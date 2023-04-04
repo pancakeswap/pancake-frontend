@@ -1,9 +1,8 @@
-import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { AutoColumn, Box, Text, RowFixed } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { PoolData, DensityChartEntry } from '../../types'
-import { RowFixed } from '../Row'
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -39,7 +38,7 @@ export function CurrentPriceLabel({ data, chartProps, poolData }: CurrentPriceLa
         <foreignObject x={labelData.x - 80} y={318} width="100%" height={100}>
           <Wrapper>
             <AutoColumn gap="6px">
-              <RowFixed align="center">
+              <RowFixed alignItems="center">
                 <Text mr="6px">{t('Current Price')}</Text>
                 <Box
                   style={{

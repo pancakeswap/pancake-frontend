@@ -8,6 +8,7 @@ import {
   SortArrowIcon,
   Text,
   useMatchBreakpoints,
+  RowFixed,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
@@ -23,7 +24,6 @@ import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader, { LoadingRows } from '../Loader'
 import Percent from '../Percent'
-import { RowFixed } from '../Row'
 import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`

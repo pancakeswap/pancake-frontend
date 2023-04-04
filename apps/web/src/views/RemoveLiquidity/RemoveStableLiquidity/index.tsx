@@ -17,6 +17,7 @@ import {
   useMatchBreakpoints,
   useModal,
   useToast,
+  RowBetween,
 } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -32,7 +33,6 @@ import { Hash } from 'viem'
 import { LightGreyCard } from '../../../components/Card'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
-import { RowBetween } from '../../../components/Layout/Row'
 import { CurrencyLogo } from '../../../components/Logo'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 

@@ -1,6 +1,17 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { AutoColumn, Button, Dots, RowBetween, Text, Box, AutoRow, Flex, QuestionHelper } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Button,
+  Dots,
+  RowBetween,
+  Text,
+  Box,
+  AutoRow,
+  Flex,
+  QuestionHelper,
+  RowFixed,
+} from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -23,8 +34,6 @@ import { AddStableChildrenProps } from 'views/AddLiquidity/AddStableLiquidity'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { FormattedSlippage } from 'views/AddLiquidity/AddStableLiquidity/components/FormattedSlippage'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
-
-import { RowFixed } from '../../../components/Layout/Row'
 
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 

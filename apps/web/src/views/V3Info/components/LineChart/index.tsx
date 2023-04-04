@@ -4,11 +4,11 @@ import useTheme from 'hooks/useTheme'
 import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { RowBetween } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from '../../hooks/usePrevious'
 import { formatDollarAmount } from '../../utils/numbers'
 import Card from '../Card'
-import { RowBetween } from '../Row'
 
 dayjs.extend(utc)
 

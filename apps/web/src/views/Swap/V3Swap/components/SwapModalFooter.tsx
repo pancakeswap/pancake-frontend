@@ -1,8 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Percent, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, QuestionHelper, Text, Link, AutoColumn } from '@pancakeswap/uikit'
+import {
+  AutoRenewIcon,
+  Button,
+  QuestionHelper,
+  Text,
+  Link,
+  AutoColumn,
+  AutoRow,
+  RowBetween,
+  RowFixed,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { useState, memo } from 'react'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
@@ -52,7 +61,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   return (
     <>
       <SwapModalFooterContainer>
-        <RowBetween align="center">
+        <RowBetween alignItems="center">
           <Text fontSize="14px">{t('Price')}</Text>
           <Text
             fontSize="14px"

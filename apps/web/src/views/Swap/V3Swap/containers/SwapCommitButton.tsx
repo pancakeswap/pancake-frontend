@@ -11,6 +11,8 @@ import {
   MessageText,
   AutoColumn,
   Dots,
+  AutoRow,
+  RowBetween,
 } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
@@ -20,7 +22,6 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
@@ -317,7 +318,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           width="48%"
         >
           {approval === ApprovalState.PENDING ? (
-            <AutoRow gap="6px" justify="center">
+            <AutoRow gap="6px" justifyContent="center">
               {t('Enabling')} <CircleLoader stroke="white" />
             </AutoRow>
           ) : approvalSubmitted && approved ? (

@@ -8,6 +8,7 @@ import {
   Text,
   Flex,
   ScanLink,
+  RowFixed
 } from '@pancakeswap/uikit'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
@@ -22,7 +23,6 @@ import { formatTime } from '../../utils/date'
 import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
-import { RowFixed } from '../Row'
 import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`

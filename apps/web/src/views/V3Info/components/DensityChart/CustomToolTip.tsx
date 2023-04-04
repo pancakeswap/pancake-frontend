@@ -1,11 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Text, RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { PoolData } from '../../types'
 import { formatAmount } from '../../utils/numbers'
 import { LightCard } from '../Card'
-import { RowBetween } from '../Row'
 
 const TooltipWrapper = styled(LightCard)`
   width: 260px;

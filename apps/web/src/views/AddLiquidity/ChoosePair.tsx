@@ -1,10 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { AddIcon, Box, CardBody, CardFooter, FlexGap, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import {
+  AddIcon,
+  Box,
+  CardBody,
+  CardFooter,
+  FlexGap,
+  Text,
+  TooltipText,
+  useTooltip,
+  RowBetween,
+} from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CurrencySelect } from 'components/CurrencySelect'
-import { RowBetween } from 'components/Layout/Row'
 import { useV2Pair } from 'hooks/usePairs'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useLPApr } from 'state/swap/useLPApr'

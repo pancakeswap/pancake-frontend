@@ -1,10 +1,9 @@
-import { ArrowDownIcon, Button } from '@pancakeswap/uikit'
+import { ArrowDownIcon, Button, AutoRow } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSwapState } from 'state/swap/hooks'
-import { AutoRow } from 'components/Layout/Row'
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ArrowWrapper } from '../../components/styleds'
@@ -22,7 +21,7 @@ export const Recipient = memo(function Recipient() {
 
   return (
     <>
-      <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
+      <AutoRow justifyContent="space-between" style={{ padding: '0 1rem' }}>
         <ArrowWrapper clickable={false}>
           <ArrowDownIcon width="16px" />
         </ArrowWrapper>

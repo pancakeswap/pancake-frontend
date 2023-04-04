@@ -13,6 +13,8 @@ import {
   useMatchBreakpoints,
   Button,
   ScanLink,
+  RowBetween,
+  RowFixed,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -32,7 +34,6 @@ import { GreyBadge } from '../components/Card'
 import DensityChart from '../components/DensityChart'
 import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
-import { RowBetween, RowFixed } from '../components/Row'
 import TransactionTable from '../components/TransactionsTable'
 import { v3InfoPath } from '../constants'
 import { usePoolChartData, usePoolData, usePoolTransactions } from '../hooks'

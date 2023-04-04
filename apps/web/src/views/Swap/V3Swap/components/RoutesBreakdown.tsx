@@ -1,10 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router/evm'
-import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
+import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2, RowBetween } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { memo } from 'react'
 
-import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
 import { RouteDisplayModal } from './RouteDisplayModal'
 

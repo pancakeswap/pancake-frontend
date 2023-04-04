@@ -1,4 +1,4 @@
-import { ArrowBackIcon, ArrowForwardIcon, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Text, SortArrowIcon, RowFixed } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import NextLink from 'next/link'
@@ -14,7 +14,6 @@ import { feeTierPercent } from '../../utils'
 import { formatDollarAmount } from '../../utils/numbers'
 import { GreyBadge } from '../Card'
 import Loader, { LoadingRows } from '../Loader'
-import { RowFixed } from '../Row'
 import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`
