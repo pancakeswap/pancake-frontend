@@ -119,8 +119,8 @@ export const farmsV3 = [
   {
     pid: 15,
     lpSymbol: 'LINK-BNB LP',
-    token: bscTokens.link,
-    quoteToken: bscTokens.wbnb,
+    token: bscTokens.wbnb,
+    quoteToken: bscTokens.link,
     lpAddress: '0x0E1893BEEb4d0913d26B9614B18Aea29c56d94b9',
     feeAmount: FeeAmount.MEDIUM,
   },
