@@ -42,11 +42,11 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const chainPath = useMultiChainPath()
   const { address: account } = useAccount()
 
-  const isPools = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/pairs`
+  const isPairs = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/pairs`
   const isTokens = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/tokens`
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
   let activeIndex = 0
-  if (isPools) {
+  if (isPairs) {
     activeIndex = 1
   }
   if (isTokens) {
@@ -61,7 +61,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
               {t('Overview')}
             </ButtonMenuItem>
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}/pairs${stableSwapQuery}`}>
-              {t('Pools')}
+              {t('Pairs')}
             </ButtonMenuItem>
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}/tokens${stableSwapQuery}`}>
               {t('Tokens')}
