@@ -7,7 +7,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 
 const Container = styled.div`
   position: sticky;
-  bottom: 50px;
+  bottom: calc(50px + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,7 +17,7 @@ const Container = styled.div`
   z-index: 6;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    bottom: 0;
+    bottom: env(safe-area-inset-bottom);
   }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
