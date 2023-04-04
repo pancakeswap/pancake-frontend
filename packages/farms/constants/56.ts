@@ -116,6 +116,46 @@ export const farmsV3 = [
     lpAddress: '0x4f3126d5DE26413AbDCF6948943FB9D0847d9818',
     feeAmount: FeeAmount.LOWEST,
   },
+  {
+    pid: 15,
+    lpSymbol: 'LINK-BNB LP',
+    token: bscTokens.link,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x0E1893BEEb4d0913d26B9614B18Aea29c56d94b9',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 16,
+    lpSymbol: 'XRP-BNB LP',
+    token: bscTokens.xrp,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0xd15B00E81F98A7DB25f1dC1BA6E983a4316c4CaC',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 17,
+    lpSymbol: 'TRX-BNB LP',
+    token: bscTokens.trx,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x71f51e5070C7070B2d079c087BfA814642Fcef58',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 17,
+    lpSymbol: 'ADA-BNB LP',
+    token: bscTokens.ada,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x673516E510d702Ab5F2bBf0c6B545111a85f7ea7',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 17,
+    lpSymbol: 'DOT-BNB LP',
+    token: bscTokens.dot,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x62F0546cBcd684F7C394D8549119e072527C41Bc',
+    feeAmount: FeeAmount.MEDIUM,
+  },
 ] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
