@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V2Pool } from '@pancakeswap/smart-router/evm'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
 
 import { infoClientWithChain } from 'utils/graphql'
@@ -55,21 +55,28 @@ export function useV2CandidatePools(currencyA?: Currency, currencyB?: Currency, 
 }
 
 export function useV2PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabled = true }: V2PoolsHookParams = {}) {
+  const fetchingBlock = useRef<string | null>(null)
+  const queryEnabled = Boolean(enabled && key && pairs?.length)
   const result = useSWR<{
     pools: SmartRouter.SubgraphV2Pool[]
     key?: string
     blockNumber?: number
   }>(
-    enabled && key && pairs?.length && ['V2PoolsFromSubgraph', key],
+    queryEnabled && ['V2PoolsFromSubgraph', key],
     async () => {
-      const pools = await SmartRouter.getV2PoolSubgraph({
-        provider: ({ chainId }) => infoClientWithChain(chainId),
-        pairs,
-      })
-      return {
-        pools,
-        key,
-        blockNumber,
+      fetchingBlock.current = blockNumber.toString()
+      try {
+        const pools = await SmartRouter.getV2PoolSubgraph({
+          provider: ({ chainId }) => infoClientWithChain(chainId),
+          pairs,
+        })
+        return {
+          pools,
+          key,
+          blockNumber,
+        }
+      } finally {
+        fetchingBlock.current = null
       }
     },
     {
@@ -77,10 +84,17 @@ export function useV2PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     },
   )
 
-  const { mutate } = result
+  const { mutate, data } = result
   useEffect(() => {
     // Revalidate pools if block number increases
-    mutate()
-  }, [blockNumber, mutate])
+    if (
+      queryEnabled &&
+      blockNumber &&
+      fetchingBlock.current !== blockNumber.toString() &&
+      (!data?.blockNumber || blockNumber > data.blockNumber)
+    ) {
+      mutate()
+    }
+  }, [blockNumber, mutate, data?.blockNumber, queryEnabled])
   return result
 }
