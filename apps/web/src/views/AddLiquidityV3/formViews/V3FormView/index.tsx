@@ -47,6 +47,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { isUserRejected } from 'utils/sentry'
 
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
@@ -289,7 +290,7 @@ export default function V3FormView({
           console.error('Failed to send transaction', error)
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
-          if (error?.code !== 4001) {
+          if (!isUserRejected(error)) {
             console.error(error)
           }
         })

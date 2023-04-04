@@ -44,6 +44,7 @@ import { useIsTransactionPending, useTransactionAdder } from 'state/transactions
 import { calculateGasMargin } from 'utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { isUserRejected } from 'utils/sentry'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
@@ -313,7 +314,7 @@ function V2PairMigrate({
       })
       .catch((err) => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (err?.code !== 4001) {
+        if (!isUserRejected(err)) {
           approveCallback()
         }
       })

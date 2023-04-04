@@ -32,6 +32,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { formatRawAmount, formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
+import { isUserRejected } from 'utils/sentry'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
@@ -207,7 +208,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           console.error('Failed to send transaction', error)
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
-          if (error?.code !== 4001) {
+          if (!isUserRejected(error)) {
             console.error(error)
           }
         })

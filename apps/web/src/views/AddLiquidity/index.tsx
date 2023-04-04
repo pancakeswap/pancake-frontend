@@ -10,7 +10,7 @@ import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useLPApr } from 'state/swap/useLPApr'
-import { logError } from 'utils/sentry'
+import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -234,14 +234,14 @@ export default function AddLiquidity({
         }),
       )
       .catch((err) => {
-        if (err && err.code !== 4001) {
+        if (err && !isUserRejected(err)) {
           logError(err)
           console.error(`Add Liquidity failed`, err, args, value)
         }
         setLiquidityState({
           attemptingTxn: false,
           liquidityErrorMessage:
-            err && err.code !== 4001
+            err && !isUserRejected(err)
               ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
               : undefined,
           txHash: undefined,
