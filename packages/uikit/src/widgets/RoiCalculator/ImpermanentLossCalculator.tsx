@@ -243,17 +243,32 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     [getPriceAdjustedAssets]
   );
 
+  const syncNewAssets = useCallback(
+    (newAssets: Asset[], currentAssets?: Asset[]) =>
+      // Recalculate if user has edited one of the prices
+      currentAssets?.some((asset) => asset.priceChanged)
+        ? getPriceAdjustedAssets(
+            // Use underlaying amounts from the new liquidity and only use the price from user
+            currentAssets.map((asset, i) =>
+              asset.priceChanged ? { ...asset, ...newAssets[i], price: asset.price } : newAssets[i]
+            )
+          )
+        : // If user doesn't edit any of the prices, then update the whole liquidity including token prices
+          newAssets,
+    [getPriceAdjustedAssets]
+  );
+
   useEffect(() => {
     if (assets) {
-      setEntry((s) => (s ? getPriceAdjustedAssets(s) : assets));
+      setEntry((s) => syncNewAssets(assets, s));
     }
-  }, [assets, getPriceAdjustedAssets]);
+  }, [assets, syncNewAssets]);
 
   useEffect(() => {
     if (exitAssets) {
-      setExit((s) => (s ? getPriceAdjustedAssets(s) : exitAssets));
+      setExit((s) => syncNewAssets(exitAssets, s));
     }
-  }, [exitAssets, getPriceAdjustedAssets]);
+  }, [exitAssets, syncNewAssets]);
 
   if (!assets?.length) {
     return null;
