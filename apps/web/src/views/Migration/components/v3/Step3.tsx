@@ -232,7 +232,7 @@ export function Step3() {
             </Heading>
             <Text color="textSubtle">
               {t(
-                'You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.',
+                'You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.',
               )}
             </Text>
             <Text color="textSubtle">
