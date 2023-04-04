@@ -419,7 +419,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   }
 
   return (
-    <ModalV2 closeOnOverlayClick {...rest}>
+    <ModalV2 closeOnOverlayClick disableOutsidePointerEvents={false} {...rest}>
       <ModalWrapper onDismiss={props.onDismiss} style={{ overflow: 'visible', border: 'none' }}>
         <AtomBox position="relative">
           <TabContainer docLink={docLink} docText={docText}>
