@@ -149,7 +149,12 @@ export default function PoolFinder() {
               hasPosition && pair ? (
                 <>
                   <MinimalPositionCard pair={pair} />
-                  <Button as={NextLinkFromReactRouter} to="/liquidity" variant="secondary" width="100%">
+                  <Button
+                    as={NextLinkFromReactRouter}
+                    to={`/v2/pair/${currencyId(currency0)}/${currencyId(currency1)}`}
+                    variant="secondary"
+                    width="100%"
+                  >
                     {t('Manage this pair')}
                   </Button>
                 </>
@@ -159,7 +164,7 @@ export default function PoolFinder() {
                     <Text textAlign="center">{t('You don’t have liquidity in this pair yet.')}</Text>
                     <Button
                       as={NextLinkFromReactRouter}
-                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      to={`/v2/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                       variant="secondary"
                     >
                       {t('Add Liquidity')}
@@ -173,7 +178,7 @@ export default function PoolFinder() {
                   <Text textAlign="center">{t('No pair found.')}</Text>
                   <Button
                     as={NextLinkFromReactRouter}
-                    to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                    to={`/v2/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                     variant="secondary"
                   >
                     {t('Create pair')}
@@ -202,14 +207,6 @@ export default function PoolFinder() {
             prerequisiteMessage
           )}
         </AutoColumn>
-
-        {/* <CurrencySearchModal
-          isOpen={showSearch}
-          onCurrencySelect={handleCurrencySelect}
-          onDismiss={handleSearchDismiss}
-          showCommonBases
-          selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
-        /> */}
       </AppBody>
     </Page>
   )
