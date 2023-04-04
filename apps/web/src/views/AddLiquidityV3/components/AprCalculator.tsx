@@ -101,10 +101,10 @@ export function AprCalculator({
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
   const currencyAUsdPrice = baseUSDPrice
     ? parseFloat(formatPrice(baseUSDPrice, 6) || '0')
-    : deriveUSDPrice(quoteUSDPrice, price?.baseCurrency.equals(quoteCurrency) ? price : price?.invert())
+    : deriveUSDPrice(quoteUSDPrice, price?.baseCurrency.equals(quoteCurrency?.wrapped) ? price : price?.invert())
   const currencyBUsdPrice =
     baseUSDPrice &&
-    (deriveUSDPrice(baseUSDPrice, price?.baseCurrency.equals(baseCurrency) ? price : price?.invert()) ||
+    (deriveUSDPrice(baseUSDPrice, price?.baseCurrency.equals(baseCurrency?.wrapped) ? price : price?.invert()) ||
       parseFloat(formatPrice(quoteUSDPrice, 6) || '0'))
 
   const depositUsd = useMemo(
