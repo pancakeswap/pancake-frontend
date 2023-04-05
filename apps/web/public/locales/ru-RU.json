@@ -2283,7 +2283,7 @@
   "View prices in": "View prices in",
   "Customize Trading Fee Tiers": "Customize Trading Fee Tiers",
   "Choose the fee rate you want when providing liquidity": "Choose the fee rate you want when providing liquidity",
-  "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.",
+  "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.",
   "Concentrate Your Liquidity": "Concentrate Your Liquidity",
   "Provide liquidity to a specific price range": "Provide liquidity to a specific price range",
   "Please note that the UI automatically chooses the most popular trading fee tier after selecting the trading pair.": "Please note that the UI automatically chooses the most popular trading fee tier after selecting the trading pair.",
