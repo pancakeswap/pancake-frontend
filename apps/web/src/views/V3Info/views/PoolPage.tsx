@@ -287,7 +287,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
                   : view === ChartView.DENSITY
                   ? ''
-                  : formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)}
+                  : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
                 <Text small color="secondary">
                   {valueLabel ? (
                     `${valueLabel} (UTC)`
@@ -298,7 +298,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   )}
                 </Text>
               </Flex>
-              <Box px="24px" height="335px">
+              <Box px="24px" height="380px">
                 {view === ChartView.VOL ? (
                   <BarChart
                     data={formattedVolumeData}
