@@ -520,7 +520,7 @@ export default function PoolPage() {
                   style={{ gap: '16px' }}
                   flexWrap={['wrap', 'wrap', 'nowrap']}
                 >
-                  <Box width="100%" mr="16px" mb={['8px', '8px', 0]} position="relative">
+                  <Box width="100%" mb={['8px', '8px', 0]} position="relative">
                     <Flex position="absolute" right={0}>
                       <AprCalculator
                         allowApply={false}
