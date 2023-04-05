@@ -18,10 +18,10 @@ interface CustomGTMDataLayer {
 }
 
 type WindowWithDataLayer = Window & {
-  customDataLayer: CustomGTMDataLayer[] | undefined
+  dataLayer: CustomGTMDataLayer[] | undefined
 }
 
 declare const window: WindowWithDataLayer
 
-export const customGTMEvent: WindowWithDataLayer['customDataLayer'] =
-  typeof window !== 'undefined' ? window?.customDataLayer : undefined
+export const customGTMEvent: WindowWithDataLayer['dataLayer'] =
+  typeof window !== 'undefined' ? window?.dataLayer : undefined
