@@ -558,7 +558,7 @@ export default function PoolPage() {
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
-                          <Text mr="4px">
+                          <Text small mr="4px">
                             <FormattedCurrencyAmount currencyAmount={positionValueUpper} />
                           </Text>
                         </Flex>
@@ -571,7 +571,7 @@ export default function PoolPage() {
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
-                          <Text mr="4px">
+                          <Text small mr="4px">
                             <FormattedCurrencyAmount currencyAmount={positionValueLower} />
                           </Text>
                         </Flex>
