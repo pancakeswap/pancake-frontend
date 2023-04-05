@@ -2283,7 +2283,7 @@
   "View prices in": "Visa priser i",
   "Customize Trading Fee Tiers": "Anpassa handelsavgiftsnivåer",
   "Choose the fee rate you want when providing liquidity": "Välj den avgiftskurs du vill ha när du tillhandahåller likviditet",
-  "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "Du kan välja mellan 0,1 %, 0,25 %, 0,05 % och 0,01 % när du tillhandahåller likviditet. Vanligtvis är lägre avgiftskurser mer populära bland stabila tillgångar, medan mer volatila tillgångar gynnas av en högre avgiftskurs.",
+  "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.",
   "Concentrate Your Liquidity": "Koncentrera din likviditet",
   "Provide liquidity to a specific price range": "Tillhandahåll likviditet till ett specifikt prisintervall",
   "Please note that the UI automatically chooses the most popular trading fee tier after selecting the trading pair.": "Observera att användargränssnittet automatiskt väljer den mest populära avgiftsnivån efter att du har valt handelsparet.",
