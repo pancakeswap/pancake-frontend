@@ -2283,7 +2283,7 @@
   "View prices in": "Näytä hinnat:",
   "Customize Trading Fee Tiers": "Mukauta kaupankäyntimaksutasoja",
   "Choose the fee rate you want when providing liquidity": "Valitse haluamasi maksu tarjotessasi likviditeettiä",
-  "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.",
+  "You can choose a trading fee rate from 1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "Voit valita jonkin seuraavista kaupankäyntimaksuista tarjotessasi likviditeettiä: 1 %, 0,25 %, 0,05 % ja 0,01 %. Yleensä alhaisemmat maksut ovat suositumpia vakaissa omaisuuserissä ja volatiilimmat omaisuuserät hyötyvät korkeammasta maksusta.",
   "Concentrate Your Liquidity": "Keskitä likviditeettisi",
   "Provide liquidity to a specific price range": "Tarjoa likviditeettiä tietylle hintavälille",
   "Please note that the UI automatically chooses the most popular trading fee tier after selecting the trading pair.": "Huomioithan, että käyttöliittymä valitsee automaattisesti suosituimman kaupankäyntimaksutason kaupankäyntiparin valitsemisen jälkeen.",
