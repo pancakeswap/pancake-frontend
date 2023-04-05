@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Text, Button, Flex, LogoRoundIcon, Tag, Balance } from '@pancakeswap/uikit'
+import { Box, Text, Button, useModal, Flex, LogoRoundIcon, Tag, Balance, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
@@ -7,7 +7,12 @@ import BigNumber from 'bignumber.js'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { add } from 'date-fns'
-// import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { Token } from '@pancakeswap/sdk'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import AddCakeButton from 'views/Pools/components/LockedPool/Buttons/AddCakeButton'
+import ExtendButton from 'views/Pools/components/LockedPool/Buttons/ExtendDurationButton'
+import LockedStakedModal from 'views/Pools/components/LockedPool/Modals/LockedStakeModal'
 import { MIN_LOCK_CAKE_AMOUNT, LOCKED_WEEK_DURATION } from '../../config'
 
 const Container = styled(Flex)`
@@ -56,6 +61,7 @@ export const BunnyButt = styled.div`
 `
 
 interface NoCakeLockedOrExtendLockProps {
+  pool: Pool.DeserializedPool<Token>
   userData: DeserializedLockedVaultUser
   isLockPosition: boolean
   isValidLockDuration: boolean
@@ -63,6 +69,7 @@ interface NoCakeLockedOrExtendLockProps {
 }
 
 const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrExtendLockProps>> = ({
+  pool,
   userData,
   isLockPosition,
   isValidLockDuration,
@@ -71,6 +78,14 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   const { t } = useTranslation()
   const { theme } = useTheme()
   const cakePriceBusd = usePriceCakeBusd()
+  const { lockEndTime, lockStartTime, lockedAmount } = userData
+
+  const lockedAmountAsNumber = getBalanceNumber(lockedAmount)
+
+  const currentBalance = useMemo(
+    () => (pool?.userData?.stakingTokenBalance ? new BigNumber(pool?.userData?.stakingTokenBalance) : BIG_ZERO),
+    [pool?.userData?.stakingTokenBalance],
+  )
 
   const isOnlyNeedExtendLock = useMemo(
     () => isLockPosition && isValidTotalStakedBalance && !isValidLockDuration,
@@ -104,6 +119,14 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     const week = new BigNumber(minLockDurationTimestamp).minus(userData?.lockEndTime).div(onWeek).toNumber()
     return Math.ceil(week)
   }, [isLockPosition, userData?.lockEndTime])
+
+  const [openPresentLockedStakeModal] = useModal(
+    <LockedStakedModal
+      currentBalance={currentBalance}
+      stakingToken={pool?.stakingToken}
+      stakingTokenBalance={currentBalance}
+    />,
+  )
 
   return (
     <>
@@ -199,21 +222,36 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
           </Flex>
         </Flex>
       </Container>
-      <Flex flexDirection={['column', 'column', 'column', 'row']} mt="32px">
+      <Flex width="250px" flexDirection={['column', 'column', 'column', 'row']} mt="32px">
         {!isOnlyNeedExtendLock ? (
-          <Button width={['250px', '250px', '250px', 'fit-content']}>
-            {isLockPosition ? t('Add CAKE') : t('Lock CAKE')}
-          </Button>
+          <Box width="100%">
+            {isLockPosition ? (
+              <AddCakeButton
+                lockEndTime={lockEndTime}
+                lockStartTime={lockStartTime}
+                currentLockedAmount={lockedAmount}
+                stakingToken={pool?.stakingToken}
+                currentBalance={currentBalance}
+                stakingTokenBalance={pool?.userData?.stakingTokenBalance}
+              />
+            ) : (
+              // TODO: Add approve Button
+              <Button width="100%" onClick={openPresentLockedStakeModal}>
+                {t('Lock CAKE')}
+              </Button>
+            )}
+          </Box>
         ) : (
-          <Button width={['250px', '250px', '250px', 'fit-content']}>{t('Extend Lock')}</Button>
+          <ExtendButton
+            lockEndTime={lockEndTime}
+            lockStartTime={lockStartTime}
+            stakingToken={pool?.stakingToken}
+            currentBalance={currentBalance}
+            currentLockedAmount={lockedAmountAsNumber}
+          >
+            {t('Extend Lock')}
+          </ExtendButton>
         )}
-        <Button
-          variant="secondary"
-          width={['250px', '250px', '250px', 'fit-content']}
-          m={['16px 0 0 0', '16px 0 0 0', '16px 0 0 0', '0 0 0 16px']}
-        >
-          {t('View Pool')}
-        </Button>
       </Flex>
     </>
   )

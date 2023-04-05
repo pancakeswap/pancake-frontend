@@ -9,12 +9,8 @@ import BigNumber from 'bignumber.js'
 import { add } from 'date-fns'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import {
-  useCakeVaultPublicData,
-  useCakeVaultUserData,
-  useDeserializedPoolByVaultKey,
-  useCakeVault,
-} from 'state/pools/hooks'
+import { useDeserializedPoolByVaultKey, useCakeVault } from 'state/pools/hooks'
+import { useCakeVaultPool } from 'views/TradingReward/hooks/useCakeVaultPool'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 // import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
@@ -148,8 +144,8 @@ const YourTradingReward = () => {
   const { profile } = useProfile()
   const { theme } = useTheme()
 
-  useCakeVaultPublicData()
-  useCakeVaultUserData()
+  useCakeVaultPool()
+
   const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
   const { userData } = useCakeVault() as DeserializedLockedCakeVault
   const vaultPosition = getVaultPosition(userData)
@@ -200,6 +196,7 @@ const YourTradingReward = () => {
             {/* <ViewEligiblePairs /> */}
             {showNoCakeLockedOrExtendLock && (
               <NoCakeLockedOrExtendLock
+                pool={pool}
                 userData={userData}
                 isLockPosition={isLockPosition}
                 isValidLockDuration={isValidLockDuration}
