@@ -194,6 +194,7 @@ export function AprCalculator({
                 </>
               }
               size="20px"
+              placement="top"
             />
           ) : null}
         </AprButtonContainer>
