@@ -2414,5 +2414,10 @@
   "gm eth teams": "gm eth teams",
   "Ev3ryone's Favourite D3X": "Ev3ryone's Favourite D3X",
   "Discover V3": "Discover V3",
-  "PancakeSwap v3 is live!": "PancakeSwap v3 is live!"
+  "PancakeSwap v3 is live!": "PancakeSwap v3 is live!",
+  "CAKE Per Second:": "CAKE Per Second:",
+  "Total Multipliers:": "Total Multipliers:",
+  "The Multiplier represents the proportion of CAKE rewards each farm receives against each farm groups.": "The Multiplier represents the proportion of CAKE rewards each farm receives against each farm groups.",
+  "Different farm groups share a different sets of multipliers.": "Different farm groups share a different sets of multipliers.",
+  "about how to calculate.": "about how to calculate."
 }

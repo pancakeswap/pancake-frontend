@@ -44,6 +44,8 @@ const fallback: Awaited<ReturnType<typeof farmFetcherV3.fetchFarms>> = {
   farmsWithPrice: [],
   poolLength: 0,
   cakePerSecond: '0',
+  totalAllocPoint: null,
+  latestPeriodCakePerSecond: null,
 }
 
 const API_FLAG = false

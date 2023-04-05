@@ -1,8 +1,11 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { BIG_ZERO, ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
+import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
+
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
@@ -146,6 +149,23 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
+  const {
+    data: farmsV2,
+    userDataLoaded: v2UserDataLoaded,
+    poolLength: v2PoolLength,
+    regularCakePerBlock,
+    totalRegularAllocPoint,
+    cakePerBlock,
+  } = useFarms()
+  const { data: farmV3 } = useFarmsV3Public()
+  console.log({
+    farmsV2,
+    v2UserDataLoaded,
+    v2PoolLength,
+    regularCakePerBlock,
+    totalRegularAllocPoint,
+    cakePerBlock,
+  })
   const generateRow = useCallback(
     (farm: V2StakeValueAndV3Farm): RowProps => {
       const { token, quoteToken } = farm
@@ -154,7 +174,12 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
       const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
       const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
+
       if (farm.version === 2) {
+        // V2
+        // const farmCakePerSecond = farm.allocPoint / totalRegularAllocPoint * cakePerBlock(_isRegular = true) / 1e18 / 3;
+        // const totalMultipliers = totalRegularAllocPoint / 10;
+        // console.log(farm.allocPoint)
         const row: RowProps = {
           apr: {
             value: getDisplayApr(farm.apr, farm.lpRewardsApr),
@@ -189,6 +214,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           },
           multiplier: {
             multiplier: farm.multiplier,
+            farmCakePerSecond: '-',
+            totalMultipliers: '-',
           },
           type: farm.isCommunity ? 'community' : 'v2',
           details: farm,
@@ -196,6 +223,21 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         }
         return row
       }
+
+      // V3
+      const PRECISION = new BigNumber('1000000000000').toNumber()
+      const farmCakePerSecond =
+        farm.allocPoint && farmV3.totalAllocPoint && farmV3.latestPeriodCakePerSecond
+          ? (
+              ((ethersToBigNumber(farm.allocPoint).toNumber() / ethersToBigNumber(farmV3.totalAllocPoint).toNumber()) *
+                ethersToBigNumber(farmV3.latestPeriodCakePerSecond).toNumber()) /
+              PRECISION /
+              1e18
+            ).toFixed(6)
+          : '-'
+      const totalMultipliers = farmV3.totalAllocPoint
+        ? (ethersToBigNumber(farmV3.totalAllocPoint).toNumber() / 10).toString()
+        : '-'
 
       return {
         initialActivity,
@@ -217,6 +259,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         details: farm,
         multiplier: {
           multiplier: farm.multiplier,
+          farmCakePerSecond,
+          totalMultipliers,
         },
         stakedLiquidity: {
           inactive: farm.multiplier === '0X',
@@ -243,7 +287,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         },
       }
     },
-    [cakePrice, query.search],
+    [cakePrice, query.search, farmV3.totalAllocPoint, farmV3.latestPeriodCakePerSecond],
   )
 
   const sortedRows = useMemo(() => {

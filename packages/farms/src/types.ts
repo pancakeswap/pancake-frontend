@@ -20,11 +20,13 @@ export type FarmsDynamicDataResultV2 = {
   tokenPriceVsQuote: string
   poolWeight: string
   multiplier: string
+  allocPoint?: EtherBigNumber
 }
 
 export type FarmPriceV3 = {
   tokenPriceBusd: string
   quoteTokenPriceBusd: string
+  allocPoint?: EtherBigNumber
 }
 
 export type FarmTVL = {
@@ -58,6 +60,7 @@ export interface FarmConfigBaseProps {
     endBlock: number
   }
   boosted?: boolean
+  allocPoint?: EtherBigNumber
 }
 
 export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
@@ -82,6 +85,7 @@ export type FarmConfigV3 = {
   token: Token
   quoteToken: Token
   feeAmount: FeeAmount
+  allocPoint?: EtherBigNumber
 }
 
 export type SerializedFarmConfigV3 = FarmConfigV3 & {
@@ -132,6 +136,7 @@ export interface SerializedFarmUserData {
 
 export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
+  allocPoint?: EtherBigNumber
 }
 
 export interface SerializedFarmsV3State {
@@ -150,6 +155,8 @@ export interface SerializedFarmsState {
   loadingKeys: Record<string, boolean>
   poolLength?: number
   regularCakePerBlock?: number
+  totalRegularAllocPoint?: EtherBigNumber
+  cakePerBlock?: EtherBigNumber
 }
 
 export interface DeserializedFarmConfig extends FarmConfigBaseProps {
@@ -187,6 +194,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: BigNumber
+  allocPoint?: EtherBigNumber
 }
 
 export interface DeserializedFarmsState {
@@ -195,6 +203,8 @@ export interface DeserializedFarmsState {
   userDataLoaded: boolean
   poolLength?: number
   regularCakePerBlock?: number
+  totalRegularAllocPoint?: EtherBigNumber
+  cakePerBlock?: EtherBigNumber
 }
 
 export interface FarmWithStakedValue extends DeserializedFarm {
@@ -214,6 +224,8 @@ export interface FarmsV3Response<T extends FarmV3DataWithPrice = FarmV3DataWithP
   poolLength: number
   farmsWithPrice: T[]
   cakePerSecond: string
+  totalAllocPoint?: EtherBigNumber
+  latestPeriodCakePerSecond?: EtherBigNumber
 }
 
 export type IPendingCakeByTokenId = Record<string, EtherBigNumber>

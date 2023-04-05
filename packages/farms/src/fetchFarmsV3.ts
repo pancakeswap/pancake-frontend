@@ -41,19 +41,21 @@ export async function farmV3FetchFarms({
   const farmsData = farms.map((farm, index) => {
     const { token, quoteToken, ...f } = farm
     const lmPoolAddress = v3PoolData[index][1][0]
+    const allocPoint = poolInfos[index]?.allocPoint
     return {
       ...f,
       token,
       quoteToken,
       lmPool: lmPoolAddress,
       lmPoolLiquidity: lmPoolInfos[lmPoolAddress],
+      allocPoint,
       ...getV3FarmsDynamicData({
         ...(v3PoolData[index][0] as any),
         token0: farm.token,
         token1: farm.quoteToken,
       }),
       ...getFarmAllocation({
-        allocPoint: poolInfos[index]?.allocPoint,
+        allocPoint,
         totalAllocPoint,
       }),
     }

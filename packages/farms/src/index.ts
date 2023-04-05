@@ -46,6 +46,8 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
       farmsWithPrice,
       poolLength: poolLength.toNumber(),
       regularCakePerBlock: +regularCakePerBlock,
+      totalRegularAllocPoint,
+      cakePerBlock,
     }
   }
 
@@ -94,6 +96,8 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
         poolLength: poolLength.toNumber(),
         farmsWithPrice,
         cakePerSecond,
+        totalAllocPoint,
+        latestPeriodCakePerSecond,
       }
     } catch (error) {
       console.error(error)
