@@ -90,17 +90,17 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
   }, [poolData])
 
-  const formattedTvlData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: unixToDate(day.date),
-          value: day.totalValueLockedUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
+  // const formattedTvlData = useMemo(() => {
+  //   if (chartData) {
+  //     return chartData.map((day) => {
+  //       return {
+  //         time: unixToDate(day.date),
+  //         value: day.totalValueLockedUSD,
+  //       }
+  //     })
+  //   }
+  //   return []
+  // }, [chartData])
 
   const formattedVolumeData = useMemo(() => {
     if (chartData) {
