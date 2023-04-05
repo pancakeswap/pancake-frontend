@@ -44,7 +44,7 @@ export function Step4() {
   return (
     <AppBody style={{ maxWidth: '700px' }} m="auto">
       <AppHeader title={t('Your Liquidity')} subtitle={t('List of your liquidity positions')} />
-      <AtomBox bg="gradientCardHeader" style={{ minHeight: '400px' }} pt="16px" px="24px">
+      <AtomBox bg="gradientCardHeader" style={{ minHeight: '400px' }} pt="16px" px="16px">
         {!account ? (
           <Text color="textSubtle" pt="24px" textAlign="center" bold fontSize="16px">
             {t('Connect to a wallet to view your liquidity.')}

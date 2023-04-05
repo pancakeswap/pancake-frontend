@@ -7,6 +7,8 @@ import { Percent, Currency } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
 
 const TagCell = styled(Flex)`
+  padding: 8px 0;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     position: absolute;
     right: 16px;
