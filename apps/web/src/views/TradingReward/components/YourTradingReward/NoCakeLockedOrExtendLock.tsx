@@ -1,7 +1,14 @@
+import { useMemo } from 'react'
 import { Box, Text, Button, Flex, LogoRoundIcon, Tag, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
+import BigNumber from 'bignumber.js'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { DeserializedLockedVaultUser } from 'state/types'
+import { add } from 'date-fns'
+// import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { MIN_LOCK_CAKE_AMOUNT, LOCKED_WEEK_DURATION } from '../../config'
 
 const Container = styled(Flex)`
   flex-direction: column;
@@ -48,24 +55,85 @@ export const BunnyButt = styled.div`
   z-index: 1;
 `
 
-const NoCakeLockedOrExtendLock = () => {
+interface NoCakeLockedOrExtendLockProps {
+  userData: DeserializedLockedVaultUser
+  isLockPosition: boolean
+  isValidLockDuration: boolean
+  isValidTotalStakedBalance: boolean
+}
+
+const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrExtendLockProps>> = ({
+  userData,
+  isLockPosition,
+  isValidLockDuration,
+  isValidTotalStakedBalance,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const cakePriceBusd = usePriceCakeBusd()
 
-  const isOnlyNeedExtendLock = false
+  const isOnlyNeedExtendLock = useMemo(
+    () => isLockPosition && isValidTotalStakedBalance && !isValidLockDuration,
+    [isLockPosition, isValidTotalStakedBalance, isValidLockDuration],
+  )
+
+  const needAddedCakeAmount = useMemo(() => {
+    if (!isLockPosition) {
+      return MIN_LOCK_CAKE_AMOUNT
+    }
+    return new BigNumber(MIN_LOCK_CAKE_AMOUNT).minus(userData.balance.cakeAsNumberBalance).toNumber()
+  }, [isLockPosition, userData.balance.cakeAsNumberBalance])
+
+  const cakePrice = useMemo(
+    () => new BigNumber(cakePriceBusd).times(needAddedCakeAmount).toNumber(),
+    [cakePriceBusd, needAddedCakeAmount],
+  )
+
+  const needAddedWeek = useMemo(() => {
+    if (!isLockPosition) {
+      return LOCKED_WEEK_DURATION
+    }
+
+    const minLockDuration = add(new Date(), { weeks: LOCKED_WEEK_DURATION })
+    const minLockDurationTimestamp = Math.floor(minLockDuration.getTime() / 1000)
+    if (new BigNumber(userData?.lockEndTime).gte(minLockDurationTimestamp)) {
+      return 0
+    }
+
+    const onWeek = 60 * 60 * 24 * 7
+    const week = new BigNumber(minLockDurationTimestamp).minus(userData?.lockEndTime).div(onWeek).toNumber()
+    return Math.ceil(week)
+  }, [isLockPosition, userData?.lockEndTime])
 
   return (
     <>
-      <Text bold mb="8px">
-        {t('You have no CAKE locked.')}
-      </Text>
-      <Text mb="32px">{t('Lock a minimum of 500 CAKE for 24 weeks or more to start earning from trades!')}</Text>
-      {/* <Text bold mb="8px">{t('Not enough CAKE locked.')}</Text> */}
-      {/* <Text mb="32px">{t('Add a minimum of 200 CAKE for 24 weeks or more to start earning from trades!')}</Text> */}
-
-      {/* <Text bold mb="8px">{t('Not enough lock time.')}</Text> */}
-      {/* <Text mb="32px">{t('Extend your locked staking for 5 weeks or more to start earning from trades!')}</Text> */}
-
+      {!isOnlyNeedExtendLock ? (
+        <>
+          <Text bold mb="8px">
+            {isLockPosition ? t('Not enough CAKE locked.') : t('You have no CAKE locked.')}
+          </Text>
+          <Text mb="32px">
+            {t(
+              'Lock a minimum of %minLockCakeAmount% CAKE for %minLockedWeekDuration% weeks or more to start earning from trades!',
+              {
+                minLockCakeAmount: MIN_LOCK_CAKE_AMOUNT,
+                minLockedWeekDuration: LOCKED_WEEK_DURATION,
+              },
+            )}
+          </Text>
+        </>
+      ) : (
+        <>
+          <Text bold mb="8px">
+            {t('Not enough lock time.')}
+          </Text>
+          <Text mb="32px">
+            {t('Extend your locked staking for %lockedWeeks% weeks or more to start earning from trades!', {
+              lockedWeeks: needAddedWeek,
+            })}
+          </Text>
+        </>
+      )}
       <Container>
         {!isOnlyNeedExtendLock && (
           <Flex
@@ -92,10 +160,15 @@ const NoCakeLockedOrExtendLock = () => {
             <Flex>
               <LogoRoundIcon style={{ alignSelf: 'center' }} width={32} height={32} />
               <Box ml="12px">
-                <Text fontSize={['16px', '16px', '16px', '20px']} bold>
-                  200+
-                </Text>
-                <Balance fontSize="12px" color="textSubtle" prefix="~ " unit=" USD" decimals={2} value={300} />
+                <Balance
+                  color="success"
+                  fontSize={['16px', '16px', '16px', '20px']}
+                  bold
+                  prefix="+ "
+                  decimals={2}
+                  value={needAddedCakeAmount}
+                />
+                <Balance fontSize="12px" color="textSubtle" prefix="~ " unit=" USD" decimals={2} value={cakePrice} />
               </Box>
             </Flex>
           </Flex>
@@ -121,19 +194,23 @@ const NoCakeLockedOrExtendLock = () => {
               <BunnyHead />
             </Box>
             <Tag ml="8px" variant="textSubtle">
-              24 Week+
+              {needAddedWeek >= 1 ? `${needAddedWeek} ${t('Week+')}` : `${needAddedWeek} ${t('Weeks+')}`}
             </Tag>
           </Flex>
         </Flex>
       </Container>
-
       <Flex flexDirection={['column', 'column', 'column', 'row']} mt="32px">
-        <Button width={['250px', '250px', '250px', 'fit-content']}>{t('Lock CAKE')}</Button>
-        {/* <Button>{t('Extend Lock')}</Button> */}
+        {!isOnlyNeedExtendLock ? (
+          <Button width={['250px', '250px', '250px', 'fit-content']}>
+            {isLockPosition ? t('Add CAKE') : t('Lock CAKE')}
+          </Button>
+        ) : (
+          <Button width={['250px', '250px', '250px', 'fit-content']}>{t('Extend Lock')}</Button>
+        )}
         <Button
+          variant="secondary"
           width={['250px', '250px', '250px', 'fit-content']}
           m={['16px 0 0 0', '16px 0 0 0', '16px 0 0 0', '0 0 0 16px']}
-          variant="secondary"
         >
           {t('View Pool')}
         </Button>
