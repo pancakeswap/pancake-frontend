@@ -98,11 +98,11 @@ const SingleFarmV3Card: React.FunctionComponent<
   const unstakedModal = useModalV2()
 
   const handleStake = async () => {
-    logGTMClickStakeFarmEvent()
     await onStake()
     if (!attemptingTxn) {
       onDismiss?.()
     }
+    logGTMClickStakeFarmEvent()
   }
 
   const handleUnStake = async () => {

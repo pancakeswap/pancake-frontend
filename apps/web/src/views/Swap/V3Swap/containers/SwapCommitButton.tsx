@@ -196,7 +196,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    logGTMClickSwapEvent()
     if (isExpertMode) {
       handleSwap()
     } else {
@@ -208,6 +207,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
 
   // useEffect

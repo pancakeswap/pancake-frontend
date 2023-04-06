@@ -150,7 +150,6 @@ export function MMSwapCommitButton({
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    logGTMClickSwapEvent()
     if (isExpertMode) {
       handleSwap()
     } else {
@@ -162,6 +161,7 @@ export function MMSwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, rfqTrade])
 
   // useEffect

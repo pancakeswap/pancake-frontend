@@ -140,7 +140,6 @@ export default function StableSwapCommitButton({
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    logGTMClickSwapEvent()
     if (isExpertMode) {
       handleSwap()
     } else {
@@ -152,6 +151,7 @@ export default function StableSwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
 
   // useEffect
