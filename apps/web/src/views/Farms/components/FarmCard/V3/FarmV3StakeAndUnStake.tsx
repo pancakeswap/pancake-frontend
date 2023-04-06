@@ -5,7 +5,8 @@ import { AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
 import { Balance } from '@pancakeswap/uikit/src/components/Balance'
 import { Box } from '@pancakeswap/uikit/src/components/Box'
 import { Button } from '@pancakeswap/uikit/src/components/Button'
-import { LinkExternal } from '@pancakeswap/uikit/src/components/Link'
+import { Link } from '@pancakeswap/uikit/src/components/Link'
+import { ChevronRightIcon } from '@pancakeswap/uikit/src/components/Svg'
 import { Text } from '@pancakeswap/uikit/src/components/Text'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
@@ -18,7 +19,7 @@ import styled from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
-const StyledLink = styled(LinkExternal)`
+const StyledLink = styled(Link)`
   &:hover {
     text-decoration: initial;
   }
@@ -48,10 +49,9 @@ export const FarmV3LPTitle = ({
   title: string
   outOfRange: boolean
 }) => (
-  <StyledLink href={liquidityUrl}>
-    <Text color="primary" bold>
-      {title}
-    </Text>
+  <StyledLink external href={liquidityUrl}>
+    <Text bold>{title}</Text>
+    <ChevronRightIcon fontSize="12px" />
   </StyledLink>
 )
 
