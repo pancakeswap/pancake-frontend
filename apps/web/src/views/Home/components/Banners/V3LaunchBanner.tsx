@@ -102,15 +102,15 @@ const RightWrapper = styled.div`
     // v3LaunchBunny
     position: absolute !important;
     top: -20px;
-    right: -40px;
-    animation: ${flyingAnim} 7.5s ease-in-out infinite;
+    right: -35px;
+    //animation: ${flyingAnim} 7.5s ease-in-out infinite;
     ${({ theme }) => theme.mediaQueries.sm} {
-      top: -40px;
+      top: -31px;
       right: 153px;
     }
     ${({ theme }) => theme.mediaQueries.lg} {
       display: block !important;
-      animation: ${flyingAnim} 7.5s ease-in-out infinite;
+      // animation: ${flyingAnim} 7.5s ease-in-out infinite;
     }
   }
 `
