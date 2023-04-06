@@ -2267,7 +2267,7 @@
   "Create a Pancake Profile to start earning from trades": "Create a Pancake Profile to start earning from trades",
   "You have earn some trading rewards": "You have earn some trading rewards",
   "Lock CAKE to Claim": "Lock CAKE to Claim",
-  "Lock a minimum of 500 CAKE for 8 weeks or more to claim rewards from trades!": "Lock a minimum of 500 CAKE for 8 weeks or more to claim rewards from trades!",
+  "Lock a minimum of %minLockCakeAmount% CAKE for %minLockedWeekDuration% weeks or more to start earning from trades!": "Lock a minimum of %minLockCakeAmount% CAKE for %minLockedWeekDuration% weeks or more to start earning from trades!",
   "Start trading eligible pairs to earn trading rewards!": "Start trading eligible pairs to earn trading rewards!",
   "View Eligible Pairs": "View Eligible Pairs",
   "Your Trading Reward": "Your Trading Reward",
