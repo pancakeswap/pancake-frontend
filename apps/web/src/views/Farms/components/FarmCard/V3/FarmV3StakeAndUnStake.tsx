@@ -49,7 +49,7 @@ export const FarmV3LPTitle = ({
   title: string
   outOfRange: boolean
 }) => (
-  <StyledLink external href={liquidityUrl}>
+  <StyledLink href={liquidityUrl}>
     <Text bold>{title}</Text>
     <ChevronRightIcon fontSize="12px" />
   </StyledLink>
