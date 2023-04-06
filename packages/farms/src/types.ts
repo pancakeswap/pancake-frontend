@@ -226,6 +226,7 @@ export interface FarmsV3Response<T extends FarmV3DataWithPrice = FarmV3DataWithP
   cakePerSecond: string
   totalAllocPoint?: EtherBigNumber
   latestPeriodCakePerSecond?: EtherBigNumber
+  PRECISION?: EtherBigNumber
 }
 
 export type IPendingCakeByTokenId = Record<string, EtherBigNumber>

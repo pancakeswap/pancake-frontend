@@ -75,7 +75,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
     }
 
     try {
-      const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
+      const { poolLength, totalAllocPoint, latestPeriodCakePerSecond, PRECISION } = await fetchMasterChefV3Data({
         multicallv2,
         masterChefAddress,
         chainId,
@@ -98,6 +98,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
         cakePerSecond,
         totalAllocPoint,
         latestPeriodCakePerSecond,
+        PRECISION,
       }
     } catch (error) {
       console.error(error)

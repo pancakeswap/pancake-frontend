@@ -114,6 +114,13 @@ const masterchefV3Abi = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'PRECISION',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ]
 
 export async function fetchMasterChefV3Data({
@@ -128,8 +135,9 @@ export async function fetchMasterChefV3Data({
   poolLength: BigNumber
   totalAllocPoint: BigNumber
   latestPeriodCakePerSecond: BigNumber
+  PRECISION: BigNumber
 }> {
-  const [[poolLength], [totalAllocPoint], [latestPeriodCakePerSecond]] = await multicallv2({
+  const [[poolLength], [totalAllocPoint], [latestPeriodCakePerSecond], [PRECISION]] = await multicallv2({
     abi: masterchefV3Abi,
     calls: [
       {
@@ -144,6 +152,10 @@ export async function fetchMasterChefV3Data({
         address: masterChefAddress,
         name: 'latestPeriodCakePerSecond',
       },
+      {
+        address: masterChefAddress,
+        name: 'PRECISION',
+      },
     ],
     chainId,
   })
@@ -152,6 +164,7 @@ export async function fetchMasterChefV3Data({
     poolLength,
     totalAllocPoint,
     latestPeriodCakePerSecond,
+    PRECISION,
   }
 }
 

@@ -157,6 +157,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     totalRegularAllocPoint,
     cakePerBlock,
   } = useFarms()
+
   const { data: farmV3 } = useFarmsV3Public()
   console.log({
     farmsV2,
@@ -225,19 +226,18 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       }
 
       // V3
-      const PRECISION = new BigNumber('1000000000000').toNumber()
+      const { allocPoint } = farm
+      const { totalAllocPoint, latestPeriodCakePerSecond, PRECISION } = farmV3
       const farmCakePerSecond =
-        farm.allocPoint && farmV3.totalAllocPoint && farmV3.latestPeriodCakePerSecond
+        allocPoint && totalAllocPoint && latestPeriodCakePerSecond
           ? (
-              ((ethersToBigNumber(farm.allocPoint).toNumber() / ethersToBigNumber(farmV3.totalAllocPoint).toNumber()) *
-                ethersToBigNumber(farmV3.latestPeriodCakePerSecond).toNumber()) /
-              PRECISION /
+              ((ethersToBigNumber(allocPoint).toNumber() / ethersToBigNumber(totalAllocPoint).toNumber()) *
+                ethersToBigNumber(latestPeriodCakePerSecond).toNumber()) /
+              PRECISION.toNumber() /
               1e18
             ).toFixed(6)
           : '-'
-      const totalMultipliers = farmV3.totalAllocPoint
-        ? (ethersToBigNumber(farmV3.totalAllocPoint).toNumber() / 10).toString()
-        : '-'
+      const totalMultipliers = totalAllocPoint ? (ethersToBigNumber(totalAllocPoint).toNumber() / 10).toString() : '-'
 
       return {
         initialActivity,
@@ -287,7 +287,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         },
       }
     },
-    [cakePrice, query.search, farmV3.totalAllocPoint, farmV3.latestPeriodCakePerSecond],
+    [cakePrice, query.search, farmV3],
   )
 
   const sortedRows = useMemo(() => {
