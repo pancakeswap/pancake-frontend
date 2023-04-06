@@ -46,7 +46,8 @@ export async function farmV3FetchFarms({
       token,
       quoteToken,
       lmPool: lmPoolAddress,
-      lmPoolLiquidity: lmPoolInfos[lmPoolAddress],
+      lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
+      _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
       ...getV3FarmsDynamicData({
         ...(v3PoolData[index][0] as any),
         token0: farm.token,
@@ -267,6 +268,19 @@ const lmPoolAbi = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'rewardGrowthGlobalX128',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ] as const
 
 const v3PoolAbi = [
@@ -298,23 +312,43 @@ type Slot0 = GetResult<typeof v3PoolAbi, 'slot0'>
 type LmPool = GetResult<typeof v3PoolAbi, 'lmPool'>
 
 type LmLiquidity = GetResult<typeof lmPoolAbi, 'lmLiquidity'>
+type LmRewardGrowthGlobalX128 = GetResult<typeof lmPoolAbi, 'rewardGrowthGlobalX128'>
 
 async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multicallv2: MultiCallV2) {
-  const lmPoolCalls = lmPoolAddresses.map((address) => ({
-    address,
-    name: 'lmLiquidity',
-  }))
+  const lmPoolCalls = lmPoolAddresses.flatMap((address) => [
+    {
+      address,
+      name: 'lmLiquidity',
+    },
+    {
+      address,
+      name: 'rewardGrowthGlobalX128',
+    },
+  ])
 
-  const resp = (await multicallv2({
+  const chunkSize = lmPoolCalls.length / lmPoolAddresses.length
+
+  const resp = await multicallv2({
     abi: lmPoolAbi,
     calls: lmPoolCalls,
     chainId,
-  })) as LmLiquidity[]
+  })
 
-  const lmPools: Record<string, string> = {}
+  const chunked = chunk(resp, chunkSize) as [LmLiquidity, LmRewardGrowthGlobalX128][]
 
-  for (const [index, liquidity] of resp.entries()) {
-    lmPools[lmPoolAddresses[index]] = liquidity?.toString() ?? '0'
+  const lmPools: Record<
+    string,
+    {
+      liquidity: string
+      rewardGrowthGlobalX128: string
+    }
+  > = {}
+
+  for (const [index, res] of chunked.entries()) {
+    lmPools[lmPoolAddresses[index]] = {
+      liquidity: res?.[0]?.toString() ?? '0',
+      rewardGrowthGlobalX128: res?.[1]?.toString() ?? '0',
+    }
   }
 
   return lmPools
