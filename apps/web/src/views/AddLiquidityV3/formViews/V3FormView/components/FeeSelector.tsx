@@ -55,7 +55,7 @@ export default function FeeSelector({
 
   const [pairState, pair] = useV2Pair(currencyA, currencyB)
 
-  const [showOptions, setShowOptions] = useState(false)
+  const [showOptions, setShowOptions] = useState(true)
   // get pool data on-chain for latest states
   const pools = usePools([
     [currencyA, currencyB, FeeAmount.LOWEST],
