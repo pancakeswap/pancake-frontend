@@ -8,6 +8,7 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 
 import { Field } from 'state/mint/actions'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import { useIsExpertMode } from '@pancakeswap/utils/user'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -111,7 +112,11 @@ export default function StableFormView({
         )}
         <CommitButton
           variant={buttonDisabled ? 'danger' : 'primary'}
-          onClick={() => (expertMode ? onAdd() : onPresentAddLiquidityModal())}
+          onClick={() => {
+            // eslint-disable-next-line no-unused-expressions
+            expertMode ? onAdd() : onPresentAddLiquidityModal()
+            logGTMClickAddLiquidityEvent()
+          }}
           disabled={buttonDisabled}
         >
           {errorText || t('Add')}

@@ -4,17 +4,23 @@ export enum GTMEvent {
 
 export enum GTMCategory {
   TokenHighlight = 'TokenHighlight',
+  Swap = 'Swap',
+  AddLiquidity = 'AddLiquidity',
+  Farm = 'Farm',
 }
 
 export enum GTMAction {
   ClickTradeButton = 'Click Trade Button',
+  ClickSwapButton = 'Click Swap Button',
+  ClickAddLiquidityButton = 'Click Add Liquidity Button',
+  ClickStakeButton = 'Click Stake Button',
 }
 
 interface CustomGTMDataLayer {
   event: GTMEvent
   category: GTMCategory
   action: GTMAction
-  label: string
+  label?: string
 }
 
 type WindowWithDataLayer = Window & {
@@ -25,3 +31,29 @@ declare const window: WindowWithDataLayer
 
 export const customGTMEvent: WindowWithDataLayer['dataLayer'] =
   typeof window !== 'undefined' ? window?.dataLayer : undefined
+
+export const logGTMClickSwapEvent = () => {
+  customGTMEvent?.push({
+    event: GTMEvent.EventTracking,
+    action: GTMAction.ClickSwapButton,
+    category: GTMCategory.Swap,
+  })
+}
+
+export const logGTMClickStakeFarmEvent = (label?: string) => {
+  customGTMEvent?.push({
+    event: GTMEvent.EventTracking,
+    action: GTMAction.ClickStakeButton,
+    category: GTMCategory.Farm,
+    label,
+  })
+}
+
+export const logGTMClickAddLiquidityEvent = (label?: string) => {
+  customGTMEvent?.push({
+    event: GTMEvent.EventTracking,
+    action: GTMAction.ClickAddLiquidityButton,
+    category: GTMCategory.AddLiquidity,
+    label,
+  })
+}

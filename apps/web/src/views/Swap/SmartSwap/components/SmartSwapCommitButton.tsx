@@ -8,6 +8,7 @@ import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
@@ -190,6 +191,7 @@ export default function SwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
 
   // useEffect
