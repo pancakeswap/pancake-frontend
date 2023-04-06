@@ -7,7 +7,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3 } from 'hooks/useContract'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo, useState } from 'react'
-import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { useContractReads } from 'wagmi'
 import { useFarmsV3BatchHarvest } from '../hooks/v3/useFarmV3Actions'
 
@@ -39,7 +39,7 @@ const lmPoolAbi = [
 ] as const
 
 export function HarvestReminder() {
-  const { farmsWithPositions } = useFarmsV3WithPositions()
+  const { data: farmsV3 } = useFarmsV3Public()
   const { account } = useActiveWeb3React()
   const { chainId } = useActiveChainId()
 
@@ -67,7 +67,7 @@ export function HarvestReminder() {
       tokenId: stakedTokenIds[i],
     }))
     .filter((userInfo) => {
-      const farm = farmsWithPositions.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
+      const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       if (!farm) return false
 
       if (
@@ -83,7 +83,7 @@ export function HarvestReminder() {
 
   const { data: getRewardGrowthInsides } = useContractReads({
     contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
-      const farm = farmsWithPositions.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
+      const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       return {
         abi: lmPoolAbi,
         address: farm?.lmPool as `0x${string}`,
@@ -106,7 +106,7 @@ export function HarvestReminder() {
 
   const { harvesting, onHarvestAll } = useFarmsV3BatchHarvest()
 
-  if (!triggerOnce && canHarvestToRetrigger.length > 0) {
+  if (!triggerOnce && canHarvestToRetrigger?.length > 0) {
     setTriggerOnce(true)
     modal.onOpen()
   }
