@@ -96,7 +96,7 @@ export function HarvestReminder() {
   })
 
   const canHarvestToRetrigger = isOverRewardGrowthGlobalUserInfos?.filter((userInfo, i) => {
-    if (!getRewardGrowthInsides[i]) return false
+    if (!getRewardGrowthInsides?.[i]) return false
     return userInfo.rewardGrowthInside.gt(getRewardGrowthInsides[i])
   })
 
