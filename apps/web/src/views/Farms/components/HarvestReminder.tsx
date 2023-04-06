@@ -82,7 +82,7 @@ export function HarvestReminder() {
     })
 
   const { data: getRewardGrowthInsides } = useContractReads({
-    contracts: isOverRewardGrowthGlobalUserInfos.map((userInfo) => {
+    contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
       const farm = farmsWithPositions.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       return {
         abi: lmPoolAbi,
@@ -92,9 +92,10 @@ export function HarvestReminder() {
         chainId,
       }
     }),
+    enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
   })
 
-  const canHarvestToRetrigger = isOverRewardGrowthGlobalUserInfos.filter((userInfo, i) => {
+  const canHarvestToRetrigger = isOverRewardGrowthGlobalUserInfos?.filter((userInfo, i) => {
     if (!getRewardGrowthInsides[i]) return false
     return userInfo.rewardGrowthInside.gt(getRewardGrowthInsides[i])
   })
