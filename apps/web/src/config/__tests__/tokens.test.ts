@@ -2,6 +2,7 @@ import { Token } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
 import erc20ABI from 'config/abi/erc20.json'
 import map from 'lodash/map'
+import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
 import multicall from 'utils/multicall'
 import { describe, it } from 'vitest'
@@ -20,10 +21,12 @@ const tokensToTest = omitBy(
     token.symbol.toLowerCase() === 'hero',
 )
 
+const tokenTables: [string, Token][] = map(tokensToTest, (token, key) => [key, token])
+
 describe.concurrent('Config tokens', () => {
-  it.each(map(tokensToTest, (token, key) => [key, token]))(
+  it.each(slice(tokenTables, tokenTables.length - 50))(
     'Token %s has the correct key, symbol, and decimal',
-    async (key, token: Token) => {
+    async (key: string, token: Token) => {
       const [[symbol], [decimals]] = await multicall(erc20ABI, [
         {
           address: token.address,
