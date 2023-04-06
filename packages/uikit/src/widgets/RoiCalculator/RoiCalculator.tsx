@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { FeeAmount, FeeCalculator, Tick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
+import { FeeAmount, FeeCalculator, Tick, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
@@ -115,14 +115,14 @@ export function RoiCalculator({
     () => currencyA && currencyB && currencyB.wrapped.sortsBefore(currencyA.wrapped),
     [currencyA, currencyB]
   );
-  const priceCurrent = useMemo<Price<Token, Token> | undefined>(() => {
-    if (typeof tickCurrent !== "number" || !currencyA || !currencyB) {
+  const priceCurrent = useMemo(() => {
+    if (!sqrtRatioX96 || !currencyA || !currencyB) {
       return undefined;
     }
-    return invertPrice
-      ? tickToPrice(currencyB.wrapped, currencyA.wrapped, tickCurrent)
-      : tickToPrice(currencyA.wrapped, currencyB.wrapped, tickCurrent);
-  }, [invertPrice, tickCurrent, currencyA, currencyB]);
+    const accuratePrice = sqrtRatioX96ToPrice(sqrtRatioX96, currencyA, currencyB);
+
+    return currencyA.wrapped.sortsBefore(currencyB.wrapped) ? accuratePrice : accuratePrice.invert();
+  }, [sqrtRatioX96, currencyA, currencyB]);
   const ticks = useMemo(
     () =>
       ticksRaw?.map(

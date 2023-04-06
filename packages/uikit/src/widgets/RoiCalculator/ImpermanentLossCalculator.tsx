@@ -55,6 +55,7 @@ const getCakeAssetsByApy = (
     amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice_ : Infinity,
     price: cakePrice,
     value: Number.isFinite(cakeApy) ? ((+usdValue * cakeApy) / 100) * (+cakePrice / +cakePrice_) : Infinity,
+    key: "CAKE_ASSET_BY_APY",
   };
 };
 
