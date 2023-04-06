@@ -1,5 +1,8 @@
 export enum GTMEvent {
   EventTracking = 'eventTracking',
+  Swap = 'swap',
+  AddLiquidity = 'addLiquidity',
+  Farm = 'stakeFarm',
 }
 
 export enum GTMCategory {
@@ -33,27 +36,28 @@ export const customGTMEvent: WindowWithDataLayer['dataLayer'] =
   typeof window !== 'undefined' ? window?.dataLayer : undefined
 
 export const logGTMClickSwapEvent = () => {
+  console.info('---Swap---')
   customGTMEvent?.push({
-    event: GTMEvent.EventTracking,
+    event: GTMEvent.Swap,
     action: GTMAction.ClickSwapButton,
     category: GTMCategory.Swap,
   })
 }
 
-export const logGTMClickStakeFarmEvent = (label?: string) => {
+export const logGTMClickStakeFarmEvent = () => {
+  console.info('---Stake---')
   customGTMEvent?.push({
-    event: GTMEvent.EventTracking,
+    event: GTMEvent.Farm,
     action: GTMAction.ClickStakeButton,
     category: GTMCategory.Farm,
-    label,
   })
 }
 
-export const logGTMClickAddLiquidityEvent = (label?: string) => {
+export const logGTMClickAddLiquidityEvent = () => {
+  console.info('---AddLiquidity---')
   customGTMEvent?.push({
-    event: GTMEvent.EventTracking,
+    event: GTMEvent.AddLiquidity,
     action: GTMAction.ClickAddLiquidityButton,
     category: GTMCategory.AddLiquidity,
-    label,
   })
 }
