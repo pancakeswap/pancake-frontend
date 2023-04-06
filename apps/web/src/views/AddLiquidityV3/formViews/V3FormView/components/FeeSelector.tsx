@@ -108,13 +108,14 @@ export default function FeeSelector({
     }
 
     if (largestUsageFeeTierTvl) {
-      if (!(largestUsageFeeTierTvl[0] && !largestUsageFeeTier[1])) {
+      if (!Array.isArray(largestUsageFeeTierTvl) || !(largestUsageFeeTierTvl[0] && !largestUsageFeeTier[1])) {
         return true
       }
-      return (
-        pair.reserve0.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)) ||
-        pair.reserve1.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1))
-      )
+
+      const v3Amount0 = tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)
+      const v3Amount1 = tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1)
+
+      return (v3Amount0 && pair.reserve0.greaterThan(v3Amount0)) || (v3Amount1 && pair.reserve1.greaterThan(v3Amount1))
     }
     return true
   }, [

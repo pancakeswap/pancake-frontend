@@ -1,27 +1,28 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column } from '@pancakeswap/uikit'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Button, Column, Text, confirmPriceImpactWithoutFee, useModal } from '@pancakeswap/uikit'
 
+import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { WrapType } from 'hooks/useWrapCallback'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
-import { ApprovalState } from 'hooks/useApproveCallback'
 import CircleLoader from 'components/Loader/CircleLoader'
-import { Field } from 'state/swap/actions'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import { useCallback, useEffect, useState } from 'react'
-import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import {
-  BIG_INT_ZERO,
   ALLOWED_PRICE_IMPACT_HIGH,
+  BIG_INT_ZERO,
   PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
 } from 'config/constants/exchange'
-import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
-import { useSwapCallback } from 'hooks/useSwapCallback'
+import { ApprovalState } from 'hooks/useApproveCallback'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
+import { useSwapCallback } from 'hooks/useSwapCallback'
+import { WrapType } from 'hooks/useWrapCallback'
+import { useCallback, useEffect, useState } from 'react'
+import { Field } from 'state/swap/actions'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 
 import ConfirmSwapModal from './ConfirmSwapModal'
 import ProgressSteps from './ProgressSteps'
@@ -189,6 +190,7 @@ export default function SwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
 
   // useEffect

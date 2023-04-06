@@ -2,7 +2,6 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { IPendingCakeByTokenId, PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import NextLink from 'next/link'
 import { AtomBox, AtomBoxProps } from '@pancakeswap/ui'
 import {
   AutoColumn,
@@ -17,18 +16,20 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
+import { Pool } from '@pancakeswap/v3-sdk'
 import { BigNumber } from 'bignumber.js'
 import { LightCard } from 'components/Card'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Image from 'next/image'
+import NextLink from 'next/link'
 import { useEffect, useMemo } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import styled from 'styled-components'
+import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
-import { Pool } from '@pancakeswap/v3-sdk'
-import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
@@ -101,6 +102,7 @@ const SingleFarmV3Card: React.FunctionComponent<
     if (!attemptingTxn) {
       onDismiss?.()
     }
+    logGTMClickStakeFarmEvent()
   }
 
   const handleUnStake = async () => {

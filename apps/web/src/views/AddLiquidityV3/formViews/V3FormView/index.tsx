@@ -17,6 +17,7 @@ import {
   PreTitle,
   DynamicSection,
 } from '@pancakeswap/uikit'
+import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
@@ -371,10 +372,11 @@ export default function V3FormView({
 
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
-  const handleButtonSubmit = useCallback(
-    () => (expertMode ? onAdd() : onPresentAddLiquidityModal()),
-    [expertMode, onAdd, onPresentAddLiquidityModal],
-  )
+  const handleButtonSubmit = useCallback(() => {
+    // eslint-disable-next-line no-unused-expressions
+    expertMode ? onAdd() : onPresentAddLiquidityModal()
+    logGTMClickAddLiquidityEvent()
+  }, [expertMode, onAdd, onPresentAddLiquidityModal])
 
   const buttons = (
     <V3SubmitButton

@@ -18,6 +18,7 @@ interface Props {
   lpReward?: number | string;
   lpApr?: Percent;
   lpApy?: Percent;
+  farmApy?: string;
   farmApr?: string;
   externalLink?: ReactNode;
   compoundIndex?: number;
@@ -32,6 +33,7 @@ export const Details = memo(function Details({
   farmReward = 0,
   lpApy = ZERO_PERCENT,
   farmApr,
+  farmApy,
   lpApr = ZERO_PERCENT,
   isFarm = false,
   compoundIndex = 0,
@@ -79,7 +81,7 @@ export const Details = memo(function Details({
           {t("APR")}
         </Text>
         <Text small bold textAlign="right">
-          ${+(formatPercent(lpApr, 5) || "0") + +(farmApr || "0")}%
+          {`${+(formatPercent(lpApr, 5) || "0") + +(farmApr || "0")}%`}
         </Text>
         <Text color="textSubtle" small style={{ textIndent: "1em" }}>
           {t("LP Fee APR")}
@@ -104,7 +106,7 @@ export const Details = memo(function Details({
             {t("APY")} {compoundText && `(${compoundText})`}
           </Text>
           <Text small bold textAlign="right">
-            {`$${formatPercent(lpApy, 5) || "0"}%`}
+            {`${+(formatPercent(lpApy, 5) || "0") + +(farmApy || "0")}%`}
           </Text>
         </Grid>
       )}

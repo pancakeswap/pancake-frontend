@@ -111,7 +111,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
         </Button>
       )}
     </div>,
-    { placement: 'right-end', trigger: 'click' },
+    { placement: 'right-end', trigger: 'click', isInPortal: false },
   )
 
   if (!list) return null

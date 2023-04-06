@@ -2538,4 +2538,12 @@ export const bscTokens = {
     'Radiant',
     'https://radiant.capital/',
   ),
+  sis: new ERC20Token(
+    ChainId.BSC,
+    '0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835',
+    18,
+    'SIS',
+    'Symbiosis',
+    'https://symbiosis.finance/',
+  ),
 }

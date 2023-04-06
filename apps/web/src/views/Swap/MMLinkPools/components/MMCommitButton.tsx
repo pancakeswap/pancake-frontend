@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { Button, Column, useModal } from '@pancakeswap/uikit'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -160,6 +161,7 @@ export function MMSwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, rfqTrade])
 
   // useEffect
