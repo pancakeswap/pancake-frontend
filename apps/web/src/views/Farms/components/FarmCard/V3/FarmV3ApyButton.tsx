@@ -11,12 +11,14 @@ import {
   TooltipText,
   useModalV2,
   useRoi,
+  Flex,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { useMemo, useState } from 'react'
+import styled from 'styled-components'
 
 import { Bound } from 'config/constants/types'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
@@ -29,6 +31,13 @@ import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/for
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../../getDisplayApr'
+
+const ApyLabelContainer = styled(Flex)`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+`
 
 type FarmV3ApyButtonProps = {
   farm: V3Farm
@@ -160,16 +169,18 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     <>
       {existingPosition_ ? (
         <AutoRow width="auto" gap="2px">
-          {outOfRange ? (
-            <TooltipText decorationColor="failure" color="failure" fontSize="14px">
-              {positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%
-            </TooltipText>
-          ) : (
-            <Text fontSize="14px">{positionDisplayApr}%</Text>
-          )}
-          <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
-            <CalculateIcon width="18px" color="textSubtle" />
-          </IconButton>
+          <ApyLabelContainer alignItems="center" style={{ textDecoration: 'initial' }} onClick={roiModal.onOpen}>
+            {outOfRange ? (
+              <TooltipText decorationColor="failure" color="failure" fontSize="14px">
+                {positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%
+              </TooltipText>
+            ) : (
+              <Text fontSize="14px">{positionDisplayApr}%</Text>
+            )}
+            <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm">
+              <CalculateIcon width="18px" color="textSubtle" />
+            </IconButton>
+          </ApyLabelContainer>
         </AutoRow>
       ) : (
         <FarmUI.FarmApyButton
