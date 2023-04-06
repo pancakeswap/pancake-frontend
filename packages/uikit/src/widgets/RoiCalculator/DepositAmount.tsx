@@ -88,6 +88,7 @@ export const DepositUsdAmountInput = memo(function DepositUsdAmountInput({
           </StyledButton>
           <QuestionHelper
             text={t("Automatically fill in the maximum token amount according to your balance and position settings.")}
+            placement="top"
           />
         </Flex>
       </Flex>
