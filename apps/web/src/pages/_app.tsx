@@ -100,7 +100,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         </Blocklist>
       </Providers>
       <Analytics />
-      {/* <Script
+      <Script
         strategy="afterInteractive"
         id="google-tag"
         dangerouslySetInnerHTML={{
@@ -112,10 +112,10 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
             })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTAG}');
           `,
         }}
-      /> */}
+      />
       <Script
         strategy="afterInteractive"
-        id="google-tag"
+        id="google-tag-new"
         dangerouslySetInnerHTML={{
           __html: `
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
