@@ -13,6 +13,7 @@ const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonProps>> = ({
   lockEndTime,
   lockStartTime,
   stakingTokenBalance,
+  customLockAmount,
 }) => {
   const {
     pool: { userDataLoaded },
@@ -28,6 +29,7 @@ const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonProps>> = ({
       lockStartTime={lockStartTime}
       lockEndTime={lockEndTime}
       stakingTokenBalance={stakingTokenBalance}
+      customLockAmount={customLockAmount}
     />,
     true,
     true,

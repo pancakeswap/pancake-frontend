@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { differenceInSeconds } from 'date-fns'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
@@ -55,15 +55,25 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
   lockStartTime,
   lockEndTime,
   stakingTokenBalance,
+  customLockAmount,
 }) => {
   const { theme } = useTheme()
   const ceiling = useIfoCeiling()
   const [lockedAmount, setLockedAmount] = useState('')
   const [checkedState, setCheckedState] = useState(false)
   const { t } = useTranslation()
-  const lockedAmountAsBigNumber = !Number.isNaN(new BigNumber(lockedAmount).toNumber())
-    ? new BigNumber(lockedAmount)
-    : BIG_ZERO
+
+  useEffect(() => {
+    if (customLockAmount) {
+      setLockedAmount(customLockAmount)
+    }
+  }, [customLockAmount])
+
+  const lockedAmountAsBigNumber = useMemo(
+    () => (!Number.isNaN(new BigNumber(lockedAmount).toNumber()) ? new BigNumber(lockedAmount) : BIG_ZERO),
+    [lockedAmount],
+  )
+
   const totalLockedAmount: number = getBalanceNumber(
     currentLockedAmount.plus(getDecimalAmount(lockedAmountAsBigNumber)),
   )

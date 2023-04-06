@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Modal, Box } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
@@ -18,10 +18,18 @@ const LockedStakeModal: React.FC<React.PropsWithChildren<GenericModalProps>> = (
   currentBalance,
   stakingToken,
   stakingTokenBalance,
+  customLockAmount,
+  customLockWeekInSeconds,
 }) => {
   const { theme } = useTheme()
   const [lockedAmount, setLockedAmount] = useState('')
   const { t } = useTranslation()
+
+  useEffect(() => {
+    if (customLockAmount) {
+      setLockedAmount(customLockAmount)
+    }
+  }, [customLockAmount])
 
   const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))
 
@@ -52,6 +60,7 @@ const LockedStakeModal: React.FC<React.PropsWithChildren<GenericModalProps>> = (
           stakingToken={stakingToken}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(lockedAmount)}
+          customLockWeekInSeconds={customLockWeekInSeconds}
         />
       </Modal>
     </RoiCalculatorModalProvider>

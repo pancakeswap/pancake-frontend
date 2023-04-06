@@ -75,11 +75,20 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   const { t } = useTranslation()
   const { theme } = useTheme()
   const cakePriceBusd = usePriceCakeBusd()
-  const { lockEndTime, lockStartTime, lockedAmount } = userData
+  const {
+    stakingToken,
+    userData: { stakingTokenBalance },
+  } = pool
+  const { lockEndTime, lockStartTime, lockedAmount, balance } = userData
 
   const currentBalance = useMemo(
-    () => (pool?.userData?.stakingTokenBalance ? new BigNumber(pool?.userData?.stakingTokenBalance) : BIG_ZERO),
-    [pool?.userData?.stakingTokenBalance],
+    () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
+    [stakingTokenBalance],
+  )
+
+  const isOnlyNeedAddCake = useMemo(
+    () => isLockPosition && !isValidTotalStakedBalance && isValidLockDuration,
+    [isLockPosition, isValidTotalStakedBalance, isValidLockDuration],
   )
 
   const isOnlyNeedExtendLock = useMemo(
@@ -91,8 +100,8 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     if (!isLockPosition) {
       return MIN_LOCK_CAKE_AMOUNT
     }
-    return new BigNumber(MIN_LOCK_CAKE_AMOUNT).minus(userData.balance.cakeAsNumberBalance).toNumber()
-  }, [isLockPosition, userData.balance.cakeAsNumberBalance])
+    return new BigNumber(MIN_LOCK_CAKE_AMOUNT).minus(balance.cakeAsNumberBalance).toNumber()
+  }, [isLockPosition, balance.cakeAsNumberBalance])
 
   const cakePrice = useMemo(
     () => new BigNumber(cakePriceBusd).times(needAddedCakeAmount).toNumber(),
@@ -106,14 +115,14 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
 
     const minLockDuration = add(new Date(), { weeks: LOCKED_WEEK_DURATION })
     const minLockDurationTimestamp = Math.floor(minLockDuration.getTime() / 1000)
-    if (new BigNumber(userData?.lockEndTime).gte(minLockDurationTimestamp)) {
+    if (new BigNumber(lockEndTime).gte(minLockDurationTimestamp)) {
       return 0
     }
 
     const onWeek = 60 * 60 * 24 * 7
-    const week = new BigNumber(minLockDurationTimestamp).minus(userData?.lockEndTime).div(onWeek).toNumber()
+    const week = new BigNumber(minLockDurationTimestamp).minus(lockEndTime).div(onWeek).toNumber()
     return Math.ceil(week)
-  }, [isLockPosition, userData?.lockEndTime])
+  }, [isLockPosition, lockEndTime])
 
   return (
     <>
@@ -213,9 +222,12 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
         lockEndTime={lockEndTime}
         lockStartTime={lockStartTime}
         lockedAmount={lockedAmount}
-        stakingToken={pool?.stakingToken}
+        stakingToken={stakingToken}
         currentBalance={currentBalance}
+        isOnlyNeedAddCake={isOnlyNeedAddCake}
         isOnlyNeedExtendLock={isOnlyNeedExtendLock}
+        needAddedWeek={needAddedWeek}
+        needAddedCakeAmount={needAddedCakeAmount.toString()}
       />
     </>
   )
