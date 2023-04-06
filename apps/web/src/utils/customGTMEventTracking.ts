@@ -39,3 +39,12 @@ export const logGTMClickSwapEvent = () => {
     category: GTMCategory.Swap,
   })
 }
+
+export const logGTMClickStakeFarmEvent = (label?: string) => {
+  customGTMEvent?.push({
+    event: GTMEvent.EventTracking,
+    action: GTMAction.ClickStakeButton,
+    category: GTMCategory.Farm,
+    label,
+  })
+}
