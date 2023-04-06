@@ -35,6 +35,16 @@ declare const window: WindowWithDataLayer
 export const customGTMEvent: WindowWithDataLayer['dataLayer'] =
   typeof window !== 'undefined' ? window?.dataLayer : undefined
 
+export const logGTMClickTokenHighLightTradeEvent = (label?: string) => {
+  console.info('---TokenHeightLightTrade---')
+  window?.dataLayer?.push({
+    event: GTMEvent.EventTracking,
+    action: GTMAction.ClickTradeButton,
+    category: GTMCategory.TokenHighlight,
+    label,
+  })
+}
+
 export const logGTMClickSwapEvent = () => {
   console.info('---Swap---')
   window?.dataLayer?.push({
