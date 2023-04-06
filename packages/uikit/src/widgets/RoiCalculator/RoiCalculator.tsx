@@ -404,8 +404,7 @@ export function RoiCalculator({
           tickUpper={priceRange?.tickUpper}
           sqrtRatioX96={sqrtRatioX96}
           isFarm={props.isFarm}
-          usdValue={usdValue}
-          cakeApy={parseFloat(formatPercent(cakeApy, 6) || "0")}
+          cakeReward={cakeReward}
           cakePrice={props.isFarm ? props.cakePrice : undefined}
           setEditCakePrice={setEditCakePrice}
         />

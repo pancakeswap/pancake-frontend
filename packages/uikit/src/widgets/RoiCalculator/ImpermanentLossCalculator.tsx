@@ -35,26 +35,19 @@ interface Props {
   tickUpper?: number;
   sqrtRatioX96?: JSBI;
   lpReward?: number;
+  cakeReward?: number;
   isFarm?: boolean;
   cakePrice?: string;
-  cakeApy?: number;
-  usdValue?: string;
   setEditCakePrice: (cakePrice: number) => void;
 }
 
-const getCakeAssetsByApy = (
-  chainId: number,
-  cakePrice_: string,
-  cakeApy = 0,
-  usdValue = "0",
-  modifiedCakePrice?: string
-) => {
+const getCakeAssetsByReward = (chainId: number, cakePrice_: string, cakeReward = 0, modifiedCakePrice?: string) => {
   const cakePrice = modifiedCakePrice || cakePrice_;
   return {
     currency: CAKE[chainId as keyof typeof CAKE],
-    amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice_ : Infinity,
+    amount: Number.isFinite(cakeReward) ? +cakeReward / +cakePrice_ : Infinity,
     price: cakePrice,
-    value: Number.isFinite(cakeApy) ? ((+usdValue * cakeApy) / 100) * (+cakePrice / +cakePrice_) : Infinity,
+    value: Number.isFinite(cakeReward) ? +cakeReward : Infinity,
     key: "CAKE_ASSET_BY_APY",
   };
 };
@@ -68,10 +61,9 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
   currencyAUsdPrice,
   currencyBUsdPrice,
   lpReward = 0,
+  cakeReward = 0,
   isFarm,
   cakePrice = "0",
-  cakeApy,
-  usdValue,
   setEditCakePrice,
 }: Props) {
   const { t } = useTranslation();
@@ -115,9 +107,9 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
   const exitAssets = useMemo<Asset[] | undefined>(
     () =>
       assets && isFarm && currencyA && currencyA.chainId in CAKE && cakePrice
-        ? [...assets, getCakeAssetsByApy(currencyA.chainId, cakePrice, cakeApy, usdValue)]
+        ? [...assets, getCakeAssetsByReward(currencyA.chainId, cakePrice, cakeReward)]
         : assets,
-    [assets, cakeApy, cakePrice, currencyA, isFarm, usdValue]
+    [assets, cakeReward, cakePrice, currencyA, isFarm]
   );
 
   const [entry, setEntry] = useState<Asset[] | undefined>(assets);
@@ -223,7 +215,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
           ...adjusted,
           {
             ...maybeAssetCake,
-            ...getCakeAssetsByApy(assetCurrencyA.chainId, cakePrice, cakeApy, usdValue, String(maybeAssetCake.price)),
+            ...getCakeAssetsByReward(assetCurrencyA.chainId, cakePrice, cakeReward, String(maybeAssetCake.price)),
           },
         ];
 
@@ -234,7 +226,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     },
     // setEditCakePrice is not a dependency because it's setState
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakeApy, cakePrice, liquidity]
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, cakeReward, cakePrice, liquidity]
   );
 
   const updateEntry = useCallback(
