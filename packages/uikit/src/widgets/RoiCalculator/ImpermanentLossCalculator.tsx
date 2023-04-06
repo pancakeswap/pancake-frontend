@@ -221,7 +221,10 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
       if (maybeAssetCake) {
         adjusted = [
           ...adjusted,
-          getCakeAssetsByApy(assetCurrencyA.chainId, cakePrice, cakeApy, usdValue, String(maybeAssetCake.price)),
+          {
+            ...maybeAssetCake,
+            ...getCakeAssetsByApy(assetCurrencyA.chainId, cakePrice, cakeApy, usdValue, String(maybeAssetCake.price)),
+          },
         ];
 
         setEditCakePrice(+maybeAssetCake.price);
