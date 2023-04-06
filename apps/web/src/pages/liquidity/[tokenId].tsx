@@ -367,7 +367,7 @@ export default function PoolPage() {
         <AutoRow justifyContent="space-between" mb="8px">
           <Flex>
             <CurrencyLogo currency={feeValueUpper?.currency} size="24px" />
-            <Text color="primary" ml="4px">
+            <Text color="textSubtle" ml="4px">
               {feeValueUpper?.currency?.symbol}
             </Text>
           </Flex>
@@ -376,7 +376,7 @@ export default function PoolPage() {
         <AutoRow justifyContent="space-between">
           <Flex>
             <CurrencyLogo currency={feeValueLower?.currency} size="24px" />
-            <Text color="primary" ml="4px">
+            <Text color="textSubtle" ml="4px">
               {feeValueLower?.currency?.symbol}
             </Text>
           </Flex>
