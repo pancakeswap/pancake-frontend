@@ -20,7 +20,6 @@ export type FarmsDynamicDataResultV2 = {
   tokenPriceVsQuote: string
   poolWeight: string
   multiplier: string
-  allocPoint?: EtherBigNumber
 }
 
 export type FarmPriceV3 = {
@@ -60,7 +59,6 @@ export interface FarmConfigBaseProps {
     endBlock: number
   }
   boosted?: boolean
-  allocPoint?: EtherBigNumber
 }
 
 export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
@@ -136,7 +134,6 @@ export interface SerializedFarmUserData {
 
 export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
-  allocPoint?: EtherBigNumber
 }
 
 export interface SerializedFarmsV3State {
@@ -194,7 +191,6 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: BigNumber
-  allocPoint?: EtherBigNumber
 }
 
 export interface DeserializedFarmsState {
