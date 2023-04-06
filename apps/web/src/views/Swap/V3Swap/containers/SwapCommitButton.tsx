@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { GreyCard } from 'components/Card'
@@ -195,6 +196,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // End Modals
 
   const onSwapHandler = useCallback(() => {
+    logGTMClickSwapEvent()
     if (isExpertMode) {
       handleSwap()
     } else {
