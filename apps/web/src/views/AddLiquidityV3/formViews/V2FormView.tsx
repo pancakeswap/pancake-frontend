@@ -10,6 +10,7 @@ import {
   BunnyKnownPlaceholder,
   DynamicSection,
 } from '@pancakeswap/uikit'
+import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import { CommitButton } from 'components/CommitButton'
 import _isNaN from 'lodash/isNaN'
@@ -96,7 +97,11 @@ export default function V2FormView({
         )}
         <CommitButton
           variant={buttonDisabled ? 'danger' : 'primary'}
-          onClick={() => (expertMode ? onAdd() : onPresentAddLiquidityModal())}
+          onClick={() => {
+            logGTMClickAddLiquidityEvent()
+            // eslint-disable-next-line no-unused-expressions
+            expertMode ? onAdd() : onPresentAddLiquidityModal()
+          }}
           disabled={buttonDisabled}
         >
           {errorText || t('Add')}

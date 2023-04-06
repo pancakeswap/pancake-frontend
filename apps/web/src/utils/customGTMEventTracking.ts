@@ -48,3 +48,12 @@ export const logGTMClickStakeFarmEvent = (label?: string) => {
     label,
   })
 }
+
+export const logGTMClickAddLiquidityEvent = (label?: string) => {
+  customGTMEvent?.push({
+    event: GTMEvent.EventTracking,
+    action: GTMAction.ClickAddLiquidityButton,
+    category: GTMCategory.AddLiquidity,
+    label,
+  })
+}
