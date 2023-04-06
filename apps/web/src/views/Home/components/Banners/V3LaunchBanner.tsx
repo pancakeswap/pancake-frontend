@@ -105,7 +105,7 @@ const RightWrapper = styled.div`
     right: -35px;
     //animation: ${flyingAnim} 7.5s ease-in-out infinite;
     ${({ theme }) => theme.mediaQueries.sm} {
-      top: -30px;
+      top: -31px;
       right: 153px;
     }
     ${({ theme }) => theme.mediaQueries.lg} {
