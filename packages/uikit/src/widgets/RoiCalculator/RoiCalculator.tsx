@@ -218,6 +218,8 @@ export function RoiCalculator({
       ? derivedCakeApr.times(cakePriceDiffPercent)
       : derivedCakeApr;
 
+  const cakeApr = props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined;
+  const editCakeApr = props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined;
   const { fee, rate, apr, apy, cakeApy, editCakeApy, cakeRate, cakeReward } = useRoi({
     amountA,
     amountB,
@@ -233,8 +235,8 @@ export function RoiCalculator({
     compoundEvery: compoundingIndexToFrequency[compoundIndex],
     stakeFor: spanIndexToSpan[spanIndex],
     compoundOn,
-    cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
-    editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
+    cakeApr,
+    editCakeApr,
   });
 
   const handleApply = useCallback(
@@ -424,7 +426,8 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={props.isFarm ? (editCakeApy ? editCakeApy.toFixed(2) : cakeApy?.toFixed(2)) : undefined}
+        farmApr={props.isFarm ? (editCakeApr ? editCakeApr.toFixed(2) : cakeApr?.toFixed(2)) : undefined}
+        farmApy={props.isFarm ? (editCakeApy ? editCakeApy.toFixed(2) : cakeApy?.toFixed(2)) : undefined}
         farmReward={farmReward}
         isFarm={props.isFarm}
       />
