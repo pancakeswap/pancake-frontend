@@ -37,7 +37,7 @@ export const customGTMEvent: WindowWithDataLayer['dataLayer'] =
 
 export const logGTMClickSwapEvent = () => {
   console.info('---Swap---')
-  customGTMEvent?.push({
+  window?.dataLayer?.push({
     event: GTMEvent.Swap,
     action: GTMAction.ClickSwapButton,
     category: GTMCategory.Swap,
@@ -46,7 +46,7 @@ export const logGTMClickSwapEvent = () => {
 
 export const logGTMClickStakeFarmEvent = () => {
   console.info('---Stake---')
-  customGTMEvent?.push({
+  window?.dataLayer?.push({
     event: GTMEvent.Farm,
     action: GTMAction.ClickStakeButton,
     category: GTMCategory.Farm,
@@ -55,7 +55,7 @@ export const logGTMClickStakeFarmEvent = () => {
 
 export const logGTMClickAddLiquidityEvent = () => {
   console.info('---AddLiquidity---')
-  customGTMEvent?.push({
+  window?.dataLayer?.push({
     event: GTMEvent.AddLiquidity,
     action: GTMAction.ClickAddLiquidityButton,
     category: GTMCategory.AddLiquidity,
