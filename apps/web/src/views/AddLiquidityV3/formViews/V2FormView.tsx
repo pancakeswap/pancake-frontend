@@ -109,7 +109,7 @@ export default function V2FormView({
     <>
       <AutoColumn>
         <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-          Deposit Amount
+          {t('Deposit Amount')}
         </Text>
 
         <Box mb="8px">
@@ -121,7 +121,7 @@ export default function V2FormView({
             }}
             onPercentInput={(percent) => {
               if (maxAmounts[Field.CURRENCY_A]) {
-                onFieldBInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
               }
             }}
             disableCurrencySelect
