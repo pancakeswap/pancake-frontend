@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo, memo } from "react";
 import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { FeeCalculator, priceToClosestTick, TickMath } from "@pancakeswap/v3-sdk";
+import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
 import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
 
@@ -198,8 +198,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
       if (!token0Price) {
         return newAssets;
       }
-      const currentTick = priceToClosestTick(token0Price);
-      const newSqrtRatioX96 = TickMath.getSqrtRatioAtTick(currentTick);
+      const newSqrtRatioX96 = encodeSqrtRatioX96(token0Price.numerator, token0Price.denominator);
       const [adjustedAmountA, adjustedAmountB] = FeeCalculator.getAmountsByLiquidityAndPrice({
         currencyA: assetCurrencyA,
         currencyB: assetCurrencyB,
