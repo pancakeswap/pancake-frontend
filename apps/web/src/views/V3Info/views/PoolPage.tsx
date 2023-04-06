@@ -90,17 +90,17 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
   }, [poolData])
 
-  const formattedTvlData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: unixToDate(day.date),
-          value: day.totalValueLockedUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
+  // const formattedTvlData = useMemo(() => {
+  //   if (chartData) {
+  //     return chartData.map((day) => {
+  //       return {
+  //         time: unixToDate(day.date),
+  //         value: day.totalValueLockedUSD,
+  //       }
+  //     })
+  //   }
+  //   return []
+  // }, [chartData])
 
   const formattedVolumeData = useMemo(() => {
     if (chartData) {
@@ -139,8 +139,8 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}${infoTypeParam}`}>
                 <Text color="primary">{t('Info')}</Text>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/pools${infoTypeParam}`}>
-                <Text color="primary">{t('Pools')}</Text>
+              <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/pairs${infoTypeParam}`}>
+                <Text color="primary">{t('Pairs')}</Text>
               </NextLinkFromReactRouter>
               <Flex>
                 <Text mr="8px">
@@ -287,7 +287,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
                   : view === ChartView.DENSITY
                   ? ''
-                  : formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)}
+                  : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
                 <Text small color="secondary">
                   {valueLabel ? (
                     `${valueLabel} (UTC)`
@@ -298,7 +298,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   )}
                 </Text>
               </Flex>
-              <Box px="24px" height="335px">
+              <Box px="24px" height="380px">
                 {view === ChartView.VOL ? (
                   <BarChart
                     data={formattedVolumeData}
