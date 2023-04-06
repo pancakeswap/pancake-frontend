@@ -169,12 +169,12 @@ const YourTradingReward = () => {
   const showBackgroundColor = useMemo(() => !account || true, [account])
 
   const showNoCakeLockedOrExtendLock = useMemo(() => {
-    return account && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
-  }, [account, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
+    return account && profile?.isActive && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
+  }, [account, profile, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
 
   const isClaimable = useMemo(() => {
     return account && profile?.isActive && isLockPosition && isValidTotalStakedBalance && isValidLockDuration
-  }, [account, isLockPosition, isValidTotalStakedBalance, profile?.isActive, isValidLockDuration])
+  }, [account, isLockPosition, isValidTotalStakedBalance, profile, isValidLockDuration])
 
   return (
     <StyledBackground showBackgroundColor={showBackgroundColor}>
