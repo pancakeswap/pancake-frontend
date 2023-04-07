@@ -138,16 +138,32 @@ export default function TransactionTable({
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
 
+  const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
+
   useEffect(() => {
     let extraPages = 1
-    if (transactions.length % maxItems === 0) {
+    if (
+      transactions.filter((x) => {
+        return txFilter === undefined || x.type === txFilter
+      }).length %
+        maxItems ===
+      0
+    ) {
       extraPages = 0
     }
-    setMaxPage(Math.floor(transactions.length / maxItems) + extraPages)
-  }, [maxItems, transactions])
+    setMaxPage(
+      Math.floor(
+        transactions.filter((x) => {
+          return txFilter === undefined || x.type === txFilter
+        }).length / maxItems,
+      ) + extraPages,
+    )
+  }, [maxItems, transactions, txFilter])
 
-  // filter on txn type
-  const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
+  const onFilterChange = useCallback((filter: TransactionType | undefined) => {
+    setPage(1)
+    setTxFilter(filter)
+  }, [])
 
   const sortedTransactions = useMemo(() => {
     return transactions
@@ -194,7 +210,7 @@ export default function TransactionTable({
           <RowFixed>
             <SortText
               onClick={() => {
-                setTxFilter(undefined)
+                onFilterChange(undefined)
               }}
               active={txFilter === undefined}
             >
@@ -202,7 +218,7 @@ export default function TransactionTable({
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.SWAP)
+                onFilterChange(TransactionType.SWAP)
               }}
               active={txFilter === TransactionType.SWAP}
             >
@@ -210,7 +226,7 @@ export default function TransactionTable({
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.MINT)
+                onFilterChange(TransactionType.MINT)
               }}
               active={txFilter === TransactionType.MINT}
             >
@@ -218,7 +234,7 @@ export default function TransactionTable({
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.BURN)
+                onFilterChange(TransactionType.BURN)
               }}
               active={txFilter === TransactionType.BURN}
             >
