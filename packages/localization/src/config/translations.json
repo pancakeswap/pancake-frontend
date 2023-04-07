@@ -2420,5 +2420,8 @@
   "Pool Reserves": "Pool Reserves",
   "Fee rate": "Fee rate",
   "Current %symbol% Price": "Current %symbol% Price",
-  "Choose Token Pair": "Choose Token Pair"
+  "Choose Token Pair": "Choose Token Pair",
+  "Fee Tier": "Fee Tier",
+  "fee tier": "fee tier",
+  "Selected Range": "Selected Range"
 }

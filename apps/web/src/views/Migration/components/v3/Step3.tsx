@@ -196,7 +196,9 @@ export function Step3() {
                 setShowOptions={setShowOptions}
                 heading={
                   <AutoColumn gap="8px">
-                    <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
+                    <Text>
+                      {FEE_AMOUNT_DETAIL[feeAmount].label}% {t('fee tier')}
+                    </Text>
                     {distributions && (
                       <FeeTierPercentageBadge
                         distributions={distributions}

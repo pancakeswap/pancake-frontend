@@ -100,6 +100,7 @@ function V2PairMigrate({
   v2LPTotalSupply: CurrencyAmount<ERC20Token>
 }) {
   const {
+    t,
     currentLanguage: { locale },
   } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
@@ -510,7 +511,7 @@ function V2PairMigrate({
         </AutoColumn>
         <AutoColumn alignSelf="flex-start" gap="16px">
           <RowBetween>
-            <PreTitle>Set Price Range</PreTitle>
+            <PreTitle>{t('Set Price Range')}</PreTitle>
             <RateToggle
               currencyA={invertPrice ? currency1 : currency0}
               handleRateToggle={() => {
@@ -653,14 +654,16 @@ function V2PairMigrate({
             <Message variant="warning">
               <RowBetween>
                 <Text ml="12px" fontSize="12px">
-                  Your position will not earn fees or be used in trades until the market price moves into your range.
+                  {t(
+                    'Your position will not earn fees or be used in trades until the market price moves into your range.',
+                  )}
                 </Text>
               </RowBetween>
             </Message>
           ) : null}
           {invalidRange ? (
             <Message variant="warning">
-              <MessageText>Invalid range selected. The min price must be lower than the max price.</MessageText>
+              <MessageText>{t('Invalid range selected. The min price must be lower than the max price.')}</MessageText>
             </Message>
           ) : null}
           <AutoColumn gap="md">
