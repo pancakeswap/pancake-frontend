@@ -43,6 +43,13 @@ const lmPoolAbi = [
 ] as const
 
 export function UpdatePositionsReminder() {
+  const { account } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
+  // eslint-disable-next-line react/jsx-pascal-case
+  return account && chainId && <UpdatePositionsReminder_ key={`${account}-${chainId}`} />
+}
+
+export function UpdatePositionsReminder_() {
   const { data: farmsV3 } = useFarmsV3Public()
   const { account } = useActiveWeb3React()
   const { chainId } = useActiveChainId()
@@ -85,7 +92,7 @@ export function UpdatePositionsReminder() {
       return false
     })
 
-  const { data: getRewardGrowthInsides } = useContractReads({
+  const { data: getRewardGrowthInsides, isLoading } = useContractReads({
     contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       return {
@@ -181,7 +188,14 @@ export function UpdatePositionsReminder() {
     console.info('needRetrigger', needRetrigger)
   }, [needRetrigger, triggerOnce])
 
-  if (!triggerOnce && needRetrigger?.length > 0) {
+  if (
+    !triggerOnce &&
+    needRetrigger &&
+    needRetrigger.length > 0 &&
+    !stakedUserInfos.isLoading &&
+    !isLoading &&
+    isOverRewardGrowthGlobalUserInfos
+  ) {
     setTriggerOnce(true)
     modal.onOpen()
   }
