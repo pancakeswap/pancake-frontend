@@ -12,7 +12,6 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
-
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -147,4 +146,19 @@ export const useLpTokenPrice = (symbol: string) => {
 
 export const usePriceCakeUSD = (): BigNumber => {
   return useCakePriceAsBN()
+}
+
+export const useFarmsV2Data = () => {
+  const { chainId } = useActiveChainId()
+
+  return useSWRImmutable(chainId ? ['useFarmsV2Data', chainId] : null, async () => {
+    const mc = getMasterchefContract(undefined, chainId)
+    const totalRegularAllocPoint = await mc.totalRegularAllocPoint()
+    const cakePerBlock = await mc.cakePerBlock(true)
+
+    return {
+      totalRegularAllocPoint,
+      cakePerBlock,
+    }
+  })
 }

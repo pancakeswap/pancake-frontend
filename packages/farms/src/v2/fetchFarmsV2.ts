@@ -86,12 +86,14 @@ export async function farmV2FetchFarms({
               token0Decimals: farm.token.decimals,
               token1Decimals: farm.quoteToken.decimals,
               price1: stableFarmsDataMap[farm.pid].price1,
+              allocPoint: poolInfos[index]?.allocPoint,
             })
           : getClassicFarmsDynamicData({
               ...lpData[index],
               ...stableFarmsDataMap[farm.pid],
               token0Decimals: farm.token.decimals,
               token1Decimals: farm.quoteToken.decimals,
+              allocPoint: poolInfos[index]?.allocPoint,
             })),
         ...getFarmAllocation({
           allocPoint: poolInfos[index]?.allocPoint,
@@ -278,10 +280,12 @@ const getStableFarmDynamicData = ({
   token0Decimals,
   token1Decimals,
   price1,
+  allocPoint,
 }: FormatClassicFarmResponse & {
   token1Decimals: number
   token0Decimals: number
   price1: BigNumber
+  allocPoint?: string
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
@@ -309,6 +313,7 @@ const getStableFarmDynamicData = ({
     lpTotalSupply: lpTotalSupply.toString(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
     tokenPriceVsQuote,
+    allocPoint: allocPoint.toString(),
   }
 }
 
@@ -372,10 +377,12 @@ const getClassicFarmsDynamicData = ({
   tokenBalanceLP,
   token0Decimals,
   token1Decimals,
+  allocPoint,
 }: FormatClassicFarmResponse & {
   token0Decimals: number
   token1Decimals: number
   lpTokenStakedAmount?: string
+  allocPoint?: string
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
@@ -401,5 +408,6 @@ const getClassicFarmsDynamicData = ({
         ? quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString()
         : FIXED_ZERO.toString(),
     lpTokenStakedAmount: lpTokenBalanceMC.toString(),
+    allocPoint: allocPoint.toString(),
   }
 }
