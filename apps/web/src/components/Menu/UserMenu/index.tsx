@@ -100,7 +100,7 @@ const UserMenu = () => {
         avatarSrc={avatarSrc}
         text={userMenuText}
         variant={userMenuVariable}
-        isSidName={sidName !== null}
+        isSidName={typeof sidName !== 'undefined' && sidName !== null}
       >
         {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>

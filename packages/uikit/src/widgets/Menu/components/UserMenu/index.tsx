@@ -79,11 +79,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const accountEllipsis = account
-    ? isSidName
-      ? account
-      : `${account.substring(0, 2)}...${account.substring(account.length - 4)}`
-    : null;
+
+  const isNeedEllipsis = account && !isSidName;
+  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const accountSID = account && isSidName ? account : null;
+
   const { styles, attributes, update } = usePopper(targetRef, tooltipRef, {
     strategy: "fixed",
     placement,
@@ -125,7 +125,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
         }}
       >
         <MenuIcon className={avatarClassName} avatarSrc={avatarSrc} variant={variant} />
-        <LabelText title={typeof text === "string" ? text || account : account}>{text || accountEllipsis}</LabelText>
+        <LabelText title={typeof text === "string" ? text || account : account}>
+          {text || isNeedEllipsis ? accountEllipsis : accountSID}
+        </LabelText>
         {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
       {!disabled && (

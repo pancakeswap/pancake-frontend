@@ -134,7 +134,7 @@ const RightWrapper = styled.div`
     // v3LaunchBunny
     position: absolute !important;
     top: -20px;
-    right: -35px;
+    right: -24px;
     z-index: 3;
     ${({ theme }) => theme.mediaQueries.sm} {
       top: -31px;
