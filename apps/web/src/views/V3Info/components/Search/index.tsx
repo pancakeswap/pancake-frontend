@@ -15,6 +15,8 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/Currency
 import { v3InfoPath } from '../../constants'
 import { usePoolsData, useSearchData, useTokensData } from '../../hooks'
 import { PoolData } from '../../types'
+import { feeTierPercent } from '../../utils'
+import { GreyBadge } from '../Card'
 
 const Container = styled.div`
   position: relative;
@@ -390,6 +392,9 @@ const Search = () => {
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
                         <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
                       </Text>
+                      <GreyBadge ml="10px" style={{ fontSize: 14 }}>
+                        {feeTierPercent(p.feeTier)}
+                      </GreyBadge>
                       {/* <SaveIcon
                         id="watchlist-icon"
                         style={{ marginLeft: '10px' }}

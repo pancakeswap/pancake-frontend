@@ -72,6 +72,7 @@ export async function fetchedTokenDatas(
     | undefined
 }> {
   const [block24, block48, blockWeek] = blocks ?? []
+
   try {
     const { data: ethPrices } = await fetchEthPrices(blocks, dataClient)
 
