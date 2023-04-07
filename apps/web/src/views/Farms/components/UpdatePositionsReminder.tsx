@@ -199,15 +199,17 @@ export function UpdatePositionsReminder() {
         <AtomBox textAlign="center">
           <Text>The followings farming positions require updates to continue earning:</Text>
           {needRetrigger && (
-            <Text my="24px" bold>
+            <Text my="24px" mb="48px" bold>
               {needRetrigger.map((u) => `#${u.tokenId.toString()}`).join(', ')}
             </Text>
           )}
-          <LinkExternal href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-am-i-seeing-an-update-positions-pop-up">
+          <LinkExternal
+            m="auto"
+            href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-am-i-seeing-an-update-positions-pop-up"
+          >
             <Trans>Learn More</Trans>
           </LinkExternal>
           <Button
-            mt="64px"
             width="100%"
             disabled={txLoading}
             onClick={() => {
