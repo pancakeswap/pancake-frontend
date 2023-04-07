@@ -1,9 +1,11 @@
-import { Box, Flex, Text, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button, Balance, Skeleton } from '@pancakeswap/uikit'
 import { useTheme } from '@pancakeswap/hooks'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
+import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import bunnyImage from '../../../../public/images/trading-reward/trading-reward-banner-bunny.png'
 
 const Container = styled(Box)<{ backgroundColor: string }>`
@@ -47,6 +49,9 @@ const Decorations = styled(Box)`
 const TradingRewardBanner = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
+  const router = useRouter()
+
+  const { data, isFetching } = useCampaignIdInfo(router?.query?.campaignId?.toString() ?? '')
 
   return (
     <Container
@@ -81,12 +86,24 @@ const TradingRewardBanner = () => {
           <Text bold fontSize={['40px', '40px', '40px', '60px']} color="secondary" lineHeight="110%">
             {t('Trading Reward')}
           </Text>
-          <Text bold fontSize="40px" color="secondary" mb="16px" lineHeight="110%">
-            $42,000
+          <Flex mb="16px">
+            {isFetching || data.totalVolume === 0 ? (
+              <Skeleton width={100} height={40} />
+            ) : (
+              <Balance
+                bold
+                prefix="$"
+                fontSize="40px"
+                color="secondary"
+                lineHeight="110%"
+                decimals={0}
+                value={data.totalVolume}
+              />
+            )}
             <Text bold fontSize="40px" color="secondary" as="span" ml="4px" lineHeight="110%">
               {t('in total to be earn!')}
             </Text>
-          </Text>
+          </Flex>
           <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
             {t('Earn CAKE while trading your favorite tokens on PancakeSwap.')}
           </Text>
