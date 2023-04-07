@@ -452,7 +452,8 @@ export default function PoolPage() {
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
-                      V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
+                      V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}%{' '}
+                      {t('fee tier')}
                     </Text>
                     {isMobile && (
                       <Flex>
@@ -916,8 +917,9 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow gap="8px">
-          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
-          <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+            <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+          </LinkExternal>
         </AutoRow>
         <Text>{positionHistoryTypeText[type]}</Text>
         <AutoColumn gap="4px">
@@ -970,8 +972,9 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center" gap="8px">
-        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
-        <Text ellipsis>{date.toLocaleString()}</Text>
+        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <Text ellipsis>{date.toLocaleString()}</Text>
+        </LinkExternal>
       </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>
       <AutoColumn gap="4px">

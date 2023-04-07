@@ -32,6 +32,7 @@ export const PositionPreview = ({
   ticksAtLimit: { [bound: string]: boolean | undefined }
 }) => {
   const {
+    t,
     currentLanguage: { locale },
   } = useTranslation()
 
@@ -101,7 +102,7 @@ export const PositionPreview = ({
           </RowBetween>
           <Divider />
           <RowBetween>
-            <Text color="textSubtle">Fee Tier</Text>
+            <Text color="textSubtle">{t('Fee Tier')}</Text>
             <Text>{position?.pool?.fee / 10000}%</Text>
           </RowBetween>
         </AutoColumn>
@@ -122,21 +123,21 @@ export const PositionPreview = ({
         <RowBetween>
           <RangePriceSection
             width="48%"
-            title="Min Price"
+            title={t('Min Price')}
             currency0={quoteCurrency}
             currency1={baseCurrency}
             price={formatTickPrice(priceLower, ticksAtLimit, Bound.LOWER, locale)}
           />
           <RangePriceSection
             width="48%"
-            title="Max Price"
+            title={t('Max Price')}
             currency0={quoteCurrency}
             currency1={baseCurrency}
             price={formatTickPrice(priceUpper, ticksAtLimit, Bound.UPPER, locale)}
           />
         </RowBetween>
         <RangePriceSection
-          title="Current price"
+          title={t('Current Price')}
           currency0={quoteCurrency}
           currency1={baseCurrency}
           price={formatPrice(price, 6, locale)}

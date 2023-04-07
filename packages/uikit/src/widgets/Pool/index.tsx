@@ -17,6 +17,7 @@ export * from "./Cells/NameCell";
 export * from "./Cells/ExpandActionCell";
 export * from "./Cells/TotalStakedCell";
 export * from "./Cells/AprCell";
+export * from "./Cells/EndsInCell";
 export * from "./PoolsTable/ExpandRow";
 export * from "./PoolsTable/HarvestAction";
 export * from "./TotalStaked";

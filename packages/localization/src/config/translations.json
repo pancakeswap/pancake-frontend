@@ -1083,7 +1083,6 @@
   "Search liquidity pairs or tokens": "Search liquidity pairs or tokens",
   "Watchlist": "Watchlist",
   "See more...": "See more...",
-  "Pool ends in": "Pool ends in",
   "No results": "No results",
   "Error occurred, please try again": "Error occurred, please try again",
   "LP reward APR": "LP reward APR",
@@ -2415,5 +2414,15 @@
   "Ev3ryone's Favourite D3X": "Ev3ryone's Favourite D3X",
   "Discover V3": "Discover V3",
   "PancakeSwap v3 is live!": "PancakeSwap v3 is live!",
+  "Your position will appear here.": "Your position will appear here.",
+  "Liquidity data not available.": "Liquidity data not available.",
+  "There is no liquidity data.": "There is no liquidity data.",
+  "Pool Reserves": "Pool Reserves",
+  "Fee rate": "Fee rate",
+  "Current %symbol% Price": "Current %symbol% Price",
+  "Choose Token Pair": "Choose Token Pair",
+  "Fee Tier": "Fee Tier",
+  "fee tier": "fee tier",
+  "Selected Range": "Selected Range",
   "Fetching best price...": "Fetching best price..."
 }

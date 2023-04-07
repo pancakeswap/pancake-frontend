@@ -1,4 +1,5 @@
 import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { PoolData, DensityChartEntry } from '../../types'
@@ -26,6 +27,7 @@ interface CurrentPriceLabelProps {
 }
 
 export function CurrentPriceLabel({ data, chartProps, poolData }: CurrentPriceLabelProps) {
+  const { t } = useTranslation()
   const { theme } = useTheme()
   const labelData = chartProps as LabelProps
   const entryData = data?.[labelData.index]
@@ -38,7 +40,7 @@ export function CurrentPriceLabel({ data, chartProps, poolData }: CurrentPriceLa
           <Wrapper>
             <AutoColumn gap="6px">
               <RowFixed align="center">
-                <Text mr="6px">Current Price</Text>
+                <Text mr="6px">{t('Current Price')}</Text>
                 <Box
                   style={{
                     marginTop: '2px',

@@ -133,7 +133,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         </>
       ) : null}
       <Flex justifyContent="space-between" alignItems="center">
-        <Text small>{t('Pool ends in')}:</Text>
+        <Text small>{t('Ends in')}:</Text>
         <Flex alignItems="center">
           <Text color="textSubtle" small>
             {poolTimeRemaining > 0

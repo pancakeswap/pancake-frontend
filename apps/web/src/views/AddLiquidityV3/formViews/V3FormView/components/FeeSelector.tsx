@@ -169,7 +169,9 @@ export default function FeeSelector({
       heading={
         feeAmount ? (
           <AutoColumn gap="8px">
-            <Text>V3 LP - {FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
+            <Text>
+              V3 LP - {FEE_AMOUNT_DETAIL[feeAmount].label}% {t('fee tier')}
+            </Text>
             {distributions && (
               <FeeTierPercentageBadge
                 distributions={distributions}

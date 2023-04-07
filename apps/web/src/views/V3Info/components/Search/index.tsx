@@ -11,10 +11,12 @@ import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import SaveIcon from 'views/Info/components/SaveIcon'
+
 import { v3InfoPath } from '../../constants'
 import { usePoolsData, useSearchData, useTokensData } from '../../hooks'
 import { PoolData } from '../../types'
+import { feeTierPercent } from '../../utils'
+import { GreyBadge } from '../Card'
 
 const Container = styled.div`
   position: relative;
@@ -192,8 +194,8 @@ const Search = () => {
   }, [showMenu])
 
   // watchlist
-  const [savedTokens, addSavedToken] = useWatchlistTokens()
-  const [savedPools, addSavedPool] = useWatchlistPools()
+  const [savedTokens] = useWatchlistTokens()
+  const [savedPools] = useWatchlistPools()
 
   const handleItemClick = (to: string) => {
     setShowMenu(false)
@@ -323,7 +325,7 @@ const Search = () => {
                       <Text ml="10px">
                         <Text>{`${token.name} (${token.symbol})`}</Text>
                       </Text>
-                      <SaveIcon
+                      {/* <SaveIcon
                         id="watchlist-icon"
                         style={{ marginLeft: '8px' }}
                         fill={savedTokens.includes(token.address)}
@@ -331,7 +333,7 @@ const Search = () => {
                           e.stopPropagation()
                           addSavedToken(token.address)
                         }}
-                      />
+                      /> */}
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
@@ -390,7 +392,10 @@ const Search = () => {
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
                         <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
                       </Text>
-                      <SaveIcon
+                      <GreyBadge ml="10px" style={{ fontSize: 14 }}>
+                        {feeTierPercent(p.feeTier)}
+                      </GreyBadge>
+                      {/* <SaveIcon
                         id="watchlist-icon"
                         style={{ marginLeft: '10px' }}
                         fill={savedPools.includes(p.address)}
@@ -398,7 +403,7 @@ const Search = () => {
                           e.stopPropagation()
                           addSavedPool(p.address)
                         }}
-                      />
+                      /> */}
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}

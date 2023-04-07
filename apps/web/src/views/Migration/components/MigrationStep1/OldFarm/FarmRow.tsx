@@ -53,7 +53,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
 }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
   const { stakedBalance } = useFarmUser(farm.pid)
@@ -69,7 +69,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <Farm {...farm} />
-          {isLargerScreen || !expanded ? (
+          {isLargerScreen || expanded ? (
             <>
               <Staked {...staked} stakedBalance={stakedBalance} />
               <Earned {...earned} />
@@ -79,7 +79,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
           {isLargerScreen && <Liquidity {...liquidity} />}
         </LeftContainer>
         <RightContainer>
-          {isLargerScreen || !expanded ? <Unstake {...unstake} /> : null}
+          {isLargerScreen || expanded ? <Unstake {...unstake} /> : null}
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>

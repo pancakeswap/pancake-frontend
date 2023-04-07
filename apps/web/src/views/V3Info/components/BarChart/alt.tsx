@@ -133,10 +133,18 @@ const Chart = ({
                 if (setLabel && label !== formattedTime) {
                   if (activeWindow === VolumeWindow.weekly) {
                     const isCurrent = formattedTimePlusWeek.isAfter(now)
-                    setLabel(`${formattedTime}-${isCurrent ? 'current' : formattedTimePlusWeek.format('MMM D, YYYY')}`)
+                    setLabel(
+                      `${formattedTime}-${
+                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
+                      }`,
+                    )
                   } else if (activeWindow === VolumeWindow.monthly) {
                     const isCurrent = formattedTimePlusMonth.isAfter(now)
-                    setLabel(`${formattedTime}-${isCurrent ? 'current' : formattedTimePlusMonth.format('MMM D, YYYY')}`)
+                    setLabel(
+                      `${formattedTime}-${
+                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusMonth.format('MMM D, YYYY')
+                      }`,
+                    )
                   } else {
                     setLabel(formattedTimeDaily)
                   }
