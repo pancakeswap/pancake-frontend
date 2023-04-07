@@ -24,6 +24,7 @@ import { PriceData, TickData } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
+import { PriceInvertSwitch } from "./PriceInvertSwitch";
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Currency, Currency>;
@@ -80,12 +81,12 @@ export function RoiCalculator({
   sqrtRatioX96,
   liquidity,
   depositAmountInUsd = "0",
-  currencyA,
-  currencyB,
-  balanceA,
-  balanceB,
-  currencyAUsdPrice,
-  currencyBUsdPrice,
+  currencyA: originalCurrencyA,
+  currencyB: originalCurrencyB,
+  balanceA: originalBalanceA,
+  balanceB: originalBalanceB,
+  currencyAUsdPrice: originalCurrencyAUsdPrice,
+  currencyBUsdPrice: originalCurrencyBUsdPrice,
   feeAmount,
   protocolFee,
   prices,
@@ -110,6 +111,39 @@ export function RoiCalculator({
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(3);
+  const [invertBase, setInvertBase] = useState(false);
+  const onSwitchBaseCurrency = useCallback(() => setInvertBase(!invertBase), [invertBase]);
+
+  const { currencyA, currencyB, balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice } = useMemo(
+    () =>
+      invertBase
+        ? {
+            currencyA: originalCurrencyB,
+            currencyB: originalCurrencyA,
+            balanceA: originalBalanceB,
+            balanceB: originalBalanceA,
+            currencyAUsdPrice: originalCurrencyBUsdPrice,
+            currencyBUsdPrice: originalCurrencyAUsdPrice,
+          }
+        : {
+            currencyA: originalCurrencyA,
+            currencyB: originalCurrencyB,
+            balanceA: originalBalanceA,
+            balanceB: originalBalanceB,
+            currencyAUsdPrice: originalCurrencyAUsdPrice,
+            currencyBUsdPrice: originalCurrencyBUsdPrice,
+          },
+    [
+      invertBase,
+      originalCurrencyA,
+      originalCurrencyB,
+      originalBalanceA,
+      originalBalanceB,
+      originalCurrencyAUsdPrice,
+      originalCurrencyBUsdPrice,
+    ]
+  );
+
   const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
   const invertPrice = useMemo(
     () => currencyA && currencyB && currencyB.wrapped.sortsBefore(currencyA.wrapped),
@@ -315,6 +349,7 @@ export function RoiCalculator({
         onLeftRangeInput={priceRange?.onLeftRangeInput}
         onRightRangeInput={priceRange?.onRightRangeInput}
       />
+      <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <DynamicSection>
         <RangeSelector
           priceLower={priceRange?.priceLower}
@@ -344,6 +379,7 @@ export function RoiCalculator({
 
   const priceChart = (
     <Section title={t("History price")}>
+      <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <PriceChart
         prices={useMemo(
           () => prices?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
@@ -397,10 +433,10 @@ export function RoiCalculator({
         {content}
         <ImpermanentLossCalculator
           lpReward={lpReward}
-          amountA={amountA}
-          amountB={amountB}
-          currencyAUsdPrice={currencyAUsdPrice}
-          currencyBUsdPrice={currencyBUsdPrice}
+          amountA={invertBase ? amountB : amountA}
+          amountB={invertBase ? amountA : amountB}
+          currencyAUsdPrice={invertBase ? currencyBUsdPrice : currencyAUsdPrice}
+          currencyBUsdPrice={invertBase ? currencyAUsdPrice : currencyBUsdPrice}
           tickLower={priceRange?.tickLower}
           tickUpper={priceRange?.tickUpper}
           sqrtRatioX96={sqrtRatioX96}
