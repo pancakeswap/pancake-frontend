@@ -1,12 +1,10 @@
 import { gql, GraphQLClient } from 'graphql-request'
-import { ChainId } from '@pancakeswap/sdk'
 import { Block } from 'state/info/types'
 import { ProtocolData } from '../../types'
 import { getPercentChange } from '../../utils/data'
-import { fetchTVLOffset } from './derived'
 
 export const GLOBAL_DATA = (block?: string | number) => {
-  const queryString = ` query uniswapFactories {
+  const queryString = ` query pancakeFactories {
       factories(
        ${block !== undefined ? `block: { number: ${block}}` : ``} 
        first: 1, subgraphError: allow) {
@@ -32,16 +30,12 @@ interface GlobalResponse {
 
 export async function fetchProtocolData(
   dataClient: GraphQLClient,
-  chainId: ChainId,
   blocks: Block[],
 ): Promise<{
   error: boolean
   data: ProtocolData | undefined
 }> {
   try {
-    // Aggregate TVL in inaccurate pools. Offset Uniswap aggregate TVL by this amount.
-    const tvlOffset = await fetchTVLOffset(dataClient, chainId)
-
     const [block24, block48] = blocks ?? []
 
     // fetch all data
@@ -96,7 +90,7 @@ export async function fetchProtocolData(
     const formattedData = {
       volumeUSD,
       volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
-      tvlUSD: parseFloat(parsed?.totalValueLockedUSD) - tvlOffset,
+      tvlUSD: parseFloat(parsed?.totalValueLockedUSD),
       tvlUSDChange,
       feesUSD,
       feeChange,

@@ -88,7 +88,6 @@ export default function Home() {
 
   const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
   const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
-
   const [volumeWindow, setVolumeWindow] = useState(VolumeWindow.weekly)
 
   const formattedTokens = useMemo(() => {

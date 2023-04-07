@@ -70,7 +70,7 @@ export const useProtocolData = (): ProtocolData | undefined => {
   const { blocks } = useBlockFromTimeStampSWR([t24, t48])
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
-    () => fetchProtocolData(v3Clients[chainId], chainId, blocks),
+    () => fetchProtocolData(v3Clients[chainId], blocks),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? undefined
