@@ -203,6 +203,7 @@ export function UpdatePositionsReminder() {
             <Trans>Learn More</Trans>
           </LinkExternal>
           <Button
+            mt="12px"
             width="100%"
             disabled={txLoading}
             onClick={() => {
