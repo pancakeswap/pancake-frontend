@@ -9,3 +9,5 @@ export * as Swap from "./SwapWidget";
 export * from "./TransactionErrorContent";
 export * from "./ConfirmationModalContent";
 export * from "./ConfirmationPendingContent";
+export * from "./withCurrencyLogo";
+export * from "./TokenRowButton";
