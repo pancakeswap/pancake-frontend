@@ -29,7 +29,7 @@ export function TradePrice({ price, loading }: TradePriceProps) {
         <>
           {loading ? (
             <>
-              {t("Fetching best pirce...")}
+              {t("Fetching best price...")}
               <AtomBox className={iconButtonClass}>
                 <Loading width="12px" height="12px" />
               </AtomBox>
