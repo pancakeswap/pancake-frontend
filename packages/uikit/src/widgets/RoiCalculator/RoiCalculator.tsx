@@ -218,24 +218,25 @@ export function RoiCalculator({
       ? derivedCakeApr.times(cakePriceDiffPercent)
       : derivedCakeApr;
 
-  const { fee, rate, apr, apy, cakeApr, cakeApy, editCakeApr, editCakeApy, cakeRate, cakeReward } = useRoi({
-    amountA,
-    amountB,
-    currencyAUsdPrice,
-    currencyBUsdPrice,
-    tickLower: priceRange?.tickLower,
-    tickUpper: priceRange?.tickUpper,
-    volume24H,
-    sqrtRatioX96,
-    mostActiveLiquidity,
-    fee: feeAmount,
-    protocolFee,
-    compoundEvery: compoundingIndexToFrequency[compoundIndex],
-    stakeFor: spanIndexToSpan[spanIndex],
-    compoundOn,
-    cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
-    editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
-  });
+  const { fee, rate, apr, apy, cakeApr, cakeApy, editCakeApr, editCakeApy, cakeRate, cakeReward, originalCakeReward } =
+    useRoi({
+      amountA,
+      amountB,
+      currencyAUsdPrice,
+      currencyBUsdPrice,
+      tickLower: priceRange?.tickLower,
+      tickUpper: priceRange?.tickUpper,
+      volume24H,
+      sqrtRatioX96,
+      mostActiveLiquidity,
+      fee: feeAmount,
+      protocolFee,
+      compoundEvery: compoundingIndexToFrequency[compoundIndex],
+      stakeFor: spanIndexToSpan[spanIndex],
+      compoundOn,
+      cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
+      editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
+    });
 
   const handleApply = useCallback(
     () =>
@@ -404,7 +405,7 @@ export function RoiCalculator({
           tickUpper={priceRange?.tickUpper}
           sqrtRatioX96={sqrtRatioX96}
           isFarm={props.isFarm}
-          cakeReward={cakeReward}
+          cakeReward={originalCakeReward}
           cakePrice={props.isFarm ? props.cakePrice : undefined}
           setEditCakePrice={setEditCakePrice}
         />

@@ -199,7 +199,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           {...roiModal}
           isFarm
           maxLabel={existingPosition_ ? t('My Position') : undefined}
-          closeOnOverlayClick
+          closeOnOverlayClick={false}
           depositAmountInUsd={depositUsdAsBN?.toString()}
           max={depositUsdAsBN?.toString()}
           balanceA={balanceA}

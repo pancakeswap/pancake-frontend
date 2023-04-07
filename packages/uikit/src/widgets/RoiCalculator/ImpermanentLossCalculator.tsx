@@ -47,7 +47,7 @@ const getCakeAssetsByReward = (chainId: number, cakePrice_: string, cakeReward =
     currency: CAKE[chainId as keyof typeof CAKE],
     amount: Number.isFinite(cakeReward) ? +cakeReward / +cakePrice_ : Infinity,
     price: cakePrice,
-    value: Number.isFinite(cakeReward) ? +cakeReward : Infinity,
+    value: Number.isFinite(cakeReward) ? +cakeReward * (+cakePrice / +cakePrice_) : Infinity,
     key: "CAKE_ASSET_BY_APY",
   };
 };
