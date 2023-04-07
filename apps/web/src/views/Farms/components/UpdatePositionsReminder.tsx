@@ -181,6 +181,7 @@ export function UpdatePositionsReminder_() {
       toastSuccess(`Updated!`)
 
       stakedUserInfos.refetch()
+      modal.onDismiss()
     }
   }
 
