@@ -1,8 +1,7 @@
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { Trans } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, Multicall, toHex } from '@pancakeswap/v3-sdk'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { BigNumber } from 'ethers'
 import { FormatTypes } from 'ethers/lib/utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -119,7 +118,6 @@ export function UpdatePositionsReminder() {
 
   const modal = useModalV2()
 
-  const { t } = useTranslation()
   const { data: signer } = useSigner()
   const { toastSuccess } = useToast()
   const { loading: txLoading, fetchWithCatchTxError } = useCatchTxError()
@@ -130,7 +128,7 @@ export function UpdatePositionsReminder() {
   const [triggerOnce, setTriggerOnce] = useState(false)
 
   // eslint-disable-next-line consistent-return
-  const handleUnStuckAll = async () => {
+  const handleUpdateAll = async () => {
     if (!needRetrigger) return null
     const calldata = []
     needRetrigger.forEach((userInfo) => {
@@ -173,12 +171,7 @@ export function UpdatePositionsReminder() {
     )
 
     if (resp?.status) {
-      toastSuccess(
-        `${t('Harvested')}!`,
-        <ToastDescriptionWithTx txHash={resp.transactionHash}>
-          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-        </ToastDescriptionWithTx>,
-      )
+      toastSuccess(`Updated!`)
 
       stakedUserInfos.refetch()
     }
@@ -213,7 +206,7 @@ export function UpdatePositionsReminder() {
             width="100%"
             disabled={txLoading}
             onClick={() => {
-              handleUnStuckAll()
+              handleUpdateAll()
             }}
           >
             {txLoading ? 'Updating...' : 'Update All'}
