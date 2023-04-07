@@ -75,6 +75,7 @@ export function UniversalAddLiquidity({
   preferredFeeAmount,
 }: UniversalAddLiquidityPropsType) {
   const { chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
 
   const router = useRouter()
   const baseCurrency = useCurrency(currencyIdA)
@@ -247,7 +248,7 @@ export function UniversalAddLiquidity({
       <CardBody>
         <ResponsiveTwoColumns>
           <AutoColumn alignSelf="stretch">
-            <PreTitle mb="8px">Choose Token Pair</PreTitle>
+            <PreTitle mb="8px">{t('Choose Token Pair')}</PreTitle>
             <FlexGap gap="4px" width="100%" mb="8px" alignItems="center">
               <CurrencySelect
                 id="add-liquidity-select-tokena"

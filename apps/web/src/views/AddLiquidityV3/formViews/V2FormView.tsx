@@ -168,7 +168,7 @@ export default function V2FormView({
       <RightContainer>
         <AutoColumn pt="12px" gap="24px">
           <DynamicSection disabled gap="12px">
-            <InfoBox message="Your position will appear here." icon={<BunnyKnownPlaceholder />} />
+            <InfoBox message={t('Your position will appear here.')} icon={<BunnyKnownPlaceholder />} />
             <RangeSelector
               getDecrementLower={mockFn}
               getIncrementLower={mockFn}

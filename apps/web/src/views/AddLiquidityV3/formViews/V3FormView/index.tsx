@@ -475,7 +475,7 @@ export default function V3FormView({
               </Message>
               <StyledInput className="start-price-input" value={startPriceTypedValue} onUserInput={onStartPriceInput} />
               <AutoRow justifyContent="space-between" mb="24px">
-                <Text>Current {baseCurrency?.symbol} Price:</Text>
+                <Text>{t('Current %symbol% Price', { symbol: baseCurrency?.symbol })}:</Text>
                 <Text>
                   {price ? (invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)) : '-'}
                   <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
