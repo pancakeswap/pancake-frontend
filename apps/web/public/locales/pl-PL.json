@@ -2413,5 +2413,15 @@
   "gm eth teams": "zespoły gm eth",
   "Ev3ryone's Favourite D3X": "Ulubieniec wszystkich, D3X",
   "Discover V3": "Odkryj V3",
-  "PancakeSwap v3 is live!": "PancakeSwap v3 już działa!"
+  "PancakeSwap v3 is live!": "PancakeSwap v3 już działa!",
+  "Your position will appear here.": "Twoja pozycja pojawi się tutaj.",
+  "Liquidity data not available.": "Dane dotyczące płynności są niedostępne.",
+  "There is no liquidity data.": "Brak danych dotyczących płynności.",
+  "Pool Reserves": "Rezerwy puli",
+  "Fee rate": "Kurs prowizji",
+  "Current %symbol% Price": "Bieżąca cena %symbol%",
+  "Choose Token Pair": "Wybierz parę tokenów",
+  "Fee Tier": "Poziom prowizji",
+  "fee tier": "poziom prowizji",
+  "Selected Range": "Wybrany zakres"
 }
