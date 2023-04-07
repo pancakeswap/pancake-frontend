@@ -2413,5 +2413,15 @@
   "gm eth teams": "gm eth 团队",
   "Ev3ryone's Favourite D3X": "人人喜爱的 D3X",
   "Discover V3": "发现 V3",
-  "PancakeSwap v3 is live!": "PancakeSwap v3 已上线！"
+  "PancakeSwap v3 is live!": "PancakeSwap v3 已上线！",
+  "Your position will appear here.": "Your position will appear here.",
+  "Liquidity data not available.": "Liquidity data not available.",
+  "There is no liquidity data.": "There is no liquidity data.",
+  "Pool Reserves": "Pool Reserves",
+  "Fee rate": "Fee rate",
+  "Current %symbol% Price": "Current %symbol% Price",
+  "Choose Token Pair": "Choose Token Pair",
+  "Fee Tier": "Fee Tier",
+  "fee tier": "fee tier",
+  "Selected Range": "Selected Range"
 }
