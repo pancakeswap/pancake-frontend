@@ -6,7 +6,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 const useBoosterFarmHandlers = (farmPid: number, onDone) => {
-  const farmBoosterContract = useBCakeFarmBoosterContract()
+  const farmBoosterContract = useBCakeFarmBoosterContract(true)
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
 
