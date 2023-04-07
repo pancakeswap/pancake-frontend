@@ -1,3 +1,4 @@
+import { useTranslation } from "@pancakeswap/localization";
 import { Price, Currency } from "@pancakeswap/swap-sdk-core";
 import { Loading, SyncAltIcon } from "@pancakeswap/uikit";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
@@ -13,6 +14,7 @@ interface TradePriceProps {
 }
 
 export function TradePrice({ price, loading }: TradePriceProps) {
+  const { t } = useTranslation();
   const [showInverted, setShowInverted] = useState<boolean>(false);
   const formattedPrice = showInverted ? formatPrice(price, 6) : formatPrice(price?.invert(), 6);
 
@@ -25,17 +27,22 @@ export function TradePrice({ price, loading }: TradePriceProps) {
     >
       {show ? (
         <>
-          {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
-          <SyncAltIcon width="14px" height="14px" color="textSubtle" ml="4px" mr="4px" />
-          {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
           {loading ? (
-            <AtomBox className={iconButtonClass}>
-              <Loading width="12px" height="12px" />
-            </AtomBox>
+            <>
+              {t("Fetching best pirce...")}
+              <AtomBox className={iconButtonClass}>
+                <Loading width="12px" height="12px" />
+              </AtomBox>
+            </>
           ) : (
-            <AtomBox role="button" className={iconButtonClass} onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
-            </AtomBox>
+            <>
+              {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
+              <SyncAltIcon width="14px" height="14px" color="textSubtle" ml="4px" mr="4px" />
+              {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
+              <AtomBox role="button" className={iconButtonClass} onClick={() => setShowInverted(!showInverted)}>
+                <AutoRenewIcon width="14px" />
+              </AtomBox>
+            </>
           )}
         </>
       ) : (
