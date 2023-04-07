@@ -11,7 +11,7 @@ const FEE_TIER_TO_TICK_SPACING = (feeTier: string): number => {
     case '10000':
       return 200
     case '2500':
-      return 60
+      return 50
     case '500':
       return 10
     case '100':

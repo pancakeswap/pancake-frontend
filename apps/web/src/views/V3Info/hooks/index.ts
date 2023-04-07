@@ -70,7 +70,7 @@ export const useProtocolData = (): ProtocolData | undefined => {
   const { blocks } = useBlockFromTimeStampSWR([t24, t48])
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
-    () => fetchProtocolData(v3Clients[chainId], chainId, blocks),
+    () => fetchProtocolData(v3Clients[chainId], blocks),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? undefined
@@ -377,10 +377,16 @@ export const useSearchData = (
   searchValue: string,
 ): { tokens: TokenData[]; pools: PoolData[]; loading: boolean; error: any } => {
   const { chainId } = useActiveChainId()
-
+  const [t24, t48, t7d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
   const { data, status, error } = useSWRImmutable(
     chainId && searchValue && [`v3/info/pool/searchData/${chainId}/${searchValue}`, chainId],
-    () => fetchSearchResults(v3Clients[chainId], searchValue),
+    () =>
+      fetchSearchResults(
+        v3Clients[chainId],
+        searchValue,
+        blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   const searchResult = useMemo(() => {

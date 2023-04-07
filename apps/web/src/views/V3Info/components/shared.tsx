@@ -87,3 +87,10 @@ export const StyledCMCLink = styled(Link)`
     opacity: 0.8;
   }
 `
+
+export const ProtocolWrapper = styled.div`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+  }
+`
