@@ -29,6 +29,9 @@ import TradingRewardBg from './trading-reward-bg.png'
 import ETHXPancakeSwap from './ethXpancakeswap.png'
 import ETHBunny from './ETHBunny.png'
 import v3LaunchBg from './v3LaunchBg.png'
+import v3LaunchBnb from './v3LaunchBnb.png'
+import v3LaunchEth from './v3LaunchEth.png'
+import v3LaunchFlag from './v3LaunchFlag.png'
 import v3LaunchBunny from './v3LaunchBunny.png'
 import v3LaunchBgMobile from './v3LaunchBgMobile.png'
 import v3LaunchBunnyMobile from './v3LaunchBunnyMobile.png'
@@ -68,4 +71,7 @@ export {
   v3LaunchBunny,
   v3LaunchBgMobile,
   v3LaunchBunnyMobile,
+  v3LaunchBnb,
+  v3LaunchEth,
+  v3LaunchFlag,
 }
