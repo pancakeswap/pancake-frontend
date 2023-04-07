@@ -109,19 +109,23 @@ export async function createGasModel({
 
     let gasCostInToken: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, 0)
     let gasCostInUSD: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(usdToken, 0)
-    if (isQuoteNative) {
-      gasCostInToken = totalGasCostNativeCurrency
-    }
-    if (!isQuoteNative && nativePool) {
-      const price = getTokenPrice(nativePool, nativeWrappedToken, quoteCurrency.wrapped)
-      gasCostInToken = price.quote(totalGasCostNativeCurrency)
-    }
 
-    if (usdPool) {
-      const nativeTokenUsdPrice = getTokenPrice(usdPool, nativeWrappedToken, usdToken)
-      gasCostInUSD = nativeTokenUsdPrice.quote(totalGasCostNativeCurrency)
-    }
+    try {
+      if (isQuoteNative) {
+        gasCostInToken = totalGasCostNativeCurrency
+      }
+      if (!isQuoteNative && nativePool) {
+        const price = getTokenPrice(nativePool, nativeWrappedToken, quoteCurrency.wrapped)
+        gasCostInToken = price.quote(totalGasCostNativeCurrency)
+      }
 
+      if (usdPool) {
+        const nativeTokenUsdPrice = getTokenPrice(usdPool, nativeWrappedToken, usdToken)
+        gasCostInUSD = nativeTokenUsdPrice.quote(totalGasCostNativeCurrency)
+      }
+    } catch (e) {
+      // console.warn('Cannot estimate gas cost', e)
+    }
     return {
       gasEstimate: baseGasUse,
       gasCostInToken,
