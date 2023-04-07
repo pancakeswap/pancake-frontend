@@ -86,6 +86,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     maxSplits: 0,
     maxHops: baseTradeAgainst ? 2 : 3,
     enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
+    autoRevalidate: false,
   })
 
   const price = useMemo(() => {
