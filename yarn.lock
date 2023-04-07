@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@adraffy/ens-normalize@1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.9.0.tgz#223572538f6bea336750039bb43a4016dcc8182d"
+  integrity sha512-iowxq3U30sghZotgl4s/oJRci6WPBfNO5YYgk2cIOMCHr3LeGPcsZjCEr+33Q4N+oV3OABDAtA+pyvWjbvBifQ==
+
 "@ampproject/remapping@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.0.tgz#56c133824780de3174aed5ab6834f3026790154d"
@@ -13322,13 +13327,6 @@ icss-utils@^4.0.0, icss-utils@^4.1.1:
   dependencies:
     postcss "^7.0.14"
 
-idna-uts46-hx@4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/idna-uts46-hx/-/idna-uts46-hx-4.1.2.tgz#b7ecf6b603abf1d81972d0a9a1335d7bc1eda553"
-  integrity sha512-EAB3egrcalcTQHcjA7yzXXkE4E09TIFerR//4yUYGYCeCfXmkU0LgsGJgYSIQA1lQunfsn4ZCWJhbelgl3cdiQ==
-  dependencies:
-    punycode "^2.1.1"
-
 ieee754@^1.1.13, ieee754@^1.1.4, ieee754@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
@@ -21532,18 +21530,18 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-viem@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-0.2.3.tgz#e52747b94f444de6cd49003bbb460a8809b84557"
-  integrity sha512-cke24k0xbr9CJEuwF9VQMfgXguGHf/9n6AmlQW3TnYOGlm1IjY0ZaceVwRbYjNqwibH64w9OVk3qPsqA4esqtA==
+viem@^0.2.12:
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-0.2.12.tgz#e5f17876a67b679eacb233ca95c43a2f868a2632"
+  integrity sha512-BxvWFFp8k5raoeDZJX0c2FGcGJSsGwWs9CeUavof/Bv3EgZLtU9tnqfIllZd3wQClZ3/+zESbTnRksgUDIUW1w==
   dependencies:
+    "@adraffy/ens-normalize" "1.9.0"
     "@noble/curves" "0.9.0"
     "@noble/hashes" "1.3.0"
     "@scure/bip32" "1.2.0"
     "@scure/bip39" "1.2.0"
     "@wagmi/chains" "0.2.16"
     abitype "0.7.1"
-    idna-uts46-hx "4.1.2"
     isomorphic-ws "5.0.0"
     ws "8.12.0"
 
