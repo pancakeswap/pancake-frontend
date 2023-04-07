@@ -8,7 +8,7 @@ export interface CampaignVolume {
   volume: number
 }
 
-interface CampaignIdInfoResponse {
+export interface CampaignIdInfoResponse {
   total: number
   volumeArr: CampaignVolume[]
 }
@@ -24,7 +24,7 @@ export interface CampaignIdInfo {
   data: CampaignIdInfoDetail
 }
 
-const initialState: CampaignIdInfoDetail = {
+export const initialState: CampaignIdInfoDetail = {
   total: 0,
   totalVolume: 0,
   volumeArr: [],

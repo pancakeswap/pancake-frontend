@@ -8,17 +8,19 @@ import HowToEarn from 'views/TradingReward/components/HowToEarn'
 import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
 import Questions from 'views/TradingReward/components/Questions'
 
+import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
+import useUserCampaignInfo from 'views/TradingReward/hooks/useUserCampaignInfo'
+
 const TradingReward = () => {
   const [showPage, setShowPage] = useState(false)
   const router = useRouter()
+  const campaignId = router?.query?.campaignId?.toString() ?? ''
+  const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
+  const { data: userCampaignInfoData, isFetching: isUserCampaignInfoFetching } = useUserCampaignInfo(campaignId)
 
   useEffect(() => {
-    if (router.query.campaignId) {
-      setShowPage(true)
-    } else {
-      router.push('/')
-    }
-  }, [router])
+    if (campaignId) setShowPage(true)
+  }, [campaignId])
 
   if (!showPage) {
     return null
@@ -26,8 +28,8 @@ const TradingReward = () => {
 
   return (
     <Box>
-      <Banner />
-      <YourTradingReward />
+      <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
+      <YourTradingReward data={userCampaignInfoData} isFetching={isUserCampaignInfoFetching} />
       <CurrentRewardPool />
       <HowToEarn />
       <RewardsBreakdown />

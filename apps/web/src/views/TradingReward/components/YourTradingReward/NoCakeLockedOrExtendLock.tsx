@@ -10,7 +10,7 @@ import { add } from 'date-fns'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Actions from 'views/TradingReward/components/YourTradingReward/Actions'
-import { MIN_LOCK_CAKE_AMOUNT, LOCKED_WEEK_DURATION } from '../../config'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useUserCampaignInfo'
 
 const Container = styled(Flex)`
   flex-direction: column;
@@ -58,6 +58,7 @@ export const BunnyButt = styled.div`
 `
 
 interface NoCakeLockedOrExtendLockProps {
+  data: UserCampaignInfoDetail
   pool: Pool.DeserializedPool<Token>
   userData: DeserializedLockedVaultUser
   isLockPosition: boolean
@@ -66,6 +67,7 @@ interface NoCakeLockedOrExtendLockProps {
 }
 
 const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrExtendLockProps>> = ({
+  data,
   pool,
   userData,
   isLockPosition,
@@ -98,22 +100,27 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
 
   const needAddedCakeAmount = useMemo(() => {
     if (!isLockPosition) {
-      return MIN_LOCK_CAKE_AMOUNT
+      return data.thresholdLockedAmount
     }
-    return new BigNumber(MIN_LOCK_CAKE_AMOUNT).minus(balance.cakeAsNumberBalance).toNumber()
-  }, [isLockPosition, balance.cakeAsNumberBalance])
+    return new BigNumber(data.thresholdLockedAmount).minus(balance.cakeAsNumberBalance).toString()
+  }, [isLockPosition, data.thresholdLockedAmount, balance.cakeAsNumberBalance])
 
   const cakePrice = useMemo(
     () => new BigNumber(cakePriceBusd).times(needAddedCakeAmount).toNumber(),
     [cakePriceBusd, needAddedCakeAmount],
   )
 
+  const lockWeekDuration = useMemo(
+    () => new BigNumber(data.thresholdLockedPeriod).div(60).div(60).div(24).div(7).toNumber(),
+    [data],
+  )
+
   const needAddedWeek = useMemo(() => {
     if (!isLockPosition) {
-      return LOCKED_WEEK_DURATION
+      return lockWeekDuration
     }
 
-    const minLockDuration = add(new Date(), { weeks: LOCKED_WEEK_DURATION })
+    const minLockDuration = add(new Date(), { weeks: lockWeekDuration })
     const minLockDurationTimestamp = Math.floor(minLockDuration.getTime() / 1000)
     if (new BigNumber(lockEndTime).gte(minLockDurationTimestamp)) {
       return 0
@@ -122,7 +129,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     const onWeek = 60 * 60 * 24 * 7
     const week = new BigNumber(minLockDurationTimestamp).minus(lockEndTime).div(onWeek).toNumber()
     return Math.ceil(week)
-  }, [isLockPosition, lockEndTime])
+  }, [lockWeekDuration, isLockPosition, lockEndTime])
 
   return (
     <>
@@ -135,8 +142,8 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
             {t(
               'Lock a minimum of %minLockCakeAmount% CAKE for %minLockedWeekDuration% weeks or more to start earning from trades!',
               {
-                minLockCakeAmount: MIN_LOCK_CAKE_AMOUNT,
-                minLockedWeekDuration: LOCKED_WEEK_DURATION,
+                minLockCakeAmount: data.thresholdLockedAmount,
+                minLockedWeekDuration: lockWeekDuration,
               },
             )}
           </Text>
@@ -185,7 +192,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                   bold
                   prefix="+ "
                   decimals={2}
-                  value={needAddedCakeAmount}
+                  value={Number(needAddedCakeAmount)}
                 />
                 <Balance fontSize="12px" color="textSubtle" prefix="~ " unit=" USD" decimals={2} value={cakePrice} />
               </Box>
@@ -227,7 +234,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
         isOnlyNeedAddCake={isOnlyNeedAddCake}
         isOnlyNeedExtendLock={isOnlyNeedExtendLock}
         needAddedWeek={needAddedWeek}
-        needAddedCakeAmount={needAddedCakeAmount.toString()}
+        needAddedCakeAmount={needAddedCakeAmount}
       />
     </>
   )

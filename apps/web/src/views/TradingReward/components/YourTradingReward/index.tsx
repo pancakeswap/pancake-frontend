@@ -4,13 +4,12 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
-import { useProfile } from 'state/profile/hooks'
 import BigNumber from 'bignumber.js'
-import { add } from 'date-fns'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useDeserializedPoolByVaultKey, useCakeVault } from 'state/pools/hooks'
 import { useCakeVaultPool } from 'views/TradingReward/hooks/useCakeVaultPool'
+import { UserCampaignInfo } from 'views/TradingReward/hooks/useUserCampaignInfo'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 // import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
@@ -18,7 +17,6 @@ import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfil
 import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
 // import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
 import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
-import { MIN_LOCK_CAKE_AMOUNT, LOCKED_WEEK_DURATION } from '../../config'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -138,10 +136,9 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
   }
 }`
 
-const YourTradingReward = () => {
+const YourTradingReward: React.FC<React.PropsWithChildren<UserCampaignInfo>> = ({ data }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { profile } = useProfile()
   const { theme } = useTheme()
 
   useCakeVaultPool()
@@ -156,25 +153,24 @@ const YourTradingReward = () => {
   )
 
   const isValidLockDuration = useMemo(() => {
-    const minLockDuration = add(new Date(), { weeks: LOCKED_WEEK_DURATION })
-    const minLockDurationTimestamp = Math.floor(minLockDuration.getTime() / 1000)
-    return new BigNumber(userData?.lockEndTime).gte(minLockDurationTimestamp)
-  }, [userData?.lockEndTime])
+    const lockTime = new BigNumber(data.lockEndTime).minus(data.lockStartTime)
+    return lockTime.gte(data.thresholdLockedPeriod)
+  }, [data])
 
   const isValidTotalStakedBalance = useMemo(
-    () => new BigNumber(userData.balance.cakeAsNumberBalance).gte(MIN_LOCK_CAKE_AMOUNT),
-    [userData],
+    () => new BigNumber(userData.balance.cakeAsNumberBalance).gte(data.thresholdLockedAmount),
+    [userData, data],
   )
 
   const showBackgroundColor = useMemo(() => !account || true, [account])
 
   const showNoCakeLockedOrExtendLock = useMemo(() => {
-    return account && profile?.isActive && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
-  }, [account, profile, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
+    return account && data.isActive && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
+  }, [account, data.isActive, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
 
   const isClaimable = useMemo(() => {
-    return account && profile?.isActive && isLockPosition && isValidTotalStakedBalance && isValidLockDuration
-  }, [account, isLockPosition, isValidTotalStakedBalance, profile, isValidLockDuration])
+    return account && data.isQualified
+  }, [account, data])
 
   return (
     <StyledBackground showBackgroundColor={showBackgroundColor}>
@@ -192,10 +188,11 @@ const YourTradingReward = () => {
             style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
           >
             {!account && <NoConnected />}
-            {account && !profile?.isActive && <NoProfile />}
+            {account && !data.isActive && <NoProfile />}
             {/* <ViewEligiblePairs /> */}
             {showNoCakeLockedOrExtendLock && (
               <NoCakeLockedOrExtendLock
+                data={data}
                 pool={pool}
                 userData={userData}
                 isLockPosition={isLockPosition}

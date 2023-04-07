@@ -4,8 +4,7 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
+import { CampaignIdInfo } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import bunnyImage from '../../../../public/images/trading-reward/trading-reward-banner-bunny.png'
 
 const Container = styled(Box)<{ backgroundColor: string }>`
@@ -46,12 +45,9 @@ const Decorations = styled(Box)`
   }
 }`
 
-const TradingRewardBanner = () => {
+const TradingRewardBanner: React.FC<React.PropsWithChildren<CampaignIdInfo>> = ({ data, isFetching }) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const router = useRouter()
-
-  const { data, isFetching } = useCampaignIdInfo(router?.query?.campaignId?.toString() ?? '')
 
   return (
     <Container
