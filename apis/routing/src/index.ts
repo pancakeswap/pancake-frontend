@@ -20,7 +20,7 @@ import { ChainId, Currency, JSBI, TradeType } from '@pancakeswap/sdk'
 import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { GraphQLClient } from 'graphql-request'
-import { parseCurrency, parseCurrencyAmount, serializeTrade } from './utils'
+import { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } from './utils'
 
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
@@ -74,12 +74,33 @@ const zStablePool = z
   .required()
 const zPools = z.array(z.union([zV2Pool, zV3Pool, zStablePool]))
 
-const zParams = z
+const zGetParams = z
   .object({
     chainId: zChainId,
     tradeType: zTradeType,
     amount: zCurrencyAmount,
     currency: zCurrency,
+    gasPriceWei: zBigNumber.optional(),
+    maxHops: z.number().optional(),
+    maxSplits: z.number().optional(),
+    blockNumber: zBigNumber.optional(),
+    poolTypes: zPoolTypes.optional(),
+  })
+  .required({
+    chainId: true,
+    tradeType: true,
+    amount: true,
+    currency: true,
+    candidatePools: true,
+  })
+
+const zPostParams = z
+  .object({
+    chainId: zChainId,
+    tradeType: zTradeType,
+    amount: zCurrencyAmount,
+    currency: zCurrency,
+    candidatePools: zPools,
     gasPriceWei: zBigNumber.optional(),
     maxHops: z.number().optional(),
     maxSplits: z.number().optional(),
@@ -183,7 +204,7 @@ const PoolCache = {
 }
 
 router.get('/v0/quote', async (req, event: FetchEvent) => {
-  const parsed = zParams.safeParse(req.query)
+  const parsed = zGetParams.safeParse(req.query)
   if (parsed.success === false) {
     return error(400, 'Invalid params')
   }
@@ -229,6 +250,53 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
     const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
       gasPriceWei: gasPrice,
       poolProvider: SmartRouter.createStaticPoolProvider([...pools.v3Pools, ...pools.v2Pools, ...pools.stablePools]),
+      quoteProvider: onChainQuoteProvider,
+      maxHops,
+      maxSplits,
+      blockNumber: Number(blockNumber),
+      allowedPoolTypes: poolTypes,
+      quoterOptimization: false,
+    })
+    return json(trade ? serializeTrade(trade) : {})
+  } catch (e) {
+    return error(500, e instanceof Error ? e.message : 'No valid trade')
+  }
+})
+
+router.post('/v0/quote', async (req) => {
+  const body = (await req.json?.()) as any
+  const parsed = zPostParams.safeParse(body)
+  if (parsed.success === false) {
+    return error(400, 'Invalid params')
+  }
+
+  const {
+    amount,
+    chainId,
+    currency,
+    tradeType,
+    blockNumber,
+    gasPriceWei,
+    maxHops,
+    maxSplits,
+    poolTypes,
+    candidatePools,
+  } = parsed.data
+  console.log(amount, currency, '????')
+
+  const gasPrice = gasPriceWei
+    ? JSBI.BigInt(gasPriceWei)
+    : async () => JSBI.BigInt(await provider({ chainId }).getGasPrice())
+
+  const currencyAAmount = parseCurrencyAmount(chainId, amount)
+  const currencyB = parseCurrency(chainId, currency)
+
+  const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
+
+  try {
+    const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
+      gasPriceWei: gasPrice,
+      poolProvider: SmartRouter.createStaticPoolProvider(pools),
       quoteProvider: onChainQuoteProvider,
       maxHops,
       maxSplits,
