@@ -10,7 +10,7 @@ import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
 import PoolTable from './components/PoolTable'
 import { RowBetween, RowFixed } from './components/Row'
-import { ChartCardsContainer, MonoSpace } from './components/shared'
+import { ChartCardsContainer, MonoSpace, ProtocolWrapper } from './components/shared'
 import TokenTable from './components/TokenTable'
 import TransactionsTable from './components/TransactionsTable'
 import {
@@ -110,6 +110,7 @@ export default function Home() {
   const tvlValue = useMemo(() => {
     return formatDollarAmount(liquidityHover ?? 0, 2, true)
   }, [liquidityHover])
+
   return (
     <Page>
       <Heading scale="lg" mb="16px">
@@ -183,7 +184,7 @@ export default function Home() {
           />
         </Card>
       </ChartCardsContainer>
-      <Box>
+      <ProtocolWrapper>
         <DarkGreyCard>
           <RowBetween>
             <RowFixed>
@@ -207,7 +208,7 @@ export default function Home() {
             </RowFixed>
           </RowBetween>
         </DarkGreyCard>
-      </Box>
+      </ProtocolWrapper>
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Top Tokens')}
       </Heading>
