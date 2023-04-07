@@ -200,6 +200,8 @@ export function UpdatePositionsReminder() {
           <Text>The followings farming positions require updates to continue earnings</Text>
           {needRetrigger && <Text>{needRetrigger.map((u) => `#${u.tokenId.toString()}`).join(', ')}</Text>}
           <Button
+            mt="64px"
+            width="100%"
             disabled={txLoading}
             onClick={() => {
               handleUnStuckAll()
