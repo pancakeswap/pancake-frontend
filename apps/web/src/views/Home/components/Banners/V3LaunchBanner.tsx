@@ -135,6 +135,7 @@ const RightWrapper = styled.div`
     position: absolute !important;
     top: -20px;
     right: -28px;
+    z-index: 3;
     ${({ theme }) => theme.mediaQueries.sm} {
       top: -31px;
       right: 153px;
