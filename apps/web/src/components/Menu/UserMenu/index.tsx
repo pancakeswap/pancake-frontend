@@ -102,7 +102,6 @@ const UserMenu = () => {
         text={userMenuText}
         variant={userMenuVariable}
       >
-      <UIKitUserMenu account={sidName || account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
         {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )
