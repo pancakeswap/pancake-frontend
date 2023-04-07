@@ -10,7 +10,6 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
@@ -21,6 +20,7 @@ import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { GraphQLClient } from 'graphql-request'
 import { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } from './utils'
+import { viemProviders } from './provider'
 
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
@@ -116,37 +116,6 @@ const zPostParams = z
   })
 
 const router = Router()
-const bscProvider = new StaticJsonRpcProvider(
-  {
-    url: 'https://nodes.pancakeswap.info',
-    skipFetchSetup: true,
-  },
-  56,
-)
-
-const bscTestnetProvider = new StaticJsonRpcProvider(
-  {
-    url: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
-    skipFetchSetup: true,
-  },
-  97,
-)
-
-const goerliProvider = new StaticJsonRpcProvider(
-  {
-    url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
-    skipFetchSetup: true,
-  },
-  5,
-)
-
-const ethProvider = new StaticJsonRpcProvider(
-  {
-    url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
-    skipFetchSetup: true,
-  },
-  1,
-)
 
 const V3_SUBGRAPH_URLS = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
@@ -155,23 +124,7 @@ const V3_SUBGRAPH_URLS = {
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
 }
 
-const provider = ({ chainId }: { chainId?: ChainId }) => {
-  if (chainId === ChainId.BSC_TESTNET) {
-    return bscTestnetProvider
-  }
-  if (chainId === ChainId.BSC) {
-    return bscProvider
-  }
-  if (chainId === ChainId.ETHEREUM) {
-    return ethProvider
-  }
-  if (chainId === ChainId.GOERLI) {
-    return goerliProvider
-  }
-  return bscProvider
-}
-
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: provider })
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemProviders })
 
 const v3Clients = {
   [ChainId.ETHEREUM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ETHEREUM], { fetch }),
@@ -214,7 +167,7 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
 
   const gasPrice = gasPriceWei
     ? JSBI.BigInt(gasPriceWei)
-    : async () => JSBI.BigInt(await provider({ chainId }).getGasPrice())
+    : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
 
   const currencyAAmount = parseCurrencyAmount(chainId, amount)
   const currencyA = currencyAAmount.currency
@@ -234,7 +187,7 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
       SmartRouter.getV2PoolSubgraph({ provider: subgraphProvider, pairs }).then((res) =>
         SmartRouter.v2PoolSubgraphSelection(currencyA, currencyB, res),
       ),
-      SmartRouter.getStablePoolsOnChain(pairs, provider, blockNumber),
+      SmartRouter.getStablePoolsOnChain(pairs, viemProviders, blockNumber),
     ])
 
     pools = {
@@ -286,7 +239,7 @@ router.post('/v0/quote', async (req) => {
 
   const gasPrice = gasPriceWei
     ? JSBI.BigInt(gasPriceWei)
-    : async () => JSBI.BigInt(await provider({ chainId }).getGasPrice())
+    : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
 
   const currencyAAmount = parseCurrencyAmount(chainId, amount)
   const currencyB = parseCurrency(chainId, currency)
