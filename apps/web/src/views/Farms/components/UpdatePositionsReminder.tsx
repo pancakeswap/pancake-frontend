@@ -205,7 +205,7 @@ export function UpdatePositionsReminder() {
               handleUnStuckAll()
             }}
           >
-            {txLoading ? 'Harvesting...' : 'Harvest'}
+            {txLoading ? 'Updating...' : 'Update All'}
           </Button>
         </AtomBox>
       </Modal>
