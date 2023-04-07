@@ -10,7 +10,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3 } from 'hooks/useContract'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { calculateGasMargin } from 'utils'
 import { useContractReads, useSigner } from 'wagmi'
@@ -184,10 +184,6 @@ export function UpdatePositionsReminder_() {
     }
   }
 
-  useEffect(() => {
-    console.info('needRetrigger', needRetrigger)
-  }, [needRetrigger, triggerOnce])
-
   if (
     !triggerOnce &&
     needRetrigger &&
@@ -198,6 +194,7 @@ export function UpdatePositionsReminder_() {
   ) {
     setTriggerOnce(true)
     modal.onOpen()
+    console.info(needRetrigger, 'needRetrigger')
   }
 
   return (
