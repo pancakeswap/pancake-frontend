@@ -1,6 +1,6 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { Button, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
+import { Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, Multicall, toHex } from '@pancakeswap/v3-sdk'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BigNumber } from 'ethers'
@@ -199,10 +199,13 @@ export function UpdatePositionsReminder() {
         <AtomBox textAlign="center">
           <Text>The followings farming positions require updates to continue earning:</Text>
           {needRetrigger && (
-            <Text mt="24px" bold>
+            <Text my="24px" bold>
               {needRetrigger.map((u) => `#${u.tokenId.toString()}`).join(', ')}
             </Text>
           )}
+          <LinkExternal href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-am-i-seeing-an-update-positions-pop-up">
+            <Trans>Learn More</Trans>
+          </LinkExternal>
           <Button
             mt="64px"
             width="100%"
