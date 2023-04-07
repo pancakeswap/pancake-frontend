@@ -323,7 +323,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             {existingPosition && (
               <PositionPreview
                 position={existingPosition}
-                title="Selected Range"
+                title={t('Selected Range')}
                 inRange={!outOfRange}
                 ticksAtLimit={ticksAtLimit}
               />

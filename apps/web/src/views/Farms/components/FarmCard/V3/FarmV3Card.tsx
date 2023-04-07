@@ -125,7 +125,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             totalValueFormatted={`$${parseInt(farm.activeTvlUSD).toLocaleString(undefined, {
               maximumFractionDigits: 0,
             })}`}
-            totalValueLabel="Staked Liquidity"
+            totalValueLabel={t('Staked Liquidity')}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
             isCommunity={false}
