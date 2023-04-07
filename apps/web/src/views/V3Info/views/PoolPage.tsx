@@ -234,7 +234,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     <Text>Total Tokens Locked</Text>
                     <RowBetween>
                       <RowFixed>
-                        <CurrencyLogo address={poolData.token0.address} size="20px" />
+                        <CurrencyLogo address={poolData.token0.address} size="20px" chainName={chainName} />
                         <Text fontSize="14px" ml="8px">
                           {poolData.token0.symbol}
                         </Text>
@@ -243,7 +243,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     </RowBetween>
                     <RowBetween>
                       <RowFixed>
-                        <CurrencyLogo address={poolData.token1.address} size="20px" />
+                        <CurrencyLogo address={poolData.token1.address} size="20px" chainName={chainName} />
                         <Text fontSize="14px" ml="8px">
                           {poolData.token1.symbol}
                         </Text>
