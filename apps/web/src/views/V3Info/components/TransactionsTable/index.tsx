@@ -1,4 +1,4 @@
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, Text, SortArrowIcon } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
