@@ -22,7 +22,7 @@ const ReferenceElement = styled.div`
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
   width: 36px;
-  margin-right: 6px;
+  margin-right: 4px;
   align-self: center;
   text-align: right;
 
