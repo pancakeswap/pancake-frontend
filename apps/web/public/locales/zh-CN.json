@@ -2387,7 +2387,7 @@
   "You may add or remove liquidity on the position detail page without unstake": "您可以在持仓详细信息页面上添加或移除流动性而无需取消质押",
   "Manage Position": "管理持仓",
   "History price": "历史价格",
-  "V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.": "V3 可以将流动性资金集中在特定的区间，并且提供了灵活的交易费用层级，因此能产生较深的流动性池，从而为同等资金量的交易者提供更低的滑点。",
+  "V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.": "V3 可以将流动性资金集中在特定的区间，并且提供了多种的交易费用层级，因此能产生较深的流动性池，从而在交易同等量的资金下能取得较低的滑点。",
   "The previous V2 exchange is where a number of iconic, popular assets are traded.": "之前的 V2 兑换是许多标志性热门资产的交易场所。",
   "Recommend leaving this on to ensure backward compatibility.": "建议保留此项以确保向后兼容性。",
   "StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.": "稳定币兑换为稳定或锚定资产提供了更高的效率，并降低了交易费用。",
