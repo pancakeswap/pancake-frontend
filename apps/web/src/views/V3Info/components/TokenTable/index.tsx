@@ -5,13 +5,13 @@ import {
   Box,
   Flex,
   NextLinkFromReactRouter,
-  Text,
   SortArrowIcon,
+  Text,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
+import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
