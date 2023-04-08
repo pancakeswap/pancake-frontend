@@ -271,7 +271,7 @@
   "Fee Earned": "수수료 획득",
   "Enable Farm": "팜 활성화",
   "Search Farms": "팜 검색",
-  "Collect as": "다음으로 수집",
+  "Collect as": "다음으로 수집:",
   "You will also collect fees earned from this position.": "이 포지션에서 획득한 수수료도 수집합니다.",
   "This liquidity position is currently staking in the Farm. Adding or removing liquidity will also harvest any unclaimed CAKE to your wallet.": "이 유동성 포지션은 팜에 현재 스테이킹되어 있습니다. 유동성을 추가하거나 제거하면 클레임되지 않은 CAKE도 지갑에 수확됩니다.",
   "To Top": "맨 위로",
