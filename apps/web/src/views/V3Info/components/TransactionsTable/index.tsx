@@ -2,6 +2,7 @@ import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, Text } 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGetChainName } from 'state/info/hooks'
 import styled from 'styled-components'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
@@ -79,17 +80,17 @@ const SORT_FIELD = {
   amountToken1: 'amountToken1',
 }
 
-const DataRow = ({ transaction, color }: { transaction: Transaction; color?: string }) => {
+const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) => {
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const { chainId } = useActiveChainId()
-  const { theme } = useTheme()
+  const chainName = useGetChainName()
 
   return (
     <ResponsiveGrid>
-      <LinkExternal href={getEtherscanLink(chainId, transaction.hash, 'transaction')}>
+      <LinkExternal href={getEtherscanLink(chainId, transaction.hash, 'transaction')} isBscScan={chainName === 'BSC'}>
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
             ? `Add ${transaction.token0Symbol} and ${transaction.token1Symbol}`
@@ -106,10 +107,7 @@ const DataRow = ({ transaction, color }: { transaction: Transaction; color?: str
         <HoverInlineText text={`${formatAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <LinkExternal
-          href={getEtherscanLink(chainId, transaction.sender, 'address')}
-          style={{ color: color ?? theme.colors.primary }}
-        >
+        <LinkExternal href={getEtherscanLink(chainId, transaction.sender, 'address')} isBscScan={chainName === 'BSC'}>
           {shortenAddress(transaction.sender)}
         </LinkExternal>
       </Text>
@@ -121,11 +119,9 @@ const DataRow = ({ transaction, color }: { transaction: Transaction; color?: str
 export default function TransactionTable({
   transactions,
   maxItems = 10,
-  color,
 }: {
   transactions: Transaction[]
   maxItems?: number
-  color?: string
 }) {
   // theming
   const { theme } = useTheme()
@@ -264,7 +260,7 @@ export default function TransactionTable({
             return (
               // eslint-disable-next-line react/no-array-index-key
               <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
-                <DataRow transaction={d} color={color} />
+                <DataRow transaction={d} />
                 <Break />
               </React.Fragment>
             )
