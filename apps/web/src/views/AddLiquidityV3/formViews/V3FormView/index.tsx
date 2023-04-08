@@ -1,6 +1,6 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent } from '@pancakeswap/sdk'
 import {
   AutoColumn,
   Button,
@@ -16,13 +16,13 @@ import {
   MessageText,
   PreTitle,
   DynamicSection,
+  Flex,
 } from '@pancakeswap/uikit'
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
-import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
@@ -145,8 +145,6 @@ export default function V3FormView({
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
 
-  const { position: existingPosition } = useDerivedPositionInfo(undefined)
-
   // mint state
   const formState = useV3FormState()
   const { independentField, typedValue, startPriceTypedValue } = formState
@@ -175,7 +173,7 @@ export default function V3FormView({
     quoteCurrency ?? undefined,
     feeAmount,
     baseCurrency ?? undefined,
-    existingPosition,
+    undefined,
     formState,
   )
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
@@ -368,6 +366,19 @@ export default function V3FormView({
     true,
     'TransactionConfirmationModal',
   )
+
+  const quickActionConfig = useMemo(() => {
+    if (feeAmount === 2500 || feeAmount === 10000) {
+      return [10, 20, 50]
+    }
+    if (feeAmount === 500) {
+      return [5, 10, 20]
+    }
+    if (feeAmount === 100) {
+      return [0.1, 0.5, 1]
+    }
+    return [10, 20, 50]
+  }, [feeAmount])
 
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
@@ -585,15 +596,41 @@ export default function V3FormView({
                 </Box>
               </Message>
             ) : (
-              <Button
-                onClick={() => {
-                  setShowCapitalEfficiencyWarning(true)
-                }}
-                variant="secondary"
-                scale="sm"
-              >
-                {t('Full Range')}
-              </Button>
+              <Flex justifyContent="space-between" width="100%">
+                {quickActionConfig.map((quickAction) => {
+                  return (
+                    <Button
+                      key={`quickActions${quickAction}`}
+                      onClick={() => {
+                        const currentPrice = invertPrice ? price?.invert() : price
+                        if (currentPrice) {
+                          onBothRangeInput({
+                            leftTypedValue: currentPrice
+                              .divide(new Fraction(1000, 1000 - quickAction * 10))
+                              .toSignificant(6),
+                            rightTypedValue: currentPrice
+                              .divide(new Fraction(1000, 1000 + quickAction * 10))
+                              .toSignificant(6),
+                          })
+                        }
+                      }}
+                      variant="secondary"
+                      scale="sm"
+                    >
+                      {quickAction}%
+                    </Button>
+                  )
+                })}
+                <Button
+                  onClick={() => {
+                    setShowCapitalEfficiencyWarning(true)
+                  }}
+                  variant="secondary"
+                  scale="sm"
+                >
+                  {t('Full Range')}
+                </Button>
+              </Flex>
             )}
 
             {outOfRange ? (
