@@ -266,7 +266,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           }
           bottomContent={() => (
             <Button width="100%" mt="16px" onClick={onIncrease}>
-              Increase
+              {t('Increase')}
             </Button>
           )}
         />

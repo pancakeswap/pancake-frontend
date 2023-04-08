@@ -177,7 +177,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
     <>
       {outOfRange && (
         <RangeTag outOfRange ml={0} style={{ alignItems: 'center' }}>
-          Inactive
+          {t('Inactive')}
           <QuestionHelper
             ml="4px"
             text={t('Inactive positions will NOT earn CAKE rewards from farm.')}

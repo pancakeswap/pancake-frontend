@@ -142,8 +142,9 @@ export function StableV3Selector({
           )}
           <Message variant="warning">
             <MessageText>
-              Stable coins work best with StableSwap LPs. Adding V3 or V2 LP may result in less fee earning or inability
-              to perform yield farming.
+              {t(
+                'Stable coins work best with StableSwap LPs. Adding V3 or V2 LP may result in less fee earning or inability to perform yield farming.',
+              )}
             </MessageText>
           </Message>
         </AutoColumn>
