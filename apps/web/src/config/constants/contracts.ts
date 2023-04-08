@@ -170,7 +170,7 @@ export default {
     56: '0xfEACb05b373f1A08E68235bA7FC92636b92ced01',
   },
   tradingReward: {
-    56: '0xB6294042CfC6c1Dcc78af022b54C49E83fDC165d',
+    56: '0xe56bc34dBd71EEB69B49a8f6EBDC1364ABb4106A',
     97: '',
   },
 }

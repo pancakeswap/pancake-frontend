@@ -1,6 +1,13 @@
 import styled from 'styled-components'
-import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button, Balance, useMatchBreakpoints } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
+import { Incentives } from 'views/TradingReward/hooks/useInCentives'
+import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
+import Link from 'next/link'
 
 const Container = styled(Flex)`
   position: relative;
@@ -77,9 +84,21 @@ const Decorations = styled(Box)`
   }
 }`
 
-const CurrentRewardPool = () => {
-  const { t } = useTranslation()
+interface CurrentRewardPoolProps {
+  incentives: Incentives
+  campaignInfoData: CampaignIdInfoDetail
+}
+
+const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps>> = ({
+  incentives,
+  campaignInfoData,
+}) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const timeUntil = getTimePeriods(incentives.campaignClaimTime)
 
   return (
     <Container>
@@ -90,7 +109,7 @@ const CurrentRewardPool = () => {
             {t('Starts')}
           </Text>
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            on Feb 1, 2023, 8:00 AM
+            {t('On %date%', { date: timeFormat(locale, incentives.campaignStart) })}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
@@ -98,24 +117,53 @@ const CurrentRewardPool = () => {
             {t('Ends')}
           </Text>
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            in 3d 5h 6m
+            {t('in')}
+            {timeUntil.days ? (
+              <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+                {`${timeUntil.days} ${t('d')}`}
+              </Text>
+            ) : null}
+            {timeUntil.days || timeUntil.hours ? (
+              <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+                {`${timeUntil.hours} ${t('h')}`}
+              </Text>
+            ) : null}
+            <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+              {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0
+                ? '< 1'
+                : `${timeUntil.minutes} ${t('m')}`}
+            </Text>
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
             {t('Total volume generated')}
           </Text>
-          <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            $123,456,789,123.456
-          </Text>
+          <Balance
+            bold
+            color="white"
+            prefix="$"
+            fontSize={['14px', '14px', '14px', '20px']}
+            decimals={3}
+            value={campaignInfoData.totalVolume}
+          />
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
             {t('Total reward to distribute')}
           </Text>
-          <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            $42,000 in CAKE
-          </Text>
+          <Flex>
+            <Balance
+              bold
+              color="white"
+              fontSize={['14px', '14px', '14px', '20px']}
+              decimals={0}
+              value={getBalanceNumber(new BigNumber(incentives.totalReward))}
+            />
+            <Text ml="4px" bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
+              {t('in CAKE')}
+            </Text>
+          </Flex>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
@@ -123,15 +171,21 @@ const CurrentRewardPool = () => {
           </Text>
           <Flex>
             <Text bold mr="8px" color="white" fontSize={['14px', '14px', '14px', '20px']}>
-              12
+              {campaignInfoData.total}
             </Text>
-            {isDesktop && <StyledButton scale="sm">{t('View Pairs')}</StyledButton>}
+            {isDesktop && (
+              <Link href="#rewards-breakdown">
+                <StyledButton scale="sm">{t('View Pairs')}</StyledButton>
+              </Link>
+            )}
           </Flex>
         </Flex>
         {!isDesktop && (
-          <StyledButton width="fit-content" margin="14px auto auto auto" scale="sm">
-            {t('View Pairs')}
-          </StyledButton>
+          <Link href="#rewards-breakdown">
+            <StyledButton width="fit-content" margin="14px auto auto auto" scale="sm">
+              {t('View Pairs')}
+            </StyledButton>
+          </Link>
         )}
       </Flex>
       <Decorations>
