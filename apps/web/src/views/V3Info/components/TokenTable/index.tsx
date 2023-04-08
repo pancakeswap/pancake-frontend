@@ -5,12 +5,13 @@ import {
   Box,
   Flex,
   NextLinkFromReactRouter,
+  SortArrowIcon,
   Text,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
+import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -21,6 +22,7 @@ import HoverInlineText from '../HoverInlineText'
 import Loader, { LoadingRows } from '../Loader'
 import Percent from '../Percent'
 import { RowFixed } from '../Row'
+import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -167,13 +169,7 @@ export default function TokenTable({
     },
     [sortDirection, sortField],
   )
-
-  const arrow = useCallback(
-    (field: string) => {
-      return sortField === field ? (!sortDirection ? '↑' : '↓') : ''
-    },
-    [sortDirection, sortField],
-  )
+  const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
   if (!tokenDatas) {
     return <Loader />
@@ -185,26 +181,63 @@ export default function TokenTable({
         <AutoColumn gap="16px">
           <ResponsiveGrid>
             <Text color={theme.colors.textSubtle}>#</Text>
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.name)}>
-              Name {arrow(SORT_FIELD.name)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Name
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.name)}
+                className={getSortFieldClassName(SORT_FIELD.name)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.priceUSD)}>
-              Price {arrow(SORT_FIELD.priceUSD)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Price
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.priceUSD)}
+                className={getSortFieldClassName(SORT_FIELD.priceUSD)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader
-              color={theme.colors.textSubtle}
-              onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
-            >
-              Price Change {arrow(SORT_FIELD.priceUSDChange)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Price Change
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
+                className={getSortFieldClassName(SORT_FIELD.priceUSDChange)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
             {/* <ClickableText onClick={() => handleSort(SORT_FIELD.priceUSDChangeWeek)}>
             7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
           </ClickableText> */}
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
-              Volume 24H {arrow(SORT_FIELD.volumeUSD)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Volume 24H
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.volumeUSD)}
+                className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
-              TVL {arrow(SORT_FIELD.tvlUSD)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              TVL
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+                className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
           </ResponsiveGrid>
 

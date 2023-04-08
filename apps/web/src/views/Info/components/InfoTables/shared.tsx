@@ -3,6 +3,9 @@ import { Text, Flex } from '@pancakeswap/uikit'
 
 export const ClickableColumnHeader = styled(Text)`
   cursor: pointer;
+  display: flex;
+  justify-content: start;
+  gap: 5px;
 `
 
 export const TableWrapper = styled(Flex)`

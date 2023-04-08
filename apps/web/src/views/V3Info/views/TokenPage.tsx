@@ -336,11 +336,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
             </DarkGreyCard>
             <Heading>Transactions</Heading>
             <DarkGreyCard>
-              {transactions ? (
-                <TransactionTable transactions={transactions} color={backgroundColor} />
-              ) : (
-                <LocalLoader fill={false} />
-              )}
+              {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
             </DarkGreyCard>
           </AutoColumn>
         )

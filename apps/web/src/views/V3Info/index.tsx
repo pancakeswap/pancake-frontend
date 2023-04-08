@@ -222,7 +222,7 @@ export default function Home() {
         {t('Transactions')}
       </Heading>
 
-      {transactionData ? <TransactionsTable transactions={transactionData} color={theme.colors.primary} /> : null}
+      {transactionData ? <TransactionsTable transactions={transactionData} /> : null}
     </Page>
   )
 }
