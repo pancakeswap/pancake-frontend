@@ -1,4 +1,4 @@
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, Text, SortArrowIcon } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -12,6 +12,7 @@ import { formatAmount, formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
 import { RowFixed } from '../Row'
+import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -135,6 +136,7 @@ export default function TransactionTable({
   const [maxPage, setMaxPage] = useState(1)
 
   const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
+  const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
   useEffect(() => {
     let extraPages = 1
@@ -237,20 +239,60 @@ export default function TransactionTable({
               Removes
             </SortText>
           </RowFixed>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountUSD)}>
-            Total Value {arrow(SORT_FIELD.amountUSD)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            Total Value
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountUSD)}
+              className={getSortFieldClassName(SORT_FIELD.amountUSD)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken0)}>
-            Token Amount {arrow(SORT_FIELD.amountToken0)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            Token0 Amount
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountToken0)}
+              className={getSortFieldClassName(SORT_FIELD.amountToken0)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken1)}>
-            Token Amount {arrow(SORT_FIELD.amountToken1)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            Token1 Amount
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountToken1)}
+              className={getSortFieldClassName(SORT_FIELD.amountToken1)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.sender)}>
-            Account {arrow(SORT_FIELD.sender)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            Account
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.sender)}
+              className={getSortFieldClassName(SORT_FIELD.sender)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.timestamp)}>
-            Time {arrow(SORT_FIELD.timestamp)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            Time{' '}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.timestamp)}
+              className={getSortFieldClassName(SORT_FIELD.timestamp)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
         </ResponsiveGrid>
         <Break />
