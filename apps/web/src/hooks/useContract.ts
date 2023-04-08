@@ -61,6 +61,7 @@ import {
   getTradingCompetitionContractMoD,
   getStableSwapNativeHelperContract,
   getSidContract,
+  getTradingRewardContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -395,4 +396,10 @@ export const useStableSwapNativeHelperContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
   return useMemo(() => getStableSwapNativeHelperContract(signer, chainId), [signer, chainId])
+}
+
+export const useTradingRewardContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useSigner()
+  return useMemo(() => getTradingRewardContract(signer, chainId), [signer, chainId])
 }

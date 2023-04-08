@@ -45,6 +45,7 @@ import {
   getCrossFarmingReceiverAddress,
   getMMLinkedPoolAddress,
   getStableSwapNativeHelperAddress,
+  getTradingRewardAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -103,6 +104,7 @@ import mmLinkedPoolAbi from 'config/abi/mmLinkedPool.json'
 import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
 import sid from 'config/abi/SID.json'
 import sidResolver from 'config/abi/SIDResolver.json'
+import tradingRewardABI from 'config/abi/tradingReward.json'
 
 // Types
 import type {
@@ -157,6 +159,7 @@ import type {
   StableSwapNativeHelper,
   SID,
   SIDResolver,
+  TradingReward,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -425,4 +428,13 @@ export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, ch
     chainId,
     signer,
   }) as StableSwapNativeHelper
+}
+
+export const getTradingRewardContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: tradingRewardABI,
+    address: getTradingRewardAddress(chainId),
+    signer,
+    chainId,
+  }) as TradingReward
 }
