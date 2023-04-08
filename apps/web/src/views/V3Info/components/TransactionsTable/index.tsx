@@ -190,13 +190,6 @@ export default function TransactionTable({
     [sortDirection, sortField],
   )
 
-  const arrow = useCallback(
-    (field: string) => {
-      return sortField === field ? (!sortDirection ? '↑' : '↓') : ''
-    },
-    [sortDirection, sortField],
-  )
-
   if (!transactions) {
     return <Loader />
   }
