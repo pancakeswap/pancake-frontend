@@ -10,6 +10,7 @@ import {
   Message,
   MessageText,
   AutoColumn,
+  Loading,
 } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
@@ -334,11 +335,17 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           id="swap-button"
           disabled={!isValid || !approved || (priceImpactSeverity > 3 && !isExpertMode)}
         >
-          {priceImpactSeverity > 3 && !isExpertMode
-            ? t('Price Impact High')
-            : priceImpactSeverity > 2
-            ? t('Swap Anyway')
-            : t('Swap')}
+          {(tradeLoading && (
+            <>
+              {t('Searching For The Best Price')}
+              <Loading width="12px" height="12px" ml="4px" />
+            </>
+          )) ||
+            (priceImpactSeverity > 3 && !isExpertMode
+              ? t('Price Impact High')
+              : priceImpactSeverity > 2
+              ? t('Swap Anyway')
+              : t('Swap'))}
         </CommitButton>
       </RowBetween>
       <Column style={{ marginTop: '1rem' }}>
@@ -358,6 +365,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
       >
         {swapInputError ||
+          (tradeLoading && (
+            <>
+              {t('Searching For The Best Price')}
+              <Loading width="12px" height="12px" ml="4px" />
+            </>
+          )) ||
           (priceImpactSeverity > 3 && !isExpertMode
             ? t('Price Impact Too High')
             : priceImpactSeverity > 2
