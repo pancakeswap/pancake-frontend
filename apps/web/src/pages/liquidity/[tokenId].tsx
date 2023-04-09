@@ -343,6 +343,8 @@ export default function PoolPage() {
 
   const positionValueUpper = inverted ? position?.amount0 : position?.amount1
   const positionValueLower = inverted ? position?.amount1 : position?.amount0
+  const priceValueUpper = inverted ? price0 : price1
+  const priceValueLower = inverted ? price1 : price0
 
   // check if price is within range
   const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
@@ -562,6 +564,13 @@ export default function PoolPage() {
                           <Text small mr="4px">
                             <FormattedCurrencyAmount currencyAmount={positionValueUpper} />
                           </Text>
+                          <Text color="textSubtle" small>
+                            {positionValueUpper && priceValueUpper
+                              ? `~$${priceValueUpper
+                                  .quote(positionValueUpper?.wrapped)
+                                  .toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
                         </Flex>
                       </AutoRow>
                       <AutoRow justifyContent="space-between">
@@ -574,6 +583,13 @@ export default function PoolPage() {
                         <Flex justifyContent="center">
                           <Text small mr="4px">
                             <FormattedCurrencyAmount currencyAmount={positionValueLower} />
+                          </Text>
+                          <Text color="textSubtle" small>
+                            {positionValueLower && priceValueLower
+                              ? `~$${priceValueLower
+                                  .quote(positionValueLower?.wrapped)
+                                  .toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
                           </Text>
                         </Flex>
                       </AutoRow>
@@ -621,7 +637,14 @@ export default function PoolPage() {
                             {feeValueUpper?.currency?.symbol}
                           </Text>
                         </Flex>
-                        <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+                        <Flex>
+                          <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+                          <Text color="textSubtle" ml="4px" small>
+                            {feeValueUpper && priceValueUpper
+                              ? `~$${priceValueUpper.quote(feeValueUpper?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
+                        </Flex>
                       </AutoRow>
                       <AutoRow justifyContent="space-between">
                         <Flex>
@@ -630,7 +653,14 @@ export default function PoolPage() {
                             {feeValueLower?.currency?.symbol}
                           </Text>
                         </Flex>
-                        <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+                        <Flex>
+                          <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+                          <Text color="textSubtle" ml="4px" small>
+                            {feeValueLower && priceValueLower
+                              ? `~$${priceValueLower.quote(feeValueLower?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
+                        </Flex>
                       </AutoRow>
                     </LightGreyCard>
                   </Box>
