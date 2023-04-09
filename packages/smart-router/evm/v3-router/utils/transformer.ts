@@ -1,15 +1,6 @@
-import {
-  SmartRouter,
-  Pool,
-  V2Pool,
-  V3Pool,
-  StablePool,
-  PoolType,
-  SmartRouterTrade,
-  Route,
-} from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, JSBI, TradeType, Percent } from '@pancakeswap/sdk'
 import { AddressZero } from '@ethersproject/constants'
+import { SmartRouter, Pool, V2Pool, V3Pool, StablePool, PoolType, SmartRouterTrade, Route } from '../../index'
 
 const ONE_HUNDRED = JSBI.BigInt(100)
 

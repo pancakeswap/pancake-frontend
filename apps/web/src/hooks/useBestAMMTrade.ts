@@ -63,6 +63,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
       !isWrapping &&
       typeof window !== 'undefined' &&
       typeof window.requestIdleCallback === 'function' &&
+      window.navigator.hardwareConcurrency > 2 &&
       (type === 'offchain' || type === 'all'),
     [type, isWrapping],
   )
@@ -76,7 +77,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   })
   const quoterAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
+  const bestTradeFromQuoter = useBestAMMTradeFromQuoterApi({
     ...params,
     enabled: isQuoterEnabled,
     autoRevalidate: quoterAutoRevalidate,
