@@ -56,7 +56,7 @@ interface useBestAMMTradeOptions extends Options {
 }
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
-  const { amount, baseCurrency, currency, autoRevalidate, enabled } = params
+  const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
   const isOffChainEnabled = useMemo(
     () =>
@@ -103,6 +103,10 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     }
     if (JSBI.greaterThan(JSBI.BigInt(tradeFromQuoter.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
+      return bestTradeFromQuoter
+    }
+
+    if (tradeFromQuoter) {
       return bestTradeFromQuoter
     }
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)

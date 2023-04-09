@@ -298,7 +298,7 @@ router.post('/v0/quote', async (req, event) => {
           'Cache-Control': `public, s-maxage=${CACHE_TIME[chainId] ?? '5'}`,
         },
       })
-      event.waitUntil(cache.put(event.request, response.clone()))
+      event.waitUntil(cache.put(cacheKey, response.clone()))
     } catch (e) {
       response = error(500, e instanceof Error ? e.message : 'No valid trade')
     }
