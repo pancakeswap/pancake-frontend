@@ -56,7 +56,7 @@ interface useBestAMMTradeOptions extends Options {
 }
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
-  const { amount, baseCurrency, currency, autoRevalidate } = params
+  const { amount, baseCurrency, currency, autoRevalidate, enabled } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
   const isOffChainEnabled = useMemo(
     () =>
@@ -72,14 +72,14 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
     ...params,
-    enabled: isOffChainEnabled,
+    enabled: enabled && isOffChainEnabled,
     autoRevalidate: offChainAutoRevalidate,
   })
   const quoterAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
   const bestTradeFromQuoter = useBestAMMTradeFromQuoterApi({
     ...params,
-    enabled: isQuoterEnabled,
+    enabled: enabled && isQuoterEnabled,
     autoRevalidate: quoterAutoRevalidate,
   })
   return useMemo(() => {
