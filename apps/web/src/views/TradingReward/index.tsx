@@ -17,7 +17,7 @@ const TradingReward = () => {
   const router = useRouter()
   const campaignId = router?.query?.campaignId?.toString() ?? ''
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
-  const { data: userCampaignInfoData, isFetching: isUserCampaignInfoFetching } = useUserCampaignInfo(campaignId)
+  const { data: userCampaignInfoData } = useUserCampaignInfo(campaignId)
   const incentives = useInCentives(campaignId)
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const TradingReward = () => {
   return (
     <Box>
       <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
-      <YourTradingReward data={userCampaignInfoData} isFetching={isUserCampaignInfoFetching} />
+      <YourTradingReward incentives={incentives} userCampaignInfoData={userCampaignInfoData} />
       <CurrentRewardPool campaignInfoData={campaignInfoData} incentives={incentives} />
       <HowToEarn />
       <RewardsBreakdown />

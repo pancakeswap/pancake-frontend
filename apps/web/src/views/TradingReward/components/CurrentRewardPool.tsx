@@ -116,24 +116,28 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
             {t('Ends')}
           </Text>
-          <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            {t('in')}
-            {timeUntil.days ? (
+          {timeUntil.days || timeUntil.hours || timeUntil.minutes ? (
+            <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
+              {t('in')}
+              {timeUntil.days && (
+                <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+                  {`${timeUntil.days}${t('d')}`}
+                </Text>
+              )}
+              {timeUntil.days || timeUntil.hours ? (
+                <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+                  {`${timeUntil.hours}${t('h')}`}
+                </Text>
+              ) : null}
               <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-                {`${timeUntil.days} ${t('d')}`}
+                {`${timeUntil.minutes}${t('m')}`}
               </Text>
-            ) : null}
-            {timeUntil.days || timeUntil.hours ? (
-              <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-                {`${timeUntil.hours} ${t('h')}`}
-              </Text>
-            ) : null}
-            <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-              {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0
-                ? '< 1'
-                : `${timeUntil.minutes} ${t('m')}`}
             </Text>
-          </Text>
+          ) : (
+            <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
+              {t('On %date%', { date: timeFormat(locale, incentives.campaignClaimTime) })}
+            </Text>
+          )}
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>

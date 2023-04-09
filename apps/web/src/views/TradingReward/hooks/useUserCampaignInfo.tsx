@@ -4,6 +4,7 @@ import { useAccount } from 'wagmi'
 import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
+import { getTradingRewardContract } from 'utils/contractHelpers'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail, initialState } from './useCampaignIdInfo'
 
 interface UserCampaignInfoResponse {
@@ -19,7 +20,9 @@ interface UserCampaignInfoResponse {
   needsProfileActivated: boolean
 }
 
-export interface UserCampaignInfoDetail extends UserCampaignInfoResponse, CampaignIdInfoDetail {}
+export interface UserCampaignInfoDetail extends UserCampaignInfoResponse, CampaignIdInfoDetail {
+  currentCanClaim: string
+}
 
 export interface UserCampaignInfo {
   isFetching: boolean
@@ -38,11 +41,13 @@ const initialUserState = {
   thresholdLockedPeriod: 0,
   thresholdLockedAmount: '0',
   needsProfileActivated: false,
+  currentCanClaim: '0',
 }
 
 const useUserCampaignInfo = (campaignId: string): UserCampaignInfo => {
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
+  const tradingRewardContract = getTradingRewardContract(chainId)
 
   const { data: userCampaignInfoData, isLoading } = useSWR(
     campaignId !== '' && chainId && account && ['/campaign-id-info', account, chainId, campaignId],
@@ -65,10 +70,14 @@ const useUserCampaignInfo = (campaignId: string): UserCampaignInfo => {
           .map((i) => i.volume)
           .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
+        // Get user current trading reward
+        const currentCanClaim = await tradingRewardContract.canClaim(campaignId, totalVolume)
+
         const newData = {
           ...userCampaignInfo,
           ...userInfoQualification,
           totalVolume,
+          currentCanClaim: new BigNumber(currentCanClaim.toString()).toJSON(),
         }
         return newData
       } catch (error) {
