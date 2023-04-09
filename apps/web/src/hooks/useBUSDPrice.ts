@@ -13,7 +13,7 @@ import {
   TradeType,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
-import { BUSD, CAKE, USDC, USDT } from '@pancakeswap/tokens'
+import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
@@ -28,13 +28,6 @@ import { usePairContract } from './useContract'
 import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
-
-const STABLE_COIN = {
-  [ChainId.ETHEREUM]: USDT[ChainId.ETHEREUM],
-  [ChainId.GOERLI]: USDC[ChainId.GOERLI],
-  [ChainId.BSC]: USDT[ChainId.BSC],
-  [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
-} satisfies Record<ChainId, ERC20Token>
 
 export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
   const { chainId: currentChainId } = useActiveChainId()

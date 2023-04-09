@@ -153,3 +153,10 @@ export const WBTC_ETH = new ERC20Token(
   'WBTC',
   'Wrapped BTC',
 )
+
+export const STABLE_COIN = {
+  [ChainId.ETHEREUM]: USDT[ChainId.ETHEREUM],
+  [ChainId.GOERLI]: USDC[ChainId.GOERLI],
+  [ChainId.BSC]: USDT[ChainId.BSC],
+  [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
+} satisfies Record<ChainId, ERC20Token>
