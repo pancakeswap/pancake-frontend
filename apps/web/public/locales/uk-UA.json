@@ -23,7 +23,7 @@
   "StableSwap": "StableSwap",
   "Close": "Закрити",
   "Boosted": "Буст застосовано",
-  "Increase": "Increase",
+  "Increase": "Збільшити",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "Множник бустера виручки буде оновлено на основі останніх умов стейкінгу.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE зібрано на контракт бустера ферми. Токени буде автоматично надіслано у ваш гаманець під час наступного збору.",
   "One-time setup is required for activating farm yield boosters": "Щоб активувати бустери виручки ферм, потрібне одноразове налаштування",
