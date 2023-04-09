@@ -23,7 +23,7 @@
   "StableSwap": "穩定幣交換",
   "Close": "關閉",
   "Boosted": "助推",
-  "Increase": "提高",
+  "Increase": "添加",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "收益助推器的倍數將根據最新的質押狀態而更新。",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE 已收割至農場助推器合約之中，且將在下次收割時自動傳送至您的錢包裡。",
   "One-time setup is required for activating farm yield boosters": "需進行單次設定才能啟動農場收益助推器",
