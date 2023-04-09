@@ -430,7 +430,7 @@ export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, ch
   }) as StableSwapNativeHelper
 }
 
-export const getTradingRewardContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getTradingRewardContract = (chainId?: number, signer?: Signer | Provider) => {
   return getContract({
     abi: tradingRewardABI,
     address: getTradingRewardAddress(chainId),

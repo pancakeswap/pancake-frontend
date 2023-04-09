@@ -401,5 +401,5 @@ export const useStableSwapNativeHelperContract = () => {
 export const useTradingRewardContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
-  return useMemo(() => getTradingRewardContract(signer, chainId), [signer, chainId])
+  return useMemo(() => getTradingRewardContract(chainId, signer), [signer, chainId])
 }

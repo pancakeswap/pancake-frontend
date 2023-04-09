@@ -2,7 +2,6 @@ import { Box, Flex, Card, Text, Balance, InfoIcon, Message, MessageText, Tooltip
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useTooltip } from '@pancakeswap/uikit/src/hooks'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 
 const ExpiringUnclaim = () => {
   const { t } = useTranslation()
@@ -22,9 +21,9 @@ const ExpiringUnclaim = () => {
       <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
         <Card style={{ width: '100%' }}>
           <Box padding={['24px']}>
-            <Box mb="24px">
-              <SubgraphHealthIndicator inline subgraphName="pancakeswap/pottery" />
-            </Box>
+            <Text bold textAlign="right" mb="24px">
+              {t('Current Period')}
+            </Text>
             <GreyCard>
               <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                 {t('Your Current trading rewards')}
@@ -70,7 +69,7 @@ const ExpiringUnclaim = () => {
                   width={['100%', '100%', '100%', 'fit-content']}
                   m={['10px 0 0 0', '10px 0 0 0', '10px 0 0 0', 'auto 0 auto auto']}
                 >
-                  {t('Claim')}
+                  {t('Claim All')}
                 </Button>
               </Flex>
               <Message variant="danger" mt="16px">

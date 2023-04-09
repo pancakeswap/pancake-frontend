@@ -1,20 +1,26 @@
 import { useState } from 'react'
+import { useAccount } from 'wagmi'
 import { Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 const RewardsBreakdown = () => {
   const { t } = useTranslation()
+  const { address: account } = useAccount()
   const [currentPage, setCurrentPage] = useState(1)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [maxPage, setMaxPages] = useState(1)
   const { isDesktop } = useMatchBreakpoints()
+
+  if (!account) {
+    return null
+  }
 
   return (
     <Flex
       id="rewards-breakdown"
       flexDirection="column"
       padding="0 16px"
-      margin={['72px auto', '72px auto', '72px auto', '108px auto 56px auto']}
+      margin={['0 auto 72px auto', '0 auto 72px auto', '0 auto 72px auto', '0 auto 56px auto']}
       width={['100%', '100%', '100%', '100%', '100%', '100%', '1140px']}
     >
       <Text lineHeight="110%" textAlign="center" color="secondary" mb="16px" bold fontSize={['40px']}>

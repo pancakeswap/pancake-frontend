@@ -1,8 +1,6 @@
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { multicallv2 } from 'utils/multicall'
-import tradingRewardABI from 'config/abi/tradingReward.json'
-import { getTradingRewardAddress } from 'utils/addressHelpers'
+import { getTradingRewardContract } from 'utils/contractHelpers'
 import BigNumber from 'bignumber.js'
 
 export interface Incentives {
@@ -39,17 +37,12 @@ const initialInCentivesData: Incentives = {
 
 const useInCentives = (campaignId: string) => {
   const { chainId } = useActiveChainId()
+  const tradingRewardContract = getTradingRewardContract(chainId)
 
   const { data } = useSWR(
-    chainId && campaignId && ['trading-reward-incentives', chainId, campaignId],
+    chainId && campaignId && ['/trading-reward-incentives', chainId, campaignId],
     async () => {
       try {
-        const response = await multicallv2({
-          abi: tradingRewardABI,
-          calls: [{ address: getTradingRewardAddress(chainId), name: 'incentives', params: [campaignId] }],
-          chainId,
-        })
-
         const [
           totalRewardUnclaimed,
           totalReward,
@@ -64,7 +57,7 @@ const useInCentives = (campaignId: string) => {
           isActivated,
           isDynamicReward,
           dynamicRate,
-        ] = response[0]
+        ] = await tradingRewardContract.incentives(campaignId)
 
         return {
           proofRoot,

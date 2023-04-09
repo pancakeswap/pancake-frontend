@@ -55,7 +55,7 @@ const HowToEarn = () => {
   const { t } = useTranslation()
 
   return (
-    <Box padding="0 16px" mt={['72px', '72px', '72px', '143px']}>
+    <Box padding="0 16px" m={['72px 0', '72px 0', '72px 0', '143px 0 108px 0']}>
       <Box margin={['auto']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1140px']}>
         <StyledCard>
           <Flex flexDirection="column" padding={['50px 0 0 0', '50px 0 0 0', '50px 0 0 0', '50px 0']}>
