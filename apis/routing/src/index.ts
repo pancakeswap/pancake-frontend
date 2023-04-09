@@ -19,8 +19,9 @@ import { ChainId, Currency, JSBI, TradeType } from '@pancakeswap/sdk'
 import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { GraphQLClient } from 'graphql-request'
-import { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } from './utils'
 import { viemProviders } from './provider'
+
+const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
@@ -163,7 +164,6 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
   }
 
   const { amount, chainId, currency, tradeType, blockNumber, gasPriceWei, maxHops, maxSplits, poolTypes } = parsed.data
-  console.log(amount, currency, '????')
 
   const gasPrice = gasPriceWei
     ? JSBI.BigInt(gasPriceWei)
@@ -235,7 +235,6 @@ router.post('/v0/quote', async (req) => {
     poolTypes,
     candidatePools,
   } = parsed.data
-  console.log(amount, currency, '????')
 
   const gasPrice = gasPriceWei
     ? JSBI.BigInt(gasPriceWei)

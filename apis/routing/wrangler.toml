@@ -11,3 +11,10 @@ kv_namespaces = [
   {binding = "POOLS", id = "5261431ca6b74625b08ffe288b86a2a5"},
 ]
 name = "routing"
+
+# The necessary secrets are:
+# - ETH_NODE
+# - GOERLI_NODE
+# - BSC_NODE
+# - BSC_TESTNET_NODE
+# Run `echo <VALUE> | wrangler secret put <NAME>` for each of these

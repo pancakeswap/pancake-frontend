@@ -9,7 +9,6 @@ import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { serializeCurrency, serializePool, parseTrade } from 'utils/routingApi'
 import { viemProviders } from 'utils/viem'
 
 import {
@@ -256,17 +255,17 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       protocols: allowedPoolTypes,
     })
 
-    const serverRes = await fetch(`http://localhost:8787/v0/quote`, {
+    const serverRes = await fetch(`${process.env.NEXT_PUBLIC_ROUTING_API}/v0/quote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         chainId: currency.chainId,
-        currency: serializeCurrency(currency),
+        currency: SmartRouter.Transformer.serializeCurrency(currency),
         tradeType,
         amount: {
-          currency: serializeCurrency(amount.currency),
+          currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
           value: amount.quotient.toString(),
         },
         gasPriceWei: gasPriceWei?.toString(),
@@ -274,11 +273,11 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
         maxSplits,
         blockNumber: blockNum.toString(),
         poolTypes: allowedPoolTypes,
-        candidatePools: candidatePools.map(serializePool),
+        candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
       }),
     })
     const serializedRes = await serverRes.json()
-    return parseTrade(currency.chainId, serializedRes)
+    return SmartRouter.Transformer.parseTrade(currency.chainId, serializedRes)
   },
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,

@@ -24,5 +24,6 @@ export {
   getMidPrice,
   involvesCurrency,
   metric,
+  Transformer,
 } from './utils'
 export { getPairCombinations } from './functions'
