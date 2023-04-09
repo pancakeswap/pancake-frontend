@@ -118,6 +118,13 @@ const zPostParams = z
 
 const router = Router()
 
+const CACHE_TIME = {
+  [ChainId.ETHEREUM]: 10,
+  [ChainId.GOERLI]: 10,
+  [ChainId.BSC]: 2,
+  [ChainId.BSC_TESTNET]: 2,
+}
+
 const V3_SUBGRAPH_URLS = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
   [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
@@ -155,6 +162,15 @@ const PoolCache = {
       expirationTtl: 900,
     })
   },
+}
+
+async function sha256(message: string) {
+  // encode as UTF-8
+  const msgBuffer = await new TextEncoder().encode(message)
+  // hash the message
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+  // convert bytes to hex string
+  return [...new Uint8Array(hashBuffer)].map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
 router.get('/v0/quote', async (req, event: FetchEvent) => {
@@ -216,50 +232,81 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
   }
 })
 
-router.post('/v0/quote', async (req) => {
+router.post('/v0/quote', async (req, event) => {
   const body = (await req.json?.()) as any
+  console.log(body, JSON.stringify(body))
   const parsed = zPostParams.safeParse(body)
   if (parsed.success === false) {
     return error(400, 'Invalid params')
   }
 
-  const {
-    amount,
-    chainId,
-    currency,
-    tradeType,
-    blockNumber,
-    gasPriceWei,
-    maxHops,
-    maxSplits,
-    poolTypes,
-    candidatePools,
-  } = parsed.data
+  const hash = await sha256(JSON.stringify(body))
 
-  const gasPrice = gasPriceWei
-    ? JSBI.BigInt(gasPriceWei)
-    : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
+  const cacheUrl = new URL(req.url)
+  cacheUrl.pathname = `/posts${cacheUrl.pathname}${hash}`
+  const cacheKey = new Request(cacheUrl.toString(), {
+    // @ts-ignore
+    headers: req.headers,
+    method: 'GET',
+  })
 
-  const currencyAAmount = parseCurrencyAmount(chainId, amount)
-  const currencyB = parseCurrency(chainId, currency)
+  const cache = caches.default
+  const cacheResponse = await cache.match(cacheKey)
+  let response
 
-  const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
-
-  try {
-    const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
-      gasPriceWei: gasPrice,
-      poolProvider: SmartRouter.createStaticPoolProvider(pools),
-      quoteProvider: onChainQuoteProvider,
+  if (!cacheResponse) {
+    console.info('no cache found', cacheKey)
+    const {
+      amount,
+      chainId,
+      currency,
+      tradeType,
+      blockNumber,
+      gasPriceWei,
       maxHops,
       maxSplits,
-      blockNumber: Number(blockNumber),
-      allowedPoolTypes: poolTypes,
-      quoterOptimization: false,
-    })
-    return json(trade ? serializeTrade(trade) : {})
-  } catch (e) {
-    return error(500, e instanceof Error ? e.message : 'No valid trade')
+      poolTypes,
+      candidatePools,
+    } = parsed.data
+
+    const gasPrice = gasPriceWei
+      ? JSBI.BigInt(gasPriceWei)
+      : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
+
+    const currencyAAmount = parseCurrencyAmount(chainId, amount)
+    const currencyB = parseCurrency(chainId, currency)
+
+    const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
+
+    try {
+      const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
+        gasPriceWei: gasPrice,
+        poolProvider: SmartRouter.createStaticPoolProvider(pools),
+        quoteProvider: onChainQuoteProvider,
+        maxHops,
+        maxSplits,
+        blockNumber: Number(blockNumber),
+        allowedPoolTypes: poolTypes,
+        quoterOptimization: false,
+      })
+
+      if (!trade) {
+        throw new Error('No valid trade')
+      }
+      response = json(serializeTrade(trade), {
+        headers: {
+          'Cache-Control': `public, s-maxage=${CACHE_TIME[chainId] ?? '5'}`,
+        },
+      })
+      event.waitUntil(cache.put(event.request, response.clone()))
+    } catch (e) {
+      response = error(500, e instanceof Error ? e.message : 'No valid trade')
+    }
+  } else {
+    response = new Response(cacheResponse.body, cacheResponse)
   }
+
+  return response
 })
 
 router.options('*', handleCors(CORS_ALLOW, `GET, POST, OPTIONS`, `*`))

@@ -60,28 +60,34 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
   const isOffChainEnabled = useMemo(
     () =>
-      !isWrapping &&
-      typeof window !== 'undefined' &&
-      typeof window.requestIdleCallback === 'function' &&
-      window.navigator.hardwareConcurrency > 2 &&
-      (type === 'offchain' || type === 'all'),
+      Boolean(
+        !isWrapping &&
+          typeof window !== 'undefined' &&
+          typeof window.requestIdleCallback === 'function' &&
+          window.navigator.hardwareConcurrency > 2 &&
+          (type === 'offchain' || type === 'all'),
+      ),
     [type, isWrapping],
   )
-  const isQuoterEnabled = useMemo(() => !isWrapping && (type === 'quoter' || type === 'all'), [type, isWrapping])
+  const isQuoterEnabled = useMemo(
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'all')),
+    [type, isWrapping],
+  )
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
     ...params,
-    enabled: enabled && isOffChainEnabled,
+    enabled: Boolean(enabled && isOffChainEnabled),
     autoRevalidate: offChainAutoRevalidate,
   })
   const quoterAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
   const bestTradeFromQuoter = useBestAMMTradeFromQuoterApi({
     ...params,
-    enabled: enabled && isQuoterEnabled,
+    enabled: Boolean(enabled && isQuoterEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
+
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
