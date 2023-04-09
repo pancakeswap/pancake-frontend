@@ -1,6 +1,7 @@
 import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, JSBI, TradeType, Percent } from '@pancakeswap/sdk'
 import { AddressZero } from '@ethersproject/constants'
-import { SmartRouter, Pool, V2Pool, V3Pool, StablePool, PoolType, SmartRouterTrade, Route } from '../../index'
+import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'
+import { isStablePool, isV2Pool, isV3Pool } from './pool'
 
 const ONE_HUNDRED = JSBI.BigInt(100)
 
@@ -73,14 +74,14 @@ export function serializeCurrencyAmount(amount: CurrencyAmount<Currency>): Seria
 }
 
 export function serializePool(pool: Pool): SerializedPool {
-  if (SmartRouter.isV2Pool(pool)) {
+  if (isV2Pool(pool)) {
     return {
       ...pool,
       reserve0: serializeCurrencyAmount(pool.reserve0),
       reserve1: serializeCurrencyAmount(pool.reserve1),
     }
   }
-  if (SmartRouter.isV3Pool(pool)) {
+  if (isV3Pool(pool)) {
     return {
       ...pool,
       token0: serializeCurrency(pool.token0),
@@ -91,7 +92,7 @@ export function serializePool(pool: Pool): SerializedPool {
       token1ProtocolFee: pool.token1ProtocolFee.toFixed(0),
     }
   }
-  if (SmartRouter.isStablePool(pool)) {
+  if (isStablePool(pool)) {
     return {
       ...pool,
       balances: pool.balances.map(serializeCurrencyAmount),
