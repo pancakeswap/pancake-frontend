@@ -637,7 +637,7 @@ export default function PoolPage() {
                             {feeValueUpper?.currency?.symbol}
                           </Text>
                         </Flex>
-                        <Flex>
+                        <Flex justifyContent="center">
                           <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
                           <Text color="textSubtle" ml="4px" small>
                             {feeValueUpper && priceValueUpper
@@ -653,7 +653,7 @@ export default function PoolPage() {
                             {feeValueLower?.currency?.symbol}
                           </Text>
                         </Flex>
-                        <Flex>
+                        <Flex justifyContent="center">
                           <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
                           <Text color="textSubtle" ml="4px" small>
                             {feeValueLower && priceValueLower
