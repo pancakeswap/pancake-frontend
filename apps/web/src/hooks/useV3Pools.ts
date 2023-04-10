@@ -150,7 +150,7 @@ export function useV3PoolsWithTicks(
     if (
       blockNumber &&
       fetchingBlock.current !== blockNumber.toString() &&
-      (!data?.blockNumber || blockNumber > data.blockNumber)
+      (!data?.blockNumber || blockNumber - data.blockNumber > 5)
     ) {
       mutate()
     }
@@ -196,7 +196,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
       queryEnabled &&
       blockNumber &&
       fetchingBlock.current !== blockNumber.toString() &&
-      (!data?.blockNumber || blockNumber > data.blockNumber)
+      (!data?.blockNumber || blockNumber - data.blockNumber > 5)
     ) {
       mutate()
     }
