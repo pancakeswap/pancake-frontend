@@ -2423,5 +2423,8 @@
   "Choose Token Pair": "选择代币对",
   "Fee Tier": "费用级别",
   "fee tier": "费用级别",
-  "Selected Range": "所选范围"
+  "Selected Range": "所选范围",
+  "Fees 24H": "Fees 24H",
+  "Tick stats": "Tick stats",
+  "Token%index% Amount": "Token%index% Amount"
 }
