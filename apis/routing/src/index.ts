@@ -137,7 +137,6 @@ const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: 
 const v3Clients = {
   [ChainId.ETHEREUM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ETHEREUM], { fetch }),
   [ChainId.GOERLI]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.GOERLI], { fetch }),
-  // TODO: v3 swap update to our own
   [ChainId.BSC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC], { fetch }),
   [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET], { fetch }),
 }
@@ -200,9 +199,7 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
       SmartRouter.getV3PoolSubgraph({ provider: subgraphProvider, pairs }).then((res) =>
         SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, res),
       ),
-      SmartRouter.getV2PoolSubgraph({ provider: subgraphProvider, pairs }).then((res) =>
-        SmartRouter.v2PoolSubgraphSelection(currencyA, currencyB, res),
-      ),
+      SmartRouter.getV2PoolsOnChain(pairs, viemProviders, blockNumber),
       SmartRouter.getStablePoolsOnChain(pairs, viemProviders, blockNumber),
     ])
 
@@ -234,7 +231,6 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
 
 router.post('/v0/quote', async (req, event) => {
   const body = (await req.json?.()) as any
-  console.log(body, JSON.stringify(body))
   const parsed = zPostParams.safeParse(body)
   if (parsed.success === false) {
     return error(400, 'Invalid params')
