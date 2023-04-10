@@ -2423,5 +2423,8 @@
   "Choose Token Pair": "Token-Paar auswählen",
   "Fee Tier": "Gebührenstufe",
   "fee tier": "Gebührenstufe",
-  "Selected Range": "Ausgewählte Spanne"
+  "Selected Range": "Ausgewählte Spanne",
+  "Fees 24H": "Fees 24H",
+  "Tick stats": "Tick stats",
+  "Token%index% Amount": "Token%index% Amount"
 }
