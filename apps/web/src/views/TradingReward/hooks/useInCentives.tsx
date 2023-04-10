@@ -1,9 +1,10 @@
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getTradingRewardContract } from 'utils/contractHelpers'
-import BigNumber from 'bignumber.js'
+import { incentiveFormat } from 'views/TradingReward/utils/incentiveFormat'
 
 export interface Incentives {
+  campaignId?: string
   campaignClaimEndTime: number
   campaignClaimTime: number
   campaignStart: number
@@ -35,7 +36,7 @@ const initialInCentivesData: Incentives = {
   totalVolume: '0',
 }
 
-const useInCentives = (campaignId: string) => {
+const useInCentives = (campaignId: string): Incentives => {
   const { chainId } = useActiveChainId()
   const tradingRewardContract = getTradingRewardContract(chainId)
 
@@ -43,37 +44,8 @@ const useInCentives = (campaignId: string) => {
     chainId && campaignId && ['/trading-reward-incentives', chainId, campaignId],
     async () => {
       try {
-        const [
-          totalRewardUnclaimed,
-          totalReward,
-          totalVolume,
-          proofRoot,
-          campaignStart,
-          campaignClaimTime,
-          campaignClaimEndTime,
-          thresholdLockedTime,
-          thresholdLockedAmount,
-          needProfileIsActivated,
-          isActivated,
-          isDynamicReward,
-          dynamicRate,
-        ] = await tradingRewardContract.incentives(campaignId)
-
-        return {
-          proofRoot,
-          dynamicRate,
-          isActivated,
-          isDynamicReward,
-          needProfileIsActivated,
-          totalReward: new BigNumber(totalReward.toString()).toJSON(),
-          totalVolume: new BigNumber(totalVolume.toString()).toJSON(),
-          campaignStart: new BigNumber(campaignStart.toString()).toNumber(),
-          campaignClaimTime: new BigNumber(campaignClaimTime.toString()).toNumber(),
-          thresholdLockedTime: new BigNumber(thresholdLockedTime.toString()).toNumber(),
-          campaignClaimEndTime: new BigNumber(campaignClaimEndTime.toString()).toNumber(),
-          totalRewardUnclaimed: new BigNumber(totalRewardUnclaimed.toString()).toJSON(),
-          thresholdLockedAmount: new BigNumber(thresholdLockedAmount.toString()).toJSON(),
-        }
+        const response = await tradingRewardContract.incentives(campaignId)
+        return incentiveFormat(response)
       } catch (error) {
         console.info(`Error fetching trading reward incentives error: ${error}`)
         return initialInCentivesData

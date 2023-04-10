@@ -199,7 +199,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
         <ExpiringUnclaim
           currentCanClaim={currentCanClaim}
           currentTradingVolume={totalVolume}
-          currentCampaignClaimEndTime={incentives.campaignClaimEndTime}
+          campaignClaimTime={incentives.campaignClaimTime}
         />
       ) : (
         <Container showBackgroundColor={showBackgroundColor}>

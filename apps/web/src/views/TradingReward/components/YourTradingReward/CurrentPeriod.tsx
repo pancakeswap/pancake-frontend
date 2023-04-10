@@ -11,19 +11,19 @@ import { useMemo } from 'react'
 interface CurrentPeriodProps {
   currentCanClaim: string
   currentTradingVolume: number
-  currentCampaignClaimEndTime: number
+  campaignClaimTime: number
 }
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   currentCanClaim,
   currentTradingVolume,
-  currentCampaignClaimEndTime,
+  campaignClaimTime,
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const timeUntil = getTimePeriods(currentCampaignClaimEndTime)
+  const timeUntil = getTimePeriods(campaignClaimTime)
   const cakePriceBusd = usePriceCakeBusd()
 
   const cakeBalance = useMemo(() => getBalanceNumber(new BigNumber(currentCanClaim)), [currentCanClaim])
@@ -66,7 +66,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                 </Text>
               ) : null}
               <Text fontSize="12px" color="textSubtle" ml="4px" as="span">
-                {t('(at ~%date%)', { date: timeFormat(locale, currentCampaignClaimEndTime) })}
+                {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
               </Text>
             </Text>
           </GreyCard>
