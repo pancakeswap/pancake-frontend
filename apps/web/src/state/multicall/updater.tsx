@@ -240,7 +240,7 @@ export default function Updater(): null {
             }
           })
           .catch((error: any) => {
-            const REVERT_STR = 'execution reverted'
+            const REVERT_STR = 'revert exception'
 
             // when revert error, should not update new state and keep current state.
             if (error instanceof CancelledError || error?.message?.indexOf(REVERT_STR) >= 0) {
