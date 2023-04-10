@@ -229,6 +229,14 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
   }
 })
 
+function timeout(seconds: number) {
+  return new Promise<null>((resolve) =>
+    setTimeout(() => {
+      resolve(null)
+    }, seconds * 1_000),
+  )
+}
+
 router.post('/v0/quote', async (req, event) => {
   const body = (await req.json?.()) as any
   const parsed = zPostParams.safeParse(body)
@@ -274,21 +282,31 @@ router.post('/v0/quote', async (req, event) => {
     const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
 
     try {
-      const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
-        gasPriceWei: gasPrice,
-        poolProvider: SmartRouter.createStaticPoolProvider(pools),
-        quoteProvider: onChainQuoteProvider,
-        maxHops,
-        maxSplits,
-        blockNumber: Number(blockNumber),
-        allowedPoolTypes: poolTypes,
-        quoterOptimization: false,
-      })
+      const getTrade = async () => {
+        const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
+          gasPriceWei: gasPrice,
+          poolProvider: SmartRouter.createStaticPoolProvider(pools),
+          quoteProvider: onChainQuoteProvider,
+          maxHops,
+          maxSplits,
+          blockNumber: Number(blockNumber),
+          allowedPoolTypes: poolTypes,
+          quoterOptimization: false,
+        })
 
-      if (!trade) {
-        throw new Error('No valid trade')
+        if (!trade) {
+          throw new Error('No valid trade')
+        }
+
+        return trade
       }
-      response = json(serializeTrade(trade), {
+
+      const res = await Promise.race([timeout(30), getTrade()])
+      if (!res) {
+        throw new Error('Timeout')
+      }
+
+      response = json(serializeTrade(res), {
         headers: {
           'Cache-Control': `public, s-maxage=${CACHE_TIME[chainId] ?? '5'}`,
         },
