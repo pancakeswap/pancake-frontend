@@ -1,4 +1,4 @@
-import { CurrencyAmount, Pair as SDKPair, Currency, JSBI, Token, Price } from '@pancakeswap/sdk'
+import { CurrencyAmount, Pair as SDKPair, Currency, JSBI, Token, Price, ZERO } from '@pancakeswap/sdk'
 import { SmartRouter, V2Pool, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useEffect, useMemo, useRef } from 'react'
@@ -119,6 +119,9 @@ export function useV2CandidatePoolsFromOnChain(
       baseTokenUsdPrices && poolsFromOnChain
         ? poolsFromOnChain.map((pool: V2Pool) => {
             const getAmountUsd = (amount: CurrencyAmount<Currency>) => {
+              if (amount.equalTo(ZERO)) {
+                return 0
+              }
               const price = baseTokenUsdPrices.get(amount.currency.wrapped.address)
               if (price !== undefined) {
                 return parseFloat(amount.toExact()) * price
