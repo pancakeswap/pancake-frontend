@@ -4,8 +4,10 @@ import { useAccount } from 'wagmi'
 import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
-import { getTradingRewardContract } from 'utils/contractHelpers'
-import { CampaignIdInfoResponse, CampaignIdInfoDetail, initialState } from './useCampaignIdInfo'
+import tradingRewardABI from 'config/abi/tradingReward.json'
+import { getTradingRewardAddress } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
+import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 
 interface UserCampaignInfoResponse {
   id: string
@@ -21,7 +23,9 @@ interface UserCampaignInfoResponse {
 }
 
 export interface UserCampaignInfoDetail extends UserCampaignInfoResponse, CampaignIdInfoDetail {
+  campaignId: string
   currentCanClaim: string
+  userClaimedIncentives: boolean
 }
 
 export interface AllUserCampaignInfo {
@@ -29,10 +33,9 @@ export interface AllUserCampaignInfo {
   data: UserCampaignInfoDetail[]
 }
 
-const useUserAllCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo => {
+const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo => {
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
-  const tradingRewardContract = getTradingRewardContract(chainId)
 
   const { data: allUserCampaignInfoData, isLoading } = useSWR(
     campaignIds.length > 0 && chainId && account && ['/all-campaign-id-info', account, chainId, campaignIds],
@@ -57,17 +60,30 @@ const useUserAllCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               .map((i) => i.volume)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
-            // Get user current trading reward
-            const currentCanClaim = await tradingRewardContract.canClaim(campaignId, totalVolume)
+            const calls = [
+              { address: getTradingRewardAddress(chainId), name: 'canClaim', params: [campaignId, totalVolume] },
+              {
+                address: getTradingRewardAddress(chainId),
+                name: 'userClaimedIncentives',
+                params: [campaignId, account],
+              },
+            ]
 
-            const newData = {
+            const [currentCanClaim, [userClaimedIncentives]] = await multicallv2({
+              abi: tradingRewardABI,
+              calls,
+              chainId,
+              options: { requireSuccess: false },
+            })
+
+            return {
               ...userCampaignInfo,
               ...userInfoQualification,
               campaignId,
               totalVolume,
               currentCanClaim: new BigNumber(currentCanClaim.toString()).toJSON(),
+              userClaimedIncentives,
             }
-            return newData
           }),
         )
 
@@ -79,11 +95,11 @@ const useUserAllCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
     },
     { refreshInterval: FAST_INTERVAL },
   )
-
+  console.log('allUserCampaignInfoData', allUserCampaignInfoData)
   return {
     isFetching: isLoading,
     data: allUserCampaignInfoData ?? [],
   }
 }
 
-export default useUserAllCampaignInfo
+export default useAllUserCampaignInfo

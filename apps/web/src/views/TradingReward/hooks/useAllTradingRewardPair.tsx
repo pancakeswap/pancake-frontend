@@ -1,11 +1,9 @@
 import useSWR from 'swr'
-import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { incentiveFormat } from 'views/TradingReward/utils/incentiveFormat'
 import { TradingReward } from 'config/abi/types'
-import { CampaignIdInfoResponse } from 'views/TradingReward/hooks/useCampaignIdInfo'
 
 export enum RewardStatus {
   ALL = '0',
@@ -13,9 +11,27 @@ export enum RewardStatus {
   INACTIVATED = '2',
 }
 
+export interface Incentives {
+  campaignId?: string
+  campaignClaimEndTime: number
+  campaignClaimTime: number
+  campaignStart: number
+  dynamicRate: number
+  isActivated: boolean
+  isDynamicReward: boolean
+  needProfileIsActivated: boolean
+  proofRoot: string
+  thresholdLockedAmount: string
+  thresholdLockedTime: number
+  totalReward: string
+  totalRewardUnclaimed: string
+  totalVolume: string
+}
+
 export interface AllTradingRewardPairDetail {
   campaignIds: Array<string>
   campaignPairs: { [key in string]: Array<string> }
+  campaignIdsIncentive: Incentives[]
 }
 
 interface AllTradingRewardPair {
@@ -29,15 +45,18 @@ const fetchCampaignPairs = async (chainId: number, campaignIds: Array<string>) =
     campaignIds.map(async (campaignId: string) => {
       const pair = await fetch(`${TRADING_REWARD_API}/campaign/pair/chainId/${chainId}/campaignId/${campaignId}`)
       const pairResult = await pair.json()
-      newData[campaignId].push(pairResult.data)
+      if (newData[campaignId]) {
+        newData[campaignId].push(pairResult.data)
+      } else {
+        newData[campaignId] = [pairResult.data]
+      }
     }),
   )
-  console.log('newData', newData)
   return newData
 }
 
 const fetchCampaignIdsIncentive = async (tradingRewardContract: TradingReward, campaignIds: Array<string>) => {
-  const campaignIdsIncentive = await Promise.all(
+  const campaignIdsIncentive: Incentives[] = await Promise.all(
     campaignIds.map(async (campaignId: string) => {
       const response = await tradingRewardContract.incentives(campaignId)
       return { campaignId, ...incentiveFormat(response) }
@@ -49,6 +68,7 @@ const fetchCampaignIdsIncentive = async (tradingRewardContract: TradingReward, c
 const initialAllTradingRewardState = {
   campaignIds: [],
   campaignPairs: {},
+  campaignIdsIncentive: [],
 }
 
 const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTradingRewardPair => {
@@ -67,16 +87,13 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
           fetchCampaignPairs(chainId, campaignIds),
           fetchCampaignIdsIncentive(tradingRewardContract, campaignIds),
         ])
-
         // return pairs.flat().filter((value, index, self) => self.indexOf(value) === index)
 
-        const test = {
+        return {
           campaignIds,
           campaignPairs,
           campaignIdsIncentive,
         }
-        console.log(campaignPairs)
-        return initialAllTradingRewardState
       } catch (error) {
         console.info(`Fetch All trading Reward Pair Error: ${error}`)
         return initialAllTradingRewardState

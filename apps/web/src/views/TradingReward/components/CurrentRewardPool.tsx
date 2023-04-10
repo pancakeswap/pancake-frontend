@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { Incentives } from 'views/TradingReward/hooks/useInCentives'
+import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import Link from 'next/link'
 
@@ -98,7 +98,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const timeUntil = getTimePeriods(incentives.campaignClaimTime)
+  const timeUntil = getTimePeriods(incentives?.campaignClaimTime)
 
   return (
     <Container>
@@ -109,7 +109,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
             {t('Starts')}
           </Text>
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            {t('On %date%', { date: timeFormat(locale, incentives.campaignStart) })}
+            {t('On %date%', { date: timeFormat(locale, incentives?.campaignStart) })}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
@@ -135,7 +135,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
             </Text>
           ) : (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-              {t('On %date%', { date: timeFormat(locale, incentives.campaignClaimTime) })}
+              {t('On %date%', { date: timeFormat(locale, incentives?.campaignClaimTime) })}
             </Text>
           )}
         </Flex>
@@ -149,7 +149,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
             prefix="$"
             fontSize={['14px', '14px', '14px', '20px']}
             decimals={3}
-            value={campaignInfoData.totalVolume}
+            value={campaignInfoData?.totalVolume}
           />
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
@@ -162,7 +162,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
               color="white"
               fontSize={['14px', '14px', '14px', '20px']}
               decimals={0}
-              value={getBalanceNumber(new BigNumber(incentives.totalReward))}
+              value={getBalanceNumber(new BigNumber(incentives?.totalReward))}
             />
             <Text ml="4px" bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {t('in CAKE')}
@@ -175,7 +175,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           </Text>
           <Flex>
             <Text bold mr="8px" color="white" fontSize={['14px', '14px', '14px', '20px']}>
-              {campaignInfoData.total}
+              {campaignInfoData?.total}
             </Text>
             {isDesktop && (
               <Link href="#rewards-breakdown">

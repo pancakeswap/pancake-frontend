@@ -11,7 +11,7 @@ import { Token } from '@pancakeswap/sdk'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Actions from 'views/TradingReward/components/YourTradingReward/Actions'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useUserCampaignInfo'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 const Container = styled(Flex)`
   flex-direction: column;

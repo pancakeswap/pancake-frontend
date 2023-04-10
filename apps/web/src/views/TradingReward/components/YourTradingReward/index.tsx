@@ -9,8 +9,8 @@ import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useDeserializedPoolByVaultKey, useCakeVault } from 'state/pools/hooks'
 import { useCakeVaultPool } from 'views/TradingReward/hooks/useCakeVaultPool'
-import { Incentives } from 'views/TradingReward/hooks/useInCentives'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useUserCampaignInfo'
+import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 // import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
@@ -159,7 +159,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     thresholdLockedAmount,
     currentCanClaim,
     totalVolume,
-  } = userCampaignInfoData
+  } = userCampaignInfoData ?? {}
 
   useCakeVaultPool()
 
