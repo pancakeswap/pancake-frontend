@@ -2371,7 +2371,7 @@
   "Migrate to continue farming CAKE rewards and earning trading fees.": "迁移以继续累积 CAKE 奖励并赚取交易费用。",
   "Guide": "指南",
   "At least one AMM liquidity source has to be enabled to support normal trading.": "必须启用至少一个 AMM 流动性来源以支持正常交易。",
-  "Unable to establish trading route due to customized routing.": "由于自定义路由，无法建立交易路由。",
+  "Unable to establish trading route due to customized routing.": "无法计算出兑换路径，您可能关闭了所需的路由。",
   "Check your settings": "检查您的设置",
   "Reset to default": "重置为默认",
   "Reset": "重置",
