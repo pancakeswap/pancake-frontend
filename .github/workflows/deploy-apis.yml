@@ -1,3 +1,5 @@
+name: Deploy CF API
+
 on:
   workflow_dispatch:
     inputs:
@@ -24,6 +26,7 @@ jobs:
       deployments: write
     env:
       HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      IS_DEV: ${{ github.event.inputs.environment == 'dev' }}
     name: Publish API
     steps:
       - name: Checkout
@@ -31,12 +34,20 @@ jobs:
         with:
           fetch-depth: 2
 
-      # - name: Install dependencies
-      #   run: yarn install --frozen-lockfile
-
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
+        if: ${{ (env.HAVE_CLOUDFLARE_TOKEN == 'true') && (env.IS_DEV == 'false') }}
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
           workingDirectory: 'apis/${{ github.event.inputs.api }}'
           command: publish --env ${{ github.event.inputs.environment }}
+
+      - name: Publish dev
+        uses: cloudflare/wrangler-action@2.0.0
+        if: ${{ (env.HAVE_CLOUDFLARE_TOKEN == 'true') && (env.IS_DEV == 'true') }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: 'apis/${{ github.event.inputs.api }}'
+          command: publish
