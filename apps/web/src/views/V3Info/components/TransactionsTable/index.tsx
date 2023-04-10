@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -124,6 +125,8 @@ export default function TransactionTable({
   transactions: Transaction[]
   maxItems?: number
 }) {
+  const { t } = useTranslation()
+
   // theming
   const { theme } = useTheme()
 
@@ -205,7 +208,7 @@ export default function TransactionTable({
               }}
               active={txFilter === undefined}
             >
-              All
+              {t('All')}
             </SortText>
             <SortText
               onClick={() => {
@@ -213,7 +216,7 @@ export default function TransactionTable({
               }}
               active={txFilter === TransactionType.SWAP}
             >
-              Swaps
+              {t('Swaps')}
             </SortText>
             <SortText
               onClick={() => {
@@ -221,7 +224,7 @@ export default function TransactionTable({
               }}
               active={txFilter === TransactionType.MINT}
             >
-              Adds
+              {t('Adds')}
             </SortText>
             <SortText
               onClick={() => {
@@ -229,11 +232,11 @@ export default function TransactionTable({
               }}
               active={txFilter === TransactionType.BURN}
             >
-              Removes
+              {t('Removes')}
             </SortText>
           </RowFixed>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Total Value
+            {t('Total Value')}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -244,7 +247,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Token0 Amount
+            {t('Token%index% Amount', { index: '0' })}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -255,7 +258,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Token1 Amount
+            {t('Token%index% Amount', { index: '1' })}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -266,7 +269,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Account
+            {t('Account')}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -277,7 +280,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Time{' '}
+            {`${t('Time')} `}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -302,7 +305,7 @@ export default function TransactionTable({
           }
           return null
         })}
-        {sortedTransactions.length === 0 ? <Text>No Transactions</Text> : undefined}
+        {sortedTransactions.length === 0 ? <Text>{t('No Transactions')}</Text> : undefined}
         <PageButtons>
           <Box
             onClick={() => {

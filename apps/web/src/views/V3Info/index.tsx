@@ -129,7 +129,7 @@ export default function Home() {
             setLabel={setLeftLabel}
             topLeft={
               <AutoColumn gap="4px">
-                <Text fontSize="16px">TVL</Text>
+                <Text fontSize="16px">{t('TVL')}</Text>
                 <Text fontSize="32px">
                   <MonoSpace>{tvlValue} </MonoSpace>
                 </Text>
@@ -172,7 +172,7 @@ export default function Home() {
             }
             topLeft={
               <AutoColumn gap="4px">
-                <Text fontSize="16px">Volume 24H</Text>
+                <Text fontSize="16px">{t('Volume 24H')}</Text>
                 <Text fontSize="32px">
                   <MonoSpace> {formatDollarAmount(volumeHover, 2)}</MonoSpace>
                 </Text>
@@ -189,18 +189,18 @@ export default function Home() {
           <RowBetween>
             <RowFixed>
               <RowFixed mr="20px">
-                <Text mr="4px">Volume 24H: </Text>
+                <Text mr="4px">{t('Volume 24H')}: </Text>
                 <Text mr="4px">{formatDollarAmount(protocolData?.volumeUSD)}</Text>
                 <Percent value={protocolData?.volumeUSDChange} wrap />
               </RowFixed>
               <RowFixed mr="20px">
-                <Text mr="4px">Fees 24H: </Text>
+                <Text mr="4px">{t('Fees 24H')}: </Text>
                 <Text mr="4px">{formatDollarAmount(protocolData?.feesUSD)}</Text>
                 <Percent value={protocolData?.feeChange} wrap />
               </RowFixed>
               <Box>
                 <RowFixed mr="20px">
-                  <Text mr="4px">TVL: </Text>
+                  <Text mr="4px">{t('TVL')}: </Text>
                   <Text mr="4px">{formatDollarAmount(protocolData?.tvlUSD)}</Text>
                   <Percent value={protocolData?.tvlUSDChange} wrap />
                 </RowFixed>

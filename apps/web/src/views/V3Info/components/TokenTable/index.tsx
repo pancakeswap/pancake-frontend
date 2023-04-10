@@ -10,6 +10,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
@@ -125,6 +126,7 @@ export default function TokenTable({
   tokenDatas: TokenData[] | undefined
   maxItems?: number
 }) {
+  const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const chainPath = useMultiChainPath()
 
@@ -184,7 +186,7 @@ export default function TokenTable({
           <ResponsiveGrid>
             <Text color={theme.colors.textSubtle}>#</Text>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Name
+              {t('Name')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -195,7 +197,7 @@ export default function TokenTable({
               </SortButton>
             </ClickableColumnHeader>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Price
+              {t('Price')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -206,7 +208,7 @@ export default function TokenTable({
               </SortButton>
             </ClickableColumnHeader>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Price Change
+              {t('Price Change')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -220,7 +222,7 @@ export default function TokenTable({
             7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
           </ClickableText> */}
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Volume 24H
+              {t('Volume 24H')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -231,7 +233,7 @@ export default function TokenTable({
               </SortButton>
             </ClickableColumnHeader>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              TVL
+              {t('TVL')}
               <SortButton
                 scale="sm"
                 variant="subtle"
