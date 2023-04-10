@@ -67,15 +67,20 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
+  // const isQuoterEnabled = useMemo(
+  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
+  //   [type, isWrapping],
+  // )
   const isQuoterEnabled = useMemo(
-    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
     [type, isWrapping],
   )
 
-  const isQuoterAPIEnabled = useMemo(
-    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
-    [isWrapping, type],
-  )
+  const isQuoterAPIEnabled = false
+  // const isQuoterAPIEnabled = useMemo(
+  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
+  //   [isWrapping, type],
+  // )
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
