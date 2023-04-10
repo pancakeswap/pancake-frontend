@@ -7,6 +7,7 @@ import {
   NextLinkFromReactRouter,
   SortArrowIcon,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -46,7 +47,7 @@ const ResponsiveGrid = styled.div`
   }
 
   @media screen and (max-width: 670px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1.3fr 1fr;
     > *:first-child {
       display: none;
     }
@@ -74,6 +75,7 @@ const ResponsiveLogo = styled(CurrencyLogo)`
 const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index: number; chainPath: string }) => {
   const { theme } = useTheme()
   const chainName = useGetChainName()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <LinkWrapper to={`/${v3InfoPath}${chainPath}/tokens/${tokenData.address}`}>
       <ResponsiveGrid>
@@ -82,15 +84,15 @@ const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index:
           <RowFixed>
             <ResponsiveLogo address={tokenData.address} chainName={chainName} />
           </RowFixed>
-          <Text style={{ marginLeft: '6px' }}>
-            <Text ml="8px">{tokenData.symbol}</Text>
-          </Text>
+
           <Text style={{ marginLeft: '10px' }}>
             <RowFixed>
-              <HoverInlineText text={tokenData.name} />
-              <Text ml="8px" color={theme.colors.text99}>
-                ({tokenData.symbol})
-              </Text>
+              {isMobile ? <HoverInlineText text={tokenData.symbol} /> : <HoverInlineText text={tokenData.name} />}
+              {!isMobile && (
+                <Text ml="8px" color={theme.colors.text99}>
+                  ({tokenData.symbol})
+                </Text>
+              )}
             </RowFixed>
           </Text>
         </Flex>
