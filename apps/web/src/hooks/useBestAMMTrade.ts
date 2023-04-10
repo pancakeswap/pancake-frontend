@@ -162,7 +162,11 @@ function bestTradeHookFactory({
       pools: candidatePools,
       loading,
       syncing,
-    } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
+    } = useCommonPools(baseCurrency || amount?.currency, currency, {
+      blockNumber,
+      allowInconsistentBlock: true,
+      enabled,
+    })
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
