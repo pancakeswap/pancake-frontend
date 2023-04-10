@@ -189,7 +189,10 @@ export default function Home() {
               <AutoColumn gap="4px">
                 <Text fontSize="16px">{t('Volume 24H')}</Text>
                 <Text fontSize="32px">
-                  <MonoSpace> {formatDollarAmount(volumeHover, 2)}</MonoSpace>
+                  <MonoSpace>
+                    {' '}
+                    {formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 2)}
+                  </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
                   {rightLabel ? <MonoSpace>{rightLabel} (UTC)</MonoSpace> : null}
