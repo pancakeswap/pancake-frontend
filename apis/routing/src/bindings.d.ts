@@ -6,4 +6,5 @@ declare global {
   const GOERLI_NODE: string
   const BSC_NODE: string
   const BSC_TESTNET_NODE: string
+  const AXIOM_TOKEN: string
 }

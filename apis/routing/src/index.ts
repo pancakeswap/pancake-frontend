@@ -14,12 +14,12 @@ import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-util
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
 import { z } from 'zod'
-
 import { ChainId, Currency, JSBI, TradeType } from '@pancakeswap/sdk'
 import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { GraphQLClient } from 'graphql-request'
 import { viemProviders } from './provider'
+import { sendLog } from './log'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -251,7 +251,6 @@ router.post('/v0/quote', async (req, event) => {
   let response
 
   if (!cacheResponse) {
-    console.info('no cache found', cacheKey)
     const {
       amount,
       chainId,
@@ -296,9 +295,11 @@ router.post('/v0/quote', async (req, event) => {
       })
       event.waitUntil(cache.put(cacheKey, response.clone()))
     } catch (e) {
+      event.waitUntil(sendLog(e))
       response = error(500, e instanceof Error ? e.message : 'No valid trade')
     }
   } else {
+    sendLog({ message: 'cache hit', url: cacheUrl.toString() })
     response = new Response(cacheResponse.body, cacheResponse)
   }
 
