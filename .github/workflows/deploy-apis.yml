@@ -34,6 +34,9 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
         if: ${{ (env.HAVE_CLOUDFLARE_TOKEN == 'true') && (env.IS_DEV == 'false') }}
