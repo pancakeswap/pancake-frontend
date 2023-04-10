@@ -4,6 +4,7 @@ import { useDeferredValue, useMemo } from 'react'
 import { SmartRouter, PoolType, QuoteProvider, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { isDesktop } from 'react-device-detect'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
@@ -52,12 +53,10 @@ interface Options {
 }
 
 interface useBestAMMTradeOptions extends Options {
-  type?: 'offchain' | 'quoter' | 'api' | 'auto'
+  type?: 'offchain' | 'quoter' | 'auto'
 }
 
-const isLowEndDevice =
-  typeof window !== 'undefined' &&
-  !(window.navigator.hardwareConcurrency > 2 && typeof window.requestIdleCallback === 'function')
+const isLowEndDevice = typeof window !== 'undefined' && !(isDesktop && typeof window.requestIdleCallback === 'function')
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
@@ -68,18 +67,15 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
-  const isQuoterEnabled_ = useMemo(
-    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
+  const isQuoterEnabled = useMemo(
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
     [type, isWrapping],
   )
 
-  const isQuoterAPIEnabled_ = useMemo(
-    () => Boolean(!isWrapping && (type === 'api' || type === 'auto')),
+  const isQuoterAPIEnabled = useMemo(
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
     [isWrapping, type],
   )
-
-  const isQuoterAPIEnabled = isLowEndDevice && isQuoterAPIEnabled_
-  const isQuoterEnabled = isQuoterEnabled_ && !isQuoterAPIEnabled
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
