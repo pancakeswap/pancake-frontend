@@ -1,4 +1,5 @@
 import { ChainId, WBNB, ERC20Token } from '@pancakeswap/sdk'
+
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
 export const bscTokens = {
@@ -2536,5 +2537,13 @@ export const bscTokens = {
     'RDNT',
     'Radiant',
     'https://radiant.capital/',
+  ),
+  sis: new ERC20Token(
+    ChainId.BSC,
+    '0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835',
+    18,
+    'SIS',
+    'Symbiosis',
+    'https://symbiosis.finance/',
   ),
 }

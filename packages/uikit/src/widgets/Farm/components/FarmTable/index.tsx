@@ -1,7 +1,8 @@
 import CellLayout from "./CellLayout";
 import Earned from "./Earned";
+import LpAmount from "./LpAmount";
 import Details from "./Details";
-import Liquidity from "./Liquidity";
+import Liquidity, { StakedLiquidity } from "./Liquidity";
 import Multiplier from "./Multiplier";
 import FarmTokenInfo from "./FarmTokenInfo";
 import FarmTableHarvestAction from "./Actions/HarvestAction";
@@ -16,6 +17,7 @@ const FarmTable = {
   Earned,
   Details,
   Liquidity,
+  StakedLiquidity,
   Multiplier,
   FarmTokenInfo,
   FarmTableHarvestAction,
@@ -24,6 +26,7 @@ const FarmTable = {
   StakeActionDataNotReady,
   EnableStakeAction,
   StakedActionComponent,
+  LpAmount,
 };
 
 export default FarmTable;

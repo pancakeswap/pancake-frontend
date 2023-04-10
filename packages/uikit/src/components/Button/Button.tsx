@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { cloneElement, ElementType, isValidElement } from "react";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import StyledButton from "./StyledButton";
@@ -7,20 +8,14 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
   const { startIcon, endIcon, external, className, isLoading, disabled, children, ...rest } = props;
   const internalProps = external ? EXTERNAL_LINK_PROPS : {};
   const isDisabled = isLoading || disabled;
-  const classNames = className ? [className] : [];
-
-  if (isLoading) {
-    classNames.push("pancake-button--loading");
-  }
-
-  if (isDisabled && !isLoading) {
-    classNames.push("pancake-button--disabled");
-  }
 
   return (
     <StyledButton
       $isLoading={isLoading}
-      className={classNames.join(" ")}
+      className={clsx(className, {
+        "pancake-button--loading": isLoading,
+        "pancake-button--disabled": isDisabled && !isLoading,
+      })}
       disabled={isDisabled}
       {...internalProps}
       {...rest}

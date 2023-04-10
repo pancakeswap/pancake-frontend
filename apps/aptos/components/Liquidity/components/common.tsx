@@ -19,7 +19,7 @@ import { getLPSymbol } from 'utils/getLpSymbol'
 import styled from 'styled-components'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { useUserSlippage } from 'state/user'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 import { CurrencySelectorValue } from '../hooks/useCurrencySelectRoute'

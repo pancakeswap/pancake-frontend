@@ -19,8 +19,7 @@ import {
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
-import useBUSDPrice from 'hooks/useBUSDPrice'
-import { multiplyPriceByAmount } from 'utils/prices'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
@@ -42,7 +41,7 @@ const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
 
-interface PositionCardProps extends CardProps {
+export interface PositionCardProps extends CardProps {
   pair: Pair
   showUnwrapped?: boolean
   currency0: Currency
@@ -54,7 +53,7 @@ interface PositionCardProps extends CardProps {
   poolTokenPercentage: Percent
 }
 
-const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
+export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   const [token0Deposited, token1Deposited] =
     !!pair &&
     !!totalPoolTokens &&
@@ -70,22 +69,20 @@ const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   return [token0Deposited, token1Deposited]
 }
 
-const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
-  const token0Price = useBUSDPrice(currency0)
-  const token1Price = useBUSDPrice(currency1)
+export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
+  const token0USDValue = useStablecoinPriceAmount(
+    currency0,
+    token0Deposited ? parseFloat(token0Deposited.toSignificant(6)) : null,
+  )
+  const token1USDValue = useStablecoinPriceAmount(
+    currency1,
+    token1Deposited ? parseFloat(token1Deposited.toSignificant(6)) : null,
+  )
 
-  const token0USDValue =
-    token0Deposited && token0Price
-      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
-      : null
-  const token1USDValue =
-    token1Deposited && token1Price
-      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
-      : null
   return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
 }
 
-const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
+export const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
   return !!userPoolBalance &&
     !!totalPoolTokens &&
     JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
@@ -136,12 +133,12 @@ const withLPValuesFactory =
     )
   }
 
-const withLPValues = withLPValuesFactory({
+export const withLPValues = withLPValuesFactory({
   useLPValuesHook: useTokensDeposited,
   hookArgFn: ({ pair, userPoolBalance, totalPoolTokens }) => ({ pair, userPoolBalance, totalPoolTokens }),
 })
 
-const withStableLPValues = withLPValuesFactory({
+export const withStableLPValues = withLPValuesFactory({
   useLPValuesHook: useGetRemovedTokenAmounts,
   hookArgFn: ({ userPoolBalance }) => ({
     lpAmount: userPoolBalance?.quotient?.toString(),

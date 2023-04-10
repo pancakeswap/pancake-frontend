@@ -13,6 +13,7 @@ import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettin
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCallback, useEffect, useState } from 'react'
 import { useSwapCallback } from 'hooks/useSwapCallback'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 
 import ConfirmSwapModal from '../../components/ConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
@@ -150,6 +151,7 @@ export default function StableSwapCommitButton({
       })
       onPresentConfirmModal()
     }
+    logGTMClickSwapEvent()
   }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
 
   // useEffect

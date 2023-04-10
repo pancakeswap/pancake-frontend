@@ -91,7 +91,9 @@ const FarmsPoolsRow = () => {
               <TopFarmPool
                 // eslint-disable-next-line react/no-array-index-key
                 key={index}
-                title={topFarm?.lpSymbol}
+                // eslint-disable-next-line no-useless-concat
+                title={`${topFarm?.lpSymbol}` + `${topFarm?.version === 3 ? ` v${topFarm.version}` : ''}`}
+                version={topFarm?.version}
                 percentage={topFarm?.apr + topFarm?.lpRewardsApr}
                 index={index}
                 visible={showFarms}

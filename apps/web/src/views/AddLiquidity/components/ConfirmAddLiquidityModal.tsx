@@ -66,6 +66,13 @@ const ConfirmAddLiquidityModal: React.FC<
     percent = normalizedAmountCurrencyA / (normalizedAmountCurrencyA + amountCurrencyB)
   }
 
+  const handleDismiss = useCallback(() => {
+    if (customOnDismiss) {
+      customOnDismiss()
+    }
+    onDismiss?.()
+  }, [customOnDismiss, onDismiss])
+
   const modalHeader = useCallback(() => {
     return (
       <AddLiquidityModalHeader
@@ -99,11 +106,11 @@ const ConfirmAddLiquidityModal: React.FC<
   const confirmationContent = useCallback(
     () =>
       liquidityErrorMessage ? (
-        <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        <TransactionErrorContent onDismiss={handleDismiss} message={liquidityErrorMessage} />
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
+    [liquidityErrorMessage, handleDismiss, modalHeader, modalBottom],
   )
 
   return (

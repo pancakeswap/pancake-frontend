@@ -10,23 +10,124 @@ import {
   WBNB,
   ERC20Token,
   WETH9,
+  TradeType,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
-import { BUSD, CAKE, USDC } from '@pancakeswap/tokens'
+import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
+import { BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
-import { PairState, usePairs } from './usePairs'
+import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
+import { useBestAMMTrade } from './useBestAMMTrade'
+
+export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
+  const { chainId: currentChainId } = useActiveChainId()
+  const chainId = currency?.chainId
+
+  const baseTradeAgainst = useMemo(
+    () =>
+      currency && BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId]?.find((c) => c.wrapped.equals(currency.wrapped)),
+    [chainId, currency],
+  )
+
+  const cakePrice = useCakePriceAsBN()
+  const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
+  const isCake = currency?.wrapped.equals(CAKE[chainId])
+
+  const isStableCoin = currency?.wrapped.equals(stableCoin)
+
+  const shouldEnabled = currency && stableCoin && enabled && currentChainId === chainId && !isCake && !isStableCoin
+
+  const enableLlama = currency?.chainId === ChainId.ETHEREUM && shouldEnabled
+
+  // we don't have too many AMM pools on ethereum yet, try to get it from api
+  const { data: priceFromLlama, isLoading } = useSWRImmutable<string>(
+    enableLlama && ['fiat-price-ethereum', currency],
+    async () => {
+      const address = currency.isToken ? currency.address : WETH9[ChainId.ETHEREUM].address
+      return fetch(`https://coins.llama.fi/prices/current/ethereum:${address}`) // <3 llama
+        .then((res) => res.json())
+        .then(
+          (res) => res?.coins?.[`ethereum:${address}`]?.confidence > 0.9 && res?.coins?.[`ethereum:${address}`]?.price,
+        )
+    },
+    {
+      dedupingInterval: 30_000,
+      refreshInterval: 30_000,
+    },
+  )
+
+  const amountIn = useMemo(
+    () => (currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined),
+    [currency],
+  )
+
+  const { trade } = useBestAMMTrade({
+    amount: amountIn,
+    currency: stableCoin,
+    baseCurrency: currency,
+    tradeType: TradeType.EXACT_INPUT,
+    maxSplits: 0,
+    maxHops: baseTradeAgainst ? 2 : 3,
+    enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
+    autoRevalidate: false,
+  })
+
+  const price = useMemo(() => {
+    if (!currency || !stableCoin || !enabled) {
+      return undefined
+    }
+
+    if (isCake && cakePrice) {
+      return new Price(
+        currency,
+        stableCoin,
+        1 * 10 ** currency.decimals,
+        getFullDecimalMultiplier(stableCoin.decimals).times(cakePrice.toFixed(stableCoin.decimals)).toString(),
+      )
+    }
+
+    // handle stable coin
+    if (isStableCoin) {
+      return new Price(stableCoin, stableCoin, '1', '1')
+    }
+
+    if (priceFromLlama && enableLlama) {
+      return new Price(
+        currency,
+        stableCoin,
+        1 * 10 ** currency.decimals,
+        getFullDecimalMultiplier(stableCoin.decimals)
+          .times(parseFloat(priceFromLlama).toFixed(stableCoin.decimals))
+          .toString(),
+      )
+    }
+
+    if (trade) {
+      const { inputAmount, outputAmount } = trade
+
+      return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
+    }
+
+    return undefined
+  }, [cakePrice, currency, enableLlama, isCake, isStableCoin, priceFromLlama, enabled, stableCoin, trade])
+
+  return price
+}
 
 /**
  * Returns the price in BUSD of the input currency
  * @param currency currency to compute the BUSD price of
+ * @deprecated it's using v2 pair
  */
 export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
@@ -42,7 +143,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
     ],
     [wnative, stable, chainId, currency, wrapped],
   )
-  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = usePairs(tokenPairs)
+  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = useV2Pairs(tokenPairs)
 
   return useMemo(() => {
     if (!currency || !wrapped || !chainId || !wnative) {
@@ -117,6 +218,9 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   ])
 }
 
+/**
+ * @deprecated it's using v2 pair
+ */
 export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
   const pairAddress = getLpAddress(tokenA, tokenB)
@@ -146,36 +250,20 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   return price
 }
 
-export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const busdPrice = useBUSDPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
-  // we don't have too many AMM pools on ethereum yet, try to get it from api
-  const { data } = useSWRImmutable(
-    amount && currency?.chainId === ChainId.ETHEREUM && ['fiat-price-ethereum', currency],
-    async () => {
-      const address = currency.isToken ? currency.address : WETH9[ChainId.ETHEREUM].address
-      return fetch(`https://coins.llama.fi/prices/current/ethereum:${address}`) // <3 llama
-        .then((res) => res.json())
-        .then(
-          (res) => res?.coins?.[`ethereum:${address}`]?.confidence > 0.9 && res?.coins?.[`ethereum:${address}`]?.price,
-        )
-    },
-    {
-      dedupingInterval: 30_000,
-      refreshInterval: 30_000,
-    },
-  )
+export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
+  const stablePrice = useStablecoinPrice(currency, !!amount)
 
   if (amount) {
-    if (data) {
-      return parseFloat(data) * amount
-    }
-    if (busdPrice) {
-      return multiplyPriceByAmount(busdPrice, amount)
+    if (stablePrice) {
+      return multiplyPriceByAmount(stablePrice, amount)
     }
   }
   return undefined
 }
 
+/**
+ * @deprecated it's using v2 pair, use `useStablecoinPriceAsBN` instead
+ */
 export const useBUSDCakeAmount = (amount: number): number | undefined => {
   const cakeBusdPrice = useCakeBusdPrice()
   if (cakeBusdPrice) {
@@ -184,7 +272,10 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
   return undefined
 }
 
-// @Note: only fetch from one pair
+/**
+ * @deprecated it's using v2 pair, use `useCakePriceAsBN` instead
+ * @Note: only fetch from one pair
+ */
 export const useCakeBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
@@ -194,6 +285,11 @@ export const useCakeBusdPrice = (
   const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
   return usePriceByPairs(BUSD[cake.chainId], cake)
 }
+
+/**
+ * @deprecated it's using v2 pair
+ * @Note: only fetch from one pair
+ */
 
 // @Note: only fetch from one pair
 export const useBNBBusdPrice = (

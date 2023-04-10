@@ -106,7 +106,7 @@ export const CurrencySelect = ({
       </DropDownContainer>
       {account && !!selectedCurrency && !hideBalance && (
         <Box>
-          <AutoRow justifyContent="space-between" gap="2">
+          <AutoRow justifyContent="space-between" gap="8px">
             <Text color="textSubtle" fontSize="12px">
               {t('Balance')}:
             </Text>

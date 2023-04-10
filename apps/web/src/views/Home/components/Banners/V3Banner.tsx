@@ -234,7 +234,7 @@ const V3Banner = () => {
           >
             <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
               <Text bold fontSize="16px" mr="4px" color="invertedContrast">
-                {isMobile ? t('Learn More') : t('Learn More')}
+                {t('Learn More')}
               </Text>
               <OpenNewIcon color="invertedContrast" />
             </StyledButtonLeft>

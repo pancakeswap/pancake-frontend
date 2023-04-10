@@ -104,7 +104,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
             </MessageText>
           </Message>
           {showCakeRequireFlow ? (
-            <Flex mb="8px">
+            <Flex mb="16px" pb="16px">
               <ApproveConfirmButtons
                 isApproveDisabled={isProfileCostsLoading || hasMinimumCakeRequired}
                 isApproving={pendingEnableTx}

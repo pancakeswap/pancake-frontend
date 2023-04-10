@@ -1,7 +1,14 @@
 import { ChainId, Token, WBNB, WNATIVE } from '@pancakeswap/sdk'
-import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT } from '@pancakeswap/tokens'
+import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT, WBTC_ETH } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
+
+export const SWAP_ROUTER_ADDRESSES = {
+  [ChainId.ETHEREUM]: '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
+  [ChainId.GOERLI]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
+  [ChainId.BSC]: '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
+  [ChainId.BSC_TESTNET]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
+} as const satisfies Record<ChainId, string>
 
 export const ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.ETHEREUM]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
@@ -19,13 +26,7 @@ export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.ETHEREUM]: [
-    WNATIVE[ChainId.ETHEREUM],
-    USDC[ChainId.ETHEREUM],
-    USDT[ChainId.ETHEREUM],
-    BUSD[ChainId.ETHEREUM],
-    WBNB[ChainId.ETHEREUM],
-  ],
+  [ChainId.ETHEREUM]: [WNATIVE[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM], WBTC_ETH],
   [ChainId.GOERLI]: [WNATIVE[ChainId.GOERLI], USDC[ChainId.GOERLI], BUSD[ChainId.GOERLI]],
   [ChainId.BSC]: [
     bscTokens.wbnb,

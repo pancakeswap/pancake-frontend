@@ -40,6 +40,8 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     hideTimeout = 100,
     manualVisible = false,
     avoidToStopPropagation = false,
+    strategy,
+    isInPortal = true,
   } = options || {};
 
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
@@ -56,6 +58,7 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
 
   const hideTooltip = useCallback(
     (e: Event) => {
+      if (manualVisible) return;
       const hide = () => {
         if (!avoidToStopPropagation) {
           e.stopPropagation();
@@ -83,7 +86,7 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
         hide();
       }
     },
-    [tooltipElement, trigger, hideTimeout, avoidToStopPropagation]
+    [manualVisible, trigger, avoidToStopPropagation, tooltipElement, hideTimeout]
   );
 
   const showTooltip = useCallback(
@@ -198,7 +201,8 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
   // even on the iPhone 5 screen (320px wide), BUT in the storybook with the contrived example ScreenEdges example
   // iPhone 5 behaves differently overflowing beyond the edge. All paddings are identical so I have no idea why it is,
   // and fixing that seems like a very bad use of time.
-  const { styles, attributes } = usePopper(targetElement, tooltipElement, {
+  const { styles, attributes, forceUpdate } = usePopper(targetElement, tooltipElement, {
+    strategy,
     placement,
     modifiers: [
       {
@@ -232,12 +236,13 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
   );
 
   const portal = getPortalRoot();
-  const tooltipInPortal = portal ? createPortal(AnimatedTooltip, portal) : null;
+  const tooltipInPortal = portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null;
 
   return {
     targetRef: setTargetElement,
     tooltip: tooltipInPortal ?? AnimatedTooltip,
     tooltipVisible: visible,
+    forceUpdate,
   };
 };
 

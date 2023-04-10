@@ -50,6 +50,7 @@ const config = {
     '@pancakeswap/token-lists',
     '@pancakeswap/utils',
     '@pancakeswap/tokens',
+    '@pancakeswap/v3-sdk',
     '@pancakeswap/smart-router',
     '@wagmi',
     'wagmi',
@@ -78,10 +79,23 @@ const config = {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
       },
+      {
+        source: '/nodeRealApi/:path*',
+        destination: 'https://pancake.nodereal.cc/graphql',
+      },
     ]
   },
   async headers() {
     return [
+      {
+        source: '/favicon.ico',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
       {
         source: '/logo.png',
         headers: [

@@ -3,7 +3,7 @@ import { Box } from "../Box";
 
 const Loading = styled(Box)`
   border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.colors.disabled};
+  border: 2px solid ${({ theme }) => theme.colors.textDisabled};
   border-top: 2px solid transparent;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;

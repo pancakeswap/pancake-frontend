@@ -110,7 +110,7 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
                         {feeList.map((fee) => (
                           <tr key={fee.id}>
                             <Td>
-                              <Text fontSize="14px">
+                              <Text style={{ wordBreak: 'break-word' }} fontSize="14px">
                                 {generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee })}
                               </Text>
                             </Td>
@@ -147,7 +147,9 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
                   {feeList.map((fee) => (
                     <MobileLinks key={fee.id}>
                       <Flex justifyContent="space-between" mb="10px">
-                        <Text fontSize="14px">{generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee })}</Text>
+                        <Text style={{ wordBreak: 'break-word' }} mr="4px" fontSize="14px">
+                          {generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee })}
+                        </Text>
                         <CopyIcon
                           color="textSubtle"
                           cursor="pointer"

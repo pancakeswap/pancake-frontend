@@ -55,19 +55,20 @@ export const fetchInitialFarmsData = createAsyncThunk<
     state: AppState
   }
 >('farms/fetchInitialFarmsData', async ({ chainId }) => {
-  const farmDataList = await getFarmConfig(chainId)
-  return {
-    data: farmDataList.map((farm) => ({
-      ...farm,
-      userData: {
-        allowance: '0',
-        tokenBalance: '0',
-        stakedBalance: '0',
-        earnings: '0',
-      },
-    })),
-    chainId,
-  }
+  return getFarmConfig(chainId).then((farmDataList) => {
+    return {
+      data: farmDataList.map((farm) => ({
+        ...farm,
+        userData: {
+          allowance: '0',
+          tokenBalance: '0',
+          stakedBalance: '0',
+          earnings: '0',
+        },
+      })),
+      chainId,
+    }
+  })
 })
 
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
@@ -85,12 +86,10 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     }
     const chain = chains.find((c) => c.id === chainId)
     if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
-    try {
-      return fetchFarmPublicDataPkg({ pids, chainId, chain })
-    } catch (error) {
+    return fetchFarmPublicDataPkg({ pids, chainId, chain }).catch((error) => {
       console.error(error)
       throw error
-    }
+    })
   },
   {
     condition: (arg, { getState }) => {
@@ -229,7 +228,7 @@ type UnknownAsyncThunkFulfilledOrPendingAction =
   | UnknownAsyncThunkPendingAction
   | UnknownAsyncThunkRejectedAction
 
-const serializeLoadingKey = (
+export const serializeLoadingKey = (
   action: UnknownAsyncThunkFulfilledOrPendingAction,
   suffix: UnknownAsyncThunkFulfilledOrPendingAction['meta']['requestStatus'],
 ) => {

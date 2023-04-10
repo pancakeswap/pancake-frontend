@@ -114,6 +114,22 @@ export const BUSD: Record<ChainId, ERC20Token> = {
 }
 
 export const CAKE = {
+  [ChainId.ETHEREUM]: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.GOERLI]: new ERC20Token(
+    ChainId.GOERLI,
+    '0xc2C3eAbE0368a2Ea97f485b03D1098cdD7d0c081',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
   [ChainId.BSC]: CAKE_MAINNET,
   [ChainId.BSC_TESTNET]: CAKE_TESTNET,
 }
@@ -137,3 +153,10 @@ export const WBTC_ETH = new ERC20Token(
   'WBTC',
   'Wrapped BTC',
 )
+
+export const STABLE_COIN = {
+  [ChainId.ETHEREUM]: USDT[ChainId.ETHEREUM],
+  [ChainId.GOERLI]: USDC[ChainId.GOERLI],
+  [ChainId.BSC]: USDT[ChainId.BSC],
+  [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
+} satisfies Record<ChainId, ERC20Token>

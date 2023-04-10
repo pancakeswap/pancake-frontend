@@ -16,6 +16,13 @@ const priceHelperLps: SerializedFarmConfig[] = [
     lpSymbol: 'WBNB-SD LP',
     lpAddress: '0xfD05C106E336bc5696686F422A35EE7a136E1C89',
   },
+  {
+    pid: null,
+    token: bscTokens.sis,
+    quoteToken: bscTokens.wbnb,
+    lpSymbol: 'WBNB-SIS LP',
+    lpAddress: '0xbCA9057666872B7b7CfC9718E68C96c64d69E1Ad',
+  },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default priceHelperLps

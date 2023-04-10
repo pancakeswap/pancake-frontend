@@ -67,6 +67,7 @@ const Benefits = () => {
 
   return (
     <PageSection
+      id="affiliate-benefits"
       index={1}
       dividerPosition="top"
       clipFill={{

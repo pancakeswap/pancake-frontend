@@ -76,7 +76,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     <RoiCalculatorModal
       account={account || ''}
       pid={pid}
-      linkLabel={t('Get %symbol%', { symbol: lpLabel })}
+      linkLabel={t('Add %symbol%', { symbol: lpLabel })}
       stakingTokenBalance={userBalanceInFarm}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpTokenPrice.toNumber()}

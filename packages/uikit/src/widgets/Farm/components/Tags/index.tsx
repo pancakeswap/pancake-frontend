@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { memo } from "react";
+import React, { memo } from "react";
+import type { FeeAmount } from "@pancakeswap/v3-sdk";
 import { Text, TooltipText } from "../../../../components/Text";
 import { Tag, TagProps } from "../../../../components/Tag/index";
 import { useTooltip } from "../../../../hooks/useTooltip";
@@ -13,8 +14,8 @@ import {
   VoteIcon,
   LockIcon,
   RocketIcon,
-  CurrencyIcon,
   CheckmarkCircleIcon,
+  CurrencyIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -44,13 +45,7 @@ const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
     <>
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} style={{ textDecoration: "none" }}>
-        <Tag
-          variant="failure"
-          style={{ background: "none" }}
-          outline
-          startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />}
-          {...props}
-        >
+        <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
           {t("Farm Auction")}
         </Tag>
       </TooltipText>
@@ -69,13 +64,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
         display="flex"
         style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
       >
-        <Tag
-          variant="failure"
-          style={{ background: "none" }}
-          outline
-          startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />}
-          {...props}
-        >
+        <Tag variant="failure" outline startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />} {...props}>
           {t("Stable LP")}
         </Tag>
       </TooltipText>
@@ -86,13 +75,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const CommunityTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag
-      variant="failure"
-      style={{ background: "none" }}
-      outline
-      startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />}
-      {...props}
-    >
+    <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
       {t("Community")}
     </Tag>
   );
@@ -101,7 +84,7 @@ const CommunityTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const DualTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="textSubtle" style={{ background: "none" }} outline {...props}>
+    <Tag variant="textSubtle" outline {...props}>
       {t("Dual")}
     </Tag>
   );
@@ -110,13 +93,7 @@ const DualTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const ManualPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag
-      variant="secondary"
-      style={{ background: "none" }}
-      outline
-      startIcon={<RefreshIcon width="18px" color="secondary" mr="4px" />}
-      {...props}
-    >
+    <Tag variant="secondary" outline startIcon={<RefreshIcon width="18px" color="secondary" mr="4px" />} {...props}>
       {t("Manual")}
     </Tag>
   );
@@ -125,7 +102,7 @@ const ManualPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const LockedOrAutoPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="success" style={{ background: "none" }} outline {...props}>
+    <Tag variant="success" outline {...props}>
       {t("Auto")}/{t("Locked")}
     </Tag>
   );
@@ -134,13 +111,7 @@ const LockedOrAutoPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props)
 const LockedPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag
-      variant="success"
-      style={{ background: "none" }}
-      outline
-      startIcon={<LockIcon width="18px" color="success" mr="4px" />}
-      {...props}
-    >
+    <Tag variant="success" outline startIcon={<LockIcon width="18px" color="success" mr="4px" />} {...props}>
       {t("Locked")}
     </Tag>
   );
@@ -149,13 +120,7 @@ const LockedPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const CompoundingPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag
-      variant="success"
-      style={{ background: "none" }}
-      outline
-      startIcon={<AutoRenewIcon width="18px" color="success" mr="4px" />}
-      {...props}
-    >
+    <Tag variant="success" outline startIcon={<AutoRenewIcon width="18px" color="success" mr="4px" />} {...props}>
       {t("Auto")}
     </Tag>
   );
@@ -206,17 +171,23 @@ const ClosedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const BoostedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag
-      variant="success"
-      style={{ background: "none" }}
-      outline
-      startIcon={<RocketIcon width="18px" color="success" mr="4px" />}
-      {...props}
-    >
+    <Tag variant="success" outline startIcon={<RocketIcon width="18px" color="success" mr="4px" />} {...props}>
       {t("Boosted")}
     </Tag>
   );
 };
+
+const V2Tag: React.FC<TagProps> = (props) => (
+  <Tag variant="textDisabled" outline {...props}>
+    V2
+  </Tag>
+);
+
+const V3FeeTag: React.FC<TagProps & { feeAmount: FeeAmount }> = ({ feeAmount, ...props }) => (
+  <Tag variant="secondary" outline {...props}>
+    {feeAmount / 10_000}%
+  </Tag>
+);
 
 const Tags = {
   CoreTag,
@@ -233,6 +204,8 @@ const Tags = {
   LockedOrAutoPoolTag,
   BoostedTag,
   VotedTag,
+  V2Tag,
+  V3FeeTag,
 };
 
 export default Tags;

@@ -46,6 +46,8 @@ import {
   getMMLinkedPoolAddress,
   getStableSwapNativeHelperAddress,
   getTradingRewardAddress,
+  getMasterChefV3Address,
+  getV3MigratorAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -105,6 +107,8 @@ import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
 import sid from 'config/abi/SID.json'
 import sidResolver from 'config/abi/SIDResolver.json'
 import tradingRewardABI from 'config/abi/tradingReward.json'
+import masterChefV3Abi from 'config/abi/masterChefV3.json'
+import v3MigratorAbi from 'config/abi/v3Migrator.json'
 
 // Types
 import type {
@@ -160,6 +164,8 @@ import type {
   SID,
   SIDResolver,
   TradingReward,
+  MasterChefV3,
+  V3Migrator,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -428,6 +434,24 @@ export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, ch
     chainId,
     signer,
   }) as StableSwapNativeHelper
+}
+
+export const getMasterChefV3Contract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: masterChefV3Abi,
+    address: getMasterChefV3Address(chainId),
+    chainId,
+    signer,
+  }) as MasterChefV3
+}
+
+export const getV3MigratorContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: v3MigratorAbi,
+    address: getV3MigratorAddress(chainId),
+    chainId,
+    signer,
+  }) as V3Migrator
 }
 
 export const getTradingRewardContract = (chainId?: number, signer?: Signer | Provider) => {

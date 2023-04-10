@@ -1,14 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useAccount } from 'wagmi'
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { ProgressStepsType } from './ProgressSteps'
 
 const Container = styled.div`
   position: sticky;
-  bottom: 50px;
+  bottom: calc(50px + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,7 +17,7 @@ const Container = styled.div`
   z-index: 6;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    bottom: 0;
+    bottom: env(safe-area-inset-bottom);
   }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
@@ -60,27 +59,73 @@ const TextSubTitle = styled(Text)`
 `
 
 interface MigrationStickyProps {
-  step: ProgressStepsType
+  step: number
   handleClick: () => void
+  version: 'v2' | 'v3'
 }
 
-const MigrationSticky: React.FC<React.PropsWithChildren<MigrationStickyProps>> = ({ step, handleClick }) => {
+export const TEXT = {
+  v2: {
+    title: <Trans>MasterChef v2 Migration</Trans>,
+    steps: [
+      {
+        title: <Trans>Unstaking LP Tokens and CAKE</Trans>,
+        subTitle: <Trans>All the earned CAKE will be harvested to your wallet upon unstake.</Trans>,
+        button: <Trans>Go to Stake</Trans>,
+      },
+      {
+        title: <Trans>Stake in the new contract.</Trans>,
+        subTitle: <Trans>Each farm and pool has to be individually enabled before staking.</Trans>,
+        button: <Trans>Skip</Trans>,
+      },
+    ],
+  },
+  v3: {
+    title: <Trans>PancakeSwap v3 Migration</Trans>,
+    steps: [
+      {
+        title: <Trans>Unstaking from V2 Farms</Trans>,
+        subTitle: <Trans>All the earned CAKE will be harvested to your wallet upon unstake.</Trans>,
+        button: <Trans>Next Steps</Trans>,
+      },
+      {
+        title: <Trans>Removing V2 liquidity</Trans>,
+        subTitle: <Trans>All trading fee earnings are included in the tokens returned.</Trans>,
+        button: <Trans>Next Steps</Trans>,
+      },
+      {
+        title: <Trans>Learn more about V3</Trans>,
+        subTitle: (
+          <Trans>
+            Before you provide liquidity, please read make sure you are familiar with how to provide liquidity in V3.
+          </Trans>
+        ),
+        button: <Trans>Next Steps</Trans>,
+      },
+      {
+        title: <Trans>Adding V3 Liquidity</Trans>,
+        subTitle: <Trans>All trading fee earnings are included in the tokens returned.</Trans>,
+        button: <Trans>Next Steps</Trans>,
+      },
+      {
+        title: <Trans>Staking to V3 Farms</Trans>,
+        subTitle: <Trans>Start earning CAKE by staking your liquidity positions to V3 Farms!</Trans>,
+        button: <Trans>Finish</Trans>,
+      },
+    ],
+  },
+} as const
+
+const MigrationSticky: React.FC<React.PropsWithChildren<MigrationStickyProps>> = ({ step, handleClick, version }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
-
-  const isStep1: boolean = step === ProgressStepsType.STEP1
-  const title: string = isStep1 ? t('Unstaking LP Tokens and CAKE') : t('Stake in the new contract.')
-  const subTitle: string = isStep1
-    ? t('All the earned CAKE will be harvested to your wallet upon unstake.')
-    : t('Each farm and pool has to be individually enabled before staking.')
-  const buttonText: string = isStep1 ? t('Go to Stake') : t('Skip')
 
   if (!account) {
     return (
       <Container>
         <TextGroup>
-          <TextTitle bold>{t('MasterChef v2 Migration')}</TextTitle>
+          <TextTitle bold>{TEXT[version].title}</TextTitle>
           <TextSubTitle>{t('Please connect wallet to check your pools & farms status.')}</TextSubTitle>
         </TextGroup>
         <ConnectWalletButton width={isMobile ? '131px' : '178px'} />
@@ -91,11 +136,11 @@ const MigrationSticky: React.FC<React.PropsWithChildren<MigrationStickyProps>> =
   return (
     <Container>
       <TextGroup>
-        <TextTitle bold>{title}</TextTitle>
-        <TextSubTitle>{subTitle}</TextSubTitle>
+        <TextTitle bold>{TEXT[version].steps[step]?.title}</TextTitle>
+        <TextSubTitle>{TEXT[version].steps[step]?.subTitle}</TextSubTitle>
       </TextGroup>
       <Button minWidth={isMobile ? '145px' : '178px'} onClick={handleClick}>
-        {buttonText}
+        {TEXT[version].steps[step]?.button}
       </Button>
     </Container>
   )

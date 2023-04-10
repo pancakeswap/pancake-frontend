@@ -26,12 +26,10 @@ export const CurrencyLogo: React.FC<
   const src = useMemo(() => {
     return getTokenLogoURL(new Token(multiChainId[chainName], address, 18, ''))
   }, [address, chainName])
-
-  const imagePath = chainName === 'BSC' ? '' : `${chainName}/tokens/`
+  const imagePath = chainName === 'BSC' ? '' : `${multiChainId[chainName]}/tokens/`
   const srcFromPCS = `https://${chainName === 'BSC' ? 'tokens.' : ''}pancakeswap.finance/images/${imagePath}${isAddress(
     address,
   )}.png`
-
   return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }
 

@@ -27,7 +27,7 @@ import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
-import { customGTMEvent, GTMEvent, GTMAction, GTMCategory } from 'utils/customGTMEventTracking'
+import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 
 /**
  *  Columns on different layouts
@@ -201,12 +201,7 @@ const DataRow: React.FC<
               e.preventDefault()
               const currency = new Token(chainId, address, tokenData.decimals, tokenData.symbol)
               handleOutputSelect(currency)
-              customGTMEvent?.push({
-                event: GTMEvent.EventTracking,
-                category: GTMCategory.TokenHighlight,
-                action: GTMAction.ClickTradeButton,
-                label: tokenData.symbol,
-              })
+              logGTMClickTokenHighLightTradeEvent(tokenData.symbol)
             }}
             style={{ color: theme.colors.textSubtle }}
           >
