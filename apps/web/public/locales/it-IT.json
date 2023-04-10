@@ -2423,5 +2423,8 @@
   "Choose Token Pair": "Scegli coppia di token",
   "Fee Tier": "Livello commissione",
   "fee tier": "livello commissione",
-  "Selected Range": "Fascia selezionata"
+  "Selected Range": "Fascia selezionata",
+  "Fees 24H": "Fees 24H",
+  "Tick stats": "Tick stats",
+  "Token%index% Amount": "Token%index% Amount"
 }
