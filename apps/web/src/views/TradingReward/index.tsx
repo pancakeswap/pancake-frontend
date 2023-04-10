@@ -7,7 +7,7 @@ import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'
 import HowToEarn from 'views/TradingReward/components/HowToEarn'
 import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
 import Questions from 'views/TradingReward/components/Questions'
-
+import useAllTradingRewardPair from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useUserCampaignInfo from 'views/TradingReward/hooks/useUserCampaignInfo'
 import useInCentives from 'views/TradingReward/hooks/useInCentives'
@@ -16,6 +16,8 @@ const TradingReward = () => {
   const [showPage, setShowPage] = useState(false)
   const router = useRouter()
   const campaignId = router?.query?.campaignId?.toString() ?? ''
+
+  useAllTradingRewardPair()
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
   const { data: userCampaignInfoData } = useUserCampaignInfo(campaignId)
   const incentives = useInCentives(campaignId)
