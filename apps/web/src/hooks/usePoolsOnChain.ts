@@ -1,18 +1,15 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { BigintIsh, Currency, ChainId } from '@pancakeswap/sdk'
-import { SmartRouter, Pool } from '@pancakeswap/smart-router/evm'
-import { Provider as IProvider } from '@ethersproject/providers'
+import { BigintIsh, Currency } from '@pancakeswap/sdk'
+import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useEffect, useRef } from 'react'
 
-import { provider } from 'utils/wagmi'
+import { viemProviders } from 'utils/viem'
 
 interface Options {
   blockNumber?: number
   enabled?: boolean
 }
-
-type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => IProvider
 
 export const useV2CandidatePools = candidatePoolsOnChainHookFactory('V2', SmartRouter.getV2PoolsOnChain)
 
@@ -59,7 +56,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
         try {
           const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${fetchingBlock.current}`
           SmartRouter.metric(label)
-          const pools = await getPoolsOnChain(pairs, provider, blockNumber)
+          const pools = await getPoolsOnChain(pairs, viemProviders, blockNumber)
           SmartRouter.metric(label, pools)
 
           return {

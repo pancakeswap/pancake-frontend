@@ -99,13 +99,28 @@ export const getV3PoolSubgraph = async ({
   return pools
 }
 
+const V3_POOL_META_CACHE = new Map<string, V3PoolMeta>()
+
 function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
-  return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
-    address: Pool.getAddress(currencyA.wrapped, currencyB.wrapped, fee),
-    currencyA,
-    currencyB,
-    fee,
-  }))
+  return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => {
+    const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+      ? [currencyA, currencyB]
+      : [currencyB, currencyA]
+    const metaKey = [token0.chainId, token0.symbol, token1.symbol, fee].join('_')
+    const cached = V3_POOL_META_CACHE.get(metaKey)
+    if (cached) {
+      return cached
+    }
+
+    const meta = {
+      address: Pool.getAddress(currencyA.wrapped, currencyB.wrapped, fee),
+      currencyA,
+      currencyB,
+      fee,
+    }
+    V3_POOL_META_CACHE.set(metaKey, meta)
+    return meta
+  })
 }
 
 const POOL_SELECTION_CONFIG = {

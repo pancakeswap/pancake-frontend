@@ -18,7 +18,7 @@ import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import getLpAddress from 'utils/getLpAddress'
 import { multicallv2 } from 'utils/multicall'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
-import { useBestTrade } from 'views/Swap/SmartSwap/hooks/useBestTrade'
+import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import { useAccount } from 'wagmi'
 import useSWRImmutable from 'swr/immutable'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -69,12 +69,23 @@ export function useSingleTokenSwapInfo(
   outputCurrencyId: string | undefined,
   outputCurrency: Currency | undefined,
 ): { [key: string]: number } {
-  const token0Address = getTokenAddress(inputCurrencyId)
-  const token1Address = getTokenAddress(outputCurrencyId)
+  const token0Address = useMemo(() => getTokenAddress(inputCurrencyId), [inputCurrencyId])
+  const token1Address = useMemo(() => getTokenAddress(outputCurrencyId), [outputCurrencyId])
 
-  const parsedAmount = tryParseAmount('1', inputCurrency ?? undefined)
+  const amount = useMemo(() => tryParseAmount('1', inputCurrency ?? undefined), [inputCurrency])
 
-  const bestTradeExactIn = useBestTrade(parsedAmount, outputCurrency ?? undefined, TradeType.EXACT_INPUT)
+  const { trade: bestTradeExactIn } = useBestAMMTrade({
+    amount,
+    currency: outputCurrency,
+    baseCurrency: inputCurrency,
+    tradeType: TradeType.EXACT_INPUT,
+    maxSplits: 0,
+    v2Swap: true,
+    v3Swap: true,
+    stableSwap: true,
+    type: 'quoter',
+    autoRevalidate: false,
+  })
   if (!inputCurrency || !outputCurrency || !bestTradeExactIn) {
     return null
   }

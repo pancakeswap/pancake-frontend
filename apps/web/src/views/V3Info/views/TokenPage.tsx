@@ -298,7 +298,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     )}
                   </Text>
                 </Flex>
-                <Box px="24px" height="250px">
+                <Box px="24px" height="320px">
                   {view === ChartView.TVL ? (
                     <LineChart
                       data={formattedTvlData}
@@ -336,11 +336,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
             </DarkGreyCard>
             <Heading>Transactions</Heading>
             <DarkGreyCard>
-              {transactions ? (
-                <TransactionTable transactions={transactions} color={backgroundColor} />
-              ) : (
-                <LocalLoader fill={false} />
-              )}
+              {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
             </DarkGreyCard>
           </AutoColumn>
         )

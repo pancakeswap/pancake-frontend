@@ -36,6 +36,7 @@
     "graphql-request": "^5.0.0",
     "lodash": "^4.17.21",
     "mnemonist": "^0.38.3",
+    "viem": "^0.2.12",
     "stats-lite": "^2.2.0",
     "tiny-invariant": "^1.1.0"
   },
