@@ -2423,5 +2423,8 @@
   "Choose Token Pair": "Wybierz parę tokenów",
   "Fee Tier": "Poziom prowizji",
   "fee tier": "poziom prowizji",
-  "Selected Range": "Wybrany zakres"
+  "Selected Range": "Wybrany zakres",
+  "Fees 24H": "Prowizje 24H",
+  "Tick stats": "Statystyki długu",
+  "Token%index% Amount": "Token%index% Kwota"
 }
