@@ -107,7 +107,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   }, [isLockPosition, data.thresholdLockedAmount, balance.cakeAsNumberBalance])
 
   const cakePrice = useMemo(
-    () => multiplyPriceByAmount(cakePriceBusd, needAddedCakeAmount),
+    () => multiplyPriceByAmount(cakePriceBusd, Number(needAddedCakeAmount)),
     [cakePriceBusd, needAddedCakeAmount],
   )
 
