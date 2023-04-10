@@ -2423,5 +2423,8 @@
   "Choose Token Pair": "Choose Token Pair",
   "Fee Tier": "Fee Tier",
   "fee tier": "fee tier",
-  "Selected Range": "Selected Range"
+  "Selected Range": "Selected Range",
+  "Fees 24H": "Fees 24H",
+  "Tick stats": "Tick stats",
+  "Token%index% Amount": "Token%index% Amount"
 }
