@@ -7,11 +7,14 @@ import { LightCard } from '../Card'
 import { RowBetween } from '../Row'
 
 const TooltipWrapper = styled(LightCard)`
+  width: 260px;
   padding: 12px;
-  width: 320px;
   opacity: 0.6;
   font-size: 12px;
   z-index: 10;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 320px;
+  }
 `
 
 interface CustomToolTipProps {

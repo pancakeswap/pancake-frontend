@@ -88,6 +88,7 @@ const CandleChart = ({
           backgroundColor: 'transparent',
           textColor: '#565A69',
           fontFamily: 'Inter var',
+          fontSize: 14,
         },
         rightPriceScale: {
           scaleMargins: {
