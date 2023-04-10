@@ -159,13 +159,27 @@ export default function Home() {
             activeWindow={volumeWindow}
             topRight={
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
-                <Button scale="sm" onClick={() => setVolumeWindow(VolumeWindow.daily)}>
+                <Button
+                  scale="sm"
+                  variant={volumeWindow === VolumeWindow.daily ? 'primary' : 'bubblegum'}
+                  onClick={() => setVolumeWindow(VolumeWindow.daily)}
+                >
                   D
                 </Button>
-                <Button scale="sm" style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.weekly)}>
+                <Button
+                  scale="sm"
+                  variant={volumeWindow === VolumeWindow.weekly ? 'primary' : 'bubblegum'}
+                  style={{ marginLeft: '8px' }}
+                  onClick={() => setVolumeWindow(VolumeWindow.weekly)}
+                >
                   W
                 </Button>
-                <Button scale="sm" style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.monthly)}>
+                <Button
+                  variant={volumeWindow === VolumeWindow.monthly ? 'primary' : 'bubblegum'}
+                  scale="sm"
+                  style={{ marginLeft: '8px' }}
+                  onClick={() => setVolumeWindow(VolumeWindow.monthly)}
+                >
                   M
                 </Button>
               </RowFixed>
