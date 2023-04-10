@@ -12,7 +12,7 @@
       "@pancakeswap/sdk": ["../../packages/swap-sdk/src"],
       "@pancakeswap/swap-sdk-core": ["../../packages/swap-sdk-core/src"],
       "@pancakeswap/v3-sdk": ["../../packages/v3-sdk/src"],
-      "@pancakeswap/smart-router/*": ["../../packages/smart-router/*"]
+      "@pancakeswap/smart-router/evm": ["../../packages/smart-router/evm"]
     }
   },
   "exclude": ["node_modules"],

@@ -1,12 +1,9 @@
 /* eslint-disable no-console, camelcase, @typescript-eslint/no-non-null-assertion */
 import { JSBI, ChainId } from '@pancakeswap/sdk'
-import { BaseProvider } from '@ethersproject/providers'
-import { Contract } from '@ethersproject/contracts'
+import { encodeFunctionData, PublicClient, decodeFunctionResult } from 'viem'
 import stats from 'stats-lite'
 
-// eslint-disable-next-line import/named
-import { InterfaceMulticall } from '../../abis/types'
-import IMulticallABI from '../../abis/InterfaceMulticall.json'
+import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
   CallMultipleFunctionsOnSameContractParams,
   CallSameFunctionOnContractWithMultipleParams,
@@ -20,10 +17,18 @@ const PANCAKE_MULTICALL_ADDRESSES = {
   [ChainId.GOERLI]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
   [ChainId.BSC]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
   [ChainId.BSC_TESTNET]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
+} as const
+
+export type PancakeMulticallConfig = {
+  gasLimitPerCallOverride?: number
 }
 
-export type PancakeswapMulticallConfig = {
-  gasLimitPerCallOverride?: number
+function isPromise<T>(p: any): p is Promise<T> {
+  if (typeof p === 'object' && typeof p.then === 'function') {
+    return true
+  }
+
+  return false
 }
 
 /**
@@ -33,12 +38,12 @@ export type PancakeswapMulticallConfig = {
  * with an out of gas error.
  *
  * @export
- * @class PancakeswapMulticallProvider
+ * @class PancakeMulticallProvider
  */
-export class PancakeswapMulticallProvider extends IMulticallProvider<PancakeswapMulticallConfig> {
-  private multicallContract: InterfaceMulticall
+export class PancakeMulticallProvider extends IMulticallProvider<PancakeMulticallConfig> {
+  static abi = IMulticallABI
 
-  constructor(protected chainId: ChainId, protected provider: BaseProvider, protected gasLimitPerCall = 1_000_000) {
+  constructor(protected chainId: ChainId, protected provider: PublicClient, protected gasLimitPerCall = 1_000_000) {
     super()
     const multicallAddress = PANCAKE_MULTICALL_ADDRESSES[this.chainId]
 
@@ -46,7 +51,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
       throw new Error(`No address for Pancakeswap Multicall Contract on chain id: ${chainId}`)
     }
 
-    this.multicallContract = new Contract(multicallAddress, IMulticallABI, this.provider) as InterfaceMulticall
+    this.provider = provider
   }
 
   public async callSameFunctionOnMultipleContracts<TFunctionParams extends any[] | undefined, TReturn = any>(
@@ -55,26 +60,44 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
     blockNumber: JSBI
     results: Result<TReturn>[]
   }> {
-    const { addresses, contractInterface, functionName, functionParams, providerConfig } = params
+    const { addresses, functionName, functionParams, providerConfig, abi } = params
 
     const blockNumberOverride = providerConfig?.blockNumber ?? undefined
 
-    const fragment = contractInterface.getFunction(functionName)
-    const callData = contractInterface.encodeFunctionData(fragment, functionParams)
+    const callData = encodeFunctionData({
+      abi,
+      functionName,
+      args: functionParams,
+    })
 
     const calls = addresses.map((address) => {
       return {
         target: address,
         callData,
-        gasLimit: this.gasLimitPerCall,
+        gasLimit: BigInt(this.gasLimitPerCall),
       }
     })
 
     // console.log({ calls }, `About to multicall for ${functionName} across ${addresses.length} addresses`)
 
-    const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-      blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
+    const {
+      result: [blockNumber, aggregateResults],
+    } = await this.provider.simulateContract({
+      abi: IMulticallABI,
+      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
+      functionName: 'multicall',
+      args: [calls],
+      // @ts-ignore
+      blockNumber: blockNumberOverride
+        ? isPromise(blockNumberOverride)
+          ? BigInt(JSBI.toNumber(JSBI.BigInt(await blockNumberOverride)))
+          : BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride)))
+        : (undefined as never),
     })
+
+    // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
+    //   blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
+    // })
 
     const results: Result<TReturn>[] = []
 
@@ -96,7 +119,11 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
 
       results.push({
         success: true,
-        result: contractInterface.decodeFunctionResult(fragment, returnData) as unknown as TReturn,
+        result: decodeFunctionResult({
+          abi,
+          functionName,
+          data: returnData,
+        }) as TReturn,
       })
     }
 
@@ -105,29 +132,32 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
     //   `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
     // )
 
-    return { blockNumber: JSBI.BigInt(blockNumber), results }
+    return { blockNumber: JSBI.BigInt(blockNumber.toString()), results }
   }
 
   public async callSameFunctionOnContractWithMultipleParams<TFunctionParams extends any[] | undefined, TReturn>(
-    params: CallSameFunctionOnContractWithMultipleParams<TFunctionParams, PancakeswapMulticallConfig>,
+    params: CallSameFunctionOnContractWithMultipleParams<TFunctionParams, PancakeMulticallConfig>,
   ): Promise<{
     blockNumber: JSBI
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
   }> {
-    const { address, contractInterface, functionName, functionParams, additionalConfig, providerConfig } = params
-    const fragment = contractInterface.getFunction(functionName)
+    const { address, functionName, functionParams, additionalConfig, providerConfig, abi } = params
 
     const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
     const blockNumberOverride = providerConfig?.blockNumber ?? undefined
 
     const calls = functionParams.map((functionParam) => {
-      const callData = contractInterface.encodeFunctionData(fragment, functionParam)
+      const callData = encodeFunctionData({
+        abi,
+        functionName,
+        args: functionParam,
+      })
 
       return {
         target: address,
         callData,
-        gasLimit: gasLimitPerCall,
+        gasLimit: BigInt(gasLimitPerCall),
       }
     })
 
@@ -136,8 +166,15 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
     //   `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
     // )
 
-    const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-      blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
+    const {
+      result: [blockNumber, aggregateResults],
+    } = await this.provider.simulateContract({
+      abi: IMulticallABI,
+      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
+      functionName: 'multicall',
+      args: [calls],
+      // @ts-ignore
+      blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
 
     const results: Result<TReturn>[] = []
@@ -159,11 +196,15 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
         continue
       }
 
-      gasUsedForSuccess.push(gasUsed.toNumber())
+      gasUsedForSuccess.push(Number(gasUsed))
 
       results.push({
         success: true,
-        result: contractInterface.decodeFunctionResult(fragment, returnData) as unknown as TReturn,
+        result: decodeFunctionResult({
+          abi,
+          functionName,
+          data: returnData,
+        }) as TReturn,
       })
     }
 
@@ -172,32 +213,35 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
     //   `Results for multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params. Results as of block ${blockNumber}`,
     // )
     return {
-      blockNumber: JSBI.BigInt(blockNumber),
+      blockNumber: JSBI.BigInt(blockNumber.toString()),
       results,
       approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
     }
   }
 
   public async callMultipleFunctionsOnSameContract<TFunctionParams extends any[] | undefined, TReturn>(
-    params: CallMultipleFunctionsOnSameContractParams<TFunctionParams, PancakeswapMulticallConfig>,
+    params: CallMultipleFunctionsOnSameContractParams<TFunctionParams, PancakeMulticallConfig>,
   ): Promise<{
     blockNumber: JSBI
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
   }> {
-    const { address, contractInterface, functionNames, functionParams, additionalConfig, providerConfig } = params
+    const { address, functionNames, functionParams, additionalConfig, providerConfig, abi } = params
 
     const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
     const blockNumberOverride = providerConfig?.blockNumber ?? undefined
 
     const calls = functionNames.map((functionName, i) => {
-      const fragment = contractInterface.getFunction(functionName)
-      const param = functionParams ? functionParams[i] : []
-      const callData = contractInterface.encodeFunctionData(fragment, param)
+      const callData = encodeFunctionData({
+        abi,
+        functionName,
+        args: functionParams ? functionParams[i] : [],
+      })
+
       return {
         target: address,
         callData,
-        gasLimit: gasLimitPerCall,
+        gasLimit: BigInt(gasLimitPerCall),
       }
     })
 
@@ -206,15 +250,24 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
     //   `About to multicall for ${functionNames.length} functions at address ${address} with ${functionParams?.length} different sets of params`,
     // )
 
-    const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-      blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
+    const {
+      result: [blockNumber, aggregateResults],
+    } = await this.provider.simulateContract({
+      abi: IMulticallABI,
+      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
+      functionName: 'multicall',
+      args: [calls],
+      // @ts-ignore
+      blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
+    // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
+    //   blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
+    // })
 
     const results: Result<TReturn>[] = []
 
     const gasUsedForSuccess: number[] = []
     for (let i = 0; i < aggregateResults.length; i++) {
-      const fragment = contractInterface.getFunction(functionNames[i]!)
       const { success, returnData, gasUsed } = aggregateResults[i]!
 
       // Return data "0x" is sometimes returned for invalid pools.
@@ -230,11 +283,15 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
         continue
       }
 
-      gasUsedForSuccess.push(gasUsed.toNumber())
+      gasUsedForSuccess.push(Number(gasUsed))
 
       results.push({
         success: true,
-        result: contractInterface.decodeFunctionResult(fragment, returnData) as unknown as TReturn,
+        result: decodeFunctionResult({
+          abi,
+          data: returnData,
+          functionName: functionNames[i]!,
+        }) as TReturn,
       })
     }
 
@@ -244,7 +301,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<Pancakeswap
     //   } different sets of params. Results as of block ${blockNumber}`,
     // )
     return {
-      blockNumber: JSBI.BigInt(blockNumber),
+      blockNumber: JSBI.BigInt(blockNumber.toString()),
       results,
       approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
     }

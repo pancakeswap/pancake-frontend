@@ -12,6 +12,7 @@ function isString(s: any): s is string {
 }
 
 export function isOriginAllowed(origin: string | null, allowedOrigin: any) {
+  if (allowedOrigin === '*') return true
   if (Array.isArray(allowedOrigin)) {
     for (let i = 0; i < allowedOrigin.length; ++i) {
       if (isOriginAllowed(origin, allowedOrigin[i])) {

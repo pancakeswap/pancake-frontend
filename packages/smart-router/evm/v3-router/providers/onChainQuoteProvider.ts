@@ -1,7 +1,6 @@
 /* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
 import { ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
-import { BaseProvider } from '@ethersproject/providers'
-import { Interface } from '@ethersproject/abi'
+import { Abi, Address } from 'abitype'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
 
@@ -10,7 +9,7 @@ import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
-import { PancakeswapMulticallProvider } from './multicallSwapProvider'
+import { PancakeMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 import { BatchMulticallConfigs } from '../../types'
 import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
@@ -33,8 +32,8 @@ type CallInputs = V3Inputs | MixedInputs
 
 interface FactoryConfig {
   getCallInputs: (route: RouteWithoutQuote, isExactIn: boolean) => CallInputs
-  getQuoterAddress: (chainId: ChainId) => string
-  contractInterface: Interface
+  getQuoterAddress: (chainId: ChainId) => Address
+  abi: Abi | any[]
   getQuoteFunctionName: (isExactIn: boolean) => string
 }
 
@@ -106,12 +105,7 @@ export class ProviderGasError extends Error {
 
 export type QuoteRetryOptions = RetryOptions
 
-function onChainQuoteProviderFactory({
-  getQuoteFunctionName,
-  getQuoterAddress,
-  contractInterface,
-  getCallInputs,
-}: FactoryConfig) {
+function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, abi, getCallInputs }: FactoryConfig) {
   return function createOnChainQuoteProvider({
     onChainProvider,
     multicallConfigs: multicallConfigsOverride,
@@ -143,11 +137,7 @@ function onChainQuoteProviderFactory({
         const providerConfig = { blockNumber: blockNumberFromConfig }
         // const baseBlockOffset = 0
         const rollback = { enabled: false, rollbackBlockOffset: 0, attemptsBeforeRollback: 2 }
-        const multicall2Provider = new PancakeswapMulticallProvider(
-          chainId,
-          chainProvider as BaseProvider,
-          gasLimitOverride,
-        )
+        const multicall2Provider = new PancakeMulticallProvider(chainId, chainProvider, gasLimitOverride)
 
         const inputs = routes.map<CallInputs>((route) => getCallInputs(route, isExactIn))
 
@@ -208,7 +198,7 @@ function onChainQuoteProviderFactory({
                     [JSBI, JSBI[], number[], JSBI] // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
                   >({
                     address: getQuoterAddress(chainId),
-                    contractInterface,
+                    abi,
                     functionName,
                     functionParams: inputs,
                     providerConfig,
@@ -325,7 +315,10 @@ function onChainQuoteProviderFactory({
                       // )
                       providerConfig.blockNumber = providerConfig.blockNumber
                         ? JSBI.add(JSBI.BigInt(await providerConfig.blockNumber), JSBI.BigInt(rollbackBlockOffset))
-                        : JSBI.add(JSBI.BigInt(await chainProvider.getBlockNumber()), JSBI.BigInt(rollbackBlockOffset))
+                        : JSBI.add(
+                            JSBI.BigInt(await (await chainProvider.getBlockNumber()).toString()),
+                            JSBI.BigInt(rollbackBlockOffset),
+                          )
 
                       retryAll = true
                       blockHeaderRolledBack = true
@@ -558,7 +551,7 @@ function processQuoteResults(
     }
 
     const quoteCurrency = getQuoteCurrency(route, route.amount.currency)
-    const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0])
+    const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0].toString())
     const { gasEstimate, gasCostInToken, gasCostInUSD } = gasModel.estimateGasCost(
       {
         ...route,
@@ -603,7 +596,7 @@ function processQuoteResults(
 export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory({
   getQuoterAddress: (chainId) => MIXED_ROUTE_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: () => 'quoteExactInput',
-  contractInterface: new Interface(IMixedRouteQuoterV1ABI),
+  abi: IMixedRouteQuoterV1ABI,
   getCallInputs: (route, isExactIn) => [
     encodeMixedRouteToPath(route, !isExactIn),
     route.pools
@@ -632,7 +625,7 @@ export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory(
 export const createV3OnChainQuoteProvider = onChainQuoteProviderFactory({
   getQuoterAddress: (chainId) => V3_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: (isExactIn) => (isExactIn ? 'quoteExactInput' : 'quoteExactOutput'),
-  contractInterface: new Interface(IQuoterV2ABI),
+  abi: IQuoterV2ABI,
   getCallInputs: (route, isExactIn) => [
     encodeMixedRouteToPath(route, !isExactIn),
     `0x${route.amount.quotient.toString(16)}`,

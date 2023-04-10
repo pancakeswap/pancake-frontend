@@ -79,6 +79,7 @@ export function useSingleTokenSwapInfo(
     currency: outputCurrency,
     baseCurrency: inputCurrency,
     tradeType: TradeType.EXACT_INPUT,
+    maxSplits: 0,
     v2Swap: true,
     v3Swap: true,
     stableSwap: true,

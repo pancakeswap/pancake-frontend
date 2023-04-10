@@ -53,6 +53,8 @@ describe('SwapRouter', () => {
       sqrtRatioX96,
       tick: TickMath.getTickAtSqrtRatio(sqrtRatioX96),
       address: V3PoolSDK.getAddress(token0, token1, feeAmount),
+      token0ProtocolFee: new Percent(0, 100),
+      token1ProtocolFee: new Percent(0, 100),
       ticks: [
         {
           index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[feeAmount]),

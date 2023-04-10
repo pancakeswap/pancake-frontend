@@ -1,5 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent, BigintIsh } from '@pancakeswap/sdk'
-import { Call, createMulticall } from '@pancakeswap/multicall'
+import { Call } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
 
@@ -25,14 +25,14 @@ export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
     if (!reserves) {
       return null
     }
-    const { reserve0, reserve1 } = reserves
+    const [reserve0, reserve1] = reserves
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
     return {
       type: PoolType.V2,
-      reserve0: CurrencyAmount.fromRawAmount(token0, reserve0),
-      reserve1: CurrencyAmount.fromRawAmount(token1, reserve1),
+      reserve0: CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+      reserve1: CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
     }
   },
 })
@@ -97,9 +97,12 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, Stable
     return {
       address,
       type: PoolType.STABLE,
-      balances: [CurrencyAmount.fromRawAmount(token0, balance0), CurrencyAmount.fromRawAmount(token1, balance1)],
-      amplifier: JSBI.BigInt(a),
-      fee: new Percent(JSBI.BigInt(fee), JSBI.BigInt(feeDenominator)),
+      balances: [
+        CurrencyAmount.fromRawAmount(token0, balance0.toString()),
+        CurrencyAmount.fromRawAmount(token1, balance1.toString()),
+      ],
+      amplifier: JSBI.BigInt(a.toString()),
+      fee: new Percent(JSBI.BigInt(fee.toString()), JSBI.BigInt(feeDenominator.toString())),
     }
   },
 })
@@ -159,8 +162,8 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       token0,
       token1,
       fee,
-      liquidity: JSBI.BigInt(liquidity),
-      sqrtRatioX96: JSBI.BigInt(sqrtPriceX96),
+      liquidity: JSBI.BigInt(liquidity.toString()),
+      sqrtRatioX96: JSBI.BigInt(sqrtPriceX96.toString()),
       tick: Number(tick),
       address,
       token0ProtocolFee,
@@ -185,14 +188,14 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
   return async function poolFactory(
     pairs: [Currency, Currency][],
     provider: OnChainProvider,
-    blockNumber: BigintIsh,
+    blockNumber?: BigintIsh,
   ): Promise<TPool[]> {
     const chainId: ChainId = pairs[0]?.[0]?.chainId
     if (!chainId) {
       return []
     }
 
-    const { multicallv2 } = createMulticall(provider)
+    const client = provider({ chainId })
     const poolAddressSet = new Set<string>()
 
     const poolMetas: TPoolMeta[] = []
@@ -223,20 +226,24 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
       return []
     }
 
-    const results = await multicallv2({
-      abi,
-      calls,
-      chainId,
-      options: {
-        requireSuccess: false,
-        blockTag: JSBI.toNumber(JSBI.BigInt(blockNumber)),
-      },
+    const results = await client.multicall({
+      contracts: calls.map((call) => ({
+        abi,
+        address: call.address as `0x${string}`,
+        functionName: call.name,
+        args: call.params,
+      })),
+      allowFailure: true,
+      blockNumber: blockNumber ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumber))) : undefined,
     })
 
     const pools: TPool[] = []
     for (let i = 0; i < poolMetas.length; i += 1) {
       const poolResults = results.slice(i * poolCallSize, (i + 1) * poolCallSize)
-      const pool = buildPool(poolMetas[i], poolResults)
+      const pool = buildPool(
+        poolMetas[i],
+        poolResults.map((result) => result.result),
+      )
       if (pool) {
         pools.push(pool)
       }
