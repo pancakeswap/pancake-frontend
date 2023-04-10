@@ -298,7 +298,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     )}
                   </Text>
                 </Flex>
-                <Box px="24px" height="250px">
+                <Box px="24px" height="320px">
                   {view === ChartView.TVL ? (
                     <LineChart
                       data={formattedTvlData}
