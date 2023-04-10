@@ -1,11 +1,9 @@
 import { useState, useMemo, ReactNode } from 'react'
 import shuffle from 'lodash/shuffle'
 import styled from 'styled-components'
-// eslint-disable-next-line import/no-unresolved
 import { Swiper, SwiperSlide } from 'swiper/react'
-// eslint-disable-next-line import/no-unresolved
-import 'swiper/css/bundle'
-import SwiperCore from 'swiper'
+import 'swiper/css'
+import type SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
 import useSWRImmutable from 'swr/immutable'

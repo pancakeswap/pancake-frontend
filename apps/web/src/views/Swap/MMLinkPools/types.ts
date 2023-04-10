@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
-import { z } from 'zod'
+import { string as zString, object as zObject, nativeEnum as zNativeEnum, number as zNumber } from 'zod'
 import { MutableRefObject } from 'react'
 import { Field } from '../../../state/swap/actions'
 
@@ -11,17 +11,17 @@ export enum MessageType {
   RFQ_ERROR = 'RFQ_ERROR',
 }
 
-export const zRFQResponse = z.object({
-  messageType: z.nativeEnum(MessageType),
-  message: z.object({
-    makerSideToken: z.string(),
-    takerSideToken: z.string(),
-    makerSideTokenAmount: z.string(),
-    takerSideTokenAmount: z.string(),
-    rfqId: z.string(),
-    mmId: z.string().optional(),
-    signature: z.string(),
-    quoteExpiry: z.number(),
+export const zRFQResponse = zObject({
+  messageType: zNativeEnum(MessageType),
+  message: zObject({
+    makerSideToken: zString(),
+    takerSideToken: zString(),
+    makerSideTokenAmount: zString(),
+    takerSideTokenAmount: zString(),
+    rfqId: zString(),
+    mmId: zString().optional(),
+    signature: zString(),
+    quoteExpiry: zNumber(),
   }),
 })
 

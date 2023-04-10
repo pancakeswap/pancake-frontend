@@ -1,11 +1,11 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TradeType, ChainId } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, TradeType, ChainId } from '@pancakeswap/sdk'
 import {
   LegacyTradeWithStableSwap as TradeWithStableSwap,
   LegacyTrade as Trade,
   LegacyRouter,
 } from '@pancakeswap/smart-router/evm'
 
-import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
+import { INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
 import PancakeSwapSmartRouterABI from 'config/abi/pancakeSwapSmartRouter.json'
@@ -26,16 +26,6 @@ export const SMART_ROUTER_ADDRESS: ChainMap<string> = {
 export function useSmartRouterContract() {
   const { chainId } = useActiveChainId()
   return useContract<PancakeSwapSmartRouter>(SMART_ROUTER_ADDRESS[chainId], PancakeSwapSmartRouterABI, true)
-}
-
-export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [JSBI, JSBI] {
-  if (slippage < 0 || slippage > 10000) {
-    throw Error(`Unexpected slippage value: ${slippage}`)
-  }
-  return [
-    JSBI.divide(JSBI.multiply(value.quotient, JSBI.BigInt(10000 - slippage)), BIPS_BASE),
-    JSBI.divide(JSBI.multiply(value.quotient, JSBI.BigInt(10000 + slippage)), BIPS_BASE),
-  ]
 }
 
 // computes price breakdown for the trade

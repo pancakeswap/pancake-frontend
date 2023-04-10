@@ -6,7 +6,6 @@ import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection 
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect } from 'react'
-import _isNaN from 'lodash/isNaN'
 
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'

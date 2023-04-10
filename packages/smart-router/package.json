@@ -8,6 +8,9 @@
     "directory": "packages/smart-router"
   },
   "sideEffects": false,
+  "main": "./dist/evm.js",
+  "module": "./dist/evm.mjs",
+  "types": "./dist/evm.d.ts",
   "scripts": {
     "build": "yarn typechain && tsup",
     "dev": "tsup --watch",

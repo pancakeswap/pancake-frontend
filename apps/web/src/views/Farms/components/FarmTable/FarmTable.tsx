@@ -1,6 +1,5 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 import BigNumber from 'bignumber.js'
@@ -68,7 +67,7 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  let earnings = BIG_ZERO
+  let earnings
   const existingEarnings = new BigNumber(farm.userData.earnings)
 
   if (farm.boosted) {
