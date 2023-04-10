@@ -190,7 +190,6 @@ export default function Home() {
                 <Text fontSize="16px">{t('Volume 24H')}</Text>
                 <Text fontSize="32px">
                   <MonoSpace>
-                    {' '}
                     {formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 2)}
                   </MonoSpace>
                 </Text>
