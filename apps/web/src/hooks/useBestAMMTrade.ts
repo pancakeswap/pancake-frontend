@@ -52,27 +52,34 @@ interface Options {
 }
 
 interface useBestAMMTradeOptions extends Options {
-  type?: 'offchain' | 'quoter' | 'all'
+  type?: 'offchain' | 'quoter' | 'api' | 'auto'
 }
+
+const isLowEndDevice =
+  typeof window !== 'undefined' &&
+  !(window.navigator.hardwareConcurrency > 2 && typeof window.requestIdleCallback === 'function')
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
+
   const isOffChainEnabled = useMemo(
-    () =>
-      Boolean(
-        !isWrapping &&
-          typeof window !== 'undefined' &&
-          typeof window.requestIdleCallback === 'function' &&
-          window.navigator.hardwareConcurrency > 2 &&
-          (type === 'offchain' || type === 'all'),
-      ),
+    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
     [type, isWrapping],
   )
-  const isQuoterEnabled = useMemo(
-    () => Boolean(!isWrapping && (type === 'quoter' || type === 'all')),
+
+  const isQuoterEnabled_ = useMemo(
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
     [type, isWrapping],
   )
+
+  const isQuoterAPIEnabled_ = useMemo(
+    () => Boolean(!isWrapping && (type === 'api' || type === 'auto')),
+    [isWrapping, type],
+  )
+
+  const isQuoterAPIEnabled = isQuoterEnabled_ && isLowEndDevice
+  const isQuoterEnabled = isQuoterAPIEnabled_ || (isQuoterEnabled_ && !isLowEndDevice)
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
@@ -80,9 +87,18 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     enabled: Boolean(enabled && isOffChainEnabled),
     autoRevalidate: offChainAutoRevalidate,
   })
+  const apiAutoRevalidate =
+    typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
+
+  const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+    ...params,
+    enabled: Boolean(enabled && isQuoterAPIEnabled),
+    autoRevalidate: apiAutoRevalidate,
+  })
+
   const quoterAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoterApi({
+  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
     ...params,
     enabled: Boolean(enabled && isQuoterEnabled),
     autoRevalidate: quoterAutoRevalidate,
@@ -91,27 +107,32 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
-    if (!tradeFromOffchain && !tradeFromQuoter) {
+    const { trade: tradeFromApi } = bestTradeFromQuoterApi
+
+    const quoterTrade = tradeFromApi || tradeFromQuoter
+    const bestTradeFromQuoter_ = isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoter
+
+    if (!tradeFromOffchain && !quoterTrade) {
       return bestTradeFromOffchain
     }
-    if (!tradeFromOffchain || !tradeFromQuoter) {
+    if (!tradeFromOffchain || !quoterTrade) {
       // console.log(
       //   `[BEST Trade] Existing ${tradeFromOffchain ? 'Offchain' : 'Quoter'} trade is used`,
       //   tradeFromOffchain || tradeFromQuoter,
       // )
-      return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter
+      return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter_
     }
-    if (JSBI.greaterThan(JSBI.BigInt(tradeFromQuoter.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
+    if (JSBI.greaterThan(JSBI.BigInt(quoterTrade.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
-      return bestTradeFromQuoter
+      return bestTradeFromQuoter_
     }
 
     if (tradeFromQuoter) {
-      return bestTradeFromQuoter
+      return bestTradeFromQuoter_
     }
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
     return bestTradeFromOffchain
-  }, [bestTradeFromOffchain, bestTradeFromQuoter])
+  }, [bestTradeFromOffchain, bestTradeFromQuoter, bestTradeFromQuoterApi, isQuoterAPIEnabled])
 }
 
 function bestTradeHookFactory({
@@ -185,7 +206,7 @@ function bestTradeHookFactory({
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
           amount.currency.symbol
         } -> ${currency.symbol}, tradeType ${tradeType}`
-        SmartRouter.metric(label)
+        SmartRouter.log(label)
         SmartRouter.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
@@ -210,7 +231,7 @@ function bestTradeHookFactory({
             res.routes,
           )
         }
-        SmartRouter.metric(label, res)
+        SmartRouter.log(label, res)
         return res
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
