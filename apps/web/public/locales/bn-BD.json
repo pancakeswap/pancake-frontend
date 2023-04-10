@@ -2423,5 +2423,8 @@
   "Choose Token Pair": "টোকেন পেয়ার বেছে নিন",
   "Fee Tier": "ফি-এর স্তর",
   "fee tier": "ফি-এর স্তর",
-  "Selected Range": "পরিসর নির্বাচন করুন"
+  "Selected Range": "পরিসর নির্বাচন করুন",
+  "Fees 24H": "Fees 24H",
+  "Tick stats": "Tick stats",
+  "Token%index% Amount": "Token%index% Amount"
 }
