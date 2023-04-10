@@ -144,7 +144,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               </NextLinkFromReactRouter>
               <Flex>
                 <Text mr="8px">
-                  {`${poolData.token0.symbol} / ${poolData.token1.symbol} 
+                  {`${poolData.token0.symbol} / ${poolData.token1.symbol}
                 `}
                   <GreyBadge ml="4px" style={{ display: 'inline-block' }}>
                     {feeTierPercent(poolData.feeTier)}
@@ -231,7 +231,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               <Box p="24px">
                 <Card mb="24px">
                   <AutoColumn padding="16px" gap="md">
-                    <Text>Total Tokens Locked</Text>
+                    <Text>{t('Total Tokens Locked')}</Text>
                     <RowBetween>
                       <RowFixed>
                         <CurrencyLogo address={poolData.token0.address} size="20px" chainName={chainName} />
@@ -253,17 +253,17 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   </AutoColumn>
                 </Card>
                 <AutoColumn gap="4px">
-                  <Text fontWeight={400}>TVL</Text>
+                  <Text fontWeight={400}>{t('TVL')}</Text>
                   <Text fontSize="24px">{formatDollarAmount(poolData.tvlUSD)}</Text>
                   <Percent value={poolData.tvlUSDChange} />
                 </AutoColumn>
                 <AutoColumn gap="4px">
-                  <Text fontWeight={400}>Volume 24h</Text>
+                  <Text fontWeight={400}>{t('Volume 24H')}</Text>
                   <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD)}</Text>
                   <Percent value={poolData.volumeUSDChange} />
                 </AutoColumn>
                 <AutoColumn gap="4px">
-                  <Text fontWeight={400}>24h Fees</Text>
+                  <Text fontWeight={400}>{t('Fees 24H')}</Text>
                   <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD * (poolData.feeTier / 1000000))}</Text>
                 </AutoColumn>
               </Box>
@@ -325,7 +325,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               </Box>
             </Card>
           </ContentLayout>
-          <Heading>Transactions</Heading>
+          <Heading>{t('Transactions')}</Heading>
           {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
         </AutoColumn>
       ) : (

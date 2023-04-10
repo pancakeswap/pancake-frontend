@@ -263,7 +263,7 @@ export abstract class MasterChefV3 {
     }
   }
 
-  private static encodeHarvest(options: HarvestOptions) {
+  public static encodeHarvest(options: HarvestOptions) {
     const { tokenId, to } = options
 
     const calldatas: string[] = []

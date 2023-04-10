@@ -204,15 +204,28 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
   return result
 }
 
+const V3_POOL_ADDRESS_CACHE = new Map<string, string>()
+
 function getV3PoolAddress(currencyA: Currency, currencyB: Currency, fee: FeeAmount) {
+  const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+    ? [currencyA, currencyB]
+    : [currencyB, currencyA]
+  const poolAddressCacheKey = [token0.chainId, token0.symbol, token1.symbol, fee].join('_')
+  const cached = V3_POOL_ADDRESS_CACHE.get(poolAddressCacheKey)
+  if (cached) {
+    return cached
+  }
+
   const deployerAddress = DEPLOYER_ADDRESSES[currencyA.chainId as ChainId]
   if (!deployerAddress) {
     return ''
   }
-  return computePoolAddress({
+  const address = computePoolAddress({
     deployerAddress,
     tokenA: currencyA.wrapped,
     tokenB: currencyB.wrapped,
     fee,
   })
+  V3_POOL_ADDRESS_CACHE.set(poolAddressCacheKey, address)
+  return address
 }

@@ -49,7 +49,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     v2Swap,
     v3Swap,
     stableSwap,
-    type: 'all',
+    type: 'auto',
   })
 
   return {

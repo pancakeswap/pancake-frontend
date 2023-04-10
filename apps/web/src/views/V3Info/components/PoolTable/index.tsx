@@ -1,9 +1,9 @@
-import { ArrowBackIcon, ArrowForwardIcon, Box, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
+import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -14,6 +14,7 @@ import { formatDollarAmount } from '../../utils/numbers'
 import { GreyBadge } from '../Card'
 import Loader, { LoadingRows } from '../Loader'
 import { RowFixed } from '../Row'
+import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -37,7 +38,7 @@ const ResponsiveGrid = styled.div`
   }
 
   @media screen and (max-width: 480px) {
-    grid-template-columns: 2.5fr repeat(1, 1fr);
+    grid-template-columns: 1.3fr 1fr;
     > *:nth-child(1) {
       display: none;
     }
@@ -136,12 +137,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
     [sortDirection, sortField],
   )
 
-  const arrow = useCallback(
-    (field: string) => {
-      return sortField === field ? (!sortDirection ? '↑' : '↓') : ''
-    },
-    [sortDirection, sortField],
-  )
+  const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
   if (!poolDatas) {
     return <Loader />
@@ -153,17 +149,49 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
         <>
           <ResponsiveGrid>
             <Text color={theme.colors.textSubtle}>#</Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.feeTier)}>
-              Pool {arrow(SORT_FIELD.feeTier)}
-            </Text>
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
-              TVL {arrow(SORT_FIELD.tvlUSD)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Pool
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.feeTier)}
+                className={getSortFieldClassName(SORT_FIELD.feeTier)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
-              Volume 24H {arrow(SORT_FIELD.volumeUSD)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              TVL
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+                className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}>
-              Volume 7D {arrow(SORT_FIELD.volumeUSDWeek)}
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Volume 24H
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.volumeUSD)}
+                className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
+              >
+                <SortArrowIcon />
+              </SortButton>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle}>
+              Volume 7D
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}
+                className={getSortFieldClassName(SORT_FIELD.volumeUSDWeek)}
+              >
+                <SortArrowIcon />
+              </SortButton>
             </ClickableColumnHeader>
           </ResponsiveGrid>
           <Break />
