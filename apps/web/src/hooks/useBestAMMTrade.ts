@@ -78,8 +78,8 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [isWrapping, type],
   )
 
-  const isQuoterAPIEnabled = isQuoterEnabled_ && isLowEndDevice
-  const isQuoterEnabled = isQuoterAPIEnabled_ || (isQuoterEnabled_ && !isLowEndDevice)
+  const isQuoterAPIEnabled = isLowEndDevice && isQuoterAPIEnabled_
+  const isQuoterEnabled = isQuoterEnabled_ && !isQuoterAPIEnabled
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
@@ -127,9 +127,6 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
       return bestTradeFromQuoter_
     }
 
-    if (tradeFromQuoter) {
-      return bestTradeFromQuoter_
-    }
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
     return bestTradeFromOffchain
   }, [bestTradeFromOffchain, bestTradeFromQuoter, bestTradeFromQuoterApi, isQuoterAPIEnabled])
@@ -167,7 +164,7 @@ function bestTradeHookFactory({
     } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
-    const deferQuotient = useDebounce(deferQuotientRaw, 300)
+    const deferQuotient = useDebounce(deferQuotientRaw, 500)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []
