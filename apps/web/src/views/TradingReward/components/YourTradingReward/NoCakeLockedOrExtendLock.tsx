@@ -4,10 +4,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { add } from 'date-fns'
 import { Token } from '@pancakeswap/sdk'
+import { multiplyPriceByAmount } from 'utils/prices'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Actions from 'views/TradingReward/components/YourTradingReward/Actions'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useUserCampaignInfo'
@@ -76,7 +77,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = useCakeBusdPrice()
   const {
     stakingToken,
     userData: { stakingTokenBalance },
@@ -106,7 +107,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   }, [isLockPosition, data.thresholdLockedAmount, balance.cakeAsNumberBalance])
 
   const cakePrice = useMemo(
-    () => new BigNumber(cakePriceBusd).times(needAddedCakeAmount).toNumber(),
+    () => multiplyPriceByAmount(cakePriceBusd, needAddedCakeAmount),
     [cakePriceBusd, needAddedCakeAmount],
   )
 

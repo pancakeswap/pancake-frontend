@@ -1,12 +1,13 @@
+import { useMemo } from 'react'
 import { Box, Flex, Card, Text, Balance, InfoIcon } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useMemo } from 'react'
+import { multiplyPriceByAmount } from 'utils/prices'
 
 interface CurrentPeriodProps {
   currentCanClaim: string
@@ -24,13 +25,10 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     currentLanguage: { locale },
   } = useTranslation()
   const timeUntil = getTimePeriods(campaignClaimTime)
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = useCakeBusdPrice()
 
   const cakeBalance = useMemo(() => getBalanceNumber(new BigNumber(currentCanClaim)), [currentCanClaim])
-  const rewardInBusd = useMemo(
-    () => new BigNumber(cakeBalance).times(cakePriceBusd).toNumber(),
-    [cakeBalance, cakePriceBusd],
-  )
+  const rewardInBusd = useMemo(() => multiplyPriceByAmount(cakePriceBusd, cakeBalance), [cakeBalance, cakePriceBusd])
 
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
