@@ -47,7 +47,7 @@ import {
   useTokenPriceData,
   useTokenTransactions,
 } from '../hooks'
-import { currentTimestamp } from '../utils'
+import { currentTimestamp, notEmpty } from '../utils'
 import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
@@ -96,6 +96,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const poolDatas = usePoolsData(poolsForToken ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
+
+  const formatPoolData = useMemo(() => {
+    return poolDatas?.filter(notEmpty)?.filter((d) => d.tvlUSD > 1) ?? []
+  }, [poolDatas])
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {
@@ -325,7 +329,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
             </ContentLayout>
             <Heading>Pools</Heading>
             <DarkGreyCard>
-              <PoolTable poolDatas={poolDatas ?? []} />
+              <PoolTable poolDatas={formatPoolData ?? []} />
             </DarkGreyCard>
             <Heading>Transactions</Heading>
             <DarkGreyCard>
