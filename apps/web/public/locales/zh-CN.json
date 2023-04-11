@@ -2391,7 +2391,7 @@
   "The previous V2 exchange is where a number of iconic, popular assets are traded.": "之前的 V2 兑换是许多标志性热门资产的交易场所。",
   "Recommend leaving this on to ensure backward compatibility.": "建议保留此项以确保向后兼容性。",
   "StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.": "稳定币兑换为稳定或锚定资产提供了更高的效率，并降低了交易费用。",
-  "If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.": "如果通过做市商进行交易，它将不再通过任何传统的 AMM DEX 糖浆池。",
+  "If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.": "如果通过做市商进行交易，它将不会通过任何传统去中心化交易所的自动化做市商流动性池。",
   "Multihops enables token swaps through multiple hops between serval pools to achieve the best deal.": "多跳支持通过在服务糖浆池之间多跳进行代币交换，以实现最佳交易。",
   "Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.": "关闭此功能将仅允许直接交换，这可能会导致滑点提高甚至资金损失。",
   "Split routing enables token swaps to be broken into multiple routes to achieve the best deal.": "拆分路由使代币交换能够被分成多条路由以实现最佳交易。",
