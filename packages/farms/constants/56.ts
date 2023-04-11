@@ -44,6 +44,23 @@ export const farmsV3 = [
     lpAddress: '0x36696169C63e42cd08ce11f5deeBbCeBae652050',
     feeAmount: FeeAmount.LOW,
   },
+  // keep those farms on top
+  {
+    pid: 20,
+    lpSymbol: 'ETH-ankrETH LP',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.ankrETH,
+    lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.ankrETH, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 21,
+    lpSymbol: 'ankrBNB-BNB LP',
+    token: bscTokens.ankrbnb,
+    quoteToken: bscTokens.bnb,
+    lpAddress: '0xCf57DaADfBE05A04440C502967cE5209F64747eB',
+    feeAmount: FeeAmount.LOW,
+  },
   {
     pid: 6,
     lpSymbol: 'BTCB-BUSD LP',
@@ -155,22 +172,6 @@ export const farmsV3 = [
     quoteToken: bscTokens.wbnb,
     lpAddress: '0x62F0546cBcd684F7C394D8549119e072527C41Bc',
     feeAmount: FeeAmount.MEDIUM,
-  },
-  {
-    pid: 20,
-    lpSymbol: 'ETH-ankrETH LP',
-    token: bscTokens.eth,
-    quoteToken: bscTokens.ankrETH,
-    lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.ankrETH, FeeAmount.LOW),
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 21,
-    lpSymbol: 'ankrBNB-BNB LP',
-    token: bscTokens.ankrbnb,
-    quoteToken: bscTokens.bnb,
-    lpAddress: Pool.getAddress(bscTokens.ankrbnb, bscTokens.bnb, FeeAmount.LOW),
-    feeAmount: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 
