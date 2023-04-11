@@ -140,7 +140,7 @@ export default function Home() {
         </Card>
         <Card>
           <BarChart
-            height={220}
+            height={200}
             minHeight={332}
             data={
               volumeWindow === VolumeWindow.monthly

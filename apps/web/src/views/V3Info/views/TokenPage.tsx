@@ -1,9 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import {
+  Alert,
   AutoColumn,
   Box,
   Breadcrumbs,
+  Button,
   Card,
   Flex,
   Heading,
@@ -13,12 +15,13 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
-  Alert,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -33,7 +36,6 @@ import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 import BarChart from '../components/BarChart/alt'
-import { DarkGreyCard } from '../components/Card'
 import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import PoolTable from '../components/PoolTable'
@@ -98,7 +100,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
   const formatPoolData = useMemo(() => {
-    return poolDatas?.filter(notEmpty)?.filter((d) => d.tvlUSD > 1 || d.tvlUSD < 0) ?? []
+    return poolDatas?.filter(notEmpty) ?? []
   }, [poolDatas])
 
   const formattedTvlData = useMemo(() => {
@@ -151,6 +153,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const chainName = useGetChainName()
+  const { chainId } = useActiveChainId()
 
   // watchlist
   // const [savedTokens, addSavedToken] = useSavedTokens()
@@ -227,14 +230,16 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   </Flex>
                 </Flex>
                 <Flex>
-                  {/* <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
+                  <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
                     <Button mr="8px" variant="secondary">
                       {t('Add Liquidity')}
                     </Button>
                   </NextLinkFromReactRouter>
-                  <NextLinkFromReactRouter to={`/swap?outputCurrency=${address}&chainId=${multiChainId[chainName]}`}>
+                  <NextLinkFromReactRouter
+                    to={`/swap?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
+                  >
                     <Button>{t('Trade')}</Button>
-                  </NextLinkFromReactRouter> */}
+                  </NextLinkFromReactRouter>
                 </Flex>
               </Flex>
             </AutoColumn>
@@ -303,7 +308,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     )}
                   </Text>
                 </Flex>
-                <Box px="24px" height="320px">
+                <Box height="320px">
                   {view === ChartView.TVL ? (
                     <LineChart
                       data={formattedTvlData}
@@ -331,7 +336,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
               </Card>
             </ContentLayout>
             <Heading>Pools</Heading>
-            <PoolTable poolDatas={formatPoolData ?? []} />
+            <PoolTable poolDatas={formatPoolData} />
             <Heading>Transactions</Heading>
             {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
           </AutoColumn>
