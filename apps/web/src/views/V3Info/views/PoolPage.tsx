@@ -13,9 +13,11 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
+  Button,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
@@ -212,20 +214,24 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   </TokenButton>
                 </NextLinkFromReactRouter>
               </Flex>
-              {/* <Flex>
+              <Flex>
                 <NextLinkFromReactRouter
-                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${CHAIN_QUERY_NAME[chainId]}`}
+                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${
+                    CHAIN_QUERY_NAME[multiChainId[chainName]]
+                  }`}
                 >
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
                   </Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter
-                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}&chainId=${multiChainId[chainName]}`}
+                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}&chain=${
+                    CHAIN_QUERY_NAME[multiChainId[chainName]]
+                  }`}
                 >
                   <Button>{t('Trade')}</Button>
                 </NextLinkFromReactRouter>
-              </Flex> */}
+              </Flex>
             </Flex>
           </Flex>
           <ContentLayout>
@@ -294,7 +300,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')} (UTC)`}
                 </Text>
               </Flex>
-              <Box px="24px" height="380px">
+              <Box height="380px">
                 {view === ChartView.VOL ? (
                   <BarChart
                     data={formattedVolumeData}

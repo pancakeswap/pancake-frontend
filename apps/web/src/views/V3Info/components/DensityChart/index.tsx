@@ -101,12 +101,12 @@ export default function DensityChart({ address }: DensityChartProps) {
   const [formattedData, setFormattedData] = useState<DensityChartEntry[] | undefined>()
   useEffect(() => {
     async function formatData() {
-      if (poolTickData) {
+      if (poolTickData && poolData?.feeTier) {
         const newData = await Promise.all(
           poolTickData.ticksProcessed.map(async (t: TickProcessed, i) => {
             const active = t.tickIdx === poolTickData.activeTickIdx
             const sqrtPriceX96 = TickMath.getSqrtRatioAtTick(t.tickIdx)
-            const feeAmount: FeeAmount = poolData.feeTier
+            const feeAmount: FeeAmount = poolData?.feeTier
             const mockTicks = [
               {
                 index: t.tickIdx - TICK_SPACINGS[feeAmount],
