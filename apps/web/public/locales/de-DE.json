@@ -2426,5 +2426,8 @@
   "Selected Range": "Ausgewählte Spanne",
   "Fees 24H": "Fees 24H",
   "Tick stats": "Tick stats",
-  "Token%index% Amount": "Token%index% Amount"
+  "Token%index% Amount": "Token%index% Amount",
+  "V3": "V3",
+  "V2": "V2",
+  "TVL is currently too low to represent the data correctly": "TVL is currently too low to represent the data correctly"
 }
