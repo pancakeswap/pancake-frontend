@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react";
+import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Price, JSBI } from "@pancakeswap/sdk";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
 import { format } from "d3";
@@ -87,6 +88,7 @@ export function LiquidityChartRangeInput({
   onRightRangeInput?: (typedValue: string) => void;
   interactive?: boolean;
 }) {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // Get token color
@@ -161,13 +163,13 @@ export function LiquidityChartRangeInput({
   return (
     <AutoColumn gap="md" style={{ minHeight: "200px", width: "100%", marginBottom: "16px" }}>
       {isUninitialized ? (
-        <InfoBox message="Your position will appear here." icon={<BunnyKnownPlaceholder />} />
+        <InfoBox message={t("Your position will appear here.")} icon={<BunnyKnownPlaceholder />} />
       ) : isLoading ? (
         <InfoBox icon={<Loader size="40px" stroke={theme.colors.text} />} />
       ) : error ? (
-        <InfoBox message="Liquidity data not available." icon={<ChartDisableIcon width="40px" />} />
+        <InfoBox message={t("Liquidity data not available.")} icon={<ChartDisableIcon width="40px" />} />
       ) : !formattedData || formattedData.length === 0 || !price ? (
-        <InfoBox message="There is no liquidity data." icon={<LineGraphIcon width="40px" />} />
+        <InfoBox message={t("There is no liquidity data.")} icon={<LineGraphIcon width="40px" />} />
       ) : (
         <ChartWrapper>
           <Chart

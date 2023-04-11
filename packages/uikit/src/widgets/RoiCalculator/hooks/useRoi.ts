@@ -1,5 +1,4 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
-import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { FeeAmount, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { formatFraction } from "@pancakeswap/utils/formatFractions";
 import { useMemo } from "react";
@@ -60,25 +59,43 @@ export function useRoi({
   });
   const fee = useMemo(() => decimalToFraction(reward), [reward]);
 
-  const { rate: cakeRate, reward: cakeReward } = useRate({
+  const {
+    apr: cakeAprInPercent,
+    apy: cakeApy,
+    reward: originalCakeReward,
+  } = useRate({
+    interest: (cakeApr && principal && ((cakeApr / 100) * principal) / 365) ?? 0,
+    principal,
+    compoundEvery,
+    compoundOn,
+    stakeFor,
+  });
+
+  const {
+    rate: cakeRate,
+    reward: cakeReward,
+    apr: editCakeAprInPercent,
+    apy: editCakeApy,
+  } = useRate({
     interest: (editCakeApr && principal && ((editCakeApr / 100) * principal) / 365) ?? 0,
     principal,
     compoundEvery,
     compoundOn,
     stakeFor,
   });
-  const cakeApy = cakeApr && getApy(cakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
-  const editCakeApy = editCakeApr && getApy(editCakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
 
   return {
     fee,
     rate,
     apr,
     apy,
+    cakeApr: cakeAprInPercent,
+    editCakeApr: editCakeAprInPercent,
     cakeApy,
     editCakeApy,
     cakeRate,
     cakeReward,
+    originalCakeReward,
   };
 }
 

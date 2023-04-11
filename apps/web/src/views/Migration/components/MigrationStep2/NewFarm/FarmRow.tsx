@@ -54,7 +54,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
 }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
 
@@ -71,7 +71,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <Farm {...farm} />
-          {isLargerScreen || !expanded ? (
+          {isLargerScreen || expanded ? (
             <>
               <Staked {...staked} stakedBalance={stakedBalance} />
               <AprCell {...apr} />
@@ -81,7 +81,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
           {isLargerScreen && <Liquidity {...liquidity} />}
         </LeftContainer>
         <RightContainer>
-          {isLargerScreen || !expanded ? (
+          {isLargerScreen || expanded ? (
             <StakeButtonCells>
               <StakeButton {...farm} lpLabel={lpLabel} displayApr={apr.value} />
             </StakeButtonCells>

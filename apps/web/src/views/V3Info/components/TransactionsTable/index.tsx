@@ -1,16 +1,19 @@
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGetChainName } from 'state/info/hooks'
 import styled from 'styled-components'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
 import { getEtherscanLink, shortenAddress } from '../../utils'
 import { formatTime } from '../../utils/date'
-import { formatAmount, formatDollarAmount } from '../../utils/numbers'
+import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
 import { RowFixed } from '../Row'
+import { SortButton, useSortFieldClassName } from '../SortButton'
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -79,17 +82,17 @@ const SORT_FIELD = {
   amountToken1: 'amountToken1',
 }
 
-const DataRow = ({ transaction, color }: { transaction: Transaction; color?: string }) => {
+const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) => {
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const { chainId } = useActiveChainId()
-  const { theme } = useTheme()
+  const chainName = useGetChainName()
 
   return (
     <ResponsiveGrid>
-      <LinkExternal href={getEtherscanLink(chainId, transaction.hash, 'transaction')}>
+      <LinkExternal href={getEtherscanLink(chainId, transaction.hash, 'transaction')} isBscScan={chainName === 'BSC'}>
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
             ? `Add ${transaction.token0Symbol} and ${transaction.token1Symbol}`
@@ -100,16 +103,13 @@ const DataRow = ({ transaction, color }: { transaction: Transaction; color?: str
       </LinkExternal>
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs0)}  ${transaction.token0Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatDollarAmount(abs0)}  ${transaction.token0Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatDollarAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <LinkExternal
-          href={getEtherscanLink(chainId, transaction.sender, 'address')}
-          style={{ color: color ?? theme.colors.primary }}
-        >
+        <LinkExternal href={getEtherscanLink(chainId, transaction.sender, 'address')} isBscScan={chainName === 'BSC'}>
           {shortenAddress(transaction.sender)}
         </LinkExternal>
       </Text>
@@ -121,12 +121,12 @@ const DataRow = ({ transaction, color }: { transaction: Transaction; color?: str
 export default function TransactionTable({
   transactions,
   maxItems = 10,
-  color,
 }: {
   transactions: Transaction[]
   maxItems?: number
-  color?: string
 }) {
+  const { t } = useTranslation()
+
   // theming
   const { theme } = useTheme()
 
@@ -138,16 +138,33 @@ export default function TransactionTable({
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
 
+  const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
+  const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
+
   useEffect(() => {
     let extraPages = 1
-    if (transactions.length % maxItems === 0) {
+    if (
+      transactions.filter((x) => {
+        return txFilter === undefined || x.type === txFilter
+      }).length %
+        maxItems ===
+      0
+    ) {
       extraPages = 0
     }
-    setMaxPage(Math.floor(transactions.length / maxItems) + extraPages)
-  }, [maxItems, transactions])
+    setMaxPage(
+      Math.floor(
+        transactions.filter((x) => {
+          return txFilter === undefined || x.type === txFilter
+        }).length / maxItems,
+      ) + extraPages,
+    )
+  }, [maxItems, transactions, txFilter])
 
-  // filter on txn type
-  const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
+  const onFilterChange = useCallback((filter: TransactionType | undefined) => {
+    setPage(1)
+    setTxFilter(filter)
+  }, [])
 
   const sortedTransactions = useMemo(() => {
     return transactions
@@ -176,13 +193,6 @@ export default function TransactionTable({
     [sortDirection, sortField],
   )
 
-  const arrow = useCallback(
-    (field: string) => {
-      return sortField === field ? (!sortDirection ? '↑' : '↓') : ''
-    },
-    [sortDirection, sortField],
-  )
-
   if (!transactions) {
     return <Loader />
   }
@@ -194,51 +204,91 @@ export default function TransactionTable({
           <RowFixed>
             <SortText
               onClick={() => {
-                setTxFilter(undefined)
+                onFilterChange(undefined)
               }}
               active={txFilter === undefined}
             >
-              All
+              {t('All')}
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.SWAP)
+                onFilterChange(TransactionType.SWAP)
               }}
               active={txFilter === TransactionType.SWAP}
             >
-              Swaps
+              {t('Swaps')}
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.MINT)
+                onFilterChange(TransactionType.MINT)
               }}
               active={txFilter === TransactionType.MINT}
             >
-              Adds
+              {t('Adds')}
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.BURN)
+                onFilterChange(TransactionType.BURN)
               }}
               active={txFilter === TransactionType.BURN}
             >
-              Removes
+              {t('Removes')}
             </SortText>
           </RowFixed>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountUSD)}>
-            Total Value {arrow(SORT_FIELD.amountUSD)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            {t('Total Value')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountUSD)}
+              className={getSortFieldClassName(SORT_FIELD.amountUSD)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken0)}>
-            Token Amount {arrow(SORT_FIELD.amountToken0)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            {t('Token%index% Amount', { index: '0' })}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountToken0)}
+              className={getSortFieldClassName(SORT_FIELD.amountToken0)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken1)}>
-            Token Amount {arrow(SORT_FIELD.amountToken1)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            {t('Token%index% Amount', { index: '1' })}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountToken1)}
+              className={getSortFieldClassName(SORT_FIELD.amountToken1)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.sender)}>
-            Account {arrow(SORT_FIELD.sender)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            {t('Account')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.sender)}
+              className={getSortFieldClassName(SORT_FIELD.sender)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.timestamp)}>
-            Time {arrow(SORT_FIELD.timestamp)}
+          <ClickableColumnHeader color={theme.colors.textSubtle}>
+            {`${t('Time')} `}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.timestamp)}
+              className={getSortFieldClassName(SORT_FIELD.timestamp)}
+            >
+              <SortArrowIcon />
+            </SortButton>
           </ClickableColumnHeader>
         </ResponsiveGrid>
         <Break />
@@ -248,14 +298,14 @@ export default function TransactionTable({
             return (
               // eslint-disable-next-line react/no-array-index-key
               <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
-                <DataRow transaction={d} color={color} />
+                <DataRow transaction={d} />
                 <Break />
               </React.Fragment>
             )
           }
           return null
         })}
-        {sortedTransactions.length === 0 ? <Text>No Transactions</Text> : undefined}
+        {sortedTransactions.length === 0 ? <Text>{t('No Transactions')}</Text> : undefined}
         <PageButtons>
           <Box
             onClick={() => {

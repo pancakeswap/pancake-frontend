@@ -42,11 +42,11 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const chainPath = useMultiChainPath()
   const { address: account } = useAccount()
 
-  const isPools = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/pools`
+  const isPairs = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/pairs`
   const isTokens = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/tokens`
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
   let activeIndex = 0
-  if (isPools) {
+  if (isPairs) {
     activeIndex = 1
   }
   if (isTokens) {
@@ -60,8 +60,8 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}${stableSwapQuery}`}>
               {t('Overview')}
             </ButtonMenuItem>
-            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}/pools${stableSwapQuery}`}>
-              {t('Pools')}
+            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}/pairs${stableSwapQuery}`}>
+              {t('Pairs')}
             </ButtonMenuItem>
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}/tokens${stableSwapQuery}`}>
               {t('Tokens')}
@@ -90,7 +90,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
     (chianId: number) => {
       const chainPath = multiChainPaths[chianId]
       if (activeIndex === 0) router.push(`/${v3InfoPath}${chainPath}`)
-      if (activeIndex === 1) router.push(`/${v3InfoPath}${chainPath}/pools`)
+      if (activeIndex === 1) router.push(`/${v3InfoPath}${chainPath}/pairs`)
       if (activeIndex === 2) router.push(`/${v3InfoPath}${chainPath}/tokens`)
       switchNetworkAsync(chianId)
     },

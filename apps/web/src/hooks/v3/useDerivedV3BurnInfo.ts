@@ -65,7 +65,7 @@ export function useDerivedV3BurnInfo(
   const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, position?.tokenId, asWETH)
 
   const outOfRange =
-    pool && position ? pool.tickCurrent < position.tickLower || pool.tickCurrent > position.tickUpper : false
+    pool && position ? pool.tickCurrent < position.tickLower || pool.tickCurrent >= position.tickUpper : false
 
   let error: ReactNode | undefined
   if (!account) {

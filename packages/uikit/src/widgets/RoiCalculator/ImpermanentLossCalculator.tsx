@@ -1,10 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo, memo } from "react";
 import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { priceToClosestTick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
+import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
 import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
-import { formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { Section } from "./Section";
 import { Box, Row, AutoColumn, Toggle, Button, RowBetween, DoubleCurrencyLogo, Flex } from "../../components";
@@ -18,7 +17,7 @@ import {
   CurrencyLogoDisplay,
   CardTag,
 } from "./AssetCard";
-import { getTokenAmountsFromDepositUsd, floatToPercent, toToken0Price } from "./utils";
+import { floatToPercent, toToken0Price } from "./utils";
 import { TwoColumns } from "./TwoColumns";
 
 const Container = styled(Box)`
@@ -36,26 +35,20 @@ interface Props {
   tickUpper?: number;
   sqrtRatioX96?: JSBI;
   lpReward?: number;
+  cakeReward?: number;
   isFarm?: boolean;
   cakePrice?: string;
-  cakeApy?: number;
-  usdValue?: string;
   setEditCakePrice: (cakePrice: number) => void;
 }
 
-const getCakeAssetsByApy = (
-  chainId: number,
-  cakePrice_: string,
-  cakeApy = 0,
-  usdValue = "0",
-  modifiedCakePrice?: string
-) => {
+const getCakeAssetsByReward = (chainId: number, cakePrice_: string, cakeReward = 0, modifiedCakePrice?: string) => {
   const cakePrice = modifiedCakePrice || cakePrice_;
   return {
     currency: CAKE[chainId as keyof typeof CAKE],
-    amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice_ : Infinity,
+    amount: Number.isFinite(cakeReward) ? +cakeReward / +cakePrice_ : Infinity,
     price: cakePrice,
-    value: Number.isFinite(cakeApy) ? ((+usdValue * cakeApy) / 100) * (+cakePrice / +cakePrice_) : Infinity,
+    value: Number.isFinite(cakeReward) ? +cakeReward * (+cakePrice / +cakePrice_) : Infinity,
+    key: "CAKE_ASSET_BY_APY",
   };
 };
 
@@ -68,10 +61,9 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
   currencyAUsdPrice,
   currencyBUsdPrice,
   lpReward = 0,
+  cakeReward = 0,
   isFarm,
   cakePrice = "0",
-  cakeApy,
-  usdValue,
   setEditCakePrice,
 }: Props) {
   const { t } = useTranslation();
@@ -100,13 +92,24 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
         : undefined,
     [valueA, currencyA, valueB, currencyB, currencyAUsdPrice, currencyBUsdPrice]
   );
+  const liquidity = useMemo(
+    () =>
+      amountA &&
+      amountB &&
+      typeof tickUpper === "number" &&
+      typeof tickLower === "number" &&
+      sqrtRatioX96 &&
+      tickLower < tickUpper &&
+      FeeCalculator.getLiquidityByAmountsAndPrice({ amountA, amountB, tickUpper, tickLower, sqrtRatioX96 }),
+    [amountA, amountB, tickUpper, tickLower, sqrtRatioX96]
+  );
 
   const exitAssets = useMemo<Asset[] | undefined>(
     () =>
       assets && isFarm && currencyA && currencyA.chainId in CAKE && cakePrice
-        ? [...assets, getCakeAssetsByApy(currencyA.chainId, cakePrice, cakeApy, usdValue)]
+        ? [...assets, getCakeAssetsByReward(currencyA.chainId, cakePrice, cakeReward)]
         : assets,
-    [assets, cakeApy, cakePrice, currencyA, isFarm, usdValue]
+    [assets, cakeReward, cakePrice, currencyA, isFarm]
   );
 
   const [entry, setEntry] = useState<Asset[] | undefined>(assets);
@@ -165,6 +168,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
   const getPriceAdjustedAssets = useCallback(
     (newAssets?: Asset[]) => {
       if (
+        !liquidity ||
         !amountA ||
         !amountB ||
         !newAssets ||
@@ -187,22 +191,16 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
       if (!token0Price) {
         return newAssets;
       }
-      const currentTick = priceToClosestTick(token0Price);
-      const newSqrtRatioX96 = TickMath.getSqrtRatioAtTick(currentTick);
-      const priceLower = tickToPrice(assetCurrencyA.wrapped, assetCurrencyB.wrapped, tickLower);
-      const priceUpper = tickToPrice(assetCurrencyA.wrapped, assetCurrencyB.wrapped, tickUpper);
-      const isToken0Price = assetCurrencyA.wrapped.sortsBefore(assetCurrencyB.wrapped);
-      const [adjustedAmountA, adjustedAmountB] = getTokenAmountsFromDepositUsd({
-        sqrtRatioX96: newSqrtRatioX96,
-        usdValue: usdValue !== undefined ? String(usdValue) : undefined,
-        price: formatPrice(token0Price, 6),
-        priceLower: formatPrice(isToken0Price ? priceLower : priceLower.invert(), 6),
-        priceUpper: formatPrice(isToken0Price ? priceUpper : priceUpper.invert(), 6),
+      const newSqrtRatioX96 = encodeSqrtRatioX96(token0Price.numerator, token0Price.denominator);
+      const [adjustedAmountA, adjustedAmountB] = FeeCalculator.getAmountsByLiquidityAndPrice({
         currencyA: assetCurrencyA,
         currencyB: assetCurrencyB,
-        currencyAUsdPrice: parseFloat(priceA),
-        currencyBUsdPrice: parseFloat(priceB),
+        liquidity,
+        sqrtRatioX96: newSqrtRatioX96,
+        tickUpper,
+        tickLower,
       });
+
       if (!adjustedAmountA || !adjustedAmountB) {
         return newAssets;
       }
@@ -215,7 +213,10 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
       if (maybeAssetCake) {
         adjusted = [
           ...adjusted,
-          getCakeAssetsByApy(assetCurrencyA.chainId, cakePrice, cakeApy, usdValue, String(maybeAssetCake.price)),
+          {
+            ...maybeAssetCake,
+            ...getCakeAssetsByReward(assetCurrencyA.chainId, cakePrice, cakeReward, String(maybeAssetCake.price)),
+          },
         ];
 
         setEditCakePrice(+maybeAssetCake.price);
@@ -225,7 +226,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     },
     // setEditCakePrice is not a dependency because it's setState
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakeApy, cakePrice]
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, cakeReward, cakePrice, liquidity]
   );
 
   const updateEntry = useCallback(
@@ -238,17 +239,32 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     [getPriceAdjustedAssets]
   );
 
+  const syncNewAssets = useCallback(
+    (newAssets: Asset[], currentAssets?: Asset[]) =>
+      // Recalculate if user has edited one of the prices
+      currentAssets?.some((asset) => asset.priceChanged)
+        ? getPriceAdjustedAssets(
+            // Use underlaying amounts from the new liquidity and only use the price from user
+            currentAssets.map((asset, i) =>
+              asset.priceChanged ? { ...asset, ...newAssets[i], price: asset.price } : newAssets[i]
+            )
+          )
+        : // If user doesn't edit any of the prices, then update the whole liquidity including token prices
+          newAssets,
+    [getPriceAdjustedAssets]
+  );
+
   useEffect(() => {
     if (assets) {
-      setEntry((s) => (s ? getPriceAdjustedAssets(s) : assets));
+      setEntry((s) => syncNewAssets(assets, s));
     }
-  }, [assets, getPriceAdjustedAssets]);
+  }, [assets, syncNewAssets]);
 
   useEffect(() => {
     if (exitAssets) {
-      setExit((s) => (s ? getPriceAdjustedAssets(s) : exitAssets));
+      setExit((s) => syncNewAssets(exitAssets, s));
     }
-  }, [exitAssets, getPriceAdjustedAssets]);
+  }, [exitAssets, syncNewAssets]);
 
   if (!assets?.length) {
     return null;

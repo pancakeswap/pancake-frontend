@@ -16,11 +16,10 @@ const DEFAULT_HEIGHT = 300
 const Wrapper = styled(Card)`
   width: 100%;
   height: ${DEFAULT_HEIGHT}px;
-  padding: 1rem;
-  padding-right: 2rem;
   display: flex;
   background-color: transparent;
   flex-direction: column;
+  padding: 1rem;
   > * {
     font-size: 1rem;
   }
@@ -126,17 +125,25 @@ const Chart = ({
                   setValue(props.payload.value)
                 }
                 const formattedTime = dayjs(props.payload.time).format('MMM D')
-                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D YYYY')
+                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D, YYYY')
                 const formattedTimePlusWeek = dayjs(props.payload.time).add(1, 'week')
                 const formattedTimePlusMonth = dayjs(props.payload.time).add(1, 'month')
 
                 if (setLabel && label !== formattedTime) {
                   if (activeWindow === VolumeWindow.weekly) {
                     const isCurrent = formattedTimePlusWeek.isAfter(now)
-                    setLabel(`${formattedTime}-${isCurrent ? 'current' : formattedTimePlusWeek.format('MMM D, YYYY')}`)
+                    setLabel(
+                      `${formattedTime}-${
+                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
+                      }`,
+                    )
                   } else if (activeWindow === VolumeWindow.monthly) {
                     const isCurrent = formattedTimePlusMonth.isAfter(now)
-                    setLabel(`${formattedTime}-${isCurrent ? 'current' : formattedTimePlusMonth.format('MMM D, YYYY')}`)
+                    setLabel(
+                      `${formattedTime}-${
+                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusMonth.format('MMM D, YYYY')
+                      }`,
+                    )
                   } else {
                     setLabel(formattedTimeDaily)
                   }

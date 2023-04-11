@@ -1,0 +1,22 @@
+compatibility_date = "2022-05-20"
+kv_namespaces = [
+  {binding = "POOLS", id = "29d3e7e6c3c44fa7bf7174ee2b7b1295", preview_id = "c808d98df0444ae1a680bc84a029baaa"},
+]
+main = "src/index.ts"
+name = "routing-dev"
+node_compat = true
+
+[env.production]
+kv_namespaces = [
+  {binding = "POOLS", id = "5261431ca6b74625b08ffe288b86a2a5"},
+]
+name = "routing"
+
+
+# - AXIOM_TOKEN
+# The necessary secrets are:
+# - ETH_NODE
+# - GOERLI_NODE
+# - BSC_NODE
+# - BSC_TESTNET_NODE
+# Run `echo <VALUE> | wrangler secret put <NAME>` for each of these

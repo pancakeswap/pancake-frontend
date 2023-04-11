@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -28,6 +29,7 @@ export function StableV3Selector({
   currencyB: Currency
   handleFeePoolSelect: HandleFeePoolSelectFn
 }) {
+  const { t } = useTranslation()
   const [showOptions, setShowOptions] = useState(false)
   const { chainId } = useActiveWeb3React()
 
@@ -91,7 +93,10 @@ export function StableV3Selector({
           FEE_AMOUNT_DETAIL[FeeAmount.LOWEST]?.supportedChains.includes(chainId) && (
             <AutoColumn>
               <Text>
-                V3 LP {FEE_AMOUNT_DETAIL[feeAmount]?.label ? `- ${FEE_AMOUNT_DETAIL[feeAmount]?.label}% fee tier` : ''}
+                V3 LP{' '}
+                {FEE_AMOUNT_DETAIL[feeAmount]?.label
+                  ? `- ${FEE_AMOUNT_DETAIL[feeAmount]?.label}% ${t('fee tier')}`
+                  : ''}
               </Text>
             </AutoColumn>
           )

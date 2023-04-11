@@ -11,14 +11,44 @@ import {
 import Image from 'next/legacy/image'
 import styled, { css, keyframes } from 'styled-components'
 import * as S from './Styled'
-import { v3LaunchBg, v3LaunchBgMobile, v3LaunchBunny, v3LaunchBunnyMobile } from './images'
+import {
+  v3LaunchBg,
+  v3LaunchBgMobile,
+  v3LaunchBunny,
+  v3LaunchBunnyMobile,
+  v3LaunchBnb,
+  v3LaunchEth,
+  v3LaunchFlag,
+} from './images'
 
-const flyingAnim = keyframes`
+const flyingAnimBnb = keyframes`
   from {
     transform: translate(0,  0px);
   }
   50% {
     transform: translate(-5px, 5px);
+  }
+  to {
+    transform: translate(0, 0px);
+  }
+`
+const flyingAnimETH = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(0px, 10px);
+  }
+  to {
+    transform: translate(0, 0px);
+  }
+`
+const flyingAnimFlag = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(2px, 2px);
   }
   to {
     transform: translate(0, 0px);
@@ -79,6 +109,7 @@ const RightWrapper = styled.div`
   height: 100%;
   right: 0;
   top: 0;
+  z-index: 1;
   ${({ theme }) => theme.mediaQueries.sm} {
     right: 1px;
     bottom: -18px;
@@ -94,6 +125,7 @@ const RightWrapper = styled.div`
     right: 0px;
     bottom: 0;
     overflow: hidden;
+    z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
       top: 0px;
     }
@@ -102,16 +134,43 @@ const RightWrapper = styled.div`
     // v3LaunchBunny
     position: absolute !important;
     top: -20px;
-    right: -40px;
-    animation: ${flyingAnim} 7.5s ease-in-out infinite;
+    right: -25px;
+    z-index: 3;
     ${({ theme }) => theme.mediaQueries.sm} {
-      top: -40px;
+      top: -31px;
       right: 153px;
     }
     ${({ theme }) => theme.mediaQueries.lg} {
       display: block !important;
-      animation: ${flyingAnim} 7.5s ease-in-out infinite;
     }
+  }
+  > span:nth-child(3) {
+    // v3LaunchBnb
+    position: absolute !important;
+    top: 0px;
+    z-index: 3;
+    right: 0px;
+    animation: ${flyingAnimBnb} 12.5s ease-in-out infinite;
+  }
+  > span:nth-child(4) {
+    // v3LaunchEth
+    display: none !important;
+    position: absolute !important;
+    z-index: 3;
+    top: 0px;
+    right: 423px;
+    animation: ${flyingAnimETH} 10.5s ease-in-out infinite 1.5s;
+    ${({ theme }) => theme.mediaQueries.md} {
+      display: block !important;
+    }
+  }
+  > span:nth-child(5) {
+    // v3LaunchEth
+    position: absolute !important;
+    z-index: 1;
+    top: 0px;
+    right: 72px;
+    animation: ${flyingAnimFlag} 5.5s ease-in-out infinite 1.5s;
   }
 `
 const TitleWrapper = styled(Flex)`
@@ -174,7 +233,7 @@ const V3LaunchBanner = () => {
       }}
     >
       <S.Inner>
-        <S.LeftWrapper>
+        <S.LeftWrapper style={{ zIndex: 2 }}>
           <TextBox>
             <StyledSubheading data-text={t(`Ev3ryone's Favourite D3X`)}>
               {t(`Ev3ryone's Favourite D3X`)}
@@ -207,6 +266,9 @@ const V3LaunchBanner = () => {
           ) : (
             <Image src={v3LaunchBunny} alt="v3LaunchBunny" width={221} height={254} placeholder="blur" />
           )}
+          {!isMobile && <Image src={v3LaunchBnb} alt="v3LaunchBnb" width={204} height={123} placeholder="blur" />}
+          {!isMobile && <Image src={v3LaunchEth} alt="v3LaunchEth" width={208} height={172} placeholder="blur" />}
+          {!isMobile && <Image src={v3LaunchFlag} alt="v3LaunchFlag" width={150} height={180} placeholder="blur" />}
         </RightWrapper>
       </S.Inner>
     </S.Wrapper>

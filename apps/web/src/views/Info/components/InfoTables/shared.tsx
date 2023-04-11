@@ -3,6 +3,9 @@ import { Text, Flex } from '@pancakeswap/uikit'
 
 export const ClickableColumnHeader = styled(Text)`
   cursor: pointer;
+  display: flex;
+  justify-content: start;
+  gap: 5px;
 `
 
 export const TableWrapper = styled(Flex)`
@@ -11,8 +14,8 @@ export const TableWrapper = styled(Flex)`
   flex-direction: column;
   gap: 16px;
   background-color: ${({ theme }) => theme.card.background};
-  border-radius: ${({ theme }) => theme.radii[0]};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: ${({ theme }) => theme.radii.card};
   ${({ theme }) => theme.mediaQueries.md} {
     border-radius: ${({ theme }) => theme.radii.card};
   }

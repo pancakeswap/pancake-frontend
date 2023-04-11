@@ -1,5 +1,5 @@
 import { BigintIsh, JSBI } from '@pancakeswap/sdk'
-import { Interface } from '@ethersproject/abi'
+import { Abi, Address } from 'abitype'
 
 export type ProviderConfig = {
   /**
@@ -9,8 +9,8 @@ export type ProviderConfig = {
 }
 
 export type CallSameFunctionOnMultipleContractsParams<TFunctionParams, TAdditionalConfig = any> = {
-  addresses: string[]
-  contractInterface: Interface
+  addresses: Address[]
+  abi: Abi
   functionName: string
   functionParams?: TFunctionParams
   providerConfig?: ProviderConfig
@@ -18,8 +18,8 @@ export type CallSameFunctionOnMultipleContractsParams<TFunctionParams, TAddition
 }
 
 export type CallSameFunctionOnContractWithMultipleParams<TFunctionParams, TAdditionalConfig = any> = {
-  address: string
-  contractInterface: Interface
+  address: Address
+  abi: Abi
   functionName: string
   functionParams: TFunctionParams[]
   providerConfig?: ProviderConfig
@@ -27,8 +27,8 @@ export type CallSameFunctionOnContractWithMultipleParams<TFunctionParams, TAddit
 }
 
 export type CallMultipleFunctionsOnSameContractParams<TFunctionParams, TAdditionalConfig = any> = {
-  address: string
-  contractInterface: Interface
+  address: Address
+  abi: Abi
   functionNames: string[]
   functionParams?: TFunctionParams[]
   providerConfig?: ProviderConfig

@@ -1,4 +1,5 @@
 import { Currency, Price } from "@pancakeswap/sdk";
+import { useTranslation } from "@pancakeswap/localization";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
 import { memo } from "react";
 
@@ -38,6 +39,8 @@ export const RangeSelector = memo(function RangeSelector({
   feeAmount?: number;
   ticksAtLimit: { [bound in Bound]?: boolean | undefined };
 }) {
+  const { t } = useTranslation();
+
   const tokenA = (currencyA ?? undefined)?.wrapped;
   const tokenB = (currencyB ?? undefined)?.wrapped;
   const isSorted = tokenA && tokenB && tokenA.sortsBefore(tokenB);
@@ -57,7 +60,7 @@ export const RangeSelector = memo(function RangeSelector({
         incrementDisabled={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER]}
         feeAmount={feeAmount}
         label={leftPrice ? `${currencyB?.symbol}` : "-"}
-        title="Min Price"
+        title={t("Min Price")}
         tokenA={currencyA?.symbol}
         tokenB={currencyB?.symbol}
       />
@@ -73,7 +76,7 @@ export const RangeSelector = memo(function RangeSelector({
         label={rightPrice ? `${currencyB?.symbol}` : "-"}
         tokenA={currencyA?.symbol}
         tokenB={currencyB?.symbol}
-        title="Max Price"
+        title={t("Max Price")}
       />
     </FlexGap>
   );

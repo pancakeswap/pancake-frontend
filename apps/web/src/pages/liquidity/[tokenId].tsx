@@ -367,7 +367,7 @@ export default function PoolPage() {
         <AutoRow justifyContent="space-between" mb="8px">
           <Flex>
             <CurrencyLogo currency={feeValueUpper?.currency} size="24px" />
-            <Text color="primary" ml="4px">
+            <Text color="textSubtle" ml="4px">
               {feeValueUpper?.currency?.symbol}
             </Text>
           </Flex>
@@ -376,7 +376,7 @@ export default function PoolPage() {
         <AutoRow justifyContent="space-between">
           <Flex>
             <CurrencyLogo currency={feeValueLower?.currency} size="24px" />
-            <Text color="primary" ml="4px">
+            <Text color="textSubtle" ml="4px">
               {feeValueLower?.currency?.symbol}
             </Text>
           </Flex>
@@ -452,7 +452,8 @@ export default function PoolPage() {
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
-                      V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
+                      V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}%{' '}
+                      {t('fee tier')}
                     </Text>
                     {isMobile && (
                       <Flex>
@@ -520,7 +521,7 @@ export default function PoolPage() {
                   style={{ gap: '16px' }}
                   flexWrap={['wrap', 'wrap', 'nowrap']}
                 >
-                  <Box width="100%" mr="16px" mb={['8px', '8px', 0]} position="relative">
+                  <Box width="100%" mb={['8px', '8px', 0]} position="relative">
                     <Flex position="absolute" right={0}>
                       <AprCalculator
                         allowApply={false}
@@ -558,7 +559,7 @@ export default function PoolPage() {
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
-                          <Text mr="4px">
+                          <Text small mr="4px">
                             <FormattedCurrencyAmount currencyAmount={positionValueUpper} />
                           </Text>
                         </Flex>
@@ -571,7 +572,7 @@ export default function PoolPage() {
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
-                          <Text mr="4px">
+                          <Text small mr="4px">
                             <FormattedCurrencyAmount currencyAmount={positionValueLower} />
                           </Text>
                         </Flex>
@@ -916,8 +917,9 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow gap="8px">
-          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
-          <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+            <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+          </LinkExternal>
         </AutoRow>
         <Text>{positionHistoryTypeText[type]}</Text>
         <AutoColumn gap="4px">
@@ -970,8 +972,9 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center" gap="8px">
-        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
-        <Text ellipsis>{date.toLocaleString()}</Text>
+        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <Text ellipsis>{date.toLocaleString()}</Text>
+        </LinkExternal>
       </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>
       <AutoColumn gap="4px">

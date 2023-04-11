@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import { SelectButton } from 'components/SelectButton'
 import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
 import { TOTAL_FEE } from 'config/constants/info'
@@ -16,6 +17,7 @@ export function V2Selector({
   selectorType: SELECTOR_TYPE
   handleFeePoolSelect: HandleFeePoolSelectFn
 }) {
+  const { t } = useTranslation()
   const [showOptions, setShowOptions] = useState(false)
 
   return (
@@ -26,7 +28,9 @@ export function V2Selector({
         selectorType === SELECTOR_TYPE.STABLE ? (
           <Text>StableSwap LP</Text>
         ) : selectorType === SELECTOR_TYPE.V2 ? (
-          <Text>V2 LP - {(TOTAL_FEE * 100).toFixed(2)} fee tier</Text>
+          <Text>
+            V2 LP - {(TOTAL_FEE * 100).toFixed(2)} {t('fee tier')}
+          </Text>
         ) : (
           <Text>V3 LP</Text>
         )

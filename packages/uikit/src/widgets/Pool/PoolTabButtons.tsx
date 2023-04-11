@@ -97,8 +97,8 @@ const PoolTabButtons = ({
   return (
     <ViewControls>
       {viewModeToggle}
-      {stakedOnlySwitch}
       {liveOrFinishedSwitch}
+      {stakedOnlySwitch}
     </ViewControls>
   );
 };

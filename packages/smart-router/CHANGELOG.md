@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 2.0.0
+
+### Major Changes
+
+- dd6cecab1: Move to viem
+
 ## 1.0.0
 
 ### Minor Changes

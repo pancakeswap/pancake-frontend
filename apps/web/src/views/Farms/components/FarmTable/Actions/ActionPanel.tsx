@@ -182,7 +182,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const bsc = getBlockExploreLink(lpAddress, 'address', token.chainId)
 
   const infoUrl = useMemo(() => {
-    return `/info/v3${multiChainPaths[token.chainId]}/pools/${lpAddress}?chain=${CHAIN_QUERY_NAME[token.chainId]}`
+    return `/info/v3${multiChainPaths[token.chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[token.chainId]}`
   }, [lpAddress, token.chainId])
 
   const { account } = useActiveWeb3React()

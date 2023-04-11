@@ -1,9 +1,10 @@
 import { gql, GraphQLClient } from 'graphql-request'
 
+import { Block } from 'state/info/types'
 import { PoolData, TokenData } from '../../types'
 import { escapeRegExp, notEmpty } from '../../utils'
-import { fetchedTokenDatas } from '../token/tokenData'
 import { fetchPoolDatas } from '../pool/poolData'
+import { fetchedTokenDatas } from '../token/tokenData'
 
 export const TOKEN_SEARCH = gql`
   query tokens($value: String, $id: String) {
@@ -130,6 +131,7 @@ interface PoolRes {
 export async function fetchSearchResults(
   client: GraphQLClient,
   value: string,
+  blocks: Block[],
 ): Promise<{
   tokens: TokenData[]
   pools: PoolData[]
@@ -156,9 +158,8 @@ export async function fetchSearchResults(
       ...pools.asAddress.map((d) => d.id),
     ]
 
-    const tokensData = await fetchedTokenDatas(client, tokenAddress, [])
-    const poolsData = await fetchPoolDatas(client, poolAddress, [])
-
+    const tokensData = await fetchedTokenDatas(client, tokenAddress, blocks)
+    const poolsData = await fetchPoolDatas(client, poolAddress, blocks)
     const filteredSortedTokens = Object.values(tokensData.data)
       .filter(notEmpty)
       .filter((t) => {

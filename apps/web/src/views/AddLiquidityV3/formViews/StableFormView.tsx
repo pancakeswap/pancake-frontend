@@ -136,7 +136,7 @@ export default function StableFormView({
     <>
       <AutoColumn>
         <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-          Deposit Amount
+          {t('Deposit Amount')}
         </Text>
 
         <CurrencyInputPanel
@@ -185,7 +185,7 @@ export default function StableFormView({
         <AutoColumn>
           <Box>
             <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-              Pool Reserves
+              {t('Pool Reserves')}
             </Text>
             <Text fontSize="24px" fontWeight={500} mb="8px">
               $
@@ -226,7 +226,7 @@ export default function StableFormView({
             </LightGreyCard>
 
             <AutoRow justifyContent="space-between" mb="4px">
-              <Text color="textSubtle">Price: </Text>
+              <Text color="textSubtle">{t('Price')}: </Text>
 
               <Text>
                 {price?.toSignificant(6) ?? '-'}{' '}
@@ -238,13 +238,13 @@ export default function StableFormView({
             </AutoRow>
 
             <AutoRow justifyContent="space-between" mb="4px">
-              <Text color="textSubtle">Your share in pool: </Text>
+              <Text color="textSubtle">{t('Your share in pool')}: </Text>
 
               <Text>{poolTokenPercentage ? poolTokenPercentage?.toSignificant(4) : '-'}%</Text>
             </AutoRow>
 
             <AutoRow justifyContent="space-between" mb="4px">
-              <Text color="textSubtle">Fee rate: </Text>
+              <Text color="textSubtle">{t('Fee rate')}: </Text>
 
               <Text>{stableLpFee ? BIG_ONE_HUNDRED.times(stableLpFee).toNumber() : '-'}%</Text>
             </AutoRow>

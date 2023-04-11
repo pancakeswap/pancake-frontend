@@ -4,12 +4,13 @@ import { useDeferredValue, useMemo } from 'react'
 import { SmartRouter, PoolType, QuoteProvider, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { isDesktop } from 'react-device-detect'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { serializeCurrency, serializePool, parseTrade } from 'utils/routingApi'
+import { viemProviders } from 'utils/viem'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -52,52 +53,84 @@ interface Options {
 }
 
 interface useBestAMMTradeOptions extends Options {
-  type?: 'offchain' | 'quoter' | 'all'
+  type?: 'offchain' | 'quoter' | 'auto'
 }
 
+const isLowEndDevice = typeof window !== 'undefined' && !(isDesktop && typeof window.requestIdleCallback === 'function')
+
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
-  const { amount, baseCurrency, currency } = params
+  const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
+
   const isOffChainEnabled = useMemo(
-    () =>
-      !isWrapping &&
-      typeof window !== 'undefined' &&
-      typeof window.requestIdleCallback === 'function' &&
-      (type === 'offchain' || type === 'all'),
+    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
     [type, isWrapping],
   )
-  const isQuoterEnabled = useMemo(() => !isWrapping && (type === 'quoter' || type === 'all'), [type, isWrapping])
 
+  // const isQuoterEnabled = useMemo(
+  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
+  //   [type, isWrapping],
+  // )
+  const isQuoterEnabled = useMemo(
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
+    [type, isWrapping],
+  )
+
+  const isQuoterAPIEnabled = false
+  // const isQuoterAPIEnabled = useMemo(
+  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
+  //   [isWrapping, type],
+  // )
+
+  const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
     ...params,
-    enabled: isOffChainEnabled,
-    autoRevalidate: isOffChainEnabled,
+    enabled: Boolean(enabled && isOffChainEnabled),
+    autoRevalidate: offChainAutoRevalidate,
   })
+  const apiAutoRevalidate =
+    typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
+
+  const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+    ...params,
+    enabled: Boolean(enabled && isQuoterAPIEnabled),
+    autoRevalidate: apiAutoRevalidate,
+  })
+
+  const quoterAutoRevalidate =
+    typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
   const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
     ...params,
-    enabled: isQuoterEnabled,
-    autoRevalidate: isQuoterEnabled && !isOffChainEnabled,
+    enabled: Boolean(enabled && isQuoterEnabled),
+    autoRevalidate: quoterAutoRevalidate,
   })
+
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
-    if (!tradeFromOffchain && !tradeFromQuoter) {
+    const { trade: tradeFromApi } = bestTradeFromQuoterApi
+
+    const quoterTrade = tradeFromApi || tradeFromQuoter
+    const bestTradeFromQuoter_ = isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoter
+
+    if (!tradeFromOffchain && !quoterTrade) {
       return bestTradeFromOffchain
     }
-    if (!tradeFromOffchain || !tradeFromQuoter) {
+    if (!tradeFromOffchain || !quoterTrade) {
       // console.log(
       //   `[BEST Trade] Existing ${tradeFromOffchain ? 'Offchain' : 'Quoter'} trade is used`,
       //   tradeFromOffchain || tradeFromQuoter,
       // )
-      return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter
+      return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter_
     }
-    if (JSBI.greaterThan(JSBI.BigInt(tradeFromQuoter.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
+    if (JSBI.greaterThan(JSBI.BigInt(quoterTrade.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
-      return bestTradeFromQuoter
+      return bestTradeFromQuoter_
     }
+
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
     return bestTradeFromOffchain
-  }, [bestTradeFromOffchain, bestTradeFromQuoter])
+  }, [bestTradeFromOffchain, bestTradeFromQuoter, bestTradeFromQuoterApi, isQuoterAPIEnabled])
 }
 
 function bestTradeHookFactory({
@@ -129,10 +162,14 @@ function bestTradeHookFactory({
       pools: candidatePools,
       loading,
       syncing,
-    } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
+    } = useCommonPools(baseCurrency || amount?.currency, currency, {
+      blockNumber,
+      allowInconsistentBlock: true,
+      enabled,
+    })
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
-    const deferQuotient = useDebounce(deferQuotientRaw, 300)
+    const deferQuotient = useDebounce(deferQuotientRaw, 500)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []
@@ -171,7 +208,7 @@ function bestTradeHookFactory({
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
           amount.currency.symbol
         } -> ${currency.symbol}, tradeType ${tradeType}`
-        SmartRouter.metric(label)
+        SmartRouter.log(label)
         SmartRouter.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
@@ -196,7 +233,7 @@ function bestTradeHookFactory({
             res.routes,
           )
         }
-        SmartRouter.metric(label, res)
+        SmartRouter.log(label, res)
         return res
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
@@ -231,7 +268,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemProviders }),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
@@ -239,7 +276,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemProviders }),
   getBestTrade: async (
     amount,
     currency,
@@ -251,17 +288,18 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       blockNumber: blockNum,
       protocols: allowedPoolTypes,
     })
-    const serverRes = await fetch('/api/routing', {
+
+    const serverRes = await fetch(`${process.env.NEXT_PUBLIC_ROUTING_API}/v0/quote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         chainId: currency.chainId,
-        currency: serializeCurrency(currency),
+        currency: SmartRouter.Transformer.serializeCurrency(currency),
         tradeType,
         amount: {
-          currency: serializeCurrency(amount.currency),
+          currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
           value: amount.quotient.toString(),
         },
         gasPriceWei: gasPriceWei?.toString(),
@@ -269,11 +307,11 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
         maxSplits,
         blockNumber: blockNum.toString(),
         poolTypes: allowedPoolTypes,
-        candidatePools: candidatePools.map(serializePool),
+        candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
       }),
     })
     const serializedRes = await serverRes.json()
-    return parseTrade(currency.chainId, serializedRes)
+    return SmartRouter.Transformer.parseTrade(currency.chainId, serializedRes)
   },
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
