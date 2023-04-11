@@ -1,4 +1,5 @@
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Spinner, Flex } from '@pancakeswap/uikit'
 import { FeeAmount, Pool, TickMath, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -212,7 +213,11 @@ export default function DensityChart({ address }: DensityChartProps) {
   }, [address])
 
   if (!poolTickData) {
-    return <Loader />
+    return (
+      <Flex mt="80px" justifyContent="center">
+        <Spinner />
+      </Flex>
+    )
   }
 
   const CustomBar = ({
@@ -276,7 +281,9 @@ export default function DensityChart({ address }: DensityChartProps) {
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <Loader />
+        <Flex mt="80px" justifyContent="center">
+          <Spinner />
+        </Flex>
       )}
       <ControlsWrapper>
         <ActionButton disabled={false} onClick={handleZoomOut}>
