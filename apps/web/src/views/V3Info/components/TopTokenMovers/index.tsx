@@ -4,9 +4,10 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import Percent from 'views/Info/components/Percent'
-import { v3InfoPath } from '../../constants'
+import { v3InfoPath, TOKEN_HIDE } from '../../constants'
 import { useTopTokensData } from '../../hooks'
 import { TokenData } from '../../types'
 
@@ -65,6 +66,7 @@ const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
 const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
   const allTokens = useTopTokensData()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const topPriceIncrease = useMemo(() => {
     if (allTokens)
@@ -75,8 +77,9 @@ const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
         })
         .slice(0, Math.min(20, Object.values(allTokens).length))
         .filter((d) => d?.exists)
+        .filter((x) => !!x && !TOKEN_HIDE[chainId].includes(x.address))
     return []
-  }, [allTokens])
+  }, [allTokens, chainId])
 
   const increaseRef = useRef<HTMLDivElement>(null)
   const moveLeftRef = useRef<boolean>(true)
