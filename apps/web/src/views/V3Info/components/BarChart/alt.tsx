@@ -126,7 +126,7 @@ const Chart = ({
                   setValue(props.payload.value)
                 }
                 const formattedTime = dayjs(props.payload.time).format('MMM D')
-                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D YYYY')
+                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D, YYYY')
                 const formattedTimePlusWeek = dayjs(props.payload.time).add(1, 'week')
                 const formattedTimePlusMonth = dayjs(props.payload.time).add(1, 'month')
 

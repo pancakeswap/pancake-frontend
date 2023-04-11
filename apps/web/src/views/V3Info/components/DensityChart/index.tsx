@@ -1,4 +1,5 @@
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Spinner, Flex } from '@pancakeswap/uikit'
 import { FeeAmount, Pool, TickMath, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -9,7 +10,6 @@ import { MAX_UINT128 } from '../../constants'
 import { TickProcessed } from '../../data/pool/tickData'
 import { usePoolData, usePoolTickData } from '../../hooks'
 import { DensityChartEntry, PoolData } from '../../types'
-import Loader from '../Loader'
 import { CurrentPriceLabel } from './CurrentPriceLabel'
 import CustomToolTip from './CustomToolTip'
 
@@ -212,7 +212,11 @@ export default function DensityChart({ address }: DensityChartProps) {
   }, [address])
 
   if (!poolTickData) {
-    return <Loader />
+    return (
+      <Flex mt="80px" justifyContent="center">
+        <Spinner />
+      </Flex>
+    )
   }
 
   const CustomBar = ({
@@ -251,7 +255,7 @@ export default function DensityChart({ address }: DensityChartProps) {
           >
             <Tooltip
               content={(props) => (
-                <CustomToolTip chartProps={props} poolData={poolData} currentPrice={poolData.token0Price} />
+                <CustomToolTip chartProps={props} poolData={poolData} currentPrice={poolData?.token0Price ?? 0} />
               )}
             />
             <XAxis reversed tick={false} />
@@ -276,7 +280,9 @@ export default function DensityChart({ address }: DensityChartProps) {
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <Loader />
+        <Flex mt="80px" justifyContent="center">
+          <Spinner />
+        </Flex>
       )}
       <ControlsWrapper>
         <ActionButton disabled={false} onClick={handleZoomOut}>

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
+import dayjs from 'dayjs'
 import {
   AutoColumn,
   Box,
@@ -68,6 +69,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   // const { chainId } = useActiveChainId()
   const { isXs, isSm } = useMatchBreakpoints()
 
+  const now = dayjs()
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -289,13 +291,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   ? ''
                   : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
                 <Text small color="secondary">
-                  {valueLabel ? (
-                    `${valueLabel} (UTC)`
-                  ) : (
-                    <Text small color="secondary" style={{ opacity: 0 }}>
-                      0
-                    </Text>
-                  )}
+                  {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')} (UTC)`}
                 </Text>
               </Flex>
               <Box px="24px" height="380px">

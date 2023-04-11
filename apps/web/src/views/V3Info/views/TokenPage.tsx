@@ -47,11 +47,11 @@ import {
   useTokenPriceData,
   useTokenTransactions,
 } from '../hooks'
-import { currentTimestamp } from '../utils'
+import { currentTimestamp, notEmpty } from '../utils'
 import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
-const CandleChart = dynamic(() => import('../components/CandleChart'), {
+const CandleChart = dynamic(() => import('../../Info/components/InfoCharts/CandleChart'), {
   ssr: false,
 })
 
@@ -84,9 +84,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   // eslint-disable-next-line no-param-reassign
   address = address.toLowerCase()
   const cmcLink = useCMCLink(address)
-
-  const { theme, isDark } = useTheme()
-  const backgroundColor = theme.colors.background
+  const { isDark } = useTheme()
 
   // scroll on page view
   useEffect(() => {
@@ -98,6 +96,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const poolDatas = usePoolsData(poolsForToken ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
+
+  const formatPoolData = useMemo(() => {
+    return poolDatas?.filter(notEmpty)?.filter((d) => d.tvlUSD > 1) ?? []
+  }, [poolDatas])
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {
@@ -320,19 +322,14 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       setLabel={setValueLabel}
                     />
                   ) : view === ChartView.PRICE ? (
-                    <CandleChart
-                      data={adjustedToCurrent}
-                      setValue={setLatestValue}
-                      setLabel={setValueLabel}
-                      color={backgroundColor}
-                    />
+                    <CandleChart data={adjustedToCurrent} setValue={setLatestValue} setLabel={setValueLabel} />
                   ) : null}
                 </Box>
               </Card>
             </ContentLayout>
             <Heading>Pools</Heading>
             <DarkGreyCard>
-              <PoolTable poolDatas={poolDatas ?? []} />
+              <PoolTable poolDatas={formatPoolData ?? []} />
             </DarkGreyCard>
             <Heading>Transactions</Heading>
             <DarkGreyCard>

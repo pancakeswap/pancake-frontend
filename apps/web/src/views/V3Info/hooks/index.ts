@@ -52,6 +52,7 @@ const DURATION_INTERVAL = {
 const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
   errorRetryInterval: 3000,
+  keepPreviousData: true,
 }
 
 export const useProtocolChartData = (): ChartDayData[] | undefined => {
@@ -83,7 +84,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
     () => fetchTopTransactions(v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data ?? []
+  return data?.filter((d) => d.amountUSD > 0) ?? []
 }
 
 export const useTokenPriceChartData = (
@@ -263,7 +264,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
     () => fetchTokenTransactions(address, v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data
+  return data?.data?.filter((d) => d.amountUSD > 0)
 }
 
 export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks: Block[]) {
@@ -349,7 +350,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
     () => fetchPoolTransactions(address, v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data ?? undefined
+  return data?.data?.filter((d) => d.amountUSD > 0) ?? undefined
 }
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {
