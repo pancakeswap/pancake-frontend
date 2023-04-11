@@ -404,7 +404,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               {t('You will receive')}
             </Text>
             <LightGreyCard>
-              <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
+              <Flex justifyContent="space-between" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={liquidityValue0?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
@@ -413,14 +413,16 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 </Flex>
                 <Flex>
                   <Text small>{formatCurrencyAmount(liquidityValue0, 4, locale)}</Text>
-                  <Text color="textSubtle" ml="4px" small>
-                    {liquidityValue0 && price0
-                      ? `~$${price0.quote(liquidityValue0?.wrapped).toFixed(2, { groupSeparator: ',' })}`
-                      : ''}
-                  </Text>
                 </Flex>
               </Flex>
-              <Flex justifyContent="space-between" as="label" alignItems="center" mb="8px">
+              <Flex justifyContent="flex-end" mb="8px">
+                <Text fontSize="10px" color="textSubtle" ml="4px">
+                  {liquidityValue0 && price0
+                    ? `~$${price0.quote(liquidityValue0?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                    : ''}
+                </Text>
+              </Flex>
+              <Flex justifyContent="space-between" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={liquidityValue1?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
@@ -429,15 +431,17 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 </Flex>
                 <Flex>
                   <Text small>{formatCurrencyAmount(liquidityValue1, 4, locale)}</Text>
-                  <Text color="textSubtle" ml="4px" small>
-                    {liquidityValue1 && price1
-                      ? `~$${price1.quote(liquidityValue1?.wrapped).toFixed(2, { groupSeparator: ',' })}`
-                      : ''}
-                  </Text>
                 </Flex>
               </Flex>
+              <Flex justifyContent="flex-end" mb="8px">
+                <Text fontSize="10px" color="textSubtle" ml="4px">
+                  {liquidityValue1 && price1
+                    ? `~$${price1.quote(liquidityValue1?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                    : ''}
+                </Text>
+              </Flex>
               <Divider />
-              <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
+              <Flex justifyContent="space-between" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={feeValue0?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
@@ -446,14 +450,16 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 </Flex>
                 <Flex>
                   <Text small>{formatCurrencyAmount(feeValue0, 4, locale)}</Text>
-                  <Text color="textSubtle" ml="4px" small>
-                    {feeValue0 && price0
-                      ? `~$${price0.quote(feeValue0?.wrapped).toFixed(2, { groupSeparator: ',' })}`
-                      : ''}
-                  </Text>
                 </Flex>
               </Flex>
-              <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
+              <Flex justifyContent="flex-end" mb="8px">
+                <Text fontSize="10px" color="textSubtle" ml="4px">
+                  {feeValue0 && price0
+                    ? `~$${price0.quote(feeValue0?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                    : ''}
+                </Text>
+              </Flex>
+              <Flex justifyContent="space-between" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={feeValue1?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
@@ -462,12 +468,14 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 </Flex>
                 <Flex>
                   <Text small>{formatCurrencyAmount(feeValue1, 4, locale)}</Text>
-                  <Text color="textSubtle" ml="4px" small>
-                    {feeValue1 && price1
-                      ? `~$${price1.quote(feeValue1?.wrapped).toFixed(2, { groupSeparator: ',' })}`
-                      : ''}
-                  </Text>
                 </Flex>
+              </Flex>
+              <Flex justifyContent="flex-end" mb="8px">
+                <Text fontSize="10px" color="textSubtle" ml="4px">
+                  {feeValue1 && price1
+                    ? `~$${price1.quote(feeValue1?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                    : ''}
+                </Text>
               </Flex>
             </LightGreyCard>
           </AutoColumn>

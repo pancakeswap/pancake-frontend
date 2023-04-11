@@ -91,12 +91,14 @@ export const PositionPreview = ({
               <Text mr="8px">
                 <FormattedCurrencyAmount currencyAmount={position.amount0} />
               </Text>
-              <Text color="textSubtle" ml="4px" small>
+            </RowFixed>
+            <RowBetween justifyContent="flex-end">
+              <Text fontSize="10px" color="textSubtle" ml="4px" mr="8px">
                 {position.amount0 && price0
                   ? `~$${price0.quote(position.amount0?.wrapped).toFixed(2, { groupSeparator: ',' })}`
                   : ''}
               </Text>
-            </RowFixed>
+            </RowBetween>
           </RowBetween>
           <RowBetween>
             <RowFixed>
@@ -107,12 +109,14 @@ export const PositionPreview = ({
               <Text mr="8px">
                 <FormattedCurrencyAmount currencyAmount={position.amount1} />
               </Text>
-              <Text color="textSubtle" ml="4px" small>
+            </RowFixed>
+            <RowBetween justifyContent="flex-end">
+              <Text fontSize="10px" color="textSubtle" ml="4px" mr="8px">
                 {position.amount1 && price1
                   ? `~$${price1.quote(position.amount1?.wrapped).toFixed(2, { groupSeparator: ',' })}`
                   : ''}
               </Text>
-            </RowFixed>
+            </RowBetween>
           </RowBetween>
           <Divider />
           <RowBetween>
