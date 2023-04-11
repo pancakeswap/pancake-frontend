@@ -1,6 +1,6 @@
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 import { bscTokens } from '@pancakeswap/tokens'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { CAKE_BNB_LP_MAINNET } from './common'
 
 export const farmsV3 = [
@@ -155,6 +155,22 @@ export const farmsV3 = [
     quoteToken: bscTokens.wbnb,
     lpAddress: '0x62F0546cBcd684F7C394D8549119e072527C41Bc',
     feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 20,
+    lpSymbol: 'ETH-ankrETH LP',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.ankrETH,
+    lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.ankrETH, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 21,
+    lpSymbol: 'ankrBNB-BNB LP',
+    token: bscTokens.ankrbnb,
+    quoteToken: bscTokens.bnb,
+    lpAddress: Pool.getAddress(bscTokens.ankrbnb, bscTokens.bnb, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 
