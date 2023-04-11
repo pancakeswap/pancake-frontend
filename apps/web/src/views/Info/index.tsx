@@ -32,21 +32,23 @@ export const InfoPageLayout = ({ children }) => {
 
   return (
     <>
-      {chainName === 'BSC' && (
-        <SubMenuItems
-          items={[
-            {
-              label: t('Swap'),
-              href: '/info',
-            },
-            {
-              label: t('StableSwap'),
-              href: '/info?type=stableSwap',
-            },
-          ]}
-          activeItem={isStableSwap ? '/info?type=stableSwap' : '/info'}
-        />
-      )}
+      <SubMenuItems
+        items={[
+          {
+            label: t('V3'),
+            href: '/info/v3',
+          },
+          {
+            label: t('V2'),
+            href: '/info',
+          },
+          chainName === 'BSC' && {
+            label: t('StableSwap'),
+            href: '/info?type=stableSwap',
+          },
+        ]}
+        activeItem={isStableSwap ? '/info?type=stableSwap' : '/info'}
+      />
 
       <InfoNav isStableSwap={isStableSwap} />
       {children}
