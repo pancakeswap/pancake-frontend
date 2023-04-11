@@ -251,7 +251,7 @@ export default function DensityChart({ address }: DensityChartProps) {
           >
             <Tooltip
               content={(props) => (
-                <CustomToolTip chartProps={props} poolData={poolData} currentPrice={poolData.token0Price} />
+                <CustomToolTip chartProps={props} poolData={poolData} currentPrice={poolData?.token0Price ?? 0} />
               )}
             />
             <XAxis reversed tick={false} />
