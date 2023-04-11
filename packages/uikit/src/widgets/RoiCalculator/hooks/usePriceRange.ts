@@ -75,12 +75,12 @@ export function usePriceRange({
   }, [tickSpaceLimits, invertPrice, quoteCurrency, baseCurrency]);
 
   const rightRangeTypedValue = useMemo(
-    () => (invertPrice ? formatPrice(priceLower, 6) : formatPrice(priceUpper, 6)),
+    () => (invertPrice ? formatPrice(priceLower, 18) : formatPrice(priceUpper, 18)),
     [priceLower, priceUpper, invertPrice]
   );
 
   const leftRangeTypedValue = useMemo(
-    () => (invertPrice ? formatPrice(priceUpper, 6) : formatPrice(priceLower, 6)),
+    () => (invertPrice ? formatPrice(priceUpper, 18) : formatPrice(priceLower, 18)),
     [priceLower, priceUpper, invertPrice]
   );
 
