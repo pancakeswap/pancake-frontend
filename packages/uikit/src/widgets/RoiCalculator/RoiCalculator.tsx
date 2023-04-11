@@ -212,13 +212,13 @@ export function RoiCalculator({
 
   const derivedCakeApr = useMemo(() => {
     if (
-      !currencyB ||
+      !amountA ||
+      !amountB ||
       !priceRange?.tickUpper ||
       !priceRange?.tickLower ||
       !sqrtRatioX96 ||
       !props.isFarm ||
-      !cakeAprFactor ||
-      !amountA
+      !cakeAprFactor
     ) {
       return undefined;
     }
@@ -228,9 +228,9 @@ export function RoiCalculator({
     }
 
     try {
-      const positionLiquidity = FeeCalculator.getLiquidityBySingleAmount({
-        amount: amountA,
-        currency: currencyB,
+      const positionLiquidity = FeeCalculator.getLiquidityByAmountsAndPrice({
+        amountA,
+        amountB,
         tickUpper: priceRange?.tickUpper,
         tickLower: priceRange?.tickLower,
         sqrtRatioX96,
@@ -245,7 +245,7 @@ export function RoiCalculator({
       console.error(error, amountA, priceRange, sqrtRatioX96);
       return undefined;
     }
-  }, [currencyB, priceRange, sqrtRatioX96, props.isFarm, cakeAprFactor, amountA, tickCurrent, usdValue]);
+  }, [amountA, amountB, priceRange, sqrtRatioX96, props.isFarm, cakeAprFactor, tickCurrent, usdValue]);
 
   const editedCakeApr =
     derivedCakeApr && typeof cakePriceDiffPercent === "number"
