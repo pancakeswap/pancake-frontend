@@ -10,9 +10,9 @@ const mapping: { [key: number]: string } = {
 export const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId]) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${getAddress(
+      return `/images${token.chainId === ChainId.BSC ? "" : `/${token.chainId}`}/tokens/${getAddress(
         token.address
-      )}/logo.png`;
+      )}.png`;
     }
     return null;
   },
@@ -22,9 +22,7 @@ export const getTokenLogoURL = memoize(
 export const getTokenLogoURLByAddress = memoize(
   (address?: string, chainId?: number) => {
     if (address && chainId && mapping[chainId]) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[chainId]}/assets/${getAddress(
-        address
-      )}/logo.png`;
+      return `/images${chainId === ChainId.BSC ? "" : `/${chainId}`}/tokens/${getAddress(address)}.png`;
     }
     return null;
   },

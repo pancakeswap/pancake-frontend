@@ -118,7 +118,7 @@ const TokenDisplayRow = memo(function TokenDisplayRow({
     <RowBetween>
       <Flex>
         <CurrencyLogo currency={currency} />
-        <Text color="textSubtle" ml="0.25em">
+        <Text color="textSubtle" ml="0.5em">
           {currency.symbol}
         </Text>
       </Flex>
