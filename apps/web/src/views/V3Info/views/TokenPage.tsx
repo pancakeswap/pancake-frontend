@@ -51,7 +51,7 @@ import { currentTimestamp, notEmpty } from '../utils'
 import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
-const CandleChart = dynamic(() => import('../../Info/components/InfoCharts/CandleChart'), {
+const CandleChart = dynamic(() => import('../components/CandleChart'), {
   ssr: false,
 })
 

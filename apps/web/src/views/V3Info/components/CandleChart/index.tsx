@@ -1,3 +1,4 @@
+import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
@@ -140,15 +141,21 @@ const CandleChart = ({
   useEffect(() => {
     if (chartCreated && data && data?.length > 0) {
       const series = chartCreated.addCandlestickSeries({
-        upColor: 'green',
-        downColor: 'red',
-        borderDownColor: 'red',
-        borderUpColor: 'green',
-        wickDownColor: 'red',
-        wickUpColor: 'green',
+        upColor: baseColors.success,
+        downColor: baseColors.failure,
+        borderDownColor: baseColors.failure,
+        borderUpColor: baseColors.success,
+        wickDownColor: baseColors.failure,
+        wickUpColor: baseColors.success,
       })
 
       series.setData(data)
+
+      chartCreated.applyOptions({
+        layout: {
+          textColor: theme.isDark ? darkColors.textSubtle : lightColors.textSubtle,
+        },
+      })
 
       // update the title when hovering on the chart
       chartCreated.subscribeCrosshairMove((param) => {
