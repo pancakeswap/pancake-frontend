@@ -2426,5 +2426,8 @@
   "Selected Range": "Wybrany zakres",
   "Fees 24H": "Prowizje 24H",
   "Tick stats": "Statystyki długu",
-  "Token%index% Amount": "Token%index% Kwota"
+  "Token%index% Amount": "Token%index% Kwota",
+  "V3": "V3",
+  "V2": "V2",
+  "TVL is currently too low to represent the data correctly": "TVL jest obecnie zbyt niska, aby prawidłowo reprezentować dane"
 }
