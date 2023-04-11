@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, Heading, Text, SkeletonV2 } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -52,11 +52,6 @@ export default function Home() {
     setVolumeHover(undefined)
   }, [chainId])
 
-  useEffect(() => {
-    if (volumeHover === undefined && protocolData) {
-      setVolumeHover(protocolData.volumeUSD)
-    }
-  }, [protocolData, volumeHover])
   useEffect(() => {
     if (liquidityHover === undefined && protocolData) {
       setLiquidityHover(protocolData.tvlUSD)
@@ -190,7 +185,9 @@ export default function Home() {
                 <Text fontSize="16px">{t('Volume 24H')}</Text>
                 <Text fontSize="32px">
                   <MonoSpace>
-                    {formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 2)}
+                    {volumeHover
+                      ? formatDollarAmount(volumeHover)
+                      : formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 2)}
                   </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
