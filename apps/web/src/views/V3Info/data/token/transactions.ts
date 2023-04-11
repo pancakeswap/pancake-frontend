@@ -263,6 +263,7 @@ interface TransactionResults {
       }
     }
     owner: string
+    origin: string
     amount0: string
     amount1: string
     amountUSD: string
@@ -283,6 +284,7 @@ interface TransactionResults {
       }
     }
     owner: string
+    origin: string
     amount0: string
     amount1: string
     amountUSD: string
