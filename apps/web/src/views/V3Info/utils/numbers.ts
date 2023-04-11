@@ -36,7 +36,6 @@ export const formatAmount = (num: number | undefined, digits = 2) => {
       abbreviations: {
         million: 'M',
         billion: 'B',
-        thousand: 'K',
         trillion: 'T',
       },
     })

@@ -103,10 +103,10 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
       </LinkExternal>
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs0)}  ${transaction.token0Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatDollarAmount(abs0)}  ${transaction.token0Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatDollarAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
         <LinkExternal href={getEtherscanLink(chainId, transaction.sender, 'address')} isBscScan={chainName === 'BSC'}>
