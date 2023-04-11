@@ -96,9 +96,8 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const poolDatas = usePoolsData(poolsForToken ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
-
   const formatPoolData = useMemo(() => {
-    return poolDatas?.filter(notEmpty)?.filter((d) => d.tvlUSD > 1) ?? []
+    return poolDatas?.filter(notEmpty)?.filter((d) => d.tvlUSD > 1 || d.tvlUSD < 0) ?? []
   }, [poolDatas])
 
   const formattedTvlData = useMemo(() => {
