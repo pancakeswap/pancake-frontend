@@ -180,7 +180,7 @@ const CandleChart = ({
         }
       })
     }
-  }, [chartCreated, color, data, height, setValue, setLabel])
+  }, [chartCreated, color, data, height, setValue, setLabel, theme.isDark])
 
   return (
     <Wrapper minHeight={minHeight}>
