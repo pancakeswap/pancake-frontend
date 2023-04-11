@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Card, Heading, Text, SkeletonV2 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -109,7 +109,7 @@ export default function Home() {
   }, [topPoolsData])
 
   const tvlValue = useMemo(() => {
-    return formatDollarAmount(liquidityHover ?? 0, 2, true)
+    return formatDollarAmount(liquidityHover, 2, true)
   }, [liquidityHover])
 
   return (
@@ -132,7 +132,7 @@ export default function Home() {
               <AutoColumn gap="4px">
                 <Text fontSize="16px">{t('TVL')}</Text>
                 <Text fontSize="32px">
-                  <MonoSpace>{tvlValue} </MonoSpace>
+                  <MonoSpace>{tvlValue}</MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
                   {leftLabel ? <MonoSpace>{leftLabel} (UTC)</MonoSpace> : null}
