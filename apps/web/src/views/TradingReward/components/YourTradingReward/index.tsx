@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
+import { useProfile } from 'state/profile/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useDeserializedPoolByVaultKey, useCakeVault } from 'state/pools/hooks'
@@ -139,27 +140,29 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
 
 interface YourTradingRewardProps {
   incentives: Incentives
-  userCampaignInfoData: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail
+  totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
   incentives,
-  userCampaignInfoData,
+  totalAvailableClaimData,
+  currentUserCampaignInfo,
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { theme } = useTheme()
+  const { profile } = useProfile()
 
   const {
     isQualified,
-    isActive,
     lockEndTime,
     lockStartTime,
     thresholdLockedPeriod,
     thresholdLockedAmount,
-    currentCanClaim,
+    canClaim,
     totalVolume,
-  } = userCampaignInfoData ?? {}
+  } = currentUserCampaignInfo ?? {}
 
   useCakeVaultPool()
 
@@ -185,20 +188,21 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const showBackgroundColor = useMemo(() => !account || true, [account])
 
   const showNoCakeLockedOrExtendLock = useMemo(() => {
-    return account && isActive && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
-  }, [account, isActive, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
+    return account && profile.isActive && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
+  }, [account, profile, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
 
   const isClaimable = useMemo(() => {
-    return account && isQualified
-  }, [account, isQualified])
+    return account && profile.isActive && isQualified
+  }, [account, profile, isQualified])
 
   return (
     <StyledBackground showBackgroundColor={showBackgroundColor}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
       {isClaimable ? (
         <ExpiringUnclaim
-          currentCanClaim={currentCanClaim}
+          canClaim={canClaim}
           currentTradingVolume={totalVolume}
+          totalAvailableClaimData={totalAvailableClaimData}
           campaignClaimTime={incentives.campaignClaimTime}
         />
       ) : (
@@ -212,13 +216,13 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
           >
             {!account && <NoConnected />}
-            {account && !isActive && <NoProfile />}
+            {account && !profile.isActive && <NoProfile />}
             {/* <ViewEligiblePairs /> */}
             {showNoCakeLockedOrExtendLock && (
               <NoCakeLockedOrExtendLock
                 pool={pool}
                 userData={userData}
-                data={userCampaignInfoData}
+                data={currentUserCampaignInfo}
                 isLockPosition={isLockPosition}
                 isValidLockDuration={isValidLockDuration}
                 isValidTotalStakedBalance={isValidTotalStakedBalance}

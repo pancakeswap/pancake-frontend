@@ -10,13 +10,13 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 
 interface CurrentPeriodProps {
-  currentCanClaim: string
+  canClaim: string
   currentTradingVolume: number
   campaignClaimTime: number
 }
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
-  currentCanClaim,
+  canClaim,
   currentTradingVolume,
   campaignClaimTime,
 }) => {
@@ -27,7 +27,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   const timeUntil = getTimePeriods(campaignClaimTime)
   const cakePriceBusd = useCakeBusdPrice()
 
-  const cakeBalance = useMemo(() => getBalanceNumber(new BigNumber(currentCanClaim)), [currentCanClaim])
+  const cakeBalance = useMemo(() => getBalanceNumber(new BigNumber(canClaim)), [canClaim])
   const rewardInBusd = useMemo(() => multiplyPriceByAmount(cakePriceBusd, cakeBalance), [cakeBalance, cakePriceBusd])
 
   return (

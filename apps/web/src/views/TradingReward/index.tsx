@@ -31,10 +31,22 @@ const TradingReward = () => {
       ),
     [campaignId, allTradingRewardPairData],
   )
+
   const currentUserCampaignInfo = useMemo(
     () => allUserCampaignInfo.find((campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase()),
     [campaignId, allUserCampaignInfo],
   )
+
+  const totalAvailableClaimData = useMemo(() => {
+    return allUserCampaignInfo.map((item) => {
+      const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
+        (pair) => pair.campaignId === item.campaignId,
+      )
+      // eslint-disable-next-line no-param-reassign
+      item.campaignClaimEndTime = tradingRewardPair.campaignClaimEndTime
+      return item
+    })
+  }, [allTradingRewardPairData, allUserCampaignInfo])
 
   if (!showPage) {
     return null
@@ -43,7 +55,11 @@ const TradingReward = () => {
   return (
     <Box>
       <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
-      <YourTradingReward incentives={currentUserIncentive} userCampaignInfoData={currentUserCampaignInfo} />
+      <YourTradingReward
+        incentives={currentUserIncentive}
+        currentUserCampaignInfo={currentUserCampaignInfo}
+        totalAvailableClaimData={totalAvailableClaimData}
+      />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={currentUserCampaignInfo} />
       <HowToEarn />
       <RewardsBreakdown />

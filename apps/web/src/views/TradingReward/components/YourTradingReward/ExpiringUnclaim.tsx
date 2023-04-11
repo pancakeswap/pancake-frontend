@@ -1,17 +1,20 @@
 import { Flex } from '@pancakeswap/uikit'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
 
 interface ExpiringUnclaimProps {
-  currentCanClaim: string
+  canClaim: string
   currentTradingVolume: number
   campaignClaimTime: number
+  totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
 const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> = ({
-  currentCanClaim,
+  canClaim,
   currentTradingVolume,
   campaignClaimTime,
+  totalAvailableClaimData,
 }) => {
   return (
     <Flex
@@ -22,11 +25,11 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
       flexDirection={['column', 'column', 'column', 'row']}
     >
       <CurrentPeriod
-        currentCanClaim={currentCanClaim}
+        canClaim={canClaim}
         currentTradingVolume={currentTradingVolume}
         campaignClaimTime={campaignClaimTime}
       />
-      <TotalPeriod />
+      <TotalPeriod totalAvailableClaimData={totalAvailableClaimData} />
     </Flex>
   )
 }

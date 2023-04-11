@@ -101,10 +101,10 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
 
   const needAddedCakeAmount = useMemo(() => {
     if (!isLockPosition) {
-      return data.thresholdLockedAmount
+      return data?.thresholdLockedAmount ?? '0'
     }
-    return new BigNumber(data.thresholdLockedAmount).minus(balance.cakeAsNumberBalance).toString()
-  }, [isLockPosition, data.thresholdLockedAmount, balance.cakeAsNumberBalance])
+    return new BigNumber(data?.thresholdLockedAmount ?? 0).minus(balance.cakeAsNumberBalance).toString()
+  }, [isLockPosition, data, balance.cakeAsNumberBalance])
 
   const cakePrice = useMemo(
     () => multiplyPriceByAmount(cakePriceBusd, Number(needAddedCakeAmount)),
@@ -112,7 +112,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   )
 
   const lockWeekDuration = useMemo(
-    () => new BigNumber(data.thresholdLockedPeriod).div(60).div(60).div(24).div(7).toNumber(),
+    () => new BigNumber(data?.thresholdLockedPeriod ?? 0).div(60).div(60).div(24).div(7).toNumber(),
     [data],
   )
 
@@ -143,7 +143,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
             {t(
               'Lock a minimum of %minLockCakeAmount% CAKE for %minLockedWeekDuration% weeks or more to start earning from trades!',
               {
-                minLockCakeAmount: data.thresholdLockedAmount,
+                minLockCakeAmount: data?.thresholdLockedAmount ?? '0',
                 minLockedWeekDuration: lockWeekDuration,
               },
             )}

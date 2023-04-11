@@ -24,8 +24,9 @@ interface UserCampaignInfoResponse {
 
 export interface UserCampaignInfoDetail extends UserCampaignInfoResponse, CampaignIdInfoDetail {
   campaignId: string
-  currentCanClaim: string
+  canClaim: string
   userClaimedIncentives: boolean
+  campaignClaimEndTime?: number
 }
 
 export interface AllUserCampaignInfo {
@@ -69,7 +70,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               },
             ]
 
-            const [currentCanClaim, [userClaimedIncentives]] = await multicallv2({
+            const [canClaim, [userClaimedIncentives]] = await multicallv2({
               abi: tradingRewardABI,
               calls,
               chainId,
@@ -81,7 +82,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               ...userInfoQualification,
               campaignId,
               totalVolume,
-              currentCanClaim: new BigNumber(currentCanClaim.toString()).toJSON(),
+              canClaim: new BigNumber(canClaim.toString()).toJSON(),
               userClaimedIncentives,
             }
           }),
@@ -95,7 +96,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
     },
     { refreshInterval: FAST_INTERVAL },
   )
-  console.log('allUserCampaignInfoData', allUserCampaignInfoData)
+
   return {
     isFetching: isLoading,
     data: allUserCampaignInfoData ?? [],
