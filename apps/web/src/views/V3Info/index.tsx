@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
@@ -10,9 +11,9 @@ import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
 import PoolTable from './components/PoolTable'
 import { RowBetween, RowFixed } from './components/Row'
-import { ChartCardsContainer, MonoSpace, ProtocolWrapper } from './components/shared'
 import TokenTable from './components/TokenTable'
 import TransactionsTable from './components/TransactionsTable'
+import { ChartCardsContainer, MonoSpace, ProtocolWrapper } from './components/shared'
 import {
   useProtocolChartData,
   useProtocolData,
@@ -23,9 +24,9 @@ import {
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
 import { notEmpty } from './utils'
+import { getPercentChange } from './utils/data'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
-import { getPercentChange } from './utils/data'
 
 export default function Home() {
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function Home() {
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
   const [rightLabel, setRightLabel] = useState<string | undefined>()
+  const now = dayjs()
 
   useEffect(() => {
     setLiquidityHover(undefined)
@@ -130,7 +132,7 @@ export default function Home() {
                   <MonoSpace>{tvlValue}</MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  {leftLabel ? <MonoSpace>{leftLabel} (UTC)</MonoSpace> : null}
+                  <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
                 </Text>
               </AutoColumn>
             }
@@ -191,7 +193,7 @@ export default function Home() {
                   </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  {rightLabel ? <MonoSpace>{rightLabel} (UTC)</MonoSpace> : null}
+                  <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
                 </Text>
               </AutoColumn>
             }

@@ -291,7 +291,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   ? ''
                   : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
                 <Text small color="secondary">
-                  {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D YYYY')} (UTC)`}
+                  {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')} (UTC)`}
                 </Text>
               </Flex>
               <Box px="24px" height="380px">
