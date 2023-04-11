@@ -155,8 +155,8 @@ describe('#getEstimatedLPFee', () => {
     const sqrtRatioX96 = encodeSqrtRatioX96(1, 1)
     const mostActiveLiquidity = JSBI.BigInt(900)
 
-    const getLiquidityBySingleAmountSpy = vi
-      .spyOn(FeeCalculator, 'getLiquidityBySingleAmount')
+    const getLiquidityByAmountsAndPriceSpy = vi
+      .spyOn(FeeCalculator, 'getLiquidityByAmountsAndPrice')
       .mockImplementationOnce(() => JSBI.BigInt(100))
     const getLiquidityFromSqrtRatioX96Spy = vi
       .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
@@ -171,7 +171,7 @@ describe('#getEstimatedLPFee', () => {
       mostActiveLiquidity,
       fee: 500,
     })
-    expect(getLiquidityBySingleAmountSpy).toHaveBeenCalledTimes(1)
+    expect(getLiquidityByAmountsAndPriceSpy).toHaveBeenCalledTimes(1)
     expect(getLiquidityFromSqrtRatioX96Spy).toHaveBeenCalledTimes(0)
     expect(amount.equalTo(new Fraction(5, 10))).toBe(true)
   })
@@ -180,8 +180,8 @@ describe('#getEstimatedLPFee', () => {
     const sqrtRatioX96 = encodeSqrtRatioX96(1, 1)
     const mostActiveLiquidity = JSBI.BigInt(900)
 
-    const getLiquidityBySingleAmountSpy = vi
-      .spyOn(FeeCalculator, 'getLiquidityBySingleAmount')
+    const getLiquidityByAmountsAndPriceSpy = vi
+      .spyOn(FeeCalculator, 'getLiquidityByAmountsAndPrice')
       .mockImplementationOnce(() => JSBI.BigInt(100))
     const getLiquidityFromSqrtRatioX96Spy = vi
       .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
@@ -197,7 +197,7 @@ describe('#getEstimatedLPFee', () => {
       fee: 500,
       insidePercentage: new Percent(50, 100),
     })
-    expect(getLiquidityBySingleAmountSpy).toHaveBeenCalledTimes(1)
+    expect(getLiquidityByAmountsAndPriceSpy).toHaveBeenCalledTimes(1)
     expect(getLiquidityFromSqrtRatioX96Spy).toHaveBeenCalledTimes(0)
     expect(amount.equalTo(new Fraction(5, 20))).toBe(true)
   })
