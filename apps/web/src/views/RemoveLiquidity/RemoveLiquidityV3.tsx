@@ -359,7 +359,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   {t('Farming')}
                 </Tag>
               )}
-              <RangeTag removed={removed} outOfRange={outOfRange} />
+              <RangeTag removed={removed} outOfRange={!outOfRange} />
             </Flex>
           </AutoRow>
           <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
