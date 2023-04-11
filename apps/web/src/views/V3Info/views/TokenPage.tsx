@@ -149,7 +149,6 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     }
     return undefined
   }, [priceData, tokenData])
-
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const chainName = useGetChainName()

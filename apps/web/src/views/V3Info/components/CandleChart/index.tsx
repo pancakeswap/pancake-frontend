@@ -151,6 +151,14 @@ const CandleChart = ({
 
       series.setData(data)
 
+      series.applyOptions({
+        priceFormat: {
+          type: 'price',
+          precision: 4,
+          minMove: 0.0001,
+        },
+      })
+
       chartCreated.applyOptions({
         layout: {
           textColor: theme.isDark ? darkColors.textSubtle : lightColors.textSubtle,
