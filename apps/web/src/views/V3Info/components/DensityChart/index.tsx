@@ -10,7 +10,6 @@ import { MAX_UINT128 } from '../../constants'
 import { TickProcessed } from '../../data/pool/tickData'
 import { usePoolData, usePoolTickData } from '../../hooks'
 import { DensityChartEntry, PoolData } from '../../types'
-import Loader from '../Loader'
 import { CurrentPriceLabel } from './CurrentPriceLabel'
 import CustomToolTip from './CustomToolTip'
 
