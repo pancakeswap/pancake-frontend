@@ -11,6 +11,7 @@ import { TickList } from './tickList'
 
 export const FeeCalculator = {
   getEstimatedLPFee,
+  getEstimatedLPFeeByAmounts,
   getLiquidityFromTick,
   getLiquidityFromSqrtRatioX96,
   getAverageLiquidity,
@@ -46,18 +47,39 @@ interface EstimateFeeOptions {
   protocolFee?: Percent
 }
 
-export function getEstimatedLPFeeWithProtocolFee(options: EstimateFeeOptions) {
+export function getEstimatedLPFeeWithProtocolFee({ amount, currency, ...rest }: EstimateFeeOptions) {
+  return getEstimatedLPFeeByAmountsWithProtocolFee({
+    ...rest,
+    amountA: amount,
+    amountB: CurrencyAmount.fromRawAmount(currency, MaxUint256),
+  })
+}
+
+export function getEstimatedLPFee({ amount, currency, ...rest }: EstimateFeeOptions) {
+  return getEstimatedLPFeeByAmounts({
+    ...rest,
+    amountA: amount,
+    amountB: CurrencyAmount.fromRawAmount(currency, MaxUint256),
+  })
+}
+
+interface EstimateFeeByAmountsOptions extends Omit<EstimateFeeOptions, 'amount' | 'currency'> {
+  amountA: CurrencyAmount<Currency>
+  amountB: CurrencyAmount<Currency>
+}
+
+export function getEstimatedLPFeeByAmountsWithProtocolFee(options: EstimateFeeByAmountsOptions) {
   try {
-    return tryGetEstimatedLPFee(options)
+    return tryGetEstimatedLPFeeByAmounts(options)
   } catch (e) {
     console.error(e)
     return new Fraction(ZERO)
   }
 }
 
-export function getEstimatedLPFee({ protocolFee = ZERO_PERCENT, ...rest }: EstimateFeeOptions) {
+export function getEstimatedLPFeeByAmounts({ protocolFee = ZERO_PERCENT, ...rest }: EstimateFeeByAmountsOptions) {
   try {
-    const fee = tryGetEstimatedLPFee(rest)
+    const fee = tryGetEstimatedLPFeeByAmounts(rest)
     return ONE_HUNDRED_PERCENT.subtract(protocolFee).multiply(fee).asFraction
   } catch (e) {
     console.error(e)
@@ -65,9 +87,9 @@ export function getEstimatedLPFee({ protocolFee = ZERO_PERCENT, ...rest }: Estim
   }
 }
 
-function tryGetEstimatedLPFee({
-  amount,
-  currency,
+function tryGetEstimatedLPFeeByAmounts({
+  amountA,
+  amountB,
   volume24H,
   sqrtRatioX96,
   tickLower,
@@ -75,7 +97,7 @@ function tryGetEstimatedLPFee({
   mostActiveLiquidity,
   fee,
   insidePercentage = ONE_HUNDRED_PERCENT,
-}: EstimateFeeOptions): Fraction {
+}: EstimateFeeByAmountsOptions): Fraction {
   invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
 
   const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
@@ -83,7 +105,13 @@ function tryGetEstimatedLPFee({
     return new Fraction(ZERO)
   }
 
-  const liquidity = FeeCalculator.getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
+  const liquidity = FeeCalculator.getLiquidityByAmountsAndPrice({
+    amountA,
+    amountB,
+    tickUpper,
+    tickLower,
+    sqrtRatioX96,
+  })
 
   return insidePercentage
     .multiply(parseNumberToFraction(volume24H).multiply(JSBI.BigInt(fee)).multiply(liquidity))
