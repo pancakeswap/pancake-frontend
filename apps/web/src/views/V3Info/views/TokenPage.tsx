@@ -84,9 +84,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   // eslint-disable-next-line no-param-reassign
   address = address.toLowerCase()
   const cmcLink = useCMCLink(address)
-
-  const { theme, isDark } = useTheme()
-  const backgroundColor = theme.colors.background
+  const { isDark } = useTheme()
 
   // scroll on page view
   useEffect(() => {
