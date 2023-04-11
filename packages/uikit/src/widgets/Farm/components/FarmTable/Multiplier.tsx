@@ -63,7 +63,7 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
       ) : (
         <>
           <Text bold>
-            {t("CAKE Per Second:")}
+            {t("Farm’s CAKE Per Second:")}
             <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
           </Text>
           <Text bold>
@@ -71,7 +71,9 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
             <InlineText marginLeft={2}>{totalMultipliers}</InlineText>
           </Text>
           <Text my="24px">
-            {t("The Multiplier represents the proportion of CAKE rewards each farm receives against each farm groups.")}
+            {t(
+              "The Farm Multiplier represents the proportion of CAKE rewards each farm receives as a proportion of its farm group."
+            )}
           </Text>
           <Text my="24px">
             {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
@@ -86,7 +88,7 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
             >
               {t("Learn more")}
             </InlineLink>
-            {t("about how to calculate.")}
+            {t("here.")}
           </Text>
         </>
       )}
