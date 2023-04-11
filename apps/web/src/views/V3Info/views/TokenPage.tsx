@@ -331,13 +331,9 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
               </Card>
             </ContentLayout>
             <Heading>Pools</Heading>
-            <DarkGreyCard>
-              <PoolTable poolDatas={formatPoolData ?? []} />
-            </DarkGreyCard>
+            <PoolTable poolDatas={formatPoolData ?? []} />
             <Heading>Transactions</Heading>
-            <DarkGreyCard>
-              {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
-            </DarkGreyCard>
+            {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
           </AutoColumn>
         )
       ) : (
