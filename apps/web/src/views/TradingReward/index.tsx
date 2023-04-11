@@ -17,8 +17,10 @@ const TradingReward = () => {
   const campaignId = router?.query?.campaignId?.toString() ?? ''
 
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
-  const { data: allTradingRewardPairData } = useAllTradingRewardPair()
-  const { data: allUserCampaignInfo } = useAllUserCampaignInfo(allTradingRewardPairData.campaignIds)
+  const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair()
+  const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo(
+    allTradingRewardPairData.campaignIds,
+  )
 
   useEffect(() => {
     if (campaignId) setShowPage(true)
@@ -56,6 +58,7 @@ const TradingReward = () => {
     <Box>
       <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
       <YourTradingReward
+        isFetching={isAllTradingRewardPairDataFetching || isAllUserCampaignInfo}
         incentives={currentUserIncentive}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}

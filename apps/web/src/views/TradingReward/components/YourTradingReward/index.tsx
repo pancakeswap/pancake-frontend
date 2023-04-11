@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Skeleton } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { useProfile } from 'state/profile/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
@@ -14,10 +13,10 @@ import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-// import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
+import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
-// import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
+import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
 import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
@@ -138,20 +137,34 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
   }
 }`
 
+const BaseContainer = styled(Flex)<{ showBackgroundColor: boolean }>`
+  width: 100%;
+  border-radius: 32px;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: ${({ theme, showBackgroundColor }) => (showBackgroundColor ? theme.card.background : BACKGROUND_COLOR)};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding: 48px 0;
+  }
+`
+
 interface YourTradingRewardProps {
+  isFetching: boolean
   incentives: Incentives
   currentUserCampaignInfo: UserCampaignInfoDetail
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
+  isFetching,
   incentives,
   totalAvailableClaimData,
   currentUserCampaignInfo,
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { theme } = useTheme()
   const { profile } = useProfile()
 
   const {
@@ -170,6 +183,14 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { userData } = useCakeVault() as DeserializedLockedCakeVault
   const vaultPosition = getVaultPosition(userData)
 
+  const hasClaimBalance = useMemo(() => {
+    const claimBalance = totalAvailableClaimData
+      .filter((i) => new BigNumber(i.canClaim).gt(0) && !i.userClaimedIncentives)
+      .map((available) => available.canClaim)
+      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    return claimBalance > 0
+  }, [totalAvailableClaimData])
+
   const isLockPosition = useMemo(
     () => Boolean(userData?.locked) && vaultPosition === VaultPosition.Locked,
     [userData, vaultPosition],
@@ -185,53 +206,94 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     [userData, thresholdLockedAmount],
   )
 
-  const showBackgroundColor = useMemo(() => !account || true, [account])
+  const showBackgroundColor = useMemo(
+    () => !account || (isQualified && !hasClaimBalance),
+    [account, hasClaimBalance, isQualified],
+  )
 
-  const showNoCakeLockedOrExtendLock = useMemo(() => {
-    return account && profile.isActive && (!isValidTotalStakedBalance || !isValidLockDuration || !isLockPosition)
-  }, [account, profile, isValidTotalStakedBalance, isValidLockDuration, isLockPosition])
+  const TradingRewardComponent = () => {
+    if (isFetching) {
+      return (
+        <Skeleton
+          height={380}
+          borderRadius={16}
+          margin="32px auto"
+          width={['calc(100% - 32px)', 'calc(100% - 32px)', 'calc(100% - 32px)', 'calc(100% - 32px)', '900px']}
+        />
+      )
+    }
 
-  const isClaimable = useMemo(() => {
-    return account && profile.isActive && isQualified
-  }, [account, profile, isQualified])
+    if (!account) {
+      return (
+        <Container showBackgroundColor={showBackgroundColor}>
+          <BaseContainer showBackgroundColor={showBackgroundColor}>
+            <NoConnected />
+          </BaseContainer>
+        </Container>
+      )
+    }
+
+    if (!profile.isActive) {
+      return (
+        <Container showBackgroundColor={showBackgroundColor}>
+          <BaseContainer showBackgroundColor={showBackgroundColor}>
+            <NoProfile />
+          </BaseContainer>
+        </Container>
+      )
+    }
+
+    if (!isQualified && hasClaimBalance) {
+      return (
+        <Container showBackgroundColor={showBackgroundColor}>
+          <BaseContainer showBackgroundColor={showBackgroundColor}>
+            <NotQualified />
+          </BaseContainer>
+        </Container>
+      )
+    }
+
+    if (!isQualified) {
+      return (
+        <Container showBackgroundColor={showBackgroundColor}>
+          <BaseContainer showBackgroundColor={showBackgroundColor}>
+            <NoCakeLockedOrExtendLock
+              pool={pool}
+              userData={userData}
+              data={currentUserCampaignInfo}
+              isLockPosition={isLockPosition}
+              isValidLockDuration={isValidLockDuration}
+              isValidTotalStakedBalance={isValidTotalStakedBalance}
+            />
+          </BaseContainer>
+        </Container>
+      )
+    }
+
+    if (isQualified && !hasClaimBalance) {
+      return (
+        <Container showBackgroundColor={showBackgroundColor}>
+          <BaseContainer showBackgroundColor={showBackgroundColor}>
+            <ViewEligiblePairs />
+          </BaseContainer>
+        </Container>
+      )
+    }
+
+    return (
+      <ExpiringUnclaim
+        canClaim={canClaim}
+        currentTradingVolume={totalVolume}
+        totalAvailableClaimData={totalAvailableClaimData}
+        campaignClaimTime={incentives.campaignClaimTime}
+      />
+    )
+  }
 
   return (
     <StyledBackground showBackgroundColor={showBackgroundColor}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
-      {isClaimable ? (
-        <ExpiringUnclaim
-          canClaim={canClaim}
-          currentTradingVolume={totalVolume}
-          totalAvailableClaimData={totalAvailableClaimData}
-          campaignClaimTime={incentives.campaignClaimTime}
-        />
-      ) : (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <Flex
-            width="100%"
-            borderRadius={32}
-            padding={['24px', '24px', '24px', '48px 0']}
-            flexDirection="column"
-            alignItems={['center']}
-            style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
-          >
-            {!account && <NoConnected />}
-            {account && !profile.isActive && <NoProfile />}
-            {/* <ViewEligiblePairs /> */}
-            {showNoCakeLockedOrExtendLock && (
-              <NoCakeLockedOrExtendLock
-                pool={pool}
-                userData={userData}
-                data={currentUserCampaignInfo}
-                isLockPosition={isLockPosition}
-                isValidLockDuration={isValidLockDuration}
-                isValidTotalStakedBalance={isValidTotalStakedBalance}
-              />
-            )}
-            {/* <NotQualified /> */}
-          </Flex>
-        </Container>
-      )}
+      <TradingRewardComponent />
       <Decorations showBackgroundColor={showBackgroundColor}>
         <img src="/images/trading-reward/left-bunny.png" width="93px" height="242px" alt="left-bunny" />
         <img src="/images/trading-reward/right-bunny.png" width="161px" height="161px" alt="right-bunny" />

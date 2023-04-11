@@ -1,4 +1,4 @@
-import { Text, Button } from '@pancakeswap/uikit'
+import { Text, Button, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 const ViewEligiblePairs = () => {
@@ -8,7 +8,9 @@ const ViewEligiblePairs = () => {
       <Text bold fontSize={['20px']} mb="24px" textAlign="center">
         {t('Start trading eligible pairs to earn trading rewards!')}
       </Text>
-      <Button>{t('View Eligible Pairs')}</Button>
+      <Link href="#rewards-breakdown">
+        <Button>{t('View Eligible Pairs')}</Button>
+      </Link>
     </>
   )
 }

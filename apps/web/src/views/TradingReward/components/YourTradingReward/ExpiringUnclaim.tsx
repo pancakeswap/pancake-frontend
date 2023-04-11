@@ -19,7 +19,7 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
   return (
     <Flex
       padding="0 16px"
-      width={['100%', '100%', '100%', '900px']}
+      width={['100%', '100%', '100%', '100%', '900px']}
       margin={['32px auto 61px auto']}
       justifyContent="space-between"
       flexDirection={['column', 'column', 'column', 'row']}

@@ -74,62 +74,64 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ tota
           <Text bold textAlign="right" mb="24px">
             {t('Total')}
           </Text>
-          <GreyCard>
-            <Flex flexDirection={['column', 'column', 'column', 'row']}>
-              <Box>
-                <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
-                  {t('Your unclaimed trading rewards')}
-                </Text>
-                <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={totalUnclaimUSDValue} />
-                <Balance
-                  fontSize="14px"
-                  color="textSubtle"
-                  prefix="~ "
-                  unit=" CAKE"
-                  decimals={2}
-                  value={totalUnclaimCake}
-                />
-              </Box>
-              <Button
-                width={['100%', '100%', '100%', 'fit-content']}
-                m={['10px 0 0 0', '10px 0 0 0', '10px 0 0 0', 'auto 0 auto auto']}
-                disabled={isPending}
-                onClick={handleClaim}
-              >
-                {t('Claim All')}
-              </Button>
-            </Flex>
-            {rewardExpiredSoonData && (
-              <Message variant="danger" mt="16px">
-                <MessageText>
-                  <TooltipText bold as="span">
-                    {`$${expiredCakePrice}`}
-                  </TooltipText>
-                  <Text m="0 4px" as="span">
-                    {t('unclaimed reward expiring in')}
+          {unclaimData.length > 0 && (
+            <GreyCard>
+              <Flex flexDirection={['column', 'column', 'column', 'row']}>
+                <Box>
+                  <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
+                    {t('Your unclaimed trading rewards')}
                   </Text>
-                  <Text ref={targetRef} as="span">
-                    <Text bold as="span">
-                      {expiredTime.days ? (
+                  <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={totalUnclaimUSDValue} />
+                  <Balance
+                    fontSize="14px"
+                    color="textSubtle"
+                    prefix="~ "
+                    unit=" CAKE"
+                    decimals={2}
+                    value={totalUnclaimCake}
+                  />
+                </Box>
+                <Button
+                  width={['100%', '100%', '100%', 'fit-content']}
+                  m={['10px 0 0 0', '10px 0 0 0', '10px 0 0 0', 'auto 0 auto auto']}
+                  disabled={isPending}
+                  onClick={handleClaim}
+                >
+                  {t('Claim All')}
+                </Button>
+              </Flex>
+              {rewardExpiredSoonData && (
+                <Message variant="danger" mt="16px">
+                  <MessageText>
+                    <TooltipText bold as="span">
+                      {`$${expiredCakePrice}`}
+                    </TooltipText>
+                    <Text m="0 4px" as="span">
+                      {t('unclaimed reward expiring in')}
+                    </Text>
+                    <Text ref={targetRef} as="span">
+                      <Text bold as="span">
+                        {expiredTime.days ? (
+                          <Text bold as="span" ml="4px">
+                            {`${expiredTime.days}${t('d')}`}
+                          </Text>
+                        ) : null}
+                        {expiredTime.days || expiredTime.hours ? (
+                          <Text bold as="span" ml="4px">
+                            {`${expiredTime.hours}${t('h')}`}
+                          </Text>
+                        ) : null}
                         <Text bold as="span" ml="4px">
-                          {`${expiredTime.days}${t('d')}`}
+                          {`${expiredTime.minutes}${t('m')}`}
                         </Text>
-                      ) : null}
-                      {expiredTime.days || expiredTime.hours ? (
-                        <Text bold as="span" ml="4px">
-                          {`${expiredTime.hours}${t('h')}`}
-                        </Text>
-                      ) : null}
-                      <Text bold as="span" ml="4px">
-                        {`${expiredTime.minutes}${t('m')}`}
                       </Text>
                     </Text>
-                  </Text>
-                  {tooltipVisible && tooltip}
-                </MessageText>
-              </Message>
-            )}
-          </GreyCard>
+                    {tooltipVisible && tooltip}
+                  </MessageText>
+                </Message>
+              )}
+            </GreyCard>
+          )}
           <GreyCard mt="24px">
             <Box mb="24px">
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
