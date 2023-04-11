@@ -294,7 +294,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')} (UTC)`}
                 </Text>
               </Flex>
-              <Box px="24px" height="380px">
+              <Box height="380px">
                 {view === ChartView.VOL ? (
                   <BarChart
                     data={formattedVolumeData}
