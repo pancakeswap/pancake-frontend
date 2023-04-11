@@ -92,7 +92,7 @@ it("renders correctly", () => {
       width: 48px;
     }
 
-    .c1 {
+    .c0 {
       min-width: 320px;
     }
 
@@ -146,7 +146,7 @@ it("renders correctly", () => {
       max-height: calc(90vh - 73px);
     }
 
-    .c0 {
+    .c1 {
       overflow: hidden;
       background: var(--colors-backgroundAlt);
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
@@ -197,7 +197,7 @@ it("renders correctly", () => {
     }
 
     @media screen and (min-width:852px) {
-      .c0 {
+      .c1 {
         width: auto;
         position: auto;
         bottom: auto;
@@ -207,49 +207,46 @@ it("renders correctly", () => {
     }
 
     <div
-        class="c0"
+        class="c0 c1"
+        minwidth="320px"
       >
         <div
-          class="c1"
+          class="c2"
         >
           <div
-            class="c2"
+            class="c3 c4"
           >
-            <div
-              class="c3 c4"
+            <h2
+              class="c5 c6"
+              color="text"
+              font-size="16px"
             >
-              <h2
-                class="c5 c6"
-                color="text"
-                font-size="16px"
-              >
-                Title
-              </h2>
-            </div>
-            <button
-              aria-label="Close the dialog"
-              class="c7 c8"
-              scale="md"
-            >
-              <svg
-                class="c9"
-                color="primary"
-                viewBox="0 0 24 24"
-                width="20px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </button>
+              Title
+            </h2>
           </div>
-          <div
-            class="c10 c3 c11"
+          <button
+            aria-label="Close the dialog"
+            class="c7 c8"
+            scale="md"
           >
-            body
-          </div>
+            <svg
+              class="c9"
+              color="primary"
+              viewBox="0 0 24 24"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          class="c10 c3 c11"
+        >
+          body
         </div>
       </div>
     </DocumentFragment>

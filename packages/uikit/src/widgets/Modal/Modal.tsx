@@ -6,7 +6,6 @@ import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, M
 import { ModalProps, ModalWrapperProps } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { ModalV2Context } from "./ModalV2";
-import { Box } from "../../components/Box";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
@@ -34,8 +33,9 @@ export const ModalWrapper = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
+      {...props}
     >
-      <Box {...props}>{children}</Box>
+      {children}
     </ModalContainer>
   );
 };
