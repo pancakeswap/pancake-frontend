@@ -1,4 +1,4 @@
-import { AnimatePresence, domMax, LazyMotion, m } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import React, { createContext, useRef, useState, useMemo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
@@ -115,7 +115,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     <Context.Provider value={providerValue}>
       {portal &&
         createPortal(
-          <LazyMotion features={domMax}>
+          <LazyMotion features={domAnimation}>
             <AnimatePresence>
               {isOpen && (
                 <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>

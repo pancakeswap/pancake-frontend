@@ -1,4 +1,4 @@
-import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion } from "framer-motion";
 import React, { createContext, useCallback, useRef, useState } from "react";
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { createPortal } from "react-dom";
@@ -56,7 +56,7 @@ export function ModalV2({
   if (portal) {
     return createPortal(
       <ModalV2Context.Provider value={{ onDismiss }}>
-        <LazyMotion features={domMax}>
+        <LazyMotion features={domAnimation}>
           <AnimatePresence>
             {isOpen && (
               <DismissableLayer
