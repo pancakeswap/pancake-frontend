@@ -133,6 +133,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
     (newField: string) => {
       setSortField(newField)
       setSortDirection(sortField !== newField ? true : !sortDirection)
+      setPage(1)
     },
     [sortDirection, sortField],
   )

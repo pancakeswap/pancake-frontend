@@ -170,6 +170,7 @@ export default function TokenTable({
     (newField: string) => {
       setSortField(newField)
       setSortDirection(sortField !== newField ? true : !sortDirection)
+      setPage(1)
     },
     [sortDirection, sortField],
   )
