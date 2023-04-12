@@ -110,7 +110,25 @@ const CACHE_TIME = {
 }
 
 // getting active "in-range" liquidity for a pool
-export const handler = async (req: Request) => {
+export const handler = async (req: Request, event: FetchEvent) => {
+  const cache = caches.default
+  const cacheResponse = await cache.match(event.request)
+
+  let response
+
+  if (!cacheResponse) {
+    response = await handler_(req)
+    if (response.status === 200) {
+      event.waitUntil(cache.put(event.request, response.clone()))
+    }
+  } else {
+    response = new Response(cacheResponse.body, cacheResponse)
+  }
+
+  return response
+}
+
+const handler_ = async (req: Request) => {
   const parsed = zParams.safeParse(req.params)
 
   if (parsed.success === false) {
