@@ -109,6 +109,14 @@ export const farmsV3 = [
     feeAmount: FeeAmount.LOW,
   },
   {
+    pid: 21,
+    lpSymbol: 'cbETH-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.cbEth, ethereumTokens.weth, FeeAmount.LOW),
+    token: ethereumTokens.cbEth,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 7,
     lpSymbol: 'DAI-USDC LP',
     lpAddress: '0xD9e497BD8f491fE163b42A62c296FB54CaEA74B7',
