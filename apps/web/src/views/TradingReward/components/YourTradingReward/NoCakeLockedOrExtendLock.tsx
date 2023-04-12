@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
-import { Box, Text, Flex, LogoRoundIcon, Tag, Balance, Pool } from '@pancakeswap/uikit'
+import { Box, Text, Flex, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { DeserializedLockedVaultUser } from 'state/types'
@@ -12,20 +11,12 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Actions from 'views/TradingReward/components/YourTradingReward/Actions'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { LightCard } from 'components/Card'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
 const Container = styled(Flex)`
-  flex-direction: column;
-  width: 250px;
-  margin: auto;
-  padding: 24px 0px;
-  border-radius: 24px;
-  justify-content: center;
-  border: ${({ theme }) => `dashed 2px ${theme.colors.cardBorder}`};
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 420px;
-    flex-direction: row;
-  }
+  justify-content: space-between;
+  border-top: ${({ theme }) => `solid 1px ${theme.colors.cardBorder}`};
 `
 
 const bunnyHeadMain = `"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAyOCAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMSIgeT0iMTkiIHdpZHRoPSIxNyIgaGVpZ2h0PSIxMSIgZmlsbD0iIzFGQzdENCIvPgo8cGF0aCBkPSJNOS41MDcgMjQuNzA2QzguMTQ2MzUgMjYuMDY2NiA5LjczNzk1IDI4LjIzMTMgMTEuNzU1NSAzMC4yNDg5QzEzLjc3MzEgMzIuMjY2NSAxNS45Mzc4IDMzLjg1ODEgMTcuMjk4NCAzMi40OTc0QzE4LjY1OTEgMzEuMTM2OCAxNy45Njg1IDI4LjA3MTEgMTUuOTUwOSAyNi4wNTM1QzEzLjkzMzMgMjQuMDM1OSAxMC44Njc2IDIzLjM0NTMgOS41MDcgMjQuNzA2WiIgZmlsbD0iIzFGQzdENCIvPgo8cGF0aCBkPSJNMTUuNTA3IDIyLjcwNkMxNC4xNDYzIDI0LjA2NjYgMTUuNzM3OSAyNi4yMzEzIDE3Ljc1NTUgMjguMjQ4OUMxOS43NzMxIDMwLjI2NjUgMjEuOTM3OCAzMS44NTgxIDIzLjI5ODQgMzAuNDk3NEMyNC42NTkxIDI5LjEzNjggMjMuOTY4NSAyNi4wNzExIDIxLjk1MDkgMjQuMDUzNUMxOS45MzMzIDIyLjAzNTkgMTYuODY3NiAyMS4zNDUzIDE1LjUwNyAyMi43MDZaIiBmaWxsPSIjMUZDN0Q0Ii8+CjxnIGZpbHRlcj0idXJsKCNmaWx0ZXIwX2QpIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNC4xNDYgNi43NTE1OUMxNC4yMTA1IDcuMTA4OTYgMTQuMjcwMyA3LjQ4MTMxIDE0LjMyODEgNy44NjE2NEMxNC4yMTg5IDcuODU4NjUgMTQuMTA5NSA3Ljg1NzE0IDE0IDcuODU3MTRDMTMuMzgwMyA3Ljg1NzE0IDEyLjc2NDggNy45MDUzOSAxMi4xNTkgNy45OTc3OUMxMS44NzkgNy40MTQ1OCAxMS41NTQ3IDYuODIyNDYgMTEuMTg3MiA2LjIzMTQ1QzguNjk4OTcgMi4yMjk0NyA2LjUzODI2IDEuOTg2NzkgNC42Nzg4MiAyLjk4MzY2QzIuODE5MzggMy45ODA1MiAyLjg1NjI4IDYuNjc2NDQgNS4yNjY5NiA5LjQwNTM4QzUuNTgwNzYgOS43NjA2MSA1LjkwMDk3IDEwLjEzOTggNi4yMjQ3IDEwLjUyODZDMy42OTAxMyAxMi40NjU5IDIgMTUuMjY0NCAyIDE4LjI2OTVDMiAyMy44MjkyIDcuNzg1MTggMjUgMTQgMjVDMjAuMjE0OCAyNSAyNiAyMy44MjkyIDI2IDE4LjI2OTVDMjYgMTQuODY1OCAyMy44MzE4IDExLjcyNzIgMjAuNzI0MyA5LjgwNDc2QzIwLjkwMjIgOC44NjA0NCAyMSA3LjgzMDE5IDIxIDYuNzUxNTlDMjEgMi4xOTYxMiAxOS4yNTQ5IDEgMTcuMTAyMiAxQzE0Ljk0OTUgMSAxMy41MjYxIDMuMzE4NDcgMTQuMTQ2IDYuNzUxNTlaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfYnVubnloZWFkX21haW4pIi8+CjwvZz4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMikiPgo8cGF0aCBkPSJNMTIuNzI4NCAxNi40NDQ2QzEyLjc5NiAxNy4zMTQ5IDEyLjQ0NDYgMTkuMDU1NiAxMC40OTggMTkuMDU1NiIgc3Ryb2tlPSIjNDUyQTdBIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHBhdGggZD0iTTEyLjc0NTcgMTYuNDQ0NkMxMi42NzgxIDE3LjMxNDkgMTMuMDI5NiAxOS4wNTU2IDE0Ljk3NjEgMTkuMDU1NiIgc3Ryb2tlPSIjNDUyQTdBIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHBhdGggZD0iTTkgMTQuNUM5IDE1LjYwNDYgOC41NTIyOCAxNiA4IDE2QzcuNDQ3NzIgMTYgNyAxNS42MDQ2IDcgMTQuNUM3IDEzLjM5NTQgNy40NDc3MiAxMyA4IDEzQzguNTUyMjggMTMgOSAxMy4zOTU0IDkgMTQuNVoiIGZpbGw9IiM0NTJBN0EiLz4KPHBhdGggZD0iTTE4IDE0LjVDMTggMTUuNjA0NiAxNy41NTIzIDE2IDE3IDE2QzE2LjQ0NzcgMTYgMTYgMTUuNjA0NiAxNiAxNC41QzE2IDEzLjM5NTQgMTYuNDQ3NyAxMyAxNyAxM0MxNy41NTIzIDEzIDE4IDEzLjM5NTQgMTggMTQuNVoiIGZpbGw9IiM0NTJBN0EiLz4KPC9nPgo8ZGVmcz4KPGZpbHRlciBpZD0iZmlsdGVyMF9kIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiLz4KPGZlT2Zmc2V0IGR5PSIxIi8+CjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjEiLz4KPGZlQ29sb3JNYXRyaXggdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAuNSAwIi8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW4yPSJCYWNrZ3JvdW5kSW1hZ2VGaXgiIHJlc3VsdD0iZWZmZWN0MV9kcm9wU2hhZG93Ii8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iZWZmZWN0MV9kcm9wU2hhZG93IiByZXN1bHQ9InNoYXBlIi8+CjwvZmlsdGVyPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfYnVubnloZWFkX21haW4iIHgxPSIxNCIgeTE9IjEiIHgyPSIxNCIgeTI9IjI1IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM1M0RFRTkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMUZDN0Q0Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg=="`
@@ -67,6 +58,8 @@ interface NoCakeLockedOrExtendLockProps {
   isValidTotalStakedBalance: boolean
 }
 
+const ONE_WEK = 60 * 60 * 24 * 7
+
 const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrExtendLockProps>> = ({
   data,
   pool,
@@ -76,7 +69,6 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   isValidTotalStakedBalance,
 }) => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
   const cakePriceBusd = useCakeBusdPrice()
   const {
     stakingToken,
@@ -103,16 +95,22 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     if (!isLockPosition) {
       return data?.thresholdLockedAmount ?? '0'
     }
-    return new BigNumber(data?.thresholdLockedAmount ?? 0).minus(balance.cakeAsNumberBalance).toString()
+    const remainingAmount = new BigNumber(data?.thresholdLockedAmount ?? 0).minus(balance.cakeAsNumberBalance)
+    return remainingAmount.gt(0) ? remainingAmount.toString() : '0'
   }, [isLockPosition, data, balance.cakeAsNumberBalance])
 
   const cakePrice = useMemo(
-    () => multiplyPriceByAmount(cakePriceBusd, Number(needAddedCakeAmount)),
-    [cakePriceBusd, needAddedCakeAmount],
+    () => multiplyPriceByAmount(cakePriceBusd, getBalanceAmount(lockedAmount).toNumber()),
+    [cakePriceBusd, lockedAmount],
+  )
+
+  const currentLockDuration = useMemo(
+    () => new BigNumber(lockEndTime).minus(lockStartTime).div(ONE_WEK).toNumber(),
+    [lockEndTime, lockStartTime],
   )
 
   const lockWeekDuration = useMemo(
-    () => new BigNumber(data?.thresholdLockedPeriod ?? 0).div(60).div(60).div(24).div(7).toNumber(),
+    () => new BigNumber(data?.thresholdLockedPeriod ?? 0).div(ONE_WEK).toNumber(),
     [data],
   )
 
@@ -127,8 +125,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
       return 0
     }
 
-    const onWeek = 60 * 60 * 24 * 7
-    const week = new BigNumber(minLockDurationTimestamp).minus(lockEndTime).div(onWeek).toNumber()
+    const week = new BigNumber(minLockDurationTimestamp).minus(lockEndTime).div(ONE_WEK).toNumber()
     return Math.ceil(week)
   }, [lockWeekDuration, isLockPosition, lockEndTime])
 
@@ -136,17 +133,18 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     <>
       {!isOnlyNeedExtendLock ? (
         <>
-          <Text bold mb="8px">
-            {isLockPosition ? t('Not enough CAKE locked.') : t('You have no CAKE locked.')}
-          </Text>
+          <Text mb="8px">{isLockPosition ? t('Not enough CAKE locked.') : t('You have no CAKE locked.')}</Text>
           <Text mb="32px">
-            {t(
-              'Lock a minimum of %minLockCakeAmount% CAKE for %minLockedWeekDuration% weeks or more to start earning from trades!',
-              {
-                minLockCakeAmount: data?.thresholdLockedAmount ?? '0',
-                minLockedWeekDuration: lockWeekDuration,
-              },
-            )}
+            <Text as="span">{t('Lock a minimum of')}</Text>
+            <Text as="span" ml="4px" bold>
+              {t('%minLockCakeAmount% CAKE', { minLockCakeAmount: data?.thresholdLockedAmount ?? '0' })}
+            </Text>
+            <Text as="span" ml="4px" bold>
+              {t('for %minLockedWeekDuration% weeks', { minLockedWeekDuration: lockWeekDuration })}
+            </Text>
+            <Text as="span" ml="4px">
+              {t('or more to start earning from trades!')}
+            </Text>
           </Text>
         </>
       ) : (
@@ -161,82 +159,53 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
           </Text>
         </>
       )}
-      <Container>
-        {!isOnlyNeedExtendLock && (
-          <Flex
-            width={['90%', '90%', '90%', '50%']}
-            margin="auto"
-            flexDirection="column"
-            padding={['0 24px 24px 24px', '0 24px 24px 24px', '0 24px 24px 24px', '0 32px']}
-            borderRight={['0', '0', '0', `solid 1px ${theme.colors.cardBorder}`]}
-            borderBottom={[
-              `solid 1px ${theme.colors.cardBorder}`,
-              `solid 1px ${theme.colors.cardBorder}`,
-              `solid 1px ${theme.colors.cardBorder}`,
-              '0',
-            ]}
-          >
-            <Flex mb="10px">
-              <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
-                {t('Stake')}
-              </Text>
-              <Text fontSize="12px" color="textSubtle" ml="4px" bold>
-                CAKE
-              </Text>
-            </Flex>
-            <Flex>
-              <LogoRoundIcon style={{ alignSelf: 'center' }} width={32} height={32} />
-              <Box ml="12px">
-                <Balance
-                  color="success"
-                  fontSize={['16px', '16px', '16px', '20px']}
-                  bold
-                  prefix="+ "
-                  decimals={2}
-                  value={Number(needAddedCakeAmount)}
-                />
-                <Balance fontSize="12px" color="textSubtle" prefix="~ " unit=" USD" decimals={2} value={cakePrice} />
-              </Box>
-            </Flex>
-          </Flex>
-        )}
-        <Flex
-          margin="auto"
-          flexDirection="column"
-          width={['90%', '90%', '90%', '50%']}
-          padding={['24px 24px 0 24px', '24px 24px 0 24px', '24px 24px 0 24px', '0 32px']}
-        >
-          <Flex mb="10px">
-            <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
-              {t('Add')}
+      <Box width={['100%', '100%', '420px']} margin={['auto']}>
+        <LightCard>
+          <Flex flexDirection="column">
+            <Text fontSize="12px" mb="16px" textTransform="uppercase" color="secondary" bold textAlign="center">
+              {t('Your Position')}
             </Text>
-            <Text textTransform="uppercase" fontSize="12px" color="textSubtle" ml="4px" bold>
-              {t('Lock Duration')}
-            </Text>
+            <Container>
+              <Flex width="228px" m="auto" paddingTop="16px" justifyContent="space-between">
+                <Flex>
+                  <Flex flexDirection="column">
+                    <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold>
+                      {`CAKE ${t('Locked')}`}
+                    </Text>
+                    <Text fontSize="20px" bold lineHeight="110%">
+                      {formatNumber(getBalanceAmount(lockedAmount).toNumber())}
+                    </Text>
+                    <Text fontSize="12px" lineHeight="110%">{`~$${formatNumber(cakePrice)} USD`}</Text>
+                  </Flex>
+                </Flex>
+                <Flex>
+                  <Flex flexDirection="column">
+                    <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold>
+                      {`${t('Lock Duration')}`}
+                    </Text>
+                    <Text fontSize="20px" bold lineHeight="110%">
+                      {currentLockDuration >= 1
+                        ? `${currentLockDuration} ${t('Week')}`
+                        : `${currentLockDuration} ${t('Weeks')}`}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Container>
+            <Actions
+              lockEndTime={lockEndTime}
+              lockStartTime={lockStartTime}
+              lockedAmount={lockedAmount}
+              stakingToken={stakingToken}
+              currentBalance={currentBalance}
+              isOnlyNeedAddCake={isOnlyNeedAddCake}
+              isOnlyNeedExtendLock={isOnlyNeedExtendLock}
+              needAddedWeek={needAddedWeek}
+              needAddedCakeAmount={needAddedCakeAmount}
+            />
           </Flex>
-          <Flex>
-            <Box position="relative" height="48px" width={isOnlyNeedExtendLock ? 80 : 40}>
-              <BunnyButt />
-              <BarProgress width="50%" />
-              <BunnyHead />
-            </Box>
-            <Tag ml="8px" variant="textSubtle">
-              {needAddedWeek >= 1 ? `${needAddedWeek} ${t('Week+')}` : `${needAddedWeek} ${t('Weeks+')}`}
-            </Tag>
-          </Flex>
-        </Flex>
-      </Container>
-      <Actions
-        lockEndTime={lockEndTime}
-        lockStartTime={lockStartTime}
-        lockedAmount={lockedAmount}
-        stakingToken={stakingToken}
-        currentBalance={currentBalance}
-        isOnlyNeedAddCake={isOnlyNeedAddCake}
-        isOnlyNeedExtendLock={isOnlyNeedExtendLock}
-        needAddedWeek={needAddedWeek}
-        needAddedCakeAmount={needAddedCakeAmount}
-      />
+        </LightCard>
+      </Box>
     </>
   )
 }

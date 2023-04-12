@@ -233,7 +233,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       )
     }
 
-    if (!profile.isActive) {
+    if (!profile?.isActive) {
       return (
         <Container showBackgroundColor={showBackgroundColor}>
           <BaseContainer showBackgroundColor={showBackgroundColor}>

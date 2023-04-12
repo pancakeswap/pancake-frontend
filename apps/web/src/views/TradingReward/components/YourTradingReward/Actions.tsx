@@ -61,7 +61,7 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
   const { handleApprove, pendingTx } = useVaultApprove(VaultKey.CakeVault, setLastUpdated)
 
   return (
-    <Flex width="250px" flexDirection={['column', 'column', 'column', 'row']} mt="32px">
+    <Flex width="228px" flexDirection={['column', 'column', 'column', 'row']} m="16px auto auto auto">
       {!isOnlyNeedExtendLock ? (
         <Box width="100%">
           {!isVaultApproved && !balance.cakeAsBigNumber.gt(0) && !userShares.gt(0) ? (
