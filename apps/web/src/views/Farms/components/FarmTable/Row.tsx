@@ -15,6 +15,7 @@ import {
   Text,
   useTooltip,
   TooltipText,
+  HelpIcon,
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
@@ -307,7 +308,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 {props.type === 'v3' ? (
-                  <FarmV3ApyButton farm={props.details} />
+                  <>
+                    <FarmV3ApyButton farm={props.details} />
+                    {aprTooltip.tooltipVisible && aprTooltip.tooltip}
+                    <Flex ref={aprTooltip.targetRef}>
+                      <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                    </Flex>
+                  </>
                 ) : (
                   <>
                     <Apr
