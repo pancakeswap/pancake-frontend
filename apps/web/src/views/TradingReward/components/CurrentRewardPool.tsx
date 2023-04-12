@@ -98,7 +98,10 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const timeUntil = getTimePeriods(incentives?.campaignClaimTime)
+
+  const currentDate = new Date().getTime() / 1000
+  const timeRemaining = incentives?.campaignClaimTime - currentDate
+  const timeUntil = getTimePeriods(timeRemaining)
 
   return (
     <Container>
@@ -116,14 +119,14 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
             {t('Ends')}
           </Text>
-          {timeUntil.days || timeUntil.hours || timeUntil.minutes ? (
+          {timeRemaining > 0 ? (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {t('in')}
-              {timeUntil.days && (
+              {timeUntil.days ? (
                 <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
                   {`${timeUntil.days}${t('d')}`}
                 </Text>
-              )}
+              ) : null}
               {timeUntil.days || timeUntil.hours ? (
                 <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
                   {`${timeUntil.hours}${t('h')}`}

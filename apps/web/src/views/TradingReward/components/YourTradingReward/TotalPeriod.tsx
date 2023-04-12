@@ -46,7 +46,11 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ tota
 
   // Expired Soon Data
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
-  const expiredTime = getTimePeriods(rewardExpiredSoonData?.campaignClaimEndTime)
+
+  const currentDate = new Date().getTime() / 1000
+  const timeRemaining = rewardExpiredSoonData?.campaignClaimEndTime - currentDate
+  const expiredTime = getTimePeriods(timeRemaining)
+
   const expiredCakePrice = useMemo(() => {
     const balance = getBalanceAmount(new BigNumber(rewardExpiredSoonData?.canClaim))
     const cakePice = multiplyPriceByAmount(cakePriceBusd, balance.toNumber())
@@ -109,23 +113,25 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ tota
                     <Text m="0 4px" as="span">
                       {t('unclaimed reward expiring in')}
                     </Text>
-                    <Text ref={targetRef} as="span">
-                      <Text bold as="span">
-                        {expiredTime.days ? (
+                    {timeRemaining > 0 && (
+                      <Text ref={targetRef} as="span">
+                        <Text bold as="span">
+                          {expiredTime.days ? (
+                            <Text bold as="span" ml="4px">
+                              {`${expiredTime.days}${t('d')}`}
+                            </Text>
+                          ) : null}
+                          {expiredTime.days || expiredTime.hours ? (
+                            <Text bold as="span" ml="4px">
+                              {`${expiredTime.hours}${t('h')}`}
+                            </Text>
+                          ) : null}
                           <Text bold as="span" ml="4px">
-                            {`${expiredTime.days}${t('d')}`}
+                            {`${expiredTime.minutes}${t('m')}`}
                           </Text>
-                        ) : null}
-                        {expiredTime.days || expiredTime.hours ? (
-                          <Text bold as="span" ml="4px">
-                            {`${expiredTime.hours}${t('h')}`}
-                          </Text>
-                        ) : null}
-                        <Text bold as="span" ml="4px">
-                          {`${expiredTime.minutes}${t('m')}`}
                         </Text>
                       </Text>
-                    </Text>
+                    )}
                     {tooltipVisible && tooltip}
                   </MessageText>
                 </Message>

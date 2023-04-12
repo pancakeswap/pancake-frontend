@@ -24,7 +24,11 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const timeUntil = getTimePeriods(campaignClaimTime)
+
+  const currentDate = new Date().getTime() / 1000
+  const timeRemaining = campaignClaimTime - currentDate
+  const timeUntil = getTimePeriods(timeRemaining)
+
   const cakePriceBusd = useCakeBusdPrice()
 
   const cakeBalance = useMemo(() => getBalanceNumber(new BigNumber(canClaim)), [canClaim])
@@ -45,7 +49,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <Balance fontSize="14px" color="textSubtle" prefix="~ " unit=" CAKE" decimals={2} value={cakeBalance} />
             <Text fontSize="12px" color="textSubtle" mt="4px">
               {t('Available for claiming')}
-              {timeUntil.days || timeUntil.hours || timeUntil.minutes ? (
+              {timeRemaining > 0 ? (
                 <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
                   {t('in')}
                   {timeUntil.days ? (
