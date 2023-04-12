@@ -40,6 +40,19 @@ const lmPoolAbi = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'rewardGrowthGlobalX128',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ] as const
 
 export function UpdatePositionsReminder() {
@@ -89,31 +102,37 @@ export function UpdatePositionsReminder_() {
       ) {
         return true
       }
-      return false
+      return true
     })
 
-  const { data: getRewardGrowthInsides, isLoading } = useContractReads({
+  // getting it on client side to final confirm
+  const { data: rewardGrowthGlobalX128s, isLoading } = useContractReads({
     contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       return {
         abi: lmPoolAbi,
         address: farm?.lmPool as `0x${string}`,
-        functionName: 'getRewardGrowthInside',
-        args: [userInfo.tickLower, userInfo.tickUpper],
+        functionName: 'rewardGrowthGlobalX128',
+        args: [],
         chainId,
       }
     }),
     enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
   })
 
-  const needRetrigger = isOverRewardGrowthGlobalUserInfos?.map((u, i) => {
-    const lmRewardGrowthInside = getRewardGrowthInsides?.[i]
-    return {
-      ...u,
-      lmRewardGrowthInside,
-      needReduce: true,
-    }
-  })
+  const needRetrigger = isOverRewardGrowthGlobalUserInfos
+    ?.filter((u, i) => {
+      if (rewardGrowthGlobalX128s?.[i]) {
+        return u.rewardGrowthInside.gt(rewardGrowthGlobalX128s[i])
+      }
+      return false
+    })
+    .map((u) => {
+      return {
+        ...u,
+        needReduce: true,
+      }
+    })
 
   const modal = useModalV2()
 
