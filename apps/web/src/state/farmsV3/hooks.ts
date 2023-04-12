@@ -100,14 +100,12 @@ export const useFarmsV3 = () => {
   const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
-      const farms = farmsV3ConfigChainMap[chainId as ChainId]
-
       const HOST = process.env.NEXT_PUBLIC_VERCEL_URL ? `` : 'http://localhost:3000'
 
       const tvls: TvlMap = {}
       if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {
         const results = await Promise.allSettled(
-          farms.map((f) =>
+          farmV3.data.farmsWithPrice.map((f) =>
             fetch(`${HOST}/api/v3/${chainId}/farms/liquidity/${f.lpAddress}`)
               .then((r) => r.json())
               .catch((err) => {
@@ -117,7 +115,7 @@ export const useFarmsV3 = () => {
           ),
         )
         results.forEach((r, i) => {
-          tvls[farms[i].lpAddress] =
+          tvls[farmV3.data.farmsWithPrice[i].lpAddress] =
             r.status === 'fulfilled' ? { ...r.value.formatted, updatedAt: r.value.updatedAt } : null
         })
       }

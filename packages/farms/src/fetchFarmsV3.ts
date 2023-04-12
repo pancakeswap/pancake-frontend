@@ -33,32 +33,37 @@ export async function farmV3FetchFarms({
   ])
 
   const lmPoolInfos = await fetchLmPools(
-    v3PoolData.map((v3Pool) => v3Pool[1][0]),
+    v3PoolData.map((v3Pool) => (v3Pool[1] ? v3Pool[1][0] : null)).filter(Boolean) as string[],
     chainId,
     multicallv2,
   )
 
-  const farmsData = farms.map((farm, index) => {
-    const { token, quoteToken, ...f } = farm
-    const lmPoolAddress = v3PoolData[index][1][0]
-    return {
-      ...f,
-      token,
-      quoteToken,
-      lmPool: lmPoolAddress,
-      lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
-      _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
-      ...getV3FarmsDynamicData({
-        ...(v3PoolData[index][0] as any),
-        token0: farm.token,
-        token1: farm.quoteToken,
-      }),
-      ...getFarmAllocation({
-        allocPoint: poolInfos[index]?.allocPoint,
-        totalAllocPoint,
-      }),
-    }
-  })
+  const farmsData = farms
+    .map((farm, index) => {
+      const { token, quoteToken, ...f } = farm
+      if (!v3PoolData[index][1]) {
+        return null
+      }
+      const lmPoolAddress = v3PoolData[index][1][0]
+      return {
+        ...f,
+        token,
+        quoteToken,
+        lmPool: lmPoolAddress,
+        lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
+        _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
+        ...getV3FarmsDynamicData({
+          ...(v3PoolData[index][0] as any),
+          token0: farm.token,
+          token1: farm.quoteToken,
+        }),
+        ...getFarmAllocation({
+          allocPoint: poolInfos[index]?.allocPoint,
+          totalAllocPoint,
+        }),
+      }
+    })
+    .filter(Boolean) as FarmV3Data[]
 
   const combinedCommonPrice: CommonPrice = {
     ...DEFAULT_COMMON_PRICE[chainId as ChainId],
