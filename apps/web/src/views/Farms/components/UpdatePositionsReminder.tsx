@@ -107,19 +107,11 @@ export function UpdatePositionsReminder_() {
   })
 
   const needRetrigger = isOverRewardGrowthGlobalUserInfos?.map((u, i) => {
-    let needReduce = false
     const lmRewardGrowthInside = getRewardGrowthInsides?.[i]
-    const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (u.pid as BigNumber).toNumber())
-    if (lmRewardGrowthInside && farm) {
-      needReduce = BigNumber.from(lmRewardGrowthInside).gt(
-        // @ts-ignore
-        farm._rewardGrowthGlobalX128,
-      )
-    }
     return {
       ...u,
       lmRewardGrowthInside,
-      needReduce,
+      needReduce: true,
     }
   })
 
