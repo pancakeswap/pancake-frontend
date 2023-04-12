@@ -2,7 +2,7 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers'
 
 export const bscProvider = new StaticJsonRpcProvider(
   {
-    url: 'https://nodes.pancakeswap.info',
+    url: BSC_NODE,
     skipFetchSetup: true,
   },
   56,
@@ -10,7 +10,7 @@ export const bscProvider = new StaticJsonRpcProvider(
 
 export const bscTestnetProvider = new StaticJsonRpcProvider(
   {
-    url: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
+    url: BSC_TESTNET_NODE,
     skipFetchSetup: true,
   },
   97,
@@ -18,8 +18,16 @@ export const bscTestnetProvider = new StaticJsonRpcProvider(
 
 export const goerliProvider = new StaticJsonRpcProvider(
   {
-    url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
+    url: GOERLI_NODE,
     skipFetchSetup: true,
   },
   5,
+)
+
+export const ethProvider = new StaticJsonRpcProvider(
+  {
+    url: ETH_NODE,
+    skipFetchSetup: true,
+  },
+  1,
 )
