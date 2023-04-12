@@ -12,13 +12,13 @@ export function RangeTag({
 
   return removed ? (
     <Tag variant="textSubtle" {...props}>
-      {children || 'Closed'}
+      {children || t('Closed')}
     </Tag>
   ) : outOfRange ? (
     <Tag variant="failure" {...props}>
       {children || (
         <Flex alignItems="center">
-          Inactive{' '}
+          {t('Inactive')}{' '}
           <QuestionHelper
             position="relative"
             top="1px"
@@ -34,7 +34,7 @@ export function RangeTag({
     </Tag>
   ) : (
     <Tag variant="success" {...props}>
-      {children || 'Active'}
+      {children || t('Active')}
     </Tag>
   )
 }

@@ -253,7 +253,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             </Text>
             <RowBetween>
               <Text fontSize={16} fontWeight={500}>
-                {feeValue0?.currency?.symbol} Fees Earned:
+                {feeValue0?.currency?.symbol} {t('Fees Earned')}:
               </Text>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500} marginLeft="6px">
@@ -264,7 +264,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             </RowBetween>
             <RowBetween>
               <Text fontSize={16} fontWeight={500}>
-                {feeValue1?.currency?.symbol} Fees Earned:
+                {feeValue1?.currency?.symbol} {t('Fees Earned')}:
               </Text>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500} marginLeft="6px">

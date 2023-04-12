@@ -202,7 +202,9 @@ export function UpdatePositionsReminder_() {
     <ModalV2 {...modal} closeOnOverlayClick>
       <Modal title="Update Positions">
         <AtomBox textAlign="center">
-          <Text>The followings farming positions require updates to continue earning:</Text>
+          <Text>
+            <Trans>The followings farming positions require updates to continue earning</Trans>:
+          </Text>
           {needRetrigger && (
             <Text my="24px" mb="48px" bold>
               {needRetrigger.map((u) => `#${u.tokenId.toString()}`).join(', ')}
@@ -222,7 +224,7 @@ export function UpdatePositionsReminder_() {
               handleUpdateAll()
             }}
           >
-            {txLoading ? 'Updating...' : 'Update All'}
+            {txLoading ? <Trans>Updating...</Trans> : <Trans>Update All</Trans>}
           </Button>
         </AtomBox>
       </Modal>
