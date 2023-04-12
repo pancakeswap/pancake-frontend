@@ -121,7 +121,7 @@ export const Details = memo(function Details({
         <li>
           <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
             {t(
-              "LP Fee Rewards: 0.01% ~ 0.1% according to the specific fee tier of the trading pair, claimed and compounded manually."
+              "LP Fee Rewards: 0.01% ~ 1% per trade according to the specific fee tier of the trading pair, claimed and compounded manually."
             )}
           </Text>
         </li>
