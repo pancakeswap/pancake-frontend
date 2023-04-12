@@ -1,5 +1,8 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
+import web3 from 'web3'
+import { keccak256 } from '@ethersproject/keccak256'
+import { useAccount } from 'wagmi'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
@@ -11,6 +14,7 @@ import { TRADING_REWARD_API } from 'config/constants/endpoints'
 
 export const useClaimAllReward = (unclaimData: UserCampaignInfoDetail[]) => {
   const { t } = useTranslation()
+  const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
@@ -18,17 +22,18 @@ export const useClaimAllReward = (unclaimData: UserCampaignInfoDetail[]) => {
 
   const handleClaim = useCallback(async () => {
     const campaignIds = unclaimData.map((i) => i.campaignId)
-    const selfVolumes = unclaimData.map((i) => [Number(new BigNumber(i.totalVolume.toFixed(2)).div(1e18))])
-
-    const merkleProofsData = await Promise.all(
+    const selfVolumes = unclaimData.map((i) => [Number(new BigNumber(i.totalVolume.toFixed(2)).times(1e18))])
+    const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
-        const response = await fetch(`${TRADING_REWARD_API}/hash/chainId/${chainId}/campaignId/${i.campaignId}`)
+        const volume = new BigNumber(i.totalVolume.toFixed(2)).times(1e18).toString()
+        const originHash = Buffer.from(`0x${keccak256(keccak256(web3.utils.encodePacked(account, volume)))}`, 'hex')
+        const response = await fetch(
+          `${TRADING_REWARD_API}/hash/chainId/${chainId}/campaignId/${i.campaignId}/originHash/${originHash}`,
+        )
         const result = await response.json()
-        return { merkleProof: result.data }
+        return result.data
       }),
     )
-
-    const merkleProofs = merkleProofsData.map((i) => i.merkleProof)
 
     const receipt = await fetchWithCatchTxError(() => contract.claimRewardMulti(campaignIds, merkleProofs, selfVolumes))
 
@@ -42,7 +47,7 @@ export const useClaimAllReward = (unclaimData: UserCampaignInfoDetail[]) => {
       // dispatch(fetchPotteryUserDataAsync(account))
     }
     return null
-  }, [chainId, contract, fetchWithCatchTxError, t, toastSuccess, unclaimData])
+  }, [account, chainId, contract, fetchWithCatchTxError, t, toastSuccess, unclaimData])
 
   return { isPending, handleClaim }
 }
