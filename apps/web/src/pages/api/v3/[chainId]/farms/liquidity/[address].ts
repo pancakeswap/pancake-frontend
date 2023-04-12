@@ -4,18 +4,18 @@ import { NextApiHandler } from 'next'
 import { PositionMath } from '@pancakeswap/v3-sdk'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { JSBI, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
-import { z } from 'zod'
+import { string as zString, object as zObject, enum as zEnum } from 'zod'
 import { BigNumber } from '@ethersproject/bignumber'
 import { request, gql } from 'graphql-request'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { multicallv3Typed } from 'utils/multicall'
 
-const zChainId = z.enum(['56', '1', '5', '97'])
+const zChainId = zEnum(['56', '1', '5', '97'])
 
-const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
+const zAddress = zString().regex(/^0x[a-fA-F0-9]{40}$/)
 
-const zParams = z.object({
+const zParams = zObject({
   chainId: zChainId,
   address: zAddress,
 })
