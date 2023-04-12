@@ -2007,7 +2007,7 @@
   "LP Fee Yield": "LP Fee Yield",
   "LP Fee APR": "LP Fee APR",
   "Yields and rewards are calculated at the current rates and subject to change based on various external variables.": "Yields and rewards are calculated at the current rates and subject to change based on various external variables.",
-  "LP Fee Rewards: 0.01% ~ 0.1% according to the specific fee tier of the trading pair, claimed and compounded manually.": "LP Fee Rewards: 0.01% ~ 0.1% according to the specific fee tier of the trading pair, claimed and compounded manually.",
+  "LP Fee Rewards: 0.01% ~ 1% per trade according to the specific fee tier of the trading pair, claimed and compounded manually.": "LP Fee Rewards: 0.01% ~ 1% per trade according to the specific fee tier of the trading pair, claimed and compounded manually.",
   "LP Fee APR figures are calculated using Subgraph and may subject to indexing delays. For more accurate LP Fee APR, please visit the Info Page.": "LP Fee APR figures are calculated using Subgraph and may subject to indexing delays. For more accurate LP Fee APR, please visit the Info Page.",
   "Entry price": "Entry price",
   "Exit price": "Exit price",
