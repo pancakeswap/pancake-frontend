@@ -11,6 +11,8 @@ const RewardsBreakdown = () => {
   const [maxPage, setMaxPages] = useState(1)
   const { isDesktop } = useMatchBreakpoints()
 
+  const list = []
+
   if (!account) {
     return null
   }
@@ -53,32 +55,40 @@ const RewardsBreakdown = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <Td>BNB-CAKE</Td>
-              {isDesktop ? (
-                <>
-                  <Td>$499.42</Td>
-                  <Td>$32.13</Td>
-                  <Td textAlign="center">$123,456,789</Td>
-                  <Td textAlign="right">$30,000.00</Td>
-                </>
-              ) : (
-                <>
-                  <Td>
-                    <Text textAlign="right">$499.42</Text>
-                    <Text textAlign="right" color="textSubtle">
-                      $32.13
-                    </Text>
-                  </Td>
-                  <Td>
-                    <Text textAlign="right">$123,456,789</Text>
-                    <Text textAlign="right" color="textSubtle">
-                      $30,000.00
-                    </Text>
-                  </Td>
-                </>
-              )}
-            </tr>
+            {list.length === 0 ? (
+              <tr>
+                <Td colSpan={isDesktop ? 5 : 3} textAlign="center">
+                  {t('No results')}
+                </Td>
+              </tr>
+            ) : (
+              <tr>
+                <Td>BNB-CAKE</Td>
+                {isDesktop ? (
+                  <>
+                    <Td>$499.42</Td>
+                    <Td>$32.13</Td>
+                    <Td textAlign="center">$123,456,789</Td>
+                    <Td textAlign="right">$30,000.00</Td>
+                  </>
+                ) : (
+                  <>
+                    <Td>
+                      <Text textAlign="right">$499.42</Text>
+                      <Text textAlign="right" color="textSubtle">
+                        $32.13
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text textAlign="right">$123,456,789</Text>
+                      <Text textAlign="right" color="textSubtle">
+                        $30,000.00
+                      </Text>
+                    </Td>
+                  </>
+                )}
+              </tr>
+            )}
           </tbody>
         </Table>
         <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />

@@ -16,7 +16,6 @@ import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/
 import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
-import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
 import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
@@ -207,7 +206,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   )
 
   const showBackgroundColor = useMemo(
-    () => !account || (isQualified && !hasClaimBalance),
+    () => !account || (isQualified && !hasClaimBalance) || (!isQualified && hasClaimBalance),
     [account, hasClaimBalance, isQualified],
   )
 
@@ -243,16 +242,6 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       )
     }
 
-    if (!isQualified && hasClaimBalance) {
-      return (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <BaseContainer showBackgroundColor={showBackgroundColor}>
-            <NotQualified />
-          </BaseContainer>
-        </Container>
-      )
-    }
-
     if (!isQualified) {
       return (
         <Container showBackgroundColor={showBackgroundColor}>
@@ -262,8 +251,10 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
               userData={userData}
               data={currentUserCampaignInfo}
               isLockPosition={isLockPosition}
+              hasClaimBalance={hasClaimBalance}
               isValidLockDuration={isValidLockDuration}
               isValidTotalStakedBalance={isValidTotalStakedBalance}
+              totalAvailableClaimData={totalAvailableClaimData}
             />
           </BaseContainer>
         </Container>

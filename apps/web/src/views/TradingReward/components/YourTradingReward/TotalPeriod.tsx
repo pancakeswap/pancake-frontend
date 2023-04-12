@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Flex, Card, Text, Balance, Message, MessageText, TooltipText, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Card, Text, Message, MessageText, TooltipText, Button } from '@pancakeswap/uikit'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
@@ -85,15 +85,8 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ tota
                   <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                     {t('Your unclaimed trading rewards')}
                   </Text>
-                  <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={totalUnclaimUSDValue} />
-                  <Balance
-                    fontSize="14px"
-                    color="textSubtle"
-                    prefix="~ "
-                    unit=" CAKE"
-                    decimals={2}
-                    value={totalUnclaimCake}
-                  />
+                  <Text bold fontSize={['40px']}>{`$ ${formatNumber(totalUnclaimUSDValue)}`}</Text>
+                  <Text fontSize={['14px']} color="textSubtle">{`~ ${formatNumber(totalUnclaimCake)} CAKE`}</Text>
                 </Box>
                 <Button
                   width={['100%', '100%', '100%', 'fit-content']}
@@ -143,13 +136,17 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ tota
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
                 {t('Your TOTAL trading Reward')}
               </Text>
-              <Balance bold fontSize={['24px']} prefix="$ " decimals={2} value={totalTradingReward} />
+              <Text bold fontSize={['24px']}>
+                {`$ ${formatNumber(totalTradingReward)}`}
+              </Text>
             </Box>
             <Box>
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
                 {t('Your TOTAL VOLUME Traded')}
               </Text>
-              <Balance bold fontSize={['24px']} prefix="$ " decimals={2} value={totalVolumeTrade} />
+              <Text bold fontSize={['24px']}>
+                {`$ ${formatNumber(totalVolumeTrade)}`}
+              </Text>
             </Box>
           </GreyCard>
         </Box>
