@@ -343,6 +343,8 @@ export default function PoolPage() {
 
   const positionValueUpper = inverted ? position?.amount0 : position?.amount1
   const positionValueLower = inverted ? position?.amount1 : position?.amount0
+  const priceValueUpper = inverted ? price0 : price1
+  const priceValueLower = inverted ? price1 : price0
 
   // check if price is within range
   const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
@@ -563,6 +565,15 @@ export default function PoolPage() {
                             <FormattedCurrencyAmount currencyAmount={positionValueUpper} />
                           </Text>
                         </Flex>
+                        <RowBetween justifyContent="flex-end">
+                          <Text fontSize="10px" color="textSubtle" mr="4px">
+                            {positionValueUpper && priceValueUpper
+                              ? `~$${priceValueUpper
+                                  .quote(positionValueUpper?.wrapped)
+                                  .toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
+                        </RowBetween>
                       </AutoRow>
                       <AutoRow justifyContent="space-between">
                         <Flex>
@@ -576,6 +587,15 @@ export default function PoolPage() {
                             <FormattedCurrencyAmount currencyAmount={positionValueLower} />
                           </Text>
                         </Flex>
+                        <RowBetween justifyContent="flex-end">
+                          <Text fontSize="10px" color="textSubtle" mr="4px">
+                            {positionValueLower && priceValueLower
+                              ? `~$${priceValueLower
+                                  .quote(positionValueLower?.wrapped)
+                                  .toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
+                        </RowBetween>
                       </AutoRow>
                     </LightGreyCard>
                   </Box>
@@ -621,7 +641,16 @@ export default function PoolPage() {
                             {feeValueUpper?.currency?.symbol}
                           </Text>
                         </Flex>
-                        <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+                        <Flex justifyContent="center">
+                          <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+                        </Flex>
+                        <RowBetween justifyContent="flex-end">
+                          <Text fontSize="10px" color="textSubtle" ml="4px">
+                            {feeValueUpper && priceValueUpper
+                              ? `~$${priceValueUpper.quote(feeValueUpper?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
+                        </RowBetween>
                       </AutoRow>
                       <AutoRow justifyContent="space-between">
                         <Flex>
@@ -630,7 +659,16 @@ export default function PoolPage() {
                             {feeValueLower?.currency?.symbol}
                           </Text>
                         </Flex>
-                        <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+                        <Flex justifyContent="center">
+                          <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+                        </Flex>
+                        <RowBetween justifyContent="flex-end">
+                          <Text fontSize="10px" color="textSubtle" ml="4px">
+                            {feeValueLower && priceValueLower
+                              ? `~$${priceValueLower.quote(feeValueLower?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                              : ''}
+                          </Text>
+                        </RowBetween>
                       </AutoRow>
                     </LightGreyCard>
                   </Box>
