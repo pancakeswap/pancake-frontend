@@ -1,35 +1,16 @@
 import BigNumber from "bignumber.js";
+import type { PoolCategory, PoolConfigBaseProps, SerializedPoolConfig } from "@pancakeswap/pools";
 
 export interface Address {
   [chainId: number]: string;
 }
 
-export enum PoolCategory {
-  "COMMUNITY" = "Community",
-  "CORE" = "Core",
-  "BINANCE" = "Binance", // Pools using native BNB behave differently than pools using a token
-  "AUTO" = "Auto",
-}
-
-export interface PoolConfigBaseProps {
-  sousId: number;
-  contractAddress: Address;
-  poolCategory: PoolCategory;
-  tokenPerBlock: string;
-  isFinished?: boolean;
-  enableEmergencyWithdraw?: boolean;
-  version?: number;
-}
+export { PoolCategory, PoolConfigBaseProps, SerializedPoolConfig };
 
 interface GenericToken {
   decimals: number;
   symbol: string;
   address: string;
-}
-
-export interface SerializedPoolConfig<T> extends PoolConfigBaseProps {
-  earningToken: T & GenericToken;
-  stakingToken: T & GenericToken;
 }
 
 export interface DeserializedPoolConfig<T> extends PoolConfigBaseProps {

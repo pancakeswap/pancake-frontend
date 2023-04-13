@@ -2,6 +2,17 @@ import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/
 import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
 import poolsConfig from 'config/constants/pools'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { bscTokens } from '@pancakeswap/tokens'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import {
+  fetchPoolsBlockLimits,
+  fetchPoolsTotalStaking,
+  fetchPoolsProfileRequirement,
+  fetchPoolsStakingLimits,
+} from '@pancakeswap/pools'
+import { ChainId } from '@pancakeswap/sdk'
+
 import {
   PoolsState,
   SerializedPool,
@@ -13,24 +24,16 @@ import {
   SerializedLockedCakeVault,
 } from 'state/types'
 import { getPoolApr } from 'utils/apr'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import cakeAbi from 'config/abi/cake.json'
 import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { bscTokens } from '@pancakeswap/tokens'
 import { isAddress } from 'utils'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { bscRpcProvider } from 'utils/providers'
+import { provider } from 'utils/providers'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
+
 import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
-import {
-  fetchPoolsBlockLimits,
-  fetchPoolsProfileRequirement,
-  fetchPoolsStakingLimits,
-  fetchPoolsTotalStaking,
-} from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
@@ -132,10 +135,10 @@ export const fetchPoolsPublicDataAsync =
   (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
     try {
       const [blockLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
-        fetchPoolsBlockLimits(),
-        fetchPoolsTotalStaking(),
-        fetchPoolsProfileRequirement(),
-        currentBlockNumber ? Promise.resolve(currentBlockNumber) : bscRpcProvider.getBlockNumber(),
+        fetchPoolsBlockLimits(chainId, provider),
+        fetchPoolsTotalStaking(chainId, provider),
+        fetchPoolsProfileRequirement(chainId, provider),
+        currentBlockNumber ? Promise.resolve(currentBlockNumber) : provider({ chainId })?.getBlockNumber(),
       ])
 
       const blockLimitsSousIdMap = keyBy(blockLimits, 'sousId')
@@ -220,13 +223,13 @@ export const fetchPoolsPublicDataAsync =
     }
   }
 
-export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => {
+export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatch, getState) => {
   const poolsWithStakingLimit = getState()
     .pools.data.filter(({ stakingLimit }) => stakingLimit !== null && stakingLimit !== undefined)
     .map((pool) => pool.sousId)
 
   try {
-    const stakingLimits = await fetchPoolsStakingLimits(poolsWithStakingLimit)
+    const stakingLimits = await fetchPoolsStakingLimits({ poolsWithStakingLimit, chainId, provider })
 
     const stakingLimitData = poolsConfig.map((pool) => {
       if (poolsWithStakingLimit.includes(pool.sousId)) {

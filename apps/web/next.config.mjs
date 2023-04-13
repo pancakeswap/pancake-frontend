@@ -45,6 +45,7 @@ const config = {
     '@pancakeswap/ui',
     '@pancakeswap/uikit',
     '@pancakeswap/farms',
+    '@pancakeswap/pools',
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',

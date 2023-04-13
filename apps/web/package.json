@@ -40,6 +40,7 @@
     "@pancakeswap/hooks": "*",
     "@pancakeswap/localization": "*",
     "@pancakeswap/multicall": "*",
+    "@pancakeswap/pools": "*",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/smart-router": "*",
     "@pancakeswap/token-lists": "*",
