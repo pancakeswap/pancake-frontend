@@ -1,6 +1,6 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
-import { BIG_ZERO, ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 import { useFarmsV2Data } from 'state/farms/hooks'
