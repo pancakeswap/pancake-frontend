@@ -4,8 +4,10 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "tsup",
-    "test": "vitest --run"
+    "build": "yarn typechain && tsup",
+    "test": "vitest --run",
+    "typechain": "typechain --out-dir src/abis/types --target=ethers-v5 \"src/abis/*.json\"",
+    "postinstall": "yarn typechain"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -38,8 +40,10 @@
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/utils": "*",
+    "@typechain/ethers-v5": "^8.0.5",
     "tsconfig": "*",
     "tsup": "^6.6.3",
+    "typechain": "^6.1.0",
     "typescript": "^4.9.4",
     "vitest": "^0.27.2"
   }

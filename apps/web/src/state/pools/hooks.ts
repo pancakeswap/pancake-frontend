@@ -120,7 +120,9 @@ export const usePoolsPageFetch = () => {
     batch(() => {
       dispatch(fetchCakeVaultPublicData())
       dispatch(fetchCakeFlexibleSideVaultPublicData())
-      dispatch(fetchIfoPublicDataAsync())
+      if (chainId) {
+        dispatch(fetchIfoPublicDataAsync(chainId))
+      }
       if (account && chainId) {
         dispatch(fetchPoolsUserDataAsync({ account, chainId }))
         dispatch(fetchCakeVaultUserData({ account }))
@@ -160,14 +162,14 @@ export const useFetchIfo = () => {
   const dispatch = useAppDispatch()
 
   useSWRImmutable(
-    'fetchIfoPublicData',
+    chainId && ['fetchIfoPublicData', chainId],
     async () => {
       const cakePriceFarms = await getCakePriceFarms(chainId)
       await dispatch(fetchFarmsPublicDataAsync({ pids: cakePriceFarms, chainId }))
       batch(() => {
         dispatch(fetchCakePoolPublicDataAsync())
         dispatch(fetchCakeVaultPublicData())
-        dispatch(fetchIfoPublicDataAsync())
+        dispatch(fetchIfoPublicDataAsync(chainId))
       })
     },
     {
@@ -176,12 +178,12 @@ export const useFetchIfo = () => {
   )
 
   useSWRImmutable(
-    account && ['fetchIfoUserData', account],
+    account && chainId && ['fetchIfoUserData', account, chainId],
     async () => {
       batch(() => {
         dispatch(fetchCakePoolUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
-        dispatch(fetchUserIfoCreditDataAsync(account))
+        dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
       })
     },
     {
