@@ -39,7 +39,6 @@ const InlineLink = styled(Link)`
 
 const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMultiplierProps>> = ({
   multiplier,
-  rewardCakePerSecond,
   farmCakePerSecond,
   totalMultipliers,
 }) => {
@@ -47,21 +46,6 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
   const { t } = useTranslation();
   const tooltipContent = (
     <>
-      {/* {rewardCakePerSecond ? (
-        <>
-          <Text>
-            {t(
-              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second."
-            )}
-          </Text>
-          <Text my="24px">
-            {" "}
-            {t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")}
-          </Text>
-          <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
-        </>
-      ) : (
-        <> */}
       <Text bold>
         {t("Farm’s CAKE Per Second:")}
         <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
@@ -90,8 +74,6 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
         </InlineLink>
         {t("here.")}
       </Text>
-      {/* </>
-      )} */}
     </>
   );
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
