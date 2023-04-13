@@ -12,6 +12,7 @@ import { useERC20 } from 'hooks/useContract'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useApprovePool } from 'views/Pools/hooks/useApprove'
 import { usePool } from 'state/pools/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
@@ -25,6 +26,7 @@ const StakeModalContainer = ({
   stakingTokenPrice,
 }: Pool.StakeModalPropsType<Token>) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const {
     sousId,
@@ -117,7 +119,7 @@ const StakeModalContainer = ({
 
   const handleEnableApprove = async () => {
     await handleApprove()
-    dispatch(updateUserAllowance({ sousId, account }))
+    dispatch(updateUserAllowance({ sousId, account, chainId }))
   }
 
   return (

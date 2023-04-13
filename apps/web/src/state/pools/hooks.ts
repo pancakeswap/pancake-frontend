@@ -112,8 +112,8 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
 }
 
 export const usePoolsPageFetch = () => {
-  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
+  const { account, chainId } = useActiveWeb3React()
   useFetchPublicPoolsData()
 
   useFastRefreshEffect(() => {
@@ -121,13 +121,13 @@ export const usePoolsPageFetch = () => {
       dispatch(fetchCakeVaultPublicData())
       dispatch(fetchCakeFlexibleSideVaultPublicData())
       dispatch(fetchIfoPublicDataAsync())
-      if (account) {
-        dispatch(fetchPoolsUserDataAsync(account))
+      if (account && chainId) {
+        dispatch(fetchPoolsUserDataAsync({ account, chainId }))
         dispatch(fetchCakeVaultUserData({ account }))
         dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
       }
     })
-  }, [account, dispatch])
+  }, [account, chainId, dispatch])
 
   useEffect(() => {
     batch(() => {
