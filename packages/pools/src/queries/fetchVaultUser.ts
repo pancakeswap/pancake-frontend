@@ -1,21 +1,28 @@
 import BigNumber from 'bignumber.js'
-import { SerializedLockedVaultUser, SerializedVaultUser } from 'state/types'
-import { getCakeVaultAddress } from 'utils/addressHelpers'
-import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
-import { multicallv2 } from 'utils/multicall'
-import { getCakeFlexibleSideVaultV2Contract } from '../../utils/contractHelpers'
+import { ChainId } from '@pancakeswap/sdk'
+import { createMulticall } from '@pancakeswap/multicall'
 
-const cakeVaultAddress = getCakeVaultAddress()
-const flexibleSideVaultContract = getCakeFlexibleSideVaultV2Contract()
+import { OnChainProvider, SerializedLockedVaultUser, SerializedVaultUser } from '../types'
+import cakeVaultAbi from '../abis/ICakeVaultV2.json'
+import { getCakeVaultAddress } from './getAddresses'
+import { getCakeFlexibleSideVaultV2Contract } from './getContracts'
 
-export const fetchVaultUser = async (account: string): Promise<SerializedLockedVaultUser> => {
+interface Params {
+  account: string
+  chainId: ChainId
+  provider: OnChainProvider
+}
+
+export const fetchVaultUser = async ({ account, chainId, provider }: Params): Promise<SerializedLockedVaultUser> => {
   try {
+    const cakeVaultAddress = getCakeVaultAddress(chainId)
     const calls = ['userInfo', 'calculatePerformanceFee', 'calculateOverdueFee'].map((method) => ({
       address: cakeVaultAddress,
       name: method,
       params: [account],
     }))
 
+    const { multicallv2 } = createMulticall(provider)
     const [userContractResponse, [currentPerformanceFee], [currentOverdueFee]] = await multicallv2({
       abi: cakeVaultAbi,
       calls,
@@ -37,23 +44,28 @@ export const fetchVaultUser = async (account: string): Promise<SerializedLockedV
   } catch (error) {
     return {
       isLoading: true,
-      userShares: null,
-      lastDepositedTime: null,
-      lastUserActionTime: null,
-      cakeAtLastUserAction: null,
-      userBoostedShare: null,
-      lockEndTime: null,
-      lockStartTime: null,
-      locked: null,
-      lockedAmount: null,
-      currentPerformanceFee: null,
-      currentOverdueFee: null,
+      userShares: '',
+      lastDepositedTime: '',
+      lastUserActionTime: '',
+      cakeAtLastUserAction: '',
+      userBoostedShare: '',
+      lockEndTime: '',
+      lockStartTime: '',
+      locked: false,
+      lockedAmount: '',
+      currentPerformanceFee: '',
+      currentOverdueFee: '',
     }
   }
 }
 
-export const fetchFlexibleSideVaultUser = async (account: string): Promise<SerializedVaultUser> => {
+export const fetchFlexibleSideVaultUser = async ({
+  account,
+  chainId,
+  provider,
+}: Params): Promise<SerializedVaultUser> => {
   try {
+    const flexibleSideVaultContract = getCakeFlexibleSideVaultV2Contract(chainId, provider)
     const userContractResponse = await flexibleSideVaultContract.userInfo(account)
     return {
       isLoading: false,
@@ -65,10 +77,10 @@ export const fetchFlexibleSideVaultUser = async (account: string): Promise<Seria
   } catch (error) {
     return {
       isLoading: true,
-      userShares: null,
-      lastDepositedTime: null,
-      lastUserActionTime: null,
-      cakeAtLastUserAction: null,
+      userShares: '',
+      lastDepositedTime: '',
+      lastUserActionTime: '',
+      cakeAtLastUserAction: '',
     }
   }
 }

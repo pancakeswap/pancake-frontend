@@ -4,6 +4,8 @@ import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => Provider
 
+export type SerializedBigNumber = string
+
 export interface Address {
   [chainId: number]: string
 }
@@ -37,3 +39,21 @@ export interface SerializedPoolConfig<T> extends PoolConfigBaseProps {
 }
 
 export type SerializedPool = SerializedPoolConfig<SerializedWrappedToken>
+
+export interface SerializedVaultUser {
+  isLoading: boolean
+  userShares: SerializedBigNumber
+  cakeAtLastUserAction: SerializedBigNumber
+  lastDepositedTime: string
+  lastUserActionTime: string
+}
+
+export interface SerializedLockedVaultUser extends SerializedVaultUser {
+  lockStartTime: string
+  lockEndTime: string
+  userBoostedShare: SerializedBigNumber
+  locked: boolean
+  lockedAmount: SerializedBigNumber
+  currentPerformanceFee: SerializedBigNumber
+  currentOverdueFee: SerializedBigNumber
+}

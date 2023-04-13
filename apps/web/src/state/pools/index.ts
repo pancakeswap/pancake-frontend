@@ -18,7 +18,9 @@ import {
   fetchUserIfoCredit,
   fetchPublicVaultData,
   fetchPublicFlexibleSideVaultData,
+  fetchVaultUser,
   fetchVaultFees,
+  fetchFlexibleSideVaultUser,
   getCakeVaultAddress,
   getCakeFlexibleSideVaultAddress,
 } from '@pancakeswap/pools'
@@ -46,7 +48,6 @@ import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
-import { fetchVaultUser, fetchFlexibleSideVaultUser } from './fetchVaultUser'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -348,13 +349,13 @@ export const fetchCakeFlexibleSideVaultFees = createAsyncThunk<SerializedVaultFe
   },
 )
 
-export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser, { account: string }>(
-  'cakeVault/fetchUser',
-  async ({ account }) => {
-    const userData = await fetchVaultUser(account)
-    return userData
-  },
-)
+export const fetchCakeVaultUserData = createAsyncThunk<
+  SerializedLockedVaultUser,
+  { account: string; chainId: ChainId }
+>('cakeVault/fetchUser', async ({ account, chainId }) => {
+  const userData = await fetchVaultUser({ account, chainId, provider })
+  return userData
+})
 
 export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData, ChainId>(
   'ifoVault/fetchIfoPublicDataAsync',
@@ -374,13 +375,13 @@ export const fetchUserIfoCreditDataAsync =
       console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
     }
   }
-export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<SerializedVaultUser, { account: string }>(
-  'cakeFlexibleSideVault/fetchUser',
-  async ({ account }) => {
-    const userData = await fetchFlexibleSideVaultUser(account)
-    return userData
-  },
-)
+export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<
+  SerializedVaultUser,
+  { account: string; chainId: ChainId }
+>('cakeFlexibleSideVault/fetchUser', async ({ account, chainId }) => {
+  const userData = await fetchFlexibleSideVaultUser({ chainId, account, provider })
+  return userData
+})
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
