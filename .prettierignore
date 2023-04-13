@@ -6,3 +6,4 @@ cli/aptos-codegen
 dist
 packages/farms/lists
 packages/smart-router/evm/abis/types
+packages/pools/src/abis/types
