@@ -2,7 +2,8 @@ import { useRef, useMemo } from 'react'
 import styled from 'styled-components'
 import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { BIG_ZERO, ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -16,6 +17,8 @@ export interface ITableProps {
   userDataReady: boolean
   cakePrice: BigNumber
   sortColumn?: string
+  totalRegularAllocPoint?: EthersBigNumber
+  cakePerBlock?: EthersBigNumber
 }
 
 const Container = styled.div`
@@ -64,7 +67,13 @@ const TableContainer = styled.div`
   position: relative;
 `
 
-const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
+  farms,
+  cakePrice,
+  userDataReady,
+  totalRegularAllocPoint,
+  cakePerBlock,
+}) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
@@ -107,21 +116,15 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
-    const { totalRegularAllocPoint, cakePerBlock } = farm || { totalRegularAllocPoint: null, cakePerBlock: null }
     const farmCakePerSecond =
       farm.allocPoint && totalRegularAllocPoint && cakePerBlock
-        ? `~${(
-            ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
-              ethersToBigNumber(cakePerBlock).toNumber()) /
-            1e18 /
-            3
-          ).toFixed(6)}`
-        : '-'
+        ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
+            ethersToBigNumber(cakePerBlock).toNumber()) /
+          1e8
+        : 0
     const totalMultipliers = totalRegularAllocPoint
-      ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
+      ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 100).toString()
       : '-'
-
-    console.log({ allocPoint: farm.allocPoint, totalRegularAllocPoint, cakePerBlock })
 
     const row: RowProps = {
       apr: {
@@ -156,7 +159,12 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       multiplier: {
         multiplier: farm.multiplier,
         rewardCakePerSecond: true,
-        farmCakePerSecond: farmCakePerSecond === '0.000000' ? '<0.000001' : farmCakePerSecond,
+        farmCakePerSecond:
+          farmCakePerSecond === 0
+            ? '-'
+            : farmCakePerSecond < 0.000001
+            ? '<0.000001'
+            : `~${farmCakePerSecond.toFixed(6)}`,
         totalMultipliers,
       },
       type: farm.isCommunity ? 'community' : 'core',

@@ -146,7 +146,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     cakePerBlock,
   } = useFarms()
   const lpRewardsAprs = useLpRewardsAprs()
-  console.log({ totalRegularAllocPoint, cakePerBlock })
+
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
   const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
@@ -357,7 +357,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         </ControlContainer>
         <NoSSR>
           {viewMode === ViewMode.TABLE ? (
-            <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+            <Table
+              farms={chosenFarmsMemoized}
+              cakePrice={cakePrice}
+              userDataReady={userDataReady}
+              totalRegularAllocPoint={totalRegularAllocPoint}
+              cakePerBlock={cakePerBlock}
+            />
           ) : (
             <FlexLayout>{children}</FlexLayout>
           )}

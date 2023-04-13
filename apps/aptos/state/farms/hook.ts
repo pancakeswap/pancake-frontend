@@ -120,7 +120,6 @@ export const useFarms = () => {
           ? masterChef?.data.total_regular_alloc_point
           : masterChef?.data.total_special_alloc_point
         const poolWeight = totalAlloc ? allocPoint.div(new BigNumber(totalAlloc)) : BIG_ZERO
-        const cakePerSecond = masterChef?.data?.cake_per_second
 
         // tokenPriceVsQuote info for this price helper farm is wrong, opposite way should be used
         const isAptCakeLp = config.pid === null && config.lpSymbol === 'APT-CAKE LP'
@@ -139,8 +138,7 @@ export const useFarms = () => {
               : '0',
           poolWeight: poolWeight.toString(),
           multiplier: `${allocPoint.div(100).toString()}X`,
-          totalRegularAllocPoint: totalAlloc,
-          cakePerBlock: cakePerSecond,
+          allocPoint,
         }
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
@@ -161,12 +159,17 @@ export const useFarms = () => {
         .toNumber()
     : 0
 
+  const totalRegularAllocPoint = masterChef?.data.total_regular_alloc_point
+  const cakePerBlock = masterChef?.data.cake_per_second
+
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
       regularCakePerBlock: regularCakePerSeconds,
       loadArchivedFarmsData: false,
+      totalRegularAllocPoint,
+      cakePerBlock,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
         .map(deserializeFarm)
@@ -188,7 +191,16 @@ export const useFarms = () => {
           }
         }),
     } as DeserializedFarmsState
-  }, [poolLength, regularCakePerSeconds, farmsWithPrices, masterChef, userInfos, getNow])
+  }, [
+    poolLength,
+    regularCakePerSeconds,
+    farmsWithPrices,
+    masterChef,
+    userInfos,
+    getNow,
+    totalRegularAllocPoint,
+    cakePerBlock,
+  ])
 }
 
 export function useFarmsUserInfo() {
