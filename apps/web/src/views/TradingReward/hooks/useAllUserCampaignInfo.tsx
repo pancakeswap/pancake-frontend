@@ -63,10 +63,14 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
             const calls = [
-              { address: tradingRewardAddress, name: 'canClaim', params: [campaignId, totalVolume] },
               {
+                name: 'canClaim',
                 address: tradingRewardAddress,
+                params: [campaignId, new BigNumber(totalVolume.toFixed(2)).times(1e18).toString()],
+              },
+              {
                 name: 'userClaimedIncentives',
+                address: tradingRewardAddress,
                 params: [campaignId, account],
               },
             ]
