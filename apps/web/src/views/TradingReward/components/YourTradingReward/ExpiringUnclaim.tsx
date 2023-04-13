@@ -4,6 +4,7 @@ import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/Curr
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
 
 interface ExpiringUnclaimProps {
+  campaignIds: Array<string>
   canClaim: string
   currentTradingVolume: number
   campaignClaimTime: number
@@ -11,6 +12,7 @@ interface ExpiringUnclaimProps {
 }
 
 const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> = ({
+  campaignIds,
   canClaim,
   currentTradingVolume,
   campaignClaimTime,
@@ -29,7 +31,7 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
         currentTradingVolume={currentTradingVolume}
         campaignClaimTime={campaignClaimTime}
       />
-      <TotalPeriod totalAvailableClaimData={totalAvailableClaimData} />
+      <TotalPeriod campaignIds={campaignIds} totalAvailableClaimData={totalAvailableClaimData} />
     </Flex>
   )
 }

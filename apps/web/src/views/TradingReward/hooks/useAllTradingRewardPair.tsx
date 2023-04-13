@@ -4,7 +4,6 @@ import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { incentiveFormat } from 'views/TradingReward/utils/incentiveFormat'
 import { TradingReward } from 'config/abi/types'
-import { SLOW_INTERVAL } from 'config/constants'
 
 export enum RewardStatus {
   ALL = '0',
@@ -100,7 +99,10 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
       }
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+      revalidateOnMount: true,
     },
   )
 

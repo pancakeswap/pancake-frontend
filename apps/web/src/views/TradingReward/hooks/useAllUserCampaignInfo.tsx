@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
-import { FAST_INTERVAL } from 'config/constants'
+import { SLOW_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import tradingRewardABI from 'config/abi/tradingReward.json'
@@ -95,7 +95,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
         return []
       }
     },
-    { refreshInterval: FAST_INTERVAL },
+    { refreshInterval: SLOW_INTERVAL },
   )
 
   return {

@@ -12,10 +12,11 @@ import { getBalanceAmount, formatNumber } from '@pancakeswap/utils/formatBalance
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
 
 interface TotalPeriodProps {
+  campaignIds: Array<string>
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
-const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ totalAvailableClaimData }) => {
+const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ campaignIds, totalAvailableClaimData }) => {
   const { t } = useTranslation()
   const cakePriceBusd = useCakeBusdPrice()
 
@@ -30,7 +31,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ tota
       .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
   }, [totalAvailableClaimData])
 
-  const { isPending, handleClaim } = useClaimAllReward(unclaimData)
+  const { isPending, handleClaim } = useClaimAllReward(campaignIds, unclaimData)
 
   const totalUnclaimCake = useMemo(() => {
     const totalCake = unclaimData

@@ -152,6 +152,7 @@ const BaseContainer = styled(Flex)<{ showBackgroundColor: boolean }>`
 interface YourTradingRewardProps {
   isFetching: boolean
   incentives: Incentives
+  campaignIds: Array<string>
   currentUserCampaignInfo: UserCampaignInfoDetail
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
@@ -159,6 +160,7 @@ interface YourTradingRewardProps {
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
   isFetching,
   incentives,
+  campaignIds,
   totalAvailableClaimData,
   currentUserCampaignInfo,
 }) => {
@@ -273,6 +275,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
 
     return (
       <ExpiringUnclaim
+        campaignIds={campaignIds}
         canClaim={canClaim}
         currentTradingVolume={totalVolume}
         totalAvailableClaimData={totalAvailableClaimData}

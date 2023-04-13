@@ -66,6 +66,7 @@ const TradingReward = () => {
       <YourTradingReward
         isFetching={isAllTradingRewardPairDataFetching || isAllUserCampaignInfo}
         incentives={currentUserIncentive}
+        campaignIds={allTradingRewardPairData.campaignIds}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
       />

@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import web3 from 'web3'
+import { useSWRConfig } from 'swr'
 import { keccak256 } from '@ethersproject/keccak256'
 import { useAccount } from 'wagmi'
 import { useToast } from '@pancakeswap/uikit'
@@ -12,16 +13,17 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 
-export const useClaimAllReward = (unclaimData: UserCampaignInfoDetail[]) => {
+export const useClaimAllReward = (campaignIds: Array<string>, unclaimData: UserCampaignInfoDetail[]) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = useTradingRewardContract()
+  const { mutate } = useSWRConfig()
 
   const handleClaim = useCallback(async () => {
-    const campaignIds = unclaimData.map((i) => i.campaignId)
+    const claimCampaignIds = unclaimData.map((i) => i.campaignId)
     const selfVolumes = unclaimData.map((i) => [Number(new BigNumber(i.totalVolume.toFixed(2)).times(1e18))])
     const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
@@ -35,7 +37,9 @@ export const useClaimAllReward = (unclaimData: UserCampaignInfoDetail[]) => {
       }),
     )
 
-    const receipt = await fetchWithCatchTxError(() => contract.claimRewardMulti(campaignIds, merkleProofs, selfVolumes))
+    const receipt = await fetchWithCatchTxError(() =>
+      contract.claimRewardMulti(claimCampaignIds, merkleProofs, selfVolumes),
+    )
 
     if (receipt?.status) {
       toastSuccess(
@@ -44,10 +48,10 @@ export const useClaimAllReward = (unclaimData: UserCampaignInfoDetail[]) => {
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
-      // dispatch(fetchPotteryUserDataAsync(account))
+      mutate(['/all-campaign-id-info', account, chainId, campaignIds])
     }
     return null
-  }, [account, chainId, contract, fetchWithCatchTxError, t, toastSuccess, unclaimData])
+  }, [account, campaignIds, chainId, contract, fetchWithCatchTxError, mutate, t, toastSuccess, unclaimData])
 
   return { isPending, handleClaim }
 }
