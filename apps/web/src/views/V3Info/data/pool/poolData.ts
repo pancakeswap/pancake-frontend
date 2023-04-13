@@ -43,7 +43,7 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
         totalValueLockedToken1
         totalValueLockedUSD
       }
-      bundles {
+      bundles(where: {id: "1"}) {
         ethPriceUSD
       }
     }
