@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react'
 import styled from 'styled-components'
 import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { BIG_ZERO, ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -105,6 +106,23 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     const lpLabel = farm.lpSymbol
     const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
+
+    const { totalRegularAllocPoint, cakePerBlock } = farm || { totalRegularAllocPoint: null, cakePerBlock: null }
+    const farmCakePerSecond =
+      farm.allocPoint && totalRegularAllocPoint && cakePerBlock
+        ? `~${(
+            ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
+              ethersToBigNumber(cakePerBlock).toNumber()) /
+            1e18 /
+            3
+          ).toFixed(6)}`
+        : '-'
+    const totalMultipliers = totalRegularAllocPoint
+      ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
+      : '-'
+
+    console.log({ allocPoint: farm.allocPoint, totalRegularAllocPoint, cakePerBlock })
+
     const row: RowProps = {
       apr: {
         value: getDisplayApr(farm.apr, farm.lpRewardsApr) || '0',
@@ -138,6 +156,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       multiplier: {
         multiplier: farm.multiplier,
         rewardCakePerSecond: true,
+        farmCakePerSecond: farmCakePerSecond === '0.000000' ? '<0.000001' : farmCakePerSecond,
+        totalMultipliers,
       },
       type: farm.isCommunity ? 'community' : 'core',
       details: farm,

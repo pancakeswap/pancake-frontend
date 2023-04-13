@@ -137,9 +137,16 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+  const {
+    data: farmsLP,
+    userDataLoaded,
+    poolLength,
+    regularCakePerBlock,
+    totalRegularAllocPoint,
+    cakePerBlock,
+  } = useFarms()
   const lpRewardsAprs = useLpRewardsAprs()
-
+  console.log({ totalRegularAllocPoint, cakePerBlock })
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
   const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
