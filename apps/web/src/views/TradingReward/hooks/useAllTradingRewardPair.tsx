@@ -4,6 +4,7 @@ import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { incentiveFormat } from 'views/TradingReward/utils/incentiveFormat'
 import { TradingReward } from 'config/abi/types'
+import { SLOW_INTERVAL } from 'config/constants'
 
 export enum RewardStatus {
   ALL = '0',
@@ -87,7 +88,6 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
           fetchCampaignPairs(chainId, campaignIds),
           fetchCampaignIdsIncentive(tradingRewardContract, campaignIds),
         ])
-        // return pairs.flat().filter((value, index, self) => self.indexOf(value) === index)
 
         return {
           campaignIds,
@@ -98,6 +98,9 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
         console.info(`Fetch All trading Reward Pair Error: ${error}`)
         return initialAllTradingRewardState
       }
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
     },
   )
 

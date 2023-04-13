@@ -23,8 +23,14 @@ const TradingReward = () => {
   )
 
   useEffect(() => {
-    if (campaignId) setShowPage(true)
-  }, [campaignId])
+    if (!isAllTradingRewardPairDataFetching) {
+      if (allTradingRewardPairData.campaignIds.includes(campaignId)) {
+        setShowPage(true)
+      } else {
+        router.push('/')
+      }
+    }
+  }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
 
   const currentUserIncentive = useMemo(
     () =>
@@ -70,7 +76,5 @@ const TradingReward = () => {
     </Box>
   )
 }
-
-TradingReward.chains = []
 
 export default TradingReward

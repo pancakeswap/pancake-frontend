@@ -37,6 +37,7 @@ export interface AllUserCampaignInfo {
 const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo => {
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
+  const tradingRewardAddress = getTradingRewardAddress(chainId)
 
   const { data: allUserCampaignInfoData, isLoading } = useSWR(
     campaignIds.length > 0 && chainId && account && ['/all-campaign-id-info', account, chainId, campaignIds],
@@ -62,9 +63,9 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
             const calls = [
-              { address: getTradingRewardAddress(chainId), name: 'canClaim', params: [campaignId, totalVolume] },
+              { address: tradingRewardAddress, name: 'canClaim', params: [campaignId, totalVolume] },
               {
-                address: getTradingRewardAddress(chainId),
+                address: tradingRewardAddress,
                 name: 'userClaimedIncentives',
                 params: [campaignId, account],
               },
