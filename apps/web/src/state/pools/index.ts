@@ -107,30 +107,32 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
   )
 }
 
-export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
-  const allowanceCall = {
-    address: bscTokens.cake.address,
-    name: 'allowance',
-    params: [account, cakeVaultAddress],
-  }
-  const balanceOfCall = {
-    address: bscTokens.cake.address,
-    name: 'balanceOf',
-    params: [account],
-  }
-  const cakeContractCalls = [allowanceCall, balanceOfCall]
-  const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: cakeAbi, calls: cakeContractCalls })
+export const fetchCakePoolUserDataAsync =
+  ({ account, chainId }: { account: string; chainId: ChainId }) =>
+  async (dispatch) => {
+    const allowanceCall = {
+      address: bscTokens.cake.address,
+      name: 'allowance',
+      params: [account, getCakeVaultAddress(chainId)],
+    }
+    const balanceOfCall = {
+      address: bscTokens.cake.address,
+      name: 'balanceOf',
+      params: [account],
+    }
+    const cakeContractCalls = [allowanceCall, balanceOfCall]
+    const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: cakeAbi, calls: cakeContractCalls })
 
-  dispatch(
-    setPoolUserData({
-      sousId: 0,
-      data: {
-        allowance: new BigNumber(allowance.toString()).toJSON(),
-        stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
-      },
-    }),
-  )
-}
+    dispatch(
+      setPoolUserData({
+        sousId: 0,
+        data: {
+          allowance: new BigNumber(allowance.toString()).toJSON(),
+          stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
+        },
+      }),
+    )
+  }
 
 export const fetchPoolsPublicDataAsync =
   (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
