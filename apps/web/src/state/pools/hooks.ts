@@ -124,8 +124,8 @@ export const usePoolsPageFetch = () => {
         dispatch(fetchIfoPublicDataAsync(chainId))
         if (account) {
           dispatch(fetchPoolsUserDataAsync({ account, chainId }))
-          dispatch(fetchCakeVaultUserData({ account }))
-          dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
+          dispatch(fetchCakeVaultUserData({ account, chainId }))
+          dispatch(fetchCakeFlexibleSideVaultUserData({ account, chainId }))
         }
       })
     }
@@ -144,12 +144,13 @@ export const usePoolsPageFetch = () => {
 export const useCakeVaultUserData = () => {
   const { address: account } = useAccount()
   const dispatch = useAppDispatch()
+  const { chainId } = useActiveChainId()
 
   useFastRefreshEffect(() => {
-    if (account) {
-      dispatch(fetchCakeVaultUserData({ account }))
+    if (account && chainId) {
+      dispatch(fetchCakeVaultUserData({ account, chainId }))
     }
-  }, [account, dispatch])
+  }, [account, dispatch, chainId])
 }
 
 export const useCakeVaultPublicData = () => {
@@ -187,7 +188,7 @@ export const useFetchIfo = () => {
     async () => {
       batch(() => {
         dispatch(fetchCakePoolUserDataAsync(account))
-        dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchCakeVaultUserData({ account, chainId }))
         dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
       })
     },

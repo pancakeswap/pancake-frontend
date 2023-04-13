@@ -13,6 +13,7 @@ import { fetchCakeVaultUserData } from 'state/pools'
 import { Token } from '@pancakeswap/sdk'
 import { ONE_WEEK_DEFAULT, vaultPoolConfig } from 'config/constants/pools'
 import { VaultKey } from 'state/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -38,6 +39,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { lockedAmount, stakingToken, onDismiss, prepConfirmArg, defaultDuration = ONE_WEEK_DEFAULT } = hookArgs
 
   const dispatch = useAppDispatch()
+  const { chainId } = useActiveChainId()
 
   const { address: account } = useAccount()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -71,11 +73,22 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
           </ToastDescriptionWithTx>,
         )
         onDismiss?.()
-        dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchCakeVaultUserData({ account, chainId }))
         mutate(['userCakeLockStatus', account])
       }
     },
-    [fetchWithCatchTxError, toastSuccess, dispatch, onDismiss, account, vaultPoolContract, t, callWithGasPrice, mutate],
+    [
+      fetchWithCatchTxError,
+      toastSuccess,
+      dispatch,
+      onDismiss,
+      account,
+      vaultPoolContract,
+      t,
+      callWithGasPrice,
+      mutate,
+      chainId,
+    ],
   )
 
   const handleConfirmClick = useCallback(async () => {
