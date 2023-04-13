@@ -6,7 +6,7 @@ import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, M
 import { ModalProps, ModalWrapperProps } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { ModalV2Context } from "./ModalV2";
-import { Box } from "../../components";
+import { Box } from "../../components/Box";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
