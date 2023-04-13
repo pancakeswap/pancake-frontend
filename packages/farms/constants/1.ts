@@ -117,6 +117,14 @@ export const farmsV3 = [
     feeAmount: FeeAmount.LOW,
   },
   {
+    pid: 22,
+    lpSymbol: 'AXL-USDC LP',
+    lpAddress: Pool.getAddress(ethereumTokens.axl, ethereumTokens.usdc, FeeAmount.MEDIUM),
+    token: ethereumTokens.axl,
+    quoteToken: ethereumTokens.usdc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 7,
     lpSymbol: 'DAI-USDC LP',
     lpAddress: '0xD9e497BD8f491fE163b42A62c296FB54CaEA74B7',
