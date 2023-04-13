@@ -30,6 +30,13 @@ const priceHelperLps: SerializedFarmConfig[] = [
     lpSymbol: 'XCAD-BUSD LP',
     lpAddress: '0x43d86605F8d22407b959D668B2689eafba23571B',
   },
+  {
+    pid: null,
+    token: bscTokens.moni,
+    quoteToken: bscTokens.wbnb,
+    lpSymbol: 'MONI-BNB LP',
+    lpAddress: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
+  },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default priceHelperLps
