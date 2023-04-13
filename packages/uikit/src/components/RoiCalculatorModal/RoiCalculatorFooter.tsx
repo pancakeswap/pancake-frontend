@@ -34,6 +34,15 @@ export const BulletList = styled.ul`
   }
 `;
 
+const InlineText = styled(Text)`
+  display: inline;
+`;
+
+const InlineLink = styled(Link)`
+  display: inline-block;
+  margin: 0 4px;
+`;
+
 interface RoiCalculatorFooterProps {
   isFarm: boolean;
   apr?: number;
@@ -48,6 +57,8 @@ interface RoiCalculatorFooterProps {
   isLocked?: boolean;
   stableSwapAddress?: string;
   stableLpFee?: number;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -64,6 +75,8 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   isLocked = false,
   stableSwapAddress,
   stableLpFee,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -75,45 +88,34 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
     tooltipVisible: multiplierTooltipVisible,
   } = useTooltip(
     <>
-      {isAptos ? (
-        <>
-          <Text>
-            {t(
-              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second."
-            )}
-          </Text>
-          <Text my="24px">
-            {" "}
-            {t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")}
-          </Text>
-          <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
-        </>
-      ) : (
-        <>
-          <Text>
-            {t(
-              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
-            )}
-          </Text>
-          <Text my="24px">
-            {" "}
-            {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
-          </Text>
-          <Text>
-            {t(
-              "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives."
-            )}
-          </Text>
-          <Link
-            mt="8px"
-            display="inline"
-            href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
-            external
-          >
-            {t("Read more")}
-          </Link>
-        </>
-      )}
+      <Text bold>
+        {t("Farm’s CAKE Per Second:")}
+        <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
+      </Text>
+      <Text bold>
+        {t("Total Multipliers:")}
+        <InlineText marginLeft={2}>{totalMultipliers}</InlineText>
+      </Text>
+      <Text my="24px">
+        {t(
+          "The Farm Multiplier represents the proportion of CAKE rewards each farm receives as a proportion of its farm group."
+        )}
+      </Text>
+      <Text my="24px">
+        {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+      </Text>
+      <Text>
+        {t("Different farm groups share a different sets of multipliers.")}
+        <InlineLink
+          mt="8px"
+          display="inline"
+          href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-a-2x-farm-in-v3-has-less-apr-than-a-1x-farm-in-v2"
+          external
+        >
+          {t("Learn more")}
+        </InlineLink>
+        {t("here.")}
+      </Text>
     </>,
     { placement: "top-end", tooltipOffset: [20, 10] }
   );
