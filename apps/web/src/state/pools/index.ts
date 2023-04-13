@@ -10,6 +10,10 @@ import {
   fetchPoolsTotalStaking,
   fetchPoolsProfileRequirement,
   fetchPoolsStakingLimits,
+  fetchPoolsAllowance,
+  fetchUserBalances,
+  fetchUserPendingRewards,
+  fetchUserStakeBalances,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -34,12 +38,6 @@ import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 
 import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
-import {
-  fetchPoolsAllowance,
-  fetchUserBalances,
-  fetchUserPendingRewards,
-  fetchUserStakeBalances,
-} from './fetchPoolsUser'
 import { fetchPublicVaultData, fetchVaultFees, fetchPublicFlexibleSideVaultData } from './fetchVaultPublic'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
@@ -254,14 +252,17 @@ export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatc
 
 export const fetchPoolsUserDataAsync = createAsyncThunk<
   { sousId: number; allowance: any; stakingTokenBalance: any; stakedBalance: any; pendingReward: any }[],
-  string
->('pool/fetchPoolsUserData', async (account, { rejectWithValue }) => {
+  {
+    account: string
+    chainId: ChainId
+  }
+>('pool/fetchPoolsUserData', async ({ account, chainId }, { rejectWithValue }) => {
   try {
     const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
-      fetchPoolsAllowance(account),
-      fetchUserBalances(account),
-      fetchUserStakeBalances(account),
-      fetchUserPendingRewards(account),
+      fetchPoolsAllowance({ account, chainId, provider }),
+      fetchUserBalances({ account, chainId, provider }),
+      fetchUserStakeBalances({ account, chainId, provider }),
+      fetchUserPendingRewards({ account, chainId, provider }),
     ])
 
     const userData = poolsConfig.map((pool) => ({
@@ -279,9 +280,9 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
 
 export const updateUserAllowance = createAsyncThunk<
   { sousId: number; field: string; value: any },
-  { sousId: number; account: string }
->('pool/updateUserAllowance', async ({ sousId, account }) => {
-  const allowances = await fetchPoolsAllowance(account)
+  { sousId: number; account: string; chainId: ChainId }
+>('pool/updateUserAllowance', async ({ sousId, account, chainId }) => {
+  const allowances = await fetchPoolsAllowance({ account, chainId, provider })
   return { sousId, field: 'allowance', value: allowances[sousId] }
 })
 
