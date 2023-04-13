@@ -334,7 +334,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                 <Multiplier {...multiplier} />
               </ValueWrapper>
               <ValueWrapper>
-                <Text>{t('Liquidity')}</Text>
+                <Text>{t('Staked Liquidity')}</Text>
                 <Liquidity {...liquidity} />
               </ValueWrapper>
             </>

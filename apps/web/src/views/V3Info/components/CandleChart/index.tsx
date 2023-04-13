@@ -2,7 +2,7 @@ import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colo
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
-import { createChart, IChartApi } from 'lightweight-charts'
+import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
@@ -86,7 +86,10 @@ const CandleChart = ({
         height,
         width: chartRef.current.parentElement.clientWidth - 32,
         layout: {
-          backgroundColor: 'transparent',
+          background: {
+            type: ColorType.Solid,
+            color: 'transparent',
+          },
           textColor: '#565A69',
           fontFamily: 'Inter var',
           fontSize: 14,
@@ -182,7 +185,7 @@ const CandleChart = ({
         } else if (series && param) {
           const timestamp = param.time as number
           const time = `${dayjs.unix(timestamp).utc().format('MMM D, YYYY h:mm A')} (UTC)`
-          const parsed = param.seriesPrices.get(series) as { open: number } | undefined
+          const parsed = param.seriesData.get(series) as { open: number } | undefined
           if (setValue) setValue(parsed?.open)
           if (setLabel) setLabel(time)
         }

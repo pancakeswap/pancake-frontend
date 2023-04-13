@@ -11,10 +11,10 @@ import {
   ONE_HUNDRED_PERCENT,
   ROUTER_ADDRESS,
 } from 'config/constants/exchange'
+import { StableTrade } from 'config/constants/types'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
-import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { Field } from '../state/swap/actions'
 
 // converts a basis points value to a sdk percent

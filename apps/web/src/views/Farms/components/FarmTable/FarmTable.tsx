@@ -71,7 +71,7 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  let earnings = BIG_ZERO
+  let earnings
   const existingEarnings = new BigNumber(farm.userData.earnings)
 
   if (farm.boosted) {

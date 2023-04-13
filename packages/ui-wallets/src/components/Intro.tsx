@@ -2,10 +2,10 @@ import { Trans } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import { Button, Heading, Image, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useState, useCallback } from 'react'
-// eslint-disable-next-line import/no-unresolved
-import 'swiper/css/bundle'
+import 'swiper/css'
+import 'swiper/css/autoplay'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Swiper as SwiperClass } from 'swiper/types'
+import type { Swiper as SwiperClass } from 'swiper/types'
 import { Autoplay } from 'swiper'
 
 const IntroSteps = [

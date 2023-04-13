@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
-import { z } from 'zod'
+import { string as zString, object as zObject } from 'zod'
 
-const zQuery = z.object({
-  linkId: z.string(),
+const zQuery = zObject({
+  linkId: zString(),
 })
 
 const affiliateFeeExist = async (req: NextApiRequest, res: NextApiResponse) => {

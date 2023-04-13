@@ -6,7 +6,6 @@ import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection 
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect } from 'react'
-import _isNaN from 'lodash/isNaN'
 
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
@@ -19,7 +18,7 @@ import { atom, useAtom } from 'jotai'
 
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'

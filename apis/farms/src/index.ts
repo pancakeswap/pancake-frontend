@@ -15,6 +15,7 @@ import { error, json, missing } from 'itty-router-extras'
 import { wrapCorsHeader, handleCors, CORS_ALLOW } from '@pancakeswap/worker-utils'
 import { fetchCakePrice, saveFarms, saveLPsAPR } from './handler'
 import { farmFetcher, requireChainId } from './helper'
+import { handler as v3Handler } from './v3'
 import { FarmKV } from './kv'
 
 const router = Router()
@@ -85,6 +86,8 @@ router.get('/:chainId', async ({ params }, event) => {
     },
   })
 })
+
+router.get('/v3/:chainId/liquidity/:address', v3Handler)
 
 router.all('*', () => missing('Not found'))
 

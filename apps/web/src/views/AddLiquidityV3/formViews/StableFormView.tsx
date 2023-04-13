@@ -3,7 +3,6 @@ import { CommonBasesType } from 'components/SearchModal/types'
 import { AutoColumn, Button, Dots, RowBetween, Text, Box, AutoRow, Flex, QuestionHelper } from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
-import _isNaN from 'lodash/isNaN'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 
 import { Field } from 'state/mint/actions'

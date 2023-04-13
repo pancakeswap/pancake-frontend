@@ -1,6 +1,6 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 
 export const farmsV3 = [
   {
@@ -50,6 +50,71 @@ export const farmsV3 = [
     token: ethereumTokens.cake,
     quoteToken: ethereumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
+  },
+  // Keep those farms on top
+  {
+    pid: 14,
+    lpSymbol: 'alETH-ALCX LP',
+    lpAddress: Pool.getAddress(ethereumTokens.alETH, ethereumTokens.alcx, FeeAmount.MEDIUM),
+    token: ethereumTokens.alETH,
+    quoteToken: ethereumTokens.alcx,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 15,
+    lpSymbol: 'alETH-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.alETH, ethereumTokens.weth, FeeAmount.LOW),
+    token: ethereumTokens.alETH,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 16,
+    lpSymbol: 'FXS-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.fxs, ethereumTokens.weth, FeeAmount.MEDIUM),
+    token: ethereumTokens.fxs,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 17,
+    lpSymbol: 'frxETH-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.frxETH, ethereumTokens.weth, FeeAmount.LOW),
+    token: ethereumTokens.frxETH,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 18,
+    lpSymbol: 'ETH-RPL LP',
+    lpAddress: Pool.getAddress(ethereumTokens.weth, ethereumTokens.rpl, FeeAmount.MEDIUM),
+    token: ethereumTokens.weth,
+    quoteToken: ethereumTokens.rpl,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 19,
+    lpSymbol: 'rETH-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.rETH, ethereumTokens.weth, FeeAmount.LOW),
+    token: ethereumTokens.rETH,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 20,
+    lpSymbol: 'ETH-ankrETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.weth, ethereumTokens.ankrETH, FeeAmount.LOW),
+    token: ethereumTokens.weth,
+    quoteToken: ethereumTokens.ankrETH,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 21,
+    lpSymbol: 'cbETH-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.cbEth, ethereumTokens.weth, FeeAmount.LOW),
+    token: ethereumTokens.cbEth,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
   },
   {
     pid: 7,

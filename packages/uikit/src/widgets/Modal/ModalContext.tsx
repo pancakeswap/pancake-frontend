@@ -1,4 +1,4 @@
-import { AnimatePresence, domMax, LazyMotion, m } from "framer-motion";
+import { AnimatePresence, LazyMotion, m } from "framer-motion";
 import React, { createContext, useRef, useState, useMemo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
@@ -16,6 +16,10 @@ import {
 import getPortalRoot from "../../util/getPortalRoot";
 import { ModalContainer } from "./styles";
 import { Handler } from "./types";
+import { useMatchBreakpoints } from "../../contexts";
+
+const DomMax = () => import("./motionDomMax").then((mod) => mod.default);
+const DomAnimation = () => import("./motionDomAnimation").then((mod) => mod.default);
 
 interface ModalsContext {
   isOpen: boolean;
@@ -70,6 +74,7 @@ export const Context = createContext<ModalsContext>({
 
 const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isMobile } = useMatchBreakpoints();
   const [modalNode, setModalNode] = useState<React.ReactNode>();
   const [nodeId, setNodeId] = useState("");
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
@@ -115,7 +120,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     <Context.Provider value={providerValue}>
       {portal &&
         createPortal(
-          <LazyMotion features={domMax}>
+          <LazyMotion features={isMobile ? DomMax : DomAnimation}>
             <AnimatePresence>
               {isOpen && (
                 <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>

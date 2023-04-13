@@ -5,6 +5,7 @@ import { Position } from '@pancakeswap/v3-sdk'
 import { LightGreyCard } from 'components/Card'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import JSBI from 'jsbi'
 import { ReactNode, useState, useCallback } from 'react'
@@ -58,6 +59,9 @@ export const PositionPreview = ({
   const priceLower = sorted ? position.token0PriceLower : position.token0PriceUpper.invert()
   const priceUpper = sorted ? position.token0PriceUpper : position.token0PriceLower.invert()
 
+  const price0 = useStablecoinPrice(position.pool.token0 ?? undefined, !!position.amount0)
+  const price1 = useStablecoinPrice(position.pool.token1 ?? undefined, !!position.amount1)
+
   const handleRateChange = useCallback(() => {
     setBaseCurrency(quoteCurrency)
   }, [quoteCurrency])
@@ -88,6 +92,13 @@ export const PositionPreview = ({
                 <FormattedCurrencyAmount currencyAmount={position.amount0} />
               </Text>
             </RowFixed>
+            <RowBetween justifyContent="flex-end">
+              <Text fontSize="10px" color="textSubtle" ml="4px" mr="8px">
+                {position.amount0 && price0
+                  ? `~$${price0.quote(position.amount0?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                  : ''}
+              </Text>
+            </RowBetween>
           </RowBetween>
           <RowBetween>
             <RowFixed>
@@ -99,6 +110,13 @@ export const PositionPreview = ({
                 <FormattedCurrencyAmount currencyAmount={position.amount1} />
               </Text>
             </RowFixed>
+            <RowBetween justifyContent="flex-end">
+              <Text fontSize="10px" color="textSubtle" ml="4px" mr="8px">
+                {position.amount1 && price1
+                  ? `~$${price1.quote(position.amount1?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                  : ''}
+              </Text>
+            </RowBetween>
           </RowBetween>
           <Divider />
           <RowBetween>

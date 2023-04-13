@@ -8,7 +8,6 @@ import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { useCallback, useState } from 'react'
-import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -266,7 +265,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           }
           bottomContent={() => (
             <Button width="100%" mt="16px" onClick={onIncrease}>
-              Increase
+              {t('Increase')}
             </Button>
           )}
         />

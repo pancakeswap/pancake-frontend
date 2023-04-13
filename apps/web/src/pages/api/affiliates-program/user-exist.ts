@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
-import { z } from 'zod'
+import { string as zString, object as zObject } from 'zod'
 
-const zQuery = z.object({
-  address: z.string(),
+const zQuery = zObject({
+  address: zString(),
 })
 
 const userExist = async (req: NextApiRequest, res: NextApiResponse) => {

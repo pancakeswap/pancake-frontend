@@ -40,6 +40,19 @@ const lmPoolAbi = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'rewardGrowthGlobalX128',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ] as const
 
 export function UpdatePositionsReminder() {
@@ -89,39 +102,37 @@ export function UpdatePositionsReminder_() {
       ) {
         return true
       }
-      return false
+      return true
     })
 
-  const { data: getRewardGrowthInsides, isLoading } = useContractReads({
+  // getting it on client side to final confirm
+  const { data: rewardGrowthGlobalX128s, isLoading } = useContractReads({
     contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       return {
         abi: lmPoolAbi,
         address: farm?.lmPool as `0x${string}`,
-        functionName: 'getRewardGrowthInside',
-        args: [userInfo.tickLower, userInfo.tickUpper],
+        functionName: 'rewardGrowthGlobalX128',
+        args: [],
         chainId,
       }
     }),
     enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
   })
 
-  const needRetrigger = isOverRewardGrowthGlobalUserInfos?.map((u, i) => {
-    let needReduce = false
-    const lmRewardGrowthInside = getRewardGrowthInsides?.[i]
-    const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (u.pid as BigNumber).toNumber())
-    if (lmRewardGrowthInside && farm) {
-      needReduce = BigNumber.from(lmRewardGrowthInside).gt(
-        // @ts-ignore
-        farm._rewardGrowthGlobalX128,
-      )
-    }
-    return {
-      ...u,
-      lmRewardGrowthInside,
-      needReduce,
-    }
-  })
+  const needRetrigger = isOverRewardGrowthGlobalUserInfos
+    ?.filter((u, i) => {
+      if (rewardGrowthGlobalX128s?.[i]) {
+        return u.rewardGrowthInside.gt(rewardGrowthGlobalX128s[i])
+      }
+      return false
+    })
+    .map((u) => {
+      return {
+        ...u,
+        needReduce: true,
+      }
+    })
 
   const modal = useModalV2()
 
@@ -202,7 +213,9 @@ export function UpdatePositionsReminder_() {
     <ModalV2 {...modal} closeOnOverlayClick>
       <Modal title="Update Positions">
         <AtomBox textAlign="center">
-          <Text>The followings farming positions require updates to continue earning:</Text>
+          <Text>
+            <Trans>The followings farming positions require updates to continue earning</Trans>:
+          </Text>
           {needRetrigger && (
             <Text my="24px" mb="48px" bold>
               {needRetrigger.map((u) => `#${u.tokenId.toString()}`).join(', ')}
@@ -222,7 +235,7 @@ export function UpdatePositionsReminder_() {
               handleUpdateAll()
             }}
           >
-            {txLoading ? 'Updating...' : 'Update All'}
+            {txLoading ? <Trans>Updating...</Trans> : <Trans>Update All</Trans>}
           </Button>
         </AtomBox>
       </Modal>
