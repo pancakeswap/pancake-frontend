@@ -14,6 +14,8 @@ import {
   fetchUserBalances,
   fetchUserPendingRewards,
   fetchUserStakeBalances,
+  fetchPublicIfoData,
+  fetchUserIfoCredit,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -41,7 +43,6 @@ import getFarmsPrices from '../farms/getFarmsPrices'
 import { fetchPublicVaultData, fetchVaultFees, fetchPublicFlexibleSideVaultData } from './fetchVaultPublic'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
-import { fetchUserIfoCredit, fetchPublicIfoData } from './fetchUserIfo'
 import { fetchVaultUser, fetchFlexibleSideVaultUser } from './fetchVaultUser'
 
 export const initialPoolVaultState = Object.freeze({
@@ -288,25 +289,25 @@ export const updateUserAllowance = createAsyncThunk<
 
 export const updateUserBalance = createAsyncThunk<
   { sousId: number; field: string; value: any },
-  { sousId: number; account: string }
->('pool/updateUserBalance', async ({ sousId, account }) => {
-  const tokenBalances = await fetchUserBalances(account)
+  { sousId: number; account: string; chainId: ChainId }
+>('pool/updateUserBalance', async ({ sousId, account, chainId }) => {
+  const tokenBalances = await fetchUserBalances({ account, chainId, provider })
   return { sousId, field: 'stakingTokenBalance', value: tokenBalances[sousId] }
 })
 
 export const updateUserStakedBalance = createAsyncThunk<
   { sousId: number; field: string; value: any },
-  { sousId: number; account: string }
->('pool/updateUserStakedBalance', async ({ sousId, account }) => {
-  const stakedBalances = await fetchUserStakeBalances(account)
+  { sousId: number; account: string; chainId: ChainId }
+>('pool/updateUserStakedBalance', async ({ sousId, account, chainId }) => {
+  const stakedBalances = await fetchUserStakeBalances({ account, chainId, provider })
   return { sousId, field: 'stakedBalance', value: stakedBalances[sousId] }
 })
 
 export const updateUserPendingReward = createAsyncThunk<
   { sousId: number; field: string; value: any },
-  { sousId: number; account: string }
->('pool/updateUserPendingReward', async ({ sousId, account }) => {
-  const pendingRewards = await fetchUserPendingRewards(account)
+  { sousId: number; account: string; chainId: ChainId }
+>('pool/updateUserPendingReward', async ({ sousId, account, chainId }) => {
+  const pendingRewards = await fetchUserPendingRewards({ chainId, account, provider })
   return { sousId, field: 'pendingReward', value: pendingRewards[sousId] }
 })
 
@@ -347,19 +348,24 @@ export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser
   },
 )
 
-export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData>('ifoVault/fetchIfoPublicDataAsync', async () => {
-  const publicIfoData = await fetchPublicIfoData()
-  return publicIfoData
-})
+export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData, ChainId>(
+  'ifoVault/fetchIfoPublicDataAsync',
+  async (chainId) => {
+    const publicIfoData = await fetchPublicIfoData(chainId, provider)
+    return publicIfoData
+  },
+)
 
-export const fetchUserIfoCreditDataAsync = (account: string) => async (dispatch) => {
-  try {
-    const credit = await fetchUserIfoCredit(account)
-    dispatch(setIfoUserCreditData(credit))
-  } catch (error) {
-    console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
+export const fetchUserIfoCreditDataAsync =
+  ({ account, chainId }: { account: string; chainId: ChainId }) =>
+  async (dispatch) => {
+    try {
+      const credit = await fetchUserIfoCredit({ account, chainId, provider })
+      dispatch(setIfoUserCreditData(credit))
+    } catch (error) {
+      console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
+    }
   }
-}
 export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<SerializedVaultUser, { account: string }>(
   'cakeFlexibleSideVault/fetchUser',
   async ({ account }) => {

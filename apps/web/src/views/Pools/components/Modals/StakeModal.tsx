@@ -56,10 +56,10 @@ const StakeModalContainer = ({
   )
 
   const onDone = useCallback(() => {
-    dispatch(updateUserStakedBalance({ sousId, account }))
-    dispatch(updateUserPendingReward({ sousId, account }))
-    dispatch(updateUserBalance({ sousId, account }))
-  }, [dispatch, sousId, account])
+    dispatch(updateUserStakedBalance({ sousId, account, chainId }))
+    dispatch(updateUserPendingReward({ sousId, account, chainId }))
+    dispatch(updateUserBalance({ sousId, account, chainId }))
+  }, [dispatch, sousId, account, chainId])
 
   const handleConfirmClick = useCallback(
     async (stakeAmount: string) => {
