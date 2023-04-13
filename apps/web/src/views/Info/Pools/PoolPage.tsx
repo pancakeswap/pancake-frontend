@@ -94,7 +94,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  const poolData = usePoolDatasSWR([address])[0]
+  const poolData = usePoolDatasSWR(useMemo(() => [address], [address]))[0]
   const chartData = usePoolChartDataSWR(address)
   const transactions = usePoolTransactionsSWR(address)
 
@@ -122,6 +122,10 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     () => (isStableSwap ? new BigNumber(feeDisplay).times(2).toNumber() : 0),
     [isStableSwap, feeDisplay],
   )
+
+  const hasSmallDifference = useMemo(() => {
+    return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
+  }, [poolData])
 
   return (
     <Page>
@@ -175,7 +179,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                       {`1 ${poolData.token0.symbol} =  ${formatAmount(poolData.token1Price, {
                         notation: 'standard',
                         displayThreshold: 0.001,
-                        tokenPrecision: true,
+                        tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
                       })} ${poolData.token1.symbol}`}
                     </Text>
                   </TokenButton>
@@ -187,7 +191,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                       {`1 ${poolData.token1.symbol} =  ${formatAmount(poolData.token0Price, {
                         notation: 'standard',
                         displayThreshold: 0.001,
-                        tokenPrecision: true,
+                        tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
                       })} ${poolData.token0.symbol}`}
                     </Text>
                   </TokenButton>
@@ -231,12 +235,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {formatAmount(isStableSwap ? stableAPR : poolData.lpApr7d)}%
                       </Text>
                       <Flex alignItems="center">
+                        <Text mr="4px" fontSize="12px" color="textSubtle">
+                          {t('7D performance')}
+                        </Text>
                         <span ref={targetRef}>
                           <HelpIcon color="textSubtle" />
                         </span>
-                        <Text ml="4px" fontSize="12px" color="textSubtle">
-                          {t('7D performance')}
-                        </Text>
                         {tooltipVisible && tooltip}
                       </Flex>
                     </Flex>

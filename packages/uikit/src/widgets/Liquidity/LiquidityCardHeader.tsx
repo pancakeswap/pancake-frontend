@@ -32,7 +32,7 @@ const LiquidityCardHeader: React.FC<React.PropsWithChildren<LiquidityCardHeaderP
         {backTo &&
           (typeof backTo === "string" ? (
             <Link passHref href={backTo}>
-              <IconButton as="a" scale="sm">
+              <IconButton scale="sm">
                 <ArrowBackIcon width="32px" />
               </IconButton>
             </Link>
@@ -45,7 +45,7 @@ const LiquidityCardHeader: React.FC<React.PropsWithChildren<LiquidityCardHeaderP
           <AtomBox display="flex" mb="8px" alignItems="center" justifyContent="space-between">
             <AtomBox display="flex">
               <Heading as="h2">{title}</Heading>
-              {helper && <QuestionHelper text={helper} ml="4px" placement="top-start" />}
+              {helper && <QuestionHelper text={helper} ml="4px" placement="top" />}
             </AtomBox>
             {config}
           </AtomBox>

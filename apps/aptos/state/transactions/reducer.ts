@@ -11,7 +11,7 @@ import {
   TransactionType,
 } from './actions'
 
-const now = () => new Date().getTime()
+const now = () => Date.now()
 
 export interface TransactionDetails {
   hash: string
@@ -76,7 +76,6 @@ const reducer = createReducer(initialState, (builder) =>
 )
 
 const storage = createJSONStorage<TransactionState>(() => localStorage)
-storage.delayInit = true
 
 const transactionsAtom = atomWithStorage('transactions', initialState, storage)
 

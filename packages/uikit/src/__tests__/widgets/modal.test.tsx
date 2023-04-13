@@ -10,24 +10,25 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c8 {
+      .c9 {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-primary);
+      color: var(--colors-primary);
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
-    .c4 {
+    .c5 {
       color: var(--colors-text);
       font-weight: 600;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c6 {
+    .c7 {
       position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
@@ -64,11 +65,12 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c6:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
+    .c7:focus-visible {
+      outline: none;
+      box-shadow: var(--shadows-focus);
     }
 
-    .c6:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
       -ms-transform: translateY(1px);
@@ -76,8 +78,8 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c6:disabled,
-    .c6.pancake-button--disabled {
+    .c7:disabled,
+    .c7.pancake-button--disabled {
       background-color: var(--colors-backgroundDisabled);
       border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
@@ -85,29 +87,33 @@ it("renders correctly", () => {
       cursor: not-allowed;
     }
 
-    .c7 {
-      padding: 0;
+    .c8 {
+      padding: 2px;
       width: 48px;
     }
 
-    .c9 {
+    .c0 {
+      min-width: 320px;
+    }
+
+    .c10 {
       padding: 24px;
     }
 
-    .c2 {
+    .c3 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
     }
 
-    .c5 {
+    .c6 {
       font-size: 20px;
       font-weight: 600;
       line-height: 1.1;
     }
 
-    .c1 {
+    .c2 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -121,7 +127,7 @@ it("renders correctly", () => {
       padding: 12px 24px;
     }
 
-    .c3 {
+    .c4 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -131,7 +137,7 @@ it("renders correctly", () => {
       flex: 1;
     }
 
-    .c10 {
+    .c11 {
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
@@ -140,7 +146,7 @@ it("renders correctly", () => {
       max-height: calc(90vh - 73px);
     }
 
-    .c0 {
+    .c1 {
       overflow: hidden;
       background: var(--colors-backgroundAlt);
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
@@ -150,33 +156,38 @@ it("renders correctly", () => {
       max-height: calc(var(--vh,1vh) * 100);
       z-index: 100;
       position: absolute;
-      min-width: 320px;
       bottom: 0;
       max-width: none !important;
       min-height: 300px;
     }
 
     @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-      .c8 {
+      .c9 {
         -webkit-filter: none !important;
         filter: none !important;
       }
     }
 
+    @media (hover:hover) {
+      .c7:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+        opacity: 0.65;
+      }
+    }
+
     @media screen and (min-width:968px) {
-      .c5 {
+      .c6 {
         font-size: 20px;
       }
     }
 
     @media screen and (min-width:852px) {
-      .c1 {
+      .c2 {
         background: transparent;
       }
     }
 
     @media screen and (min-width:852px) {
-      .c10 {
+      .c11 {
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -186,7 +197,7 @@ it("renders correctly", () => {
     }
 
     @media screen and (min-width:852px) {
-      .c0 {
+      .c1 {
         width: auto;
         position: auto;
         bottom: auto;
@@ -196,16 +207,17 @@ it("renders correctly", () => {
     }
 
     <div
-        class="c0"
+        class="c0 c1"
+        minwidth="320px"
       >
         <div
-          class="c1"
+          class="c2"
         >
           <div
-            class="c2 c3"
+            class="c3 c4"
           >
             <h2
-              class="c4 c5"
+              class="c5 c6"
               color="text"
               font-size="16px"
             >
@@ -214,11 +226,11 @@ it("renders correctly", () => {
           </div>
           <button
             aria-label="Close the dialog"
-            class="c6 c7"
+            class="c7 c8"
             scale="md"
           >
             <svg
-              class="c8"
+              class="c9"
               color="primary"
               viewBox="0 0 24 24"
               width="20px"
@@ -232,7 +244,7 @@ it("renders correctly", () => {
           </button>
         </div>
         <div
-          class="c9 c2 c10"
+          class="c10 c3 c11"
         >
           body
         </div>

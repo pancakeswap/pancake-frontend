@@ -24,6 +24,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
+import { useSidNameForAddress } from 'hooks/useSid'
 import { NetWinningsView } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
@@ -57,7 +58,8 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { profile } = useProfileForAddress(address)
+  const { profile, isLoading: isProfileLoading } = useProfileForAddress(address)
+  const { sidName } = useSidNameForAddress(address, !profile && !isProfileLoading)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
@@ -70,7 +72,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
   }
 
   return (
-    <ModalContainer $minWidth="320px">
+    <ModalContainer minWidth="320px">
       <ModalHeader background={theme.colors.gradientBubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
@@ -82,7 +84,9 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
                 {profile?.username}
               </Heading>
             )}
-            <ExternalLink href={getBlockExploreLink(address, 'address')}>{truncateHash(address)}</ExternalLink>
+            <ExternalLink isBscScan href={getBlockExploreLink(address, 'address')}>
+              {sidName || truncateHash(address)}
+            </ExternalLink>
           </Box>
         </Flex>
         <IconButton variant="text" onClick={handleDismiss} aria-label="Close the dialog">

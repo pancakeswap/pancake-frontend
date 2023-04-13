@@ -1,11 +1,11 @@
-import { Currency, TradeType } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { MutableRefObject, useDeferredValue } from 'react'
+import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
 import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
+import { MessageType, MMRfqTrade, QuoteRequest, RFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (
@@ -19,17 +19,14 @@ export const useGetRFQId = (
   if (rfqUserInputPath)
     // eslint-disable-next-line no-param-reassign
     rfqUserInputPath.current = `${param?.networkId}/${param?.makerSideToken}/${param?.takerSideToken}/${param?.makerSideTokenAmount}/${param?.takerSideTokenAmount}`
-  // eslint-disable-next-line no-param-reassign
-  if (isRFQLive) isRFQLive.current = false
 
   const enabled = Boolean(
     isMMBetter &&
       account &&
       param &&
       param?.trader &&
-      (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
-      param?.makerSideTokenAmount !== '0' &&
-      param?.takerSideTokenAmount !== '0',
+      ((param?.makerSideTokenAmount && param?.makerSideTokenAmount !== '0') ||
+        (param?.takerSideTokenAmount && param?.takerSideTokenAmount !== '0')),
   )
 
   const { data, refetch, isLoading } = useQuery(
@@ -42,6 +39,8 @@ export const useGetRFQId = (
       enabled,
     }, // 20sec
   )
+  // eslint-disable-next-line no-param-reassign
+  if (!data?.message?.rfqId) isRFQLive.current = false
 
   return {
     rfqId: data?.message?.rfqId ?? '',
@@ -59,71 +58,102 @@ export const useGetRFQTrade = (
   isMMBetter: boolean,
   refreshRFQ: () => void,
   isRFQLive: MutableRefObject<boolean>,
-): {
-  rfq: RFQResponse['message'] | null
-  trade: TradeWithMM<Currency, Currency, TradeType> | null
-  refreshRFQ: () => void | null
-  quoteExpiry: number | null
-  isLoading: boolean
-  error?: Error
-  rfqId?: string
-  errorUpdateCount: number
-} | null => {
+): MMRfqTrade | null => {
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
-  const { error, data, isLoading, errorUpdateCount } = useQuery(
-    [`RFQ/${deferredRfqId}`],
-    () => getRFQById(deferredRfqId),
+  const [{ error, data, isLoading }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
     {
-      enabled,
-      staleTime: Infinity,
-      retry: (failureCount, err) => {
-        if (err instanceof MMError) {
-          return err.shouldRetry
-        }
-        return failureCount < 4
-      },
+      error: null,
+      data: null,
+      isLoading: false,
     },
   )
+  const {
+    error: errorResponse,
+    data: dataResponse,
+    isLoading: isLoadingResponse,
+  } = useQuery([`RFQ/${deferredRfqId}`], () => getRFQById(deferredRfqId), {
+    enabled,
+    staleTime: Infinity,
+    retry: (failureCount, err) => {
+      if (err instanceof MMError) {
+        return err.shouldRetry
+      }
+      return failureCount < 4
+    },
+  })
   const isExactIn: boolean = independentField === Field.INPUT
 
-  if (error && error instanceof Error && error?.message) {
+  useEffect(() => {
+    setRfqState((prevState) => {
+      if (!enabled)
+        return {
+          error: null,
+          data: null,
+          isLoading: false,
+        }
+      const { data: prevData } = prevState
+      return {
+        error: errorResponse,
+        data: !prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse,
+        isLoading: isLoadingResponse,
+      }
+    })
+  }, [errorResponse, dataResponse, isLoadingResponse, enabled])
+
+  return useMemo(() => {
+    if (error && error instanceof Error && error?.message) {
+      // eslint-disable-next-line no-param-reassign
+      if (isRFQLive) isRFQLive.current = false
+      return {
+        rfq: null,
+        trade: null,
+        quoteExpiry: null,
+        refreshRFQ: null,
+        error,
+        rfqId,
+        isLoading: enabled && isLoading,
+      }
+    }
+    if (data?.messageType === MessageType.RFQ_RESPONSE) {
+      // eslint-disable-next-line no-param-reassign
+      if (isRFQLive) isRFQLive.current = true
+      return {
+        rfq: data?.message,
+        rfqId,
+        trade: parseMMTrade(
+          isExactIn,
+          inputCurrency,
+          outputCurrency,
+          data?.message?.takerSideTokenAmount,
+          data?.message?.makerSideTokenAmount,
+        ),
+        quoteExpiry: data?.message?.quoteExpiry ?? null,
+        refreshRFQ,
+        isLoading: enabled && isLoading,
+      }
+    }
+    // eslint-disable-next-line no-param-reassign
+    if (isRFQLive) isRFQLive.current = false
     return {
       rfq: null,
       trade: null,
       quoteExpiry: null,
+      isLoading: enabled && isLoading,
       refreshRFQ: null,
-      error,
-      rfqId,
-      isLoading: enabled && isLoading,
-      errorUpdateCount,
     }
-  }
-  if (data?.messageType === MessageType.RFQ_RESPONSE) {
-    // eslint-disable-next-line no-param-reassign
-    if (isRFQLive) isRFQLive.current = true
-    return {
-      rfq: data?.message,
-      trade: parseMMTrade(
-        isExactIn,
-        inputCurrency,
-        outputCurrency,
-        data?.message?.takerSideTokenAmount,
-        data?.message?.makerSideTokenAmount,
-      ),
-      quoteExpiry: data?.message?.quoteExpiry ?? null,
-      refreshRFQ,
-      isLoading: enabled && isLoading,
-      errorUpdateCount,
-    }
-  }
-  return {
-    rfq: null,
-    trade: null,
-    quoteExpiry: null,
-    isLoading: enabled && isLoading,
-    refreshRFQ: null,
-    errorUpdateCount,
-  }
+  }, [
+    data?.message,
+    data?.messageType,
+    enabled,
+    error,
+    inputCurrency,
+    isExactIn,
+    isLoading,
+    isRFQLive,
+    outputCurrency,
+    refreshRFQ,
+    rfqId,
+  ])
 }

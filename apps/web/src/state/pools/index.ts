@@ -22,6 +22,7 @@ import { isAddress } from 'utils'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { bscRpcProvider } from 'utils/providers'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
+import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
 import {
@@ -85,17 +86,11 @@ const initialState: PoolsState = {
 
 const cakeVaultAddress = getCakeVaultAddress()
 
-export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => {
-  const farmsData = getState().farms.data
-  const prices = getTokenPricesFromFarm(farmsData)
+export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
+  const cakePrice = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
+  const stakingTokenPrice = cakePrice.price
 
-  const cakePool = poolsConfig.filter((p) => p.sousId === 0)[0]
-
-  const stakingTokenAddress = isAddress(cakePool.stakingToken.address)
-  const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-
-  const earningTokenAddress = isAddress(cakePool.earningToken.address)
-  const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+  const earningTokenPrice = cakePrice.price
 
   dispatch(
     setPoolPublicData({
@@ -173,7 +168,17 @@ export const fetchPoolsPublicDataAsync =
         ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
         : []
 
-      const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithPricesOfDifferentTokenPools])
+      let farmV3: Awaited<ReturnType<typeof farmV3ApiFetch>>
+      try {
+        farmV3 = await farmV3ApiFetch(chainId)
+      } catch (error) {
+        //
+      }
+      const prices = getTokenPricesFromFarm([
+        ...farmsData,
+        ...farmsWithPricesOfDifferentTokenPools,
+        ...(farmV3?.farmsWithPrice ?? []),
+      ])
 
       const liveData = poolsConfig.map((pool) => {
         const blockLimit = blockLimitsSousIdMap[pool.sousId]

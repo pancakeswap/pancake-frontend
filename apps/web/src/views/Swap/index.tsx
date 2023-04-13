@@ -7,23 +7,20 @@ import { useCallback, useContext } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
-import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
+import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
 import useWarningImport from './hooks/useWarningImport'
-import { SmartSwapForm } from './SmartSwap'
+import { V3SwapForm } from './V3Swap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
-const queryClient = new QueryClient()
-
 export default function Swap() {
-  const { isMobile } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
@@ -44,6 +41,7 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   const warningSwapHandler = useWarningImport()
+  useDefaultsFromURLSearch()
   const { onCurrencySelection } = useSwapActionHandlers()
 
   const handleOutputSelect = useCallback(
@@ -64,7 +62,7 @@ export default function Swap() {
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
-        {!isMobile && isChartSupported && (
+        {isDesktop && isChartSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}
             inputCurrency={currencies[Field.INPUT]}
@@ -76,7 +74,7 @@ export default function Swap() {
             currentSwapPrice={singleTokenPrice}
           />
         )}
-        {isChartSupported && (
+        {!isDesktop && isChartSupported && (
           <BottomDrawer
             content={
               <PriceChartContainer
@@ -88,6 +86,7 @@ export default function Swap() {
                 setIsChartExpanded={setIsChartExpanded}
                 isChartDisplayed={isChartDisplayed}
                 currentSwapPrice={singleTokenPrice}
+                isFullWidthContainer
                 isMobile
               />
             }
@@ -95,8 +94,8 @@ export default function Swap() {
             setIsOpen={setIsChartDisplayed}
           />
         )}
-        {!isMobile && isSwapHotTokenDisplay && <HotTokenList handleOutputSelect={handleOutputSelect} />}
-        <ModalV2 isOpen={isMobile && isSwapHotTokenDisplay} onDismiss={() => setIsSwapHotTokenDisplay(false)}>
+        {isDesktop && isSwapHotTokenDisplay && <HotTokenList handleOutputSelect={handleOutputSelect} />}
+        <ModalV2 isOpen={!isDesktop && isSwapHotTokenDisplay} onDismiss={() => setIsSwapHotTokenDisplay(false)}>
           <Modal
             style={{ padding: 0 }}
             title={t('Top Token')}
@@ -115,9 +114,7 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <QueryClientProvider client={queryClient}>
-                  <SmartSwapForm handleOutputSelect={handleOutputSelect} />
-                </QueryClientProvider>
+                <V3SwapForm />
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>

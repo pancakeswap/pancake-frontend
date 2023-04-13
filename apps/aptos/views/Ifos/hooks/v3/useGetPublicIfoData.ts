@@ -60,7 +60,7 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   // TODO: Currently we only support CAKE Price
   const { data: cakePrice } = useCakePrice()
 
-  const currencyPriceInUSD = useMemo(() => new BigNumber(cakePrice), [cakePrice])
+  const currencyPriceInUSD = useMemo(() => (cakePrice ? new BigNumber(cakePrice) : BIG_ZERO), [cakePrice])
 
   const finalState = useMemo(() => {
     if (

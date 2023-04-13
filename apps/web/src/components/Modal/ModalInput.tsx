@@ -100,7 +100,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
         <StyledErrorMessage fontSize="14px" color="failure">
           {t('No tokens to stake')}:{' '}
           <Link fontSize="14px" bold={false} href={addLiquidityUrl} external color="failure">
-            {t('Get %symbol%', { symbol })}
+            {t('Add %symbol%', { symbol })}
           </Link>
         </StyledErrorMessage>
       )}

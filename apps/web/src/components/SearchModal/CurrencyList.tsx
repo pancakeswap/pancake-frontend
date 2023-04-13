@@ -6,6 +6,7 @@ import { FixedSizeList } from 'react-window'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { useAccount } from 'wagmi'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -38,7 +39,7 @@ const FixedContentRow = styled.div`
 `
 
 function Balance({ balance }: { balance: CurrencyAmount<Currency> }) {
-  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
+  return <StyledBalanceText title={balance.toExact()}>{formatAmount(balance, 4)}</StyledBalanceText>
 }
 
 const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
@@ -204,7 +205,7 @@ export default function CurrencyList({
     ],
   )
 
-  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
+  const itemKey = useCallback((index: number, data: any) => `${currencyKey(data[index])}-${index}`, [])
 
   return (
     <FixedSizeList

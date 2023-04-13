@@ -1,18 +1,19 @@
 import _uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 
-import { PairState, usePairs } from 'hooks/usePairs'
-import { APT, L0_USDC } from 'config/coins'
-import { Pair } from '@pancakeswap/aptos-swap-sdk'
+import { usePairs } from 'hooks/usePairs'
+import { CE_USDC, L0_USDC, WH_USDC } from 'config/coins'
+import { Currency } from '@pancakeswap/aptos-swap-sdk'
 
 import splitTypeTag from '../../../utils/splitTypeTag'
 import getTokenByAddress from '../utils/getTokenByAddress'
-import { getPriceInUSDC } from '../utils/getPriceInUSDC'
+import useNativeCurrency from '../../../hooks/useNativeCurrency'
+import getCurrencyPrice from '../../../utils/getCurrencyPrice'
 
-function getPossibleLPAddresses({ pools, chainId }) {
+function getPoolsCoins({ pools, chainId }): Currency[] {
   if (!pools?.length) return []
 
-  const coinAddresses = pools.reduce((list, resource) => {
+  const coinAddresses: string[] = pools.reduce((list, resource) => {
     const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
     const updatedList = list
@@ -28,64 +29,76 @@ function getPossibleLPAddresses({ pools, chainId }) {
     return updatedList
   }, [])
 
-  // Pair all addresses with potential Stable or Native ones
-
-  const pairs = coinAddresses.reduce(
-    (results, address) => {
-      const coin = getTokenByAddress({ chainId, address })
-
-      if (!coin) return results
-
-      return [...results, [coin, APT[chainId]], [coin, L0_USDC[chainId]]]
-    },
-    [[APT[chainId], L0_USDC[chainId]]],
+  return _uniqBy(
+    coinAddresses.map((address) => getTokenByAddress({ chainId, address })).filter(Boolean) as Currency[],
+    'address',
   )
-
-  return pairs
 }
 
 export default function useAddressPriceMap({ pools, chainId }) {
+  const native = useNativeCurrency(chainId)
+  const wnative = native.wrapped
+  const stableTokens = useMemo(() => [L0_USDC[chainId], WH_USDC[chainId], CE_USDC[chainId]], [chainId])
   const usdcCoin = L0_USDC[chainId]
 
-  const relevantPairs = getPossibleLPAddresses({ pools, chainId })
+  const [stableNativePairInfo] = usePairs(
+    useMemo(() => [[chainId ? wnative : undefined, usdcCoin]], [wnative, usdcCoin, chainId]),
+  )
+  const poolsCoins = useMemo(() => getPoolsCoins({ pools, chainId }), [pools, chainId])
 
-  const pairsInfo = usePairs(relevantPairs)
-
-  const availablePairs = useMemo(
+  const poolsCoinsNativePairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () =>
-      _uniqBy(
-        pairsInfo.filter(([status]) => status === PairState.EXISTS).map(([, pair]) => pair as Pair),
-        'liquidityToken.address',
-      ),
-    [pairsInfo],
+      poolsCoins.map((coin) => {
+        return [
+          chainId && coin?.wrapped && wnative?.equals(coin.wrapped) ? undefined : coin,
+          chainId ? wnative : undefined,
+        ]
+      }),
+    [wnative, poolsCoins, chainId],
+  )
+  const poolsCoinsStablePairs = useMemo(
+    () =>
+      poolsCoins
+        .map((coin) => {
+          const result: [Currency | undefined, Currency | undefined][] = stableTokens.map((stableToken) => {
+            return [stableToken && coin?.wrapped?.equals(stableToken) ? undefined : coin.wrapped, stableToken]
+          })
+          return result
+        })
+        .flat(),
+    [poolsCoins, stableTokens],
+  )
+  const pairsInfo = usePairs(
+    useMemo(() => [...poolsCoinsNativePairs, ...poolsCoinsStablePairs], [poolsCoinsNativePairs, poolsCoinsStablePairs]),
   )
 
-  if (!availablePairs?.length) return []
+  return useMemo(() => {
+    const prices = {}
 
-  const prices = {}
-
-  availablePairs.forEach((pair) => {
-    const token0 = pair?.token0
-    const token1 = pair?.token1
-
-    if (token0.address === usdcCoin.address || token1.address === usdcCoin.address) return
-
-    if (token0 && !prices[token0?.address]) {
-      prices[token0?.address] = getPriceInUSDC({
-        tokenIn: token0,
-        availablePairs,
-        usdcCoin,
+    poolsCoins
+      .map((coin) => {
+        const stablePairsInfo = pairsInfo.filter(
+          ([, pair]) =>
+            pair && pair.involvesToken(coin) && stableTokens.some((stableToken) => pair.involvesToken(stableToken)),
+        )
+        const nativePairInfo = pairsInfo.filter(
+          ([, pair]) => pair && pair.involvesToken(coin) && pair.involvesToken(wnative),
+        )[0]
+        return getCurrencyPrice(
+          coin,
+          usdcCoin,
+          wnative,
+          stableTokens,
+          nativePairInfo,
+          stableNativePairInfo,
+          stablePairsInfo,
+        )
       })
-    }
-
-    if (token1 && !prices[token1?.address]) {
-      prices[token1?.address] = getPriceInUSDC({
-        tokenIn: token1,
-        availablePairs,
-        usdcCoin,
+      .forEach((price) => {
+        if (price) {
+          prices[price.baseCurrency.wrapped.address] = parseFloat(price.toFixed())
+        }
       })
-    }
-  })
-
-  return prices
+    return prices
+  }, [poolsCoins, pairsInfo, stableNativePairInfo, stableTokens, usdcCoin, wnative])
 }

@@ -14,7 +14,12 @@
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": true
-  },
-  "exclude": ["node_modules"]
+    "strict": true,
+    "paths": {
+      "@pancakeswap/sdk": ["../../packages/swap-sdk/src"],
+      "@pancakeswap/swap-sdk-core": ["../../packages/swap-sdk-core/src"],
+      "@pancakeswap/v3-sdk": ["../../packages/v3-sdk/src"],
+      "@pancakeswap/smart-router/*": ["../../packages/smart-router/*"]
+    }
+  }
 }

@@ -197,9 +197,6 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
 
 export default BCakeCalculator
 
-const CA = 0.5
-const CB = 3 // TODO: read from SC later
-
 export const getBCakeMultiplier = (
   userBalanceInFarm: BigNumber,
   userLockAmount: BigNumber,
@@ -207,11 +204,13 @@ export const getBCakeMultiplier = (
   totalLockAmount: BigNumber,
   lpBalanceOfFarm: BigNumber,
   averageLockDuration: number,
+  cA: number,
+  cB: number,
 ) => {
-  const dB = userBalanceInFarm.times(CA)
+  const dB = userBalanceInFarm.times(cA)
   const aBPart1 = lpBalanceOfFarm.times(userLockAmount).times(userLockDuration)
   const aBPart3 = totalLockAmount.times(averageLockDuration)
-  const aB = aBPart1.dividedBy(CB).dividedBy(aBPart3)
+  const aB = aBPart1.dividedBy(cB).dividedBy(aBPart3)
   const bigNumberResult = dB.plus(aB).gt(userBalanceInFarm)
     ? userBalanceInFarm.dividedBy(dB)
     : dB.plus(aB).dividedBy(dB)

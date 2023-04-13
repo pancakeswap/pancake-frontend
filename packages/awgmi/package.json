@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/awgmi",
   "license": "MIT",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
@@ -83,6 +83,11 @@
       "types": "./dist/connectors/safePal.d.ts",
       "import": "./dist/connectors/safePal.mjs",
       "default": "./dist/connectors/safePal.js"
+    },
+    "./connectors/rise": {
+      "types": "./dist/connectors/rise.d.ts",
+      "import": "./dist/connectors/rise.mjs",
+      "default": "./dist/connectors/rise.js"
     }
   },
   "peerDependenciesMeta": {

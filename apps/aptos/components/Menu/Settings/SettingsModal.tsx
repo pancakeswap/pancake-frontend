@@ -16,9 +16,13 @@ import {
 import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
 import { useCallback, useState } from 'react'
-import { useAudioPlay, useUserSlippage } from 'state/user'
-import { useExpertMode, useUserExpertModeAcknowledgement } from 'state/user/expertMode'
-import { useUserSingleHopOnly } from 'state/user/singleHop'
+import {
+  useUserSlippage,
+  useExpertMode,
+  useUserExpertModeAcknowledgement,
+  useAudioPlay,
+  useUserSingleHopOnly,
+} from '@pancakeswap/utils/user'
 import styled from 'styled-components'
 
 export const withCustomOnDismiss =
@@ -95,7 +99,7 @@ const SlippageSetting = () => {
           text={t(
             'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
           )}
-          placement="top-start"
+          placement="top"
           ml="4px"
         />
       </Flex>
@@ -223,7 +227,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
               <Text>{t('Expert Mode')}</Text>
               <QuestionHelper
                 text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
-                placement="top-start"
+                placement="top"
                 ml="4px"
               />
             </Flex>
@@ -232,15 +236,15 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
           <SlippageSetting />
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
-              <Text>{t('Disable Multihops')}</Text>
-              <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+              <Text>{t('Allow Multihops')}</Text>
+              <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top" ml="4px" />
             </Flex>
             <Toggle
               id="toggle-disable-multihop-button"
-              checked={singleHopOnly}
+              checked={!singleHopOnly}
               scale="md"
               onChange={() => {
-                setSingleHopOnly(!singleHopOnly)
+                setSingleHopOnly((s) => !s)
               }}
             />
           </Flex>
@@ -249,7 +253,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
               <Text>{t('Flippy sounds')}</Text>
               <QuestionHelper
                 text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                placement="top-start"
+                placement="top"
                 ml="4px"
               />
             </Flex>

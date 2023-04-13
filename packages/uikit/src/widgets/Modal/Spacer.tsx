@@ -11,14 +11,14 @@ const Spacer: React.FC<React.PropsWithChildren<SpacerProps>> = ({ size = "md" })
   let s: string;
   switch (size) {
     case "lg":
-      s = spacing[6];
+      s = spacing["32px"];
       break;
     case "sm":
-      s = spacing[2];
+      s = spacing["12px"];
       break;
     case "md":
     default:
-      s = spacing[4];
+      s = spacing["24px"];
   }
 
   return <StyledSpacer size={s} />;

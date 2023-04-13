@@ -22,12 +22,16 @@ const sentryWebpackPluginOptions =
         //   urlPrefix, include, ignore
         silent: false, // Logging when deploying to check if there is any problem
         validate: true,
+        hideSourceMaps: false,
         // https://github.com/getsentry/sentry-webpack-plugin#options.
       }
     : {
+        hideSourceMaps: false,
         silent: true, // Suppresses all logs
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
+
+const blocksPage = ['/trading-reward', '/api/routing']
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -36,27 +40,29 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
-    transpilePackages: [
-      '@pancakeswap/ui',
-      '@pancakeswap/uikit',
-      '@pancakeswap/swap-sdk-core',
-      '@pancakeswap/farms',
-      '@pancakeswap/localization',
-      '@pancakeswap/hooks',
-      '@pancakeswap/multicall',
-      '@pancakeswap/token-lists',
-      '@pancakeswap/utils',
-      '@pancakeswap/tokens',
-      '@pancakeswap/smart-router',
-      '@wagmi',
-      'wagmi',
-      '@ledgerhq',
-      '@gnosis.pm/safe-apps-wagmi',
-    ],
   },
+  transpilePackages: [
+    '@pancakeswap/ui',
+    '@pancakeswap/uikit',
+    '@pancakeswap/swap-sdk-core',
+    '@pancakeswap/farms',
+    '@pancakeswap/localization',
+    '@pancakeswap/hooks',
+    '@pancakeswap/multicall',
+    '@pancakeswap/token-lists',
+    '@pancakeswap/utils',
+    '@pancakeswap/tokens',
+    '@pancakeswap/v3-sdk',
+    '@pancakeswap/smart-router',
+    '@wagmi',
+    'wagmi',
+    '@ledgerhq',
+    '@gnosis.pm/safe-apps-wagmi',
+  ],
   reactStrictMode: true,
   swcMinify: true,
   images: {
+    contentDispositionType: 'attachment',
     remotePatterns: [
       {
         protocol: 'https',
@@ -75,10 +81,23 @@ const config = {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
       },
+      {
+        source: '/nodeRealApi/:path*',
+        destination: 'https://pancake.nodereal.cc/graphql',
+      },
     ]
   },
   async headers() {
     return [
+      {
+        source: '/favicon.ico',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
       {
         source: '/logo.png',
         headers: [
@@ -160,6 +179,11 @@ const config = {
         destination: '/info/pairs/:address',
         permanent: true,
       },
+      ...blocksPage.map((p) => ({
+        source: p,
+        destination: '/404',
+        permanent: false,
+      })),
     ]
   },
   webpack: (webpackConfig, { webpack }) => {

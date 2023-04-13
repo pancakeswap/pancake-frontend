@@ -1,5 +1,17 @@
 # @pancakeswap/token-lists
 
+## 0.0.6
+
+### Patch Changes
+
+- d5bf9101d: chore: Bump up jotai
+
+## 0.0.5
+
+### Patch Changes
+
+- 80e616be0: fix: Filter out tokeen with empty symbol in tokenlists
+
 ## 0.0.4
 
 ### Patch Changes

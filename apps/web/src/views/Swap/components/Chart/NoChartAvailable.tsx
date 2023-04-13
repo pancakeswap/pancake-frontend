@@ -4,14 +4,12 @@ import { useTranslation } from '@pancakeswap/localization'
 interface NoChartAvailableProps {
   token0Address: string
   token1Address: string
-  pairAddress: string
   isMobile: boolean
 }
 
 const NoChartAvailable: React.FC<React.PropsWithChildren<NoChartAvailableProps>> = ({
   token0Address,
   token1Address,
-  pairAddress,
   isMobile,
 }) => {
   const { t } = useTranslation()
@@ -37,7 +35,7 @@ const NoChartAvailable: React.FC<React.PropsWithChildren<NoChartAvailableProps>>
         >
           Token1: {token1Address ?? 'null'}
         </Text>
-        <Text
+        {/* <Text
           textAlign={isMobile ? 'center' : 'left'}
           mb={['8px', '8px', '0px']}
           color="textSubtle"
@@ -45,7 +43,7 @@ const NoChartAvailable: React.FC<React.PropsWithChildren<NoChartAvailableProps>>
           style={isMobile && { wordSpacing: '100vw' }}
         >
           Pair: {pairAddress ?? 'null'}
-        </Text>
+        </Text> */}
       </Flex>
     </>
   )

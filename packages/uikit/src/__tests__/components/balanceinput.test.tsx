@@ -10,12 +10,16 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c5 {
+      .c6 {
       color: var(--colors-textSubtle);
       font-weight: 400;
       line-height: 1.5;
       font-size: 12px;
       text-align: right;
+    }
+
+    .c2 {
+      width: 100%;
     }
 
     .c1 {
@@ -29,7 +33,7 @@ it("renders correctly", () => {
       justify-content: flex-end;
     }
 
-    .c2 {
+    .c3 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -40,7 +44,7 @@ it("renders correctly", () => {
       align-items: center;
     }
 
-    .c3 {
+    .c4 {
       background-color: var(--colors-input);
       border-radius: 16px;
       box-shadow: var(--shadows-inset);
@@ -52,51 +56,6 @@ it("renders correctly", () => {
       padding: 0 16px;
       width: 100%;
       border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c3::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3::placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3:disabled {
-      background-color: var(--colors-backgroundDisabled);
-      box-shadow: none;
-      color: var(--colors-textDisabled);
-      cursor: not-allowed;
-    }
-
-    .c3:focus:not(:disabled) {
-      box-shadow: var(--shadows-focus);
-    }
-
-    .c0 {
-      background-color: var(--colors-input);
-      border: 1px solid var(--colors-inputSecondary);
-      border-radius: 16px;
-      box-shadow: var(--shadows-inset);
-      padding: 8px 16px;
-    }
-
-    .c4 {
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      padding-left: 0;
-      padding-right: 0;
-      text-align: right;
-      border: none;
     }
 
     .c4::-webkit-input-placeholder {
@@ -115,7 +74,52 @@ it("renders correctly", () => {
       color: var(--colors-textSubtle);
     }
 
+    .c4:disabled {
+      background-color: var(--colors-backgroundDisabled);
+      box-shadow: none;
+      color: var(--colors-textDisabled);
+      cursor: not-allowed;
+    }
+
     .c4:focus:not(:disabled) {
+      box-shadow: var(--shadows-focus);
+    }
+
+    .c0 {
+      background-color: var(--colors-input);
+      border: 1px solid var(--colors-inputSecondary);
+      border-radius: 16px;
+      box-shadow: var(--shadows-inset);
+      padding: 8px 16px;
+    }
+
+    .c5 {
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: right;
+      border: none;
+    }
+
+    .c5::-webkit-input-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5::-moz-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:-ms-input-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5::placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:focus:not(:disabled) {
       box-shadow: none;
     }
 
@@ -126,13 +130,14 @@ it("renders correctly", () => {
           class="c1"
         >
           <div
-            class=""
+            class="c2"
+            width="100%"
           >
             <div
-              class="c2"
+              class="c3"
             >
               <input
-                class="c3 c4"
+                class="c4 c5"
                 inputmode="decimal"
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
@@ -142,7 +147,7 @@ it("renders correctly", () => {
               />
             </div>
             <div
-              class="c5"
+              class="c6"
               color="textSubtle"
               font-size="12px"
             >
@@ -161,19 +166,23 @@ it("renders correctly with unit prop", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c5 {
+      .c6 {
       color: var(--colors-text);
       font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c7 {
+    .c8 {
       color: var(--colors-textSubtle);
       font-weight: 400;
       line-height: 1.5;
       font-size: 12px;
       text-align: right;
+    }
+
+    .c2 {
+      width: 100%;
     }
 
     .c1 {
@@ -187,7 +196,7 @@ it("renders correctly with unit prop", () => {
       justify-content: flex-end;
     }
 
-    .c2 {
+    .c3 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -198,7 +207,7 @@ it("renders correctly with unit prop", () => {
       align-items: center;
     }
 
-    .c3 {
+    .c4 {
       background-color: var(--colors-input);
       border-radius: 16px;
       box-shadow: var(--shadows-inset);
@@ -210,58 +219,6 @@ it("renders correctly with unit prop", () => {
       padding: 0 16px;
       width: 100%;
       border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c3::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3::placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3:disabled {
-      background-color: var(--colors-backgroundDisabled);
-      box-shadow: none;
-      color: var(--colors-textDisabled);
-      cursor: not-allowed;
-    }
-
-    .c3:focus:not(:disabled) {
-      box-shadow: var(--shadows-focus);
-    }
-
-    .c6 {
-      margin-left: 4px;
-      text-align: right;
-      color: var(--colors-textSubtle);
-      white-space: nowrap;
-    }
-
-    .c0 {
-      background-color: var(--colors-input);
-      border: 1px solid var(--colors-inputSecondary);
-      border-radius: 16px;
-      box-shadow: var(--shadows-inset);
-      padding: 8px 16px;
-    }
-
-    .c4 {
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      padding-left: 0;
-      padding-right: 0;
-      text-align: right;
-      border: none;
     }
 
     .c4::-webkit-input-placeholder {
@@ -280,7 +237,59 @@ it("renders correctly with unit prop", () => {
       color: var(--colors-textSubtle);
     }
 
+    .c4:disabled {
+      background-color: var(--colors-backgroundDisabled);
+      box-shadow: none;
+      color: var(--colors-textDisabled);
+      cursor: not-allowed;
+    }
+
     .c4:focus:not(:disabled) {
+      box-shadow: var(--shadows-focus);
+    }
+
+    .c7 {
+      margin-left: 4px;
+      text-align: right;
+      color: var(--colors-textSubtle);
+      white-space: nowrap;
+    }
+
+    .c0 {
+      background-color: var(--colors-input);
+      border: 1px solid var(--colors-inputSecondary);
+      border-radius: 16px;
+      box-shadow: var(--shadows-inset);
+      padding: 8px 16px;
+    }
+
+    .c5 {
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: right;
+      border: none;
+    }
+
+    .c5::-webkit-input-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5::-moz-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:-ms-input-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5::placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:focus:not(:disabled) {
       box-shadow: none;
     }
 
@@ -291,13 +300,14 @@ it("renders correctly with unit prop", () => {
           class="c1"
         >
           <div
-            class=""
+            class="c2"
+            width="100%"
           >
             <div
-              class="c2"
+              class="c3"
             >
               <input
-                class="c3 c4"
+                class="c4 c5"
                 inputmode="decimal"
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
@@ -306,7 +316,7 @@ it("renders correctly with unit prop", () => {
                 value="14"
               />
               <div
-                class="c5 c6"
+                class="c6 c7"
                 color="text"
                 font-size="16px"
               >
@@ -314,7 +324,7 @@ it("renders correctly with unit prop", () => {
               </div>
             </div>
             <div
-              class="c7"
+              class="c8"
               color="textSubtle"
               font-size="12px"
             >
@@ -339,24 +349,25 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c12 {
+      .c13 {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-textSubtle);
+      color: var(--colors-textSubtle);
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
-    .c5 {
+    .c6 {
       color: var(--colors-text);
       font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c7 {
+    .c8 {
       color: var(--colors-textSubtle);
       font-weight: 400;
       line-height: 1.5;
@@ -364,7 +375,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       text-align: right;
     }
 
-    .c9 {
+    .c10 {
       position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
@@ -401,11 +412,12 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
-    .c9:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
+    .c10:focus-visible {
+      outline: none;
+      box-shadow: var(--shadows-focus);
     }
 
-    .c9:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c10:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
       -ms-transform: translateY(1px);
@@ -413,8 +425,8 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
-    .c9:disabled,
-    .c9.pancake-button--disabled {
+    .c10:disabled,
+    .c10.pancake-button--disabled {
       background-color: var(--colors-backgroundDisabled);
       border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
@@ -422,12 +434,16 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       cursor: not-allowed;
     }
 
-    .c10 {
-      padding: 0;
+    .c11 {
+      padding: 2px;
       width: 32px;
     }
 
-    .c8 {
+    .c2 {
+      width: 100%;
+    }
+
+    .c9 {
       padding-left: 12px;
     }
 
@@ -442,7 +458,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       justify-content: flex-end;
     }
 
-    .c2 {
+    .c3 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -453,7 +469,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       align-items: center;
     }
 
-    .c3 {
+    .c4 {
       background-color: var(--colors-input);
       border-radius: 16px;
       box-shadow: var(--shadows-inset);
@@ -465,62 +481,6 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       padding: 0 16px;
       width: 100%;
       border: 1px solid var(--colors-inputSecondary);
-    }
-
-    .c3::-webkit-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3::-moz-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3:-ms-input-placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3::placeholder {
-      color: var(--colors-textSubtle);
-    }
-
-    .c3:disabled {
-      background-color: var(--colors-backgroundDisabled);
-      box-shadow: none;
-      color: var(--colors-textDisabled);
-      cursor: not-allowed;
-    }
-
-    .c3:focus:not(:disabled) {
-      box-shadow: var(--shadows-focus);
-    }
-
-    .c11 {
-      width: 16px;
-    }
-
-    .c6 {
-      margin-left: 4px;
-      text-align: right;
-      color: var(--colors-textSubtle);
-      white-space: nowrap;
-    }
-
-    .c0 {
-      background-color: var(--colors-input);
-      border: 1px solid var(--colors-inputSecondary);
-      border-radius: 16px;
-      box-shadow: var(--shadows-inset);
-      padding: 8px 16px;
-    }
-
-    .c4 {
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      padding-left: 0;
-      padding-right: 0;
-      text-align: right;
-      border: none;
     }
 
     .c4::-webkit-input-placeholder {
@@ -539,14 +499,76 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       color: var(--colors-textSubtle);
     }
 
+    .c4:disabled {
+      background-color: var(--colors-backgroundDisabled);
+      box-shadow: none;
+      color: var(--colors-textDisabled);
+      cursor: not-allowed;
+    }
+
     .c4:focus:not(:disabled) {
+      box-shadow: var(--shadows-focus);
+    }
+
+    .c12 {
+      width: 16px;
+    }
+
+    .c7 {
+      margin-left: 4px;
+      text-align: right;
+      color: var(--colors-textSubtle);
+      white-space: nowrap;
+    }
+
+    .c0 {
+      background-color: var(--colors-input);
+      border: 1px solid var(--colors-inputSecondary);
+      border-radius: 16px;
+      box-shadow: var(--shadows-inset);
+      padding: 8px 16px;
+    }
+
+    .c5 {
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: right;
+      border: none;
+    }
+
+    .c5::-webkit-input-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5::-moz-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:-ms-input-placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5::placeholder {
+      color: var(--colors-textSubtle);
+    }
+
+    .c5:focus:not(:disabled) {
       box-shadow: none;
     }
 
     @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-      .c12 {
+      .c13 {
         -webkit-filter: none !important;
         filter: none !important;
+      }
+    }
+
+    @media (hover:hover) {
+      .c10:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+        opacity: 0.65;
       }
     }
 
@@ -557,13 +579,14 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
           class="c1"
         >
           <div
-            class=""
+            class="c2"
+            width="100%"
           >
             <div
-              class="c2"
+              class="c3"
             >
               <input
-                class="c3 c4"
+                class="c4 c5"
                 inputmode="decimal"
                 min="0"
                 pattern="^[0-9]*[.,]?[0-9]{0,18}$"
@@ -572,7 +595,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
                 value="14"
               />
               <div
-                class="c5 c6"
+                class="c6 c7"
                 color="text"
                 font-size="16px"
               >
@@ -580,7 +603,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
               </div>
             </div>
             <div
-              class="c7"
+              class="c8"
               color="textSubtle"
               font-size="12px"
             >
@@ -588,14 +611,14 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
             </div>
           </div>
           <div
-            class="c8 c2"
+            class="c9 c3"
           >
             <button
-              class="c9 c10 c11"
+              class="c10 c11 c12"
               scale="sm"
             >
               <svg
-                class="c12"
+                class="c13"
                 color="textSubtle"
                 viewBox="0 0 24 25"
                 width="20px"

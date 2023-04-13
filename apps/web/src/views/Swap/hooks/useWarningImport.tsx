@@ -1,32 +1,33 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 import useSWRImmutable from 'swr/immutable'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 
-import { useCurrency, useAllTokens } from 'hooks/Tokens'
-import { useDefaultsFromURLSearch } from 'state/swap/hooks'
 import ImportTokenWarningModal from 'components/ImportTokenWarningModal'
+import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Field } from 'state/swap/actions'
+import { useSwapState } from 'state/swap/hooks'
 import { isAddress } from 'utils'
 
 import SwapWarningModal from '../components/SwapWarningModal'
 
 export default function useWarningImport() {
   const router = useRouter()
-  const loadedUrlParams = useDefaultsFromURLSearch()
   const { chainId, isWrongNetwork } = useActiveWeb3React()
+  const {
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useSwapState()
 
   // swap warning state
   const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
 
   // token warning stuff
-  const [loadedInputCurrency, loadedOutputCurrency] = [
-    useCurrency(loadedUrlParams?.inputCurrencyId),
-    useCurrency(loadedUrlParams?.outputCurrencyId),
-  ]
+  const [loadedInputCurrency, loadedOutputCurrency] = [useCurrency(inputCurrencyId), useCurrency(outputCurrencyId)]
 
   const urlLoadedTokens: Token[] = useMemo(
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken) ?? [],

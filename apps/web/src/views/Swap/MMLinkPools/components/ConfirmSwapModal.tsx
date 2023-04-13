@@ -9,7 +9,7 @@ import {
 } from '@pancakeswap/uikit'
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { Field } from 'state/swap/actions'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { TradeWithMM } from '../types'
@@ -62,14 +62,12 @@ interface ConfirmSwapModalProps {
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null
-  allowedSlippage: number
   onAcceptChanges: () => void
   onConfirm: () => void
   swapErrorMessage?: string
   customOnDismiss?: () => void
   openSettingModal?: () => void
   isRFQReady: boolean
-  isRFQLoading: boolean
 }
 
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
@@ -77,7 +75,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   originalTrade,
   currencyBalances,
   onAcceptChanges,
-  allowedSlippage,
   onConfirm,
   onDismiss,
   customOnDismiss,
@@ -87,16 +84,19 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   txHash,
   openSettingModal,
   isRFQReady,
-  isRFQLoading,
 }) => {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
+  const [txCache, setTxCache] = useState<string>(() => '')
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
       customOnDismiss()
     }
     onDismiss?.()
   }, [customOnDismiss, onDismiss])
+  useEffect(() => {
+    if (txHash) setTxCache(txHash)
+  }, [txHash])
 
   const confirmationContent = useCallback(
     () =>
@@ -109,12 +109,10 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       ) : (
         <TransactionConfirmSwapContentWithSmartRouter
           isRFQReady={isRFQReady}
-          isRFQLoading={isRFQLoading}
           trade={trade}
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
           onAcceptChanges={onAcceptChanges}
-          allowedSlippage={allowedSlippage}
           onConfirm={onConfirm}
           recipient={recipient}
         />
@@ -123,7 +121,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       trade,
       originalTrade,
       onAcceptChanges,
-      allowedSlippage,
       onConfirm,
       recipient,
       swapErrorMessage,
@@ -131,7 +128,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       openSettingModal,
       currencyBalances,
       isRFQReady,
-      isRFQLoading,
     ],
   )
 
@@ -151,7 +147,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
     <ConfirmSwapModalContainer handleDismiss={handleDismiss}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
-      ) : txHash ? (
+      ) : txHash || txCache ? (
         <TransactionSubmittedContent
           chainId={chainId}
           hash={txHash}

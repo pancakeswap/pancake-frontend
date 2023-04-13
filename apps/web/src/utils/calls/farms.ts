@@ -2,10 +2,11 @@ import { Contract } from '@ethersproject/contracts'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { getNonBscVaultContractFee, MessageTypes } from 'views/Farms/hooks/getNonBscVaultFee'
+import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 
 export const stakeFarm = async (masterChefContract: Contract, pid, amount, gasPrice, gasLimit?: number) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
-
+  logGTMClickStakeFarmEvent()
   return masterChefContract.deposit(pid, value, {
     gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
@@ -40,6 +41,7 @@ export const nonBscStakeFarm = async (contract, pid, amount, gasPrice, account, 
     messageType: MessageTypes.Deposit,
   })
   console.info(totalFee, 'stake totalFee')
+  logGTMClickStakeFarmEvent()
   return contract.deposit(pid, value, { value: totalFee })
 }
 

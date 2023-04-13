@@ -1,13 +1,9 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { LinkExternal, ModalV2 } from '@pancakeswap/uikit'
-import DisclaimerModal from 'components/DisclaimerModal'
-import { ConnectorNames, getDocLink } from 'config/wallet'
+import { ConnectorNames } from 'config/wallet'
 import { ExtendEthereum } from 'global'
-import { useState, useCallback } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
-import { FarmsContext } from './context'
-import Farms from './Farms'
+import { FarmsContext, FarmsV3Context } from './context'
+import FarmsV3 from './FarmsV3'
 
 export function useIsBloctoETH() {
   const { chain } = useNetwork()
@@ -21,55 +17,8 @@ export function useIsBloctoETH() {
   )
 }
 
-// Blocto EVM address is different across chains
-function BloctoWarning() {
-  const isBloctoETH = useIsBloctoETH()
-  const {
-    t,
-    currentLanguage: { code },
-  } = useTranslation()
-
-  const [close, setClose] = useState(false)
-
-  const handleSuccess = useCallback(() => {
-    setClose(true)
-  }, [])
-
-  return (
-    <ModalV2 isOpen={isBloctoETH && !close} closeOnOverlayClick={false}>
-      <DisclaimerModal
-        id="blocto-eth"
-        modalHeader={t('Unsupported Wallet')}
-        header={
-          <>
-            {t(
-              'Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.',
-            )}
-            <LinkExternal href={getDocLink(code)} mt="4px">
-              {t('Check out our wallet guide for the list of supported wallets.')}
-            </LinkExternal>
-          </>
-        }
-        subtitle={t('If you have previously deposited any LP tokens, please unstake.')}
-        checks={[
-          {
-            key: 'blocto-understand',
-            content: t('I understand'),
-          },
-        ]}
-        onSuccess={handleSuccess}
-      />
-    </ModalV2>
-  )
+export const FarmsV3PageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
+  return <FarmsV3>{children}</FarmsV3>
 }
 
-export const FarmsPageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  return (
-    <>
-      <BloctoWarning />
-      <Farms>{children}</Farms>
-    </>
-  )
-}
-
-export { FarmsContext }
+export { FarmsContext, FarmsV3Context }

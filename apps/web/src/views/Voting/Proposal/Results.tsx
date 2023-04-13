@@ -8,8 +8,7 @@ import {
   Heading,
   Progress,
   Skeleton,
-  Tag,
-  CheckmarkCircleIcon,
+  Farm as FarmUI,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { Vote } from 'state/types'
@@ -18,6 +17,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'
+
+const { VotedTag } = FarmUI.Tags
 
 interface ResultsProps {
   choices: string[]
@@ -54,11 +55,7 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, vot
                   <TextEllipsis mb="4px" title={choice}>
                     {choice}
                   </TextEllipsis>
-                  {hasVoted && (
-                    <Tag variant="success" outline ml="8px">
-                      <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
-                    </Tag>
-                  )}
+                  {hasVoted && <VotedTag mr="4px" />}
                 </Flex>
                 <Box mb="4px">
                   <Progress primaryStep={progress} scale="sm" />

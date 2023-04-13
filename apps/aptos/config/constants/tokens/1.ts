@@ -108,4 +108,28 @@ export const mainnetTokens = {
     'Tortuga Staked APT',
     'https://app.tortuga.finance/',
   ),
+  etern: new Coin(
+    ChainId.MAINNET,
+    '0x25a64579760a4c64be0d692327786a6375ec80740152851490cfd0b53604cf95::coin::ETERN',
+    8,
+    'ETERN',
+    'Eternal Token',
+    'https://eternalfinance.io/',
+  ),
+  blt: new Coin(
+    ChainId.MAINNET,
+    '0xfbab9fb68bd2103925317b6a540baa20087b1e7a7a4eb90badee04abb6b5a16f::blt::Blt',
+    8,
+    'BLT',
+    'Blocto Token',
+    'https://blocto.io/',
+  ),
+  thl: new Coin(
+    ChainId.MAINNET,
+    '0x7fd500c11216f0fe3095d0c4b8aa4d64a4e2e04f83758462f2b127255643615::thl_coin::THL',
+    8,
+    'THL',
+    'Thala Token',
+    'https://www.thalalabs.xyz/',
+  ),
 }

@@ -11,43 +11,18 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from './safeConnector'
+import { getNodeRealUrl } from './nodeReal'
 
 const CHAINS = [bsc, mainnet, bscTestnet, goerli]
-
-const getNodeRealUrl = (networkName: string) => {
-  let host = null
-
-  switch (networkName) {
-    case 'homestead':
-      if (process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) {
-        host = `eth-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}`
-      }
-      break
-    case 'goerli':
-      if (process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) {
-        host = `eth-goerli.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI}`
-      }
-      break
-    default:
-      host = null
-  }
-
-  if (!host) {
-    return null
-  }
-
-  const url = `https://${host}`
-  return {
-    http: url,
-    webSocket: url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),
-  }
-}
 
 export const { provider, chains } = configureChains(CHAINS, [
   jsonRpcProvider({
     rpc: (chain) => {
       if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
         return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
+      }
+      if (chain.id === bscTestnet.id) {
+        return { http: 'https://data-seed-prebsc-1-s2.binance.org:8545' }
       }
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
@@ -62,7 +37,6 @@ export const injectedConnector = new InjectedConnector({
   chains,
   options: {
     shimDisconnect: false,
-    shimChainChangedDisconnect: true,
   },
 })
 
@@ -92,7 +66,6 @@ export const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {
     shimDisconnect: false,
-    shimChainChangedDisconnect: true,
   },
 })
 
@@ -136,5 +109,8 @@ export const client = createClient({
 
 export const CHAIN_IDS = chains.map((c) => c.id)
 
-export const isChainSupported = memoize((chainId: number) => CHAIN_IDS.includes(chainId))
-export const isChainTestnet = memoize((chainId: number) => chains.find((c) => c.id === chainId)?.testnet)
+export const isChainSupported = memoize((chainId: number) => (CHAIN_IDS as number[]).includes(chainId))
+export const isChainTestnet = memoize((chainId: number) => {
+  const found = chains.find((c) => c.id === chainId)
+  return found ? 'testnet' in found : false
+})

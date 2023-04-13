@@ -69,6 +69,11 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
         label: t('IFO'),
         href: '/ifo',
       },
+      {
+        label: t('Blog'),
+        href: 'https://blog.pancakeswap.finance',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
+      },
     ],
   },
 ]

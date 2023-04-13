@@ -2,27 +2,28 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowForwardIcon,
   AutoRenewIcon,
+  Balance,
   Button,
   Card,
   CardBody,
   Flex,
+  NextLinkFromReactRouter,
   Skeleton,
   Text,
   useToast,
-  Balance,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import styled from 'styled-components'
-import { harvestFarm } from 'utils/calls'
 import { getMasterChefAddress } from 'utils/addressHelpers'
-import { BOOSTED_FARM_GAS_LIMIT } from 'config'
-import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
+import { harvestFarm } from 'utils/calls'
+import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
+import useFarmsWithBalance, { FarmWithBalance } from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
 
 const StyledCard = styled(Card)`
@@ -38,19 +39,29 @@ const HarvestCard = () => {
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
 
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeUSD()
   const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
-  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length
+  const numFarmsToCollect = farmsWithStakedBalance.filter(
+    (value) => ('pid' in value && value.pid !== 0) || ('sendTx' in value && value.sendTx !== null),
+  ).length
   const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
   const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
+  const { onHarvestAll } = useFarmsV3BatchHarvest()
 
   const harvestAllFarms = useCallback(async () => {
-    for (let i = 0; i < farmsWithStakedBalance.length; i++) {
-      const farmWithBalance = farmsWithStakedBalance[i]
+    const v2Farms = farmsWithStakedBalance.filter((value) => 'pid' in value) as FarmWithBalance[]
+    const v3Farms = farmsWithStakedBalance.filter((value) => 'sendTx' in value) as {
+      sendTx: {
+        to: string
+        tokenId: string
+      }
+    }[]
+    for (let i = 0; i < v2Farms.length; i++) {
+      const farmWithBalance = v2Farms[i]
       // eslint-disable-next-line no-await-in-loop
       const receipt = await fetchWithCatchTxError(() => {
         return harvestFarm(
@@ -69,7 +80,9 @@ const HarvestCard = () => {
         )
       }
     }
-  }, [farmsWithStakedBalance, toastSuccess, t, fetchWithCatchTxError, gasPrice])
+
+    onHarvestAll(v3Farms.map((farm) => farm.sendTx.tokenId))
+  }, [farmsWithStakedBalance, onHarvestAll, fetchWithCatchTxError, gasPrice, toastSuccess, t])
 
   return (
     <StyledCard>

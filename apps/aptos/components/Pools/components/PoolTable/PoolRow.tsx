@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { TokenPairImage } from 'components/TokenImage'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import Apr from '../PoolCard/Apr'
 import ActionPanel from './ActionPanel'
 
@@ -17,12 +18,21 @@ const PoolRow: React.FC<
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked, earningToken } = pool
 
+  const getNow = useLedgerTimestamp()
+
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <Pool.NameCell<Coin>
         pool={pool}
         tokenPairImage={
-          <TokenPairImage mr="8px" width={40} height={40} primaryToken={earningToken} secondaryToken={stakingToken} />
+          <TokenPairImage
+            mr="8px"
+            width={40}
+            height={40}
+            style={{ minWidth: 40 }}
+            primaryToken={earningToken}
+            secondaryToken={stakingToken}
+          />
         }
       />
       <Pool.EarningsCell<Coin> pool={pool} account={account} />
@@ -34,6 +44,7 @@ const PoolRow: React.FC<
         />
       )}
       <Pool.AprCell<Coin> pool={pool} aprComp={Apr} />
+      <Pool.EndsInCell<Coin> pool={pool} getNow={getNow} />
     </Pool.ExpandRow>
   )
 }

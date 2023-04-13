@@ -1,0 +1,60 @@
+name: Deploy CF API
+
+on:
+  workflow_dispatch:
+    inputs:
+      api:
+        description: 'API'
+        required: true
+        type: choice
+        options:
+          - routing
+          - farms
+      environment:
+        description: 'Choose an environment to deploy to: <dev|production>'
+        required: true
+        type: choice
+        default: 'dev'
+        options:
+          - dev
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    env:
+      HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      IS_DEV: ${{ github.event.inputs.environment == 'dev' }}
+    name: Publish API
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build package
+        run: yarn build:packages
+
+      - name: Publish
+        uses: cloudflare/wrangler-action@2.0.0
+        if: ${{ (env.HAVE_CLOUDFLARE_TOKEN == 'true') && (env.IS_DEV == 'false') }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: 'apis/${{ github.event.inputs.api }}'
+          command: publish --env ${{ github.event.inputs.environment }}
+
+      - name: Publish dev
+        uses: cloudflare/wrangler-action@2.0.0
+        if: ${{ (env.HAVE_CLOUDFLARE_TOKEN == 'true') && (env.IS_DEV == 'true') }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: 'apis/${{ github.event.inputs.api }}'
+          command: publish

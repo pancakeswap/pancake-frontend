@@ -937,7 +937,10 @@ export const fetchWalletTokenIdsForCollections = async (
   account: string,
   collections: ApiCollections,
 ): Promise<TokenIdWithCollectionAddress[]> => {
-  const balanceOfCalls = Object.values(collections).map((collection) => {
+  const tokenOfOwnerByIndexCollections = Object.values(collections).filter(
+    (c) => !COLLECTIONS_WITH_WALLET_OF_OWNER.includes(c.address),
+  )
+  const balanceOfCalls = tokenOfOwnerByIndexCollections.map((collection) => {
     const { address: collectionAddress } = collection
     return {
       address: collectionAddress,
@@ -953,8 +956,7 @@ export const fetchWalletTokenIdsForCollections = async (
   })
   const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
 
-  const tokenIdCalls = Object.values(collections)
-    .filter((c) => !COLLECTIONS_WITH_WALLET_OF_OWNER.includes(c.address))
+  const tokenIdCalls = tokenOfOwnerByIndexCollections
     .map((collection, index) => {
       const balanceOf = balanceOfCallsResult[index]?.toNumber() ?? 0
       const { address: collectionAddress } = collection

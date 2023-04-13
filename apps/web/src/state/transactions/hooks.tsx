@@ -10,7 +10,10 @@ import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { useAccount } from 'wagmi'
+
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+
 import { TransactionDetails } from './reducer'
 import {
   addTransaction,
@@ -32,6 +35,18 @@ export function useTransactionAdder(): (
     type?: TransactionType
     order?: Order
     nonBscFarm?: NonBscFarmTransactionType
+    // add/remove pool
+    baseCurrencyId?: string
+    quoteCurrencyId?: string
+    expectedAmountBaseRaw?: string
+    expectedAmountQuoteRaw?: string
+    feeAmount?: FeeAmount
+    createPool?: boolean
+    // fee collect
+    currencyId0?: string
+    currencyId1?: string
+    expectedCurrencyOwed0?: string
+    expectedCurrencyOwed1?: string
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
@@ -156,7 +171,7 @@ export function useIsTransactionPending(transactionHash?: string): boolean {
  * @param tx to check for recency
  */
 export function isTransactionRecent(tx: TransactionDetails): boolean {
-  return new Date().getTime() - tx.addedTime < 86_400_000
+  return Date.now() - tx.addedTime < 86_400_000
 }
 
 // returns whether a token has a pending approval transaction

@@ -49,8 +49,8 @@ import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransacti
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippage } from 'state/user'
-import { useIsExpertMode } from 'state/user/expertMode'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { useIsExpertMode } from '@pancakeswap/utils/user/expertMode'
 import useSWRImmutable from 'swr/immutable'
 import currencyId from 'utils/currencyId'
 import {
@@ -454,9 +454,10 @@ const SwapPage = () => {
             onPercentInput={handlePercentInput}
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
             showBridgeWarning={showBridgeWarning}
+            showUSDPrice
           />
           {showBridgeWarning && (
-            <AtomBox width="full">
+            <AtomBox width="100%">
               <Flex justifyContent="flex-end">
                 <Text fontSize="12px" color="warning">
                   {t('Use')}
@@ -477,7 +478,7 @@ const SwapPage = () => {
               </Flex>
             </AtomBox>
           )}
-          <AtomBox width="full" textAlign="center">
+          <AtomBox width="100%" textAlign="center">
             <SwitchButton
               onClick={() => {
                 handleSwitch()
@@ -493,6 +494,7 @@ const SwapPage = () => {
             currency={isLoaded ? outputCurrency : undefined}
             otherCurrency={inputCurrency}
             onUserInput={(value) => dispatch(typeInput({ field: Field.OUTPUT, typedValue: value }))}
+            showUSDPrice
           />
 
           <Info

@@ -4,7 +4,7 @@ export const Row = ({
   width = "100%",
   alignItems = "center",
   justifyContent = "flex-start",
-  padding = "0",
+  padding = "0px",
   ...props
 }: AtomBoxProps) => (
   <AtomBox
@@ -19,6 +19,6 @@ export const Row = ({
 
 export const AutoRow = (props: AtomBoxProps) => <Row flexWrap="wrap" {...props} />;
 
-export const RowFixed = (props: AtomBoxProps) => <Row width="fit" flexWrap="wrap" {...props} />;
+export const RowFixed = (props: AtomBoxProps) => <Row width="fit-content" flexWrap="wrap" {...props} />;
 
 export const RowBetween = (props: AtomBoxProps) => <Row flexWrap="wrap" justifyContent="space-between" {...props} />;

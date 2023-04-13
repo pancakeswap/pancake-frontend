@@ -84,6 +84,9 @@ export function getY({ amplifier, balances, i, j, x }: GetYParams): JSBI {
     if (index === i) {
       balanceAfterDeposit = JSBI.add(balanceAfterDeposit, JSBI.BigInt(x))
     }
+
+    invariant(JSBI.greaterThan(balanceAfterDeposit, ZERO), 'Insufficient liquidity')
+
     sum = JSBI.add(sum, balanceAfterDeposit)
     c = JSBI.divide(JSBI.multiply(c, d), JSBI.multiply(balanceAfterDeposit, n))
   }

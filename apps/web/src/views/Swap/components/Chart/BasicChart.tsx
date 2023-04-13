@@ -1,14 +1,14 @@
 import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useState, memo } from 'react'
-import { useFetchPairPrices } from 'state/swap/hooks'
+import { useFetchPairPricesV3 } from 'state/swap/hooks'
 import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import NoChartAvailable from './NoChartAvailable'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import { getTimeWindowChange } from './utils'
 
-const SwapLineChart = dynamic(() => import('./SwapLineChart'), {
+const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
   ssr: false,
 })
 
@@ -23,18 +23,19 @@ const BasicChart = ({
 }) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
 
-  const { pairPrices = [], pairId } = useFetchPairPrices({
+  const { data: pairPrices = [] } = useFetchPairPricesV3({
     token0Address,
     token1Address,
     timeWindow,
     currentSwapPrice,
   })
+
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const valueToDisplay = hoverValue || pairPrices[pairPrices.length - 1]?.value
   const { changePercentage, changeValue } = getTimeWindowChange(pairPrices)
   const isChangePositive = changeValue >= 0
-  const chartHeight = isChartExpanded ? 'calc(100vh - 220px)' : '378px'
+  const chartHeight = isChartExpanded ? 'calc(100vh - 220px)' : '320px'
   const {
     t,
     currentLanguage: { locale },
@@ -57,14 +58,7 @@ const BasicChart = ({
     )
 
   if (isBadData) {
-    return (
-      <NoChartAvailable
-        token0Address={token0Address}
-        token1Address={token1Address}
-        pairAddress={pairId}
-        isMobile={isMobile}
-      />
-    )
+    return <NoChartAvailable token0Address={token0Address} token1Address={token1Address} isMobile={isMobile} />
   }
 
   return (

@@ -1,6 +1,7 @@
 import '@pancakeswap/ui/css/reset.css'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { Analytics } from '@vercel/analytics/react'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
@@ -98,6 +99,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           </PersistGate>
         </Blocklist>
       </Providers>
+      <Analytics />
       <Script
         strategy="afterInteractive"
         id="google-tag"
@@ -108,6 +110,19 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTAG}');
+          `,
+        }}
+      />
+      <Script
+        strategy="afterInteractive"
+        id="google-tag-new"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_NEW_GTAG}');
           `,
         }}
       />

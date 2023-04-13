@@ -1,6 +1,8 @@
 {
-  "extends": "tsconfig/react-library",
+  "extends": "tsconfig/base",
+  "include": ["./index.ts"],
   "compilerOptions": {
+    "outDir": "./dist",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

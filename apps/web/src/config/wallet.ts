@@ -2,9 +2,8 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
-import { metaMaskConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
+import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
   MetaMask = 'metaMask',
@@ -24,7 +23,7 @@ const createQrCode = (chainId: number, connect) => async () => {
 
   // wait for WalletConnect to setup in order to get the uri
   await delay(100)
-  const { uri } = ((await walletConnectNoQrCodeConnector.getProvider()) as WalletConnectProvider).connector
+  const { uri } = ((await walletConnectNoQrCodeConnector.getProvider()) as any).connector
 
   return uri
 }
@@ -59,7 +58,8 @@ const walletsConfig = ({
       title: 'Metamask',
       icon: '/images/wallets/metamask.png',
       get installed() {
-        return isMetamaskInstalled() && metaMaskConnector.ready
+        return isMetamaskInstalled()
+        // && metaMaskConnector.ready
       },
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',

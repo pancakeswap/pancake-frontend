@@ -98,3 +98,9 @@ export default function useWrapCallback(
     return NOT_APPLICABLE
   }, [wbnbContract, chainId, inputCurrency, outputCurrency, t, inputAmount, balance, addTransaction, callWithGasPrice])
 }
+
+export function useIsWrapping(currencyA: Currency | undefined, currencyB: Currency | undefined, value?: string) {
+  const { wrapType } = useWrapCallback(currencyA, currencyB, value)
+
+  return wrapType !== WrapType.NOT_APPLICABLE
+}

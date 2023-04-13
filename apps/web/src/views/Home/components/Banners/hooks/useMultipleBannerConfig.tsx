@@ -1,13 +1,16 @@
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
-import AptosBanner from '../AptosBanner'
+import EthBanner from '../EthBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import IFOBanner from '../IFOBanner'
+import V3LaunchBanner from '../V3LaunchBanner'
 import PerpetualBanner from '../PerpetualBanner'
-import TrustWalletCampaignBanner from '../TrustWalletCampaignBanner'
+import V3Banner from '../V3Banner'
+import FarmV3MigrationBanner from '../FarmV3MigrationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
-import useIsRenderTrustWalletCampaignBanner from './useIsRenderTrustWalletCampaignBanner'
+
+// import TradingRewardBanner from '../TradingRewardBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -29,12 +32,14 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
-  const isRenderTrustWalletCampaignBanner = useIsRenderTrustWalletCampaignBanner()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: isRenderTrustWalletCampaignBanner, banner: <TrustWalletCampaignBanner /> },
-      { shouldRender: true, banner: <AptosBanner /> },
+      { shouldRender: true, banner: <V3LaunchBanner /> },
+      { shouldRender: true, banner: <FarmV3MigrationBanner /> },
+      // { shouldRender: true, banner: <TradingRewardBanner /> },
+      { shouldRender: true, banner: <V3Banner /> },
+      { shouldRender: true, banner: <EthBanner /> },
       {
         shouldRender: isRenderIFOBanner,
         banner: <IFOBanner />,
@@ -54,5 +59,5 @@ export const useMultipleBannerConfig = () => {
     return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
-  }, [isRenderIFOBanner, isRenderCompetitionBanner, isRenderTrustWalletCampaignBanner])
+  }, [isRenderIFOBanner, isRenderCompetitionBanner])
 }

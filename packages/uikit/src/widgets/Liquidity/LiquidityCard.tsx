@@ -15,7 +15,7 @@ export const CardWrapper = styled(Card)`
 
 export const LiquidityCard = ({ children, ...props }: LiquidityCardProps) => (
   <>
-    <AtomBox width="full" display="flex" flexDirection="column" alignItems="center" {...props}>
+    <AtomBox width="100%" display="flex" flexDirection="column" alignItems="center" {...props}>
       <CardWrapper>{children}</CardWrapper>
     </AtomBox>
   </>
