@@ -174,7 +174,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     lockStartTime,
     thresholdLockedPeriod,
     thresholdLockedAmount,
-    canClaim,
+    estimateReward,
     totalVolume,
   } = currentUserCampaignInfo ?? {}
 
@@ -263,7 +263,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       )
     }
 
-    if (isQualified && !hasClaimBalance) {
+    if (isQualified && !estimateReward) {
       return (
         <Container showBackgroundColor={showBackgroundColor}>
           <BaseContainer showBackgroundColor={showBackgroundColor}>
@@ -276,7 +276,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     return (
       <ExpiringUnclaim
         campaignIds={campaignIds}
-        canClaim={canClaim}
+        estimateReward={estimateReward}
         currentTradingVolume={totalVolume}
         totalAvailableClaimData={totalAvailableClaimData}
         campaignClaimTime={incentives.campaignClaimTime}

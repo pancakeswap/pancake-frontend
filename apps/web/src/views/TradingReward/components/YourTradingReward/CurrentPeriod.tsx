@@ -1,22 +1,21 @@
 import { useMemo } from 'react'
-import { Box, Flex, Card, Text, Balance, InfoIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Card, Text, InfoIcon } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 
 interface CurrentPeriodProps {
-  canClaim: string
+  estimateReward: number
   currentTradingVolume: number
   campaignClaimTime: number
 }
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
-  canClaim,
+  estimateReward,
   currentTradingVolume,
   campaignClaimTime,
 }) => {
@@ -31,8 +30,10 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
 
   const cakePriceBusd = useCakeBusdPrice()
 
-  const cakeBalance = useMemo(() => getBalanceNumber(new BigNumber(canClaim)), [canClaim])
-  const rewardInBusd = useMemo(() => multiplyPriceByAmount(cakePriceBusd, cakeBalance), [cakeBalance, cakePriceBusd])
+  const rewardInBusd = useMemo(
+    () => multiplyPriceByAmount(cakePriceBusd, estimateReward),
+    [estimateReward, cakePriceBusd],
+  )
 
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
@@ -45,8 +46,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
               {t('Your Current trading rewards')}
             </Text>
-            <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={rewardInBusd} />
-            <Balance fontSize="14px" color="textSubtle" prefix="~ " unit=" CAKE" decimals={2} value={cakeBalance} />
+            <Text bold fontSize="40px">{`$ ${formatNumber(rewardInBusd)}`}</Text>
+            <Text fontSize="14px" color="textSubtle">{`~ ${formatNumber(estimateReward)} CAKE`}</Text>
             <Text fontSize="12px" color="textSubtle" mt="4px">
               {t('Available for claiming')}
               {timeRemaining > 0 ? (
@@ -79,7 +80,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
               </Text>
               <InfoIcon color="secondary" width={16} height={16} ml="4px" />
             </Flex>
-            <Balance bold fontSize={['24px']} prefix="$ " decimals={2} value={currentTradingVolume} />
+            <Text bold fontSize="24px">{`$ ${formatNumber(currentTradingVolume)}`}</Text>
           </GreyCard>
         </Box>
       </Card>

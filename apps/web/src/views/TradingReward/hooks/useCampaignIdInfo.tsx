@@ -11,12 +11,14 @@ export interface CampaignVolume {
 export interface CampaignIdInfoResponse {
   total: number
   volumeArr: CampaignVolume[]
+  estimateReward?: number
 }
 
 export interface CampaignIdInfoDetail {
   total: number
   totalVolume: number
   volumeArr: CampaignVolume[]
+  estimateReward?: number
 }
 
 export interface CampaignIdInfo {
@@ -28,6 +30,7 @@ export const initialState: CampaignIdInfoDetail = {
   total: 0,
   totalVolume: 0,
   volumeArr: [],
+  estimateReward: 0,
 }
 
 const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
