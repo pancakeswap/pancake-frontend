@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { useAccount } from 'wagmi'
+import { Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import { useCakeVault, usePoolsWithVault } from 'state/pools/hooks'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { useAppDispatch } from 'state'
@@ -13,13 +15,14 @@ import {
   fetchCakeFlexibleSideVaultUserData,
   fetchCakeFlexibleSideVaultFees,
 } from 'state/pools'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { batch } from 'react-redux'
-import { Pool } from '@pancakeswap/uikit'
-import { Token } from '@pancakeswap/sdk'
+
 import PoolsTable from './PoolTable'
 
 const NewPool: React.FC<React.PropsWithChildren> = () => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const { pools } = usePoolsWithVault()
   const cakeVault = useCakeVault()
 
@@ -33,24 +36,28 @@ const NewPool: React.FC<React.PropsWithChildren> = () => {
   const dispatch = useAppDispatch()
 
   useFastRefreshEffect(() => {
-    batch(() => {
-      dispatch(fetchCakeVaultPublicData())
-      dispatch(fetchCakeFlexibleSideVaultPublicData())
-      dispatch(fetchCakePoolPublicDataAsync())
-      if (account) {
-        dispatch(fetchCakeVaultUserData({ account }))
-        dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
-        dispatch(fetchCakePoolUserDataAsync(account))
-      }
-    })
-  }, [account, dispatch])
+    if (chainId) {
+      batch(() => {
+        dispatch(fetchCakeVaultPublicData(chainId))
+        dispatch(fetchCakeFlexibleSideVaultPublicData(chainId))
+        dispatch(fetchCakePoolPublicDataAsync())
+        if (account) {
+          dispatch(fetchCakeVaultUserData({ account }))
+          dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
+          dispatch(fetchCakePoolUserDataAsync(account))
+        }
+      })
+    }
+  }, [account, dispatch, chainId])
 
   useEffect(() => {
-    batch(() => {
-      dispatch(fetchCakeVaultFees())
-      dispatch(fetchCakeFlexibleSideVaultFees())
-    })
-  }, [dispatch])
+    if (chainId) {
+      batch(() => {
+        dispatch(fetchCakeVaultFees(chainId))
+        dispatch(fetchCakeFlexibleSideVaultFees(chainId))
+      })
+    }
+  }, [dispatch, chainId])
 
   return <PoolsTable pools={stakedOnlyOpenPools} account={account} userDataReady={userDataReady} />
 }

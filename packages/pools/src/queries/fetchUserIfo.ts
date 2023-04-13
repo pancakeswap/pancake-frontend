@@ -5,15 +5,11 @@ import { ChainId } from '@pancakeswap/sdk'
 
 import cakeAbi from '../abis/ICake.json'
 import { ICAKE } from '../constants/contracts'
-import { PoolsSupportedChainId } from '../constants'
 import { OnChainProvider } from '../types'
+import { getContractAddress } from '../utils'
 
 const getIfoCreditAddressContract = (chainId: ChainId, provider: OnChainProvider) => {
-  const address = ICAKE[chainId as PoolsSupportedChainId]
-  if (!address) {
-    throw new Error(`Unsupported chain ${chainId}`)
-  }
-  return new Contract(address, cakeAbi, provider({ chainId }))
+  return new Contract(getContractAddress(ICAKE, chainId), cakeAbi, provider({ chainId }))
 }
 
 export const fetchPublicIfoData = async (chainId: ChainId, provider: OnChainProvider) => {
