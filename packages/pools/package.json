@@ -20,6 +20,7 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
+    "@pancakeswap/multicall": "*",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
@@ -32,6 +33,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@pancakeswap/multicall": "*",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
