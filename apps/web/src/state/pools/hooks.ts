@@ -86,7 +86,7 @@ export const useFetchPublicPoolsData = () => {
 
         batch(() => {
           dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId))
-          dispatch(fetchPoolsStakingLimitsAsync())
+          dispatch(fetchPoolsStakingLimitsAsync(chainId))
         })
       }
 
