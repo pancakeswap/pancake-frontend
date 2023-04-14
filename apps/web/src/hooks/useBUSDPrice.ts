@@ -67,14 +67,14 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
   )
 
   const amountOut = useMemo(
-    () => (currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined),
-    [currency],
+    () => (stableCoin ? CurrencyAmount.fromRawAmount(stableCoin, 10 * 10 ** stableCoin.decimals) : undefined),
+    [stableCoin],
   )
 
   const { trade } = useBestAMMTrade({
     amount: amountOut,
-    currency: stableCoin,
-    baseCurrency: currency,
+    currency,
+    baseCurrency: stableCoin,
     tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
     maxHops: baseTradeAgainst ? 2 : 3,
@@ -114,8 +114,9 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
 
     if (trade) {
       const { inputAmount, outputAmount } = trade
+      console.log(inputAmount, outputAmount)
 
-      return new Price(currency, stableCoin, outputAmount.quotient, inputAmount.quotient)
+      return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
     }
 
     return undefined
