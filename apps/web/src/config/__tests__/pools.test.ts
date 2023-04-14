@@ -1,7 +1,11 @@
 import { formatUnits } from '@ethersproject/units'
-import pools from 'config/constants/pools'
+import { getPoolsConfig } from '@pancakeswap/pools'
+import { ChainId } from '@pancakeswap/sdk'
 import { getSouschefContract, getSouschefV2Contract } from 'utils/contractHelpers'
 import { describe, it } from 'vitest'
+
+// TODO: pools add test cases to new pools created by smart chef
+const pools = getPoolsConfig(ChainId.BSC)
 
 // Pool 0 is special (cake pool)
 // Pool 78 is a broken pool, not used, and break the tests

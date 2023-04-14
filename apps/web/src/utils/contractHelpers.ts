@@ -2,7 +2,7 @@ import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
 import { provider } from 'utils/wagmi'
 import { Contract } from '@ethersproject/contracts'
-import poolsConfig from 'config/constants/pools'
+import { getPoolsConfig } from '@pancakeswap/pools'
 import { PoolCategory } from 'config/constants/types'
 import { CAKE } from '@pancakeswap/tokens'
 
@@ -165,6 +165,8 @@ import type {
   V3Migrator,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
+
+const poolsConfig = getPoolsConfig(ChainId.BSC)
 
 export const getContract = ({
   abi,
