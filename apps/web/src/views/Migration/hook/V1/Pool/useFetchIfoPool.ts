@@ -5,6 +5,7 @@ import { fetchPublicIfoPoolData, fetchIfoPoolFeesData } from 'views/Migration/ho
 import { initialPoolVaultState } from 'state/pools/index'
 import useSWR from 'swr'
 import { fetchVaultFees } from '@pancakeswap/pools'
+import { ChainId } from '@pancakeswap/sdk'
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
@@ -15,7 +16,6 @@ import { VaultKey } from 'state/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { fetchPublicVaultData } from './fetchPublicVaultData'
-import { ChainId } from '../../../../../../../../packages/swap-sdk/dist'
 
 export const ifoPoolV1Contract = '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8'
 export const cakeVaultAddress = '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC'
