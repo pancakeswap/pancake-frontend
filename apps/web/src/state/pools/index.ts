@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
-import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { bscTokens } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -23,6 +22,7 @@ import {
   fetchFlexibleSideVaultUser,
   getCakeVaultAddress,
   getCakeFlexibleSideVaultAddress,
+  getPoolsConfig,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -83,7 +83,7 @@ export const initialIfoState = Object.freeze({
 })
 
 const initialState: PoolsState = {
-  data: [...poolsConfig],
+  data: [],
   userDataLoaded: false,
   cakeVault: initialPoolVaultState,
   ifo: initialIfoState,
@@ -147,6 +147,7 @@ export const fetchPoolsPublicDataAsync =
       const blockLimitsSousIdMap = keyBy(blockLimits, 'sousId')
       const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
+      const poolsConfig = getPoolsConfig(chainId)
       const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
       const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
         return (
@@ -234,6 +235,7 @@ export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatc
   try {
     const stakingLimits = await fetchPoolsStakingLimits({ poolsWithStakingLimit, chainId, provider })
 
+    const poolsConfig = getPoolsConfig(chainId)
     const stakingLimitData = poolsConfig.map((pool) => {
       if (poolsWithStakingLimit.includes(pool.sousId)) {
         return { sousId: pool.sousId }
@@ -270,6 +272,7 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
       fetchUserPendingRewards({ account, chainId, provider }),
     ])
 
+    const poolsConfig = getPoolsConfig(chainId)
     const userData = poolsConfig.map((pool) => ({
       sousId: pool.sousId,
       allowance: allowances[pool.sousId],
@@ -389,6 +392,15 @@ export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
   reducers: {
+    setInitialPoolConfig: (state, action) => {
+      const { chainId } = action.payload
+      const poolsConfig = getPoolsConfig(chainId)
+      state.data = [...poolsConfig]
+      state.userDataLoaded = false
+      state.cakeVault = initialPoolVaultState
+      state.ifo = initialIfoState
+      state.cakeFlexibleSideVault = initialPoolVaultState
+    },
     setPoolPublicData: (state, action) => {
       const { sousId } = action.payload
       const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
@@ -507,6 +519,7 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolPublicData, setPoolUserData, setIfoUserCreditData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolPublicData, setPoolUserData, setIfoUserCreditData, setInitialPoolConfig } =
+  PoolsSlice.actions
 
 export default PoolsSlice.reducer

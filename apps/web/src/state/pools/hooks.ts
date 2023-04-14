@@ -26,6 +26,7 @@ import {
   fetchCakeFlexibleSideVaultFees,
   fetchCakePoolUserDataAsync,
   fetchCakePoolPublicDataAsync,
+  setInitialPoolConfig,
 } from '.'
 import { VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -114,6 +115,12 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
 export const usePoolsPageFetch = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
+  useEffect(() => {
+    if (chainId) {
+      dispatch(setInitialPoolConfig({ chainId }))
+    }
+  }, [dispatch, chainId])
+
   useFetchPublicPoolsData()
 
   useFastRefreshEffect(() => {
