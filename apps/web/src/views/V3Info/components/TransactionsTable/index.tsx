@@ -170,12 +170,8 @@ export default function TransactionTable({
       ) + extraPages
     setMaxPage(maxPageResult)
     if (maxPageResult === 0) setPage(0)
+    else setPage(1)
   }, [maxItems, transactions, txFilter])
-
-  const onFilterChange = useCallback((filter: TransactionType | undefined) => {
-    setPage(1)
-    setTxFilter(filter)
-  }, [])
 
   const sortedTransactions = useMemo(() => {
     return transactions
@@ -215,7 +211,7 @@ export default function TransactionTable({
           <RowFixed>
             <SortText
               onClick={() => {
-                onFilterChange(undefined)
+                setTxFilter(undefined)
               }}
               active={txFilter === undefined}
             >
@@ -223,7 +219,7 @@ export default function TransactionTable({
             </SortText>
             <SortText
               onClick={() => {
-                onFilterChange(TransactionType.SWAP)
+                setTxFilter(TransactionType.SWAP)
               }}
               active={txFilter === TransactionType.SWAP}
             >
@@ -231,7 +227,7 @@ export default function TransactionTable({
             </SortText>
             <SortText
               onClick={() => {
-                onFilterChange(TransactionType.MINT)
+                setTxFilter(TransactionType.MINT)
               }}
               active={txFilter === TransactionType.MINT}
             >
@@ -239,7 +235,7 @@ export default function TransactionTable({
             </SortText>
             <SortText
               onClick={() => {
-                onFilterChange(TransactionType.BURN)
+                setTxFilter(TransactionType.BURN)
               }}
               active={txFilter === TransactionType.BURN}
             >
