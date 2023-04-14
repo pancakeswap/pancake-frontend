@@ -2,11 +2,11 @@ import { ChainId } from '@pancakeswap/sdk'
 import { OnChainProvider } from '@pancakeswap/smart-router/evm'
 import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
-import { getNodeRealUrl } from './nodeReal'
+import { getNodeRealServerUrl } from './nodeReal'
 
 const mainnetClient = createPublicClient({
   chain: mainnet,
-  transport: http(getNodeRealUrl(mainnet.network)?.http || mainnet.rpcUrls.default.http[0]),
+  transport: http(getNodeRealServerUrl(mainnet.network)?.http || mainnet.rpcUrls.default.http[0]),
 })
 
 const bscClient = createPublicClient({
@@ -21,7 +21,7 @@ const bscTestnetClient = createPublicClient({
 
 const goerliClient = createPublicClient({
   chain: goerli,
-  transport: http(getNodeRealUrl(goerli.network)?.http || goerli.rpcUrls.default.http[0]),
+  transport: http(getNodeRealServerUrl(goerli.network)?.http || goerli.rpcUrls.default.http[0]),
 })
 
 // @ts-ignore
