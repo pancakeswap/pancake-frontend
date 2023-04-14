@@ -27,18 +27,18 @@ export const getNodeRealUrl = (networkName: string) => {
   }
 }
 
-export const getNodeRealServerUrl = (networkName: string) => {
+export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
   let host = null
 
-  switch (networkName) {
-    case 'homestead':
-      if (process.env.SERVER_NODE_REAL_API_ETH) {
-        host = `eth-mainnet.nodereal.io/v1/${process.env.SERVER_NODE_REAL_API_ETH}`
+  switch (chainId) {
+    case 1:
+      if (key) {
+        host = `eth-mainnet.nodereal.io/v1/${key}`
       }
       break
-    case 'goerli':
-      if (process.env.SERVER_NODE_REAL_API_GOERLI) {
-        host = `eth-goerli.nodereal.io/v1/${process.env.SERVER_NODE_REAL_API_GOERLI}`
+    case 5:
+      if (key) {
+        host = `eth-goerli.nodereal.io/v1/${key}`
       }
       break
     default:
@@ -50,8 +50,5 @@ export const getNodeRealServerUrl = (networkName: string) => {
   }
 
   const url = `https://${host}`
-  return {
-    http: url,
-    webSocket: url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),
-  }
+  return url
 }
