@@ -35,7 +35,9 @@ export const ModalWrapper = ({
       }}
       ref={wrapperRef}
     >
-      <Box {...props}>{children}</Box>
+      <Box overflow="hidden" borderRadius="32px" {...props}>
+        {children}
+      </Box>
     </ModalContainer>
   );
 };
