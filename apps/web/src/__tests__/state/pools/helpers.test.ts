@@ -1,9 +1,13 @@
+import { getPoolsConfig } from '@pancakeswap/pools'
+import { ChainId } from '@pancakeswap/sdk'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import { Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import poolsConfig from 'config/constants/pools'
 import { transformPool, transformUserData } from 'state/pools/helpers'
 import { SerializedPool } from 'state/types'
+
+// TODO: pools add test cases to new pools created by smart chef
+const poolsConfig = getPoolsConfig(ChainId.BSC)
 
 describe('transformUserData', () => {
   it.each([

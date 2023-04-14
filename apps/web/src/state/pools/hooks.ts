@@ -7,9 +7,9 @@ import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffe
 import { FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { livePools } from 'config/constants/pools'
 import { Pool } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
+import { getLivePoolsConfig } from '@pancakeswap/pools'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import {
@@ -39,18 +39,19 @@ import {
   makeVaultPoolWithKeySelector,
 } from './selectors'
 
-const lPoolAddresses = livePools
-  .filter(({ sousId }) => sousId !== 0)
-  .map(({ earningToken, stakingToken }) => {
-    if (earningToken.symbol === 'CAKE') {
-      return stakingToken.address
-    }
-    return earningToken.address
-  })
-
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
   const farmsConfig = await getFarmConfig(chainId)
+  const livePools = getLivePoolsConfig(chainId)
+  const lPoolAddresses = livePools
+    .filter(({ sousId }) => sousId !== 0)
+    .map(({ earningToken, stakingToken }) => {
+      if (earningToken.symbol === 'CAKE') {
+        return stakingToken.address
+      }
+      return earningToken.address
+    })
+
   return farmsConfig
     .filter(
       ({ token, pid, quoteToken }) =>
