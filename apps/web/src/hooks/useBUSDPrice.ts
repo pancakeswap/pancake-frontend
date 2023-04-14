@@ -75,7 +75,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     amount: amountIn,
     currency: stableCoin,
     baseCurrency: currency,
-    tradeType: TradeType.EXACT_INPUT,
+    tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
     maxHops: baseTradeAgainst ? 2 : 3,
     enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
@@ -115,7 +115,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     if (trade) {
       const { inputAmount, outputAmount } = trade
 
-      return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
+      return new Price(currency, stableCoin, outputAmount.quotient, inputAmount.quotient)
     }
 
     return undefined
