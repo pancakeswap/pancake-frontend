@@ -24,7 +24,7 @@ import Page from 'components/Layout/Page'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { Duration } from 'date-fns'
 import { useMemo } from 'react'
-import { multiChainId, multiChainScan } from 'state/info/constant'
+import { multiChainId, multiChainScan, v2SubgraphTokenName } from 'state/info/constant'
 import {
   useGetChainName,
   useMultiChainPath,
@@ -169,7 +169,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     fontSize={isXs || isSm ? '24px' : '40px'}
                     id="info-token-name-title"
                   >
-                    {tokenData.name}
+                    {v2SubgraphTokenName[tokenData.address] ?? tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
                     ({tokenData.symbol})
