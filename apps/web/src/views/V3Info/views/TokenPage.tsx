@@ -96,7 +96,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { t } = useTranslation()
   const tokenData = useTokenData(address)
   const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolsData(poolsForToken.filter((d, index) => index < 200) ?? [])
+  const poolDatas = usePoolsData(poolsForToken?.filter((d, index) => index < 200) ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
   const formatPoolData = useMemo(() => {
