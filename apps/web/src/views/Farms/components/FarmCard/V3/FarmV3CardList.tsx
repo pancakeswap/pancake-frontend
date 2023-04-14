@@ -13,6 +13,7 @@ interface FarmV3CardListProps {
   harvesting?: boolean
   direction?: 'row' | 'column'
   onDismiss?: () => void
+  showHarvestAll?: boolean
 }
 
 const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3CardListProps>> = ({
@@ -20,6 +21,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
   onDismiss,
   direction,
   harvesting,
+  showHarvestAll,
 }) => {
   const { t } = useTranslation()
   const { onHarvestAll, harvesting: v3BatchHarvesting } = useFarmsV3BatchHarvest()
@@ -85,7 +87,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
                 onDismiss={onDismiss}
               />
             ))}
-            {stakedPositions.length > 1 && (
+            {showHarvestAll && stakedPositions.length > 1 && (
               <Button
                 width="100%"
                 id="harvest-all"
