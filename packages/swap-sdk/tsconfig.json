@@ -1,6 +1,7 @@
 {
   "extends": "tsconfig/base",
   "include": ["src"],
+  "exclude": ["./dist/**"],
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",

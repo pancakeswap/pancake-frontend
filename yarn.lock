@@ -12042,7 +12042,7 @@ ethereumjs-util@^6.0.0:
     ethjs-util "0.1.6"
     rlp "^2.2.3"
 
-ethers@5.7.2, ethers@^5.4.6, ethers@^5.6.8, ethers@^5.7.0, ethers@^5.7.2:
+ethers@5.7.2, ethers@^5.0.0, ethers@^5.4.6, ethers@^5.6.8, ethers@^5.7.0, ethers@^5.7.2:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -21267,10 +21267,10 @@ tslib@^2.0.0, tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
-tsup@^6.6.3:
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/tsup/-/tsup-6.6.3.tgz#f6f975a8656cfd9b8e115f33b1aa0f0fd4df78e2"
-  integrity sha512-OLx/jFllYlVeZQ7sCHBuRVEQBBa1tFbouoc/gbYakyipjVQdWy/iQOvmExUA/ewap9iQ7tbJf9pW0PgcEFfJcQ==
+tsup@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/tsup/-/tsup-6.7.0.tgz#416f350f32a07b6ae86792ad7e52b0cafc566d64"
+  integrity sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==
   dependencies:
     bundle-require "^4.0.0"
     cac "^6.7.12"
