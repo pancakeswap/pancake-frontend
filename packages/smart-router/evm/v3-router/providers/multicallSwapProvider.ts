@@ -86,6 +86,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       abi: IMulticallABI,
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
+      // @ts-ignore
       args: [calls],
       blockNumber: blockNumberOverride
         ? isPromise(blockNumberOverride)
@@ -171,6 +172,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       abi: IMulticallABI,
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
+      // @ts-ignore
       args: [calls],
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
@@ -254,6 +256,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       abi: IMulticallABI,
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
+      // @ts-ignore
       args: [calls],
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })

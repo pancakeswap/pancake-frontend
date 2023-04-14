@@ -1,6 +1,7 @@
 {
   "extends": "tsconfig/base",
   "include": ["src"],
+  "exclude": ["./dist/**"],
   "compilerOptions": {
     "outDir": "./dist",
     "target": "es2018",
