@@ -50,7 +50,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 export const V3_SUBGRAPH_URLS = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
   [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
-  [ChainId.BSC]: 'https://pancake.nodereal.cc/graphql',
+  [ChainId.BSC]: `https://open-platform.nodereal.io/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}/pancakeswap-v3/graphql`,
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
 } satisfies Record<ChainId, string>
 
