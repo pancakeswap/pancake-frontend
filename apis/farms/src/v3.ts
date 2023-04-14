@@ -9,7 +9,7 @@ import { Request } from 'itty-router'
 import { error, json } from 'itty-router-extras'
 import { z } from 'zod'
 
-import { multicallv3Typed } from './helper'
+import { multicallv3 } from './helper'
 
 export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ETHEREUM]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth', {
@@ -141,7 +141,7 @@ const handler_ = async (req: Request) => {
 
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const [pid] = await multicallv3Typed({
+  const [pid] = await multicallv3({
     calls: [
       {
         abi: masterchefV3Abi,
@@ -157,7 +157,7 @@ const handler_ = async (req: Request) => {
     return error(400, { error: 'Invalid LP address' })
   }
 
-  const [slot0, poolInfo] = await multicallv3Typed({
+  const [slot0, poolInfo] = await multicallv3({
     calls: [
       { abi: v3PoolAbi, address, name: 'slot0' },
       {
