@@ -67,7 +67,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
   )
 
   const amountOut = useMemo(
-    () => (stableCoin ? CurrencyAmount.fromRawAmount(stableCoin, 10 * 10 ** stableCoin.decimals) : undefined),
+    () => (stableCoin ? CurrencyAmount.fromRawAmount(stableCoin, 5 * 10 ** stableCoin.decimals) : undefined),
     [stableCoin],
   )
 
@@ -114,7 +114,6 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
 
     if (trade) {
       const { inputAmount, outputAmount } = trade
-      console.log(inputAmount, outputAmount)
 
       return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
     }
