@@ -7,6 +7,9 @@ export enum ChainId {
   GOERLI = 5,
   BSC = 56,
   BSC_TESTNET = 97,
+  ZKSYNC = 324,
+  POLYGON_ZKEVM = 1101,
+  ARBITRUM_ONE = 42161,
 }
 
 export const ZERO_PERCENT = new Percent('0')
@@ -65,6 +68,30 @@ export const WETH9 = {
     'ETH',
     'https://ethereum.org'
   ),
+  [ChainId.ARBITRUM_ONE]: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
+  [ChainId.POLYGON_ZKEVM]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
 }
 
 export const WBNB = {
@@ -94,21 +121,17 @@ export const WBNB = {
   ),
 }
 
-export const WNATIVE: Record<number, ERC20Token> = {
+export const WNATIVE = {
   [ChainId.ETHEREUM]: WETH9[ChainId.ETHEREUM],
   [ChainId.GOERLI]: WETH9[ChainId.GOERLI],
   [ChainId.BSC]: WBNB[ChainId.BSC],
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
-}
+  [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
+  [ChainId.POLYGON_ZKEVM]: WETH9[ChainId.POLYGON_ZKEVM],
+  [ChainId.ZKSYNC]: WETH9[ChainId.ZKSYNC],
+} satisfies Record<ChainId, ERC20Token>
 
-export const NATIVE: Record<
-  number,
-  {
-    name: string
-    symbol: string
-    decimals: number
-  }
-> = {
+export const NATIVE = {
   [ChainId.ETHEREUM]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   [ChainId.GOERLI]: { name: 'Goerli Ether', symbol: 'GOR', decimals: 18 },
   [ChainId.BSC]: {
@@ -121,4 +144,14 @@ export const NATIVE: Record<
     symbol: 'tBNB',
     decimals: 18,
   },
-}
+  [ChainId.ARBITRUM_ONE]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  [ChainId.POLYGON_ZKEVM]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  [ChainId.ZKSYNC]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+} satisfies Record<
+  ChainId,
+  {
+    name: string
+    symbol: string
+    decimals: number
+  }
+>

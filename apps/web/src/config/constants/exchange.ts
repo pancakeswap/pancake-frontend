@@ -7,6 +7,9 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.GOERLI]: 12_000,
   [ChainId.BSC]: 6_000,
   [ChainId.BSC_TESTNET]: 6_000,
+  [ChainId.ARBITRUM_ONE]: 15_000,
+  [ChainId.POLYGON_ZKEVM]: 7_000,
+  [ChainId.ZKSYNC]: 1_000,
 } as const satisfies Record<ChainId, number>
 
 export const ROUTER_ADDRESS: ChainMap<string> = {

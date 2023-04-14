@@ -1,7 +1,13 @@
 import { PublicClient, formatEther } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { masterChefAddresses, masterChefV3Addresses } from './const'
+import {
+  FarmSupportedChainId,
+  masterChefAddresses,
+  masterChefV3Addresses,
+  supportedChainIdV2,
+  supportedChainIdV3,
+} from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
 import {
   farmV3FetchFarms,
@@ -14,9 +20,7 @@ import {
 } from './fetchFarmsV3'
 import { ComputedFarmConfigV3, FarmV3DataWithPrice } from './types'
 
-const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
-const supportedChainIdV3 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
-export const bCakeSupportedChainId = [ChainId.BSC]
+export { type FarmSupportedChainId, supportedChainIdV3 }
 
 export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async (
@@ -52,8 +56,8 @@ export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) =
 
   return {
     fetchFarms,
-    isChainSupported: (chainId: number) => supportedChainId.includes(chainId),
-    supportedChainId,
+    isChainSupported: (chainId: number) => supportedChainIdV2.includes(chainId),
+    supportedChainId: supportedChainIdV2,
     isTestnet: (chainId: number) => ![ChainId.BSC, ChainId.ETHEREUM].includes(chainId),
   }
 }
@@ -64,8 +68,8 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
     chainId,
     commonPrice,
   }: {
-    chainId: ChainId
     farms: ComputedFarmConfigV3[]
+    chainId: FarmSupportedChainId
     commonPrice: CommonPrice
   }) => {
     const masterChefAddress = masterChefV3Addresses[chainId]

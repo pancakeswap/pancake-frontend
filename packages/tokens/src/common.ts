@@ -106,11 +106,18 @@ export const BUSD_GOERLI = new ERC20Token(
   'https://www.paxos.com/busd/',
 )
 
-export const BUSD: Record<ChainId, ERC20Token> = {
+export const BUSD = {
   [ChainId.ETHEREUM]: BUSD_ETH,
   [ChainId.GOERLI]: BUSD_GOERLI,
   [ChainId.BSC]: BUSD_BSC,
   [ChainId.BSC_TESTNET]: BUSD_TESTNET,
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x2039bb4116B4EFc145Ec4f0e2eA75012D6C0f181',
+    18,
+    'BUSD',
+    'Binance USD',
+  ),
 }
 
 export const CAKE = {
@@ -139,11 +146,40 @@ export const USDC = {
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
   [ChainId.GOERLI]: USDC_GOERLI,
+  [ChainId.ZKSYNC]: new ERC20Token(ChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD Coin'),
+  [ChainId.ARBITRUM_ONE]: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
+  [ChainId.POLYGON_ZKEVM]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
 }
 
 export const USDT = {
   [ChainId.BSC]: USDT_BSC,
   [ChainId.ETHEREUM]: USDT_ETH,
+  [ChainId.ARBITRUM_ONE]: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
+  [ChainId.POLYGON_ZKEVM]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x1E4a5963aBFD975d8c9021ce480b42188849D41d',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
 }
 
 export const WBTC_ETH = new ERC20Token(
@@ -159,4 +195,7 @@ export const STABLE_COIN = {
   [ChainId.GOERLI]: USDC[ChainId.GOERLI],
   [ChainId.BSC]: USDT[ChainId.BSC],
   [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
+  [ChainId.ARBITRUM_ONE]: USDC[ChainId.ARBITRUM_ONE],
+  [ChainId.ZKSYNC]: USDC[ChainId.ZKSYNC],
+  [ChainId.POLYGON_ZKEVM]: USDC[ChainId.POLYGON_ZKEVM],
 } satisfies Record<ChainId, ERC20Token>
