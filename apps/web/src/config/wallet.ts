@@ -8,7 +8,7 @@ import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 export enum ConnectorNames {
   MetaMask = 'metaMask',
   Injected = 'injected',
-  WalletConnect = 'walletConnect',
+  WalletConnect = 'walletConnectLegacy',
   BSC = 'bsc',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',

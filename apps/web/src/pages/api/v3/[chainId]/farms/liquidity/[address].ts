@@ -9,7 +9,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { request, gql } from 'graphql-request'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
-import { multicallv3Typed } from 'utils/multicall'
+import { multicallv3 } from 'utils/multicall.server'
 
 const zChainId = zEnum(['56', '1', '5', '97'])
 
@@ -111,7 +111,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const [slot0, poolInfo] = await multicallv3Typed({
+  const [slot0, poolInfo] = await multicallv3({
     calls: [
       { abi: v3PoolAbi, address, name: 'slot0' },
       {

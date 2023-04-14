@@ -152,4 +152,12 @@ export const ethereumTokens = {
     'Ankr Staked ETH',
     'https://www.ankr.com/',
   ),
+  axl: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x467719aD09025FcC6cF6F8311755809d45a5E5f3',
+    6,
+    'AXL',
+    'Axelar',
+    'https://axelar.network/',
+  ),
 }
