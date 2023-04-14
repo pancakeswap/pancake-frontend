@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, Input, Message, MessageText, Text } from '@pancakeswap/uikit'
-import { MAX_LOCK_DURATION } from 'config/constants/pools'
+import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
+
 import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
