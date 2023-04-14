@@ -808,7 +808,7 @@
   "Only use this mode if you know what you’re doing.": "请仅在您清楚自身需求时才使用此模式。",
   "Turn On Expert Mode": "开启专家模式",
   "Allow Multihops": "允许多跳",
-  "Allow Split Routing": "允许拆分路由",
+  "Allow Split Routing": "允许拆分路径",
   "Restricts swaps to direct pairs only.": "将兑换限制为仅限直接币对。",
   "Enter a valid slippage percentage": "输入有效的滑点百分比",
   "Your transaction may fail": "您的交易可能会失败",
