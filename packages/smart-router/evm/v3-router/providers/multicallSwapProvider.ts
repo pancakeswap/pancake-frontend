@@ -87,7 +87,6 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
-      // @ts-ignore
       blockNumber: blockNumberOverride
         ? isPromise(blockNumberOverride)
           ? BigInt(JSBI.toNumber(JSBI.BigInt(await blockNumberOverride)))
@@ -173,7 +172,6 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
-      // @ts-ignore
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
 
@@ -257,7 +255,6 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
-      // @ts-ignore
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
     // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {

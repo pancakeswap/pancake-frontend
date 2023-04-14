@@ -53,7 +53,6 @@ const config = {
     '@pancakeswap/utils',
     '@pancakeswap/tokens',
     '@pancakeswap/v3-sdk',
-    '@pancakeswap/smart-router',
     '@wagmi',
     'wagmi',
     '@ledgerhq',
