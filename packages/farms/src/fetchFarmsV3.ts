@@ -53,6 +53,7 @@ export async function farmV3FetchFarms({
         lmPool: lmPoolAddress,
         lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
         _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
+        allocPoint,
         ...getV3FarmsDynamicData({
           ...(v3PoolData[index][0] as any),
           token0: farm.token,
