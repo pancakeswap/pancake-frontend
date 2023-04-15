@@ -20,6 +20,8 @@ export interface AprProps {
   originalValue: number
   hideButton?: boolean
   useTooltipText?: boolean
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const Container = styled.div`
@@ -59,6 +61,8 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   hideButton = false,
   lpRewardsApr,
   useTooltipText = true,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -80,6 +84,8 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           addLiquidityUrl={addLiquidityUrl}
           useTooltipText={useTooltipText}
           hideButton={hideButton}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
       ) : (
         <AprWrapper>

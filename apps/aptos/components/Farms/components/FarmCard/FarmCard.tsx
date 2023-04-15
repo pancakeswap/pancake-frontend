@@ -39,6 +39,8 @@ interface FarmCardProps {
   cakePrice?: BigNumber
   account?: string
   originalLiquidity?: BigNumber
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -48,6 +50,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   cakePrice,
   account,
   originalLiquidity,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const { t } = useTranslation()
 
@@ -104,6 +108,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                   displayApr={displayApr}
                   lpRewardsApr={farm.lpRewardsApr}
                   useTooltipText
+                  farmCakePerSecond={farmCakePerSecond}
+                  totalMultipliers={totalMultipliers}
                 />
               ) : (
                 <Skeleton height={24} width={80} />
