@@ -11,7 +11,7 @@ import ProxyFarmContainer, {
   YieldBoosterStateContext,
 } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 
-export const ProxyFarmCardContainer = ({ farm, farmCakePerSecond, totalMultipliers }) => {
+export const ProxyFarmCardContainer = ({ farm, farmCakePerSecond = null, totalMultipliers = null }) => {
   const { address: account } = useAccount()
   const cakePrice = usePriceCakeUSD()
 
