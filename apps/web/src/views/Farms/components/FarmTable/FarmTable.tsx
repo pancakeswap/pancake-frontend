@@ -288,7 +288,17 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         },
       }
     },
-    [cakePrice, query.search, farmV3, farmV2],
+    [
+      cakePrice,
+      query.search,
+      PRECISION,
+      cakePerBlock,
+      latestPeriodCakePerSecond,
+      totalAllocPoint,
+      totalMultipliersV2,
+      totalMultipliersV3,
+      totalRegularAllocPoint,
+    ],
   )
 
   const sortedRows = useMemo(() => {
