@@ -48,6 +48,8 @@ interface FarmCardProps {
   cakePrice?: BigNumber
   account?: string
   originalLiquidity?: BigNumber
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -57,6 +59,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   cakePrice,
   account,
   originalLiquidity,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -145,6 +149,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     boosted={farm.boosted}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
+                    farmCakePerSecond={farmCakePerSecond}
+                    totalMultipliers={totalMultipliers}
                   />
                 </>
               ) : (

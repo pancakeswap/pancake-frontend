@@ -1,16 +1,17 @@
 import { useContext } from 'react'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
 import { FarmsV3PageLayout, FarmsV3Context } from 'views/Farms'
+import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { usePriceCakeUSD, useFarmsV2Data } from 'state/farms/hooks'
 import { useAccount } from 'wagmi'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import ProxyFarmContainer, {
   YieldBoosterStateContext,
 } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 
-export const ProxyFarmCardContainer = ({ farm }) => {
+export const ProxyFarmCardContainer = ({ farm, farmCakePerSecond, totalMultipliers }) => {
   const { address: account } = useAccount()
   const cakePrice = usePriceCakeUSD()
 
@@ -25,6 +26,8 @@ export const ProxyFarmCardContainer = ({ farm }) => {
       cakePrice={cakePrice}
       account={account}
       removed={false}
+      farmCakePerSecond={farmCakePerSecond}
+      totalMultipliers={totalMultipliers}
     />
   )
 }
@@ -33,14 +36,40 @@ const FarmsPage = () => {
   const { address: account } = useAccount()
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
   const cakePrice = usePriceCakeUSD()
+  const { data: farmV2 } = useFarmsV2Data()
 
   return (
     <>
       {chosenFarmsMemoized?.map((farm) => {
         if (farm.version === 2) {
+          const { totalRegularAllocPoint, cakePerBlock } = farmV2 || {
+            totalRegularAllocPoint: null,
+            cakePerBlock: null,
+          }
+          const farmCakePerSecondNum =
+            farm.allocPoint && totalRegularAllocPoint && cakePerBlock
+              ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
+                  ethersToBigNumber(cakePerBlock).toNumber()) /
+                1e18 /
+                3
+              : 0
+          const farmCakePerSecond =
+            farmCakePerSecondNum === 0
+              ? '-'
+              : farmCakePerSecondNum < 0.000001
+              ? '<0.000001'
+              : `~${farmCakePerSecondNum.toFixed(6)}`
+          const totalMultipliers = totalRegularAllocPoint
+            ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
+            : '-'
+
           return farm.boosted ? (
             <ProxyFarmContainer farm={farm} key={`${farm.pid}-${farm.version}`}>
-              <ProxyFarmCardContainer farm={farm} />
+              <ProxyFarmCardContainer
+                farm={farm}
+                farmCakePerSecond={farmCakePerSecond}
+                totalMultipliers={totalMultipliers}
+              />
             </ProxyFarmContainer>
           ) : (
             <FarmCard
@@ -50,6 +79,8 @@ const FarmsPage = () => {
               cakePrice={cakePrice}
               account={account}
               removed={false}
+              farmCakePerSecond={farmCakePerSecond}
+              totalMultipliers={totalMultipliers}
             />
           )
         }
