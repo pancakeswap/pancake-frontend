@@ -150,7 +150,14 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   const { query } = useRouter()
 
   const { data: farmV2 } = useFarmsV2Data()
+  const { totalRegularAllocPoint, cakePerBlock } = farmV2 || { totalRegularAllocPoint: null, cakePerBlock: null }
+  const totalMultipliersV2 = totalRegularAllocPoint
+    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
+    : '-'
+
   const { data: farmV3 } = useFarmsV3Public()
+  const { totalAllocPoint, latestPeriodCakePerSecond, PRECISION } = farmV3
+  const totalMultipliersV3 = totalAllocPoint ? (ethersToBigNumber(totalAllocPoint).toNumber() / 10).toString() : '-'
 
   const generateRow = useCallback(
     (farm: V2StakeValueAndV3Farm): RowProps => {
@@ -162,7 +169,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
       if (farm.version === 2) {
-        const { totalRegularAllocPoint, cakePerBlock } = farmV2 || { totalRegularAllocPoint: null, cakePerBlock: null }
         const farmCakePerSecond =
           farm.allocPoint && totalRegularAllocPoint && cakePerBlock
             ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
@@ -170,9 +176,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
               1e18 /
               3
             : 0
-        const totalMultipliers = totalRegularAllocPoint
-          ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
-          : '-'
 
         const row: RowProps = {
           apr: {
@@ -214,7 +217,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
                 : farmCakePerSecond < 0.000001
                 ? '<0.000001'
                 : `~${farmCakePerSecond.toFixed(6)}`,
-            totalMultipliers,
+            totalMultipliers: totalMultipliersV2,
           },
           type: farm.isCommunity ? 'community' : 'v2',
           details: farm,
@@ -224,16 +227,13 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       }
 
       // V3
-      const { allocPoint } = farm
-      const { totalAllocPoint, latestPeriodCakePerSecond, PRECISION } = farmV3
       const farmCakePerSecond =
-        allocPoint && totalAllocPoint && latestPeriodCakePerSecond
-          ? ((ethersToBigNumber(allocPoint).toNumber() / ethersToBigNumber(totalAllocPoint).toNumber()) *
+        farm.allocPoint && totalAllocPoint && latestPeriodCakePerSecond
+          ? ((ethersToBigNumber(farm.allocPoint).toNumber() / ethersToBigNumber(totalAllocPoint).toNumber()) *
               ethersToBigNumber(latestPeriodCakePerSecond).toNumber()) /
             PRECISION.toNumber() /
             1e18
           : 0
-      const totalMultipliers = totalAllocPoint ? (ethersToBigNumber(totalAllocPoint).toNumber() / 10).toString() : '-'
 
       return {
         initialActivity,
@@ -261,7 +261,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
               : farmCakePerSecond < 0.000001
               ? '<0.000001'
               : `~${farmCakePerSecond.toFixed(6)}`,
-          totalMultipliers,
+          totalMultipliers: totalMultipliersV3,
         },
         stakedLiquidity: {
           inactive: farm.multiplier === '0X',

@@ -38,14 +38,18 @@ const FarmsPage = () => {
   const cakePrice = usePriceCakeUSD()
   const { data: farmV2 } = useFarmsV2Data()
 
+  const { totalRegularAllocPoint, cakePerBlock } = farmV2 || {
+    totalRegularAllocPoint: null,
+    cakePerBlock: null,
+  }
+  const totalMultipliers = totalRegularAllocPoint
+    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
+    : '-'
+
   return (
     <>
       {chosenFarmsMemoized?.map((farm) => {
         if (farm.version === 2) {
-          const { totalRegularAllocPoint, cakePerBlock } = farmV2 || {
-            totalRegularAllocPoint: null,
-            cakePerBlock: null,
-          }
           const farmCakePerSecondNum =
             farm.allocPoint && totalRegularAllocPoint && cakePerBlock
               ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
@@ -59,9 +63,6 @@ const FarmsPage = () => {
               : farmCakePerSecondNum < 0.000001
               ? '<0.000001'
               : `~${farmCakePerSecondNum.toFixed(6)}`
-          const totalMultipliers = totalRegularAllocPoint
-            ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
-            : '-'
 
           return farm.boosted ? (
             <ProxyFarmContainer farm={farm} key={`${farm.pid}-${farm.version}`}>

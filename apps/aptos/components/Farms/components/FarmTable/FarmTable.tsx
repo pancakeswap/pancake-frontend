@@ -103,6 +103,10 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     [],
   )
 
+  const totalMultipliers = totalRegularAllocPoint
+    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 100).toString()
+    : '-'
+
   const getFarmEarnings = (farm) => {
     const earnings = new BigNumber(farm?.userData?.earnings)
     return getBalanceNumber(earnings, FARM_DEFAULT_DECIMALS)
@@ -122,9 +126,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
             ethersToBigNumber(cakePerBlock).toNumber()) /
           1e8
         : 0
-    const totalMultipliers = totalRegularAllocPoint
-      ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 100).toString()
-      : '-'
 
     const row: RowProps = {
       apr: {
