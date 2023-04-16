@@ -22,6 +22,8 @@ const TradingReward = () => {
     allTradingRewardPairData.campaignIds,
   )
 
+  const isFetching = isAllTradingRewardPairDataFetching || isAllUserCampaignInfo
+
   useEffect(() => {
     if (!isAllTradingRewardPairDataFetching) {
       if (allTradingRewardPairData.campaignIds.includes(campaignId)) {
@@ -64,7 +66,7 @@ const TradingReward = () => {
     <Box>
       <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
       <YourTradingReward
-        isFetching={isAllTradingRewardPairDataFetching || isAllUserCampaignInfo}
+        isFetching={isFetching}
         incentives={currentUserIncentive}
         campaignIds={allTradingRewardPairData.campaignIds}
         currentUserCampaignInfo={currentUserCampaignInfo}
@@ -72,7 +74,11 @@ const TradingReward = () => {
       />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={currentUserCampaignInfo} />
       <HowToEarn />
-      <RewardsBreakdown />
+      <RewardsBreakdown
+        campaignId={campaignId}
+        allUserCampaignInfo={allUserCampaignInfo}
+        allTradingRewardPairData={allTradingRewardPairData}
+      />
       <Questions />
     </Box>
   )

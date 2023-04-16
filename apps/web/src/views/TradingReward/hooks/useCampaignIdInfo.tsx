@@ -6,19 +6,19 @@ import { TRADING_REWARD_API } from 'config/constants/endpoints'
 export interface CampaignVolume {
   pool: string
   volume: number
+  estimateReward: number
 }
 
 export interface CampaignIdInfoResponse {
   total: number
   volumeArr: CampaignVolume[]
-  estimateReward?: number
 }
 
 export interface CampaignIdInfoDetail {
   total: number
   totalVolume: number
   volumeArr: CampaignVolume[]
-  estimateReward?: number
+  totalEstimateReward?: number
 }
 
 export interface CampaignIdInfo {
@@ -30,7 +30,7 @@ export const initialState: CampaignIdInfoDetail = {
   total: 0,
   totalVolume: 0,
   volumeArr: [],
-  estimateReward: 0,
+  totalEstimateReward: 0,
 }
 
 const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
@@ -45,9 +45,14 @@ const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
         )
         const { data }: { data: CampaignIdInfoResponse } = await response.json()
         const totalVolume = data.volumeArr.map((i) => i.volume).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+        const totalEstimateReward = data.volumeArr
+          .map((i) => i.estimateReward)
+          .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+
         const newData: CampaignIdInfoDetail = {
           ...data,
           totalVolume,
+          totalEstimateReward,
         }
         return newData
       } catch (error) {
@@ -60,12 +65,13 @@ const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
       revalidateIfStale: false,
       revalidateOnReconnect: false,
       revalidateOnMount: true,
+      fallbackData: initialState,
     },
   )
 
   return {
     isFetching: isLoading,
-    data: campaignIdInfo ?? initialState,
+    data: campaignIdInfo,
   }
 }
 

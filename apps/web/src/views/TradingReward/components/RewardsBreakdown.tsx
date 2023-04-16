@@ -1,17 +1,82 @@
-import { useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useAccount } from 'wagmi'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 
-const RewardsBreakdown = () => {
-  const { t } = useTranslation()
+interface RewardsBreakdownProps {
+  campaignId: string
+  allUserCampaignInfo: UserCampaignInfoDetail[]
+  allTradingRewardPairData: AllTradingRewardPairDetail
+}
+
+const MAX_PER_PAGE = 1
+
+const initList: RewardBreakdownDetail = {
+  campaignId: '',
+  campaignStart: 0,
+  campaignClaimTime: 0,
+  pairs: [],
+}
+
+const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>> = ({
+  campaignId,
+  allUserCampaignInfo,
+  allTradingRewardPairData,
+}) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { address: account } = useAccount()
-  const [currentPage, setCurrentPage] = useState(1)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [maxPage, setMaxPages] = useState(1)
   const { isDesktop } = useMatchBreakpoints()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [maxPage, setMaxPages] = useState(1)
+  const [list, setList] = useState<RewardBreakdownDetail>(initList)
 
-  const list = []
+  const { data, isFetching } = useRewardBreakdown({
+    allUserCampaignInfo,
+    allTradingRewardPairData,
+  })
+
+  const sortData = useMemo(() => {
+    return data.sort((a, b) => {
+      if (a?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
+        return -1
+      }
+      if (b?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
+        return 1
+      }
+      return 0
+    })
+  }, [data, campaignId])
+
+  useEffect(() => {
+    if (sortData.length > 0) {
+      const max = Math.ceil(sortData.length / MAX_PER_PAGE)
+      setMaxPages(max)
+    }
+
+    return () => {
+      setMaxPages(1)
+      setCurrentPage(1)
+      setList(initList)
+    }
+  }, [sortData])
+
+  useEffect(() => {
+    const getActivitySlice = () => {
+      const slice = sortData.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      setList({ ...slice[0] })
+    }
+    if (sortData.length > 0) {
+      getActivitySlice()
+    }
+  }, [currentPage, sortData])
 
   if (!account) {
     return null
@@ -29,10 +94,12 @@ const RewardsBreakdown = () => {
         {t('Rewards Breakdown')}
       </Text>
       <Text textAlign="center" color="textSubtle" bold>
-        March 20, 2023 - March 26, 2023
+        {`${timeFormat(locale, list.campaignStart)} - ${timeFormat(locale, list.campaignStart)}`}
       </Text>
       <Text textAlign="center" color="textSubtle" mb="40px">
-        Round 23 (current period)
+        {`${t('Campaign')} ${list.campaignId} ${
+          list.campaignId?.toLowerCase() === campaignId?.toLowerCase() ? t('(current period)') : ''
+        }`}
       </Text>
       <Card>
         <Table>
@@ -55,40 +122,56 @@ const RewardsBreakdown = () => {
             </tr>
           </thead>
           <tbody>
-            {list.length === 0 ? (
-              <tr>
-                <Td colSpan={isDesktop ? 5 : 3} textAlign="center">
-                  {t('No results')}
-                </Td>
-              </tr>
-            ) : (
-              <tr>
-                <Td>BNB-CAKE</Td>
-                {isDesktop ? (
-                  <>
-                    <Td>$499.42</Td>
-                    <Td>$32.13</Td>
-                    <Td textAlign="center">$123,456,789</Td>
-                    <Td textAlign="right">$30,000.00</Td>
-                  </>
-                ) : (
-                  <>
-                    <Td>
-                      <Text textAlign="right">$499.42</Text>
-                      <Text textAlign="right" color="textSubtle">
-                        $32.13
-                      </Text>
-                    </Td>
-                    <Td>
-                      <Text textAlign="right">$123,456,789</Text>
-                      <Text textAlign="right" color="textSubtle">
-                        $30,000.00
-                      </Text>
-                    </Td>
-                  </>
-                )}
-              </tr>
-            )}
+            <>
+              {isFetching ? (
+                <tr>
+                  <Td colSpan={isDesktop ? 5 : 3} textAlign="center">
+                    {t('Loading...')}
+                  </Td>
+                </tr>
+              ) : (
+                <>
+                  {list.pairs.length === 0 ? (
+                    <tr>
+                      <Td colSpan={isDesktop ? 5 : 3} textAlign="center">
+                        {t('No results')}
+                      </Td>
+                    </tr>
+                  ) : (
+                    <>
+                      {list.pairs.map((pair) => (
+                        <tr key={pair.address}>
+                          <Td>{pair.lpSymbol}</Td>
+                          {isDesktop ? (
+                            <>
+                              <Td>{`$${formatNumber(pair.yourVolume)}`}</Td>
+                              <Td>{`$${formatNumber(pair.rewardEarned)}`}</Td>
+                              <Td textAlign="center">{`$${formatNumber(pair.totalVolume)}`}</Td>
+                              <Td textAlign="right">{`$${formatNumber(pair.totalReward)}`}</Td>
+                            </>
+                          ) : (
+                            <>
+                              <Td>
+                                <Text textAlign="right">{`$${formatNumber(pair.yourVolume)}`}</Text>
+                                <Text textAlign="right" color="textSubtle">
+                                  {`$${formatNumber(pair.rewardEarned)}`}
+                                </Text>
+                              </Td>
+                              <Td>
+                                <Text textAlign="right">{`$${formatNumber(pair.totalVolume)}`}</Text>
+                                <Text textAlign="right" color="textSubtle">
+                                  {`$${formatNumber(pair.totalReward)}`}
+                                </Text>
+                              </Td>
+                            </>
+                          )}
+                        </tr>
+                      ))}
+                    </>
+                  )}
+                </>
+              )}
+            </>
           </tbody>
         </Table>
         <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
