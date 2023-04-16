@@ -369,15 +369,31 @@ export default function V3FormView({
 
   const quickActionConfig = useMemo(() => {
     if (feeAmount === 2500 || feeAmount === 10000) {
-      return [10, 20, 50]
+      return [
+        { percentage: 10, balanceFactor: 1.11 },
+        { percentage: 20, balanceFactor: 1.25 },
+        { percentage: 50, balanceFactor: 2 },
+      ]
     }
     if (feeAmount === 500) {
-      return [5, 10, 20]
+      return [
+        { percentage: 5, balanceFactor: 1.08 },
+        { percentage: 10, balanceFactor: 1.11 },
+        { percentage: 20, balanceFactor: 1.25 },
+      ]
     }
     if (feeAmount === 100) {
-      return [0.1, 0.5, 1]
+      return [
+        { percentage: 0.1, balanceFactor: 1 },
+        { percentage: 0.5, balanceFactor: 1 },
+        { percentage: 1, balanceFactor: 1 },
+      ]
     }
-    return [10, 20, 50]
+    return [
+      { percentage: 10, balanceFactor: 1.11 },
+      { percentage: 20, balanceFactor: 1.25 },
+      { percentage: 50, balanceFactor: 2 },
+    ]
   }, [feeAmount])
 
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
@@ -600,16 +616,21 @@ export default function V3FormView({
                 {quickActionConfig.map((quickAction) => {
                   return (
                     <Button
-                      key={`quickActions${quickAction}`}
+                      key={`quickActions${quickAction.percentage}`}
                       onClick={() => {
                         const currentPrice = invertPrice ? price?.invert() : price
                         if (currentPrice) {
                           onBothRangeInput({
                             leftTypedValue: currentPrice
-                              .divide(new Fraction(1000, 1000 - quickAction * 10))
+                              .divide(new Fraction(1000, 1000 - quickAction.percentage * 10))
                               .toSignificant(6),
                             rightTypedValue: currentPrice
-                              .divide(new Fraction(1000, 1000 + quickAction * 10))
+                              .divide(
+                                new Fraction(
+                                  1000,
+                                  Math.floor(1000 + quickAction.percentage * 10 * quickAction.balanceFactor),
+                                ),
+                              )
                               .toSignificant(6),
                           })
                         }
@@ -617,7 +638,7 @@ export default function V3FormView({
                       variant="secondary"
                       scale="sm"
                     >
-                      {quickAction}%
+                      {quickAction.percentage}%
                     </Button>
                   )
                 })}
