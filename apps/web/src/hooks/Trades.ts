@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Currency, CurrencyAmount, isTradeBetter, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
+import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
@@ -87,9 +88,9 @@ export function useAllCurrencyCombinations(currencyA?: Currency, currencyB?: Cur
 export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveChainId()
 
-  const [tokenA, tokenB] = chainId
-    ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
-    : [undefined, undefined]
+  const [tokenA, tokenB] = useMemo(() => {
+    return chainId ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)] : [undefined, undefined]
+  }, [currencyA, currencyB, chainId])
 
   const bases: Token[] = useMemo(() => {
     if (!chainId) return []
@@ -109,32 +110,41 @@ export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): P
   const allPairCombinations: [Token, Token][] = useMemo(
     () =>
       tokenA && tokenB
-        ? [
-            // the direct pair
-            [tokenA, tokenB],
-            // token A against all bases
-            ...bases.map((base): [Token, Token] => [tokenA, base]),
-            // token B against all bases
-            ...bases.map((base): [Token, Token] => [tokenB, base]),
-            // each base against all bases
-            ...basePairs,
-          ]
-            .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
-            .filter(([t0, t1]) => t0.address !== t1.address)
-            .filter(([tokenA_, tokenB_]) => {
-              if (!chainId) return true
-              const customBases = CUSTOM_BASES[chainId]
+        ? uniqBy(
+            [
+              // the direct pair
+              [tokenA, tokenB],
+              // token A against all bases
+              ...bases.map((base): [Token, Token] => [tokenA, base]),
+              // token B against all bases
+              ...bases.map((base): [Token, Token] => [tokenB, base]),
+              // each base against all bases
+              ...basePairs,
+            ]
+              .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
+              .filter(([t0, t1]) => t0.address !== t1.address)
+              .filter(([tokenA_, tokenB_]) => {
+                if (!chainId) return true
+                const customBases = CUSTOM_BASES[chainId]
 
-              const customBasesA: Token[] | undefined = customBases?.[tokenA_.address]
-              const customBasesB: Token[] | undefined = customBases?.[tokenB_.address]
+                const customBasesA: Token[] | undefined = customBases?.[tokenA_.address]
+                const customBasesB: Token[] | undefined = customBases?.[tokenB_.address]
 
-              if (!customBasesA && !customBasesB) return true
+                if (!customBasesA && !customBasesB) return true
 
-              if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false
-              if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false
+                if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false
+                if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false
 
-              return true
-            })
+                return true
+              })
+              .map(([t0, t1]) => {
+                if (t0.sortsBefore(t1)) {
+                  return [t0, t1]
+                }
+                return [t1, t0]
+              }),
+            ([tA, tB]) => `${tA.chainId}${tA.address}#${tB.chainId}${tB.address}`,
+          )
         : [],
     [tokenA, tokenB, bases, basePairs, chainId],
   )
