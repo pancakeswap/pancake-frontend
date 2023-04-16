@@ -99,12 +99,15 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
         return []
       }
     },
-    { refreshInterval: SLOW_INTERVAL },
+    {
+      refreshInterval: SLOW_INTERVAL,
+      fallbackData: [],
+    },
   )
 
   return {
     isFetching: isLoading,
-    data: allUserCampaignInfoData ?? [],
+    data: allUserCampaignInfoData,
   }
 }
 

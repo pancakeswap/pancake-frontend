@@ -103,12 +103,13 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
       revalidateIfStale: false,
       revalidateOnReconnect: false,
       revalidateOnMount: true,
+      fallbackData: initialAllTradingRewardState,
     },
   )
 
   return {
     isFetching: isLoading,
-    data: allPairs ?? initialAllTradingRewardState,
+    data: allPairs,
   }
 }
 
