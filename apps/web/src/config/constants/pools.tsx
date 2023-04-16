@@ -93,18 +93,6 @@ export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
     version: 3,
   },
   {
-    sousId: 334,
-    stakingToken: bscTokens.rdnt,
-    earningToken: bscTokens.cake,
-    contractAddress: {
-      56: '0xaaFf0B9fdC503087764Ee7155039015d74fE79B1',
-      97: '',
-    },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.009409',
-    version: 3,
-  },
-  {
     sousId: 333,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.gq,
@@ -248,6 +236,26 @@ export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
     tokenPerBlock: '0.0135',
     version: 3,
   },
+].map((p) => ({
+  ...p,
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
+
+// known finished pools
+const finishedPools = [
+  {
+    sousId: 334,
+    stakingToken: bscTokens.rdnt,
+    earningToken: bscTokens.cake,
+    contractAddress: {
+      56: '0xaaFf0B9fdC503087764Ee7155039015d74fE79B1',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.009409',
+    version: 3,
+  },
   {
     sousId: 306,
     stakingToken: bscTokens.cake,
@@ -260,14 +268,6 @@ export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
     tokenPerBlock: '2.459',
     version: 3,
   },
-].map((p) => ({
-  ...p,
-  stakingToken: p.stakingToken.serialize,
-  earningToken: p.earningToken.serialize,
-}))
-
-// known finished pools
-const finishedPools = [
   {
     sousId: 335,
     stakingToken: bscTokens.cake,
