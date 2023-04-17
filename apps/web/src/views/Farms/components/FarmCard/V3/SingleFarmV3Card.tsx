@@ -105,6 +105,10 @@ const SingleFarmV3Card: React.FunctionComponent<
     logGTMClickStakeFarmEvent()
   }
 
+  const handleStakeInactivePosition = () => {
+    unstakedModal.onOpen()
+  }
+
   const handleUnStake = async () => {
     await onUnstake()
     if (!attemptingTxn) {
@@ -119,6 +123,9 @@ const SingleFarmV3Card: React.FunctionComponent<
     }
   }
 
+  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
+  const outOfRangeUnstaked = outOfRange && positionType === 'unstaked'
+
   const totalEarnings = useMemo(
     () => +formatBigNumber(pendingCakeByTokenIds[position.tokenId.toString()] || EthersBigNumber.from('0'), 4),
     [pendingCakeByTokenIds, position.tokenId],
@@ -129,7 +136,11 @@ const SingleFarmV3Card: React.FunctionComponent<
   }, [cakePrice, totalEarnings])
 
   const unstakingTooltip = useTooltip(
-    <Text maxWidth="160px">{t('You may add or remove liquidity on the position detail page without unstake')}</Text>,
+    <Text maxWidth="160px">
+      {outOfRangeUnstaked
+        ? t('Inactive positions will NOT earn CAKE rewards from farm.')
+        : t('You may add or remove liquidity on the position detail page without unstake')}
+    </Text>,
     {
       placement: 'left-end',
       manualVisible: true,
@@ -143,8 +154,6 @@ const SingleFarmV3Card: React.FunctionComponent<
       unstakingTooltip.forceUpdate?.()
     }
   }, [unstakedModal.isOpen, unstakingTooltip])
-
-  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
 
   return (
     <AtomBox {...atomBoxProps}>
@@ -167,11 +176,11 @@ const SingleFarmV3Card: React.FunctionComponent<
             positionType={positionType}
             liquidityUrl={liquidityUrl}
             isPending={attemptingTxn || harvesting}
-            handleStake={handleStake}
+            handleStake={outOfRangeUnstaked ? handleStakeInactivePosition : handleStake}
             handleUnStake={unstakedModal.onOpen}
           />
           <ModalV2 {...unstakedModal} closeOnOverlayClick>
-            <Modal title={t('Unstaking')} maxWidth={['100%', , '420px']}>
+            <Modal title={outOfRangeUnstaked ? t('Staking') : t('Unstaking')} maxWidth={['100%', , '420px']}>
               <AutoColumn gap="16px">
                 <AtomBox position="relative">
                   <Image
@@ -201,14 +210,32 @@ const SingleFarmV3Card: React.FunctionComponent<
                       positionType={positionType}
                     />
                     <NextLink href={liquidityUrl} onClick={unstakedModal.onDismiss}>
-                      <Button variant="tertiary" width="100%" as="a">
-                        {t('Manage Position')}
-                      </Button>
+                      {outOfRangeUnstaked ? (
+                        <Button
+                          external
+                          variant="primary"
+                          width="100%"
+                          as="a"
+                          href={liquidityUrl}
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          {t('View Position')}
+                        </Button>
+                      ) : (
+                        <Button variant="tertiary" width="100%" as="a">
+                          {t('Manage Position')}
+                        </Button>
+                      )}
                     </NextLink>
                   </AutoColumn>
                 </LightCard>
-                <Button onClick={handleUnStake} disabled={attemptingTxn || harvesting} width="100%">
-                  {t('Unstake')}
+                <Button
+                  variant={outOfRangeUnstaked ? 'subtle' : 'primary'}
+                  onClick={outOfRangeUnstaked ? handleStake : handleUnStake}
+                  disabled={attemptingTxn || harvesting}
+                  width="100%"
+                >
+                  {outOfRangeUnstaked ? t('Continue Staking') : t('Unstake')}
                 </Button>
                 <Text color="textSubtle">
                   {t(
