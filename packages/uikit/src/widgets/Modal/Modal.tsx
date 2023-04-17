@@ -52,6 +52,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   headerBackground = "transparent",
   minWidth = "320px",
   headerRightSlot,
+  bodyAlignItems,
   ...props
 }) => {
   const context = useContext(ModalV2Context);
@@ -71,6 +72,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
         // prevent drag event from propagating to parent on scroll
         onPointerDownCapture={(e) => e.stopPropagation()}
         p={bodyPadding}
+        style={{ alignItems: bodyAlignItems ?? "normal" }}
       >
         {children}
       </ModalBody>
