@@ -72,7 +72,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   }, [])
 
   return (
-    <ModalContainer minWidth="320px" style={{ overflow: 'hidden' }}>
+    <ModalContainer minWidth="320px">
       <ModalHeader>
         <ModalTitle>
           <Heading>{t('Your Wallet')}</Heading>
