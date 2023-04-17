@@ -153,11 +153,11 @@ const transformPool = (
       totalStaked: getBalanceNumber(new BigNumber(totalStakedToken), stakingToken.decimals),
     }) || 0
 
-  const startBlock = _toNumber(resource.data.start_timestamp)
+  const startTimestamp = _toNumber(resource.data.start_timestamp)
 
-  const stakeLimitEndBlock = _toNumber(resource.data.seconds_for_user_limit)
+  const stakeLimitEndTimestamp = _toNumber(resource.data.seconds_for_user_limit)
 
-  const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentTimestamp / 1000
+  const stakeLimitTimeRemaining = stakeLimitEndTimestamp + startTimestamp - currentTimestamp / 1000
 
   return {
     sousId,
@@ -172,8 +172,8 @@ const transformPool = (
 
     isFinished: Boolean(isFinished),
     poolCategory: PoolCategory.CORE,
-    startBlock,
-    endBlock: _toNumber(resource.data.end_timestamp),
+    startTimestamp,
+    endTimestamp: _toNumber(resource.data.end_timestamp),
 
     tokenPerBlock: resource.data.reward_per_second,
     stakingLimit:

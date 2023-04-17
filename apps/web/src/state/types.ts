@@ -37,7 +37,7 @@ export enum VaultKey {
 }
 
 export type SerializedPool = SerializedPoolWithInfo & {
-  numberSecondsForUserLimit: number
+  numberSecondsForUserLimit?: number
 }
 
 export interface Profile {
