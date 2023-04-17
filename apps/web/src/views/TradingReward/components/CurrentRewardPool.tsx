@@ -1,13 +1,15 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text, Button, Balance, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import Link from 'next/link'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 
 const Container = styled(Flex)`
   position: relative;
@@ -98,10 +100,16 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const cakePriceBusd = usePriceCakeUSD()
 
   const currentDate = new Date().getTime() / 1000
   const timeRemaining = incentives?.campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
+
+  const rewardInCake = useMemo(
+    () => new BigNumber(campaignInfoData.totalEstimateReward).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, campaignInfoData],
+  )
 
   return (
     <Container>
@@ -138,7 +146,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
             </Text>
           ) : (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-              {t('On %date%', { date: timeFormat(locale, incentives?.campaignClaimTime) })}
+              {timeFormat(locale, incentives?.campaignClaimTime)}
             </Text>
           )}
         </Flex>
@@ -146,27 +154,18 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
             {t('Total volume generated')}
           </Text>
-          <Balance
-            bold
-            color="white"
-            prefix="$"
-            fontSize={['14px', '14px', '14px', '20px']}
-            decimals={3}
-            value={campaignInfoData?.totalVolume}
-          />
+          <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
+            {`$${formatNumber(campaignInfoData?.totalVolume, 3, 3)}`}
+          </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
           <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
             {t('Total reward to distribute')}
           </Text>
           <Flex>
-            <Balance
-              bold
-              color="white"
-              fontSize={['14px', '14px', '14px', '20px']}
-              decimals={0}
-              value={getBalanceNumber(new BigNumber(incentives?.totalReward))}
-            />
+            <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
+              {formatNumber(rewardInCake, 0, 0)}
+            </Text>
             <Text ml="4px" bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {t('in CAKE')}
             </Text>

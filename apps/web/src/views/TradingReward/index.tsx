@@ -72,7 +72,7 @@ const TradingReward = () => {
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
       />
-      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={currentUserCampaignInfo} />
+      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <HowToEarn />
       <RewardsBreakdown
         campaignId={campaignId}
