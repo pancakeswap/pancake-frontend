@@ -12,7 +12,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
-  pool: Pool.DeserializedPool<Token> & { stakeLimitEndBlock?: number }
+  pool: Pool.DeserializedPool<Token> & { stakeLimitEndTimestamp?: number }
   account?: string
   showTotalStaked?: boolean
   alignLinksToRight?: boolean
@@ -60,9 +60,9 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     totalStaked = BIG_ZERO,
     userData: poolUserData,
     stakingLimit = BIG_ZERO,
-    endBlock = 0,
-    startBlock = 0,
-    stakeLimitEndBlock = 0,
+    endTimestamp = 0,
+    startTimestamp = 0,
+    stakeLimitEndTimestamp = 0,
     contractAddress,
   } = pool
 
@@ -70,8 +70,8 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const currentDate = getNow() / 1000
 
-  const poolTimeRemaining = endBlock - currentDate
-  const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
+  const poolTimeRemaining = endTimestamp - currentDate
+  const stakeLimitTimeRemaining = stakeLimitEndTimestamp + startTimestamp - currentDate
 
   const endTimeObject = useMemo(() => getTimePeriods(poolTimeRemaining), [poolTimeRemaining])
 
@@ -81,13 +81,13 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     targetRef: endTimeTargetRef,
     tooltip: endTimeTooltip,
     tooltipVisible: endTimeTooltipVisible,
-  } = useTooltip(<EndTimeTooltipComponent endTime={endBlock} />)
+  } = useTooltip(<EndTimeTooltipComponent endTime={endTimestamp} />)
 
   const {
     targetRef: stakeLimitTargetRef,
     tooltip: stakeLimitTooltip,
     tooltipVisible: stakeLimitTooltipVisible,
-  } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndBlock + startBlock} />)
+  } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndTimestamp + startTimestamp} />)
 
   const poolContractAddress = getContactAddress(contractAddress[chainId])
 

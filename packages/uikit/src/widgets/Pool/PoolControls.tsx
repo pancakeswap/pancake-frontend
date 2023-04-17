@@ -105,7 +105,10 @@ export function PoolControls<T>({
 
   const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools]);
   const openPoolsWithStartBlockFilter = useMemo(
-    () => openPools.filter((pool) => (threshHold > 0 && pool.startBlock ? Number(pool.startBlock) < threshHold : true)),
+    () =>
+      openPools.filter((pool) =>
+        threshHold > 0 && pool.startTimestamp ? Number(pool.startTimestamp) < threshHold : true
+      ),
     [threshHold, openPools]
   );
   const stakedOnlyFinishedPools = useMemo(
