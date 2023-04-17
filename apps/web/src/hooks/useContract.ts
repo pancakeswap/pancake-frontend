@@ -60,7 +60,6 @@ import {
   getPredictionsContract,
   getPredictionsV1Contract,
   getProfileContract,
-  getSouschefContract,
   getTradingCompetitionContractEaster,
   getTradingCompetitionContractFanToken,
   getTradingCompetitionContractMobox,
