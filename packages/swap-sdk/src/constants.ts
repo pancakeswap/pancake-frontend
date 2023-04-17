@@ -24,6 +24,7 @@ export const FACTORY_ADDRESS_MAP: Record<number, Address> = {
   [ChainId.GOERLI]: FACTORY_ADDRESS_ETH,
   [ChainId.BSC]: FACTORY_ADDRESS,
   [ChainId.BSC_TESTNET]: '0x6725f303b657a9451d8ba641348b6761a6cc7a17',
+  [ChainId.ARBITRUM_ONE]: '0x13eB8884bD7991F8dEe804Dad0436f7C806bF1b9',
 }
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
 
@@ -33,6 +34,7 @@ export const INIT_CODE_HASH_MAP: Record<number, Hash> = {
   [ChainId.GOERLI]: INIT_CODE_HASH_ETH,
   [ChainId.BSC]: INIT_CODE_HASH,
   [ChainId.BSC_TESTNET]: '0xd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66',
+  [ChainId.ARBITRUM_ONE]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
 }
 
 export const WETH9 = {
@@ -131,8 +133,10 @@ export const WNATIVE = {
   [ChainId.ZKSYNC]: WETH9[ChainId.ZKSYNC],
 } satisfies Record<ChainId, ERC20Token>
 
+const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
+
 export const NATIVE = {
-  [ChainId.ETHEREUM]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  [ChainId.ETHEREUM]: ETHER,
   [ChainId.GOERLI]: { name: 'Goerli Ether', symbol: 'GOR', decimals: 18 },
   [ChainId.BSC]: {
     name: 'Binance Chain Native Token',
@@ -144,9 +148,9 @@ export const NATIVE = {
     symbol: 'tBNB',
     decimals: 18,
   },
-  [ChainId.ARBITRUM_ONE]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  [ChainId.POLYGON_ZKEVM]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  [ChainId.ZKSYNC]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  [ChainId.ARBITRUM_ONE]: ETHER,
+  [ChainId.POLYGON_ZKEVM]: ETHER,
+  [ChainId.ZKSYNC]: ETHER,
 } satisfies Record<
   ChainId,
   {
