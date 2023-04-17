@@ -160,12 +160,12 @@ export default {
     97: '0x56666300A1E25624489b661f3C6c456c159a109a',
   },
   nonBscVault: {
-    56: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841', // Only for pass contracts test
+    56: '0x',
     1: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
     5: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
   },
   crossFarmingSender: {
-    56: '0x327d26dE30f92600620A99043034e0A5FD9402C8', // Only for pass contracts test
+    56: '0x',
     1: '0x8EA90Ef07f37c77137453C7A1B72B7886d51eCFb',
     5: '0x327d26dE30f92600620A99043034e0A5FD9402C8',
   },

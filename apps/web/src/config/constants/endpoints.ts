@@ -56,7 +56,7 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
   [ChainId.BSC]: `https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc`,
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
-  // TODO: chains
+  // TODO: new chains
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.POLYGON_ZKEVM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.ZKSYNC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',

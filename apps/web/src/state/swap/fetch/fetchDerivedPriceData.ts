@@ -31,6 +31,10 @@ const SWAP_INFO_BY_CHAIN = {
     v3: V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET],
   },
   [ChainId.GOERLI]: {},
+  // TODO: new chains
+  [ChainId.ARBITRUM_ONE]: {},
+  [ChainId.POLYGON_ZKEVM]: {},
+  [ChainId.ZKSYNC]: {},
 } satisfies Record<ChainId, Partial<ProtocolEndpoint>>
 
 export const getTokenBestTvlProtocol = async (tokenAddress: string, chainId: ChainId): Promise<Protocol | null> => {

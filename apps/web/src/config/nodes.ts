@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { arbitrum, polygonZkEvm, zkSync } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
 
 export const SERVER_NODES = {
@@ -17,6 +18,9 @@ export const SERVER_NODES = {
     getNodeRealUrlV2(ChainId.GOERLI, process.env.SERVER_NODE_REAL_API_GOERLI),
     'https://eth-goerli.public.blastapi.io',
   ].filter(Boolean),
+  [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
 } satisfies Record<ChainId, string[]>
 
 export const PUBLIC_NODES = {
@@ -36,4 +40,7 @@ export const PUBLIC_NODES = {
     getNodeRealUrlV2(ChainId.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI),
     'https://eth-goerli.public.blastapi.io',
   ].filter(Boolean),
+  [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
 } satisfies Record<ChainId, string[]>

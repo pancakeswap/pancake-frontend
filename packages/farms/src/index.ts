@@ -7,6 +7,7 @@ import {
   masterChefV3Addresses,
   supportedChainIdV2,
   supportedChainIdV3,
+  bCakeSupportedChainId,
 } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
 import {
@@ -20,7 +21,7 @@ import {
 } from './fetchFarmsV3'
 import { ComputedFarmConfigV3, FarmV3DataWithPrice } from './types'
 
-export { type FarmSupportedChainId, supportedChainIdV3 }
+export { type FarmSupportedChainId, supportedChainIdV3, bCakeSupportedChainId }
 
 export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async (
@@ -125,7 +126,7 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
   return {
     fetchFarms,
     getCakeAprAndTVL,
-    isChainSupported: (chainId: number) => supportedChainIdV3.includes(chainId),
+    isChainSupported: (chainId: number): chainId is FarmSupportedChainId => supportedChainIdV3.includes(chainId),
     supportedChainId: supportedChainIdV3,
     isTestnet: (chainId: number) => ![ChainId.BSC, ChainId.ETHEREUM].includes(chainId),
   }

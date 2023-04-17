@@ -9,6 +9,10 @@ export const DEPLOYER_ADDRESSES = {
   [ChainId.GOERLI]: DEPLOYER_ADDRESS,
   [ChainId.BSC]: DEPLOYER_ADDRESS,
   [ChainId.BSC_TESTNET]: DEPLOYER_ADDRESS,
+  // TODO: new chains
+  [ChainId.ARBITRUM_ONE]: '',
+  [ChainId.POLYGON_ZKEVM]: '',
+  [ChainId.ZKSYNC]: '',
 } as const satisfies Record<ChainId, Address>
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'

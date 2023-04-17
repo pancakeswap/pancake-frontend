@@ -129,7 +129,7 @@ describe('Pair', () => {
     })
   })
   describe('#involvesToken', () => {
-    it('invlovesToken', () => {
+    it('returns true if the token is involved in the pair', () => {
       expect(
         new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(
           USDC

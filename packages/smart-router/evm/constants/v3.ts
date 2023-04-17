@@ -11,11 +11,19 @@ export const MIXED_ROUTE_QUOTER_ADDRESSES = {
   [ChainId.GOERLI]: '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997',
   [ChainId.BSC]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.BSC_TESTNET]: '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997',
-} as const
+  // TODO: new chains
+  [ChainId.ARBITRUM_ONE]: '',
+  [ChainId.POLYGON_ZKEVM]: '',
+  [ChainId.ZKSYNC]: '',
+} as const satisfies Record<ChainId, string>
 
 export const V3_QUOTER_ADDRESSES = {
   [ChainId.ETHEREUM]: '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997',
   [ChainId.GOERLI]: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
   [ChainId.BSC]: '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997',
   [ChainId.BSC_TESTNET]: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
-} as const
+  // TODO: new chains
+  [ChainId.ARBITRUM_ONE]: '',
+  [ChainId.POLYGON_ZKEVM]: '',
+  [ChainId.ZKSYNC]: '',
+} as const satisfies Record<ChainId, string>
