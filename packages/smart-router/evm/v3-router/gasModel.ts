@@ -24,7 +24,7 @@ import { sum } from '../utils/sum'
 
 interface GasModelConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
-  blockNumber: BigintIsh
+  blockNumber?: BigintIsh
   poolProvider: PoolProvider
   quoteCurrency: Currency
 }
@@ -141,7 +141,7 @@ export async function createGasModel({
 async function getHighestLiquidityNativePool(
   poolProvider: PoolProvider,
   currency: Currency,
-  blockNumber: BigintIsh,
+  blockNumber?: BigintIsh,
 ): Promise<Pool | null> {
   const nativeWrappedToken = getNativeWrappedToken(currency.chainId)
   if (!nativeWrappedToken || currency.wrapped.equals(nativeWrappedToken)) {
@@ -156,7 +156,7 @@ async function getHighestLiquidityNativePool(
 async function getHighestLiquidityUSDPool(
   poolProvider: PoolProvider,
   chainId: ChainId,
-  blockNumber: BigintIsh,
+  blockNumber?: BigintIsh,
 ): Promise<Pool | null> {
   const usdToken = getUsdGasToken(chainId)
   const nativeWrappedToken = getNativeWrappedToken(chainId)

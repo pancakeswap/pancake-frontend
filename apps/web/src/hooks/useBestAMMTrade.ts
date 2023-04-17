@@ -218,7 +218,6 @@ function bestTradeHookFactory({
           poolProvider,
           maxSplits,
           quoteProvider,
-          blockNumber,
           allowedPoolTypes: poolTypes,
           quoterOptimization,
         })
@@ -281,11 +280,9 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
     amount,
     currency,
     tradeType,
-    { maxHops, maxSplits, gasPriceWei, blockNumber, allowedPoolTypes, poolProvider },
+    { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider },
   ) => {
-    const blockNum = typeof blockNumber === 'number' ? blockNumber : await blockNumber()
     const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
-      blockNumber: blockNum,
       protocols: allowedPoolTypes,
     })
 
@@ -305,7 +302,6 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
         gasPriceWei: gasPriceWei?.toString(),
         maxHops,
         maxSplits,
-        blockNumber: blockNum.toString(),
         poolTypes: allowedPoolTypes,
         candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
       }),
