@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 import {
@@ -11,8 +10,10 @@ import {
   StyledVolumeFlex,
 } from 'views/TradingCompetition/components/TeamRanks/Podium/styles'
 import { PodiumBase } from 'views/TradingCompetition/svgs'
-import TeamPodiumIcon from 'views/TradingCompetition/components/TeamRanks/Podium/TeamPodiumIcon'
+import PodiumAvatar from 'views/AffiliatesProgram/components/LeaderBoard/PodiumAvatar'
 import NewUsers from 'views/AffiliatesProgram/components/LeaderBoard/NewUsers'
+
+const IMAGE_URL = ''
 
 const Podium = () => {
   const { t } = useTranslation()
@@ -22,13 +23,22 @@ const Podium = () => {
       <Inner>
         <Flex height="132px" position="relative">
           <LeftBox>
-            <TeamPodiumIcon teamId={2} teamPosition={2} />
+            <PodiumAvatar position={2} imageUrl={IMAGE_URL} />
+            <Text margin="auto auto 10px auto" maxWidth="80px" color="primary" bold textAlign="center" ellipsis>
+              123123
+            </Text>
           </LeftBox>
           <MiddleBox>
-            <TeamPodiumIcon teamId={1} teamPosition={1} />
+            <PodiumAvatar position={1} imageUrl={IMAGE_URL} />
+            <Text margin="auto auto 10px auto" maxWidth="80px" color="primary" bold textAlign="center" ellipsis>
+              123123
+            </Text>
           </MiddleBox>
           <RightBox>
-            <TeamPodiumIcon teamId={3} teamPosition={3} />
+            <PodiumAvatar position={3} imageUrl={IMAGE_URL} />
+            <Text margin="auto auto 10px auto" maxWidth="80px" color="primary" bold textAlign="center" ellipsis>
+              123123
+            </Text>
           </RightBox>
         </Flex>
         <PodiumBase />
