@@ -6,4 +6,4 @@ const PoolsPage = () => <Pools />
 
 PoolsPage.chains = SUPPORTED_CHAIN_IDS
 
-export default Pools
+export default PoolsPage
