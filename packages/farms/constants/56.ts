@@ -48,8 +48,8 @@ export const farmsV3 = [
   {
     pid: 22,
     lpSymbol: 'GQ-USDT LP',
-    token: bscTokens.gq,
-    quoteToken: bscTokens.usdt,
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.gq,
     lpAddress: '0x07003daEbc432ecec26309cCd1391BBBF06cC890',
     feeAmount: FeeAmount.MEDIUM,
   },
