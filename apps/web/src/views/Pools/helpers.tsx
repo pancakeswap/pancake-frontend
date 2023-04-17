@@ -78,15 +78,16 @@ export const getCakeVaultEarnings = (
 
 export const getPoolBlockInfo = memoize(
   (pool: Pool.DeserializedPool<Token>, currentBlock: number) => {
-    const { startBlock, endBlock, isFinished } = pool
-    const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
-    const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
-    const blocksRemaining = Math.max(endBlock - currentBlock, 0)
-    const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
-    const blocksToDisplay = hasPoolStarted ? blocksRemaining : blocksUntilStart
-    return { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay }
+    const { startTimestamp, endTimestamp, isFinished } = pool
+    const shouldShowBlockCountdown = Boolean(!isFinished && startTimestamp && endTimestamp)
+    const now = Math.floor(Date.now() / 1000)
+    const timeUntilStart = Math.max(startTimestamp - now, 0)
+    const timeRemaining = Math.max(endTimestamp - now, 0)
+    const hasPoolStarted = timeUntilStart <= 0 && timeRemaining > 0
+    const timeToDisplay = hasPoolStarted ? timeRemaining : timeUntilStart
+    return { shouldShowBlockCountdown, timeUntilStart, timeRemaining, hasPoolStarted, timeToDisplay, currentBlock }
   },
-  (pool, currentBlock) => `${pool.startBlock}#${pool.endBlock}#${pool.isFinished}#${currentBlock}`,
+  (pool, currentBlock) => `${pool.startTimestamp}#${pool.endTimestamp}#${pool.isFinished}#${currentBlock}`,
 )
 
 export const getICakeWeekDisplay = (ceiling: BigNumber) => {

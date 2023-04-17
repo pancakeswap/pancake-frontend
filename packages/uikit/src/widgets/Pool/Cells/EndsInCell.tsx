@@ -15,7 +15,9 @@ interface EndTimeTooltipComponentProps {
   endTime: number;
 }
 
-const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipComponentProps>> = ({ endTime }) => {
+export const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipComponentProps>> = ({
+  endTime,
+}) => {
   const {
     t,
     currentLanguage: { locale },
@@ -38,22 +40,49 @@ const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipCo
   );
 };
 
-export function EndsInCell<T>({ pool, getNow }: EndsInCellProps<T>) {
+export function TimeCountdownDisplay({
+  timestamp,
+  getNow = () => Date.now(),
+}: {
+  timestamp: number;
+  getNow?: () => number;
+}) {
   const { t } = useTranslation();
 
-  const { endBlock = 0 } = pool;
-
   const currentDate = getNow() / 1000;
-  const poolTimeRemaining = endBlock - currentDate;
+  const poolTimeRemaining = Math.abs(timestamp - currentDate);
   const endTimeObject = useMemo(() => getTimePeriods(poolTimeRemaining), [poolTimeRemaining]);
 
   const {
     targetRef: endTimeTargetRef,
     tooltip: endTimeTooltip,
     tooltipVisible: endTimeTooltipVisible,
-  } = useTooltip(<EndTimeTooltipComponent endTime={endBlock} />, {
+  } = useTooltip(<EndTimeTooltipComponent endTime={timestamp} />, {
     placement: "top",
   });
+
+  return (
+    <Flex alignItems="center">
+      <Text color="textSubtle" small>
+        {poolTimeRemaining > 0
+          ? endTimeObject?.totalDays
+            ? endTimeObject?.totalDays === 1
+              ? t("1 day")
+              : t("%days% days", { days: endTimeObject?.totalDays })
+            : t("< 1 day")
+          : t("%days% days", { days: 0 })}
+      </Text>
+      <span ref={endTimeTargetRef}>
+        <TimerIcon ml="4px" color="primary" />
+        {endTimeTooltipVisible && endTimeTooltip}
+      </span>
+    </Flex>
+  );
+}
+
+export function EndsInCell<T>({ pool, getNow }: EndsInCellProps<T>) {
+  const { t } = useTranslation();
+  const { endTimestamp = 0 } = pool;
 
   return (
     <BaseCell role="cell" flex={["1 0 50px", "1 0 50px", "2 0 100px", "2 0 100px", "1 0 120px"]}>
@@ -61,21 +90,7 @@ export function EndsInCell<T>({ pool, getNow }: EndsInCellProps<T>) {
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t("Ends in")}
         </Text>
-        <Flex alignItems="center">
-          <Text color="textSubtle" small>
-            {poolTimeRemaining > 0
-              ? endTimeObject?.totalDays
-                ? endTimeObject?.totalDays === 1
-                  ? t("1 day")
-                  : t("%days% days", { days: endTimeObject?.totalDays })
-                : t("< 1 day")
-              : t("%days% days", { days: 0 })}
-          </Text>
-          <span ref={endTimeTargetRef}>
-            <TimerIcon ml="4px" color="primary" />
-            {endTimeTooltipVisible && endTimeTooltip}
-          </span>
-        </Flex>
+        <TimeCountdownDisplay timestamp={endTimestamp} getNow={getNow} />
       </CellContent>
     </BaseCell>
   );
