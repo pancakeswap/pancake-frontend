@@ -8,7 +8,7 @@ export function isLegacyPool(pool: SerializedPool): pool is LegacySerializedPool
 }
 
 export function isUpgradedPool(pool: SerializedPool): pool is UpgradedSerializedPool {
-  if ((pool as any).tokenPerSeconds) {
+  if ((pool as any).tokenPerSecond) {
     return true
   }
   return false

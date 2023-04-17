@@ -38,6 +38,7 @@ export const fetchPublicVaultData = async ({
     const [[sharePrice], [shares], totalLockedAmount, [totalCakeInVault]] = await multicallv3({
       calls: [...calls, cakeBalanceOfCall],
       allowFailure: true,
+      chainId,
     })
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
@@ -82,6 +83,7 @@ export const fetchPublicFlexibleSideVaultData = async ({
     const [[sharePrice], [shares], [totalCakeInVault]] = await multicallv3({
       calls: [...calls, cakeBalanceOfCall],
       allowFailure: true,
+      chainId,
     })
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
@@ -112,7 +114,11 @@ export const fetchVaultFees = async ({
     }))
 
     const { multicallv2 } = createMulticall(provider)
-    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({ abi: cakeVaultAbi, calls })
+    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({
+      abi: cakeVaultAbi,
+      calls,
+      chainId,
+    })
 
     return {
       performanceFee: performanceFee.toNumber(),

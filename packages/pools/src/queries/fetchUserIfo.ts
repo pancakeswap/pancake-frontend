@@ -9,6 +9,10 @@ import { OnChainProvider } from '../types'
 import { getContractAddress } from '../utils'
 
 const getIfoCreditAddressContract = (chainId: ChainId, provider: OnChainProvider) => {
+  const address = getContractAddress(ICAKE, chainId)
+  if (!address) {
+    throw new Error(`ICAKE not supported on chain ${chainId}`)
+  }
   return new Contract(getContractAddress(ICAKE, chainId), cakeAbi, provider({ chainId }))
 }
 
@@ -20,7 +24,6 @@ export const fetchPublicIfoData = async (chainId: ChainId, provider: OnChainProv
       ceiling: new BigNumber(ceiling.toString()).toJSON(),
     }
   } catch (error) {
-    console.error(error)
     return {
       ceiling: BIG_ZERO.toJSON(),
     }
