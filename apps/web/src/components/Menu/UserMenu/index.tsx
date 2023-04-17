@@ -96,8 +96,8 @@ const UserMenu = () => {
   if (account) {
     return (
       <UIKitUserMenu
-        account={account}
-        sidName={sidName}
+        account={sidName || account}
+        ellipsis={!sidName}
         avatarSrc={avatarSrc}
         text={userMenuText}
         variant={userMenuVariable}

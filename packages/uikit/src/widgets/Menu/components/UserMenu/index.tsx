@@ -73,7 +73,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   disabled,
   placement = "bottom-end",
   recalculatePopover,
-  sidName,
+  ellipsis,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -123,8 +123,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
         }}
       >
         <MenuIcon className={avatarClassName} avatarSrc={avatarSrc} variant={variant} />
-        <LabelText title={typeof text === "string" ? text || sidName || account : sidName || account}>
-          {text || sidName || accountEllipsis}
+        <LabelText title={typeof text === "string" ? text || account : account}>
+          {text || (ellipsis ? accountEllipsis : account)}
         </LabelText>
         {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
