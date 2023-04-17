@@ -34,6 +34,7 @@ export const ModalWrapper = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
+      style={{ overflow: "visible" }}
     >
       <Box overflow="hidden" borderRadius="32px" {...props}>
         {children}
