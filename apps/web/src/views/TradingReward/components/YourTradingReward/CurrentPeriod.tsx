@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 import { Box, Flex, Card, Text, InfoIcon } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { multiplyPriceByAmount } from 'utils/prices'
 
 interface CurrentPeriodProps {
   estimateReward: number
@@ -28,10 +28,10 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
-  const cakePriceBusd = useCakeBusdPrice()
+  const cakePriceBusd = usePriceCakeUSD()
 
-  const rewardInBusd = useMemo(
-    () => multiplyPriceByAmount(cakePriceBusd, estimateReward),
+  const rewardInCake = useMemo(
+    () => new BigNumber(estimateReward).div(cakePriceBusd).toNumber(),
     [estimateReward, cakePriceBusd],
   )
 
@@ -46,8 +46,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
               {t('Your Current trading rewards')}
             </Text>
-            <Text bold fontSize="40px">{`$ ${formatNumber(rewardInBusd)}`}</Text>
-            <Text fontSize="14px" color="textSubtle">{`~ ${formatNumber(estimateReward)} CAKE`}</Text>
+            <Text bold fontSize="40px">{`$ ${formatNumber(estimateReward)}`}</Text>
+            <Text fontSize="14px" color="textSubtle">{`~ ${formatNumber(rewardInCake)} CAKE`}</Text>
             <Text fontSize="12px" color="textSubtle" mt="4px">
               {t('Available for claiming')}
               {timeRemaining > 0 ? (

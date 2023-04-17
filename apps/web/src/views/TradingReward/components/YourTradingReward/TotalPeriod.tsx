@@ -6,9 +6,8 @@ import { GreyCard } from 'components/Card'
 import { useTooltip } from '@pancakeswap/uikit/src/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import { multiplyPriceByAmount } from 'utils/prices'
-import { getBalanceAmount, formatNumber } from '@pancakeswap/utils/formatBalance'
+import { usePriceCakeUSD } from 'state/farms/hooks'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
 
 interface TotalPeriodProps {
@@ -18,7 +17,7 @@ interface TotalPeriodProps {
 
 const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ campaignIds, totalAvailableClaimData }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = useCakeBusdPrice()
+  const cakePriceBusd = usePriceCakeUSD()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Claim your rewards before expiring.'), {
     placement: 'bottom',
@@ -33,38 +32,38 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ camp
 
   const { isPending, handleClaim } = useClaimAllReward(campaignIds, unclaimData)
 
-  const totalUnclaimCake = useMemo(() => {
-    const totalCake = unclaimData
-      .map((available) => available.canClaim)
-      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-    return getBalanceAmount(new BigNumber(totalCake)).toNumber()
-  }, [unclaimData])
-
-  const totalUnclaimUSDValue = useMemo(
-    () => multiplyPriceByAmount(cakePriceBusd, totalUnclaimCake),
-    [cakePriceBusd, totalUnclaimCake],
-  )
-
-  // Expired Soon Data
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
 
   const currentDate = new Date().getTime() / 1000
   const timeRemaining = rewardExpiredSoonData?.campaignClaimEndTime - currentDate
   const expiredTime = getTimePeriods(timeRemaining)
 
-  const expiredCakePrice = useMemo(() => {
-    const balance = getBalanceAmount(new BigNumber(rewardExpiredSoonData?.canClaim))
-    const cakePice = multiplyPriceByAmount(cakePriceBusd, balance.toNumber())
-    return formatNumber(cakePice)
-  }, [cakePriceBusd, rewardExpiredSoonData])
+  const totalUnclaimInUSD = useMemo(() => {
+    const totalUSD = unclaimData
+      .map((available) => (timeRemaining > 0 ? available.totalEstimateReward : available.canClaim))
+      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+
+    return new BigNumber(totalUSD).toNumber()
+  }, [timeRemaining, unclaimData])
+
+  const totalUnclaimInCake = useMemo(
+    () => new BigNumber(totalUnclaimInUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, totalUnclaimInUSD],
+  )
+
+  // Expired Soon Data
+  const expiredUSDPrice = useMemo(() => {
+    const balance = timeRemaining > 0 ? rewardExpiredSoonData.totalEstimateReward : rewardExpiredSoonData?.canClaim
+    return formatNumber(new BigNumber(balance).toNumber())
+  }, [rewardExpiredSoonData, timeRemaining])
 
   const totalTradingReward = useMemo(() => {
     const total = totalAvailableClaimData
       .map((available) => available.canClaim)
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-    const balance = getBalanceAmount(new BigNumber(total))
-    return multiplyPriceByAmount(cakePriceBusd, balance.toNumber())
-  }, [cakePriceBusd, totalAvailableClaimData])
+
+    return new BigNumber(total).toNumber()
+  }, [totalAvailableClaimData])
 
   const totalVolumeTrade = useMemo(() => {
     return totalAvailableClaimData
@@ -86,8 +85,8 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ camp
                   <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                     {t('Your unclaimed trading rewards')}
                   </Text>
-                  <Text bold fontSize={['40px']}>{`$ ${formatNumber(totalUnclaimUSDValue)}`}</Text>
-                  <Text fontSize={['14px']} color="textSubtle">{`~ ${formatNumber(totalUnclaimCake)} CAKE`}</Text>
+                  <Text bold fontSize={['40px']}>{`$ ${formatNumber(totalUnclaimInUSD)}`}</Text>
+                  <Text fontSize={['14px']} color="textSubtle">{`~ ${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
                 </Box>
                 <Button
                   width={['100%', '100%', '100%', 'fit-content']}
@@ -102,7 +101,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({ camp
                 <Message variant="danger" mt="16px">
                   <MessageText>
                     <TooltipText bold as="span">
-                      {`$${expiredCakePrice}`}
+                      {`$${expiredUSDPrice}`}
                     </TooltipText>
                     <Text m="0 4px" as="span">
                       {t('unclaimed reward expiring in')}

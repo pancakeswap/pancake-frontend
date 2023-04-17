@@ -18,7 +18,7 @@ export interface CampaignIdInfoDetail {
   total: number
   totalVolume: number
   volumeArr: CampaignVolume[]
-  totalEstimateReward?: number
+  totalEstimateReward: number
 }
 
 export interface CampaignIdInfo {

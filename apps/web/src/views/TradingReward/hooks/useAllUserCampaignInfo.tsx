@@ -8,6 +8,7 @@ import tradingRewardABI from 'config/abi/tradingReward.json'
 import { getTradingRewardAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 
 interface UserCampaignInfoResponse {
   id: string
@@ -62,6 +63,10 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               .map((i) => i.volume)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
+            const totalEstimateReward = userCampaignInfo.volumeArr
+              .map((i) => i.estimateReward)
+              .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+
             const calls = [
               {
                 name: 'canClaim',
@@ -87,7 +92,8 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               ...userInfoQualification,
               campaignId,
               totalVolume,
-              canClaim: new BigNumber(canClaim.toString()).toJSON(),
+              totalEstimateReward,
+              canClaim: getBalanceNumber(new BigNumber(canClaim.toString())).toString(),
               userClaimedIncentives,
             }
           }),
