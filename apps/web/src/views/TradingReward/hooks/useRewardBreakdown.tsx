@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { CampaignIdInfoResponse } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
@@ -18,8 +19,8 @@ interface UseRewardBreakdownProps {
 export interface RewardBreakdownPair {
   address: string
   lpSymbol: string
-  token: string
-  quoteToken: string
+  token: Token
+  quoteToken: Token
   yourVolume: number
   totalVolume: number
   totalReward: number
@@ -77,8 +78,8 @@ const useRewardBreakdown = ({
                 return {
                   address: volume.pool,
                   lpSymbol: pairInfo?.lpSymbol ?? '',
-                  token: pairInfo?.token?.address ?? '',
-                  quoteToken: pairInfo?.quoteToken?.address ?? '',
+                  token: pairInfo?.token,
+                  quoteToken: pairInfo?.quoteToken,
                   yourVolume: volume.volume,
                   totalVolume: pair.volume,
                   totalReward: pair.estimateReward,

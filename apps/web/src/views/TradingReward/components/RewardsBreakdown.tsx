@@ -7,6 +7,7 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
+import PairInfo from 'views/TradingReward/components/PairInfo'
 
 interface RewardsBreakdownProps {
   campaignId: string
@@ -141,7 +142,14 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
                     <>
                       {list.pairs.map((pair) => (
                         <tr key={pair.address}>
-                          <Td>{pair.lpSymbol}</Td>
+                          <Td>
+                            <PairInfo
+                              isReady={!isFetching}
+                              lpSymbol={pair.lpSymbol}
+                              token={pair.token}
+                              quoteToken={pair.quoteToken}
+                            />
+                          </Td>
                           {isDesktop ? (
                             <>
                               <Td>{`$${formatNumber(pair.yourVolume)}`}</Td>

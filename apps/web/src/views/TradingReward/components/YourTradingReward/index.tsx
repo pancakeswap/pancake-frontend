@@ -212,7 +212,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     [account, hasClaimBalance, isQualified],
   )
 
-  const TradingRewardComponent = () => {
+  const TradingRewardComponent = (): JSX.Element => {
     if (isFetching) {
       return (
         <Skeleton
