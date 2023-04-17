@@ -46,7 +46,7 @@ async function fetchUpgradedPoolsTimeLimits(
   })
 
   const { multicall } = createMulticall(provider)
-  const startEndRaw: [BigNumber][] = await multicall(smartChefABI, calls)
+  const startEndRaw: [BigNumber][] = await multicall(smartChefABI, calls, chainId)
 
   const startEndResult = startEndRaw.reduce<[BigNumber][][]>((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / 2)
@@ -95,7 +95,7 @@ const fetchLegacyPoolsBlockLimits = async (
   const blockNumber = await provider({ chainId }).getBlockNumber()
   const block = await provider({ chainId }).getBlock(blockNumber)
   const { multicall } = createMulticall(provider)
-  const startEndBlockRaw: [BigNumber][] = await multicall(sousChefABI, startEndBlockCalls)
+  const startEndBlockRaw: [BigNumber][] = await multicall(sousChefABI, startEndBlockCalls, chainId)
 
   const startEndBlockResult = startEndBlockRaw.reduce<[BigNumber][][]>((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / 2)
@@ -151,7 +151,7 @@ export const fetchPoolsTotalStaking = async (chainId: ChainId, provider: OnChain
   })
 
   const { multicall } = createMulticall(provider)
-  const poolsTotalStaked = await multicall(erc20ABI, poolsBalanceOf)
+  const poolsTotalStaked = await multicall(erc20ABI, poolsBalanceOf, chainId)
 
   return poolsConfig.map((p, index) => ({
     sousId: p.sousId,
@@ -194,6 +194,7 @@ export const fetchPoolsStakingLimitsByBlock = async ({
 
   const { multicallv2 } = createMulticall(provider)
   const poolStakingResultRaw = await multicallv2({
+    chainId,
     abi: sousChefV2,
     calls: poolStakingCalls,
     options: { requireSuccess: false },
@@ -240,6 +241,7 @@ const fetchPoolsStakingLimitsByTime = async ({
 
   const { multicallv2 } = createMulticall(provider)
   const poolStakingResultRaw = await multicallv2({
+    chainId,
     abi: smartChefABI,
     calls: poolStakingCalls,
     options: { requireSuccess: false },
@@ -299,6 +301,7 @@ export const fetchPoolsProfileRequirement = async (
 
   const { multicallv2 } = createMulticall(provider)
   const poolProfileRequireResultRaw = await multicallv2({
+    chainId,
     abi: sousChefV3,
     calls: poolProfileRequireCalls,
     options: { requireSuccess: false },

@@ -38,7 +38,7 @@ export const fetchPoolsAllowance = async ({ account, chainId, provider }: FetchU
   }))
 
   const { multicall } = createMulticall(provider)
-  const allowances = await multicall(erc20ABI, calls)
+  const allowances = await multicall(erc20ABI, calls, chainId)
   return fromPairs(nonBnbPools.map((pool, index) => [pool.sousId, new BigNumber(allowances[index]).toJSON()]))
 }
 
@@ -60,7 +60,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
     params: [account],
   }
   const { multicallv3 } = createMulticall(provider)
-  const tokenBnbBalancesRaw = await multicallv3({ calls: [...tokenBalanceCalls, bnbBalanceCall] })
+  const tokenBnbBalancesRaw = await multicallv3({ calls: [...tokenBalanceCalls, bnbBalanceCall], chainId })
   const bnbBalance = tokenBnbBalancesRaw.pop()
   const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBnbBalancesRaw[index]]))
 
@@ -88,7 +88,7 @@ export const fetchUserStakeBalances = async ({ account, chainId, provider }: Fet
     params: [account],
   }))
   const { multicall } = createMulticall(provider)
-  const userInfo = await multicall(sousChefABI, calls)
+  const userInfo = await multicall(sousChefABI, calls, chainId)
   return fromPairs(
     nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(userInfo[index].amount._hex).toJSON()]),
   )
@@ -102,6 +102,6 @@ export const fetchUserPendingRewards = async ({ account, chainId, provider }: Fe
     params: [account],
   }))
   const { multicall } = createMulticall(provider)
-  const res = await multicall(sousChefABI, calls)
+  const res = await multicall(sousChefABI, calls, chainId)
   return fromPairs(nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(res[index]).toJSON()]))
 }
