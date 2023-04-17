@@ -237,11 +237,13 @@ const SingleFarmV3Card: React.FunctionComponent<
                 >
                   {outOfRangeUnstaked ? t('Continue Staking') : t('Unstake')}
                 </Button>
-                <Text color="textSubtle">
-                  {t(
-                    'Unstake will also automatically harvest any earnings that you haven’t collected yet, and send them to your wallet.',
-                  )}
-                </Text>
+                {outOfRangeUnstaked ? null : (
+                  <Text color="textSubtle">
+                    {t(
+                      'Unstake will also automatically harvest any earnings that you haven’t collected yet, and send them to your wallet.',
+                    )}
+                  </Text>
+                )}
               </AutoColumn>
             </Modal>
           </ModalV2>
