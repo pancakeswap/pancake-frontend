@@ -4,6 +4,7 @@ import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
+import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
   MetaMask = 'metaMask',
@@ -56,7 +57,7 @@ const walletsConfig = ({
     {
       id: 'metamask',
       title: 'Metamask',
-      icon: '/images/wallets/metamask.png',
+      icon: `${ASSET_CDN}/web/wallets/metamask.png`,
       get installed() {
         return isMetamaskInstalled()
         // && metaMaskConnector.ready
@@ -69,7 +70,7 @@ const walletsConfig = ({
     {
       id: 'binance',
       title: 'Binance Wallet',
-      icon: '/images/wallets/binance.png',
+      icon: `${ASSET_CDN}/web/wallets/binance.png`,
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.BinanceChain)
       },
@@ -86,13 +87,13 @@ const walletsConfig = ({
     {
       id: 'coinbase',
       title: 'Coinbase Wallet',
-      icon: '/images/wallets/coinbase.png',
+      icon: `${ASSET_CDN}/web/wallets/coinbase.png`,
       connectorId: ConnectorNames.WalletLink,
     },
     {
       id: 'trust',
       title: 'Trust Wallet',
-      icon: '/images/wallets/trust.png',
+      icon: `${ASSET_CDN}/web/wallets/trust.png`,
       connectorId: ConnectorNames.TrustWallet,
       get installed() {
         return !!getTrustWalletProvider()
@@ -108,13 +109,13 @@ const walletsConfig = ({
     {
       id: 'walletconnect',
       title: 'WalletConnect',
-      icon: '/images/wallets/walletconnect.png',
+      icon: `${ASSET_CDN}/web/wallets/walletconnect.png`,
       connectorId: ConnectorNames.WalletConnect,
     },
     {
       id: 'opera',
       title: 'Opera Wallet',
-      icon: '/images/wallets/opera.png',
+      icon: `${ASSET_CDN}/web/wallets/opera.png`,
       connectorId: ConnectorNames.Injected,
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isOpera)
@@ -124,7 +125,7 @@ const walletsConfig = ({
     {
       id: 'brave',
       title: 'Brave Wallet',
-      icon: '/images/wallets/brave.png',
+      icon: `${ASSET_CDN}/web/wallets/brave.png`,
       connectorId: ConnectorNames.Injected,
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isBraveWallet)
@@ -134,7 +135,7 @@ const walletsConfig = ({
     {
       id: 'math',
       title: 'MathWallet',
-      icon: '/images/wallets/mathwallet.png',
+      icon: `${ASSET_CDN}/web/wallets/mathwallet.png`,
       connectorId: ConnectorNames.Injected,
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet)
@@ -144,7 +145,7 @@ const walletsConfig = ({
     {
       id: 'tokenpocket',
       title: 'TokenPocket',
-      icon: '/images/wallets/tokenpocket.png',
+      icon: `${ASSET_CDN}/web/wallets/tokenpocket.png`,
       connectorId: ConnectorNames.Injected,
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket)
@@ -154,7 +155,7 @@ const walletsConfig = ({
     {
       id: 'safepal',
       title: 'SafePal',
-      icon: '/images/wallets/safepal.png',
+      icon: `${ASSET_CDN}/web/wallets/safepal.png`,
       connectorId: ConnectorNames.Injected,
       get installed() {
         return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal)
@@ -166,7 +167,7 @@ const walletsConfig = ({
     {
       id: 'coin98',
       title: 'Coin98',
-      icon: '/images/wallets/coin98.png',
+      icon: `${ASSET_CDN}/web/wallets/coin98.png`,
       connectorId: ConnectorNames.Injected,
       get installed() {
         return (
@@ -179,7 +180,7 @@ const walletsConfig = ({
     {
       id: 'blocto',
       title: 'Blocto',
-      icon: '/images/wallets/blocto.png?v=2',
+      icon: `${ASSET_CDN}/web/wallets/blocto.png`,
       connectorId: ConnectorNames.Blocto,
       get installed() {
         return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
@@ -190,7 +191,7 @@ const walletsConfig = ({
     {
       id: 'ledger',
       title: 'Ledger',
-      icon: '/images/wallets/ledger.png',
+      icon: `${ASSET_CDN}/web/wallets/ledger.png`,
       connectorId: ConnectorNames.Ledger,
     },
   ]

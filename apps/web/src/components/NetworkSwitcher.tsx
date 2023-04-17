@@ -23,6 +23,7 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { chains } from 'utils/wagmi'
 import Image from 'next/image'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 import { ChainLogo } from './Logo/ChainLogo'
 
@@ -163,7 +164,7 @@ export const NetworkSwitcher = () => {
         mr="8px"
         placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
-        avatarSrc={`/images/chains/${chainId}.png`}
+        avatarSrc={`${ASSET_CDN}/images/chains/${chainId}.png`}
         disabled={cannotChangeNetwork}
         text={
           isLoading ? (

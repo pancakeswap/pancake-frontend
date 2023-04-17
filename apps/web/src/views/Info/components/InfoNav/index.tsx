@@ -22,6 +22,7 @@ import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useAccount } from 'wagmi'
 import { bsc, mainnet } from 'wagmi/chains'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
@@ -100,7 +101,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
     <UserMenu
       alignItems="top"
       ml="8px"
-      avatarSrc={`/images/chains/${multiChainId[chainName]}.png`}
+      avatarSrc={`${ASSET_CDN}/web/chains/${multiChainId[chainName]}.png`}
       text={
         foundChain ? (
           <>
