@@ -249,6 +249,7 @@ it("renders correctly", () => {
           </div>
           <div
             class="c10 c3 c11"
+            style="align-items: normal;"
           >
             body
           </div>
