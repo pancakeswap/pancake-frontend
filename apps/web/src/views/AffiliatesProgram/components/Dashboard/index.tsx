@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
 import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyReferralLink'
@@ -14,6 +15,7 @@ import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/Affilia
 
 const Dashboard = () => {
   const router = useRouter()
+  const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isAffiliate, affiliate, refresh } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
@@ -35,7 +37,7 @@ const Dashboard = () => {
 
   return (
     <AffiliatesProgramLayout>
-      <Banner />
+      <Banner title={t('Dashboard')} subTitle={t('Manage your affiliate link, see how much you’ve earned')} />
       {!isAffiliate ? (
         <LoginButton />
       ) : (

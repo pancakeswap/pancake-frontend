@@ -20,10 +20,14 @@ const AffiliatesProgramLayout = ({ children }) => {
         href: 'https://docs.google.com/forms/d/e/1FAIpQLSfP43IciQ5cH0JhTf1fDgUpwapBx-yD3ybv24pBdiVW7Th5jQ/viewform',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
+      {
+        label: t('Leaderboard'),
+        href: '/affiliates-program/leaderboard',
+      },
     ]
 
     if (isAffiliateExist) {
-      menu.push({
+      menu.splice(2, 0, {
         label: t('Dashboard'),
         href: '/affiliates-program/dashboard',
       })
