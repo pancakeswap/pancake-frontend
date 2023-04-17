@@ -12,6 +12,7 @@ import {
   UserMenuItem,
 } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
@@ -101,7 +102,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
     <UserMenu
       alignItems="top"
       ml="8px"
-      avatarSrc={`/images/chains/${multiChainId[chainName]}.png`}
+      avatarSrc={`${ASSET_CDN}/web/chains/${multiChainId[chainName]}.png`}
       text={
         foundChain ? (
           <>
