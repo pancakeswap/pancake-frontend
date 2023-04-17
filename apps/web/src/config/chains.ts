@@ -1,6 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
 import memoize from 'lodash/memoize'
-import invert from 'lodash/invert'
 import { bsc as bsc_, bscTestnet, goerli, mainnet, zkSync, arbitrum, polygonZkEvm, Chain } from 'wagmi/chains'
 
 export const CHAIN_QUERY_NAME = {
@@ -9,15 +8,20 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.BSC]: 'bsc',
   [ChainId.BSC_TESTNET]: 'bscTestnet',
   [ChainId.ARBITRUM_ONE]: 'arb',
-  [ChainId.POLYGON_ZKEVM]: 'polygonZkEvm',
-  [ChainId.ZKSYNC]: 'zysync',
+  [ChainId.POLYGON_ZKEVM]: 'polygonZkEVM',
+  [ChainId.ZKSYNC]: 'zkSync',
 } as const satisfies Record<ChainId, string>
 
-const CHAIN_QUERY_NAME_TO_ID = invert(CHAIN_QUERY_NAME)
+const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
+  return {
+    [chainName.toLowerCase()]: chainId as unknown as ChainId,
+    ...acc,
+  }
+}, {} as Record<string, ChainId>)
 
 export const getChainId = memoize((chainName: string) => {
   if (!chainName) return undefined
-  return CHAIN_QUERY_NAME_TO_ID[chainName] ? +CHAIN_QUERY_NAME_TO_ID[chainName] : undefined
+  return CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] ? +CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] : undefined
 })
 
 const bsc = {
