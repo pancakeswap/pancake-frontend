@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
-import { createChart, IChartApi } from 'lightweight-charts'
+import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
@@ -14,7 +14,6 @@ dayjs.extend(utc)
 
 const Wrapper = styled(Card)`
   width: 100%;
-  padding: 1rem;
   display: flex;
   background-color: ${({ theme }) => theme.colors.background};
   flex-direction: column;
@@ -97,7 +96,10 @@ const LineChart = ({
         height,
         width: chartRef.current.parentElement.clientWidth - 32,
         layout: {
-          backgroundColor: 'transparent',
+          background: {
+            type: ColorType.Solid,
+            color: 'transparent',
+          },
           textColor: '#565A69',
           fontFamily: 'Inter var',
         },
@@ -106,7 +108,7 @@ const LineChart = ({
             top: 0.1,
             bottom: 0.1,
           },
-          drawTicks: false,
+          ticksVisible: false,
           borderVisible: false,
         },
         timeScale: {
@@ -177,7 +179,7 @@ const LineChart = ({
           if (setValue) setValue(undefined)
           if (setLabel) setLabel(undefined)
         } else if (series && param) {
-          const price = parseFloat(param?.seriesPrices?.get(series)?.toString() ?? currentValue)
+          const price = parseFloat(param?.seriesData?.get(series)?.toString() ?? currentValue)
           const time = param?.time as { day: number; year: number; month: number }
           const timeString = dayjs(`${time.year}-${time.month}-${time.day}`).format('MMM D, YYYY')
           if (setValue) setValue(price)

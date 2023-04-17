@@ -32,7 +32,7 @@ import useStableConfig, {
   LPStablePair,
   StableConfigContext,
   useLPTokensWithBalanceByAccount,
-} from 'views/Swap/StableSwap/hooks/useStableConfig'
+} from 'views/Swap/hooks/useStableConfig'
 import { useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'

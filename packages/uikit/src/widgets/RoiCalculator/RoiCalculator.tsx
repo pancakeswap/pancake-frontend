@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { FeeAmount, FeeCalculator, Tick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
+import { FeeAmount, FeeCalculator, Tick, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
@@ -18,12 +18,13 @@ import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
 import { Details } from "./Details";
-// import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
+import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 import { PriceData, TickData } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
+import { PriceInvertSwitch } from "./PriceInvertSwitch";
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Currency, Currency>;
@@ -80,12 +81,12 @@ export function RoiCalculator({
   sqrtRatioX96,
   liquidity,
   depositAmountInUsd = "0",
-  currencyA,
-  currencyB,
-  balanceA,
-  balanceB,
-  currencyAUsdPrice,
-  currencyBUsdPrice,
+  currencyA: originalCurrencyA,
+  currencyB: originalCurrencyB,
+  balanceA: originalBalanceA,
+  balanceB: originalBalanceB,
+  currencyAUsdPrice: originalCurrencyAUsdPrice,
+  currencyBUsdPrice: originalCurrencyBUsdPrice,
   feeAmount,
   protocolFee,
   prices,
@@ -110,19 +111,52 @@ export function RoiCalculator({
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(3);
+  const [invertBase, setInvertBase] = useState(false);
+  const onSwitchBaseCurrency = useCallback(() => setInvertBase(!invertBase), [invertBase]);
+
+  const { currencyA, currencyB, balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice } = useMemo(
+    () =>
+      invertBase
+        ? {
+            currencyA: originalCurrencyB,
+            currencyB: originalCurrencyA,
+            balanceA: originalBalanceB,
+            balanceB: originalBalanceA,
+            currencyAUsdPrice: originalCurrencyBUsdPrice,
+            currencyBUsdPrice: originalCurrencyAUsdPrice,
+          }
+        : {
+            currencyA: originalCurrencyA,
+            currencyB: originalCurrencyB,
+            balanceA: originalBalanceA,
+            balanceB: originalBalanceB,
+            currencyAUsdPrice: originalCurrencyAUsdPrice,
+            currencyBUsdPrice: originalCurrencyBUsdPrice,
+          },
+    [
+      invertBase,
+      originalCurrencyA,
+      originalCurrencyB,
+      originalBalanceA,
+      originalBalanceB,
+      originalCurrencyAUsdPrice,
+      originalCurrencyBUsdPrice,
+    ]
+  );
+
   const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
   const invertPrice = useMemo(
     () => currencyA && currencyB && currencyB.wrapped.sortsBefore(currencyA.wrapped),
     [currencyA, currencyB]
   );
-  const priceCurrent = useMemo<Price<Token, Token> | undefined>(() => {
-    if (typeof tickCurrent !== "number" || !currencyA || !currencyB) {
+  const priceCurrent = useMemo(() => {
+    if (!sqrtRatioX96 || !currencyA || !currencyB) {
       return undefined;
     }
-    return invertPrice
-      ? tickToPrice(currencyB.wrapped, currencyA.wrapped, tickCurrent)
-      : tickToPrice(currencyA.wrapped, currencyB.wrapped, tickCurrent);
-  }, [invertPrice, tickCurrent, currencyA, currencyB]);
+    const accuratePrice = sqrtRatioX96ToPrice(sqrtRatioX96, currencyA, currencyB);
+
+    return currencyA.wrapped.sortsBefore(currencyB.wrapped) ? accuratePrice : accuratePrice.invert();
+  }, [sqrtRatioX96, currencyA, currencyB]);
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
@@ -178,13 +212,13 @@ export function RoiCalculator({
 
   const derivedCakeApr = useMemo(() => {
     if (
-      !currencyB ||
+      !amountA ||
+      !amountB ||
       !priceRange?.tickUpper ||
       !priceRange?.tickLower ||
       !sqrtRatioX96 ||
       !props.isFarm ||
-      !cakeAprFactor ||
-      !amountA
+      !cakeAprFactor
     ) {
       return undefined;
     }
@@ -194,9 +228,9 @@ export function RoiCalculator({
     }
 
     try {
-      const positionLiquidity = FeeCalculator.getLiquidityBySingleAmount({
-        amount: amountA,
-        currency: currencyB,
+      const positionLiquidity = FeeCalculator.getLiquidityByAmountsAndPrice({
+        amountA,
+        amountB,
         tickUpper: priceRange?.tickUpper,
         tickLower: priceRange?.tickLower,
         sqrtRatioX96,
@@ -211,33 +245,32 @@ export function RoiCalculator({
       console.error(error, amountA, priceRange, sqrtRatioX96);
       return undefined;
     }
-  }, [currencyB, priceRange, sqrtRatioX96, props.isFarm, cakeAprFactor, amountA, tickCurrent, usdValue]);
+  }, [amountA, amountB, priceRange, sqrtRatioX96, props.isFarm, cakeAprFactor, tickCurrent, usdValue]);
 
   const editedCakeApr =
     derivedCakeApr && typeof cakePriceDiffPercent === "number"
       ? derivedCakeApr.times(cakePriceDiffPercent)
       : derivedCakeApr;
 
-  const cakeApr = props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined;
-  const editCakeApr = props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined;
-  const { fee, rate, apr, apy, cakeApy, editCakeApy, cakeRate, cakeReward } = useRoi({
-    amountA,
-    amountB,
-    currencyAUsdPrice,
-    currencyBUsdPrice,
-    tickLower: priceRange?.tickLower,
-    tickUpper: priceRange?.tickUpper,
-    volume24H,
-    sqrtRatioX96,
-    mostActiveLiquidity,
-    fee: feeAmount,
-    protocolFee,
-    compoundEvery: compoundingIndexToFrequency[compoundIndex],
-    stakeFor: spanIndexToSpan[spanIndex],
-    compoundOn,
-    cakeApr,
-    editCakeApr,
-  });
+  const { fee, rate, apr, apy, cakeApr, cakeApy, editCakeApr, editCakeApy, cakeRate, cakeReward, originalCakeReward } =
+    useRoi({
+      amountA,
+      amountB,
+      currencyAUsdPrice,
+      currencyBUsdPrice,
+      tickLower: priceRange?.tickLower,
+      tickUpper: priceRange?.tickUpper,
+      volume24H,
+      sqrtRatioX96,
+      mostActiveLiquidity,
+      fee: feeAmount,
+      protocolFee,
+      compoundEvery: compoundingIndexToFrequency[compoundIndex],
+      stakeFor: spanIndexToSpan[spanIndex],
+      compoundOn,
+      cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
+      editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
+    });
 
   const handleApply = useCallback(
     () =>
@@ -316,6 +349,7 @@ export function RoiCalculator({
         onLeftRangeInput={priceRange?.onLeftRangeInput}
         onRightRangeInput={priceRange?.onRightRangeInput}
       />
+      <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <DynamicSection>
         <RangeSelector
           priceLower={priceRange?.priceLower}
@@ -345,6 +379,7 @@ export function RoiCalculator({
 
   const priceChart = (
     <Section title={t("History price")}>
+      <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <PriceChart
         prices={useMemo(
           () => prices?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
@@ -396,21 +431,20 @@ export function RoiCalculator({
       <ScrollableContainer>
         {warningMessage}
         {content}
-        {/* <ImpermanentLossCalculator
+        <ImpermanentLossCalculator
           lpReward={lpReward}
-          amountA={amountA}
-          amountB={amountB}
-          currencyAUsdPrice={currencyAUsdPrice}
-          currencyBUsdPrice={currencyBUsdPrice}
+          amountA={invertBase ? amountB : amountA}
+          amountB={invertBase ? amountA : amountB}
+          currencyAUsdPrice={invertBase ? currencyBUsdPrice : currencyAUsdPrice}
+          currencyBUsdPrice={invertBase ? currencyAUsdPrice : currencyBUsdPrice}
           tickLower={priceRange?.tickLower}
           tickUpper={priceRange?.tickUpper}
           sqrtRatioX96={sqrtRatioX96}
           isFarm={props.isFarm}
-          usdValue={usdValue}
-          cakeApy={cakeApy}
+          cakeReward={originalCakeReward}
           cakePrice={props.isFarm ? props.cakePrice : undefined}
           setEditCakePrice={setEditCakePrice}
-        /> */}
+        />
         <AnimatedArrow state={{}} />
         <RoiRate usdAmount={totalReward} roiPercent={totalRate} />
         {allowApply && (
@@ -426,8 +460,8 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={props.isFarm ? (editCakeApr ? editCakeApr.toFixed(2) : cakeApr?.toFixed(2)) : undefined}
-        farmApy={props.isFarm ? (editCakeApy ? editCakeApy.toFixed(2) : cakeApy?.toFixed(2)) : undefined}
+        farmApr={props.isFarm ? editCakeApr || cakeApr : undefined}
+        farmApy={props.isFarm ? editCakeApy || cakeApy : undefined}
         farmReward={farmReward}
         isFarm={props.isFarm}
       />

@@ -138,7 +138,7 @@ export function FarmV3LPPositionDetail({
         </AutoRow>
       )}
       <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
-      <AutoRow columnGap="4px">
+      <AutoRow columnGap="8px">
         <Balance
           fontSize="12px"
           color="textSubtle"
@@ -177,7 +177,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
     <>
       {outOfRange && (
         <RangeTag outOfRange ml={0} style={{ alignItems: 'center' }}>
-          Inactive
+          {t('Inactive')}
           <QuestionHelper
             ml="4px"
             text={t('Inactive positions will NOT earn CAKE rewards from farm.')}

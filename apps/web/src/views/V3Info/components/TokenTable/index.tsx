@@ -7,8 +7,10 @@ import {
   NextLinkFromReactRouter,
   SortArrowIcon,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
@@ -46,7 +48,7 @@ const ResponsiveGrid = styled.div`
   }
 
   @media screen and (max-width: 670px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1.3fr 1fr;
     > *:first-child {
       display: none;
     }
@@ -74,6 +76,7 @@ const ResponsiveLogo = styled(CurrencyLogo)`
 const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index: number; chainPath: string }) => {
   const { theme } = useTheme()
   const chainName = useGetChainName()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <LinkWrapper to={`/${v3InfoPath}${chainPath}/tokens/${tokenData.address}`}>
       <ResponsiveGrid>
@@ -82,15 +85,15 @@ const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index:
           <RowFixed>
             <ResponsiveLogo address={tokenData.address} chainName={chainName} />
           </RowFixed>
-          <Text style={{ marginLeft: '6px' }}>
-            <Text ml="8px">{tokenData.symbol}</Text>
-          </Text>
+
           <Text style={{ marginLeft: '10px' }}>
             <RowFixed>
-              <HoverInlineText text={tokenData.name} />
-              <Text ml="8px" color={theme.colors.text99}>
-                ({tokenData.symbol})
-              </Text>
+              {isMobile ? <HoverInlineText text={tokenData.symbol} /> : <HoverInlineText text={tokenData.name} />}
+              {!isMobile && (
+                <Text ml="8px" color={theme.colors.text99}>
+                  ({tokenData.symbol})
+                </Text>
+              )}
             </RowFixed>
           </Text>
         </Flex>
@@ -123,6 +126,7 @@ export default function TokenTable({
   tokenDatas: TokenData[] | undefined
   maxItems?: number
 }) {
+  const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const chainPath = useMultiChainPath()
 
@@ -166,6 +170,7 @@ export default function TokenTable({
     (newField: string) => {
       setSortField(newField)
       setSortDirection(sortField !== newField ? true : !sortDirection)
+      setPage(1)
     },
     [sortDirection, sortField],
   )
@@ -182,7 +187,7 @@ export default function TokenTable({
           <ResponsiveGrid>
             <Text color={theme.colors.textSubtle}>#</Text>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Name
+              {t('Name')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -193,7 +198,7 @@ export default function TokenTable({
               </SortButton>
             </ClickableColumnHeader>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Price
+              {t('Price')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -204,7 +209,7 @@ export default function TokenTable({
               </SortButton>
             </ClickableColumnHeader>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Price Change
+              {t('Price Change')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -218,7 +223,7 @@ export default function TokenTable({
             7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
           </ClickableText> */}
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              Volume 24H
+              {t('Volume 24H')}
               <SortButton
                 scale="sm"
                 variant="subtle"
@@ -229,7 +234,7 @@ export default function TokenTable({
               </SortButton>
             </ClickableColumnHeader>
             <ClickableColumnHeader color={theme.colors.textSubtle}>
-              TVL
+              {t('TVL')}
               <SortButton
                 scale="sm"
                 variant="subtle"

@@ -58,7 +58,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
         </Flex>
       )}
       <Flex justifyContent="space-between">
-        <Text>{totalValueLabel || t("Total Liquidity")}:</Text>
+        <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
       {!removed && (

@@ -22,9 +22,12 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@types/react": "^18.0.17",
+    "localforage": "^1.10.0",
+    "jotai": "^2.0.3",
     "@reduxjs/toolkit": "^1.9.1",
     "react": "^18.2.0",
-    "tsup": "^6.6.3"
+    "tsup": "^6.7.0"
   },
   "exports": {
     ".": {

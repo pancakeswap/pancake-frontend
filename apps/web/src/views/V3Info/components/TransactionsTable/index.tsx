@@ -1,14 +1,25 @@
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, SortArrowIcon, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import {
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  AutoColumn,
+  Box,
+  LinkExternal,
+  SortArrowIcon,
+  Text,
+  Flex,
+} from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGetChainName } from 'state/info/hooks'
 import styled from 'styled-components'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
 import { getEtherscanLink, shortenAddress } from '../../utils'
 import { formatTime } from '../../utils/date'
-import { formatAmount, formatDollarAmount } from '../../utils/numbers'
+import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
 import { RowFixed } from '../Row'
@@ -124,6 +135,8 @@ export default function TransactionTable({
   transactions: Transaction[]
   maxItems?: number
 }) {
+  const { t } = useTranslation()
+
   // theming
   const { theme } = useTheme()
 
@@ -149,19 +162,16 @@ export default function TransactionTable({
     ) {
       extraPages = 0
     }
-    setMaxPage(
+    const maxPageResult =
       Math.floor(
         transactions.filter((x) => {
           return txFilter === undefined || x.type === txFilter
         }).length / maxItems,
-      ) + extraPages,
-    )
+      ) + extraPages
+    setMaxPage(maxPageResult)
+    if (maxPageResult === 0) setPage(0)
+    else setPage(1)
   }, [maxItems, transactions, txFilter])
-
-  const onFilterChange = useCallback((filter: TransactionType | undefined) => {
-    setPage(1)
-    setTxFilter(filter)
-  }, [])
 
   const sortedTransactions = useMemo(() => {
     return transactions
@@ -201,39 +211,39 @@ export default function TransactionTable({
           <RowFixed>
             <SortText
               onClick={() => {
-                onFilterChange(undefined)
+                setTxFilter(undefined)
               }}
               active={txFilter === undefined}
             >
-              All
+              {t('All')}
             </SortText>
             <SortText
               onClick={() => {
-                onFilterChange(TransactionType.SWAP)
+                setTxFilter(TransactionType.SWAP)
               }}
               active={txFilter === TransactionType.SWAP}
             >
-              Swaps
+              {t('Swaps')}
             </SortText>
             <SortText
               onClick={() => {
-                onFilterChange(TransactionType.MINT)
+                setTxFilter(TransactionType.MINT)
               }}
               active={txFilter === TransactionType.MINT}
             >
-              Adds
+              {t('Adds')}
             </SortText>
             <SortText
               onClick={() => {
-                onFilterChange(TransactionType.BURN)
+                setTxFilter(TransactionType.BURN)
               }}
               active={txFilter === TransactionType.BURN}
             >
-              Removes
+              {t('Removes')}
             </SortText>
           </RowFixed>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Total Value
+            {t('Total Value')}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -244,7 +254,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Token0 Amount
+            {t('Token%index% Amount', { index: '0' })}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -255,7 +265,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Token1 Amount
+            {t('Token%index% Amount', { index: '1' })}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -266,7 +276,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Account
+            {t('Account')}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -277,7 +287,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color={theme.colors.textSubtle}>
-            Time{' '}
+            {`${t('Time')} `}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -302,21 +312,25 @@ export default function TransactionTable({
           }
           return null
         })}
-        {sortedTransactions.length === 0 ? <Text>No Transactions</Text> : undefined}
+        {sortedTransactions.length === 0 && (
+          <Flex justifyContent="center">
+            <Text>{t('No Transactions')}</Text>
+          </Flex>
+        )}
         <PageButtons>
           <Box
             onClick={() => {
-              setPage(page === 1 ? page : page - 1)
+              if (page > 1) setPage(page - 1)
             }}
           >
             <Arrow>
-              <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+              <ArrowBackIcon color={page <= 1 ? 'textDisabled' : 'primary'} />
             </Arrow>
           </Box>
           <Text>{`Page ${page} of ${maxPage}`}</Text>
           <Box
             onClick={() => {
-              setPage(page === maxPage ? page : page + 1)
+              if (page !== maxPage) setPage(page + 1)
             }}
           >
             <Arrow>

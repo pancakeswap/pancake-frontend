@@ -2546,4 +2546,12 @@ export const bscTokens = {
     'Symbiosis',
     'https://symbiosis.finance/',
   ),
+  ankrETH: new ERC20Token(
+    ChainId.BSC,
+    '0xe05A08226c49b636ACf99c40Da8DC6aF83CE5bB3',
+    18,
+    'ankrETH',
+    'Ankr Staked ETH',
+    'https://www.ankr.com/',
+  ),
 }

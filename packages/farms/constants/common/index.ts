@@ -12,7 +12,14 @@ export type PriceHelper = {
 export const priceHelperTokens = {
   [ChainId.ETHEREUM]: {
     chain: 'ethereum',
-    list: [ethereumTokens.weth, ethereumTokens.usdc, ethereumTokens.usdt, ethereumTokens.dai, ethereumTokens.wbtc],
+    list: [
+      ethereumTokens.weth,
+      ethereumTokens.usdc,
+      ethereumTokens.usdt,
+      ethereumTokens.dai,
+      ethereumTokens.wbtc,
+      ethereumTokens.alcx,
+    ],
   },
   [ChainId.BSC]: {
     chain: 'bsc',

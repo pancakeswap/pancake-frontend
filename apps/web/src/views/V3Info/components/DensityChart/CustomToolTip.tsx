@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
@@ -7,11 +8,14 @@ import { LightCard } from '../Card'
 import { RowBetween } from '../Row'
 
 const TooltipWrapper = styled(LightCard)`
+  width: 260px;
   padding: 12px;
-  width: 320px;
   opacity: 0.6;
   font-size: 12px;
   z-index: 10;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 320px;
+  }
 `
 
 interface CustomToolTipProps {
@@ -21,6 +25,7 @@ interface CustomToolTipProps {
 }
 
 function CustomToolTip({ chartProps, poolData, currentPrice }: CustomToolTipProps) {
+  const { t } = useTranslation()
   const { theme } = useTheme()
   const price0 = chartProps?.payload?.[0]?.payload.price0
   const price1 = chartProps?.payload?.[0]?.payload.price1
@@ -30,9 +35,11 @@ function CustomToolTip({ chartProps, poolData, currentPrice }: CustomToolTipProp
   return (
     <TooltipWrapper>
       <AutoColumn gap="sm">
-        <Text color={theme.colors.textSubtle}>Tick stats</Text>
+        <Text color={theme.colors.textSubtle}>{t('Tick stats')}</Text>
         <RowBetween>
-          <Text>{poolData?.token0?.symbol} Price: </Text>
+          <Text>
+            {poolData?.token0?.symbol} {t('Price')}:{' '}
+          </Text>
           <Text>
             {price0
               ? Number(price0).toLocaleString(undefined, {
@@ -43,7 +50,9 @@ function CustomToolTip({ chartProps, poolData, currentPrice }: CustomToolTipProp
           </Text>
         </RowBetween>
         <RowBetween>
-          <Text>{poolData?.token1?.symbol} Price: </Text>
+          <Text>
+            {poolData?.token1?.symbol} {t('Price')}:{' '}
+          </Text>
           <Text>
             {price1
               ? Number(price1).toLocaleString(undefined, {
@@ -55,14 +64,18 @@ function CustomToolTip({ chartProps, poolData, currentPrice }: CustomToolTipProp
         </RowBetween>
         {currentPrice && price0 && currentPrice > price1 ? (
           <RowBetween>
-            <Text>{poolData?.token0?.symbol} Locked: </Text>
+            <Text>
+              {poolData?.token0?.symbol} {t('Locked')}:{' '}
+            </Text>
             <Text>
               {tvlToken0 ? formatAmount(tvlToken0) : ''} {poolData?.token0?.symbol}
             </Text>
           </RowBetween>
         ) : (
           <RowBetween>
-            <Text>{poolData?.token1?.symbol} Locked: </Text>
+            <Text>
+              {poolData?.token1?.symbol} {t('Locked')}:{' '}
+            </Text>
             <Text>
               {tvlToken1 ? formatAmount(tvlToken1) : ''} {poolData?.token1?.symbol}
             </Text>

@@ -158,7 +158,7 @@ const config: (
       items: [
         {
           label: t('Info'),
-          href: '/info',
+          href: '/info/v3',
         },
         {
           label: t('IFO'),

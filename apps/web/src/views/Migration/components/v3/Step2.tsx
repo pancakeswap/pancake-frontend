@@ -20,10 +20,7 @@ import atomWithStorage from 'utils/atomWithStorageWithErrorCatch'
 import currencyId from 'utils/currencyId'
 import RemoveLiquidity from 'views/RemoveLiquidity'
 import RemoveStableLiquidity from 'views/RemoveLiquidity/RemoveStableLiquidity'
-import useStableConfig, {
-  StableConfigContext,
-  useLPTokensWithBalanceByAccount,
-} from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext, useLPTokensWithBalanceByAccount } from 'views/Swap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
 
 export const STABLE_LP_TO_MIGRATE = [

@@ -95,7 +95,7 @@ export function AprCalculator({
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
-  const inverted = quoteCurrency?.wrapped.sortsBefore(baseCurrency?.wrapped)
+  const inverted = Boolean(baseCurrency && quoteCurrency && quoteCurrency.wrapped.sortsBefore(baseCurrency.wrapped))
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
@@ -123,7 +123,7 @@ export function AprCalculator({
     [pool?.feeProtocol],
   )
 
-  const isInLiquidity = defaultDepositUsd
+  const applyProtocalFee = defaultDepositUsd ? undefined : protocolFee
 
   const { apr } = useRoi({
     tickLower,
@@ -137,7 +137,7 @@ export function AprCalculator({
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
-    protocolFee: isInLiquidity ? undefined : protocolFee,
+    protocolFee: applyProtocalFee,
   })
 
   // NOTE: Assume no liquidity when openning modal
@@ -217,7 +217,7 @@ export function AprCalculator({
         sqrtRatioX96={sqrtRatioX96}
         liquidity={pool?.liquidity}
         feeAmount={feeAmount}
-        protocolFee={protocolFee}
+        protocolFee={applyProtocalFee}
         ticks={data}
         volume24H={volume24H}
         priceUpper={priceUpper}

@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next'
-import { z } from 'zod'
+import { enum as zEnum, string as zString, object as zObject } from 'zod'
 import { v4 as uuid } from 'uuid'
 import HmacSHA256 from 'crypto-js/hmac-sha256'
 import EncodeHex from 'crypto-js/enc-hex'
@@ -11,11 +11,11 @@ const endpoint = host + url
 const appId = '0331c8c6a3130f66c01a3ea362ddc7de3612c5f18d65898896a32650553d47aa1e'
 const appSecret = process.env.RISK_APP_SECRET
 
-const zChainId = z.enum(['56'])
+const zChainId = zEnum(['56'])
 
-const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
+const zAddress = zString().regex(/^0x[a-fA-F0-9]{40}$/)
 
-const zParams = z.object({
+const zParams = zObject({
   chainId: zChainId,
   address: zAddress,
 })

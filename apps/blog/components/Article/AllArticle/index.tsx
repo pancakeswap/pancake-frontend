@@ -11,6 +11,8 @@ import CategoriesSelector from 'components/Article/CategoriesSelector'
 import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
 import SkeletonArticle from 'components/SkeletonArticle'
+import { storageLangMap } from 'utils/getLocalStorageLanguageCode'
+import { getLanguageCodeFromLS } from 'utils/getLanguageCodeFromLS'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -94,6 +96,14 @@ const AllArticle = () => {
     }
   }, [categoriesData, router.isReady, router.query.category])
 
+  const codeFromStorage = getLanguageCodeFromLS()
+  useEffect(() => {
+    if (codeFromStorage) {
+      const languageStorage = storageLangMap(codeFromStorage)
+      setLanguageOption(languageStorage)
+    }
+  }, [codeFromStorage])
+
   const { articlesData, isFetching } = useAllArticle({
     query,
     sortBy,
@@ -138,7 +148,12 @@ const AllArticle = () => {
             <Flex flexDirection={['column', 'row']}>
               {languageItems.length > 0 && (
                 <Box width="100%">
-                  <ArticleSortSelect title={t('Languages')} options={languageItems} setOption={setLanguageOption} />
+                  <ArticleSortSelect
+                    title={t('Languages')}
+                    value={languageOption}
+                    options={languageItems}
+                    setOption={setLanguageOption}
+                  />
                 </Box>
               )}
               <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>

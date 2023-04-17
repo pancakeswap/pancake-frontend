@@ -26,3 +26,29 @@ export const getNodeRealUrl = (networkName: string) => {
     webSocket: url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),
   }
 }
+
+export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
+  let host = null
+
+  switch (chainId) {
+    case 1:
+      if (key) {
+        host = `eth-mainnet.nodereal.io/v1/${key}`
+      }
+      break
+    case 5:
+      if (key) {
+        host = `eth-goerli.nodereal.io/v1/${key}`
+      }
+      break
+    default:
+      host = null
+  }
+
+  if (!host) {
+    return null
+  }
+
+  const url = `https://${host}`
+  return url
+}

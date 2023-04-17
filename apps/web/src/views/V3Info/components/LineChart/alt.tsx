@@ -16,11 +16,10 @@ const DEFAULT_HEIGHT = 300
 const Wrapper = styled(Card)`
   width: 100%;
   height: ${DEFAULT_HEIGHT}px;
-  padding: 1rem;
-  padding-right: 2rem;
   display: flex;
   background-color: transparent;
   flex-direction: column;
+  padding: 1rem;
   > * {
     font-size: 1rem;
   }

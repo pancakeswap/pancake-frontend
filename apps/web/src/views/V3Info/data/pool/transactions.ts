@@ -61,6 +61,7 @@ const POOL_TRANSACTIONS = gql`
         }
       }
       owner
+      origin
       amount0
       amount1
       amountUSD
@@ -125,6 +126,7 @@ interface TransactionResults {
       }
     }
     owner: string
+    origin: string
     amount0: string
     amount1: string
     amountUSD: string
@@ -160,7 +162,7 @@ export async function fetchPoolTransactions(
         type: TransactionType.BURN,
         hash: m.transaction.id,
         timestamp: m.timestamp,
-        sender: m.owner,
+        sender: m.origin,
         token0Symbol: m.pool.token0.symbol,
         token1Symbol: m.pool.token1.symbol,
         token0Address: m.pool.token0.id,

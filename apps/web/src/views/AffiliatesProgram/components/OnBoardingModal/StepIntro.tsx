@@ -4,10 +4,11 @@ import { Heading, Text, Flex, Box, useMatchBreakpoints, ChevronLeftIcon, Chevron
 import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
 import { useState, useCallback } from 'react'
-// eslint-disable-next-line import/no-unresolved
-import 'swiper/css/bundle'
+import 'swiper/css'
+import 'swiper/css/autoplay'
+import 'swiper/css/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Swiper as SwiperClass } from 'swiper/types'
+import type { Swiper as SwiperClass } from 'swiper/types'
 import { Autoplay, Navigation } from 'swiper'
 
 const MobileNavigation = styled('div')`

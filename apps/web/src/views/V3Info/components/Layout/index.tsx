@@ -1,4 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { SubMenuItems } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -13,6 +15,8 @@ export const InfoPageLayout = ({ children }) => {
   const router = useRouter()
   const chainName = useGetChainName()
   const isStableSwap = router.query.type === 'stableSwap'
+  const isV3 = router.pathname.includes(v3InfoPath)
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (account && chainId === ChainId.BSC && router.query.chainName === 'eth')
@@ -22,6 +26,23 @@ export const InfoPageLayout = ({ children }) => {
   }, [isStableSwap, chainId, account, chainName, router])
   return (
     <>
+      <SubMenuItems
+        items={[
+          {
+            label: t('V3'),
+            href: '/info/v3',
+          },
+          {
+            label: t('V2'),
+            href: '/info',
+          },
+          chainName === 'BSC' && {
+            label: t('StableSwap'),
+            href: '/info?type=stableSwap',
+          },
+        ]}
+        activeItem={isV3 ? '/info/v3' : '/info'}
+      />
       <InfoNav isStableSwap={false} />
       {children}
     </>

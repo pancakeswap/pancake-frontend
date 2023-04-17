@@ -1,34 +1,26 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
-import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
-import { configureChains, createClient } from 'wagmi'
+import { CHAINS } from 'config/chains'
+import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
+import { configureChains, createClient } from 'wagmi'
+import { mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from './safeConnector'
-import { getNodeRealUrl } from './nodeReal'
-
-const CHAINS = [bsc, mainnet, bscTestnet, goerli]
 
 export const { provider, chains } = configureChains(CHAINS, [
   jsonRpcProvider({
     rpc: (chain) => {
-      if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
-        return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
-      }
-      if (chain.id === bscTestnet.id) {
-        return { http: 'https://data-seed-prebsc-1-s2.binance.org:8545' }
-      }
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
       }
-
-      return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default.http[0] }
+      return PUBLIC_NODES[chain.id] ? { http: PUBLIC_NODES[chain.id] } : { http: chain.rpcUrls.default.http[0] }
     },
   }),
 ])
@@ -48,14 +40,14 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
   },
 })
 
-export const walletConnectConnector = new WalletConnectConnector({
+export const walletConnectConnector = new WalletConnectLegacyConnector({
   chains,
   options: {
     qrcode: true,
   },
 })
 
-export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
+export const walletConnectNoQrCodeConnector = new WalletConnectLegacyConnector({
   chains,
   options: {
     qrcode: false,

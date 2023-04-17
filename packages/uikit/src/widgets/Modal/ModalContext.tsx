@@ -1,8 +1,9 @@
-import { AnimatePresence, domMax, LazyMotion, m } from "framer-motion";
-import React, { createContext, useRef, useState, useMemo, useCallback } from "react";
+import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
+import { AnimatePresence, LazyMotion, m } from "framer-motion";
+import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import { useIsomorphicEffect } from "../../hooks";
@@ -16,6 +17,9 @@ import {
 import getPortalRoot from "../../util/getPortalRoot";
 import { ModalContainer } from "./styles";
 import { Handler } from "./types";
+
+const DomMax = () => import("./motionDomMax").then((mod) => mod.default);
+const DomAnimation = () => import("./motionDomAnimation").then((mod) => mod.default);
 
 interface ModalsContext {
   isOpen: boolean;
@@ -115,7 +119,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     <Context.Provider value={providerValue}>
       {portal &&
         createPortal(
-          <LazyMotion features={domMax}>
+          <LazyMotion features={isMobile ? DomMax : DomAnimation}>
             <AnimatePresence>
               {isOpen && (
                 <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>

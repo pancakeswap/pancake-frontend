@@ -12,6 +12,8 @@ kv_namespaces = [
 ]
 name = "routing"
 
+
+# - AXIOM_TOKEN
 # The necessary secrets are:
 # - ETH_NODE
 # - GOERLI_NODE

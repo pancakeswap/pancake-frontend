@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import memoize from 'lodash/memoize'
 import invert from 'lodash/invert'
+import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
 
 export const CHAIN_QUERY_NAME = {
   [ChainId.ETHEREUM]: 'eth',
@@ -15,3 +16,5 @@ export const getChainId = memoize((chainName: string) => {
   if (!chainName) return undefined
   return CHAIN_QUERY_NAME_TO_ID[chainName] ? +CHAIN_QUERY_NAME_TO_ID[chainName] : undefined
 })
+
+export const CHAINS = [bsc, mainnet, bscTestnet, goerli]

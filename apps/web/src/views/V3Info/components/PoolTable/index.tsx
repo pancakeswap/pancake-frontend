@@ -38,7 +38,7 @@ const ResponsiveGrid = styled.div`
   }
 
   @media screen and (max-width: 480px) {
-    grid-template-columns: 2.5fr repeat(1, 1fr);
+    grid-template-columns: 1.3fr 1fr;
     > *:nth-child(1) {
       display: none;
     }
@@ -133,6 +133,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
     (newField: string) => {
       setSortField(newField)
       setSortDirection(sortField !== newField ? true : !sortDirection)
+      setPage(1)
     },
     [sortDirection, sortField],
   )

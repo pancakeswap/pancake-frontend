@@ -10,7 +10,7 @@ import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { viemProviders } from 'utils/viem'
+import { viemClients } from 'utils/viem'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -67,15 +67,20 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
+  // const isQuoterEnabled = useMemo(
+  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
+  //   [type, isWrapping],
+  // )
   const isQuoterEnabled = useMemo(
-    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
+    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
     [type, isWrapping],
   )
 
-  const isQuoterAPIEnabled = useMemo(
-    () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
-    [isWrapping, type],
-  )
+  const isQuoterAPIEnabled = false
+  // const isQuoterAPIEnabled = useMemo(
+  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
+  //   [isWrapping, type],
+  // )
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
@@ -157,7 +162,11 @@ function bestTradeHookFactory({
       pools: candidatePools,
       loading,
       syncing,
-    } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
+    } = useCommonPools(baseCurrency || amount?.currency, currency, {
+      blockNumber,
+      allowInconsistentBlock: true,
+      enabled,
+    })
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
@@ -259,7 +268,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemProviders }),
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
@@ -267,7 +276,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemProviders }),
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
   getBestTrade: async (
     amount,
     currency,

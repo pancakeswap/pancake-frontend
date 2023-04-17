@@ -6,7 +6,6 @@ import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from 'ethers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
-import { GetResult } from '@pancakeswap/utils/abitype'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
@@ -33,32 +32,37 @@ export async function farmV3FetchFarms({
   ])
 
   const lmPoolInfos = await fetchLmPools(
-    v3PoolData.map((v3Pool) => v3Pool[1][0]),
+    v3PoolData.map((v3Pool) => (v3Pool[1] ? v3Pool[1][0] : null)).filter(Boolean) as string[],
     chainId,
     multicallv2,
   )
 
-  const farmsData = farms.map((farm, index) => {
-    const { token, quoteToken, ...f } = farm
-    const lmPoolAddress = v3PoolData[index][1][0]
-    return {
-      ...f,
-      token,
-      quoteToken,
-      lmPool: lmPoolAddress,
-      lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
-      _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
-      ...getV3FarmsDynamicData({
-        ...(v3PoolData[index][0] as any),
-        token0: farm.token,
-        token1: farm.quoteToken,
-      }),
-      ...getFarmAllocation({
-        allocPoint: poolInfos[index]?.allocPoint,
-        totalAllocPoint,
-      }),
-    }
-  })
+  const farmsData = farms
+    .map((farm, index) => {
+      const { token, quoteToken, ...f } = farm
+      if (!v3PoolData[index][1]) {
+        return null
+      }
+      const lmPoolAddress = v3PoolData[index][1][0]
+      return {
+        ...f,
+        token,
+        quoteToken,
+        lmPool: lmPoolAddress,
+        lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
+        _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
+        ...getV3FarmsDynamicData({
+          ...(v3PoolData[index][0] as any),
+          token0: farm.token,
+          token1: farm.quoteToken,
+        }),
+        ...getFarmAllocation({
+          allocPoint: poolInfos[index]?.allocPoint,
+          totalAllocPoint,
+        }),
+      }
+    })
+    .filter(Boolean) as FarmV3Data[]
 
   const combinedCommonPrice: CommonPrice = {
     ...DEFAULT_COMMON_PRICE[chainId as ChainId],
@@ -308,11 +312,19 @@ const v3PoolAbi = [
   },
 ] as const
 
-type Slot0 = GetResult<typeof v3PoolAbi, 'slot0'>
-type LmPool = GetResult<typeof v3PoolAbi, 'lmPool'>
+type Slot0 = {
+  sqrtPriceX96: BigNumber
+  tick: number
+  observationIndex: number
+  observationCardinality: number
+  observationCardinalityNext: number
+  feeProtocol: number
+  unlocked: boolean
+}
+type LmPool = `0x${string}`
 
-type LmLiquidity = GetResult<typeof lmPoolAbi, 'lmLiquidity'>
-type LmRewardGrowthGlobalX128 = GetResult<typeof lmPoolAbi, 'rewardGrowthGlobalX128'>
+type LmLiquidity = BigNumber
+type LmRewardGrowthGlobalX128 = BigNumber
 
 async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multicallv2: MultiCallV2) {
   const lmPoolCalls = lmPoolAddresses.flatMap((address) => [

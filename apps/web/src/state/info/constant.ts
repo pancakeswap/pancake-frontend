@@ -78,4 +78,8 @@ export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNa
   return multiChainQueryClient[chainName]
 }
 
+export const v2SubgraphTokenName = {
+  '0x738d96caf7096659db4c1afbf1e1bdfd281f388c': 'Ankr Staked MATIC',
+}
+
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')

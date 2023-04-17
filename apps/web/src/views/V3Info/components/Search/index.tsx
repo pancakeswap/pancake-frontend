@@ -20,7 +20,7 @@ import { GreyBadge } from '../Card'
 
 const Container = styled.div`
   position: relative;
-  z-index: 30;
+  z-index: 105;
   width: 100%;
 `
 
@@ -63,7 +63,7 @@ const Blackout = styled.div`
   position: absolute;
   min-height: 100vh;
   width: 100vw;
-  z-index: 10;
+  z-index: 104;
   background-color: black;
   opacity: 0.7;
   left: 0;

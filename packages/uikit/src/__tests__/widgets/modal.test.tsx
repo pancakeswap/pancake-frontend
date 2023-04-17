@@ -93,6 +93,8 @@ it("renders correctly", () => {
     }
 
     .c1 {
+      border-radius: var(--radii-32px);
+      overflow: hidden;
       min-width: 320px;
     }
 
@@ -147,7 +149,6 @@ it("renders correctly", () => {
     }
 
     .c0 {
-      overflow: hidden;
       background: var(--colors-backgroundAlt);
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
       border: 1px solid var(--colors-cardBorder);
@@ -211,6 +212,7 @@ it("renders correctly", () => {
       >
         <div
           class="c1"
+          overflow="hidden"
         >
           <div
             class="c2"
