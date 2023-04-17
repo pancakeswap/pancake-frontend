@@ -11,9 +11,9 @@ import {
   Modal,
   ModalV2,
   RowBetween,
+  StyledTooltip,
   Text,
   useModalV2,
-  useTooltip,
 } from '@pancakeswap/uikit'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
@@ -24,9 +24,9 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
@@ -45,6 +45,23 @@ const ActionContainer = styled(Flex)`
   flex-wrap: wrap;
   padding: 16px;
   gap: 24px;
+`
+
+const Arrow = styled.div`
+  position: absolute;
+  top: 0px;
+  transform: translate3d(0px, 62px, 0px);
+  right: 4px;
+  &::before {
+    content: '';
+    transform: rotate(45deg);
+    background: var(--colors-backgroundAlt);
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    z-index: -1;
+  }
 `
 
 ActionContainer.defaultProps = {
@@ -87,6 +104,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { t } = useTranslation()
   const cakePrice = usePriceCakeUSD()
   const { tokenId } = position
+  const { isDark } = useTheme()
 
   const title = `${lpSymbol} (#${tokenId.toString()})`
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
@@ -135,26 +153,6 @@ const SingleFarmV3Card: React.FunctionComponent<
     return new BigNumber(totalEarnings).times(cakePrice.toString()).toNumber()
   }, [cakePrice, totalEarnings])
 
-  const unstakingTooltip = useTooltip(
-    <Text maxWidth="160px">
-      {outOfRangeUnstaked
-        ? t('Inactive positions will NOT earn CAKE rewards from farm.')
-        : t('You may add or remove liquidity on the position detail page without unstake')}
-    </Text>,
-    {
-      placement: 'left-end',
-      manualVisible: true,
-      strategy: 'absolute',
-      tooltipOffset: [0, -8],
-    },
-  )
-
-  useEffect(() => {
-    if (unstakedModal.isOpen) {
-      unstakingTooltip.forceUpdate?.()
-    }
-  }, [unstakedModal.isOpen, unstakingTooltip])
-
   return (
     <AtomBox {...atomBoxProps}>
       <ActionContainer bg="background" flexDirection={direction}>
@@ -180,23 +178,45 @@ const SingleFarmV3Card: React.FunctionComponent<
             handleUnStake={unstakedModal.onOpen}
           />
           <ModalV2 {...unstakedModal} closeOnOverlayClick>
-            <Modal title={outOfRangeUnstaked ? t('Staking') : t('Unstaking')} maxWidth={['100%', , '420px']}>
+            <Modal
+              title={outOfRangeUnstaked ? t('Staking') : t('Unstaking')}
+              width={['100%', '100%', '420px']}
+              maxWidth={['100%', , '420px']}
+            >
               <AutoColumn gap="16px">
-                <AtomBox position="relative">
-                  <Image
-                    ref={unstakingTooltip.targetRef}
+                <AtomBox
+                  position="relative"
+                  style={{
+                    minHeight: '170px',
+                  }}
+                >
+                  <AtomBox
                     style={{
                       position: 'absolute',
                       right: 0,
                       bottom: '-23px',
+                      display: 'flex',
                     }}
-                    src="/images/decorations/bulb-bunny.png"
-                    width={135}
-                    height={120}
-                    alt="bulb bunny reminds unstaking"
-                  />
-                  <div style={{ width: 135, height: 120 }} />
-                  {unstakingTooltip.tooltip}
+                  >
+                    <StyledTooltip
+                      data-theme={isDark ? 'light' : 'dark'}
+                      style={{
+                        maxWidth: '160px',
+                        position: 'relative',
+                      }}
+                    >
+                      {outOfRangeUnstaked
+                        ? t('Inactive positions will NOT earn CAKE rewards from farm.')
+                        : t('You may add or remove liquidity on the position detail page without unstake')}
+                      <Arrow />
+                    </StyledTooltip>
+                    <Image
+                      src="/images/decorations/bulb-bunny.png"
+                      width={135}
+                      height={120}
+                      alt="bulb bunny reminds unstaking"
+                    />
+                  </AtomBox>
                 </AtomBox>
                 <LightCard>
                   <AutoColumn gap="8px">
