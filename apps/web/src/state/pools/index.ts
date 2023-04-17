@@ -5,7 +5,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { bscTokens } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import {
-  fetchPoolsBlockLimits,
+  fetchPoolsTimeLimits,
   fetchPoolsTotalStaking,
   fetchPoolsProfileRequirement,
   fetchPoolsStakingLimits,
@@ -23,6 +23,9 @@ import {
   getCakeVaultAddress,
   getCakeFlexibleSideVaultAddress,
   getPoolsConfig,
+  isLegacyPool,
+  getPoolAprByTokenPerSecond,
+  getPoolAprByTokenPerBlock,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -36,11 +39,10 @@ import {
   SerializedVaultUser,
   SerializedLockedCakeVault,
 } from 'state/types'
-import { getPoolApr } from 'utils/apr'
 import cakeAbi from 'config/abi/cake.json'
 import { multicallv2 } from 'utils/multicall'
 import { isAddress } from 'utils'
-import { provider } from 'utils/providers'
+import { provider } from 'utils/wagmi'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 
@@ -137,14 +139,15 @@ export const fetchCakePoolUserDataAsync =
 export const fetchPoolsPublicDataAsync =
   (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
     try {
-      const [blockLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
-        fetchPoolsBlockLimits(chainId, provider),
+      const [timeLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
+        fetchPoolsTimeLimits(chainId, provider),
         fetchPoolsTotalStaking(chainId, provider),
         fetchPoolsProfileRequirement(chainId, provider),
         currentBlockNumber ? Promise.resolve(currentBlockNumber) : provider({ chainId })?.getBlockNumber(),
       ])
+      const block = await provider({ chainId })?.getBlock(currentBlock)
 
-      const blockLimitsSousIdMap = keyBy(blockLimits, 'sousId')
+      const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
       const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
       const poolsConfig = getPoolsConfig(chainId)
@@ -156,9 +159,9 @@ export const fetchPoolsPublicDataAsync =
               (pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase(),
             )
             .filter((pool) => {
-              const poolBlockLimit = blockLimitsSousIdMap[pool.sousId]
-              if (poolBlockLimit) {
-                return poolBlockLimit.endBlock > currentBlock
+              const poolTimeLimit = timeLimitsSousIdMap[pool.sousId]
+              if (poolTimeLimit) {
+                return poolTimeLimit.endTimestamp > block.timestamp
               }
               return false
             }).length > 0
@@ -188,10 +191,10 @@ export const fetchPoolsPublicDataAsync =
       ])
 
       const liveData = poolsConfig.map((pool) => {
-        const blockLimit = blockLimitsSousIdMap[pool.sousId]
+        const timeLimit = timeLimitsSousIdMap[pool.sousId]
         const totalStaking = totalStakingsSousIdMap[pool.sousId]
         const isPoolEndBlockExceeded =
-          currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
+          block.timestamp > 0 && timeLimit ? block.timestamp > Number(timeLimit.endTimestamp) : false
         const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
         const stakingTokenAddress = isAddress(pool.stakingToken.address)
@@ -199,19 +202,27 @@ export const fetchPoolsPublicDataAsync =
 
         const earningTokenAddress = isAddress(pool.earningToken.address)
         const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
         const apr = !isPoolFinished
-          ? getPoolApr(
-              stakingTokenPrice,
-              earningTokenPrice,
-              getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-              parseFloat(pool.tokenPerBlock),
-            )
+          ? isLegacyPool(pool)
+            ? getPoolAprByTokenPerBlock(
+                stakingTokenPrice,
+                earningTokenPrice,
+                totalStaked,
+                parseFloat(pool.tokenPerBlock),
+              )
+            : getPoolAprByTokenPerSecond(
+                stakingTokenPrice,
+                earningTokenPrice,
+                totalStaked,
+                parseFloat(pool.tokenPerSecond),
+              )
           : 0
 
         const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
 
         return {
-          ...blockLimit,
+          ...timeLimit,
           ...totalStaking,
           profileRequirement,
           stakingTokenPrice,
@@ -240,14 +251,14 @@ export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatc
       if (poolsWithStakingLimit.includes(pool.sousId)) {
         return { sousId: pool.sousId }
       }
-      const { stakingLimit, numberBlocksForUserLimit } = stakingLimits[pool.sousId] || {
+      const { stakingLimit, numberSecondsForUserLimit } = stakingLimits[pool.sousId] || {
         stakingLimit: BIG_ZERO,
-        numberBlocksForUserLimit: 0,
+        numberSecondsForUserLimit: 0,
       }
       return {
         sousId: pool.sousId,
         stakingLimit: stakingLimit.toJSON(),
-        numberBlocksForUserLimit,
+        numberSecondsForUserLimit,
       }
     })
 

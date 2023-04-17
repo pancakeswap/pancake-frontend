@@ -2,8 +2,7 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { parseUnits } from '@ethersproject/units'
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
-import { SerializedWrappedToken } from '@pancakeswap/token-lists'
-import { Pool } from '@pancakeswap/uikit'
+import { SerializedPoolWithInfo } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
 import { CampaignType, FetchStatus, LotteryStatus, LotteryTicket, Team, TranslatableText } from 'config/constants/types'
 import { NftToken } from './nftMarket/types'
@@ -37,30 +36,8 @@ export enum VaultKey {
   IfoPool = 'ifoPool',
 }
 
-interface CorePoolProps {
-  startBlock?: number
-  endBlock?: number
-  apr?: number
-  rawApr?: number
-  stakingTokenPrice?: number
-  earningTokenPrice?: number
-  vaultKey?: VaultKey
-}
-
-export interface SerializedPool extends Pool.SerializedPoolConfig<SerializedWrappedToken>, CorePoolProps {
-  totalStaked?: SerializedBigNumber
-  stakingLimit?: SerializedBigNumber
-  numberBlocksForUserLimit?: number
-  profileRequirement?: {
-    required: boolean
-    thresholdPoints: SerializedBigNumber
-  }
-  userData?: {
-    allowance: SerializedBigNumber
-    stakingTokenBalance: SerializedBigNumber
-    stakedBalance: SerializedBigNumber
-    pendingReward: SerializedBigNumber
-  }
+export type SerializedPool = SerializedPoolWithInfo & {
+  numberSecondsForUserLimit: number
 }
 
 export interface Profile {

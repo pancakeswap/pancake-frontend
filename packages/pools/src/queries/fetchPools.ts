@@ -6,12 +6,14 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { createMulticall } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 
-import { getPoolsConfig } from '../constants'
+import { BSC_BLOCK_TIME, getPoolsConfig } from '../constants'
 import sousChefABI from '../abis/ISousChef.json'
 import erc20ABI from '../abis/IERC20.json'
 import sousChefV2 from '../abis/ISousChefV2.json'
 import sousChefV3 from '../abis/ISousChefV3.json'
-import { OnChainProvider } from '../types'
+import smartChefABI from '../abis/ISmartChef.json'
+import { LegacySerializedPool, OnChainProvider, UpgradedSerializedPool } from '../types'
+import { isLegacyPool, isUpgradedPool } from '../utils'
 
 const getLivePoolsWithEnd = async (chainId: ChainId) => {
   const poolsConfig = getPoolsConfig(chainId)
@@ -21,12 +23,63 @@ const getLivePoolsWithEnd = async (chainId: ChainId) => {
   return poolsConfig.filter((p) => p.sousId !== 0 && !p.isFinished)
 }
 
-export const fetchPoolsBlockLimits = async (chainId: ChainId, provider: OnChainProvider) => {
-  const livePoolsWithEnd = await getLivePoolsWithEnd(chainId)
-  if (!livePoolsWithEnd) {
-    return null
+async function fetchUpgradedPoolsTimeLimits(
+  pools: UpgradedSerializedPool[],
+  chainId: ChainId,
+  provider: OnChainProvider,
+) {
+  if (!pools.length) {
+    return []
   }
-  const startEndBlockCalls = livePoolsWithEnd.flatMap(({ contractAddress }) => {
+
+  const calls = pools.flatMap(({ contractAddress }) => {
+    return [
+      {
+        address: contractAddress[chainId],
+        name: 'startTimestamp',
+      },
+      {
+        address: contractAddress[chainId],
+        name: 'endTimestamp',
+      },
+    ]
+  })
+
+  const { multicall } = createMulticall(provider)
+  const startEndRaw: [BigNumber][] = await multicall(smartChefABI, calls)
+
+  const startEndResult = startEndRaw.reduce<[BigNumber][][]>((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 2)
+
+    if (!resultArray[chunkIndex]) {
+      // eslint-disable-next-line no-param-reassign
+      resultArray[chunkIndex] = [] // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item)
+
+    return resultArray
+  }, [])
+
+  return pools.map((cakePoolConfig, index) => {
+    const [[startTimestamp], [endTimestamp]] = startEndResult[index]
+    return {
+      sousId: cakePoolConfig.sousId,
+      startTimestamp: startTimestamp.toNumber(),
+      endTimestamp: endTimestamp.toNumber(),
+    }
+  })
+}
+
+const fetchLegacyPoolsBlockLimits = async (
+  pools: LegacySerializedPool[],
+  chainId: ChainId,
+  provider: OnChainProvider,
+) => {
+  if (!pools.length) {
+    return []
+  }
+  const startEndBlockCalls = pools.flatMap(({ contractAddress }) => {
     return [
       {
         address: contractAddress[chainId],
@@ -39,6 +92,8 @@ export const fetchPoolsBlockLimits = async (chainId: ChainId, provider: OnChainP
     ]
   })
 
+  const blockNumber = await provider({ chainId }).getBlockNumber()
+  const block = await provider({ chainId }).getBlock(blockNumber)
   const { multicall } = createMulticall(provider)
   const startEndBlockRaw: [BigNumber][] = await multicall(sousChefABI, startEndBlockCalls)
 
@@ -55,14 +110,31 @@ export const fetchPoolsBlockLimits = async (chainId: ChainId, provider: OnChainP
     return resultArray
   }, [])
 
-  return livePoolsWithEnd.map((cakePoolConfig, index) => {
+  const getTimestampFromBlock = (targetBlock: number) => {
+    return block.timestamp + (targetBlock - blockNumber) * BSC_BLOCK_TIME
+  }
+  return pools.map((cakePoolConfig, index) => {
     const [[startBlock], [endBlock]] = startEndBlockResult[index]
     return {
       sousId: cakePoolConfig.sousId,
-      startBlock: startBlock.toNumber(),
-      endBlock: endBlock.toNumber(),
+      startTimestamp: getTimestampFromBlock(startBlock.toNumber()),
+      endTimestamp: getTimestampFromBlock(endBlock.toNumber()),
     }
   })
+}
+
+export const fetchPoolsTimeLimits = async (chainId: ChainId, provider: OnChainProvider) => {
+  const livedPools = await getLivePoolsWithEnd(chainId)
+  if (!livedPools) {
+    return null
+  }
+  const upgradedPools = livedPools.filter(isUpgradedPool)
+  const legacyPools = livedPools.filter(isLegacyPool)
+  const [upgradePoolLimits, legacyPoolLimits] = await Promise.all([
+    fetchUpgradedPoolsTimeLimits(upgradedPools, chainId, provider),
+    fetchLegacyPoolsBlockLimits(legacyPools, chainId, provider),
+  ])
+  return [...upgradePoolLimits, ...legacyPoolLimits]
 }
 
 export const fetchPoolsTotalStaking = async (chainId: ChainId, provider: OnChainProvider) => {
@@ -93,12 +165,12 @@ interface FetchingPoolsStakingLimitsParams {
   provider: OnChainProvider
 }
 
-export const fetchPoolsStakingLimits = async ({
+export const fetchPoolsStakingLimitsByBlock = async ({
   poolsWithStakingLimit,
   chainId,
   provider,
 }: FetchingPoolsStakingLimitsParams): Promise<{
-  [key: string]: { stakingLimit: BigNumber; numberBlocksForUserLimit: number }
+  [key: string]: { stakingLimit: BigNumber; numberSecondsForUserLimit: number }
 }> => {
   const poolsConfig = getPoolsConfig(chainId)
   if (!poolsConfig) {
@@ -106,6 +178,7 @@ export const fetchPoolsStakingLimits = async ({
   }
 
   const validPools = poolsConfig
+    .filter(isLegacyPool)
     .filter((p) => p.stakingToken.symbol !== 'BNB' && !p.isFinished)
     .filter((p) => !poolsWithStakingLimit.includes(p.sousId))
 
@@ -132,9 +205,70 @@ export const fetchPoolsStakingLimits = async ({
       const hasUserLimit = stakingLimitRaw[0]
       const stakingLimit = hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
       const numberBlocksForUserLimit = stakingLimitRaw[2] ? (stakingLimitRaw[2] as EthersBigNumber).toNumber() : 0
-      return [validPools[index].sousId, { stakingLimit, numberBlocksForUserLimit }]
+      const numberSecondsForUserLimit = numberBlocksForUserLimit * BSC_BLOCK_TIME
+      return [validPools[index].sousId, { stakingLimit, numberSecondsForUserLimit }]
     }),
   )
+}
+
+const fetchPoolsStakingLimitsByTime = async ({
+  poolsWithStakingLimit,
+  chainId,
+  provider,
+}: FetchingPoolsStakingLimitsParams): Promise<{
+  [key: string]: { stakingLimit: BigNumber; numberSecondsForUserLimit: number }
+}> => {
+  const poolsConfig = getPoolsConfig(chainId)
+  if (!poolsConfig) {
+    throw new Error(`No pools found on chain ${chainId}`)
+  }
+
+  const validPools = poolsConfig
+    .filter(isUpgradedPool)
+    .filter((p) => p.stakingToken.symbol !== 'BNB' && !p.isFinished)
+    .filter((p) => !poolsWithStakingLimit.includes(p.sousId))
+
+  // Get the staking limit for each valid pool
+  const poolStakingCalls = validPools
+    .map(({ contractAddress }) => {
+      return ['hasUserLimit', 'poolLimitPerUser', 'numberSecondsForUserLimit'].map((method) => ({
+        address: contractAddress[chainId],
+        name: method,
+      }))
+    })
+    .flat()
+
+  const { multicallv2 } = createMulticall(provider)
+  const poolStakingResultRaw = await multicallv2({
+    abi: smartChefABI,
+    calls: poolStakingCalls,
+    options: { requireSuccess: false },
+  })
+  const chunkSize = poolStakingCalls.length / validPools.length
+  const poolStakingChunkedResultRaw = chunk(poolStakingResultRaw.flat(), chunkSize)
+  return fromPairs(
+    poolStakingChunkedResultRaw.map((stakingLimitRaw, index) => {
+      const hasUserLimit = stakingLimitRaw[0]
+      const stakingLimit = hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
+      const numberSecondsForUserLimit = stakingLimitRaw[2] ? (stakingLimitRaw[2] as EthersBigNumber).toNumber() : 0
+      return [validPools[index].sousId, { stakingLimit, numberSecondsForUserLimit }]
+    }),
+  )
+}
+
+export const fetchPoolsStakingLimits = async (
+  params: FetchingPoolsStakingLimitsParams,
+): Promise<{
+  [key: string]: { stakingLimit: BigNumber; numberSecondsForUserLimit: number }
+}> => {
+  const [limitsByTime, limitsByBlock] = await Promise.all([
+    fetchPoolsStakingLimitsByTime(params),
+    fetchPoolsStakingLimitsByBlock(params),
+  ])
+  return {
+    ...limitsByTime,
+    ...limitsByBlock,
+  }
 }
 
 export const fetchPoolsProfileRequirement = async (
@@ -151,7 +285,9 @@ export const fetchPoolsProfileRequirement = async (
     throw new Error(`No pools found on chain ${chainId}`)
   }
 
-  const livePoolsWithV3 = poolsConfig.filter((pool) => pool?.version === 3 && !pool?.isFinished)
+  const livePoolsWithV3 = poolsConfig.filter(
+    (pool) => (isUpgradedPool(pool) || (isLegacyPool(pool) && pool?.version === 3)) && !pool?.isFinished,
+  )
   const poolProfileRequireCalls = livePoolsWithV3
     .map(({ contractAddress }) => {
       return ['pancakeProfileIsRequested', 'pancakeProfileThresholdPoints'].map((method) => ({
