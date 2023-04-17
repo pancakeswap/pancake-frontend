@@ -20,6 +20,10 @@ export const usePollBlockNumber = () => {
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
         mutate(['initialBlockNumber', chainId], blockNumber)
       }
+      if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
+        const block = await provider.getBlock(blockNumber)
+        mutate(['initialBlockTimestamp', chainId], block.timestamp)
+      }
       return blockNumber
     },
     {
@@ -78,4 +82,10 @@ export const useInitialBlock = (): number => {
   const { chainId } = useActiveChainId()
   const { data: initialBlock = 0 } = useSWRImmutable(['initialBlockNumber', chainId])
   return initialBlock
+}
+
+export const useInitialBlockTimestamp = (): number => {
+  const { chainId } = useActiveChainId()
+  const { data: initialBlockTimestamp = 0 } = useSWRImmutable(['initialBlockTimestamp', chainId])
+  return initialBlockTimestamp
 }
