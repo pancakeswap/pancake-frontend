@@ -1,6 +1,5 @@
 import { Flex, LinkExternal, Skeleton, Text, Pool } from '@pancakeswap/uikit'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
-import { bsc } from 'wagmi/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -8,8 +7,10 @@ import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
-import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
+import { getVaultPoolAddress } from 'utils/addressHelpers'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getBlockExploreLink } from 'utils'
 import MaxStakeRow from './MaxStakeRow'
 import { AprInfo, DurationAvg, PerformanceFee, TotalLocked } from './Stat'
 
@@ -28,6 +29,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 }) => {
   const { t } = useTranslation()
   const currentBlock = useCurrentBlock()
+  const { chainId } = useActiveChainId()
 
   const {
     stakingToken,
@@ -54,7 +56,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   } = useVaultPoolByKey(vaultKey)
 
   const tokenAddress = earningToken.address || ''
-  const poolContractAddress = getAddress(contractAddress)
+  const poolContractAddress = contractAddress[chainId]
   const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
 
   const { shouldShowBlockCountdown, timeUntilStart, timeRemaining, hasPoolStarted } = getPoolBlockInfo(
@@ -133,9 +135,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <LinkExternal
             isBscScan
-            href={`${bsc.blockExplorers.default.url}/address/${
-              vaultKey ? cakeVaultContractAddress : poolContractAddress
-            }`}
+            href={getBlockExploreLink(vaultKey ? cakeVaultContractAddress : poolContractAddress, 'address', chainId)}
             bold={false}
             small
           >
