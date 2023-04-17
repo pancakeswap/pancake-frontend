@@ -46,6 +46,14 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 22,
+    lpSymbol: 'GQ-USDT LP',
+    token: bscTokens.gq,
+    quoteToken: bscTokens.usdt,
+    lpAddress: '0x07003daEbc432ecec26309cCd1391BBBF06cC890',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 20,
     lpSymbol: 'ETH-ankrETH LP',
     token: bscTokens.eth,
@@ -223,13 +231,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
-  {
-    pid: 164,
-    lpSymbol: 'GQ-USDT LP',
-    lpAddress: '0x06a2355fE6f2E93F3177be26Df5926211e9dd462',
-    token: bscTokens.gq,
-    quoteToken: bscTokens.usdt,
-  },
   {
     pid: 163,
     lpSymbol: 'HAY-USDT LP',
