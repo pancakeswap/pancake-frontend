@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useTransition } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { Field, selectCurrency, switchCurrencies, typeInput, setRecipient } from './actions'
 import { useAppDispatch } from '../index'
@@ -9,6 +9,7 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
+  const [, startTransition] = useTransition()
   const dispatch = useAppDispatch()
 
   const onSwitchTokens = useCallback(() => {
@@ -27,7 +28,9 @@ export function useSwapActionHandlers(): {
   }, [])
 
   const onUserInput = useCallback((field: Field, typedValue: string) => {
-    dispatch(typeInput({ field, typedValue }))
+    startTransition(() => {
+      dispatch(typeInput({ field, typedValue }))
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

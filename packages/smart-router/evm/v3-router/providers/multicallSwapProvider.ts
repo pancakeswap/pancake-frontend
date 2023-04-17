@@ -91,7 +91,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
         ? isPromise(blockNumberOverride)
           ? BigInt(JSBI.toNumber(JSBI.BigInt(await blockNumberOverride)))
           : BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride)))
-        : (undefined as never),
+        : undefined,
     })
 
     // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {

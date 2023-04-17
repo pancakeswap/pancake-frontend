@@ -251,7 +251,7 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
 }
 
 export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const stablePrice = useStablecoinPrice(currency, !!amount)
+  const stablePrice = useStablecoinPrice(currency, !!currency)
 
   if (amount) {
     if (stablePrice) {
