@@ -7,7 +7,7 @@ import { RouteWithoutQuote, RouteWithQuote } from './route'
 import { GasModel } from './gasModel'
 
 interface PoolOptions {
-  blockNumber: BigintIsh
+  blockNumber?: BigintIsh
   protocols?: PoolType[]
 }
 
@@ -18,7 +18,7 @@ export interface PoolProvider {
 }
 
 export interface QuoterOptions {
-  blockNumber: BigintIsh
+  blockNumber?: BigintIsh
   gasModel: GasModel
 }
 

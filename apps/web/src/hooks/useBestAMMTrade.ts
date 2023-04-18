@@ -123,7 +123,12 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
       // )
       return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter_
     }
-    if (JSBI.greaterThan(JSBI.BigInt(quoterTrade.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
+
+    if (
+      quoterTrade.blockNumber &&
+      tradeFromOffchain.blockNumber &&
+      JSBI.greaterThan(JSBI.BigInt(quoterTrade.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))
+    ) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
       return bestTradeFromQuoter_
     }
@@ -218,7 +223,6 @@ function bestTradeHookFactory({
           poolProvider,
           maxSplits,
           quoteProvider,
-          blockNumber,
           allowedPoolTypes: poolTypes,
           quoterOptimization,
         })
@@ -234,7 +238,10 @@ function bestTradeHookFactory({
           )
         }
         SmartRouter.log(label, res)
-        return res
+        return {
+          ...res,
+          blockNumber,
+        }
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
@@ -281,11 +288,9 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
     amount,
     currency,
     tradeType,
-    { maxHops, maxSplits, gasPriceWei, blockNumber, allowedPoolTypes, poolProvider },
+    { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider },
   ) => {
-    const blockNum = typeof blockNumber === 'number' ? blockNumber : await blockNumber()
     const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
-      blockNumber: blockNum,
       protocols: allowedPoolTypes,
     })
 
@@ -305,7 +310,6 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
         gasPriceWei: gasPriceWei?.toString(),
         maxHops,
         maxSplits,
-        blockNumber: blockNum.toString(),
         poolTypes: allowedPoolTypes,
         candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
       }),

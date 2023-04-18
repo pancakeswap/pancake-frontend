@@ -2006,7 +2006,7 @@
   "LP Fee Yield": "Rendimento da comissão LP",
   "LP Fee APR": "Comissão de LP APR",
   "Yields and rewards are calculated at the current rates and subject to change based on various external variables.": "Os rendimentos e recompensas são calculados às taxas atuais e estão sujeitos a alterações com base em várias variáveis externas.",
-  "LP Fee Rewards: 0.01% ~ 1% per trade according to the specific fee tier of the trading pair, claimed and compounded manually.": "Recompensas de comissões LP: 0,01% ~ 1% por negociação de acordo com o nível de comissão específico do par de negociação, reclamado e composto manualmente.",
+  "LP Fee Rewards: 0.01% ~ 1% per trade according to the specific fee tier of the trading pair, claimed and compounded manually.": "Recompensas de comissões LP: 0,01% ~ 1% por negociação conforme o nível de comissão específico do par de negociação, reclamado e composto manualmente.",
   "LP Fee APR figures are calculated using Subgraph and may subject to indexing delays. For more accurate LP Fee APR, please visit the Info Page.": "Os valores de APR da taxa de LP são calculados com uso do Subgrafo e podem estar sujeitos a atrasos de indexação. Para um APR de Taxa de LP mais preciso, visite a página de informações.",
   "Entry price": "Preço de entrada",
   "Exit price": "Preço de saída",
