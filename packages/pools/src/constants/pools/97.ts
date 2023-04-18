@@ -34,16 +34,6 @@ export const livePools: SerializedPool[] = [
     tokenPerSecond: '0.01',
   },
   {
-    sousId: 4,
-    stakingToken: bscTestnetTokens.cake2,
-    earningToken: bscTestnetTokens.msix,
-    contractAddress: {
-      97: '0xcEbF4Bd7b40b224b793B70E7c71Fa3A009209625',
-    },
-    poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '100000000',
-  },
-  {
     sousId: 5,
     stakingToken: bscTestnetTokens.msix,
     earningToken: bscTestnetTokens.cake2,
@@ -52,6 +42,16 @@ export const livePools: SerializedPool[] = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.0001',
+  },
+  {
+    sousId: 6,
+    stakingToken: bscTestnetTokens.cake2,
+    earningToken: bscTestnetTokens.msix,
+    contractAddress: {
+      97: '0xeB019927EB2d79b6A03B728a6f7A9020f3e2E25f',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '1',
   },
 ].map((p) => ({
   ...p,
