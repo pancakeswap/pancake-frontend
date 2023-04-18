@@ -14,12 +14,12 @@ export type PoolsConfigByChain<TChainId extends ChainId> = {
 export const POOLS_CONFIG_BY_CHAIN = {
   [ChainId.BSC]: bscPools,
   [ChainId.BSC_TESTNET]: bscTestnetPools,
-} satisfies PoolsConfigByChain<SupportedChainId>
+} as PoolsConfigByChain<SupportedChainId>
 
 export const LIVE_POOLS_CONFIG_BY_CHAIN = {
   [ChainId.BSC]: bscLivePools,
   [ChainId.BSC_TESTNET]: bscTestnetLivePools,
-} satisfies PoolsConfigByChain<SupportedChainId>
+} as PoolsConfigByChain<SupportedChainId>
 
 export const getPoolsConfig = (chainId: ChainId) => {
   if (!isPoolsSupported(chainId)) {
