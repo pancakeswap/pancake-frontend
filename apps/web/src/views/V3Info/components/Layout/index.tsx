@@ -18,12 +18,12 @@ export const InfoPageLayout = ({ children }) => {
   const isV3 = router.pathname.includes(v3InfoPath)
   const { t } = useTranslation()
 
-  useEffect(() => {
-    if (account && chainId === ChainId.BSC && router.query.chainName === 'eth')
-      router.replace(`/${v3InfoPath}`, undefined, { shallow: true })
-    else if (account && chainId === ChainId.ETHEREUM && router.query.chainName !== 'eth')
-      router.replace(`/${v3InfoPath}/eth`, undefined, { shallow: true })
-  }, [isStableSwap, chainId, account, chainName, router])
+  // useEffect(() => {
+  //   if (account && chainId === ChainId.BSC && router.query.chainName === 'eth')
+  //     router.replace(`/${v3InfoPath}`, undefined, { shallow: true })
+  //   else if (account && chainId === ChainId.ETHEREUM && router.query.chainName !== 'eth')
+  //     router.replace(`/${v3InfoPath}/eth`, undefined, { shallow: true })
+  // }, [isStableSwap, chainId, account, chainName, router])
   return (
     <>
       <SubMenuItems
