@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
 import Podium from 'views/AffiliatesProgram/components/LeaderBoard/Podium'
+import LeaderBoardList from 'views/AffiliatesProgram/components/LeaderBoard/LeaderBoardList'
 
 const LeaderBoard = () => {
   const { t } = useTranslation()
@@ -10,6 +11,7 @@ const LeaderBoard = () => {
     <AffiliatesProgramLayout>
       <Banner title={t('Leaderboard')} subTitle={t('See who has invited the most friends')} />
       <Podium />
+      <LeaderBoardList />
     </AffiliatesProgramLayout>
   )
 }
