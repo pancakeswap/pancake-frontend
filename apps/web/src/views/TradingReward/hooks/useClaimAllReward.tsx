@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import web3 from 'web3'
 import { useSWRConfig } from 'swr'
-import { keccak256 } from '@ethersproject/keccak256'
+import { solidityKeccak256 } from 'ethers/lib/utils'
 import { useAccount } from 'wagmi'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -28,7 +27,8 @@ export const useClaimAllReward = (campaignIds: Array<string>, unclaimData: UserC
     const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
         const volume = new BigNumber(i.totalVolume.toFixed(2)).times(1e18).toString()
-        const originHash = Buffer.from(`0x${keccak256(keccak256(web3.utils.encodePacked(account, volume)))}`, 'hex')
+        const originHash = Buffer.from(solidityKeccak256(['address', 'uint256'], [account, volume]).slice(2), 'hex')
+
         const response = await fetch(
           `${TRADING_REWARD_API}/hash/chainId/${chainId}/campaignId/${i.campaignId}/originHash/${originHash}`,
         )
