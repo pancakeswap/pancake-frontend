@@ -22,7 +22,7 @@ import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
@@ -47,6 +47,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
 
 import RangeSelector from './components/RangeSelector'
@@ -367,35 +368,6 @@ export default function V3FormView({
     'TransactionConfirmationModal',
   )
 
-  const quickActionConfig = useMemo(() => {
-    if (feeAmount === 2500 || feeAmount === 10000) {
-      return [
-        { percentage: 10, balanceFactor: 1.11 },
-        { percentage: 20, balanceFactor: 1.25 },
-        { percentage: 50, balanceFactor: 2 },
-      ]
-    }
-    if (feeAmount === 500) {
-      return [
-        { percentage: 5, balanceFactor: 1.08 },
-        { percentage: 10, balanceFactor: 1.11 },
-        { percentage: 20, balanceFactor: 1.25 },
-      ]
-    }
-    if (feeAmount === 100) {
-      return [
-        { percentage: 0.1, balanceFactor: 1 },
-        { percentage: 0.5, balanceFactor: 1 },
-        { percentage: 1, balanceFactor: 1 },
-      ]
-    }
-    return [
-      { percentage: 10, balanceFactor: 1.11 },
-      { percentage: 20, balanceFactor: 1.25 },
-      { percentage: 50, balanceFactor: 2 },
-    ]
-  }, [feeAmount])
-
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const handleButtonSubmit = useCallback(() => {
@@ -613,36 +585,34 @@ export default function V3FormView({
               </Message>
             ) : (
               <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
-                {quickActionConfig.map((quickAction) => {
-                  return (
-                    <Button
-                      width="100%"
-                      key={`quickActions${quickAction.percentage}`}
-                      onClick={() => {
-                        const currentPrice = invertPrice ? price?.invert() : price
-                        if (currentPrice) {
-                          onBothRangeInput({
-                            leftTypedValue: currentPrice
-                              .divide(new Fraction(1000, 1000 - quickAction.percentage * 10))
-                              .toSignificant(6),
-                            rightTypedValue: currentPrice
-                              .divide(
-                                new Fraction(
-                                  1000,
-                                  Math.floor(1000 + quickAction.percentage * 10 * quickAction.balanceFactor),
-                                ),
-                              )
-                              .toSignificant(6),
-                          })
-                        }
-                      }}
-                      variant="secondary"
-                      scale="sm"
-                    >
-                      {quickAction.percentage}%
-                    </Button>
-                  )
-                })}
+                {QUICK_ACTION_CONFIGS[feeAmount]?.map((quickAction) => (
+                  <Button
+                    width="100%"
+                    key={`quickActions${quickAction.percentage}`}
+                    onClick={() => {
+                      const currentPrice = invertPrice ? price?.invert() : price
+                      if (currentPrice) {
+                        onBothRangeInput({
+                          leftTypedValue: currentPrice
+                            .divide(new Fraction(1000, 1000 - quickAction.percentage * 10))
+                            .toSignificant(6),
+                          rightTypedValue: currentPrice
+                            .divide(
+                              new Fraction(
+                                1000,
+                                Math.floor(1000 + quickAction.percentage * 10 * quickAction.balanceFactor),
+                              ),
+                            )
+                            .toSignificant(6),
+                        })
+                      }
+                    }}
+                    variant="secondary"
+                    scale="sm"
+                  >
+                    {quickAction.percentage}%
+                  </Button>
+                ))}
                 <Button
                   width="200%"
                   onClick={() => {
