@@ -40,7 +40,6 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const chainPath = useMultiChainPath()
-  const { address: account } = useAccount()
 
   const isPairs = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/pairs`
   const isTokens = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/tokens`
