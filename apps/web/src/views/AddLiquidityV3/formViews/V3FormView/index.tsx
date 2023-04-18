@@ -612,10 +612,11 @@ export default function V3FormView({
                 </Box>
               </Message>
             ) : (
-              <Flex justifyContent="space-between" width="100%">
+              <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
                 {quickActionConfig.map((quickAction) => {
                   return (
                     <Button
+                      width="100%"
                       key={`quickActions${quickAction.percentage}`}
                       onClick={() => {
                         const currentPrice = invertPrice ? price?.invert() : price
@@ -643,6 +644,7 @@ export default function V3FormView({
                   )
                 })}
                 <Button
+                  width="200%"
                   onClick={() => {
                     setShowCapitalEfficiencyWarning(true)
                   }}
