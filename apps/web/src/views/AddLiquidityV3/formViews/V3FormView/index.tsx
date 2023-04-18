@@ -335,6 +335,8 @@ export default function V3FormView({
     !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
   } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
 
+  const [activeQuickAction, setActiveQuickAction] = useState<number>()
+
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
       minWidth={['100%', , '420px']}
@@ -585,40 +587,44 @@ export default function V3FormView({
               </Message>
             ) : (
               <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
-                {QUICK_ACTION_CONFIGS[feeAmount]?.map((quickAction) => (
-                  <Button
-                    width="100%"
-                    key={`quickActions${quickAction.percentage}`}
-                    onClick={() => {
-                      const currentPrice = invertPrice ? price?.invert() : price
-                      if (currentPrice) {
-                        onBothRangeInput({
-                          leftTypedValue: currentPrice
-                            .divide(new Fraction(1000, 1000 - quickAction.percentage * 10))
-                            .toSignificant(6),
-                          rightTypedValue: currentPrice
-                            .divide(
-                              new Fraction(
-                                1000,
-                                Math.floor(1000 + quickAction.percentage * 10 * quickAction.balanceFactor),
-                              ),
-                            )
-                            .toSignificant(6),
-                        })
-                      }
-                    }}
-                    variant="secondary"
-                    scale="sm"
-                  >
-                    {quickAction.percentage}%
-                  </Button>
-                ))}
+                {QUICK_ACTION_CONFIGS[feeAmount]?.map((quickAction) => {
+                  return (
+                    <Button
+                      width="100%"
+                      key={`quickActions${quickAction.percentage}`}
+                      onClick={() => {
+                        const currentPrice = invertPrice ? price?.invert() : price
+                        if (currentPrice) {
+                          onBothRangeInput({
+                            leftTypedValue: currentPrice
+                              .divide(new Fraction(1000, 1000 - quickAction.percentage * 10))
+                              .toSignificant(6),
+                            rightTypedValue: currentPrice
+                              .divide(
+                                new Fraction(
+                                  1000,
+                                  Math.floor(1000 + quickAction.percentage * 10 * quickAction.balanceFactor),
+                                ),
+                              )
+                              .toSignificant(6),
+                          })
+                          setActiveQuickAction(quickAction.percentage)
+                        }
+                      }}
+                      variant={quickAction.percentage === activeQuickAction ? 'primary' : 'secondary'}
+                      scale="sm"
+                    >
+                      {quickAction.percentage}%
+                    </Button>
+                  )
+                })}
                 <Button
                   width="200%"
                   onClick={() => {
                     setShowCapitalEfficiencyWarning(true)
+                    setActiveQuickAction(100)
                   }}
-                  variant="secondary"
+                  variant={activeQuickAction === 100 ? 'primary' : 'secondary'}
                   scale="sm"
                 >
                   {t('Full Range')}
