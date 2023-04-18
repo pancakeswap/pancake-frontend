@@ -188,7 +188,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                 <AtomBox
                   position="relative"
                   style={{
-                    minHeight: '88px',
+                    minHeight: '96px',
                   }}
                 >
                   <AtomBox
@@ -227,7 +227,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                 </AtomBox>
                 <LightCard>
                   <AutoColumn gap="8px">
-                    {outOfRangeUnstaked && (
+                    {outOfRange && (
                       <RangeTag outOfRange ml={0} style={{ alignItems: 'center', width: 'fit-content' }}>
                         {t('Inactive')}
                       </RangeTag>
