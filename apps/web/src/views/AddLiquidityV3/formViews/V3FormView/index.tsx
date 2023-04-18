@@ -190,14 +190,15 @@ export default function V3FormView({
   }
 
   //   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field]),
-      }
-    },
-    {},
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = useMemo(
+    () =>
+      [Field.CURRENCY_A, Field.CURRENCY_B].reduce((accumulator, field) => {
+        return {
+          ...accumulator,
+          [field]: maxAmountSpend(currencyBalances[field]),
+        }
+      }, {}),
+    [currencyBalances],
   )
 
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
