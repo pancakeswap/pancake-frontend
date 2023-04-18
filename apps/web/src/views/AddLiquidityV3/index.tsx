@@ -211,7 +211,7 @@ export function UniversalAddLiquidity({
       return
     }
 
-    // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, eg. toggle rate
+    // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, e.g. toggle rate
     if (feeAmountFromUrl) return
     if (stableConfig.stableSwapConfig) {
       setSelectorType(SELECTOR_TYPE.STABLE)

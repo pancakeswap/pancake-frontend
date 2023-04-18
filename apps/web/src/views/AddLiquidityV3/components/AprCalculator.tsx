@@ -123,7 +123,7 @@ export function AprCalculator({
     [pool?.feeProtocol],
   )
 
-  const applyProtocalFee = defaultDepositUsd ? undefined : protocolFee
+  const applyProtocolFee = defaultDepositUsd ? undefined : protocolFee
 
   const { apr } = useRoi({
     tickLower,
@@ -137,10 +137,10 @@ export function AprCalculator({
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
-    protocolFee: applyProtocalFee,
+    protocolFee: applyProtocolFee,
   })
 
-  // NOTE: Assume no liquidity when openning modal
+  // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)
 
   const closeModal = useCallback(() => setOpen(false), [])
@@ -217,7 +217,7 @@ export function AprCalculator({
         sqrtRatioX96={sqrtRatioX96}
         liquidity={pool?.liquidity}
         feeAmount={feeAmount}
-        protocolFee={applyProtocalFee}
+        protocolFee={applyProtocolFee}
         ticks={data}
         volume24H={volume24H}
         priceUpper={priceUpper}
