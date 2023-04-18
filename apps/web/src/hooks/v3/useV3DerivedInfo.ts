@@ -206,7 +206,7 @@ export default function useV3DerivedInfo(
 
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks || {}
 
-  // specifies whether the lower and upper ticks is at the exteme bounds
+  // specifies whether the lower and upper ticks is at the extreme bounds
   const ticksAtLimit = useMemo(
     () => ({
       [Bound.LOWER]: feeAmount && tickLower === tickSpaceLimits.LOWER,
