@@ -25,6 +25,15 @@ const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
 }) => {
   const { t } = useTranslation()
 
+  const showMaxStakeLimit =
+    hasPoolStarted &&
+    endTimestamp !== stakingLimitEndTimestamp &&
+    stakingLimitEndTimestamp >= Math.floor(Date.now() / 1000)
+
+  if (!showMaxStakeLimit) {
+    return null
+  }
+
   return (
     <Flex flexDirection="column">
       <Flex justifyContent="space-between" alignItems="center">
@@ -33,15 +42,11 @@ const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
           stakingToken.symbol
         }`}</Text>
       </Flex>
-      {hasPoolStarted &&
-        endTimestamp !== stakingLimitEndTimestamp &&
-        stakingLimitEndTimestamp <= Math.floor(Date.now() / 1000) && (
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text small={small}>{t('Max. stake limit ends in')}:</Text>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text small={small}>{t('Max. stake limit ends in')}:</Text>
 
-            <Pool.TimeCountdownDisplay timestamp={stakingLimitEndTimestamp} />
-          </Flex>
-        )}
+        <Pool.TimeCountdownDisplay timestamp={stakingLimitEndTimestamp} />
+      </Flex>
     </Flex>
   )
 }
