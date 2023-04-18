@@ -35,7 +35,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
 }
 
 const PRICE_FOR_PAIR_PRICE_CHART = (timestamps: number[]) => {
-  let queryString = 'query poolHourDatas($address: Bytes!) {'
+  let queryString = 'query poolHourDatas($address: String) {'
   timestamps.forEach((d) => {
     queryString += `
       t${d}:poolHourDatas(
