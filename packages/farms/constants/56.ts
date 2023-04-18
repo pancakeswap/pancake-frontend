@@ -48,9 +48,9 @@ export const farmsV3 = [
   {
     pid: 23,
     lpSymbol: 'AXL-USDT  LP',
-    token: bscTokens.axl,
-    quoteToken: bscTokens.usdt,
-    lpAddress: '0xd10612a288bd5024db6a47663750996d176130fe',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.axl,
+    lpAddress: '0xD10612A288Bd5024Db6a47663750996d176130Fe',
     feeAmount: FeeAmount.MEDIUM,
   },
   {
