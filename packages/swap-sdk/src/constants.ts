@@ -25,9 +25,8 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.BSC]: FACTORY_ADDRESS,
   [ChainId.BSC_TESTNET]: '0x6725f303b657a9451d8ba641348b6761a6cc7a17',
   [ChainId.ARBITRUM_ONE]: '0x13eB8884bD7991F8dEe804Dad0436f7C806bF1b9',
-  // TODO: new chains
-  [ChainId.POLYGON_ZKEVM]: '0x13eB8884bD7991F8dEe804Dad0436f7C806bF1b9',
-  [ChainId.ZKSYNC]: '0x13eB8884bD7991F8dEe804Dad0436f7C806bF1b9',
+  [ChainId.POLYGON_ZKEVM]: '0xb3dF6321C8e3f71bf15Bc8810c26Bd4200BfFdA2',
+  [ChainId.ZKSYNC]: '0x0530cAA5c022464231A8B566C089DEd181Cb71EC',
 } as const satisfies Record<ChainId, Address>
 
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
@@ -39,8 +38,8 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.BSC]: INIT_CODE_HASH,
   [ChainId.BSC_TESTNET]: '0xd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66',
   [ChainId.ARBITRUM_ONE]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
-  // TODO: new chains
   [ChainId.POLYGON_ZKEVM]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
+  // TODO: new chains
   [ChainId.ZKSYNC]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
 } as const satisfies Record<ChainId, Hash>
 
