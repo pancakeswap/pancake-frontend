@@ -59,4 +59,46 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
       multicallChunk: 40,
     },
   },
+  [ChainId.ARBITRUM_ONE]: {
+    defaultConfig: {
+      multicallChunk: 150,
+      gasLimitOverride: 1_000_000,
+    },
+    gasErrorFailureOverride: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 30,
+    },
+    successRateFailureOverrides: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 40,
+    },
+  },
+  [ChainId.POLYGON_ZKEVM]: {
+    defaultConfig: {
+      multicallChunk: 150,
+      gasLimitOverride: 1_000_000,
+    },
+    gasErrorFailureOverride: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 30,
+    },
+    successRateFailureOverrides: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 40,
+    },
+  },
+  [ChainId.ZKSYNC]: {
+    defaultConfig: {
+      multicallChunk: 150,
+      gasLimitOverride: 1_000_000,
+    },
+    gasErrorFailureOverride: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 30,
+    },
+    successRateFailureOverrides: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 40,
+    },
+  },
 }

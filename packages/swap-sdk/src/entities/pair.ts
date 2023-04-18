@@ -66,7 +66,7 @@ export const computePairAddress = ({
       [key]: getCreate2Address(
         factoryAddress,
         keccak256(encodePacked(['address', 'address'], [token0.address, token1.address])),
-        INIT_CODE_HASH_MAP[token0.chainId]
+        INIT_CODE_HASH_MAP[token0.chainId as keyof typeof INIT_CODE_HASH_MAP]
       ),
     }
   }
@@ -80,7 +80,11 @@ export class Pair {
   private readonly tokenAmounts: [CurrencyAmount<ERC20Token>, CurrencyAmount<ERC20Token>]
 
   public static getAddress(tokenA: ERC20Token, tokenB: ERC20Token): Address {
-    return computePairAddress({ factoryAddress: FACTORY_ADDRESS_MAP[tokenA.chainId], tokenA, tokenB })
+    return computePairAddress({
+      factoryAddress: FACTORY_ADDRESS_MAP[tokenA.chainId as keyof typeof FACTORY_ADDRESS_MAP],
+      tokenA,
+      tokenB,
+    })
   }
 
   public constructor(currencyAmountA: CurrencyAmount<ERC20Token>, tokenAmountB: CurrencyAmount<ERC20Token>) {

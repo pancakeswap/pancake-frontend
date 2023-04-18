@@ -17,6 +17,6 @@ export function unwrappedToken(token: Currency): Currency {
     return token
   }
 
-  if (token.equals(WNATIVE[token.chainId])) return Native.onChain(token.chainId)
+  if (token.equals(WNATIVE[token.chainId as ChainId])) return Native.onChain(token.chainId)
   return token
 }
