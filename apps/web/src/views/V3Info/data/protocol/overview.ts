@@ -7,7 +7,7 @@ export const GLOBAL_DATA = (block?: string | number) => {
   const queryString = ` query pancakeFactories {
       factories(
        ${block !== undefined ? `block: { number: ${block}}` : ``} 
-       first: 1, subgraphError: allow) {
+       first: 1) {
         txCount
         totalVolumeUSD
         totalFeesUSD

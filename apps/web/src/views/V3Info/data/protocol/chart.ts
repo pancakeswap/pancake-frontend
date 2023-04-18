@@ -13,14 +13,7 @@ const ONE_DAY_UNIX = 24 * 60 * 60
 
 const GLOBAL_CHART = gql`
   query pancakeDayDatas($startTime: Int!, $skip: Int!) {
-    pancakeDayDatas(
-      first: 1000
-      skip: $skip
-      subgraphError: allow
-      where: { date_gt: $startTime }
-      orderBy: date
-      orderDirection: asc
-    ) {
+    pancakeDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
       id
       date
       volumeUSD

@@ -2,7 +2,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 export const TOP_TOKENS = gql`
   query topPools {
-    tokens(first: 50, orderBy: totalValueLockedUSD, orderDirection: desc, subgraphError: allow) {
+    tokens(first: 50, orderBy: totalValueLockedUSD, orderDirection: desc) {
       id
     }
   }
