@@ -8,7 +8,7 @@ import { multiChainName } from 'state/info/constant'
 import { Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { v3InfoClients as v3Clients } from 'utils/graphql'
+import { v3InfoClients, v3Clients } from 'utils/graphql'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
@@ -59,7 +59,7 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
   const { chainId } = useActiveChainId()
   const { data: chartData } = useSWRImmutable(
     chainId && [`v3/info/protocol/ProtocolChartData/${chainId}`, chainId],
-    () => fetchChartData(v3Clients[chainId]),
+    () => fetchChartData(v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return chartData?.data ?? []
@@ -71,7 +71,7 @@ export const useProtocolData = (): ProtocolData | undefined => {
   const { blocks } = useBlockFromTimeStampSWR([t24, t48])
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
-    () => fetchProtocolData(v3Clients[chainId], blocks),
+    () => fetchProtocolData(v3InfoClients[chainId], blocks),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? undefined
@@ -81,7 +81,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
   const { chainId } = useActiveChainId()
   const { data } = useSWRImmutable(
     chainId && [`v3/info/protocol/ProtocolTransactionData/${chainId}`, chainId],
-    () => fetchTopTransactions(v3Clients[chainId]),
+    () => fetchTopTransactions(v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.filter((d) => d.amountUSD > 0) ?? []
@@ -106,7 +106,7 @@ export const useTokenPriceChartData = (
         address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
-        v3Clients[targetChianId ?? chainId],
+        v3InfoClients[targetChianId ?? chainId],
         multiChainName[targetChianId ?? chainId],
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -169,7 +169,7 @@ export const useTopTokensData = ():
     chainId && blocks && blocks.length > 0 && [`v3/info/token/TopTokensData/${chainId}`, chainId],
     () =>
       fetchTopTokens(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -189,7 +189,7 @@ export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
       blocks.length > 0 && [`v3/info/token/tokensData/${chainId}/${addresses.join()}`, chainId],
     () =>
       fetchedTokenDatas(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         addresses,
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
@@ -207,7 +207,7 @@ export const useTokenData = (address: string): TokenData | undefined => {
     chainId && blocks && address && blocks.length > 0 && [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
     () =>
       fetchedTokenDatas(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         [address],
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
@@ -220,7 +220,7 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
   const { chainId } = useActiveChainId()
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/poolsForTOken/${chainId}/${address}`, chainId],
-    () => fetchPoolsForToken(address, v3Clients[chainId]),
+    () => fetchPoolsForToken(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.addresses
@@ -231,7 +231,7 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
-    () => fetchTokenChartData(address, v3Clients[chainId]),
+    () => fetchTokenChartData(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
@@ -251,7 +251,7 @@ export const useTokenPriceData = (
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenPriceData/${chainId}/${address}/${interval}/${timeWindow}`, chainId],
-    () => fetchTokenPriceData(address, interval, startTimestamp, v3Clients[chainId], multiChainName[chainId]),
+    () => fetchTokenPriceData(address, interval, startTimestamp, v3InfoClients[chainId], multiChainName[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
@@ -261,7 +261,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   const { chainId } = useActiveChainId()
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
-    () => fetchTokenTransactions(address, v3Clients[chainId]),
+    () => fetchTokenTransactions(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data?.filter((d) => d.amountUSD > 0)
@@ -294,7 +294,7 @@ export const useTopPoolsData = ():
     chainId && blocks && blocks.length > 0 && [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
     () =>
       fetchTopPools(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         chainId,
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
@@ -316,7 +316,7 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
       addresses.length > 0 && [`v3/info/pool/poolsData/${chainId}/${addresses.join()}`, chainId],
     () =>
       fetchPoolDatas(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         addresses,
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
@@ -334,7 +334,7 @@ export const usePoolData = (address: string): PoolData | undefined => {
     chainId && blocks && blocks.length > 0 && address && [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
     () =>
       fetchPoolDatas(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         [address],
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
@@ -347,7 +347,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
-    () => fetchPoolTransactions(address, v3Clients[chainId]),
+    () => fetchPoolTransactions(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data?.filter((d) => d.amountUSD > 0) ?? undefined
@@ -357,7 +357,7 @@ export const usePoolChartData = (address: string): PoolChartEntry[] | undefined 
   const { chainId } = useActiveChainId()
   const { data } = useSWRImmutable(
     chainId && address && address !== 'undefined' && [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
-    () => fetchPoolChartData(address, v3Clients[chainId]),
+    () => fetchPoolChartData(address, v3InfoClients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
@@ -368,7 +368,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
-    () => fetchTicksSurroundingPrice(address, v3Clients[chainId], chainId),
+    () => fetchTicksSurroundingPrice(address, v3InfoClients[chainId], chainId),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? undefined
@@ -384,7 +384,7 @@ export const useSearchData = (
     chainId && searchValue && [`v3/info/pool/searchData/${chainId}/${searchValue}`, chainId],
     () =>
       fetchSearchResults(
-        v3Clients[chainId],
+        v3InfoClients[chainId],
         searchValue,
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
