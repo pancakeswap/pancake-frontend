@@ -72,7 +72,7 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
   }
 
   return (
-    <Flex width={['100%', '100%', '100%', '100%', '100%', '700px']} m="24px 0 0 auto" flexDirection="column">
+    <Flex width="100%" mt="16px" flexDirection="column">
       <Card>
         <Box padding="24px">
           <Flex justifyContent="space-between" onClick={() => setIsExpanded(!isExpanded)}>

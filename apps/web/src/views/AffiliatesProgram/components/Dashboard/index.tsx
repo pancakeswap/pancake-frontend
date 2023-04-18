@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, Box, Card } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -48,10 +48,18 @@ const Dashboard = () => {
           flexDirection={['column', 'column', 'column', 'column', 'column', 'row']}
         >
           <CommissionInfo />
-          <Flex flexDirection="column">
-            <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
-            <AffiliateLinks affiliate={affiliate} />
-            <ClaimReward />
+          <Flex
+            flexDirection="column"
+            width={['100%', '100%', '100%', '100%', '100%', '700px']}
+            m={['32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '0 0 0 32px']}
+          >
+            <Card>
+              <Box padding={['24px']}>
+                <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
+                <AffiliateLinks affiliate={affiliate} />
+                <ClaimReward />
+              </Box>
+            </Card>
           </Flex>
         </Flex>
       )}
