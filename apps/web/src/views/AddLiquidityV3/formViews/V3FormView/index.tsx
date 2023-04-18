@@ -5,7 +5,6 @@ import {
   AutoColumn,
   Button,
   RowBetween,
-  Card,
   Text,
   AutoRow,
   Box,
@@ -58,13 +57,6 @@ import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
 
-export const BodyWrapper = styled(Card)`
-  border-radius: 24px;
-  max-width: 858px;
-  width: 100%;
-  z-index: 1;
-`
-
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
   box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
@@ -73,23 +65,6 @@ const StyledInput = styled(NumericalInput)`
   font-size: 16px;
   width: 100%;
   margin-bottom: 16px;
-`
-
-/* two-column layout where DepositAmount is moved at the very end on mobile. */
-export const ResponsiveTwoColumns = styled.div`
-  display: grid;
-  grid-column-gap: 32px;
-  grid-row-gap: 16px;
-  grid-template-columns: 1fr;
-
-  grid-template-rows: max-content;
-  grid-auto-flow: row;
-
-  padding-top: 20px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 1fr;
-  }
 `
 
 export const HideMedium = styled.div`
