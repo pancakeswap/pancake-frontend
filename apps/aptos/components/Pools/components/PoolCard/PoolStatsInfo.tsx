@@ -109,7 +109,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
               stakingToken.symbol
             }`}</Text>
           </Flex>
-          {poolTimeRemaining && (
+          {poolTimeRemaining > 0 && (
             <Flex justifyContent="space-between" alignItems="center">
               <Text small>{t('Max. stake limit ends in')}:</Text>
               <Flex alignItems="center">
