@@ -208,8 +208,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   )
 
   const showBackgroundColor = useMemo(
-    () => !account || (isQualified && !hasClaimBalance) || (!isQualified && hasClaimBalance),
-    [account, hasClaimBalance, isQualified],
+    () => !(!account || (isQualified && !totalEstimateReward)),
+    [account, isQualified, totalEstimateReward],
   )
 
   const TradingRewardComponent = (): JSX.Element => {
