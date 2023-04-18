@@ -747,6 +747,7 @@
   "Auction duration": "Auction duration",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Supplying %amountA% %symbolA% and %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Removing %amountA% %symbolA% and %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Swapping %amountA% %symbolA% for %amountB% %symbolB%",
   "Add Liquidity": "Add Liquidity",

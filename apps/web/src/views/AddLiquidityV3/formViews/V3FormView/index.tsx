@@ -21,7 +21,7 @@ import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
@@ -306,11 +306,23 @@ export default function V3FormView({
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
-  const pendingText = `Supplying ${
-    !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
-  } ${!depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''} ${!outOfRange ? 'and' : ''} ${
-    !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
-  } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
+  const translationData = useMemo(
+    () => ({
+      amountA: !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : '',
+      symbolA: !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : '',
+      amountB: !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : '',
+      symbolB: !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : '',
+    }),
+    [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies],
+  )
+
+  const pendingText = useMemo(
+    () =>
+      !outOfRange
+        ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
+        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
+    [t, outOfRange, translationData],
+  )
 
   const [activeQuickAction, setActiveQuickAction] = useState<number>()
 
