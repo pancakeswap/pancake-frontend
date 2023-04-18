@@ -13,7 +13,6 @@ import {
 } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { multiChainId, multiChainPaths } from 'state/info/constant'
@@ -86,16 +85,14 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
   const symbol = foundChain?.nativeCurrency?.symbol
   const router = useRouter()
-  const { switchNetworkAsync } = useSwitchNetwork()
   const switchNetwork = useCallback(
     (chianId: number) => {
       const chainPath = multiChainPaths[chianId]
       if (activeIndex === 0) router.push(`/${v3InfoPath}${chainPath}`)
       if (activeIndex === 1) router.push(`/${v3InfoPath}${chainPath}/pairs`)
       if (activeIndex === 2) router.push(`/${v3InfoPath}${chainPath}/tokens`)
-      switchNetworkAsync(chianId)
     },
-    [router, activeIndex, switchNetworkAsync],
+    [router, activeIndex],
   )
 
   return (
