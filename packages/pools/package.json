@@ -4,23 +4,12 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "yarn typechain && tsup",
+    "build": "yarn typechain",
     "test": "vitest --run",
     "typechain": "typechain --out-dir src/abis/types --target=ethers-v5 \"src/abis/*.json\"",
     "postinstall": "yarn typechain"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./abis/": "./src/abis/",
-    "./package.json": "./package.json"
-  },
+  "type": "module",
   "peerDependencies": {
     "@pancakeswap/multicall": "*",
     "@pancakeswap/sdk": "*",
