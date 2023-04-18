@@ -30,6 +30,7 @@ import styled, { useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
+import { RangeTag } from 'components/RangeTag'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
@@ -187,7 +188,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                 <AtomBox
                   position="relative"
                   style={{
-                    minHeight: '170px',
+                    minHeight: '88px',
                   }}
                 >
                   <AtomBox
@@ -205,9 +206,15 @@ const SingleFarmV3Card: React.FunctionComponent<
                         position: 'relative',
                       }}
                     >
-                      {outOfRangeUnstaked
-                        ? t('Inactive positions will NOT earn CAKE rewards from farm.')
-                        : t('You may add or remove liquidity on the position detail page without unstake')}
+                      {outOfRangeUnstaked ? (
+                        <>
+                          {t('Inactive positions will')}
+                          <b> {t('NOT')} </b>
+                          {t('earn CAKE rewards from farm.')}
+                        </>
+                      ) : (
+                        t('You may add or remove liquidity on the position detail page without unstake')
+                      )}
                       <Arrow />
                     </StyledTooltip>
                     <Image
@@ -220,6 +227,11 @@ const SingleFarmV3Card: React.FunctionComponent<
                 </AtomBox>
                 <LightCard>
                   <AutoColumn gap="8px">
+                    {outOfRangeUnstaked && (
+                      <RangeTag outOfRange ml={0} style={{ alignItems: 'center', width: 'fit-content' }}>
+                        {t('Inactive')}
+                      </RangeTag>
+                    )}
                     <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
                     <FarmV3LPPosition token={token} quoteToken={quoteToken} position={position} />
                     <FarmV3LPPositionDetail
