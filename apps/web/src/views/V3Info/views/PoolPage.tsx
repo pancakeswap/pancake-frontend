@@ -22,7 +22,7 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -130,7 +130,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     return []
   }, [chartData])
 
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const { t } = useTranslation()

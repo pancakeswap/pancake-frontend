@@ -12,7 +12,7 @@ import {
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useGetChainName } from 'state/info/hooks'
+import { useChainNameByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -98,7 +98,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const { chainId } = useActiveChainId()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
 
   return (
     <ResponsiveGrid>

@@ -293,6 +293,15 @@ export const useGetChainName = () => {
   return result
 }
 
+export const useChainNameByQuery = () => {
+  const { query } = useRouter()
+  const chainName = useMemo(() => {
+    if (query?.chainName === 'eth') return 'ETH'
+    return 'BSC'
+  }, [query])
+  return chainName
+}
+
 const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
   return Promise.all(addresses.map((d) => getAprsForStableFarm(d)))
 }

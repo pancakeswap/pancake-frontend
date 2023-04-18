@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { multiChainId, multiChainName } from 'state/info/constant'
-import { useGetChainName } from 'state/info/hooks'
+import { useGetChainName, useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
@@ -53,7 +53,7 @@ export const useBlockFromTimeStampSWR = (
   sortDirection: 'asc' | 'desc' | undefined = 'desc',
   skipCount: number | undefined = 1000,
 ) => {
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const timestampsString = JSON.stringify(timestamps)
   const timestampsArray = JSON.parse(timestampsString)
