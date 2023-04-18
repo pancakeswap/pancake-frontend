@@ -20,7 +20,7 @@ import {
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -49,6 +49,7 @@ import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmoun
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
 
+import { ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
@@ -167,6 +168,7 @@ export default function V3FormView({
 
   useEffect(() => {
     if (feeAmount) {
+      setActiveQuickAction(undefined)
       onBothRangeInput({
         leftTypedValue: '',
         rightTypedValue: '',
@@ -377,6 +379,17 @@ export default function V3FormView({
     />
   )
 
+  const handleRefresh = useCallback(() => {
+    setActiveQuickAction(undefined)
+    const currentPrice = price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
+    if (currentPrice) {
+      onBothRangeInput({
+        leftTypedValue: (currentPrice * ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin).toString(),
+        rightTypedValue: (currentPrice * ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax).toString(),
+      })
+    }
+  }, [price, feeAmount, invertPrice, onBothRangeInput])
+
   return (
     <>
       <DynamicSection
@@ -568,6 +581,10 @@ export default function V3FormView({
                       width="100%"
                       key={`quickActions${quickAction.percentage}`}
                       onClick={() => {
+                        if (quickAction.percentage === activeQuickAction) {
+                          handleRefresh()
+                          return
+                        }
                         const currentPrice = invertPrice ? price?.invert() : price
                         if (currentPrice) {
                           onBothRangeInput({
@@ -596,6 +613,10 @@ export default function V3FormView({
                 <Button
                   width="200%"
                   onClick={() => {
+                    if (activeQuickAction === 100) {
+                      handleRefresh()
+                      return
+                    }
                     setShowCapitalEfficiencyWarning(true)
                     setActiveQuickAction(100)
                   }}
