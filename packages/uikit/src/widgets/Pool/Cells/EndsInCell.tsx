@@ -84,7 +84,8 @@ export function EndsInCell<T>({ pool, getNow }: EndsInCellProps<T>) {
   const { t } = useTranslation();
   const { endTimestamp = 0, isFinished } = pool;
 
-  const countdown = isFinished ? <Text>-</Text> : <TimeCountdownDisplay timestamp={endTimestamp} getNow={getNow} />;
+  const countdown =
+    isFinished || !endTimestamp ? <Text>-</Text> : <TimeCountdownDisplay timestamp={endTimestamp} getNow={getNow} />;
 
   return (
     <BaseCell role="cell" flex={["1 0 50px", "1 0 50px", "2 0 100px", "2 0 100px", "1 0 120px"]}>
