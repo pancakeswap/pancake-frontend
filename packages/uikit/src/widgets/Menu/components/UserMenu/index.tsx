@@ -73,7 +73,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   disabled,
   placement = "bottom-end",
   recalculatePopover,
-  ellipsis,
+  ellipsis = true,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
