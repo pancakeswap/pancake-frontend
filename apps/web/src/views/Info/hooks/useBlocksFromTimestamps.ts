@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
+import { multiChainId, multiChainName } from 'state/info/constant'
 import { useGetChainName } from 'state/info/hooks'
-import { multiChainName, multiChainId } from 'state/info/constant'
 import { Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 
 /**
