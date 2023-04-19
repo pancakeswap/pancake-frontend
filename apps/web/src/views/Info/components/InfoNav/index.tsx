@@ -9,7 +9,7 @@ import {
   Text,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import {} from 'hooks/useSwitchNetwork'
 import { ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
@@ -39,17 +39,16 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const chainPath = useMultiChainPath()
-
-  const isPairs = router.pathname === `/info${chainPath && `/[chainName]`}/pairs`
-  const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
-  let activeIndex = 0
-  if (isPairs) {
-    activeIndex = 1
-  }
-  if (isTokens) {
-    activeIndex = 2
-  }
+  const activeIndex = useMemo(() => {
+    if (router.pathname.includes('/pairs')) {
+      return 1
+    }
+    if (router.pathname.includes('/tokens')) {
+      return 2
+    }
+    return 0
+  }, [router.pathname])
   return (
     <NavWrapper>
       <Flex>

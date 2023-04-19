@@ -14,7 +14,7 @@ import {
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { multiChainId, multiChainPaths } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
@@ -39,17 +39,16 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const chainPath = useMultiChainPath()
-
-  const isPairs = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/pairs`
-  const isTokens = router.pathname === `/${v3InfoPath}${chainPath && `/[chainName]`}/tokens`
+  const activeIndex = useMemo(() => {
+    if (router.pathname.includes('/pairs')) {
+      return 1
+    }
+    if (router.pathname.includes('/tokens')) {
+      return 2
+    }
+    return 0
+  }, [router.pathname])
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
-  let activeIndex = 0
-  if (isPairs) {
-    activeIndex = 1
-  }
-  if (isTokens) {
-    activeIndex = 2
-  }
   return (
     <NavWrapper>
       <Flex>
