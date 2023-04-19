@@ -139,19 +139,16 @@ export const fetchCakePoolUserDataAsync =
 export const fetchPoolsPublicDataAsync =
   (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
     try {
-      const [timeLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
+      const [block, timeLimits] = await Promise.all([
+        provider({ chainId })?.getBlock('latest'),
         fetchPoolsTimeLimits(chainId, provider),
-        fetchPoolsTotalStaking(chainId, provider),
-        fetchPoolsProfileRequirement(chainId, provider),
-        currentBlockNumber ? Promise.resolve(currentBlockNumber) : provider({ chainId })?.getBlockNumber(),
       ])
-      const block = await provider({ chainId })?.getBlock(currentBlock)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const currentBlock = currentBlockNumber || block.number
 
       const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
-      const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
-
-      const poolsConfig = getPoolsConfig(chainId) || []
       const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
+      const poolsConfig = getPoolsConfig(chainId) || []
       const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
         return (
           poolsConfig
@@ -167,8 +164,21 @@ export const fetchPoolsPublicDataAsync =
             }).length > 0
         )
       })
-      const poolsWithDifferentFarmToken =
-        activePriceHelperLpsConfig.length > 0 ? await fetchFarms(priceHelperLpsConfig, chainId) : []
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const fetchFarmV3Promise = farmV3ApiFetch(chainId).catch((error) => {
+        return undefined
+      })
+
+      const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmV3] = await Promise.all([
+        fetchPoolsTotalStaking(chainId, provider),
+        fetchPoolsProfileRequirement(chainId, provider),
+        activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
+        fetchFarmV3Promise,
+      ])
+
+      const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
+
       const farmsData = getState().farms.data
       const bnbBusdFarm =
         activePriceHelperLpsConfig.length > 0
@@ -178,12 +188,6 @@ export const fetchPoolsPublicDataAsync =
         ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
         : []
 
-      let farmV3: Awaited<ReturnType<typeof farmV3ApiFetch>>
-      try {
-        farmV3 = await farmV3ApiFetch(chainId)
-      } catch (error) {
-        //
-      }
       const prices = getTokenPricesFromFarm([
         ...farmsData,
         ...farmsWithPricesOfDifferentTokenPools,
