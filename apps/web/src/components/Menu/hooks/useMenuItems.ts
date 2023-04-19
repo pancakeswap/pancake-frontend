@@ -71,5 +71,5 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
       })
     }
     return menuItems
-  }, [t, menuItems, menuItemsStatus, userNotUsCitizenAcknowledgement, onUsCitizenModalPresent])
+  }, [t, menuItems, menuItemsStatus, userNotUsCitizenAcknowledgement, onUsCitizenModalPresent, chainId])
 }
