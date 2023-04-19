@@ -42,7 +42,7 @@ import {
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
   const farmsConfig = await getFarmConfig(chainId)
-  const livePools = getLivePoolsConfig(chainId)
+  const livePools = getLivePoolsConfig(chainId) || []
   const lPoolAddresses = livePools
     .filter(({ sousId }) => sousId !== 0)
     .map(({ earningToken, stakingToken }) => {
