@@ -150,7 +150,7 @@ export const fetchPoolsPublicDataAsync =
       const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
       const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
-      const poolsConfig = getPoolsConfig(chainId)
+      const poolsConfig = getPoolsConfig(chainId) || []
       const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
       const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
         return (
@@ -190,7 +190,7 @@ export const fetchPoolsPublicDataAsync =
         ...(farmV3?.farmsWithPrice ?? []),
       ])
 
-      const liveData = poolsConfig.map((pool) => {
+      const liveData = poolsConfig?.map((pool) => {
         const timeLimit = timeLimitsSousIdMap[pool.sousId]
         const totalStaking = totalStakingsSousIdMap[pool.sousId]
         const isPoolEndBlockExceeded =
@@ -232,7 +232,7 @@ export const fetchPoolsPublicDataAsync =
         }
       })
 
-      dispatch(setPoolsPublicData(liveData))
+      dispatch(setPoolsPublicData(liveData || []))
     } catch (error) {
       console.error('[Pools Action] error when getting public data', error)
     }
@@ -284,7 +284,7 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
     ])
 
     const poolsConfig = getPoolsConfig(chainId)
-    const userData = poolsConfig.map((pool) => ({
+    const userData = poolsConfig?.map((pool) => ({
       sousId: pool.sousId,
       allowance: allowances[pool.sousId],
       stakingTokenBalance: stakingTokenBalances[pool.sousId],
@@ -405,7 +405,7 @@ export const PoolsSlice = createSlice({
   reducers: {
     setInitialPoolConfig: (state, action) => {
       const { chainId } = action.payload
-      const poolsConfig = getPoolsConfig(chainId)
+      const poolsConfig = getPoolsConfig(chainId) || []
       state.data = [...poolsConfig]
       state.userDataLoaded = false
       state.cakeVault = initialPoolVaultState
