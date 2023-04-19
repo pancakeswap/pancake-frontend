@@ -35,11 +35,11 @@ async function fetchUpgradedPoolsTimeLimits(
   const calls = pools.flatMap(({ contractAddress }) => {
     return [
       {
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: 'startTimestamp',
       },
       {
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: 'endTimestamp',
       },
     ]
@@ -82,11 +82,11 @@ const fetchLegacyPoolsBlockLimits = async (
   const startEndBlockCalls = pools.flatMap(({ contractAddress }) => {
     return [
       {
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: 'startBlock',
       },
       {
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: 'bonusEndBlock',
       },
     ]
@@ -146,7 +146,7 @@ export const fetchPoolsTotalStaking = async (chainId: ChainId, provider: OnChain
     return {
       address: stakingToken.address,
       name: 'balanceOf',
-      params: [contractAddress[chainId]],
+      params: [contractAddress],
     }
   })
 
@@ -186,7 +186,7 @@ export const fetchPoolsStakingLimitsByBlock = async ({
   const poolStakingCalls = validPools
     .map(({ contractAddress }) => {
       return ['hasUserLimit', 'poolLimitPerUser', 'numberBlocksForUserLimit'].map((method) => ({
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: method,
       }))
     })
@@ -233,7 +233,7 @@ const fetchPoolsStakingLimitsByTime = async ({
   const poolStakingCalls = validPools
     .map(({ contractAddress }) => {
       return ['hasUserLimit', 'poolLimitPerUser', 'numberSecondsForUserLimit'].map((method) => ({
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: method,
       }))
     })
@@ -293,7 +293,7 @@ export const fetchPoolsProfileRequirement = async (
   const poolProfileRequireCalls = livePoolsWithV3
     .map(({ contractAddress }) => {
       return ['pancakeProfileIsRequested', 'pancakeProfileThresholdPoints'].map((method) => ({
-        address: contractAddress[chainId],
+        address: contractAddress,
         name: method,
       }))
     })

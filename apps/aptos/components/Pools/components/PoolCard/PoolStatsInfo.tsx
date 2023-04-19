@@ -88,7 +88,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     tooltipVisible: stakeLimitTooltipVisible,
   } = useTooltip(<EndTimeTooltipComponent endTime={stakingLimitEndTimestamp} />)
 
-  const poolContractAddress = getContactAddress(contractAddress[chainId])
+  const poolContractAddress = getContactAddress(contractAddress)
 
   return (
     <>

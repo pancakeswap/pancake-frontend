@@ -56,7 +56,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   } = useVaultPoolByKey(vaultKey)
 
   const tokenAddress = earningToken.address || ''
-  const poolContractAddress = contractAddress[chainId]
+  const poolContractAddress = contractAddress
   const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
 
   const { shouldShowBlockCountdown, timeUntilStart, timeRemaining, hasPoolStarted } = getPoolBlockInfo(

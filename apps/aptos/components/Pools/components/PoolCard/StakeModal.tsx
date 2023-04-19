@@ -15,8 +15,8 @@ import StakeModalContainer from './StakeModalContainer'
 const StakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
   const { stakingToken, contractAddress } = pool
   const queryClient = useQueryClient()
-  const { account, chainId } = useActiveWeb3React()
-  const [stakingTokenAddress, earningTokenAddress, uid] = splitTypeTag(contractAddress[chainId])
+  const { account } = useActiveWeb3React()
+  const [stakingTokenAddress, earningTokenAddress, uid] = splitTypeTag(contractAddress)
 
   const onUnstake = useUnstakePool({
     uid,

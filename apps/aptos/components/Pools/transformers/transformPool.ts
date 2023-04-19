@@ -158,9 +158,7 @@ const transformPool = (
 
   return {
     sousId,
-    contractAddress: {
-      [chainId]: resource.type,
-    },
+    contractAddress: resource.type,
     stakingToken,
     earningToken,
     apr,

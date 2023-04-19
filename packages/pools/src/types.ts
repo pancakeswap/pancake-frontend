@@ -21,7 +21,7 @@ export enum PoolCategory {
 // @deprecated
 export interface LegacyPoolConfigBaseProps {
   sousId: number
-  contractAddress: Address
+  contractAddress: string
   poolCategory: PoolCategory
   tokenPerBlock: string
   isFinished?: boolean
@@ -31,7 +31,7 @@ export interface LegacyPoolConfigBaseProps {
 
 export interface PoolConfigBaseProps {
   sousId: number
-  contractAddress: Address
+  contractAddress: string
   poolCategory: PoolCategory
   tokenPerSecond: string
   isFinished?: boolean

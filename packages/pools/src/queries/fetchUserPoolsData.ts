@@ -34,7 +34,7 @@ export const fetchPoolsAllowance = async ({ account, chainId, provider }: FetchU
   const calls = nonBnbPools.map(({ contractAddress, stakingToken }) => ({
     address: stakingToken.address,
     name: 'allowance',
-    params: [account, contractAddress[chainId]],
+    params: [account, contractAddress],
   }))
 
   const { multicall } = createMulticall(provider)
@@ -83,7 +83,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
 export const fetchUserStakeBalances = async ({ account, chainId, provider }: FetchUserDataParams) => {
   const nonMasterPools = getNonMasterPools(chainId)
   const calls = nonMasterPools.map(({ contractAddress }) => ({
-    address: contractAddress[chainId],
+    address: contractAddress,
     name: 'userInfo',
     params: [account],
   }))
@@ -97,7 +97,7 @@ export const fetchUserStakeBalances = async ({ account, chainId, provider }: Fet
 export const fetchUserPendingRewards = async ({ account, chainId, provider }: FetchUserDataParams) => {
   const nonMasterPools = getNonMasterPools(chainId)
   const calls = nonMasterPools.map(({ contractAddress }) => ({
-    address: contractAddress[chainId],
+    address: contractAddress,
     name: 'pendingReward',
     params: [account],
   }))
