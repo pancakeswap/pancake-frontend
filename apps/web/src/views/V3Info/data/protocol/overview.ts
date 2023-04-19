@@ -12,6 +12,7 @@ export const GLOBAL_DATA = (block?: string | number) => {
         totalVolumeUSD
         totalFeesUSD
         totalValueLockedUSD
+        totalProtocolFeesUSD
       }
     }`
   return gql`
@@ -25,6 +26,7 @@ interface GlobalResponse {
     totalVolumeUSD: string
     totalFeesUSD: string
     totalValueLockedUSD: string
+    totalProtocolFeesUSD: string
   }[]
 }
 
@@ -77,12 +79,18 @@ export async function fetchProtocolData(
       txCount && txCountOneWindowAgo ? getPercentChange(txCount.toString(), txCountOneWindowAgo.toString()) : 0
 
     const feesOneWindowAgo =
-      parsed24 && parsed48 ? parseFloat(parsed24.totalFeesUSD) - parseFloat(parsed48.totalFeesUSD) : undefined
+      parsed24 && parsed48
+        ? parseFloat(parsed24.totalFeesUSD) -
+          parseFloat(parsed24.totalProtocolFeesUSD) -
+          (parseFloat(parsed48.totalFeesUSD) - parseFloat(parsed48.totalProtocolFeesUSD))
+        : undefined
 
     const feesUSD =
       parsed && parsed24
-        ? parseFloat(parsed.totalFeesUSD) - parseFloat(parsed24.totalFeesUSD)
-        : parseFloat(parsed.totalFeesUSD)
+        ? parseFloat(parsed.totalFeesUSD) -
+          parseFloat(parsed.totalProtocolFeesUSD) -
+          (parseFloat(parsed24.totalFeesUSD) - parseFloat(parsed24.totalProtocolFeesUSD))
+        : parseFloat(parsed.totalFeesUSD) - parseFloat(parsed.totalProtocolFeesUSD)
 
     const feeChange =
       feesUSD && feesOneWindowAgo ? getPercentChange(feesUSD.toString(), feesOneWindowAgo.toString()) : 0
