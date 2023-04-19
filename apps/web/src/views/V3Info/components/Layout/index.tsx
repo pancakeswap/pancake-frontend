@@ -9,7 +9,7 @@ export const InfoPageLayout = ({ children }) => {
   const router = useRouter()
   const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
-  const isV3 = router.pathname.includes(v3InfoPath)
+  const isV3 = router?.pathname?.includes(v3InfoPath)
   const { t } = useTranslation()
 
   return (
