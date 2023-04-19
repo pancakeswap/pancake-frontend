@@ -1603,6 +1603,14 @@
     "@esbuild-kit/core-utils" "^3.0.0"
     get-tsconfig "^4.2.0"
 
+"@esbuild-kit/cjs-loader@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@esbuild-kit/cjs-loader/-/cjs-loader-2.4.2.tgz#cb4dde00fbf744a68c4f20162ea15a8242d0fa54"
+  integrity sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==
+  dependencies:
+    "@esbuild-kit/core-utils" "^3.0.0"
+    get-tsconfig "^4.4.0"
+
 "@esbuild-kit/core-utils@^3.0.0":
   version "3.0.0"
   resolved "https://registry.npmmirror.com/@esbuild-kit/core-utils/-/core-utils-3.0.0.tgz#e0f8463a32b4a9c9b456a7f9c31a5e038c8d2c19"
@@ -1618,6 +1626,14 @@
   dependencies:
     "@esbuild-kit/core-utils" "^3.0.0"
     get-tsconfig "^4.2.0"
+
+"@esbuild-kit/esm-loader@^2.5.5":
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/@esbuild-kit/esm-loader/-/esm-loader-2.5.5.tgz#b82da14fcee3fc1d219869756c06f43f67d1ca71"
+  integrity sha512-Qwfvj/qoPbClxCRNuac1Du01r9gvNOT+pMYtJDapfB1eoGN1YlJ1BixLyL9WVENRx5RXgNLdfYdx/CuswlGhMw==
+  dependencies:
+    "@esbuild-kit/core-utils" "^3.0.0"
+    get-tsconfig "^4.4.0"
 
 "@esbuild-plugins/node-globals-polyfill@^0.1.1":
   version "0.1.1"
@@ -13008,6 +13024,11 @@ get-tsconfig@^4.2.0:
   resolved "https://registry.npmmirror.com/get-tsconfig/-/get-tsconfig-4.2.0.tgz#ff368dd7104dab47bf923404eb93838245c66543"
   integrity sha512-X8u8fREiYOE6S8hLbq99PeykTDoLVnxvF4DjWKJmz9xy2nNRdUcV8ZN9tniJFeKyTU3qnC9lL8n4Chd6LmVKHg==
 
+get-tsconfig@^4.4.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/get-tsconfig/-/get-tsconfig-4.5.0.tgz#6d52d1c7b299bd3ee9cd7638561653399ac77b0f"
+  integrity sha512-MjhiaIWCJ1sAU4pIQ5i5OfOuHHxVo1oYeNsWTON7jxYkod8pHocXeh+SSbmu5OZZZK73B6cbJ2XADzXehLyovQ==
+
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
@@ -21302,6 +21323,17 @@ tsx@^3.12.1:
     "@esbuild-kit/cjs-loader" "^2.4.0"
     "@esbuild-kit/core-utils" "^3.0.0"
     "@esbuild-kit/esm-loader" "^2.5.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
+tsx@^3.12.6:
+  version "3.12.6"
+  resolved "https://registry.yarnpkg.com/tsx/-/tsx-3.12.6.tgz#36b3693e48b8392da374487190972c7b80e433b4"
+  integrity sha512-q93WgS3lBdHlPgS0h1i+87Pt6n9K/qULIMNYZo07nSeu2z5QE2CellcAZfofVXBo2tQg9av2ZcRMQ2S2i5oadQ==
+  dependencies:
+    "@esbuild-kit/cjs-loader" "^2.4.2"
+    "@esbuild-kit/core-utils" "^3.0.0"
+    "@esbuild-kit/esm-loader" "^2.5.5"
   optionalDependencies:
     fsevents "~2.3.2"
 
