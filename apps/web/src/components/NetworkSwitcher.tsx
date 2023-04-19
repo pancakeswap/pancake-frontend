@@ -153,7 +153,7 @@ export const NetworkSwitcher = () => {
 
   const cannotChangeNetwork = !canSwitch
 
-  if (!chainId || (!account && router.pathname.includes('info'))) {
+  if (!chainId || router.pathname.includes('/info')) {
     return null
   }
 
