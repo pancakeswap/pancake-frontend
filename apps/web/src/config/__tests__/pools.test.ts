@@ -21,7 +21,7 @@ describe.concurrent('Config pools', () => {
   it.each(pools.map((pool) => [pool.sousId, pool.contractAddress]))(
     'Pool #%d has an unique contract address',
     (sousId, contractAddress) => {
-      const duplicates = pools.filter((p) => contractAddress[56] === p.contractAddress[56])
+      const duplicates = pools.filter((p) => contractAddress === p.contractAddress)
       expect(duplicates).toHaveLength(1)
     },
   )

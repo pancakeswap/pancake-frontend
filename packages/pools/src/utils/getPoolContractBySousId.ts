@@ -28,7 +28,7 @@ export function getPoolContractBySousId({ chainId, sousId, provider }: Params) {
   const { contractAddress } = pool
   if (isLegacyPool(pool)) {
     const abi = pool.poolCategory === PoolCategory.BINANCE ? sousChefBnbABI : sousChefABI
-    return new Contract(contractAddress[chainId], abi, provider)
+    return new Contract(contractAddress, abi, provider)
   }
-  return new Contract(contractAddress[chainId], smartChefABI, provider)
+  return new Contract(contractAddress, smartChefABI, provider)
 }

@@ -17,25 +17,37 @@ export interface PoolsState {
 const cakeContract = getCakeContract()
 
 const initialData = {
-  data: {
-    sousId: 0,
-    stakingToken: bscTokens.cake.serialize,
-    earningToken: bscTokens.cake.serialize,
-    contractAddress: {
-      97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+  56: {
+    data: {
+      sousId: 0,
+      stakingToken: bscTokens.cake.serialize,
+      earningToken: bscTokens.cake.serialize,
+      contractAddress: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+      poolCategory: PoolCategory.CORE,
+      tokenPerBlock: '10',
+      isFinished: false,
+      totalStaked: '0',
     },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '10',
-    isFinished: false,
-    totalStaked: '0',
+    userDataLoaded: false,
   },
-  userDataLoaded: false,
+  97: {
+    data: {
+      sousId: 0,
+      stakingToken: bscTokens.cake.serialize,
+      earningToken: bscTokens.cake.serialize,
+      contractAddress: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
+      poolCategory: PoolCategory.CORE,
+      tokenPerBlock: '10',
+      isFinished: false,
+      totalStaked: '0',
+    },
+    userDataLoaded: false,
+  },
 }
 
 export const useFetchUserPools = (account) => {
   const { chainId } = useActiveChainId()
-  const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData)
+  const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData[chainId || 56])
 
   const fetchUserPoolsData = useCallback(() => {
     if (account) {
@@ -44,11 +56,11 @@ export const useFetchUserPools = (account) => {
           const [stakedBalances, pendingRewards, totalStaking] = await Promise.all([
             fetchUserStakeBalances(account),
             fetchUserPendingRewards(account),
-            cakeContract.balanceOf(initialData.data.contractAddress[chainId]),
+            cakeContract.balanceOf(initialData[chainId].data.contractAddress),
           ])
 
           const userData = {
-            sousId: initialData.data.sousId,
+            sousId: initialData[chainId].data.sousId,
             allowance: '0',
             stakingTokenBalance: '0',
             stakedBalance: stakedBalances,
