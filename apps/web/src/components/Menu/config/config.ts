@@ -159,7 +159,6 @@ const config: (
         {
           label: t('Info'),
           href: '/info/v3',
-          menuItemsStatus: 'new',
         },
         {
           label: t('IFO'),
