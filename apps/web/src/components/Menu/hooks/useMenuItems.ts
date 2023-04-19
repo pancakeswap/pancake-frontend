@@ -4,6 +4,7 @@ import { LinkStatus } from '@pancakeswap/uikit/src/widgets/Menu/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useMemo } from 'react'
+import { multiChainPaths } from 'state/info/constant'
 import config, { ConfigMenuItemsType } from '../config/config'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
@@ -27,6 +28,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
         const innerItems = item.items.map((innerItem) => {
           const itemStatus = menuItemsStatus[innerItem.href]
           const modalId = innerItem.confirmModalId
+          const isInfo = innerItem.href === '/info/v3'
           if (itemStatus) {
             let itemMenuStatus
             if (itemStatus === 'soon') {
@@ -56,6 +58,11 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
               }
             }
             return { ...innerItem, onClick: onClickEvent }
+          }
+          if (isInfo) {
+            const itemMenuStatus = <LinkStatus>{ text: t('New'), color: 'success' }
+            const href = `${innerItem.href}${multiChainPaths[chainId]}`
+            return { ...innerItem, status: itemMenuStatus, href }
           }
 
           return innerItem
