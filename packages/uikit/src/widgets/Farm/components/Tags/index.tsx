@@ -129,7 +129,7 @@ const CompoundingPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) 
 const VoteNowTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="success" startIcon={<VoteIcon width="18px" color="success" mr="4px" />} {...props}>
+    <Tag variant="success" startIcon={<VoteIcon width="18px" color="text" mr="4px" />} {...props}>
       {t("Vote Now")}
     </Tag>
   );
@@ -153,7 +153,7 @@ const VotedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const SoonTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="binance" startIcon={<TimerIcon width="18px" color="success" mr="4px" />} {...props}>
+    <Tag variant="binance" startIcon={<TimerIcon width="18px" color="text" mr="4px" />} {...props}>
       {t("Soon")}
     </Tag>
   );
