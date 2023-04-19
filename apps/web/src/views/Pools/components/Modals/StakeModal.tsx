@@ -11,6 +11,7 @@ import BigNumber from 'bignumber.js'
 import { useERC20 } from 'hooks/useContract'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useApprovePool } from 'views/Pools/hooks/useApprove'
+import { tokenImageChainNameMapping } from 'components/TokenImage'
 import { usePool } from 'state/pools/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -53,6 +54,11 @@ const StakeModalContainer = ({
     stakingTokenContract,
     sousId,
     earningToken.symbol,
+  )
+
+  const tokenImageUrl = useMemo(
+    () => `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[chainId]}`,
+    [chainId],
   )
 
   const onDone = useCallback(() => {
@@ -145,6 +151,7 @@ const StakeModalContainer = ({
       setAmount={setAmount}
       handleConfirmClick={handleConfirmClick}
       isRemovingStake={isRemovingStake}
+      imageUrl={tokenImageUrl}
     />
   )
 }
