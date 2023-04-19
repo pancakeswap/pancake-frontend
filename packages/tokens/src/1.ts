@@ -160,4 +160,12 @@ export const ethereumTokens = {
     'Axelar',
     'https://axelar.network/',
   ),
+  doge: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x4206931337dc273a630d328dA6441786BfaD668f',
+    8,
+    'DOGE',
+    'Dogecoin',
+    'https://dogecoin.com/',
+  ),
 }

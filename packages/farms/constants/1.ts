@@ -53,6 +53,22 @@ export const farmsV3 = [
   },
   // Keep those farms on top
   {
+    pid: 23,
+    lpSymbol: 'DOGE-USDC LP',
+    lpAddress: Pool.getAddress(ethereumTokens.doge, ethereumTokens.usdc, FeeAmount.MEDIUM),
+    token: ethereumTokens.doge,
+    quoteToken: ethereumTokens.usdc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 24,
+    lpSymbol: 'DOGE-USDT LP',
+    lpAddress: Pool.getAddress(ethereumTokens.doge, ethereumTokens.usdt, FeeAmount.MEDIUM),
+    token: ethereumTokens.doge,
+    quoteToken: ethereumTokens.usdt,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 22,
     lpSymbol: 'AXL-USDC LP',
     lpAddress: Pool.getAddress(ethereumTokens.axl, ethereumTokens.usdc, FeeAmount.MEDIUM),
