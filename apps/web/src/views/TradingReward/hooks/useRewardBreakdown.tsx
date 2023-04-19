@@ -53,26 +53,26 @@ const useRewardBreakdown = ({
     async () => {
       try {
         const dataInfo = await Promise.all(
-          allUserCampaignInfo.map(async (user) => {
+          allTradingRewardPairData.campaignIdsIncentive.map(async (incentive) => {
             const response = await fetch(
-              `${TRADING_REWARD_API}/campaign/chainId/${chainId}/campaignId/${user.campaignId}/address/0x`,
+              `${TRADING_REWARD_API}/campaign/chainId/${chainId}/campaignId/${incentive.campaignId}/address/0x`,
             )
             const { data: result }: { data: CampaignIdInfoResponse } = await response.json()
-            const campaignIncentive = allTradingRewardPairData?.campaignIdsIncentive?.find(
-              (i) => i.campaignId === user.campaignId,
+            const userInfo = allUserCampaignInfo.find(
+              (user) => user.campaignId.toLowerCase() === incentive.campaignId.toLowerCase(),
             )
 
             const pairs = await Promise.all(
-              user.volumeArr.map(async (volume) => {
+              result?.volumeArr?.map(async (volume) => {
                 const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === volume.pool.toLowerCase())
-                const pair = result.volumeArr.find((arr) => arr.pool.toLowerCase() === volume.pool.toLowerCase())
+                const user = userInfo?.volumeArr?.find((arr) => arr.pool.toLowerCase() === volume.pool.toLowerCase())
                 const canClaimResponse = await tradingRewardContract.canClaim(
-                  user.campaignId,
-                  new BigNumber(volume.volume.toFixed(2)).times(1e18).toString(),
+                  userInfo?.campaignId,
+                  new BigNumber(user?.volume?.toFixed(2) ?? 0).times(1e18).toString(),
                 )
                 const rewardEarned =
-                  campaignIncentive?.campaignClaimTime - currentDate > 0
-                    ? volume.estimateReward
+                  incentive.campaignClaimTime - currentDate > 0
+                    ? user?.estimateReward || 0
                     : getBalanceNumber(new BigNumber(canClaimResponse.toString()))
 
                 return {
@@ -80,18 +80,18 @@ const useRewardBreakdown = ({
                   lpSymbol: pairInfo?.lpSymbol ?? '',
                   token: pairInfo?.token,
                   quoteToken: pairInfo?.quoteToken,
-                  yourVolume: volume.volume,
-                  totalVolume: pair.volume,
-                  totalReward: pair.estimateReward,
+                  yourVolume: user?.volume ?? 0,
+                  totalVolume: volume.volume,
+                  totalReward: volume.estimateReward,
                   rewardEarned,
                 }
               }),
             )
 
             return {
-              campaignId: user.campaignId,
-              campaignStart: campaignIncentive?.campaignStart ?? 0,
-              campaignClaimTime: campaignIncentive?.campaignClaimTime ?? 0,
+              campaignId: incentive.campaignId,
+              campaignStart: incentive?.campaignStart ?? 0,
+              campaignClaimTime: incentive?.campaignClaimTime ?? 0,
               pairs,
             }
           }),
