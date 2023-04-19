@@ -1,6 +1,15 @@
 import { ChainId } from '@pancakeswap/sdk'
 import memoize from 'lodash/memoize'
-import { bsc as bsc_, bscTestnet, goerli, mainnet, zkSync, arbitrum, polygonZkEvm, Chain } from 'wagmi/chains'
+import {
+  bsc as bsc_,
+  bscTestnet,
+  goerli,
+  mainnet,
+  zkSync as zkSync_,
+  arbitrum,
+  polygonZkEvm as polygonZkEvm_,
+  Chain,
+} from 'wagmi/chains'
 
 export const CHAIN_QUERY_NAME = {
   [ChainId.ETHEREUM]: 'eth',
@@ -39,10 +48,30 @@ const bsc = {
   },
 } satisfies Chain
 
+const zkSync = {
+  ...zkSync_,
+  contracts: {
+    multicall3: {
+      address: '0x47898B2C52C957663aE9AB46922dCec150a2272c',
+      blockCreated: 1536804,
+    },
+  },
+} as const satisfies Chain
+
+const polygonZkEvm = {
+  ...polygonZkEvm_,
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 57746,
+    },
+  },
+} as const satisfies Chain
+
+export const CHAINS = [bsc, mainnet, bscTestnet, goerli, zkSync, arbitrum, polygonZkEvm]
+
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
  * The expectation is that all of these networks have immediate transaction confirmation.
  */
 export const L2_CHAIN_IDS: ChainId[] = []
-
-export const CHAINS = [bsc, mainnet, bscTestnet, goerli, zkSync, arbitrum, polygonZkEvm]
