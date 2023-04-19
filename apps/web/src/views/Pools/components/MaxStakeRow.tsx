@@ -25,10 +25,9 @@ const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
 }) => {
   const { t } = useTranslation()
 
+  const currentTimestamp = Math.floor(Date.now() / 1000)
   const showMaxStakeLimit =
-    hasPoolStarted &&
-    endTimestamp !== stakingLimitEndTimestamp &&
-    stakingLimitEndTimestamp >= Math.floor(Date.now() / 1000)
+    hasPoolStarted && endTimestamp >= currentTimestamp && stakingLimitEndTimestamp >= currentTimestamp
 
   if (!showMaxStakeLimit) {
     return null
