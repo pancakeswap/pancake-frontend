@@ -6,6 +6,7 @@ import { transformPool } from 'state/pools/helpers'
 import { getCakeContract } from 'utils/contractHelpers'
 import { PoolCategory } from 'config/constants/types'
 import { bscTokens } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { fetchUserStakeBalances, fetchUserPendingRewards } from './fetchPoolsUser'
 
@@ -17,7 +18,7 @@ export interface PoolsState {
 const cakeContract = getCakeContract()
 
 const initialData = {
-  56: {
+  [ChainId.BSC]: {
     data: {
       sousId: 0,
       stakingToken: bscTokens.cake.serialize,
@@ -30,7 +31,7 @@ const initialData = {
     },
     userDataLoaded: false,
   },
-  97: {
+  [ChainId.BSC_TESTNET]: {
     data: {
       sousId: 0,
       stakingToken: bscTokens.cake.serialize,
@@ -47,7 +48,7 @@ const initialData = {
 
 export const useFetchUserPools = (account) => {
   const { chainId } = useActiveChainId()
-  const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData[chainId || 56])
+  const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData[chainId || ChainId.BSC])
 
   const fetchUserPoolsData = useCallback(() => {
     if (account) {
