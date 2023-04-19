@@ -10,7 +10,7 @@ import {
   useMatchBreakpoints,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
-import { useMultiChainPath, useStableSwapPath, useGetChainName } from 'state/info/hooks'
+import { useMultiChainPath, useStableSwapPath, useChainNameByQuery } from 'state/info/hooks'
 import { v2SubgraphTokenName } from 'state/info/constant'
 import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -100,7 +100,7 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number }>> = ({ tokenData, index }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const chianPath = useMultiChainPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const stableSwapPath = useStableSwapPath()
 
   return (

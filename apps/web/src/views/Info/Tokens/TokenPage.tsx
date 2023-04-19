@@ -26,7 +26,7 @@ import { Duration } from 'date-fns'
 import { useMemo } from 'react'
 import { multiChainId, multiChainScan, v2SubgraphTokenName } from 'state/info/constant'
 import {
-  useGetChainName,
+  useChainNameByQuery,
   useMultiChainPath,
   usePoolDatasSWR,
   usePoolsForTokenSWR,
@@ -107,7 +107,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
   const chainPath = useMultiChainPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const infoTypeParam = useStableSwapPath()
 
   return (

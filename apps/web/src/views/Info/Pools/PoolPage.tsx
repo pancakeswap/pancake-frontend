@@ -26,7 +26,7 @@ import { useState, useMemo } from 'react'
 import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import {
-  useGetChainName,
+  useChainNameByQuery,
   useMultiChainPath,
   usePoolChartDataSWR,
   usePoolDatasSWR,
@@ -99,7 +99,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const transactions = usePoolTransactionsSWR(address)
 
   const [watchlistPools, addPoolToWatchlist] = useWatchlistPools()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()

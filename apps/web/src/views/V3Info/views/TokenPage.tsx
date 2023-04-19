@@ -31,7 +31,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 // import { useSavedTokens } from 'state/user/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
@@ -151,7 +151,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   }, [priceData, tokenData])
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const { chainId } = useActiveChainId()
 
   // watchlist

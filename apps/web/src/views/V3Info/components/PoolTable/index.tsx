@@ -3,7 +3,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -61,7 +61,7 @@ const SORT_FIELD = {
 }
 
 const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: number; chainPath: string }) => {
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   return (
     <LinkWrapper href={`/${v3InfoPath}${chainPath}/pairs/${poolData.address}`}>
       <ResponsiveGrid>

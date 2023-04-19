@@ -2,9 +2,9 @@ import { ChainId } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import dayjs, { OpUnitType } from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
-import { multiChainName } from 'state/info/constant'
+import { useChainNameByQuery } from 'state/info/hooks'
+import { multiChainName, multiChainId } from 'state/info/constant'
 import { Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
@@ -56,7 +56,8 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
 }
 
 export const useProtocolChartData = (): ChartDayData[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const { data: chartData } = useSWRImmutable(
     chainId && [`v3/info/protocol/ProtocolChartData/${chainId}`, chainId],
     () => fetchChartData(v3InfoClients[chainId]),
@@ -66,7 +67,8 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
 }
 
 export const useProtocolData = (): ProtocolData | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48])
   const { data } = useSWRImmutable(
@@ -78,7 +80,8 @@ export const useProtocolData = (): ProtocolData | undefined => {
 }
 
 export const useProtocolTransactionData = (): Transaction[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const { data } = useSWRImmutable(
     chainId && [`v3/info/protocol/ProtocolTransactionData/${chainId}`, chainId],
     () => fetchTopTransactions(v3InfoClients[chainId]),
@@ -92,7 +95,8 @@ export const useTokenPriceChartData = (
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime
     .subtract(1, duration ?? 'day')
@@ -120,7 +124,8 @@ export const usePairPriceChartTokenData = (
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime
     .subtract(1, duration ?? 'day')
@@ -161,7 +166,8 @@ export const useTopTokensData = ():
       [address: string]: TokenData
     }
   | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
@@ -178,7 +184,8 @@ export const useTopTokensData = ():
 }
 
 export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
@@ -199,7 +206,8 @@ export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
 }
 
 export const useTokenData = (address: string): TokenData | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
@@ -217,7 +225,8 @@ export const useTokenData = (address: string): TokenData | undefined => {
 }
 
 export const usePoolsForToken = (address: string): string[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/poolsForTOken/${chainId}/${address}`, chainId],
     () => fetchPoolsForToken(address, v3InfoClients[chainId]),
@@ -227,7 +236,8 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
 }
 
 export const useTokenChartData = (address: string): TokenChartEntry[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
@@ -242,7 +252,8 @@ export const useTokenPriceData = (
   interval: number,
   timeWindow: OpUnitType,
 ): PriceChartEntry[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime
     .subtract(1, timeWindow ?? 'day')
@@ -258,7 +269,8 @@ export const useTokenPriceData = (
 }
 
 export const useTokenTransactions = (address: string): Transaction[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
     () => fetchTokenTransactions(address, v3InfoClients[chainId]),
@@ -286,7 +298,8 @@ export const useTopPoolsData = ():
       [address: string]: PoolData
     }
   | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
@@ -304,7 +317,8 @@ export const useTopPoolsData = ():
 }
 
 export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
@@ -326,7 +340,8 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
 }
 
 export const usePoolData = (address: string): PoolData | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
@@ -343,7 +358,8 @@ export const usePoolData = (address: string): PoolData | undefined => {
   return data?.data[address] ?? undefined
 }
 export const usePoolTransactions = (address: string): Transaction[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
@@ -354,7 +370,8 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 }
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const { data } = useSWRImmutable(
     chainId && address && address !== 'undefined' && [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
     () => fetchPoolChartData(address, v3InfoClients[chainId]),
@@ -364,7 +381,8 @@ export const usePoolChartData = (address: string): PoolChartEntry[] | undefined 
 }
 
 export const usePoolTickData = (address: string): PoolTickData | undefined => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
@@ -377,7 +395,8 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 export const useSearchData = (
   searchValue: string,
 ): { tokens: TokenData[]; pools: PoolData[]; loading: boolean; error: any } => {
-  const { chainId } = useActiveChainId()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
   const { data, status, error } = useSWRImmutable(
