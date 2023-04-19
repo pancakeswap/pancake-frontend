@@ -41,10 +41,10 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const chainPath = useMultiChainPath()
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
   const activeIndex = useMemo(() => {
-    if (router.pathname.includes('/pairs')) {
+    if (router?.pathname?.includes('/pairs')) {
       return 1
     }
-    if (router.pathname.includes('/tokens')) {
+    if (router?.pathname?.includes('/tokens')) {
       return 2
     }
     return 0
