@@ -40,7 +40,7 @@ export const v3Clients = {
   [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET]),
 }
 
-export const v3InfoClients = { ...v3Clients } // , [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
+export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 
