@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { BatchMulticallConfigs } from '../../types'
 import { QuoteProvider, OnChainProvider, RouteWithoutQuote, RouteWithQuote, RouteType, QuoterOptions } from '../types'
 import { isV3Pool } from '../utils'
 import { createOffChainQuoteProvider } from './offChainQuoteProvider'
@@ -6,13 +7,14 @@ import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } fr
 
 interface Config {
   onChainProvider: OnChainProvider
+  multicallConfigs?: BatchMulticallConfigs
 }
 
 // For evm
-export function createQuoteProvider({ onChainProvider }: Config): QuoteProvider {
+export function createQuoteProvider({ onChainProvider, multicallConfigs }: Config): QuoteProvider {
   const offChainQuoteProvider = createOffChainQuoteProvider()
-  const mixedRouteOnChainQuoteProvider = createMixedRouteOnChainQuoteProvider({ onChainProvider })
-  const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider })
+  const mixedRouteOnChainQuoteProvider = createMixedRouteOnChainQuoteProvider({ onChainProvider, multicallConfigs })
+  const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider, multicallConfigs })
 
   const createGetRouteWithQuotes = (isExactIn = true) => {
     const getOffChainQuotes = isExactIn
