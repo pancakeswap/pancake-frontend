@@ -746,6 +746,7 @@
   "Auction duration": "オークション期間",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "出来高は推定です。価格が%slippage%%以上変化する場合、取引は取り消しになります。",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA%と%amountB% %symbolB%を供給",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA%と%amountB% %symbolB%を削除",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "%amountA% %symbolA%を%amountB% %symbolB%とスワップ",
   "Add Liquidity": "流動性の追加",
