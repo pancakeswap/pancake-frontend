@@ -746,6 +746,7 @@
   "Auction duration": "নিলামের সময়কাল",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "ফলাফল অনুমান করা হয়। দাম %slippage%% এর বেশি পরিবর্তিত হলে আপনার লেনদেন প্রত্যাহার হবে।",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA% এবং %amountB% %symbolB% সরবরাহ করা হচ্ছে",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA% এবং %amountB% %symbolB% অপসারণ করা হচ্ছে",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "%amountB% %symbolB% এর জন্য %amountA% %symbolA% সোয়াপ করা হচ্ছে",
   "Add Liquidity": "লিকিউডিটি যোগ করুন",
