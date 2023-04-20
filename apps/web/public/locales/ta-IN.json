@@ -746,6 +746,7 @@
   "Auction duration": "ஏல காலஅளவு",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "வெளியீடு கணக்கிடப்பட்டுள்ளது. விலை, %slippage%% க்கும் மேல் மாறினால் உங்கள் பரிவர்த்தனை மாற்றியமைக்கப்படும்.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "சப்ளை செய்வது %amountA% %symbolA% மற்றும் %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "அகற்றுவது %amountA% %symbolA% மற்றும் %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "ஸ்வாப் செய்வது %amountB% %symbolB% க்கு %amountA% %symbolA%",
   "Add Liquidity": "லிக்விடிட்டியைச் சேர்",
