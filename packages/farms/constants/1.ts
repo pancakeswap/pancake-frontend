@@ -53,6 +53,14 @@ export const farmsV3 = [
   },
   // Keep those farms on top
   {
+    pid: 24,
+    lpSymbol: 'WETH-WNCG LP',
+    lpAddress: '0x5145755c0535198eec1642DC0cc96225fb28263D',
+    token: ethereumTokens.weth,
+    quoteToken: ethereumTokens.wncg,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 23,
     lpSymbol: 'MASK-USDC LP',
     lpAddress: '0x6E229C972d9F69c15Bdc7B07f385D2025225E72b',
