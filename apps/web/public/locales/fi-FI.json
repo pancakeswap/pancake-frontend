@@ -746,6 +746,7 @@
   "Auction duration": "Huutokaupan kesto",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Tulos on arvioitu. Jos hinta muuttuu yli %slippage% %, transaktiosi peruuntuu.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Tarjotaan %amountA% %symbolA% ja %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Poistetaan %amountA% %symbolA% ja %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Vaihdetaan %amountA% %symbolA% vaihtokohteeseen %amountB% %symbolB%",
   "Add Liquidity": "Lisää likviditeettiä",
