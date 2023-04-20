@@ -53,6 +53,14 @@ export const farmsV3 = [
   },
   // Keep those farms on top
   {
+    pid: 23,
+    lpSymbol: 'MASK-USDC LP',
+    lpAddress: '0x6E229C972d9F69c15Bdc7B07f385D2025225E72b',
+    token: ethereumTokens.mask,
+    quoteToken: ethereumTokens.usdc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 22,
     lpSymbol: 'AXL-USDC LP',
     lpAddress: Pool.getAddress(ethereumTokens.axl, ethereumTokens.usdc, FeeAmount.MEDIUM),

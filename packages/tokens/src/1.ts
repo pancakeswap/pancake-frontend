@@ -160,4 +160,12 @@ export const ethereumTokens = {
     'Axelar',
     'https://axelar.network/',
   ),
+  mask: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x69af81e73A73B40adF4f3d4223Cd9b1ECE623074',
+    18,
+    'MASK',
+    'Mask Network',
+    'https://mask.io/',
+  ),
 }
