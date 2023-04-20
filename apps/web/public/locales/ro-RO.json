@@ -746,6 +746,7 @@
   "Auction duration": "Durata licitației",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Rezultatul este estimat. Dacă prețul se modifică cu mai mult de %slippage%%, tranzacția ta va fi inversată.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Se furnizează %amountA% %symbolA% și %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Se elimină %amountA% %symbolA% și %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Se schimbă %amountA% %symbolA% cu %amountB% %symbolB%",
   "Add Liquidity": "Adaugă lichidități",
