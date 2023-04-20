@@ -133,10 +133,11 @@ export const usePoolTransactionsSWR = (address: string): Transaction[] | undefin
 
 // Tokens hooks
 
-export const useAllTokenHighLight = (): TokenData[] => {
-  const chainName = useChainNameByQuery()
+export const useAllTokenHighLight = (targetChainName?: MultiChainName): TokenData[] => {
+  const chainNameByQuery = useChainNameByQuery()
+  const chainName = targetChainName ?? chainNameByQuery
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d], undefined, undefined, chainName)
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${type}`, chainName],
