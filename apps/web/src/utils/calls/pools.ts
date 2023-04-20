@@ -39,7 +39,7 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
     : null
 
   const calls = !block ? [...startBlockCalls, ...endBlockCalls, blockCall] : [...startBlockCalls, ...endBlockCalls]
-  const resultsRaw = await multicallv3({ calls })
+  const resultsRaw = await multicallv3({ calls, chainId })
   const blockNumber = block || resultsRaw.pop()[0].toNumber()
   const blockCallsRaw = chunk(resultsRaw, resultsRaw.length / 2)
   const startBlocks: any[] = blockCallsRaw[0]
