@@ -746,6 +746,7 @@
   "Auction duration": "Διάρκεια δημοπρασίας",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Το παραγόμενο ποσό είναι εκτίμηση. Εάν η τιμή αλλάξει περισσότερο από %slippage%% η συναλλαγή σας θα ακυρωθεί.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Κατάθεση %amountA% %symbolA% και %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Αφαίρεση %amountA% %symbolA% και %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Ανταλλαγή %amountA% %symbolA% για %amountB% %symbolB%",
   "Add Liquidity": "Προσθήκη ρευστότητας",
