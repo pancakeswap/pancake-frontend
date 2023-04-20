@@ -17,9 +17,9 @@ const nameMapping = {
 }
 
 const getImageUrlFromToken = (token: Token) => {
-  const address = token?.isNative ? token?.wrapped?.address : token?.address
+  const address = token?.isNative ? token.wrapped.address : token.address
 
-  return `https://tokens.pancakeswap.finance/images/${nameMapping[token?.chainId]}${address}.png`
+  return `https://tokens.pancakeswap.finance/images/${nameMapping[token.chainId]}${address}.png`
 }
 
 export const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({
