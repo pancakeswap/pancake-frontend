@@ -746,6 +746,7 @@
   "Auction duration": "Продолжительность аукциона",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Результат ориентировочный. Если цена меняется более чем на %slippage%%, транзакция будет возвращена.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Предложение %amountA% %symbolA% и %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Удаление %amountA% %symbolA% и %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Обмен %amountA% %symbolA% на %amountB% %symbolB%",
   "Add Liquidity": "Добавить ликвидность",
