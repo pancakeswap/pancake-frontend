@@ -35,8 +35,8 @@ export const QUICK_ACTION_CONFIGS: Record<FeeAmount, { [percentage: number]: Zoo
   },
   [FeeAmount.LOW]: {
     5: {
-      initialMin: 0.999,
-      initialMax: 1.001,
+      initialMin: 0.95,
+      initialMax: 1.054,
       min: 0.00001,
       max: 1.5,
     },
