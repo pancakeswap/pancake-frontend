@@ -746,6 +746,7 @@
   "Auction duration": "Auktionslängd",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Utdelningen är uppskattad. Om priset ändras med mer än %slippage% annulleras din transaktion.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Tillför %amountA% %symbolA% och %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Tar bort %amountA% %symbolA% och %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Byter %amountA% %symbolA% mot %amountB% %symbolB%",
   "Add Liquidity": "Lägg till likviditet",
