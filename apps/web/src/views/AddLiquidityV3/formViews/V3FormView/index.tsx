@@ -597,7 +597,7 @@ export default function V3FormView({
             ) : (
               <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
                 {QUICK_ACTION_CONFIGS[feeAmount] &&
-                  Object.entries(QUICK_ACTION_CONFIGS[feeAmount])
+                  Object.entries<ZoomLevels>(QUICK_ACTION_CONFIGS[feeAmount])
                     ?.sort(([a], [b]) => +a - +b)
                     .map(([quickAction, zoomLevel]) => {
                       return (
