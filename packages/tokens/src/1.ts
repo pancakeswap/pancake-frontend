@@ -165,7 +165,7 @@ export const ethereumTokens = {
     '0x69af81e73A73B40adF4f3d4223Cd9b1ECE623074',
     18,
     'MASK',
-    'MASK Network',
+    'Mask Network',
     'https://mask.io/',
   ),
 }
