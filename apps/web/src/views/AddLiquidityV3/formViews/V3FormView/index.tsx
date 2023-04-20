@@ -49,7 +49,7 @@ import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmoun
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
 
-import { ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
+import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
@@ -392,16 +392,23 @@ export default function V3FormView({
     />
   )
 
-  const handleRefresh = useCallback(() => {
-    setActiveQuickAction(undefined)
-    const currentPrice = price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
-    if (currentPrice) {
-      onBothRangeInput({
-        leftTypedValue: (currentPrice * ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin).toString(),
-        rightTypedValue: (currentPrice * ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax).toString(),
-      })
-    }
-  }, [price, feeAmount, invertPrice, onBothRangeInput])
+  const handleRefresh = useCallback(
+    (zoomLevel?: ZoomLevels) => {
+      setActiveQuickAction(undefined)
+      const currentPrice = price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
+      if (currentPrice) {
+        onBothRangeInput({
+          leftTypedValue: (
+            currentPrice * zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin
+          ).toString(),
+          rightTypedValue: (
+            currentPrice * zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax
+          ).toString(),
+        })
+      }
+    },
+    [price, feeAmount, invertPrice, onBothRangeInput],
+  )
 
   return (
     <>
@@ -534,6 +541,7 @@ export default function V3FormView({
                   </AutoRow>
                 )}
                 <LiquidityChartRangeInput
+                  zoomLevel={QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction]}
                   onBothRangeInput={onBothRangeInput}
                   key={baseCurrency?.wrapped?.address}
                   currencyA={baseCurrency ?? undefined}
@@ -588,41 +596,30 @@ export default function V3FormView({
               </Message>
             ) : (
               <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
-                {QUICK_ACTION_CONFIGS[feeAmount]?.map((quickAction) => {
-                  return (
-                    <Button
-                      width="100%"
-                      key={`quickActions${quickAction.percentage}`}
-                      onClick={() => {
-                        if (quickAction.percentage === activeQuickAction) {
-                          handleRefresh()
-                          return
-                        }
-                        const currentPrice = invertPrice ? price?.invert() : price
-                        if (currentPrice) {
-                          onBothRangeInput({
-                            leftTypedValue: currentPrice
-                              .divide(new Fraction(1000, 1000 - quickAction.percentage * 10))
-                              .toSignificant(6),
-                            rightTypedValue: currentPrice
-                              .divide(
-                                new Fraction(
-                                  1000,
-                                  Math.floor(1000 + quickAction.percentage * 10 * quickAction.balanceFactor),
-                                ),
-                              )
-                              .toSignificant(6),
-                          })
-                          setActiveQuickAction(quickAction.percentage)
-                        }
-                      }}
-                      variant={quickAction.percentage === activeQuickAction ? 'primary' : 'secondary'}
-                      scale="sm"
-                    >
-                      {quickAction.percentage}%
-                    </Button>
-                  )
-                })}
+                {QUICK_ACTION_CONFIGS[feeAmount] &&
+                  Object.entries<ZoomLevels>(QUICK_ACTION_CONFIGS[feeAmount])
+                    ?.sort(([a], [b]) => +a - +b)
+                    .map(([quickAction, zoomLevel]) => {
+                      return (
+                        <Button
+                          width="100%"
+                          key={`quickActions${quickAction}`}
+                          onClick={() => {
+                            if (+quickAction === activeQuickAction) {
+                              handleRefresh(ZOOM_LEVELS[feeAmount])
+                              return
+                            }
+                            handleRefresh(zoomLevel)
+
+                            setActiveQuickAction(+quickAction)
+                          }}
+                          variant={+quickAction === activeQuickAction ? 'primary' : 'secondary'}
+                          scale="sm"
+                        >
+                          {quickAction}%
+                        </Button>
+                      )
+                    })}
                 <Button
                   width="200%"
                   onClick={() => {
