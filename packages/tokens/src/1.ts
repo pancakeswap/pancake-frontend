@@ -168,4 +168,12 @@ export const ethereumTokens = {
     'Mask Network',
     'https://mask.io/',
   ),
+  wncg: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xf203Ca1769ca8e9e8FE1DA9D147DB68B6c919817',
+    18,
+    'WNCG',
+    'Wrapped NCG',
+    'https://nine-chronicles.com/',
+  ),
 }

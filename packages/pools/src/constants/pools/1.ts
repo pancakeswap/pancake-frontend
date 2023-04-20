@@ -6,10 +6,10 @@ export const livePools: SerializedPool[] = [
   {
     sousId: 1,
     stakingToken: ethereumTokens.cake,
-    earningToken: ethereumTokens.usdt,
-    contractAddress: '0x83492ae058cefACa420b6faef25619DA3cC8DC87',
+    earningToken: ethereumTokens.wncg,
+    contractAddress: '0x5eC855219e236b75E7cfba0D56105b9Cc88B4A18',
     poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '0.000231',
+    tokenPerSecond: '0.04061',
   },
 ].map((p) => ({
   ...p,
