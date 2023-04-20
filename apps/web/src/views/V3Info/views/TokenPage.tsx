@@ -334,9 +334,9 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                 </Box>
               </Card>
             </ContentLayout>
-            <Heading>Pools</Heading>
+            <Heading>{t('Pairs')}</Heading>
             <PoolTable poolDatas={formatPoolData} />
-            <Heading>Transactions</Heading>
+            <Heading>{t('Transactions')}</Heading>
             {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
           </AutoColumn>
         )
