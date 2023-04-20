@@ -746,6 +746,7 @@
   "Auction duration": "Thời gian đấu giá",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Đầu ra được ước tính. Nếu giá thay đổi nhiều hơn %slippage%%, giao dịch của bạn sẽ được hoàn tác.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Cung ứng %amountA% %symbolA% và %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Xóa %amountA% %symbolA% và %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Hoán đổi %amountA% %symbolA% để lấy %amountB% %symbolB%",
   "Add Liquidity": "Thêm Thanh khoản",
