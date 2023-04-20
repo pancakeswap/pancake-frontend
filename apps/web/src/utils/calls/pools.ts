@@ -7,7 +7,7 @@ import sousChefV2 from 'config/abi/sousChefV2.json'
 import chunk from 'lodash/chunk'
 
 import { multicallv3 } from '../multicall'
-import { getAddress, getMulticallAddress } from '../addressHelpers'
+import { getMulticallAddress } from '../addressHelpers'
 import multiCallAbi from '../../config/abi/Multicall.json'
 
 const multicallAddress = getMulticallAddress()
