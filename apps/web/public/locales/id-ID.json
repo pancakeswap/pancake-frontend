@@ -746,6 +746,7 @@
   "Auction duration": "Durasi lelang",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Output diperkirakan. Jika harga berubah sebesar lebih dari %slippage%% transaksi Anda akan dibalik.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Menyuplai %amountA% %symbolA% dan %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Menghapus %amountA% %symbolA% dan %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Menukar %amountA% %symbolA% dengan %amountB% %symbolB%",
   "Add Liquidity": "Tambahkan Likuiditas",
