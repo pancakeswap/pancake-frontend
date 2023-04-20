@@ -746,6 +746,7 @@
   "Auction duration": "Тривалість аукціону",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Результат приблизний. Якщо ціна зміниться більше ніж на %slippage%%, вашу транзакцію буде скасовано.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Вноситься %amountA% %symbolA% і %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Вилучається %amountA% %symbolA% і %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Обмінюється %amountA% %symbolA% на %amountB% %symbolB%",
   "Add Liquidity": "Додати ліквідність",
