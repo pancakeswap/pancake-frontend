@@ -92,26 +92,30 @@ const fetchLegacyPoolsBlockLimits = async (
     ]
   })
 
-  const blockNumber = await provider({ chainId }).getBlockNumber()
-  const block = await provider({ chainId }).getBlock(blockNumber)
   const { multicall } = createMulticall(provider)
-  const startEndBlockRaw: [BigNumber][] = await multicall(sousChefABI, startEndBlockCalls, chainId)
+  const [block, startEndBlockRaw] = await Promise.all([
+    provider({ chainId }).getBlock('latest'),
+    multicall(sousChefABI, startEndBlockCalls, chainId),
+  ])
 
-  const startEndBlockResult = startEndBlockRaw.reduce<[BigNumber][][]>((resultArray, item, index) => {
-    const chunkIndex = Math.floor(index / 2)
+  const startEndBlockResult = (startEndBlockRaw as [BigNumber][]).reduce<[BigNumber][][]>(
+    (resultArray, item, index) => {
+      const chunkIndex = Math.floor(index / 2)
 
-    if (!resultArray[chunkIndex]) {
-      // eslint-disable-next-line no-param-reassign
-      resultArray[chunkIndex] = [] // start a new chunk
-    }
+      if (!resultArray[chunkIndex]) {
+        // eslint-disable-next-line no-param-reassign
+        resultArray[chunkIndex] = [] // start a new chunk
+      }
 
-    resultArray[chunkIndex].push(item)
+      resultArray[chunkIndex].push(item)
 
-    return resultArray
-  }, [])
+      return resultArray
+    },
+    [],
+  )
 
   const getTimestampFromBlock = (targetBlock: number) => {
-    return block.timestamp + (targetBlock - blockNumber) * BSC_BLOCK_TIME
+    return block.timestamp + (targetBlock - block.number) * BSC_BLOCK_TIME
   }
   return pools.map((cakePoolConfig, index) => {
     const [[startBlock], [endBlock]] = startEndBlockResult[index]
