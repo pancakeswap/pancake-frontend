@@ -2,10 +2,20 @@ import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection } from '@pancakeswap/uikit'
+import {
+  FlexGap,
+  AutoColumn,
+  CardBody,
+  Card,
+  AddIcon,
+  PreTitle,
+  DynamicSection,
+  RefreshIcon,
+  IconButton,
+} from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
@@ -23,6 +33,7 @@ import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
 
+import noop from 'lodash/noop'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -91,11 +102,14 @@ export function UniversalAddLiquidity({
   const [, , feeAmountFromUrl] = router.query.currency || []
 
   // fee selection from url
-  const feeAmount: FeeAmount | undefined =
-    preferredFeeAmount ||
-    (feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
-      ? parseFloat(feeAmountFromUrl)
-      : undefined)
+  const feeAmount: FeeAmount | undefined = useMemo(() => {
+    return (
+      preferredFeeAmount ||
+      (feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
+        ? parseFloat(feeAmountFromUrl)
+        : undefined)
+    )
+  }, [preferredFeeAmount, feeAmountFromUrl])
 
   const handleCurrencySelect = useCallback(
     (currencyNew: Currency, currencyIdOther?: string): (string | undefined)[] => {
@@ -197,7 +211,7 @@ export function UniversalAddLiquidity({
       return
     }
 
-    // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, eg. toggle rate
+    // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, e.g. toggle rate
     if (feeAmountFromUrl) return
     if (stableConfig.stableSwapConfig) {
       setSelectorType(SELECTOR_TYPE.STABLE)
@@ -335,7 +349,15 @@ const SELECTOR_TYPE_T = {
   [SELECTOR_TYPE.V3]: <Trans>Add V3 Liquidity</Trans>,
 } as const satisfies Record<SELECTOR_TYPE, JSX.Element>
 
-export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }) {
+export function AddLiquidityV3Layout({
+  showRefreshButton = false,
+  handleRefresh,
+  children,
+}: {
+  showRefreshButton?: boolean
+  handleRefresh?: () => void
+  children: React.ReactNode
+}) {
   const { t } = useTranslation()
 
   const [selectType] = useAtom(selectTypeAtom)
@@ -353,14 +375,21 @@ export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }
           title={title}
           backTo="/liquidity"
           IconSlot={
-            selectType === SELECTOR_TYPE.V3 && (
-              <AprCalculator
-                showQuestion
-                baseCurrency={baseCurrency}
-                quoteCurrency={quoteCurrency}
-                feeAmount={feeAmount}
-              />
-            )
+            <>
+              {selectType === SELECTOR_TYPE.V3 && (
+                <AprCalculator
+                  showQuestion
+                  baseCurrency={baseCurrency}
+                  quoteCurrency={quoteCurrency}
+                  feeAmount={feeAmount}
+                />
+              )}
+              {showRefreshButton && (
+                <IconButton variant="text" scale="sm">
+                  <RefreshIcon onClick={handleRefresh || noop} color="textSubtle" height={24} width={24} />
+                </IconButton>
+              )}
+            </>
           }
         />
         {children}

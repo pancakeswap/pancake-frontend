@@ -12,35 +12,8 @@ import { InfoBox } from 'components/InfoBox'
 
 import { Chart } from './Chart'
 import { useDensityChartData } from './hooks'
-import { ZoomLevels } from './types'
+import { ZoomLevels, ZOOM_LEVELS } from './types'
 import Loader from './Loader'
-
-const ZOOM_LEVELS: Record<FeeAmount, ZoomLevels> = {
-  [FeeAmount.LOWEST]: {
-    initialMin: 0.999,
-    initialMax: 1.001,
-    min: 0.00001,
-    max: 1.5,
-  },
-  [FeeAmount.LOW]: {
-    initialMin: 0.999,
-    initialMax: 1.001,
-    min: 0.00001,
-    max: 1.5,
-  },
-  [FeeAmount.MEDIUM]: {
-    initialMin: 0.5,
-    initialMax: 2,
-    min: 0.00001,
-    max: 20,
-  },
-  [FeeAmount.HIGH]: {
-    initialMin: 0.5,
-    initialMax: 2,
-    min: 0.00001,
-    max: 20,
-  },
-}
 
 const ChartWrapper = styled.div`
   position: relative;
@@ -61,6 +34,7 @@ export default function LiquidityChartRangeInput({
   onRightRangeInput,
   interactive,
   onBothRangeInput,
+  zoomLevel,
 }: {
   currencyA: Currency | undefined
   currencyB: Currency | undefined
@@ -73,6 +47,7 @@ export default function LiquidityChartRangeInput({
   onRightRangeInput: (typedValue: string) => void
   onBothRangeInput: ({ leftTypedValue, rightTypedValue }: { leftTypedValue: string; rightTypedValue: string }) => void
   interactive: boolean
+  zoomLevel?: ZoomLevels
 }) {
   const { t } = useTranslation()
   const theme = useTheme()
@@ -167,6 +142,7 @@ export default function LiquidityChartRangeInput({
       ) : (
         <ChartWrapper>
           <Chart
+            key={`${feeAmount ?? FeeAmount.MEDIUM}`}
             data={{ series: formattedData, current: price }}
             dimensions={{ width: 400, height: 200 }}
             margins={{ top: 10, right: 2, bottom: 20, left: 0 }}
@@ -185,7 +161,7 @@ export default function LiquidityChartRangeInput({
             brushLabels={brushLabelValue}
             brushDomain={brushDomain}
             onBrushDomainChange={onBrushDomainChangeEnded}
-            zoomLevels={ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM]}
+            zoomLevels={zoomLevel ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM]}
             ticksAtLimit={ticksAtLimit}
           />
         </ChartWrapper>
