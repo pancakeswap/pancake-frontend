@@ -7,7 +7,7 @@ import sousChefV2 from 'config/abi/sousChefV2.json'
 import chunk from 'lodash/chunk'
 
 import { multicallv3 } from '../multicall'
-import { getAddress, getMulticallAddress } from '../addressHelpers'
+import { getMulticallAddress } from '../addressHelpers'
 import multiCallAbi from '../../config/abi/Multicall.json'
 
 const multicallAddress = getMulticallAddress()
@@ -22,12 +22,12 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
     .filter((pool) => pool.isFinished === false || pool.isFinished === undefined)
   const startBlockCalls = eligiblePools.map(({ contractAddress }) => ({
     abi: sousChefV2,
-    address: getAddress(contractAddress, 56),
+    address: contractAddress,
     name: 'startBlock',
   }))
   const endBlockCalls = eligiblePools.map(({ contractAddress }) => ({
     abi: sousChefV2,
-    address: getAddress(contractAddress, 56),
+    address: contractAddress,
     name: 'bonusEndBlock',
   }))
   const blockCall = !block
@@ -39,7 +39,7 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
     : null
 
   const calls = !block ? [...startBlockCalls, ...endBlockCalls, blockCall] : [...startBlockCalls, ...endBlockCalls]
-  const resultsRaw = await multicallv3({ calls })
+  const resultsRaw = await multicallv3({ calls, chainId })
   const blockNumber = block || resultsRaw.pop()[0].toNumber()
   const blockCallsRaw = chunk(resultsRaw, resultsRaw.length / 2)
   const startBlocks: any[] = blockCallsRaw[0]
