@@ -9,10 +9,11 @@ import {
   Text,
   Flex,
 } from '@pancakeswap/uikit'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
+import { multiChainId } from 'state/info/constant'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -97,12 +98,14 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const abs1 = Math.abs(transaction.amountToken1)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-  const { chainId } = useActiveChainId()
   const chainName = useChainNameByQuery()
 
   return (
     <ResponsiveGrid>
-      <LinkExternal href={getEtherscanLink(chainId, transaction.hash, 'transaction')} isBscScan={chainName === 'BSC'}>
+      <LinkExternal
+        href={getEtherscanLink(multiChainId[chainName], transaction.hash, 'transaction')}
+        isBscScan={chainName === 'BSC'}
+      >
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
             ? `Add ${transaction.token0Symbol} and ${transaction.token1Symbol}`
@@ -119,7 +122,10 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
         <HoverInlineText text={`${formatAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <LinkExternal href={getEtherscanLink(chainId, transaction.sender, 'address')} isBscScan={chainName === 'BSC'}>
+        <LinkExternal
+          href={getEtherscanLink(multiChainId[chainName], transaction.sender, 'address')}
+          isBscScan={chainName === 'BSC'}
+        >
           {shortenAddress(transaction.sender)}
         </LinkExternal>
       </Text>
