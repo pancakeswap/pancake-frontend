@@ -746,6 +746,7 @@
   "Auction duration": "拍賣持續時間",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "輸出為估計值。如果價格變化超過 %slippage%%，則系統將退還您的交易。",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "正在供應 %amountA% %symbolA% 和 %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "正在移除 %amountA% %symbolA% 和 %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "正在將 %amountA% %symbolA% 交換為 %amountB% %symbolB%",
   "Add Liquidity": "增加流動性",
