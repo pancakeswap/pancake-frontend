@@ -746,6 +746,7 @@
   "Auction duration": "नीलामी की अवधि",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "आउटपुट अनुमानित है। यदि कीमत %slippage%% से ज्यादा बदलती है, तो आपका लेनदेन रिवर्ट हो जाएगा।",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA% और %amountB% %symbolB% की सप्लाई की जा रही है",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA% और %amountB% %symbolB% को हटाया जा रहा है",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "%amountA% %symbolA% को %amountB% %symbolB% में स्वैप किया जा रहा है",
   "Add Liquidity": "लिक्विडिटी जोड़ें",
