@@ -746,6 +746,7 @@
   "Auction duration": "Müzayede süresi",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Çıktı tahminidir. Fiyat %slippage% oranından fazla değişirse işlemin geri çevrilir.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% miktarında %symbolA% ve %amountB% miktarında %symbolB% arz ediliyor",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% miktarında %symbolA% ve %amountB% miktarında %symbolB% bozduruluyor",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "%amountB% miktarında %symbolB% karşılığında %amountA% miktarında %symbolA% değiştiriliyor",
   "Add Liquidity": "Likidite Ekle",
