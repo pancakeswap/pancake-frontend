@@ -746,6 +746,7 @@
   "Auction duration": "Duração do leilão",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "O rendimento é estimado. Se o preço é alterado em mais de %slippage%%, sua transação será revertida.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Fornecendo %amountA% %symbolA% e %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Removendo %amountA% %symbolA% e %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Trocando %amountA% %symbolA% por %amountB% %symbolB%",
   "Add Liquidity": "Adicionar liquidez",
