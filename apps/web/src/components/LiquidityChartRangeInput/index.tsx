@@ -164,7 +164,6 @@ export default function LiquidityChartRangeInput({
             zoomLevels={zoomLevel ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM]}
             ticksAtLimit={ticksAtLimit}
           />
-          ()
         </ChartWrapper>
       )}
     </AutoColumn>
