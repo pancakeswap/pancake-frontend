@@ -746,6 +746,7 @@
   "Auction duration": "Tagal ng auction",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "Tinatantiya ang output. Kung ang presyo ay nagbago ng higit sa %slippage%% babalik ang iyong transaksyon.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "Nag-susupply ng %amountA% %symbolA% at %amountB% %symbolB%",
+  "Supplying %amountA% %symbolA% %amountB% %symbolB%": "Supplying %amountA% %symbolA% %amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "Inaalis ang %amountA% %symbolA% at %amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "Isina-swap ang %amountA% %symbolA% para sa %amountB% %symbolB%",
   "Add Liquidity": "Idagdag ang Liquidity",
