@@ -22,6 +22,7 @@ import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStable
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
+import { getAddress } from 'utils/addressHelpers'
 
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
@@ -111,7 +112,7 @@ export function UniversalAddLiquidity({
       const isETHOrWETHOther =
         currencyIdOther !== undefined &&
         (currencyIdOther === NATIVE[chainId]?.symbol ||
-          (chainId !== undefined && currencyIdOther === WNATIVE[chainId]?.address))
+          (chainId !== undefined && getAddress(currencyIdOther) === WNATIVE[chainId]?.address))
 
       if (isETHOrWETHNew && isETHOrWETHOther) {
         return [currencyIdNew, undefined]
