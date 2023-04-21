@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { gql, GraphQLClient } from 'graphql-request'
-import { MultiChainName } from 'state/info/constant'
+import { MultiChainNameExtend } from 'state/info/constant'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { PriceChartEntry } from '../../types'
 
@@ -96,7 +96,7 @@ export async function fetchTokenPriceData(
   interval: number,
   startTimestamp: number,
   dataClient: GraphQLClient,
-  chainName: MultiChainName,
+  chainName: MultiChainNameExtend,
 ): Promise<{
   data: PriceChartEntry[]
   error: boolean
@@ -196,7 +196,7 @@ export async function fetchPairPriceChartTokenData(
   interval: number,
   startTimestamp: number,
   dataClient: GraphQLClient,
-  chainName: MultiChainName,
+  chainName: MultiChainNameExtend,
 ): Promise<{
   data: PriceChartEntry[]
   error: boolean
