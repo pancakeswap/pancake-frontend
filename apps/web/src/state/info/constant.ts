@@ -11,7 +11,7 @@ import {
   ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
 
-export type MultiChainName = 'BSC' | 'ETH'
+export type MultiChainName = 'BSC' | 'ETH' | 'BSC_TESTNET'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET'
 
