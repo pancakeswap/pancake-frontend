@@ -272,7 +272,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 </AutoColumn>
                 <AutoColumn gap="4px">
                   <Text fontWeight={400}>{t('Fees 24H')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD * (poolData.feeTier / 1000000))}</Text>
+                  <Text fontSize="24px">{formatDollarAmount(poolData.feeUSD)}</Text>
                 </AutoColumn>
               </Box>
             </Card>

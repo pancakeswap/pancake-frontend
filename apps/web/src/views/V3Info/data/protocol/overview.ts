@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { gql, GraphQLClient } from 'graphql-request'
 import { Block } from 'state/info/types'
 import { ProtocolData } from '../../types'
@@ -80,17 +81,17 @@ export async function fetchProtocolData(
 
     const feesOneWindowAgo =
       parsed24 && parsed48
-        ? parseFloat(parsed24.totalFeesUSD) -
-          parseFloat(parsed24.totalProtocolFeesUSD) -
-          (parseFloat(parsed48.totalFeesUSD) - parseFloat(parsed48.totalProtocolFeesUSD))
+        ? new BigNumber(parsed24.totalFeesUSD)
+            .minus(parsed24.totalProtocolFeesUSD)
+            .minus(new BigNumber(parsed48.totalFeesUSD).minus(parsed48.totalProtocolFeesUSD))
         : undefined
 
     const feesUSD =
       parsed && parsed24
-        ? parseFloat(parsed.totalFeesUSD) -
-          parseFloat(parsed.totalProtocolFeesUSD) -
-          (parseFloat(parsed24.totalFeesUSD) - parseFloat(parsed24.totalProtocolFeesUSD))
-        : parseFloat(parsed.totalFeesUSD) - parseFloat(parsed.totalProtocolFeesUSD)
+        ? new BigNumber(parsed.totalFeesUSD)
+            .minus(parsed.totalProtocolFeesUSD)
+            .minus(new BigNumber(parsed24.totalFeesUSD).minus(parsed24.totalProtocolFeesUSD))
+        : new BigNumber(parsed.totalFeesUSD).minus(parsed.totalProtocolFeesUSD)
 
     const feeChange =
       feesUSD && feesOneWindowAgo ? getPercentChange(feesUSD.toString(), feesOneWindowAgo.toString()) : 0
@@ -100,7 +101,7 @@ export async function fetchProtocolData(
       volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
       tvlUSD: parseFloat(parsed?.totalValueLockedUSD),
       tvlUSDChange,
-      feesUSD,
+      feesUSD: feesUSD.toNumber(),
       feeChange,
       txCount,
       txCountChange,
