@@ -5,7 +5,7 @@ const ViewEligiblePairs = () => {
   const { t } = useTranslation()
   return (
     <>
-      <Text bold fontSize={['20px']} mb="24px" textAlign="center">
+      <Text color="black" bold fontSize={['20px']} mb="24px" textAlign="center">
         {t('Start trading eligible pairs to earn trading rewards!')}
       </Text>
       <Link href="#rewards-breakdown">

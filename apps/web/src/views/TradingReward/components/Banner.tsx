@@ -78,11 +78,11 @@ const TradingRewardBanner: React.FC<React.PropsWithChildren<CampaignIdInfo>> = (
           'row',
         ]}
       >
-        <Flex flexDirection="column" alignSelf="center">
+        <Flex flexDirection="column" alignSelf="center" width={['100%', '100%', '100%', '700px']}>
           <Text bold fontSize={['40px', '40px', '40px', '60px']} color="secondary" lineHeight="110%">
             {t('Trading Reward')}
           </Text>
-          <Flex mb="16px">
+          <Flex mb="16px" flexWrap="wrap">
             {isFetching || data.totalVolume === 0 ? (
               <Skeleton width={100} height={40} />
             ) : (

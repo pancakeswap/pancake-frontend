@@ -32,7 +32,7 @@ const stepList = [
     subTitle: (
       <Trans>After each period ends, come back to this page and claim your rewards from the previous periods.</Trans>
     ),
-    imgUrl: '/images/trading-reward/step4.png',
+    imgUrl: '/images/trading-reward/step4-1.png',
   },
 ]
 
@@ -71,7 +71,7 @@ const HowToEarn = () => {
                   padding={['42px 22px', '42px 22px', '42px 22px', '0 22px']}
                 >
                   <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step${index + 1}`}</Text>
-                  <Box margin="auto">
+                  <Box margin="0 auto">
                     <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
                   </Box>
                   <Text bold fontSize={['24px']} color="secondary" mb={['16px']}>
