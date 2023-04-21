@@ -138,7 +138,7 @@ export const usePairPriceChartTokenData = (
       address !== 'undefined' && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChianId ?? chainId],
     () =>
       fetchPairPriceChartTokenData(
-        address ?? '',
+        address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
         v3Clients[targetChianId ?? chainId],
