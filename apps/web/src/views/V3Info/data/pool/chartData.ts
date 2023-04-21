@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import BigNumber from 'bignumber.js'
 import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 
@@ -23,6 +24,7 @@ const POOL_CHART = gql`
       volumeUSD
       tvlUSD
       feesUSD
+      protocolFeesUSD
       pool {
         feeTier
       }
@@ -36,6 +38,7 @@ interface ChartResults {
     volumeUSD: string
     tvlUSD: string
     feesUSD: string
+    protocolFeesUSD: string
     pool: {
       feeTier: string
     }
@@ -48,6 +51,7 @@ export async function fetchPoolChartData(address: string, client: GraphQLClient)
     volumeUSD: string
     tvlUSD: string
     feesUSD: string
+    protocolFeesUSD: string
     pool: {
       feeTier: string
     }
@@ -93,7 +97,7 @@ export async function fetchPoolChartData(address: string, client: GraphQLClient)
         date: dayData.date,
         volumeUSD: parseFloat(dayData.volumeUSD),
         totalValueLockedUSD: parseFloat(dayData.tvlUSD) - tvlAdjust,
-        feesUSD: parseFloat(dayData.feesUSD),
+        feesUSD: new BigNumber(dayData.feesUSD).minus(dayData.protocolFeesUSD).toNumber(),
       }
       return accum
     }, {})
