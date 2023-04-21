@@ -1,23 +1,11 @@
 import { gql, GraphQLClient } from 'graphql-request'
 
 export const POOLS_FOR_TOKEN = gql`
-  query topPools($address: Bytes!) {
-    asToken0: pools(
-      first: 200
-      orderBy: totalValueLockedUSD
-      orderDirection: desc
-      where: { token0: $address }
-      subgraphError: allow
-    ) {
+  query topPools($address: String!) {
+    asToken0: pools(first: 200, orderBy: totalValueLockedUSD, orderDirection: desc, where: { token0: $address }) {
       id
     }
-    asToken1: pools(
-      first: 200
-      orderBy: totalValueLockedUSD
-      orderDirection: desc
-      where: { token1: $address }
-      subgraphError: allow
-    ) {
+    asToken1: pools(first: 200, orderBy: totalValueLockedUSD, orderDirection: desc, where: { token1: $address }) {
       id
     }
   }

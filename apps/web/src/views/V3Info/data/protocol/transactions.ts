@@ -3,19 +3,17 @@ import { Transaction, TransactionType } from '../../types'
 
 const GLOBAL_TRANSACTIONS = gql`
   query transactions {
-    transactions(first: 500, orderBy: timestamp, orderDirection: desc, subgraphError: allow) {
+    transactions(first: 500, orderBy: timestamp, orderDirection: desc) {
       id
       timestamp
       mints {
-        pool {
-          token0 {
-            id
-            symbol
-          }
-          token1 {
-            id
-            symbol
-          }
+        token0 {
+          id
+          symbol
+        }
+        token1 {
+          id
+          symbol
         }
         owner
         sender
@@ -25,15 +23,13 @@ const GLOBAL_TRANSACTIONS = gql`
         amountUSD
       }
       swaps {
-        pool {
-          token0 {
-            id
-            symbol
-          }
-          token1 {
-            id
-            symbol
-          }
+        token0 {
+          id
+          symbol
+        }
+        token1 {
+          id
+          symbol
         }
         origin
         amount0
@@ -41,15 +37,13 @@ const GLOBAL_TRANSACTIONS = gql`
         amountUSD
       }
       burns {
-        pool {
-          token0 {
-            id
-            symbol
-          }
-          token1 {
-            id
-            symbol
-          }
+        token0 {
+          id
+          symbol
+        }
+        token1 {
+          id
+          symbol
         }
         owner
         origin
@@ -65,15 +59,13 @@ type TransactionEntry = {
   timestamp: string
   id: string
   mints: {
-    pool: {
-      token0: {
-        id: string
-        symbol: string
-      }
-      token1: {
-        id: string
-        symbol: string
-      }
+    token0: {
+      id: string
+      symbol: string
+    }
+    token1: {
+      id: string
+      symbol: string
     }
     origin: string
     amount0: string
@@ -81,15 +73,13 @@ type TransactionEntry = {
     amountUSD: string
   }[]
   swaps: {
-    pool: {
-      token0: {
-        id: string
-        symbol: string
-      }
-      token1: {
-        id: string
-        symbol: string
-      }
+    token0: {
+      id: string
+      symbol: string
+    }
+    token1: {
+      id: string
+      symbol: string
     }
     origin: string
     amount0: string
@@ -97,15 +87,13 @@ type TransactionEntry = {
     amountUSD: string
   }[]
   burns: {
-    pool: {
-      token0: {
-        id: string
-        symbol: string
-      }
-      token1: {
-        id: string
-        symbol: string
-      }
+    token0: {
+      id: string
+      symbol: string
+    }
+    token1: {
+      id: string
+      symbol: string
     }
     owner: string
     origin: string
@@ -134,10 +122,10 @@ export async function fetchTopTransactions(client: GraphQLClient): Promise<Trans
           hash: t.id,
           timestamp: t.timestamp,
           sender: m.origin,
-          token0Symbol: m.pool.token0.symbol,
-          token1Symbol: m.pool.token1.symbol,
-          token0Address: m.pool.token0.id,
-          token1Address: m.pool.token1.id,
+          token0Symbol: m.token0.symbol,
+          token1Symbol: m.token1.symbol,
+          token0Address: m.token0.id,
+          token1Address: m.token1.id,
           amountUSD: parseFloat(m.amountUSD),
           amountToken0: parseFloat(m.amount0),
           amountToken1: parseFloat(m.amount1),
@@ -149,10 +137,10 @@ export async function fetchTopTransactions(client: GraphQLClient): Promise<Trans
           hash: t.id,
           timestamp: t.timestamp,
           sender: m.origin,
-          token0Symbol: m.pool.token0.symbol,
-          token1Symbol: m.pool.token1.symbol,
-          token0Address: m.pool.token0.id,
-          token1Address: m.pool.token1.id,
+          token0Symbol: m.token0.symbol,
+          token1Symbol: m.token1.symbol,
+          token0Address: m.token0.id,
+          token1Address: m.token1.id,
           amountUSD: parseFloat(m.amountUSD),
           amountToken0: parseFloat(m.amount0),
           amountToken1: parseFloat(m.amount1),
@@ -165,10 +153,10 @@ export async function fetchTopTransactions(client: GraphQLClient): Promise<Trans
           type: TransactionType.SWAP,
           timestamp: t.timestamp,
           sender: m.origin,
-          token0Symbol: m.pool.token0.symbol,
-          token1Symbol: m.pool.token1.symbol,
-          token0Address: m.pool.token0.id,
-          token1Address: m.pool.token1.id,
+          token0Symbol: m.token0.symbol,
+          token1Symbol: m.token1.symbol,
+          token0Address: m.token0.id,
+          token1Address: m.token1.id,
           amountUSD: parseFloat(m.amountUSD),
           amountToken0: parseFloat(m.amount0),
           amountToken1: parseFloat(m.amount1),

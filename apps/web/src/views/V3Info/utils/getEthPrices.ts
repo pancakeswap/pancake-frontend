@@ -10,24 +10,24 @@ export interface EthPrices {
 
 export const ETH_PRICES = (block24?: number, block48?: number, blockWeek?: number) => {
   const dayQueryString = block24
-    ? `oneDay: bundles(first: 1, block: { number: ${block24} }, subgraphError: allow) {
+    ? `oneDay: bundles(first: 1, block: { number: ${block24} }) {
       ethPriceUSD
     }`
     : ''
 
   const twoDayQueryString = block48
-    ? `twoDay: bundles(first: 1, block: { number: ${block48} }, subgraphError: allow) {
+    ? `twoDay: bundles(first: 1, block: { number: ${block48} }) {
       ethPriceUSD
     }`
     : ''
   const weekQueryString = blockWeek
-    ? `oneWeek: bundles(first: 1, block: { number: ${blockWeek} }, subgraphError: allow) {
+    ? `oneWeek: bundles(first: 1, block: { number: ${blockWeek} }) {
       ethPriceUSD
     }`
     : ''
   const queryString = `
   query prices {
-    current: bundles(first: 1, subgraphError: allow) {
+    current: bundles(first: 1) {
       ethPriceUSD
     }
     ${dayQueryString}

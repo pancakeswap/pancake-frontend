@@ -3,6 +3,7 @@ import { BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import styled from 'styled-components'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useHttpLocations } from '@pancakeswap/hooks'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 
@@ -43,7 +44,9 @@ export default function CurrencyLogo({
     if (currency.chainId === ChainId.BSC) {
       return <BinanceIcon width={size} style={style} />
     }
-    return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
+    return (
+      <StyledLogo size={size} srcs={[`${ASSET_CDN}/web/chains/${currency.chainId}.png`]} width={size} style={style} />
+    )
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />

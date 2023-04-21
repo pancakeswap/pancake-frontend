@@ -46,6 +46,22 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 23,
+    lpSymbol: 'AXL-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.axl,
+    lpAddress: '0xD10612A288Bd5024Db6a47663750996d176130Fe',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 22,
+    lpSymbol: 'GQ-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.gq,
+    lpAddress: '0x07003daEbc432ecec26309cCd1391BBBF06cC890',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 20,
     lpSymbol: 'ETH-ankrETH LP',
     token: bscTokens.eth,

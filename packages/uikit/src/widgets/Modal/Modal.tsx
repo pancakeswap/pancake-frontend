@@ -34,6 +34,7 @@ export const ModalWrapper = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
+      style={{ overflow: "visible" }}
     >
       <Box overflow="hidden" borderRadius="32px" {...props}>
         {children}
@@ -52,6 +53,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   headerBackground = "transparent",
   minWidth = "320px",
   headerRightSlot,
+  bodyAlignItems,
   ...props
 }) => {
   const context = useContext(ModalV2Context);
@@ -71,6 +73,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
         // prevent drag event from propagating to parent on scroll
         onPointerDownCapture={(e) => e.stopPropagation()}
         p={bodyPadding}
+        style={{ alignItems: bodyAlignItems ?? "normal" }}
       >
         {children}
       </ModalBody>

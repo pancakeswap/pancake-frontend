@@ -12,5 +12,5 @@ export interface SmartRouterTrade<TTradeType extends TradeType> {
 
   gasEstimate: JSBI
   gasEstimateInUSD: CurrencyAmount<Currency>
-  blockNumber: number
+  blockNumber?: number
 }

@@ -2554,4 +2554,12 @@ export const bscTokens = {
     'Ankr Staked ETH',
     'https://www.ankr.com/',
   ),
+  axl: new ERC20Token(
+    ChainId.BSC,
+    '0x8b1f4432F943c465A973FeDC6d7aa50Fc96f1f65',
+    6,
+    'AXL',
+    'Axelar',
+    'https://axelar.network/',
+  ),
 }

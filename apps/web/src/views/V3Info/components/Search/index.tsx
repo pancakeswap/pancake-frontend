@@ -6,7 +6,7 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { checkIsStableSwap } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -261,7 +261,7 @@ const Search = () => {
     )
   }
   const chainPath = useMultiChainPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>

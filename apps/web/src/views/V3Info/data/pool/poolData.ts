@@ -13,7 +13,7 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
     query pools {
       pools(where: {id_in: ${poolString}},
      ${block ? `block: {number: ${block}} ,` : ``}
-     orderBy: totalValueLockedUSD, orderDirection: desc, subgraphError: allow) {
+     orderBy: totalValueLockedUSD, orderDirection: desc) {
         id
         feeTier
         liquidity
@@ -43,7 +43,7 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
         totalValueLockedToken1
         totalValueLockedUSD
       }
-      bundles (where: {id: "1"}) {
+      bundles(where: {id: "1"}) {
         ethPriceUSD
       }
     }

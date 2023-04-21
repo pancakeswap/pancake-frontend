@@ -11,9 +11,9 @@ import {
   Modal,
   ModalV2,
   RowBetween,
+  StyledTooltip,
   Text,
   useModalV2,
-  useTooltip,
 } from '@pancakeswap/uikit'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
@@ -24,12 +24,13 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
+import { RangeTag } from 'components/RangeTag'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
@@ -45,6 +46,23 @@ const ActionContainer = styled(Flex)`
   flex-wrap: wrap;
   padding: 16px;
   gap: 24px;
+`
+
+const Arrow = styled.div`
+  position: absolute;
+  top: 0px;
+  transform: translate3d(0px, 62px, 0px);
+  right: 4px;
+  &::before {
+    content: '';
+    transform: rotate(45deg);
+    background: var(--colors-backgroundAlt);
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    z-index: -1;
+  }
 `
 
 ActionContainer.defaultProps = {
@@ -87,6 +105,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { t } = useTranslation()
   const cakePrice = usePriceCakeUSD()
   const { tokenId } = position
+  const { isDark } = useTheme()
 
   const title = `${lpSymbol} (#${tokenId.toString()})`
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
@@ -105,6 +124,10 @@ const SingleFarmV3Card: React.FunctionComponent<
     logGTMClickStakeFarmEvent()
   }
 
+  const handleStakeInactivePosition = () => {
+    unstakedModal.onOpen()
+  }
+
   const handleUnStake = async () => {
     await onUnstake()
     if (!attemptingTxn) {
@@ -119,6 +142,9 @@ const SingleFarmV3Card: React.FunctionComponent<
     }
   }
 
+  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
+  const outOfRangeUnstaked = outOfRange && positionType === 'unstaked'
+
   const totalEarnings = useMemo(
     () => +formatBigNumber(pendingCakeByTokenIds[position.tokenId.toString()] || EthersBigNumber.from('0'), 4),
     [pendingCakeByTokenIds, position.tokenId],
@@ -127,24 +153,6 @@ const SingleFarmV3Card: React.FunctionComponent<
   const earningsBusd = useMemo(() => {
     return new BigNumber(totalEarnings).times(cakePrice.toString()).toNumber()
   }, [cakePrice, totalEarnings])
-
-  const unstakingTooltip = useTooltip(
-    <Text maxWidth="160px">{t('You may add or remove liquidity on the position detail page without unstake')}</Text>,
-    {
-      placement: 'left-end',
-      manualVisible: true,
-      strategy: 'absolute',
-      tooltipOffset: [0, -8],
-    },
-  )
-
-  useEffect(() => {
-    if (unstakedModal.isOpen) {
-      unstakingTooltip.forceUpdate?.()
-    }
-  }, [unstakedModal.isOpen, unstakingTooltip])
-
-  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
 
   return (
     <AtomBox {...atomBoxProps}>
@@ -167,30 +175,63 @@ const SingleFarmV3Card: React.FunctionComponent<
             positionType={positionType}
             liquidityUrl={liquidityUrl}
             isPending={attemptingTxn || harvesting}
-            handleStake={handleStake}
+            handleStake={outOfRangeUnstaked ? handleStakeInactivePosition : handleStake}
             handleUnStake={unstakedModal.onOpen}
           />
           <ModalV2 {...unstakedModal} closeOnOverlayClick>
-            <Modal title={t('Unstaking')} maxWidth={['100%', , '420px']}>
+            <Modal
+              title={outOfRangeUnstaked ? t('Staking') : t('Unstaking')}
+              width={['100%', '100%', '420px']}
+              maxWidth={['100%', , '420px']}
+            >
               <AutoColumn gap="16px">
-                <AtomBox position="relative">
-                  <Image
-                    ref={unstakingTooltip.targetRef}
+                <AtomBox
+                  position="relative"
+                  style={{
+                    minHeight: '96px',
+                  }}
+                >
+                  <AtomBox
                     style={{
                       position: 'absolute',
                       right: 0,
                       bottom: '-23px',
+                      display: 'flex',
                     }}
-                    src="/images/decorations/bulb-bunny.png"
-                    width={135}
-                    height={120}
-                    alt="bulb bunny reminds unstaking"
-                  />
-                  <div style={{ width: 135, height: 120 }} />
-                  {unstakingTooltip.tooltip}
+                  >
+                    <StyledTooltip
+                      data-theme={isDark ? 'light' : 'dark'}
+                      style={{
+                        maxWidth: '160px',
+                        position: 'relative',
+                      }}
+                    >
+                      {outOfRangeUnstaked ? (
+                        <>
+                          {t('Inactive positions will')}
+                          <b> {t('NOT')} </b>
+                          {t('earn CAKE rewards from farm.')}
+                        </>
+                      ) : (
+                        t('You may add or remove liquidity on the position detail page without unstake')
+                      )}
+                      <Arrow />
+                    </StyledTooltip>
+                    <Image
+                      src="/images/decorations/bulb-bunny.png"
+                      width={135}
+                      height={120}
+                      alt="bulb bunny reminds unstaking"
+                    />
+                  </AtomBox>
                 </AtomBox>
                 <LightCard>
                   <AutoColumn gap="8px">
+                    {outOfRange && (
+                      <RangeTag outOfRange ml={0} style={{ alignItems: 'center', width: 'fit-content' }}>
+                        {t('Inactive')}
+                      </RangeTag>
+                    )}
                     <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
                     <FarmV3LPPosition token={token} quoteToken={quoteToken} position={position} />
                     <FarmV3LPPositionDetail
@@ -201,20 +242,40 @@ const SingleFarmV3Card: React.FunctionComponent<
                       positionType={positionType}
                     />
                     <NextLink href={liquidityUrl} onClick={unstakedModal.onDismiss}>
-                      <Button variant="tertiary" width="100%" as="a">
-                        {t('Manage Position')}
-                      </Button>
+                      {outOfRangeUnstaked ? (
+                        <Button
+                          external
+                          variant="primary"
+                          width="100%"
+                          as="a"
+                          href={liquidityUrl}
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          {t('View Position')}
+                        </Button>
+                      ) : (
+                        <Button variant="tertiary" width="100%" as="a">
+                          {t('Manage Position')}
+                        </Button>
+                      )}
                     </NextLink>
                   </AutoColumn>
                 </LightCard>
-                <Button onClick={handleUnStake} disabled={attemptingTxn || harvesting} width="100%">
-                  {t('Unstake')}
+                <Button
+                  variant={outOfRangeUnstaked ? 'subtle' : 'primary'}
+                  onClick={outOfRangeUnstaked ? handleStake : handleUnStake}
+                  disabled={attemptingTxn || harvesting}
+                  width="100%"
+                >
+                  {outOfRangeUnstaked ? t('Continue Staking') : t('Unstake')}
                 </Button>
-                <Text color="textSubtle">
-                  {t(
-                    'Unstake will also automatically harvest any earnings that you haven’t collected yet, and send them to your wallet.',
-                  )}
-                </Text>
+                {outOfRangeUnstaked ? null : (
+                  <Text color="textSubtle">
+                    {t(
+                      'Unstake will also automatically harvest any earnings that you haven’t collected yet, and send them to your wallet.',
+                    )}
+                  </Text>
+                )}
               </AutoColumn>
             </Modal>
           </ModalV2>

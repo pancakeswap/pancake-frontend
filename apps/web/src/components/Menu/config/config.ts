@@ -13,6 +13,7 @@ import {
   DropdownMenuItems,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
+import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
@@ -94,7 +95,7 @@ const config: (
         {
           label: t('Pools'),
           href: '/pools',
-          supportChainIds: SUPPORT_ONLY_BSC,
+          supportChainIds: POOL_SUPPORTED_CHAINS,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

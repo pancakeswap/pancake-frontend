@@ -1,15 +1,25 @@
 import BigNumber from 'bignumber.js'
-import { multicallv2, multicallv3 } from 'utils/multicall'
-import cakeAbi from 'config/abi/cake.json'
-import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
-import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
+import { createMulticall } from '@pancakeswap/multicall'
 
-const cakeVaultV2 = getCakeVaultAddress()
-const cakeFlexibleSideVaultV2 = getCakeFlexibleSideVaultAddress()
-export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
+import cakeAbi from '../abis/Cake.json'
+import cakeVaultAbi from '../abis/ICakeVaultV2.json'
+import { OnChainProvider } from '../types'
+import { getCakeFlexibleSideVaultAddress, getCakeVaultAddress } from './getAddresses'
+
+interface Params {
+  cakeVaultAddress?: string
+  chainId: ChainId
+  provider: OnChainProvider
+}
+
+export const fetchPublicVaultData = async ({
+  chainId,
+  cakeVaultAddress = getCakeVaultAddress(chainId),
+  provider,
+}: Params) => {
   try {
     const calls = ['getPricePerFullShare', 'totalShares', 'totalLockedAmount'].map((method) => ({
       abi: cakeVaultAbi,
@@ -21,12 +31,14 @@ export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
       abi: cakeAbi,
       address: CAKE[ChainId.BSC].address,
       name: 'balanceOf',
-      params: [cakeVaultV2],
+      params: [cakeVaultAddress],
     }
 
+    const { multicallv3 } = createMulticall(provider)
     const [[sharePrice], [shares], totalLockedAmount, [totalCakeInVault]] = await multicallv3({
       calls: [...calls, cakeBalanceOfCall],
       allowFailure: true,
+      chainId,
     })
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
@@ -48,7 +60,11 @@ export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
   }
 }
 
-export const fetchPublicFlexibleSideVaultData = async (cakeVaultAddress = cakeFlexibleSideVaultV2) => {
+export const fetchPublicFlexibleSideVaultData = async ({
+  chainId,
+  cakeVaultAddress = getCakeFlexibleSideVaultAddress(chainId),
+  provider,
+}: Params) => {
   try {
     const calls = ['getPricePerFullShare', 'totalShares'].map((method) => ({
       abi: cakeVaultAbi,
@@ -63,9 +79,11 @@ export const fetchPublicFlexibleSideVaultData = async (cakeVaultAddress = cakeFl
       params: [cakeVaultAddress],
     }
 
+    const { multicallv3 } = createMulticall(provider)
     const [[sharePrice], [shares], [totalCakeInVault]] = await multicallv3({
       calls: [...calls, cakeBalanceOfCall],
       allowFailure: true,
+      chainId,
     })
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
@@ -84,14 +102,23 @@ export const fetchPublicFlexibleSideVaultData = async (cakeVaultAddress = cakeFl
   }
 }
 
-export const fetchVaultFees = async (cakeVaultAddress = cakeVaultV2) => {
+export const fetchVaultFees = async ({
+  chainId,
+  cakeVaultAddress = getCakeVaultAddress(chainId),
+  provider,
+}: Params) => {
   try {
     const calls = ['performanceFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
       address: cakeVaultAddress,
       name: method,
     }))
 
-    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({ abi: cakeVaultAbi, calls })
+    const { multicallv2 } = createMulticall(provider)
+    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({
+      abi: cakeVaultAbi,
+      calls,
+      chainId,
+    })
 
     return {
       performanceFee: performanceFee.toNumber(),
@@ -106,5 +133,3 @@ export const fetchVaultFees = async (cakeVaultAddress = cakeVaultV2) => {
     }
   }
 }
-
-export default fetchPublicVaultData

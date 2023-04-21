@@ -9,7 +9,9 @@ const clients = CHAINS.reduce((prev, cur) => {
     ...prev,
     [cur.id]: createPublicClient({
       chain: cur,
-      transport: http(PUBLIC_NODES[cur.id]),
+      transport: http(PUBLIC_NODES[cur.id], {
+        timeout: 15_000,
+      }),
     }),
   }
 }, {} as Record<ChainId, ReturnType<typeof createPublicClient>>)

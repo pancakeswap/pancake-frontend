@@ -7,7 +7,7 @@ import { metric } from './utils/metric'
 import { chunk } from '../utils/chunk'
 
 interface Params {
-  blockNumber: BigintIsh
+  blockNumber?: BigintIsh
   amount: CurrencyAmount<Currency>
   baseRoutes: BaseRoute[]
   distributionPercent: number

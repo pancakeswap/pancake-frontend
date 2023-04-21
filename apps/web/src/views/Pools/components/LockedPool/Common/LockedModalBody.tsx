@@ -4,7 +4,7 @@ import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@p
 import _noop from 'lodash/noop'
 import { useTranslation } from '@pancakeswap/localization'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
-import { MAX_LOCK_DURATION } from 'config/constants/pools'
+import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
 import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useIfoCeiling } from 'state/pools/hooks'

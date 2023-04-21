@@ -11,7 +11,9 @@ import BigNumber from 'bignumber.js'
 import { useERC20 } from 'hooks/useContract'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useApprovePool } from 'views/Pools/hooks/useApprove'
+import { tokenImageChainNameMapping } from 'components/TokenImage'
 import { usePool } from 'state/pools/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
@@ -25,6 +27,7 @@ const StakeModalContainer = ({
   stakingTokenPrice,
 }: Pool.StakeModalPropsType<Token>) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const {
     sousId,
@@ -53,11 +56,16 @@ const StakeModalContainer = ({
     earningToken.symbol,
   )
 
+  const tokenImageUrl = useMemo(
+    () => `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[chainId]}`,
+    [chainId],
+  )
+
   const onDone = useCallback(() => {
-    dispatch(updateUserStakedBalance({ sousId, account }))
-    dispatch(updateUserPendingReward({ sousId, account }))
-    dispatch(updateUserBalance({ sousId, account }))
-  }, [dispatch, sousId, account])
+    dispatch(updateUserStakedBalance({ sousId, account, chainId }))
+    dispatch(updateUserPendingReward({ sousId, account, chainId }))
+    dispatch(updateUserBalance({ sousId, account, chainId }))
+  }, [dispatch, sousId, account, chainId])
 
   const handleConfirmClick = useCallback(
     async (stakeAmount: string) => {
@@ -109,15 +117,15 @@ const StakeModalContainer = ({
 
   const needEnable = useMemo(() => {
     if (!isRemovingStake && !pendingTx) {
-      const stakeAmount = getDecimalAmount(new BigNumber(amount))
+      const stakeAmount = getDecimalAmount(new BigNumber(amount), stakingToken.decimals)
       return stakeAmount.gt(singlePool.userData.allowance)
     }
     return false
-  }, [singlePool, amount, pendingTx, isRemovingStake])
+  }, [singlePool, amount, pendingTx, isRemovingStake, stakingToken.decimals])
 
   const handleEnableApprove = async () => {
     await handleApprove()
-    dispatch(updateUserAllowance({ sousId, account }))
+    dispatch(updateUserAllowance({ sousId, account, chainId }))
   }
 
   return (
@@ -143,6 +151,7 @@ const StakeModalContainer = ({
       setAmount={setAmount}
       handleConfirmClick={handleConfirmClick}
       isRemovingStake={isRemovingStake}
+      imageUrl={tokenImageUrl}
     />
   )
 }

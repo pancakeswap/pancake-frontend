@@ -14,7 +14,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   let queryString = 'query blocks {'
   queryString += blocks.map(
     (block: any) => `
-      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }, subgraphError: allow) {
+      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) {
         derivedETH
       }
     `,
@@ -22,7 +22,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   queryString += ','
   queryString += blocks.map(
     (block: any) => `
-      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }, subgraphError: allow) {
+      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) {
         ethPriceUSD
       }
     `,
@@ -35,7 +35,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
 }
 
 const PRICE_FOR_PAIR_PRICE_CHART = (timestamps: number[]) => {
-  let queryString = 'query poolHourDatas($address: Bytes!) {'
+  let queryString = 'query poolHourDatas($address: String) {'
   timestamps.forEach((d) => {
     queryString += `
       t${d}:poolHourDatas(
@@ -60,7 +60,7 @@ const PRICE_FOR_PAIR_PRICE_CHART = (timestamps: number[]) => {
 }
 
 const PRICE_CHART = gql`
-  query tokenHourDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {
+  query tokenHourDatas($startTime: Int!, $skip: Int!, $address: String!) {
     tokenHourDatas(
       first: 100
       skip: $skip

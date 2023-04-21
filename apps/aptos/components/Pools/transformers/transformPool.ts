@@ -65,11 +65,7 @@ const transformPool = (
   chainId,
   prices,
   sousId,
-):
-  | (Pool.DeserializedPool<Coin | AptosCoin> & {
-      stakeLimitEndBlock?: number
-    })
-  | undefined => {
+): Pool.DeserializedPool<Coin | AptosCoin> | undefined => {
   const startTime = _toNumber(_get(resource, 'data.start_timestamp', '0'))
 
   const startYet = getSecondsLeftFromNow(startTime, currentTimestamp)
@@ -153,17 +149,16 @@ const transformPool = (
       totalStaked: getBalanceNumber(new BigNumber(totalStakedToken), stakingToken.decimals),
     }) || 0
 
-  const startBlock = _toNumber(resource.data.start_timestamp)
+  const startTimestamp = _toNumber(resource.data.start_timestamp)
 
-  const stakeLimitEndBlock = _toNumber(resource.data.seconds_for_user_limit)
+  const stakeLimitSeconds = _toNumber(resource.data.seconds_for_user_limit)
+  const stakingLimitEndTimestamp = stakeLimitSeconds + startTimestamp
 
-  const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentTimestamp / 1000
+  const stakeLimitTimeRemaining = stakingLimitEndTimestamp - Math.floor(currentTimestamp / 1000)
 
   return {
     sousId,
-    contractAddress: {
-      [chainId]: resource.type,
-    },
+    contractAddress: resource.type,
     stakingToken,
     earningToken,
     apr,
@@ -172,15 +167,15 @@ const transformPool = (
 
     isFinished: Boolean(isFinished),
     poolCategory: PoolCategory.CORE,
-    startBlock,
-    endBlock: _toNumber(resource.data.end_timestamp),
+    startTimestamp,
+    endTimestamp: _toNumber(resource.data.end_timestamp),
 
     tokenPerBlock: resource.data.reward_per_second,
     stakingLimit:
       stakeLimitTimeRemaining > 0 && resource.data.pool_limit_per_user
         ? new BigNumber(resource.data.pool_limit_per_user)
         : BIG_ZERO,
-    stakeLimitEndBlock: _toNumber(resource.data.seconds_for_user_limit),
+    stakingLimitEndTimestamp,
     totalStaked: new BigNumber(totalStakedToken),
 
     userData,

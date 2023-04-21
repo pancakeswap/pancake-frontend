@@ -1,0 +1,39 @@
+{
+  "name": "@pancakeswap/pools",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "build": "yarn typechain",
+    "test": "vitest --run",
+    "typechain": "typechain --out-dir src/abis/types --target=ethers-v5 \"src/abis/*.json\"",
+    "postinstall": "yarn typechain"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@pancakeswap/multicall": "*",
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/token-lists": "*",
+    "@pancakeswap/tokens": "*",
+    "@pancakeswap/utils": "*"
+  },
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/contracts": "^5.0.0",
+    "@ethersproject/providers": "^5.0.0",
+    "bignumber.js": "^9.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@pancakeswap/multicall": "*",
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/token-lists": "*",
+    "@pancakeswap/tokens": "*",
+    "@pancakeswap/utils": "*",
+    "@typechain/ethers-v5": "^8.0.5",
+    "tsconfig": "*",
+    "typechain": "^6.1.0",
+    "typescript": "^4.9.4",
+    "vitest": "^0.27.2"
+  }
+}

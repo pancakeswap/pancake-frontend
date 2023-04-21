@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { BOOST_WEIGHT, DURATION_FACTOR } from 'config/constants/pools'
+import { BOOST_WEIGHT, DURATION_FACTOR } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
 import { useCakeVault } from 'state/pools/hooks'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'

@@ -79,7 +79,6 @@ const fetchInitializedTicks = async (
       $skip: Int!
     ) {
       ticks(
-        subgraphError: allow
         first: 1000
         skip: $skip
         where: { poolAddress: $poolAddress, tickIdx_lte: $tickIdxUpperBound, tickIdx_gte: $tickIdxLowerBound }
@@ -130,7 +129,7 @@ export interface PoolTickData {
 }
 
 const poolQuery = gql`
-  query pool($poolAddress: String!) {
+  query pool($poolAddress: ID!) {
     pool(id: $poolAddress) {
       tick
       token0 {

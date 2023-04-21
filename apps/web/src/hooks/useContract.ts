@@ -1,3 +1,4 @@
+import { getPoolContractBySousId } from '@pancakeswap/pools'
 import {
   Cake,
   CakeFlexibleSideVaultV2,
@@ -59,7 +60,6 @@ import {
   getPredictionsContract,
   getPredictionsV1Contract,
   getProfileContract,
-  getSouschefContract,
   getTradingCompetitionContractEaster,
   getTradingCompetitionContractFanToken,
   getTradingCompetitionContractMobox,
@@ -160,7 +160,8 @@ export const useMasterchefV1 = () => {
 
 export const useSousChef = (id) => {
   const { data: signer } = useSigner()
-  return useMemo(() => getSouschefContract(id, signer), [id, signer])
+  const { chainId } = useActiveChainId()
+  return useMemo(() => getPoolContractBySousId({ sousId: id, provider: signer, chainId }), [id, signer, chainId])
 }
 
 export const usePointCenterIfoContract = () => {

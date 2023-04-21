@@ -70,7 +70,7 @@ const useCakeBenefits = () => {
       const credit = await ifoCreditAddressContract.getUserCredit(account)
       iCake = getBalanceNumber(new BigNumber(credit.toString())).toLocaleString('en', { maximumFractionDigits: 3 })
 
-      const eligiblePools = await getActivePools(currentBscBlock)
+      const eligiblePools = await getActivePools(ChainId.BSC, currentBscBlock)
       const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress, ChainId.BSC))
 
       const [cakeVaultBalance, total] = await getScores(
