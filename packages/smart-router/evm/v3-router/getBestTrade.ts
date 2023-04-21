@@ -15,7 +15,7 @@ interface TradeConfig {
   maxSplits?: number
   distributionPercent?: number
   allowedPoolTypes?: PoolType[]
-  quoterOptimization?: boolean
+  quoterOptimization?: boolean | number
 }
 
 export async function getBestTrade(

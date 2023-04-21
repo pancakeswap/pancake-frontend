@@ -14,7 +14,7 @@ interface Params {
   quoteProvider: QuoteProvider
   tradeType: TradeType
   gasModel: GasModel
-  quoterOptimization?: boolean
+  quoterOptimization?: boolean | number
 }
 
 export async function getRoutesWithValidQuote({
@@ -62,7 +62,7 @@ export async function getRoutesWithValidQuote({
         }
       })
     })
-  const chunks = chunk(routesWithoutQuote, 10)
+  const chunks = chunk(routesWithoutQuote, typeof quoterOptimization === 'number' ? quoterOptimization : 10)
   const result = await Promise.all(chunks.map(getQuotes))
   const quotes = result.reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur], [])
   metric('Get quotes', 'success, got', quotes.length, 'quoted routes', quotes)

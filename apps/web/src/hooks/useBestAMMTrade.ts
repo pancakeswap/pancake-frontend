@@ -35,7 +35,7 @@ interface FactoryOptions {
   quoteProvider: QuoteProvider
 
   // Decrease the size of batch getting quotes for better performance
-  quoterOptimization?: boolean
+  quoterOptimization?: boolean | number
 }
 
 interface Options {
@@ -276,7 +276,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
-  quoterOptimization: true,
+  quoterOptimization: 100,
 })
 
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
