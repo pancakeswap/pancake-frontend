@@ -51,7 +51,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
 }) => {
   const { t } = useTranslation()
 
-  const isLocked = (vaultPool as DeserializedLockedCakeVault).userData.locked
+  const isLocked = (vaultPool as DeserializedLockedCakeVault)?.userData?.locked
 
   if (!pool) {
     return null
@@ -118,7 +118,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
 }) => {
   const { address: account } = useAccount()
 
-  const vaultPool = useVaultPoolByKey(pool?.vaultKey)
+  const vaultPool = useVaultPoolByKey(pool?.vaultKey || VaultKey.CakeVault)
   const totalStaked = pool?.totalStaked
 
   const {
