@@ -15,7 +15,7 @@ export type MultiChainName = 'BSC' | 'ETH'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET'
 
-export const multiChainName = {
+export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.BSC]: 'BSC',
   [ChainId.ETHEREUM]: 'ETH',
   [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
