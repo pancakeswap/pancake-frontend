@@ -346,6 +346,7 @@ export function AprCalculator({
         volume24H={volume24H}
         priceUpper={priceUpper}
         priceLower={priceLower}
+        fullRangeSelected={formState.rightRangeTypedValue === true && formState.leftRangeTypedValue === true}
         priceSpan={priceSpan}
         onPriceSpanChange={setPriceSpan}
         onApply={onApply}

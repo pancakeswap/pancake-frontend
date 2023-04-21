@@ -19,6 +19,7 @@ interface Params {
   quoteCurrency?: Currency;
   priceLower?: Price<Currency, Currency>;
   priceUpper?: Price<Currency, Currency>;
+  fullRangeSelected?: boolean;
 }
 
 interface PriceRangeInfo {
@@ -39,8 +40,9 @@ export function usePriceRange({
   feeAmount,
   priceLower: initialPriceLower,
   priceUpper: initialPriceUpper,
+  fullRangeSelected,
 }: Params): PriceRangeInfo | null {
-  const [fullRange, setFullRange] = useState(false);
+  const [fullRange, setFullRange] = useState(!!fullRangeSelected);
   const [priceLower, setPriceLower] = useState<Price<Currency, Currency> | undefined>(initialPriceLower);
   const [priceUpper, setPriceUpper] = useState<Price<Currency, Currency> | undefined>(initialPriceUpper);
 

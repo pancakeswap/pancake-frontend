@@ -61,6 +61,7 @@ export type RoiCalculatorProps = {
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
   priceUpper?: Price<Token, Token>;
+  fullRangeSelected?: boolean;
   currencyAUsdPrice?: number;
   currencyBUsdPrice?: number;
   depositAmountInUsd?: number | string;
@@ -103,6 +104,7 @@ export function RoiCalculator({
   price,
   priceLower,
   priceUpper,
+  fullRangeSelected,
   volume24H,
   maxLabel,
   max,
@@ -186,6 +188,7 @@ export function RoiCalculator({
     quoteCurrency: currencyB,
     priceLower,
     priceUpper,
+    fullRangeSelected,
   });
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper } = useRangeHopCallbacks(
     currencyA,
