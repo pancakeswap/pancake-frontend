@@ -41,7 +41,7 @@ import {
 
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
-  const farmsConfig = await getFarmConfig(chainId)
+  const farmsConfig = (await getFarmConfig(chainId)) || []
   const livePools = getLivePoolsConfig(chainId) || []
   const lPoolAddresses = livePools
     .filter(({ sousId }) => sousId !== 0)
@@ -65,7 +65,7 @@ const getActiveFarms = async (chainId: number) => {
 }
 
 const getCakePriceFarms = async (chainId: number) => {
-  const farmsConfig = await getFarmConfig(chainId)
+  const farmsConfig = (await getFarmConfig(chainId)) || []
   return farmsConfig
     .filter(
       ({ token, pid, quoteToken }) =>
@@ -113,14 +113,21 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
   return useSelector(vaultPoolWithKeySelector)
 }
 
-export const usePoolsPageFetch = () => {
+export const usePoolsConfigInitialize = () => {
   const dispatch = useAppDispatch()
-  const { account, chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   useEffect(() => {
     if (chainId) {
       dispatch(setInitialPoolConfig({ chainId }))
     }
   }, [dispatch, chainId])
+}
+
+export const usePoolsPageFetch = () => {
+  const dispatch = useAppDispatch()
+  const { account, chainId } = useActiveWeb3React()
+
+  usePoolsConfigInitialize()
 
   useFetchPublicPoolsData()
 
@@ -174,6 +181,8 @@ export const useCakeVaultPublicData = () => {
 export const useFetchIfo = () => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
+
+  usePoolsConfigInitialize()
 
   useSWRImmutable(
     chainId && ['fetchIfoPublicData', chainId],
