@@ -15,6 +15,8 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -243,7 +245,11 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
               </Flex>
             </AutoColumn>
             {tokenData.tvlUSD <= 0 && (
-              <Alert title={t('TVL is currently too low to represent the data correctly')} variant="info" />
+              <Message variant="warning">
+                <MessageText fontSize="16px">
+                  {t('TVL is currently too low to represent the data correctly')}
+                </MessageText>
+              </Message>
             )}
             <ContentLayout>
               <Card>
