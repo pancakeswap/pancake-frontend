@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import {
-  Alert,
   AutoColumn,
   Box,
   Breadcrumbs,
