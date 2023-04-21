@@ -40,6 +40,7 @@
     "@changesets/cli": "^2.25.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "eslint-plugin-lodash": "^7.4.0",
+    "eslint-plugin-strict-null-checks": "0.0.21",
     "husky": "^7.0.0",
     "jest": "^27.4.5",
     "lint-staged": "^12.3.4",
