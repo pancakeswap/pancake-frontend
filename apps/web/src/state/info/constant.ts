@@ -11,11 +11,11 @@ import {
   ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
 
-export type MultiChainName = 'BSC' | 'ETH'
+export type MultiChainName = 'BSC' | 'ETH' | 'BSC_TESTNET'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET'
 
-export const multiChainName = {
+export const multiChainName: Record<string | number, MultiChainNameExtend> = {
   [ChainId.BSC]: 'BSC',
   [ChainId.ETHEREUM]: 'ETH',
   [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
