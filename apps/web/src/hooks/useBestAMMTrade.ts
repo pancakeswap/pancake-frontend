@@ -276,8 +276,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
-  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
-  quoterOptimization: false,
+  quoterOptimization: true,
 })
 
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
