@@ -28,19 +28,6 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   opacity: ${({ disable }) => disable && '0.4'};
 `
 
-const RowWrapper = styled.div`
-  white-space: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-`
-
 export default function CommonBases({
   chainId,
   onSelect,
@@ -64,7 +51,7 @@ export default function CommonBases({
           <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
         )}
       </AutoRow>
-      <RowWrapper>
+      <AutoRow>
         <ButtonWrapper>
           <BaseWrapper
             onClick={() => {
@@ -89,7 +76,7 @@ export default function CommonBases({
             </ButtonWrapper>
           )
         })}
-      </RowWrapper>
+      </AutoRow>
     </AutoColumn>
   )
 }
