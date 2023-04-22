@@ -99,7 +99,10 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
 
   const youWillReceive = useMemo(() => new BigNumber(100).minus(percentage).toString(), [percentage])
 
-  const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [])
+  const dataList = useMemo(
+    () => commissionList.filter((i) => i.percentage !== '?' || (i.id === 'perpetual' && affiliate.ablePerps)),
+    [affiliate],
+  )
 
   const linkId = useMemo(() => note || defaultLinkId, [note, defaultLinkId])
 
@@ -189,24 +192,21 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
         </Flex>
         <Wrapper>
           <CardInner>
-            {dataList.map((list) => (
-              <>
-                {list.id === 'perpetual' && affiliate.ablePerps ? null : (
-                  <StyledCommission key={list.id}>
-                    <Flex>
-                      <Box>
-                        <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
-                          {list.title}
-                        </Text>
-                        <Text textAlign="center" fontSize={['32px']} bold>
-                          {list.percentage}
-                        </Text>
-                      </Box>
-                    </Flex>
-                  </StyledCommission>
-                )}
-              </>
-            ))}
+            {dataList &&
+              dataList.map((list) => (
+                <StyledCommission key={list.id}>
+                  <Flex>
+                    <Box>
+                      <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
+                        {list.title}
+                      </Text>
+                      <Text textAlign="center" fontSize={['32px']} bold>
+                        {list.percentage}
+                      </Text>
+                    </Box>
+                  </Flex>
+                </StyledCommission>
+              ))}
           </CardInner>
         </Wrapper>
       </Flex>

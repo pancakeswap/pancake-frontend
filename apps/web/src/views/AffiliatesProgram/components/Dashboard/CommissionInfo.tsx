@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Box, Card, Flex, Text, Balance } from '@pancakeswap/uikit'
 import PieChartContainer from './PieChartContainer'
@@ -32,19 +31,10 @@ const StyledCircle = styled(Flex)`
 const CommissionInfo = () => {
   const { t } = useTranslation()
 
-  const arrow = useMemo(() => {
-    // eslint-disable-next-line no-constant-condition
-    const directionArrow = true ? '↑' : '↓'
-    return directionArrow
-  }, [])
-
   return (
     <Box width={['100%', '100%', '100%', '100%', '100%', '387px']}>
       <Card>
         <Box padding={['24px']}>
-          <Text textTransform="uppercase" color="secondary" bold fontSize="12px">
-            {t('rewards breakdown')}
-          </Text>
           <CardInner mb="28px">
             <StyledFlex>
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
@@ -53,7 +43,6 @@ const CommissionInfo = () => {
               <Text fontSize={['32px']} bold>
                 123
               </Text>
-              <Text fontSize="12px" color="success">{`${arrow} 31.53%`}</Text>
             </StyledFlex>
             <StyledFlex pl="10%">
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
@@ -61,7 +50,6 @@ const CommissionInfo = () => {
               </Text>
               <Balance fontSize={['32px']} bold value={1234} decimals={0} />
               <Balance color="textSubtle" prefix="$ " unit=" USD" fontSize="14px" decimals={0} value={1234} />
-              <Text fontSize="12px" color="success">{`${arrow} 31.53%`}</Text>
             </StyledFlex>
           </CardInner>
           <Box mb="24px">

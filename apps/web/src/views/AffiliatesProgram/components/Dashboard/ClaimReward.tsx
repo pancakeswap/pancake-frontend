@@ -29,7 +29,7 @@ const ClaimReward = () => {
   const { t } = useTranslation()
 
   return (
-    <Box mt="16px">
+    <Box>
       <Flex>
         <Card style={{ width: '100%' }}>
           <Flex flexDirection="column" padding={['24px']}>
@@ -43,18 +43,15 @@ const ClaimReward = () => {
               >
                 {t('claim your rewards')}
               </Text>
-              <Button display={['none', 'none', 'none', 'block']} scale="sm">
+              {/* <Button display={['none', 'none', 'none', 'block']} scale="sm">
                 Claim Reward
-              </Button>
+              </Button> */}
             </Flex>
             <CardContainer>
               <LightGreyCard>
-                <Text bold fontSize="12px" mb="22px">
-                  v2/v3 Swaps & StableSwap
-                </Text>
                 <Flex justifyContent="space-between" mb="7px">
                   <Text color="textSubtle" fontSize="14px">
-                    Total friends
+                    Total USD
                   </Text>
                   <Text bold fontSize="14px">
                     63
@@ -62,29 +59,7 @@ const ClaimReward = () => {
                 </Flex>
                 <Flex justifyContent="space-between">
                   <Text color="textSubtle" fontSize="14px">
-                    Rewards earned
-                  </Text>
-                  <Text bold fontSize="14px">
-                    500 CAKE
-                  </Text>
-                </Flex>
-              </LightGreyCard>
-
-              <LightGreyCard>
-                <Text bold fontSize="12px" mb="22px">
-                  Perpetual
-                </Text>
-                <Flex justifyContent="space-between" mb="7px">
-                  <Text color="textSubtle" fontSize="14px">
-                    Total friends
-                  </Text>
-                  <Text bold fontSize="14px">
-                    63
-                  </Text>
-                </Flex>
-                <Flex justifyContent="space-between">
-                  <Text color="textSubtle" fontSize="14px">
-                    Rewards earned
+                    Total CAKE
                   </Text>
                   <Text bold fontSize="14px">
                     500 CAKE
@@ -92,9 +67,9 @@ const ClaimReward = () => {
                 </Flex>
               </LightGreyCard>
             </CardContainer>
-            <Button display={['block', 'block', 'block', 'none']} variant="secondary" mt="18px" width="100%">
+            {/* <Button display={['block', 'block', 'block', 'none']} variant="secondary" mt="18px" width="100%">
               Claim Reward
-            </Button>
+            </Button> */}
           </Flex>
         </Card>
       </Flex>
