@@ -290,33 +290,35 @@ export default function PoolPage() {
       value,
     }
 
-    signer
-      .estimateGas(txn)
-      .then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gasLimit: calculateGasMargin(estimate),
-        }
+    if (signer) {
+      signer
+        .estimateGas(txn)
+        .then((estimate) => {
+          const newTxn = {
+            ...txn,
+            gasLimit: calculateGasMargin(estimate),
+          }
 
-        return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-          setCollectMigrationHash(response.hash)
-          setCollecting(false)
+          return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+            setCollectMigrationHash(response.hash)
+            setCollecting(false)
 
-          const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
-          const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
+            const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
+            const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
 
-          addTransaction(response, {
-            type: 'collect-fee',
-            summary: `Collect fee ${amount0.toExact()} ${
-              currency0ForFeeCollectionPurposes.symbol
-            } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
+            addTransaction(response, {
+              type: 'collect-fee',
+              summary: `Collect fee ${amount0.toExact()} ${
+                currency0ForFeeCollectionPurposes.symbol
+              } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
+            })
           })
         })
-      })
-      .catch((error) => {
-        setCollecting(false)
-        console.error(error)
-      })
+        .catch((error) => {
+          setCollecting(false)
+          console.error(error)
+        })
+    }
   }, [
     tokenIdsInMCv3Loading,
     currency0ForFeeCollectionPurposes,
@@ -345,6 +347,28 @@ export default function PoolPage() {
   const positionValueLower = inverted ? position?.amount1 : position?.amount0
   const priceValueUpper = inverted ? price0 : price1
   const priceValueLower = inverted ? price1 : price0
+
+  const positionValueUpperUsdValue =
+    positionValueUpper && priceValueUpper ? priceValueUpper.quote(positionValueUpper?.wrapped) : null
+  const positionValueLowerUsdValue =
+    positionValueLower && priceValueLower ? priceValueLower.quote(positionValueLower?.wrapped) : null
+  const feeValueUpperUsdValue = feeValueUpper && priceValueUpper ? priceValueUpper.quote(feeValueUpper?.wrapped) : null
+  const feeValueLowerUsdValue = feeValueLower && priceValueLower ? priceValueLower.quote(feeValueLower?.wrapped) : null
+
+  const positionValueUpperAsFraction =
+    fiatValueOfLiquidity?.greaterThan(0) && positionValueUpperUsdValue?.greaterThan(0)
+      ? positionValueUpperUsdValue?.divide(fiatValueOfLiquidity)
+      : null
+  const positionValueLowerAsFraction =
+    fiatValueOfLiquidity?.greaterThan(0) && positionValueLowerUsdValue?.greaterThan(0)
+      ? positionValueLowerUsdValue?.divide(fiatValueOfLiquidity)
+      : null
+  const positionValueUpperPercent = positionValueUpperAsFraction
+    ? new Percent(positionValueUpperAsFraction.numerator, positionValueUpperAsFraction.denominator).toFixed(2)
+    : null
+  const positionValueLowerPercent = positionValueLowerAsFraction
+    ? new Percent(positionValueLowerAsFraction.numerator, positionValueLowerAsFraction.denominator).toFixed(2)
+    : null
 
   // check if price is within range
   const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
@@ -567,11 +591,10 @@ export default function PoolPage() {
                         </Flex>
                         <RowBetween justifyContent="flex-end">
                           <Text fontSize="10px" color="textSubtle" mr="4px">
-                            {positionValueUpper && priceValueUpper
-                              ? `~$${priceValueUpper
-                                  .quote(positionValueUpper?.wrapped)
-                                  .toFixed(2, { groupSeparator: ',' })}`
+                            {positionValueUpperUsdValue
+                              ? `~$${positionValueUpperUsdValue.toFixed(2, { groupSeparator: ',' })}`
                               : ''}
+                            {positionValueUpperPercent ? ` (${positionValueUpperPercent}%)` : ''}
                           </Text>
                         </RowBetween>
                       </AutoRow>
@@ -589,11 +612,10 @@ export default function PoolPage() {
                         </Flex>
                         <RowBetween justifyContent="flex-end">
                           <Text fontSize="10px" color="textSubtle" mr="4px">
-                            {positionValueLower && priceValueLower
-                              ? `~$${priceValueLower
-                                  .quote(positionValueLower?.wrapped)
-                                  .toFixed(2, { groupSeparator: ',' })}`
+                            {positionValueLowerUsdValue
+                              ? `~$${positionValueLowerUsdValue.toFixed(2, { groupSeparator: ',' })}`
                               : ''}
+                            {positionValueLowerPercent ? ` (${positionValueLowerPercent}%)` : ''}
                           </Text>
                         </RowBetween>
                       </AutoRow>
@@ -646,8 +668,8 @@ export default function PoolPage() {
                         </Flex>
                         <RowBetween justifyContent="flex-end">
                           <Text fontSize="10px" color="textSubtle" ml="4px">
-                            {feeValueUpper && priceValueUpper
-                              ? `~$${priceValueUpper.quote(feeValueUpper?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                            {feeValueUpperUsdValue
+                              ? `~$${feeValueUpperUsdValue.toFixed(2, { groupSeparator: ',' })}`
                               : ''}
                           </Text>
                         </RowBetween>
@@ -664,8 +686,8 @@ export default function PoolPage() {
                         </Flex>
                         <RowBetween justifyContent="flex-end">
                           <Text fontSize="10px" color="textSubtle" ml="4px">
-                            {feeValueLower && priceValueLower
-                              ? `~$${priceValueLower.quote(feeValueLower?.wrapped).toFixed(2, { groupSeparator: ',' })}`
+                            {feeValueLowerUsdValue
+                              ? `~$${feeValueLowerUsdValue.toFixed(2, { groupSeparator: ',' })}`
                               : ''}
                           </Text>
                         </RowBetween>
