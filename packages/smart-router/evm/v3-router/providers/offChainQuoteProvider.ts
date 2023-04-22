@@ -13,6 +13,7 @@ import {
 } from '../types'
 import * as StableSwap from '../../stableSwap'
 import { getOutputCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
+import { asyncChunkCallback } from '../utils/chunkAsyncCallback'
 
 export function createOffChainQuoteProvider(): QuoteProvider {
   const createGetRoutesWithQuotes = (isExactIn = true) => {
@@ -40,61 +41,65 @@ export function createOffChainQuoteProvider(): QuoteProvider {
 
     return async function getRoutesWithQuotes(
       routes: RouteWithoutQuote[],
-      { gasModel }: QuoterOptions,
+      { gasModel, quoterOptimization }: QuoterOptions,
     ): Promise<RouteWithQuote[]> {
-      const routesWithQuote: RouteWithQuote[] = []
-      for (const route of routes) {
-        try {
-          const { pools, amount } = route
-          let quote = amount
-          const initializedTickCrossedList = Array(pools.length).fill(0)
-          let quoteSuccess = true
-          for (const [pool, i] of each(pools)) {
-            if (isV2Pool(pool)) {
-              quote = getV2Quote(pool, quote)
-              continue
-            }
-            if (isStablePool(pool)) {
-              quote = getStableQuote(pool, quote)
-              continue
-            }
-            if (isV3Pool(pool)) {
-              // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
-              // eslint-disable-next-line no-await-in-loop
-              const v3QuoteResult = await getV3Quote(pool, quote)
-              if (!v3QuoteResult || JSBI.equal(v3QuoteResult.quote.quotient, ZERO)) {
-                quoteSuccess = false
-                break
+      async function run(routes_: RouteWithoutQuote[]): Promise<RouteWithQuote[]> {
+        const routesWithQuote: RouteWithQuote[] = []
+        for (const route of routes_) {
+          try {
+            const { pools, amount } = route
+            let quote = amount
+            const initializedTickCrossedList = Array(pools.length).fill(0)
+            let quoteSuccess = true
+            for (const [pool, i] of each(pools)) {
+              if (isV2Pool(pool)) {
+                quote = getV2Quote(pool, quote)
+                continue
               }
-              const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
-              quote = v3Quote
-              initializedTickCrossedList[i] = numOfTicksCrossed
+              if (isStablePool(pool)) {
+                quote = getStableQuote(pool, quote)
+                continue
+              }
+              if (isV3Pool(pool)) {
+                // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
+                // eslint-disable-next-line no-await-in-loop
+                const v3QuoteResult = await getV3Quote(pool, quote)
+                if (!v3QuoteResult || JSBI.equal(v3QuoteResult.quote.quotient, ZERO)) {
+                  quoteSuccess = false
+                  break
+                }
+                const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
+                quote = v3Quote
+                initializedTickCrossedList[i] = numOfTicksCrossed
+              }
             }
-          }
-          if (!quoteSuccess) {
-            continue
-          }
+            if (!quoteSuccess) {
+              continue
+            }
 
-          const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
-            {
+            const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
+              {
+                ...route,
+                quote,
+              },
+              { initializedTickCrossedList },
+            )
+            routesWithQuote.push({
               ...route,
               quote,
-            },
-            { initializedTickCrossedList },
-          )
-          routesWithQuote.push({
-            ...route,
-            quote,
-            quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
-            gasEstimate,
-            gasCostInUSD,
-            gasCostInToken,
-          })
-        } catch (e) {
-          // console.warn('Failed to get quote from route', route, e)
+              quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
+              gasEstimate,
+              gasCostInUSD,
+              gasCostInToken,
+            })
+          } catch (e) {
+            // console.warn('Failed to get quote from route', route, e)
+          }
         }
+        return routesWithQuote
       }
-      return routesWithQuote
+
+      return asyncChunkCallback(routes, run, typeof quoterOptimization === 'number' ? quoterOptimization : undefined)
     }
   }
 

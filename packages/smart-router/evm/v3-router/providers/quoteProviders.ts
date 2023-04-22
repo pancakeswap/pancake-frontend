@@ -29,7 +29,7 @@ export function createQuoteProvider({ onChainProvider, multicallConfigs }: Confi
 
     return async function getRoutesWithQuotes(
       routes: RouteWithoutQuote[],
-      { blockNumber, gasModel }: QuoterOptions,
+      { blockNumber, gasModel, quoterOptimization }: QuoterOptions,
     ): Promise<RouteWithQuote[]> {
       const v3Routes: RouteWithoutQuote[] = []
       const mixedRoutesHaveV3Pool: RouteWithoutQuote[] = []
@@ -52,9 +52,9 @@ export function createQuoteProvider({ onChainProvider, multicallConfigs }: Confi
       }
 
       const [offChainQuotes, mixedRouteQuotes, v3Quotes] = await Promise.all([
-        getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel }),
-        getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel }),
-        getV3Quotes(v3Routes, { blockNumber, gasModel }),
+        getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel, quoterOptimization }),
+        getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel, quoterOptimization }),
+        getV3Quotes(v3Routes, { blockNumber, gasModel, quoterOptimization }),
       ])
       return [...offChainQuotes, ...mixedRouteQuotes, ...v3Quotes]
     }

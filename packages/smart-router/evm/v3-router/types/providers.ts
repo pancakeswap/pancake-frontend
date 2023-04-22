@@ -20,6 +20,7 @@ export interface PoolProvider {
 export interface QuoterOptions {
   blockNumber?: BigintIsh
   gasModel: GasModel
+  quoterOptimization?: boolean | number
 }
 
 export interface QuoteProvider {

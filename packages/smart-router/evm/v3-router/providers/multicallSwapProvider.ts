@@ -11,6 +11,7 @@ import {
   IMulticallProvider,
   Result,
 } from './multicallProvider'
+import { asyncChunkCallback } from '../utils/chunkAsyncCallback'
 
 const PANCAKE_MULTICALL_ADDRESSES = {
   [ChainId.ETHEREUM]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
@@ -43,7 +44,12 @@ function isPromise<T>(p: any): p is Promise<T> {
 export class PancakeMulticallProvider extends IMulticallProvider<PancakeMulticallConfig> {
   static abi = IMulticallABI
 
-  constructor(protected chainId: ChainId, protected provider: PublicClient, protected gasLimitPerCall = 1_000_000) {
+  constructor(
+    protected chainId: ChainId,
+    protected provider: PublicClient,
+    protected gasLimitPerCall = 1_000_000,
+    protected quoterOptimization?: boolean | number,
+  ) {
     super()
     const multicallAddress = PANCAKE_MULTICALL_ADDRESSES[this.chainId]
 
@@ -146,19 +152,25 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
     const blockNumberOverride = providerConfig?.blockNumber ?? undefined
 
-    const calls = functionParams.map((functionParam) => {
-      const callData = encodeFunctionData({
-        abi,
-        functionName,
-        args: functionParam,
-      })
+    const calls = await asyncChunkCallback(
+      functionParams,
+      async (functionParams_) => {
+        return functionParams_.map((functionParam) => {
+          const callData = encodeFunctionData({
+            abi,
+            functionName,
+            args: functionParam,
+          })
 
-      return {
-        target: address,
-        callData,
-        gasLimit: BigInt(gasLimitPerCall),
-      }
-    })
+          return {
+            target: address,
+            callData,
+            gasLimit: BigInt(gasLimitPerCall),
+          }
+        })
+      },
+      typeof this.quoterOptimization === 'number' ? this.quoterOptimization : this.quoterOptimization ? undefined : 0,
+    )
 
     // console.log(
     //   { calls },
@@ -175,36 +187,52 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
 
-    const results: Result<TReturn>[] = []
-
     const gasUsedForSuccess: number[] = []
-    for (let i = 0; i < aggregateResults.length; i++) {
-      const { success, returnData, gasUsed } = aggregateResults[i]!
+    const results: Result<TReturn>[] = []
+    async function getResults(
+      aggregateResults_: readonly {
+        success: boolean
+        gasUsed: bigint
+        returnData: `0x${string}`
+      }[],
+    ) {
+      for (let i = 0; i < aggregateResults_.length; i++) {
+        const { success, returnData, gasUsed } = aggregateResults[i]!
 
-      // Return data "0x" is sometimes returned for invalid pools.
-      if (!success || returnData.length <= 2) {
-        // console.log(
-        //   { result: aggregateResults[i] },
-        //   `Invalid result calling ${functionName} with params ${functionParams[i]}`,
-        // )
+        // Return data "0x" is sometimes returned for invalid pools.
+        if (!success || returnData.length <= 2) {
+          // console.log(
+          //   { result: aggregateResults[i] },
+          //   `Invalid result calling ${functionName} with params ${functionParams[i]}`,
+          // )
+          results.push({
+            success: false,
+            returnData,
+          })
+          continue
+        }
+
+        gasUsedForSuccess.push(Number(gasUsed))
+
         results.push({
-          success: false,
-          returnData,
+          success: true,
+          result: decodeFunctionResult({
+            abi,
+            functionName,
+            data: returnData,
+          }) as TReturn,
         })
-        continue
       }
 
-      gasUsedForSuccess.push(Number(gasUsed))
-
-      results.push({
-        success: true,
-        result: decodeFunctionResult({
-          abi,
-          functionName,
-          data: returnData,
-        }) as TReturn,
-      })
+      return []
     }
+
+    await asyncChunkCallback(
+      // @ts-ignore
+      aggregateResults,
+      getResults,
+      typeof this.quoterOptimization === 'number' ? this.quoterOptimization : this.quoterOptimization ? undefined : 0,
+    )
 
     // console.log(
     //   { results, functionName, address },

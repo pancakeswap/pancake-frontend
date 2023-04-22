@@ -117,7 +117,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
       return async function getRoutesWithQuote(
         routes: RouteWithoutQuote[],
-        { blockNumber: blockNumberFromConfig, gasModel }: QuoterOptions,
+        { blockNumber: blockNumberFromConfig, gasModel, quoterOptimization }: QuoterOptions,
       ): Promise<RouteWithQuote[]> {
         if (!routes.length) {
           return []
@@ -137,7 +137,12 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
         const providerConfig = { blockNumber: blockNumberFromConfig }
         // const baseBlockOffset = 0
         const rollback = { enabled: false, rollbackBlockOffset: 0, attemptsBeforeRollback: 2 }
-        const multicall2Provider = new PancakeMulticallProvider(chainId, chainProvider, gasLimitOverride)
+        const multicall2Provider = new PancakeMulticallProvider(
+          chainId,
+          chainProvider,
+          gasLimitOverride,
+          quoterOptimization,
+        )
 
         const inputs = routes.map<CallInputs>((route) => getCallInputs(route, isExactIn))
 

@@ -44,27 +44,8 @@ export async function getRoutesWithValidQuote({
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
 
-  if (!quoterOptimization) {
-    return getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel })
-  }
-
-  const requestCallback = typeof window === 'undefined' ? setTimeout : window.requestIdleCallback || window.setTimeout
   metric('Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
-  // Split into chunks so the calculation won't block the main thread
-  const getQuotes = (routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> =>
-    new Promise((resolve, reject) => {
-      requestCallback(async () => {
-        try {
-          const result = await getRoutesWithQuote(routes, { blockNumber, gasModel })
-          resolve(result)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    })
-  const chunks = chunk(routesWithoutQuote, typeof quoterOptimization === 'number' ? quoterOptimization : 10)
-  const result = await Promise.all(chunks.map(getQuotes))
-  const quotes = result.reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur], [])
+  const quotes = await getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel, quoterOptimization })
   metric('Get quotes', 'success, got', quotes.length, 'quoted routes', quotes)
   return quotes
 }
