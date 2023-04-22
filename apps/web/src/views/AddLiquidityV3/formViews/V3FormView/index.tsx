@@ -612,7 +612,7 @@ export default function V3FormView({
                     .map(([quickAction, zoomLevel]) => {
                       return (
                         <Button
-                          width="100%"
+                          style={{ flexBasis: '20%', padding: 0 }}
                           key={`quickActions${quickAction}`}
                           onClick={() => {
                             if (+quickAction === activeQuickAction) {
@@ -632,7 +632,7 @@ export default function V3FormView({
                       )
                     })}
                 <Button
-                  width="200%"
+                  style={{ flexBasis: '40%', padding: 0 }}
                   onClick={() => {
                     if (activeQuickAction === 100) {
                       handleRefresh()
