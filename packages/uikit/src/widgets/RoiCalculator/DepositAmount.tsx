@@ -26,6 +26,8 @@ export const DepositAmountInput = memo(function DepositAmountInput({
   amountB,
   currencyA,
   currencyB,
+  currencyAUsdPrice,
+  currencyBUsdPrice,
   maxLabel,
 }: Props) {
   return (
@@ -33,7 +35,14 @@ export const DepositAmountInput = memo(function DepositAmountInput({
       <Box mb="1em">
         <DepositUsdAmountInput value={value} max={max} onChange={onChange} maxLabel={maxLabel} />
       </Box>
-      <TokenAmountsDisplay amountA={amountA} amountB={amountB} currencyA={currencyA} currencyB={currencyB} />
+      <TokenAmountsDisplay
+        amountA={amountA}
+        amountB={amountB}
+        currencyA={currencyA}
+        currencyB={currencyB}
+        currencyAUsdPrice={currencyAUsdPrice}
+        currencyBUsdPrice={currencyBUsdPrice}
+      />
     </>
   );
 });
@@ -101,29 +110,40 @@ interface TokenAmountsDisplayProps {
   currencyB?: Currency;
   amountA?: CurrencyAmount<Currency>;
   amountB?: CurrencyAmount<Currency>;
+  currencyAUsdPrice?: number;
+  currencyBUsdPrice?: number;
 }
 
 const TokenDisplayRow = memo(function TokenDisplayRow({
   amount,
   currency,
+  usdPrice,
 }: {
   amount?: CurrencyAmount<Currency>;
   currency?: Currency;
+  usdPrice?: number;
 }) {
   if (!currency) {
     return null;
   }
 
   return (
-    <RowBetween>
-      <Flex>
-        <CurrencyLogo currency={currency} />
-        <Text color="textSubtle" ml="0.25em">
-          {currency.symbol}
+    <>
+      <RowBetween>
+        <Flex>
+          <CurrencyLogo currency={currency} />
+          <Text color="textSubtle" ml="0.25em">
+            {currency.symbol}
+          </Text>
+        </Flex>
+        <Text>{amount?.toExact() || "0"}</Text>
+      </RowBetween>
+      <RowBetween justifyContent="flex-end">
+        <Text fontSize="10px" color="textSubtle" ml="4px">
+          {amount && usdPrice ? `~$${(parseFloat(amount.toExact()) * usdPrice).toFixed(2)}` : ""}
         </Text>
-      </Flex>
-      <Text>{amount?.toExact() || "0"}</Text>
-    </RowBetween>
+      </RowBetween>
+    </>
   );
 });
 
@@ -132,6 +152,8 @@ export const TokenAmountsDisplay = memo(function TokenAmountsDisplay({
   amountB,
   currencyA,
   currencyB,
+  currencyAUsdPrice,
+  currencyBUsdPrice,
 }: TokenAmountsDisplayProps) {
   if (!currencyA && !currencyB) {
     return null;
@@ -141,9 +163,9 @@ export const TokenAmountsDisplay = memo(function TokenAmountsDisplay({
     <Card>
       <CardBody>
         <Box mb="0.5em">
-          <TokenDisplayRow amount={amountA} currency={currencyA} />
+          <TokenDisplayRow amount={amountA} currency={currencyA} usdPrice={currencyAUsdPrice} />
         </Box>
-        <TokenDisplayRow amount={amountB} currency={currencyB} />
+        <TokenDisplayRow amount={amountB} currency={currencyB} usdPrice={currencyBUsdPrice} />
       </CardBody>
     </Card>
   );

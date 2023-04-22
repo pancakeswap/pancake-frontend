@@ -312,6 +312,8 @@ export function RoiCalculator({
         currencyB={currencyB}
         amountA={amountA}
         amountB={amountB}
+        currencyAUsdPrice={currencyAUsdPrice}
+        currencyBUsdPrice={currencyBUsdPrice}
         max={maxUsdValue}
       />
     </Section>
