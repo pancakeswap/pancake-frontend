@@ -4,7 +4,6 @@ import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk
 import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
 import { metric } from './utils/metric'
-import { chunk } from '../utils/chunk'
 
 interface Params {
   blockNumber?: BigintIsh
