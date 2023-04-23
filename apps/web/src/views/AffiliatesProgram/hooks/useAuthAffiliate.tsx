@@ -36,7 +36,7 @@ export interface InfoDetail {
   _count: {
     user: number
   }
-  fee: FeeType[]
+  fees: FeeType[]
   nickName: string
   ablePerps: boolean
   metric: MetricDetail
@@ -63,7 +63,7 @@ const initAffiliateData: InfoDetail = {
   _count: {
     user: 0,
   },
-  fee: [],
+  fees: [],
   nickName: '',
   ablePerps: false,
   metric: {

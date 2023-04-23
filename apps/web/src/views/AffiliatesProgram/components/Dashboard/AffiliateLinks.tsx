@@ -40,8 +40,8 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
   const [feeList, setFeeList] = useState<FeeType[]>([])
 
   useEffect(() => {
-    if (affiliate?.fee?.length > 0) {
-      const max = Math.ceil(affiliate.fee.length / MAX_PER_PAGE)
+    if (affiliate.fees.length > 0) {
+      const max = Math.ceil(affiliate.fees.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
@@ -54,10 +54,10 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
 
   useEffect(() => {
     const getActivitySlice = () => {
-      const slice = affiliate.fee.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      const slice = affiliate.fees.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setFeeList(slice)
     }
-    if (affiliate?.fee?.length > 0) {
+    if (affiliate.fees.length > 0) {
       getActivitySlice()
       setIsExpanded(true)
     }
