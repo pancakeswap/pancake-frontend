@@ -1,13 +1,19 @@
-import { useEffect, useState } from 'react'
-import { Flex, Text, Card, PaginationButton, Table, Td, Th } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { Flex, Text, Card, Table, Td, Th } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { ListType } from 'views/AffiliatesProgram/hooks/useLeaderboard'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
-const MAX_PER_PAGE = 20
+interface LeaderBoardListProps {
+  isFetching: boolean
+  list: ListType[]
+}
 
-const LeaderBoardList = () => {
+const SPLICE_NUMBER = 3
+
+const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> = ({ list, isFetching }) => {
   const { t } = useTranslation()
-  const [currentPage, setCurrentPage] = useState(1)
-  const [maxPage, setMaxPages] = useState(1)
+  const otherData = useMemo(() => list.slice(SPLICE_NUMBER), [list])
 
   return (
     <Flex maxWidth={1120} padding="0 16px" margin="auto auto 100px auto">
@@ -37,35 +43,46 @@ const LeaderBoardList = () => {
             </Th>
           </thead>
           <tbody>
-            <tr>
-              <Td>
-                <Text color="secondary" bold>
-                  #2
-                </Text>
-              </Td>
-              <Td>
-                <Text color="primary" bold>
-                  Chungus
-                </Text>
-              </Td>
-              <Td>
-                <Text bold>500</Text>
-              </Td>
-              <Td>
-                <Text bold>~$13,000,000</Text>
-              </Td>
-              <Td>
-                <Flex flexDirection="column">
-                  <Text bold>500 CAKE</Text>
-                  <Text textAlign="left" fontSize="12px" color="textSubtle">
-                    ~$500
-                  </Text>
-                </Flex>
-              </Td>
-            </tr>
+            {isFetching ? (
+              <tr>
+                <Td colSpan={5} textAlign="center">
+                  {t('Loading...')}
+                </Td>
+              </tr>
+            ) : (
+              <>
+                {otherData.map((data, index) => (
+                  <tr key={data.address}>
+                    <Td>
+                      <Text color="secondary" bold>
+                        {`#${index + SPLICE_NUMBER}`}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text color="primary" bold>
+                        {data.nickName}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text bold>{data.metric.totalUsers}</Text>
+                    </Td>
+                    <Td>
+                      <Text bold>{`$${formatNumber(Number(data.metric.totalTradeVolumeUSD), 0)}`}</Text>
+                    </Td>
+                    <Td>
+                      <Flex flexDirection="column">
+                        <Text bold>{`~ ${formatNumber(Number(data.cakeBalance), 0)} CAKE`}</Text>
+                        <Text textAlign="left" fontSize="12px" color="textSubtle">
+                          {`$${formatNumber(Number(data.metric.totalEarnFeeUSD), 0)}`}
+                        </Text>
+                      </Flex>
+                    </Td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </Table>
-        <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
       </Card>
     </Flex>
   )

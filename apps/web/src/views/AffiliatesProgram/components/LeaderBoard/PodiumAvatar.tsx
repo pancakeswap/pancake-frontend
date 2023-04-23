@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useProfileForAddress } from 'state/profile/hooks'
 import { Flex, Skeleton, ProfileAvatar, NoProfileAvatarIcon } from '@pancakeswap/uikit'
 
 const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
@@ -32,13 +33,13 @@ const Wrapper = styled(Flex)<{ imageSize: number }>`
 `
 
 interface PodiumAvatarProps {
-  isFetching?: boolean
   position: number
-  imageUrl: string
+  address: string
 }
 
-const PodiumAvatar: React.FC<React.PropsWithChildren<PodiumAvatarProps>> = ({ isFetching, imageUrl, position }) => {
+const PodiumAvatar: React.FC<React.PropsWithChildren<PodiumAvatarProps>> = ({ address, position }) => {
   const imageSize = position === 1 ? 128 : 113
+  const { profile, isFetching } = useProfileForAddress(address)
 
   return (
     <Wrapper imageSize={imageSize}>
@@ -46,8 +47,8 @@ const PodiumAvatar: React.FC<React.PropsWithChildren<PodiumAvatarProps>> = ({ is
         <Skeleton variant="circle" width="100%" height="100%" />
       ) : (
         <>
-          {imageUrl ? (
-            <ProfileAvatar width={imageSize} height={imageSize} src={imageUrl} />
+          {profile?.nft?.image?.thumbnail ? (
+            <ProfileAvatar width={imageSize} height={imageSize} src={profile?.nft?.image?.thumbnail} />
           ) : (
             <StyledNoProfileAvatarIcon />
           )}
