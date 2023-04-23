@@ -26,11 +26,16 @@ class WorkerProxy {
   constructor(protected worker: Worker) {}
 
   public postMessage = async (message: any) => {
+    if (!this.worker) {
+      throw new Error('Worker not initialized')
+    }
+
     const id = this.id++
-    return new Promise((resolve, reject) => {
-      this.worker.onmessage = (e) => {
+    const promise = new Promise((resolve, reject) => {
+      const handler = (e) => {
         const [eventId, data] = e.data
         if (id === eventId) {
+          this.worker.removeEventListener('message', handler)
           if (data.success === false) {
             reject(data.error)
           } else {
@@ -38,8 +43,11 @@ class WorkerProxy {
           }
         }
       }
-      this.worker.postMessage([id, message])
+      this.worker.addEventListener('message', handler)
     })
+
+    this.worker.postMessage([id, message])
+    return promise
   }
 
   public getBestTrade = async (params) => {
@@ -403,7 +411,7 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
       poolTypes: allowedPoolTypes,
       candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
     })
-    console.log(SmartRouter.Transformer.parseTrade(currency.chainId, result as any), 'result')
+    console.log(SmartRouter.Transformer.parseTrade(currency.chainId, result as any), 'result', tradeType)
     return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
   },
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
