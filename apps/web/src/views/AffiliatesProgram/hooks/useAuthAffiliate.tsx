@@ -27,6 +27,7 @@ export interface MetricDetail {
 }
 
 export interface InfoDetail {
+  availableFeeUSD: string
   active: boolean
   address: string
   createdAt: string
@@ -63,6 +64,7 @@ const initAffiliateData: InfoDetail = {
   _count: {
     user: 0,
   },
+  availableFeeUSD: '0',
   fees: [],
   nickName: '',
   ablePerps: false,

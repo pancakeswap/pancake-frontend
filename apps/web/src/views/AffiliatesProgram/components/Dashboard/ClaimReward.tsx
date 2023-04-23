@@ -37,12 +37,11 @@ interface ClaimRewardProps {
 const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
-  const { totalEarnFeeUSD } = affiliate.metric
 
   const totalCakeEarned = useMemo(() => {
-    const cakeBalance = new BigNumber(totalEarnFeeUSD).div(cakePriceBusd).toNumber()
+    const cakeBalance = new BigNumber(affiliate.availableFeeUSD).div(cakePriceBusd).toNumber()
     return formatNumber(cakeBalance)
-  }, [cakePriceBusd, totalEarnFeeUSD])
+  }, [cakePriceBusd, affiliate])
 
   return (
     <Box>
@@ -70,7 +69,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({ affi
                     {t('Total Reward')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`$ ${formatNumber(Number(totalEarnFeeUSD))}`}
+                    {`$ ${formatNumber(Number(affiliate.availableFeeUSD))}`}
                   </Text>
                 </Flex>
                 <Flex justifyContent="space-between">
