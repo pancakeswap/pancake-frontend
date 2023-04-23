@@ -1,7 +1,12 @@
-import { Card, Flex, Text, Button, Box } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { Card, Flex, Text, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import BigNumber from 'bignumber.js'
+import { usePriceCakeUSD } from 'state/farms/hooks'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { InfoDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 
 const CardContainer = styled(Flex)`
   flex-direction: column;
@@ -25,8 +30,19 @@ const CardContainer = styled(Flex)`
   }
 `
 
-const ClaimReward = () => {
+interface ClaimRewardProps {
+  affiliate: InfoDetail
+}
+
+const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeUSD()
+  const { totalEarnFeeUSD } = affiliate.metric
+
+  const totalCakeEarned = useMemo(() => {
+    const cakeBalance = new BigNumber(totalEarnFeeUSD).div(cakePriceBusd).toNumber()
+    return formatNumber(cakeBalance)
+  }, [cakePriceBusd, totalEarnFeeUSD])
 
   return (
     <Box>
@@ -50,19 +66,19 @@ const ClaimReward = () => {
             <CardContainer>
               <LightGreyCard>
                 <Flex justifyContent="space-between" mb="7px">
-                  <Text color="textSubtle" fontSize="14px">
-                    Total USD
+                  <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                    {t('Total Reward')}
                   </Text>
                   <Text bold fontSize="14px">
-                    63
+                    {`$ ${formatNumber(Number(totalEarnFeeUSD))}`}
                   </Text>
                 </Flex>
                 <Flex justifyContent="space-between">
-                  <Text color="textSubtle" fontSize="14px">
-                    Total CAKE
+                  <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                    {t('Total cake earned')}
                   </Text>
                   <Text bold fontSize="14px">
-                    500 CAKE
+                    {`~ ${totalCakeEarned} CAKE`}
                   </Text>
                 </Flex>
               </LightGreyCard>

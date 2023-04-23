@@ -30,29 +30,27 @@ const Dashboard = () => {
           justifyContent={['center']}
           flexDirection={['column', 'column', 'column', 'column', 'column', 'row']}
         >
-          {isAffiliate && <CommissionInfo />}
+          {isAffiliate && <CommissionInfo affiliate={affiliate} />}
           <Flex
             flexDirection="column"
             width={['100%', '100%', '100%', '100%', '100%', '700px']}
             m={['32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '0 0 0 32px']}
           >
-            <Card>
-              <Box padding={['24px']}>
-                {isAffiliateExist && (
-                  <>
-                    {!isAffiliate ? (
-                      <LoginButton />
-                    ) : (
-                      <>
-                        <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
-                        <AffiliateLinks affiliate={affiliate} />
-                      </>
-                    )}
-                  </>
-                )}
-                <ClaimReward />
-              </Box>
-            </Card>
+            {isAffiliateExist && (
+              <Card mb="16px">
+                <Box padding={['24px']}>
+                  {!isAffiliate ? (
+                    <LoginButton />
+                  ) : (
+                    <>
+                      <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
+                      <AffiliateLinks affiliate={affiliate} />
+                    </>
+                  )}
+                </Box>
+              </Card>
+            )}
+            <ClaimReward affiliate={affiliate} />
           </Flex>
         </Flex>
       )}

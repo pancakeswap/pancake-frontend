@@ -1,6 +1,11 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { useMemo } from 'react'
+import { useTranslation, Trans } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { Box, Card, Flex, Text, Balance } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { usePriceCakeUSD } from 'state/farms/hooks'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { InfoDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import PieChartContainer from './PieChartContainer'
 
 const StyledFlex = styled(Flex)`
@@ -21,15 +26,93 @@ const CardInner = styled(Flex)`
   }
 `
 
-const StyledCircle = styled(Flex)`
+const StyledCircle = styled(Flex)<{ backgroundColor: string }>`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: ${({ theme }) => `${theme.colors.primary}`};
+  background-color: ${({ backgroundColor }) => `${backgroundColor}`};
 `
 
-const CommissionInfo = () => {
+interface CommissionInfoProps {
+  affiliate: InfoDetail
+}
+
+export interface ChartInfo {
+  id: string
+  name: JSX.Element
+  chartColor: string
+  usdValue: string
+  cakeValue: string
+  cakeValueAsNumber: number
+  percentage: string
+}
+
+const chartConfig: ChartInfo[] = [
+  {
+    id: 'totalPerpSwapEarnFeeUSD',
+    name: <Trans>Perp Swap Earn Fee</Trans>,
+    chartColor: '#ED4B9E',
+    usdValue: '0',
+    cakeValue: '0',
+    cakeValueAsNumber: 0,
+    percentage: '0',
+  },
+  {
+    id: 'totalStableSwapEarnFeeUSD',
+    name: <Trans>Stable Swap Earn Fee</Trans>,
+    chartColor: '#FFB237',
+    usdValue: '0',
+    cakeValue: '0',
+    cakeValueAsNumber: 0,
+    percentage: '0',
+  },
+  {
+    id: 'totalV2SwapEarnFeeUSD',
+    name: <Trans>V2 Swap Earn Fee</Trans>,
+    chartColor: '#7645D9',
+    usdValue: '0',
+    cakeValue: '0',
+    cakeValueAsNumber: 0,
+    percentage: '0',
+  },
+  {
+    id: 'totalV3SwapEarnFeeUSD',
+    name: <Trans>V3 Swap Earn Fee</Trans>,
+    chartColor: '#2ECFDC',
+    usdValue: '0',
+    cakeValue: '0',
+    cakeValueAsNumber: 0,
+    percentage: '0',
+  },
+]
+
+const CommissionInfo: React.FC<React.PropsWithChildren<CommissionInfoProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeUSD()
+  const { totalUsers, totalEarnFeeUSD } = affiliate.metric
+
+  const totalCakeEarned = useMemo(() => {
+    const cakeBalance = new BigNumber(totalEarnFeeUSD).div(cakePriceBusd).toNumber()
+    return formatNumber(cakeBalance)
+  }, [cakePriceBusd, totalEarnFeeUSD])
+
+  const chartData = useMemo(() => {
+    return chartConfig
+      .map((chart) => {
+        const usdValue: string = affiliate.metric[chart?.id] ?? '0'
+        const cakeBalance = new BigNumber(usdValue).div(cakePriceBusd).toNumber()
+        const valuePercentage = new BigNumber(usdValue).div(totalEarnFeeUSD)
+        const percentage = new BigNumber(valuePercentage.isNaN() ? '0' : valuePercentage).times(100).toNumber()
+        return {
+          ...chart,
+          usdValue,
+          cakeValue: formatNumber(cakeBalance),
+          cakeValueAsNumber: cakeBalance,
+          percentage: formatNumber(percentage),
+        }
+      })
+      .sort((a, b) => b.cakeValueAsNumber - a.cakeValueAsNumber)
+  }, [affiliate?.metric, cakePriceBusd, totalEarnFeeUSD])
 
   return (
     <Box width={['100%', '100%', '100%', '100%', '100%', '387px']}>
@@ -38,43 +121,45 @@ const CommissionInfo = () => {
           <CardInner mb="28px">
             <StyledFlex>
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
-                active friends
+                {t('Active friends')}
               </Text>
               <Text fontSize={['32px']} bold>
-                123
+                {totalUsers}
               </Text>
             </StyledFlex>
             <StyledFlex pl="10%">
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
-                total cake earned
+                {t('Total cake earned')}
               </Text>
-              <Balance fontSize={['32px']} bold value={1234} decimals={0} />
-              <Balance color="textSubtle" prefix="$ " unit=" USD" fontSize="14px" decimals={0} value={1234} />
+              <Text fontSize={['32px']} bold>{`~ ${totalCakeEarned}`}</Text>
+              <Text color="textSubtle" fontSize="14px">{`$ ${formatNumber(Number(totalEarnFeeUSD))}`}</Text>
             </StyledFlex>
           </CardInner>
           <Box mb="24px">
             <Text mb="16px" color="secondary" bold fontSize={['12px']} textTransform="uppercase">
-              rewards breakdown
+              {t('Rewards Breakdown')}
             </Text>
-            <PieChartContainer />
+            {Number(totalEarnFeeUSD) > 0 && <PieChartContainer chartData={chartData} />}
           </Box>
-          <Flex>
-            <Flex width="100%" justifyContent="space-between" mb="16px">
-              <Flex>
-                <StyledCircle />
-                <Text ellipsis ml="8px" fontSize={['14px']}>
-                  v2/v3 Swaps & StableSwap
-                </Text>
+          <Flex flexDirection="column">
+            {chartData.map((chart) => (
+              <Flex key={chart.id} width="100%" justifyContent="space-between" mb="16px">
+                <Flex>
+                  <StyledCircle backgroundColor={chart.chartColor} />
+                  <Text ellipsis ml="8px" fontSize={['14px']}>
+                    {chart.name}
+                  </Text>
+                </Flex>
+                <Box ml="10px">
+                  <Text bold fontSize={['16px']}>
+                    {`${chart.percentage}%`}
+                  </Text>
+                  <Text color="textSubtle" fontSize={['14px']}>
+                    {`~ ${chart.cakeValue} CAKE`}
+                  </Text>
+                </Box>
               </Flex>
-              <Box ml="10px">
-                <Text bold fontSize={['16px']}>
-                  40.1%
-                </Text>
-                <Text color="textSubtle" fontSize={['14px']}>
-                  (494 CAKE)
-                </Text>
-              </Box>
-            </Flex>
+            ))}
           </Flex>
         </Box>
       </Card>
