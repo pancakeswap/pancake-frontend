@@ -109,6 +109,38 @@ const Chart = ({
               if (setLabel) setLabel(undefined)
               if (setValue) setValue(undefined)
             }}
+            onMouseMove={(state) => {
+              if (state.isTooltipActive) {
+                if (setValue && parsedValue !== state?.activePayload?.[0]?.payload?.value) {
+                  setValue(state?.activePayload?.[0]?.payload?.value)
+                }
+                const dayNow = dayjs(state?.activePayload?.[0]?.payload?.value)
+                const formattedTime = dayNow.format('MMM D')
+
+                if (setLabel && label !== formattedTime) {
+                  if (activeWindow === VolumeWindow.weekly) {
+                    const formattedTimePlusWeek = dayNow.add(1, 'week')
+                    const isCurrent = formattedTimePlusWeek.isAfter(now)
+                    setLabel(
+                      `${formattedTime}-${
+                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
+                      }`,
+                    )
+                  } else if (activeWindow === VolumeWindow.monthly) {
+                    const formattedTimePlusMonth = dayNow.add(1, 'month')
+                    const isCurrent = formattedTimePlusMonth.isAfter(now)
+                    setLabel(
+                      `${formattedTime}-${
+                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusMonth.format('MMM D, YYYY')
+                      }`,
+                    )
+                  } else {
+                    const formattedTimeDaily = dayNow.format('MMM D, YYYY')
+                    setLabel(formattedTimeDaily)
+                  }
+                }
+              }
+            }}
           >
             <XAxis
               dataKey="time"
@@ -117,40 +149,7 @@ const Chart = ({
               tickFormatter={(time) => dayjs(time).format(activeWindow === VolumeWindow.monthly ? 'MMM' : 'DD')}
               minTickGap={10}
             />
-            <Tooltip
-              cursor={{ fill: theme.colors.backgroundAlt }}
-              contentStyle={{ display: 'none' }}
-              formatter={(toolTipValue: number, name: string, props) => {
-                if (setValue && parsedValue !== props.payload.value) {
-                  setValue(props.payload.value)
-                }
-                const formattedTime = dayjs(props.payload.time).format('MMM D')
-                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D, YYYY')
-                const formattedTimePlusWeek = dayjs(props.payload.time).add(1, 'week')
-                const formattedTimePlusMonth = dayjs(props.payload.time).add(1, 'month')
-
-                if (setLabel && label !== formattedTime) {
-                  if (activeWindow === VolumeWindow.weekly) {
-                    const isCurrent = formattedTimePlusWeek.isAfter(now)
-                    setLabel(
-                      `${formattedTime}-${
-                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
-                      }`,
-                    )
-                  } else if (activeWindow === VolumeWindow.monthly) {
-                    const isCurrent = formattedTimePlusMonth.isAfter(now)
-                    setLabel(
-                      `${formattedTime}-${
-                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusMonth.format('MMM D, YYYY')
-                      }`,
-                    )
-                  } else {
-                    setLabel(formattedTimeDaily)
-                  }
-                }
-                return null
-              }}
-            />
+            <Tooltip cursor={{ fill: theme.colors.backgroundAlt }} contentStyle={{ display: 'none' }} />
             <Bar
               dataKey="value"
               fill={color}
