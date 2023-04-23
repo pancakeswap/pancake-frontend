@@ -43,7 +43,7 @@ import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
-import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
 import { hexToBigInt } from 'viem'
@@ -51,6 +51,7 @@ import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
 
 import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
+import { useSupplyingPendingText } from 'views/AddLiquidityV3/hooks/useSupplyingPendingText'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
@@ -114,10 +115,7 @@ export default function V3FormView({
   const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
   const positionManager = useV3NFTPositionManagerContract()
@@ -308,23 +306,7 @@ export default function V3FormView({
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
-  const translationData = useMemo(
-    () => ({
-      amountA: !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : '',
-      symbolA: !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : '',
-      amountB: !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : '',
-      symbolB: !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : '',
-    }),
-    [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies],
-  )
-
-  const pendingText = useMemo(
-    () =>
-      !outOfRange
-        ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
-        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
-    [t, outOfRange, translationData],
-  )
+  const pendingText = useSupplyingPendingText(parsedAmounts, depositADisabled, depositBDisabled, currencies, outOfRange)
 
   const [activeQuickAction, setActiveQuickAction] = useState<number>()
   const isQuickButtonUsed = useRef(false)

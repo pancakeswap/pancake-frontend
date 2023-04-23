@@ -27,12 +27,13 @@ import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { formatRawAmount, formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
 import { hexToBigInt } from 'viem'
 import { isUserRejected } from 'utils/sentry'
 import { getViemClients } from 'utils/viem'
 
+import { useSupplyingPendingText } from 'views/AddLiquidityV3/hooks/useSupplyingPendingText'
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
 import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
@@ -51,10 +52,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const [, , feeAmountFromUrl, tokenId] = router.query.currency || []
 
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -244,15 +242,11 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onFieldAInput('')
-      router.push('/liquidity')
+      router.push(hasExistingPosition ? `/liquidity/${existingPositionDetails.tokenId.toString()}` : '/liquidity')
     }
-  }, [onFieldAInput, router, txHash])
+  }, [hasExistingPosition, existingPositionDetails, onFieldAInput, router, txHash])
 
-  const pendingText = `Supplying ${
-    !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
-  } ${!depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''} ${!outOfRange ? 'and' : ''} ${
-    !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
-  } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
+  const pendingText = useSupplyingPendingText(parsedAmounts, depositADisabled, depositBDisabled, currencies, outOfRange)
 
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal
@@ -338,7 +332,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                   maxAmount={maxAmounts[Field.CURRENCY_A]}
                   onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
                   onPercentInput={(percent) =>
-                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                    onFieldAInput(maxAmounts?.[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
                   }
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onFieldAInput}
@@ -357,7 +351,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                   maxAmount={maxAmounts[Field.CURRENCY_B]}
                   onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
                   onPercentInput={(percent) =>
-                    onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                    onFieldBInput(maxAmounts?.[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
                   }
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}
