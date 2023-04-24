@@ -1,5 +1,17 @@
 # @pancakeswap/smart-router
 
+## 2.0.1
+
+### Patch Changes
+
+- 91af69fa2: Allow multicall config pass into quote provider
+
+## 2.0.0
+
+### Major Changes
+
+- dd6cecab1: Move to viem
+
 ## 1.0.0
 
 ### Minor Changes

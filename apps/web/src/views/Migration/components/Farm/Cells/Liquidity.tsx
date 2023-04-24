@@ -16,7 +16,7 @@ const LiquidityWrapper = styled.div`
   min-width: 110px;
   font-weight: 600;
   text-align: right;
-  margin-right: 14px;
+  margin-right: 4px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     text-align: left;

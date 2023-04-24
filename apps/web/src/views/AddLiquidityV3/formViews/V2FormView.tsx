@@ -13,7 +13,6 @@ import {
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import { CommitButton } from 'components/CommitButton'
-import _isNaN from 'lodash/isNaN'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 
 import { Field } from 'state/mint/actions'

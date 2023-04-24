@@ -2,14 +2,8 @@ import { gql, GraphQLClient } from 'graphql-request'
 import { Transaction, TransactionType } from '../../types'
 
 const GLOBAL_TRANSACTIONS = gql`
-  query transactions($address: Bytes!) {
-    mintsAs0: mints(
-      first: 500
-      orderBy: timestamp
-      orderDirection: desc
-      where: { token0: $address }
-      subgraphError: allow
-    ) {
+  query transactions($address: String!) {
+    mintsAs0: mints(first: 500, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
       timestamp
       transaction {
         id
@@ -31,13 +25,7 @@ const GLOBAL_TRANSACTIONS = gql`
       amount1
       amountUSD
     }
-    mintsAs1: mints(
-      first: 500
-      orderBy: timestamp
-      orderDirection: desc
-      where: { token0: $address }
-      subgraphError: allow
-    ) {
+    mintsAs1: mints(first: 500, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
       timestamp
       transaction {
         id
@@ -59,13 +47,7 @@ const GLOBAL_TRANSACTIONS = gql`
       amount1
       amountUSD
     }
-    swapsAs0: swaps(
-      first: 500
-      orderBy: timestamp
-      orderDirection: desc
-      where: { token0: $address }
-      subgraphError: allow
-    ) {
+    swapsAs0: swaps(first: 500, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
       timestamp
       transaction {
         id
@@ -85,13 +67,7 @@ const GLOBAL_TRANSACTIONS = gql`
       amount1
       amountUSD
     }
-    swapsAs1: swaps(
-      first: 500
-      orderBy: timestamp
-      orderDirection: desc
-      where: { token1: $address }
-      subgraphError: allow
-    ) {
+    swapsAs1: swaps(first: 500, orderBy: timestamp, orderDirection: desc, where: { token1: $address }) {
       timestamp
       transaction {
         id
@@ -111,13 +87,7 @@ const GLOBAL_TRANSACTIONS = gql`
       amount1
       amountUSD
     }
-    burnsAs0: burns(
-      first: 500
-      orderBy: timestamp
-      orderDirection: desc
-      where: { token0: $address }
-      subgraphError: allow
-    ) {
+    burnsAs0: burns(first: 500, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
       timestamp
       transaction {
         id
@@ -133,17 +103,12 @@ const GLOBAL_TRANSACTIONS = gql`
         }
       }
       owner
+      origin
       amount0
       amount1
       amountUSD
     }
-    burnsAs1: burns(
-      first: 500
-      orderBy: timestamp
-      orderDirection: desc
-      where: { token1: $address }
-      subgraphError: allow
-    ) {
+    burnsAs1: burns(first: 500, orderBy: timestamp, orderDirection: desc, where: { token1: $address }) {
       timestamp
       transaction {
         id
@@ -159,6 +124,7 @@ const GLOBAL_TRANSACTIONS = gql`
         }
       }
       owner
+      origin
       amount0
       amount1
       amountUSD
@@ -263,6 +229,7 @@ interface TransactionResults {
       }
     }
     owner: string
+    origin: string
     amount0: string
     amount1: string
     amountUSD: string
@@ -283,6 +250,7 @@ interface TransactionResults {
       }
     }
     owner: string
+    origin: string
     amount0: string
     amount1: string
     amountUSD: string
@@ -334,7 +302,7 @@ export async function fetchTokenTransactions(
         type: TransactionType.BURN,
         hash: m.transaction.id,
         timestamp: m.timestamp,
-        sender: m.owner,
+        sender: m.origin,
         token0Symbol: m.pool.token0.symbol,
         token1Symbol: m.pool.token1.symbol,
         token0Address: m.pool.token0.id,
@@ -349,7 +317,7 @@ export async function fetchTokenTransactions(
         type: TransactionType.BURN,
         hash: m.transaction.id,
         timestamp: m.timestamp,
-        sender: m.owner,
+        sender: m.origin,
         token0Symbol: m.pool.token0.symbol,
         token1Symbol: m.pool.token1.symbol,
         token0Address: m.pool.token0.id,

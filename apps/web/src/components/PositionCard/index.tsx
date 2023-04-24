@@ -23,7 +23,7 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
 import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from '../../state/wallet/hooks'

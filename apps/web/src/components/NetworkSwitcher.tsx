@@ -13,7 +13,7 @@ import {
   UserMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useAccount, useNetwork } from 'wagmi'
+import { useNetwork } from 'wagmi'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
@@ -23,6 +23,7 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { chains } from 'utils/wagmi'
 import Image from 'next/image'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 import { ChainLogo } from './Logo/ChainLogo'
 
@@ -136,7 +137,6 @@ export const NetworkSwitcher = () => {
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
   const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
   const router = useRouter()
-  const { address: account } = useAccount()
 
   useNetworkConnectorUpdater()
 
@@ -152,7 +152,7 @@ export const NetworkSwitcher = () => {
 
   const cannotChangeNetwork = !canSwitch
 
-  if (!chainId || (!account && router.pathname.includes('info'))) {
+  if (!chainId || router.pathname.includes('/info')) {
     return null
   }
 
@@ -163,7 +163,7 @@ export const NetworkSwitcher = () => {
         mr="8px"
         placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
-        avatarSrc={`/images/chains/${chainId}.png`}
+        avatarSrc={`${ASSET_CDN}/web/chains/${chainId}.png`}
         disabled={cannotChangeNetwork}
         text={
           isLoading ? (

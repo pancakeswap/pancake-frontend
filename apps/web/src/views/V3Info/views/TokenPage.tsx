@@ -4,6 +4,7 @@ import {
   AutoColumn,
   Box,
   Breadcrumbs,
+  Button,
   Card,
   Flex,
   Heading,
@@ -13,11 +14,15 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -27,12 +32,11 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 // import { useSavedTokens } from 'state/user/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 import BarChart from '../components/BarChart/alt'
-import { DarkGreyCard } from '../components/Card'
 import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import PoolTable from '../components/PoolTable'
@@ -47,7 +51,7 @@ import {
   useTokenPriceData,
   useTokenTransactions,
 } from '../hooks'
-import { currentTimestamp } from '../utils'
+import { currentTimestamp, notEmpty } from '../utils'
 import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
@@ -84,9 +88,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   // eslint-disable-next-line no-param-reassign
   address = address.toLowerCase()
   const cmcLink = useCMCLink(address)
-
-  const { theme, isDark } = useTheme()
-  const backgroundColor = theme.colors.background
+  const { isDark } = useTheme()
 
   // scroll on page view
   useEffect(() => {
@@ -95,9 +97,12 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { t } = useTranslation()
   const tokenData = useTokenData(address)
   const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolsData(poolsForToken ?? [])
+  const poolDatas = usePoolsData(poolsForToken?.filter((d, index) => index < 200) ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
+  const formatPoolData = useMemo(() => {
+    return poolDatas?.filter(notEmpty) ?? []
+  }, [poolDatas])
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {
@@ -145,10 +150,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     }
     return undefined
   }, [priceData, tokenData])
-
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
+  const { chainId } = useActiveChainId()
 
   // watchlist
   // const [savedTokens, addSavedToken] = useSavedTokens()
@@ -225,17 +230,26 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   </Flex>
                 </Flex>
                 <Flex>
-                  {/* <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
+                  <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
                     <Button mr="8px" variant="secondary">
                       {t('Add Liquidity')}
                     </Button>
                   </NextLinkFromReactRouter>
-                  <NextLinkFromReactRouter to={`/swap?outputCurrency=${address}&chainId=${multiChainId[chainName]}`}>
+                  <NextLinkFromReactRouter
+                    to={`/swap?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
+                  >
                     <Button>{t('Trade')}</Button>
-                  </NextLinkFromReactRouter> */}
+                  </NextLinkFromReactRouter>
                 </Flex>
               </Flex>
             </AutoColumn>
+            {tokenData.tvlUSD <= 0 && (
+              <Message variant="warning">
+                <MessageText fontSize="16px">
+                  {t('TVL is currently too low to represent the data correctly')}
+                </MessageText>
+              </Message>
+            )}
             <ContentLayout>
               <Card>
                 <Box p="24px">
@@ -298,7 +312,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     )}
                   </Text>
                 </Flex>
-                <Box px="24px" height="320px">
+                <Box height="320px">
                   {view === ChartView.TVL ? (
                     <LineChart
                       data={formattedTvlData}
@@ -320,24 +334,15 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       setLabel={setValueLabel}
                     />
                   ) : view === ChartView.PRICE ? (
-                    <CandleChart
-                      data={adjustedToCurrent}
-                      setValue={setLatestValue}
-                      setLabel={setValueLabel}
-                      color={backgroundColor}
-                    />
+                    <CandleChart data={adjustedToCurrent} setValue={setLatestValue} setLabel={setValueLabel} />
                   ) : null}
                 </Box>
               </Card>
             </ContentLayout>
-            <Heading>Pools</Heading>
-            <DarkGreyCard>
-              <PoolTable poolDatas={poolDatas ?? []} />
-            </DarkGreyCard>
-            <Heading>Transactions</Heading>
-            <DarkGreyCard>
-              {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
-            </DarkGreyCard>
+            <Heading>{t('Pairs')}</Heading>
+            <PoolTable poolDatas={formatPoolData} />
+            <Heading>{t('Transactions')}</Heading>
+            {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
           </AutoColumn>
         )
       ) : (

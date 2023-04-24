@@ -117,7 +117,6 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
             <FarmV3CardList farm={farm} onDismiss={() => setShow(false)} harvesting={harvesting} />
           </Flex>
         </ViewAllFarmModal>
-        ,
       </ModalV2>
     </Flex>
   )

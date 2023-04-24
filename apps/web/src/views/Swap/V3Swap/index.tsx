@@ -1,5 +1,8 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
+import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
+import { Box } from '@pancakeswap/uikit'
+import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 
 import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
@@ -20,7 +23,7 @@ export function V3SwapForm() {
     <>
       <FormHeader onRefresh={refresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
       <FormMain
-        tradeLoading={!tradeLoaded}
+        tradeLoading={mm.isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={<PricingAndSlippage priceLoading={isLoading} price={price} showSlippage={!mm.isMMBetter} />}
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}
@@ -37,6 +40,11 @@ export function V3SwapForm() {
         <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />
       ) : (
         <TradeDetails loaded={tradeLoaded} trade={trade} />
+      )}
+      {(shouldShowMMLiquidityError(mm?.mmOrderBookTrade?.inputError) || mm?.mmRFQTrade?.error) && !trade && (
+        <Box mt="5px">
+          <MMLiquidityWarning />
+        </Box>
       )}
     </>
   )

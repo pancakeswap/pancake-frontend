@@ -6,7 +6,7 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { checkIsStableSwap } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -20,7 +20,7 @@ import { GreyBadge } from '../Card'
 
 const Container = styled.div`
   position: relative;
-  z-index: 30;
+  z-index: 105;
   width: 100%;
 `
 
@@ -63,7 +63,7 @@ const Blackout = styled.div`
   position: absolute;
   min-height: 100vh;
   width: 100vw;
-  z-index: 10;
+  z-index: 104;
   background-color: black;
   opacity: 0.7;
   left: 0;
@@ -261,7 +261,7 @@ const Search = () => {
     )
   }
   const chainPath = useMultiChainPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>

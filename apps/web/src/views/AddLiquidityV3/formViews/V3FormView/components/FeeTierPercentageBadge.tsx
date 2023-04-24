@@ -1,5 +1,6 @@
 import { Tag } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { useTranslation } from '@pancakeswap/localization'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 
@@ -12,6 +13,8 @@ export function FeeTierPercentageBadge({
   distributions: ReturnType<typeof useFeeTierDistribution>['distributions']
   poolState: PoolState
 }) {
+  const { t } = useTranslation()
+
   return (
     <Tag
       variant="secondary"
@@ -27,10 +30,10 @@ export function FeeTierPercentageBadge({
       }}
     >
       {!distributions || poolState === PoolState.NOT_EXISTS || poolState === PoolState.INVALID
-        ? 'Not Created'
+        ? t('Not Created')
         : distributions[feeAmount] !== undefined
-        ? `${distributions[feeAmount]?.toFixed(0)}% Pick`
-        : 'No Data'}
+        ? `${distributions[feeAmount]?.toFixed(0)}% ${t('Pick')}`
+        : t('No Data')}
     </Tag>
   )
 }

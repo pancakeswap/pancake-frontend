@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
@@ -10,9 +11,9 @@ import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
 import PoolTable from './components/PoolTable'
 import { RowBetween, RowFixed } from './components/Row'
-import { ChartCardsContainer, MonoSpace, ProtocolWrapper } from './components/shared'
 import TokenTable from './components/TokenTable'
 import TransactionsTable from './components/TransactionsTable'
+import { ChartCardsContainer, MonoSpace, ProtocolWrapper } from './components/shared'
 import {
   useProtocolChartData,
   useProtocolData,
@@ -23,6 +24,7 @@ import {
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
 import { notEmpty } from './utils'
+import { getPercentChange } from './utils/data'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
@@ -45,17 +47,13 @@ export default function Home() {
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
   const [rightLabel, setRightLabel] = useState<string | undefined>()
+  const now = dayjs()
 
   useEffect(() => {
     setLiquidityHover(undefined)
     setVolumeHover(undefined)
   }, [chainId])
 
-  useEffect(() => {
-    if (volumeHover === undefined && protocolData) {
-      setVolumeHover(protocolData.volumeUSD)
-    }
-  }, [protocolData, volumeHover])
   useEffect(() => {
     if (liquidityHover === undefined && protocolData) {
       setLiquidityHover(protocolData.tvlUSD)
@@ -88,7 +86,7 @@ export default function Home() {
 
   const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
   const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
-  const [volumeWindow, setVolumeWindow] = useState(VolumeWindow.weekly)
+  const [volumeWindow, setVolumeWindow] = useState(VolumeWindow.daily)
 
   const formattedTokens = useMemo(() => {
     if (topTokensData)
@@ -108,7 +106,7 @@ export default function Home() {
   }, [topPoolsData])
 
   const tvlValue = useMemo(() => {
-    return formatDollarAmount(liquidityHover ?? 0, 2, true)
+    return formatDollarAmount(liquidityHover, 2, true)
   }, [liquidityHover])
 
   return (
@@ -131,10 +129,10 @@ export default function Home() {
               <AutoColumn gap="4px">
                 <Text fontSize="16px">{t('TVL')}</Text>
                 <Text fontSize="32px">
-                  <MonoSpace>{tvlValue} </MonoSpace>
+                  <MonoSpace>{tvlValue}</MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  {leftLabel ? <MonoSpace>{leftLabel} (UTC)</MonoSpace> : null}
+                  <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
                 </Text>
               </AutoColumn>
             }
@@ -142,7 +140,7 @@ export default function Home() {
         </Card>
         <Card>
           <BarChart
-            height={220}
+            height={200}
             minHeight={332}
             data={
               volumeWindow === VolumeWindow.monthly
@@ -159,13 +157,27 @@ export default function Home() {
             activeWindow={volumeWindow}
             topRight={
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
-                <Button scale="sm" onClick={() => setVolumeWindow(VolumeWindow.daily)}>
+                <Button
+                  scale="sm"
+                  variant={volumeWindow === VolumeWindow.daily ? 'primary' : 'bubblegum'}
+                  onClick={() => setVolumeWindow(VolumeWindow.daily)}
+                >
                   D
                 </Button>
-                <Button scale="sm" style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.weekly)}>
+                <Button
+                  scale="sm"
+                  variant={volumeWindow === VolumeWindow.weekly ? 'primary' : 'bubblegum'}
+                  style={{ marginLeft: '8px' }}
+                  onClick={() => setVolumeWindow(VolumeWindow.weekly)}
+                >
                   W
                 </Button>
-                <Button scale="sm" style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.monthly)}>
+                <Button
+                  variant={volumeWindow === VolumeWindow.monthly ? 'primary' : 'bubblegum'}
+                  scale="sm"
+                  style={{ marginLeft: '8px' }}
+                  onClick={() => setVolumeWindow(VolumeWindow.monthly)}
+                >
                   M
                 </Button>
               </RowFixed>
@@ -174,10 +186,14 @@ export default function Home() {
               <AutoColumn gap="4px">
                 <Text fontSize="16px">{t('Volume 24H')}</Text>
                 <Text fontSize="32px">
-                  <MonoSpace> {formatDollarAmount(volumeHover, 2)}</MonoSpace>
+                  <MonoSpace>
+                    {volumeHover
+                      ? formatDollarAmount(volumeHover)
+                      : formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 2)}
+                  </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  {rightLabel ? <MonoSpace>{rightLabel} (UTC)</MonoSpace> : null}
+                  <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
                 </Text>
               </AutoColumn>
             }
@@ -190,8 +206,14 @@ export default function Home() {
             <RowFixed>
               <RowFixed mr="20px">
                 <Text mr="4px">{t('Volume 24H')}: </Text>
-                <Text mr="4px">{formatDollarAmount(protocolData?.volumeUSD)}</Text>
-                <Percent value={protocolData?.volumeUSDChange} wrap />
+                <Text mr="4px">{formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)}</Text>
+                <Percent
+                  value={getPercentChange(
+                    formattedVolumeData[formattedVolumeData.length - 1]?.value.toString(),
+                    formattedVolumeData[formattedVolumeData.length - 2]?.value.toString(),
+                  )}
+                  wrap
+                />
               </RowFixed>
               <RowFixed mr="20px">
                 <Text mr="4px">{t('Fees 24H')}: </Text>

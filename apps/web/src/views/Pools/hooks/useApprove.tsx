@@ -13,9 +13,11 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
 import useCakeApprove from 'hooks/useCakeApprove'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
   const { toastSuccess } = useToast()
+  const { chainId } = useActiveChainId()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
@@ -34,9 +36,10 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
           {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
         </ToastDescriptionWithTx>,
       )
-      dispatch(updateUserAllowance({ sousId, account }))
+      dispatch(updateUserAllowance({ sousId, account, chainId }))
     }
   }, [
+    chainId,
     account,
     dispatch,
     lpContract,

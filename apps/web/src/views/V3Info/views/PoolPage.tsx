@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
+import dayjs from 'dayjs'
 import {
   AutoColumn,
   Box,
@@ -12,14 +13,16 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
+  Button,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -68,6 +71,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   // const { chainId } = useActiveChainId()
   const { isXs, isSm } = useMatchBreakpoints()
 
+  const now = dayjs()
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -126,7 +130,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     return []
   }, [chartData])
 
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const { t } = useTranslation()
@@ -210,20 +214,24 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   </TokenButton>
                 </NextLinkFromReactRouter>
               </Flex>
-              {/* <Flex>
+              <Flex>
                 <NextLinkFromReactRouter
-                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${CHAIN_QUERY_NAME[chainId]}`}
+                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${
+                    CHAIN_QUERY_NAME[multiChainId[chainName]]
+                  }`}
                 >
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
                   </Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter
-                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}&chainId=${multiChainId[chainName]}`}
+                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}&chain=${
+                    CHAIN_QUERY_NAME[multiChainId[chainName]]
+                  }`}
                 >
                   <Button>{t('Trade')}</Button>
                 </NextLinkFromReactRouter>
-              </Flex> */}
+              </Flex>
             </Flex>
           </Flex>
           <ContentLayout>
@@ -252,20 +260,32 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     </RowBetween>
                   </AutoColumn>
                 </Card>
-                <AutoColumn gap="4px">
-                  <Text fontWeight={400}>{t('TVL')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.tvlUSD)}</Text>
+                <Box mb="20px">
+                  <Text lineHeight={1.3} fontWeight={400}>
+                    {t('TVL')}
+                  </Text>
+                  <Text lineHeight={1} fontSize="24px">
+                    {formatDollarAmount(poolData.tvlUSD)}
+                  </Text>
                   <Percent value={poolData.tvlUSDChange} />
-                </AutoColumn>
-                <AutoColumn gap="4px">
-                  <Text fontWeight={400}>{t('Volume 24H')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD)}</Text>
+                </Box>
+                <Box mb="20px">
+                  <Text lineHeight={1.3} fontWeight={400}>
+                    {t('Volume 24H')}
+                  </Text>
+                  <Text lineHeight={1} fontSize="24px">
+                    {formatDollarAmount(poolData.volumeUSD)}
+                  </Text>
                   <Percent value={poolData.volumeUSDChange} />
-                </AutoColumn>
-                <AutoColumn gap="4px">
-                  <Text fontWeight={400}>{t('Fees 24H')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD * (poolData.feeTier / 1000000))}</Text>
-                </AutoColumn>
+                </Box>
+                <Box mb="20px">
+                  <Text lineHeight={1.3} fontWeight={400}>
+                    {t('Fees 24H')}
+                  </Text>
+                  <Text lineHeight={1} fontSize="24px">
+                    {formatDollarAmount(poolData.feeUSD)}
+                  </Text>
+                </Box>
               </Box>
             </Card>
             <Card>
@@ -289,16 +309,10 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   ? ''
                   : formatDollarAmount(formattedFeesUSD[formattedFeesUSD.length - 1]?.value)}
                 <Text small color="secondary">
-                  {valueLabel ? (
-                    `${valueLabel} (UTC)`
-                  ) : (
-                    <Text small color="secondary" style={{ opacity: 0 }}>
-                      0
-                    </Text>
-                  )}
+                  {view !== ChartView.DENSITY && `${valueLabel ?? now.format('MMM D, YYYY')} (UTC)`}
                 </Text>
               </Flex>
-              <Box px="24px" height="380px">
+              <Box height="380px">
                 {view === ChartView.VOL ? (
                   <BarChart
                     data={formattedVolumeData}

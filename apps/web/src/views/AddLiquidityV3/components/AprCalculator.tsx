@@ -95,7 +95,10 @@ export function AprCalculator({
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
-  const inverted = quoteCurrency?.wrapped.sortsBefore(baseCurrency?.wrapped)
+  const tokenA = (baseCurrency ?? undefined)?.wrapped
+  const tokenB = (quoteCurrency ?? undefined)?.wrapped
+
+  const inverted = Boolean(tokenA && tokenB && tokenA?.address !== tokenB?.address && tokenB.sortsBefore(tokenA))
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
@@ -123,7 +126,7 @@ export function AprCalculator({
     [pool?.feeProtocol],
   )
 
-  const isInLiquidity = defaultDepositUsd
+  const applyProtocolFee = defaultDepositUsd ? undefined : protocolFee
 
   const { apr } = useRoi({
     tickLower,
@@ -137,10 +140,10 @@ export function AprCalculator({
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
-    protocolFee: isInLiquidity ? undefined : protocolFee,
+    protocolFee: applyProtocolFee,
   })
 
-  // NOTE: Assume no liquidity when openning modal
+  // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)
 
   const closeModal = useCallback(() => setOpen(false), [])
@@ -217,7 +220,7 @@ export function AprCalculator({
         sqrtRatioX96={sqrtRatioX96}
         liquidity={pool?.liquidity}
         feeAmount={feeAmount}
-        protocolFee={protocolFee}
+        protocolFee={applyProtocolFee}
         ticks={data}
         volume24H={volume24H}
         priceUpper={priceUpper}

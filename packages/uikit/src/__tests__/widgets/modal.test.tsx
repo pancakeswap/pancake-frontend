@@ -93,6 +93,8 @@ it("renders correctly", () => {
     }
 
     .c1 {
+      border-radius: var(--radii-32px);
+      overflow: hidden;
       min-width: 320px;
     }
 
@@ -208,9 +210,11 @@ it("renders correctly", () => {
 
     <div
         class="c0"
+        style="overflow: visible;"
       >
         <div
           class="c1"
+          overflow="hidden"
         >
           <div
             class="c2"
@@ -247,6 +251,7 @@ it("renders correctly", () => {
           </div>
           <div
             class="c10 c3 c11"
+            style="align-items: normal;"
           >
             body
           </div>

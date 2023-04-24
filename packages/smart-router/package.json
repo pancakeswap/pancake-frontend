@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
@@ -8,6 +8,9 @@
     "directory": "packages/smart-router"
   },
   "sideEffects": false,
+  "main": "./dist/evm.js",
+  "module": "./dist/evm.mjs",
+  "types": "../dist/evm/index.d.ts",
   "scripts": {
     "build": "yarn typechain && tsup",
     "dev": "tsup --watch",
@@ -38,7 +41,8 @@
     "mnemonist": "^0.38.3",
     "viem": "^0.2.12",
     "stats-lite": "^2.2.0",
-    "tiny-invariant": "^1.1.0"
+    "tiny-invariant": "^1.1.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@pancakeswap/swap-sdk-core": "*",
@@ -51,13 +55,14 @@
     "@types/lodash": "^4.14.178",
     "@types/stats-lite": "^2.2.0",
     "@types/debug": "^4.1.7",
+    "tsup": "^6.7.0",
     "tsconfig": "*",
     "typechain": "^6.1.0",
     "typescript": "^4.9.4"
   },
   "exports": {
     "./evm": {
-      "types": "./dist/evm.d.ts",
+      "types": "./dist/evm/index.d.ts",
       "import": "./dist/evm.mjs",
       "require": "./dist/evm.js"
     }

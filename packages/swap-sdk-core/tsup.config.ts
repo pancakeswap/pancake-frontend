@@ -1,11 +1,21 @@
 import { defineConfig } from 'tsup'
+import { exec } from 'child_process'
 
-export default defineConfig({
+export default defineConfig((options) => ({
   entry: {
     index: './src/index.ts',
   },
   format: ['esm', 'cjs'],
-  dts: true,
+  dts: false,
   treeshake: true,
   splitting: true,
-})
+  clean: !options.watch,
+  onSuccess: async () => {
+    exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
+      if (err) {
+        console.error(stdout)
+        process.exit(1)
+      }
+    })
+  },
+}))

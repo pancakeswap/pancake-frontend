@@ -1,7 +1,8 @@
+import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
-import { createChart, IChartApi } from 'lightweight-charts'
+import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
@@ -85,7 +86,10 @@ const CandleChart = ({
         height,
         width: chartRef.current.parentElement.clientWidth - 32,
         layout: {
-          backgroundColor: 'transparent',
+          background: {
+            type: ColorType.Solid,
+            color: 'transparent',
+          },
           textColor: '#565A69',
           fontFamily: 'Inter var',
           fontSize: 14,
@@ -140,15 +144,29 @@ const CandleChart = ({
   useEffect(() => {
     if (chartCreated && data && data?.length > 0) {
       const series = chartCreated.addCandlestickSeries({
-        upColor: 'green',
-        downColor: 'red',
-        borderDownColor: 'red',
-        borderUpColor: 'green',
-        wickDownColor: 'red',
-        wickUpColor: 'green',
+        upColor: baseColors.success,
+        downColor: baseColors.failure,
+        borderDownColor: baseColors.failure,
+        borderUpColor: baseColors.success,
+        wickDownColor: baseColors.failure,
+        wickUpColor: baseColors.success,
       })
 
       series.setData(data)
+
+      series.applyOptions({
+        priceFormat: {
+          type: 'price',
+          precision: 4,
+          minMove: 0.0001,
+        },
+      })
+
+      chartCreated.applyOptions({
+        layout: {
+          textColor: theme.isDark ? darkColors.textSubtle : lightColors.textSubtle,
+        },
+      })
 
       // update the title when hovering on the chart
       chartCreated.subscribeCrosshairMove((param) => {
@@ -167,13 +185,13 @@ const CandleChart = ({
         } else if (series && param) {
           const timestamp = param.time as number
           const time = `${dayjs.unix(timestamp).utc().format('MMM D, YYYY h:mm A')} (UTC)`
-          const parsed = param.seriesPrices.get(series) as { open: number } | undefined
+          const parsed = param.seriesData.get(series) as { open: number } | undefined
           if (setValue) setValue(parsed?.open)
           if (setLabel) setLabel(time)
         }
       })
     }
-  }, [chartCreated, color, data, height, setValue, setLabel])
+  }, [chartCreated, color, data, height, setValue, setLabel, theme.isDark])
 
   return (
     <Wrapper minHeight={minHeight}>

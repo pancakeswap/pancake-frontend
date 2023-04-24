@@ -2,21 +2,20 @@ import { gql, GraphQLClient } from 'graphql-request'
 import { Transaction, TransactionType } from '../../types'
 
 const POOL_TRANSACTIONS = gql`
-  query transactions($address: Bytes!) {
-    mints(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }, subgraphError: allow) {
+  query transactions($address: String) {
+    mints(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }) {
       timestamp
       transaction {
         id
       }
-      pool {
-        token0 {
-          id
-          symbol
-        }
-        token1 {
-          id
-          symbol
-        }
+
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
       }
       owner
       sender
@@ -25,42 +24,39 @@ const POOL_TRANSACTIONS = gql`
       amount1
       amountUSD
     }
-    swaps(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }, subgraphError: allow) {
+    swaps(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }) {
       timestamp
       transaction {
         id
       }
-      pool {
-        token0 {
-          id
-          symbol
-        }
-        token1 {
-          id
-          symbol
-        }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
       }
       origin
       amount0
       amount1
       amountUSD
     }
-    burns(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }, subgraphError: allow) {
+    burns(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }) {
       timestamp
       transaction {
         id
       }
-      pool {
-        token0 {
-          id
-          symbol
-        }
-        token1 {
-          id
-          symbol
-        }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
       }
       owner
+      origin
       amount0
       amount1
       amountUSD
@@ -74,15 +70,13 @@ interface TransactionResults {
     transaction: {
       id: string
     }
-    pool: {
-      token0: {
-        id: string
-        symbol: string
-      }
-      token1: {
-        id: string
-        symbol: string
-      }
+    token0: {
+      id: string
+      symbol: string
+    }
+    token1: {
+      id: string
+      symbol: string
     }
     origin: string
     amount0: string
@@ -94,15 +88,13 @@ interface TransactionResults {
     transaction: {
       id: string
     }
-    pool: {
-      token0: {
-        id: string
-        symbol: string
-      }
-      token1: {
-        id: string
-        symbol: string
-      }
+    token0: {
+      id: string
+      symbol: string
+    }
+    token1: {
+      id: string
+      symbol: string
     }
     origin: string
     amount0: string
@@ -114,17 +106,16 @@ interface TransactionResults {
     transaction: {
       id: string
     }
-    pool: {
-      token0: {
-        id: string
-        symbol: string
-      }
-      token1: {
-        id: string
-        symbol: string
-      }
+    token0: {
+      id: string
+      symbol: string
+    }
+    token1: {
+      id: string
+      symbol: string
     }
     owner: string
+    origin: string
     amount0: string
     amount1: string
     amountUSD: string
@@ -146,10 +137,10 @@ export async function fetchPoolTransactions(
         hash: m.transaction.id,
         timestamp: m.timestamp,
         sender: m.origin,
-        token0Symbol: m.pool.token0.symbol,
-        token1Symbol: m.pool.token1.symbol,
-        token0Address: m.pool.token0.id,
-        token1Address: m.pool.token1.id,
+        token0Symbol: m.token0.symbol,
+        token1Symbol: m.token1.symbol,
+        token0Address: m.token0.id,
+        token1Address: m.token1.id,
         amountUSD: parseFloat(m.amountUSD),
         amountToken0: parseFloat(m.amount0),
         amountToken1: parseFloat(m.amount1),
@@ -160,11 +151,11 @@ export async function fetchPoolTransactions(
         type: TransactionType.BURN,
         hash: m.transaction.id,
         timestamp: m.timestamp,
-        sender: m.owner,
-        token0Symbol: m.pool.token0.symbol,
-        token1Symbol: m.pool.token1.symbol,
-        token0Address: m.pool.token0.id,
-        token1Address: m.pool.token1.id,
+        sender: m.origin,
+        token0Symbol: m.token0.symbol,
+        token1Symbol: m.token1.symbol,
+        token0Address: m.token0.id,
+        token1Address: m.token1.id,
         amountUSD: parseFloat(m.amountUSD),
         amountToken0: parseFloat(m.amount0),
         amountToken1: parseFloat(m.amount1),
@@ -177,10 +168,10 @@ export async function fetchPoolTransactions(
         hash: m.transaction.id,
         timestamp: m.timestamp,
         sender: m.origin,
-        token0Symbol: m.pool.token0.symbol,
-        token1Symbol: m.pool.token1.symbol,
-        token0Address: m.pool.token0.id,
-        token1Address: m.pool.token1.id,
+        token0Symbol: m.token0.symbol,
+        token1Symbol: m.token1.symbol,
+        token0Address: m.token0.id,
+        token1Address: m.token1.id,
         amountUSD: parseFloat(m.amountUSD),
         amountToken0: parseFloat(m.amount0),
         amountToken1: parseFloat(m.amount1),

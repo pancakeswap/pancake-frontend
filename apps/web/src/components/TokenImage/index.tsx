@@ -11,12 +11,15 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
   secondaryToken: Token
 }
 
+export const tokenImageChainNameMapping = {
+  [ChainId.BSC]: '',
+  [ChainId.ETHEREUM]: 'eth/',
+}
+
 const getImageUrlFromToken = (token: Token) => {
   const address = token?.isNative ? token.wrapped.address : token.address
-  if (token.chainId !== ChainId.BSC) {
-    return `/images/${token.chainId}/tokens/${address}.png`
-  }
-  return `/images/tokens/${address}.png`
+
+  return `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[token.chainId]}${address}.png`
 }
 
 export const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({

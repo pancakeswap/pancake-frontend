@@ -1,0 +1,10 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.strictNullChecks.json"
+  },
+  "plugins": ["strict-null-checks"],
+  "extends": ["./.eslintrc"],
+  "rules": {
+    "strict-null-checks/all": "error"
+  }
+}

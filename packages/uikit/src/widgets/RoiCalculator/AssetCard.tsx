@@ -61,6 +61,9 @@ export interface Asset {
   amount: number | string;
 
   priceChanged?: boolean;
+
+  // Used to identify item in list
+  key?: string;
 }
 
 export const CurrencyLogoDisplay = memo(function CurrencyLogoDisplay({
@@ -100,13 +103,14 @@ export const AssetCard = memo(function AssetCard({
 }: Props) {
   const { t } = useTranslation();
 
-  const assetNodes = assets.map(({ price, value, amount, currency, priceChanged }, index) => (
+  const assetNodes = assets.map(({ price, value, amount, currency, priceChanged, key = "" }, index) => (
     <AssetRow
-      key={currency.symbol}
+      key={currency.symbol + key}
       price={price}
       value={value}
       amount={amount}
       showPrice={showPrice}
+      decimals={18}
       priceEditable={priceEditable}
       priceChanged={priceChanged}
       name={<CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />}

@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, NextLinkFromReactRouter, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { PoolData } from 'state/info/types'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -84,7 +84,7 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => (
 )
 
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
   return (

@@ -6,6 +6,7 @@ import { transformPool } from 'state/pools/helpers'
 import { getCakeContract } from 'utils/contractHelpers'
 import { PoolCategory } from 'config/constants/types'
 import { bscTokens } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { fetchUserStakeBalances, fetchUserPendingRewards } from './fetchPoolsUser'
 
@@ -17,25 +18,37 @@ export interface PoolsState {
 const cakeContract = getCakeContract()
 
 const initialData = {
-  data: {
-    sousId: 0,
-    stakingToken: bscTokens.cake.serialize,
-    earningToken: bscTokens.cake.serialize,
-    contractAddress: {
-      97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+  [ChainId.BSC]: {
+    data: {
+      sousId: 0,
+      stakingToken: bscTokens.cake.serialize,
+      earningToken: bscTokens.cake.serialize,
+      contractAddress: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+      poolCategory: PoolCategory.CORE,
+      tokenPerBlock: '10',
+      isFinished: false,
+      totalStaked: '0',
     },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '10',
-    isFinished: false,
-    totalStaked: '0',
+    userDataLoaded: false,
   },
-  userDataLoaded: false,
+  [ChainId.BSC_TESTNET]: {
+    data: {
+      sousId: 0,
+      stakingToken: bscTokens.cake.serialize,
+      earningToken: bscTokens.cake.serialize,
+      contractAddress: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
+      poolCategory: PoolCategory.CORE,
+      tokenPerBlock: '10',
+      isFinished: false,
+      totalStaked: '0',
+    },
+    userDataLoaded: false,
+  },
 }
 
 export const useFetchUserPools = (account) => {
   const { chainId } = useActiveChainId()
-  const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData)
+  const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData[chainId || ChainId.BSC])
 
   const fetchUserPoolsData = useCallback(() => {
     if (account) {
@@ -44,11 +57,11 @@ export const useFetchUserPools = (account) => {
           const [stakedBalances, pendingRewards, totalStaking] = await Promise.all([
             fetchUserStakeBalances(account),
             fetchUserPendingRewards(account),
-            cakeContract.balanceOf(initialData.data.contractAddress[chainId]),
+            cakeContract.balanceOf(initialData[chainId].data.contractAddress),
           ])
 
           const userData = {
-            sousId: initialData.data.sousId,
+            sousId: initialData[chainId].data.sousId,
             allowance: '0',
             stakingTokenBalance: '0',
             stakedBalance: stakedBalances,

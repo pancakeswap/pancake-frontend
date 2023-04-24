@@ -1,7 +1,6 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
-import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { FeeAmount, FeeCalculator } from "@pancakeswap/v3-sdk";
-import { formatFraction } from "@pancakeswap/utils/formatFractions";
+import { formatFraction, parseNumberToFraction } from "@pancakeswap/utils/formatFractions";
 import { useMemo } from "react";
 
 import { useRate } from "./useRate";
@@ -19,12 +18,6 @@ interface Params extends Omit<FeeParams, "amount" | "currency"> {
   cakePrice?: number;
 }
 
-const scale = 1_000_000_000_000_000;
-
-const decimalToFraction = (decimal: number) => {
-  return new Fraction(Math.floor(decimal * scale), scale);
-};
-
 export function useRoi({
   amountA,
   amountB,
@@ -39,8 +32,8 @@ export function useRoi({
 }: Params) {
   const fee24h = useFee24h({
     ...rest,
-    amount: amountA,
-    currency: amountB?.currency,
+    amountA,
+    amountB,
   });
   const principal = useMemo(
     () =>
@@ -58,35 +51,53 @@ export function useRoi({
     compoundOn,
     stakeFor,
   });
-  const fee = useMemo(() => decimalToFraction(reward), [reward]);
+  const fee = useMemo(() => parseNumberToFraction(reward, 18), [reward]);
 
-  const { rate: cakeRate, reward: cakeReward } = useRate({
+  const {
+    apr: cakeAprInPercent,
+    apy: cakeApy,
+    reward: originalCakeReward,
+  } = useRate({
+    interest: (cakeApr && principal && ((cakeApr / 100) * principal) / 365) ?? 0,
+    principal,
+    compoundEvery,
+    compoundOn,
+    stakeFor,
+  });
+
+  const {
+    rate: cakeRate,
+    reward: cakeReward,
+    apr: editCakeAprInPercent,
+    apy: editCakeApy,
+  } = useRate({
     interest: (editCakeApr && principal && ((editCakeApr / 100) * principal) / 365) ?? 0,
     principal,
     compoundEvery,
     compoundOn,
     stakeFor,
   });
-  const cakeApy = cakeApr && getApy(cakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
-  const editCakeApy = editCakeApr && getApy(editCakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
 
   return {
     fee,
     rate,
     apr,
     apy,
+    cakeApr: cakeAprInPercent,
+    editCakeApr: editCakeAprInPercent,
     cakeApy,
     editCakeApy,
     cakeRate,
     cakeReward,
+    originalCakeReward,
   };
 }
 
 export interface FeeParams {
   // Amount of token user input
-  amount?: CurrencyAmount<Currency>;
+  amountA?: CurrencyAmount<Currency>;
   // Currency of the other token in the pool
-  currency?: Currency;
+  amountB?: CurrencyAmount<Currency>;
   tickLower?: number;
   tickUpper?: number;
   // Average 24h historical trading volume in USD
@@ -105,8 +116,8 @@ export interface FeeParams {
 }
 
 export function useFee24h({
-  amount,
-  currency,
+  amountA,
+  amountB,
   tickLower,
   tickUpper,
   volume24H,
@@ -117,8 +128,8 @@ export function useFee24h({
 }: FeeParams) {
   return useMemo(() => {
     if (
-      !amount ||
-      !currency ||
+      !amountA ||
+      !amountB ||
       typeof tickLower !== "number" ||
       typeof tickUpper !== "number" ||
       !volume24H ||
@@ -128,9 +139,9 @@ export function useFee24h({
     ) {
       return new Fraction(ZERO, ONE);
     }
-    return FeeCalculator.getEstimatedLPFee({
-      amount,
-      currency,
+    return FeeCalculator.getEstimatedLPFeeByAmounts({
+      amountA,
+      amountB,
       tickLower,
       tickUpper,
       volume24H,
@@ -139,5 +150,5 @@ export function useFee24h({
       fee,
       protocolFee,
     });
-  }, [amount, currency, tickLower, tickUpper, volume24H, sqrtRatioX96, mostActiveLiquidity, fee, protocolFee]);
+  }, [amountA, amountB, tickLower, tickUpper, volume24H, sqrtRatioX96, mostActiveLiquidity, fee, protocolFee]);
 }

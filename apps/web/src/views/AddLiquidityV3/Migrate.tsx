@@ -445,7 +445,7 @@ function V2PairMigrate({
     <CardBody>
       <ResponsiveTwoColumns>
         <AutoColumn alignSelf="start" gap="16px">
-          <PreTitle>Migrating from V2</PreTitle>
+          <PreTitle>{t('Migrating from V2')}</PreTitle>
           <GreyCard>
             <AutoColumn gap="8px">
               <AutoRow justifyContent="space-between">
@@ -475,7 +475,7 @@ function V2PairMigrate({
             feeAmount={feeAmount}
           />
           <AutoColumn gap="8px">
-            <PreTitle>Deposit Amount</PreTitle>
+            <PreTitle>{t('Deposit Amount')}</PreTitle>
             <GreyCard>
               <AutoColumn gap="8px">
                 <AutoRow justifyContent="space-between">
@@ -525,10 +525,11 @@ function V2PairMigrate({
             <AtomBox>
               <Message variant="warning">
                 <MessageText>
-                  You are the first liquidity provider for this PancakeSwap V3 pool. Your liquidity will migrate at the
-                  current V2 price.
+                  {t(
+                    'You are the first liquidity provider for this PancakeSwap V3 pool. Your liquidity will migrate at the current V2 price.',
+                  )}
                   <MessageText>
-                    Your transaction cost will be much higher as it includes the gas to create the pool.
+                    {t('Your transaction cost will be much higher as it includes the gas to create the pool.')}
                   </MessageText>
                 </MessageText>
               </Message>
@@ -570,7 +571,7 @@ function V2PairMigrate({
 
                 <RowBetween>
                   <Text fontSize={14} color="inherit">
-                    Price Difference:
+                    {t('Price Difference')}:
                   </Text>
                   <Text fontSize={14} color="inherit">
                     {priceDifferenceFraction?.toSignificant(4)}%
@@ -578,9 +579,10 @@ function V2PairMigrate({
                 </RowBetween>
               </AutoColumn>
               <Text fontSize={14} style={{ marginTop: 8, fontWeight: 400 }}>
-                You should only deposit liquidity into PancakeSwap V3 at a price you believe is correct. <br />
-                If the price seems incorrect, you can either make a swap to move the price or wait for someone else to
-                do so.
+                {t('You should only deposit liquidity into PancakeSwap V3 at a price you believe is correct.')} <br />
+                {t(
+                  'If the price seems incorrect, you can either make a swap to move the price or wait for someone else to do so.',
+                )}
               </Text>
             </GreyCard>
           ) : !noLiquidity && v3SpotPrice ? (
@@ -624,8 +626,10 @@ function V2PairMigrate({
           {showCapitalEfficiencyWarning ? (
             <Message variant="warning">
               <Box>
-                <Text fontSize="16px">Efficiency Comparison</Text>
-                <Text color="textSubtle">Full range positions may earn less fees than concentrated positions.</Text>
+                <Text fontSize="16px">{t('Efficiency Comparison')}</Text>
+                <Text color="textSubtle">
+                  {t('Full range positions may earn less fees than concentrated positions.')}
+                </Text>
                 <Button
                   mt="16px"
                   onClick={() => {
@@ -635,7 +639,7 @@ function V2PairMigrate({
                   scale="md"
                   variant="danger"
                 >
-                  I understand
+                  {t('I understand')}
                 </Button>
               </Box>
             </Message>
@@ -647,7 +651,7 @@ function V2PairMigrate({
               variant="secondary"
               scale="sm"
             >
-              Full Range
+              {t('Full Range')}
             </Button>
           )}
           {outOfRange ? (
@@ -710,7 +714,9 @@ function V2PairMigrate({
                 {isSuccessfullyMigrated ? (
                   'Success!'
                 ) : isMigrationPending ? (
-                  <Dots>Migrating</Dots>
+                  <Dots>
+                    <Trans>Migrating</Trans>
+                  </Dots>
                 ) : (
                   <Trans>Migrate</Trans>
                 )}

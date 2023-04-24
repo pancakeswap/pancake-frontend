@@ -2,7 +2,6 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useAccount } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import useSWRImmutable from 'swr/immutable'
-import { getAddress } from 'utils/addressHelpers'
 import { getActivePools } from 'utils/calls'
 import { bscRpcProvider } from 'utils/providers'
 import { getVotingPower } from '../helpers'
@@ -23,8 +22,8 @@ const useGetVotingPower = (block?: number): State & { isLoading: boolean; isErro
   const { address: account } = useAccount()
   const { data, status, error } = useSWRImmutable(account ? [account, block, 'votingPower'] : null, async () => {
     const blockNumber = block || (await bscRpcProvider.getBlockNumber())
-    const eligiblePools = await getActivePools(blockNumber)
-    const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress, ChainId.BSC))
+    const eligiblePools = await getActivePools(ChainId.BSC, blockNumber)
+    const poolAddresses = eligiblePools.map(({ contractAddress }) => contractAddress)
     const {
       cakeBalance,
       cakeBnbLpBalance,

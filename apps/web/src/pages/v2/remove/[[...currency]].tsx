@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
 import RemoveLiquidity, { RemoveLiquidityV2Layout } from 'views/RemoveLiquidity'
 import RemoveStableLiquidity, { RemoveLiquidityStableLayout } from 'views/RemoveLiquidity/RemoveStableLiquidity'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
 const RemoveLiquidityPage = () => {
   const router = useRouter()

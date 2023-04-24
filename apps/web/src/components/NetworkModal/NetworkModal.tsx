@@ -6,11 +6,21 @@ import { useMemo } from 'react'
 import { useNetwork } from 'wagmi'
 import { atom, useAtom } from 'jotai'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
-import { UnsupportedNetworkModal } from './UnsupportedNetworkModal'
-import { WrongNetworkModal } from './WrongNetworkModal'
-import { PageNetworkSupportModal } from './PageNetworkSupportModal'
+import dynamic from 'next/dynamic'
 
 export const hideWrongNetworkModalAtom = atom(false)
+
+const PageNetworkSupportModal = dynamic(
+  () => import('./PageNetworkSupportModal').then((mod) => mod.PageNetworkSupportModal),
+  { ssr: false },
+)
+const WrongNetworkModal = dynamic(() => import('./WrongNetworkModal').then((mod) => mod.WrongNetworkModal), {
+  ssr: false,
+})
+const UnsupportedNetworkModal = dynamic(
+  () => import('./UnsupportedNetworkModal').then((mod) => mod.UnsupportedNetworkModal),
+  { ssr: false },
+)
 
 export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageSupportedChains?: number[] }) => {
   const { chainId, chain, isWrongNetwork } = useActiveWeb3React()
@@ -25,6 +35,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     () => Boolean(pageSupportedChains.length) && !pageSupportedChains.includes(chainId),
     [chainId, pageSupportedChains],
   )
+  if (pageSupportedChains?.length === 0) return null // open to all chains
 
   if (isPageNotSupported && isBNBOnlyPage) {
     return (

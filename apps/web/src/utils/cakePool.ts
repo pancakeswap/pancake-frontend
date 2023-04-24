@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { UNLOCK_FREE_DURATION } from 'config/constants/pools'
+import { UNLOCK_FREE_DURATION } from '@pancakeswap/pools'
 
 export const isStaked = ({ userShares }: { userShares?: BigNumber }): boolean => userShares && userShares.gt(0)
 

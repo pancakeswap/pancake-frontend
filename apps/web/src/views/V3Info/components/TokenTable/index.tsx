@@ -13,7 +13,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -75,7 +75,7 @@ const ResponsiveLogo = styled(CurrencyLogo)`
 
 const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index: number; chainPath: string }) => {
   const { theme } = useTheme()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const { isMobile } = useMatchBreakpoints()
   return (
     <LinkWrapper to={`/${v3InfoPath}${chainPath}/tokens/${tokenData.address}`}>
@@ -153,7 +153,7 @@ export default function TokenTable({
   const sortedTokens = useMemo(() => {
     return tokenDatas
       ? tokenDatas
-          .filter((x) => !!x && !TOKEN_HIDE[chainId].includes(x.address))
+          .filter((x) => !!x && !TOKEN_HIDE?.[chainId]?.includes(x.address))
           .sort((a, b) => {
             if (a && b) {
               return a[sortField as keyof TokenData] > b[sortField as keyof TokenData]
@@ -170,6 +170,7 @@ export default function TokenTable({
     (newField: string) => {
       setSortField(newField)
       setSortDirection(sortField !== newField ? true : !sortDirection)
+      setPage(1)
     },
     [sortDirection, sortField],
   )

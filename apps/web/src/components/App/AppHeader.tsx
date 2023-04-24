@@ -12,7 +12,6 @@ import {
 import { useExpertMode } from '@pancakeswap/utils/user'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
-import _isString from 'lodash/isString'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {

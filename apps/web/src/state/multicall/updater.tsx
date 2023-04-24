@@ -76,6 +76,7 @@ async function fetchChunk(
   if (resultsBlockNumber?.toNumber() < minBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
   }
+
   return { results: returnData, blockNumber: resultsBlockNumber?.toNumber() }
 }
 
@@ -239,7 +240,10 @@ export default function Updater(): null {
             }
           })
           .catch((error: any) => {
-            if (error instanceof CancelledError) {
+            const REVERT_STR = 'revert exception'
+
+            // when revert error, should not update new state and keep current state.
+            if (error instanceof CancelledError || error?.message?.indexOf(REVERT_STR) >= 0) {
               console.debug('Cancelled fetch for blockNumber', currentBlock)
               return
             }

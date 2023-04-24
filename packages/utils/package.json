@@ -9,5 +9,8 @@
     "@pancakeswap/tokens": "*",
     "@pancakeswap/swap-sdk-core": "*",
     "@pancakeswap/token-lists": "*"
+  },
+  "devDependencies": {
+    "ethers": "^5.0.0"
   }
 }

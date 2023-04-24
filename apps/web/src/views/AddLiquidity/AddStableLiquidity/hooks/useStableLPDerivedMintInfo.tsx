@@ -11,7 +11,7 @@ import { useContext, useMemo } from 'react'
 import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
 

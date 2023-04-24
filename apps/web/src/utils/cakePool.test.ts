@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { UNLOCK_FREE_DURATION, BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from 'config/constants/pools'
+import { UNLOCK_FREE_DURATION, BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { addWeeks, addDays } from 'date-fns'
 import { vi, describe, it } from 'vitest'
 import { VaultPosition, getVaultPosition } from './cakePool'

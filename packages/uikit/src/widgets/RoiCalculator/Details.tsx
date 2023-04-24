@@ -18,8 +18,8 @@ interface Props {
   lpReward?: number | string;
   lpApr?: Percent;
   lpApy?: Percent;
-  farmApy?: string;
-  farmApr?: string;
+  farmApy?: Percent;
+  farmApr?: Percent;
   externalLink?: ReactNode;
   compoundIndex?: number;
   compoundOn?: boolean;
@@ -32,8 +32,8 @@ export const Details = memo(function Details({
   lpReward = 0,
   farmReward = 0,
   lpApy = ZERO_PERCENT,
-  farmApr,
-  farmApy,
+  farmApr = ZERO_PERCENT,
+  farmApy = ZERO_PERCENT,
   lpApr = ZERO_PERCENT,
   isFarm = false,
   compoundIndex = 0,
@@ -81,7 +81,7 @@ export const Details = memo(function Details({
           {t("APR")}
         </Text>
         <Text small bold textAlign="right">
-          {`${+(formatPercent(lpApr, 5) || "0") + +(farmApr || "0")}%`}
+          {`${formatPercent(lpApr.add(farmApr), 5) || "0"}%`}
         </Text>
         <Text color="textSubtle" small style={{ textIndent: "1em" }}>
           {t("LP Fee APR")}
@@ -95,7 +95,7 @@ export const Details = memo(function Details({
               {t("Farm APR")}
             </Text>
             <Text small color="textSubtle" textAlign="right">
-              {farmApr}%
+              {formatPercent(farmApr, 5) || "0"}%
             </Text>
           </>
         )}
@@ -106,7 +106,7 @@ export const Details = memo(function Details({
             {t("APY")} {compoundText && `(${compoundText})`}
           </Text>
           <Text small bold textAlign="right">
-            {`${+(formatPercent(lpApy, 5) || "0") + +(farmApy || "0")}%`}
+            {`${formatPercent(lpApy.add(farmApy), 5) || "0"}%`}
           </Text>
         </Grid>
       )}
@@ -121,7 +121,7 @@ export const Details = memo(function Details({
         <li>
           <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
             {t(
-              "LP Fee Rewards: 0.01% ~ 0.1% according to the specific fee tier of the trading pair, claimed and compounded manually."
+              "LP Fee Rewards: 0.01% ~ 1% per trade according to the specific fee tier of the trading pair, claimed and compounded manually."
             )}
           </Text>
         </li>

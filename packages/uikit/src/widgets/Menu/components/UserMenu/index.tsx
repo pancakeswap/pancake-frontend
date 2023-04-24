@@ -73,17 +73,20 @@ const UserMenu: React.FC<UserMenuProps> = ({
   disabled,
   placement = "bottom-end",
   recalculatePopover,
+  ellipsis = true,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+
   const { styles, attributes, update } = usePopper(targetRef, tooltipRef, {
     strategy: "fixed",
     placement,
     modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
+
+  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
 
   // recalculate the popover position
   useEffect(() => {
@@ -120,7 +123,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
         }}
       >
         <MenuIcon className={avatarClassName} avatarSrc={avatarSrc} variant={variant} />
-        <LabelText title={typeof text === "string" ? text || account : account}>{text || accountEllipsis}</LabelText>
+        <LabelText title={typeof text === "string" ? text || account : account}>
+          {text || (ellipsis ? accountEllipsis : account)}
+        </LabelText>
         {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
       {!disabled && (

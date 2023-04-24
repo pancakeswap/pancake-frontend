@@ -11,7 +11,8 @@ import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettin
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { WrapType } from 'hooks/useWrapCallback'
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
+import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
@@ -38,7 +39,7 @@ interface SwapCommitButtonPropsType {
   }
   isExpertMode: boolean
   rfqTrade: MMRfqTrade
-  swapInputError: string | ReactNode
+  swapInputError: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
@@ -258,7 +259,7 @@ export function MMSwapCommitButton({
         width="100%"
         disabled={!rfqTrade.rfq || !isValid || !!swapCallbackError || !approved}
       >
-        {swapInputError || t('Swap')}
+        {parseMMError(swapInputError) || t('Swap')}
       </CommitButton>
 
       {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

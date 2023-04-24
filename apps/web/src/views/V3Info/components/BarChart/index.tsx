@@ -2,7 +2,7 @@ import { RowBetween } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
-import { createChart, IChartApi } from 'lightweight-charts'
+import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import usePrevious from '../../hooks/usePrevious'
@@ -31,7 +31,7 @@ export type LineChartProps = {
   height?: number | undefined
   minHeight?: number
   setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of valye
+  setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
   topLeft?: ReactNode | undefined
   topRight?: ReactNode | undefined
   bottomLeft?: ReactNode | undefined
@@ -97,7 +97,10 @@ const BarChart = ({
         height,
         width: chartRef.current.parentElement.clientWidth - 62,
         layout: {
-          backgroundColor: 'transparent',
+          background: {
+            type: ColorType.Solid,
+            color: 'transparent',
+          },
           textColor: '#565A69',
           fontFamily: 'Inter var',
         },
@@ -107,7 +110,7 @@ const BarChart = ({
             bottom: 0,
           },
 
-          drawTicks: false,
+          ticksVisible: false,
           borderVisible: false,
           visible: false,
         },
@@ -179,7 +182,7 @@ const BarChart = ({
         } else if (series && param) {
           const time = param?.time as { day: number; year: number; month: number }
           const timeString = dayjs(`${time.year}-${time.month}-${time.day}`).format('MMM D, YYYY')
-          const price = parseFloat(param?.seriesPrices?.get(series)?.toString() ?? currentValue)
+          const price = parseFloat(param?.seriesData?.get(series)?.toString() ?? currentValue)
           if (setValue) setValue(price)
           if (setLabel && timeString) setLabel(timeString)
         }

@@ -26,7 +26,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useContext, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 
