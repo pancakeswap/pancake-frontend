@@ -19,8 +19,8 @@
   },
   "peerDependencies": {
     "swr": "^2.1.3",
-    "wagmi": "^0.12.10",
-    "@wagmi/core": "^0.10.9",
+    "wagmi": "^0.12.12",
+    "@wagmi/core": "^0.10.10",
     "@blocto/sdk": "^0.3.1",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
