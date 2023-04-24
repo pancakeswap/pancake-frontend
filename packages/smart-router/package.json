@@ -41,7 +41,8 @@
     "mnemonist": "^0.38.3",
     "viem": "^0.2.12",
     "stats-lite": "^2.2.0",
-    "tiny-invariant": "^1.1.0"
+    "tiny-invariant": "^1.1.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@pancakeswap/swap-sdk-core": "*",
