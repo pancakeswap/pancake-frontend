@@ -31,9 +31,22 @@ import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
 
-export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
+type UseStablecoinPriceConfig = {
+  enabled?: boolean
+  hideIfPriceImpactTooHigh?: boolean
+}
+const DEFAULT_CONFIG: UseStablecoinPriceConfig = {
+  enabled: true,
+  hideIfPriceImpactTooHigh: false,
+}
+
+export function useStablecoinPrice(
+  currency?: Currency,
+  config: UseStablecoinPriceConfig = DEFAULT_CONFIG,
+): Price<Currency, Currency> | undefined {
   const { chainId: currentChainId } = useActiveChainId()
   const chainId = currency?.chainId
+  const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
   const baseTradeAgainst = useMemo(
     () =>
@@ -117,18 +130,31 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     if (trade) {
       const { inputAmount, outputAmount } = trade
 
-      const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-
       // if price impact is too high, don't show price
-      if (!priceImpactWithoutFee || warningSeverity(priceImpactWithoutFee) > 2) {
-        return undefined
+      if (hideIfPriceImpactTooHigh) {
+        const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+
+        if (!priceImpactWithoutFee || warningSeverity(priceImpactWithoutFee) > 2) {
+          return undefined
+        }
       }
 
       return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
     }
 
     return undefined
-  }, [cakePrice, currency, enableLlama, isCake, isStableCoin, priceFromLlama, enabled, stableCoin, trade])
+  }, [
+    currency,
+    stableCoin,
+    enabled,
+    isCake,
+    cakePrice,
+    isStableCoin,
+    priceFromLlama,
+    enableLlama,
+    trade,
+    hideIfPriceImpactTooHigh,
+  ])
 
   return price
 }
@@ -259,8 +285,12 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   return price
 }
 
-export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const stablePrice = useStablecoinPrice(currency, !!currency)
+export const useStablecoinPriceAmount = (
+  currency?: Currency,
+  amount?: number,
+  config?: UseStablecoinPriceConfig,
+): number | undefined => {
+  const stablePrice = useStablecoinPrice(currency, { enabled: !!currency, ...config })
 
   if (amount) {
     if (stablePrice) {
