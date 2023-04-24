@@ -162,7 +162,7 @@ const SoonTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const ClosedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="textDisabled" startIcon={<BlockIcon width="18px" color="textDisabled" mr="4px" />} {...props}>
+    <Tag variant="textDisabled" startIcon={<BlockIcon width="18px" color="text" mr="4px" />} {...props}>
       {t("Closed")}
     </Tag>
   );
