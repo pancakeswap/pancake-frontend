@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Button, Box, useToast, Flex } from '@pancakeswap/uikit'
+import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Link } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import Page from 'views/Page'
@@ -23,6 +23,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { CurrencyLogo } from 'components/Logo'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
+
 // import { calculateGasMargin } from 'utils'
 
 // Philip TODO: Validate routing only allow WETH BNB
@@ -131,7 +132,7 @@ const LiquidStakingStakePage = () => {
 
   return (
     <Page>
-      <AppBody>
+      <AppBody mb="24px">
         <AppHeader
           backTo="/liquid-staking"
           subtitle={t('Unlock liquidity while earning rewards')}
@@ -168,7 +169,7 @@ const LiquidStakingStakePage = () => {
             </RowBetween>
           </LightGreyCard>
           <RowBetween mb="24px">
-            <ExchangeRateTitle isETH={isETH} />
+            <ExchangeRateTitle />
 
             {rateNumber ? (
               <Text>{isETH ? `${rateNumber?.toString()} ETH = 1 wBETH` : `${rateNumber} BNB = 1 sBNB`}</Text>
@@ -201,6 +202,15 @@ const LiquidStakingStakePage = () => {
             </Button>
           )}
         </CardBody>
+      </AppBody>
+      <AppBody>
+        <Text padding="24px">
+          We currently do not provide redemption services for wBETH to ETH. You can swap wBETH for ETH on{' '}
+          <Link style={{ display: 'inline' }} href="/swap">
+            our swap page{' '}
+          </Link>
+          instead. Alternatively, you can head to Binance.com to redeem ETH
+        </Text>
       </AppBody>
     </Page>
   )
