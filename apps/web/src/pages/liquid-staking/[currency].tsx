@@ -198,7 +198,7 @@ const LiquidStakingStakePage = () => {
               }}
               width="100%"
             >
-              {t('Approve')}
+              {t('Approve %symbol%', { symbol: inputCurrency?.symbol ?? '' })}
             </Button>
           )}
         </CardBody>

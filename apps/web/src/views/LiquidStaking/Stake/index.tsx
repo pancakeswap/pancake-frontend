@@ -48,7 +48,7 @@ export function LiquidStakingPageStake() {
           onOptionChange={handleSortOptionChange}
         />
         <RowBetween mb="24px">
-          <ExchangeRateTitle isETH={isETH} />
+          <ExchangeRateTitle />
 
           {rateNumber ? (
             <Text>{isETH ? `${rateNumber?.toString()} ETH = 1 wBETH` : `${rateNumber} BNB = 1 sBNB`}</Text>
