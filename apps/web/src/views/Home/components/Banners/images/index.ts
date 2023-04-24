@@ -35,6 +35,11 @@ import v3LaunchFlag from './v3LaunchFlag.png'
 import v3LaunchBunny from './v3LaunchBunny.png'
 import v3LaunchBgMobile from './v3LaunchBgMobile.png'
 import v3LaunchBunnyMobile from './v3LaunchBunnyMobile.png'
+import apolloXCampaignBunny from './ApolloXCampaignBunny.png'
+import apolloXCampaignBg from './ApolloXCampaignBg.png'
+import apolloXCampaignTitle from './ApolloXCampaignTitle.png'
+import apolloXCampaignBgMobile from './ApolloXCampaignBgMobile.png'
+import apolloXCampaignBunnyMobile from './ApolloXCampaignBunnyMobile.png'
 
 export {
   lotteryImage,
@@ -74,4 +79,9 @@ export {
   v3LaunchBnb,
   v3LaunchEth,
   v3LaunchFlag,
+  apolloXCampaignBunny,
+  apolloXCampaignBg,
+  apolloXCampaignTitle,
+  apolloXCampaignBgMobile,
+  apolloXCampaignBunnyMobile,
 }
