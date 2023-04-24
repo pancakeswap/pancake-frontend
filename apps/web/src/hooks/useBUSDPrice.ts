@@ -22,8 +22,10 @@ import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
+import { warningSeverity } from 'utils/exchange'
 import { usePairContract } from './useContract'
 import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
@@ -114,6 +116,13 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
 
     if (trade) {
       const { inputAmount, outputAmount } = trade
+
+      const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+
+      // if price impact is too high, don't show price
+      if (!priceImpactWithoutFee || warningSeverity(priceImpactWithoutFee) > 2) {
+        return undefined
+      }
 
       return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
     }
