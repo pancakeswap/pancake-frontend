@@ -15,6 +15,7 @@ import {
   Text,
   useTooltip,
   TooltipText,
+  HelpIcon,
 } from '@pancakeswap/uikit'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
@@ -117,7 +118,7 @@ const FarmMobileCell = styled.td`
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { initialActivity, userDataReady, farm } = props
   const hasSetInitialValue = useRef(false)
-  const hasStakedAmount = farm.isStaking
+  const hasStakedAmount = farm.isStaking ?? false
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
@@ -304,7 +305,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               <AprMobileCell>
                 <CellLayout label={t('APR')}>
                   {props.type === 'v3' ? (
-                    <FarmV3ApyButton farm={props.details} />
+                    <>
+                      <FarmV3ApyButton farm={props.details} />
+                      {aprTooltip.tooltipVisible && aprTooltip.tooltip}
+                      <Flex ref={aprTooltip.targetRef}>
+                        <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                      </Flex>
+                    </>
                   ) : (
                     <>
                       <Apr
