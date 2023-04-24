@@ -79,6 +79,7 @@ import ERC20_ABI from 'config/abi/erc20.json'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
 import multiCallAbi from 'config/abi/Multicall.json'
 import WETH_ABI from 'config/abi/weth.json'
+import WBETH_ABI from 'config/abi/wbeth.json'
 import { getContract } from 'utils'
 
 import { VaultKey } from 'state/types'
@@ -335,6 +336,17 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 export function useWNativeContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveChainId()
   return useContract<Weth>(chainId ? WNATIVE[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
+}
+
+const WBETH = {
+  1: '0xa2E3356610840701BDf5611a53974510Ae27E2e1',
+  97: '0x34f8f72e3f14Ede08bbdA1A19a90B35a80f3E789',
+  56: '0xa2E3356610840701BDf5611a53974510Ae27E2e1',
+}
+
+export function useWBETHContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveChainId()
+  return useContract<Weth>(chainId ? WBETH[chainId] : undefined, WBETH_ABI, withSignerIfPossible)
 }
 
 export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
