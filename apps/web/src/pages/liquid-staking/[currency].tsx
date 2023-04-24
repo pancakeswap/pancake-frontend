@@ -105,7 +105,7 @@ const LiquidStakingStakePage = () => {
       toastSuccess(
         t('Staked!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t(`Received ${quoteAmount?.toString()} wBETH`)}
+          {`${t('Received')} ${quoteAmount?.toString()} wBETH`}
         </ToastDescriptionWithTx>,
       )
 
@@ -151,7 +151,7 @@ const LiquidStakingStakePage = () => {
               showQuickInputButton
               showMaxButton
               currency={inputCurrency}
-              id="stake-liquidity-input-tokena"
+              id="stake-liquidity-input-token"
               showCommonBases
             />
           </Box>

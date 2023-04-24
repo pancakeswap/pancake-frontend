@@ -24,7 +24,6 @@ export function LiquidStakingPageStake() {
 
   const wbethContract = useWBETHContract()
 
-  // TODO add sBNB exchangeRate
   const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
 
   const decimals = inputCurrency?.decimals
@@ -45,10 +44,6 @@ export function LiquidStakingPageStake() {
               label: 'ETH / wBETH',
               value: WETH9[chainId]?.address,
             },
-            // {
-            //   label: 'BNB / sBNB',
-            //   value: WNATIVE[chainId]?.address,
-            // },
           ]}
           onOptionChange={handleSortOptionChange}
         />

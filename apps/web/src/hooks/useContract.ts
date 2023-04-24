@@ -82,6 +82,7 @@ import WETH_ABI from 'config/abi/weth.json'
 import WBETH_ABI from 'config/abi/wbeth.json'
 import { getContract } from 'utils'
 
+import { WBETH } from 'config/constants/liquidStaking'
 import { VaultKey } from 'state/types'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -336,12 +337,6 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 export function useWNativeContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveChainId()
   return useContract<Weth>(chainId ? WNATIVE[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
-}
-
-const WBETH = {
-  1: '0xa2E3356610840701BDf5611a53974510Ae27E2e1',
-  97: '0x34f8f72e3f14Ede08bbdA1A19a90B35a80f3E789',
-  56: '0xa2E3356610840701BDf5611a53974510Ae27E2e1',
 }
 
 export function useWBETHContract(withSignerIfPossible?: boolean): Contract | null {

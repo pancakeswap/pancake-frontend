@@ -1,12 +1,10 @@
 import { Text, QuestionHelper, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
-export function ExchangeRateTitle({ isETH }) {
+export function ExchangeRateTitle() {
   const { t } = useTranslation()
 
-  const tooltipMsg = isETH
-    ? `wBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of wBETH will not change.`
-    : `sBNB's exchange rate is determined by the value accrued vs BNB. As you receive rewards, your amount of sBNB will not change.`
+  const tooltipMsg = `wBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of wBETH will not change.`
 
   return (
     <Flex>
