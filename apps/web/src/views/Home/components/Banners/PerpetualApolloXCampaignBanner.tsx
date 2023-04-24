@@ -127,8 +127,10 @@ const StyledButton = styled(Button)`
   padding: 2px 4px;
   border-radius: 8px;
   height: auto;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     border-radius: 16px;
+    height: 48px;
+    padding: 4px 8px;
   }
 `
 
@@ -200,7 +202,7 @@ const PerpetualBanner = () => {
               external
               style={{ textDecoration: 'none' }}
             >
-              <StyledButton variant="tertiary" scale={isMobile ? 'sm' : 'md'}>
+              <StyledButton variant="tertiary" style={{ background: 'white' }} scale={isMobile ? 'sm' : 'md'}>
                 <Text
                   color="primary"
                   bold
