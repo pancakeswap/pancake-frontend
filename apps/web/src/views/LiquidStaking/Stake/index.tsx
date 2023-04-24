@@ -2,7 +2,7 @@ import { CardBody, Text, Select, RowBetween, Button, OptionProps } from '@pancak
 import NextLink from 'next/link'
 import { AppHeader } from 'components/App'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { JSBI, WETH9 } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWBETHContract } from 'hooks/useContract'
@@ -14,6 +14,7 @@ export function LiquidStakingPageStake() {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   // NOTE: default is ETH
+
   const [currencyAddress, setCurrencyAddress] = useState(WETH9[chainId]?.address)
 
   const handleSortOptionChange = useCallback((option: OptionProps) => setCurrencyAddress(option.value), [])
@@ -26,9 +27,14 @@ export function LiquidStakingPageStake() {
 
   const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
 
+  useEffect(() => {
+    setCurrencyAddress(WETH9[chainId]?.address)
+  }, [chainId])
+
   const decimals = inputCurrency?.decimals
 
-  const rateNumber = data ? JSBI.divide(JSBI.BigInt(data.toString()), JSBI.BigInt(10 ** decimals)) : undefined
+  const rateNumber =
+    data && decimals ? JSBI.divide(JSBI.BigInt(data.toString()), JSBI.BigInt(10 ** decimals)) : undefined
 
   return (
     <>

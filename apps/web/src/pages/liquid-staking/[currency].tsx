@@ -23,6 +23,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { CurrencyLogo } from 'components/Logo'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -130,6 +131,36 @@ const LiquidStakingStakePage = () => {
     error = t('Insufficient Balance')
   }
 
+  let button = null
+
+  if (!account) {
+    button = <ConnectWalletButton width="100%" />
+  } else if (!isApproved) {
+    button = (
+      <Button
+        isLoading={isPending}
+        onClick={() => {
+          onApprove()
+        }}
+        width="100%"
+      >
+        {t('Approve %symbol%', { symbol: inputCurrency?.symbol ?? '' })}
+      </Button>
+    )
+  } else if (error) {
+    button = (
+      <Button disabled width="100%">
+        {error}
+      </Button>
+    )
+  } else if (isApproved && account) {
+    button = (
+      <Button isLoading={loading || !currentAmount?.isGreaterThan(0)} onClick={onStake} width="100%">
+        {loading ? `${t('Staking')}...` : t('Stake')}
+      </Button>
+    )
+  }
+
   return (
     <Page>
       <AppBody mb="24px">
@@ -182,25 +213,7 @@ const LiquidStakingStakePage = () => {
             <Text color="textSubtle">Gas Fee</Text>-
           </RowBetween> */}
 
-          {error ? (
-            <Button disabled width="100%">
-              {error}
-            </Button>
-          ) : isApproved ? (
-            <Button isLoading={loading || !currentAmount?.isGreaterThan(0)} onClick={onStake} width="100%">
-              {loading ? `${t('Staking')}...` : t('Stake')}
-            </Button>
-          ) : (
-            <Button
-              isLoading={isPending}
-              onClick={() => {
-                onApprove()
-              }}
-              width="100%"
-            >
-              {t('Approve %symbol%', { symbol: inputCurrency?.symbol ?? '' })}
-            </Button>
-          )}
+          {button}
         </CardBody>
       </AppBody>
       <AppBody>
