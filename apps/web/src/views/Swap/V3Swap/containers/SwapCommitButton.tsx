@@ -264,7 +264,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
-  if (noRoute && userHasSpecifiedInputOutput) {
+  if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return (
       <AutoColumn gap="12px">
         <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
