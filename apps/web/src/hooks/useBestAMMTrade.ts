@@ -121,7 +121,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
-  const isQuoterAPIEnabled = false
+  const isQuoterAPIEnabled = true
   // const isQuoterAPIEnabled = useMemo(
   //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
   //   [isWrapping, type],
@@ -147,7 +147,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !worker),
+    enabled: Boolean(enabled && isQuoterEnabled && !worker) && false,
     autoRevalidate: quoterAutoRevalidate,
   })
 
@@ -357,7 +357,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       protocols: allowedPoolTypes,
     })
 
-    const serverRes = await fetch(`${process.env.NEXT_PUBLIC_ROUTING_API}/v0/quote`, {
+    const serverRes = await fetch(`/v0/quote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
