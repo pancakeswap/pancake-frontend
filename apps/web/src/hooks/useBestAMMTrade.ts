@@ -11,6 +11,7 @@ import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { viemClients } from 'utils/viem'
+import { WorkerEvent } from 'quote-worker'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -50,7 +51,7 @@ class WorkerProxy {
     return promise
   }
 
-  public getBestTrade = async (params) => {
+  public getBestTrade = async (params: WorkerEvent[1]['params']) => {
     return this.postMessage({
       cmd: 'getBestTrade',
       params,
@@ -411,7 +412,6 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
       poolTypes: allowedPoolTypes,
       candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
     })
-    console.log(SmartRouter.Transformer.parseTrade(currency.chainId, result as any), 'result', tradeType)
     return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
   },
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize

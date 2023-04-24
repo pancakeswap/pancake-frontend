@@ -28,3 +28,4 @@ export {
   Transformer,
 } from './utils'
 export { getPairCombinations } from './functions'
+export * as APISchema from './schema'

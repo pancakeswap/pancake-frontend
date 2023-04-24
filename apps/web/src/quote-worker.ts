@@ -8,7 +8,7 @@ export type WorkerEvent = [
   id: number,
   message: {
     cmd: 'getBestTrade'
-    params: any
+    params: SmartRouter.APISchema.RouterPostParams
   },
 ]
 
@@ -19,6 +19,17 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
   const [id, message] = data
   if (message.cmd === 'getBestTrade') {
+    const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(message.params)
+    if (parsed.success === false) {
+      postMessage([
+        id,
+        {
+          success: false,
+          error: parsed.error.message,
+        },
+      ])
+      return
+    }
     const {
       amount,
       chainId,
@@ -30,7 +41,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       maxSplits,
       poolTypes,
       candidatePools,
-    } = message.params
+    } = parsed.data
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
 
@@ -46,7 +57,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       quoteProvider: onChainQuoteProvider,
       maxHops,
       maxSplits,
-      blockNumber: Number(blockNumber),
+      blockNumber: blockNumber ? Number(blockNumber) : undefined,
       allowedPoolTypes: poolTypes,
       quoterOptimization: false,
     })
