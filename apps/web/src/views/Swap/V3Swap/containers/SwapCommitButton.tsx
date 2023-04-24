@@ -10,7 +10,7 @@ import {
   Message,
   MessageText,
   AutoColumn,
-  Loading,
+  Dots,
 } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
@@ -337,8 +337,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         >
           {(tradeLoading && (
             <>
-              {t('Searching For The Best Price...')}
-              <Loading width="12px" height="12px" ml="4px" />
+              <Dots>{t('Searching For The Best Price')}</Dots>
             </>
           )) ||
             (priceImpactSeverity > 3 && !isExpertMode
@@ -367,8 +366,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         {swapInputError ||
           (tradeLoading && (
             <>
-              {t('Searching For The Best Price...')}
-              <Loading width="12px" height="12px" ml="4px" />
+              <Dots>{t('Searching For The Best Price')}</Dots>
             </>
           )) ||
           (priceImpactSeverity > 3 && !isExpertMode
