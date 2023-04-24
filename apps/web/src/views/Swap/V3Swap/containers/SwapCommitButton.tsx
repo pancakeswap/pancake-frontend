@@ -367,7 +367,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         {swapInputError ||
           (tradeLoading && (
             <>
-              {t('Searching For The Best Price')}
+              {t('Searching For The Best Price...')}
               <Loading width="12px" height="12px" ml="4px" />
             </>
           )) ||
