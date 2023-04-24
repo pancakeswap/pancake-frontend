@@ -1,4 +1,5 @@
 import { gql, GraphQLClient } from 'graphql-request'
+import BigNumber from 'bignumber.js'
 import { Block } from 'state/info/types'
 import { PoolData } from '../../types'
 import { get2DayChange } from '../../utils/data'
@@ -13,7 +14,7 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
     query pools {
       pools(where: {id_in: ${poolString}},
      ${block ? `block: {number: ${block}} ,` : ``}
-     orderBy: totalValueLockedUSD, orderDirection: desc, subgraphError: allow) {
+     orderBy: totalValueLockedUSD, orderDirection: desc) {
         id
         feeTier
         liquidity
@@ -42,8 +43,10 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
         totalValueLockedToken0
         totalValueLockedToken1
         totalValueLockedUSD
+        feesUSD
+        protocolFeesUSD
       }
-      bundles (where: {id: "1"}) {
+      bundles(where: {id: "1"}) {
         ethPriceUSD
       }
     }
@@ -82,6 +85,8 @@ interface PoolFields {
   totalValueLockedToken0: string
   totalValueLockedToken1: string
   totalValueLockedUSD: string
+  feesUSD: string
+  protocolFeesUSD: string
 }
 
 interface PoolDataResponse {
@@ -170,7 +175,12 @@ export async function fetchPoolDatas(
           : current
           ? parseFloat(current.volumeUSD)
           : 0
-
+      const feeUSD =
+        current && oneDay
+          ? new BigNumber(current.feesUSD)
+              .minus(current.protocolFeesUSD)
+              .minus(new BigNumber(oneDay.feesUSD).minus(oneDay.protocolFeesUSD))
+          : new BigNumber(current.feesUSD).minus(current.protocolFeesUSD)
       // Hotifx: Subtract fees from TVL to correct data while subgraph is fixed.
       /**
        * Note: see issue desribed here https://github.com/Uniswap/v3-subgraph/issues/74
@@ -234,6 +244,7 @@ export async function fetchPoolDatas(
           tvlUSDChange,
           tvlToken0,
           tvlToken1,
+          feeUSD: feeUSD.toNumber(),
         }
       }
 

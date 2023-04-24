@@ -10,7 +10,7 @@ import { VaultKey } from 'state/types'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
+import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
 

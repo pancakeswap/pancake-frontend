@@ -3,7 +3,7 @@ import { useNetwork } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
-import { APEX_DOMAIN } from 'config'
+import { APEX_DOMAIN, ASSETS_CDN } from 'config'
 import { defaultChain } from 'config/chains'
 import Image from 'next/image'
 import { aptosLogoClass } from './Logo/CurrencyLogo.css'
@@ -31,7 +31,7 @@ const NetworkSelect = () => {
           href={`${APEX_DOMAIN}?chain=${chain.chainName}`}
         >
           <Image
-            src={`${APEX_DOMAIN}/images/chains/${chain.id}.png`}
+            src={`${ASSETS_CDN}/web/chains/${chain.id}.png`}
             width={24}
             height={24}
             unoptimized

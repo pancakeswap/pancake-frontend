@@ -73,9 +73,7 @@ interface WithHarvestActionsProps {
   isLoading?: boolean;
   earningTokenDecimals: number;
   earningTokenAddress?: string;
-  poolAddress?: {
-    [index: number]: string;
-  };
+  poolAddress?: string;
 }
 
 const withCollectModalFactory =

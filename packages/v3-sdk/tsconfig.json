@@ -1,7 +1,9 @@
 {
   "extends": "tsconfig/base",
-  "exclude": ["**/*.test.ts"],
+  "exclude": ["**/*.test.ts", "./dist/**"],
+  "include": ["src"],
   "compilerOptions": {
+    "outDir": "./dist",
     "lib": ["ESNext"],
     "target": "es2018",
     "module": "esnext",

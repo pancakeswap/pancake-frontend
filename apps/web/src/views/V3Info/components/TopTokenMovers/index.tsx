@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Flex, NextLinkFromReactRouter, Text } from '@pancakeswap/uikit'
 import { useEffect, useMemo, useRef } from 'react'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -38,7 +38,7 @@ export const ScrollableRow = styled.div`
 `
 
 const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   return (
     <CardWrapper to={`/${v3InfoPath}${chainPath}/tokens/${tokenData.address}`}>
@@ -77,7 +77,7 @@ const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
         })
         .slice(0, Math.min(20, Object.values(allTokens).length))
         .filter((d) => d?.exists)
-        .filter((x) => !!x && !TOKEN_HIDE[chainId].includes(x.address))
+        .filter((x) => !!x && !TOKEN_HIDE?.[chainId]?.includes(x.address))
     return []
   }, [allTokens, chainId])
 

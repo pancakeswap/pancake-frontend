@@ -1,7 +1,7 @@
 import { Token } from '@pancakeswap/sdk'
 import { TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { multiChainId } from 'state/info/constant'
+import { multiChainId, MultiChainName } from 'state/info/constant'
 import styled from 'styled-components'
 import { isAddress } from 'utils'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
@@ -20,12 +20,13 @@ export const CurrencyLogo: React.FC<
     address?: string
     token?: Token
     size?: string
-    chainName?: 'ETH' | 'BSC'
+    chainName?: MultiChainName
   }>
 > = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
   const src = useMemo(() => {
     return getTokenLogoURL(new Token(multiChainId[chainName], address, 18, ''))
   }, [address, chainName])
+
   const imagePath = chainName === 'BSC' ? '' : `${multiChainId[chainName]}/tokens/`
   const srcFromPCS = `https://${chainName === 'BSC' ? 'tokens.' : ''}pancakeswap.finance/images/${imagePath}${isAddress(
     address,

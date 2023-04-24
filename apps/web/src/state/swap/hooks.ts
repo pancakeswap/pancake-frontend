@@ -322,7 +322,7 @@ export const useFetchPairPricesV3 = ({
       protocol1 &&
       token0Address &&
       chainId &&
-      token1Address && ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1 }],
+      token1Address && ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
     async () => {
       const data = await fetchDerivedPriceData(token0Address, token1Address, timeWindow, protocol0, protocol1, chainId)
       return normalizeDerivedPairDataByActiveToken({

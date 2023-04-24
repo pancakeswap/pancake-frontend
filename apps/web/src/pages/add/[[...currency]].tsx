@@ -1,7 +1,7 @@
 import { isStableFarm } from '@pancakeswap/farms'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
@@ -27,7 +27,7 @@ const AddLiquidityPage = () => {
 
   // Initial prefer farm type if there is a farm for the pair
   const preferFarmType = useMemo(() => {
-    if (feeAmount || !currencyA || !currencyB || !router.isReady) return undefined
+    if (!currencyA || !currencyB || !router.isReady) return undefined
 
     const hasV3Farm = farmV3Public?.farmsWithPrice.find(
       (farm) =>
@@ -52,7 +52,7 @@ const AddLiquidityPage = () => {
         ? { type: SELECTOR_TYPE.STABLE }
         : { type: SELECTOR_TYPE.V2 }
       : undefined
-  }, [feeAmount, farmsV2Public, farmV3Public?.farmsWithPrice, currencyA, currencyB, router.isReady])
+  }, [farmsV2Public, farmV3Public?.farmsWithPrice, currencyA, currencyB, router])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -60,15 +60,31 @@ const AddLiquidityPage = () => {
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
+  const handleRefresh = useCallback(() => {
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: {
+          currency: [currencyIdA, currencyIdB],
+        },
+      },
+      undefined,
+      { shallow: true },
+    )
+  }, [router, currencyIdA, currencyIdB])
+
   return (
     <LiquidityFormProvider>
-      <AddLiquidityV3Layout>
+      <AddLiquidityV3Layout
+        handleRefresh={handleRefresh}
+        showRefreshButton={preferFarmType?.type === SELECTOR_TYPE.V3 && preferFarmType?.feeAmount !== feeAmount}
+      >
         <UniversalAddLiquidity
           currencyIdA={currencyIdA}
           currencyIdB={currencyIdB}
-          preferredSelectType={preferFarmType?.type}
-          isV2={preferFarmType?.type === SELECTOR_TYPE.V2}
-          preferredFeeAmount={preferFarmType?.feeAmount}
+          preferredSelectType={!feeAmount ? preferFarmType?.type : undefined}
+          isV2={!feeAmount ? preferFarmType?.type === SELECTOR_TYPE.V2 : undefined}
+          preferredFeeAmount={!feeAmount ? preferFarmType?.feeAmount : undefined}
         />
       </AddLiquidityV3Layout>
     </LiquidityFormProvider>

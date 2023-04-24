@@ -152,4 +152,28 @@ export const ethereumTokens = {
     'Ankr Staked ETH',
     'https://www.ankr.com/',
   ),
+  axl: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x467719aD09025FcC6cF6F8311755809d45a5E5f3',
+    6,
+    'AXL',
+    'Axelar',
+    'https://axelar.network/',
+  ),
+  mask: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x69af81e73A73B40adF4f3d4223Cd9b1ECE623074',
+    18,
+    'MASK',
+    'Mask Network',
+    'https://mask.io/',
+  ),
+  wncg: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xf203Ca1769ca8e9e8FE1DA9D147DB68B6c919817',
+    18,
+    'WNCG',
+    'Wrapped NCG',
+    'https://nine-chronicles.com/',
+  ),
 }

@@ -150,7 +150,7 @@ const AllArticle = () => {
                 <Box width="100%">
                   <ArticleSortSelect
                     title={t('Languages')}
-                    key={languageOption}
+                    value={languageOption}
                     options={languageItems}
                     setOption={setLanguageOption}
                   />

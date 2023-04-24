@@ -8,14 +8,14 @@ interface SortByItem {
 
 interface ArticleSortSelectProps {
   title: string
-  key?: string
+  value?: string
   options: SortByItem[]
   setOption: (value: string) => void
 }
 
 const ArticleSortSelect: React.FC<React.PropsWithChildren<ArticleSortSelectProps>> = ({
   title,
-  key,
+  value,
   options,
   setOption,
 }) => {
@@ -23,14 +23,14 @@ const ArticleSortSelect: React.FC<React.PropsWithChildren<ArticleSortSelectProps
     setOption(newOption.value)
   }
 
-  const placeHolderText = useMemo(() => options.find((i) => i.value === key), [key, options])
+  const placeHolderText = useMemo(() => options.find((i) => i.value === value), [value, options])
 
   return (
     <Box minWidth="165px">
       <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
         {title}
       </Text>
-      <Select placeHolderText={key ? placeHolderText?.label : ''} options={options} onOptionChange={handleChange} />
+      <Select placeHolderText={value ? placeHolderText?.label : ''} options={options} onOptionChange={handleChange} />
     </Box>
   )
 }

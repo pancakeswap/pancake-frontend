@@ -6,7 +6,6 @@ import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from 'ethers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
-import { GetResult } from '@pancakeswap/utils/abitype'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
@@ -328,11 +327,19 @@ const v3PoolAbi = [
   },
 ] as const
 
-type Slot0 = GetResult<typeof v3PoolAbi, 'slot0'>
-type LmPool = GetResult<typeof v3PoolAbi, 'lmPool'>
+type Slot0 = {
+  sqrtPriceX96: BigNumber
+  tick: number
+  observationIndex: number
+  observationCardinality: number
+  observationCardinalityNext: number
+  feeProtocol: number
+  unlocked: boolean
+}
+type LmPool = `0x${string}`
 
-type LmLiquidity = GetResult<typeof lmPoolAbi, 'lmLiquidity'>
-type LmRewardGrowthGlobalX128 = GetResult<typeof lmPoolAbi, 'rewardGrowthGlobalX128'>
+type LmLiquidity = BigNumber
+type LmRewardGrowthGlobalX128 = BigNumber
 
 async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multicallv2: MultiCallV2) {
   const lmPoolCalls = lmPoolAddresses.flatMap((address) => [

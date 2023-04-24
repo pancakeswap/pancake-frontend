@@ -6,7 +6,7 @@ import { notEmpty } from '../../utils'
 
 export const TOP_POOLS = gql`
   query topPools {
-    pools(first: 50, orderBy: totalValueLockedUSD, orderDirection: desc, subgraphError: allow) {
+    pools(first: 50, orderBy: totalValueLockedUSD, orderDirection: desc) {
       id
     }
   }
@@ -37,7 +37,7 @@ export async function fetchTopPoolAddresses(
     const formattedData = data
       ? data.pools
           .map((p) => {
-            if (POOL_HIDE[chainId].includes(p.id.toLocaleLowerCase())) {
+            if (POOL_HIDE?.[chainId]?.includes(p.id.toLocaleLowerCase())) {
               return undefined
             }
             return p.id

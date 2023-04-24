@@ -66,7 +66,7 @@ const ZOOM_INTERVAL = 20
 
 const initialState = {
   left: 0,
-  right: INITIAL_TICKS_TO_FETCH * 2 + 1,
+  right: INITIAL_TICKS_TO_FETCH * 3 - 1,
   refAreaLeft: '',
   refAreaRight: '',
 }

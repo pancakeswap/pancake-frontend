@@ -6,6 +6,7 @@ import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, M
 import { ModalProps, ModalWrapperProps } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { ModalV2Context } from "./ModalV2";
+import { Box } from "../../components/Box";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
@@ -33,9 +34,11 @@ export const ModalWrapper = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
-      {...props}
+      style={{ overflow: "visible" }}
     >
-      {children}
+      <Box overflow="hidden" borderRadius="32px" {...props}>
+        {children}
+      </Box>
     </ModalContainer>
   );
 };
@@ -50,6 +53,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   headerBackground = "transparent",
   minWidth = "320px",
   headerRightSlot,
+  bodyAlignItems,
   ...props
 }) => {
   const context = useContext(ModalV2Context);
@@ -69,6 +73,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
         // prevent drag event from propagating to parent on scroll
         onPointerDownCapture={(e) => e.stopPropagation()}
         p={bodyPadding}
+        style={{ alignItems: bodyAlignItems ?? "normal" }}
       >
         {children}
       </ModalBody>

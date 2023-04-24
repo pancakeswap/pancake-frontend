@@ -46,6 +46,38 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 25,
+    lpSymbol: 'UNW-BNB LP',
+    token: bscTokens.unw,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0xb4E9DeA6105089f15685508B8EF2e7f7F5A1B16D',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 24,
+    lpSymbol: 'MGP-BNB LP',
+    token: bscTokens.wbnb,
+    quoteToken: bscTokens.mgp,
+    lpAddress: '0x088464e4E8CC54BF91180cBb8c61C68AeCC74166',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 23,
+    lpSymbol: 'AXL-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.axl,
+    lpAddress: '0xD10612A288Bd5024Db6a47663750996d176130Fe',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 22,
+    lpSymbol: 'GQ-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.gq,
+    lpAddress: '0x07003daEbc432ecec26309cCd1391BBBF06cC890',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 20,
     lpSymbol: 'ETH-ankrETH LP',
     token: bscTokens.eth,

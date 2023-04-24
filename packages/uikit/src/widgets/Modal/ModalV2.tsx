@@ -1,13 +1,13 @@
+import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { AnimatePresence, LazyMotion } from "framer-motion";
 import React, { createContext, useCallback, useRef, useState } from "react";
-import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
+import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
 import { Overlay } from "../../components/Overlay";
 import { animationHandler, animationMap, animationVariants } from "../../util/animationToolkit";
 import getPortalRoot from "../../util/getPortalRoot";
 import { StyledModalWrapper } from "./ModalContext";
-import { useMatchBreakpoints } from "../../contexts";
 
 const DomMax = () => import("./motionDomMax").then((mod) => mod.default);
 const DomAnimation = () => import("./motionDomAnimation").then((mod) => mod.default);
@@ -47,7 +47,6 @@ export function ModalV2({
   ...props
 }: ModalV2Props & BoxProps & { disableOutsidePointerEvents?: boolean }) {
   const animationRef = useRef<HTMLDivElement>(null);
-  const { isMobile } = useMatchBreakpoints();
 
   const handleOverlayDismiss = (e: any) => {
     e.stopPropagation();

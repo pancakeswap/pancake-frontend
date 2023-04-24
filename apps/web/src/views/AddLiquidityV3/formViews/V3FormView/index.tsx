@@ -5,7 +5,6 @@ import {
   AutoColumn,
   Button,
   RowBetween,
-  Card,
   Text,
   AutoRow,
   Box,
@@ -16,13 +15,13 @@ import {
   MessageText,
   PreTitle,
   DynamicSection,
+  Flex,
 } from '@pancakeswap/uikit'
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
-import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useState } from 'react'
+import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
@@ -47,8 +46,10 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
 
+import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
@@ -56,13 +57,6 @@ import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
-
-export const BodyWrapper = styled(Card)`
-  border-radius: 24px;
-  max-width: 858px;
-  width: 100%;
-  z-index: 1;
-`
 
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
@@ -72,23 +66,6 @@ const StyledInput = styled(NumericalInput)`
   font-size: 16px;
   width: 100%;
   margin-bottom: 16px;
-`
-
-/* two-column layout where DepositAmount is moved at the very end on mobile. */
-export const ResponsiveTwoColumns = styled.div`
-  display: grid;
-  grid-column-gap: 32px;
-  grid-row-gap: 16px;
-  grid-template-columns: 1fr;
-
-  grid-template-rows: max-content;
-  grid-auto-flow: row;
-
-  padding-top: 20px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 1fr;
-  }
 `
 
 export const HideMedium = styled.div`
@@ -145,8 +122,6 @@ export default function V3FormView({
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
 
-  const { position: existingPosition } = useDerivedPositionInfo(undefined)
-
   // mint state
   const formState = useV3FormState()
   const { independentField, typedValue, startPriceTypedValue } = formState
@@ -175,7 +150,7 @@ export default function V3FormView({
     quoteCurrency ?? undefined,
     feeAmount,
     baseCurrency ?? undefined,
-    existingPosition,
+    undefined,
     formState,
   )
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
@@ -193,6 +168,7 @@ export default function V3FormView({
 
   useEffect(() => {
     if (feeAmount) {
+      setActiveQuickAction(undefined)
       onBothRangeInput({
         leftTypedValue: '',
         rightTypedValue: '',
@@ -214,14 +190,15 @@ export default function V3FormView({
   }
 
   //   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field]),
-      }
-    },
-    {},
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = useMemo(
+    () =>
+      [Field.CURRENCY_A, Field.CURRENCY_B].reduce((accumulator, field) => {
+        return {
+          ...accumulator,
+          [field]: maxAmountSpend(currencyBalances[field]),
+        }
+      }, {}),
+    [currencyBalances],
   )
 
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
@@ -330,11 +307,25 @@ export default function V3FormView({
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
-  const pendingText = `Supplying ${
-    !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
-  } ${!depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''} ${!outOfRange ? 'and' : ''} ${
-    !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
-  } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
+  const translationData = useMemo(
+    () => ({
+      amountA: !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : '',
+      symbolA: !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : '',
+      amountB: !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : '',
+      symbolB: !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : '',
+    }),
+    [depositADisabled, depositBDisabled, parsedAmounts, locale, currencies],
+  )
+
+  const pendingText = useMemo(
+    () =>
+      !outOfRange
+        ? t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData)
+        : t('Supplying %amountA% %symbolA% %amountB% %symbolB%', translationData),
+    [t, outOfRange, translationData],
+  )
+
+  const [activeQuickAction, setActiveQuickAction] = useState<number>()
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
@@ -399,6 +390,24 @@ export default function V3FormView({
       depositADisabled={depositADisabled}
       depositBDisabled={depositBDisabled}
     />
+  )
+
+  const handleRefresh = useCallback(
+    (zoomLevel?: ZoomLevels) => {
+      setActiveQuickAction(undefined)
+      const currentPrice = price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
+      if (currentPrice) {
+        onBothRangeInput({
+          leftTypedValue: (
+            currentPrice * zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin
+          ).toString(),
+          rightTypedValue: (
+            currentPrice * zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax
+          ).toString(),
+        })
+      }
+    },
+    [price, feeAmount, invertPrice, onBothRangeInput],
   )
 
   return (
@@ -532,6 +541,7 @@ export default function V3FormView({
                   </AutoRow>
                 )}
                 <LiquidityChartRangeInput
+                  zoomLevel={QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction]}
                   onBothRangeInput={onBothRangeInput}
                   key={baseCurrency?.wrapped?.address}
                   currencyA={baseCurrency ?? undefined}
@@ -585,15 +595,47 @@ export default function V3FormView({
                 </Box>
               </Message>
             ) : (
-              <Button
-                onClick={() => {
-                  setShowCapitalEfficiencyWarning(true)
-                }}
-                variant="secondary"
-                scale="sm"
-              >
-                {t('Full Range')}
-              </Button>
+              <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
+                {QUICK_ACTION_CONFIGS[feeAmount] &&
+                  Object.entries<ZoomLevels>(QUICK_ACTION_CONFIGS[feeAmount])
+                    ?.sort(([a], [b]) => +a - +b)
+                    .map(([quickAction, zoomLevel]) => {
+                      return (
+                        <Button
+                          width="100%"
+                          key={`quickActions${quickAction}`}
+                          onClick={() => {
+                            if (+quickAction === activeQuickAction) {
+                              handleRefresh(ZOOM_LEVELS[feeAmount])
+                              return
+                            }
+                            handleRefresh(zoomLevel)
+
+                            setActiveQuickAction(+quickAction)
+                          }}
+                          variant={+quickAction === activeQuickAction ? 'primary' : 'secondary'}
+                          scale="sm"
+                        >
+                          {quickAction}%
+                        </Button>
+                      )
+                    })}
+                <Button
+                  width="200%"
+                  onClick={() => {
+                    if (activeQuickAction === 100) {
+                      handleRefresh()
+                      return
+                    }
+                    setShowCapitalEfficiencyWarning(true)
+                    setActiveQuickAction(100)
+                  }}
+                  variant={activeQuickAction === 100 ? 'primary' : 'secondary'}
+                  scale="sm"
+                >
+                  {t('Full Range')}
+                </Button>
+              </Flex>
             )}
 
             {outOfRange ? (
