@@ -61,6 +61,7 @@ const Header = styled.div`
   line-height: 110%;
   padding-right: 120px;
   margin-bottom: 0px;
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 40px;
     color: #7645d9;
