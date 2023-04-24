@@ -12,7 +12,7 @@ import { CommonBasesType } from './types'
 const ButtonWrapper = styled.div`
   display: inline-block;
   vertical-align: top;
-  margin-right: 10px;
+  margin-right: 6px;
 `
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
@@ -27,6 +27,18 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   }
   background-color: ${({ theme, disable }) => disable && theme.colors.dropdown};
   opacity: ${({ disable }) => disable && '0.4'};
+`
+
+const RowWrapper = styled.div`
+  white-space: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  ::-webkit-scrollbar {
+    height: 8px;
+  }
 `
 
 export default function CommonBases({
@@ -52,7 +64,7 @@ export default function CommonBases({
           <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
         )}
       </AutoRow>
-      <AutoRow>
+      <RowWrapper>
         <ButtonWrapper>
           <BaseWrapper
             onClick={() => {
@@ -77,7 +89,7 @@ export default function CommonBases({
             </ButtonWrapper>
           )
         })}
-      </AutoRow>
+      </RowWrapper>
     </AutoColumn>
   )
 }
