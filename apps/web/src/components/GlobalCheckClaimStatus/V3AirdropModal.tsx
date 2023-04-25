@@ -1,16 +1,16 @@
+import { useEffect, useState, useMemo } from 'react'
 import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import { useTranslation } from '@pancakeswap/localization'
 import delay from 'lodash/delay'
-import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Dots from 'components/Loader/Dots'
 
-const AnniversaryImage = styled.img`
+const Image = styled.img`
   display: block;
   height: 128px;
   width: 128px;
-  margin: auto;
+  margin: auto auto 10px auto;
   border-radius: 50%;
 `
 
@@ -27,11 +27,31 @@ const showConfetti = () => {
   })
 }
 
+type CurrencyType = 'btcb' | 'busd' | 'eth' | 'usdt'
+type WhiteListCurrencyType = 't1' | 't2' | 't3' | 't4'
+
+enum TierType {
+  t1 = 'Tier 1',
+  t2 = 'Tier 2',
+  t3 = 'Tier 3',
+  t4 = 'Tier 4',
+}
+
+export interface WhitelistType {
+  part1: {
+    [currency in CurrencyType]: null | WhiteListCurrencyType
+  }
+  part2: {
+    [currency in CurrencyType]: null | WhiteListCurrencyType
+  }
+}
+
 interface V3AirdropModalProps extends InjectedModalProps {
+  data: WhitelistType
   onClick: () => Promise<void>
 }
 
-const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ onDismiss, onClick }) => {
+const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss, onClick }) => {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -48,38 +68,88 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ onDismiss, onClick }) =
     delay(showConfetti, 100)
   }, [])
 
+  const hasPart1 = useMemo(() => Object.values(data.part1).find((i) => i !== null), [data])
+  const hasPart2 = useMemo(() => Object.values(data.part2).find((i) => i !== null), [data])
+
+  const textDisplay = (): string => {
+    if (hasPart1 && hasPart2) {
+      return t(
+        "You've earned an exclusive v3 Early Supporter and v3 Legendary NFT for participating in the PancakeSwap v3 Launch campaign. Claim your NFT now and show off your support for PancakeSwap.",
+      )
+    }
+    if (hasPart1) {
+      return t(
+        "You've earned an exclusive v3 Lgendary NFT for participating in the PancakeSwap v3 Launch campaign. Claim your NFT now and show off your support for PancakeSwap.",
+      )
+    }
+    return t(
+      "You've earned an exclusive v3 Early Supporter NFT for participating in the PancakeSwap v3 Launch campaign. Claim your NFT now and show off your support for PancakeSwap.",
+    )
+  }
+
   return (
     <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
-      <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
-        <Flex width="100%" flexDirection="column" justifyContent="flex-start">
-          <Box>
-            <AnniversaryImage src="/images/nfts/v3-part1.jpg" />
-          </Box>
-          <Text textAlign="left" bold>
-            {t('Part 1')}
-          </Text>
-          <Box>
-            <Text fontSize="14px">BUSD/WBNB Tier 1</Text>
-            <Text fontSize="14px">USDT/WBNB Tier 2</Text>
-            <Text fontSize="14px">BTCB/WBNB Tier 3</Text>
-            <Text fontSize="14px">ETH/WBNB Tier 4</Text>
-          </Box>
+      <Flex
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        maxWidth={['100%', '100%', '100%', '450px']}
+      >
+        <Flex width="100%" justifyContent="space-between">
+          {hasPart1 && (
+            <Flex width="100%" flexDirection="column">
+              <Box>
+                <Image src="/images/nfts/v3-part1.jpg" />
+              </Box>
+              <Text textAlign="center" bold>
+                {t('Part 1')}
+              </Text>
+              <Box>
+                {data.part1.btcb && (
+                  <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part1.btcb])}`}</Text>
+                )}
+                {data.part1.busd && (
+                  <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part1.busd])}`}</Text>
+                )}
+                {data.part1.eth && (
+                  <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part1.eth])}`}</Text>
+                )}
+                {data.part1.usdt && (
+                  <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part1.usdt])}`}</Text>
+                )}
+              </Box>
+            </Flex>
+          )}
+          {hasPart2 && (
+            <Flex width="100%" flexDirection="column">
+              <Box>
+                <Image src="/images/nfts/v3-part2.jpg" />
+              </Box>
+              <Text textAlign="center" bold>
+                {t('Part 2')}
+              </Text>
+              <Box>
+                {data.part2.btcb && (
+                  <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part2.btcb])}`}</Text>
+                )}
+                {data.part2.busd && (
+                  <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part2.busd])}`}</Text>
+                )}
+                {data.part2.eth && (
+                  <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part2.eth])}`}</Text>
+                )}
+                {data.part2.usdt && (
+                  <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part2.usdt])}`}</Text>
+                )}
+              </Box>
+            </Flex>
+          )}
         </Flex>
-        <Flex width="100%" flexDirection="column" justifyContent="flex-start" mt="24px">
-          <Box>
-            <AnniversaryImage src="/images/nfts/v3-part2.jpg" />
-          </Box>
-          <Text textAlign="left" bold>
-            {t('Part 2')}
-          </Text>
-          <Box>
-            <Text fontSize="14px">BUSD/WBNB Tier 1</Text>
-            <Text fontSize="14px">USDT/WBNB Tier 2</Text>
-            <Text fontSize="14px">BTCB/WBNB Tier 3</Text>
-            <Text fontSize="14px">ETH/WBNB Tier 4</Text>
-          </Box>
-        </Flex>
+        <Text textAlign="center" bold color="secondary" mt="24px">
+          {textDisplay()}
+        </Text>
         <Button
+          mt="24px"
           disabled={isLoading}
           onClick={handleClick}
           endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
