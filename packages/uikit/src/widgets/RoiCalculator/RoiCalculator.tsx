@@ -47,7 +47,14 @@ export type RoiCalculatorProps = {
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
   protocolFee?: Percent;
-  prices?: PriceData[];
+  prices?: {
+    pairPriceData: {
+      time: Date;
+      value: number;
+    }[];
+    maxPrice: number;
+    minPrice: number;
+  };
   ticks?: TickData[];
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
@@ -386,7 +393,8 @@ export function RoiCalculator({
       <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <PriceChart
         prices={useMemo(
-          () => prices?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
+          () =>
+            prices?.pairPriceData.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
           [invertPrice, prices]
         )}
         onSpanChange={onPriceSpanChange}
@@ -406,6 +414,8 @@ export function RoiCalculator({
             : formatPrice(priceRange?.priceLower, 6)
         }
         priceCurrent={invertPrice ? formatPrice(priceCurrent?.invert(), 6) : formatPrice(priceCurrent, 6)}
+        maxPrice={prices?.maxPrice}
+        minPrice={prices?.minPrice}
       />
     </Section>
   );

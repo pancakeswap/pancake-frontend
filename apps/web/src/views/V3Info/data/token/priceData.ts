@@ -199,9 +199,13 @@ export async function fetchPairPriceChartTokenData(
   chainName: MultiChainNameExtend,
 ): Promise<{
   data: PriceChartEntry[]
+  maxPrice?: number
+  minPrice?: number
   error: boolean
 }> {
   // start and end bounds
+  let maxPrice = 0
+  let minPrice = -100
   try {
     const endTimestamp = dayjs.utc().unix()
 
@@ -264,17 +268,23 @@ export async function fetchPairPriceChartTokenData(
     }
 
     const formattedHistory = data.map((d) => {
+      const high = parseFloat(d.high)
+      const low = parseFloat(d.low)
+      if (high >= maxPrice) maxPrice = high
+      if ((minPrice === -100 || low < minPrice) && low !== 0) minPrice = low
       return {
         time: d.periodStartUnix,
         open: parseFloat(d.open),
         close: parseFloat(d.close),
-        high: parseFloat(d.high),
-        low: parseFloat(d.low),
+        high,
+        low,
       }
     })
 
     return {
       data: formattedHistory,
+      maxPrice,
+      minPrice,
       error: false,
     }
   } catch (e) {
