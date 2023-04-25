@@ -20,7 +20,7 @@ import { RoiRate } from "./RoiRate";
 import { Details } from "./Details";
 import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
-import { PriceData, TickData } from "./types";
+import { TickData } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
