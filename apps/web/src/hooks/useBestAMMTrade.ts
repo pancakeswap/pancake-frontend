@@ -65,6 +65,11 @@ const worker =
     ? new WorkerProxy(new Worker(new URL('../quote-worker.ts', import.meta.url)))
     : undefined
 
+const worker2 =
+  typeof window !== 'undefined' && typeof Worker !== 'undefined'
+    ? new WorkerProxy(new Worker(new URL('../quote-worker.ts', import.meta.url)))
+    : undefined
+
 // Revalidate interval in milliseconds
 const REVALIDATE_AFTER = {
   [ChainId.BSC_TESTNET]: 15_000,
@@ -132,7 +137,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const apiAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
 
-  const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+  const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
     enabled: Boolean(enabled && isQuoterAPIEnabled),
     autoRevalidate: apiAutoRevalidate,
@@ -378,6 +383,40 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
     })
 
     const result = await worker.getBestTrade({
+      chainId: currency.chainId,
+      currency: SmartRouter.Transformer.serializeCurrency(currency),
+      tradeType,
+      amount: {
+        currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+        value: amount.quotient.toString(),
+      },
+      gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+      maxHops,
+      maxSplits,
+      poolTypes: allowedPoolTypes,
+      candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+    })
+    return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
+  },
+  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
+  quoterOptimization: false,
+})
+
+export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
+  key: 'useBestAMMTradeFromQuoterWorker2',
+  useCommonPools: useCommonPoolsLite,
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
+  getBestTrade: async (
+    amount,
+    currency,
+    tradeType,
+    { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei },
+  ) => {
+    const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
+      protocols: allowedPoolTypes,
+    })
+
+    const result = await worker2.getBestTrade({
       chainId: currency.chainId,
       currency: SmartRouter.Transformer.serializeCurrency(currency),
       tradeType,
