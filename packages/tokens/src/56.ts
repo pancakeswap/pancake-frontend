@@ -2562,4 +2562,20 @@ export const bscTokens = {
     'Axelar',
     'https://axelar.network/',
   ),
+  ush: new ERC20Token(
+    ChainId.BSC,
+    '0x91d6d6aF7635B7b23A8CED9508117965180e2362',
+    18,
+    'USH',
+    'unshETHing_Token',
+    'https://unsheth.xyz/',
+  ),
+  unshETH: new ERC20Token(
+    ChainId.BSC,
+    '0x0Ae38f7E10A43B5b2fB064B42a2f4514cbA909ef',
+    18,
+    'unshETH',
+    'unshETH Ether',
+    'https://unsheth.xyz/',
+  ),
 }
