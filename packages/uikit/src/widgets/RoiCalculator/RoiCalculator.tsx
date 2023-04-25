@@ -414,8 +414,8 @@ export function RoiCalculator({
             : formatPrice(priceRange?.priceLower, 6)
         }
         priceCurrent={invertPrice ? formatPrice(priceCurrent?.invert(), 6) : formatPrice(priceCurrent, 6)}
-        maxPrice={prices?.maxPrice}
-        minPrice={prices?.minPrice}
+        maxPrice={invertPrice && prices?.maxPrice ? prices?.maxPrice : 1 / (prices?.maxPrice ?? 1)}
+        minPrice={invertPrice && prices?.minPrice ? prices?.minPrice : 1 / (prices?.minPrice ?? 1)}
       />
     </Section>
   );
