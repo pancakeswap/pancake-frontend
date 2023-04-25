@@ -106,8 +106,8 @@ export const PriceChart = memo(function PriceChart({
     prices && prices.length ? (
       <>
         <Flex flexDirection="row" justifyContent="space-between" mt="0.5em" width="100%">
-          <PriceDisplay title={t("Min")} value={maxPrice?.toPrecision(6)} />
-          <PriceDisplay title={t("Max")} value={minPrice?.toPrecision(6)} ml="0.5em" />
+          <PriceDisplay title={t("Min")} value={minPrice?.toPrecision(6)} />
+          <PriceDisplay title={t("Max")} value={maxPrice?.toPrecision(6)} ml="0.5em" />
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" mt="0.5em" width="100%">
           <PriceDisplay title={t("Avg")} value={priceKeyValues.average.toPrecision(6)} />
