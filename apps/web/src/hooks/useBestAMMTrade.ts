@@ -12,6 +12,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { viemClients } from 'utils/viem'
 import { WorkerEvent } from 'quote-worker'
+import { QUOTING_API } from 'config/constants/endpoints'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -335,7 +336,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       protocols: allowedPoolTypes,
     })
 
-    const serverRes = await fetch(`/v0/quote`, {
+    const serverRes = await fetch(`${QUOTING_API}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

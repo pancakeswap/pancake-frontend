@@ -8,8 +8,6 @@ const withBundleAnalyzer = BundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-// const withTM = NextTranspileModules([])
-
 const withVanillaExtract = createVanillaExtractPlugin()
 
 const sentryWebpackPluginOptions =
@@ -72,10 +70,6 @@ const config = {
       {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
-      },
-      {
-        source: '/v0/quote',
-        destination: 'https://swap-quoting.pancakeswap.com/quoting-service/v0/quote',
       },
     ]
   },
