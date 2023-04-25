@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 2.0.2
+
+### Patch Changes
+
+- 078ee23fb: Fix multicall chunk config types
+
 ## 2.0.1
 
 ### Patch Changes
