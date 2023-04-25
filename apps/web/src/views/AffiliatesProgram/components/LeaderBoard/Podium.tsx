@@ -54,23 +54,6 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
         <Flex justifyContent="space-between" mt="8px">
           <StyledVolumeFlex>
             <StyledVolumeText bold>{`$${formatNumber(
-              Number(firstUser?.metric?.totalTradeVolumeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text mb="12px" fontSize="12px" color="textSubtle">
-              {t('Total Volume')}
-            </Text>
-            <NewUsers totalUsers={Number(firstUser?.metric?.totalUsers)} />
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(firstUser?.metric?.totalEarnFeeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text fontSize="12px" color="textSubtle">
-              {t('Commission')}
-            </Text>
-          </StyledVolumeFlex>
-          <StyledVolumeFlex>
-            <StyledVolumeText bold>{`$${formatNumber(
               Number(secondUser?.metric?.totalTradeVolumeUSD),
               0,
             )}`}</StyledVolumeText>
@@ -80,6 +63,23 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
             <NewUsers totalUsers={Number(secondUser?.metric?.totalUsers)} />
             <StyledVolumeText bold>{`$${formatNumber(
               Number(secondUser?.metric?.totalEarnFeeUSD),
+              0,
+            )}`}</StyledVolumeText>
+            <Text fontSize="12px" color="textSubtle">
+              {t('Commission')}
+            </Text>
+          </StyledVolumeFlex>
+          <StyledVolumeFlex>
+            <StyledVolumeText bold>{`$${formatNumber(
+              Number(firstUser?.metric?.totalTradeVolumeUSD),
+              0,
+            )}`}</StyledVolumeText>
+            <Text mb="12px" fontSize="12px" color="textSubtle">
+              {t('Total Volume')}
+            </Text>
+            <NewUsers totalUsers={Number(firstUser?.metric?.totalUsers)} />
+            <StyledVolumeText bold>{`$${formatNumber(
+              Number(firstUser?.metric?.totalEarnFeeUSD),
               0,
             )}`}</StyledVolumeText>
             <Text fontSize="12px" color="textSubtle">
