@@ -1,4 +1,4 @@
-import { Currency, JSBI, Pair, Price } from '@pancakeswap/sdk'
+import { Currency, Pair, Price } from '@pancakeswap/sdk'
 import { Pool as SDKV3Pool } from '@pancakeswap/v3-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
@@ -95,5 +95,5 @@ export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Pric
       quoteAmount: quoteOut,
     })
   }
-  return new Price(base, quote, JSBI.BigInt(1), JSBI.BigInt(0))
+  return new Price(base, quote, 1n, 0n)
 }

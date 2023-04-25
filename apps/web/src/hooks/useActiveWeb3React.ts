@@ -10,7 +10,7 @@ import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 const getHashFromRouter = (router: NextRouter) => {
-  return router.asPath.match(/#([a-z0-9]+)/gi)
+  return router.asPath.match(/#([a-z0-9]+)/gi);
 }
 
 export function useNetworkConnectorUpdater() {

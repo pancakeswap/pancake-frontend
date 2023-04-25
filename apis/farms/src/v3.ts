@@ -1,8 +1,6 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-param-reassign */
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
-import { CurrencyAmount, JSBI } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
 import { gql, GraphQLClient } from 'graphql-request'
 import { Request } from 'itty-router'
@@ -299,10 +297,10 @@ const handler_ = async (req: Request) => {
   }
 
   const currentTick = slot0.tick
-  const sqrtRatio = JSBI.BigInt(slot0.sqrtPriceX96.toString())
+  const sqrtRatio = BigInt(slot0.sqrtPriceX96.toString())
 
-  let totalToken0 = JSBI.BigInt(0)
-  let totalToken1 = JSBI.BigInt(0)
+  let totalToken0 = 0n
+  let totalToken1 = 0n
 
   for (const position of allActivePositions.filter(
     // double check that the position is within the current tick range
@@ -313,7 +311,7 @@ const handler_ = async (req: Request) => {
       +position.tickLower.tickIdx,
       +position.tickUpper.tickIdx,
       sqrtRatio,
-      JSBI.BigInt(position.liquidity),
+      BigInt(position.liquidity),
     )
 
     const token1 = PositionMath.getToken1Amount(
@@ -321,10 +319,10 @@ const handler_ = async (req: Request) => {
       +position.tickLower.tickIdx,
       +position.tickUpper.tickIdx,
       sqrtRatio,
-      JSBI.BigInt(position.liquidity),
+      BigInt(position.liquidity),
     )
-    totalToken0 = JSBI.add(totalToken0, token0)
-    totalToken1 = JSBI.add(totalToken1, token1)
+    totalToken0 = totalToken0 + token0
+    totalToken1 = totalToken1 + token1
   }
 
   const curr0 = CurrencyAmount.fromRawAmount(

@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Native, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Native, Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import ERC20_INTERFACE from 'config/abi/erc20'
@@ -34,11 +34,11 @@ export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): 
     () =>
       addresses.reduce<{ [address: string]: CurrencyAmount<Native> }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
-        if (value) memo[address] = CurrencyAmount.fromRawAmount(native, JSBI.BigInt(value.toString()))
+        if (value) memo[address] = CurrencyAmount.fromRawAmount(native, BigInt(value.toString()))
         return memo
       }, {}),
     [addresses, results, native],
-  )
+  );
 }
 
 /**
@@ -70,7 +70,7 @@ export function useTokenBalancesWithLoadingIndicator(
         address && validatedTokens.length > 0
           ? validatedTokens.reduce<{ [tokenAddress: string]: CurrencyAmount<Token> | undefined }>((memo, token, i) => {
               const value = balances?.[i]?.result?.[0]
-              const amount = value ? JSBI.BigInt(value.toString()) : undefined
+              const amount = value ? BigInt(value.toString()) : undefined
               if (amount) {
                 memo[token.address] = CurrencyAmount.fromRawAmount(token, amount)
               }
@@ -80,7 +80,7 @@ export function useTokenBalancesWithLoadingIndicator(
       [address, validatedTokens, balances],
     ),
     anyLoading,
-  ]
+  ];
 }
 
 export function useTokenBalances(

@@ -28,7 +28,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { splitSignature } from '@ethersproject/bytes'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, ERC20Token, Fraction, JSBI, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
+import { CurrencyAmount, ERC20Token, Fraction, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
@@ -114,7 +114,7 @@ function V2PairMigrate({
     () =>
       CurrencyAmount.fromRawAmount(
         token0,
-        JSBI.divide(JSBI.multiply(JSBI.BigInt(pairBalance.toString()), reserve0.quotient), v2LPTotalSupply.quotient),
+        BigInt(pairBalance.toString()) * reserve0.quotient / v2LPTotalSupply.quotient,
       ),
     [token0, pairBalance, reserve0.quotient, v2LPTotalSupply.quotient],
   )
@@ -122,7 +122,7 @@ function V2PairMigrate({
     () =>
       CurrencyAmount.fromRawAmount(
         token1,
-        JSBI.divide(JSBI.multiply(JSBI.BigInt(pairBalance.toString()), reserve1.quotient), v2LPTotalSupply.quotient),
+        BigInt(pairBalance.toString()) * reserve1.quotient / v2LPTotalSupply.quotient,
       ),
     [token1, pairBalance, reserve1.quotient, v2LPTotalSupply.quotient],
   )
@@ -165,7 +165,7 @@ function V2PairMigrate({
     priceDifferenceFraction = priceDifferenceFraction.multiply(-1)
   }
 
-  const largePriceDifference = priceDifferenceFraction && !priceDifferenceFraction?.lessThan(JSBI.BigInt(2))
+  const largePriceDifference = priceDifferenceFraction && !priceDifferenceFraction?.lessThan(2n)
 
   // modal and loading
   // capital efficiency warning
@@ -228,12 +228,12 @@ function V2PairMigrate({
 
   const refund0 = useMemo(
     () =>
-      position && CurrencyAmount.fromRawAmount(token0, JSBI.subtract(token0Value.quotient, position.amount0.quotient)),
+      position && CurrencyAmount.fromRawAmount(token0, token0Value.quotient - position.amount0.quotient),
     [token0Value, position, token0],
   )
   const refund1 = useMemo(
     () =>
-      position && CurrencyAmount.fromRawAmount(token1, JSBI.subtract(token1Value.quotient, position.amount1.quotient)),
+      position && CurrencyAmount.fromRawAmount(token1, token1Value.quotient - position.amount1.quotient),
     [token1Value, position, token1],
   )
 
@@ -439,7 +439,7 @@ function V2PairMigrate({
     currency1,
   ])
 
-  const isSuccessfullyMigrated = !!pendingMigrationHash && JSBI.equal(JSBI.BigInt(pairBalance.toString()), ZERO)
+  const isSuccessfullyMigrated = !!pendingMigrationHash && BigInt(pairBalance.toString()) === ZERO
 
   return (
     <CardBody>

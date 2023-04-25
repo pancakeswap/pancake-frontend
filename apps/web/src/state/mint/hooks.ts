@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { PairState, useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -81,12 +81,12 @@ export function useDerivedMintInfo(
 
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
+    Boolean(totalSupply && totalSupply.quotient === BIG_INT_ZERO) ||
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
+        pair.reserve0.quotient === BIG_INT_ZERO &&
+        pair.reserve1.quotient === BIG_INT_ZERO,
     )
 
   // balances

@@ -57,7 +57,7 @@ const RowWrapper = styled(Row)<{ active: boolean; hasActiveTokens: boolean }>`
 `
 
 function listUrlRowHTMLId(listUrl: string) {
-  return `list-row-${listUrl.replace(/\./g, '-')}`
+  return `list-row-${listUrl.replace(/\./g, '-')}`;
 }
 
 const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {

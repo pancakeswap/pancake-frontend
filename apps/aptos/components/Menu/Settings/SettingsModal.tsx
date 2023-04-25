@@ -175,7 +175,7 @@ const SlippageSetting = () => {
         </Text>
       )}
     </Flex>
-  )
+  );
 }
 
 export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {

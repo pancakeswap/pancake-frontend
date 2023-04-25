@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { FeeAmount, FeeCalculator, Tick, TickMath, sqrtRatioX96ToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
@@ -38,8 +38,8 @@ export interface RoiCalculatorPositionInfo {
 }
 
 export type RoiCalculatorProps = {
-  sqrtRatioX96?: JSBI;
-  liquidity?: JSBI;
+  sqrtRatioX96?: bigint;
+  liquidity?: bigint;
   independentAmount?: CurrencyAmount<Currency>;
   currencyA?: Currency;
   currencyB?: Currency;
@@ -236,7 +236,7 @@ export function RoiCalculator({
         sqrtRatioX96,
       });
 
-      const cakeApr = JSBI.greaterThan(positionLiquidity, ZERO)
+      const cakeApr = positionLiquidity > ZERO
         ? new BigNumber(positionLiquidity.toString()).times(cakeAprFactor).div(usdValue)
         : BIG_ZERO;
 

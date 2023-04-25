@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Price } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, Price } from "@pancakeswap/sdk";
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 import { FeeCalculator, TickMath } from "@pancakeswap/v3-sdk";
 import { useCallback, useMemo, useState, useEffect } from "react";
@@ -12,7 +12,7 @@ interface Params {
   currencyB?: Currency;
   tickLower?: number;
   tickUpper?: number;
-  sqrtRatioX96?: JSBI;
+  sqrtRatioX96?: bigint;
 }
 
 export function useAmounts({
@@ -80,7 +80,7 @@ interface AmountsByUsdValueParams {
   price?: Price<Currency, Currency>;
   priceLower?: Price<Currency, Currency>;
   priceUpper?: Price<Currency, Currency>;
-  sqrtRatioX96?: JSBI;
+  sqrtRatioX96?: bigint;
   currencyAUsdPrice?: number;
   currencyBUsdPrice?: number;
 }
@@ -133,7 +133,7 @@ interface TokenAmountOptions {
   amount?: CurrencyAmount<Currency>;
   currencyA?: Currency;
   currencyB?: Currency;
-  sqrtRatioX96?: JSBI;
+  sqrtRatioX96?: bigint;
   tickLower?: number;
   tickUpper?: number;
 }

@@ -1,7 +1,6 @@
 import { Currency, CurrencyAmount, Fraction } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 
-const CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000))
+const CURRENCY_AMOUNT_MIN = new Fraction(1n, 1000000n)
 
 interface FormatterCurrencyAmountProps {
   currencyAmount?: CurrencyAmount<Currency>
@@ -9,11 +8,11 @@ interface FormatterCurrencyAmountProps {
 }
 
 export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 }: FormatterCurrencyAmountProps) {
-  return !currencyAmount || currencyAmount.equalTo(JSBI.BigInt(0))
+  return !currencyAmount || currencyAmount.equalTo(0n)
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
     ? currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
-    : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
+    : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`;
 }
 
 export default function FormattedCurrencyAmount(props: FormatterCurrencyAmountProps) {

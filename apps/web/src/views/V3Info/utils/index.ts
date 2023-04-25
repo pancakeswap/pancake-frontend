@@ -6,7 +6,7 @@ export function notEmpty<TValue>(value: TValue | null | undefined): value is TVa
 }
 
 export function escapeRegExp(string: string): string {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 export function getEtherscanLink(
