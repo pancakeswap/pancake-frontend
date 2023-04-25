@@ -40,7 +40,7 @@ describe('Trade', () => {
           liquidityGross: liquidity,
         },
       ]
-    );
+    )
   }
 
   const pool_0_1 = v2StylePool(
@@ -537,9 +537,9 @@ describe('Trade', () => {
 
   describe('#bestTradeExactIn', () => {
     it('throws with empty pools', async () => {
-      await expect(
-        Trade.bestTradeExactIn([], CurrencyAmount.fromRawAmount(token0, 10000n), token2)
-      ).rejects.toThrow('POOLS')
+      await expect(Trade.bestTradeExactIn([], CurrencyAmount.fromRawAmount(token0, 10000n), token2)).rejects.toThrow(
+        'POOLS'
+      )
     })
     it('throws with max hops of 0', async () => {
       await expect(
@@ -652,28 +652,20 @@ describe('Trade', () => {
         )
       })
       it('throws if less than 0', () => {
-        expect(() => exactIn.maximumAmountIn(new Percent(BigInt(-1), 100n))).toThrow(
-          'SLIPPAGE_TOLERANCE'
-        )
+        expect(() => exactIn.maximumAmountIn(new Percent(BigInt(-1), 100n))).toThrow('SLIPPAGE_TOLERANCE')
       })
       it('returns exact if 0', () => {
         expect(exactIn.maximumAmountIn(new Percent(0n, 100n))).toEqual(exactIn.inputAmount)
       })
       it('returns exact if nonzero', () => {
         expect(
-          exactIn
-            .maximumAmountIn(new Percent(0n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token0, 100n))
+          exactIn.maximumAmountIn(new Percent(0n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token0, 100n))
         ).toBeTruthy()
         expect(
-          exactIn
-            .maximumAmountIn(new Percent(5n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token0, 100n))
+          exactIn.maximumAmountIn(new Percent(5n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token0, 100n))
         ).toBeTruthy()
         expect(
-          exactIn
-            .maximumAmountIn(new Percent(200n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token0, 100n))
+          exactIn.maximumAmountIn(new Percent(200n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token0, 100n))
         ).toBeTruthy()
       })
     })
@@ -698,19 +690,13 @@ describe('Trade', () => {
 
       it('returns slippage amount if nonzero', () => {
         expect(
-          exactOut
-            .maximumAmountIn(new Percent(0n, 100))
-            .equalTo(CurrencyAmount.fromRawAmount(token0, 15470))
+          exactOut.maximumAmountIn(new Percent(0n, 100)).equalTo(CurrencyAmount.fromRawAmount(token0, 15470))
         ).toBeTruthy()
         expect(
-          exactOut
-            .maximumAmountIn(new Percent(5n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token0, 16243))
+          exactOut.maximumAmountIn(new Percent(5n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token0, 16243))
         ).toBeTruthy()
         expect(
-          exactOut
-            .maximumAmountIn(new Percent(200n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token0, 46410))
+          exactOut.maximumAmountIn(new Percent(200n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token0, 46410))
         ).toBeTruthy()
       })
     })
@@ -736,15 +722,9 @@ describe('Trade', () => {
       })
 
       it('returns exact if nonzero', () => {
-        expect(exactIn.minimumAmountOut(new Percent(0n, 100))).toEqual(
-          CurrencyAmount.fromRawAmount(token2, 7010)
-        )
-        expect(exactIn.minimumAmountOut(new Percent(5n, 100))).toEqual(
-          CurrencyAmount.fromRawAmount(token2, 6676)
-        )
-        expect(exactIn.minimumAmountOut(new Percent(200n, 100))).toEqual(
-          CurrencyAmount.fromRawAmount(token2, 2336)
-        )
+        expect(exactIn.minimumAmountOut(new Percent(0n, 100))).toEqual(CurrencyAmount.fromRawAmount(token2, 7010))
+        expect(exactIn.minimumAmountOut(new Percent(5n, 100))).toEqual(CurrencyAmount.fromRawAmount(token2, 6676))
+        expect(exactIn.minimumAmountOut(new Percent(200n, 100))).toEqual(CurrencyAmount.fromRawAmount(token2, 2336))
       })
     })
     describe('tradeType = EXACT_OUTPUT', () => {
@@ -758,28 +738,20 @@ describe('Trade', () => {
       })
 
       it('throws if less than 0', () => {
-        expect(() => exactOut.minimumAmountOut(new Percent(BigInt(-1), 100n))).toThrow(
-          'SLIPPAGE_TOLERANCE'
-        )
+        expect(() => exactOut.minimumAmountOut(new Percent(BigInt(-1), 100n))).toThrow('SLIPPAGE_TOLERANCE')
       })
       it('returns exact if 0', () => {
         expect(exactOut.minimumAmountOut(new Percent(0n, 100n))).toEqual(exactOut.outputAmount)
       })
       it('returns slippage amount if nonzero', () => {
         expect(
-          exactOut
-            .minimumAmountOut(new Percent(0n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token2, 100n))
+          exactOut.minimumAmountOut(new Percent(0n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token2, 100n))
         ).toBeTruthy()
         expect(
-          exactOut
-            .minimumAmountOut(new Percent(5n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token2, 100n))
+          exactOut.minimumAmountOut(new Percent(5n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token2, 100n))
         ).toBeTruthy()
         expect(
-          exactOut
-            .minimumAmountOut(new Percent(200n, 100n))
-            .equalTo(CurrencyAmount.fromRawAmount(token2, 100n))
+          exactOut.minimumAmountOut(new Percent(200n, 100n)).equalTo(CurrencyAmount.fromRawAmount(token2, 100n))
         ).toBeTruthy()
       })
     })
@@ -787,9 +759,9 @@ describe('Trade', () => {
 
   describe('#bestTradeExactOut', () => {
     it('throws with empty pools', async () => {
-      await expect(
-        Trade.bestTradeExactOut([], token0, CurrencyAmount.fromRawAmount(token2, 100n))
-      ).rejects.toThrow('POOLS')
+      await expect(Trade.bestTradeExactOut([], token0, CurrencyAmount.fromRawAmount(token2, 100n))).rejects.toThrow(
+        'POOLS'
+      )
     })
     it('throws with max hops of 0', async () => {
       await expect(

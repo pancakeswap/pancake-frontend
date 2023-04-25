@@ -59,5 +59,5 @@ export function useSwapCallArguments(
     }
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, contract, deadline, recipient, trade]);
+  }, [account, allowedSlippage, chainId, contract, deadline, recipient, trade])
 }

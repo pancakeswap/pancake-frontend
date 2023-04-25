@@ -403,9 +403,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
         : undefined,
 
       output: outputCurrency
-        ? parsedAmounts.output
-            ?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals))
-            .toFixed(0)
+        ? parsedAmounts.output?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals)).toFixed(0)
         : undefined,
     }),
     [inputCurrency, outputCurrency, parsedAmounts],

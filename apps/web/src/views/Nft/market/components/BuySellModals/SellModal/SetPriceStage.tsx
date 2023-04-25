@@ -84,112 +84,114 @@ const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
     }
     return t('Enable Listing')
   }
-  return <>
-    <Text fontSize="24px" bold p="16px">
-      {variant === 'set' ? t('Set Price') : t('Adjust Sale Price')}
-    </Text>
-    <GreyedOutContainer>
-      <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
-        {t('Set Price')}
+  return (
+    <>
+      <Text fontSize="24px" bold p="16px">
+        {variant === 'set' ? t('Set Price') : t('Adjust Sale Price')}
       </Text>
-      <Flex>
-        <Flex flex="1" alignItems="center">
-          <BinanceIcon width={24} height={24} mr="4px" />
-          <Text bold>WBNB</Text>
+      <GreyedOutContainer>
+        <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
+          {t('Set Price')}
+        </Text>
+        <Flex>
+          <Flex flex="1" alignItems="center">
+            <BinanceIcon width={24} height={24} mr="4px" />
+            <Text bold>WBNB</Text>
+          </Flex>
+          <Flex flex="2">
+            <RightAlignedInput
+              scale="sm"
+              type="text"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
+              inputMode="decimal"
+              value={price}
+              ref={inputRef}
+              isWarning={priceIsOutOfRange}
+              onChange={(e) => {
+                enforcer(e.target.value.replace(/,/g, '.'))
+              }}
+            />
+          </Flex>
         </Flex>
-        <Flex flex="2">
-          <RightAlignedInput
-            scale="sm"
-            type="text"
-            pattern="^[0-9]*[.,]?[0-9]*$"
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck="false"
-            inputMode="decimal"
-            value={price}
-            ref={inputRef}
-            isWarning={priceIsOutOfRange}
-            onChange={(e) => {
-              enforcer(e.target.value.replace(/,/g, '.'))
-            }}
-          />
+        <Flex alignItems="center" height="21px" justifyContent="flex-end">
+          {!Number.isNaN(priceInUsd) && (
+            <Text fontSize="12px" color="textSubtle">
+              {`$${priceInUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            </Text>
+          )}
         </Flex>
-      </Flex>
-      <Flex alignItems="center" height="21px" justifyContent="flex-end">
-        {!Number.isNaN(priceInUsd) && (
-          <Text fontSize="12px" color="textSubtle">
-            {`$${priceInUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        {priceIsOutOfRange && (
+          <Text fontSize="12px" color="failure">
+            {t('Allowed price range is between %minPrice% and %maxPrice% WBNB', {
+              minPrice: MIN_PRICE,
+              maxPrice: MAX_PRICE,
+            })}
           </Text>
         )}
-      </Flex>
-      {priceIsOutOfRange && (
-        <Text fontSize="12px" color="failure">
-          {t('Allowed price range is between %minPrice% and %maxPrice% WBNB', {
-            minPrice: MIN_PRICE,
-            maxPrice: MAX_PRICE,
-          })}
-        </Text>
-      )}
-      <Flex mt="8px">
-        {Number.isFinite(creatorFeeAsNumber) && Number.isFinite(tradingFeeAsNumber) ? (
-          <>
-            <Text small color="textSubtle" mr="8px">
-              {t('Seller pays %percentage%% platform fee on sale', {
-                percentage: creatorFeeAsNumber + tradingFeeAsNumber,
-              })}
-            </Text>
-            <span ref={targetRef}>
-              <ErrorIcon />
-            </span>
-            {tooltipVisible && tooltip}
-          </>
-        ) : (
-          <Skeleton width="70%" />
-        )}
-      </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mt="16px">
-        <Text small color="textSubtle">
-          {t('Platform fee if sold')}
-        </Text>
-        {Number.isFinite(creatorFeeAsNumber) && Number.isFinite(tradingFeeAsNumber) ? (
-          <FeeAmountCell bnbAmount={priceAsFloat} creatorFee={creatorFeeAsNumber} tradingFee={tradingFeeAsNumber} />
-        ) : (
-          <Skeleton width={40} />
-        )}
-      </Flex>
-      {lowestPrice && (
+        <Flex mt="8px">
+          {Number.isFinite(creatorFeeAsNumber) && Number.isFinite(tradingFeeAsNumber) ? (
+            <>
+              <Text small color="textSubtle" mr="8px">
+                {t('Seller pays %percentage%% platform fee on sale', {
+                  percentage: creatorFeeAsNumber + tradingFeeAsNumber,
+                })}
+              </Text>
+              <span ref={targetRef}>
+                <ErrorIcon />
+              </span>
+              {tooltipVisible && tooltip}
+            </>
+          ) : (
+            <Skeleton width="70%" />
+          )}
+        </Flex>
         <Flex justifyContent="space-between" alignItems="center" mt="16px">
           <Text small color="textSubtle">
-            {t('Lowest price on market')}
+            {t('Platform fee if sold')}
           </Text>
-          <BnbAmountCell bnbAmount={lowestPrice} />
+          {Number.isFinite(creatorFeeAsNumber) && Number.isFinite(tradingFeeAsNumber) ? (
+            <FeeAmountCell bnbAmount={priceAsFloat} creatorFee={creatorFeeAsNumber} tradingFee={tradingFeeAsNumber} />
+          ) : (
+            <Skeleton width={40} />
+          )}
         </Flex>
-      )}
-    </GreyedOutContainer>
-    <Grid gridTemplateColumns="32px 1fr" p="16px" maxWidth="360px">
-      <Flex alignSelf="flex-start">
-        <ErrorIcon width={24} height={24} color="textSubtle" />
+        {lowestPrice && (
+          <Flex justifyContent="space-between" alignItems="center" mt="16px">
+            <Text small color="textSubtle">
+              {t('Lowest price on market')}
+            </Text>
+            <BnbAmountCell bnbAmount={lowestPrice} />
+          </Flex>
+        )}
+      </GreyedOutContainer>
+      <Grid gridTemplateColumns="32px 1fr" p="16px" maxWidth="360px">
+        <Flex alignSelf="flex-start">
+          <ErrorIcon width={24} height={24} color="textSubtle" />
+        </Flex>
+        <Box>
+          <Text small color="textSubtle">
+            {t('The NFT will be removed from your wallet and put on sale at this price.')}
+          </Text>
+          <Text small color="textSubtle">
+            {t('Sales are in WBNB. You can swap WBNB to BNB 1:1 for free with PancakeSwap.')}
+          </Text>
+        </Box>
+      </Grid>
+      <Divider />
+      <Flex flexDirection="column" px="16px" pb="16px">
+        <Button
+          mb="8px"
+          onClick={continueToNextStage}
+          disabled={priceIsValid || adjustedPriceIsTheSame || priceIsOutOfRange}
+        >
+          {getButtonText()}
+        </Button>
       </Flex>
-      <Box>
-        <Text small color="textSubtle">
-          {t('The NFT will be removed from your wallet and put on sale at this price.')}
-        </Text>
-        <Text small color="textSubtle">
-          {t('Sales are in WBNB. You can swap WBNB to BNB 1:1 for free with PancakeSwap.')}
-        </Text>
-      </Box>
-    </Grid>
-    <Divider />
-    <Flex flexDirection="column" px="16px" pb="16px">
-      <Button
-        mb="8px"
-        onClick={continueToNextStage}
-        disabled={priceIsValid || adjustedPriceIsTheSame || priceIsOutOfRange}
-      >
-        {getButtonText()}
-      </Button>
-    </Flex>
-  </>;
+    </>
+  )
 }
 
 export default SetPriceStage

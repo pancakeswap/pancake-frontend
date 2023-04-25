@@ -10,7 +10,7 @@ import {
   Pair,
   Route as V2Route,
   Trade as V2Trade,
-} from '@pancakeswap/sdk';
+} from '@pancakeswap/sdk'
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -65,7 +65,7 @@ describe('SwapRouter', () => {
           liquidityGross: liquidity,
         },
       ],
-    };
+    }
   }
 
   const convertV3PoolToSDKPool = ({ token0, token1, fee, sqrtRatioX96, liquidity, tick, ticks }: V3Pool) =>
@@ -98,7 +98,7 @@ describe('SwapRouter', () => {
       gasEstimate: 0n,
       gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
       blockNumber: 0,
-    };
+    }
   }
 
   // v2
@@ -140,7 +140,7 @@ describe('SwapRouter', () => {
       gasEstimate: 0n,
       gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
       blockNumber: 0,
-    };
+    }
   }
 
   const makeMixedRouteTrade = async (
@@ -193,7 +193,7 @@ describe('SwapRouter', () => {
       gasEstimate: 0n,
       gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
       blockNumber: 0,
-    };
+    }
   }
 
   const pool_0_1 = makeV3Pool(token0, token1, liquidity)

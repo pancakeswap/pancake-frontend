@@ -19,13 +19,10 @@ export function formatPrice(price?: Price<Currency, Currency>, precision?: numbe
 }
 
 export function formatAmount(amount?: CurrencyAmount<Currency>, precision?: number) {
-  return formatFraction(
-    amount?.asFraction.divide(10n ** BigInt(amount?.currency.decimals)),
-    precision,
-  );
+  return formatFraction(amount?.asFraction.divide(10n ** BigInt(amount?.currency.decimals)), precision)
 }
 
 export function parseNumberToFraction(num: number, precision = 6) {
   const scalar = 10 ** precision
-  return new Fraction(BigInt(Math.floor(num * scalar)), BigInt(scalar));
+  return new Fraction(BigInt(Math.floor(num * scalar)), BigInt(scalar))
 }

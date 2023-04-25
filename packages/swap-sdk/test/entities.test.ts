@@ -17,7 +17,7 @@ const DECIMAL_PERMUTATIONS: [number, number, number][] = [
 ]
 
 function decimalize(amount: number, decimals: number): bigint {
-  return BigInt(amount) * 10n ** BigInt(decimals);
+  return BigInt(amount) * 10n ** BigInt(decimals)
 }
 
 describe('entities', () => {

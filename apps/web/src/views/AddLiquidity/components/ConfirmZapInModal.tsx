@@ -97,10 +97,7 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
   )
 
   const [token0Deposited, token1Deposited] =
-    !!pair &&
-    !!totalPoolTokens &&
-    !!liquidityMinted &&
-    totalPoolTokens.quotient >= liquidityMinted.quotient
+    !!pair && !!totalPoolTokens && !!liquidityMinted && totalPoolTokens.quotient >= liquidityMinted.quotient
       ? [
           pair.getLiquidityValue(pair.token0, totalPoolTokens, liquidityMinted, false),
           pair.getLiquidityValue(pair.token1, totalPoolTokens, liquidityMinted, false),

@@ -74,7 +74,7 @@ export function getSwapInput({ amount, ...rest }: GetSwapOutputParams) {
   return getSwapOutput({
     ...rest,
     amount: CurrencyAmount.fromRawAmount(amount.currency, -amount.quotient),
-  });
+  })
 }
 
 export function getSwapInputWithtouFee(params: Omit<GetSwapOutputParams, 'fee'>) {

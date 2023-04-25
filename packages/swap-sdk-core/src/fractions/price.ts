@@ -42,10 +42,7 @@ export class Price<TBase extends Currency, TQuote extends Currency> extends Frac
 
     this.baseCurrency = baseCurrency
     this.quoteCurrency = quoteCurrency
-    this.scalar = new Fraction(
-      10n ** BigInt(baseCurrency.decimals),
-      10n ** BigInt(quoteCurrency.decimals)
-    )
+    this.scalar = new Fraction(10n ** BigInt(baseCurrency.decimals), 10n ** BigInt(quoteCurrency.decimals))
   }
 
   /**

@@ -238,7 +238,7 @@ const SwapPage = () => {
 
           return tx
         })
-      };
+      }
     }
     return undefined
   }, [addTransaction, allowedSlippage, executeTransaction, t, trade, userAllowedSlippage])

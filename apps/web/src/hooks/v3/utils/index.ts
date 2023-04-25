@@ -27,7 +27,7 @@ export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: str
     quoteToken,
     BigInt(10 ** decimals) * BigInt(10 ** baseToken.decimals),
     withoutDecimals * BigInt(10 ** quoteToken.decimals),
-  );
+  )
 }
 
 export function tryParseTick(

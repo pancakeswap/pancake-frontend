@@ -194,7 +194,7 @@ const SlippageTabs = () => {
         </Flex>
       </Flex>
     </Flex>
-  );
+  )
 }
 
 export default SlippageTabs

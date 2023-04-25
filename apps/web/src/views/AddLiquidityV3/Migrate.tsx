@@ -114,7 +114,7 @@ function V2PairMigrate({
     () =>
       CurrencyAmount.fromRawAmount(
         token0,
-        BigInt(pairBalance.toString()) * reserve0.quotient / v2LPTotalSupply.quotient,
+        (BigInt(pairBalance.toString()) * reserve0.quotient) / v2LPTotalSupply.quotient,
       ),
     [token0, pairBalance, reserve0.quotient, v2LPTotalSupply.quotient],
   )
@@ -122,7 +122,7 @@ function V2PairMigrate({
     () =>
       CurrencyAmount.fromRawAmount(
         token1,
-        BigInt(pairBalance.toString()) * reserve1.quotient / v2LPTotalSupply.quotient,
+        (BigInt(pairBalance.toString()) * reserve1.quotient) / v2LPTotalSupply.quotient,
       ),
     [token1, pairBalance, reserve1.quotient, v2LPTotalSupply.quotient],
   )
@@ -227,13 +227,11 @@ function V2PairMigrate({
   )
 
   const refund0 = useMemo(
-    () =>
-      position && CurrencyAmount.fromRawAmount(token0, token0Value.quotient - position.amount0.quotient),
+    () => position && CurrencyAmount.fromRawAmount(token0, token0Value.quotient - position.amount0.quotient),
     [token0Value, position, token0],
   )
   const refund1 = useMemo(
-    () =>
-      position && CurrencyAmount.fromRawAmount(token1, token1Value.quotient - position.amount1.quotient),
+    () => position && CurrencyAmount.fromRawAmount(token1, token1Value.quotient - position.amount1.quotient),
     [token1Value, position, token1],
   )
 

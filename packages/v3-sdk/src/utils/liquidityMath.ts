@@ -8,8 +8,8 @@ export abstract class LiquidityMath {
 
   public static addDelta(x: bigint, y: bigint): bigint {
     if (y < ZERO) {
-      return x - y * NEGATIVE_ONE;
+      return x - y * NEGATIVE_ONE
     }
-    return x + y;
+    return x + y
   }
 }

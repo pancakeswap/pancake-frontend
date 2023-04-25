@@ -284,10 +284,12 @@ export const fetchTicksSurroundingPrice = async (
         // it to the current processed tick we are building.
         // If we are iterating descending, we don't want to apply the net liquidity until the following tick.
         if (direction === Direction.ASC && currentInitializedTick) {
-          currentTickProcessed.liquidityActive = previousTickProcessed.liquidityActive + BigInt(currentInitializedTick.liquidityNet)
+          currentTickProcessed.liquidityActive =
+            previousTickProcessed.liquidityActive + BigInt(currentInitializedTick.liquidityNet)
         } else if (direction === Direction.DESC && previousTickProcessed.liquidityNet !== 0n) {
           // We are iterating descending, so look at the previous tick and apply any net liquidity.
-          currentTickProcessed.liquidityActive = previousTickProcessed.liquidityActive - previousTickProcessed.liquidityNet
+          currentTickProcessed.liquidityActive =
+            previousTickProcessed.liquidityActive - previousTickProcessed.liquidityNet
         }
 
         processedTicks.push(currentTickProcessed)

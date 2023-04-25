@@ -11,7 +11,7 @@ export function subIn256(x: bigint, y: bigint): bigint {
   const difference = x - y
 
   if (difference < ZERO) {
-    return Q256 + difference;
+    return Q256 + difference
   }
   return difference
 }

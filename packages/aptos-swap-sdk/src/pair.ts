@@ -201,8 +201,8 @@ export class Pair {
     if (totalSupply.quotient === ZERO) {
       liquidity = sqrt(tokenAmounts[0].quotient * tokenAmounts[1].quotient) - MINIMUM_LIQUIDITY
     } else {
-      const amount0 = tokenAmounts[0].quotient * totalSupply.quotient / this.reserve0.quotient
-      const amount1 = tokenAmounts[1].quotient * totalSupply.quotient / this.reserve1.quotient
+      const amount0 = (tokenAmounts[0].quotient * totalSupply.quotient) / this.reserve0.quotient
+      const amount1 = (tokenAmounts[1].quotient * totalSupply.quotient) / this.reserve1.quotient
       liquidity = amount0 <= amount1 ? amount0 : amount1
     }
     if (!(liquidity > ZERO)) {
@@ -247,7 +247,7 @@ export class Pair {
 
     return CurrencyAmount.fromRawAmount(
       token,
-      liquidity.quotient * this.reserveOf(token).quotient / totalSupplyAdjusted.quotient
-    );
+      (liquidity.quotient * this.reserveOf(token).quotient) / totalSupplyAdjusted.quotient
+    )
   }
 }

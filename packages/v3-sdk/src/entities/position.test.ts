@@ -277,15 +277,7 @@ describe('Position', () => {
 
       it('is correct for pool at max price', () => {
         const position = new Position({
-          pool: new Pool(
-            DAI,
-            USDC,
-            FeeAmount.LOW,
-            TickMath.MAX_SQRT_RATIO - 1n,
-            0,
-            TickMath.MAX_TICK - 1,
-            []
-          ),
+          pool: new Pool(DAI, USDC, FeeAmount.LOW, TickMath.MAX_SQRT_RATIO - 1n, 0, TickMath.MAX_TICK - 1, []),
           liquidity: 100e18,
           tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
           tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
@@ -400,15 +392,7 @@ describe('Position', () => {
 
       it('is correct for pool at max price', () => {
         const position = new Position({
-          pool: new Pool(
-            DAI,
-            USDC,
-            FeeAmount.LOW,
-            TickMath.MAX_SQRT_RATIO - 1n,
-            0,
-            TickMath.MAX_TICK - 1,
-            []
-          ),
+          pool: new Pool(DAI, USDC, FeeAmount.LOW, TickMath.MAX_SQRT_RATIO - 1n, 0, TickMath.MAX_TICK - 1, []),
           liquidity: 100e18,
           tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
           tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,

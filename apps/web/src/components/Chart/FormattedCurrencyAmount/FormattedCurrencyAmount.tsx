@@ -12,7 +12,7 @@ export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
     ? currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
-    : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`;
+    : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
 }
 
 export default function FormattedCurrencyAmount(props: FormatterCurrencyAmountProps) {

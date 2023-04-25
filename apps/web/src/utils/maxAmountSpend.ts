@@ -9,7 +9,7 @@ export function maxAmountSpend(currencyAmount?: CurrencyAmount<Currency>): Curre
   if (!currencyAmount) return undefined
   if (currencyAmount.currency?.isNative) {
     if (currencyAmount.quotient > MIN_BNB) {
-      return CurrencyAmount.fromRawAmount(currencyAmount.currency, currencyAmount.quotient - MIN_BNB);
+      return CurrencyAmount.fromRawAmount(currencyAmount.currency, currencyAmount.quotient - MIN_BNB)
     }
     return CurrencyAmount.fromRawAmount(currencyAmount.currency, BIG_INT_ZERO)
   }

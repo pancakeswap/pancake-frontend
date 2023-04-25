@@ -35,5 +35,5 @@ export function formatPrice(price: Price<Currency, Currency> | undefined, sigFig
 }
 
 export function formatRawAmount(amountRaw: string, decimals: number, sigFigs: number): string {
-  return new Fraction(amountRaw, 10n ** BigInt(decimals)).toSignificant(sigFigs);
+  return new Fraction(amountRaw, 10n ** BigInt(decimals)).toSignificant(sigFigs)
 }

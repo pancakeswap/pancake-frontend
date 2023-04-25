@@ -17,8 +17,8 @@ function maxLiquidityForAmount0Imprecise(sqrtRatioAX96: bigint, sqrtRatioBX96: b
     sqrtRatioAX96 = sqrtRatioBX96
     sqrtRatioBX96 = sqrtRatioAX96
   }
-  const intermediate = sqrtRatioAX96 * sqrtRatioBX96 / Q96
-  return BigInt(amount0) * intermediate / (sqrtRatioBX96 - sqrtRatioAX96);
+  const intermediate = (sqrtRatioAX96 * sqrtRatioBX96) / Q96
+  return (BigInt(amount0) * intermediate) / (sqrtRatioBX96 - sqrtRatioAX96)
 }
 
 /**
@@ -38,7 +38,7 @@ function maxLiquidityForAmount0Precise(sqrtRatioAX96: bigint, sqrtRatioBX96: big
   const numerator = BigInt(amount0) * sqrtRatioAX96 * sqrtRatioBX96
   const denominator = Q96 * (sqrtRatioBX96 - sqrtRatioAX96)
 
-  return numerator / denominator;
+  return numerator / denominator
 }
 
 /**
@@ -53,7 +53,7 @@ function maxLiquidityForAmount1(sqrtRatioAX96: bigint, sqrtRatioBX96: bigint, am
     sqrtRatioAX96 = sqrtRatioBX96
     sqrtRatioBX96 = sqrtRatioAX96
   }
-  return BigInt(amount1) * Q96 / (sqrtRatioBX96 - sqrtRatioAX96);
+  return (BigInt(amount1) * Q96) / (sqrtRatioBX96 - sqrtRatioAX96)
 }
 
 /**
@@ -88,7 +88,7 @@ export function maxLiquidityForAmounts(
   if (sqrtRatioCurrentX96 < sqrtRatioBX96) {
     const liquidity0 = maxLiquidityForAmount0(sqrtRatioCurrentX96, sqrtRatioBX96, amount0)
     const liquidity1 = maxLiquidityForAmount1(sqrtRatioAX96, sqrtRatioCurrentX96, amount1)
-    return liquidity0 < liquidity1 ? liquidity0 : liquidity1;
+    return liquidity0 < liquidity1 ? liquidity0 : liquidity1
   }
   return maxLiquidityForAmount1(sqrtRatioAX96, sqrtRatioBX96, amount1)
 }

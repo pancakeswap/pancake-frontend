@@ -1,13 +1,4 @@
-import {
-  Currency,
-  CurrencyAmount,
-  TradeType,
-  Percent,
-  ONE_HUNDRED_PERCENT,
-  Token,
-  Price,
-  ZERO,
-} from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, Token, Price, ZERO } from '@pancakeswap/sdk'
 import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
@@ -108,5 +99,5 @@ export function formatExecutionPrice(
 }
 
 export function v3FeeToPercent(fee: FeeAmount): Percent {
-  return new Percent(fee, BIPS_BASE * 100n);
+  return new Percent(fee, BIPS_BASE * 100n)
 }

@@ -84,5 +84,5 @@ export function useDerivedLPInfo(
       lpOutputWithoutFee,
       price,
     }
-  }, [totalSupplyAmount, poolBalances, amplifier, loading, amount0, amount1, amountA, amountB]);
+  }, [totalSupplyAmount, poolBalances, amplifier, loading, amount0, amount1, amountA, amountB])
 }

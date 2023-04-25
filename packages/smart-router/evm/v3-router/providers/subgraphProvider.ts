@@ -91,7 +91,7 @@ export const getV3PoolSubgraph = async ({
       tvlUSD: BigInt(Number.parseInt(totalValueLockedUSD)),
       token0ProtocolFee,
       token1ProtocolFee,
-    };
+    }
   })
 
   metric(`Got V3 pools from subgraph end`, pools)

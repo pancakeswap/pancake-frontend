@@ -27,7 +27,7 @@ export abstract class SwapMath {
     const exactIn = amountRemaining >= ZERO
 
     if (exactIn) {
-      const amountRemainingLessFee = amountRemaining * (MAX_FEE - BigInt(feePips)) / MAX_FEE
+      const amountRemainingLessFee = (amountRemaining * (MAX_FEE - BigInt(feePips))) / MAX_FEE
       returnValues.amountIn = zeroForOne
         ? SqrtPriceMath.getAmount0Delta(sqrtRatioTargetX96, sqrtRatioCurrentX96, liquidity, true)
         : SqrtPriceMath.getAmount1Delta(sqrtRatioCurrentX96, sqrtRatioTargetX96, liquidity, true)

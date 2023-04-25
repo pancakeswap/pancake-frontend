@@ -10,13 +10,7 @@ describe('PositionLibrary', () => {
     })
 
     it('non-0', () => {
-      const [tokensOwed0, tokensOwed1] = PositionLibrary.getTokensOwed(
-        ZERO,
-        ZERO,
-        1n,
-        2n ** 128n,
-        2n ** 128n
-      )
+      const [tokensOwed0, tokensOwed1] = PositionLibrary.getTokensOwed(ZERO, ZERO, 1n, 2n ** 128n, 2n ** 128n)
       expect(tokensOwed0).toEqual(1n)
       expect(tokensOwed1).toEqual(1n)
     })

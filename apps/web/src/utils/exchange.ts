@@ -19,7 +19,7 @@ import { Field } from '../state/swap/actions'
 
 // converts a basis points value to a sdk percent
 export function basisPointsToPercent(num: number): Percent {
-  return new Percent(BigInt(num), BIPS_BASE);
+  return new Percent(BigInt(num), BIPS_BASE)
 }
 
 export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [bigint, bigint] {
@@ -27,9 +27,9 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
     throw Error(`Unexpected slippage value: ${slippage}`)
   }
   return [
-    value.quotient * BigInt(10000 - slippage) / BIPS_BASE,
-    value.quotient * BigInt(10000 + slippage) / BIPS_BASE,
-  ];
+    (value.quotient * BigInt(10000 - slippage)) / BIPS_BASE,
+    (value.quotient * BigInt(10000 + slippage)) / BIPS_BASE,
+  ]
 }
 
 export function useRouterContract() {

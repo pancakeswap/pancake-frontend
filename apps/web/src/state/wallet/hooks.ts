@@ -38,7 +38,7 @@ export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): 
         return memo
       }, {}),
     [addresses, results, native],
-  );
+  )
 }
 
 /**
@@ -80,7 +80,7 @@ export function useTokenBalancesWithLoadingIndicator(
       [address, validatedTokens, balances],
     ),
     anyLoading,
-  ];
+  ]
 }
 
 export function useTokenBalances(

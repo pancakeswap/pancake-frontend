@@ -135,12 +135,7 @@ export default function useV3DerivedInfo(
   // check for invalid price input (converts to invalid ratio)
   const invalidPrice = useMemo(() => {
     const sqrtRatioX96 = price ? encodeSqrtRatioX96(price.numerator, price.denominator) : undefined
-    return price &&
-    sqrtRatioX96 &&
-    !(
-      sqrtRatioX96 >= TickMath.MIN_SQRT_RATIO &&
-      sqrtRatioX96 < TickMath.MAX_SQRT_RATIO
-    );
+    return price && sqrtRatioX96 && !(sqrtRatioX96 >= TickMath.MIN_SQRT_RATIO && sqrtRatioX96 < TickMath.MAX_SQRT_RATIO)
   }, [price])
 
   // used for ratio calculation when pool not initialized
@@ -148,7 +143,7 @@ export default function useV3DerivedInfo(
     if (tokenA && tokenB && feeAmount && price && !invalidPrice) {
       const currentTick = priceToClosestTick(price)
       const currentSqrt = TickMath.getSqrtRatioAtTick(currentTick)
-      return new Pool(tokenA, tokenB, feeAmount, currentSqrt, 0n, currentTick, []);
+      return new Pool(tokenA, tokenB, feeAmount, currentSqrt, 0n, currentTick, [])
     }
 
     return undefined

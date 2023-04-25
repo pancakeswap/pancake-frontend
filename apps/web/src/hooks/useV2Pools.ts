@@ -138,7 +138,7 @@ export function useV2CandidatePoolsFromOnChain(
               ...pool,
               tvlUSD: BigInt(Math.floor(getAmountUsd(pool.reserve0) + getAmountUsd(pool.reserve1))),
               address: SDKPair.getAddress(pool.reserve0.wrapped.currency, pool.reserve1.wrapped.currency),
-            };
+            }
           })
         : null,
     [poolsFromOnChain, baseTokenUsdPrices],

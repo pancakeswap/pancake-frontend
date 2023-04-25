@@ -119,5 +119,5 @@ export function usePoolActiveLiquidity(
       activeTick,
       data: ticksProcessed,
     }
-  }, [currencyA, currencyB, activeTick, pool, ticks, isLoading, error]);
+  }, [currencyA, currencyB, activeTick, pool, ticks, isLoading, error])
 }

@@ -25,10 +25,7 @@ export abstract class TickList {
     )
 
     // ensure tick liquidity deltas sum to 0
-    invariant(
-      ticks.reduce((accumulator, { liquidityNet }) => accumulator + liquidityNet, ZERO) === ZERO,
-      'ZERO_NET'
-    )
+    invariant(ticks.reduce((accumulator, { liquidityNet }) => accumulator + liquidityNet, ZERO) === ZERO, 'ZERO_NET')
 
     invariant(isSorted(ticks, tickComparator), 'SORTED')
   }

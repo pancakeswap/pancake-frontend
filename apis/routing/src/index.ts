@@ -1,4 +1,4 @@
-import { ChainId, Currency } from '@pancakeswap/sdk';
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
 import { GraphQLClient } from 'graphql-request'

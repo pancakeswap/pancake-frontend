@@ -10,18 +10,9 @@ describe('isTradeBetter', () => {
   const token2 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000002', 18, '2')
   const token3 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000003', 18, '3')
 
-  const pair12 = new Pair(
-    CurrencyAmount.fromRawAmount(token1, 20000n),
-    CurrencyAmount.fromRawAmount(token2, 20000n)
-  )
-  const pair23 = new Pair(
-    CurrencyAmount.fromRawAmount(token2, 20000n),
-    CurrencyAmount.fromRawAmount(token3, 30000n)
-  )
-  const pair13 = new Pair(
-    CurrencyAmount.fromRawAmount(token1, 30000n),
-    CurrencyAmount.fromRawAmount(token3, 30000n)
-  )
+  const pair12 = new Pair(CurrencyAmount.fromRawAmount(token1, 20000n), CurrencyAmount.fromRawAmount(token2, 20000n))
+  const pair23 = new Pair(CurrencyAmount.fromRawAmount(token2, 20000n), CurrencyAmount.fromRawAmount(token3, 30000n))
+  const pair13 = new Pair(CurrencyAmount.fromRawAmount(token1, 30000n), CurrencyAmount.fromRawAmount(token3, 30000n))
 
   it('should return false if tradeB missing', () => {
     expect(

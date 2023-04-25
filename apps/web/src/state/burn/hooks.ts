@@ -60,20 +60,12 @@ export function useDerivedBurnInfo(
   // liquidity values
   const totalSupply = useTotalSupply(pair?.liquidityToken)
   const liquidityValueA =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenA &&
-    totalSupply.quotient >= userLiquidity.quotient
+    pair && totalSupply && userLiquidity && tokenA && totalSupply.quotient >= userLiquidity.quotient
       ? CurrencyAmount.fromRawAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).quotient)
       : undefined
 
   const liquidityValueB =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenB &&
-    totalSupply.quotient >= userLiquidity.quotient
+    pair && totalSupply && userLiquidity && tokenB && totalSupply.quotient >= userLiquidity.quotient
       ? CurrencyAmount.fromRawAmount(tokenB, pair.getLiquidityValue(tokenB, totalSupply, userLiquidity, false).quotient)
       : undefined
   const liquidityValues: { [Field.CURRENCY_A]?: CurrencyAmount<Token>; [Field.CURRENCY_B]?: CurrencyAmount<Token> } = {

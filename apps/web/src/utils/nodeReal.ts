@@ -24,7 +24,7 @@ export const getNodeRealUrl = (networkName: string) => {
   return {
     http: url,
     webSocket: url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),
-  };
+  }
 }
 
 export const getNodeRealUrlV2 = (chainId: number, key?: string) => {

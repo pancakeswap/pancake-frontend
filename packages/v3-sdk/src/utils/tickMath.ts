@@ -4,7 +4,7 @@ import { ONE, ZERO } from '../internalConstants'
 import { mostSignificantBit } from './mostSignificantBit'
 
 function mulShift(val: bigint, mulBy: string): bigint {
-  return val * BigInt(mulBy) >> 128n;
+  return (val * BigInt(mulBy)) >> 128n
 }
 
 const Q32 = 2n ** 32n
@@ -71,9 +71,7 @@ export abstract class TickMath {
     if (tick > 0) ratio = MaxUint256 / ratio
 
     // back to Q96
-    return ratio % Q32 > ZERO
-      ? ratio / Q32 + ONE
-      : ratio / Q32;
+    return ratio % Q32 > ZERO ? ratio / Q32 + ONE : ratio / Q32
   }
 
   /**
@@ -82,11 +80,7 @@ export abstract class TickMath {
    * @param sqrtRatioX96 the sqrt ratio as a Q64.96 for which to compute the tick
    */
   public static getTickAtSqrtRatio(sqrtRatioX96: bigint): number {
-    invariant(
-      sqrtRatioX96 >= TickMath.MIN_SQRT_RATIO &&
-        sqrtRatioX96 < TickMath.MAX_SQRT_RATIO,
-      'SQRT_RATIO'
-    )
+    invariant(sqrtRatioX96 >= TickMath.MIN_SQRT_RATIO && sqrtRatioX96 < TickMath.MAX_SQRT_RATIO, 'SQRT_RATIO')
 
     const sqrtRatioX128 = sqrtRatioX96 << 32n
 
@@ -99,24 +93,20 @@ export abstract class TickMath {
       r = sqrtRatioX128 << BigInt(127 - msb)
     }
 
-    let log_2: bigint = BigInt(msb) - 128n << 64n
+    let log_2: bigint = (BigInt(msb) - 128n) << 64n
 
     for (let i = 0; i < 14; i++) {
-      r = r * r >> 127n
+      r = (r * r) >> 127n
       const f = r >> 128n
-      log_2 = log_2 | f << BigInt(63 - i)
+      log_2 = log_2 | (f << BigInt(63 - i))
       r = r >> f
     }
 
     const log_sqrt10001 = log_2 * 255738958999603826347141n
 
-    const tickLow = Number(log_sqrt10001 - 3402992956809132418596140100660247210n >> 128n)
-    const tickHigh = Number(log_sqrt10001 + 291339464771989622907027621153398088495n >> 128n)
+    const tickLow = Number((log_sqrt10001 - 3402992956809132418596140100660247210n) >> 128n)
+    const tickHigh = Number((log_sqrt10001 + 291339464771989622907027621153398088495n) >> 128n)
 
-    return tickLow === tickHigh
-      ? tickLow
-      : TickMath.getSqrtRatioAtTick(tickHigh) <= sqrtRatioX96
-      ? tickHigh
-      : tickLow;
+    return tickLow === tickHigh ? tickLow : TickMath.getSqrtRatioAtTick(tickHigh) <= sqrtRatioX96 ? tickHigh : tickLow
   }
 }
