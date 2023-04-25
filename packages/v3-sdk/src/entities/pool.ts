@@ -285,15 +285,11 @@ export class Pool {
       )
 
       if (exactInput) {
-        // @ts-ignore FIXME: BigInt
-        state.amountSpecifiedRemaining = state.amountSpecifiedRemaining - (step.amountIn + step.feeAmount)
-        // @ts-ignore FIXME: BigInt
-        state.amountCalculated = state.amountCalculated - step.amountOut
+        state.amountSpecifiedRemaining = state.amountSpecifiedRemaining - (step.amountIn! + step.feeAmount!)
+        state.amountCalculated = state.amountCalculated! - step.amountOut!
       } else {
-        // @ts-ignore FIXME: BigInt
-        state.amountSpecifiedRemaining = state.amountSpecifiedRemaining + step.amountOut
-        // @ts-ignore FIXME: BigInt
-        state.amountCalculated = state.amountCalculated + (step.amountIn + step.feeAmount)
+        state.amountSpecifiedRemaining = state.amountSpecifiedRemaining! + step.amountOut!
+        state.amountCalculated = state.amountCalculated! + (step.amountIn! + step.feeAmount!)
       }
 
       // TODO

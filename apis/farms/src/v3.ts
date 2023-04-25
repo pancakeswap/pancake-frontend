@@ -261,6 +261,7 @@ const handler_ = async (req: Request) => {
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    // eslint-disable-next-line no-await-in-loop
     const pos = await fetchPositionByMasterChefId(posId)
     allActivePositions = [...allActivePositions, ...pos]
     if (pos.length < 1000) {
@@ -321,8 +322,8 @@ const handler_ = async (req: Request) => {
       sqrtRatio,
       BigInt(position.liquidity),
     )
-    totalToken0 = totalToken0 + token0
-    totalToken1 = totalToken1 + token1
+    totalToken0 += token0
+    totalToken1 += token1
   }
 
   const curr0 = CurrencyAmount.fromRawAmount(

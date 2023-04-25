@@ -144,7 +144,10 @@ export function RoiCalculator({
     ]
   );
 
-  const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
+  const tickCurrent = useMemo(
+    () => (sqrtRatioX96 ? TickMath.getTickAtSqrtRatio(sqrtRatioX96) : undefined),
+    [sqrtRatioX96]
+  );
   const invertPrice = useMemo(
     () => currencyA && currencyB && currencyB.wrapped.sortsBefore(currencyA.wrapped),
     [currencyA, currencyB]
@@ -236,9 +239,10 @@ export function RoiCalculator({
         sqrtRatioX96,
       });
 
-      const cakeApr = positionLiquidity > ZERO
-        ? new BigNumber(positionLiquidity.toString()).times(cakeAprFactor).div(usdValue)
-        : BIG_ZERO;
+      const cakeApr =
+        positionLiquidity > ZERO
+          ? new BigNumber(positionLiquidity.toString()).times(cakeAprFactor).div(usdValue)
+          : BIG_ZERO;
 
       return cakeApr;
     } catch (error) {
