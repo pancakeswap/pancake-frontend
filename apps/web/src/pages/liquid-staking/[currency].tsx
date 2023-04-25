@@ -12,11 +12,11 @@ import useETHApprovalStatus from 'hooks/useETHApprovalStatus'
 import { useApproveETH } from 'hooks/useApproveETH'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCallback, useMemo, useState } from 'react'
-import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { WETH9, WNATIVE } from '@pancakeswap/sdk'
+import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
 import { useSWRContract } from 'hooks/useSWRContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from 'state/wallet/hooks'
@@ -39,9 +39,9 @@ const LiquidStakingStakePage = () => {
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
 
-  const currency = router.query.currency as string
+  const ethToken = chainId === ChainId.ETHEREUM ? NATIVE[chainId] : WETH9[chainId]
 
-  const inputCurrency = useCurrency(currency)
+  const inputCurrency = useCurrency(ethToken?.address || ethToken?.symbol)
 
   const currencyBalance = useCurrencyBalance(account, inputCurrency)
 
@@ -63,9 +63,7 @@ const LiquidStakingStakePage = () => {
 
   const { isPending, onApprove } = useApproveETH(wbethContract?.address)
 
-  const isETH = WETH9[chainId]?.address === currency
-
-  const decimals = isETH ? WETH9[chainId]?.decimals : WNATIVE[chainId]?.decimals
+  const decimals = ethToken?.decimals
 
   const rateNumber: BigNumber | undefined = data
     ? new BigNumber(data.toString()).dividedBy(new BigNumber(10 ** decimals))
@@ -195,17 +193,17 @@ const LiquidStakingStakePage = () => {
           </Text>
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
-              <Text>{quoteAmount?.toFixed(4) || '0'}</Text>
+              <Text>{quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0) : '0'}</Text>
               <Flex>
                 <CurrencyLogo currency={inputCurrency} size="24px" />
-                <Text mr="4px">{isETH ? 'wBETH' : 'sBNB'}</Text>
+                <Text ml="4px">wBETH</Text>
               </Flex>
             </RowBetween>
           </LightGreyCard>
           <RowBetween mb="24px">
             <ExchangeRateTitle />
 
-            {exchangeRateAmount ? <Text>{`1 ETH = ${exchangeRateAmount.toFixed(4)} wBETH`}</Text> : '-'}
+            {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0)} wBETH`}</Text> : '-'}
           </RowBetween>
           {/* 
           <RowBetween mb="24px">

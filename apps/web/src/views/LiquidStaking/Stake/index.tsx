@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import { AppHeader } from 'components/App'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState, useCallback, useEffect } from 'react'
-import { WETH9 } from '@pancakeswap/sdk'
+import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWBETHContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
@@ -15,21 +15,23 @@ import { ExchangeRateTitle } from '../components/ExchangeRateTitle'
 export function LiquidStakingPageStake() {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+
+  const eth = chainId === ChainId.ETHEREUM ? NATIVE[chainId] : WETH9[chainId]
+
   // NOTE: default is ETH
+  const [selectedSymbol, setSymbol] = useState(eth?.symbol)
 
-  const [currencyAddress, setCurrencyAddress] = useState(WETH9[chainId]?.address)
+  const handleSortOptionChange = useCallback((option: OptionProps) => setSymbol(option.value), [])
 
-  const handleSortOptionChange = useCallback((option: OptionProps) => setCurrencyAddress(option.value), [])
-
-  const inputCurrency = useCurrency(currencyAddress)
+  const inputCurrency = useCurrency(eth?.address || eth?.symbol)
 
   const wbethContract = useWBETHContract()
 
   const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
 
   useEffect(() => {
-    setCurrencyAddress(WETH9[chainId]?.address)
-  }, [chainId])
+    setSymbol(eth?.symbol)
+  }, [chainId, eth?.symbol])
 
   const decimals = inputCurrency?.decimals
 
@@ -51,7 +53,7 @@ export function LiquidStakingPageStake() {
           options={[
             {
               label: 'ETH / wBETH',
-              value: WETH9[chainId]?.address,
+              value: WETH9[chainId]?.symbol,
             },
           ]}
           onOptionChange={handleSortOptionChange}
@@ -61,7 +63,7 @@ export function LiquidStakingPageStake() {
 
           {exchangeRateAmount ? <Text>{`1 ETH = ${exchangeRateAmount.toFixed(4)} wBETH`}</Text> : '-'}
         </RowBetween>
-        <NextLink href={`/liquid-staking/${currencyAddress}`}>
+        <NextLink href={`/liquid-staking/${selectedSymbol}`}>
           <Button width="100%">{t('Proceed')}</Button>
         </NextLink>
       </CardBody>
