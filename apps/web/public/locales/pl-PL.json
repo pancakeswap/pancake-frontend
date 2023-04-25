@@ -2414,7 +2414,7 @@
   "Fee Tier": "Poziom prowizji",
   "fee tier": "poziom prowizji",
   "Selected Range": "Wybrany zakres",
-  "Searching For The Best Price": "Searching For The Best Price",
+  "Searching For The Best Price": "Wyszukiwanie najlepszej ceny",
   "Fees Earned": "Zarobione prowizje",
   "Inactive": "Nieaktywne",
   "Stable coins work best with StableSwap LPs. Adding V3 or V2 LP may result in less fee earning or inability to perform yield farming.": "Stablecoiny działają najlepiej z pulami LP StableSwap. Dodanie LP w wersji V3 lub V2 może skutkować mniejszymi zarobkami z opłat lub niemożnością uzyskiwania przychodów z farmienia.",
@@ -2437,6 +2437,6 @@
   "V3": "V3",
   "V2": "V2",
   "TVL is currently too low to represent the data correctly": "TVL jest obecnie zbyt niska, aby prawidłowo reprezentować dane",
-  "Trade now to win $5000 in rewards": "Trade now to win $5000 in rewards",
-  "25 winners every day until May 1st!": "25 winners every day until May 1st!"
+  "Trade now to win $5000 in rewards": "Handluj teraz, aby wygrać 5000 USD w nagrodach",
+  "25 winners every day until May 1st!": "25 zwycięzców każdego dnia do 1 maja!"
 }
