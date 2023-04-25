@@ -1,7 +1,13 @@
 /* eslint-disable no-console */
 import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useMemo } from 'react'
-import { SmartRouter, PoolType, QuoteProvider, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import {
+  SmartRouter,
+  PoolType,
+  QuoteProvider,
+  SmartRouterTrade,
+  BATCH_MULTICALL_CONFIGS,
+} from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 import { isDesktop } from 'react-device-detect'
@@ -135,6 +141,11 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
 
   // switch to api when it's stable
+  const _bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+    ...params,
+    enabled: Boolean(enabled && isQuoterAPIEnabled),
+    autoRevalidate: apiAutoRevalidate,
+  })
   const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
     enabled: Boolean(enabled && isQuoterAPIEnabled),
@@ -401,10 +412,23 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
   quoterOptimization: false,
 })
 
+const onChainQuoteProvider2 = SmartRouter.createQuoteProvider({
+  onChainProvider: viemClients,
+  multicallConfigs: {
+    ...BATCH_MULTICALL_CONFIGS,
+    [ChainId.BSC]: {
+      ...BATCH_MULTICALL_CONFIGS[ChainId.BSC],
+      defaultConfig: {
+        multicallChunk: 150,
+        gasLimitOverride: 1_000_000,
+      },
+    },
+  },
+})
 export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker2',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: onChainQuoteProvider,
+  quoteProvider: onChainQuoteProvider2,
   getBestTrade: createWorkerGetBestTrade(worker2),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
