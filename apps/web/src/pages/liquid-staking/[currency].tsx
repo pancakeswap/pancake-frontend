@@ -16,7 +16,7 @@ import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { JSBI, WETH9, WNATIVE } from '@pancakeswap/sdk'
+import { WETH9, WNATIVE } from '@pancakeswap/sdk'
 import { useSWRContract } from 'hooks/useSWRContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from 'state/wallet/hooks'
@@ -67,9 +67,12 @@ const LiquidStakingStakePage = () => {
 
   const decimals = isETH ? WETH9[chainId]?.decimals : WNATIVE[chainId]?.decimals
 
-  const rateNumber = data ? JSBI.divide(JSBI.BigInt(data.toString()), JSBI.BigInt(10 ** decimals)) : undefined
+  const rateNumber: BigNumber | undefined = data
+    ? new BigNumber(data.toString()).dividedBy(new BigNumber(10 ** decimals))
+    : undefined
 
   const quoteAmount = currentAmount && rateNumber ? currentAmount.dividedBy(rateNumber.toString()) : undefined
+  const exchangeRateAmount = rateNumber ? new BigNumber('1').dividedBy(rateNumber.toString()) : undefined
 
   // const estimateFn = useCallback(async () => {
   //   if (!convertedStakeAmount || !account) return
@@ -192,7 +195,7 @@ const LiquidStakingStakePage = () => {
           </Text>
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
-              <Text>{quoteAmount?.toString() || '0'}</Text>
+              <Text>{quoteAmount?.toFixed(4) || '0'}</Text>
               <Flex>
                 <CurrencyLogo currency={inputCurrency} size="24px" />
                 <Text mr="4px">{isETH ? 'wBETH' : 'sBNB'}</Text>
@@ -202,11 +205,7 @@ const LiquidStakingStakePage = () => {
           <RowBetween mb="24px">
             <ExchangeRateTitle />
 
-            {rateNumber ? (
-              <Text>{isETH ? `${rateNumber?.toString()} ETH = 1 wBETH` : `${rateNumber} BNB = 1 sBNB`}</Text>
-            ) : (
-              '-'
-            )}
+            {exchangeRateAmount ? <Text>{`1 ETH = ${exchangeRateAmount.toFixed(4)} wBETH`}</Text> : '-'}
           </RowBetween>
           {/* 
           <RowBetween mb="24px">

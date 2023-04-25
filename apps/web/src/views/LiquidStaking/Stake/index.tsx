@@ -3,11 +3,13 @@ import NextLink from 'next/link'
 import { AppHeader } from 'components/App'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState, useCallback, useEffect } from 'react'
-import { JSBI, WETH9 } from '@pancakeswap/sdk'
+import { WETH9 } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWBETHContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { useCurrency } from 'hooks/Tokens'
+import BigNumber from 'bignumber.js'
+
 import { ExchangeRateTitle } from '../components/ExchangeRateTitle'
 
 export function LiquidStakingPageStake() {
@@ -18,8 +20,6 @@ export function LiquidStakingPageStake() {
   const [currencyAddress, setCurrencyAddress] = useState(WETH9[chainId]?.address)
 
   const handleSortOptionChange = useCallback((option: OptionProps) => setCurrencyAddress(option.value), [])
-
-  const isETH = WETH9[chainId]?.address === currencyAddress
 
   const inputCurrency = useCurrency(currencyAddress)
 
@@ -33,8 +33,11 @@ export function LiquidStakingPageStake() {
 
   const decimals = inputCurrency?.decimals
 
-  const rateNumber =
-    data && decimals ? JSBI.divide(JSBI.BigInt(data.toString()), JSBI.BigInt(10 ** decimals)) : undefined
+  const rateNumber: BigNumber | undefined = data
+    ? new BigNumber(data.toString()).dividedBy(new BigNumber(10 ** decimals))
+    : undefined
+
+  const exchangeRateAmount = rateNumber ? new BigNumber('1').dividedBy(rateNumber.toString()) : undefined
 
   return (
     <>
@@ -56,11 +59,7 @@ export function LiquidStakingPageStake() {
         <RowBetween mb="24px">
           <ExchangeRateTitle />
 
-          {rateNumber ? (
-            <Text>{isETH ? `${rateNumber?.toString()} ETH = 1 wBETH` : `${rateNumber} BNB = 1 sBNB`}</Text>
-          ) : (
-            '-'
-          )}
+          {exchangeRateAmount ? <Text>{`1 ETH = ${exchangeRateAmount.toFixed(4)} wBETH`}</Text> : '-'}
         </RowBetween>
         <NextLink href={`/liquid-staking/${currencyAddress}`}>
           <Button width="100%">{t('Proceed')}</Button>
