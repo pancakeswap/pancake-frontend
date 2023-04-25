@@ -65,7 +65,7 @@ export const useFarmsV3Public = () => {
 
       // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
       const farms = farmsV3ConfigChainMap[chainId as ChainId]
-      console.log(farms, 'farms')
+
       const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
 
       try {
