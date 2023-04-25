@@ -62,6 +62,22 @@ export const farmsV3 = [
     feeAmount: FeeAmount.MEDIUM,
   },
   {
+    pid: 27,
+    lpSymbol: 'PSTAKE-CAKE LP',
+    token: bscTokens.pstake,
+    quoteToken: bscTokens.cake,
+    lpAddress: Pool.getAddress(bscTokens.stkbnb, bscTokens.wbnb, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 26,
+    lpSymbol: 'stkBNB-BNB LP',
+    token: bscTokens.stkbnb,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: Pool.getAddress(bscTokens.stkbnb, bscTokens.wbnb, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 25,
     lpSymbol: 'UNW-BNB LP',
     token: bscTokens.unw,
