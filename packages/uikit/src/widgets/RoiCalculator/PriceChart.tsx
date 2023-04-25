@@ -27,6 +27,8 @@ interface Props {
   priceCurrent?: number | string;
   priceUpper?: number | string;
   priceLower?: number | string;
+  maxPrice?: number;
+  minPrice?: number;
   onSpanChange?: (spanIndex: number) => void;
 }
 
@@ -37,6 +39,8 @@ export const PriceChart = memo(function PriceChart({
   priceUpper,
   priceLower,
   priceCurrent,
+  maxPrice,
+  minPrice,
 }: Props) {
   const { t } = useTranslation();
   const priceLimits = useMemo(
@@ -102,8 +106,8 @@ export const PriceChart = memo(function PriceChart({
     prices && prices.length ? (
       <>
         <Flex flexDirection="row" justifyContent="space-between" mt="0.5em" width="100%">
-          <PriceDisplay title={t("Min")} value={priceKeyValues.min.toPrecision(6)} />
-          <PriceDisplay title={t("Max")} value={priceKeyValues.max.toPrecision(6)} ml="0.5em" />
+          <PriceDisplay title={t("Min")} value={maxPrice?.toPrecision(6)} />
+          <PriceDisplay title={t("Max")} value={minPrice?.toPrecision(6)} ml="0.5em" />
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" mt="0.5em" width="100%">
           <PriceDisplay title={t("Avg")} value={priceKeyValues.average.toPrecision(6)} />
