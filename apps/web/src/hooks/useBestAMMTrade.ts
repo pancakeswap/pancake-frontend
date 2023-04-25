@@ -349,7 +349,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
           currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
           value: amount.quotient.toString(),
         },
-        gasPriceWei: gasPriceWei?.toString(),
+        gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
         maxHops,
         maxSplits,
         poolTypes: allowedPoolTypes,
@@ -367,7 +367,12 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterWorker',
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
-  getBestTrade: async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes, poolProvider }) => {
+  getBestTrade: async (
+    amount,
+    currency,
+    tradeType,
+    { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei },
+  ) => {
     const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
       protocols: allowedPoolTypes,
     })
@@ -380,6 +385,7 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
         currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
         value: amount.quotient.toString(),
       },
+      gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
       maxHops,
       maxSplits,
       poolTypes: allowedPoolTypes,
