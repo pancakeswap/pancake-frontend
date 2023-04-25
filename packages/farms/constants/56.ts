@@ -46,7 +46,7 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
-    pid: 27,
+    pid: 29,
     lpSymbol: 'unshETH-USH LP',
     token: bscTokens.unshETH,
     quoteToken: bscTokens.ush,
@@ -54,7 +54,7 @@ export const farmsV3 = [
     feeAmount: FeeAmount.MEDIUM,
   },
   {
-    pid: 26,
+    pid: 28,
     lpSymbol: 'unshETH-USDT LP',
     token: bscTokens.unshETH,
     quoteToken: bscTokens.usdt,
