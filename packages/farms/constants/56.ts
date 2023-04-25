@@ -66,7 +66,7 @@ export const farmsV3 = [
     lpSymbol: 'PSTAKE-CAKE LP',
     token: bscTokens.pstake,
     quoteToken: bscTokens.cake,
-    lpAddress: Pool.getAddress(bscTokens.stkbnb, bscTokens.wbnb, FeeAmount.MEDIUM),
+    lpAddress: Pool.getAddress(bscTokens.pstake, bscTokens.cake, FeeAmount.MEDIUM),
     feeAmount: FeeAmount.MEDIUM,
   },
   {
