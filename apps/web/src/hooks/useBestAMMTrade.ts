@@ -141,11 +141,11 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
 
   // switch to api when it's stable
-  const _bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
-    ...params,
-    enabled: Boolean(enabled && isQuoterAPIEnabled),
-    autoRevalidate: apiAutoRevalidate,
-  })
+  // const _bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+  //   ...params,
+  //   enabled: Boolean(enabled && isQuoterAPIEnabled),
+  //   autoRevalidate: apiAutoRevalidate,
+  // })
   const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
     enabled: Boolean(enabled && isQuoterAPIEnabled),
