@@ -34,9 +34,6 @@ export interface InfoDetail {
   email: string
   name: string
   updatedAt: string
-  _count: {
-    user: number
-  }
   fees: FeeType[]
   nickName: string
   ablePerps: boolean
@@ -61,9 +58,6 @@ const initAffiliateData: InfoDetail = {
   email: '',
   name: '',
   updatedAt: '',
-  _count: {
-    user: 0,
-  },
   availableFeeUSD: '0',
   fees: [],
   nickName: '',
