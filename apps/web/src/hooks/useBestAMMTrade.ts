@@ -12,6 +12,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { viemClients } from 'utils/viem'
 import { WorkerEvent } from 'quote-worker'
+import { QUOTING_API } from 'config/constants/endpoints'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -98,7 +99,7 @@ interface Options {
 }
 
 interface useBestAMMTradeOptions extends Options {
-  type?: 'offchain' | 'quoter' | 'auto'
+  type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
 const isLowEndDevice = typeof window !== 'undefined' && !(isDesktop && typeof window.requestIdleCallback === 'function')
@@ -107,25 +108,20 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
 
-  const isOffChainEnabled = useMemo(
-    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
-    [type, isWrapping],
-  )
-
-  // const isQuoterEnabled = useMemo(
-  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
-  //   [type, isWrapping],
-  // )
   const isQuoterEnabled = useMemo(
     () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
     [type, isWrapping],
   )
 
-  const isQuoterAPIEnabled = false
-  // const isQuoterAPIEnabled = useMemo(
-  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
-  //   [isWrapping, type],
-  // )
+  const isQuoterAPIEnabled = useMemo(
+    () => Boolean(!isWrapping && (type === 'api' || (isQuoterEnabled && !worker))),
+    [isWrapping, type, isQuoterEnabled],
+  )
+
+  const isOffChainEnabled = useMemo(
+    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
+    [isWrapping, type],
+  )
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
@@ -145,30 +141,19 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const quoterAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
 
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
-    ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !worker),
-    autoRevalidate: quoterAutoRevalidate,
-  })
-
   const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && worker),
+    enabled: Boolean(enabled && isQuoterEnabled && worker && !isQuoterAPIEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
 
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
-    const { trade: tradeFromQuoter } = bestTradeFromQuoter
     const { trade: tradeFromQuoterWorker } = bestTradeFromQuoterWorker
     const { trade: tradeFromApi } = bestTradeFromQuoterApi
 
-    const quoterTrade = tradeFromApi || tradeFromQuoter || tradeFromQuoterWorker
-    const bestTradeFromQuoter_ = isQuoterAPIEnabled
-      ? bestTradeFromQuoterApi
-      : worker
-      ? bestTradeFromQuoterWorker
-      : bestTradeFromQuoter
+    const quoterTrade = tradeFromApi || tradeFromQuoterWorker
+    const bestTradeFromQuoter_ = isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker
 
     if (!tradeFromOffchain && !quoterTrade) {
       return bestTradeFromOffchain
@@ -192,13 +177,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
     return bestTradeFromOffchain
-  }, [
-    bestTradeFromOffchain,
-    bestTradeFromQuoter,
-    bestTradeFromQuoterApi,
-    bestTradeFromQuoterWorker,
-    isQuoterAPIEnabled,
-  ])
+  }, [bestTradeFromOffchain, bestTradeFromQuoterApi, bestTradeFromQuoterWorker, isQuoterAPIEnabled])
 }
 
 function bestTradeHookFactory({
@@ -357,7 +336,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       protocols: allowedPoolTypes,
     })
 
-    const serverRes = await fetch(`${process.env.NEXT_PUBLIC_ROUTING_API}/v0/quote`, {
+    const serverRes = await fetch(`${QUOTING_API}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
