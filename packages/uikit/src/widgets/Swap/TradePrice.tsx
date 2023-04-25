@@ -14,8 +14,8 @@ interface TradePriceProps {
 
 export function TradePrice({ price, loading }: TradePriceProps) {
   const [showInverted, setShowInverted] = useState<boolean>(false);
-  const formattedPrice = showInverted ? formatPrice(price, 6) : formatPrice(price?.invert(), 6);
 
+  const formattedPrice = showInverted ? formatPrice(price, 6) : formatPrice(price?.invert(), 6);
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency);
 
   return (
