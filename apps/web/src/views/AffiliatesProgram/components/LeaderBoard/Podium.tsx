@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 import {
-  StyledVolumeText,
   RightBox,
   MiddleBox,
   LeftBox,
@@ -12,9 +11,8 @@ import {
 } from 'views/TradingCompetition/components/TeamRanks/Podium/styles'
 import { PodiumBase } from 'views/TradingCompetition/svgs'
 import PodiumAvatar from 'views/AffiliatesProgram/components/LeaderBoard/PodiumAvatar'
-import NewUsers from 'views/AffiliatesProgram/components/LeaderBoard/NewUsers'
 import { ListType } from 'views/AffiliatesProgram/hooks/useLeaderboard'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import PodiumText from 'views/AffiliatesProgram/components/LeaderBoard/PodiumText'
 
 interface PodiumProps {
   list: ListType[]
@@ -53,55 +51,19 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
         <PodiumBase />
         <Flex justifyContent="space-between" mt="8px">
           <StyledVolumeFlex>
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(secondUser?.metric?.totalTradeVolumeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text mb="12px" fontSize="12px" color="textSubtle">
-              {t('Total Volume')}
-            </Text>
-            <NewUsers totalUsers={Number(secondUser?.metric?.totalUsers)} />
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(secondUser?.metric?.totalEarnFeeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text fontSize="12px" color="textSubtle">
-              {t('Commission')}
-            </Text>
+            <PodiumText title={t('Total Volume')} amount={secondUser?.metric?.totalTradeVolumeUSD} mb="12px" />
+            <PodiumText title={t('New users')} amount={secondUser?.metric?.totalUsers.toString()} />
+            <PodiumText title={t('Commission')} amount={secondUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(firstUser?.metric?.totalTradeVolumeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text mb="12px" fontSize="12px" color="textSubtle">
-              {t('Total Volume')}
-            </Text>
-            <NewUsers totalUsers={Number(firstUser?.metric?.totalUsers)} />
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(firstUser?.metric?.totalEarnFeeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text fontSize="12px" color="textSubtle">
-              {t('Commission')}
-            </Text>
+            <PodiumText title={t('Total Volume')} amount={firstUser?.metric?.totalTradeVolumeUSD} mb="12px" />
+            <PodiumText title={t('New users')} amount={firstUser?.metric?.totalUsers.toString()} />
+            <PodiumText title={t('Commission')} amount={firstUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(thirdUser?.metric?.totalTradeVolumeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text mb="12px" fontSize="12px" color="textSubtle">
-              {t('Total Volume')}
-            </Text>
-            <NewUsers totalUsers={Number(thirdUser?.metric?.totalUsers)} />
-            <StyledVolumeText bold>{`$${formatNumber(
-              Number(thirdUser?.metric?.totalEarnFeeUSD),
-              0,
-            )}`}</StyledVolumeText>
-            <Text fontSize="12px" color="textSubtle">
-              {t('Commission')}
-            </Text>
+            <PodiumText title={t('Total Volume')} amount={thirdUser?.metric?.totalTradeVolumeUSD} mb="12px" />
+            <PodiumText title={t('New users')} amount={thirdUser?.metric?.totalUsers.toString()} />
+            <PodiumText title={t('Commission')} amount={thirdUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
         </Flex>
       </Inner>
