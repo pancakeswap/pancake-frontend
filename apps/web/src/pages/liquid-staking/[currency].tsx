@@ -24,6 +24,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { CurrencyLogo } from 'components/Logo'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { GetStaticPaths, GetStaticProps } from 'next/types'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -236,5 +237,29 @@ const LiquidStakingStakePage = () => {
 }
 
 LiquidStakingStakePage.chains = CHAIN_IDS
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { currency } = params
+
+  if (!['ETH'].includes(currency as string)) {
+    return {
+      redirect: {
+        statusCode: 303,
+        destination: `/liquid-staking`,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
+}
 
 export default LiquidStakingStakePage
