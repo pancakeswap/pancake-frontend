@@ -98,6 +98,14 @@ const LiquidStakingStakePage = () => {
     if (!convertedStakeAmount || !account) return
 
     const receipt = await fetchWithCatchTxError(() => {
+      if (chainId === ChainId.ETHEREUM) {
+        const methodArgs = [account]
+        return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
+          // gasLimit: calculateGasMargin(estimatedGas),
+          value: convertedStakeAmount.toString(),
+        })
+      }
+
       const methodArgs = [convertedStakeAmount.toString(), account]
       return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
         // gasLimit: calculateGasMargin(estimatedGas),
@@ -117,6 +125,7 @@ const LiquidStakingStakePage = () => {
   }, [
     account,
     callWithGasPrice,
+    chainId,
     convertedStakeAmount,
     fetchWithCatchTxError,
     quoteAmount,

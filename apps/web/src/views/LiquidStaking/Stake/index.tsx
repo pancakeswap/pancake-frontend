@@ -9,6 +9,7 @@ import { useWBETHContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { useCurrency } from 'hooks/Tokens'
 import BigNumber from 'bignumber.js'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 
 import { ExchangeRateTitle } from '../components/ExchangeRateTitle'
 
@@ -43,7 +44,12 @@ export function LiquidStakingPageStake() {
 
   return (
     <>
-      <AppHeader subtitle={t('Unlock liquidity while earning rewards')} title={t('Liquid Staking')} noConfig />
+      <AppHeader
+        shouldCenter
+        subtitle={t('Unlock liquidity while earning rewards')}
+        title={t('Liquid Staking')}
+        noConfig
+      />
       <CardBody>
         <Text fontSize="12px" mb="8px" color="secondary" bold textTransform="uppercase">
           {t('Choose a pair to liquid stake')}
@@ -61,7 +67,7 @@ export function LiquidStakingPageStake() {
         <RowBetween mb="24px">
           <ExchangeRateTitle />
 
-          {exchangeRateAmount ? <Text>{`1 ETH = ${exchangeRateAmount.toFixed(4)} wBETH`}</Text> : '-'}
+          {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0)} wBETH`}</Text> : '-'}
         </RowBetween>
         <NextLink href={`/liquid-staking/${selectedSymbol}`}>
           <Button width="100%">{t('Proceed')}</Button>
