@@ -85,16 +85,16 @@
   },
   "0x9b0CDA697F74791D549Ca50550C6bdE89e0eA7df": {
     "part1": {
-      "btcb": null,
+      "btcb": "t2",
       "busd": "t1",
-      "eth": null,
-      "usdt": null
+      "eth": "t4",
+      "usdt": "t3"
     },
     "part2": {
-      "btcb": null,
-      "busd": "t4",
-      "eth": null,
-      "usdt": null
+      "btcb": "t2",
+      "busd": "t3",
+      "eth": "t2",
+      "usdt": "t1"
     }
   }
 }
