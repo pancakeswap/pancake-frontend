@@ -202,8 +202,10 @@ const LiquidStakingStakePage = () => {
           <Box mb="16px">
             <CurrencyInputPanel
               showUSDPrice
+              maxAmount={currencyBalance}
               disableCurrencySelect
               value={stakeAmount}
+              onMax={() => setStakeAmount(currencyBalance?.toExact())}
               onUserInput={setStakeAmount}
               showQuickInputButton
               showMaxButton
