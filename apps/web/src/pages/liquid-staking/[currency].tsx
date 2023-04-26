@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Link } from '@pancakeswap/uikit'
+import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Link, Image } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import Page from 'views/Page'
@@ -21,7 +21,6 @@ import { useSWRContract } from 'hooks/useSWRContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { CurrencyLogo } from 'components/Logo'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GetStaticPaths, GetStaticProps } from 'next/types'
@@ -113,11 +112,11 @@ const LiquidStakingStakePage = () => {
       })
     })
 
-    if (receipt?.status) {
+    if (receipt?.status && quoteAmount) {
       toastSuccess(
         t('Staked!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('Received')} ${quoteAmount?.toString()} wBETH`}
+          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, 6)} wBETH`}
         </ToastDescriptionWithTx>,
       )
 
@@ -207,7 +206,14 @@ const LiquidStakingStakePage = () => {
                 {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, 6) : '0'}
               </Text>
               <Flex>
-                <CurrencyLogo currency={inputCurrency} size="24px" />
+                <Box width={24} height={24}>
+                  <Image
+                    src={`/images/tokens/${wbethContract?.address}.png`}
+                    width={24}
+                    height={24}
+                    alt={wbethContract?.symbol}
+                  />
+                </Box>
                 <Text ml="4px">wBETH</Text>
               </Flex>
             </RowBetween>
