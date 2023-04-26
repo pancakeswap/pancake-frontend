@@ -3,19 +3,22 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useModal, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useAnniversaryAchievementContract } from 'hooks/useContract'
+import { useV3AirdropContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import AnniversaryAchievementModal from './AnniversaryAchievementModal'
+import v3WhitelistAddress from 'components/GlobalCheckClaimStatus/constants/v3WhitelistAddress.json'
+import v3ForSC from 'components/GlobalCheckClaimStatus/constants/v3ForSC.json'
+import v3MerkleProofs from 'components/GlobalCheckClaimStatus/constants/v3MerkleProofs.json'
+import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
 }
 
 // change it to true if we have events to check claim status
-const enable = false
+const enable = true
 
 const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = (props) => {
   const { account, chainId } = useActiveWeb3React()
@@ -32,17 +35,23 @@ const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimS
  * TODO: Put global checks in redux or make a generic area to house global checks
  */
 const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
+  const { address: account } = useAccount()
+  const { pathname } = useRouter()
   const hasDisplayedModal = useRef(false)
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
-  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
-  const { claimAnniversaryPoints } = useAnniversaryAchievementContract()
-  const { canClaim } = useAnniversaryAchievementContract(false)
+  const [canClaimReward, setCanClaimReward] = useState(false)
+  const { claim } = useV3AirdropContract()
+  const { isClaimed } = useV3AirdropContract(false)
   const { fetchWithCatchTxError } = useCatchTxError()
-  const [onPresentAnniversaryModal] = useModal(
-    <AnniversaryAchievementModal
+
+  const [onPresentV3AirdropModal, closeV3AirdropModal] = useModal(
+    <V3AirdropModal
+      data={v3WhitelistAddress[account] as WhitelistType}
       onClick={async () => {
-        const receipt = await fetchWithCatchTxError(() => claimAnniversaryPoints())
+        const { cakeAmountInWei, nft1, nft2 } = v3ForSC[account]
+        const proof = v3MerkleProofs.merkleProofs?.[account]
+        const receipt = await fetchWithCatchTxError(() => claim(cakeAmountInWei, nft1, nft2, proof))
         if (receipt?.status) {
           toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         }
@@ -50,29 +59,33 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     />,
   )
 
-  const { address: account } = useAccount()
-  const { pathname } = useRouter()
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
-      const canClaimAnniversary = await canClaim(account)
-      setCanClaimAnniversaryPoints(canClaimAnniversary)
+      const canV3ClaimReward = await isClaimed(account)
+      const isWhitelistAddress = v3WhitelistAddress[account]
+      // TODO: also need check json acc is whitelisted or not.
+      if (!canV3ClaimReward && isWhitelistAddress) {
+        setCanClaimReward(true)
+      } else {
+        closeV3AirdropModal()
+      }
     }
 
     if (account) {
       fetchClaimAnniversaryStatus()
     }
-  }, [account, canClaim])
+  }, [account, canClaimReward, isClaimed, closeV3AirdropModal])
 
   // // Check if we need to display the modal
   useEffect(() => {
     const matchesSomeLocations = excludeLocations.some((location) => pathname.includes(location))
 
-    if (canClaimAnniversaryPoints && !matchesSomeLocations && !hasDisplayedModal.current) {
-      onPresentAnniversaryModal()
+    if (canClaimReward && !matchesSomeLocations && !hasDisplayedModal.current) {
+      onPresentV3AirdropModal()
       hasDisplayedModal.current = true
     }
-  }, [pathname, excludeLocations, hasDisplayedModal, canClaim, canClaimAnniversaryPoints, onPresentAnniversaryModal])
+  }, [pathname, excludeLocations, hasDisplayedModal, canClaimReward, onPresentV3AirdropModal])
 
   // Reset the check flag when account changes
   useEffect(() => {

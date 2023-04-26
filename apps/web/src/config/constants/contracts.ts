@@ -187,4 +187,9 @@ export default {
     97: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
   },
   quoter: V3_QUOTER_ADDRESSES,
+  v3Airdrop: {
+    1: '',
+    56: '0x15a62397D02d641EcbEF51Aaf607a2B0AbD36d33',
+    97: '',
+  },
 }
