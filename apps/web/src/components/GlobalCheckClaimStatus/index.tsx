@@ -9,7 +9,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import v3WhitelistAddress from './constants/v3WhitelistAddress.json'
-// @ts-ignore
 import v3ForSC from './constants/v3ForSC.json'
 import v3MerkleProofs from './constants/v3MerkleProofs.json'
 import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
