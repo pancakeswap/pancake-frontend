@@ -24,10 +24,9 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GetStaticPaths, GetStaticProps } from 'next/types'
+import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 
 // import { calculateGasMargin } from 'utils'
-
-// Philip TODO: Validate routing only allow WETH BNB
 
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
@@ -56,6 +55,10 @@ const LiquidStakingStakePage = () => {
     currentAmount && inputCurrency ? getDecimalAmount(currentAmount, inputCurrency.decimals) : undefined
 
   const wbethContract = useWBETHContract()
+
+  const wbethCurrency = useCurrency(wbethContract?.address)
+
+  const wbethCurrencyBalance = useCurrencyBalance(account, wbethCurrency)
 
   const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
 
@@ -214,9 +217,36 @@ const LiquidStakingStakePage = () => {
               showCommonBases
             />
           </Box>
-          <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-            {t('You will receive')}
-          </Text>
+          <Flex justifyContent="space-between">
+            <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
+              {t('You will receive')}
+            </Text>
+            <Flex>
+              <AddToWalletButton
+                variant="text"
+                p="0"
+                pb="8px"
+                pr="4px"
+                height="auto"
+                width="fit-content"
+                tokenAddress={wbethContract?.address}
+                tokenSymbol={wbethCurrency?.symbol}
+                tokenDecimals={wbethCurrency?.decimals}
+                tokenLogo={undefined}
+              />
+              <Text color="textSubtle" fontSize="12px" ellipsis>
+                {t('Balance: %balance%', {
+                  balance: wbethCurrencyBalance
+                    ? getFullDisplayBalance(
+                        new BigNumber(wbethCurrencyBalance.quotient.toString()),
+                        wbethCurrencyBalance.currency.decimals,
+                        6,
+                      )
+                    : '0',
+                })}
+              </Text>
+            </Flex>
+          </Flex>
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
               <Text>
