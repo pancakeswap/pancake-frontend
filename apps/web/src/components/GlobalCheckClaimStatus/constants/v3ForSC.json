@@ -1,0 +1,37 @@
+{
+  "0xA13bb13609c3B9AABB8A4D5B4E9EcbaF502cA56E": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": true,
+    "nft2": false
+  },
+  "0xdaD8428082F08D912178D2Ba0fDD0188E29df970": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": false,
+    "nft2": true
+  },
+  "0xF4354944716bc79E6AaCAF0F791b0020C6F53445": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": true,
+    "nft2": true
+  },
+  "0xb34ae149018c37a6C935c0866f1d3A059659F9a0": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": false,
+    "nft2": true
+  },
+  "0x7544503807b4DF4fc3Db6AcF4f32Ce5E7eE8FdFb": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": true,
+    "nft2": false
+  },
+  "0x2EA0c71e665f4E3c3CE1b3c72aDDe941B010E770": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": false,
+    "nft2": true
+  },
+  "0x9b0CDA697F74791D549Ca50550C6bdE89e0eA7df": {
+    "cakeAmountInWei": "10000000000000000",
+    "nft1": true,
+    "nft2": true
+  }
+}
