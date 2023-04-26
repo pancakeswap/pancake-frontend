@@ -51,7 +51,7 @@ export function sortedInsert<T>(items: T[], add: T, maxSize: number, comparator:
       hi = items.length
 
     while (lo < hi) {
-      const mid = (lo + hi) >> 1
+      const mid = (lo + hi) >>> 1
       if (comparator(items[mid], add) <= 0) {
         lo = mid + 1
       } else {
