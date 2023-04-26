@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChainId } from '@pancakeswap/sdk'
 import { encodeFunctionData, PublicClient, decodeFunctionResult } from 'viem'
 import stats from 'stats-lite'
