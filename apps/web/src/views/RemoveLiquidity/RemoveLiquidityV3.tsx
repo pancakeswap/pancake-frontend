@@ -218,8 +218,8 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const removed = position?.liquidity?.eq(0)
 
-  const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, !!feeValue0)
-  const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, !!feeValue1)
+  const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, { enabled: !!feeValue0 })
+  const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, { enabled: !!feeValue1 })
 
   function modalHeader() {
     return (

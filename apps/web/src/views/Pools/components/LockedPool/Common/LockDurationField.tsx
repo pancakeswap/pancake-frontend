@@ -3,7 +3,7 @@ import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakesw
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import _toNumber from 'lodash/toNumber'
-import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
+import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 

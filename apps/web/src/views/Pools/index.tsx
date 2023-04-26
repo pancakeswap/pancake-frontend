@@ -6,8 +6,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
 import Page from 'components/Layout/Page'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { Token } from '@pancakeswap/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import CardActions from './components/PoolCard/CardActions'
 import AprRow from './components/PoolCard/AprRow'
@@ -37,6 +38,7 @@ const FinishedTextLink = styled(Link)`
 const Pools: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const { pools, userDataLoaded } = usePoolsWithVault()
 
   usePoolsPageFetch()
@@ -62,7 +64,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
         <PoolControls pools={pools}>
           {({ chosenPools, viewMode, stakedOnly, normalizedUrlSearch, showFinishedPools }) => (
             <>
-              {showFinishedPools && (
+              {showFinishedPools && chainId === ChainId.BSC && (
                 <FinishedTextContainer>
                   <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
                     {t('Looking for v1 CAKE syrup pools?')}

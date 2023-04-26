@@ -9,6 +9,8 @@ import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
 import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
 
@@ -49,6 +51,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>(initialState)
   const dispatch = useAppDispatch()
   const credit = useIfoCredit()
+  const { chainId } = useActiveChainId()
 
   const { address, currency, version } = ifo
 
@@ -135,7 +138,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
           ].filter(Boolean)
         : []
 
-    dispatch(fetchCakeVaultUserData({ account }))
+    dispatch(fetchCakeVaultUserData({ account, chainId }))
 
     const [
       userInfo,
@@ -184,7 +187,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
           : BIG_ZERO,
       },
     }))
-  }, [account, address, dispatch, version])
+  }, [account, address, dispatch, version, chainId])
 
   const resetIfoData = useCallback(() => {
     setState({ ...initialState })

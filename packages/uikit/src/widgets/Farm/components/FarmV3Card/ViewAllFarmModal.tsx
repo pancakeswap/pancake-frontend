@@ -38,7 +38,6 @@ interface ViewAllFarmModalProps extends ModalProps {
 const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllFarmModalProps>> = ({
   isReady,
   lpSymbol,
-  onAddLiquidity,
   tokenPairImage,
   boosted,
   feeAmount,
@@ -52,7 +51,13 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
   const { t } = useTranslation();
 
   return (
-    <ModalContainer minWidth="300px" maxHeight="90vh">
+    <ModalContainer
+      minWidth="300px"
+      maxHeight="90vh"
+      style={{
+        overflow: "hidden",
+      }}
+    >
       <AtomBox bg="gradientBubblegum" py="24px" maxWidth="420px">
         <RowBetween flexWrap="nowrap" px="24px">
           <Flex alignItems="center" width="100%">
@@ -77,11 +82,6 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
           <ScrollableContainer px="24px">{children}</ScrollableContainer>
         </ModalBody>
         <AutoColumn px="24px" gap="16px">
-          <ModalActions>
-            <Button width="100%" variant="secondary" onClick={onAddLiquidity}>
-              {t("Add Liquidity")}
-            </Button>
-          </ModalActions>
           {onHarvestAll && (
             <ModalActions>
               <Button width="100%" variant="primary" disabled={harvesting} onClick={onHarvestAll}>

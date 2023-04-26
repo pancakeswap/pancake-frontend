@@ -95,7 +95,13 @@ const UserMenu = () => {
 
   if (account) {
     return (
-      <UIKitUserMenu account={sidName || account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
+      <UIKitUserMenu
+        account={sidName || account}
+        ellipsis={!sidName}
+        avatarSrc={avatarSrc}
+        text={userMenuText}
+        variant={userMenuVariable}
+      >
         {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )

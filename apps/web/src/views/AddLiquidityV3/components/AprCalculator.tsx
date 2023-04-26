@@ -15,6 +15,7 @@ import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
+import { useRouter } from 'next/router'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -26,6 +27,7 @@ import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { batch } from 'react-redux'
 import { PositionDetails } from '@pancakeswap/farms'
+import currencyId from 'utils/currencyId'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
@@ -82,6 +84,7 @@ export function AprCalculator({
     existingPosition,
     formState,
   )
+  const router = useRouter()
   const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
 
   const prices = usePairTokensPrice(poolAddress, priceSpan, baseCurrency?.chainId)
@@ -95,7 +98,10 @@ export function AprCalculator({
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
-  const inverted = Boolean(baseCurrency && quoteCurrency && quoteCurrency.wrapped.sortsBefore(baseCurrency.wrapped))
+  const tokenA = (baseCurrency ?? undefined)?.wrapped
+  const tokenB = (quoteCurrency ?? undefined)?.wrapped
+
+  const inverted = Boolean(tokenA && tokenB && tokenA?.address !== tokenB?.address && tokenB.sortsBefore(tokenA))
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
@@ -123,7 +129,7 @@ export function AprCalculator({
     [pool?.feeProtocol],
   )
 
-  const applyProtocalFee = defaultDepositUsd ? undefined : protocolFee
+  const applyProtocolFee = defaultDepositUsd ? undefined : protocolFee
 
   const { apr } = useRoi({
     tickLower,
@@ -137,10 +143,10 @@ export function AprCalculator({
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
-    protocolFee: applyProtocalFee,
+    protocolFee: applyProtocolFee,
   })
 
-  // NOTE: Assume no liquidity when openning modal
+  // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)
 
   const closeModal = useCallback(() => setOpen(false), [])
@@ -159,9 +165,26 @@ export function AprCalculator({
 
         onFieldAInput(position.amountA.toExact())
       })
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            currency: [
+              position.amountA ? currencyId(position.amountA.currency) : undefined,
+              position.amountB ? currencyId(position.amountB.currency) : undefined,
+              feeAmount ? feeAmount.toString() : '',
+            ],
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
       closeModal()
     },
-    [closeModal, onBothRangeInput, onFieldAInput, onSetFullRange],
+    [closeModal, feeAmount, onBothRangeInput, onFieldAInput, onSetFullRange, router],
   )
 
   if (!data || !data.length) {
@@ -217,7 +240,7 @@ export function AprCalculator({
         sqrtRatioX96={sqrtRatioX96}
         liquidity={pool?.liquidity}
         feeAmount={feeAmount}
-        protocolFee={applyProtocalFee}
+        protocolFee={applyProtocolFee}
         ticks={data}
         volume24H={volume24H}
         priceUpper={priceUpper}

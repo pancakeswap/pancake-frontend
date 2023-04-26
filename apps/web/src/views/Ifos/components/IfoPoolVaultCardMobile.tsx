@@ -33,7 +33,7 @@ const StyledTokenContent = styled(Flex)`
 `
 
 interface IfoPoolVaultCardMobileProps {
-  pool: Pool.DeserializedPool<Token>
+  pool?: Pool.DeserializedPool<Token>
 }
 
 const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardMobileProps>> = ({ pool }) => {
@@ -43,7 +43,7 @@ const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardM
   const { isExpanded, setIsExpanded } = useConfig()
   const cakeAsNumberBalance = getBalanceNumber(credit)
 
-  const vaultPool = useVaultPoolByKey(pool.vaultKey)
+  const vaultPool = useVaultPoolByKey(pool?.vaultKey || VaultKey.CakeVault)
 
   const {
     userData: { userShares, isLoading: isVaultUserDataLoading },
@@ -51,7 +51,11 @@ const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardM
   } = vaultPool
 
   const accountHasSharesStaked = userShares && userShares.gt(0)
-  const isLoading = !pool.userData || isVaultUserDataLoading
+  const isLoading = !pool?.userData || isVaultUserDataLoading
+
+  if (!pool) {
+    return null
+  }
 
   return (
     <StyledCardMobile isActive>

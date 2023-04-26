@@ -27,6 +27,7 @@
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/v3-sdk": "*",
+    "@pancakeswap/pools": "*",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.2.1",
     "@rollup/plugin-url": "^6.0.0",
@@ -69,7 +70,8 @@
     "styled-components": "^5.2.3",
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
-    "@pancakeswap/v3-sdk": "*"
+    "@pancakeswap/v3-sdk": "*",
+    "@pancakeswap/pools": "*"
   },
   "dependencies": {
     "@pancakeswap/ui": "*",

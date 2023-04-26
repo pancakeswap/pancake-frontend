@@ -5,7 +5,7 @@ import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR, useGetChainName } from 'state/info/hooks'
+import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR, useChainNameByQuery } from 'state/info/hooks'
 import { checkIsStableSwap, v2SubgraphTokenName } from 'state/info/constant'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
@@ -258,7 +258,7 @@ const Search = () => {
     )
   }
   const chainPath = useMultiChainPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>

@@ -27,7 +27,7 @@ export function createHybridPoolProvider({ onChainProvider }: HybridProviderConf
 
 interface Options {
   provider: OnChainProvider
-  blockNumber: BigintIsh
+  blockNumber?: BigintIsh
   protocols?: PoolType[]
 }
 

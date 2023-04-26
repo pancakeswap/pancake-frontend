@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import { usePool, useDeserializedPoolByVaultKey, useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
@@ -8,7 +8,6 @@ import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
 import AprCell from './Cells/AprCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
-import EndsInCell from './Cells/EndsInCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
 import AutoAprCell from './Cells/AutoAprCell'
@@ -60,6 +59,8 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }, [stakingToken.decimals, totalStaked])
 
+  const getNow = useCallback(() => Date.now(), [])
+
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
@@ -72,7 +73,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
         />
       )}
       <AprCell pool={pool} />
-      {isDesktop && <EndsInCell pool={pool} />}
+      {isDesktop && <Pool.EndsInCell pool={pool} getNow={getNow} />}
     </Pool.ExpandRow>
   )
 }

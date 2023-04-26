@@ -12,7 +12,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
-  pool: Pool.DeserializedPool<Token> & { stakeLimitEndBlock?: number }
+  pool: Pool.DeserializedPool<Token>
   account?: string
   showTotalStaked?: boolean
   alignLinksToRight?: boolean
@@ -60,18 +60,17 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     totalStaked = BIG_ZERO,
     userData: poolUserData,
     stakingLimit = BIG_ZERO,
-    endBlock = 0,
-    startBlock = 0,
-    stakeLimitEndBlock = 0,
+    endTimestamp = 0,
+    stakingLimitEndTimestamp = 0,
     contractAddress,
   } = pool
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const currentDate = getNow() / 1000
+  const currentDate = Math.floor(getNow() / 1000)
 
-  const poolTimeRemaining = endBlock - currentDate
-  const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
+  const poolTimeRemaining = endTimestamp - currentDate
+  const stakeLimitTimeRemaining = Math.max(stakingLimitEndTimestamp - currentDate, 0)
 
   const endTimeObject = useMemo(() => getTimePeriods(poolTimeRemaining), [poolTimeRemaining])
 
@@ -81,15 +80,15 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     targetRef: endTimeTargetRef,
     tooltip: endTimeTooltip,
     tooltipVisible: endTimeTooltipVisible,
-  } = useTooltip(<EndTimeTooltipComponent endTime={endBlock} />)
+  } = useTooltip(<EndTimeTooltipComponent endTime={endTimestamp} />)
 
   const {
     targetRef: stakeLimitTargetRef,
     tooltip: stakeLimitTooltip,
     tooltipVisible: stakeLimitTooltipVisible,
-  } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndBlock + startBlock} />)
+  } = useTooltip(<EndTimeTooltipComponent endTime={stakingLimitEndTimestamp} />)
 
-  const poolContractAddress = getContactAddress(contractAddress[chainId])
+  const poolContractAddress = getContactAddress(contractAddress)
 
   return (
     <>
@@ -102,7 +101,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           symbol={stakingToken.symbol}
         />
       )}
-      {stakingLimit?.gt(0) ? (
+      {stakingLimit?.gt(0) && stakeLimitTimeRemaining ? (
         <>
           <Flex justifyContent="space-between" alignItems="center">
             <Text small>{t('Max. stake per user')}:</Text>
@@ -110,7 +109,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
               stakingToken.symbol
             }`}</Text>
           </Flex>
-          {poolTimeRemaining !== stakeLimitTimeRemaining && (
+          {poolTimeRemaining > 0 && stakingLimitEndTimestamp !== endTimestamp && (
             <Flex justifyContent="space-between" alignItems="center">
               <Text small>{t('Max. stake limit ends in')}:</Text>
               <Flex alignItems="center">

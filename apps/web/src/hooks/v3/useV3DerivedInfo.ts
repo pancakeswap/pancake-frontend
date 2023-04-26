@@ -94,10 +94,13 @@ export default function useV3DerivedInfo(
     account ?? undefined,
     useMemo(() => [currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B]], [currencies]),
   )
-  const currencyBalances: { [field in Field]?: CurrencyAmount<Currency> } = {
-    [Field.CURRENCY_A]: balances[0],
-    [Field.CURRENCY_B]: balances[1],
-  }
+  const currencyBalances: { [field in Field]?: CurrencyAmount<Currency> } = useMemo(
+    () => ({
+      [Field.CURRENCY_A]: balances[0],
+      [Field.CURRENCY_B]: balances[1],
+    }),
+    [balances],
+  )
 
   // pool
   const [poolState, pool] = usePool(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B], feeAmount)
@@ -206,7 +209,7 @@ export default function useV3DerivedInfo(
 
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks || {}
 
-  // specifies whether the lower and upper ticks is at the exteme bounds
+  // specifies whether the lower and upper ticks is at the extreme bounds
   const ticksAtLimit = useMemo(
     () => ({
       [Bound.LOWER]: feeAmount && tickLower === tickSpaceLimits.LOWER,

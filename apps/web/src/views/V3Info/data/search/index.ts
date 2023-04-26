@@ -7,30 +7,20 @@ import { fetchPoolDatas } from '../pool/poolData'
 import { fetchedTokenDatas } from '../token/tokenData'
 
 export const TOKEN_SEARCH = gql`
-  query tokens($value: String, $id: String) {
-    asSymbol: tokens(
-      where: { symbol_contains: $value }
-      orderBy: totalValueLockedUSD
-      orderDirection: desc
-      subgraphError: allow
-    ) {
+  query tokens($value: String, $id: ID) {
+    asSymbol: tokens(where: { symbol_contains: $value }, orderBy: totalValueLockedUSD, orderDirection: desc) {
       id
       symbol
       name
       totalValueLockedUSD
     }
-    asName: tokens(
-      where: { name_contains: $value }
-      orderBy: totalValueLockedUSD
-      orderDirection: desc
-      subgraphError: allow
-    ) {
+    asName: tokens(where: { name_contains: $value }, orderBy: totalValueLockedUSD, orderDirection: desc) {
       id
       symbol
       name
       totalValueLockedUSD
     }
-    asAddress: tokens(where: { id: $id }, orderBy: totalValueLockedUSD, orderDirection: desc, subgraphError: allow) {
+    asAddress: tokens(where: { id: $id }, orderBy: totalValueLockedUSD, orderDirection: desc) {
       id
       symbol
       name
@@ -40,8 +30,8 @@ export const TOKEN_SEARCH = gql`
 `
 
 export const POOL_SEARCH = gql`
-  query pools($tokens: [Bytes]!, $id: String) {
-    as0: pools(where: { token0_in: $tokens }, subgraphError: allow) {
+  query pools($tokens: [String!], $id: ID) {
+    as0: pools(where: { token0_in: $tokens }) {
       id
       feeTier
       token0 {
@@ -55,7 +45,7 @@ export const POOL_SEARCH = gql`
         name
       }
     }
-    as1: pools(where: { token1_in: $tokens }, subgraphError: allow) {
+    as1: pools(where: { token1_in: $tokens }) {
       id
       feeTier
       token0 {
@@ -69,7 +59,7 @@ export const POOL_SEARCH = gql`
         name
       }
     }
-    asAddress: pools(where: { id: $id }, subgraphError: allow) {
+    asAddress: pools(where: { id: $id }) {
       id
       feeTier
       token0 {

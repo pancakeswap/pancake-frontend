@@ -138,6 +138,9 @@ export interface PoolData {
   // token amounts
   tvlToken0: number
   tvlToken1: number
+
+  // 24h fees
+  feeUSD
 }
 
 export interface GenericChartEntry {

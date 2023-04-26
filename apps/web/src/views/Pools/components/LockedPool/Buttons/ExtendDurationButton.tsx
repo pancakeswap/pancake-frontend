@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Button, useModal, ButtonProps } from '@pancakeswap/uikit'
-import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
+import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from '@pancakeswap/pools'
 
 import ExtendDurationModal from '../Modals/ExtendDurationModal'
 import { ExtendDurationButtonPropsType } from '../types'

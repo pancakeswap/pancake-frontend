@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import {
-  Alert,
   AutoColumn,
   Box,
   Breadcrumbs,
@@ -15,6 +14,8 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -31,7 +32,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 // import { useSavedTokens } from 'state/user/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
@@ -96,7 +97,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { t } = useTranslation()
   const tokenData = useTokenData(address)
   const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolsData(poolsForToken ?? [])
+  const poolDatas = usePoolsData(poolsForToken?.filter((d, index) => index < 200) ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
   const formatPoolData = useMemo(() => {
@@ -151,7 +152,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   }, [priceData, tokenData])
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const { chainId } = useActiveChainId()
 
   // watchlist
@@ -243,7 +244,11 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
               </Flex>
             </AutoColumn>
             {tokenData.tvlUSD <= 0 && (
-              <Alert title={t('TVL is currently too low to represent the data correctly')} variant="info" />
+              <Message variant="warning">
+                <MessageText fontSize="16px">
+                  {t('TVL is currently too low to represent the data correctly')}
+                </MessageText>
+              </Message>
             )}
             <ContentLayout>
               <Card>
@@ -334,9 +339,9 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                 </Box>
               </Card>
             </ContentLayout>
-            <Heading>Pools</Heading>
+            <Heading>{t('Pairs')}</Heading>
             <PoolTable poolDatas={formatPoolData} />
-            <Heading>Transactions</Heading>
+            <Heading>{t('Transactions')}</Heading>
             {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
           </AutoColumn>
         )

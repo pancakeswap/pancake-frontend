@@ -59,8 +59,8 @@ export const PositionPreview = ({
   const priceLower = sorted ? position.token0PriceLower : position.token0PriceUpper.invert()
   const priceUpper = sorted ? position.token0PriceUpper : position.token0PriceLower.invert()
 
-  const price0 = useStablecoinPrice(position.pool.token0 ?? undefined, !!position.amount0)
-  const price1 = useStablecoinPrice(position.pool.token1 ?? undefined, !!position.amount1)
+  const price0 = useStablecoinPrice(position.pool.token0 ?? undefined, { enabled: !!position.amount0 })
+  const price1 = useStablecoinPrice(position.pool.token1 ?? undefined, { enabled: !!position.amount1 })
 
   const handleRateChange = useCallback(() => {
     setBaseCurrency(quoteCurrency)

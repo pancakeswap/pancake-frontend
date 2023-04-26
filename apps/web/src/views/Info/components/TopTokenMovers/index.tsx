@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Flex, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useEffect, useMemo, useRef } from 'react'
-import { useAllTokenDataSWR, useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useAllTokenDataSWR, useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -35,7 +35,7 @@ export const ScrollableRow = styled.div`
 `
 
 const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
-  const chainName = useGetChainName()
+  const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   return (
     <CardWrapper to={`/info${chainPath}/tokens/${tokenData.address}`}>
