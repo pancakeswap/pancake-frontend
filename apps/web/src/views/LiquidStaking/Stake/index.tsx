@@ -17,7 +17,7 @@ export function LiquidStakingPageStake() {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
-  const eth = chainId === ChainId.ETHEREUM ? NATIVE[chainId] : WETH9[chainId]
+  const eth = [ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? NATIVE[chainId] : WETH9[chainId]
 
   // NOTE: default is ETH
   const [selectedSymbol, setSymbol] = useState(eth?.symbol)

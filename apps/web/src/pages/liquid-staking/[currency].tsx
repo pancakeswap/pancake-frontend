@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Link, Image } from '@pancakeswap/uikit'
+import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Link, Image, AutoRenewIcon } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import Page from 'views/Page'
@@ -39,7 +39,7 @@ const LiquidStakingStakePage = () => {
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
 
-  const ethToken = chainId === ChainId.ETHEREUM ? NATIVE[chainId] : WETH9[chainId]
+  const ethToken = [ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? NATIVE[chainId] : WETH9[chainId]
 
   const inputCurrency = useCurrency(ethToken?.address || ethToken?.symbol)
 
@@ -98,7 +98,7 @@ const LiquidStakingStakePage = () => {
     if (!convertedStakeAmount || !account) return
 
     const receipt = await fetchWithCatchTxError(() => {
-      if (chainId === ChainId.ETHEREUM) {
+      if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
         const methodArgs = [account]
         return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
           // gasLimit: calculateGasMargin(estimatedGas),
@@ -116,7 +116,7 @@ const LiquidStakingStakePage = () => {
       toastSuccess(
         t('Staked!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, 6)} wBETH`}
+          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, 8)} wBETH`}
         </ToastDescriptionWithTx>,
       )
 
@@ -139,7 +139,7 @@ const LiquidStakingStakePage = () => {
 
   if (convertedStakeAmount?.isGreaterThan(balance)) {
     error = t('Insufficient Balance')
-  } else if (convertedStakeAmount?.toString()?.length > decimals || !currentAmount?.isGreaterThan(0)) {
+  } else if (convertedStakeAmount?.toString()?.includes('.') || !currentAmount?.isGreaterThan(0)) {
     error = t('Enter an amount')
   }
 
@@ -147,28 +147,34 @@ const LiquidStakingStakePage = () => {
 
   if (!account) {
     button = <ConnectWalletButton width="100%" />
-  } else if (!isApproved) {
-    button = (
-      <Button
-        isLoading={isPending}
-        onClick={() => {
-          onApprove()
-        }}
-        width="100%"
-      >
-        {t('Approve %symbol%', { symbol: inputCurrency?.symbol ?? '' })}
-      </Button>
-    )
   } else if (error) {
     button = (
       <Button disabled width="100%">
         {error}
       </Button>
     )
+  } else if (!isApproved) {
+    button = (
+      <Button
+        endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+        isLoading={isPending}
+        onClick={() => {
+          onApprove()
+        }}
+        width="100%"
+      >
+        {isPending ? t('Enabling') : t('Enable')}
+      </Button>
+    )
   } else if (isApproved && account) {
     button = (
-      <Button isLoading={loading} onClick={onStake} width="100%">
-        {loading ? `${t('Staking')}...` : t('Stake')}
+      <Button
+        endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+        isLoading={loading}
+        onClick={onStake}
+        width="100%"
+      >
+        {loading ? `${t('Staking')}` : t('Stake')}
       </Button>
     )
   }
@@ -205,7 +211,7 @@ const LiquidStakingStakePage = () => {
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
               <Text>
-                {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, 6) : '0'}
+                {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, 8) : '0'}
               </Text>
               <Flex>
                 <Box width={24} height={24}>
@@ -224,7 +230,7 @@ const LiquidStakingStakePage = () => {
             <ExchangeRateTitle />
 
             {exchangeRateAmount ? (
-              <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 6)} wBETH`}</Text>
+              <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 8)} wBETH`}</Text>
             ) : (
               '-'
             )}
@@ -262,7 +268,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { currency } = params
 
-  if (!['ETH'].includes(currency as string)) {
+  if (!['ETH', 'WETH'].includes(currency as string)) {
     return {
       redirect: {
         statusCode: 303,

@@ -343,7 +343,10 @@ export function useWNativeContract(withSignerIfPossible?: boolean): Contract | n
 export function useWBETHContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveChainId()
 
-  const abi = useMemo(() => (chainId === ChainId.ETHEREUM ? WBETH_ETH_ABI : WBETH_BSC_ABI), [chainId])
+  const abi = useMemo(
+    () => ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? WBETH_ETH_ABI : WBETH_BSC_ABI),
+    [chainId],
+  )
 
   return useContract<Weth>(chainId ? WBETH[chainId] : undefined, abi, withSignerIfPossible)
 }
