@@ -46,6 +46,38 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 29,
+    lpSymbol: 'unshETH-USH LP',
+    token: bscTokens.unshETH,
+    quoteToken: bscTokens.ush,
+    lpAddress: Pool.getAddress(bscTokens.unshETH, bscTokens.ush, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 28,
+    lpSymbol: 'unshETH-USDT LP',
+    token: bscTokens.unshETH,
+    quoteToken: bscTokens.usdt,
+    lpAddress: Pool.getAddress(bscTokens.unshETH, bscTokens.usdt, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 27,
+    lpSymbol: 'PSTAKE-CAKE LP',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.pstake,
+    lpAddress: Pool.getAddress(bscTokens.pstake, bscTokens.cake, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 26,
+    lpSymbol: 'stkBNB-BNB LP',
+    token: bscTokens.wbnb,
+    quoteToken: bscTokens.stkbnb,
+    lpAddress: Pool.getAddress(bscTokens.stkbnb, bscTokens.wbnb, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 25,
     lpSymbol: 'UNW-BNB LP',
     token: bscTokens.unw,

@@ -4,6 +4,14 @@ import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
   {
+    sousId: 2,
+    stakingToken: ethereumTokens.cake,
+    earningToken: ethereumTokens.ush,
+    contractAddress: '0x3Bb1CCa68756a7E0ffEBf59d52174784047f3dE8',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.04629',
+  },
+  {
     sousId: 1,
     stakingToken: ethereumTokens.cake,
     earningToken: ethereumTokens.wncg,
