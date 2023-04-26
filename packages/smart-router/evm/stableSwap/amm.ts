@@ -79,12 +79,12 @@ export function getY({ amplifier, balances, i, j, x }: GetYParams): bigint {
     }
     let balanceAfterDeposit = BigInt(b)
     if (index === i) {
-      balanceAfterDeposit = balanceAfterDeposit + BigInt(x)
+      balanceAfterDeposit += BigInt(x)
     }
 
     invariant(balanceAfterDeposit > ZERO, 'Insufficient liquidity')
 
-    sum = sum + balanceAfterDeposit
+    sum += balanceAfterDeposit
     c = (c * d) / (balanceAfterDeposit * n)
   }
   c = (c * d) / (ann * n)

@@ -189,6 +189,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                 }
 
                 // QuoteChunk is pending or failed, so we try again
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                 const { inputs, order } = quoteState
 
                 try {
@@ -315,8 +316,10 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                       //   } times. Rolling back block number by ${rollbackBlockOffset} for next retry`,
                       // )
                       providerConfig.blockNumber = providerConfig.blockNumber
-                        ? BigInt(await providerConfig.blockNumber) + BigInt(rollbackBlockOffset)
-                        : BigInt(await (await chainProvider.getBlockNumber()).toString()) + BigInt(rollbackBlockOffset)
+                        ? // eslint-disable-next-line no-await-in-loop
+                          BigInt(providerConfig.blockNumber) + BigInt(rollbackBlockOffset)
+                        : // eslint-disable-next-line no-await-in-loop
+                          (await chainProvider.getBlockNumber()) + BigInt(rollbackBlockOffset)
 
                       retryAll = true
                       blockHeaderRolledBack = true
@@ -334,6 +337,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                   multicallChunk = gasErrorFailureOverride.multicallChunk
                   retryAll = true
                 } else {
+                  // eslint-disable-next-line no-lonely-if
                   if (!haveRetriedForUnknownReason) {
                     haveRetriedForUnknownReason = true
                   }
@@ -367,8 +371,10 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             if (retryAll) {
               // console.log(`Attempt ${attemptNumber}. Resetting all requests to pending for next attempt.`)
 
+              // eslint-disable-next-line @typescript-eslint/no-shadow
               const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
 
+              // eslint-disable-next-line @typescript-eslint/no-shadow
               const inputsChunked = chunk(inputs, normalizedChunk)
               quoteStates = inputsChunked.map((inputChunk, index) => {
                 return {
@@ -475,6 +481,7 @@ function validateSuccessRate(
       return
     }
 
+    // eslint-disable-next-line consistent-return
     return new SuccessRateError(`Quote success rate below threshold of ${quoteMinSuccessRate}: ${successRate}`)
   }
 }

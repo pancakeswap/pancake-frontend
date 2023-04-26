@@ -69,30 +69,30 @@ export async function createGasModel({
       const { type } = pool
       if (isV2Pool(pool)) {
         if (!poolTypeSet.has(type)) {
-          baseGasUse = baseGasUse + BASE_SWAP_COST_V2
+          baseGasUse += BASE_SWAP_COST_V2
           poolTypeSet.add(type)
           continue
         }
-        baseGasUse = baseGasUse + COST_PER_EXTRA_HOP_V2
+        baseGasUse += COST_PER_EXTRA_HOP_V2
         continue
       }
 
       if (isV3Pool(pool)) {
         if (!poolTypeSet.has(type)) {
-          baseGasUse = baseGasUse + BASE_SWAP_COST_V3(chainId)
+          baseGasUse += BASE_SWAP_COST_V3(chainId)
           poolTypeSet.add(type)
         }
-        baseGasUse = baseGasUse + COST_PER_HOP_V3(chainId)
+        baseGasUse += COST_PER_HOP_V3(chainId)
         continue
       }
 
       if (isStablePool(pool)) {
         if (!poolTypeSet.has(type)) {
-          baseGasUse = baseGasUse + BASE_SWAP_COST_STABLE_SWAP
+          baseGasUse += BASE_SWAP_COST_STABLE_SWAP
           poolTypeSet.add(type)
           continue
         }
-        baseGasUse = baseGasUse + COST_PER_EXTRA_HOP_STABLE_SWAP
+        baseGasUse += COST_PER_EXTRA_HOP_STABLE_SWAP
         continue
       }
     }
