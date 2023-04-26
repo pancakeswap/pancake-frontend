@@ -139,6 +139,8 @@ const LiquidStakingStakePage = () => {
 
   if (convertedStakeAmount?.isGreaterThan(balance)) {
     error = t('Insufficient Balance')
+  } else if (convertedStakeAmount?.toString()?.length > decimals || !currentAmount?.isGreaterThan(0)) {
+    error = t('Enter an amount')
   }
 
   let button = null
@@ -165,7 +167,7 @@ const LiquidStakingStakePage = () => {
     )
   } else if (isApproved && account) {
     button = (
-      <Button isLoading={loading || !currentAmount?.isGreaterThan(0)} onClick={onStake} width="100%">
+      <Button isLoading={loading} onClick={onStake} width="100%">
         {loading ? `${t('Staking')}...` : t('Stake')}
       </Button>
     )
