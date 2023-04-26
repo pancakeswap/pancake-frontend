@@ -67,6 +67,7 @@ export function getLPOutput({
       diff = newBalances[i] - idealBalance
     }
     const feeAmount = eachTokenFee.multiply(diff).quotient
+    // eslint-disable-next-line operator-assignment
     newBalances[i] = newBalances[i] - feeAmount
   }
   d2 = getD({ amplifier, balances: newBalances })

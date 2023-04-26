@@ -15,7 +15,7 @@ export class Percent extends Fraction {
   /**
    * This boolean prevents a fraction from being interpreted as a Percent
    */
-  public readonly isPercent: true = true
+  public readonly isPercent = true as const
 
   add(other: Fraction | BigintIsh): Percent {
     return toPercent(super.add(other))

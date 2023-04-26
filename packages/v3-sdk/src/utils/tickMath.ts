@@ -29,12 +29,12 @@ export abstract class TickMath {
   /**
    * The sqrt ratio corresponding to the minimum tick that could be used on any pool.
    */
-  public static MIN_SQRT_RATIO: bigint = 4295128739n
+  public static MIN_SQRT_RATIO = 4295128739n
 
   /**
    * The sqrt ratio corresponding to the maximum tick that could be used on any pool.
    */
-  public static MAX_SQRT_RATIO: bigint = 1461446703485210103287273052203988822378723970342n
+  public static MAX_SQRT_RATIO = 1461446703485210103287273052203988822378723970342n
 
   /**
    * Returns the sqrt ratio as a Q64.96 for the given tick. The sqrt ratio is computed as sqrt(1.0001)^tick
@@ -98,7 +98,9 @@ export abstract class TickMath {
     for (let i = 0; i < 14; i++) {
       r = (r * r) >> 127n
       const f = r >> 128n
+      // eslint-disable-next-line operator-assignment
       log_2 = log_2 | (f << BigInt(63 - i))
+      // eslint-disable-next-line operator-assignment
       r = r >> f
     }
 

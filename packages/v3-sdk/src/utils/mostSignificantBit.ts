@@ -12,6 +12,7 @@ export function mostSignificantBit(x: bigint): number {
   let msb = 0
   for (const [power, min] of POWERS_OF_2) {
     if (x >= min) {
+      // eslint-disable-next-line operator-assignment
       x = x >> BigInt(power)
       msb += power
     }
