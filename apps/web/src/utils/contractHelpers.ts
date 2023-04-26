@@ -108,7 +108,7 @@ import sid from 'config/abi/SID.json'
 import sidResolver from 'config/abi/SIDResolver.json'
 import masterChefV3Abi from 'config/abi/masterChefV3.json'
 import v3MigratorAbi from 'config/abi/v3Migrator.json'
-import V3AirdropAbi from 'config/abi/V3Airdrop.json'
+import V3AirdropAbi from 'config/abi/v3Airdrop.json'
 
 // Types
 import type {
