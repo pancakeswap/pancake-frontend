@@ -23,7 +23,7 @@ const defaultTokenAndPoolList: TokenAndPoolList = {
   },
 }
 
-const tokensAtom = atomWithStorage('tokens', defaultTokenAndPoolList)
+const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList)
 
 const useInfoUserSavedTokensAndPools = (chainId: ChainId) => {
   const [lists, setLists] = useAtom(tokensAtom)
