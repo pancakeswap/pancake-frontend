@@ -271,7 +271,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { currency } = params
 
-  if (!['ETH', 'WETH'].includes(currency as string)) {
+  if (!['ETH', 'WETH', 'GOR'].includes(currency as string)) {
     return {
       redirect: {
         statusCode: 303,
