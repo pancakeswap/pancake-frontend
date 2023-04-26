@@ -50,7 +50,7 @@ export const farmsV3 = [
     lpSymbol: 'CHAMP-USDT LP',
     token: bscTokens.usdt,
     quoteToken: bscTokens.champ,
-    lpAddress: '0x55d398326f99059ff775485246999027b3197955',
+    lpAddress: '0x2dA32920A775CF121004551AbC92F385B3C0Dab9',
     feeAmount: FeeAmount.HIGH,
   },
   {
