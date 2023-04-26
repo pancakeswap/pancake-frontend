@@ -71,7 +71,7 @@ export function useTokenBalancesWithLoadingIndicator(
           ? validatedTokens.reduce<{ [tokenAddress: string]: CurrencyAmount<Token> | undefined }>((memo, token, i) => {
               const value = balances?.[i]?.result?.[0]
               const amount = value ? BigInt(value.toString()) : undefined
-              if (amount) {
+              if (typeof amount !== 'undefined') {
                 memo[token.address] = CurrencyAmount.fromRawAmount(token, amount)
               }
               return memo
