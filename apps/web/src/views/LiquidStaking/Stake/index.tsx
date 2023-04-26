@@ -67,7 +67,7 @@ export function LiquidStakingPageStake() {
         <RowBetween mb="24px">
           <ExchangeRateTitle />
 
-          {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0)} wBETH`}</Text> : '-'}
+          {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 6)} wBETH`}</Text> : '-'}
         </RowBetween>
         <NextLink href={`/liquid-staking/${selectedSymbol}`}>
           <Button width="100%">{t('Proceed')}</Button>

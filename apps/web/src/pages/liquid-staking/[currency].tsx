@@ -203,7 +203,9 @@ const LiquidStakingStakePage = () => {
           </Text>
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
-              <Text>{quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0) : '0'}</Text>
+              <Text>
+                {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, 6) : '0'}
+              </Text>
               <Flex>
                 <CurrencyLogo currency={inputCurrency} size="24px" />
                 <Text ml="4px">wBETH</Text>
@@ -213,7 +215,11 @@ const LiquidStakingStakePage = () => {
           <RowBetween mb="24px">
             <ExchangeRateTitle />
 
-            {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0)} wBETH`}</Text> : '-'}
+            {exchangeRateAmount ? (
+              <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 6)} wBETH`}</Text>
+            ) : (
+              '-'
+            )}
           </RowBetween>
           {/* 
           <RowBetween mb="24px">

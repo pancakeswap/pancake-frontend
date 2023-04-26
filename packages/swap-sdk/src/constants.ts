@@ -60,8 +60,8 @@ export const WETH9 = {
     ChainId.BSC,
     '0xE7bCB9e341D546b66a46298f4893f5650a56e99E',
     18,
-    'Test ETH',
-    'Test ETH',
+    'ETH',
+    'ETH',
     'https://ethereum.org'
   ),
 }
