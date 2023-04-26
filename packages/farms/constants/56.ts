@@ -46,6 +46,14 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 30,
+    lpSymbol: 'CHAMP-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.champ,
+    lpAddress: '0x55d398326f99059ff775485246999027b3197955',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 29,
     lpSymbol: 'unshETH-USH LP',
     token: bscTokens.unshETH,
