@@ -287,7 +287,9 @@ const LiquidStakingStakePage = () => {
           We currently do not provide redemption services for wBETH to ETH. You can swap wBETH for ETH on{' '}
           <Link
             style={{ display: 'inline' }}
-            href={`/swap?inputCurrency=${wbethContract?.address}&outputCurrency=${ethToken?.address}`}
+            href={`/swap?inputCurrency=${wbethContract?.address}&outputCurrency=${
+              ethToken?.address || ethToken?.symbol
+            }`}
           >
             our swap page{' '}
           </Link>
