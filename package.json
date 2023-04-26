@@ -55,5 +55,8 @@
   "volta": {
     "node": "16.18.0"
   },
-  "packageManager": "yarn@1.22.17"
+  "packageManager": "yarn@3.4.1",
+  "dependencies": {
+    "tsup": "^6.6.3"
+  }
 }
