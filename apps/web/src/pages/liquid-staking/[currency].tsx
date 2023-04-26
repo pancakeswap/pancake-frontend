@@ -118,7 +118,7 @@ const LiquidStakingStakePage = () => {
       toastSuccess(
         t('Staked!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, 8)} wBETH`}
+          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, decimals)} wBETH`}
         </ToastDescriptionWithTx>,
       )
 
@@ -129,6 +129,7 @@ const LiquidStakingStakePage = () => {
     callWithGasPrice,
     chainId,
     convertedStakeAmount,
+    decimals,
     fetchWithCatchTxError,
     quoteAmount,
     router,
@@ -213,7 +214,7 @@ const LiquidStakingStakePage = () => {
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
               <Text>
-                {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, 8) : '0'}
+                {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, decimals) : '0'}
               </Text>
               <Flex>
                 <Box width={24} height={24}>
