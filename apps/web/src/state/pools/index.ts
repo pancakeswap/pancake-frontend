@@ -206,7 +206,7 @@ export const fetchPoolsPublicDataAsync =
 
         const stakingTokenAddress = isAddress(pool.stakingToken.address)
         let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-        if (stakingTokenAddress && !prices[stakingTokenAddress]) {
+        if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
           // eslint-disable-next-line no-await-in-loop
           const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
           stakingTokenPrice = result.get(stakingTokenAddress) || 0
@@ -214,7 +214,7 @@ export const fetchPoolsPublicDataAsync =
 
         const earningTokenAddress = isAddress(pool.earningToken.address)
         let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
-        if (earningTokenAddress && !prices[earningTokenAddress]) {
+        if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
           // eslint-disable-next-line no-await-in-loop
           const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
           earningTokenPrice = result.get(earningTokenAddress) || 0
