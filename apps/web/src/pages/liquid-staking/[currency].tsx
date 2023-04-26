@@ -11,7 +11,7 @@ import { useWBETHContract } from 'hooks/useContract'
 import useETHApprovalStatus from 'hooks/useETHApprovalStatus'
 import { useApproveETH } from 'hooks/useApproveETH'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -59,11 +59,15 @@ const LiquidStakingStakePage = () => {
 
   const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
 
-  const { isApproved, allowance } = useETHApprovalStatus(wbethContract?.address)
+  const { isApproved, allowance, setLastUpdated } = useETHApprovalStatus(wbethContract?.address)
 
   const isApprovedEnough = isApproved && allowance?.isGreaterThanOrEqualTo(convertedStakeAmount)
 
   const { isPending, onApprove } = useApproveETH(wbethContract?.address)
+
+  useEffect(() => {
+    setLastUpdated()
+  }, [isPending, setLastUpdated])
 
   const decimals = ethToken?.decimals
 
@@ -249,7 +253,10 @@ const LiquidStakingStakePage = () => {
       <AppBody>
         <Text padding="24px">
           We currently do not provide redemption services for wBETH to ETH. You can swap wBETH for ETH on{' '}
-          <Link style={{ display: 'inline' }} href="/swap">
+          <Link
+            style={{ display: 'inline' }}
+            href={`/swap?inputCurrency=${wbethContract?.address}&outputCurrency=${ethToken?.address}`}
+          >
             our swap page{' '}
           </Link>
           instead. Alternatively, you can head to Binance.com to redeem ETH
