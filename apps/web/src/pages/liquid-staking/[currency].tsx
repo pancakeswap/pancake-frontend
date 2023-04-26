@@ -59,7 +59,9 @@ const LiquidStakingStakePage = () => {
 
   const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
 
-  const { isApproved } = useETHApprovalStatus(wbethContract?.address)
+  const { isApproved, allowance } = useETHApprovalStatus(wbethContract?.address)
+
+  const isApprovedEnough = isApproved && allowance?.isGreaterThanOrEqualTo(convertedStakeAmount)
 
   const { isPending, onApprove } = useApproveETH(wbethContract?.address)
 
@@ -153,7 +155,7 @@ const LiquidStakingStakePage = () => {
         {error}
       </Button>
     )
-  } else if (!isApproved) {
+  } else if (!isApprovedEnough) {
     button = (
       <Button
         endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : undefined}
@@ -166,7 +168,7 @@ const LiquidStakingStakePage = () => {
         {isPending ? t('Enabling') : t('Enable')}
       </Button>
     )
-  } else if (isApproved && account) {
+  } else if (isApprovedEnough && account) {
     button = (
       <Button
         endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
