@@ -25,6 +25,7 @@ import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTi
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GetStaticPaths, GetStaticProps } from 'next/types'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -208,7 +209,7 @@ const LiquidStakingStakePage = () => {
               maxAmount={currencyBalance}
               disableCurrencySelect
               value={stakeAmount}
-              onMax={() => setStakeAmount(currencyBalance?.toExact())}
+              onMax={() => setStakeAmount(maxAmountSpend(currencyBalance)?.toExact())}
               onUserInput={setStakeAmount}
               showQuickInputButton
               showMaxButton
