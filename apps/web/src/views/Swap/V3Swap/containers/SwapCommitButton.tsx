@@ -10,6 +10,7 @@ import {
   Message,
   MessageText,
   AutoColumn,
+  Dots,
 } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
@@ -263,7 +264,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
-  if (noRoute && userHasSpecifiedInputOutput) {
+  if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return (
       <AutoColumn gap="12px">
         <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
@@ -334,11 +335,16 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           id="swap-button"
           disabled={!isValid || !approved || (priceImpactSeverity > 3 && !isExpertMode)}
         >
-          {priceImpactSeverity > 3 && !isExpertMode
-            ? t('Price Impact High')
-            : priceImpactSeverity > 2
-            ? t('Swap Anyway')
-            : t('Swap')}
+          {(tradeLoading && (
+            <>
+              <Dots>{t('Searching For The Best Price')}</Dots>
+            </>
+          )) ||
+            (priceImpactSeverity > 3 && !isExpertMode
+              ? t('Price Impact High')
+              : priceImpactSeverity > 2
+              ? t('Swap Anyway')
+              : t('Swap'))}
         </CommitButton>
       </RowBetween>
       <Column style={{ marginTop: '1rem' }}>
@@ -358,6 +364,11 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
       >
         {swapInputError ||
+          (tradeLoading && (
+            <>
+              <Dots>{t('Searching For The Best Price')}</Dots>
+            </>
+          )) ||
           (priceImpactSeverity > 3 && !isExpertMode
             ? t('Price Impact Too High')
             : priceImpactSeverity > 2

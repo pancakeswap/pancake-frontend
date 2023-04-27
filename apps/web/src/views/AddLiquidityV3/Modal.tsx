@@ -20,10 +20,12 @@ export function AddLiquidityV3Modal({
   isOpen,
   onDismiss,
   feeAmount,
+  preferredSelectType = SELECTOR_TYPE.V3,
 }: {
   currency0?: Currency
   currency1?: Currency
   feeAmount?: FeeAmount
+  preferredSelectType?: SELECTOR_TYPE
 } & UseModalV2Props) {
   const { t } = useTranslation()
   const router = useRouter()
@@ -90,7 +92,7 @@ export function AddLiquidityV3Modal({
             <UniversalAddLiquidity
               currencyIdA={currencyIdA}
               currencyIdB={currencyIdB}
-              preferredSelectType={SELECTOR_TYPE.V3}
+              preferredSelectType={preferredSelectType}
               preferredFeeAmount={feeAmount}
             />
           </Box>

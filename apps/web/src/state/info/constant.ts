@@ -1,5 +1,6 @@
 import { BLOCKS_CLIENT, BLOCKS_CLIENT_ETH, INFO_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
 import { infoClientETH, infoClient, infoStableSwapClient } from 'utils/graphql'
+import { GraphQLClient } from 'graphql-request'
 
 import { ChainId } from '@pancakeswap/sdk'
 import {
@@ -11,11 +12,11 @@ import {
   ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
 
-export type MultiChainName = 'BSC' | 'ETH'
+export type MultiChainName = 'BSC' | 'ETH' | 'BSC_TESTNET'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET'
 
-export const multiChainName = {
+export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.BSC]: 'BSC',
   [ChainId.ETHEREUM]: 'ETH',
   [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
@@ -72,7 +73,7 @@ export const multiChainTokenWhiteList = {
   ETH: ETH_TOKEN_WHITELIST,
 }
 
-export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName) => {
+export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName): GraphQLClient => {
   const isStableSwap = checkIsStableSwap()
   if (isStableSwap) return infoStableSwapClient
   return multiChainQueryClient[chainName]

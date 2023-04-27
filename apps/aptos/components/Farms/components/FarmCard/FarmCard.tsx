@@ -130,7 +130,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             removed={removed}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
-            addLiquidityUrl={addLiquidityUrl}
+            onAddLiquidity={addLiquidityUrl}
             isCommunity={farm.isCommunity}
             auctionHostingEndDate={farm.auctionHostingEndDate}
           />

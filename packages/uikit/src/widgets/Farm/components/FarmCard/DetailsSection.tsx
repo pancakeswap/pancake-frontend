@@ -11,7 +11,7 @@ export interface ExpandableSectionProps {
   removed?: boolean;
   totalValueFormatted?: string;
   lpLabel: string;
-  addLiquidityUrl?: string;
+  onAddLiquidity?: (() => void) | string;
   isCommunity?: boolean;
   auctionHostingEndDate?: string;
   alignLinksToRight?: boolean;
@@ -26,6 +26,13 @@ const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
 `;
 
+const StyledText = styled(Text)`
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`;
+
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   scanAddressLink,
   infoAddress,
@@ -33,7 +40,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   totalValueLabel,
   totalValueFormatted,
   lpLabel,
-  addLiquidityUrl,
+  onAddLiquidity,
   isCommunity,
   auctionHostingEndDate,
   alignLinksToRight = true,
@@ -63,7 +70,15 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       </Flex>
       {!removed && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
-          <StyledLinkExternal href={addLiquidityUrl}>{t("Add %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
+          {onAddLiquidity ? (
+            typeof onAddLiquidity === "string" ? (
+              <StyledLinkExternal href={onAddLiquidity}>{t("Add %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
+            ) : (
+              <StyledText color="primary" onClick={onAddLiquidity}>
+                {t("Add %symbol%", { symbol: lpLabel })}
+              </StyledText>
+            )
+          ) : null}
         </Flex>
       )}
       {infoAddress && (

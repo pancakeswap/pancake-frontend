@@ -1,6 +1,6 @@
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text, useModalV2 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
@@ -10,6 +10,9 @@ import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
+import { unwrappedToken } from 'utils/wrappedCurrency'
+import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
@@ -94,6 +97,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     setShowExpandableSection((prev) => !prev)
   }, [])
 
+  const addLiquidityModal = useModalV2()
+
   return (
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
@@ -169,16 +174,24 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
       <ExpandingWrapper>
         <ExpandableSectionButton onClick={toggleExpandableSection} expanded={showExpandableSection} />
         {showExpandableSection && (
-          <DetailsSection
-            removed={removed}
-            scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={infoUrl}
-            totalValueFormatted={totalValueFormatted}
-            lpLabel={lpLabel}
-            addLiquidityUrl={addLiquidityUrl}
-            isCommunity={farm.isCommunity}
-            auctionHostingEndDate={farm.auctionHostingEndDate}
-          />
+          <>
+            <AddLiquidityV3Modal
+              {...addLiquidityModal}
+              currency0={unwrappedToken(farm.token)}
+              currency1={unwrappedToken(farm.quoteToken)}
+              preferredSelectType={farm.isStable ? SELECTOR_TYPE.STABLE : SELECTOR_TYPE.V2}
+            />
+            <DetailsSection
+              removed={removed}
+              scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
+              infoAddress={infoUrl}
+              totalValueFormatted={totalValueFormatted}
+              lpLabel={lpLabel}
+              onAddLiquidity={addLiquidityModal.onOpen}
+              isCommunity={farm.isCommunity}
+              auctionHostingEndDate={farm.auctionHostingEndDate}
+            />
+          </>
         )}
       </ExpandingWrapper>
     </StyledCard>

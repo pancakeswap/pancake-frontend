@@ -204,17 +204,24 @@ const handler_ = async (req: Request) => {
 
   // don't cache when pool is not active or has no liquidity
   if (poolInfo.allocPoint.isZero() || poolInfo.totalLiquidity.isZero()) {
-    return json({
-      tvl: {
-        token0: '0',
-        token1: '0',
+    return json(
+      {
+        tvl: {
+          token0: '0',
+          token1: '0',
+        },
+        formatted: {
+          token0: '0',
+          token1: '0',
+        },
+        updatedAt,
       },
-      formatted: {
-        token0: '0',
-        token1: '0',
+      {
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
       },
-      updatedAt,
-    })
+    )
   }
 
   let allActivePositions: any[] = []
@@ -271,17 +278,24 @@ const handler_ = async (req: Request) => {
   })
 
   if (allActivePositions.length === 0) {
-    return json({
-      tvl: {
-        token0: '0',
-        token1: '0',
+    return json(
+      {
+        tvl: {
+          token0: '0',
+          token1: '0',
+        },
+        formatted: {
+          token0: '0',
+          token1: '0',
+        },
+        updatedAt,
       },
-      formatted: {
-        token0: '0',
-        token1: '0',
+      {
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
       },
-      updatedAt,
-    })
+    )
   }
 
   const currentTick = slot0.tick

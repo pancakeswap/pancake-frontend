@@ -120,7 +120,7 @@ export const useTokenPriceChartData = (
 
 // this is for the swap page and ROI calculator
 export const usePairPriceChartTokenData = (
-  address?: string,
+  address: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {
@@ -133,7 +133,9 @@ export const usePairPriceChartTokenData = (
     .unix()
 
   const { data } = useSWRImmutable(
-    chainId && address && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChianId ?? chainId],
+    chainId &&
+      address &&
+      address !== 'undefined' && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChianId ?? chainId],
     () =>
       fetchPairPriceChartTokenData(
         address,
@@ -150,7 +152,7 @@ export const usePairPriceChartTokenData = (
 export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {
   try {
     const topTokenAddress = await fetchTopTokenAddresses(dataClient)
-    const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses, blocks)
+    const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses ?? [], blocks)
     return data
   } catch (e) {
     console.error(e)
@@ -193,7 +195,8 @@ export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
     chainId &&
       blocks &&
       addresses &&
-      blocks.length > 0 && [`v3/info/token/tokensData/${chainId}/${addresses.join()}`, chainId],
+      addresses?.length > 0 &&
+      blocks?.length > 0 && [`v3/info/token/tokensData/${chainId}/${addresses.join()}`, chainId],
     () =>
       fetchedTokenDatas(
         v3InfoClients[chainId],
@@ -212,7 +215,11 @@ export const useTokenData = (address: string): TokenData | undefined => {
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
-    chainId && blocks && address && blocks.length > 0 && [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
+    chainId &&
+      blocks &&
+      address &&
+      address !== 'undefined' &&
+      blocks?.length > 0 && [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
     () =>
       fetchedTokenDatas(
         v3InfoClients[chainId],
@@ -282,7 +289,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks: Block[]) {
   try {
     const topPoolAddress = await fetchTopPoolAddresses(dataClient, chainId)
-    const data = await fetchPoolDatas(dataClient, topPoolAddress.addresses, blocks)
+    const data = await fetchPoolDatas(dataClient, topPoolAddress.addresses ?? [], blocks)
     return data
   } catch (e) {
     console.error(e)
@@ -325,9 +332,9 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
   const { data } = useSWRImmutable(
     chainId &&
       blocks &&
-      blocks.length > 0 &&
+      blocks?.length > 0 &&
       addresses &&
-      addresses.length > 0 && [`v3/info/pool/poolsData/${chainId}/${addresses.join()}`, chainId],
+      addresses?.length > 0 && [`v3/info/pool/poolsData/${chainId}/${addresses.join()}`, chainId],
     () =>
       fetchPoolDatas(
         v3InfoClients[chainId],
@@ -346,7 +353,11 @@ export const usePoolData = (address: string): PoolData | undefined => {
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
-    chainId && blocks && blocks.length > 0 && address && [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
+    chainId &&
+      blocks &&
+      blocks?.length > 0 &&
+      address &&
+      address !== 'undefined' && [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
     () =>
       fetchPoolDatas(
         v3InfoClients[chainId],
@@ -355,7 +366,7 @@ export const usePoolData = (address: string): PoolData | undefined => {
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data[address] ?? undefined
+  return data?.data?.[address] ?? undefined
 }
 export const usePoolTransactions = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()

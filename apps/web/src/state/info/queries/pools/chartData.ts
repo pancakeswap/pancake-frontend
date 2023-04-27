@@ -25,7 +25,7 @@ const getPoolChartData = async (
         }
       }
     `
-    const { pairDayDatas } = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PairDayDatasResponse>(
+    const { pairDayDatas } = await getMultiChainQueryEndPointWithStableSwap(chainName)?.request<PairDayDatasResponse>(
       query,
       {
         startTime: multiChainStartTime[chainName],

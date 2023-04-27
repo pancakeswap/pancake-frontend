@@ -83,7 +83,7 @@ export function useSingleTokenSwapInfo(
     v2Swap: true,
     v3Swap: true,
     stableSwap: true,
-    type: 'quoter',
+    type: 'api',
     autoRevalidate: false,
   })
   if (!inputCurrency || !outputCurrency || !bestTradeExactIn) {

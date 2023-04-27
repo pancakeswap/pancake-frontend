@@ -8,8 +8,6 @@ const withBundleAnalyzer = BundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-// const withTM = NextTranspileModules([])
-
 const withVanillaExtract = createVanillaExtractPlugin()
 
 const sentryWebpackPluginOptions =
@@ -50,10 +48,6 @@ const config = {
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
     '@pancakeswap/tokens',
-    '@wagmi',
-    'wagmi',
-    '@ledgerhq',
-    '@gnosis.pm/safe-apps-wagmi',
   ],
   reactStrictMode: true,
   swcMinify: true,
@@ -76,10 +70,6 @@ const config = {
       {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
-      },
-      {
-        source: '/nodeRealApi/:path*',
-        destination: 'https://pancake.nodereal.cc/graphql',
       },
     ]
   },

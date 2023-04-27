@@ -260,20 +260,32 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     </RowBetween>
                   </AutoColumn>
                 </Card>
-                <AutoColumn gap="4px">
-                  <Text fontWeight={400}>{t('TVL')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.tvlUSD)}</Text>
+                <Box mb="20px">
+                  <Text lineHeight={1.3} fontWeight={400}>
+                    {t('TVL')}
+                  </Text>
+                  <Text lineHeight={1} fontSize="24px">
+                    {formatDollarAmount(poolData.tvlUSD)}
+                  </Text>
                   <Percent value={poolData.tvlUSDChange} />
-                </AutoColumn>
-                <AutoColumn gap="4px">
-                  <Text fontWeight={400}>{t('Volume 24H')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD)}</Text>
+                </Box>
+                <Box mb="20px">
+                  <Text lineHeight={1.3} fontWeight={400}>
+                    {t('Volume 24H')}
+                  </Text>
+                  <Text lineHeight={1} fontSize="24px">
+                    {formatDollarAmount(poolData.volumeUSD)}
+                  </Text>
                   <Percent value={poolData.volumeUSDChange} />
-                </AutoColumn>
-                <AutoColumn gap="4px">
-                  <Text fontWeight={400}>{t('Fees 24H')}</Text>
-                  <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD * (poolData.feeTier / 1000000))}</Text>
-                </AutoColumn>
+                </Box>
+                <Box mb="20px">
+                  <Text lineHeight={1.3} fontWeight={400}>
+                    {t('Fees 24H')}
+                  </Text>
+                  <Text lineHeight={1} fontSize="24px">
+                    {formatDollarAmount(poolData.feeUSD)}
+                  </Text>
+                </Box>
               </Box>
             </Card>
             <Card>

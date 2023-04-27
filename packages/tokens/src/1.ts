@@ -176,4 +176,20 @@ export const ethereumTokens = {
     'Wrapped NCG',
     'https://nine-chronicles.com/',
   ),
+  ush: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xE60779CC1b2c1d0580611c526a8DF0E3f870EC48',
+    18,
+    'USH',
+    'unshETHing_Token',
+    'https://unsheth.xyz/',
+  ),
+  unshETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x0Ae38f7E10A43B5b2fB064B42a2f4514cbA909ef',
+    18,
+    'unshETH',
+    'unshETH Ether',
+    'https://unsheth.xyz/',
+  ),
 }

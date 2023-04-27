@@ -11,7 +11,7 @@ import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3P
 import { Result } from './multicallProvider'
 import { PancakeMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
-import { BatchMulticallConfigs } from '../../types'
+import { BatchMulticallConfigs, ChainMap } from '../../types'
 import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
 import { flatMap } from '../../utils/flatMap'
 import { uniq } from '../../utils/uniq'
@@ -39,7 +39,7 @@ interface FactoryConfig {
 
 interface ProviderConfig {
   onChainProvider: OnChainProvider
-  multicallConfigs?: BatchMulticallConfigs
+  multicallConfigs?: ChainMap<BatchMulticallConfigs>
 }
 
 type QuoteBatchSuccess = {
@@ -125,7 +125,9 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
         const chainId: ChainId = routes[0].amount.currency.chainId
         const multicallConfigs =
-          multicallConfigsOverride || BATCH_MULTICALL_CONFIGS[chainId] || BATCH_MULTICALL_CONFIGS[ChainId.ETHEREUM]
+          multicallConfigsOverride?.[chainId] ||
+          BATCH_MULTICALL_CONFIGS[chainId] ||
+          BATCH_MULTICALL_CONFIGS[ChainId.ETHEREUM]
         const chainProvider = onChainProvider({ chainId })
         let { multicallChunk, gasLimitOverride } = multicallConfigs.defaultConfig
         const { gasErrorFailureOverride, successRateFailureOverrides } = multicallConfigs

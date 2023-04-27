@@ -1,14 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import {
+  Card,
+  ExpandableSectionButton,
+  Farm as FarmUI,
+  Flex,
+  Text,
+  TooltipText,
+  useModalV2,
+  useTooltip,
+} from '@pancakeswap/uikit'
+import { unwrappedToken } from 'utils/wrappedCurrency'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import BigNumber from 'bignumber.js'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
@@ -57,14 +66,6 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
   const earnLabel = t('CAKE + Fees')
-
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({
-    quoteTokenAddress: farm.quoteToken.address,
-    tokenAddress: farm.token.address,
-    chainId,
-    feeAmount: farm.feeAmount,
-  })
-  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
 
@@ -87,6 +88,8 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
       <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
     </>,
   )
+
+  const addLiquidityModal = useModalV2()
 
   return (
     <StyledCard isActive={isPromotedFarm}>
@@ -118,18 +121,26 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
       <ExpandingWrapper>
         <ExpandableSectionButton onClick={toggleExpandableSection} expanded={showExpandableSection} />
         {showExpandableSection && (
-          <DetailsSection
-            removed={removed}
-            scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={infoUrl}
-            totalValueFormatted={`$${parseInt(farm.activeTvlUSD).toLocaleString(undefined, {
-              maximumFractionDigits: 0,
-            })}`}
-            totalValueLabel={t('Staked Liquidity')}
-            lpLabel={lpLabel}
-            addLiquidityUrl={addLiquidityUrl}
-            isCommunity={false}
-          />
+          <>
+            <AddLiquidityV3Modal
+              {...addLiquidityModal}
+              currency0={unwrappedToken(farm.token)}
+              currency1={unwrappedToken(farm.quoteToken)}
+              feeAmount={farm.feeAmount}
+            />
+            <DetailsSection
+              removed={removed}
+              scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
+              infoAddress={infoUrl}
+              totalValueFormatted={`$${parseInt(farm.activeTvlUSD).toLocaleString(undefined, {
+                maximumFractionDigits: 0,
+              })}`}
+              totalValueLabel={t('Staked Liquidity')}
+              lpLabel={lpLabel}
+              onAddLiquidity={addLiquidityModal.onOpen}
+              isCommunity={false}
+            />
+          </>
         )}
       </ExpandingWrapper>
     </StyledCard>
