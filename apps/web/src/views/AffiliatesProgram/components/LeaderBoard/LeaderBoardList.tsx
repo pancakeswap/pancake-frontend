@@ -56,7 +56,7 @@ const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> =
                   <tr key={data.address}>
                     <Td>
                       <Text color="secondary" bold>
-                        {`#${index + SPLICE_NUMBER}`}
+                        {`#${index + SPLICE_NUMBER + 1}`}
                       </Text>
                     </Td>
                     <Td>

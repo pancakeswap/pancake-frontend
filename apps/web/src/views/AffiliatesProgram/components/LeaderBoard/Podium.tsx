@@ -52,19 +52,34 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
         <PodiumBase />
         <Flex justifyContent="space-between" mt="8px">
           <StyledVolumeFlex>
-            <PodiumText title={t('Total Volume')} amount={secondUser?.metric?.totalTradeVolumeUSD} mb="12px" />
+            <PodiumText
+              title={t('Total Volume')}
+              prefix="$"
+              amount={secondUser?.metric?.totalTradeVolumeUSD}
+              mb="12px"
+            />
             <PodiumText title={t('New users')} amount={secondUser?.metric?.totalUsers.toString()} />
-            <PodiumText title={t('Commission')} amount={secondUser?.metric?.totalEarnFeeUSD} mt="12px" />
+            <PodiumText title={t('Commission')} prefix="$" amount={secondUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
-            <PodiumText title={t('Total Volume')} amount={firstUser?.metric?.totalTradeVolumeUSD} mb="12px" />
+            <PodiumText
+              title={t('Total Volume')}
+              prefix="$"
+              amount={firstUser?.metric?.totalTradeVolumeUSD}
+              mb="12px"
+            />
             <PodiumText title={t('New users')} amount={firstUser?.metric?.totalUsers.toString()} />
-            <PodiumText title={t('Commission')} amount={firstUser?.metric?.totalEarnFeeUSD} mt="12px" />
+            <PodiumText title={t('Commission')} prefix="$" amount={firstUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
-            <PodiumText title={t('Total Volume')} amount={thirdUser?.metric?.totalTradeVolumeUSD} mb="12px" />
+            <PodiumText
+              title={t('Total Volume')}
+              prefix="$"
+              amount={thirdUser?.metric?.totalTradeVolumeUSD}
+              mb="12px"
+            />
             <PodiumText title={t('New users')} amount={thirdUser?.metric?.totalUsers.toString()} />
-            <PodiumText title={t('Commission')} amount={thirdUser?.metric?.totalEarnFeeUSD} mt="12px" />
+            <PodiumText title={t('Commission')} prefix="$" amount={thirdUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
         </Flex>
       </Inner>

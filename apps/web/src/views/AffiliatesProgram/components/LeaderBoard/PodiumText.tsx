@@ -5,13 +5,14 @@ import { StyledVolumeText } from 'views/TradingCompetition/components/TeamRanks/
 interface PodiumTextProps extends BoxProps {
   title: string
   amount: string
+  prefix?: string
 }
 
-const PodiumText: React.FC<React.PropsWithChildren<PodiumTextProps>> = ({ title, amount, ...props }) => {
+const PodiumText: React.FC<React.PropsWithChildren<PodiumTextProps>> = ({ title, amount, prefix = '', ...props }) => {
   return (
     <Box {...props}>
       {amount ? (
-        <StyledVolumeText textAlign="center" bold>{`$${formatNumber(Number(amount), 0)}`}</StyledVolumeText>
+        <StyledVolumeText textAlign="center" bold>{`${prefix}${formatNumber(Number(amount), 0)}`}</StyledVolumeText>
       ) : (
         <Skeleton width="77px" height="24px" />
       )}
