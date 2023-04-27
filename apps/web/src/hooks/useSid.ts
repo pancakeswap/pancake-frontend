@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { namehash } from 'ethers/lib/utils'
-import { ChainId } from '@pancakeswap/sdk'
+import { getSidResolverContract } from 'utils/contractHelpers'
 import { FetchStatus } from '../config/constants/types'
 import useActiveWeb3React from './useActiveWeb3React'
-import { getSidResolverContract } from '../utils/contractHelpers'
 import { useSIDContract } from './useContract'
 
 function getSidAddress(networkId) {
