@@ -69,17 +69,26 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
-            {tooltipVisible && tooltip}
             <Flex>
               <Box mr="8px" height="32px">
-                <Balance
-                  mt="4px"
-                  bold={!isMobile}
-                  fontSize={isMobile ? '14px' : '16px'}
-                  color={hasEarnings ? 'primary' : 'textDisabled'}
-                  decimals={hasEarnings ? 5 : 1}
-                  value={hasEarnings ? earningTokenBalance : 0}
-                />
+                <Flex>
+                  <Balance
+                    mt="4px"
+                    bold={!isMobile}
+                    fontSize={isMobile ? '14px' : '16px'}
+                    color={hasEarnings ? 'primary' : 'textDisabled'}
+                    decimals={hasEarnings ? 5 : 1}
+                    value={hasEarnings ? earningTokenBalance : 0}
+                  />
+                  {hasEarnings && !isMobile && (
+                    <>
+                      {tooltipVisible && tooltip}
+                      <HelpIconWrapper ref={targetRef}>
+                        <HelpIcon ml="4px" mt="2px" color="textSubtle" />
+                      </HelpIconWrapper>
+                    </>
+                  )}
+                </Flex>
                 {hasEarnings ? (
                   <>
                     {earningTokenPrice > 0 && (
@@ -100,11 +109,6 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
                   </Text>
                 )}
               </Box>
-              {hasEarnings && !isMobile && (
-                <HelpIconWrapper ref={targetRef}>
-                  <HelpIcon color="textSubtle" />
-                </HelpIconWrapper>
-              )}
             </Flex>
           </>
         )}

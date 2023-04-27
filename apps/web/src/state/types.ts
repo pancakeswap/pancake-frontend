@@ -88,6 +88,7 @@ export interface DeserializedVaultUser {
   cakeAtLastUserAction: BigNumber
   lastDepositedTime: string
   lastUserActionTime: string
+  lockedAmount: BigNumber
   balance: {
     cakeAsNumberBalance: number
     cakeAsBigNumber: BigNumber

@@ -2445,5 +2445,9 @@
   "V2": "V2",
   "TVL is currently too low to represent the data correctly": "TVL is currently too low to represent the data correctly",
   "Trade now to win $5000 in rewards": "Trade now to win $5000 in rewards",
-  "25 winners every day until May 1st!": "25 winners every day until May 1st!"
+  "25 winners every day until May 1st!": "25 winners every day until May 1st!",
+  "*Please note that any deposit, withdraw, extend or convert action will combine earned rewards with the original staked amount. Resetting this number to 0.": "*Please note that any deposit, withdraw, extend or convert action will combine earned rewards with the original staked amount. Resetting this number to 0.",
+  "Includes both the original staked amount and rewards earned since the last deposit, withdraw, extend or convert action.": "Includes both the original staked amount and rewards earned since the last deposit, withdraw, extend or convert action.",
+  "Original locked amount": "Original locked amount",
+  "Last action": "Last action"
 }

@@ -50,6 +50,9 @@ import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 const IconButtonWrapper = styled.div`
   display: flex;
 `
+const HelpIconWrapper = styled.div`
+  align-self: center;
+`
 
 interface StackedActionProps {
   pool: Pool.DeserializedPool<Token>
@@ -69,7 +72,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     profileRequirement,
     userDataLoaded,
   } = pool
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
 
@@ -104,6 +110,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     userData: {
       userShares,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
+      lockedAmount,
+      lastUserActionTime,
     },
   } = vaultData
 
@@ -190,6 +198,45 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     placement: 'bottom',
   })
 
+  const originalLockedAmount = getBalanceNumber(lockedAmount)
+  const originalUsdValue = getBalanceNumber(lockedAmount.multipliedBy(stakingTokenPrice), stakingToken.decimals)
+  const originalLockedAmountText = originalLockedAmount > 0.01 ? originalLockedAmount.toFixed(2) : '<0.01'
+  const originalUsdValueText = originalUsdValue > 0.01 ? `~${originalUsdValue.toFixed(2)}` : '<0.01'
+  const lastActionInMs = lastUserActionTime ? parseInt(lastUserActionTime) * 1000 : 0
+  const tooltipContentOfLocked = (
+    <>
+      <Text>
+        {t(
+          'Includes both the original staked amount and rewards earned since the last deposit, withdraw, extend or convert action.',
+        )}
+      </Text>
+      <Box mt="12px">
+        <Text>{t('Original locked amount')}:</Text>
+        <Text bold>{`${originalLockedAmountText} CAKE (${originalUsdValueText} USD)`}</Text>
+      </Box>
+      <Box mt="12px">
+        <Text>{t('Last action')}:</Text>
+        <Text bold>
+          {new Date(lastActionInMs).toLocaleString(locale, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })}
+        </Text>
+      </Box>
+    </>
+  )
+  const {
+    targetRef: tagTargetRefOfLocked,
+    tooltip: tagTooltipOfLocked,
+    tooltipVisible: tagTooltipVisibleOfLocked,
+  } = useTooltip(tooltipContentOfLocked, {
+    placement: 'bottom',
+  })
+
   const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
 
   if (!account) {
@@ -272,15 +319,21 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                     : t('Staked')}
                 </Text>
               </ActionTitles>
-              <ActionContent>
+              <Flex mt={2}>
                 <Box position="relative">
-                  <Balance
-                    lineHeight="1"
-                    bold
-                    fontSize="20px"
-                    decimals={5}
-                    value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
-                  />
+                  <Flex>
+                    <Balance
+                      lineHeight="1"
+                      bold
+                      fontSize="20px"
+                      decimals={5}
+                      value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
+                    />
+                    {tagTooltipVisibleOfLocked && tagTooltipOfLocked}
+                    <HelpIconWrapper ref={tagTargetRefOfLocked}>
+                      <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                    </HelpIconWrapper>
+                  </Flex>
                   <SkeletonV2
                     isDataReady={Number.isFinite(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance)}
                     width={120}
@@ -298,7 +351,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                     />
                   </SkeletonV2>
                 </Box>
-              </ActionContent>
+              </Flex>
               {vaultPosition === VaultPosition.Locked && (
                 <Box mt="16px">
                   <AddCakeButton
@@ -317,19 +370,20 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {t('Unlocks In')}
                 </Text>
-                <Text
-                  lineHeight="1"
-                  mt="5px"
-                  bold
-                  fontSize="20px"
-                  color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
-                >
-                  {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                <Flex mt={2}>
+                  <Text
+                    lineHeight="1"
+                    bold
+                    fontSize="20px"
+                    color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
+                  >
+                    {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                  </Text>
                   {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
                   <span ref={tagTargetRefOfBurn}>
                     <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
                   </span>
-                </Text>
+                </Flex>
                 <Text
                   height="20px"
                   fontSize="12px"
