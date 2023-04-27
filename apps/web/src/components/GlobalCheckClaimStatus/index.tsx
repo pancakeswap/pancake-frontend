@@ -8,9 +8,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import v3WhitelistAddress from './constants/v3WhitelistAddress.json'
-import v3ForSC from './constants/v3ForSC.json'
-import v3MerkleProofs from './constants/v3MerkleProofs.json'
+import useSWRImmutable from 'swr/immutable'
 import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
 
 interface GlobalCheckClaimStatusProps {
@@ -34,6 +32,8 @@ const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimS
  *
  * TODO: Put global checks in redux or make a generic area to house global checks
  */
+const GITHUB_ENDPOINT = 'https://raw.githubusercontent.com/pancakeswap/airdrop-v3-users/master'
+
 const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
   const { address: account } = useAccount()
   const { pathname } = useRouter()
@@ -45,12 +45,31 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   const { isClaimed } = useV3AirdropContract(false)
   const { fetchWithCatchTxError } = useCatchTxError()
 
+  const { data } = useSWRImmutable('/airdrop-json', async () => {
+    const [feResponse, scResponse, merkleProofsResponse] = await Promise.all([
+      fetch(`${GITHUB_ENDPOINT}/forFE.json?token=GHSAT0AAAAAABQ3Y5ZYJVPWU2HB3QBIBLT4ZCKKORQ`),
+      fetch(`${GITHUB_ENDPOINT}/forSC.json?token=GHSAT0AAAAAABQ3Y5ZZJO2BG2T6WAOMVBKSZCKKSVQ`),
+      fetch(`${GITHUB_ENDPOINT}/v3MerkleProofs.json?token=GHSAT0AAAAAABQ3Y5ZY2YFH6UYA46Z2ZN36ZCKK33Q`),
+    ])
+    const [v3WhitelistAddress, v3ForSC, v3MerkleProofs] = await Promise.all([
+      feResponse.json(),
+      scResponse.json(),
+      merkleProofsResponse.json(),
+    ])
+
+    return {
+      v3WhitelistAddress,
+      v3ForSC,
+      v3MerkleProofs,
+    }
+  })
+
   const [onPresentV3AirdropModal, closeV3AirdropModal] = useModal(
     <V3AirdropModal
-      data={v3WhitelistAddress[account] as WhitelistType}
+      data={data?.v3WhitelistAddress[account] as WhitelistType}
       onClick={async () => {
-        const { cakeAmountInWei, nft1, nft2 } = v3ForSC[account]
-        const proof = v3MerkleProofs.merkleProofs?.[account]
+        const { cakeAmountInWei, nft1, nft2 } = data.v3ForSC[account]
+        const proof = data?.v3MerkleProofs?.merkleProofs?.[account]
         const receipt = await fetchWithCatchTxError(() => claim(cakeAmountInWei, nft1, nft2, proof))
         if (receipt?.status) {
           toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
@@ -63,7 +82,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
       const canV3ClaimReward = await isClaimed(account)
-      const isWhitelistAddress = v3WhitelistAddress[account]
+      const isWhitelistAddress = data?.v3WhitelistAddress[account]
       // TODO: also need check json acc is whitelisted or not.
       if (!canV3ClaimReward && isWhitelistAddress) {
         setCanClaimReward(true)
@@ -75,7 +94,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     if (account) {
       fetchClaimAnniversaryStatus()
     }
-  }, [account, canClaimReward, isClaimed, closeV3AirdropModal])
+  }, [data, account, canClaimReward, isClaimed, closeV3AirdropModal])
 
   // // Check if we need to display the modal
   useEffect(() => {
