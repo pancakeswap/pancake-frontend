@@ -47,7 +47,7 @@ export const farmsV3 = [
   // keep those farms on top
   {
     pid: 31,
-    lpSymbol: 'ZBC-CAKE LP',
+    lpSymbol: 'CAKE-ZBC LP',
     token: bscTokens.cake,
     quoteToken: bscTokens.zbc,
     lpAddress: '0x63ca58e7c6bF06B06cBbEc2a83bf6AA8f8f9f77B',
