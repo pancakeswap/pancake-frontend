@@ -58,7 +58,7 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
               amount={secondUser?.metric?.totalTradeVolumeUSD}
               mb="12px"
             />
-            <PodiumText title={t('New users')} amount={secondUser?.metric?.totalUsers.toString()} />
+            <PodiumText title={t('New Users')} amount={secondUser?.metric?.totalUsers.toString()} />
             <PodiumText title={t('Commission')} prefix="$" amount={secondUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
@@ -68,7 +68,7 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
               amount={firstUser?.metric?.totalTradeVolumeUSD}
               mb="12px"
             />
-            <PodiumText title={t('New users')} amount={firstUser?.metric?.totalUsers.toString()} />
+            <PodiumText title={t('New Users')} amount={firstUser?.metric?.totalUsers.toString()} />
             <PodiumText title={t('Commission')} prefix="$" amount={firstUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
@@ -78,7 +78,7 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
               amount={thirdUser?.metric?.totalTradeVolumeUSD}
               mb="12px"
             />
-            <PodiumText title={t('New users')} amount={thirdUser?.metric?.totalUsers.toString()} />
+            <PodiumText title={t('New Users')} amount={thirdUser?.metric?.totalUsers.toString()} />
             <PodiumText title={t('Commission')} prefix="$" amount={thirdUser?.metric?.totalEarnFeeUSD} mt="12px" />
           </StyledVolumeFlex>
         </Flex>

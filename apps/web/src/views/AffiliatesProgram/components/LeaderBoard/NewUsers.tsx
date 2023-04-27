@@ -20,7 +20,7 @@ const NewUsers: React.FC<React.PropsWithChildren<NewUsersProps>> = ({ totalUsers
         <Skeleton width="77px" height="24px" />
       )}
       <Text fontSize="12px" textAlign="center" color="textSubtle">
-        {t('New users')}
+        {t('New Users')}
       </Text>
     </Flex>
   )

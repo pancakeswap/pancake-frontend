@@ -2255,7 +2255,6 @@
   "Join PancakeSwap's Community and Make a Difference": "Join PancakeSwap's Community and Make a Difference",
   "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program": "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
   "claim your rewards": "claim your rewards",
-  "rewards breakdown": "rewards breakdown",
   "affiliate links": "affiliate links",
   "link": "link",
   "profit sharing %": "profit sharing %",
@@ -2435,5 +2434,16 @@
   "Token%index% Amount": "Token%index% Amount",
   "V3": "V3",
   "V2": "V2",
-  "TVL is currently too low to represent the data correctly": "TVL is currently too low to represent the data correctly"
+  "TVL is currently too low to represent the data correctly": "TVL is currently too low to represent the data correctly",
+  "Total Reward": "Total Reward",
+  "Total cake earned": "Total cake earned",
+  "Active friends": "Active friends",
+  "Perp Swap Earn Fee": "Perp Swap Earn Fee",
+  "Stable Swap Earn Fee": "Stable Swap Earn Fee",
+  "V2 Swap Earn Fee": "V2 Swap Earn Fee",
+  "V3 Swap Earn Fee": "V3 Swap Earn Fee",
+  "Affilaite": "Affilaite",
+  "New Users": "New Users",
+  "Commission": "Commission",
+  "See who has invited the most friends": "See who has invited the most friends"
 }
