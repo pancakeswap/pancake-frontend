@@ -7,7 +7,7 @@ import {
   IconButton,
   InjectedModalProps,
   LinkExternal,
-  ModalContainer,
+  ModalWrapper,
   ModalHeader,
   ProfileAvatar,
   Skeleton,
@@ -72,7 +72,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
   }
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalWrapper minWidth="320px">
       <ModalHeader background={theme.colors.gradientBubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
@@ -155,7 +155,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
           )}
         </Box>
       )}
-    </ModalContainer>
+    </ModalWrapper>
   )
 }
 
