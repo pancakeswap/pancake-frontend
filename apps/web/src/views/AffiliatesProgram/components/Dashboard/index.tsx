@@ -6,6 +6,7 @@ import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
 import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyReferralLink'
 import useAuthAffiliate from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
+import useUserInfo from 'views/AffiliatesProgram/hooks/useUserInfo'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButton'
 import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const { address: account } = useAccount()
   const { isAffiliate, affiliate, refresh } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
+  const { userInfo } = useUserInfo()
 
   return (
     <AffiliatesProgramLayout>
@@ -50,7 +52,11 @@ const Dashboard = () => {
                 </Box>
               </Card>
             )}
-            <ClaimReward affiliate={affiliate} />
+            <ClaimReward
+              isAffiliate={isAffiliate}
+              userRewardFeeUSD={userInfo.availableFeeUSD}
+              affiliateRewardFeeUSD={affiliate.availableFeeUSD}
+            />
           </Flex>
         </Flex>
       )}

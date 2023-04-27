@@ -6,7 +6,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { InfoDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 
 const CardContainer = styled(Flex)`
   flex-direction: column;
@@ -31,17 +30,27 @@ const CardContainer = styled(Flex)`
 `
 
 interface ClaimRewardProps {
-  affiliate: InfoDetail
+  isAffiliate: boolean
+  userRewardFeeUSD: string
+  affiliateRewardFeeUSD: string
 }
 
-const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({ affiliate }) => {
+const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
+  isAffiliate,
+  userRewardFeeUSD,
+  affiliateRewardFeeUSD,
+}) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
 
-  const totalCakeEarned = useMemo(() => {
-    const cakeBalance = new BigNumber(affiliate.availableFeeUSD).div(cakePriceBusd).toNumber()
-    return formatNumber(cakeBalance)
-  }, [cakePriceBusd, affiliate])
+  const affiliateTotalCakeEarned = useMemo(
+    () => new BigNumber(affiliateRewardFeeUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, affiliateRewardFeeUSD],
+  )
+  const userTotalCakeEarned = useMemo(
+    () => new BigNumber(userRewardFeeUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, userRewardFeeUSD],
+  )
 
   return (
     <Box>
@@ -63,21 +72,41 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({ affi
               </Button> */}
             </Flex>
             <CardContainer>
+              {isAffiliate && (
+                <LightGreyCard>
+                  <Flex justifyContent="space-between" mb="7px">
+                    <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                      {t('Affiliate Reward')}
+                    </Text>
+                    <Text bold fontSize="14px">
+                      {`$ ${formatNumber(Number(affiliateRewardFeeUSD))}`}
+                    </Text>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                      {t('Affiliate CAKE Earned')}
+                    </Text>
+                    <Text bold fontSize="14px">
+                      {`~ ${formatNumber(affiliateTotalCakeEarned)} CAKE`}
+                    </Text>
+                  </Flex>
+                </LightGreyCard>
+              )}
               <LightGreyCard>
                 <Flex justifyContent="space-between" mb="7px">
                   <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
-                    {t('Total Reward')}
+                    {t('User Reward')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`$ ${formatNumber(Number(affiliate.availableFeeUSD))}`}
+                    {`$ ${formatNumber(Number(userRewardFeeUSD))}`}
                   </Text>
                 </Flex>
                 <Flex justifyContent="space-between">
                   <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
-                    {t('Total cake earned')}
+                    {t('User CAKE Earned')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`~ ${totalCakeEarned} CAKE`}
+                    {`~ ${formatNumber(userTotalCakeEarned)} CAKE`}
                   </Text>
                 </Flex>
               </LightGreyCard>
