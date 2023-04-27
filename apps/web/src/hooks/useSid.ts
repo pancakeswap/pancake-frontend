@@ -32,9 +32,7 @@ export const useSidNameForAddress = (address: string, fetchData = true) => {
   const sidContract = useSIDContract(getSidAddress(`${chainId}`))
 
   const { data: sidName, status } = useSWRImmutable(
-    fetchData && address && [ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId)
-      ? ['sidName', chainId, address.toLowerCase()]
-      : null,
+    fetchData && address ? ['sidName', chainId, address.toLowerCase()] : null,
     async () => {
       const reverseNode = `${address.slice(2)}.addr.reverse`
       const reverseNameHash = namehash(reverseNode)

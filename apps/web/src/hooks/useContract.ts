@@ -68,6 +68,7 @@ import {
   getSidContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
+  getUnsContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -405,6 +406,10 @@ export const useNonBscVault = (withSignerIfPossible = true) => {
 
 export const useSIDContract = (address) => {
   return useMemo(() => getSidContract(address), [address])
+}
+
+export const useUNSContract = (address, chainId, provider) => {
+  return useMemo(() => getUnsContract(address, chainId, provider), [chainId, address, provider])
 }
 
 export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfPossible = true) => {
