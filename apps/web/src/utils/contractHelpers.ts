@@ -375,8 +375,8 @@ export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: num
   return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
 }
 
-export const getSidContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: sid, address, signer }) as SID
+export const getSidContract = (address: string, chainId: number) => {
+  return getContract({ abi: sid, address, chainId }) as SID
 }
 
 export const getUnsContract = (address: string, chainId?: ChainId, signer?: Signer | Provider) => {

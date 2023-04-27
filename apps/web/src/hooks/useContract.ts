@@ -404,8 +404,8 @@ export const useNonBscVault = (withSignerIfPossible = true) => {
   return useMemo(() => getNonBscVaultContract(providerOrSigner, chainId), [providerOrSigner, chainId])
 }
 
-export const useSIDContract = (address) => {
-  return useMemo(() => getSidContract(address), [address])
+export const useSIDContract = (address, chainId) => {
+  return useMemo(() => getSidContract(address, chainId), [address, chainId])
 }
 
 export const useUNSContract = (address, chainId, provider) => {

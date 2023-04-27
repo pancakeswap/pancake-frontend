@@ -27,7 +27,7 @@ function getSidAddress(networkId) {
 
 export const useSidNameForAddress = (address: string, fetchData = true) => {
   const { chainId } = useActiveWeb3React()
-  const sidContract = useSIDContract(getSidAddress(chainId))
+  const sidContract = useSIDContract(getSidAddress(chainId), chainId)
 
   const { data: sidName, status } = useSWRImmutable(
     fetchData && address ? ['sidName', chainId, address.toLowerCase()] : null,
