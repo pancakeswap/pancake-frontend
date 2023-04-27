@@ -24,7 +24,7 @@ const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> =
             <Th width="5%" />
             <Th>
               <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
-                {t('Affilaite')}
+                {t('Affiliate')}
               </Text>
             </Th>
             <Th>
