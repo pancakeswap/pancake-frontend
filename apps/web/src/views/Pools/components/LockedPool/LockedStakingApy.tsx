@@ -222,6 +222,12 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
           </Text>
         </Flex>
       )}
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+          {t('Original locked amount')}
+        </Text>
+        <BalanceWithLoading color="text" bold fontSize="16px" value={originalLockedAmount} decimals={2} />
+      </Flex>
       {showICake && <IfoCakeRow />}
     </LightGreyCard>
   )
