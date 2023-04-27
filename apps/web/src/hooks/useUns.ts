@@ -6,19 +6,18 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useUNSContract } from './useContract'
 
 function getUnsAddress(networkId) {
-  const id = parseInt(networkId)
-  if ([1].includes(id)) {
+  if ([1].includes(networkId)) {
     return '0x049aba7510f45BA5b64ea9E658E342F904DB358D'
   }
-  if ([137].includes(id)) {
+  if ([137].includes(networkId)) {
     return '0xa9a6A3626993D487d2Dbda3173cf58cA1a9D9e9f'
   }
   return ''
 }
 
 export const useUnsNameForAddress = (address: string, fetchData = true) => {
-  const unsEtherContract = useUNSContract(getUnsAddress(`${1}`), ChainId.ETHEREUM, undefined)
-  const unsPolygonContract = useUNSContract(getUnsAddress(`${137}`), undefined, polygonRpcProvider)
+  const unsEtherContract = useUNSContract(getUnsAddress(1), ChainId.ETHEREUM, undefined)
+  const unsPolygonContract = useUNSContract(getUnsAddress(137), undefined, polygonRpcProvider)
 
   const { data: unsName, status } = useSWRImmutable(
     fetchData && address ? ['unsName', address.toLowerCase()] : null,
