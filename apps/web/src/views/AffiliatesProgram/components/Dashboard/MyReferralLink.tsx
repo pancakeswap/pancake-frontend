@@ -155,6 +155,14 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
     }
   }
 
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const textValue = e.target.value
+    const reg = /^[a-zA-Z0-9]+$/
+    if (reg.test(textValue) || textValue === '') {
+      setNote(textValue)
+    }
+  }
+
   return (
     <Box>
       <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">
@@ -167,7 +175,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
           value={note}
           type="text"
           placeholder="Note (20 characters)"
-          onChange={(e) => setNote(e.target.value)}
+          onChange={handleInput}
         />
       </Flex>
       <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="36px">
