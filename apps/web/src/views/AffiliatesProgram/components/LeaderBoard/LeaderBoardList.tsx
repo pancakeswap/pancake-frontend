@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Flex, Text, Card, Table, Td, Th } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ListType } from 'views/AffiliatesProgram/hooks/useLeaderboard'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
@@ -60,7 +61,7 @@ const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> =
                     </Td>
                     <Td>
                       <Text color="primary" bold>
-                        {data.nickName}
+                        {truncateHash(data.address)}
                       </Text>
                     </Td>
                     <Td>

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import {
   RightBox,
   MiddleBox,
@@ -32,19 +33,19 @@ const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ list }) => {
           <LeftBox>
             <PodiumAvatar position={2} address={secondUser?.address} />
             <Text margin="auto auto 10px auto" maxWidth="80px" color="primary" bold textAlign="center" ellipsis>
-              {secondUser?.nickName}
+              {truncateHash(secondUser?.address)}
             </Text>
           </LeftBox>
           <MiddleBox>
             <PodiumAvatar position={1} address={firstUser?.address} />
             <Text margin="auto auto 10px auto" maxWidth="80px" color="primary" bold textAlign="center" ellipsis>
-              {firstUser?.nickName}
+              {truncateHash(firstUser?.address)}
             </Text>
           </MiddleBox>
           <RightBox>
             <PodiumAvatar position={3} address={thirdUser?.address} />
             <Text margin="auto auto 10px auto" maxWidth="80px" color="primary" bold textAlign="center" ellipsis>
-              {thirdUser?.nickName}
+              {truncateHash(thirdUser?.address)}
             </Text>
           </RightBox>
         </Flex>
