@@ -48,8 +48,8 @@ export const farmsV3 = [
   {
     pid: 32,
     lpSymbol: 'WBETH-ETH LP',
-    token: bscTokens.eth,
-    quoteToken: bscTokens.wbeth,
+    token: bscTokens.wbeth,
+    quoteToken: bscTokens.eth,
     lpAddress: Pool.getAddress(bscTokens.wbeth, bscTokens.eth, FeeAmount.LOW),
     feeAmount: FeeAmount.LOW,
   },

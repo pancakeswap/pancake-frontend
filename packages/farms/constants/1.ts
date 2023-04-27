@@ -56,8 +56,8 @@ export const farmsV3 = [
     pid: 26,
     lpSymbol: 'WBETH-ETH LP',
     lpAddress: Pool.getAddress(ethereumTokens.wbeth, ethereumTokens.weth, FeeAmount.LOW),
-    token: ethereumTokens.weth,
-    quoteToken: ethereumTokens.wbeth,
+    token: ethereumTokens.wbeth,
+    quoteToken: ethereumTokens.weth,
     feeAmount: FeeAmount.LOW,
   },
   {
