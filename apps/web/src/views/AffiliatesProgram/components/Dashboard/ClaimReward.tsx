@@ -98,7 +98,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                     {t('User Reward')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`$ ${formatNumber(Number(userRewardFeeUSD))}`}
+                    {`$ ${formatNumber(Number(userRewardFeeUSD), 2, 8)}`}
                   </Text>
                 </Flex>
                 <Flex justifyContent="space-between">
@@ -106,7 +106,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                     {t('User CAKE Earned')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`~ ${formatNumber(userTotalCakeEarned)} CAKE`}
+                    {`~ ${formatNumber(userTotalCakeEarned, 2, 8)} CAKE`}
                   </Text>
                 </Flex>
               </LightGreyCard>
