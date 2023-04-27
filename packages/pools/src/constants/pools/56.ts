@@ -147,7 +147,8 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.432',
     version: 3,
-  }, {
+  },
+  {
     sousId: 336,
     stakingToken: bscTokens.xcad,
     earningToken: bscTokens.cake,
