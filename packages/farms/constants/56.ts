@@ -48,9 +48,9 @@ export const farmsV3 = [
   {
     pid: 31,
     lpSymbol: 'ZBC-CAKE LP',
-    token: bscTokens.zbc,
-    quoteToken: bscTokens.cake,
-    lpAddress: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.zbc,
+    lpAddress: '0x63ca58e7c6bF06B06cBbEc2a83bf6AA8f8f9f77B',
     feeAmount: FeeAmount.HIGH,
   },
   {
