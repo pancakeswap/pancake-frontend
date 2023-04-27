@@ -46,6 +46,14 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 31,
+    lpSymbol: 'ZBC-CAKE LP',
+    token: bscTokens.zbc,
+    quoteToken: bscTokens.cake,
+    lpAddress: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 30,
     lpSymbol: 'CHAMP-USDT LP',
     token: bscTokens.usdt,
