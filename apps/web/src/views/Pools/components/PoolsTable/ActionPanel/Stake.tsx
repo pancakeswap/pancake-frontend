@@ -199,9 +199,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   })
 
   const originalLockedAmount = getBalanceNumber(lockedAmount)
-  const originalUsdValue = getBalanceNumber(lockedAmount.multipliedBy(stakingTokenPrice), stakingToken.decimals)
-  const originalLockedAmountText = originalLockedAmount > 0.01 ? originalLockedAmount.toFixed(2) : '<0.01'
-  const originalUsdValueText = originalUsdValue > 0.01 ? `~${originalUsdValue.toFixed(2)}` : '<0.01'
+  const originalUsdValue = getBalanceNumber(lockedAmount?.multipliedBy(stakingTokenPrice), stakingToken.decimals)
+  const originalLockedAmountText =
+    originalLockedAmount && originalLockedAmount > 0.01 ? originalLockedAmount.toFixed(2) : '<0.01'
+  const originalUsdValueText = originalUsdValue && originalUsdValue > 0.01 ? `~${originalUsdValue.toFixed(2)}` : '<0.01'
   const lastActionInMs = lastUserActionTime ? parseInt(lastUserActionTime) * 1000 : 0
   const tooltipContentOfLocked = (
     <>
@@ -238,6 +239,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   })
 
   const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
+  const isLocked = vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
 
   if (!account) {
     return (
@@ -314,9 +316,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   {stakingToken.symbol}{' '}
                 </Text>
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                  {vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
-                    ? t('Locked')
-                    : t('Staked')}
+                  {isLocked ? t('Locked') : t('Staked')}
                 </Text>
               </ActionTitles>
               <Flex mt={2}>
@@ -329,10 +329,15 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                       decimals={5}
                       value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
                     />
-                    {tagTooltipVisibleOfLocked && tagTooltipOfLocked}
-                    <HelpIconWrapper ref={tagTargetRefOfLocked}>
-                      <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
-                    </HelpIconWrapper>
+                    {isLocked ? (
+                      <>
+                        {' '}
+                        {tagTooltipVisibleOfLocked && tagTooltipOfLocked}
+                        <HelpIconWrapper ref={tagTargetRefOfLocked}>
+                          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                        </HelpIconWrapper>
+                      </>
+                    ) : null}
                   </Flex>
                   <SkeletonV2
                     isDataReady={Number.isFinite(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance)}
