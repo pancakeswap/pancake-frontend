@@ -46,6 +46,14 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 32,
+    lpSymbol: 'WBETH-ETH LP LP',
+    token: bscTokens.weth,
+    quoteToken: bscTokens.wbeth,
+    lpAddress: Pool.getAddress(bscTokens.wbeth, bscTokens.weth, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 31,
     lpSymbol: 'CAKE-ZBC LP',
     token: bscTokens.cake,
