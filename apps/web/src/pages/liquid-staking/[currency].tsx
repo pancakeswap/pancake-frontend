@@ -126,7 +126,7 @@ const LiquidStakingStakePage = () => {
       toastSuccess(
         t('Staked!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, decimals)} wBETH`}
+          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, decimals)} WBETH`}
         </ToastDescriptionWithTx>,
       )
 
@@ -198,6 +198,7 @@ const LiquidStakingStakePage = () => {
           subtitle={t('Unlock liquidity while earning rewards')}
           title={t('Liquid Staking')}
           noConfig
+          shouldCenter
         />
         <CardBody>
           <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
@@ -262,7 +263,7 @@ const LiquidStakingStakePage = () => {
                     alt={wbethContract?.symbol}
                   />
                 </Box>
-                <Text ml="4px">wBETH</Text>
+                <Text ml="4px">WBETH</Text>
               </Flex>
             </RowBetween>
           </LightGreyCard>
@@ -270,7 +271,7 @@ const LiquidStakingStakePage = () => {
             <ExchangeRateTitle />
 
             {exchangeRateAmount ? (
-              <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 8)} wBETH`}</Text>
+              <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 8)} WBETH`}</Text>
             ) : (
               '-'
             )}
@@ -285,16 +286,16 @@ const LiquidStakingStakePage = () => {
       </AppBody>
       <AppBody>
         <Text padding="24px">
-          We currently do not provide redemption services for wBETH to ETH. You can swap wBETH for ETH on{' '}
+          {t('To convert WBETH back to ETH, you can swap WBETH for ETH on')}{' '}
           <Link
             style={{ display: 'inline' }}
             href={`/swap?inputCurrency=${wbethContract?.address}&outputCurrency=${
               ethToken?.address || ethToken?.symbol
             }`}
           >
-            our swap page{' '}
+            {t('our swap page')}{' '}
           </Link>
-          instead. Alternatively, you can head to Binance.com to redeem ETH
+          {t('instead. Alternatively, you can head to Binance.com to redeem ETH.')}
         </Text>
       </AppBody>
     </Page>

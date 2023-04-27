@@ -68,7 +68,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
               <ArrowBackIcon width="32px" />
             </IconButton>
           ))}
-        <Flex flexDirection="column" width="100%" marginTop="4px">
+        <Flex pr={backTo && shouldCenter ? '48px' : ''} flexDirection="column" width="100%" marginTop="4px">
           <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between" style={{ gap: '16px' }}>
             <Flex flex={1} justifyContent={shouldCenter ? 'center' : ''}>
               {typeof title === 'string' ? <Heading as="h2">{title}</Heading> : title}
@@ -91,7 +91,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
           </Flex>
           {subtitle && (
             <Flex alignItems="center" justifyContent={shouldCenter ? 'center' : ''}>
-              <Text color="textSubtle" fontSize="14px">
+              <Text textAlign={shouldCenter ? 'center' : 'inherit'} color="textSubtle" fontSize="14px">
                 {subtitle}
               </Text>
             </Flex>

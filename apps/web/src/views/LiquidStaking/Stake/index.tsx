@@ -58,7 +58,7 @@ export function LiquidStakingPageStake() {
           mb="24px"
           options={[
             {
-              label: 'ETH / wBETH',
+              label: 'ETH / WBETH',
               value: WETH9[chainId]?.symbol,
             },
           ]}
@@ -67,7 +67,7 @@ export function LiquidStakingPageStake() {
         <RowBetween mb="24px">
           <ExchangeRateTitle />
 
-          {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 6)} wBETH`}</Text> : '-'}
+          {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 6)} WBETH`}</Text> : '-'}
         </RowBetween>
         <NextLink href={`/liquid-staking/${selectedSymbol}`}>
           <Button width="100%">{t('Proceed')}</Button>
