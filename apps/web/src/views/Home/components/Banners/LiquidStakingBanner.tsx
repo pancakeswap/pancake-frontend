@@ -43,13 +43,13 @@ const RightWrapper = styled.div`
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
       right: 26px;
-      bottom: 1px;
+      bottom: 2px;
     }
   }
   > span:nth-child(2) {
     // liquidStakingBunnyBg1
     position: absolute !important;
-    top: 0px;
+    top: -1px;
     right: 100px;
     z-index: 1;
     filter: blur(2px);
