@@ -47,9 +47,9 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
 
   const { data } = useSWRImmutable('/airdrop-json', async () => {
     const [feResponse, scResponse, merkleProofsResponse] = await Promise.all([
-      fetch(`${GITHUB_ENDPOINT}/forFE.json?token=GHSAT0AAAAAABQ3Y5ZYJVPWU2HB3QBIBLT4ZCKKORQ`),
-      fetch(`${GITHUB_ENDPOINT}/forSC.json?token=GHSAT0AAAAAABQ3Y5ZZJO2BG2T6WAOMVBKSZCKKSVQ`),
-      fetch(`${GITHUB_ENDPOINT}/v3MerkleProofs.json?token=GHSAT0AAAAAABQ3Y5ZY2YFH6UYA46Z2ZN36ZCKK33Q`),
+      fetch(`${GITHUB_ENDPOINT}/forFE.json`),
+      fetch(`${GITHUB_ENDPOINT}/forSC.json`),
+      fetch(`${GITHUB_ENDPOINT}/v3MerkleProofs.json`),
     ])
     const [v3WhitelistAddress, v3ForSC, v3MerkleProofs] = await Promise.all([
       feResponse.json(),
