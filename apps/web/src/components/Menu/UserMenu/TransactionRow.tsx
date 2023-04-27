@@ -6,6 +6,7 @@ import { TransactionDetails } from 'state/transactions/reducer'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { TransactionType, FarmTransactionStatus } from 'state/transactions/actions'
 import { getBlockExploreLink } from 'utils'
+import { useCallback, useMemo } from 'react'
 
 interface TransactionRowProps {
   txn: TransactionDetails
@@ -38,25 +39,16 @@ const TxnLink = styled.div`
   }
 `
 
-const renderIcon = (txn: TransactionDetails) => {
-  const { receipt, nonBscFarm } = txn
-  if (!txn.receipt || nonBscFarm?.status === FarmTransactionStatus.PENDING) {
-    return <RefreshIcon spin width="24px" />
-  }
-
-  const isFarmStatusSuccess = nonBscFarm ? nonBscFarm.status === FarmTransactionStatus.SUCCESS : true
-  return (receipt?.status === 1 && isFarmStatusSuccess) || typeof receipt?.status === 'undefined' ? (
-    <CheckmarkCircleIcon color="success" width="24px" />
-  ) : (
-    <BlockIcon color="failure" width="24px" />
-  )
-}
-
 const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, chainId, type, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { receipt, nonBscFarm } = txn || {}
+  const isFarmStatusSuccess = useMemo(
+    () => (nonBscFarm ? nonBscFarm.status === FarmTransactionStatus.SUCCESS : true),
+    [nonBscFarm],
+  )
 
-  const onClickTransaction = () => {
+  const onClickTransaction = useCallback(() => {
     if (type === 'non-bsc-farm') {
       onDismiss()
       dispatch(pickFarmTransactionTx({ tx: txn.hash, chainId }))
@@ -64,7 +56,7 @@ const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = (
       const url = getBlockExploreLink(txn.hash, 'transaction', chainId)
       window.open(url, '_blank', 'noopener noreferrer')
     }
-  }
+  }, [chainId, dispatch, onDismiss, txn?.hash, type])
 
   if (!txn) {
     return null
@@ -72,7 +64,15 @@ const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = (
 
   return (
     <TxnLink onClick={onClickTransaction}>
-      <TxnIcon>{renderIcon(txn)}</TxnIcon>
+      <TxnIcon>
+        {!txn.receipt || nonBscFarm?.status === FarmTransactionStatus.PENDING ? (
+          <RefreshIcon spin width="24px" />
+        ) : (receipt?.status === 1 && isFarmStatusSuccess) || typeof receipt?.status === 'undefined' ? (
+          <CheckmarkCircleIcon color="success" width="24px" />
+        ) : (
+          <BlockIcon color="failure" width="24px" />
+        )}
+      </TxnIcon>
       <Summary>
         {txn.translatableSummary
           ? t(txn.translatableSummary.text, txn.translatableSummary.data)
