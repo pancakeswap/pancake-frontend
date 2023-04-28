@@ -13,7 +13,7 @@ import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import { BigNumber } from '@ethersproject/bignumber'
-import useCakeEmissionPerBlock from 'views/Home/hooks/useCakeEmissionPerBlock'
+import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -78,7 +78,7 @@ const CakeDataRow = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const emissionsPerBlock = useCakeEmissionPerBlock()
+  const emissionsPerBlock = useCakeEmissionPerBlock(loadData)
 
   const {
     data: { cakeSupply, burnedBalance, circulatingSupply } = {
@@ -174,7 +174,11 @@ const CakeDataRow = () => {
       <StyledColumn style={{ gridArea: 'f' }}>
         <Text color="textSubtle">{t('Current emissions')}</Text>
 
-        <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: formatNumber(emissionsPerBlock) })}</Heading>
+        {emissionsPerBlock ? (
+          <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: formatNumber(emissionsPerBlock) })}</Heading>
+        ) : (
+          <Skeleton height={24} width={126} my="4px" />
+        )}
       </StyledColumn>
     </Grid>
   )

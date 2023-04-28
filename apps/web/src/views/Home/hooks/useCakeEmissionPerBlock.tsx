@@ -8,8 +8,8 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 const CAKE_PER_BLOCK = 40
 const masterChefAddress = getMasterChefAddress()
 
-const useCakeEmissionPerBlock = () => {
-  const { data: emissionsPerBlock } = useSWRImmutable('/cakeEmissionPerBlock', async () => {
+export const useCakeEmissionPerBlock = (inView?: boolean) => {
+  const { data: emissionsPerBlock } = useSWRImmutable(inView && '/cakeEmissionPerBlock', async () => {
     const [cakePerBlockToBurn] = await multicallv3({
       calls: [
         {
@@ -26,5 +26,3 @@ const useCakeEmissionPerBlock = () => {
 
   return emissionsPerBlock
 }
-
-export default useCakeEmissionPerBlock
