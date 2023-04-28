@@ -9,7 +9,7 @@ import { ASSET_CDN } from './constants/endpoints'
 export enum ConnectorNames {
   MetaMask = 'metaMask',
   Injected = 'injected',
-  WalletConnect = 'walletConnectLegacy',
+  WalletConnect = 'walletConnect',
   BSC = 'bsc',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
@@ -17,16 +17,15 @@ export enum ConnectorNames {
   TrustWallet = 'trustWallet',
 }
 
-const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
-
 const createQrCode = (chainId: number, connect) => async () => {
   connect({ connector: walletConnectNoQrCodeConnector, chainId })
 
-  // wait for WalletConnect to setup in order to get the uri
-  await delay(100)
-  const { uri } = ((await walletConnectNoQrCodeConnector.getProvider()) as any).connector
-
-  return uri
+  const r = await walletConnectNoQrCodeConnector.getProvider()
+  return new Promise<string>((resolve) => {
+    r.on('display_uri', (uri) => {
+      resolve(uri)
+    })
+  })
 }
 
 const isMetamaskInstalled = () => {
