@@ -27,6 +27,7 @@ import { GetStaticPaths, GetStaticProps } from 'next/types'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -39,6 +40,8 @@ const LiquidStakingStakePage = () => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
+
+  const masterChefAddress = masterChefV3Addresses[chainId]
 
   const ethToken = [ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? NATIVE[chainId] : WETH9[chainId]
 
@@ -117,7 +120,7 @@ const LiquidStakingStakePage = () => {
         })
       }
 
-      const methodArgs = [convertedStakeAmount.toString(), account]
+      const methodArgs = [convertedStakeAmount.toString(), masterChefAddress]
       return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
         // gasLimit: calculateGasMargin(estimatedGas),
       })
@@ -140,6 +143,7 @@ const LiquidStakingStakePage = () => {
     convertedStakeAmount,
     decimals,
     fetchWithCatchTxError,
+    masterChefAddress,
     quoteAmount,
     router,
     t,
