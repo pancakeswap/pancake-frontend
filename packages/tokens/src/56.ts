@@ -2578,4 +2578,12 @@ export const bscTokens = {
     'unshETH Ether',
     'https://unsheth.xyz/',
   ),
+  wbeth: new ERC20Token(
+    ChainId.BSC,
+    '0xa2E3356610840701BDf5611a53974510Ae27E2e1',
+    18,
+    'wBETH',
+    'Wrapped Binance Beacon ETH',
+    'https://ethereum.org/en/roadmap/beacon-chain/',
+  ),
 }
