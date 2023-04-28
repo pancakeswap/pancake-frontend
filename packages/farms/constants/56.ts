@@ -46,6 +46,30 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 32,
+    lpSymbol: 'WBETH-ETH LP',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.wbeth,
+    lpAddress: Pool.getAddress(bscTokens.wbeth, bscTokens.eth, FeeAmount.LOW),
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 31,
+    lpSymbol: 'CAKE-ZBC LP',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.zbc,
+    lpAddress: '0x63ca58e7c6bF06B06cBbEc2a83bf6AA8f8f9f77B',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 30,
+    lpSymbol: 'CHAMP-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.champ,
+    lpAddress: '0x2dA32920A775CF121004551AbC92F385B3C0Dab9',
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 29,
     lpSymbol: 'unshETH-USH LP',
     token: bscTokens.unshETH,
