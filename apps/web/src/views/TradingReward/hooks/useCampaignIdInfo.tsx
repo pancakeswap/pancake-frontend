@@ -6,19 +6,20 @@ import { TRADING_REWARD_API } from 'config/constants/endpoints'
 export interface CampaignVolume {
   pool: string
   volume: number
-  estimateReward: number
+  estimateRewardUSD: number
+  tradingFee: string
 }
 
 export interface CampaignIdInfoResponse {
   total: number
-  volumeArr: CampaignVolume[]
+  tradingFeeArr: CampaignVolume[]
 }
 
 export interface CampaignIdInfoDetail {
   total: number
   totalVolume: number
-  volumeArr: CampaignVolume[]
-  totalEstimateReward: number
+  tradingFeeArr: CampaignVolume[]
+  totalEstimateRewardUSD: number
 }
 
 export interface CampaignIdInfo {
@@ -29,8 +30,8 @@ export interface CampaignIdInfo {
 export const initialState: CampaignIdInfoDetail = {
   total: 0,
   totalVolume: 0,
-  volumeArr: [],
-  totalEstimateReward: 0,
+  tradingFeeArr: [],
+  totalEstimateRewardUSD: 0,
 }
 
 const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
@@ -44,15 +45,17 @@ const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
           `${TRADING_REWARD_API}/campaign/chainId/${chainId}/campaignId/${campaignId}/address/0x`,
         )
         const { data }: { data: CampaignIdInfoResponse } = await response.json()
-        const totalVolume = data.volumeArr.map((i) => i.volume).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-        const totalEstimateReward = data.volumeArr
-          .map((i) => i.estimateReward)
+        const totalVolume = data.tradingFeeArr
+          .map((i) => i.volume)
+          .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+        const totalEstimateRewardUSD = data.tradingFeeArr
+          .map((i) => i.estimateRewardUSD)
           .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
         const newData: CampaignIdInfoDetail = {
           ...data,
           totalVolume,
-          totalEstimateReward,
+          totalEstimateRewardUSD,
         }
         return newData
       } catch (error) {
