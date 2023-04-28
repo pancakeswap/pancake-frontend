@@ -6,6 +6,7 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 
 import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
+import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 // import { LiquidStakingPageHistory } from 'views/LiquidStaking/History'
 
 // enum ACTIONS {
@@ -15,8 +16,6 @@ import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
 // }
 
 const LiquidStakingPage = () => {
-  // const { t } = useTranslation()
-
   // const [selectedTypeIndex, setSelectedTypeIndex] = useState(ACTIONS.STAKE)
 
   return (
@@ -32,10 +31,13 @@ const LiquidStakingPage = () => {
         <ButtonMenuItem>{t('Unstake')}</ButtonMenuItem>
         <ButtonMenuItem>{t('History')}</ButtonMenuItem>
       </ButtonMenu> */}
-      <AppBody>
+      <AppBody mb="24px">
         <LiquidStakingPageStake />
         {/* {ACTIONS.STAKE === selectedTypeIndex && <LiquidStakingPageStake />}
         {ACTIONS.HISTORY === selectedTypeIndex && <LiquidStakingPageHistory />} */}
+      </AppBody>
+      <AppBody>
+        <LiquidStakingFAQs />
       </AppBody>
     </Page>
   )
