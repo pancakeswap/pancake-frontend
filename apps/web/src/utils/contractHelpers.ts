@@ -3,12 +3,10 @@ import type { Provider } from '@ethersproject/providers'
 import { provider } from 'utils/wagmi'
 import { Contract } from '@ethersproject/contracts'
 import { getPoolsConfig } from '@pancakeswap/pools'
-import { PoolCategory } from 'config/constants/types'
 import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
 import {
-  getAddress,
   getPancakeProfileAddress,
   getPancakeBunniesAddress,
   getBunnyFactoryAddress,
@@ -64,9 +62,6 @@ import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import masterChef from 'config/abi/masterchef.json'
 import masterChefV1 from 'config/abi/masterchefV1.json'
-import sousChef from 'config/abi/sousChef.json'
-import sousChefV2 from 'config/abi/sousChefV2.json'
-import sousChefBnb from 'config/abi/sousChefBnb.json'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionEasterAbi from 'config/abi/tradingCompetitionEaster.json'
 import tradingCompetitionFanTokenAbi from 'config/abi/tradingCompetitionFanToken.json'
@@ -203,15 +198,6 @@ export const getIfoV3Contract = (address: string, signer?: Signer | Provider) =>
 }
 export const getMMLinkedPoolContract = (signer?: Signer | Provider, chainId?: number) => {
   return getContract({ abi: mmLinkedPoolAbi, address: getMMLinkedPoolAddress(chainId), signer }) as MmLinkedPool
-}
-export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
-  const config = poolsConfig.find((pool) => pool.sousId === id)
-  const abi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
-  return getContract({ abi, address: getAddress(config.contractAddress), signer }) as SousChef
-}
-export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) => {
-  const config = poolsConfig.find((pool) => pool.sousId === id)
-  return getContract({ abi: sousChefV2, address: getAddress(config.contractAddress), signer }) as SousChefV2
 }
 
 export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
