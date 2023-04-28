@@ -178,7 +178,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            {pool.vaultKey ? <AutoHarvest {...pool} /> : <Harvest {...pool} />}
+            {pool.vaultKey ? <AutoHarvest pool={pool} /> : <Harvest {...pool} />}
             <Stake pool={pool} />
           </ActionContainer>
         </Box>

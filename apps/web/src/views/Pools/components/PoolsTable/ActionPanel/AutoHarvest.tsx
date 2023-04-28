@@ -1,4 +1,16 @@
-import { Text, Flex, Skeleton, Heading, Box, useMatchBreakpoints, BalanceWithLoading, Pool } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import {
+  Text,
+  Flex,
+  Skeleton,
+  Heading,
+  Box,
+  useMatchBreakpoints,
+  BalanceWithLoading,
+  Pool,
+  useTooltip,
+  HelpIcon,
+} from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from '@pancakeswap/localization'
@@ -11,17 +23,23 @@ import { Token } from '@pancakeswap/sdk'
 import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
+import AutoEarningsBreakdown from '../../AutoEarningsBreakdown'
 
-const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.DeserializedPool<Token>>> = ({
-  userDataLoaded,
-  earningTokenPrice,
-  vaultKey,
-}) => {
+const HelpIconWrapper = styled.div`
+  align-self: center;
+`
+
+interface AutoHarvestActionProps {
+  pool: Pool.DeserializedPool<Token>
+}
+
+const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHarvestActionProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
 
-  const vaultData = useVaultPoolByKey(vaultKey)
+  const { earningTokenPrice, vaultKey, userDataLoaded } = pool
+  const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
     userData: { userShares, cakeAtLastUserAction },
     pricePerFullShare,
@@ -49,6 +67,14 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.De
   const { boostFactor } = useVaultApy({ duration: secondDuration })
 
   const vaultPosition = getVaultPosition(vaultData.userData)
+
+  const {
+    targetRef: tagTargetRefOfRecentProfit,
+    tooltip: tagTooltipOfRecentProfit,
+    tooltipVisible: tagTooltipVisibleOfRecentProfit,
+  } = useTooltip(<AutoEarningsBreakdown pool={pool} account={account} />, {
+    placement: 'bottom',
+  })
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -87,7 +113,13 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.De
             <>
               {hasAutoEarnings ? (
                 <>
-                  <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={autoCakeToDisplay} />
+                  <Flex>
+                    <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={autoCakeToDisplay} />
+                    {tagTooltipVisibleOfRecentProfit && tagTooltipOfRecentProfit}
+                    <HelpIconWrapper ref={tagTargetRefOfRecentProfit}>
+                      <HelpIcon ml="4px" color="textSubtle" />
+                    </HelpIconWrapper>
+                  </Flex>
                   {Number.isFinite(earningTokenPrice) && earningTokenPrice > 0 && (
                     <BalanceWithLoading
                       display="inline"
