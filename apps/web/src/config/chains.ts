@@ -18,3 +18,5 @@ export const getChainId = memoize((chainName: string) => {
 })
 
 export const CHAINS = [bsc, mainnet, bscTestnet, goerli]
+
+export const MAINNET_CHAINS = [bsc, mainnet]

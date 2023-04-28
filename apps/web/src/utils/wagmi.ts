@@ -1,7 +1,7 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
-import { CHAINS } from 'config/chains'
+import { CHAINS, MAINNET_CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
 import { configureChains, createClient } from 'wagmi'
@@ -40,7 +40,8 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 })
 
 export const walletConnectConnector = new WalletConnectConnector({
-  chains,
+  // v2 only supports mainnet
+  chains: MAINNET_CHAINS,
   options: {
     showQrModal: true,
     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
@@ -48,7 +49,8 @@ export const walletConnectConnector = new WalletConnectConnector({
 })
 
 export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
-  chains,
+  // v2 only supports mainnet
+  chains: MAINNET_CHAINS,
   options: {
     showQrModal: false,
     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
