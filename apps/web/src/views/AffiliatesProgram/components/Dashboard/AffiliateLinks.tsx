@@ -14,6 +14,7 @@ import {
   Td,
   Th,
   useMatchBreakpoints,
+  useToast,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { InfoDetail, FeeType } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
@@ -33,6 +34,7 @@ const MAX_PER_PAGE = 5
 
 const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
+  const { toastSuccess } = useToast()
   const { isDesktop } = useMatchBreakpoints()
   const [isExpanded, setIsExpanded] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -69,6 +71,12 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
     const displayName = name.replaceAll(' ', '_')
     const discount = new BigNumber(percentage).gt(0) ? new BigNumber(percentage).times(3).div(100).toFixed(2) : 0
     return `${hostname}/affiliates-program?ref=${linkId}&user=${displayName}&discount=${discount}&noperps=${affiliate.ablePerps}`
+  }
+
+  const handleCopyText = ({ linkId, percentage }: { linkId: string; percentage: number }) => {
+    const link = generateLink({ linkId, percentage })
+    copyText(link)
+    toastSuccess(t('Link'), t('Copied!'))
   }
 
   return (
@@ -124,9 +132,7 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
                                   cursor="pointer"
                                   width={24}
                                   height={24}
-                                  onClick={() =>
-                                    copyText(generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee }))
-                                  }
+                                  onClick={() => handleCopyText({ linkId: fee.linkId, percentage: fee.v2SwapFee })}
                                 />
                               </Box>
                             </Td>
