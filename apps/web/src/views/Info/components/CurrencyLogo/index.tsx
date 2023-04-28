@@ -28,7 +28,10 @@ export const CurrencyLogo: React.FC<
   }, [address, chainName])
 
   const imagePath = chainName === 'BSC' ? '' : `${chainName?.toLowerCase()}/`
-  const srcFromPCS = `https://tokens.pancakeswap.finance/images/${imagePath}${isAddress(address)}.png`
+  const checkedSumAddress = isAddress(address)
+  const srcFromPCS = checkedSumAddress
+    ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedSumAddress}.png`
+    : ''
   return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }
 
