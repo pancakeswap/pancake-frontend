@@ -37,11 +37,11 @@ const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> =
                 {t('Total Volume')}
               </Text>
             </Th>
-            <Th width="15%">
+            {/* <Th width="15%">
               <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
                 {t('Commission')}
               </Text>
-            </Th>
+            </Th> */}
           </thead>
           <tbody>
             {isFetching ? (
@@ -70,14 +70,14 @@ const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> =
                     <Td>
                       <Text bold>{`$${formatNumber(Number(data.metric.totalTradeVolumeUSD), 0)}`}</Text>
                     </Td>
-                    <Td>
+                    {/* <Td>
                       <Flex flexDirection="column">
                         <Text bold>{`~ ${formatNumber(Number(data.cakeBalance), 0)} CAKE`}</Text>
                         <Text textAlign="left" fontSize="12px" color="textSubtle">
                           {`$${formatNumber(Number(data.metric.totalEarnFeeUSD), 0)}`}
                         </Text>
                       </Flex>
-                    </Td>
+                    </Td> */}
                   </tr>
                 ))}
               </>
