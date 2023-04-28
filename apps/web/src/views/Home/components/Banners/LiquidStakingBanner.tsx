@@ -213,7 +213,7 @@ const PerpetualBanner = () => {
               </StyledButton>
             </Link>
             <Link
-              href="https://blog.pancakeswap.finance/articles/pancake-swap-s-perpetual-trading-powered-by-apollo-x-v2-now-fully-on-chain-with-low-fees-and-more-transparency"
+              href="https://blog.pancakeswap.finance/articles/liquid-staking-integration-with-binance-earn-stake-eth-and-receive-wbeth-to-earn-eth-staking-rewards"
               external
               style={{ textDecoration: 'none' }}
             >
