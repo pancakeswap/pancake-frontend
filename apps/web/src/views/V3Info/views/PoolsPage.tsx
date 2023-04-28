@@ -20,9 +20,7 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const chainId = useChainIdByQuery()
 
   const { savedPools } = useInfoUserSavedTokensAndPools(chainId)
-  console.log(savedPools, 'savedPools???')
   const watchListPoolsData = usePoolsData(savedPools)
-  console.log(watchListPoolsData, 'watchListPoolsData???')
   return (
     <Page>
       <Heading scale="lg" mb="16px">
