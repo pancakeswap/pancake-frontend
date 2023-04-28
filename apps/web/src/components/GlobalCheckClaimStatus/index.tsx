@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useModal, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -36,6 +37,7 @@ const GITHUB_ENDPOINT = 'https://raw.githubusercontent.com/pancakeswap/airdrop-v
 
 const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const { pathname } = useRouter()
   const hasDisplayedModal = useRef(false)
   const { toastSuccess } = useToast()
@@ -91,10 +93,10 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
       }
     }
 
-    if (account) {
+    if (account && chainId === ChainId.BSC) {
       fetchClaimAnniversaryStatus()
     }
-  }, [data, account, canClaimReward, isClaimed, closeV3AirdropModal])
+  }, [data, account, chainId, canClaimReward, isClaimed, closeV3AirdropModal])
 
   // // Check if we need to display the modal
   useEffect(() => {
