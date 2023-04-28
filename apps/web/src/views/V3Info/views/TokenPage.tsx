@@ -18,6 +18,7 @@ import {
   MessageText,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import SaveIcon from 'views/Info/components/SaveIcon'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -28,11 +29,12 @@ import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import useInfoUserSavedTokensAndPoolsList from 'hooks/useInfoUserSavedTokensAndPoolsList'
 
 // import { useSavedTokens } from 'state/user/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath, useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
@@ -84,7 +86,8 @@ const DEFAULT_TIME_WINDOW = TimeWindow.WEEK
 
 const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { isXs, isSm } = useMatchBreakpoints()
-  // const { chainId } = useActiveChainId()
+  const chainIdByQuery = useChainIdByQuery()
+  const { savedTokens, addToken } = useInfoUserSavedTokensAndPoolsList(chainIdByQuery)
   // eslint-disable-next-line no-param-reassign
   address = address.toLowerCase()
   const cmcLink = useCMCLink(address)
@@ -154,10 +157,6 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const infoTypeParam = useStableSwapPath()
   const chainName = useChainNameByQuery()
   const { chainId } = useActiveChainId()
-
-  // watchlist
-  // const [savedTokens, addSavedToken] = useSavedTokens()
-
   return (
     <Page>
       {tokenData ? (
@@ -202,7 +201,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />
                     </StyledCMCLink>
                   )}
-                  {/* <SaveIcon fill={watchlistTokens.includes(address)} onClick={() => addWatchlistToken(address)} /> */}
+                  <SaveIcon fill={savedTokens.includes(address)} onClick={() => addToken(address)} />
                 </Flex>
               </Flex>
               <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>

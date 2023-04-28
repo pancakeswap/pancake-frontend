@@ -164,23 +164,23 @@ export async function fetchPoolDatas(
 
       const [volumeUSD, volumeUSDChange] =
         current && oneDay && twoDay
-          ? get2DayChange(current.volumeUSD, oneDay.volumeUSD, twoDay.volumeUSD)
+          ? get2DayChange(current?.volumeUSD, oneDay?.volumeUSD, twoDay?.volumeUSD)
           : current
-          ? [parseFloat(current.volumeUSD), 0]
+          ? [parseFloat(current?.volumeUSD), 0]
           : [0, 0]
 
       const volumeUSDWeek =
         current && week
-          ? parseFloat(current.volumeUSD) - parseFloat(week.volumeUSD)
+          ? parseFloat(current?.volumeUSD) - parseFloat(week?.volumeUSD)
           : current
-          ? parseFloat(current.volumeUSD)
+          ? parseFloat(current?.volumeUSD)
           : 0
       const feeUSD =
         current && oneDay
-          ? new BigNumber(current.feesUSD)
-              .minus(current.protocolFeesUSD)
-              .minus(new BigNumber(oneDay.feesUSD).minus(oneDay.protocolFeesUSD))
-          : new BigNumber(current.feesUSD).minus(current.protocolFeesUSD)
+          ? new BigNumber(current?.feesUSD)
+              .minus(current?.protocolFeesUSD)
+              .minus(new BigNumber(oneDay?.feesUSD).minus(oneDay?.protocolFeesUSD))
+          : new BigNumber(current?.feesUSD).minus(current?.protocolFeesUSD)
       // Hotifx: Subtract fees from TVL to correct data while subgraph is fixed.
       /**
        * Note: see issue desribed here https://github.com/Uniswap/v3-subgraph/issues/74
@@ -188,24 +188,24 @@ export async function fetchPoolDatas(
        * Grafted sync pending fix now.
        * @chef-jojo: should be fixed on our version, but leaving this in for now
        */
-      const feePercent = current ? parseFloat(current.feeTier) / 10000 / 100 : 0
-      const tvlAdjust0 = current?.volumeToken0 ? (parseFloat(current.volumeToken0) * feePercent) / 2 : 0
-      const tvlAdjust1 = current?.volumeToken1 ? (parseFloat(current.volumeToken1) * feePercent) / 2 : 0
-      const tvlToken0 = current ? parseFloat(current.totalValueLockedToken0) - tvlAdjust0 : 0
-      const tvlToken1 = current ? parseFloat(current.totalValueLockedToken1) - tvlAdjust1 : 0
-      let tvlUSD = current ? parseFloat(current.totalValueLockedUSD) : 0
+      const feePercent = current ? parseFloat(current?.feeTier) / 10000 / 100 : 0
+      const tvlAdjust0 = current?.volumeToken0 ? (parseFloat(current?.volumeToken0) * feePercent) / 2 : 0
+      const tvlAdjust1 = current?.volumeToken1 ? (parseFloat(current?.volumeToken1) * feePercent) / 2 : 0
+      const tvlToken0 = current ? parseFloat(current?.totalValueLockedToken0) - tvlAdjust0 : 0
+      const tvlToken1 = current ? parseFloat(current?.totalValueLockedToken1) - tvlAdjust1 : 0
+      let tvlUSD = current ? parseFloat(current?.totalValueLockedUSD) : 0
 
       const tvlUSDChange =
         current && oneDay
-          ? ((parseFloat(current.totalValueLockedUSD) - parseFloat(oneDay.totalValueLockedUSD)) /
-              parseFloat(oneDay.totalValueLockedUSD === '0' ? '1' : oneDay.totalValueLockedUSD)) *
+          ? ((parseFloat(current?.totalValueLockedUSD) - parseFloat(oneDay?.totalValueLockedUSD)) /
+              parseFloat(oneDay?.totalValueLockedUSD === '0' ? '1' : oneDay?.totalValueLockedUSD)) *
             100
           : 0
 
       // Part of TVL fix
       const tvlUpdated = current
-        ? tvlToken0 * parseFloat(current.token0.derivedETH) * ethPriceUSD +
-          tvlToken1 * parseFloat(current.token1.derivedETH) * ethPriceUSD
+        ? tvlToken0 * parseFloat(current?.token0?.derivedETH) * ethPriceUSD +
+          tvlToken1 * parseFloat(current?.token1?.derivedETH) * ethPriceUSD
         : undefined
       if (tvlUpdated) {
         tvlUSD = tvlUpdated
@@ -218,25 +218,25 @@ export async function fetchPoolDatas(
         accum[address] = {
           address,
           feeTier,
-          liquidity: parseFloat(current.liquidity),
-          sqrtPrice: parseFloat(current.sqrtPrice),
-          tick: parseFloat(current.tick),
+          liquidity: parseFloat(current?.liquidity),
+          sqrtPrice: parseFloat(current?.sqrtPrice),
+          tick: parseFloat(current?.tick),
           token0: {
-            address: current.token0.id,
-            name: current.token0.name,
-            symbol: current.token0.symbol,
-            decimals: parseInt(current.token0.decimals),
-            derivedETH: parseFloat(current.token0.derivedETH),
+            address: current?.token0.id,
+            name: current?.token0?.name,
+            symbol: current?.token0?.symbol,
+            decimals: parseInt(current?.token0?.decimals),
+            derivedETH: parseFloat(current?.token0?.derivedETH),
           },
           token1: {
-            address: current.token1.id,
-            name: current.token1.name,
-            symbol: current.token1.symbol,
-            decimals: parseInt(current.token1.decimals),
-            derivedETH: parseFloat(current.token1.derivedETH),
+            address: current?.token1.id,
+            name: current?.token1.name,
+            symbol: current?.token1.symbol,
+            decimals: parseInt(current?.token1?.decimals),
+            derivedETH: parseFloat(current.token1?.derivedETH),
           },
-          token0Price: parseFloat(current.token0Price),
-          token1Price: parseFloat(current.token1Price),
+          token0Price: parseFloat(current?.token0Price),
+          token1Price: parseFloat(current?.token1Price),
           volumeUSD,
           volumeUSDChange,
           volumeUSDWeek,
@@ -244,7 +244,7 @@ export async function fetchPoolDatas(
           tvlUSDChange,
           tvlToken0,
           tvlToken1,
-          feeUSD: feeUSD.toNumber(),
+          feeUSD: feeUSD?.toNumber(),
         }
       }
 

@@ -2,15 +2,16 @@ import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Input, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
+import useInfoUserSavedTokensAndPoolsList from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { checkIsStableSwap } from 'state/info/constant'
-import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
-import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
+import { useChainIdByQuery, useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import SaveIcon from 'views/Info/components/SaveIcon'
 
 import { v3InfoPath } from '../../constants'
 import { usePoolsData, useSearchData, useTokensData } from '../../hooks'
@@ -161,6 +162,8 @@ const Search = () => {
 
   const [tokensShown, setTokensShown] = useState(3)
   const [poolsShown, setPoolsShown] = useState(3)
+  const chainId = useChainIdByQuery()
+  const { savedPools, savedTokens, addPool, addToken } = useInfoUserSavedTokensAndPoolsList(chainId)
 
   useEffect(() => {
     setTokensShown(3)
@@ -192,10 +195,6 @@ const Search = () => {
       document.removeEventListener('click', handleOutsideClick)
     }
   }, [showMenu])
-
-  // watchlist
-  const [savedTokens] = useWatchlistTokens()
-  const [savedPools] = useWatchlistPools()
 
   const handleItemClick = (to: string) => {
     setShowMenu(false)
@@ -285,7 +284,7 @@ const Search = () => {
               <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
                 {t('Search')}
               </OptionButton>
-              <OptionButton style={{ display: 'none' }} enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
+              <OptionButton enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
                 {t('Watchlist')}
               </OptionButton>
             </Flex>
@@ -325,15 +324,15 @@ const Search = () => {
                       <Text ml="10px">
                         <Text>{`${token.name} (${token.symbol})`}</Text>
                       </Text>
-                      {/* <SaveIcon
+                      <SaveIcon
                         id="watchlist-icon"
                         style={{ marginLeft: '8px' }}
                         fill={savedTokens.includes(token.address)}
                         onClick={(e) => {
                           e.stopPropagation()
-                          addSavedToken(token.address)
+                          addToken(token.address)
                         }}
-                      /> */}
+                      />
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
@@ -395,15 +394,15 @@ const Search = () => {
                       <GreyBadge ml="10px" style={{ fontSize: 14 }}>
                         {feeTierPercent(p.feeTier)}
                       </GreyBadge>
-                      {/* <SaveIcon
+                      <SaveIcon
                         id="watchlist-icon"
                         style={{ marginLeft: '10px' }}
                         fill={savedPools.includes(p.address)}
                         onClick={(e) => {
                           e.stopPropagation()
-                          addSavedPool(p.address)
+                          addPool(p.address)
                         }}
-                      /> */}
+                      />
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}

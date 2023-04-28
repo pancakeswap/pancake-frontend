@@ -15,14 +15,16 @@ import {
   useMatchBreakpoints,
   Button,
 } from '@pancakeswap/uikit'
+import SaveIcon from 'views/Info/components/SaveIcon'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
+import useInfoUserSavedTokensAndPoolsList from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 // import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { multiChainId, multiChainScan } from 'state/info/constant'
-import { useChainNameByQuery, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath, useStableSwapPath, useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -93,6 +95,9 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   const hasSmallDifference = useMemo(() => {
     return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
   }, [poolData])
+  const chainId = useChainIdByQuery()
+
+  const { savedPools, addPool } = useInfoUserSavedTokensAndPoolsList(chainId)
 
   // const formattedTvlData = useMemo(() => {
   //   if (chartData) {
@@ -165,7 +170,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </LinkExternal>
-              {/* <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} /> */}
+              <SaveIcon fill={savedPools.includes(address)} onClick={() => addPool(address)} />
             </Flex>
           </Flex>
           <Flex flexDirection="column">

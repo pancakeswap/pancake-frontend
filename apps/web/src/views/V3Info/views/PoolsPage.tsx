@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Heading } from '@pancakeswap/uikit'
+import { Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { useMemo } from 'react'
+import { useChainIdByQuery } from 'state/info/hooks'
 import PoolTable from '../components/PoolTable'
-
-import { useTopPoolsData } from '../hooks'
+import { usePoolsData, useTopPoolsData } from '../hooks'
 
 const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -16,24 +17,26 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
     }
     return []
   }, [topPoolsData])
+  const chainId = useChainIdByQuery()
 
-  // const [savedPools] = useWatchlistPools()
-  // const watchlistPools = usePoolDatasSWR(savedPools)
-
+  const { savedPools } = useInfoUserSavedTokensAndPools(chainId)
+  console.log(savedPools, 'savedPools???')
+  const watchListPoolsData = usePoolsData(savedPools)
+  console.log(watchListPoolsData, 'watchListPoolsData???')
   return (
     <Page>
-      {/* <Heading scale="lg" mb="16px">
+      <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
-      <Card style={{ display: 'none' }}>
-        {watchListPoolsData.length > 0 ? (
+      <Card>
+        {watchListPoolsData?.length > 0 ? (
           <PoolTable poolDatas={watchListPoolsData} />
         ) : (
           <Text px="24px" py="16px">
             {t('Saved pairs will appear here')}
           </Text>
         )}
-      </Card> */}
+      </Card>
       <Heading scale="lg" mt="40px" mb="16px" id="info-pools-title">
         {t('All Pairs')}
       </Heading>
