@@ -1,14 +1,11 @@
-name: Farm Config
+name: Deploy Locales
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
     paths:
-      - 'packages/farms/constants/**'
-      - 'packages/tokens/**'
-      - '!packages/tokens/src/common.ts'
-      - '!packages/tokens/src/helpers.ts'
-      - '!packages/tokens/src/index.ts'
+      - 'locales/**'
 
 jobs:
   publish:
@@ -18,21 +15,12 @@ jobs:
       deployments: write
     env:
       HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
-    name: Publish Farm Config to Cloudflare Pages
+    name: Publish Locales to Cloudflare Pages
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Test
-        run: yarn test:config
-
-      - name: Build list
-        run: yarn turbo run build --filter=@pancakeswap/farms
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
@@ -40,7 +28,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: b82548875bdb333ff5edcca4d076f88d
-          projectName: farms-config
-          directory: ./packages/farms/lists
+          projectName: pcs-locales
+          directory: ./locales
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name == 'develop' && 'master' ||  null  }}
