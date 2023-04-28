@@ -79,7 +79,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                       {t('Affiliate Reward')}
                     </Text>
                     <Text bold fontSize="14px">
-                      {`$ ${formatNumber(Number(affiliateRewardFeeUSD), 2, 8)}`}
+                      {`$ ${formatNumber(Number(affiliateRewardFeeUSD))}`}
                     </Text>
                   </Flex>
                   <Flex justifyContent="space-between">
@@ -87,7 +87,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                       {t('Affiliate CAKE Earned')}
                     </Text>
                     <Text bold fontSize="14px">
-                      {`~ ${formatNumber(affiliateTotalCakeEarned, 2, 8)} CAKE`}
+                      {`~ ${formatNumber(affiliateTotalCakeEarned)} CAKE`}
                     </Text>
                   </Flex>
                 </LightGreyCard>
@@ -98,7 +98,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                     {t('User Reward')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`$ ${formatNumber(Number(userRewardFeeUSD), 2, 8)}`}
+                    {`$ ${formatNumber(Number(userRewardFeeUSD))}`}
                   </Text>
                 </Flex>
                 <Flex justifyContent="space-between">
@@ -106,7 +106,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                     {t('User CAKE Earned')}
                   </Text>
                   <Text bold fontSize="14px">
-                    {`~ ${formatNumber(userTotalCakeEarned, 2, 8)} CAKE`}
+                    {`~ ${formatNumber(userTotalCakeEarned)} CAKE`}
                   </Text>
                 </Flex>
               </LightGreyCard>
