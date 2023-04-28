@@ -2,11 +2,12 @@ import styled from 'styled-components'
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box, TooltipText, useTooltip, HelpIcon, BalanceWithLoading } from '@pancakeswap/uikit'
+import { Flex, Text, Box, TooltipText, useTooltip, HelpIcon, BalanceWithLoading, Pool } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import Divider from 'components/Divider'
+import { Token } from '@pancakeswap/sdk'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
@@ -18,6 +19,7 @@ import IfoCakeRow from './Common/IfoCakeRow'
 import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import { LockedStakingApyPropsType } from './types'
 import LockedAprTooltipContent from './Common/LockedAprTooltipContent'
+import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
 
 const HelpIconWrapper = styled.div`
   align-self: center;
@@ -25,6 +27,8 @@ const HelpIconWrapper = styled.div`
 
 interface LockedStakingApyProps extends LockedStakingApyPropsType {
   showICake?: boolean
+  pool?: Pool.DeserializedPool<Token>
+  account?: string
 }
 
 const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({
@@ -32,6 +36,8 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   stakingTokenBalance,
   userData,
   showICake,
+  pool,
+  account,
 }) => {
   const {
     t,
@@ -126,6 +132,14 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
     placement: 'bottom',
   })
 
+  const {
+    targetRef: tagTargetRefOfRecentProfit,
+    tooltip: tagTooltipOfRecentProfit,
+    tooltipVisible: tagTooltipVisibleOfRecentProfit,
+  } = useTooltip(<AutoEarningsBreakdown pool={pool} account={account} />, {
+    placement: 'bottom',
+  })
+
   return (
     <LightGreyCard>
       <Flex justifyContent="space-between" mb="16px">
@@ -195,9 +209,12 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
         <YieldBoostRow secondDuration={secondDuration} />
       )}
       <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Recent CAKE profit')}
-        </Text>
+        {tagTooltipVisibleOfRecentProfit && tagTooltipOfRecentProfit}
+        <TooltipText>
+          <Text ref={tagTargetRefOfRecentProfit} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Recent CAKE profit')}
+          </Text>
+        </TooltipText>
         <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
       </Flex>
       {position === VaultPosition.LockedEnd && (
