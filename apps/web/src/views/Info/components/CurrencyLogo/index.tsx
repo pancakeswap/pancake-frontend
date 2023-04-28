@@ -27,10 +27,8 @@ export const CurrencyLogo: React.FC<
     return getTokenLogoURL(new Token(multiChainId[chainName], address, 18, ''))
   }, [address, chainName])
 
-  const imagePath = chainName === 'BSC' ? '' : `${multiChainId[chainName]}/tokens/`
-  const srcFromPCS = `https://${chainName === 'BSC' ? 'tokens.' : ''}pancakeswap.finance/images/${imagePath}${isAddress(
-    address,
-  )}.png`
+  const imagePath = chainName === 'BSC' ? '' : `${chainName?.toLowerCase()}/`
+  const srcFromPCS = `https://tokens.pancakeswap.finance/images/${imagePath}${isAddress(address)}.png`
   return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }
 
