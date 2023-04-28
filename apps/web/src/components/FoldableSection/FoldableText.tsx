@@ -5,6 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 
 interface FoldableTextProps extends Omit<FlexProps, 'title'> {
   title?: ReactNode
+  noBorder?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -18,14 +19,19 @@ const StyledExpandableLabelWrapper = styled(Flex)`
   }
 `
 
-const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
+const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean; noBorder?: boolean }>`
   overflow: hidden;
   height: ${({ isExpanded }) => (isExpanded ? '100%' : '0px')};
   padding-bottom: ${({ isExpanded }) => (isExpanded ? '16px' : '0px')};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-bottom: ${({ noBorder }) => (noBorder ? '' : `1px solid ${({ theme }) => theme.colors.inputSecondary}`)};
 `
 
-const FoldableText: React.FC<React.PropsWithChildren<FoldableTextProps>> = ({ title, children, ...props }) => {
+const FoldableText: React.FC<React.PropsWithChildren<FoldableTextProps>> = ({
+  title,
+  children,
+  noBorder,
+  ...props
+}) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -37,7 +43,7 @@ const FoldableText: React.FC<React.PropsWithChildren<FoldableTextProps>> = ({ ti
           <ExpandableLabel expanded={isExpanded}>{isExpanded ? t('Hide') : t('Details')}</ExpandableLabel>
         </StyledExpandableLabelWrapper>
       </Wrapper>
-      <StyledChildrenFlex isExpanded={isExpanded} flexDirection="column">
+      <StyledChildrenFlex noBorder={noBorder} isExpanded={isExpanded} flexDirection="column">
         {children}
       </StyledChildrenFlex>
     </Flex>
