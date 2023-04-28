@@ -46,6 +46,7 @@ import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
 import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
+import OriginalLockedInfo from '../../OriginalLockedInfo'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -72,10 +73,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     profileRequirement,
     userDataLoaded,
   } = pool
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
 
@@ -110,8 +108,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     userData: {
       userShares,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
-      lockedAmount,
-      lastUserActionTime,
     },
   } = vaultData
 
@@ -198,43 +194,11 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     placement: 'bottom',
   })
 
-  const originalLockedAmount = getBalanceNumber(lockedAmount)
-  const originalUsdValue = getBalanceNumber(lockedAmount?.multipliedBy(stakingTokenPrice), stakingToken.decimals)
-  const originalLockedAmountText =
-    originalLockedAmount && originalLockedAmount > 0.01 ? originalLockedAmount.toFixed(2) : '<0.01'
-  const originalUsdValueText = originalUsdValue && originalUsdValue > 0.01 ? `~${originalUsdValue.toFixed(2)}` : '<0.01'
-  const lastActionInMs = lastUserActionTime ? parseInt(lastUserActionTime) * 1000 : 0
-  const tooltipContentOfLocked = (
-    <>
-      <Text>
-        {t(
-          'Includes both the original staked amount and rewards earned since the last deposit, withdraw, extend or convert action.',
-        )}
-      </Text>
-      <Box mt="12px">
-        <Text>{t('Original locked amount')}:</Text>
-        <Text bold>{`${originalLockedAmountText} CAKE (${originalUsdValueText} USD)`}</Text>
-      </Box>
-      <Box mt="12px">
-        <Text>{t('Last action')}:</Text>
-        <Text bold>
-          {new Date(lastActionInMs).toLocaleString(locale, {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })}
-        </Text>
-      </Box>
-    </>
-  )
   const {
     targetRef: tagTargetRefOfLocked,
     tooltip: tagTooltipOfLocked,
     tooltipVisible: tagTooltipVisibleOfLocked,
-  } = useTooltip(tooltipContentOfLocked, {
+  } = useTooltip(<OriginalLockedInfo pool={pool} />, {
     placement: 'bottom',
   })
 

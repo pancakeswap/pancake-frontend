@@ -20,6 +20,7 @@ import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import { LockedStakingApyPropsType } from './types'
 import LockedAprTooltipContent from './Common/LockedAprTooltipContent'
 import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
+import OriginalLockedInfo from '../OriginalLockedInfo'
 
 const HelpIconWrapper = styled.div`
   align-self: center;
@@ -39,10 +40,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   pool,
   account,
 }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const position = useMemo(
     () =>
       getVaultPosition({
@@ -94,41 +92,12 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   })
 
   const originalLockedAmount = getBalanceNumber(userData?.lockedAmount)
-  const originalUsdValue = useBUSDCakeAmount(getBalanceNumber(userData?.lockedAmount))
-  const originalLockedAmountText = originalLockedAmount > 0.01 ? originalLockedAmount.toFixed(2) : '<0.01'
-  const originalUsdValueText = originalUsdValue > 0.01 ? `~${originalUsdValue.toFixed(2)}` : '<0.01'
-  const lastActionInMs = userData?.lastUserActionTime ? parseInt(userData?.lastUserActionTime) * 1000 : 0
-  const tooltipContentOfLocked = (
-    <>
-      <Text>
-        {t(
-          'Includes both the original staked amount and rewards earned since the last deposit, withdraw, extend or convert action.',
-        )}
-      </Text>
-      <Box mt="12px">
-        <Text>{t('Original locked amount')}:</Text>
-        <Text bold>{`${originalLockedAmountText} CAKE (${originalUsdValueText} USD)`}</Text>
-      </Box>
-      <Box mt="12px">
-        <Text>{t('Last action')}:</Text>
-        <Text bold>
-          {new Date(lastActionInMs).toLocaleString(locale, {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })}
-        </Text>
-      </Box>
-    </>
-  )
+
   const {
     targetRef: tagTargetRefOfLocked,
     tooltip: tagTooltipOfLocked,
     tooltipVisible: tagTooltipVisibleOfLocked,
-  } = useTooltip(tooltipContentOfLocked, {
+  } = useTooltip(<OriginalLockedInfo pool={pool} />, {
     placement: 'bottom',
   })
 
