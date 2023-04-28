@@ -49,4 +49,6 @@ const LeaderBoard = () => {
   )
 }
 
+LeaderBoard.chains = []
+
 export default LeaderBoard
