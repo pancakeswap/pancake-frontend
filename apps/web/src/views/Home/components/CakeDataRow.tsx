@@ -6,13 +6,14 @@ import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useEffect, useState } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import styled from 'styled-components'
-import { formatBigNumber, formatLocalisedCompactNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigNumber, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { multicallv3 } from 'utils/multicall'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import { BigNumber } from '@ethersproject/bignumber'
+import useCakeEmissionPerBlock from 'views/Home/hooks/useCakeEmissionPerBlock'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -62,8 +63,6 @@ const Grid = styled.div`
   }
 `
 
-const emissionsPerBlock = 5.48
-
 /**
  * User (Planet Finance) built a contract on top of our original manual CAKE pool,
  * but the contract was written in such a way that when we performed the migration from Masterchef v1 to v2, the tokens were stuck.
@@ -79,6 +78,8 @@ const CakeDataRow = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
+  const emissionsPerBlock = useCakeEmissionPerBlock()
+
   const {
     data: { cakeSupply, burnedBalance, circulatingSupply } = {
       cakeSupply: 0,
@@ -173,7 +174,7 @@ const CakeDataRow = () => {
       <StyledColumn style={{ gridArea: 'f' }}>
         <Text color="textSubtle">{t('Current emissions')}</Text>
 
-        <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
+        <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: formatNumber(emissionsPerBlock) })}</Heading>
       </StyledColumn>
     </Grid>
   )
