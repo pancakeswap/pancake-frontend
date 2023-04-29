@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, CardHeader, Heading, CardBody, Text, Link } from '@pancakeswap/uikit'
+import { Card, CardHeader, Heading, CardBody, Text, Link, LinkExternal } from '@pancakeswap/uikit'
 
 import FoldableText from 'components/FoldableSection/FoldableText'
 
@@ -17,9 +17,9 @@ const config = (t) => [
         {t(
           'Post-merge, the APR is hovering at around 3-5% for Ethereum validators. For WBETH, the daily APR is published by the Binance Earn team',
         )}{' '}
-        <Link style={{ display: 'inline' }} href="https://www.binance.com/en/eth2">
-          {t('here')}
-        </Link>
+        <LinkExternal style={{ display: 'inline-flex' }} href="https://www.binance.com/en/eth2">
+          {t('here.')}
+        </LinkExternal>
       </>
     ),
   },
@@ -30,12 +30,12 @@ const config = (t) => [
         {t(
           'WBETH is the wrapped version of BETH. Unlike BETH, WBETH can be obtained and utilized on-chain. For a side-by-side comparison,',
         )}{' '}
-        <Link
-          style={{ display: 'inline' }}
+        <LinkExternal
+          style={{ display: 'inline-flex' }}
           href="https://www.binance.com/en/support/announcement/binance-introduces-wrapped-beacon-eth-wbeth-on-eth-staking-a1197f34d832445db41654ad01f56b4d"
         >
           {t('visit this page.')}
-        </Link>
+        </LinkExternal>
       </>
     ),
   },
