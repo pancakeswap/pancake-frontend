@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@pancakeswap/tokens": "*",
+    "@pancakeswap/v3-sdk": "*",
+    "@pancakeswap/sdk": "*",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/contracts": "^5.0.0",
     "@ethersproject/providers": "^5.0.0",
