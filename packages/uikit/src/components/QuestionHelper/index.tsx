@@ -1,5 +1,5 @@
-import { BoxProps, Flex, HelpIcon, Placement, useTooltip } from "@pancakeswap/uikit";
 import styled from "styled-components";
+import { BoxProps, Flex, HelpIcon, Placement, useTooltip } from "../../";
 
 interface Props extends BoxProps {
   text: string | React.ReactNode;

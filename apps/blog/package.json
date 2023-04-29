@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@pancakeswap/localization": "*",
-    "@pancakeswap/uikit": "*",
+    "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/uikit": "workspace:*",
+    "next-seo": "^5.15.0",
     "next": "13.2.4",
     "next-axiom": "^0.16.0",
     "react": "^18.2.0",
@@ -26,6 +27,6 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "eslint": "^8.32.0",
-    "tsconfig": "*"
+    "@pancakeswap/tsconfig": "workspace:*"
   }
 }

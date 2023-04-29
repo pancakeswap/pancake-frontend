@@ -13,7 +13,7 @@ export default defineConfig((options) => ({
   onSuccess: async () => {
     exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
       if (err) {
-        console.error(stdout)
+        console.error(err)
         if (!options.watch) {
           process.exit(1)
         }

@@ -1,6 +1,6 @@
 import { useMemo, useCallback, ReactNode, MouseEvent } from "react";
 import { Currency, CurrencyAmount } from "@pancakeswap/sdk";
-import { Button, Text, Flex } from "@pancakeswap/uikit";
+import { Button, Text, Flex } from "../../";
 import { CurrencyLogo } from "../CurrencyLogo";
 import { BalanceInput } from "../BalanceInput";
 

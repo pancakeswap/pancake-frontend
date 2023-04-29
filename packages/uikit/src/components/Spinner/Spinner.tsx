@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Box } from "@pancakeswap/uikit";
+import { Image, Box } from "../../";
 import { SpinnerProps } from "./types";
 
 const Spinner: React.FC<React.PropsWithChildren<SpinnerProps>> = ({ size = 128 }) => {

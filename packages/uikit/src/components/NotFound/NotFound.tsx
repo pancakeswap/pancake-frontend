@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { NextSeo } from "next-seo";
-import { Button, Heading, Text, LogoIcon } from "@pancakeswap/uikit";
+import { Button, Heading, Text, LogoIcon } from "../../";
 import { useTranslation } from "@pancakeswap/localization";
 import Link from "next/link";
 

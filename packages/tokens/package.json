@@ -13,8 +13,11 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@pancakeswap/sdk": "*",
-    "@pancakeswap/token-lists": "*"
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/token-lists": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
   },
   "exports": {
     ".": {

@@ -1,8 +1,8 @@
-import { Flex, TimerIcon, useTooltip } from "@pancakeswap/uikit";
 import getTimePeriods from "@pancakeswap/utils/getTimePeriods";
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo } from "react";
 import { CellContent, BaseCell } from "./BaseCell";
+import { Flex, TimerIcon, useTooltip } from "../../";
 import { Text } from "../../../components/Text";
 import { DeserializedPool } from "../types";
 

@@ -13,13 +13,13 @@
   },
   "dependencies": {
     "@ethersproject/keccak256": "^5.7.0",
-    "@pancakeswap/aptos-swap-sdk": "*",
-    "@pancakeswap/awgmi": "*",
-    "@pancakeswap/token-lists": "*",
-    "@pancakeswap/farms": "*",
-    "@pancakeswap/uikit": "*",
-    "@pancakeswap/ui-wallets": "*",
-    "@pancakeswap/localization": "*",
+    "@pancakeswap/aptos-swap-sdk": "workspace:*",
+    "@pancakeswap/awgmi": "workspace:*",
+    "@pancakeswap/token-lists": "workspace:*",
+    "@pancakeswap/farms": "workspace:*",
+    "@pancakeswap/uikit": "workspace:*",
+    "@pancakeswap/ui-wallets": "workspace:*",
+    "@pancakeswap/localization": "workspace:*",
     "aptos": "^1.3.16",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
@@ -38,6 +38,6 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "eslint": "^8.32.0",
-    "tsconfig": "*"
+    "@pancakeswap/tsconfig": "workspace:*"
   }
 }

@@ -31,12 +31,14 @@
     "@ethersproject/providers": "^5.0.0",
     "@ethersproject/strings": "^5.0.0",
     "@ethersproject/units": "^5.0.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@types/react": "^18.0.17",
     "@blocto/sdk": "^0.3.1",
-    "tsconfig": "*",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "react": "^18.2.0",
     "tsup": "^6.7.0"
   },
   "exports": {

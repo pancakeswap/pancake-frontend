@@ -12,12 +12,12 @@
     "tsx": "^3.12.1"
   },
   "dependencies": {
-    "@pancakeswap/swap-sdk-core": "*",
-    "@pancakeswap/sdk": "*",
-    "@pancakeswap/v3-sdk": "*",
-    "@pancakeswap/tokens": "*",
-    "@pancakeswap/token-lists": "*",
-    "@pancakeswap/multicall": "*",
-    "@pancakeswap/utils": "*"
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/token-lists": "workspace:*",
+    "@pancakeswap/multicall": "workspace:*",
+    "@pancakeswap/utils": "workspace:*"
   }
 }

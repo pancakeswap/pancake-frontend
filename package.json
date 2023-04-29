@@ -7,7 +7,9 @@
     "packages/*",
     "apis/*"
   ],
+  "packageManager": "^pnpm@8.3.1",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web...",
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "dev:blog": "yarn turbo run dev --filter=blog...",
@@ -37,6 +39,7 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "@types/node": "^18.16.2",
     "@changesets/cli": "^2.25.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "eslint-plugin-lodash": "^7.4.0",
@@ -54,8 +57,10 @@
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
     "tsx": "^3.12.6",
-    "tsconfig": "*",
-    "turbo": "1.7.0",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/eslint-config-pancake": "workspace:*",
+    "typescript": "^4.9.4",
+    "turbo": "1.9.3",
     "vitest": "^0.27.2"
   },
   "volta": {

@@ -17,8 +17,8 @@
     "@ethersproject/providers": "^5.0.0"
   },
   "devDependencies": {
-    "@pancakeswap/sdk": "*",
-    "tsconfig": "*",
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*",
     "tsup": "^6.7.0",
     "typescript": "^4.9.4"
   },

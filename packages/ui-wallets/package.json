@@ -7,7 +7,7 @@
   ],
   "private": true,
   "dependencies": {
-    "@pancakeswap/uikit": "*",
+    "@pancakeswap/uikit": "workspace:*",
     "qrcode.react": "^3.1.0"
   },
   "peerDependencies": {

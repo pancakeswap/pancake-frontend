@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "@pancakeswap/tsconfig/nextjs.json",
   "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"],
   "compilerOptions": {
     "target": "ES2015",
