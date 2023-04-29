@@ -403,7 +403,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           </ActionContent>
         </ActionContainer>
         {isMobile && vaultPosition >= VaultPosition.LockedEnd && (
-          <Flex mb="24px" justifyContent="space-between">
+          <Flex mb="24px" mr="4px" ml="4px" justifyContent="space-between">
             <Text fontSize="14px" color="failure" as="span">
               {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
             </Text>
