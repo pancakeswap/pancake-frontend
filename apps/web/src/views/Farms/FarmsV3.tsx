@@ -321,7 +321,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     if (v3FarmOnly || v2FarmOnly) {
-      console.log(chosenFs)
       const v3OrV2Farms = chosenFs.filter(
         (farm) => (v3FarmOnly && farm.version === 3) || (v2FarmOnly && farm.version === 2),
       )
@@ -366,6 +365,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     archivedFarms,
     boostedOnly,
     stableSwapOnly,
+    v3FarmOnly,
+    v2FarmOnly,
   ])
 
   const chosenFarmsMemoized = useMemo(() => {
