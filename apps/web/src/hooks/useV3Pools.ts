@@ -3,6 +3,8 @@ import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancakeswap/v3-sdk'
 import { useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
+import { viemClients } from 'utils/viem'
 
 import { v3Clients } from 'utils/graphql'
 
@@ -91,12 +93,23 @@ export function useV3CandidatePoolsWithoutTicks(
     error,
   } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
+  const { data } = useQuery({
+    queryKey: ['v3_pools_onchain', key],
+    queryFn: async () => {
+      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, viemClients)
+    },
+    enabled: Boolean(error),
+  })
+
   const candidatePools = useMemo<V3Pool[] | null>(() => {
+    if (error && data) {
+      return data
+    }
     if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
       return null
     }
     return SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, poolsFromSubgraphState.pools)
-  }, [poolsFromSubgraphState, currencyA, currencyB])
+  }, [poolsFromSubgraphState, currencyA, currencyB, error, data])
 
   return {
     refresh: mutate,

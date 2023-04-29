@@ -328,7 +328,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   quoteProvider: SmartRouter.createOffChainQuoteProvider(),
 })
 
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
+export const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',

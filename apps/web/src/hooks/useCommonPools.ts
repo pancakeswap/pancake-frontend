@@ -70,11 +70,17 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
     // FIXME: allow inconsistent block not working as expected
     const pools = useMemo(
       () =>
+        // FIXME: revert this
         // v2Pools && v3Pools && stablePools && (allowInconsistentBlock || !!consistentBlockNumber)
         //   ? [...v2Pools, ...v3Pools, ...stablePools]
         //   : undefined,
         [...(v2Pools || []), ...(v3Pools || []), ...(stablePools || [])],
-      [v2Pools, v3Pools, stablePools, allowInconsistentBlock, consistentBlockNumber],
+      [
+        v2Pools,
+        v3Pools,
+        stablePools,
+        // allowInconsistentBlock, consistentBlockNumber
+      ],
     )
     const refresh = useCallback(() => {
       v3Refresh()
