@@ -3,6 +3,9 @@ import { ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
 import { Abi, Address } from 'abitype'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
+import flatMap from 'lodash/flatMap.js'
+import uniq from 'lodash/uniq.js'
+import chunk from 'lodash/chunk.js'
 
 import { GasModel, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
@@ -13,9 +16,6 @@ import { PancakeMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 import { BatchMulticallConfigs, ChainMap } from '../../types'
 import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
-import { flatMap } from '../../utils/flatMap'
-import { uniq } from '../../utils/uniq'
-import { chunk } from '../../utils/chunk'
 
 const DEFAULT_BATCH_RETRIES = 2
 
