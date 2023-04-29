@@ -222,6 +222,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userDataReady = !account || (!!account && v2UserDataLoaded && v3UserDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const [v3FarmOnly, setV3FarmOnly] = useState(false)
+  const [v2FarmOnly, setV2FarmOnly] = useState(false)
   const [boostedOnly, setBoostedOnly] = useState(false)
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
@@ -316,6 +318,22 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
     if (isArchived) {
       chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
+    }
+
+    if (v3FarmOnly || v2FarmOnly) {
+      console.log(chosenFs)
+      const v3OrV2Farms = chosenFs.filter(
+        (farm) => (v3FarmOnly && farm.version === 3) || (v2FarmOnly && farm.version === 2),
+      )
+
+      const stakedV3OrV2Farms = chosenFs.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      )
+
+      chosenFs = stakedOnly ? farmsList(stakedV3OrV2Farms) : farmsList(v3OrV2Farms)
     }
 
     if (boostedOnly || stableSwapOnly) {
@@ -453,6 +471,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
             <Flex mt="20px" ml="16px">
               <FarmTypesFilter
+                v3FarmOnly={v3FarmOnly}
+                handleSetV3FarmOnly={setV3FarmOnly}
+                v2FarmOnly={v2FarmOnly}
+                handleSetV2FarmOnly={setV2FarmOnly}
                 boostedOnly={boostedOnly}
                 handleSetBoostedOnly={setBoostedOnly}
                 stableSwapOnly={stableSwapOnly}

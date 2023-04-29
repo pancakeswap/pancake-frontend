@@ -1,5 +1,16 @@
 import { useEffect, useState, useRef } from 'react'
-import { Box, Button, RocketIcon, CurrencyIcon, Flex, Text, InlineMenu, Toggle } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  RocketIcon,
+  CurrencyIcon,
+  Flex,
+  Text,
+  InlineMenu,
+  Toggle,
+  FarmIcon,
+  TradeIcon,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -8,6 +19,10 @@ interface FarmTypesFilterProps {
   handleSetBoostedOnly: (value: boolean) => void
   stableSwapOnly: boolean
   handleSetStableSwapOnly: (value: boolean) => void
+  v3FarmOnly?: boolean
+  handleSetV3FarmOnly?: (value: boolean) => void
+  v2FarmOnly?: boolean
+  handleSetV2FarmOnly?: (value: boolean) => void
   farmTypesEnableCount: number
   handleSetFarmTypesEnableCount: (value: number) => void
 }
@@ -37,6 +52,10 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
   handleSetBoostedOnly,
   stableSwapOnly,
   handleSetStableSwapOnly,
+  v3FarmOnly,
+  handleSetV3FarmOnly,
+  v2FarmOnly,
+  handleSetV2FarmOnly,
   farmTypesEnableCount,
   handleSetFarmTypesEnableCount,
 }) => {
@@ -87,6 +106,44 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                 </Text>
               </FarmTypesWrapper>
               <Box height="240px" overflowY="auto">
+                <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
+                  <TradeIcon />
+                  <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
+                    {t('V3 Farms')}
+                  </Text>
+                  <ToggleWrapper>
+                    <Toggle
+                      id="v3-only-farms"
+                      checked={v3FarmOnly}
+                      onChange={() => {
+                        const totalFarmsEnableCount = farmTypesEnableCount + (!v3FarmOnly ? 1 : -1)
+                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
+
+                        handleSetV3FarmOnly(!v3FarmOnly)
+                      }}
+                      scale="sm"
+                    />
+                  </ToggleWrapper>
+                </StyledItemRow>
+                <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
+                  <FarmIcon />
+                  <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
+                    {t('V2 Farms')}
+                  </Text>
+                  <ToggleWrapper>
+                    <Toggle
+                      id="v2-only-farms"
+                      checked={v2FarmOnly}
+                      onChange={() => {
+                        const totalFarmsEnableCount = farmTypesEnableCount + (!v2FarmOnly ? 1 : -1)
+                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
+
+                        handleSetV2FarmOnly(!v2FarmOnly)
+                      }}
+                      scale="sm"
+                    />
+                  </ToggleWrapper>
+                </StyledItemRow>
                 <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
                   <RocketIcon />
                   <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
