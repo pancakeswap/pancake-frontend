@@ -43,6 +43,7 @@ import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import Table from './components/FarmTable/FarmTable'
+import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsV3Context } from './context'
 
 const ControlContainer = styled.div`
@@ -221,6 +222,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userDataReady = !account || (!!account && v2UserDataLoaded && v3UserDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const [boostedOnly, setBoostedOnly] = useState(false)
+  const [stableSwapOnly, setStableSwapOnly] = useState(false)
+  const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
   const activeFarms = farmsLP.filter(
     (farm) =>
@@ -314,6 +318,21 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
+    if (boostedOnly || stableSwapOnly) {
+      const boostedOrStableSwapFarms = chosenFs.filter(
+        (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
+      )
+
+      const stakedBoostedOrStableSwapFarms = chosenFs.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      )
+
+      chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
+    }
+
     return chosenFs
   }, [
     isActive,
@@ -327,6 +346,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     inactiveFarms,
     stakedArchivedFarms,
     archivedFarms,
+    boostedOnly,
+    stableSwapOnly,
   ])
 
   const chosenFarmsMemoized = useMemo(() => {
@@ -431,6 +452,14 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </Flex>
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
             <Flex mt="20px" ml="16px">
+              <FarmTypesFilter
+                boostedOnly={boostedOnly}
+                handleSetBoostedOnly={setBoostedOnly}
+                stableSwapOnly={stableSwapOnly}
+                handleSetStableSwapOnly={setStableSwapOnly}
+                farmTypesEnableCount={farmTypesEnableCount}
+                handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
+              />
               <ToggleWrapper>
                 <Toggle
                   id="staked-only-farms"
