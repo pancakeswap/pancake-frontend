@@ -23,6 +23,7 @@ export interface V3PoolsResult {
   loading: boolean
   syncing: boolean
   blockNumber?: number
+  error?: Error
 }
 
 export function useV3CandidatePools(
@@ -37,6 +38,7 @@ export function useV3CandidatePools(
     key,
     blockNumber,
     refresh,
+    error,
   } = useV3CandidatePoolsWithoutTicks(currencyA, currencyB, options)
 
   const {
@@ -53,6 +55,7 @@ export function useV3CandidatePools(
 
   return {
     refresh,
+    error,
     pools: candidatePools,
     loading: isLoading || ticksLoading,
     syncing: isValidating || ticksValidating,
@@ -85,6 +88,7 @@ export function useV3CandidatePoolsWithoutTicks(
     isLoading,
     isValidating,
     mutate,
+    error,
   } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
   const candidatePools = useMemo<V3Pool[] | null>(() => {
@@ -101,6 +105,7 @@ export function useV3CandidatePoolsWithoutTicks(
     syncing: isValidating,
     blockNumber: poolsFromSubgraphState?.blockNumber,
     key: poolsFromSubgraphState?.key,
+    error,
   }
 }
 
@@ -186,6 +191,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     },
     {
       revalidateOnFocus: false,
+      errorRetryCount: 10,
     },
   )
 
