@@ -12,11 +12,9 @@
   "module": "./dist/evm.mjs",
   "types": "../dist/evm/index.d.ts",
   "scripts": {
-    "build": "yarn typechain && tsup",
+    "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
-    "typechain": "typechain --out-dir evm/abis/types --target=ethers-v5 \"evm/abis/*.json\"",
-    "postinstall": "yarn typechain",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
