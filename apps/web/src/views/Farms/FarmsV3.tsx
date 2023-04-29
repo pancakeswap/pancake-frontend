@@ -320,34 +320,23 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
-    if (v3FarmOnly || v2FarmOnly) {
-      const v3OrV2Farms = chosenFs.filter(
-        (farm) => (v3FarmOnly && farm.version === 3) || (v2FarmOnly && farm.version === 2),
+    if (v3FarmOnly || v2FarmOnly || boostedOnly || stableSwapOnly) {
+      const filterFarms = chosenFs.filter(
+        (farm) =>
+          (v3FarmOnly && farm.version === 3) ||
+          (v2FarmOnly && farm.version === 2) ||
+          (boostedOnly && farm.boosted) ||
+          (stableSwapOnly && farm.isStable),
       )
 
-      const stakedV3OrV2Farms = chosenFs.filter(
+      const stakedFilterFarms = chosenFs.filter(
         (farm) =>
           farm.userData &&
           (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
             new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
       )
 
-      chosenFs = stakedOnly ? farmsList(stakedV3OrV2Farms) : farmsList(v3OrV2Farms)
-    }
-
-    if (boostedOnly || stableSwapOnly) {
-      const boostedOrStableSwapFarms = chosenFs.filter(
-        (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
-      )
-
-      const stakedBoostedOrStableSwapFarms = chosenFs.filter(
-        (farm) =>
-          farm.userData &&
-          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-      )
-
-      chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
+      chosenFs = stakedOnly ? farmsList(stakedFilterFarms) : farmsList(filterFarms)
     }
 
     return chosenFs
