@@ -713,7 +713,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       react-redux:
         specifier: ^8.0.5
-        version: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
+        version: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
@@ -723,9 +723,12 @@ importers:
       recharts:
         specifier: 2.1.15
         version: 2.1.15(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      redux:
+        specifier: ^4.2.1
+        version: 4.2.1
       redux-persist:
         specifier: ^6.0.0
-        version: 6.0.0(react@18.2.0)(redux@4.2.0)
+        version: 6.0.0(react@18.2.0)(redux@4.2.1)
       remark-gfm:
         specifier: ^1.0.0
         version: 1.0.0
@@ -1629,7 +1632,7 @@ importers:
         version: 2.2.5(@popperjs/core@2.11.2)(react@18.2.0)
       react-redux:
         specifier: ^8.0.5
-        version: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
+        version: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
       react-transition-group:
         specifier: '*'
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
@@ -1793,6 +1796,9 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
+      date-fns:
+        specifier: ^2.29.3
+        version: 2.29.3
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -7452,9 +7458,9 @@ packages:
     dependencies:
       immer: 9.0.16
       react: 18.2.0
-      react-redux: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
-      redux: 4.2.0
-      redux-thunk: 2.4.2(redux@4.2.0)
+      react-redux: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
+      redux: 4.2.1
+      redux-thunk: 2.4.2(redux@4.2.1)
       reselect: 4.1.7
 
   /@rollup/plugin-babel@6.0.3(@babel/core@7.21.3)(rollup@2.78.0):
@@ -10318,7 +10324,7 @@ packages:
       '@types/hoist-non-react-statics': 3.3.1
       '@types/react': 18.2.0
       hoist-non-react-statics: 3.3.2
-      redux: 4.2.0
+      redux: 4.2.1
     dev: true
 
   /@types/react-router-dom@5.3.3:
@@ -23329,7 +23335,7 @@ packages:
       react-fast-compare: 3.2.0
       warning: 4.0.3
 
-  /react-redux@8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0):
+  /react-redux@8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1):
     resolution: {integrity: sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==}
     peerDependencies:
       '@types/react': ^16.8 || ^17.0 || ^18.0
@@ -23359,7 +23365,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.1.0
-      redux: 4.2.0
+      redux: 4.2.1
       use-sync-external-store: 1.2.0(react@18.2.0)
 
   /react-refresh@0.11.0:
@@ -23662,7 +23668,7 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /redux-persist@6.0.0(react@18.2.0)(redux@4.2.0):
+  /redux-persist@6.0.0(react@18.2.0)(redux@4.2.1):
     resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
     peerDependencies:
       react: '>=16'
@@ -23672,18 +23678,18 @@ packages:
         optional: true
     dependencies:
       react: 18.2.0
-      redux: 4.2.0
+      redux: 4.2.1
     dev: false
 
-  /redux-thunk@2.4.2(redux@4.2.0):
+  /redux-thunk@2.4.2(redux@4.2.1):
     resolution: {integrity: sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==}
     peerDependencies:
       redux: ^4
     dependencies:
-      redux: 4.2.0
+      redux: 4.2.1
 
-  /redux@4.2.0:
-    resolution: {integrity: sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==}
+  /redux@4.2.1:
+    resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
     dependencies:
       '@babel/runtime': 7.20.6
 
