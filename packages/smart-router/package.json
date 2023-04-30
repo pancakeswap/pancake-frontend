@@ -8,19 +8,17 @@
     "directory": "packages/smart-router"
   },
   "sideEffects": false,
-  "main": "./dist/evm.js",
-  "module": "./dist/evm.mjs",
-  "types": "../dist/evm/index.d.ts",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
-    "prepublishOnly": "yarn run build",
+    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "jsbi": "^3.1.4",
     "abitype": "^0.8.0",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -44,7 +42,6 @@
   },
   "devDependencies": {
     "@ethersproject/constants": "^5.0.0",
-    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",

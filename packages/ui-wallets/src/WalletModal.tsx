@@ -19,7 +19,6 @@ import {
 import { atom, useAtom } from 'jotai'
 import { lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import dynamic from 'next/dynamic'
 import {
   desktopWalletSelectionClass,
   modalWrapperClass,
@@ -28,7 +27,7 @@ import {
   walletSelectWrapperClass,
 } from './WalletModal.css'
 
-const StepIntro = dynamic(() => import('./components/Intro').then((mod) => mod.StepIntro), { ssr: false })
+const StepIntro = lazy(() => import('./components/Intro'))
 
 const Qrcode = lazy(() => import('./components/QRCode'))
 

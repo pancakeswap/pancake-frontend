@@ -1,5 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
+import { BigNumber, Contract } from 'ethers'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'

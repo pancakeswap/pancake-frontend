@@ -15,7 +15,7 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 - [Info](doc/Info.md)
 - [Cypress tests](doc/Cypress.md)
 
-> Install dependencies using **yarn**
+> Install dependencies using [pnpm](https://pnpm.io)
 
 ## `apps/web`
 <details>
@@ -24,20 +24,20 @@ How to start
 </summary>
 
 ```sh
-yarn
+pnpm i
 ```
 
 start the development server
 ```sh
-yarn dev
+pnpm dev
 ```
 
 build with production mode
 ```sh
-yarn build
+pnpm build
 
 # start the application after build
-yarn start
+pnpm start
 ```
 </details>
 
@@ -48,10 +48,10 @@ How to start
 </summary>
 
 ```sh
-yarn dev:aptos
+pnpm dev:aptos
 ```
 ```sh
-yarn turbo run build --filter=aptos-web
+pnpm build:aptos
 ```
 </details>
 
@@ -62,10 +62,10 @@ How to start
 </summary>
 
 ```sh
-yarn dev:blog
+pnpm dev:blog
 ```
 ```sh
-yarn turbo run build --filter=blog
+pnpm build:blog
 ```
 </details>
 

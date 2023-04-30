@@ -4,10 +4,10 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "yarn typechain",
+    "build": "pnpm typechain",
     "test": "vitest --run",
     "typechain": "typechain --out-dir src/abis/types --target=ethers-v5 \"src/abis/*.json\"",
-    "postinstall": "yarn typechain"
+    "postinstall": "pnpm typechain"
   },
   "type": "module",
   "peerDependencies": {

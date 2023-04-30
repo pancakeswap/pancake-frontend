@@ -1,5 +1,5 @@
 import { Price, Token, Currency, Percent, Fraction } from "@pancakeswap/sdk";
-import { parseUnits } from "@ethersproject/units";
+import { parseUnits } from "ethers/lib/utils";
 import {
   encodeSqrtRatioX96,
   FeeAmount,

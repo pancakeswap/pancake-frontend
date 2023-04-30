@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "prepublishOnly": "yarn run build",
+    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {

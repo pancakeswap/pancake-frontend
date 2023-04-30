@@ -1,7 +1,7 @@
-import type { Signer } from '@ethersproject/abstract-signer'
+import type { Signer } from 'ethers'
 import type { Provider } from '@ethersproject/providers'
 import { provider } from 'utils/wagmi'
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses

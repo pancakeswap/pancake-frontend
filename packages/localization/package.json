@@ -8,6 +8,13 @@
   "private": true,
   "scripts": {},
   "dependencies": {
+    "@pancakeswap/utils": "workspace:*",
+    "@pancakeswap/hooks": "workspace:*",
+    "lodash": "^4.17.21",
     "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/lodash": "^4.14.178"
   }
 }
