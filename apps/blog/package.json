@@ -24,15 +24,20 @@
     "react-wrap-balancer": "^0.4.0",
     "styled-components": "^5.3.3",
     "swiper": "^8.4.2",
-    "typescript": "^4.9.4"
+    "swr": "^2.1.5",
+    "typescript": "^4.9.4",
+    "qs": "^6.0.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.26",
     "@next/eslint-plugin-next": "13.2.4",
     "@types/node": "18.0.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "eslint": "^8.32.0",
-    "styled-system": "^5.1.5",
-    "@pancakeswap/tsconfig": "workspace:*"
+    "@types/styled-system": "^5.1.15",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@types/qs": "^6.0.0"
   }
 }

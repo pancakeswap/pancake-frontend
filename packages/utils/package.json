@@ -6,17 +6,20 @@
   },
   "private": true,
   "peerDependencies": {
+    "styled-components": "^5.3.10",
     "lodash": "^4.17.21",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/awgmi": "workspace:*",
     "@pancakeswap/aptos-swap-sdk": "workspace:*"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.26",
     "ethers": "^5.0.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.0.0",
     "vitest": "^0.30.1",
     "swr": "^2.1.3",

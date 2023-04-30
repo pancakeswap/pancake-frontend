@@ -1,7 +1,7 @@
-import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { CAKE_BNB_LP_MAINNET } from './common'
+import { FarmConfigV3, SerializedFarmConfig } from '..'
 
 export const farmsV3 = [
   {

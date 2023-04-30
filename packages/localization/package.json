@@ -5,6 +5,7 @@
   "description": "A minimal internationalization library",
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",
+  "sideEffects": false,
   "private": true,
   "scripts": {},
   "dependencies": {

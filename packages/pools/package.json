@@ -15,21 +15,19 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
-    "@pancakeswap/utils": "workspace:*"
-  },
-  "dependencies": {
+    "@pancakeswap/utils": "workspace:*",
     "@ethersproject/bignumber": "^5.0.0",
     "@ethersproject/contracts": "^5.0.0",
     "@ethersproject/providers": "^5.0.0",
+    "ethers": "^5.0.0"
+  },
+  "dependencies": {
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@pancakeswap/multicall": "workspace:*",
-    "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/token-lists": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
-    "@pancakeswap/utils": "workspace:*",
+    "@ethersproject/abi": "^5.0.0",
+    "@types/lodash": "^4.14.168",
     "@typechain/ethers-v5": "^8.0.5",
     "@pancakeswap/tsconfig": "workspace:*",
     "typechain": "^6.1.0",

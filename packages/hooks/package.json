@@ -8,16 +8,15 @@
   "private": true,
   "scripts": {},
   "dependencies": {
+    "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "next-themes": "^0.2.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.2",
     "@types/styled-components": "5.1.26",
     "@types/react": "^18.2.0"
-  },
-  "peerDependencies": {
-    "js-cookie": "^3.0.1"
   }
 }

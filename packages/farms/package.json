@@ -9,15 +9,24 @@
     "test": "vitest --run"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.168",
     "tsx": "^3.12.1"
   },
   "dependencies": {
+    "date-fns": "^2.29.3",
+    "bignumber.js": "^9.0.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
-    "@pancakeswap/utils": "workspace:*"
+    "@pancakeswap/utils": "workspace:*",
+    "lodash": "^4.17.21"
+  },
+  "peerDependencies": {
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/units": "^5.0.0",
+    "ethers": "^5.0.0"
   }
 }
