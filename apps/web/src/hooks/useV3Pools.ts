@@ -93,23 +93,26 @@ export function useV3CandidatePoolsWithoutTicks(
     error,
   } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
-  const { data } = useQuery({
+  const { data: poolsFromOnChain } = useQuery({
     queryKey: ['v3_pools_onchain', key],
     queryFn: async () => {
       return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, viemClients)
     },
-    enabled: Boolean(error),
+    enabled: Boolean(error && key && options.enabled),
   })
 
   const candidatePools = useMemo<V3Pool[] | null>(() => {
-    if (error && data) {
-      return data
+    if (!currencyA || !currencyB) {
+      return null
     }
-    if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
+    if (error && poolsFromOnChain) {
+      return poolsFromOnChain
+    }
+    if (!poolsFromSubgraphState?.pools) {
       return null
     }
     return SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, poolsFromSubgraphState.pools)
-  }, [poolsFromSubgraphState, currencyA, currencyB, error, data])
+  }, [poolsFromSubgraphState, currencyA, currencyB, error, poolsFromOnChain])
 
   return {
     refresh: mutate,
@@ -204,7 +207,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     },
     {
       revalidateOnFocus: false,
-      errorRetryCount: 10,
+      errorRetryCount: 5,
     },
   )
 
