@@ -1,46 +1,32 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import { CAKE, USDC } from '@pancakeswap/tokens'
-import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSlippage } from '@pancakeswap/utils/user'
-import IPancakePairABI from 'config/abi/IPancakePair.json'
-import { SLOW_INTERVAL } from 'config/constants'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import useSWRImmutable from 'swr/immutable'
 import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
-import getLpAddress from 'utils/getLpAddress'
-import { multicallv2 } from 'utils/multicall'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import { useAccount, useEnsAddress } from 'wagmi'
-import { AppState, useAppDispatch } from '../index'
+import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
+import useSWRImmutable from 'swr/immutable'
+import { SLOW_INTERVAL } from 'config/constants'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
+import { Field, replaceSwapState } from './actions'
 import fetchDerivedPriceData, { getTokenBestTvlProtocol } from './fetch/fetchDerivedPriceData'
-import fetchPairPriceData from './fetch/fetchPairPriceData'
-import { pairHasEnoughLiquidity } from './fetch/utils'
-import {
-  normalizeChartData,
-  normalizeDerivedChartData,
-  normalizeDerivedPairDataByActiveToken,
-  normalizePairDataByActiveToken,
-} from './normalizers'
-import { SwapState } from './reducer'
-import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
+import { normalizeDerivedChartData, normalizeDerivedPairDataByActiveToken } from './normalizers'
+import { swapReducerAtom, SwapState } from './reducer'
 import { PairDataTimeWindowEnum } from './types'
-import { useStableSwapPairs } from './useStableSwapPairs'
 
-export function useSwapState(): AppState['swap'] {
-  return useSelector<AppState, AppState['swap']>((state) => state.swap)
+export function useSwapState() {
+  return useAtomValue(swapReducerAtom)
 }
 
 // TODO: update
@@ -268,7 +254,7 @@ export function useDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
   const { chainId } = useActiveChainId()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(swapReducerAtom)
   const native = useNativeCurrency()
   const { query, isReady } = useRouter()
   const [result, setResult] = useState<
@@ -360,209 +346,4 @@ export const useFetchPairPricesV3 = ({
     error,
     isLoading,
   }
-}
-
-export const useFetchPairPrices = ({
-  token0Address,
-  token1Address,
-  timeWindow,
-  currentSwapPrice,
-}: useFetchPairPricesParams) => {
-  const { chainId } = useActiveChainId()
-  const [pairId, setPairId] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
-  const derivedPairData = useSelector(derivedPairByDataIdSelector({ pairId, timeWindow }))
-  const dispatch = useDispatch()
-
-  const stableSwapPairs = useStableSwapPairs()
-  const stableSwapPair = useMemo(
-    () =>
-      stableSwapPairs.find(
-        (pair) =>
-          pair.token0.isToken &&
-          pair.token1.isToken &&
-          (equalsIgnoreCase(pair.token0.address, token0Address) ||
-            equalsIgnoreCase(pair.token0.address, token1Address)) &&
-          (equalsIgnoreCase(pair.token1.address, token0Address) ||
-            equalsIgnoreCase(pair.token1.address, token1Address)),
-      ),
-    [stableSwapPairs, token0Address, token1Address],
-  )
-  const isStableSwap = !!stableSwapPair
-
-  useEffect(() => {
-    const fetchDerivedData = async () => {
-      console.info(
-        '[Price Chart]: Not possible to retrieve price data from single pool, trying to fetch derived prices',
-      )
-      try {
-        // Try to get at least derived data for chart
-        // This is used when there is no direct data for pool
-        // i.e. when multihops are necessary
-        const derivedData = await fetchDerivedPriceData(
-          token0Address,
-          token1Address,
-          timeWindow,
-          stableSwapPairs.some(
-            (p) =>
-              equalsIgnoreCase(p.token0.wrapped.address, token0Address) ||
-              equalsIgnoreCase(p.token1.wrapped.address, token0Address),
-          )
-            ? 'stable'
-            : 'v2',
-          stableSwapPairs.some(
-            (p) =>
-              equalsIgnoreCase(p.token0.wrapped.address, token1Address) ||
-              equalsIgnoreCase(p.token1.wrapped.address, token1Address),
-          )
-            ? 'stable'
-            : 'v2',
-          chainId,
-        )
-        if (derivedData) {
-          const normalizedDerivedData = normalizeDerivedChartData(derivedData)
-          dispatch(updateDerivedPairData({ pairData: normalizedDerivedData, pairId, timeWindow }))
-        } else {
-          dispatch(updateDerivedPairData({ pairData: [], pairId, timeWindow }))
-        }
-      } catch (error) {
-        console.error('Failed to fetch derived prices for chart', error)
-        dispatch(updateDerivedPairData({ pairData: [], pairId, timeWindow }))
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    const fetchAndUpdatePairPrice = async () => {
-      setIsLoading(true)
-      const { data } = await fetchPairPriceData({ pairId, timeWindow, isStableSwap })
-      if (data) {
-        // Find out if Liquidity Pool has enough liquidity
-        // low liquidity pool might mean that the price is incorrect
-        // in that case try to get derived price
-        const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
-        let pairTokenResults
-        if (isStableSwap) {
-          pairTokenResults = [[stableSwapPair.token0.wrapped.address], [stableSwapPair.token1.wrapped.address]]
-        } else {
-          try {
-            pairTokenResults = await multicallv2({
-              abi: IPancakePairABI,
-              calls: [
-                {
-                  address: pairId,
-                  name: 'token0',
-                },
-                {
-                  address: pairId,
-                  name: 'token1',
-                },
-              ],
-              options: { requireSuccess: false },
-            })
-          } catch (error) {
-            console.info('Error fetching tokenIds from pair')
-          }
-        }
-        const newPairData =
-          (pairTokenResults &&
-            pairTokenResults[0]?.[0] &&
-            pairTokenResults[1]?.[0] &&
-            normalizeChartData(
-              data,
-              pairTokenResults[0][0].toLowerCase(),
-              pairTokenResults[1][0].toLowerCase(),
-              timeWindow,
-            )) ||
-          []
-
-        if (newPairData.length > 0 && hasEnoughLiquidity) {
-          dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
-          setIsLoading(false)
-        } else {
-          console.info(`[Price Chart]: Liquidity too low for ${pairId}`)
-          dispatch(updatePairData({ pairData: [], pairId, timeWindow }))
-          fetchDerivedData()
-        }
-      } else {
-        dispatch(updatePairData({ pairData: [], pairId, timeWindow }))
-        fetchDerivedData()
-      }
-    }
-
-    if (!pairData && !derivedPairData && pairId && !isLoading) {
-      fetchAndUpdatePairPrice()
-    }
-  }, [
-    pairId,
-    timeWindow,
-    pairData,
-    currentSwapPrice,
-    token0Address,
-    token1Address,
-    derivedPairData,
-    dispatch,
-    isLoading,
-    isStableSwap,
-    stableSwapPair,
-    stableSwapPairs,
-    chainId,
-  ])
-
-  useEffect(() => {
-    const updatePairId = () => {
-      try {
-        const pairAddress = isStableSwap
-          ? stableSwapPair?.stableSwapAddress?.toLowerCase()
-          : getLpAddress(token0Address, token1Address)?.toLowerCase()
-        if (pairAddress !== pairId) {
-          setPairId(pairAddress)
-        }
-      } catch (error) {
-        setPairId(null)
-      }
-    }
-
-    updatePairId()
-  }, [token0Address, token1Address, pairId, isStableSwap, stableSwapPair])
-
-  const normalizedPairData = useMemo(
-    () => normalizePairDataByActiveToken({ activeToken: token0Address, pairData }),
-    [token0Address, pairData],
-  )
-
-  const normalizedDerivedPairData = useMemo(
-    () => normalizeDerivedPairDataByActiveToken({ activeToken: token0Address, pairData: derivedPairData }),
-    [token0Address, derivedPairData],
-  )
-
-  const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
-
-  const normalizedPairDataWithCurrentSwapPrice =
-    normalizedPairData?.length > 0 && hasSwapPrice
-      ? [...normalizedPairData, { time: new Date(), value: currentSwapPrice[token0Address] }]
-      : normalizedPairData
-
-  const normalizedDerivedPairDataWithCurrentSwapPrice =
-    normalizedDerivedPairData?.length > 0 && hasSwapPrice
-      ? [...normalizedDerivedPairData, { time: new Date(), value: currentSwapPrice[token0Address] }]
-      : normalizedDerivedPairData
-
-  const hasNoDirectData = normalizedPairDataWithCurrentSwapPrice && normalizedPairDataWithCurrentSwapPrice?.length === 0
-  const hasNoDerivedData =
-    normalizedDerivedPairDataWithCurrentSwapPrice && normalizedDerivedPairDataWithCurrentSwapPrice?.length === 0
-
-  // undefined is used for loading
-
-  let pairPrices = hasNoDirectData && hasNoDerivedData ? [] : undefined
-  if (normalizedPairDataWithCurrentSwapPrice && normalizedPairDataWithCurrentSwapPrice?.length > 0) {
-    pairPrices = normalizedPairDataWithCurrentSwapPrice
-  } else if (
-    normalizedDerivedPairDataWithCurrentSwapPrice &&
-    normalizedDerivedPairDataWithCurrentSwapPrice?.length > 0
-  ) {
-    pairPrices = normalizedDerivedPairDataWithCurrentSwapPrice
-  }
-  return { pairPrices, pairId }
 }

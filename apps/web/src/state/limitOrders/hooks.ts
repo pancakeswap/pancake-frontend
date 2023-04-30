@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, Trade, Token, Price, Native, TradeType } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useCurrency } from 'hooks/Tokens'
+import { useAtom, useAtomValue } from 'jotai'
+import { limitReducerAtom } from 'state/limitOrders/reducer'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
@@ -16,7 +18,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
-import { AppState, useAppDispatch } from '..'
 
 // Get desired input amount in output basis mode
 const getDesiredInput = (
@@ -81,9 +82,9 @@ const getDesiredOutput = (
   return CurrencyAmount.fromRawAmount(outputCurrency, resultAsFraction.quotient.toString())
 }
 
-// Just returns Redux state for limitOrders
-export const useOrderState = (): AppState['limitOrders'] => {
-  return useSelector<AppState, AppState['limitOrders']>((state) => state.limitOrders)
+// Just returns state for limitOrders
+export function useOrderState() {
+  return useAtomValue(limitReducerAtom)
 }
 
 // Returns handlers to change user-defined parts of limitOrders state
@@ -493,7 +494,7 @@ export const useDefaultsFromURLSearch = ():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined => {
   const { chainId } = useActiveChainId()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(limitReducerAtom)
   const { query } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
