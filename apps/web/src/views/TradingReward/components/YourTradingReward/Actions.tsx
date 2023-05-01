@@ -6,10 +6,8 @@ import { Token } from '@pancakeswap/sdk'
 import { VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useVaultApprove, useCheckVaultApprovalStatus } from 'views/Pools/hooks/useApprove'
-import AddCakeButton from 'views/Pools/components/LockedPool/Buttons/AddCakeButton'
 import ExtendButton from 'views/Pools/components/LockedPool/Buttons/ExtendDurationButton'
 import LockedStakedModal from 'views/Pools/components/LockedPool/Modals/LockedStakeModal'
-import { useMemo } from 'react'
 
 interface ActionsProps {
   lockEndTime: string
@@ -17,10 +15,8 @@ interface ActionsProps {
   lockedAmount: BigNumber
   stakingToken: Token
   currentBalance: BigNumber
-  isOnlyNeedAddCake: boolean
   isOnlyNeedExtendLock: boolean
-  needAddedWeek: number
-  needAddedCakeAmount: string
+  customLockWeekInSeconds: number
 }
 
 const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
@@ -29,10 +25,8 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
   lockedAmount,
   stakingToken,
   currentBalance,
-  isOnlyNeedAddCake,
   isOnlyNeedExtendLock,
-  needAddedWeek,
-  needAddedCakeAmount,
+  customLockWeekInSeconds,
 }) => {
   const { t } = useTranslation()
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(VaultKey.CakeVault)
@@ -41,11 +35,6 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
     userData: { userShares, balance },
   } = vaultData
 
-  const customLockWeekInSeconds = useMemo(
-    () => new BigNumber(needAddedWeek).times(60).times(60).times(24).times(7).toNumber(),
-    [needAddedWeek],
-  )
-
   const lockedAmountAsNumber = getBalanceNumber(lockedAmount)
 
   const [openPresentLockedStakeModal] = useModal(
@@ -53,7 +42,6 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
       currentBalance={currentBalance}
       stakingToken={stakingToken}
       stakingTokenBalance={currentBalance}
-      customLockAmount={needAddedCakeAmount}
       customLockWeekInSeconds={customLockWeekInSeconds}
     />,
   )
@@ -70,21 +58,9 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
             </Button>
           ) : (
             <Box width="100%">
-              {isOnlyNeedAddCake ? (
-                <AddCakeButton
-                  lockEndTime={lockEndTime}
-                  lockStartTime={lockStartTime}
-                  currentLockedAmount={lockedAmount}
-                  stakingToken={stakingToken}
-                  currentBalance={currentBalance}
-                  stakingTokenBalance={currentBalance}
-                  customLockAmount={needAddedCakeAmount}
-                />
-              ) : (
-                <Button width="100%" onClick={openPresentLockedStakeModal}>
-                  {t('Lock CAKE')}
-                </Button>
-              )}
+              <Button width="100%" onClick={openPresentLockedStakeModal}>
+                {t('Lock CAKE')}
+              </Button>
             </Box>
           )}
         </Box>

@@ -9,8 +9,6 @@ export const incentiveFormat = (incentive) => {
     campaignStart,
     campaignClaimTime,
     campaignClaimEndTime,
-    thresholdLockedTime,
-    thresholdLockedAmount,
     needProfileIsActivated,
     isActivated,
     isDynamicReward,
@@ -27,9 +25,7 @@ export const incentiveFormat = (incentive) => {
     totalVolume: new BigNumber(totalVolume.toString()).toJSON(),
     campaignStart: new BigNumber(campaignStart.toString()).toNumber(),
     campaignClaimTime: new BigNumber(campaignClaimTime.toString()).toNumber(),
-    thresholdLockedTime: new BigNumber(thresholdLockedTime.toString()).toNumber(),
     campaignClaimEndTime: new BigNumber(campaignClaimEndTime.toString()).toNumber(),
     totalRewardUnclaimed: new BigNumber(totalRewardUnclaimed.toString()).toJSON(),
-    thresholdLockedAmount: new BigNumber(thresholdLockedAmount.toString()).toJSON(),
   }
 }

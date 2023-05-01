@@ -59,19 +59,19 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
             const userCampaignInfo: CampaignIdInfoResponse = userCampaignInfoResult.data
             const userInfoQualification: UserCampaignInfoResponse = userInfoQualificationResult.data
 
-            const totalVolume = userCampaignInfo.volumeArr
+            const totalVolume = userCampaignInfo.tradingFeeArr
               .map((i) => i.volume)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
-            const totalEstimateReward = userCampaignInfo.volumeArr
-              .map((i) => i.estimateReward)
+            const totalEstimateRewardUSD = userCampaignInfo.tradingFeeArr
+              .map((i) => i.estimateRewardUSD)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
             const calls = [
               {
                 name: 'canClaim',
                 address: tradingRewardAddress,
-                params: [campaignId, new BigNumber(totalVolume.toFixed(2)).times(1e18).toString()],
+                params: [campaignId, account, new BigNumber(totalVolume.toFixed(2)).times(1e18).toString()],
               },
               {
                 name: 'userClaimedIncentives',
@@ -92,7 +92,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               ...userInfoQualification,
               campaignId,
               totalVolume,
-              totalEstimateReward,
+              totalEstimateRewardUSD,
               canClaim: getBalanceNumber(new BigNumber(canClaim.toString())).toString(),
               userClaimedIncentives,
             }

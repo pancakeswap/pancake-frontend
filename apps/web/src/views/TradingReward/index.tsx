@@ -1,5 +1,5 @@
 import { Box } from '@pancakeswap/uikit'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Banner from 'views/TradingReward/components/Banner'
 import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
@@ -17,61 +17,65 @@ const TradingReward = () => {
 
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
   const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair()
-  // const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo(
-  //   allTradingRewardPairData.campaignIds,
-  // )
+  const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo(
+    allTradingRewardPairData.campaignIds,
+  )
 
-  // const isFetching = isAllTradingRewardPairDataFetching || isAllUserCampaignInfo
+  const isFetching = useMemo(
+    () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo,
+    [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo],
+  )
+  const showPage = useMemo(
+    () => !isAllTradingRewardPairDataFetching && allTradingRewardPairData.campaignIds.includes(campaignId),
+    [isAllTradingRewardPairDataFetching, allTradingRewardPairData, campaignId],
+  )
 
-  // const showPage = useMemo(() => !isAllTradingRewardPairDataFetching && allTradingRewardPairData.campaignIds.includes(campaignId), [isAllTradingRewardPairDataFetching, allTradingRewardPairData, campaignId])
+  useEffect(() => {
+    if (!isAllTradingRewardPairDataFetching && !allTradingRewardPairData.campaignIds.includes(campaignId)) {
+      router.push('/')
+    }
+  }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
 
-  // useEffect(() => {
-  //   if (!isAllTradingRewardPairDataFetching) {
-  //     if (!allTradingRewardPairData.campaignIds.includes(campaignId)) {
-  //       router.push('/')
-  //     }
-  //   }
-  // }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
+  const currentUserIncentive = useMemo(
+    () =>
+      allTradingRewardPairData.campaignIdsIncentive.find(
+        (campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase(),
+      ),
+    [campaignId, allTradingRewardPairData],
+  )
 
-  // const currentUserIncentive = useMemo(
-  //   () =>
-  //     allTradingRewardPairData.campaignIdsIncentive.find(
-  //       (campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase(),
-  //     ),
-  //   [campaignId, allTradingRewardPairData],
-  // )
+  const currentUserCampaignInfo = useMemo(
+    () => allUserCampaignInfo.find((campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase()),
+    [campaignId, allUserCampaignInfo],
+  )
 
-  // const currentUserCampaignInfo = useMemo(
-  //   () => allUserCampaignInfo.find((campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase()),
-  //   [campaignId, allUserCampaignInfo],
-  // )
+  const totalAvailableClaimData = useMemo(() => {
+    return allUserCampaignInfo.map((item) => {
+      const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
+        (pair) => pair.campaignId === item.campaignId,
+      )
+      // eslint-disable-next-line no-param-reassign
+      item.campaignClaimEndTime = tradingRewardPair.campaignClaimEndTime
+      return item
+    })
+  }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  // const totalAvailableClaimData = useMemo(() => {
-  //   return allUserCampaignInfo.map((item) => {
-  //     const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
-  //       (pair) => pair.campaignId === item.campaignId,
-  //     )
-  //     // eslint-disable-next-line no-param-reassign
-  //     item.campaignClaimEndTime = tradingRewardPair.campaignClaimEndTime
-  //     return item
-  //   })
-  // }, [allTradingRewardPairData, allUserCampaignInfo])
-
-  // if (!showPage) {
-  //   return null
-  // }
+  if (!showPage) {
+    return null
+  }
 
   return (
     <Box>
       <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
-      {/* <YourTradingReward
+      <YourTradingReward
         isFetching={isFetching}
         incentives={currentUserIncentive}
+        qualification={allTradingRewardPairData.qualification}
         campaignIds={allTradingRewardPairData.campaignIds}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
       />
-      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} /> */}
+      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <HowToEarn />
       {/* <RewardsBreakdown
         campaignId={campaignId}

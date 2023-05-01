@@ -9,17 +9,20 @@ import {
   fetchCakePoolUserDataAsync,
   fetchCakeVaultUserData,
 } from 'state/pools'
+import { usePoolsConfigInitialize } from 'state/pools/hooks'
 
 export const useCakeVaultPool = () => {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
+
+  usePoolsConfigInitialize()
 
   useSWRImmutable(
     'fetchCakePoolData',
     async () => {
       batch(() => {
         dispatch(fetchCakePoolPublicDataAsync())
-        dispatch(fetchCakeVaultPublicData())
+        dispatch(fetchCakeVaultPublicData(chainId))
       })
     },
     {
@@ -31,8 +34,8 @@ export const useCakeVaultPool = () => {
     account && ['fetchCakePoolUserData', account],
     async () => {
       batch(() => {
-        dispatch(fetchCakePoolUserDataAsync(account))
-        dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchCakePoolUserDataAsync({ account, chainId }))
+        dispatch(fetchCakeVaultUserData({ account, chainId }))
       })
     },
     {

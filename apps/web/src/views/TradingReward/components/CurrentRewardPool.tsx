@@ -4,7 +4,7 @@ import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
@@ -101,15 +101,19 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const cakePriceBusd = usePriceCakeUSD()
+  const { totalReward, rewardPrice, rewardTokenDecimals, campaignClaimTime } = incentives ?? {}
 
   const currentDate = new Date().getTime() / 1000
-  const timeRemaining = incentives?.campaignClaimTime - currentDate
+  const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
-  const rewardInCake = useMemo(
-    () => new BigNumber(campaignInfoData.totalEstimateReward).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, campaignInfoData],
-  )
+  const rewardInCake = useMemo(() => {
+    const estimateRewardUSD = new BigNumber(campaignInfoData.totalEstimateRewardUSD)
+    const reward = getBalanceAmount(new BigNumber(totalReward))
+    const rewardCakePrice = getBalanceAmount(new BigNumber(rewardPrice), rewardTokenDecimals)
+
+    return timeRemaining > 0 ? estimateRewardUSD.div(cakePriceBusd).toNumber() : reward.div(rewardCakePrice).toNumber()
+  }, [campaignInfoData, cakePriceBusd, rewardPrice, rewardTokenDecimals, timeRemaining, totalReward])
 
   return (
     <Container>
