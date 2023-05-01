@@ -2184,7 +2184,7 @@
   "Inactive positions will": "停用的部位",
   "NOT": "不會",
   "earn CAKE rewards from farm.": "從農場賺取 CAKE 獎勵。",
-  "Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.": "全域 APR ，由分配給此農場的 CAKE 獎勵，和質押在此農場中的所有有效流動性資金，計算得出的年化報酬率。",
+  "Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.": "全域 APR ，指分配給此農場的 CAKE 獎勵，除以質押在此農場中的所有有效流動性資金所得出的年化報酬率。",
   "APRs for individual positions may vary depend on their price range settings.": "各部位的 APR 可能會有所不同，具體取決於其價格範圍設定。",
   "Removing V2 liquidity": "正在移除 V2 流動性",
   "All trading fee earnings are included in the tokens returned.": "所有交易費用收入均包含在退回的代幣中。",
