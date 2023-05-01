@@ -98,7 +98,11 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
         width="100%"
       >
         {index === 0 && children}
-        {index === 1 && <StepIntro docLink={docLink} docText={docText} />}
+        {index === 1 && (
+          <Suspense>
+            <StepIntro docLink={docLink} docText={docText} />
+          </Suspense>
+        )}
       </AtomBox>
     </AtomBox>
   )
