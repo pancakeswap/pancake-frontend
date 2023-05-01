@@ -184,7 +184,7 @@ export default function Home() {
             }
             topLeft={
               <AutoColumn gap="4px">
-                <Text fontSize="16px">{t('Volume 24H')}</Text>
+                <Text fontSize="16px">{t('Volume')}</Text>
                 <Text fontSize="32px">
                   <MonoSpace>
                     {volumeHover

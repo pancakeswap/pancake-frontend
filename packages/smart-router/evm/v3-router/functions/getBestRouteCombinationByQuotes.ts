@@ -1,13 +1,13 @@
 /* eslint-disable no-console, @typescript-eslint/no-non-null-assertion */
 import { ChainId, Currency, CurrencyAmount, JSBI, TradeType } from '@pancakeswap/sdk'
-import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
-import Queue from 'mnemonist/queue'
+import FixedReverseHeap from 'mnemonist/fixed-reverse-heap.js'
+import Queue from 'mnemonist/queue.js'
+import flatMap from 'lodash/flatMap.js'
+import mapValues from 'lodash/mapValues.js'
 
 import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
 import { getPoolAddress, isV2Pool, isV3Pool } from '../utils'
 import { usdGasTokensByChain } from '../../constants'
-import { flatMap } from '../../utils/flatMap'
-import { mapValues } from '../../utils/mapValues'
 
 interface Config {
   minSplits?: number

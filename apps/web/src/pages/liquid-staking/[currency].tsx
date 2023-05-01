@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Link, Image, AutoRenewIcon } from '@pancakeswap/uikit'
+import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Image, AutoRenewIcon } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import Page from 'views/Page'
@@ -26,6 +26,8 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GetStaticPaths, GetStaticProps } from 'next/types'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -38,6 +40,8 @@ const LiquidStakingStakePage = () => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
+
+  const masterChefAddress = masterChefV3Addresses[chainId]
 
   const ethToken = [ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? NATIVE[chainId] : WETH9[chainId]
 
@@ -116,7 +120,7 @@ const LiquidStakingStakePage = () => {
         })
       }
 
-      const methodArgs = [convertedStakeAmount.toString(), account]
+      const methodArgs = [convertedStakeAmount.toString(), masterChefAddress]
       return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
         // gasLimit: calculateGasMargin(estimatedGas),
       })
@@ -139,6 +143,7 @@ const LiquidStakingStakePage = () => {
     convertedStakeAmount,
     decimals,
     fetchWithCatchTxError,
+    masterChefAddress,
     quoteAmount,
     router,
     t,
@@ -285,18 +290,7 @@ const LiquidStakingStakePage = () => {
         </CardBody>
       </AppBody>
       <AppBody>
-        <Text padding="24px">
-          {t('To convert WBETH back to ETH, you can swap WBETH for ETH on')}{' '}
-          <Link
-            style={{ display: 'inline' }}
-            href={`/swap?inputCurrency=${wbethContract?.address}&outputCurrency=${
-              ethToken?.address || ethToken?.symbol
-            }`}
-          >
-            {t('our swap page')}{' '}
-          </Link>
-          {t('instead. Alternatively, you can head to Binance.com to redeem ETH.')}
-        </Text>
+        <LiquidStakingFAQs />
       </AppBody>
     </Page>
   )

@@ -1,9 +1,12 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Pool } from '@pancakeswap/uikit'
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 
-export const getAddress = (address: Pool.Address, chainId?: number): string => {
+export interface Addresses {
+  [chainId: number]: `0x${string}`
+}
+
+export const getAddress = (address: Addresses, chainId?: number): `0x${string}` => {
   return address[chainId] ? address[chainId] : address[ChainId.BSC]
 }
 
