@@ -1,0 +1,34 @@
+name: Deploy Locales
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'locales/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    env:
+      HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    name: Publish Locales to Cloudflare Pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@1
+        if: ${{ env.HAVE_CLOUDFLARE_TOKEN == 'true' }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: b82548875bdb333ff5edcca4d076f88d
+          projectName: pcs-locales
+          directory: ./locales
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name == 'develop' && 'master' ||  null  }}

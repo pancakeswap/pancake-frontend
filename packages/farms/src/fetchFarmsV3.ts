@@ -417,6 +417,7 @@ export type CommonPrice = {
   [address: string]: string
 }
 
+// TODO: refactor to fetchTokenUSDValue
 export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promise<CommonPrice> => {
   const commonTokenUSDValue: CommonPrice = {}
   if (priceHelper && priceHelper.list.length > 0) {

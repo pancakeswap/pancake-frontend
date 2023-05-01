@@ -4,6 +4,7 @@ import keyBy from 'lodash/keyBy'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { bscTokens } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { fetchTokenUSDValue } from '@pancakeswap/utils/llamaPrice'
 import {
   fetchPoolsTimeLimits,
   fetchPoolsTotalStaking,
@@ -194,7 +195,9 @@ export const fetchPoolsPublicDataAsync =
         ...(farmV3?.farmsWithPrice ?? []),
       ])
 
-      const liveData = poolsConfig?.map((pool) => {
+      const liveData: any[] = []
+
+      for (const pool of poolsConfig) {
         const timeLimit = timeLimitsSousIdMap[pool.sousId]
         const totalStaking = totalStakingsSousIdMap[pool.sousId]
         const isPoolEndBlockExceeded =
@@ -202,10 +205,20 @@ export const fetchPoolsPublicDataAsync =
         const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
         const stakingTokenAddress = isAddress(pool.stakingToken.address)
-        const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+        let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+        if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
+          stakingTokenPrice = result.get(stakingTokenAddress) || 0
+        }
 
         const earningTokenAddress = isAddress(pool.earningToken.address)
-        const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
+          earningTokenPrice = result.get(earningTokenAddress) || 0
+        }
         const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
         const apr = !isPoolFinished
           ? isLegacyPool(pool)
@@ -225,7 +238,7 @@ export const fetchPoolsPublicDataAsync =
 
         const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
 
-        return {
+        liveData.push({
           ...timeLimit,
           ...totalStaking,
           profileRequirement,
@@ -233,8 +246,8 @@ export const fetchPoolsPublicDataAsync =
           earningTokenPrice,
           apr,
           isFinished: isPoolFinished,
-        }
-      })
+        })
+      }
 
       dispatch(setPoolsPublicData(liveData || []))
     } catch (error) {

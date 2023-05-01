@@ -53,6 +53,22 @@ export const farmsV3 = [
   },
   // Keep those farms on top
   {
+    pid: 26,
+    lpSymbol: 'WBETH-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.wbeth, ethereumTokens.weth, FeeAmount.LOW),
+    token: ethereumTokens.wbeth,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 25,
+    lpSymbol: 'unshETH-USDC LP',
+    lpAddress: Pool.getAddress(ethereumTokens.unshETH, ethereumTokens.usdc, FeeAmount.MEDIUM),
+    token: ethereumTokens.unshETH,
+    quoteToken: ethereumTokens.usdc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 24,
     lpSymbol: 'WETH-WNCG LP',
     lpAddress: '0x5145755c0535198eec1642DC0cc96225fb28263D',
