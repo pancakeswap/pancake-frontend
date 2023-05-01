@@ -1127,6 +1127,9 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
+      tslib:
+        specifier: ^2.2.0
+        version: 2.4.0
     devDependencies:
       '@types/lodash':
         specifier: ^4.14.178
