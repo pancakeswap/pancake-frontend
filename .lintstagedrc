@@ -1,6 +1,6 @@
 {
   "**/*.{js,jsx,ts,tsx}": [
-    "eslint -c .lintstaged.eslintrc",
+    "eslint",
     "prettier --write"
   ],
   "**/*.json": [

@@ -1,4 +1,5 @@
 import { BigintIsh, ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import sum from 'lodash/sum.js'
 
 import {
   BASE_SWAP_COST_STABLE_SWAP,
@@ -20,7 +21,6 @@ import {
   RouteWithoutGasEstimate,
 } from './types'
 import { getNativeWrappedToken, getTokenPrice, getUsdGasToken, isStablePool, isV2Pool, isV3Pool } from './utils'
-import { sum } from '../utils/sum'
 
 interface GasModelConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)

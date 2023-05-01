@@ -40,6 +40,15 @@ import apolloXCampaignBg from './ApolloXCampaignBg.png'
 import apolloXCampaignTitle from './ApolloXCampaignTitle.png'
 import apolloXCampaignBgMobile from './ApolloXCampaignBgMobile.png'
 import apolloXCampaignBunnyMobile from './ApolloXCampaignBunnyMobile.png'
+import liquidStakingTitle from './liquidStakingTitle.png'
+import liquidStakingTitleMobile from './liquidStakingTitleMobile.png'
+import liquidStakingBunny from './liquidStakingBunny.png'
+import liquidStakingBunnyMobile from './liquidStakingBunnyMobile.png'
+import liquidStakingBunnyBg1 from './liquidStakingBunnyBg1.png'
+import liquidStakingBunnyBg2 from './liquidStakingBunnyBg2.png'
+import liquidStakingBunnyBg2Mobile from './liquidStakingBunnyBg2Mobile.png'
+import liquidStakingBunnyBg3 from './liquidStakingBunnyBg3.png'
+import liquidStakingBunnyBg4 from './liquidStakingBunnyBg4.png'
 
 export {
   lotteryImage,
@@ -84,4 +93,13 @@ export {
   apolloXCampaignTitle,
   apolloXCampaignBgMobile,
   apolloXCampaignBunnyMobile,
+  liquidStakingTitle,
+  liquidStakingTitleMobile,
+  liquidStakingBunny,
+  liquidStakingBunnyMobile,
+  liquidStakingBunnyBg1,
+  liquidStakingBunnyBg2,
+  liquidStakingBunnyBg2Mobile,
+  liquidStakingBunnyBg3,
+  liquidStakingBunnyBg4,
 }

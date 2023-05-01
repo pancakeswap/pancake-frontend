@@ -43,7 +43,7 @@ export const StakedLiquidity: React.FunctionComponent<React.PropsWithChildren<Fa
   const tooltip = useTooltip(
     <>
       <Text>{t("Total active (in-range) liquidity staked in the farm.")}</Text>
-      {updatedAt && <Text>Update {distanceToNow(updatedAt)}</Text>}
+      {updatedAt && <Text>Updated {distanceToNow(updatedAt)}</Text>}
     </>,
     {
       placement: "top-end",

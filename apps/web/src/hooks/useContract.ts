@@ -74,14 +74,17 @@ import { useSigner } from 'wagmi'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
-import { WNATIVE } from '@pancakeswap/sdk'
+import { WNATIVE, ChainId } from '@pancakeswap/sdk'
 import { ERC20_BYTES32_ABI } from 'config/abi/erc20'
 import ERC20_ABI from 'config/abi/erc20.json'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
 import multiCallAbi from 'config/abi/Multicall.json'
 import WETH_ABI from 'config/abi/weth.json'
+import WBETH_BSC_ABI from 'config/abi/wbethBSC.json'
+import WBETH_ETH_ABI from 'config/abi/wbethETH.json'
 import { getContract } from 'utils'
 
+import { WBETH } from 'config/constants/liquidStaking'
 import { VaultKey } from 'state/types'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -336,6 +339,17 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 export function useWNativeContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveChainId()
   return useContract<Weth>(chainId ? WNATIVE[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
+}
+
+export function useWBETHContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveChainId()
+
+  const abi = useMemo(
+    () => ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? WBETH_ETH_ABI : WBETH_BSC_ABI),
+    [chainId],
+  )
+
+  return useContract<Weth>(chainId ? WBETH[chainId] : undefined, abi, withSignerIfPossible)
 }
 
 export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
