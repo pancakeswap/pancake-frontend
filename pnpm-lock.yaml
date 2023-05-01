@@ -1443,9 +1443,6 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
     devDependencies:
-      '@pancakeswap/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@reduxjs/toolkit':
         specifier: ^1.9.1
         version: 1.9.1(react-redux@8.0.5)(react@18.2.0)
@@ -1796,9 +1793,6 @@ importers:
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
-      '@pancakeswap/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       date-fns:
         specifier: ^2.29.3
         version: 2.29.3
@@ -1815,6 +1809,9 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
+      '@pancakeswap/tokens':
+        specifier: workspace:*
+        version: link:../tokens
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.186
