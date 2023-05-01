@@ -313,7 +313,7 @@ const getStableFarmDynamicData = ({
     lpTotalSupply: lpTotalSupply.toString(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
     tokenPriceVsQuote,
-    allocPoint: allocPoint.toString(),
+    allocPoint: allocPoint?.toString(),
   }
 }
 
@@ -408,6 +408,6 @@ const getClassicFarmsDynamicData = ({
         ? quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString()
         : FIXED_ZERO.toString(),
     lpTokenStakedAmount: lpTokenBalanceMC.toString(),
-    allocPoint: allocPoint.toString(),
+    allocPoint: allocPoint?.toString(),
   }
 }
