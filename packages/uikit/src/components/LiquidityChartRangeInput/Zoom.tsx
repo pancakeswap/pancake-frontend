@@ -2,7 +2,7 @@ import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } 
 import { useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { ZoomInIcon, ZoomOutIcon, AutoRenewIcon } from "../Svg";
-import { Box } from "../../";
+import { Box } from "../Box";
 
 import { ZoomLevels } from "./types";
 

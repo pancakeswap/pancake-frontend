@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { BoxProps, Flex, HelpIcon, Placement, useTooltip } from "../../";
+import { Placement, useTooltip } from "../../hooks";
+import { BoxProps, Flex } from "../Box";
+import { HelpIcon } from "../Svg";
 
 interface Props extends BoxProps {
   text: string | React.ReactNode;

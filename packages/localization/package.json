@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {},
   "dependencies": {
+    "tslib": "^2.2.0",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "lodash": "^4.17.21",

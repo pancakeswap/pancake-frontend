@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import CountUp from "react-countup";
-import { Text, TextProps } from "../../";
+import { Text, TextProps } from "../Text";
 
 interface BalanceProps extends TextProps {
   value: number;
