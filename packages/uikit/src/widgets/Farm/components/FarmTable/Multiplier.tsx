@@ -70,9 +70,8 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
           href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-a-2x-farm-in-v3-has-less-apr-than-a-1x-farm-in-v2"
           external
         >
-          {t("Learn more")}
+          {t("Learn More")}
         </InlineLink>
-        {t("here.")}
       </Text>
     </>
   );
