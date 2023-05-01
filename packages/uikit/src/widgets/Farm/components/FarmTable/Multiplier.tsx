@@ -63,7 +63,7 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
         {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
       </Text>
       <Text>
-        {t("Different farm groups share a different sets of multipliers.")}
+        {t("Different farm groups have different sets of multipliers.")}
         <InlineLink
           mt="8px"
           display="inline"
