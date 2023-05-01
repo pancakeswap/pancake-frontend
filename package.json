@@ -7,7 +7,7 @@
     "packages/*",
     "apis/*"
   ],
-  "packageManager": "^pnpm@8.3.1",
+  "packageManager": "pnpm@8.3.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web...",
