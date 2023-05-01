@@ -4,6 +4,7 @@
   "version": "0.1.1",
   "description": "Tokens for pancakeswap",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "sideEffects": false,
   "types": "./dist/index.d.ts",
   "scripts": {

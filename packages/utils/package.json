@@ -19,6 +19,7 @@
     "@types/styled-components": "^5.1.26",
     "ethers": "^5.0.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.0.0",
