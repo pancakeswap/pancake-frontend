@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import Link from 'next/link'
 import { usePriceCakeUSD } from 'state/farms/hooks'
@@ -87,13 +87,17 @@ const Decorations = styled(Box)`
 }`
 
 interface CurrentRewardPoolProps {
+  campaignId: string
   incentives: Incentives
   campaignInfoData: CampaignIdInfoDetail
+  rewardInfo: { [key in string]: RewardInfo }
 }
 
 const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps>> = ({
+  campaignId,
   incentives,
   campaignInfoData,
+  rewardInfo,
 }) => {
   const {
     t,
@@ -101,19 +105,25 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const cakePriceBusd = usePriceCakeUSD()
-  const { totalReward, rewardPrice, rewardTokenDecimals, campaignClaimTime } = incentives ?? {}
+  const { totalReward, campaignClaimTime } = incentives ?? {}
 
   const currentDate = new Date().getTime() / 1000
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
+  const currentRewardInfo = useMemo(() => rewardInfo?.[campaignId], [rewardInfo, campaignId])
+
   const rewardInCake = useMemo(() => {
     const estimateRewardUSD = new BigNumber(campaignInfoData.totalEstimateRewardUSD)
     const reward = getBalanceAmount(new BigNumber(totalReward))
-    const rewardCakePrice = getBalanceAmount(new BigNumber(rewardPrice), rewardTokenDecimals)
+    const rewardCakePrice = getBalanceAmount(
+      new BigNumber(currentRewardInfo?.rewardPrice ?? '0'),
+      currentRewardInfo?.rewardTokenDecimal ?? 0,
+    )
+    const totalCakeReward = reward.div(rewardCakePrice).isNaN() ? 0 : reward.div(rewardCakePrice).toNumber()
 
-    return timeRemaining > 0 ? estimateRewardUSD.div(cakePriceBusd).toNumber() : reward.div(rewardCakePrice).toNumber()
-  }, [campaignInfoData, cakePriceBusd, rewardPrice, rewardTokenDecimals, timeRemaining, totalReward])
+    return timeRemaining > 0 ? estimateRewardUSD.div(cakePriceBusd).toNumber() : totalCakeReward
+  }, [campaignInfoData, cakePriceBusd, currentRewardInfo, timeRemaining, totalReward])
 
   return (
     <Container>
