@@ -16,19 +16,28 @@ export interface FeeType {
   v3SwapFee: number
 }
 
+export interface MetricDetail {
+  totalEarnFeeUSD: string
+  totalPerpSwapEarnFeeUSD: string
+  totalStableSwapEarnFeeUSD: string
+  totalTradeVolumeUSD: string
+  totalUsers: number
+  totalV2SwapEarnFeeUSD: string
+  totalV3SwapEarnFeeUSD: string
+}
+
 export interface InfoDetail {
+  availableFeeUSD: string
   active: boolean
   address: string
   createdAt: string
   email: string
   name: string
   updatedAt: string
-  _count: {
-    user: number
-  }
-  fee: FeeType[]
+  fees: FeeType[]
   nickName: string
   ablePerps: boolean
+  metric: MetricDetail
 }
 
 interface AffiliateInfoType {
@@ -49,12 +58,19 @@ const initAffiliateData: InfoDetail = {
   email: '',
   name: '',
   updatedAt: '',
-  _count: {
-    user: 0,
-  },
-  fee: [],
+  availableFeeUSD: '0',
+  fees: [],
   nickName: '',
   ablePerps: false,
+  metric: {
+    totalEarnFeeUSD: '0',
+    totalPerpSwapEarnFeeUSD: '0',
+    totalStableSwapEarnFeeUSD: '0',
+    totalTradeVolumeUSD: '0',
+    totalUsers: 0,
+    totalV2SwapEarnFeeUSD: '0',
+    totalV3SwapEarnFeeUSD: '0',
+  },
 }
 
 const useAuthAffiliate = (): AffiliateInfoType => {
