@@ -41,6 +41,7 @@ const config = {
     outputFileTracingExcludes: {
       '/api/*': ['**/node_modules/.pnpm/**', '**/@swc/core*', '**/@esbuild/**'],
     },
+    outputFileTracingIgnores: ['**/@swc/core*', '**/@esbuild/**'],
   },
   transpilePackages: [
     '@pancakeswap/ui',
