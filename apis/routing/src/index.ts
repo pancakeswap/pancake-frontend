@@ -1,16 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `wrangler dev src/index.ts` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `wrangler publish src/index.ts --name my-worker` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
-import { ChainId, Currency, JSBI } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
 import { GraphQLClient } from 'graphql-request'
@@ -86,8 +74,8 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
   const { amount, chainId, currency, tradeType, blockNumber, gasPriceWei, maxHops, maxSplits, poolTypes } = parsed.data
 
   const gasPrice = gasPriceWei
-    ? JSBI.BigInt(gasPriceWei)
-    : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
+    ? BigInt(gasPriceWei)
+    : async () => BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
 
   const currencyAAmount = parseCurrencyAmount(chainId, amount)
   const currencyA = currencyAAmount.currency
@@ -178,8 +166,8 @@ router.post('/v0/quote', async (req, event) => {
     } = parsed.data
 
     const gasPrice = gasPriceWei
-      ? JSBI.BigInt(gasPriceWei)
-      : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
+      ? BigInt(gasPriceWei)
+      : async () => BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
 
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)

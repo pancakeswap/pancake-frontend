@@ -1,4 +1,3 @@
-import JSBI from 'jsbi'
 import { CurrencyAmount, Native, Percent, Token, TradeType, WETH9 } from '@pancakeswap/sdk'
 import { FeeAmount, TICK_SPACINGS } from './constants'
 import { Pool } from './entities/pool'
@@ -202,7 +201,7 @@ describe('SwapRouter', () => {
           slippageTolerance,
           recipient,
           deadline,
-          sqrtPriceLimitX96: JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)),
+          sqrtPriceLimitX96: 2n ** 128n,
         })
 
         expect(calldata).toBe(
@@ -590,7 +589,7 @@ describe('SwapRouter', () => {
         slippageTolerance,
         recipient,
         deadline,
-        sqrtPriceLimitX96: JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)),
+        sqrtPriceLimitX96: 2n ** 128n,
       })
 
       expect(calldata).toBe(

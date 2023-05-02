@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { JSBI, Percent } from '@pancakeswap/swap-sdk-core'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Pair, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
@@ -30,7 +30,7 @@ const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
 
-export const BIG_INT_ZERO = JSBI.BigInt(0)
+export const BIG_INT_ZERO = 0n
 
 export const LightCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -74,7 +74,7 @@ function MinimalPositionCardView({
 
   return (
     <>
-      {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) ? (
+      {userPoolBalance && userPoolBalance.quotient > BIG_INT_ZERO ? (
         <Card>
           <CardBody>
             <AutoColumn gap="16px">
@@ -263,7 +263,7 @@ function FullPositionCardView({
             </Text>
           </FixedHeightRow>
 
-          {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) && (
+          {userPoolBalance && userPoolBalance.quotient > BIG_INT_ZERO && (
             <Flex flexDirection="column">
               <Button as={NextLinkFromReactRouter} to={removeTo} variant="primary" width="100%" mb="8px">
                 {t('Remove')}

@@ -5,13 +5,16 @@ import { Pair } from './pair'
 
 export class Route<TInput extends Currency, TOutput extends Currency> {
   public readonly pairs: Pair[]
+
   public readonly path: Token[]
+
   public readonly input: TInput
+
   public readonly output: TOutput
 
   public constructor(pairs: Pair[], input: TInput, output: TOutput) {
     invariant(pairs.length > 0, 'PAIRS')
-    const chainId: number = pairs[0].chainId
+    const { chainId } = pairs[0]
     invariant(
       pairs.every((pair) => pair.chainId === chainId),
       'CHAIN_IDS'
@@ -25,6 +28,7 @@ export class Route<TInput extends Currency, TOutput extends Currency> {
     for (const [i, pair] of pairs.entries()) {
       const currentInput = path[i]
       invariant(currentInput.equals(pair.token0) || currentInput.equals(pair.token1), 'PATH')
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const output = currentInput.equals(pair.token0) ? pair.token1 : pair.token0
       path.push(output)
     }
@@ -48,6 +52,7 @@ export class Route<TInput extends Currency, TOutput extends Currency> {
       )
     }
     const reduced = prices.slice(1).reduce((accumulator, currentValue) => accumulator.multiply(currentValue), prices[0])
+    // eslint-disable-next-line no-return-assign
     return (this._midPrice = new Price(this.input, this.output, reduced.denominator, reduced.numerator))
   }
 

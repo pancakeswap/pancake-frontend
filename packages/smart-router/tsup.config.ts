@@ -7,7 +7,7 @@ export default defineConfig((options) => ({
   },
   format: ['esm', 'cjs'],
   // FIXME not sure why core will be bundled if not specify explicitly
-  external: ['@pancakeswap/swap-sdk-core', 'jsbi'],
+  external: ['@pancakeswap/swap-sdk-core'],
   dts: false,
   treeshake: true,
   splitting: true,

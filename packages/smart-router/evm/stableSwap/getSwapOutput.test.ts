@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { CurrencyAmount, Percent, JSBI } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
 
 import { getSwapOutput, getSwapInput } from './getSwapOutput'
@@ -18,7 +18,7 @@ describe('getSwapOutput', () => {
     }
     const exactIn = getSwapOutput(params)
     expect(exactIn.currency).toBe(bscTokens.busd)
-    expect(exactIn.quotient).toEqual(JSBI.BigInt('1997834290490693375'))
+    expect(exactIn.quotient).toEqual(1997834290490693375n)
 
     const exactOut = getSwapInput({
       ...params,
@@ -26,6 +26,6 @@ describe('getSwapOutput', () => {
       amount: CurrencyAmount.fromRawAmount(bscTokens.busd, '1997834290490693375'),
     })
     expect(exactOut.currency).toBe(bscTokens.usdt)
-    expect(exactOut.quotient).toEqual(JSBI.BigInt('2000000000000000000'))
+    expect(exactOut.quotient).toEqual(2000000000000000000n)
   })
 })

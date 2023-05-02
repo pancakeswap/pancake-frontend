@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import { useContext, useMemo } from 'react'
 import { StableSwap } from '@pancakeswap/smart-router/evm'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -55,8 +55,8 @@ export function useDerivedLPInfo(
     if (!totalSupplyAmount || !poolBalances || !amount0 || !amount1) {
       return emptyResult
     }
-    const totalValue = JSBI.add(poolBalances[0].quotient, poolBalances[1].quotient)
-    if (JSBI.equal(totalValue, BIG_INT_ZERO)) {
+    const totalValue = poolBalances[0].quotient + poolBalances[1].quotient
+    if (totalValue === BIG_INT_ZERO) {
       return emptyResult
     }
     let lpOutputWithoutFee: CurrencyAmount<Currency> | null = null

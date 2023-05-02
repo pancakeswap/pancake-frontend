@@ -7,7 +7,6 @@ import { DoubleCurrencyLogo } from 'components/Logo'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import JSBI from 'jsbi'
 import { ReactNode, useState, useCallback } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { Bound } from 'config/constants/types'
@@ -66,7 +65,7 @@ export const PositionPreview = ({
     setBaseCurrency(quoteCurrency)
   }, [quoteCurrency])
 
-  const removed = position?.liquidity && JSBI.equal(position?.liquidity, JSBI.BigInt(0))
+  const removed = position?.liquidity && position?.liquidity === 0n
 
   return (
     <AutoColumn gap="md" style={{ marginTop: '0.5rem' }}>
