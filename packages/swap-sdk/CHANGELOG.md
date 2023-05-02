@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 3.2.1
+
+### Patch Changes
+
+- 9bee15cad: Fix v2 sdk fetcher export
+
 ## 3.2.0
 
 ### Minor Changes
