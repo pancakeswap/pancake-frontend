@@ -1,8 +1,8 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useTooltip, HelpIcon } from "@pancakeswap/uikit";
+import { useTooltip, HelpIcon, Farm as FarmUI } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
-import { Link, LinkExternal } from "../../../../components/Link";
+import { LinkExternal } from "../../../../components/Link";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Text } from "../../../../components/Text";
 
@@ -37,15 +37,6 @@ const StyledText = styled(Text)`
   }
 `;
 
-const InlineText = styled(Text)`
-  display: inline;
-`;
-
-const InlineLink = styled(Link)`
-  display: inline-block;
-  margin: 0 4px;
-`;
-
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   scanAddressLink,
   infoAddress,
@@ -66,37 +57,10 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
     currentLanguage: { locale },
   } = useTranslation();
 
-  const multiplierTooltipContent = (
-    <>
-      <Text bold>
-        {t("Farm’s CAKE Per Second:")}
-        <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
-      </Text>
-      <Text bold>
-        {t("Total Multipliers:")}
-        <InlineText marginLeft={2}>{totalMultipliers}</InlineText>
-      </Text>
-      <Text my="24px">
-        {t(
-          "The Farm Multiplier represents the proportion of CAKE rewards each farm receives as a proportion of its farm group."
-        )}
-      </Text>
-      <Text my="24px">
-        {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
-      </Text>
-      <Text>
-        {t("Different farm groups have different sets of multipliers.")}
-        <InlineLink
-          mt="8px"
-          display="inline"
-          href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-a-2x-farm-in-v3-has-less-apr-than-a-1x-farm-in-v2"
-          external
-        >
-          {t("Learn More")}
-        </InlineLink>
-      </Text>
-    </>
-  );
+  const multiplierTooltipContent = FarmUI.FarmMultiplierInfo({
+    farmCakePerSecond: farmCakePerSecond ?? "-",
+    totalMultipliers: totalMultipliers ?? "-",
+  });
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
     placement: "bottom",
