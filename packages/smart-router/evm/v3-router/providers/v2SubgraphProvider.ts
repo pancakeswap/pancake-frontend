@@ -1,4 +1,4 @@
-import { ChainId, Currency, JSBI, Token, WNATIVE, Pair } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token, WNATIVE, Pair } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { gql } from 'graphql-request'
 
@@ -32,7 +32,7 @@ interface V2PoolSubgraphResult {
 
 interface PoolWithTvl {
   address: string
-  tvlUSD: JSBI
+  tvlUSD: bigint
 }
 
 export type SubgraphV2Pool = V2Pool & PoolWithTvl
@@ -91,7 +91,7 @@ export const getV2PoolSubgraph = async ({
         type: PoolType.V2 as const,
         reserve0: reserve0Amount,
         reserve1: reserve1Amount,
-        tvlUSD: JSBI.BigInt(Number.parseInt(reserveUSD)),
+        tvlUSD: BigInt(Number.parseInt(reserveUSD)),
       }
     })
     .filter((p) => !!p)
@@ -118,7 +118,7 @@ const POOL_SELECTION_CONFIG = {
   topNWithBaseToken: 3,
 }
 
-const sortByTvl = (a: SubgraphV2Pool, b: SubgraphV2Pool) => (JSBI.greaterThanOrEqual(a.tvlUSD, b.tvlUSD) ? -1 : 1)
+const sortByTvl = (a: SubgraphV2Pool, b: SubgraphV2Pool) => (a.tvlUSD >= b.tvlUSD ? -1 : 1)
 
 export function v2PoolSubgraphSelection(
   currencyA: Currency,

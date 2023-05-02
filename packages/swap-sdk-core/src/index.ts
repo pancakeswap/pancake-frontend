@@ -1,7 +1,3 @@
-import JSBI from 'jsbi'
-
-export { JSBI }
-
 export * from './constants'
 
 export * from './baseCurrency'

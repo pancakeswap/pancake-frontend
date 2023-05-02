@@ -1,4 +1,3 @@
-import { JSBI } from '@pancakeswap/sdk'
 import { Field } from 'state/mint/actions'
 
 export enum PoolState {
@@ -16,10 +15,10 @@ export interface LiquidityFormState {
   startPriceTypedValue: string
 }
 
-// Tick with fields parsed to JSBIs, and active liquidity computed.
+// Tick with fields parsed to bigints, and active liquidity computed.
 export interface TickProcessed {
   tick: number
-  liquidityActive: JSBI
-  liquidityNet: JSBI
+  liquidityActive: bigint
+  liquidityNet: bigint
   price0: string
 }

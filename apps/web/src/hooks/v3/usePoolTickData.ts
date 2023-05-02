@@ -1,6 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
 import { FeeAmount, Pool, tickToPrice, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
-import JSBI from 'jsbi'
 import { useMemo } from 'react'
 
 import { PoolState, TickProcessed } from './types'
@@ -102,9 +101,9 @@ export function usePoolActiveLiquidity(
     }
 
     const activeTickProcessed: TickProcessed = {
-      liquidityActive: JSBI.BigInt(pool[1]?.liquidity ?? 0),
+      liquidityActive: BigInt(pool[1]?.liquidity ?? 0),
       tick: activeTick,
-      liquidityNet: Number(ticks[pivot].tick) === activeTick ? JSBI.BigInt(ticks[pivot].liquidityNet) : JSBI.BigInt(0),
+      liquidityNet: Number(ticks[pivot].tick) === activeTick ? BigInt(ticks[pivot].liquidityNet) : 0n,
       price0: tickToPrice(token0, token1, activeTick).toFixed(PRICE_FIXED_DIGITS),
     }
 

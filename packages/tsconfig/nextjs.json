@@ -10,6 +10,7 @@
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
+    "target": "ES2020",
     "noEmit": true,
     "resolveJsonModule": true
   }

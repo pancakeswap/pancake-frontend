@@ -1,5 +1,4 @@
 import { gql, GraphQLClient } from 'graphql-request'
-import JSBI from 'jsbi'
 import keyBy from 'lodash/keyBy'
 import { TickMath, tickToPrice } from '@pancakeswap/v3-sdk'
 import { Token, ChainId } from '@pancakeswap/sdk'
@@ -55,12 +54,12 @@ interface SurroundingTicksResult {
   ticks: Tick[]
 }
 
-// Tick with fields parsed to JSBIs, and active liquidity computed.
+// Tick with fields parsed to bigints, and active liquidity computed.
 export interface TickProcessed {
-  liquidityGross: JSBI
-  liquidityNet: JSBI
+  liquidityGross: bigint
+  liquidityNet: bigint
   tickIdx: number
-  liquidityActive: JSBI
+  liquidityActive: bigint
   price0: string
   price1: string
 }
@@ -216,12 +215,12 @@ export const fetchTicksSurroundingPrice = async (
     }
 
     const activeTickProcessed: TickProcessed = {
-      liquidityActive: JSBI.BigInt(liquidity),
+      liquidityActive: BigInt(liquidity),
       tickIdx: activeTickIdx,
-      liquidityNet: JSBI.BigInt(0),
+      liquidityNet: 0n,
       price0: tickToPrice(token0, token1, activeTickIdxForPrice).toFixed(PRICE_FIXED_DIGITS),
       price1: tickToPrice(token1, token0, activeTickIdxForPrice).toFixed(PRICE_FIXED_DIGITS),
-      liquidityGross: JSBI.BigInt(0),
+      liquidityGross: 0n,
     }
 
     // If our active tick happens to be initialized (i.e. there is a position that starts or
@@ -229,8 +228,8 @@ export const fetchTicksSurroundingPrice = async (
     // correctly.
     const activeTick = tickIdxToInitializedTick[activeTickIdx]
     if (activeTick) {
-      activeTickProcessed.liquidityGross = JSBI.BigInt(activeTick.liquidityGross)
-      activeTickProcessed.liquidityNet = JSBI.BigInt(activeTick.liquidityNet)
+      activeTickProcessed.liquidityGross = BigInt(activeTick.liquidityGross)
+      activeTickProcessed.liquidityNet = BigInt(activeTick.liquidityNet)
     }
 
     enum Direction {
@@ -266,18 +265,18 @@ export const fetchTicksSurroundingPrice = async (
         const currentTickProcessed: TickProcessed = {
           liquidityActive: previousTickProcessed.liquidityActive,
           tickIdx: currentTickIdx,
-          liquidityNet: JSBI.BigInt(0),
+          liquidityNet: 0n,
           price0: tickToPrice(token0, token1, currentTickIdx).toFixed(PRICE_FIXED_DIGITS),
           price1: tickToPrice(token1, token0, currentTickIdx).toFixed(PRICE_FIXED_DIGITS),
-          liquidityGross: JSBI.BigInt(0),
+          liquidityGross: 0n,
         }
 
         // Check if there is an initialized tick at our current tick.
         // If so copy the gross and net liquidity from the initialized tick.
         const currentInitializedTick = tickIdxToInitializedTick[currentTickIdx.toString()]
         if (currentInitializedTick) {
-          currentTickProcessed.liquidityGross = JSBI.BigInt(currentInitializedTick.liquidityGross)
-          currentTickProcessed.liquidityNet = JSBI.BigInt(currentInitializedTick.liquidityNet)
+          currentTickProcessed.liquidityGross = BigInt(currentInitializedTick.liquidityGross)
+          currentTickProcessed.liquidityNet = BigInt(currentInitializedTick.liquidityNet)
         }
 
         // Update the active liquidity.
@@ -285,16 +284,12 @@ export const fetchTicksSurroundingPrice = async (
         // it to the current processed tick we are building.
         // If we are iterating descending, we don't want to apply the net liquidity until the following tick.
         if (direction === Direction.ASC && currentInitializedTick) {
-          currentTickProcessed.liquidityActive = JSBI.add(
-            previousTickProcessed.liquidityActive,
-            JSBI.BigInt(currentInitializedTick.liquidityNet),
-          )
-        } else if (direction === Direction.DESC && JSBI.notEqual(previousTickProcessed.liquidityNet, JSBI.BigInt(0))) {
+          currentTickProcessed.liquidityActive =
+            previousTickProcessed.liquidityActive + BigInt(currentInitializedTick.liquidityNet)
+        } else if (direction === Direction.DESC && previousTickProcessed.liquidityNet !== 0n) {
           // We are iterating descending, so look at the previous tick and apply any net liquidity.
-          currentTickProcessed.liquidityActive = JSBI.subtract(
-            previousTickProcessed.liquidityActive,
-            previousTickProcessed.liquidityNet,
-          )
+          currentTickProcessed.liquidityActive =
+            previousTickProcessed.liquidityActive - previousTickProcessed.liquidityNet
         }
 
         processedTicks.push(currentTickProcessed)

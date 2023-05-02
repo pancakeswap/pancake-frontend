@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import chunk from 'lodash/chunk.js'
 
 import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
 import { metric } from './utils/metric'
-import { chunk } from '../utils/chunk'
 
 interface Params {
   blockNumber?: BigintIsh

@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Pair, ZERO } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, ZERO } from '@pancakeswap/sdk'
 import { Pool as V3Pool, TickList } from '@pancakeswap/v3-sdk'
 import {
   Pool as IPool,
@@ -62,7 +62,7 @@ export function createOffChainQuoteProvider(): QuoteProvider {
               // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
               // eslint-disable-next-line no-await-in-loop
               const v3QuoteResult = await getV3Quote(pool, quote)
-              if (!v3QuoteResult || JSBI.equal(v3QuoteResult.quote.quotient, ZERO)) {
+              if (!v3QuoteResult || v3QuoteResult.quote.quotient === ZERO) {
                 quoteSuccess = false
                 break
               }

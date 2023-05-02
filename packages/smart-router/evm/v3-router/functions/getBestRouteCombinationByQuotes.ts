@@ -1,13 +1,13 @@
 /* eslint-disable no-console, @typescript-eslint/no-non-null-assertion */
-import { ChainId, Currency, CurrencyAmount, JSBI, TradeType } from '@pancakeswap/sdk'
-import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
-import Queue from 'mnemonist/queue'
+import { ChainId, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import FixedReverseHeap from 'mnemonist/fixed-reverse-heap.js'
+import Queue from 'mnemonist/queue.js'
+import flatMap from 'lodash/flatMap.js'
+import mapValues from 'lodash/mapValues.js'
 
 import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
 import { getPoolAddress, isV2Pool, isV3Pool } from '../utils'
 import { usdGasTokensByChain } from '../../constants'
-import { flatMap } from '../../utils/flatMap'
-import { mapValues } from '../../utils/mapValues'
 
 interface Config {
   minSplits?: number
@@ -130,7 +130,7 @@ export function getBestSwapRouteBy(
 ): {
   quote: CurrencyAmount<Currency>
   quoteGasAdjusted: CurrencyAmount<Currency>
-  estimatedGasUsed: JSBI
+  estimatedGasUsed: bigint
   estimatedGasUsedUSD: CurrencyAmount<Currency>
   estimatedGasUsedQuoteToken: CurrencyAmount<Currency>
   routes: RouteWithQuote[]
@@ -386,7 +386,7 @@ export function getBestSwapRouteBy(
   // if on L2, its the gas used on the L2 based on hops and ticks across all the routes
   const estimatedGasUsed = bestSwap
     .map((routeWithValidQuote) => routeWithValidQuote.gasEstimate)
-    .reduce((sum, routeWithValidQuote) => JSBI.add(sum, routeWithValidQuote), JSBI.BigInt(0))
+    .reduce((sum, routeWithValidQuote) => sum + routeWithValidQuote, 0n)
 
   if (!usdGasTokensByChain[chainId] || !usdGasTokensByChain[chainId]![0]) {
     // Each route can use a different stablecoin to account its gas costs.
@@ -399,7 +399,7 @@ export function getBestSwapRouteBy(
 
   // if on L2, calculate the L1 security fee
   const gasCostsL1ToL2: L1ToL2GasCosts = {
-    gasUsedL1: JSBI.BigInt(0),
+    gasUsedL1: 0n,
     gasCostL1USD: CurrencyAmount.fromRawAmount(usdToken, 0),
     gasCostL1QuoteToken: CurrencyAmount.fromRawAmount(
       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -431,10 +431,7 @@ export function getBestSwapRouteBy(
 
     return CurrencyAmount.fromRawAmount(
       usdToken,
-      JSBI.multiply(
-        routeWithValidQuote.gasCostInUSD.quotient,
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimalsDiff)),
-      ),
+      routeWithValidQuote.gasCostInUSD.quotient * 10n ** BigInt(decimalsDiff),
     )
   })
 
@@ -444,10 +441,7 @@ export function getBestSwapRouteBy(
   if (!estimatedGasUsedUSD.currency.equals(gasCostL1USD.currency)) {
     const decimalsDiff = usdTokenDecimals - gasCostL1USD.currency.decimals
     estimatedGasUsedUSD = estimatedGasUsedUSD.add(
-      CurrencyAmount.fromRawAmount(
-        usdToken,
-        JSBI.multiply(gasCostL1USD.quotient, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimalsDiff))),
-      ),
+      CurrencyAmount.fromRawAmount(usdToken, gasCostL1USD.quotient * 10n ** BigInt(decimalsDiff)),
     )
   } else {
     estimatedGasUsedUSD = estimatedGasUsedUSD.add(gasCostL1USD)

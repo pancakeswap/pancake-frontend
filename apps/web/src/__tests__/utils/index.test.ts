@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
-import { Token, ChainId, Percent, JSBI, CurrencyAmount } from '@pancakeswap/sdk'
+import { Token, ChainId, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { getBlockExploreLink, isAddress, calculateGasMargin } from 'utils'
 import { calculateSlippageAmount, basisPointsToPercent } from 'utils/exchange'
 
@@ -65,9 +65,9 @@ describe('utils', () => {
 
   describe('#basisPointsToPercent', () => {
     it('converts basis points numbers to percents', () => {
-      expect(basisPointsToPercent(100).equalTo(new Percent(JSBI.BigInt(1), JSBI.BigInt(100)))).toBeTruthy()
-      expect(basisPointsToPercent(500).equalTo(new Percent(JSBI.BigInt(5), JSBI.BigInt(100)))).toBeTruthy()
-      expect(basisPointsToPercent(50).equalTo(new Percent(JSBI.BigInt(5), JSBI.BigInt(1000)))).toBeTruthy()
+      expect(basisPointsToPercent(100).equalTo(new Percent(1n, 100n))).toBeTruthy()
+      expect(basisPointsToPercent(500).equalTo(new Percent(5n, 100n))).toBeTruthy()
+      expect(basisPointsToPercent(50).equalTo(new Percent(5n, 1000n))).toBeTruthy()
     })
   })
 })

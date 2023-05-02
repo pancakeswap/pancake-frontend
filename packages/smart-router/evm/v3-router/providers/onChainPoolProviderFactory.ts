@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent, BigintIsh } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Pair, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { Call } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
@@ -101,8 +101,8 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, Stable
         CurrencyAmount.fromRawAmount(token0, balance0.toString()),
         CurrencyAmount.fromRawAmount(token1, balance1.toString()),
       ],
-      amplifier: JSBI.BigInt(a.toString()),
-      fee: new Percent(JSBI.BigInt(fee.toString()), JSBI.BigInt(feeDenominator.toString())),
+      amplifier: BigInt(a.toString()),
+      fee: new Percent(BigInt(fee.toString()), BigInt(feeDenominator.toString())),
     }
   },
 })
@@ -152,7 +152,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
     if (!liquidity || !slot0) {
       return null
     }
-    const { sqrtPriceX96, tick, feeProtocol } = slot0
+    const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
@@ -162,8 +162,8 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       token0,
       token1,
       fee,
-      liquidity: JSBI.BigInt(liquidity.toString()),
-      sqrtRatioX96: JSBI.BigInt(sqrtPriceX96.toString()),
+      liquidity: BigInt(liquidity.toString()),
+      sqrtRatioX96: BigInt(sqrtPriceX96.toString()),
       tick: Number(tick),
       address,
       token0ProtocolFee,
@@ -234,7 +234,7 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
         args: call.params,
       })),
       allowFailure: true,
-      blockNumber: blockNumber ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumber))) : undefined,
+      blockNumber: blockNumber ? BigInt(Number(BigInt(blockNumber))) : undefined,
     })
 
     const pools: TPool[] = []

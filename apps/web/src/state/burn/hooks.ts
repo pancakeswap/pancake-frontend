@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -60,22 +60,12 @@ export function useDerivedBurnInfo(
   // liquidity values
   const totalSupply = useTotalSupply(pair?.liquidityToken)
   const liquidityValueA =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenA &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
+    pair && totalSupply && userLiquidity && tokenA && totalSupply.quotient >= userLiquidity.quotient
       ? CurrencyAmount.fromRawAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).quotient)
       : undefined
 
   const liquidityValueB =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenB &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
+    pair && totalSupply && userLiquidity && tokenB && totalSupply.quotient >= userLiquidity.quotient
       ? CurrencyAmount.fromRawAmount(tokenB, pair.getLiquidityValue(tokenB, totalSupply, userLiquidity, false).quotient)
       : undefined
   const liquidityValues: { [Field.CURRENCY_A]?: CurrencyAmount<Token>; [Field.CURRENCY_B]?: CurrencyAmount<Token> } = {
@@ -154,7 +144,7 @@ export function useDerivedBurnInfo(
       : amountA && removalCheckedA && !removalCheckedB && estimateZapOutAmount
       ? CurrencyAmount.fromRawAmount(
           tokenA,
-          JSBI.add(percentToRemove.multiply(liquidityValueA.quotient).quotient, estimateZapOutAmount.quotient),
+          percentToRemove.multiply(liquidityValueA.quotient).quotient + estimateZapOutAmount.quotient,
         )
       : !removalCheckedA
       ? undefined
@@ -164,7 +154,7 @@ export function useDerivedBurnInfo(
       : amountB && removalCheckedB && !removalCheckedA && estimateZapOutAmount
       ? CurrencyAmount.fromRawAmount(
           tokenB,
-          JSBI.add(percentToRemove.multiply(liquidityValueB.quotient).quotient, estimateZapOutAmount.quotient),
+          percentToRemove.multiply(liquidityValueB.quotient).quotient + estimateZapOutAmount.quotient,
         )
       : !removalCheckedB
       ? undefined

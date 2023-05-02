@@ -1,4 +1,5 @@
-import { BigintIsh, ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import { BigintIsh, ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import sum from 'lodash/sum.js'
 
 import {
   BASE_SWAP_COST_STABLE_SWAP,
@@ -20,7 +21,6 @@ import {
   RouteWithoutGasEstimate,
 } from './types'
 import { getNativeWrappedToken, getTokenPrice, getUsdGasToken, isStablePool, isV2Pool, isV3Pool } from './utils'
-import { sum } from '../utils/sum'
 
 interface GasModelConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
@@ -45,7 +45,7 @@ export async function createGasModel({
     throw new Error(`Unsupported chain ${chainId}. Native wrapped token not found.`)
   }
 
-  const gasPrice = JSBI.BigInt(typeof gasPriceWei === 'function' ? await gasPriceWei() : gasPriceWei)
+  const gasPrice = BigInt(typeof gasPriceWei === 'function' ? await gasPriceWei() : gasPriceWei)
   const [usdPool, nativePool] = await Promise.all([
     getHighestLiquidityUSDPool(poolProvider, chainId, blockNumber),
     getHighestLiquidityNativePool(poolProvider, quoteCurrency, blockNumber),
@@ -57,53 +57,53 @@ export async function createGasModel({
   ): GasCost => {
     const isQuoteNative = nativeWrappedToken.equals(quoteCurrency.wrapped)
 
-    const totalInitializedTicksCrossed = JSBI.BigInt(Math.max(1, sum(initializedTickCrossedList)))
+    const totalInitializedTicksCrossed = BigInt(Math.max(1, sum(initializedTickCrossedList)))
     /**
      * Since we must make a separate call to multicall for each v3 and v2 section, we will have to
      * add the BASE_SWAP_COST to each section.
      */
     const poolTypeSet = new Set<PoolType>()
-    let baseGasUse = JSBI.BigInt(0)
+    let baseGasUse = 0n
 
     for (const pool of pools) {
       const { type } = pool
       if (isV2Pool(pool)) {
         if (!poolTypeSet.has(type)) {
-          baseGasUse = JSBI.add(baseGasUse, BASE_SWAP_COST_V2)
+          baseGasUse += BASE_SWAP_COST_V2
           poolTypeSet.add(type)
           continue
         }
-        baseGasUse = JSBI.add(baseGasUse, COST_PER_EXTRA_HOP_V2)
+        baseGasUse += COST_PER_EXTRA_HOP_V2
         continue
       }
 
       if (isV3Pool(pool)) {
         if (!poolTypeSet.has(type)) {
-          baseGasUse = JSBI.add(baseGasUse, BASE_SWAP_COST_V3(chainId))
+          baseGasUse += BASE_SWAP_COST_V3(chainId)
           poolTypeSet.add(type)
         }
-        baseGasUse = JSBI.add(baseGasUse, COST_PER_HOP_V3(chainId))
+        baseGasUse += COST_PER_HOP_V3(chainId)
         continue
       }
 
       if (isStablePool(pool)) {
         if (!poolTypeSet.has(type)) {
-          baseGasUse = JSBI.add(baseGasUse, BASE_SWAP_COST_STABLE_SWAP)
+          baseGasUse += BASE_SWAP_COST_STABLE_SWAP
           poolTypeSet.add(type)
           continue
         }
-        baseGasUse = JSBI.add(baseGasUse, COST_PER_EXTRA_HOP_STABLE_SWAP)
+        baseGasUse += COST_PER_EXTRA_HOP_STABLE_SWAP
         continue
       }
     }
 
-    const tickGasUse = JSBI.multiply(COST_PER_INIT_TICK(chainId), totalInitializedTicksCrossed)
-    const uninitializedTickGasUse = JSBI.multiply(COST_PER_UNINIT_TICK, JSBI.BigInt(0))
+    const tickGasUse = COST_PER_INIT_TICK(chainId) * totalInitializedTicksCrossed
+    const uninitializedTickGasUse = COST_PER_UNINIT_TICK * 0n
 
     // base estimate gas used based on chainId estimates for hops and ticks gas useage
-    baseGasUse = JSBI.add(JSBI.add(baseGasUse, tickGasUse), uninitializedTickGasUse)
+    baseGasUse = baseGasUse + tickGasUse + uninitializedTickGasUse
 
-    const baseGasCostWei = JSBI.multiply(gasPrice, baseGasUse)
+    const baseGasCostWei = gasPrice * baseGasUse
 
     const totalGasCostNativeCurrency = CurrencyAmount.fromRawAmount(nativeWrappedToken, baseGasCostWei)
 

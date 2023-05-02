@@ -1,4 +1,4 @@
-import { Currency, JSBI, Pair, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, Pair, Price } from '@pancakeswap/aptos-swap-sdk'
 import maxBy from 'lodash/maxBy'
 import _uniqBy from 'lodash/uniqBy'
 import { PairState } from '../hooks/usePairs'
@@ -65,10 +65,10 @@ export default function getCurrencyPrice(
     stableNativePair.reserve1.greaterThan('0')
 
   const nativePairNativeAmount = isNativePairExist && nativePair?.reserveOf(wnative)
-  const nativePairNativeStableValue: JSBI =
+  const nativePairNativeStableValue: bigint =
     nativePairNativeAmount && bestStablePair && isStableNativePairExist
       ? stableNativePair.priceOf(wnative).quote(nativePairNativeAmount).quotient
-      : JSBI.BigInt(0)
+      : 0n
 
   // all other tokens
   // first try the stable pair
