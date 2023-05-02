@@ -5,6 +5,7 @@ import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
 import { usePriceCakeUSD, useFarmsV2Data } from 'state/farms/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { useAccount } from 'wagmi'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import ProxyFarmContainer, {
@@ -46,6 +47,10 @@ const FarmsPage = () => {
     ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
     : '-'
 
+  const { data: farmV3 } = useFarmsV3Public()
+  const { totalAllocPoint, latestPeriodCakePerSecond, PRECISION } = farmV3
+  const totalMultipliersV3 = totalAllocPoint ? (ethersToBigNumber(totalAllocPoint).toNumber() / 10).toString() : '-'
+
   return (
     <>
       {chosenFarmsMemoized?.map((farm) => {
@@ -85,6 +90,16 @@ const FarmsPage = () => {
             />
           )
         }
+
+        // V3
+        const farmCakePerSecond =
+          farm.allocPoint && totalAllocPoint && latestPeriodCakePerSecond
+            ? ((ethersToBigNumber(farm.allocPoint).toNumber() / ethersToBigNumber(totalAllocPoint).toNumber()) *
+                ethersToBigNumber(latestPeriodCakePerSecond).toNumber()) /
+              PRECISION.toNumber() /
+              1e18
+            : 0
+
         return (
           <FarmV3Card
             key={`${farm.pid}-${farm.version}`}
@@ -92,6 +107,14 @@ const FarmsPage = () => {
             cakePrice={cakePrice}
             account={account}
             removed={false}
+            farmCakePerSecond={
+              farmCakePerSecond === 0
+                ? '-'
+                : farmCakePerSecond < 0.000001
+                ? '<0.000001'
+                : `~${farmCakePerSecond.toFixed(6)}`
+            }
+            totalMultipliers={totalMultipliersV3}
           />
         )
       })}

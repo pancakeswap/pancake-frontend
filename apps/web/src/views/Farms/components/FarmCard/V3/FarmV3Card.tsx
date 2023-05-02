@@ -52,6 +52,8 @@ interface FarmCardProps {
   removed: boolean
   cakePrice?: BigNumber
   account?: string
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -59,6 +61,8 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   removed,
   // cakePrice,
   account,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -101,6 +105,8 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           quoteToken={farm.quoteToken}
           version={3}
           feeAmount={farm.feeAmount}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -139,6 +145,9 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               lpLabel={lpLabel}
               onAddLiquidity={addLiquidityModal.onOpen}
               isCommunity={false}
+              multiplier={farm.multiplier}
+              farmCakePerSecond={farmCakePerSecond}
+              totalMultipliers={totalMultipliers}
             />
           </>
         )}

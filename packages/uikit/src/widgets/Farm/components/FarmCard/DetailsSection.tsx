@@ -1,4 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { useTooltip, HelpIcon, Link } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
 import { LinkExternal } from "../../../../components/Link";
@@ -16,6 +17,9 @@ export interface ExpandableSectionProps {
   auctionHostingEndDate?: string;
   alignLinksToRight?: boolean;
   totalValueLabel?: string;
+  multiplier?: string;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 const Wrapper = styled.div`
@@ -33,6 +37,15 @@ const StyledText = styled(Text)`
   }
 `;
 
+const InlineText = styled(Text)`
+  display: inline;
+`;
+
+const InlineLink = styled(Link)`
+  display: inline-block;
+  margin: 0 4px;
+`;
+
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   scanAddressLink,
   infoAddress,
@@ -44,11 +57,50 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   isCommunity,
   auctionHostingEndDate,
   alignLinksToRight = true,
+  multiplier,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation();
+
+  const multiplierTooltipContent = (
+    <>
+      <Text bold>
+        {t("Farm’s CAKE Per Second:")}
+        <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
+      </Text>
+      <Text bold>
+        {t("Total Multipliers:")}
+        <InlineText marginLeft={2}>{totalMultipliers}</InlineText>
+      </Text>
+      <Text my="24px">
+        {t(
+          "The Farm Multiplier represents the proportion of CAKE rewards each farm receives as a proportion of its farm group."
+        )}
+      </Text>
+      <Text my="24px">
+        {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+      </Text>
+      <Text>
+        {t("Different farm groups have different sets of multipliers.")}
+        <InlineLink
+          mt="8px"
+          display="inline"
+          href="https://docs.pancakeswap.finance/products/yield-farming/faq#why-a-2x-farm-in-v3-has-less-apr-than-a-1x-farm-in-v2"
+          external
+        >
+          {t("Learn More")}
+        </InlineLink>
+      </Text>
+    </>
+  );
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
+    placement: "bottom",
+  });
 
   return (
     <Wrapper>
@@ -67,6 +119,20 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       <Flex justifyContent="space-between">
         <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text>{t("Multiplier")}:</Text>
+        {multiplier ? (
+          <Flex>
+            <Text>{multiplier}</Text>
+            {tooltipVisible && tooltip}
+            <Flex ref={targetRef}>
+              <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+            </Flex>
+          </Flex>
+        ) : (
+          <Skeleton width={75} height={25} />
+        )}
       </Flex>
       {!removed && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
