@@ -11,5 +11,6 @@ export * from './router'
 export * from './utils'
 
 export * from './ether'
+export * from './fetcher'
 
 export * from '@pancakeswap/swap-sdk-core'

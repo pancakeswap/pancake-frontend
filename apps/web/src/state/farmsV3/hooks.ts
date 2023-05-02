@@ -15,6 +15,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { FAST_INTERVAL } from 'config/constants'
+import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
@@ -100,13 +101,11 @@ export const useFarmsV3 = () => {
   const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
-      const HOST = process.env.NEXT_PUBLIC_VERCEL_URL ? `` : 'http://localhost:3000'
-
       const tvls: TvlMap = {}
       if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {
         const results = await Promise.allSettled(
           farmV3.data.farmsWithPrice.map((f) =>
-            fetch(`${HOST}/api/v3/${chainId}/farms/liquidity/${f.lpAddress}`)
+            fetch(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`)
               .then((r) => r.json())
               .catch((err) => {
                 console.error(err)

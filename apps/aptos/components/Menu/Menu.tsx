@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { useMenuItems, ConfigMenuItemsType } from './hooks/useMenuItems'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
@@ -45,6 +46,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
   const { setTheme, resolvedTheme } = useTheme()
   const [show] = usePhishingBanner()
+  const chainId = useActiveChainId()
 
   const { data: cakePrice } = useCakePrice()
 
@@ -63,6 +65,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       linkComponent={(linkProps) => {
         return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
       }}
+      chainId={chainId}
       links={menuItems}
       activeItem={activeMenuItem?.href}
       isDark={isDark}
