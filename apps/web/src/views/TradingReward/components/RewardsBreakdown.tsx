@@ -4,7 +4,7 @@ import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Card, Table, Th, Td, Text, Flex, PaginationButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { AllTradingRewardPairDetail, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 import PairInfo from 'views/TradingReward/components/PairInfo'
@@ -13,6 +13,7 @@ interface RewardsBreakdownProps {
   campaignId: string
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
+  rewardInfo: { [key in string]: RewardInfo }
 }
 
 const MAX_PER_PAGE = 1
@@ -28,6 +29,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   campaignId,
   allUserCampaignInfo,
   allTradingRewardPairData,
+  rewardInfo,
 }) => {
   const {
     t,
@@ -41,6 +43,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   const { data, isFetching } = useRewardBreakdown({
     allUserCampaignInfo,
     allTradingRewardPairData,
+    rewardInfo,
   })
 
   const sortData = useMemo(() => {

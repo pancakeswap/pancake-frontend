@@ -25,8 +25,6 @@ export interface Incentives {
   totalReward: string
   totalRewardUnclaimed: string
   totalVolume: string
-  rewardPrice: string
-  rewardTokenDecimals: number
 }
 
 export interface Qualification {
@@ -34,11 +32,20 @@ export interface Qualification {
   thresholdLockAmount: string
 }
 
+export interface RewardInfo {
+  rewardToken: string
+  rewardTokenDecimal: number
+  rewardPrice: string
+  rewardToLockRatio: string
+  rewardFeeRatio: string
+}
+
 export interface AllTradingRewardPairDetail {
   campaignIds: Array<string>
   campaignPairs: { [key in string]: Array<string> }
   campaignIdsIncentive: Incentives[]
   qualification: Qualification
+  rewardInfo: { [key in string]: RewardInfo }
 }
 
 interface AllTradingRewardPair {
@@ -65,15 +72,9 @@ const fetchCampaignPairs = async (chainId: number, campaignIds: Array<string>) =
 const fetchCampaignIdsIncentive = async (tradingRewardContract: TradingReward, campaignIds: Array<string>) => {
   const campaignIdsIncentive: Incentives[] = await Promise.all(
     campaignIds.map(async (campaignId: string) => {
-      const [incentives, incentiveRewards] = await Promise.all([
-        tradingRewardContract.incentives(campaignId),
-        tradingRewardContract.incentiveRewards(campaignId),
-      ])
-
+      const incentives = await tradingRewardContract.incentives(campaignId)
       return {
         campaignId,
-        rewardPrice: new BigNumber(incentiveRewards[1].toString()).toJSON(),
-        rewardTokenDecimals: 18, // TODO: get from API, ask Cupcake
         ...incentiveFormat(incentives),
       } as Incentives
     }),
@@ -89,6 +90,18 @@ const fetUserQualification = async (tradingRewardContract: TradingReward) => {
   } as Qualification
 }
 
+const fetchRewardInfo = async (chainId: number, campaignIds: Array<string>) => {
+  const newData: { [key in string]: RewardInfo } = {}
+  await Promise.all(
+    campaignIds.map(async (campaignId: string) => {
+      const reward = await fetch(`${TRADING_REWARD_API}/reward/chainId/${chainId}/campaignId/${campaignId}`)
+      const rewardResult = await reward.json()
+      newData[campaignId] = rewardResult.data as RewardInfo
+    }),
+  )
+  return newData
+}
+
 const initialAllTradingRewardState = {
   campaignIds: [],
   campaignPairs: {},
@@ -97,6 +110,7 @@ const initialAllTradingRewardState = {
     thresholdLockTime: 0,
     thresholdLockAmount: '0',
   },
+  rewardInfo: {},
 }
 
 const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTradingRewardPair => {
@@ -111,10 +125,11 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
         const campaignsResult = await campaignsResponse.json()
         const campaignIds: Array<string> = campaignsResult.data
 
-        const [campaignPairs, campaignIdsIncentive, qualification] = await Promise.all([
+        const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
           fetchCampaignPairs(chainId, campaignIds),
           fetchCampaignIdsIncentive(tradingRewardContract, campaignIds),
           fetUserQualification(tradingRewardContract),
+          fetchRewardInfo(chainId, campaignIds),
         ])
 
         return {
@@ -122,6 +137,7 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
           campaignPairs,
           campaignIdsIncentive,
           qualification,
+          rewardInfo,
         }
       } catch (error) {
         console.info(`Fetch All trading Reward Pair Error: ${error}`)

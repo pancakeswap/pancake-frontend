@@ -8,6 +8,7 @@ export interface CampaignVolume {
   volume: number
   estimateRewardUSD: number
   tradingFee: string
+  maxCap: number
 }
 
 export interface CampaignIdInfoResponse {
