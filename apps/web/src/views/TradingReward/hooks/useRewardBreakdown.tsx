@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
+import { useAccount } from 'wagmi'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -22,9 +23,9 @@ export interface RewardBreakdownPair {
   token: Token
   quoteToken: Token
   yourVolume: number
-  totalVolume: number
-  totalReward: number
   rewardEarned: number
+  yourTradingFee: string
+  feeAmount: number
 }
 
 export interface RewardBreakdownDetail {
@@ -43,13 +44,14 @@ const useRewardBreakdown = ({
   allUserCampaignInfo,
   allTradingRewardPairData,
 }: UseRewardBreakdownProps): RewardBreakdown => {
+  const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const farms = farmsV3ConfigChainMap[chainId as ChainId]
   const tradingRewardContract = getTradingRewardContract(chainId)
   const currentDate = new Date().getTime() / 1000
 
   const { data: rewardBreakdownList, isLoading } = useSWR(
-    ['/rewards-breakdown', allUserCampaignInfo, allTradingRewardPairData],
+    ['/rewards-breakdown', allUserCampaignInfo, allTradingRewardPairData, account],
     async () => {
       try {
         const dataInfo = await Promise.all(
@@ -63,16 +65,19 @@ const useRewardBreakdown = ({
             )
 
             const pairs = await Promise.all(
-              result?.volumeArr?.map(async (volume) => {
+              result?.tradingFeeArr?.map(async (volume) => {
                 const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === volume.pool.toLowerCase())
-                const user = userInfo?.volumeArr?.find((arr) => arr.pool.toLowerCase() === volume.pool.toLowerCase())
+                const user = userInfo?.tradingFeeArr?.find(
+                  (arr) => arr.pool.toLowerCase() === volume.pool.toLowerCase(),
+                )
                 const canClaimResponse = await tradingRewardContract.canClaim(
                   userInfo?.campaignId,
+                  account,
                   new BigNumber(user?.volume?.toFixed(2) ?? 0).times(1e18).toString(),
                 )
                 const rewardEarned =
                   incentive.campaignClaimTime - currentDate > 0
-                    ? user?.estimateReward || 0
+                    ? user?.estimateRewardUSD || 0
                     : getBalanceNumber(new BigNumber(canClaimResponse.toString()))
 
                 return {
@@ -81,9 +86,9 @@ const useRewardBreakdown = ({
                   token: pairInfo?.token,
                   quoteToken: pairInfo?.quoteToken,
                   yourVolume: user?.volume ?? 0,
-                  totalVolume: volume.volume,
-                  totalReward: volume.estimateReward,
                   rewardEarned,
+                  yourTradingFee: user?.tradingFee ?? '0',
+                  feeAmount: pairInfo?.feeAmount ?? 0,
                 }
               }),
             )

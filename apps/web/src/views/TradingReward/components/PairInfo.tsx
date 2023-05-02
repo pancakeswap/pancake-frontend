@@ -22,6 +22,7 @@ interface PairInfoProps {
   lpSymbol: string
   token: Token
   quoteToken: Token
+  feeAmount: number
 }
 
 const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> = ({
@@ -29,6 +30,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
   lpSymbol,
   token,
   quoteToken,
+  feeAmount,
 }) => {
   if (!isReady) {
     return (
@@ -56,9 +58,9 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
             />
           </TokenWrapper>
         )}
-        <div>
-          <Text bold>{lpSymbol}</Text>
-        </div>
+        <Flex>
+          <Text bold>{`${lpSymbol} - ${feeAmount / 10000}%`}</Text>
+        </Flex>
       </Container>
     </Flex>
   )

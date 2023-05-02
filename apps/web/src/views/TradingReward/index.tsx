@@ -77,11 +77,11 @@ const TradingReward = () => {
       />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <HowToEarn />
-      {/* <RewardsBreakdown
+      <RewardsBreakdown
         campaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
-      /> */}
+      />
       <Questions />
     </Box>
   )
