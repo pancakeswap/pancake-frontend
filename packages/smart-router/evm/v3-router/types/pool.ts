@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { FeeAmount, Tick } from '@pancakeswap/v3-sdk'
 
 export enum PoolType {
@@ -22,7 +22,7 @@ export interface StablePool extends BasePool {
   type: PoolType.STABLE
   // Could be 2 token pool or more
   balances: CurrencyAmount<Currency>[]
-  amplifier: JSBI
+  amplifier: bigint
   // Swap fee
   fee: Percent
 }
@@ -33,8 +33,8 @@ export interface V3Pool extends BasePool {
   token1: Currency
   // Different fee tier
   fee: FeeAmount
-  liquidity: JSBI
-  sqrtRatioX96: JSBI
+  liquidity: bigint
+  sqrtRatioX96: bigint
   tick: number
   address: string
   token0ProtocolFee: Percent

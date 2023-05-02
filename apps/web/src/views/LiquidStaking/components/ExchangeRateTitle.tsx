@@ -9,7 +9,7 @@ export function ExchangeRateTitle() {
   return (
     <Flex>
       <Text color="textSubtle">{t('Exchange Rate')}</Text>
-      <QuestionHelper ml="4px" text={tooltipMsg} size="20px" />
+      <QuestionHelper ml="4px" text={tooltipMsg} size="20px" placement="bottom" />
     </Flex>
   )
 }

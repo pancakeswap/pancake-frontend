@@ -1,5 +1,4 @@
 import { Box, Text, PageSection } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 
@@ -43,8 +42,12 @@ const Decorations = styled(Box)`
   }
 }`
 
-const Banner = () => {
-  const { t } = useTranslation()
+interface BannerProps {
+  title: string
+  subTitle: string
+}
+
+const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ title, subTitle }) => {
   const { theme } = useTheme()
 
   return (
@@ -63,9 +66,9 @@ const Banner = () => {
       </Decorations>
       <Box maxWidth={['1120px']}>
         <Text bold color="secondary" fontSize={['40px']}>
-          {t('Dashboard')}
+          {title}
         </Text>
-        <Text fontSize={['20px']}>{t('Manage your affiliate link, see how much you’ve earned')}</Text>
+        <Text fontSize={['20px']}>{subTitle}</Text>
       </Box>
     </PageSection>
   )

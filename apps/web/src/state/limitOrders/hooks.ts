@@ -1,4 +1,3 @@
-import JSBI from 'jsbi'
 import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, Trade, Token, Price, Native, TradeType } from '@pancakeswap/sdk'
@@ -45,7 +44,7 @@ const getDesiredInput = (
   }
   const resultAsFraction = parsedOutAmount
     .divide(parsedExchangeRate.asFraction)
-    .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
+    .multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals))
 
   return CurrencyAmount.fromRawAmount(inputCurrency, resultAsFraction.quotient.toString())
 }
@@ -70,13 +69,13 @@ const getDesiredOutput = (
 
   if (isInverted) {
     const invertedResultAsFraction = parsedInputAmount
-      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
+      .multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals))
       .divide(parsedExchangeRate.asFraction)
     return CurrencyAmount.fromRawAmount(outputCurrency, invertedResultAsFraction.quotient)
   }
 
   const resultAsFraction = parsedInputAmount
-    .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
+    .divide(BIG_INT_TEN ** BigInt(inputCurrency.decimals))
     .multiply(parsedExchangeRate.asFraction)
 
   return CurrencyAmount.fromRawAmount(outputCurrency, resultAsFraction.quotient.toString())
@@ -400,13 +399,11 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const rawAmounts = useMemo(
     () => ({
       input: inputCurrency
-        ? parsedAmounts.input?.multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals))).toFixed(0)
+        ? parsedAmounts.input?.multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals)).toFixed(0)
         : undefined,
 
       output: outputCurrency
-        ? parsedAmounts.output
-            ?.multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
-            .toFixed(0)
+        ? parsedAmounts.output?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals)).toFixed(0)
         : undefined,
     }),
     [inputCurrency, outputCurrency, parsedAmounts],

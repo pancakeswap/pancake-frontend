@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useMemo } from 'react'
 import {
@@ -8,7 +7,7 @@ import {
   SmartRouterTrade,
   BATCH_MULTICALL_CONFIGS,
 } from '@pancakeswap/smart-router/evm'
-import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 import { isDesktop } from 'react-device-detect'
 
@@ -183,7 +182,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     if (
       quoterTrade.blockNumber &&
       tradeFromOffchain.blockNumber &&
-      JSBI.greaterThan(JSBI.BigInt(quoterTrade.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))
+      BigInt(quoterTrade.blockNumber) > BigInt(tradeFromOffchain.blockNumber)
     ) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
       return bestTradeFromQuoter_
@@ -273,8 +272,8 @@ function bestTradeHookFactory({
         SmartRouter.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
-            ? JSBI.BigInt(gasPrice)
-            : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+            ? BigInt(gasPrice)
+            : async () => BigInt(await (await provider({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
           maxHops,
           poolProvider,
           maxSplits,

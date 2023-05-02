@@ -1,19 +1,18 @@
 import { MaxUint256 } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO, Q96 } from '../internalConstants'
 import { FullMath } from './fullMath'
 
-const MaxUint160 = JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(160)), ONE)
+const MaxUint160 = 2n ** 160n - ONE
 
-function multiplyIn256(x: JSBI, y: JSBI): JSBI {
-  const product = JSBI.multiply(x, y)
-  return JSBI.bitwiseAnd(product, MaxUint256)
+function multiplyIn256(x: bigint, y: bigint): bigint {
+  const product = x * y
+  return product & MaxUint256
 }
 
-function addIn256(x: JSBI, y: JSBI): JSBI {
-  const sum = JSBI.add(x, y)
-  return JSBI.bitwiseAnd(sum, MaxUint256)
+function addIn256(x: bigint, y: bigint): bigint {
+  const sum = x + y
+  return sum & MaxUint256
 }
 
 export abstract class SqrtPriceMath {
@@ -22,34 +21,49 @@ export abstract class SqrtPriceMath {
    */
   private constructor() {}
 
-  public static getAmount0Delta(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, liquidity: JSBI, roundUp: boolean): JSBI {
-    if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
+  public static getAmount0Delta(
+    sqrtRatioAX96: bigint,
+    sqrtRatioBX96: bigint,
+    liquidity: bigint,
+    roundUp: boolean
+  ): bigint {
+    if (sqrtRatioAX96 > sqrtRatioBX96) {
       sqrtRatioAX96 = sqrtRatioBX96
       sqrtRatioBX96 = sqrtRatioAX96
     }
 
-    const numerator1 = JSBI.leftShift(liquidity, JSBI.BigInt(96))
-    const numerator2 = JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96)
+    const numerator1 = liquidity << 96n
+    const numerator2 = sqrtRatioBX96 - sqrtRatioAX96
 
     return roundUp
       ? FullMath.mulDivRoundingUp(FullMath.mulDivRoundingUp(numerator1, numerator2, sqrtRatioBX96), ONE, sqrtRatioAX96)
-      : JSBI.divide(JSBI.divide(JSBI.multiply(numerator1, numerator2), sqrtRatioBX96), sqrtRatioAX96)
+      : (numerator1 * numerator2) / sqrtRatioBX96 / sqrtRatioAX96
   }
 
-  public static getAmount1Delta(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, liquidity: JSBI, roundUp: boolean): JSBI {
-    if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
+  public static getAmount1Delta(
+    sqrtRatioAX96: bigint,
+    sqrtRatioBX96: bigint,
+    liquidity: bigint,
+    roundUp: boolean
+  ): bigint {
+    if (sqrtRatioAX96 > sqrtRatioBX96) {
       sqrtRatioAX96 = sqrtRatioBX96
       sqrtRatioBX96 = sqrtRatioAX96
     }
 
     return roundUp
-      ? FullMath.mulDivRoundingUp(liquidity, JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96), Q96)
-      : JSBI.divide(JSBI.multiply(liquidity, JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96)), Q96)
+      ? FullMath.mulDivRoundingUp(liquidity, sqrtRatioBX96 - sqrtRatioAX96, Q96)
+      : (liquidity * (sqrtRatioBX96 - sqrtRatioAX96)) / Q96
   }
 
-  public static getNextSqrtPriceFromInput(sqrtPX96: JSBI, liquidity: JSBI, amountIn: JSBI, zeroForOne: boolean): JSBI {
-    invariant(JSBI.greaterThan(sqrtPX96, ZERO))
-    invariant(JSBI.greaterThan(liquidity, ZERO))
+  public static getNextSqrtPriceFromInput(
+    sqrtPX96: bigint,
+    liquidity: bigint,
+    amountIn: bigint,
+    zeroForOne: boolean
+  ): bigint {
+    invariant(sqrtPX96 > ZERO)
+    invariant(liquidity > ZERO)
 
     return zeroForOne
       ? this.getNextSqrtPriceFromAmount0RoundingUp(sqrtPX96, liquidity, amountIn, true)
@@ -57,13 +71,13 @@ export abstract class SqrtPriceMath {
   }
 
   public static getNextSqrtPriceFromOutput(
-    sqrtPX96: JSBI,
-    liquidity: JSBI,
-    amountOut: JSBI,
+    sqrtPX96: bigint,
+    liquidity: bigint,
+    amountOut: bigint,
     zeroForOne: boolean
-  ): JSBI {
-    invariant(JSBI.greaterThan(sqrtPX96, ZERO))
-    invariant(JSBI.greaterThan(liquidity, ZERO))
+  ): bigint {
+    invariant(sqrtPX96 > ZERO)
+    invariant(liquidity > ZERO)
 
     return zeroForOne
       ? this.getNextSqrtPriceFromAmount1RoundingDown(sqrtPX96, liquidity, amountOut, false)
@@ -71,49 +85,47 @@ export abstract class SqrtPriceMath {
   }
 
   private static getNextSqrtPriceFromAmount0RoundingUp(
-    sqrtPX96: JSBI,
-    liquidity: JSBI,
-    amount: JSBI,
+    sqrtPX96: bigint,
+    liquidity: bigint,
+    amount: bigint,
     add: boolean
-  ): JSBI {
-    if (JSBI.equal(amount, ZERO)) return sqrtPX96
-    const numerator1 = JSBI.leftShift(liquidity, JSBI.BigInt(96))
+  ): bigint {
+    if (amount === ZERO) return sqrtPX96
+    const numerator1 = liquidity << 96n
 
     if (add) {
       const product = multiplyIn256(amount, sqrtPX96)
-      if (JSBI.equal(JSBI.divide(product, amount), sqrtPX96)) {
+      if (product / amount === sqrtPX96) {
         const denominator = addIn256(numerator1, product)
-        if (JSBI.greaterThanOrEqual(denominator, numerator1)) {
+        if (denominator >= numerator1) {
           return FullMath.mulDivRoundingUp(numerator1, sqrtPX96, denominator)
         }
       }
 
-      return FullMath.mulDivRoundingUp(numerator1, ONE, JSBI.add(JSBI.divide(numerator1, sqrtPX96), amount))
+      return FullMath.mulDivRoundingUp(numerator1, ONE, numerator1 / sqrtPX96 + amount)
     }
     const product = multiplyIn256(amount, sqrtPX96)
 
-    invariant(JSBI.equal(JSBI.divide(product, amount), sqrtPX96))
-    invariant(JSBI.greaterThan(numerator1, product))
-    const denominator = JSBI.subtract(numerator1, product)
+    invariant(product / amount === sqrtPX96)
+    invariant(numerator1 > product)
+    const denominator = numerator1 - product
     return FullMath.mulDivRoundingUp(numerator1, sqrtPX96, denominator)
   }
 
   private static getNextSqrtPriceFromAmount1RoundingDown(
-    sqrtPX96: JSBI,
-    liquidity: JSBI,
-    amount: JSBI,
+    sqrtPX96: bigint,
+    liquidity: bigint,
+    amount: bigint,
     add: boolean
-  ): JSBI {
+  ): bigint {
     if (add) {
-      const quotient = JSBI.lessThanOrEqual(amount, MaxUint160)
-        ? JSBI.divide(JSBI.leftShift(amount, JSBI.BigInt(96)), liquidity)
-        : JSBI.divide(JSBI.multiply(amount, Q96), liquidity)
+      const quotient = amount <= MaxUint160 ? (amount << 96n) / liquidity : (amount * Q96) / liquidity
 
-      return JSBI.add(sqrtPX96, quotient)
+      return sqrtPX96 + quotient
     }
     const quotient = FullMath.mulDivRoundingUp(amount, Q96, liquidity)
 
-    invariant(JSBI.greaterThan(sqrtPX96, quotient))
-    return JSBI.subtract(sqrtPX96, quotient)
+    invariant(sqrtPX96 > quotient)
+    return sqrtPX96 - quotient
   }
 }

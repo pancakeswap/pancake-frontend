@@ -1,7 +1,6 @@
 import {
   Currency,
   CurrencyAmount,
-  JSBI,
   Percent,
   Router,
   SWAP_ADDRESS_MODULE,
@@ -175,7 +174,7 @@ const SwapPage = () => {
     if (trade) {
       return async () => {
         const payload = Router.swapCallParameters(trade, {
-          allowedSlippage: new Percent(JSBI.BigInt(userAllowedSlippage), BIPS_BASE),
+          allowedSlippage: new Percent(BigInt(userAllowedSlippage), BIPS_BASE),
         })
         if (!payload) {
           throw new Error('Missing swap call')
