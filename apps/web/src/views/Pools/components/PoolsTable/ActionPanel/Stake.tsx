@@ -339,10 +339,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {t('Unlocks In')}
                 </Text>
-                <Flex>
+                <Flex mt={2}>
                   <Text
                     lineHeight="1"
-                    mt="5px"
                     bold
                     fontSize="20px"
                     color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
@@ -351,7 +350,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   </Text>
                   {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
                   <span ref={tagTargetRefOfBurn}>
-                    <HelpIcon ml="4px" mt="4px" width="20px" height="20px" color="textSubtle" />
+                    <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
                   </span>
                 </Flex>
                 <Text
