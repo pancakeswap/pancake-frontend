@@ -40,6 +40,7 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
       syncing: v3Syncing,
       blockNumber: v3BlockNumber,
       refresh: v3Refresh,
+      error,
     } = useV3Pools(currencyA, currencyB, { blockNumber, enabled })
     const {
       pools: v2Pools,
@@ -70,11 +71,12 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
     // FIXME: allow inconsistent block not working as expected
     const pools = useMemo(
       () =>
-        v2Pools && v3Pools && stablePools && (allowInconsistentBlock || !!consistentBlockNumber)
-          ? [...v2Pools, ...v3Pools, ...stablePools]
+        v2Pools && (v3Pools || error) && stablePools && (allowInconsistentBlock || !!consistentBlockNumber)
+          ? [...v2Pools, ...(v3Pools || []), ...stablePools]
           : undefined,
-      [v2Pools, v3Pools, stablePools, allowInconsistentBlock, consistentBlockNumber],
+      [v2Pools, v3Pools, stablePools, allowInconsistentBlock, consistentBlockNumber, error],
     )
+
     const refresh = useCallback(() => {
       v3Refresh()
       v2Refresh()

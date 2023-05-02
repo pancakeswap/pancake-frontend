@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { ModalV2, Modal, Flex, Text, Checkbox, Button, Link } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useAtom } from 'jotai'
@@ -10,6 +11,7 @@ const showAffiliateModalAtom = atomWithStorageWithErrorCatch('pcs::showAffiliate
 
 const AffiliateModal = () => {
   const { t } = useTranslation()
+  const router = useRouter()
   const { address } = useAccount()
   const { isAffiliateExist } = useAuthAffiliateExist()
   const [isOpen, setIsOpen] = useState(false)
@@ -17,9 +19,10 @@ const AffiliateModal = () => {
   const [showModal, setShowModal] = useAtom(showAffiliateModalAtom)
 
   useEffect(() => {
+    const { ref, user, discount, noperps } = router.query
     // Close when switch address
-    setIsOpen(address && isAffiliateExist && showModal)
-  }, [address, isAffiliateExist, showModal])
+    setIsOpen(address && isAffiliateExist && showModal && !ref && !user && !discount && !noperps)
+  }, [address, isAffiliateExist, showModal, router])
 
   const handleCheckbox = () => setIsChecked(!isChecked)
 

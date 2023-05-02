@@ -152,7 +152,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
     if (!liquidity || !slot0) {
       return null
     }
-    const { sqrtPriceX96, tick, feeProtocol } = slot0
+    const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]

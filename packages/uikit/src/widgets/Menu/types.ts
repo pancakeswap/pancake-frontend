@@ -31,5 +31,6 @@ export interface NavProps {
   buyCakeLabel: string;
   buyCakeLink: string;
   langs: Language[];
+  chainId: number;
   setLang: (lang: Language) => void;
 }

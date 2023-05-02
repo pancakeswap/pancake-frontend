@@ -17,10 +17,10 @@ import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Block, Transaction } from 'state/info/types'
 import { SWRConfiguration } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { checkIsStableSwap, MultiChainName } from './constant'
+import { MultiChainName, checkIsStableSwap, multiChainId } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
 // Protocol hooks
@@ -301,6 +301,14 @@ export const useChainNameByQuery = () => {
     return 'BSC'
   }, [query])
   return chainName
+}
+
+export const useChainIdByQuery = () => {
+  const chainName = useChainNameByQuery()
+  const chainId = useMemo(() => {
+    return multiChainId[chainName]
+  }, [chainName])
+  return chainId
 }
 
 const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
