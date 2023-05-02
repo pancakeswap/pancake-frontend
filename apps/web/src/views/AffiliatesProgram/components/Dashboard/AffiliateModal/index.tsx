@@ -38,7 +38,7 @@ const AffiliateModal = () => {
           <Text mb="24px">
             <Text as="span">
               {t(
-                'Our affiliate program’s terms and conditions have been updated as of May 2nd, 2023, with changes relating to',
+                'Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to',
               )}
             </Text>
             <Text as="span" bold m="0 4px">
