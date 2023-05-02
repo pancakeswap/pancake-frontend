@@ -47,8 +47,9 @@
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/solidity": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
-    "@types/jest": "^24.0.25",
-    "tsup": "^6.7.0"
+    "vitest": "^0.30.1",
+    "tsup": "^6.7.0",
+    "typescript": "^4.9.4"
   },
   "engines": {
     "node": ">=10"

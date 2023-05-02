@@ -163,6 +163,6 @@
     "@vanilla-extract/vite-plugin": "^3.8.0",
     "@vitejs/plugin-react": "4.0.0",
     "vite-tsconfig-paths": "^4.0.3",
-    "vitest": "^0.27.2"
+    "vitest": "^0.30.1"
   }
 }
