@@ -80,22 +80,19 @@ export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveChainId()
 
-  useSlowRefreshEffect(
-    (currentBlock) => {
-      const fetchPoolsDataWithFarms = async () => {
-        const activeFarms = await getActiveFarms(chainId)
-        await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId }))
+  useSlowRefreshEffect(() => {
+    const fetchPoolsDataWithFarms = async () => {
+      const activeFarms = await getActiveFarms(chainId)
+      await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId }))
 
-        batch(() => {
-          dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId))
-          dispatch(fetchPoolsStakingLimitsAsync(chainId))
-        })
-      }
+      batch(() => {
+        dispatch(fetchPoolsPublicDataAsync(chainId))
+        dispatch(fetchPoolsStakingLimitsAsync(chainId))
+      })
+    }
 
-      fetchPoolsDataWithFarms()
-    },
-    [dispatch, chainId],
-  )
+    fetchPoolsDataWithFarms()
+  }, [dispatch, chainId])
 }
 
 export const usePool = (sousId: number): { pool: Pool.DeserializedPool<Token>; userDataLoaded: boolean } => {

@@ -137,123 +137,112 @@ export const fetchCakePoolUserDataAsync =
     )
   }
 
-export const fetchPoolsPublicDataAsync =
-  (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
-    try {
-      const [block, timeLimits] = await Promise.all([
-        provider({ chainId })?.getBlock('latest'),
-        fetchPoolsTimeLimits(chainId, provider),
-      ])
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const currentBlock = currentBlockNumber || block.number
+export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, getState) => {
+  try {
+    const [block, timeLimits] = await Promise.all([
+      provider({ chainId })?.getBlock('latest'),
+      fetchPoolsTimeLimits(chainId, provider),
+    ])
+    const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
+    const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
+    const poolsConfig = getPoolsConfig(chainId) || []
+    const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
+      return (
+        poolsConfig
+          .filter((pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase())
+          .filter((pool) => {
+            const poolTimeLimit = timeLimitsSousIdMap[pool.sousId]
+            if (poolTimeLimit) {
+              return poolTimeLimit.endTimestamp > block.timestamp
+            }
+            return false
+          }).length > 0
+      )
+    })
 
-      const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
-      const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
-      const poolsConfig = getPoolsConfig(chainId) || []
-      const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
-        return (
-          poolsConfig
-            .filter(
-              (pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase(),
-            )
-            .filter((pool) => {
-              const poolTimeLimit = timeLimitsSousIdMap[pool.sousId]
-              if (poolTimeLimit) {
-                return poolTimeLimit.endTimestamp > block.timestamp
-              }
-              return false
-            }).length > 0
-        )
-      })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const fetchFarmV3Promise = farmV3ApiFetch(chainId).catch((error) => {
+      return undefined
+    })
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const fetchFarmV3Promise = farmV3ApiFetch(chainId).catch((error) => {
-        return undefined
-      })
+    const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmV3] = await Promise.all([
+      fetchPoolsTotalStaking(chainId, provider),
+      fetchPoolsProfileRequirement(chainId, provider),
+      activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
+      fetchFarmV3Promise,
+    ])
 
-      const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmV3] = await Promise.all([
-        fetchPoolsTotalStaking(chainId, provider),
-        fetchPoolsProfileRequirement(chainId, provider),
-        activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
-        fetchFarmV3Promise,
-      ])
+    const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
-      const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
+    const farmsData = getState().farms.data
+    const bnbBusdFarm =
+      activePriceHelperLpsConfig.length > 0
+        ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
+        : null
+    const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
+      ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
+      : []
 
-      const farmsData = getState().farms.data
-      const bnbBusdFarm =
-        activePriceHelperLpsConfig.length > 0
-          ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
-          : null
-      const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
-        ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
-        : []
+    const prices = getTokenPricesFromFarm([
+      ...farmsData,
+      ...farmsWithPricesOfDifferentTokenPools,
+      ...(farmV3?.farmsWithPrice ?? []),
+    ])
 
-      const prices = getTokenPricesFromFarm([
-        ...farmsData,
-        ...farmsWithPricesOfDifferentTokenPools,
-        ...(farmV3?.farmsWithPrice ?? []),
-      ])
+    const liveData: any[] = []
 
-      const liveData: any[] = []
+    for (const pool of poolsConfig) {
+      const timeLimit = timeLimitsSousIdMap[pool.sousId]
+      const totalStaking = totalStakingsSousIdMap[pool.sousId]
+      const isPoolEndBlockExceeded =
+        block.timestamp > 0 && timeLimit ? block.timestamp > Number(timeLimit.endTimestamp) : false
+      const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
-      for (const pool of poolsConfig) {
-        const timeLimit = timeLimitsSousIdMap[pool.sousId]
-        const totalStaking = totalStakingsSousIdMap[pool.sousId]
-        const isPoolEndBlockExceeded =
-          block.timestamp > 0 && timeLimit ? block.timestamp > Number(timeLimit.endTimestamp) : false
-        const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
-
-        const stakingTokenAddress = isAddress(pool.stakingToken.address)
-        let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-        if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
-          // eslint-disable-next-line no-await-in-loop
-          const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
-          stakingTokenPrice = result.get(stakingTokenAddress) || 0
-        }
-
-        const earningTokenAddress = isAddress(pool.earningToken.address)
-        let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
-        if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
-          // eslint-disable-next-line no-await-in-loop
-          const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
-          earningTokenPrice = result.get(earningTokenAddress) || 0
-        }
-        const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
-        const apr = !isPoolFinished
-          ? isLegacyPool(pool)
-            ? getPoolAprByTokenPerBlock(
-                stakingTokenPrice,
-                earningTokenPrice,
-                totalStaked,
-                parseFloat(pool.tokenPerBlock),
-              )
-            : getPoolAprByTokenPerSecond(
-                stakingTokenPrice,
-                earningTokenPrice,
-                totalStaked,
-                parseFloat(pool.tokenPerSecond),
-              )
-          : 0
-
-        const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
-
-        liveData.push({
-          ...timeLimit,
-          ...totalStaking,
-          profileRequirement,
-          stakingTokenPrice,
-          earningTokenPrice,
-          apr,
-          isFinished: isPoolFinished,
-        })
+      const stakingTokenAddress = isAddress(pool.stakingToken.address)
+      let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+      if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
+        // eslint-disable-next-line no-await-in-loop
+        const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
+        stakingTokenPrice = result.get(stakingTokenAddress) || 0
       }
 
-      dispatch(setPoolsPublicData(liveData || []))
-    } catch (error) {
-      console.error('[Pools Action] error when getting public data', error)
+      const earningTokenAddress = isAddress(pool.earningToken.address)
+      let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+      if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
+        // eslint-disable-next-line no-await-in-loop
+        const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
+        earningTokenPrice = result.get(earningTokenAddress) || 0
+      }
+      const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
+      const apr = !isPoolFinished
+        ? isLegacyPool(pool)
+          ? getPoolAprByTokenPerBlock(stakingTokenPrice, earningTokenPrice, totalStaked, parseFloat(pool.tokenPerBlock))
+          : getPoolAprByTokenPerSecond(
+              stakingTokenPrice,
+              earningTokenPrice,
+              totalStaked,
+              parseFloat(pool.tokenPerSecond),
+            )
+        : 0
+
+      const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
+
+      liveData.push({
+        ...timeLimit,
+        ...totalStaking,
+        profileRequirement,
+        stakingTokenPrice,
+        earningTokenPrice,
+        apr,
+        isFinished: isPoolFinished,
+      })
     }
+
+    dispatch(setPoolsPublicData(liveData || []))
+  } catch (error) {
+    console.error('[Pools Action] error when getting public data', error)
   }
+}
 
 export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatch, getState) => {
   const poolsWithStakingLimit = getState()
