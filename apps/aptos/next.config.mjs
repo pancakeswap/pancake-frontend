@@ -24,7 +24,6 @@ const nextConfig = {
     '@pancakeswap/tokens',
     '@pancakeswap/farms',
     '@pancakeswap/awgmi',
-    '@pancakeswap/awgmi/core',
   ],
   async redirects() {
     return [
