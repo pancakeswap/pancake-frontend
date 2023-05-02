@@ -39,7 +39,7 @@ const config = {
   experimental: {
     scrollRestoration: true,
     outputFileTracingExcludes: {
-      '/api/*': ['**node_modules/.pnpm/**'],
+      '/api/*': ['**/node_modules/.pnpm/**'],
     },
   },
   transpilePackages: [
