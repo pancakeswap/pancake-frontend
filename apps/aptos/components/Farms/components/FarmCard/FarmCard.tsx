@@ -88,6 +88,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -139,6 +141,9 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             onAddLiquidity={addLiquidityUrl}
             isCommunity={farm.isCommunity}
             auctionHostingEndDate={farm.auctionHostingEndDate}
+            multiplier={farm.multiplier}
+            farmCakePerSecond={farmCakePerSecond}
+            totalMultipliers={totalMultipliers}
           />
         )}
       </ExpandingWrapper>

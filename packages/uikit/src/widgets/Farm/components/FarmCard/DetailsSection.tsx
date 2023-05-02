@@ -1,8 +1,8 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useTooltip, HelpIcon, Link } from "@pancakeswap/uikit";
+import { useTooltip, HelpIcon } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
-import { LinkExternal } from "../../../../components/Link";
+import { Link, LinkExternal } from "../../../../components/Link";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Text } from "../../../../components/Text";
 
