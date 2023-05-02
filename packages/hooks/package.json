@@ -14,8 +14,12 @@
     "@pancakeswap/utils": "workspace:*",
     "next-themes": "^0.2.0"
   },
+  "peerDependencies": {
+    "styled-components": "^5.3.3"
+  },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",
+    "styled-components": "^5.3.3",
     "@types/styled-components": "5.1.26",
     "@types/react": "^18.0.17"
   }
