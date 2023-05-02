@@ -317,19 +317,21 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {t('Unlocks In')}
                 </Text>
-                <Text
-                  lineHeight="1"
-                  mt="5px"
-                  bold
-                  fontSize="20px"
-                  color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
-                >
-                  {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                <Flex>
+                  <Text
+                    lineHeight="1"
+                    mt="5px"
+                    bold
+                    fontSize="20px"
+                    color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
+                  >
+                    {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                  </Text>
                   {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
                   <span ref={tagTargetRefOfBurn}>
-                    <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                    <HelpIcon ml="4px" mt="4px" width="20px" height="20px" color="textSubtle" />
                   </span>
-                </Text>
+                </Flex>
                 <Text
                   height="20px"
                   fontSize="12px"
@@ -403,7 +405,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           </ActionContent>
         </ActionContainer>
         {isMobile && vaultPosition >= VaultPosition.LockedEnd && (
-          <Flex mb="24px" justifyContent="space-between">
+          <Flex mb="24px" mr="4px" ml="4px" justifyContent="space-between">
             <Text fontSize="14px" color="failure" as="span">
               {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
             </Text>
