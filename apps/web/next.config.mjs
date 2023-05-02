@@ -42,6 +42,10 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    // outputFileTracingRoot: path.join(__dirname, '../../'),
+    // outputFileTracingExcludes: {
+    //   '*': ['**@swc+core*', '**/@esbuild**'],
+    // },
   },
   transpilePackages: [
     '@pancakeswap/ui',

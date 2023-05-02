@@ -201,7 +201,7 @@ export function useFarmsUserInfo() {
     queries:
       data?.data.pids.map((pid) => ({
         staleTime: Infinity,
-        enable: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
+        enabled: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
         refetchInterval: 3_000,
         queryKey: [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
         queryFn: async () => {
