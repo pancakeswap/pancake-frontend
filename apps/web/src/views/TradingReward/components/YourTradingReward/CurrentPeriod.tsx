@@ -1,28 +1,59 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { Box, Flex, Card, Text, InfoIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Card, Text, InfoIcon, Message, MessageText, Pool } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import AddCakeButton from 'views/Pools/components/LockedPool/Buttons/AddCakeButton'
+import { DeserializedLockedVaultUser } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
+import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 
 interface CurrentPeriodProps {
-  estimateReward: number
-  currentTradingVolume: number
+  incentives: Incentives
   campaignClaimTime: number
+  userData: DeserializedLockedVaultUser
+  pool: Pool.DeserializedPool<Token>
+  rewardInfo: { [key in string]: RewardInfo }
+  currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
-  estimateReward,
-  currentTradingVolume,
+  pool,
+  userData,
+  incentives,
+  rewardInfo,
   campaignClaimTime,
+  currentUserCampaignInfo,
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
+
+  const { totalVolume, tradingFeeArr } = currentUserCampaignInfo
+  const { stakingToken, userData: poolUserData } = pool ?? {}
+  const {
+    lockEndTime,
+    lockStartTime,
+    balance: { cakeAsBigNumber },
+  } = userData
+
+  const currentBalance = useMemo(
+    () => (poolUserData?.stakingTokenBalance ? new BigNumber(poolUserData?.stakingTokenBalance ?? '0') : BIG_ZERO),
+    [poolUserData],
+  )
+  const currentRewardInfo = useMemo(
+    () => rewardInfo?.[currentUserCampaignInfo.campaignId],
+    [rewardInfo, currentUserCampaignInfo],
+  )
 
   const currentDate = new Date().getTime() / 1000
   const timeRemaining = campaignClaimTime - currentDate
@@ -30,10 +61,46 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
 
   const cakePriceBusd = usePriceCakeUSD()
 
-  const rewardInCake = useMemo(
-    () => new BigNumber(estimateReward).div(cakePriceBusd).toNumber(),
-    [estimateReward, cakePriceBusd],
+  const rewardInUSD = useRewardInUSD({
+    timeRemaining,
+    totalEstimateRewardUSD: currentUserCampaignInfo.totalEstimateRewardUSD,
+    canClaim: currentUserCampaignInfo.canClaim,
+    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
+    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  })
+
+  const rewardInCake = useRewardInCake({
+    timeRemaining,
+    totalEstimateRewardUSD: currentUserCampaignInfo.totalEstimateRewardUSD,
+    totalReward: currentUserCampaignInfo.canClaim,
+    cakePriceBusd,
+    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
+    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  })
+
+  // Additional Amount
+  const additionalAmount = useMemo(() => {
+    const totalMapCap = tradingFeeArr.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    return new BigNumber(totalMapCap).minus(currentUserCampaignInfo.totalEstimateRewardUSD).toNumber()
+  }, [currentUserCampaignInfo, tradingFeeArr])
+
+  // MAX REWARD CAP
+  const maxRewardCap = useMemo(() => {
+    const totalTradingFee = tradingFeeArr
+      .map((fee) => fee.tradingFee)
+      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    return new BigNumber(totalTradingFee).times(incentives.dynamicRate).toNumber()
+  }, [tradingFeeArr, incentives])
+
+  const maxRewardCapCakePrice = useMemo(
+    () => new BigNumber(maxRewardCap).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, maxRewardCap],
   )
+
+  const showMaxRewardCap = useMemo(() => {
+    const lockCake = cakeAsBigNumber.times(currentRewardInfo.rewardToLockRatio)
+    return new BigNumber(maxRewardCap).gt(lockCake)
+  }, [maxRewardCap, cakeAsBigNumber, currentRewardInfo])
 
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
@@ -46,8 +113,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
               {t('Your Current trading rewards')}
             </Text>
-            <Text bold fontSize="40px">{`$ ${formatNumber(estimateReward)}`}</Text>
-            <Text fontSize="14px" color="textSubtle">{`~ ${formatNumber(rewardInCake)} CAKE`}</Text>
+            <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
+            <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
             <Text fontSize="12px" color="textSubtle" mt="4px">
               {t('Available for claiming')}
               {timeRemaining > 0 ? (
@@ -72,7 +139,55 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                 {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
               </Text>
             </Text>
+            {additionalAmount > 0 && (
+              <Message variant="warning" mt="10px">
+                <MessageText>
+                  <Text as="span">{t('An additional amount of reward of')}</Text>
+                  <Text as="span" bold m="0 4px">{`$${formatNumber(additionalAmount)}`}</Text>
+                  <Text as="span" mr="4px">
+                    {t('can not be claim due to the max reward cap.')}
+                  </Text>
+                  <Text as="span" bold>
+                    {t('Lock more CAKE to keep earning.')}
+                  </Text>
+                </MessageText>
+              </Message>
+            )}
           </GreyCard>
+
+          {showMaxRewardCap && (
+            <GreyCard mt="24px">
+              <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+                {t('Your Current Max Reward Cap')}
+              </Text>
+              <Text bold color="failure" fontSize="24px">{`$${formatNumber(maxRewardCap)}`}</Text>
+              <Text color="failure" fontSize="14px">{`~${formatNumber(maxRewardCapCakePrice)} CAKE`}</Text>
+              <Text width="100%" lineHeight="120%">
+                <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                  {t('Equals to your amount of locked CAKE divided by')}
+                </Text>
+                <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
+                  {t('10.')}
+                </Text>
+                <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                  {t('Lock more CAKE to raise this limit')}
+                </Text>
+              </Text>
+              <AddCakeButton
+                scale="sm"
+                mt="10px"
+                width="fit-content"
+                padding="0 16px !important"
+                lockEndTime={lockEndTime}
+                lockStartTime={lockStartTime}
+                currentLockedAmount={cakeAsBigNumber}
+                stakingToken={stakingToken}
+                currentBalance={currentBalance}
+                stakingTokenBalance={currentBalance}
+              />
+            </GreyCard>
+          )}
+
           <GreyCard mt="24px">
             <Flex>
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
@@ -80,7 +195,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
               </Text>
               <InfoIcon color="secondary" width={16} height={16} ml="4px" />
             </Flex>
-            <Text bold fontSize="24px">{`$ ${formatNumber(currentTradingVolume)}`}</Text>
+            <Text bold fontSize="24px">{`$${formatNumber(totalVolume)}`}</Text>
           </GreyCard>
         </Box>
       </Card>

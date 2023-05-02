@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import Link from 'next/link'
 import { usePriceCakeUSD } from 'state/farms/hooks'
+import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 
 const Container = styled(Flex)`
   position: relative;
@@ -113,17 +113,14 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
 
   const currentRewardInfo = useMemo(() => rewardInfo?.[campaignId], [rewardInfo, campaignId])
 
-  const rewardInCake = useMemo(() => {
-    const estimateRewardUSD = new BigNumber(campaignInfoData.totalEstimateRewardUSD)
-    const reward = getBalanceAmount(new BigNumber(totalReward))
-    const rewardCakePrice = getBalanceAmount(
-      new BigNumber(currentRewardInfo?.rewardPrice ?? '0'),
-      currentRewardInfo?.rewardTokenDecimal ?? 0,
-    )
-    const totalCakeReward = reward.div(rewardCakePrice).isNaN() ? 0 : reward.div(rewardCakePrice).toNumber()
-
-    return timeRemaining > 0 ? estimateRewardUSD.div(cakePriceBusd).toNumber() : totalCakeReward
-  }, [campaignInfoData, cakePriceBusd, currentRewardInfo, timeRemaining, totalReward])
+  const rewardInCake = useRewardInCake({
+    timeRemaining,
+    totalEstimateRewardUSD: campaignInfoData.totalEstimateRewardUSD,
+    totalReward,
+    cakePriceBusd,
+    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
+    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  })
 
   return (
     <Container>

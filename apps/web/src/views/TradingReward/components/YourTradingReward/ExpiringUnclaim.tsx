@@ -1,21 +1,30 @@
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, Pool } from '@pancakeswap/uikit'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
+import { DeserializedLockedVaultUser } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
+import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface ExpiringUnclaimProps {
   campaignIds: Array<string>
-  estimateReward: number
-  currentTradingVolume: number
   campaignClaimTime: number
+  incentives: Incentives
+  pool: Pool.DeserializedPool<Token>
+  userData: DeserializedLockedVaultUser
+  rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
+  currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
 const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> = ({
   campaignIds,
-  estimateReward,
-  currentTradingVolume,
   campaignClaimTime,
+  userData,
+  pool,
+  incentives,
+  currentUserCampaignInfo,
+  rewardInfo,
   totalAvailableClaimData,
 }) => {
   return (
@@ -27,11 +36,14 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
       flexDirection={['column', 'column', 'column', 'row']}
     >
       <CurrentPeriod
-        estimateReward={estimateReward}
-        currentTradingVolume={currentTradingVolume}
+        pool={pool}
+        userData={userData}
+        incentives={incentives}
+        rewardInfo={rewardInfo}
         campaignClaimTime={campaignClaimTime}
+        currentUserCampaignInfo={currentUserCampaignInfo}
       />
-      <TotalPeriod campaignIds={campaignIds} totalAvailableClaimData={totalAvailableClaimData} />
+      {/* <TotalPeriod campaignIds={campaignIds} totalAvailableClaimData={totalAvailableClaimData} /> */}
     </Flex>
   )
 }

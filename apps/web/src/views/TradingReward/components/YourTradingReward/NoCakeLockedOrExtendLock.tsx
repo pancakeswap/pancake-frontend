@@ -3,10 +3,9 @@ import { Box, Text, Flex, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
-import { multiplyPriceByAmount } from 'utils/prices'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Actions from 'views/TradingReward/components/YourTradingReward/Actions'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
@@ -56,7 +55,7 @@ interface NoCakeLockedOrExtendLockProps {
   isLockPosition: boolean
   isValidLockDuration: boolean
   minLockWeekInSeconds: number
-  // hasClaimBalance: boolean
+  hasClaimBalance: boolean
   totalAvailableClaimData: UserCampaignInfoDetail[]
 }
 
@@ -65,25 +64,22 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   userData,
   isLockPosition,
   minLockWeekInSeconds,
-  // hasClaimBalance,
+  hasClaimBalance,
   isValidLockDuration,
   totalAvailableClaimData,
 }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = useCakeBusdPrice()
-  const {
-    stakingToken,
-    userData: { stakingTokenBalance },
-  } = pool ?? {}
+  const cakePriceBusd = usePriceCakeUSD()
+  const { stakingToken, userData: poolUserData } = pool ?? {}
   const {
     lockEndTime,
     lockStartTime,
-    balance: { cakeAsBigNumber, cakeAsNumberBalance },
+    balance: { cakeAsBigNumber, cakeAsNumberBalance, cakeAsDisplayBalance },
   } = userData
 
   const currentBalance = useMemo(
-    () => (stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO),
-    [stakingTokenBalance],
+    () => (poolUserData?.stakingTokenBalance ? new BigNumber(poolUserData?.stakingTokenBalance ?? '0') : BIG_ZERO),
+    [poolUserData],
   )
 
   const { remainingTime, secondDuration } = useUserDataInVaultPresenter({
@@ -97,13 +93,13 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   )
 
   const cakePrice = useMemo(
-    () => multiplyPriceByAmount(cakePriceBusd, cakeAsNumberBalance),
+    () => new BigNumber(cakeAsNumberBalance).times(cakePriceBusd).toNumber(),
     [cakePriceBusd, cakeAsNumberBalance],
   )
 
   return (
     <Flex flexDirection={['column', 'column', 'column', 'row']}>
-      {/* {hasClaimBalance && <NotQualified totalAvailableClaimData={totalAvailableClaimData} />} */}
+      {hasClaimBalance && <NotQualified totalAvailableClaimData={totalAvailableClaimData} />}
       <Flex flexDirection="column" width={['100%', '100%', '100%', '354px']}>
         {!isOnlyNeedExtendLock ? (
           <>
@@ -154,7 +150,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                     {`CAKE ${t('Locked')}`}
                   </Text>
                   <Text bold fontSize="20px" lineHeight="110%" color={cakeAsNumberBalance > 0 ? 'text' : 'failure'}>
-                    {formatNumber(cakeAsNumberBalance)}
+                    {cakeAsDisplayBalance}
                   </Text>
                   <Text fontSize="12px" lineHeight="110%" color={cakeAsNumberBalance > 0 ? 'text' : 'failure'}>
                     {`~$${formatNumber(cakePrice)} USD`}

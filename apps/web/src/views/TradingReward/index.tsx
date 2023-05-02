@@ -30,11 +30,17 @@ const TradingReward = () => {
     [isAllTradingRewardPairDataFetching, allTradingRewardPairData, campaignId],
   )
 
-  useEffect(() => {
-    if (!isAllTradingRewardPairDataFetching && !allTradingRewardPairData.campaignIds.includes(campaignId)) {
-      router.push('/')
-    }
-  }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
+  // useEffect(() => {
+  //   if (!isAllTradingRewardPairDataFetching) {
+  //     if (!allTradingRewardPairData.campaignIds.includes(campaignId)) {
+  //       console.log('kick', {
+  //         isFetching: !isAllTradingRewardPairDataFetching,
+  //         includeCampaignId: !allTradingRewardPairData.campaignIds.includes(campaignId)
+  //       })
+  //       router.push('/')
+  //     }
+  //   }
+  // }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
 
   const currentUserIncentive = useMemo(
     () =>
@@ -72,15 +78,22 @@ const TradingReward = () => {
         incentives={currentUserIncentive}
         qualification={allTradingRewardPairData.qualification}
         campaignIds={allTradingRewardPairData.campaignIds}
+        rewardInfo={allTradingRewardPairData.rewardInfo}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
       />
-      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
+      <CurrentRewardPool
+        campaignId={campaignId}
+        incentives={currentUserIncentive}
+        campaignInfoData={campaignInfoData}
+        rewardInfo={allTradingRewardPairData.rewardInfo}
+      />
       <HowToEarn />
       <RewardsBreakdown
         campaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
+        rewardInfo={allTradingRewardPairData.rewardInfo}
       />
       <Questions />
     </Box>

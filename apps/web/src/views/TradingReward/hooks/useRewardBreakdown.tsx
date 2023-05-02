@@ -89,8 +89,9 @@ const useRewardBreakdown = ({
                 const rewardEarned =
                   incentive.campaignClaimTime - currentDate > 0
                     ? user?.estimateRewardUSD || 0
-                    : new BigNumber(getBalanceAmount(new BigNumber(canClaimResponse)).times(rewardPrice)).toNumber() ||
-                      0
+                    : new BigNumber(
+                        getBalanceAmount(new BigNumber(canClaimResponse.toString())).times(rewardPrice),
+                      ).toNumber() || 0
 
                 return {
                   address: volume.pool,

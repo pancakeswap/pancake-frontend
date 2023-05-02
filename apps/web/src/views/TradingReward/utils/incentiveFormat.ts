@@ -4,12 +4,11 @@ export const incentiveFormat = (incentive) => {
   const [
     totalRewardUnclaimed,
     totalReward,
-    totalVolume,
+    totalTradingFee,
     proofRoot,
     campaignStart,
     campaignClaimTime,
     campaignClaimEndTime,
-    needProfileIsActivated,
     isActivated,
     isDynamicReward,
     dynamicRate,
@@ -17,12 +16,11 @@ export const incentiveFormat = (incentive) => {
 
   return {
     proofRoot,
-    dynamicRate,
     isActivated,
     isDynamicReward,
-    needProfileIsActivated,
     totalReward: new BigNumber(totalReward.toString()).toJSON(),
-    totalVolume: new BigNumber(totalVolume.toString()).toJSON(),
+    totalTradingFee: new BigNumber(totalTradingFee.toString()).toNumber(),
+    dynamicRate: new BigNumber(dynamicRate.toString()).toNumber(),
     campaignStart: new BigNumber(campaignStart.toString()).toNumber(),
     campaignClaimTime: new BigNumber(campaignClaimTime.toString()).toNumber(),
     campaignClaimEndTime: new BigNumber(campaignClaimEndTime.toString()).toNumber(),

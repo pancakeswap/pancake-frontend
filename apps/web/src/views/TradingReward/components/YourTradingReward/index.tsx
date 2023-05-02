@@ -9,7 +9,7 @@ import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useDeserializedPoolByVaultKey, useCakeVault } from 'state/pools/hooks'
 import { useCakeVaultPool } from 'views/TradingReward/hooks/useCakeVaultPool'
-import { Incentives, Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
@@ -156,6 +156,7 @@ interface YourTradingRewardProps {
   currentUserCampaignInfo: UserCampaignInfoDetail
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
+  rewardInfo: { [key in string]: RewardInfo }
 }
 
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
@@ -165,13 +166,14 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   qualification,
   totalAvailableClaimData,
   currentUserCampaignInfo,
+  rewardInfo,
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
 
   const { thresholdLockTime } = qualification
-  const { totalEstimateRewardUSD, totalVolume } = currentUserCampaignInfo ?? {}
+  const { totalEstimateRewardUSD } = currentUserCampaignInfo ?? {}
 
   useCakeVaultPool()
 
@@ -179,13 +181,13 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { userData } = useCakeVault() as DeserializedLockedCakeVault
   const vaultPosition = getVaultPosition(userData)
 
-  // const hasClaimBalance = useMemo(() => {
-  //   const claimBalance = totalAvailableClaimData
-  //     .filter((i) => new BigNumber(i.canClaim).gt(0) && !i.userClaimedIncentives)
-  //     .map((available) => available.canClaim)
-  //     .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-  //   return claimBalance > 0
-  // }, [totalAvailableClaimData])
+  const hasClaimBalance = useMemo(() => {
+    const claimBalance = totalAvailableClaimData
+      .filter((i) => new BigNumber(i.canClaim).gt(0) && !i.userClaimedIncentives)
+      .map((available) => available.canClaim)
+      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    return claimBalance > 0
+  }, [totalAvailableClaimData])
 
   const isLockPosition = useMemo(
     () => Boolean(userData?.locked) && vaultPosition === VaultPosition.Locked,
@@ -255,7 +257,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
               userData={userData}
               isLockPosition={isLockPosition}
               minLockWeekInSeconds={minLockWeekInSeconds}
-              // hasClaimBalance={hasClaimBalance}
+              hasClaimBalance={hasClaimBalance}
               isValidLockDuration={isValidLockDuration}
               totalAvailableClaimData={totalAvailableClaimData}
             />
@@ -274,16 +276,18 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       )
     }
 
-    // return (
-    //   <ExpiringUnclaim
-    //     campaignIds={campaignIds}
-    //     estimateReward={totalEstimateRewardUSD}
-    //     currentTradingVolume={totalVolume}
-    //     totalAvailableClaimData={totalAvailableClaimData}
-    //     campaignClaimTime={incentives.campaignClaimTime}
-    //   />
-    // )
-    return null
+    return (
+      <ExpiringUnclaim
+        pool={pool}
+        userData={userData}
+        campaignIds={campaignIds}
+        incentives={incentives}
+        rewardInfo={rewardInfo}
+        currentUserCampaignInfo={currentUserCampaignInfo}
+        totalAvailableClaimData={totalAvailableClaimData}
+        campaignClaimTime={incentives.campaignClaimTime}
+      />
+    )
   }
 
   return (

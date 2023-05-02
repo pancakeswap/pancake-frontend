@@ -14,17 +14,16 @@ export enum RewardStatus {
 
 export interface Incentives {
   campaignId?: string
-  campaignClaimEndTime: number
-  campaignClaimTime: number
+  totalRewardUnclaimed: string
+  totalReward: string
+  totalTradingFee: number
+  proofRoot: string
   campaignStart: number
-  dynamicRate: number
+  campaignClaimTime: number
+  campaignClaimEndTime: number
   isActivated: boolean
   isDynamicReward: boolean
-  needProfileIsActivated: boolean
-  proofRoot: string
-  totalReward: string
-  totalRewardUnclaimed: string
-  totalVolume: string
+  dynamicRate: number
 }
 
 export interface Qualification {
