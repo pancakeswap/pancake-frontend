@@ -7,7 +7,7 @@
   "private": true,
   "peerDependencies": {
     "date-fns": "^2.29.3",
-    "styled-components": "^5.3.10",
+    "styled-components": "^5.3.3",
     "lodash": "^4.17.21",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -16,6 +16,7 @@
     "@pancakeswap/aptos-swap-sdk": "workspace:*"
   },
   "devDependencies": {
+    "styled-components": "^5.3.3",
     "@types/styled-components": "^5.1.26",
     "ethers": "^5.0.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
