@@ -86,7 +86,7 @@
     "local-storage": "^2.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "next": "13.2.4",
+    "next": "13.3.4",
     "next-axiom": "^0.13.0",
     "next-themes": "^0.2.0",
     "next-seo": "^5.15.0",
@@ -121,7 +121,7 @@
   "devDependencies": {
     "@types/qs": "^6.0.0",
     "@types/uuid": "^8.0.0",
-    "@next/eslint-plugin-next": "13.2.4",
+    "@next/eslint-plugin-next": "13.3.4",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^13.3.0",
