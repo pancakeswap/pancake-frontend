@@ -38,6 +38,7 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    outputFileTracingIgnores: ['**node_modules/.pnpm/**'],
   },
   transpilePackages: [
     '@pancakeswap/ui',
