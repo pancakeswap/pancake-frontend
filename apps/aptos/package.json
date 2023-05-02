@@ -19,6 +19,7 @@
     "@pancakeswap/farms": "*",
     "@pancakeswap/uikit": "*",
     "@pancakeswap/ui-wallets": "*",
+    "@pancakeswap/localization": "*",
     "aptos": "^1.3.16",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
