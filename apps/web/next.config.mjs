@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { withSentryConfig } from '@sentry/nextjs'
 import { withAxiom } from 'next-axiom'
+import path from 'path'
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 
@@ -38,10 +39,10 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
-      '/api/*': ['**/node_modules/.pnpm/**', '**/@swc/core*', '**/@esbuild/**'],
+      '*': ['**@swc/core*', '**/@esbuild/**'],
     },
-    outputFileTracingIgnores: ['**/@swc/core*', '**/@esbuild/**'],
   },
   transpilePackages: [
     '@pancakeswap/ui',
