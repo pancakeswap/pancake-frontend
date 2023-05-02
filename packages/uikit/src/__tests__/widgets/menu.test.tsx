@@ -33,6 +33,7 @@ it("renders correctly", () => {
   const { asFragment } = renderWithProvider(
     <BrowserRouter>
       <Menu
+        chainId={56}
         isDark={false}
         toggleTheme={noop}
         langs={langs}

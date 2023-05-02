@@ -362,7 +362,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             'desc',
           )
         case 'latest':
-          return orderBy(farms, (farm) => Number(farm.pid), 'desc')
+          return orderBy(
+            orderBy(farms, (farm) => Number(farm.pid), 'desc'),
+            ['version'],
+            'desc',
+          )
         default:
           return farms
       }
