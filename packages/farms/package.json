@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
-    "tsx": "^3.12.1"
+    "tsx": "^3.12.1",
+    "wrangler": "2.15.0"
   },
   "dependencies": {
     "date-fns": "^2.29.3",

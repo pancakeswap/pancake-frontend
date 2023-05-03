@@ -1090,6 +1090,9 @@ importers:
       tsx:
         specifier: ^3.12.1
         version: 3.12.6
+      wrangler:
+        specifier: 2.15.0
+        version: 2.15.0
 
   packages/hooks:
     dependencies:
@@ -1124,12 +1127,6 @@ importers:
 
   packages/localization:
     dependencies:
-      '@pancakeswap/hooks':
-        specifier: workspace:*
-        version: link:../hooks
-      '@pancakeswap/utils':
-        specifier: workspace:*
-        version: link:../utils
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1140,6 +1137,12 @@ importers:
         specifier: ^2.2.0
         version: 2.4.0
     devDependencies:
+      '@pancakeswap/hooks':
+        specifier: workspace:*
+        version: link:../hooks
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@types/lodash':
         specifier: ^4.14.178
         version: 4.14.186
