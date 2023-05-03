@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { parseUnits } from "@ethersproject/units";
+import { parseUnits } from "ethers/lib/utils";
 import { formatBigNumber } from "@pancakeswap/utils/formatBalance";
 import { trimTrailZero } from "@pancakeswap/utils/trimTrailZero";
 import { Flex } from "../../components/Box";

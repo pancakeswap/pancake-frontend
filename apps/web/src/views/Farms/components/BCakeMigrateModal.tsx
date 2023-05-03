@@ -1,4 +1,4 @@
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,

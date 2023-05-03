@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { Contract } from '@ethersproject/contracts'
 import { Provider } from '@ethersproject/providers'
-import type { Signer } from '@ethersproject/abstract-signer'
+import type { Signer } from 'ethers'
 
 import { getPoolsConfig } from '../constants'
 import { isLegacyPool } from './isLegacyPool'

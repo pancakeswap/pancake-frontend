@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/react";
+import * as Sentry from "@sentry/nextjs";
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Price } from "@pancakeswap/sdk";
 import { FeeAmount } from "@pancakeswap/v3-sdk";

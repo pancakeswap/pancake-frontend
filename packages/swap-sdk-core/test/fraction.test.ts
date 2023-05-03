@@ -1,3 +1,4 @@
+import {} from 'vitest/globals'
 import { Fraction } from '../src'
 
 describe('Fraction', () => {

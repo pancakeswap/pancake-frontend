@@ -23,11 +23,16 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
-    "prepublishOnly": "yarn run build",
+    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@pancakeswap/swap-sdk-core": "*"
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "big.js": "^5.2.2",
+    "decimal.js-light": "^2.5.0",
+    "tiny-invariant": "^1.1.0",
+    "tiny-warning": "^1.0.3",
+    "toformat": "^2.0.0"
   },
   "peerDependencies": {
     "aptos": "^1.3.14"

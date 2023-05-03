@@ -1,6 +1,8 @@
-import { CopyIcon, IconButton, SvgProps, useTooltip } from "@pancakeswap/uikit";
 import { ElementType, useState } from "react";
 import { copyText } from "./copyText";
+import { CopyIcon, SvgProps } from "../Svg";
+import { useTooltip } from "../../hooks";
+import { IconButton } from "../Button";
 
 interface CopyButtonProps extends SvgProps {
   text: string;

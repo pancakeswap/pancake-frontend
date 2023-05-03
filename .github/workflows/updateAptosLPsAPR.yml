@@ -5,7 +5,7 @@ on:
   schedule:
     # 23:15 UTC
     # GitHub Actions might be delayed if time is at exact hour
-    - cron: "15 23 * * *"
+    - cron: '15 23 * * *'
 
 jobs:
   updateLPsAPRs:
@@ -15,19 +15,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2.2.4
+      - name: Set up node@18
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          cache: 'pnpm'
+          node-version: 18
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm i --ignore-scripts
 
       - name: Fetch and save Aptos LP APR data
-        run: yarn updateAptosLPsAPR
+        run: pnpm updateAptosLPsAPR
 
       - name: Format
-        run: yarn prettier --write "apps/aptos/config/constants/lpAprs/*.{ts,json}"
+        run: pnpm prettier --write "apps/aptos/config/constants/lpAprs/*.{ts,json}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
@@ -35,8 +52,8 @@ jobs:
           author: PancakeSwap Bot <pancakeswap-bot@protonmail.com>
           token: ${{ secrets.LP_APR_PANCAKE_BOT }}
           delete-branch: true
-          commit-message: "chore: Update Aptos LP APRs for Farms"
-          title: "chore: Update Aptos LP APRs for Farms"
+          commit-message: 'chore: Update Aptos LP APRs for Farms'
+          title: 'chore: Update Aptos LP APRs for Farms'
           body: |
             - Update Aptos LP APRs for Farms
 

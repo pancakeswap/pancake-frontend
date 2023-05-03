@@ -1,6 +1,5 @@
 import { Provider, JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
-import { Signer } from '@ethersproject/abstract-signer'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber, Signer } from 'ethers'
 import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'

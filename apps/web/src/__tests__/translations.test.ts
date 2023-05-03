@@ -71,6 +71,7 @@ describe('Check translations available', () => {
   function throughDirectory(directory, includeJs = false) {
     fs.readdirSync(directory).forEach((file) => {
       const absolute = Path.join(directory, file)
+      if (absolute.includes('node_modules')) return null
       if (fs.statSync(absolute).isDirectory()) return throughDirectory(absolute)
       if (
         (absolute.includes('.tsx') || absolute.includes('.ts') || (includeJs && absolute.includes('.js'))) &&

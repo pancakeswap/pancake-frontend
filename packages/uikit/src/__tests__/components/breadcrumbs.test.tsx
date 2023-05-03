@@ -1,4 +1,4 @@
-import React from "react";
+import {} from "vitest/globals";
 import { renderWithProvider } from "../../testHelpers";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 

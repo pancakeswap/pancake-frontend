@@ -1,4 +1,6 @@
-import { StaticJsonRpcProvider } from '@ethersproject/providers'
+import { providers } from 'ethers'
+
+const { StaticJsonRpcProvider } = providers
 
 export const bscProvider = new StaticJsonRpcProvider(
   {
