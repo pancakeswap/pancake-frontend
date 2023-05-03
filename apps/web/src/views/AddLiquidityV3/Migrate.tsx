@@ -32,7 +32,7 @@ import { CurrencyAmount, ERC20Token, Fraction, Pair, Price, WNATIVE, ZERO } from
 import { AtomBox } from '@pancakeswap/ui'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
-import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
+import { useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -109,6 +109,8 @@ function V2PairMigrate({
   const router = useRouter()
 
   const { reserve0, reserve1 } = pair
+
+  const { signTypedDataAsync } = useSignTypedData()
 
   const token0Value = useMemo(
     () =>
@@ -257,7 +259,6 @@ function V2PairMigrate({
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
     ROUTER_ADDRESS[chainId],
   )
-  const library = useWeb3LibraryContext()
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address, false)
 
@@ -275,7 +276,7 @@ function V2PairMigrate({
       name: 'Pancake LPs',
       version: '1',
       chainId,
-      verifyingContract: pair.liquidityToken.address,
+      verifyingContract: pair.liquidityToken.address as `0x${string}`,
     }
     const Permit = [
       { name: 'owner', type: 'address' },
@@ -291,17 +292,17 @@ function V2PairMigrate({
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber(),
     }
-    const data = JSON.stringify({
+
+    signTypedDataAsync({
+      domain,
+      // @ts-ignore
+      primaryType: 'Permit',
       types: {
         EIP712Domain,
         Permit,
       },
-      domain,
-      primaryType: 'Permit',
-      message,
+      value: message,
     })
-    library
-      .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
       .then((signature) => {
         setSignatureData({
@@ -325,7 +326,7 @@ function V2PairMigrate({
     migrator.address,
     pairBalance,
     deadline,
-    library,
+    signTypedDataAsync,
     approveCallback,
   ])
 
