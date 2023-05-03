@@ -1,4 +1,4 @@
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import {
   ButtonMenu,
   ButtonMenuItem,

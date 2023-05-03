@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { Currency, CurrencyAmount, Fraction, Pair, Percent, Token } from '@pancakeswap/sdk'
 import {
   InjectedModalProps,

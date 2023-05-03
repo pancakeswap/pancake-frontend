@@ -5,9 +5,18 @@
   "description": "A minimal internationalization library",
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",
+  "sideEffects": false,
   "private": true,
   "scripts": {},
   "dependencies": {
+    "tslib": "^2.2.0",
+    "@pancakeswap/utils": "workspace:*",
+    "@pancakeswap/hooks": "workspace:*",
+    "lodash": "^4.17.21",
     "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/lodash": "^4.14.178"
   }
 }

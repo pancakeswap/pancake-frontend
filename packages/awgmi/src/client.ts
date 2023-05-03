@@ -36,6 +36,7 @@ export function createClient<TProvider extends AptosClient>({
   const client = createCoreClient<TProvider>(config)
   if (persister)
     persistQueryClient({
+      // @ts-ignore
       queryClient,
       persister,
       dehydrateOptions: {

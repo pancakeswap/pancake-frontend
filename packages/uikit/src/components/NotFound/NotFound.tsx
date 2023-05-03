@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { NextSeo } from "next-seo";
-import { Button, Heading, Text, LogoIcon } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
 import Link from "next/link";
+import { LogoIcon } from "../Svg";
+import { Heading } from "../Heading";
+import { Text } from "../Text";
+import { Button } from "../Button";
 
 const StyledNotFound = styled.div`
   align-items: center;

@@ -1,4 +1,4 @@
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { getNonBscVaultContractFee, MessageTypes } from 'views/Farms/hooks/getNonBscVaultFee'
