@@ -9,9 +9,15 @@ import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyCon
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
+import {
+  DeserializedFarm,
+  DeserializedFarmsState,
+  DeserializedFarmUserData,
+  createFarmFetcher,
+} from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { multicallv2 } from 'utils/multicall'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -162,3 +168,5 @@ export const useFarmsV2Data = () => {
     }
   })
 }
+
+export const farmFetcher = createFarmFetcher(multicallv2)

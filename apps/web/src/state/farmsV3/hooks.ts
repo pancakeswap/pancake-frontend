@@ -47,7 +47,6 @@ const fallback: Awaited<ReturnType<typeof farmFetcherV3.fetchFarms>> = {
   cakePerSecond: '0',
   totalAllocPoint: null,
   latestPeriodCakePerSecond: null,
-  PRECISION: null,
 }
 
 const API_FLAG = false

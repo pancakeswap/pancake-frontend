@@ -121,11 +121,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
     const farmCakePerSecond =
-      farm.allocPoint && totalRegularAllocPoint && cakePerBlock
-        ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
-            ethersToBigNumber(cakePerBlock).toNumber()) /
-          1e8
-        : 0
+      farm.poolWeight && cakePerBlock ? (Number(farm.poolWeight) * ethersToBigNumber(cakePerBlock).toNumber()) / 1e8 : 0
 
     const row: RowProps = {
       apr: {

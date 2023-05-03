@@ -48,7 +48,7 @@ const FarmsPage = () => {
     : '-'
 
   const { data: farmV3 } = useFarmsV3Public()
-  const { totalAllocPoint, latestPeriodCakePerSecond, PRECISION } = farmV3
+  const { totalAllocPoint, cakePerSecond } = farmV3
   const totalMultipliersV3 = totalAllocPoint ? (ethersToBigNumber(totalAllocPoint).toNumber() / 10).toString() : '-'
 
   return (
@@ -92,13 +92,7 @@ const FarmsPage = () => {
         }
 
         // V3
-        const farmCakePerSecond =
-          farm.allocPoint && totalAllocPoint && latestPeriodCakePerSecond
-            ? ((ethersToBigNumber(farm.allocPoint).toNumber() / ethersToBigNumber(totalAllocPoint).toNumber()) *
-                ethersToBigNumber(latestPeriodCakePerSecond).toNumber()) /
-              PRECISION.toNumber() /
-              1e18
-            : 0
+        const farmCakePerSecond = farm.poolWeight && cakePerSecond ? Number(farm.poolWeight) * Number(cakePerSecond) : 0
 
         return (
           <FarmV3Card
