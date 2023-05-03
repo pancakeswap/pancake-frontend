@@ -1,5 +1,5 @@
-/* eslint-disable no-console, camelcase, @typescript-eslint/no-non-null-assertion */
-import { JSBI, ChainId } from '@pancakeswap/sdk'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { ChainId } from '@pancakeswap/sdk'
 import { encodeFunctionData, PublicClient, decodeFunctionResult } from 'viem'
 import stats from 'stats-lite'
 
@@ -57,7 +57,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
   public async callSameFunctionOnMultipleContracts<TFunctionParams extends any[] | undefined, TReturn = any>(
     params: CallSameFunctionOnMultipleContractsParams<TFunctionParams>,
   ): Promise<{
-    blockNumber: JSBI
+    blockNumber: bigint
     results: Result<TReturn>[]
   }> {
     const { addresses, functionName, functionParams, providerConfig, abi } = params
@@ -89,8 +89,8 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       args: [calls],
       blockNumber: blockNumberOverride
         ? isPromise(blockNumberOverride)
-          ? BigInt(JSBI.toNumber(JSBI.BigInt(await blockNumberOverride)))
-          : BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride)))
+          ? BigInt(Number(await blockNumberOverride))
+          : BigInt(Number(blockNumberOverride))
         : undefined,
     })
 
@@ -131,13 +131,13 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
     // )
 
-    return { blockNumber: JSBI.BigInt(blockNumber.toString()), results }
+    return { blockNumber, results }
   }
 
   public async callSameFunctionOnContractWithMultipleParams<TFunctionParams extends any[] | undefined, TReturn>(
     params: CallSameFunctionOnContractWithMultipleParams<TFunctionParams, PancakeMulticallConfig>,
   ): Promise<{
-    blockNumber: JSBI
+    blockNumber: bigint
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
   }> {
@@ -172,7 +172,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
-      blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
+      blockNumber: blockNumberOverride ? BigInt(Number(blockNumberOverride)) : undefined,
     })
 
     const results: Result<TReturn>[] = []
@@ -211,7 +211,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `Results for multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params. Results as of block ${blockNumber}`,
     // )
     return {
-      blockNumber: JSBI.BigInt(blockNumber.toString()),
+      blockNumber,
       results,
       approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
     }
@@ -220,7 +220,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
   public async callMultipleFunctionsOnSameContract<TFunctionParams extends any[] | undefined, TReturn>(
     params: CallMultipleFunctionsOnSameContractParams<TFunctionParams, PancakeMulticallConfig>,
   ): Promise<{
-    blockNumber: JSBI
+    blockNumber: bigint
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
   }> {
@@ -255,7 +255,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
-      blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
+      blockNumber: blockNumberOverride ? BigInt(Number(blockNumberOverride)) : undefined,
     })
     // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
     //   blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
@@ -298,7 +298,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   } different sets of params. Results as of block ${blockNumber}`,
     // )
     return {
-      blockNumber: JSBI.BigInt(blockNumber.toString()),
+      blockNumber,
       results,
       approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
     }

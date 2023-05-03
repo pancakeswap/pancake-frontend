@@ -1,4 +1,4 @@
-import { formatUnits } from '@ethersproject/units'
+import { formatUnits } from 'ethers/lib/utils'
 import { getPoolsConfig, getPoolContractBySousId, SUPPORTED_CHAIN_IDS, isLegacyPool } from '@pancakeswap/pools'
 import { describe, it } from 'vitest'
 import { provider } from 'utils/wagmi'

@@ -1,6 +1,6 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
-import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FarmConfigV3, SerializedFarmConfig } from '..'
 
 export const farmsV3 = [
   {

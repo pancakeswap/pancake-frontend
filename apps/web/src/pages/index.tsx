@@ -1,4 +1,4 @@
-import { formatEther } from '@ethersproject/units'
+import { formatEther } from 'ethers/lib/utils'
 import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'

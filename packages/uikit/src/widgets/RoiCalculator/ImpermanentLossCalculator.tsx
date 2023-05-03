@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo, memo } from "react";
-import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
 import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
@@ -33,7 +33,7 @@ interface Props {
   currencyBUsdPrice?: number;
   tickLower?: number;
   tickUpper?: number;
-  sqrtRatioX96?: JSBI;
+  sqrtRatioX96?: bigint;
   lpReward?: number;
   cakeReward?: number;
   isFarm?: boolean;

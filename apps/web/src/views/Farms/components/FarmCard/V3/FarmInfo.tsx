@@ -1,4 +1,4 @@
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { BigNumber as EthersBigNumber } from 'ethers'
 import { Farm as FarmUI, Flex, ModalV2 } from '@pancakeswap/uikit'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'

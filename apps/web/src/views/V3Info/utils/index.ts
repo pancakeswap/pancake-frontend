@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { getAddress } from '@ethersproject/address'
+import { getAddress } from 'ethers/lib/utils'
 
 export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined

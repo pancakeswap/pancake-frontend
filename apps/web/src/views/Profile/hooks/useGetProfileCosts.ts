@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { Zero } from '@ethersproject/constants'
 import { useTranslation } from '@pancakeswap/localization'
 import { multicallv2 } from 'utils/multicall'

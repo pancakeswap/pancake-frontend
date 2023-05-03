@@ -1,4 +1,4 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
+import { providers } from 'ethers'
 import { bscTokens } from '@pancakeswap/tokens'
 import BigNumber from 'bignumber.js'
 import cakeVaultAbiV2 from 'config/abi/cakeVaultV2.json'
@@ -12,6 +12,8 @@ import { convertSharesToCake } from 'views/Pools/helpers'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
+
+const { JsonRpcProvider } = providers
 
 export const isCoreProposal = (proposal: Proposal) => {
   return ADMINS.includes(proposal.author.toLowerCase())

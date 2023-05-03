@@ -1,5 +1,5 @@
 /* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
-import { ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Abi, Address } from 'abitype'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
@@ -47,8 +47,8 @@ type QuoteBatchSuccess = {
   order: number
   inputs: [string, string][]
   results: {
-    blockNumber: JSBI
-    results: Result<[JSBI, JSBI[], number[], JSBI]>[]
+    blockNumber: bigint
+    results: Result<[bigint, bigint[], number[], bigint]>[]
     approxGasUsedPerSuccessCall: number
   }
 }
@@ -59,8 +59,8 @@ type QuoteBatchFailed = {
   inputs: [string, string][]
   reason: Error
   results?: {
-    blockNumber: JSBI
-    results: Result<[JSBI, JSBI[], number[], JSBI]>[]
+    blockNumber: bigint
+    results: Result<[bigint, bigint[], number[], bigint]>[]
     approxGasUsedPerSuccessCall: number
   }
 }
@@ -190,6 +190,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                 }
 
                 // QuoteChunk is pending or failed, so we try again
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                 const { inputs, order } = quoteState
 
                 try {
@@ -197,7 +198,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
                   const results = await multicall2Provider.callSameFunctionOnContractWithMultipleParams<
                     CallInputs,
-                    [JSBI, JSBI[], number[], JSBI] // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
+                    [bigint, bigint[], number[], bigint] // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
                   >({
                     address: getQuoterAddress(chainId),
                     abi,
@@ -316,11 +317,10 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                       //   } times. Rolling back block number by ${rollbackBlockOffset} for next retry`,
                       // )
                       providerConfig.blockNumber = providerConfig.blockNumber
-                        ? JSBI.add(JSBI.BigInt(await providerConfig.blockNumber), JSBI.BigInt(rollbackBlockOffset))
-                        : JSBI.add(
-                            JSBI.BigInt(await (await chainProvider.getBlockNumber()).toString()),
-                            JSBI.BigInt(rollbackBlockOffset),
-                          )
+                        ? // eslint-disable-next-line no-await-in-loop
+                          BigInt(providerConfig.blockNumber) + BigInt(rollbackBlockOffset)
+                        : // eslint-disable-next-line no-await-in-loop
+                          (await chainProvider.getBlockNumber()) + BigInt(rollbackBlockOffset)
 
                       retryAll = true
                       blockHeaderRolledBack = true
@@ -338,6 +338,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                   multicallChunk = gasErrorFailureOverride.multicallChunk
                   retryAll = true
                 } else {
+                  // eslint-disable-next-line no-lonely-if
                   if (!haveRetriedForUnknownReason) {
                     haveRetriedForUnknownReason = true
                   }
@@ -348,7 +349,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             let successRateError: Error | void
             if (failedQuoteStates.length === 0) {
               successRateError = validateSuccessRate(
-                quoteStates.reduce<Result<[JSBI, JSBI[], number[], JSBI]>[]>(
+                quoteStates.reduce<Result<[bigint, bigint[], number[], bigint]>[]>(
                   (acc, cur) => (cur.status === 'success' ? [...acc, ...(cur.results?.results || [])] : acc),
                   [],
                 ),
@@ -371,8 +372,10 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             if (retryAll) {
               // console.log(`Attempt ${attemptNumber}. Resetting all requests to pending for next attempt.`)
 
+              // eslint-disable-next-line @typescript-eslint/no-shadow
               const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
 
+              // eslint-disable-next-line @typescript-eslint/no-shadow
               const inputsChunked = chunk(inputs, normalizedChunk)
               quoteStates = inputsChunked.map((inputChunk, index) => {
                 return {
@@ -396,7 +399,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
             return {
               results: flatMap(callResults, (result) => result.results),
-              blockNumber: JSBI.BigInt(successfulQuoteStates[0]!.results.blockNumber),
+              blockNumber: BigInt(successfulQuoteStates[0]!.results.blockNumber),
               approxGasUsedPerSuccessCall: stats.percentile(
                 callResults.map((result) => result.approxGasUsedPerSuccessCall),
                 100,
@@ -462,7 +465,7 @@ function partitionQuotes(
 }
 
 function validateSuccessRate(
-  allResults: Result<[JSBI, JSBI[], number[], JSBI]>[],
+  allResults: Result<[bigint, bigint[], number[], bigint]>[],
   haveRetriedForSuccessRate: boolean,
   quoteMinSuccessRate: number,
 ): void | SuccessRateError {
@@ -479,6 +482,7 @@ function validateSuccessRate(
       return
     }
 
+    // eslint-disable-next-line consistent-return
     return new SuccessRateError(`Quote success rate below threshold of ${quoteMinSuccessRate}: ${successRate}`)
   }
 }
@@ -516,7 +520,7 @@ function validateBlockNumbers(
 }
 
 function processQuoteResults(
-  quoteResults: (Result<[JSBI, JSBI[], number[], JSBI]> | null)[],
+  quoteResults: (Result<[bigint, bigint[], number[], bigint]> | null)[],
   routes: RouteWithoutQuote[],
   gasModel: GasModel,
   adjustQuoteForGas: (

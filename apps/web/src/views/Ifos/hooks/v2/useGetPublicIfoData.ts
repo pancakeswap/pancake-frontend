@@ -4,7 +4,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
-import { FixedNumber } from '@ethersproject/bignumber'
+import { FixedNumber } from 'ethers'
 
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'

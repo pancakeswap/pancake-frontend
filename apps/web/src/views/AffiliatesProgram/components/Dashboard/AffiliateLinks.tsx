@@ -14,6 +14,7 @@ import {
   Td,
   Th,
   useMatchBreakpoints,
+  useToast,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { InfoDetail, FeeType } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
@@ -33,6 +34,7 @@ const MAX_PER_PAGE = 5
 
 const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
+  const { toastSuccess } = useToast()
   const { isDesktop } = useMatchBreakpoints()
   const [isExpanded, setIsExpanded] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -40,8 +42,8 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
   const [feeList, setFeeList] = useState<FeeType[]>([])
 
   useEffect(() => {
-    if (affiliate.fee.length > 0) {
-      const max = Math.ceil(affiliate.fee.length / MAX_PER_PAGE)
+    if (affiliate.fees.length > 0) {
+      const max = Math.ceil(affiliate.fees.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
@@ -54,10 +56,10 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
 
   useEffect(() => {
     const getActivitySlice = () => {
-      const slice = affiliate.fee.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      const slice = affiliate.fees.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
       setFeeList(slice)
     }
-    if (affiliate.fee.length > 0) {
+    if (affiliate.fees.length > 0) {
       getActivitySlice()
       setIsExpanded(true)
     }
@@ -71,8 +73,14 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
     return `${hostname}/affiliates-program?ref=${linkId}&user=${displayName}&discount=${discount}&noperps=${affiliate.ablePerps}`
   }
 
+  const handleCopyText = ({ linkId, percentage }: { linkId: string; percentage: number }) => {
+    const link = generateLink({ linkId, percentage })
+    copyText(link)
+    toastSuccess(t('Link'), t('Copied!'))
+  }
+
   return (
-    <Flex width={['100%', '100%', '100%', '100%', '100%', '700px']} m="24px 0 0 auto" flexDirection="column">
+    <Flex width="100%" mt="16px" flexDirection="column">
       <Card>
         <Box padding="24px">
           <Flex justifyContent="space-between" onClick={() => setIsExpanded(!isExpanded)}>
@@ -124,9 +132,7 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
                                   cursor="pointer"
                                   width={24}
                                   height={24}
-                                  onClick={() =>
-                                    copyText(generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee }))
-                                  }
+                                  onClick={() => handleCopyText({ linkId: fee.linkId, percentage: fee.v2SwapFee })}
                                 />
                               </Box>
                             </Td>

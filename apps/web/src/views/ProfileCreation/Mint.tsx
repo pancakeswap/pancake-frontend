@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { formatUnits } from '@ethersproject/units'
+import { formatUnits } from 'ethers/lib/utils'
 import { Card, CardBody, Heading, Text, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'

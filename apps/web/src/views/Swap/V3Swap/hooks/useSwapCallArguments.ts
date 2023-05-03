@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { SwapRouter, SmartRouterTrade, SWAP_ROUTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 import { Percent, TradeType } from '@pancakeswap/sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import {
   Box,
   Button,
@@ -9,7 +9,7 @@ import {
   IconButton,
   InfoIcon,
   ModalBody,
-  ModalContainer,
+  ModalWrapper,
   ModalHeader,
   ModalProps,
   ModalTitle,
@@ -66,7 +66,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
   const buyButtons = new Array(maxBuyButtons).fill('')
 
   return (
-    <ModalContainer minWidth="375px">
+    <ModalWrapper minWidth="375px">
       <ModalHeader background={headerBackground}>
         <ModalTitle>
           <Heading>{title}</Heading>
@@ -166,7 +166,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
           </Box>
         </Flex>
       </ModalBody>
-    </ModalContainer>
+    </ModalWrapper>
   )
 }
 

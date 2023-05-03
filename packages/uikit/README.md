@@ -2,10 +2,6 @@
 
 Pancake UIkit is a set of React components and hooks used to build pages on Pancake's apps. It also contains a theme file for dark and light mode.
 
-## Install
-
-`yarn add @pancakeswap/uikit`
-
 ***Note**: In case you want to use the older version of the Pancake UIkit, you should install @pancakeswap-libs/uikit, instead, but we recommend using the latest version of the UIkit.*
 
 

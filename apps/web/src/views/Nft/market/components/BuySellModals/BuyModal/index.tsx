@@ -1,5 +1,5 @@
 import { MaxUint256, Zero } from '@ethersproject/constants'
-import { formatEther, parseUnits } from '@ethersproject/units'
+import { formatEther, parseUnits } from 'ethers/lib/utils'
 import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'

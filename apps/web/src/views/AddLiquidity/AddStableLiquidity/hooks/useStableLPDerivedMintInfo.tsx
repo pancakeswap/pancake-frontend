@@ -1,8 +1,8 @@
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 
 import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -97,8 +97,8 @@ function useMintedStableLP({
   stableSwapConfig: any
   stableSwapAddress: string
   currencyInput: Currency | undefined
-  currencyInputAmount: JSBI | undefined
-  currencyOutputAmount: JSBI | undefined
+  currencyInputAmount: bigint | undefined
+  currencyOutputAmount: bigint | undefined
 }) {
   const quotient0Str = currencyInputAmount?.toString() || '0'
   const quotient1Str = currencyOutputAmount?.toString() || '0'
@@ -175,7 +175,7 @@ export function useStableLPDerivedMintInfo(
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   const noLiquidity: boolean =
-    pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO))
+    pairState === PairState.NOT_EXISTS || Boolean(totalSupply && totalSupply.quotient === BIG_INT_ZERO)
 
   // balances
   const balances = useCurrencyBalances(

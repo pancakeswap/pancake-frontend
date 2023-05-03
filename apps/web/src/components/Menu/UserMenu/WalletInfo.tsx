@@ -22,7 +22,7 @@ import { ChainLogo } from 'components/Logo/ChainLogo'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { formatBigNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useBalance } from 'wagmi'
-import { useSidNameForAddress } from 'hooks/useSid'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import CakeBenefitsCard from './CakeBenefitsCard'
 
 const COLORS = {
@@ -39,7 +39,7 @@ interface WalletInfoProps {
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account, chainId, chain } = useActiveWeb3React()
-  const { sidName } = useSidNameForAddress(account)
+  const { domainName } = useDomainNameForAddress(account)
   const isBSC = chainId === ChainId.BSC
   const bnbBalance = useBalance({ address: account, chainId: ChainId.BSC })
   const nativeBalance = useBalance({ address: account, enabled: !isBSC })
@@ -63,7 +63,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       </Text>
       <FlexGap flexDirection="column" mb="24px" gap="8px">
         <CopyAddress tooltipMessage={t('Copied')} account={account} />
-        {sidName ? <Text color="textSubtle">{sidName}</Text> : null}
+        {domainName ? <Text color="textSubtle">{domainName}</Text> : null}
       </FlexGap>
       {hasLowNativeBalance && (
         <Message variant="warning" mb="24px">

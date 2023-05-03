@@ -1,6 +1,6 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
 import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
@@ -143,8 +143,8 @@ export const parseMMTrade = (
   if (!inputCurrency || !outputCurrency || !takerSideTokenAmount || !makerSideTokenAmount) return null
   const bestTradeWithMM: TradeWithMM<Currency, Currency, TradeType> = {
     tradeType: isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
-    inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, JSBI.BigInt(takerSideTokenAmount)),
-    outputAmount: CurrencyAmount.fromRawAmount(outputCurrency, JSBI.BigInt(makerSideTokenAmount)),
+    inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, BigInt(takerSideTokenAmount)),
+    outputAmount: CurrencyAmount.fromRawAmount(outputCurrency, BigInt(makerSideTokenAmount)),
     route: {
       input: inputCurrency,
       output: outputCurrency,

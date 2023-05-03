@@ -2,7 +2,6 @@ import {
   ChainId,
   Currency,
   CurrencyAmount,
-  JSBI,
   Pair,
   Price,
   Token,
@@ -210,10 +209,10 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
       busdBnbPair.reserve1.greaterThan('0')
 
     const bnbPairBNBAmount = isBnbPairExist && bnbPair?.reserveOf(wnative)
-    const bnbPairBNBBUSDValue: JSBI =
+    const bnbPairBNBBUSDValue: bigint =
       bnbPairBNBAmount && isBUSDPairExist && isBusdBnbPairExist
         ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient
-        : JSBI.BigInt(0)
+        : 0n
 
     // all other tokens
     // first try the busd pair

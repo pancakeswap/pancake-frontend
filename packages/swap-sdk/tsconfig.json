@@ -1,9 +1,9 @@
 {
-  "extends": "tsconfig/base",
+  "extends": "@pancakeswap/tsconfig/base",
   "include": ["src"],
   "exclude": ["./dist/**"],
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es2020",
     "module": "esnext",
     "importHelpers": true,
     "declaration": true,
