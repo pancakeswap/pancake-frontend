@@ -1921,6 +1921,9 @@ importers:
       '@ethersproject/contracts':
         specifier: ^5.0.0
         version: 5.7.0
+      '@ethersproject/providers':
+        specifier: ^5.0.0
+        version: 5.7.2
       '@ethersproject/strings':
         specifier: ^5.0.0
         version: 5.7.0
