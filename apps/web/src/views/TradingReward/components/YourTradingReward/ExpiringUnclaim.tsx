@@ -43,7 +43,11 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
         campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
       />
-      {/* <TotalPeriod campaignIds={campaignIds} totalAvailableClaimData={totalAvailableClaimData} /> */}
+      <TotalPeriod
+        campaignIds={campaignIds}
+        rewardInfo={rewardInfo}
+        totalAvailableClaimData={totalAvailableClaimData}
+      />
     </Flex>
   )
 }
