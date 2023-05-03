@@ -26,7 +26,7 @@ import {
   ColumnCenter,
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
-import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
+import { useSignTypedData } from 'wagmi'
 import { BigNumber, Contract } from 'ethers'
 import { callWithEstimateGas } from 'utils/calls'
 import { getLPSymbol } from 'utils/getLpSymbol'
@@ -86,7 +86,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const { isMobile } = useMatchBreakpoints()
 
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
-  const library = useWeb3LibraryContext()
+  const { signTypedDataAsync } = useSignTypedData()
   const { toastError } = useToast()
   const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
 
@@ -163,7 +163,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   )
 
   async function onAttemptToApprove() {
-    if (!pairContractRead || !pair || !library || !deadline) throw new Error('missing dependencies')
+    if (!pairContractRead || !pair || !signTypedDataAsync || !deadline) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) {
       toastError(t('Error'), t('Missing liquidity amount'))
@@ -183,7 +183,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       name: 'Pancake LPs',
       version: '1',
       chainId,
-      verifyingContract: pair.liquidityToken.address,
+      verifyingContract: pair.liquidityToken.address as `0x${string}`,
     }
     const Permit = [
       { name: 'owner', type: 'address' },
@@ -199,18 +199,17 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber(),
     }
-    const data = JSON.stringify({
+
+    signTypedDataAsync({
+      domain,
+      // @ts-ignore
+      primaryType: 'Permit',
       types: {
         EIP712Domain,
         Permit,
       },
-      domain,
-      primaryType: 'Permit',
-      message,
+      value: message,
     })
-
-    library
-      .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
       .then((signature) => {
         setSignatureData({
@@ -249,7 +248,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const routerContract = useRouterContract()
 
   async function onZapOut() {
-    if (!chainId || !library || !account || !estimateZapOutAmount) throw new Error('missing dependencies')
+    if (!chainId || !account || !estimateZapOutAmount) throw new Error('missing dependencies')
     if (!zapContract) throw new Error('missing zap contract')
     if (!tokenToReceive) throw new Error('missing tokenToReceive')
 

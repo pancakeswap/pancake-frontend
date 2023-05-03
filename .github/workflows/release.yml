@@ -46,6 +46,7 @@ jobs:
         uses: changesets/action@v1
         with:
           title: 'chore: Version Packages'
+          version: pnpm version-packages
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: pnpm release-packages
         env:

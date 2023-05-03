@@ -8,11 +8,10 @@ import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exc
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
-import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
-import { useFeeData } from 'wagmi'
+import { useFeeData, useSigner } from 'wagmi'
 
 import { AppState, useAppDispatch } from '../../index'
 import {
@@ -298,16 +297,13 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
  */
 export function useGasPrice(chainIdOverride?: number): string | undefined {
   const { chainId: chainId_ } = useActiveWeb3React()
-  const library = useWeb3LibraryContext()
   const chainId = chainIdOverride ?? chainId_
+  const { data: signer } = useSigner({ chainId })
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
-    library &&
-      library.provider &&
-      chainId === ChainId.BSC &&
-      userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', library.provider],
+    signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
-      const gasPrice = await library.getGasPrice()
+      const gasPrice = await signer.getGasPrice()
       return gasPrice.toString()
     },
     {
