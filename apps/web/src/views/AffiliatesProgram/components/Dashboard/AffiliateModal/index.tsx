@@ -53,7 +53,7 @@ const AffiliateModal = () => {
               )}
             </Text>
             <Text as="span" bold m="0 4px">
-              {t('section 2.1 (b) on slippage during trades.')}
+              {t('section 2.1 (c) on slippage during trades.')}
             </Text>
             <Text as="span">{t('Please review the updates to ensure you agree with the revised terms.')}</Text>
           </Text>
