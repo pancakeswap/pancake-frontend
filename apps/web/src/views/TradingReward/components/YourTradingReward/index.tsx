@@ -255,6 +255,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             <NoCakeLockedOrExtendLock
               pool={pool}
               userData={userData}
+              rewardInfo={rewardInfo}
               isLockPosition={isLockPosition}
               minLockWeekInSeconds={minLockWeekInSeconds}
               hasClaimBalance={hasClaimBalance}

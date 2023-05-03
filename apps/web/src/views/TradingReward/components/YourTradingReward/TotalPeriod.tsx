@@ -78,9 +78,9 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   // Expired Soon Data
   const expiredUSDPrice = useMemo(() => {
-    const balance = timeRemaining > 0 ? rewardExpiredSoonData.totalEstimateRewardUSD : rewardExpiredSoonData?.canClaim
-    return formatNumber(new BigNumber(balance).toNumber())
-  }, [rewardExpiredSoonData, timeRemaining])
+    const balance = getBalanceAmount(new BigNumber(rewardExpiredSoonData?.canClaim ?? 0)).toNumber()
+    return formatNumber(balance)
+  }, [rewardExpiredSoonData])
 
   const totalTradingReward = useMemo(() => {
     return totalAvailableClaimData

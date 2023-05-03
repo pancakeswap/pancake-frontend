@@ -13,6 +13,7 @@ import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQu
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 import formatSecondsToWeeks from 'views/Pools/components/utils/formatSecondsToWeeks'
+import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 const Container = styled(Flex)`
   justify-content: space-between;
@@ -57,6 +58,7 @@ interface NoCakeLockedOrExtendLockProps {
   minLockWeekInSeconds: number
   hasClaimBalance: boolean
   totalAvailableClaimData: UserCampaignInfoDetail[]
+  rewardInfo: { [key in string]: RewardInfo }
 }
 
 const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrExtendLockProps>> = ({
@@ -67,6 +69,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   hasClaimBalance,
   isValidLockDuration,
   totalAvailableClaimData,
+  rewardInfo,
 }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
@@ -99,7 +102,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
 
   return (
     <Flex flexDirection={['column', 'column', 'column', 'row']}>
-      {hasClaimBalance && <NotQualified totalAvailableClaimData={totalAvailableClaimData} />}
+      {hasClaimBalance && <NotQualified totalAvailableClaimData={totalAvailableClaimData} rewardInfo={rewardInfo} />}
       <Flex flexDirection="column" width={['100%', '100%', '100%', '354px']}>
         {!isOnlyNeedExtendLock ? (
           <>

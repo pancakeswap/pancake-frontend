@@ -4,18 +4,21 @@ import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useTooltip } from '@pancakeswap/uikit/src/hooks'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { usePriceCakeUSD } from 'state/farms/hooks'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface NotQualifiedProps {
   totalAvailableClaimData: UserCampaignInfoDetail[]
+  rewardInfo: { [key in string]: RewardInfo }
 }
 
-const NotQualified: React.FC<React.PropsWithChildren<NotQualifiedProps>> = ({ totalAvailableClaimData }) => {
+const NotQualified: React.FC<React.PropsWithChildren<NotQualifiedProps>> = ({
+  totalAvailableClaimData,
+  rewardInfo,
+}) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeUSD()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Claim your rewards before expiring.'), {
     placement: 'bottom',
@@ -35,23 +38,44 @@ const NotQualified: React.FC<React.PropsWithChildren<NotQualifiedProps>> = ({ to
   const expiredTime = getTimePeriods(timeRemaining)
 
   const totalUnclaimInUSD = useMemo(() => {
-    const totalUSD = unclaimData
-      .map((available) => (timeRemaining > 0 ? available.totalEstimateReward : available.canClaim))
+    return unclaimData
+      .map((available) => {
+        const currentReward = rewardInfo?.[available.campaignId]
+        if (currentReward) {
+          const rewardPriceAsBg = new BigNumber(currentReward.rewardPrice).div(currentReward.rewardTokenDecimal)
+          return (
+            new BigNumber(
+              getBalanceAmount(new BigNumber(available.canClaim.toString())).times(rewardPriceAsBg),
+            ).toNumber() || 0
+          )
+        }
+        return 0
+      })
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+  }, [rewardInfo, unclaimData])
 
-    return new BigNumber(totalUSD).toNumber()
-  }, [timeRemaining, unclaimData])
-
-  const totalUnclaimInCake = useMemo(
-    () => new BigNumber(totalUnclaimInUSD).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, totalUnclaimInUSD],
-  )
+  const totalUnclaimInCake = useMemo(() => {
+    return unclaimData
+      .map((available) => {
+        const currentReward = rewardInfo?.[available.campaignId]
+        if (currentReward) {
+          const reward = getBalanceAmount(new BigNumber(available.canClaim))
+          const rewardCakePrice = getBalanceAmount(
+            new BigNumber(currentReward.rewardPrice ?? '0'),
+            currentReward.rewardTokenDecimal ?? 0,
+          )
+          return reward.div(rewardCakePrice).isNaN() ? 0 : reward.div(rewardCakePrice).toNumber()
+        }
+        return 0
+      })
+      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+  }, [rewardInfo, unclaimData])
 
   // Expired Soon Data
   const expiredUSDPrice = useMemo(() => {
-    const balance = timeRemaining > 0 ? rewardExpiredSoonData.totalEstimateReward : rewardExpiredSoonData?.canClaim
-    return formatNumber(new BigNumber(balance).toNumber())
-  }, [rewardExpiredSoonData, timeRemaining])
+    const balance = getBalanceAmount(new BigNumber(rewardExpiredSoonData?.canClaim ?? 0)).toNumber()
+    return formatNumber(balance)
+  }, [rewardExpiredSoonData])
 
   return (
     <Box width={['100%', '100%', '100%', '236px']} m={['0 0 24px 0', '0 0 24px 0', '0 0 24px 0', '0 91px 0 0']}>
