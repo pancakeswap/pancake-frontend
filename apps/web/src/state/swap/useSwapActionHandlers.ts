@@ -1,7 +1,8 @@
 import { useCallback, useTransition } from 'react'
 import { Currency } from '@pancakeswap/sdk'
+import { useAtom } from 'jotai'
+import { swapReducerAtom } from 'state/swap/reducer'
 import { Field, selectCurrency, switchCurrencies, typeInput, setRecipient } from './actions'
-import { useAppDispatch } from '../index'
 
 export function useSwapActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
@@ -10,7 +11,7 @@ export function useSwapActionHandlers(): {
   onChangeRecipient: (recipient: string | null) => void
 } {
   const [, startTransition] = useTransition()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(swapReducerAtom)
 
   const onSwitchTokens = useCallback(() => {
     dispatch(switchCurrencies())

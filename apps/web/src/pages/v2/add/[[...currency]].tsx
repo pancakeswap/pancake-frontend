@@ -3,17 +3,18 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV3'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
+import { useAtom } from 'jotai'
+import { mintReducerAtom } from 'state/mint/reducer'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
   const { chainId } = useActiveChainId()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(mintReducerAtom)
 
   const native = useNativeCurrency()
 

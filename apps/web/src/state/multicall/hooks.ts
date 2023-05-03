@@ -7,7 +7,7 @@ import {
   unstable_serialize,
 } from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { multicallReducerAtom } from 'state/multicall/reducer'
 import {
   addMulticallListeners,
@@ -59,8 +59,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): CallResult[] {
   const { chainId } = useActiveChainId()
-  const callResults = useAtomValue(multicallReducerAtom)
-  const [, dispatch] = useAtom(multicallReducerAtom)
+  const [callResults, dispatch] = useAtom(multicallReducerAtom)
 
   const serializedCallKeys: string = useMemo(
     () =>

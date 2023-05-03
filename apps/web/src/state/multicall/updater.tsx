@@ -4,10 +4,9 @@ import { ResultStructOutput } from 'config/abi/types/Multicall'
 import { useEffect, useMemo, useRef } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
 import { useMulticallContract } from '../../hooks/useContract'
-import { useAppDispatch } from '../index'
 import {
   Call,
   errorFetchingMulticallResults,
@@ -146,8 +145,7 @@ export function outdatedListeningKeys(
 }
 
 export default function Updater(): null {
-  const dispatch = useAppDispatch()
-  const state = useAtomValue(multicallReducerAtom)
+  const [state, dispatch] = useAtom(multicallReducerAtom)
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const currentBlock = useCurrentBlock()
