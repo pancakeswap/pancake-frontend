@@ -1,9 +1,9 @@
-import { Farm as FarmUI } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { HelpIcon } from "../../../../components/Svg";
 import { Skeleton } from "../../../../components/Skeleton";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import { FarmTableMultiplierProps } from "../../types";
+import { FarmMultiplierInfo } from "../FarmMultiplierInfo";
 
 const ReferenceElement = styled.div`
   display: inline-block;
@@ -33,7 +33,7 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
 }) => {
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />;
 
-  const tooltipContent = FarmUI.FarmMultiplierInfo({
+  const tooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? "-",
     totalMultipliers: totalMultipliers ?? "-",
   });

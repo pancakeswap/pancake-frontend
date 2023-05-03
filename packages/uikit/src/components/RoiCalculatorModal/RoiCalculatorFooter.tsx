@@ -1,5 +1,4 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Farm as FarmUI } from "@pancakeswap/uikit";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
@@ -11,6 +10,7 @@ import { ExpandableLabel } from "../Button";
 import { Link, LinkExternal } from "../Link";
 import { HelpIcon } from "../Svg";
 import { Text } from "../Text";
+import { FarmMultiplierInfo } from "../../widgets/Farm/components/FarmMultiplierInfo";
 
 export const Footer = styled(Flex)`
   width: 100%;
@@ -74,7 +74,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   const { t } = useTranslation();
   const isAptos = rewardCakePerSecond === true;
 
-  const multiplierTooltipContent = FarmUI.FarmMultiplierInfo({
+  const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? "-",
     totalMultipliers: totalMultipliers ?? "-",
   });

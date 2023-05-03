@@ -1,10 +1,12 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useTooltip, HelpIcon, Farm as FarmUI } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
 import { LinkExternal } from "../../../../components/Link";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Text } from "../../../../components/Text";
+import { HelpIcon } from "../../../../components/Svg";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import { FarmMultiplierInfo } from "../FarmMultiplierInfo";
 
 export interface ExpandableSectionProps {
   scanAddressLink?: string;
@@ -57,7 +59,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
     currentLanguage: { locale },
   } = useTranslation();
 
-  const multiplierTooltipContent = FarmUI.FarmMultiplierInfo({
+  const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? "-",
     totalMultipliers: totalMultipliers ?? "-",
   });
