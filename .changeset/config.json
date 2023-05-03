@@ -9,12 +9,9 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@pancakeswap/eslint-config-pancake",
-    "@pancakeswap/hooks",
-    "@pancakeswap/localization",
     "@pancakeswap/ui",
     "@pancakeswap/ui-wallets",
     "@pancakeswap/uikit",
-    "@pancakeswap/utils",
     "farms-api",
     "aptos-web",
     "blog",
