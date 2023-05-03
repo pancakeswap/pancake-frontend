@@ -6,6 +6,7 @@ import { useAtom } from 'jotai'
 import { useTranslation } from '@pancakeswap/localization'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
+import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 
 const showAffiliateModalAtom = atomWithStorageWithErrorCatch('pcs::showAffiliateModalAtom', true)
 
@@ -14,6 +15,7 @@ const AffiliateModal = () => {
   const router = useRouter()
   const { address } = useAccount()
   const { isAffiliateExist } = useAuthAffiliateExist()
+  const { isUserExist, isFetching } = useUserExist()
   const [isOpen, setIsOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   const [showModal, setShowModal] = useAtom(showAffiliateModalAtom)
@@ -21,8 +23,17 @@ const AffiliateModal = () => {
   useEffect(() => {
     const { ref, user, discount, noperps } = router.query
     // Close when switch address
-    setIsOpen(address && isAffiliateExist && showModal && !ref && !user && !discount && !noperps)
-  }, [address, isAffiliateExist, showModal, router])
+    setIsOpen(
+      (isAffiliateExist || isUserExist) &&
+        !isFetching &&
+        address &&
+        showModal &&
+        !ref &&
+        !user &&
+        !discount &&
+        !noperps,
+    )
+  }, [address, isAffiliateExist, isUserExist, isFetching, showModal, router])
 
   const handleCheckbox = () => setIsChecked(!isChecked)
 
