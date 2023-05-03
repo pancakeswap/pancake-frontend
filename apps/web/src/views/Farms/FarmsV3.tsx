@@ -1,4 +1,4 @@
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { BigNumber as EthersBigNumber } from 'ethers'
 import {
   DeserializedFarm,
   FarmV3DataWithPriceAndUserInfo,

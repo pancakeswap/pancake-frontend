@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { NEVER_RELOAD, useSingleCallResult } from 'state/multicall/hooks'

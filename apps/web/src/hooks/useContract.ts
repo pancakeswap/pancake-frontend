@@ -68,11 +68,12 @@ import {
   getSidContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
+  getUnsContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
 // Imports below migrated from Exchange useContract.ts
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { WNATIVE, ChainId } from '@pancakeswap/sdk'
 import { ERC20_BYTES32_ABI } from 'config/abi/erc20'
 import ERC20_ABI from 'config/abi/erc20.json'
@@ -403,8 +404,12 @@ export const useNonBscVault = (withSignerIfPossible = true) => {
   return useMemo(() => getNonBscVaultContract(providerOrSigner, chainId), [providerOrSigner, chainId])
 }
 
-export const useSIDContract = (address) => {
-  return useMemo(() => getSidContract(address), [address])
+export const useSIDContract = (address, chainId) => {
+  return useMemo(() => getSidContract(address, chainId), [address, chainId])
+}
+
+export const useUNSContract = (address, chainId, provider) => {
+  return useMemo(() => getUnsContract(address, chainId, provider), [chainId, address, provider])
 }
 
 export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfPossible = true) => {

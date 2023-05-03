@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
-import { WagmiProvider } from '@pancakeswap/wagmi'
+import { WagmiConfig } from 'wagmi'
 import { client } from 'utils/wagmi'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
 
@@ -28,7 +28,7 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
 }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <WagmiProvider client={client}>
+      <WagmiConfig client={client}>
         <Provider store={store}>
           <NextThemeProvider>
             <StyledUIKitProvider>
@@ -46,7 +46,7 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
             </StyledUIKitProvider>
           </NextThemeProvider>
         </Provider>
-      </WagmiProvider>
+      </WagmiConfig>
     </QueryClientProvider>
   )
 }

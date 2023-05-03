@@ -61,7 +61,7 @@ export function usePairReservesQueries(pairReservesAddresses: (string | undefine
     queries: useMemo(
       () =>
         pairReservesAddresses.map((pairAddress) => ({
-          enable: Boolean(pairAddress),
+          enabled: Boolean(pairAddress),
           queryFn: () => {
             if (!pairAddress) throw new Error('No pair address')
             return fetchAccountResource({ address: SWAP_ADDRESS, resourceType: pairAddress, networkName })

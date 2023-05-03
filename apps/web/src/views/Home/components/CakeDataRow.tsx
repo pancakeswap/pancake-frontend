@@ -12,7 +12,7 @@ import { getCakeVaultAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`

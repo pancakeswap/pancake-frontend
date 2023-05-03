@@ -1,4 +1,4 @@
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { BigNumber as EthersBigNumber } from 'ethers'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
 import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'

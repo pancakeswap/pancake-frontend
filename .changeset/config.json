@@ -9,8 +9,6 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@pancakeswap/eslint-config-pancake",
-    "@pancakeswap/hooks",
-    "@pancakeswap/localization",
     "@pancakeswap/ui",
     "@pancakeswap/ui-wallets",
     "@pancakeswap/uikit",

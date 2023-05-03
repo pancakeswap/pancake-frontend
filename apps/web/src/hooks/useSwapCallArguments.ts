@@ -1,4 +1,4 @@
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'

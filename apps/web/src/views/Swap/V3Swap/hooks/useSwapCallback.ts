@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
