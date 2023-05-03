@@ -1,8 +1,9 @@
 import noop from "lodash/noop";
+import type { Language } from "@pancakeswap/localization";
 import { vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import { renderWithProvider } from "../../testHelpers";
-import { Menu, menuConfig, Language } from "../../widgets/Menu";
+import { Menu, menuConfig } from "../../widgets/Menu";
 import { footerLinks } from "../../components/Footer/config";
 import { SubMenuItemsType } from "../../components/SubMenuItems/types";
 
@@ -33,6 +34,7 @@ it("renders correctly", () => {
   const { asFragment } = renderWithProvider(
     <BrowserRouter>
       <Menu
+        chainId={56}
         isDark={false}
         toggleTheme={noop}
         langs={langs}

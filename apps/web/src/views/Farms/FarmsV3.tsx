@@ -1,4 +1,4 @@
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { BigNumber as EthersBigNumber } from 'ethers'
 import {
   DeserializedFarm,
   FarmV3DataWithPriceAndUserInfo,
@@ -43,6 +43,7 @@ import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import Table from './components/FarmTable/FarmTable'
+import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsV3Context } from './context'
 
 const ControlContainer = styled.div`
@@ -221,6 +222,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userDataReady = !account || (!!account && v2UserDataLoaded && v3UserDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const [v3FarmOnly, setV3FarmOnly] = useState(false)
+  const [v2FarmOnly, setV2FarmOnly] = useState(false)
+  const [boostedOnly, setBoostedOnly] = useState(false)
+  const [stableSwapOnly, setStableSwapOnly] = useState(false)
+  const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
   const activeFarms = farmsLP.filter(
     (farm) =>
@@ -314,6 +320,25 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
+    if (v3FarmOnly || v2FarmOnly || boostedOnly || stableSwapOnly) {
+      const filterFarms = chosenFs.filter(
+        (farm) =>
+          (v3FarmOnly && farm.version === 3) ||
+          (v2FarmOnly && farm.version === 2) ||
+          (boostedOnly && farm.boosted) ||
+          (stableSwapOnly && farm.isStable),
+      )
+
+      const stakedFilterFarms = chosenFs.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      )
+
+      chosenFs = stakedOnly ? farmsList(stakedFilterFarms) : farmsList(filterFarms)
+    }
+
     return chosenFs
   }, [
     isActive,
@@ -327,6 +352,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     inactiveFarms,
     stakedArchivedFarms,
     archivedFarms,
+    boostedOnly,
+    stableSwapOnly,
+    v3FarmOnly,
+    v2FarmOnly,
   ])
 
   const chosenFarmsMemoized = useMemo(() => {
@@ -362,7 +391,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             'desc',
           )
         case 'latest':
-          return orderBy(farms, (farm) => Number(farm.pid), 'desc')
+          return orderBy(
+            orderBy(farms, (farm) => Number(farm.pid), 'desc'),
+            ['version'],
+            'desc',
+          )
         default:
           return farms
       }
@@ -431,6 +464,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </Flex>
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
             <Flex mt="20px" ml="16px">
+              <FarmTypesFilter
+                v3FarmOnly={v3FarmOnly}
+                handleSetV3FarmOnly={setV3FarmOnly}
+                v2FarmOnly={v2FarmOnly}
+                handleSetV2FarmOnly={setV2FarmOnly}
+                boostedOnly={boostedOnly}
+                handleSetBoostedOnly={setBoostedOnly}
+                stableSwapOnly={stableSwapOnly}
+                handleSetStableSwapOnly={setStableSwapOnly}
+                farmTypesEnableCount={farmTypesEnableCount}
+                handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
+              />
               <ToggleWrapper>
                 <Toggle
                   id="staked-only-farms"

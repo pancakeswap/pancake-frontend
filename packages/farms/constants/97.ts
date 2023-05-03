@@ -1,6 +1,6 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+import { FarmConfigV3, SerializedFarmConfig } from '..'
 
 export const farmsV3 = [
   {

@@ -1,4 +1,5 @@
-import { bscTestnetTokens } from '@pancakeswap/tokens'
+import { ERC20Token, ChainId } from '@pancakeswap/sdk'
+import { describe, it, expect } from 'vitest'
 import tryParseAmount from './tryParseAmount'
 
 describe('utils/tryParseAmount', () => {
@@ -10,6 +11,18 @@ describe('utils/tryParseAmount', () => {
   })
 
   it('should pared value', () => {
-    expect(tryParseAmount('100', bscTestnetTokens.cake)).toBeTruthy()
+    expect(
+      tryParseAmount(
+        '100',
+        new ERC20Token(
+          ChainId.BSC,
+          '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+          18,
+          'CAKE',
+          'PancakeSwap Token',
+          'https://pancakeswap.finance/',
+        ),
+      ),
+    ).toBeTruthy()
   })
 })

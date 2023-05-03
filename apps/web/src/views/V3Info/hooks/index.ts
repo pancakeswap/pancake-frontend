@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
-import dayjs, { OpUnitType } from 'dayjs'
+import dayjs, { ManipulateType } from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
@@ -257,7 +257,7 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 export const useTokenPriceData = (
   address: string,
   interval: number,
-  timeWindow: OpUnitType,
+  timeWindow: ManipulateType,
 ): PriceChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]

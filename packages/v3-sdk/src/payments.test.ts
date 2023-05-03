@@ -1,9 +1,8 @@
 import { Percent, Token } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { Payments } from './payments'
 
 const recipient = '0x0000000000000000000000000000000000000003'
-const amount = JSBI.BigInt(123)
+const amount = 123n
 
 const feeOptions = {
   fee: new Percent(1, 1000),

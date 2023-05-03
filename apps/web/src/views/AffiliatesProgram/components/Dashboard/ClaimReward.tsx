@@ -1,38 +1,60 @@
-// import { Card, Flex, Text, Button, Box } from '@pancakeswap/uikit'
-// import { LightGreyCard } from 'components/Card'
-// import styled from 'styled-components'
+import { useMemo } from 'react'
 import { Card, Flex, Text, Box } from '@pancakeswap/uikit'
+import { LightGreyCard } from 'components/Card'
+import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import ComingSoon from 'views/AffiliatesProgram/components/Dashboard/ComingSoon'
+import BigNumber from 'bignumber.js'
+import { usePriceCakeUSD } from 'state/farms/hooks'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
-// const CardContainer = styled(Flex)`
-//   flex-direction: column;
+const CardContainer = styled(Flex)`
+  flex-direction: column;
 
-//   ${LightGreyCard} {
-//     margin: 0 0 16px 0;
-//     &:last-child {
-//       margin: 0;
-//     }
-//   }
+  ${LightGreyCard} {
+    margin: 0 0 16px 0;
+    &:last-child {
+      margin: 0;
+    }
+  }
 
-//   ${({ theme }) => theme.mediaQueries.md} {
-//     flex-direction: row;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
 
-//     ${LightGreyCard} {
-//       margin: 0 16px 0 0;
-//       &:last-child {
-//         margin: 0;
-//       }
-//     }
-//   }
-// `
+    ${LightGreyCard} {
+      margin: 0 16px 0 0;
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+`
 
-const ClaimReward = () => {
+interface ClaimRewardProps {
+  isAffiliate: boolean
+  userRewardFeeUSD: string
+  affiliateRewardFeeUSD: string
+}
+
+const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
+  isAffiliate,
+  userRewardFeeUSD,
+  affiliateRewardFeeUSD,
+}) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeUSD()
+
+  const affiliateTotalCakeEarned = useMemo(
+    () => new BigNumber(affiliateRewardFeeUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, affiliateRewardFeeUSD],
+  )
+  const userTotalCakeEarned = useMemo(
+    () => new BigNumber(userRewardFeeUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, userRewardFeeUSD],
+  )
 
   return (
-    <Box mt="24px">
-      <Flex maxWidth={['100%', '100%', '100%', '100%', '100%', '700px']} m="auto 0 100px auto">
+    <Box>
+      <Flex>
         <Card style={{ width: '100%' }}>
           <Flex flexDirection="column" padding={['24px']}>
             <Flex justifyContent="space-between" mb="16px">
@@ -45,57 +67,51 @@ const ClaimReward = () => {
               >
                 {t('claim your rewards')}
               </Text>
-              {/* <Button display={['none', 'none', 'none', 'block']} scale="sm" variant="secondary">
+              {/* <Button display={['none', 'none', 'none', 'block']} scale="sm">
                 Claim Reward
               </Button> */}
             </Flex>
-            <ComingSoon />
-            {/* <CardContainer>
+            <CardContainer>
+              {isAffiliate && (
+                <LightGreyCard>
+                  <Flex justifyContent="space-between" mb="7px">
+                    <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                      {t('Affiliate Reward')}
+                    </Text>
+                    <Text bold fontSize="14px">
+                      {`$ ${formatNumber(Number(affiliateRewardFeeUSD))}`}
+                    </Text>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                      {t('Affiliate CAKE Earned')}
+                    </Text>
+                    <Text bold fontSize="14px">
+                      {`~ ${formatNumber(affiliateTotalCakeEarned)} CAKE`}
+                    </Text>
+                  </Flex>
+                </LightGreyCard>
+              )}
               <LightGreyCard>
-                <Text bold fontSize="12px" mb="22px">
-                  v2/v3 Swaps & StableSwap
-                </Text>
                 <Flex justifyContent="space-between" mb="7px">
-                  <Text color="textSubtle" fontSize="14px">
-                    Total friends
+                  <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                    {t('User Reward')}
                   </Text>
                   <Text bold fontSize="14px">
-                    63
+                    {`$ ${formatNumber(Number(userRewardFeeUSD))}`}
                   </Text>
                 </Flex>
                 <Flex justifyContent="space-between">
-                  <Text color="textSubtle" fontSize="14px">
-                    Rewards earned
+                  <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
+                    {t('User CAKE Earned')}
                   </Text>
                   <Text bold fontSize="14px">
-                    500 CAKE
-                  </Text>
-                </Flex>
-              </LightGreyCard>
-
-              <LightGreyCard>
-                <Text bold fontSize="12px" mb="22px">
-                  Perpetual
-                </Text>
-                <Flex justifyContent="space-between" mb="7px">
-                  <Text color="textSubtle" fontSize="14px">
-                    Total friends
-                  </Text>
-                  <Text bold fontSize="14px">
-                    63
-                  </Text>
-                </Flex>
-                <Flex justifyContent="space-between">
-                  <Text color="textSubtle" fontSize="14px">
-                    Rewards earned
-                  </Text>
-                  <Text bold fontSize="14px">
-                    500 CAKE
+                    {`~ ${formatNumber(userTotalCakeEarned)} CAKE`}
                   </Text>
                 </Flex>
               </LightGreyCard>
             </CardContainer>
-            <Button display={['block', 'block', 'block', 'none']} variant="secondary" mt="18px" width="100%">
+            {/* <Button display={['block', 'block', 'block', 'none']} variant="secondary" mt="18px" width="100%">
               Claim Reward
             </Button> */}
           </Flex>

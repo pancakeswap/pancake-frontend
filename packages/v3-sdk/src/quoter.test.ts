@@ -1,4 +1,3 @@
-import JSBI from 'jsbi'
 import { CurrencyAmount, Token, TradeType, WETH9 } from '@pancakeswap/sdk'
 import { FeeAmount, TICK_SPACINGS } from './constants'
 import { SwapQuoter } from './quoter'
@@ -104,7 +103,7 @@ describe('SwapQuoter', () => {
           TradeType.EXACT_INPUT
         )
         const { calldata, value } = SwapQuoter.quoteCallParameters(trade.route, trade.inputAmount, trade.tradeType, {
-          sqrtPriceLimitX96: JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)),
+          sqrtPriceLimitX96: 2n ** 128n,
         })
 
         expect(calldata).toBe(

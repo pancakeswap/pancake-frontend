@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { useCallback } from 'react'
 import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import { useMasterchefV1, useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
 

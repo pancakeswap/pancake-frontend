@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, Fraction, ONE, Percent, ZERO } from "@pancakeswap/sdk";
 import { FeeAmount, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { formatFraction, parseNumberToFraction } from "@pancakeswap/utils/formatFractions";
 import { useMemo } from "react";
@@ -105,9 +105,9 @@ export interface FeeParams {
 
   // The reason of using price sqrt X96 instead of tick current is that
   // tick current may have rounding error since it's a floor rounding
-  sqrtRatioX96?: JSBI;
+  sqrtRatioX96?: bigint;
   // All ticks inside the pool
-  mostActiveLiquidity?: JSBI;
+  mostActiveLiquidity?: bigint;
   // Fee tier of the pool, in hundreds of a bip, i.e. 1e-6
   fee?: FeeAmount;
 

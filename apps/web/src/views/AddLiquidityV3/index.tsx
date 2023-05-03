@@ -32,7 +32,7 @@ import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStable
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
-import { getAddress } from '@ethersproject/address'
+import { getAddress } from 'ethers/lib/utils'
 
 import noop from 'lodash/noop'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'

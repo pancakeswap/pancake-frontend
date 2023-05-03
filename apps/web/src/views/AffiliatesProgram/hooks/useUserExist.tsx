@@ -9,7 +9,7 @@ interface UserExistResponse {
 const useUserExist = () => {
   const { address } = useAccount()
 
-  const { data: isUserExist } = useSWR(
+  const { data: isUserExist, isLoading } = useSWR(
     address && ['/user-exist', address],
     async () => {
       try {
@@ -32,6 +32,7 @@ const useUserExist = () => {
 
   return {
     isUserExist: isUserExist ?? true,
+    isFetching: isLoading,
   }
 }
 

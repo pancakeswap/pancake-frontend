@@ -1,5 +1,5 @@
-import { BigNumber as EthersBigNumber } from "@ethersproject/bignumber";
-import { formatUnits } from "@ethersproject/units";
+import { BigNumber as EthersBigNumber } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
 
 import orderBy from "lodash/orderBy";
 

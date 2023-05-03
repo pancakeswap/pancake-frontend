@@ -1,4 +1,4 @@
-import { CurrencyAmount, Pair as SDKPair, Currency, JSBI, Token, Price, ZERO } from '@pancakeswap/sdk'
+import { CurrencyAmount, Pair as SDKPair, Currency, Token, Price, ZERO } from '@pancakeswap/sdk'
 import { SmartRouter, V2Pool, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useEffect, useMemo, useRef } from 'react'
@@ -136,7 +136,7 @@ export function useV2CandidatePoolsFromOnChain(
             }
             return {
               ...pool,
-              tvlUSD: JSBI.BigInt(Math.floor(getAmountUsd(pool.reserve0) + getAmountUsd(pool.reserve1))),
+              tvlUSD: BigInt(Math.floor(getAmountUsd(pool.reserve0) + getAmountUsd(pool.reserve1))),
               address: SDKPair.getAddress(pool.reserve0.wrapped.currency, pool.reserve1.wrapped.currency),
             }
           })

@@ -3,7 +3,7 @@ import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { bscTokens } from "@pancakeswap/tokens";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
-import { CurrencyAmount, JSBI, Price } from "@pancakeswap/sdk";
+import { CurrencyAmount, Price } from "@pancakeswap/sdk";
 
 import { LiquidityChartRangeInput } from "./index";
 import mockData from "./mockData.json";
@@ -28,7 +28,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
         currencyA={bscTokens.bnb}
         currencyB={bscTokens.cake}
         tickCurrent={-202763}
-        liquidity={JSBI.BigInt("3799256509904881797")}
+        liquidity={3799256509904881797n}
         feeAmount={FeeAmount.MEDIUM}
         ticks={mockData}
       />

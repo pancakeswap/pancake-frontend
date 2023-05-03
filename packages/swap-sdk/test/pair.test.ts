@@ -129,16 +129,20 @@ describe('Pair', () => {
     })
   })
   describe('#involvesToken', () => {
-    expect(
-      new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(USDC)
-    ).toEqual(true)
-    expect(
-      new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(DAI)
-    ).toEqual(true)
-    expect(
-      new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(
-        WNATIVE[ChainId.BSC]
-      )
-    ).toEqual(false)
+    it('invlovesToken', () => {
+      expect(
+        new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(
+          USDC
+        )
+      ).toEqual(true)
+      expect(
+        new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(DAI)
+      ).toEqual(true)
+      expect(
+        new Pair(CurrencyAmount.fromRawAmount(USDC, '100'), CurrencyAmount.fromRawAmount(DAI, '100')).involvesToken(
+          WNATIVE[ChainId.BSC]
+        )
+      ).toEqual(false)
+    })
   })
 })

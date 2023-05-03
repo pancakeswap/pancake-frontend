@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Pair } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, Pair } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { PairState, usePair } from 'hooks/usePairs'
@@ -38,12 +38,12 @@ export default function useMintPair({ currencyA, currencyB }): MintPairContextVa
 
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
+    Boolean(totalSupply && totalSupply.quotient === BIG_INT_ZERO) ||
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
+        pair.reserve0.quotient === BIG_INT_ZERO &&
+        pair.reserve1.quotient === BIG_INT_ZERO,
     )
 
   const balanceA = useCurrencyBalance(currencyA?.wrapped.address)

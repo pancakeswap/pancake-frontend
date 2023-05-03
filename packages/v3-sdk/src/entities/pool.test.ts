@@ -1,5 +1,4 @@
 import { Token, CurrencyAmount, WETH9 } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { nearestUsableTick } from '../utils/nearestUsableTick'
 import { TickMath } from '../utils/tickMath'
@@ -7,7 +6,7 @@ import { Pool } from './pool'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { NEGATIVE_ONE } from '../internalConstants'
 
-const ONE_ETHER = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+const ONE_ETHER = 10n ** 18n
 
 describe('Pool', () => {
   const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
@@ -43,7 +42,7 @@ describe('Pool', () => {
         new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 1, [])
       }).toThrow('PRICE_BOUNDS')
       expect(() => {
-        new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, JSBI.add(encodeSqrtRatioX96(1, 1), JSBI.BigInt(1)), 0, -1, [])
+        new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1) + 1n, 0, -1, [])
       }).toThrow('PRICE_BOUNDS')
     })
 
@@ -184,7 +183,7 @@ describe('Pool', () => {
         },
         {
           index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.LOW]),
-          liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
+          liquidityNet: ONE_ETHER * NEGATIVE_ONE,
           liquidityGross: ONE_ETHER,
         },
       ])
@@ -195,14 +194,14 @@ describe('Pool', () => {
         const inputAmount = CurrencyAmount.fromRawAmount(USDC, 100)
         const [outputAmount] = await pool.getOutputAmount(inputAmount)
         expect(outputAmount.currency.equals(DAI)).toBe(true)
-        expect(outputAmount.quotient).toEqual(JSBI.BigInt(98))
+        expect(outputAmount.quotient).toEqual(98n)
       })
 
       it('DAI -> USDC', async () => {
         const inputAmount = CurrencyAmount.fromRawAmount(DAI, 100)
         const [outputAmount] = await pool.getOutputAmount(inputAmount)
         expect(outputAmount.currency.equals(USDC)).toBe(true)
-        expect(outputAmount.quotient).toEqual(JSBI.BigInt(98))
+        expect(outputAmount.quotient).toEqual(98n)
       })
     })
 
@@ -211,22 +210,22 @@ describe('Pool', () => {
         const outputAmount = CurrencyAmount.fromRawAmount(DAI, 98)
         const [inputAmount] = await pool.getInputAmount(outputAmount)
         expect(inputAmount.currency.equals(USDC)).toBe(true)
-        expect(inputAmount.quotient).toEqual(JSBI.BigInt(100))
+        expect(inputAmount.quotient).toEqual(100n)
       })
 
       it('DAI -> USDC', async () => {
         const outputAmount = CurrencyAmount.fromRawAmount(USDC, 98)
         const [inputAmount] = await pool.getInputAmount(outputAmount)
         expect(inputAmount.currency.equals(DAI)).toBe(true)
-        expect(inputAmount.quotient).toEqual(JSBI.BigInt(100))
+        expect(inputAmount.quotient).toEqual(100n)
       })
     })
   })
 
   describe('#bigNums', () => {
     let pool: Pool
-    const bigNum1 = JSBI.add(JSBI.BigInt(Number.MAX_SAFE_INTEGER), JSBI.BigInt(1))
-    const bigNum2 = JSBI.add(JSBI.BigInt(Number.MAX_SAFE_INTEGER), JSBI.BigInt(1))
+    const bigNum1 = BigInt(Number.MAX_SAFE_INTEGER) + 1n
+    const bigNum2 = BigInt(Number.MAX_SAFE_INTEGER) + 1n
     beforeEach(() => {
       pool = new Pool(USDC, DAI, FeeAmount.LOW, encodeSqrtRatioX96(bigNum1, bigNum2), ONE_ETHER, 0, [
         {
@@ -236,7 +235,7 @@ describe('Pool', () => {
         },
         {
           index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.LOW]),
-          liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
+          liquidityNet: ONE_ETHER * NEGATIVE_ONE,
           liquidityGross: ONE_ETHER,
         },
       ])

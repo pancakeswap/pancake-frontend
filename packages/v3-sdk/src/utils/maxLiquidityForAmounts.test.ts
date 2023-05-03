@@ -1,5 +1,4 @@
 import { MaxUint256 } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'
 import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
 
@@ -16,7 +15,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             false
           )
-        ).toEqual(JSBI.BigInt(2148))
+        ).toEqual(2148n)
       })
 
       it('100 token0, max token1', () => {
@@ -29,7 +28,7 @@ describe('#maxLiquidityForAmounts', () => {
             MaxUint256,
             false
           )
-        ).toEqual(JSBI.BigInt(2148))
+        ).toEqual(2148n)
       })
 
       it('max token0, 200 token1', () => {
@@ -42,7 +41,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             false
           )
-        ).toEqual(JSBI.BigInt(4297))
+        ).toEqual(4297n)
       })
     })
 
@@ -57,7 +56,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             false
           )
-        ).toEqual(JSBI.BigInt(1048))
+        ).toEqual(1048n)
       })
 
       it('100 token0, max token1', () => {
@@ -70,7 +69,7 @@ describe('#maxLiquidityForAmounts', () => {
             MaxUint256,
             false
           )
-        ).toEqual(JSBI.BigInt(1048))
+        ).toEqual(1048n)
       })
 
       it('max token0, 200 token1', () => {
@@ -83,7 +82,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             false
           )
-        ).toEqual(JSBI.BigInt('1214437677402050006470401421068302637228917309992228326090730924516431320489727'))
+        ).toEqual(1214437677402050006470401421068302637228917309992228326090730924516431320489727n)
       })
     })
 
@@ -98,7 +97,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             false
           )
-        ).toEqual(JSBI.BigInt(2097))
+        ).toEqual(2097n)
       })
 
       it('100 token0, max token1', () => {
@@ -111,7 +110,7 @@ describe('#maxLiquidityForAmounts', () => {
             MaxUint256,
             false
           )
-        ).toEqual(JSBI.BigInt('1214437677402050006470401421098959354205873606971497132040612572422243086574654'))
+        ).toEqual(1214437677402050006470401421098959354205873606971497132040612572422243086574654n)
       })
 
       it('max token0, 200 token1', () => {
@@ -124,7 +123,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             false
           )
-        ).toEqual(JSBI.BigInt(2097))
+        ).toEqual(2097n)
       })
     })
   })
@@ -141,7 +140,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             true
           )
-        ).toEqual(JSBI.BigInt(2148))
+        ).toEqual(2148n)
       })
 
       it('100 token0, max token1', () => {
@@ -154,7 +153,7 @@ describe('#maxLiquidityForAmounts', () => {
             MaxUint256,
             true
           )
-        ).toEqual(JSBI.BigInt(2148))
+        ).toEqual(2148n)
       })
 
       it('max token0, 200 token1', () => {
@@ -167,7 +166,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             true
           )
-        ).toEqual(JSBI.BigInt(4297))
+        ).toEqual(4297n)
       })
     })
 
@@ -182,7 +181,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             true
           )
-        ).toEqual(JSBI.BigInt(1048))
+        ).toEqual(1048n)
       })
 
       it('100 token0, max token1', () => {
@@ -195,7 +194,7 @@ describe('#maxLiquidityForAmounts', () => {
             MaxUint256,
             true
           )
-        ).toEqual(JSBI.BigInt(1048))
+        ).toEqual(1048n)
       })
 
       it('max token0, 200 token1', () => {
@@ -208,7 +207,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             true
           )
-        ).toEqual(JSBI.BigInt('1214437677402050006470401421082903520362793114274352355276488318240158678126184'))
+        ).toEqual(1214437677402050006470401421082903520362793114274352355276488318240158678126184n)
       })
     })
 
@@ -223,7 +222,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             true
           )
-        ).toEqual(JSBI.BigInt(2097))
+        ).toEqual(2097n)
       })
 
       it('100 token0, max token1', () => {
@@ -236,7 +235,7 @@ describe('#maxLiquidityForAmounts', () => {
             MaxUint256,
             true
           )
-        ).toEqual(JSBI.BigInt('1214437677402050006470401421098959354205873606971497132040612572422243086574654'))
+        ).toEqual(1214437677402050006470401421098959354205873606971497132040612572422243086574654n)
       })
 
       it('max token0, 200 token1', () => {
@@ -249,7 +248,7 @@ describe('#maxLiquidityForAmounts', () => {
             '200',
             true
           )
-        ).toEqual(JSBI.BigInt(2097))
+        ).toEqual(2097n)
       })
     })
   })

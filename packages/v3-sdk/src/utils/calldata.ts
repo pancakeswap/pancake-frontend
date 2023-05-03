@@ -1,5 +1,4 @@
 import { BigintIsh } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 
 /**
  * Generated method parameters for executing a call.
@@ -21,7 +20,7 @@ export interface MethodParameters {
  * @returns The hex encoded calldata
  */
 export function toHex(bigintIsh: BigintIsh) {
-  const bigInt = JSBI.BigInt(bigintIsh)
+  const bigInt = BigInt(bigintIsh)
   let hex = bigInt.toString(16)
   if (hex.length % 2 !== 0) {
     hex = `0${hex}`

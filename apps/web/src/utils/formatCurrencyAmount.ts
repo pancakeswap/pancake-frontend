@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Price } from '@pancakeswap/sdk'
 import formatLocaleNumber from './formatLocaleNumber'
 
 export function formatCurrencyAmount(
@@ -11,7 +11,7 @@ export function formatCurrencyAmount(
     return '-'
   }
 
-  if (JSBI.equal(amount.quotient, JSBI.BigInt(0))) {
+  if (amount.quotient === 0n) {
     return '0'
   }
 
@@ -35,5 +35,5 @@ export function formatPrice(price: Price<Currency, Currency> | undefined, sigFig
 }
 
 export function formatRawAmount(amountRaw: string, decimals: number, sigFigs: number): string {
-  return new Fraction(amountRaw, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals))).toSignificant(sigFigs)
+  return new Fraction(amountRaw, 10n ** BigInt(decimals)).toSignificant(sigFigs)
 }

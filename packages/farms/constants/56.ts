@@ -1,7 +1,7 @@
-import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { CAKE_BNB_LP_MAINNET } from './common'
+import { FarmConfigV3, SerializedFarmConfig } from '..'
 
 export const farmsV3 = [
   {
@@ -45,6 +45,30 @@ export const farmsV3 = [
     feeAmount: FeeAmount.LOW,
   },
   // keep those farms on top
+  {
+    pid: 35,
+    lpSymbol: 'REVV-EDU LP',
+    token: bscTokens.revv,
+    quoteToken: bscTokens.edu,
+    lpAddress: '0x07b2d7379427d9A5AC96D704D53983b41D9d0082',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 34,
+    lpSymbol: 'BNB-EDU LP',
+    token: bscTokens.wbnb,
+    quoteToken: bscTokens.edu,
+    lpAddress: '0xFB5C2D2f2cF7741ba1A7Be2FfAbED248BD9b888e',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 33,
+    lpSymbol: 'USDT-EDU LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.edu,
+    lpAddress: '0x6425bC30D0751aF5181fC74a50e760b0e4a19811',
+    feeAmount: FeeAmount.MEDIUM,
+  },
   {
     pid: 32,
     lpSymbol: 'WBETH-ETH LP',

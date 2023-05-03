@@ -13,3 +13,11 @@ export const bscRpcProvider = new StaticJsonRpcProvider(
   },
   ChainId.BSC,
 )
+
+export const polygonRpcProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://polygon-rpc.com/',
+    skipFetchSetup: true,
+  },
+  137,
+)

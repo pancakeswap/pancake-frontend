@@ -1,5 +1,4 @@
 import { BigintIsh, MaxUint256, Percent, Price, CurrencyAmount, Token } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ZERO } from '../internalConstants'
 import { maxLiquidityForAmounts } from '../utils/maxLiquidityForAmounts'
@@ -27,14 +26,14 @@ export class Position {
 
   public readonly tickUpper: number
 
-  public readonly liquidity: JSBI
+  public readonly liquidity: bigint
 
   // cached resuts for the getters
   private _token0Amount: CurrencyAmount<Token> | null = null
 
   private _token1Amount: CurrencyAmount<Token> | null = null
 
-  private _mintAmounts: Readonly<{ amount0: JSBI; amount1: JSBI }> | null = null
+  private _mintAmounts: Readonly<{ amount0: bigint; amount1: bigint }> | null = null
 
   /**
    * Constructs a position for a given pool with the given liquidity
@@ -51,7 +50,7 @@ export class Position {
     this.pool = pool
     this.tickLower = tickLower
     this.tickUpper = tickUpper
-    this.liquidity = JSBI.BigInt(liquidity)
+    this.liquidity = BigInt(liquidity)
   }
 
   /**
@@ -111,16 +110,16 @@ export class Position {
    * @param slippageTolerance The amount by which the price can 'slip' before the transaction will revert
    * @returns The sqrt ratios after slippage
    */
-  private ratiosAfterSlippage(slippageTolerance: Percent): { sqrtRatioX96Lower: JSBI; sqrtRatioX96Upper: JSBI } {
+  private ratiosAfterSlippage(slippageTolerance: Percent): { sqrtRatioX96Lower: bigint; sqrtRatioX96Upper: bigint } {
     const priceLower = this.pool.token0Price.asFraction.multiply(new Percent(1).subtract(slippageTolerance))
     const priceUpper = this.pool.token0Price.asFraction.multiply(slippageTolerance.add(1))
     let sqrtRatioX96Lower = encodeSqrtRatioX96(priceLower.numerator, priceLower.denominator)
-    if (JSBI.lessThanOrEqual(sqrtRatioX96Lower, TickMath.MIN_SQRT_RATIO)) {
-      sqrtRatioX96Lower = JSBI.add(TickMath.MIN_SQRT_RATIO, JSBI.BigInt(1))
+    if (sqrtRatioX96Lower <= TickMath.MIN_SQRT_RATIO) {
+      sqrtRatioX96Lower = TickMath.MIN_SQRT_RATIO + 1n
     }
     let sqrtRatioX96Upper = encodeSqrtRatioX96(priceUpper.numerator, priceUpper.denominator)
-    if (JSBI.greaterThanOrEqual(sqrtRatioX96Upper, TickMath.MAX_SQRT_RATIO)) {
-      sqrtRatioX96Upper = JSBI.subtract(TickMath.MAX_SQRT_RATIO, JSBI.BigInt(1))
+    if (sqrtRatioX96Upper >= TickMath.MAX_SQRT_RATIO) {
+      sqrtRatioX96Upper = TickMath.MAX_SQRT_RATIO - 1n
     }
     return {
       sqrtRatioX96Lower,
@@ -134,7 +133,7 @@ export class Position {
    * @param slippageTolerance Tolerance of unfavorable slippage from the current price
    * @returns The amounts, with slippage
    */
-  public mintAmountsWithSlippage(slippageTolerance: Percent): Readonly<{ amount0: JSBI; amount1: JSBI }> {
+  public mintAmountsWithSlippage(slippageTolerance: Percent): Readonly<{ amount0: bigint; amount1: bigint }> {
     // get lower/upper prices
     const { sqrtRatioX96Upper, sqrtRatioX96Lower } = this.ratiosAfterSlippage(slippageTolerance)
 
@@ -190,7 +189,7 @@ export class Position {
    * @param slippageTolerance tolerance of unfavorable slippage from the current price
    * @returns The amounts, with slippage
    */
-  public burnAmountsWithSlippage(slippageTolerance: Percent): Readonly<{ amount0: JSBI; amount1: JSBI }> {
+  public burnAmountsWithSlippage(slippageTolerance: Percent): Readonly<{ amount0: bigint; amount1: bigint }> {
     // get lower/upper prices
     const { sqrtRatioX96Upper, sqrtRatioX96Lower } = this.ratiosAfterSlippage(slippageTolerance)
 
@@ -235,7 +234,7 @@ export class Position {
    * Returns the minimum amounts that must be sent in order to mint the amount of liquidity held by the position at
    * the current price for the pool
    */
-  public get mintAmounts(): Readonly<{ amount0: JSBI; amount1: JSBI }> {
+  public get mintAmounts(): Readonly<{ amount0: bigint; amount1: bigint }> {
     if (this._mintAmounts === null) {
       if (this.pool.tickCurrent < this.tickLower) {
         return {

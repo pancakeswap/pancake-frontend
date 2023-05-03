@@ -2586,4 +2586,12 @@ export const bscTokens = {
     'Wrapped Binance Beacon ETH',
     'https://ethereum.org/en/roadmap/beacon-chain/',
   ),
+  edu: new ERC20Token(
+    ChainId.BSC,
+    '0xBdEAe1cA48894A1759A8374D63925f21f2Ee2639',
+    18,
+    'EDU',
+    'EDU Coin',
+    'https://www.opencampus.xyz/',
+  ),
 }

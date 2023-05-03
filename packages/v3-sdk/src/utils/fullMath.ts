@@ -1,4 +1,3 @@
-import JSBI from 'jsbi'
 import { ONE, ZERO } from '../internalConstants'
 
 export abstract class FullMath {
@@ -7,10 +6,11 @@ export abstract class FullMath {
    */
   private constructor() {}
 
-  public static mulDivRoundingUp(a: JSBI, b: JSBI, denominator: JSBI): JSBI {
-    const product = JSBI.multiply(a, b)
-    let result = JSBI.divide(product, denominator)
-    if (JSBI.notEqual(JSBI.remainder(product, denominator), ZERO)) result = JSBI.add(result, ONE)
+  public static mulDivRoundingUp(a: bigint, b: bigint, denominator: bigint): bigint {
+    const product = a * b
+    let result = product / denominator
+    // eslint-disable-next-line operator-assignment
+    if (product % denominator !== ZERO) result = result + ONE
     return result
   }
 }

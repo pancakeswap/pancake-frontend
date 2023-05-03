@@ -1,5 +1,5 @@
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/evm'
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { createContext, useMemo } from 'react'
 

@@ -124,6 +124,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
     Number.isFinite(+value) ? +value : undefined,
     {
       hideIfPriceImpactTooHigh: true,
+      enabled: Number.isFinite(+value),
     },
   )
 

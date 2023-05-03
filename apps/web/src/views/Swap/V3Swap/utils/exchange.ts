@@ -1,14 +1,4 @@
-import {
-  Currency,
-  CurrencyAmount,
-  TradeType,
-  Percent,
-  ONE_HUNDRED_PERCENT,
-  JSBI,
-  Token,
-  Price,
-  ZERO,
-} from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, Token, Price, ZERO } from '@pancakeswap/sdk'
 import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
@@ -74,7 +64,7 @@ export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> |
     )
   }
 
-  if (JSBI.equal(outputAmountWithoutPriceImpact.quotient, ZERO)) {
+  if (outputAmountWithoutPriceImpact.quotient === ZERO) {
     return {
       priceImpactWithoutFee: undefined,
       lpFeeAmount: null,
@@ -109,5 +99,5 @@ export function formatExecutionPrice(
 }
 
 export function v3FeeToPercent(fee: FeeAmount): Percent {
-  return new Percent(fee, JSBI.multiply(BIPS_BASE, JSBI.BigInt(100)))
+  return new Percent(fee, BIPS_BASE * 100n)
 }
