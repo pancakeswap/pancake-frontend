@@ -30,17 +30,16 @@ const TradingReward = () => {
     [isAllTradingRewardPairDataFetching, allTradingRewardPairData, campaignId],
   )
 
-  // useEffect(() => {
-  //   if (!isAllTradingRewardPairDataFetching) {
-  //     if (!allTradingRewardPairData.campaignIds.includes(campaignId)) {
-  //       console.log('kick', {
-  //         isFetching: !isAllTradingRewardPairDataFetching,
-  //         includeCampaignId: !allTradingRewardPairData.campaignIds.includes(campaignId)
-  //       })
-  //       router.push('/')
-  //     }
-  //   }
-  // }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
+  useEffect(() => {
+    if (!isAllTradingRewardPairDataFetching && !allTradingRewardPairData.campaignIds.includes(campaignId)) {
+      console.log('kick', {
+        isFetching: isAllTradingRewardPairDataFetching,
+        includeCampaignId: allTradingRewardPairData.campaignIds.includes(campaignId),
+        campaignIds: allTradingRewardPairData.campaignIds,
+      })
+      router.push('/')
+    }
+  }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
 
   const currentUserIncentive = useMemo(
     () =>
