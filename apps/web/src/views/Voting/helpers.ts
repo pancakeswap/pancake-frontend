@@ -115,7 +115,7 @@ interface GetVotingPowerType {
   lockedEndTime?: number
 }
 
-const nodeRealProvider = new JsonRpcProvider('https://bsc-mainnet.nodereal.io/v1/13acdadd769d4128b5c4a994e42140b3', 56)
+const nodeRealProvider = new JsonRpcProvider('https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24', 56)
 
 export const getVotingPower = async (
   account: string,
