@@ -98,6 +98,7 @@ import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
 import mmLinkedPoolAbi from 'config/abi/mmLinkedPool.json'
 import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
 import sid from 'config/abi/SID.json'
+import uns from 'config/abi/UNS.json'
 import sidResolver from 'config/abi/SIDResolver.json'
 import masterChefV3Abi from 'config/abi/masterChefV3.json'
 import v3MigratorAbi from 'config/abi/v3Migrator.json'
@@ -155,6 +156,7 @@ import type {
   SIDResolver,
   MasterChefV3,
   V3Migrator,
+  UNS,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -373,8 +375,12 @@ export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: num
   return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
 }
 
-export const getSidContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: sid, address, signer }) as SID
+export const getSidContract = (address: string, chainId: number) => {
+  return getContract({ abi: sid, address, chainId }) as SID
+}
+
+export const getUnsContract = (address: string, chainId?: ChainId, signer?: Signer | Provider) => {
+  return getContract({ abi: uns, chainId, address, signer }) as UNS
 }
 
 export const getSidResolverContract = (address: string, signer?: Signer | Provider) => {
