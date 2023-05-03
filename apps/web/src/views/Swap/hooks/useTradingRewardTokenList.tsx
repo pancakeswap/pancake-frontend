@@ -5,7 +5,7 @@ import useAllTradingRewardPair, { RewardStatus } from 'views/TradingReward/hooks
 
 const useTradingRewardTokenList = () => {
   const farms = farmsV3ConfigChainMap[ChainId.BSC]
-  const { data } = useAllTradingRewardPair(RewardStatus.ALL)
+  const { data } = useAllTradingRewardPair(RewardStatus.ACTIVATED)
 
   const uniqueAddressList = useMemo(() => {
     const tokenAddressArray = Object.values(data.campaignPairs).reduce((acc, val) => {
@@ -21,7 +21,10 @@ const useTradingRewardTokenList = () => {
     [uniqueAddressList, farms],
   )
 
-  return tokenPairs
+  return {
+    tokenPairs,
+    campaignId: data.campaignIds[0],
+  }
 }
 
 export default useTradingRewardTokenList

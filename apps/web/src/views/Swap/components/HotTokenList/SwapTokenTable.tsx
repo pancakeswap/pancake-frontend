@@ -28,6 +28,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
+import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
 
 /**
  *  Columns on different layouts
@@ -192,6 +193,9 @@ const DataRow: React.FC<
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
         <Flex alignItems="center">
+          {tokenData?.pairs?.length > 0 && (
+            <TradingRewardIcon pairs={tokenData.pairs} campaignId={tokenData.campaignId} />
+          )}
           <Button
             variant="text"
             scale="sm"
