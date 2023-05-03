@@ -59,7 +59,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): CallResult[] {
   const { chainId } = useActiveChainId()
-  const [callResults, dispatch] = useAtom(multicallReducerAtom)
+  const [{ callResults }, dispatch] = useAtom(multicallReducerAtom)
 
   const serializedCallKeys: string = useMemo(
     () =>
