@@ -1,5 +1,5 @@
 ---
-'@pancakeswap/wagmi': patch
+'@pancakeswap/wagmi': major
 ---
 
 Remove Web3Provider
