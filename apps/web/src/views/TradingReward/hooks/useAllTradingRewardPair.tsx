@@ -58,11 +58,7 @@ const fetchCampaignPairs = async (chainId: number, campaignIds: Array<string>) =
     campaignIds.map(async (campaignId: string) => {
       const pair = await fetch(`${TRADING_REWARD_API}/campaign/pair/chainId/${chainId}/campaignId/${campaignId}`)
       const pairResult = await pair.json()
-      if (newData[campaignId]) {
-        newData[campaignId].push(pairResult.data)
-      } else {
-        newData[campaignId] = [pairResult.data]
-      }
+      newData[campaignId] = [...pairResult.data]
     }),
   )
   return newData
