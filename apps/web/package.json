@@ -94,7 +94,7 @@
     "polished": "^4.2.2",
     "qs": "^6.0.0",
     "react": "^18.2.0",
-    "react-countup": "^6.4.0",
+    "react-countup": "^6.4.2",
     "react-datepicker": "^4.8.0",
     "react-device-detect": "^2.1.2",
     "react-dom": "^18.2.0",
