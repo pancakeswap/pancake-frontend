@@ -25,5 +25,5 @@ export const useDomainNameForAddress = (address: `0x${string}` | string, fetchDa
       avatar: ensAvatar ?? undefined,
       isLoading: isEnsLoading || isEnsAvatarLoading || (!ensName && isSidLoading) || (!sidName && isUnsLoading),
     }
-  }, [sidName, unsName, isSidLoading, isUnsLoading, ensName, isEnsLoading])
+  }, [sidName, unsName, isSidLoading, isUnsLoading, ensName, isEnsLoading, ensAvatar, isEnsAvatarLoading])
 }
