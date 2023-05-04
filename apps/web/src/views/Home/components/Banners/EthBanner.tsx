@@ -7,7 +7,7 @@ import * as S from './Styled'
 
 const { ETHBunny, ETHXPancakeSwap } = {
   ETHBunny: `${ASSET_CDN}/web/banners/ETHBunny.png`,
-  ETHXPancakeSwap: `${ASSET_CDN}/web/banners/ETHXPancakeSwap.png`,
+  ETHXPancakeSwap: `${ASSET_CDN}/web/banners/eTHXPancakeSwap.png`,
 }
 
 const RightWrapper = styled.div`
