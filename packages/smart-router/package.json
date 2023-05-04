@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "@ethersproject/providers": "^5.0.0",
     "@ethersproject/solidity": "^5.0.0",
     "@ethersproject/units": "^5.0.0",
-    "@pancakeswap/multicall": "^1.0.0",
+    "@pancakeswap/multicall": "^2.0.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",

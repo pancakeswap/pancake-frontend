@@ -1,5 +1,11 @@
 # @pancakeswap/wagmi
 
+## 1.0.0
+
+### Major Changes
+
+- c58a1103a: Remove Web3Provider
+
 ## 0.1.0
 
 ### Minor Changes
