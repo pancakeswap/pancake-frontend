@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/sdk",
   "license": "MIT",
-  "version": "4.0.0",
+  "version": "3.2.1",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
