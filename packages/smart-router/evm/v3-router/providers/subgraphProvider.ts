@@ -129,7 +129,7 @@ const POOL_SELECTION_CONFIG = {
   topNTokenInOut: 2,
   topNSecondHop: 1,
   topNWithEachBaseToken: 3,
-  topNWithBaseToken: 3,
+  topNWithBaseToken: 4,
 }
 
 const sortByTvl = (a: SubgraphV3Pool, b: SubgraphV3Pool) => (a.tvlUSD >= b.tvlUSD ? -1 : 1)
