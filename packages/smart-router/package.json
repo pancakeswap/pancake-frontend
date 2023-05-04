@@ -42,6 +42,7 @@
     }
   },
   "devDependencies": {
+    "@pancakeswap/multicall": "^2.0.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
