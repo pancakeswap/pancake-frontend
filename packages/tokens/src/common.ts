@@ -147,6 +147,13 @@ export const USDC = {
   [ChainId.ETHEREUM]: USDC_ETH,
   [ChainId.GOERLI]: USDC_GOERLI,
   [ChainId.ZKSYNC]: new ERC20Token(ChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD Coin'),
+  [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
+    ChainId.ZKSYNC_TESTNET,
+    '0x0faF6df7054946141266420b43783387A78d82A9',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
@@ -197,5 +204,6 @@ export const STABLE_COIN = {
   [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
   [ChainId.ARBITRUM_ONE]: USDC[ChainId.ARBITRUM_ONE],
   [ChainId.ZKSYNC]: USDC[ChainId.ZKSYNC],
+  [ChainId.ZKSYNC_TESTNET]: USDC[ChainId.ZKSYNC_TESTNET],
   [ChainId.POLYGON_ZKEVM]: USDC[ChainId.POLYGON_ZKEVM],
 } satisfies Record<ChainId, ERC20Token>

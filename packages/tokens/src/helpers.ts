@@ -12,6 +12,7 @@ export const EMPTY_LIST: TokenAddressMap<ChainId> = {
   [ChainId.ARBITRUM_ONE]: {},
   [ChainId.POLYGON_ZKEVM]: {},
   [ChainId.ZKSYNC]: {},
+  [ChainId.ZKSYNC_TESTNET]: {},
 }
 
 export function serializeTokens(unserializedTokens: any) {

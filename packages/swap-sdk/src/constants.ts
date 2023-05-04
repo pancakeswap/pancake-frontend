@@ -7,6 +7,7 @@ export enum ChainId {
   GOERLI = 5,
   BSC = 56,
   BSC_TESTNET = 97,
+  ZKSYNC_TESTNET = 280,
   ZKSYNC = 324,
   POLYGON_ZKEVM = 1101,
   ARBITRUM_ONE = 42161,
@@ -26,7 +27,8 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.BSC_TESTNET]: '0x6725f303b657a9451d8ba641348b6761a6cc7a17',
   [ChainId.ARBITRUM_ONE]: '0x13eB8884bD7991F8dEe804Dad0436f7C806bF1b9',
   [ChainId.POLYGON_ZKEVM]: '0xb3dF6321C8e3f71bf15Bc8810c26Bd4200BfFdA2',
-  [ChainId.ZKSYNC]: '0x0530cAA5c022464231A8B566C089DEd181Cb71EC',
+  [ChainId.ZKSYNC]: '0x0F70cE1e2c0FB5FC3B67E13ed4F422fE82d832bD',
+  [ChainId.ZKSYNC_TESTNET]: '0xA4370037e4C151449Fb7166DccB9FcF30B812baF',
 } as const satisfies Record<ChainId, Address>
 
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
@@ -40,7 +42,8 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.ARBITRUM_ONE]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
   [ChainId.POLYGON_ZKEVM]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
   // TODO: new chains
-  [ChainId.ZKSYNC]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
+  [ChainId.ZKSYNC]: '0x1cb011040b91cd937ddff2327f17c9690653b05b6506e830baadf2493468d657',
+  [ChainId.ZKSYNC_TESTNET]: '0x1cb011040b91cd937ddff2327f17c9690653b05b6506e830baadf2493468d657',
 } as const satisfies Record<ChainId, Hash>
 
 export const WETH9 = {
@@ -92,6 +95,14 @@ export const WETH9 = {
     'Wrapped Ether',
     'https://weth.io'
   ),
+  [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
+    ChainId.ZKSYNC_TESTNET,
+    '0x20b28B1e4665FFf290650586ad76E977EAb90c5D',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
   [ChainId.POLYGON_ZKEVM]: new ERC20Token(
     ChainId.POLYGON_ZKEVM,
     '0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9',
@@ -137,6 +148,7 @@ export const WNATIVE = {
   [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
   [ChainId.POLYGON_ZKEVM]: WETH9[ChainId.POLYGON_ZKEVM],
   [ChainId.ZKSYNC]: WETH9[ChainId.ZKSYNC],
+  [ChainId.ZKSYNC_TESTNET]: WETH9[ChainId.ZKSYNC_TESTNET],
 } satisfies Record<ChainId, ERC20Token>
 
 const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
@@ -157,6 +169,7 @@ export const NATIVE = {
   [ChainId.ARBITRUM_ONE]: ETHER,
   [ChainId.POLYGON_ZKEVM]: ETHER,
   [ChainId.ZKSYNC]: ETHER,
+  [ChainId.ZKSYNC_TESTNET]: ETHER,
 } satisfies Record<
   ChainId,
   {

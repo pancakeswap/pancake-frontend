@@ -224,6 +224,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
     [ChainId.ARBITRUM_ONE]: { ...map1[ChainId.ARBITRUM_ONE], ...map2[ChainId.ARBITRUM_ONE] },
     [ChainId.POLYGON_ZKEVM]: { ...map1[ChainId.POLYGON_ZKEVM], ...map2[ChainId.POLYGON_ZKEVM] },
     [ChainId.ZKSYNC]: { ...map1[ChainId.ZKSYNC], ...map2[ChainId.ZKSYNC] },
+    [ChainId.ZKSYNC_TESTNET]: { ...map1[ChainId.ZKSYNC_TESTNET], ...map2[ChainId.ZKSYNC_TESTNET] },
   }
 }
 

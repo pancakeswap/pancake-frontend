@@ -9,6 +9,7 @@ import {
   arbitrumTokens,
   polygonZkEvmTokens,
   zksyncTokens,
+  zkSyncTestnetTokens,
 } from '@pancakeswap/tokens'
 import { ChainTokenList } from './types'
 
@@ -27,6 +28,7 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.ARBITRUM_ONE]: 15_000,
   [ChainId.POLYGON_ZKEVM]: 7_000,
   [ChainId.ZKSYNC]: 1_000,
+  [ChainId.ZKSYNC_TESTNET]: 1_000,
 } as const satisfies Record<ChainId, number>
 
 // used for display in the default list when adding liquidity
@@ -38,6 +40,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
+  [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -49,6 +52,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
+  [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -71,6 +75,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdc],
   ],
   [ChainId.ZKSYNC]: [[zksyncTokens.usdc, zksyncTokens.weth]],
+  [ChainId.ZKSYNC_TESTNET]: [[zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth]],
 }
 
 export const BIG_INT_ZERO = 0n

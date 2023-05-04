@@ -22,6 +22,7 @@ export const SWAP_ROUTER_ADDRESSES = {
   [ChainId.ARBITRUM_ONE]: '',
   [ChainId.POLYGON_ZKEVM]: '',
   [ChainId.ZKSYNC]: '',
+  [ChainId.ZKSYNC_TESTNET]: '',
 } as const satisfies Record<ChainId, string>
 
 export const ROUTER_ADDRESS: ChainMap<string> = {
@@ -31,7 +32,8 @@ export const ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.BSC_TESTNET]: '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
   [ChainId.ARBITRUM_ONE]: '0xb3dF6321C8e3f71bf15Bc8810c26Bd4200BfFdA2',
   [ChainId.POLYGON_ZKEVM]: '0x058f6D3B74e1A54ac7ED9160510bf756fCC5Bf1a',
-  [ChainId.ZKSYNC]: '0x35674A0F5F882EEe84e0c1Ab57889174CFF261b2',
+  [ChainId.ZKSYNC]: '0xbFc9a73c77d5D8cE972FBa2806Ac18e7d913Deb6',
+  [ChainId.ZKSYNC_TESTNET]: '0xC7E73aFdcfa7146052468Cb1BD81819591C1De20',
 }
 
 export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
@@ -42,6 +44,7 @@ export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
   [ChainId.ARBITRUM_ONE]: '',
   [ChainId.POLYGON_ZKEVM]: '',
   [ChainId.ZKSYNC]: '',
+  [ChainId.ZKSYNC_TESTNET]: '',
 }
 
 // used to construct intermediary pairs for trading
@@ -61,6 +64,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
+  [ChainId.ZKSYNC_TESTNET]: [zksyncTokens.usdc, zksyncTokens.weth],
 }
 
 /**

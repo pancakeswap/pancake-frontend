@@ -6,6 +6,7 @@ import {
   goerli,
   mainnet,
   zkSync as zkSync_,
+  zkSyncTestnet as zkSyncTestnet_,
   arbitrum,
   polygonZkEvm as polygonZkEvm_,
   Chain,
@@ -19,6 +20,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.ARBITRUM_ONE]: 'arb',
   [ChainId.POLYGON_ZKEVM]: 'polygonZkEVM',
   [ChainId.ZKSYNC]: 'zkSync',
+  [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
 } as const satisfies Record<ChainId, string>
 
 const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
@@ -58,6 +60,16 @@ const zkSync = {
   },
 } as const satisfies Chain
 
+const zkSyncTestnet = {
+  ...zkSyncTestnet_,
+  contracts: {
+    multicall3: {
+      address: '0x5640049C9e2d33127B34F1bef5C070509f14B5D0',
+      blockCreated: 5138198, // TODO: double check
+    },
+  },
+} as const satisfies Chain
+
 const polygonZkEvm = {
   ...polygonZkEvm_,
   contracts: {
@@ -68,7 +80,7 @@ const polygonZkEvm = {
   },
 } as const satisfies Chain
 
-export const CHAINS = [bsc, mainnet, bscTestnet, goerli, zkSync, arbitrum, polygonZkEvm]
+export const CHAINS = [bsc, mainnet, bscTestnet, goerli, zkSync, zkSyncTestnet, arbitrum, polygonZkEvm]
 
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
