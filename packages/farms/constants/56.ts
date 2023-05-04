@@ -46,6 +46,22 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 37,
+    lpSymbol: 'BNBX-BNB LP',
+    token: bscTokens.bnbx,
+    quoteToken: bscTokens.bnb,
+    lpAddress: '0x77B27c351B13Dc6a8A16Cc1d2E9D5e7F9873702E',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 36,
+    lpSymbol: 'PEEL-BUSD LP',
+    token: bscTokens.peel,
+    quoteToken: bscTokens.busd,
+    lpAddress: '0x08eAbc3d13Fb4bdFFD1F42a5644C1c826aCF62c0',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 35,
     lpSymbol: 'REVV-EDU LP',
     token: bscTokens.revv,
