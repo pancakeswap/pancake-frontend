@@ -1,4 +1,5 @@
 import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, TradeType, Percent } from '@pancakeswap/sdk'
+import { Address } from 'viem'
 import { ADDRESS_ZERO } from '@pancakeswap/v3-sdk'
 import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'
 import { isStablePool, isV2Pool, isV3Pool } from './pool'
@@ -6,7 +7,7 @@ import { isStablePool, isV2Pool, isV3Pool } from './pool'
 const ONE_HUNDRED = 100n
 
 interface SerializedCurrency {
-  address: string
+  address: Address
   decimals: number
   symbol: string
 }

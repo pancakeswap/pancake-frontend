@@ -1,15 +1,34 @@
-import { Contract, providers } from 'ethers'
+import { createPublicClient, PublicClient, http, getContract, Address } from 'viem'
+import { bsc, bscTestnet, mainnet, goerli } from 'viem/chains'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { Pair } from './entities/pair'
 import { ChainId } from './constants'
-import ERC20 from './abis/ERC20.json'
-import IPancakePair from './abis/IPancakePair.json'
-
-const { getNetwork, getDefaultProvider } = providers
+import { erc20Abi } from './abis/ERC20'
+import { pancakePairAbi } from './abis/IPancakePair'
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {
   [ChainId.BSC]: {},
+}
+
+const ethClient = createPublicClient({ chain: mainnet, transport: http() })
+const bscClient = createPublicClient({ chain: bsc, transport: http() })
+const bscTestnetClient = createPublicClient({ chain: bscTestnet, transport: http() })
+const goerliClient = createPublicClient({ chain: goerli, transport: http() })
+
+const getDefaultClient = (chainId: ChainId): PublicClient => {
+  switch (chainId) {
+    case ChainId.ETHEREUM:
+      return ethClient
+    case ChainId.BSC:
+      return bscClient
+    case ChainId.BSC_TESTNET:
+      return bscTestnetClient
+    case ChainId.GOERLI:
+      return goerliClient
+    default:
+      return bscClient
+  }
 }
 
 /**
@@ -32,15 +51,20 @@ export abstract class Fetcher {
    */
   public static async fetchTokenData(
     chainId: ChainId,
-    address: string,
-    provider = getDefaultProvider(getNetwork(chainId)),
+    address: Address,
+    publicClient: any = getDefaultClient(chainId),
     symbol: string,
     name?: string
   ): Promise<Token> {
+    const erc20 = getContract({
+      abi: erc20Abi,
+      address,
+      publicClient: publicClient as PublicClient,
+    })
     const parsedDecimals =
       typeof TOKEN_DECIMALS_CACHE?.[chainId]?.[address] === 'number'
         ? TOKEN_DECIMALS_CACHE[chainId][address]
-        : await new Contract(address, ERC20, provider).decimals().then((decimals: number): number => {
+        : await erc20.read.decimals().then((decimals): number => {
             TOKEN_DECIMALS_CACHE = {
               ...TOKEN_DECIMALS_CACHE,
               [chainId]: {
@@ -62,11 +86,16 @@ export abstract class Fetcher {
   public static async fetchPairData(
     tokenA: Token,
     tokenB: Token,
-    provider = getDefaultProvider(getNetwork(tokenA.chainId))
+    publicClient: any = getDefaultClient(tokenA.chainId)
   ): Promise<Pair> {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB)
-    const [reserves0, reserves1] = await new Contract(address, IPancakePair, provider).getReserves()
+    const pairContract = getContract({
+      abi: pancakePairAbi,
+      address,
+      publicClient: publicClient as PublicClient,
+    })
+    const [reserves0, reserves1] = await pairContract.read.getReserves()
     const balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0]
     return new Pair(
       CurrencyAmount.fromRawAmount(tokenA, balances[0]),

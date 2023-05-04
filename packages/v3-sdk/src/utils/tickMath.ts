@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@pancakeswap/sdk'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../internalConstants'
 import { mostSignificantBit } from './mostSignificantBit'

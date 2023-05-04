@@ -1,15 +1,9 @@
-import { Interface } from 'ethers/lib/utils'
+import { Hex, encodeFunctionData, Address } from 'viem'
 import invariant from 'tiny-invariant'
 import { Currency, Percent, Token } from '@pancakeswap/sdk'
-import {
-  MintSpecificOptions,
-  IncreaseSpecificOptions,
-  NonfungiblePositionManager,
-  Position,
-  toHex,
-} from '@pancakeswap/v3-sdk'
+import { MintSpecificOptions, IncreaseSpecificOptions, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 
-import abi from '../../abis/IApproveAndCall.json'
+import { approveAndCallAbi } from '../../abis/IApproveAndCall'
 
 // condensed version of v3-sdk AddLiquidityOptions containing only necessary swap + add attributes
 export type CondensedAddLiquidityOptions = Omit<MintSpecificOptions, 'createPool'> | IncreaseSpecificOptions
@@ -28,7 +22,7 @@ export function isMint(options: CondensedAddLiquidityOptions): options is Omit<M
 }
 
 export abstract class ApproveAndCall {
-  public static INTERFACE: Interface = new Interface(abi)
+  public static ABI = approveAndCallAbi
 
   /**
    * Cannot be constructed.
@@ -36,30 +30,58 @@ export abstract class ApproveAndCall {
   // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static encodeApproveMax(token: Token): string {
-    return ApproveAndCall.INTERFACE.encodeFunctionData('approveMax', [token.address])
+  public static encodeApproveMax(token: Token): Hex {
+    return encodeFunctionData({
+      abi: ApproveAndCall.ABI,
+      functionName: 'approveMax',
+      args: [token.address],
+    })
   }
 
-  public static encodeApproveMaxMinusOne(token: Token): string {
-    return ApproveAndCall.INTERFACE.encodeFunctionData('approveMaxMinusOne', [token.address])
+  public static encodeApproveMaxMinusOne(token: Token): Hex {
+    return encodeFunctionData({
+      abi: ApproveAndCall.ABI,
+      functionName: 'approveMaxMinusOne',
+      args: [token.address],
+    })
   }
 
-  public static encodeApproveZeroThenMax(token: Token): string {
-    return ApproveAndCall.INTERFACE.encodeFunctionData('approveZeroThenMax', [token.address])
+  public static encodeApproveZeroThenMax(token: Token): Hex {
+    return encodeFunctionData({
+      abi: ApproveAndCall.ABI,
+      functionName: 'approveZeroThenMax',
+      args: [token.address],
+    })
   }
 
-  public static encodeApproveZeroThenMaxMinusOne(token: Token): string {
-    return ApproveAndCall.INTERFACE.encodeFunctionData('approveZeroThenMaxMinusOne', [token.address])
+  public static encodeApproveZeroThenMaxMinusOne(token: Token): Hex {
+    return encodeFunctionData({
+      abi: ApproveAndCall.ABI,
+      functionName: 'approveZeroThenMaxMinusOne',
+      args: [token.address],
+    })
   }
 
-  public static encodeCallPositionManager(calldatas: string[]): string {
+  public static encodeCallPositionManager(calldatas: Hex[]): Hex {
     invariant(calldatas.length > 0, 'NULL_CALLDATA')
 
     if (calldatas.length === 1) {
-      return ApproveAndCall.INTERFACE.encodeFunctionData('callPositionManager', calldatas)
+      return encodeFunctionData({
+        abi: ApproveAndCall.ABI,
+        functionName: 'callPositionManager',
+        args: calldatas as [Hex],
+      })
     }
-    const encodedMulticall = NonfungiblePositionManager.INTERFACE.encodeFunctionData('multicall', [calldatas])
-    return ApproveAndCall.INTERFACE.encodeFunctionData('callPositionManager', [encodedMulticall])
+    const encodedMulticall = encodeFunctionData({
+      abi: NonfungiblePositionManager.ABI,
+      functionName: 'multicall',
+      args: [calldatas],
+    })
+    return encodeFunctionData({
+      abi: ApproveAndCall.ABI,
+      functionName: 'callPositionManager',
+      args: [encodedMulticall],
+    })
   }
 
   /**
@@ -74,7 +96,7 @@ export abstract class ApproveAndCall {
     minimalPosition: Position,
     addLiquidityOptions: CondensedAddLiquidityOptions,
     slippageTolerance: Percent,
-  ): string {
+  ): Hex {
     let { amount0: amount0Min, amount1: amount1Min } = position.mintAmountsWithSlippage(slippageTolerance)
 
     // position.mintAmountsWithSlippage() can create amounts not dependenable in scenarios
@@ -88,31 +110,40 @@ export abstract class ApproveAndCall {
     }
 
     if (isMint(addLiquidityOptions)) {
-      return ApproveAndCall.INTERFACE.encodeFunctionData('mint', [
+      return encodeFunctionData({
+        abi: ApproveAndCall.ABI,
+        functionName: 'mint',
+        args: [
+          {
+            token0: position.pool.token0.address,
+            token1: position.pool.token1.address,
+            fee: position.pool.fee,
+            tickLower: position.tickLower,
+            tickUpper: position.tickUpper,
+            amount0Min,
+            amount1Min,
+            recipient: addLiquidityOptions.recipient as Address,
+          },
+        ],
+      })
+    }
+
+    return encodeFunctionData({
+      abi: ApproveAndCall.ABI,
+      functionName: 'increaseLiquidity',
+      args: [
         {
           token0: position.pool.token0.address,
           token1: position.pool.token1.address,
-          fee: position.pool.fee,
-          tickLower: position.tickLower,
-          tickUpper: position.tickUpper,
-          amount0Min: toHex(amount0Min),
-          amount1Min: toHex(amount1Min),
-          recipient: addLiquidityOptions.recipient,
+          amount0Min,
+          amount1Min,
+          tokenId: BigInt(addLiquidityOptions.tokenId),
         },
-      ])
-    }
-    return ApproveAndCall.INTERFACE.encodeFunctionData('increaseLiquidity', [
-      {
-        token0: position.pool.token0.address,
-        token1: position.pool.token1.address,
-        amount0Min: toHex(amount0Min),
-        amount1Min: toHex(amount1Min),
-        tokenId: toHex(addLiquidityOptions.tokenId),
-      },
-    ])
+      ],
+    })
   }
 
-  public static encodeApprove(token: Currency, approvalType: ApprovalTypes): string {
+  public static encodeApprove(token: Currency, approvalType: ApprovalTypes): Hex {
     switch (approvalType) {
       case ApprovalTypes.MAX:
         return ApproveAndCall.encodeApproveMax(token.wrapped)

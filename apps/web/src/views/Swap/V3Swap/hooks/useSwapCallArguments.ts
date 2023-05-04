@@ -8,9 +8,9 @@ import { isAddress } from 'utils'
 
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { Address } from 'viem'
 
 interface SwapCall {
   address: string

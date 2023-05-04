@@ -1,5 +1,5 @@
-import { solidityPack as pack } from 'ethers/lib/utils'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { encodePacked, Hash } from 'viem'
+import { Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { Pool } from '../entities/pool'
 import { Route } from '../entities/route'
 
@@ -8,7 +8,7 @@ import { Route } from '../entities/route'
  * @param route the v3 path to convert to an encoded path
  * @param exactOutput whether the route should be encoded in reverse, for making exact output swaps
  */
-export function encodeRouteToPath(route: Route<Currency, Currency>, exactOutput: boolean): string {
+export function encodeRouteToPath(route: Route<Currency, Currency>, exactOutput: boolean): Hash {
   const firstInputToken: Token = route.input.wrapped
 
   const { path, types } = route.pools.reduce(
@@ -34,5 +34,5 @@ export function encodeRouteToPath(route: Route<Currency, Currency>, exactOutput:
     { inputToken: firstInputToken, path: [], types: [] }
   )
 
-  return exactOutput ? pack(types.reverse(), path.reverse()) : pack(types, path)
+  return exactOutput ? encodePacked(types.reverse(), path.reverse()) : encodePacked(types, path)
 }

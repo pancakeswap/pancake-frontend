@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { Q96 } from '../internalConstants'
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'
 

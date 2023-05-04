@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
-import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
+import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { useState, memo } from 'react'

@@ -7,6 +7,7 @@ import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContr
 import { useCallback } from 'react'
 import { mutate } from 'swr'
 import { calculateGasMargin } from 'utils'
+import { Address } from 'viem'
 import { useAccount, useSigner } from 'wagmi'
 
 interface FarmV3ActionContainerChildrenProps {
@@ -24,8 +25,8 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
 
   const { loading, fetchWithCatchTxError } = useCatchTxError()
 
-  const masterChefV3Address = useMasterchefV3()?.address
-  const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
+  const masterChefV3Address = useMasterchefV3()?.address as Address
+  const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address as Address
 
   const onUnstake = useCallback(async () => {
     const { calldata, value } = MasterChefV3.withdrawCallParameters({ tokenId, to: account })

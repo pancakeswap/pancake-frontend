@@ -1,4 +1,4 @@
-import { solidityPack as pack } from 'ethers/lib/utils'
+import { Hex, encodePacked } from 'viem'
 import { Token } from '@pancakeswap/sdk'
 
 import { BaseRoute, Pool } from '../types'
@@ -10,7 +10,7 @@ import { V2_FEE_PATH_PLACEHOLDER } from '../../constants'
  * @param route the mixed path to convert to an encoded path
  * @returns the encoded path
  */
-export function encodeMixedRouteToPath(route: BaseRoute, exactOutput: boolean): string {
+export function encodeMixedRouteToPath(route: BaseRoute, exactOutput: boolean): Hex {
   const firstInputToken: Token = route.input.wrapped
 
   const { path, types } = route.pools.reduce(
@@ -38,5 +38,5 @@ export function encodeMixedRouteToPath(route: BaseRoute, exactOutput: boolean): 
     { inputToken: firstInputToken, path: [], types: [] },
   )
 
-  return exactOutput ? pack(types.reverse(), path.reverse()) : pack(types, path)
+  return exactOutput ? encodePacked(types.reverse(), path.reverse()) : encodePacked(types, path)
 }

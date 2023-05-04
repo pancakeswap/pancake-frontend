@@ -1,6 +1,6 @@
 import { BigintIsh, ZERO, CurrencyAmount, Fraction, Percent } from '@pancakeswap/swap-sdk-core'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { bscTokens } from '@pancakeswap/tokens'
-import { vi } from 'vitest'
 
 import { FeeCalculator } from './feeCalculator'
 import { Tick } from '../entities'

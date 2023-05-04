@@ -1,4 +1,4 @@
-import { LegacyStableSwapPair } from '@pancakeswap/smart-router/evm'
+import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { Contract } from 'ethers'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { createContext, useMemo } from 'react'

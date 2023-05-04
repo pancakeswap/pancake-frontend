@@ -1,5 +1,5 @@
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { Box, Text } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 

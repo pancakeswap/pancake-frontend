@@ -781,8 +781,8 @@ importers:
         specifier: ^8.0.0
         version: 8.3.2
       viem:
-        specifier: ^0.2.12
-        version: 0.2.12(typescript@4.9.4)(zod@3.21.4)
+        specifier: ^0.3.17
+        version: 0.3.17(typescript@4.9.4)(zod@3.21.4)
       wagmi:
         specifier: ^0.12.12
         version: 0.12.12(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.4)(zod@3.21.4)
@@ -1299,8 +1299,8 @@ importers:
         specifier: ^1.1.0
         version: 1.2.0
       viem:
-        specifier: ^0.2.12
-        version: 0.2.12(typescript@4.9.4)(zod@3.21.4)
+        specifier: ^0.3.17
+        version: 0.3.17(typescript@4.9.4)(zod@3.21.4)
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -1356,6 +1356,9 @@ importers:
       toformat:
         specifier: ^2.0.0
         version: 2.0.0
+      viem:
+        specifier: ^0.3.17
+        version: 0.3.17(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@swc/core':
         specifier: ^1.2.215
@@ -1821,6 +1824,9 @@ importers:
       swr:
         specifier: ^2.1.3
         version: 2.1.5(react@18.2.0)
+      viem:
+        specifier: ^0.3.17
+        version: 0.3.17(typescript@4.9.4)(zod@3.21.4)
       vitest:
         specifier: ^0.30.1
         version: 0.30.1
@@ -1857,6 +1863,9 @@ importers:
       toformat:
         specifier: ^2.0.0
         version: 2.0.0
+      viem:
+        specifier: ^0.3.17
+        version: 0.3.17(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@pancakeswap/utils':
         specifier: workspace:*
@@ -2021,7 +2030,6 @@ packages:
 
   /@adraffy/ens-normalize@1.9.0:
     resolution: {integrity: sha512-iowxq3U30sghZotgl4s/oJRci6WPBfNO5YYgk2cIOMCHr3LeGPcsZjCEr+33Q4N+oV3OABDAtA+pyvWjbvBifQ==}
-    dev: false
 
   /@ampproject/remapping@2.2.0:
     resolution: {integrity: sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==}
@@ -7499,13 +7507,11 @@ packages:
     resolution: {integrity: sha512-OqaOf4RWDaCRuBKJLDURrgVxjLmneGsiCXGuzYB5y95YithZMA6w4uk34DHSm0rKMrrYiaeZj48/81EvaAScLQ==}
     dependencies:
       '@noble/hashes': 1.3.0
-    dev: false
 
   /@noble/curves@0.9.0:
     resolution: {integrity: sha512-OAdtHMXBp7Chl2lcTn/i7vnFX/q+hhTwDnek5NfYfZsY4LyaUuHCcoq2JlLY3BTFTLT+ZhYZalhF6ejlV7KnJQ==}
     dependencies:
       '@noble/hashes': 1.3.0
-    dev: false
 
   /@noble/ed25519@1.7.3:
     resolution: {integrity: sha512-iR8GBkDt0Q3GyaVcIu7mSsVIqnFbkbRzGLWlvhwunacoLwt4J3swfKhfaM6rN6WY+TBGoYT1GtT1mIh2/jGbRQ==}
@@ -8001,7 +8007,6 @@ packages:
       '@noble/curves': 0.8.3
       '@noble/hashes': 1.3.0
       '@scure/base': 1.1.1
-    dev: false
 
   /@scure/bip39@1.1.0:
     resolution: {integrity: sha512-pwrPOS16VeTKg98dYXQyIjJEcWfz7/1YJIwxUEPFfQPtc86Ym/1sVgQ2RLoD43AazMk2l/unK4ITySSpW2+82w==}
@@ -8014,7 +8019,6 @@ packages:
     dependencies:
       '@noble/hashes': 1.3.0
       '@scure/base': 1.1.1
-    dev: false
 
   /@sentry-internal/tracing@7.47.0:
     resolution: {integrity: sha512-udpHnCzF8DQsWf0gQwd0XFGp6Y8MOiwnl8vGt2ohqZGS3m1+IxoRLXsSkD8qmvN6KKDnwbaAvYnK0z0L+AW95g==}
@@ -11295,7 +11299,6 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.4
-    dev: false
 
   /@wagmi/chains@0.2.19(typescript@4.9.4):
     resolution: {integrity: sha512-pyqGjOscXH/ZFUJni+VpKmVIENz/vsgq2sgqpNAmLQ6h7/DYrzRvptij+b62K5wONZMr+7X2J5mHM9s4tkEd6A==}
@@ -11895,7 +11898,6 @@ packages:
     dependencies:
       typescript: 4.9.4
       zod: 3.21.4
-    dev: false
 
   /abitype@0.8.0(typescript@4.9.4)(zod@3.21.4):
     resolution: {integrity: sha512-QqBuwc2trtaNd/kp4k0dSjVu3OQIYRAB4ww4LCPwfSECXcCGTD3imYovNYNjx0SyN3OHV0XUOzUVwnXP1kLsVQ==}
@@ -18084,7 +18086,6 @@ packages:
       ws: '*'
     dependencies:
       ws: 8.12.0
-    dev: false
 
   /isstream@0.1.2:
     resolution: {integrity: sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==}
@@ -25437,8 +25438,8 @@ packages:
       vfile-message: 2.0.4
     dev: true
 
-  /viem@0.2.12(typescript@4.9.4)(zod@3.21.4):
-    resolution: {integrity: sha512-BxvWFFp8k5raoeDZJX0c2FGcGJSsGwWs9CeUavof/Bv3EgZLtU9tnqfIllZd3wQClZ3/+zESbTnRksgUDIUW1w==}
+  /viem@0.3.17(typescript@4.9.4)(zod@3.21.4):
+    resolution: {integrity: sha512-WGJQ3rV2gMiHgwxLqeAZQ3HetSfsrkF//WezdJPnwUNXuic/c2jjB3MBk4XfYvuRUMccPfc37ORi03AmQxjscg==}
     dependencies:
       '@adraffy/ens-normalize': 1.9.0
       '@noble/curves': 0.9.0
@@ -25454,7 +25455,6 @@ packages:
       - typescript
       - utf-8-validate
       - zod
-    dev: false
 
   /vite-node@0.27.2(@types/node@18.16.2):
     resolution: {integrity: sha512-IDwuVhslF10qCnWOGJui7/2KksAOBHi+UbVo6Pqt4f5lgn+kS2sVvYDsETRG5PSuslisGB5CFGvb9I6FQgymBQ==}
@@ -26345,7 +26345,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: false
 
   /ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10):
     resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}

@@ -1,8 +1,8 @@
-import { Interface } from 'ethers/lib/utils'
-import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { Address, encodeFunctionData, Hex } from 'viem'
+import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
-import IQuoter from './abi/Quoter.json'
-import IQuoterV2 from './abi/QuoterV2.json'
+import { quoterAbi } from './abi/Quoter'
+import { quoterV2Abi } from './abi/QuoterV2'
 import { Route } from './entities'
 import { encodeRouteToPath, MethodParameters, toHex } from './utils'
 import { FeeAmount } from './constants'
@@ -24,9 +24,9 @@ export interface QuoteOptions {
 
 interface BaseQuoteParams {
   fee: FeeAmount
-  sqrtPriceLimitX96: string
-  tokenIn: string
-  tokenOut: string
+  sqrtPriceLimitX96: bigint
+  tokenIn: Address
+  tokenOut: Address
 }
 
 /**
@@ -34,9 +34,9 @@ interface BaseQuoteParams {
  * calldata needed to call the quoter contract.
  */
 export abstract class SwapQuoter {
-  public static V1INTERFACE: Interface = new Interface(IQuoter)
+  public static V1ABI = quoterAbi
 
-  public static V2INTERFACE: Interface = new Interface(IQuoterV2)
+  public static V2ABI = quoterV2Abi
 
   /**
    * Produces the on-chain method name of the appropriate function within QuoterV2,
@@ -56,16 +56,16 @@ export abstract class SwapQuoter {
     options: QuoteOptions = {}
   ): MethodParameters {
     const singleHop = route.pools.length === 1
-    const quoteAmount: string = toHex(amount.quotient)
-    let calldata: string
-    const swapInterface: Interface = options.useQuoterV2 ? this.V2INTERFACE : this.V1INTERFACE
+    const quoteAmount = amount.quotient
+    let calldata: Hex
+    const swapAbi = options.useQuoterV2 ? this.V2ABI : this.V1ABI
 
     if (singleHop) {
       const baseQuoteParams: BaseQuoteParams = {
         tokenIn: route.tokenPath[0].address,
         tokenOut: route.tokenPath[1].address,
         fee: route.pools[0].fee,
-        sqrtPriceLimitX96: toHex(options?.sqrtPriceLimitX96 ?? 0),
+        sqrtPriceLimitX96: BigInt(options?.sqrtPriceLimitX96 ?? 0),
       }
 
       const v2QuoteParams = {
@@ -79,19 +79,35 @@ export abstract class SwapQuoter {
         baseQuoteParams.fee,
         quoteAmount,
         baseQuoteParams.sqrtPriceLimitX96,
-      ]
+      ] as const
 
       const tradeTypeFunctionName =
         tradeType === TradeType.EXACT_INPUT ? 'quoteExactInputSingle' : 'quoteExactOutputSingle'
-      calldata = swapInterface.encodeFunctionData(
-        tradeTypeFunctionName,
-        options.useQuoterV2 ? [v2QuoteParams] : v1QuoteParams
-      )
+
+      if (options.useQuoterV2) {
+        calldata = encodeFunctionData({
+          abi: this.V2ABI,
+          functionName: tradeTypeFunctionName,
+          // @ts-ignore // FIXME
+          args: [v2QuoteParams],
+        })
+      } else {
+        calldata = encodeFunctionData({
+          abi: this.V1ABI,
+          functionName: tradeTypeFunctionName,
+          args: v1QuoteParams,
+        })
+      }
     } else {
       invariant(options?.sqrtPriceLimitX96 === undefined, 'MULTIHOP_PRICE_LIMIT')
-      const path: string = encodeRouteToPath(route, tradeType === TradeType.EXACT_OUTPUT)
+      const path = encodeRouteToPath(route, tradeType === TradeType.EXACT_OUTPUT)
       const tradeTypeFunctionName = tradeType === TradeType.EXACT_INPUT ? 'quoteExactInput' : 'quoteExactOutput'
-      calldata = swapInterface.encodeFunctionData(tradeTypeFunctionName, [path, quoteAmount])
+      calldata = encodeFunctionData({
+        // @ts-ignore
+        abi: swapAbi,
+        functionName: tradeTypeFunctionName,
+        args: [path, quoteAmount],
+      })
     }
 
     return {

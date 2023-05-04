@@ -1,6 +1,7 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade, LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'

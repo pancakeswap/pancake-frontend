@@ -1,4 +1,4 @@
-import { Interface } from 'ethers/lib/utils'
+import { encodeFunctionData } from 'viem'
 
 const IMulticall = [
   {
@@ -23,18 +23,20 @@ const IMulticall = [
 ] as const
 
 export abstract class Multicall {
-  public static INTERFACE: Interface = new Interface(IMulticall)
+  public static ABI = IMulticall
 
   /**
    * Cannot be constructed.
    */
   private constructor() {}
 
-  public static encodeMulticall(calldatas: string | string[]): string {
+  public static encodeMulticall(calldatas: `0x${string}` | `0x${string}`[]): `0x${string}` {
     if (!Array.isArray(calldatas)) {
       calldatas = [calldatas]
     }
 
-    return calldatas.length === 1 ? calldatas[0] : Multicall.INTERFACE.encodeFunctionData('multicall', [calldatas])
+    return calldatas.length === 1
+      ? calldatas[0]
+      : encodeFunctionData({ abi: Multicall.ABI, functionName: 'multicall', args: [calldatas] })
   }
 }

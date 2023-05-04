@@ -16,8 +16,6 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "ethers": "^5.0.0",
-    "@pancakeswap/multicall": "^2.0.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -31,10 +29,11 @@
     "mnemonist": "^0.38.3",
     "stats-lite": "^2.2.0",
     "tiny-invariant": "^1.1.0",
-    "viem": "^0.2.12",
+    "viem": "^0.3.17",
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@pancakeswap/multicall": "^2.0.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -54,6 +53,11 @@
       "types": "./dist/evm/index.d.ts",
       "import": "./dist/evm.mjs",
       "require": "./dist/evm.js"
+    },
+    "./legacy-router": {
+      "types": "./dist/legacy-router/index.d.ts",
+      "import": "./dist/legacy-router.mjs",
+      "require": "./dist/legacy-router.js"
     }
   }
 }

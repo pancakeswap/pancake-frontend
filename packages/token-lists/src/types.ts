@@ -2,7 +2,7 @@ type ExtensionValue = string | number | boolean | null | undefined
 
 export interface TokenInfo {
   readonly chainId: number
-  readonly address: string
+  readonly address: `0x${string}`
   readonly name: string
   readonly decimals: number
   readonly symbol: string
