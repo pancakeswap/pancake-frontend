@@ -10,6 +10,7 @@
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
+    "react/no-unknown-property": ["error", { "ignore": ["css","jsx","global","mask-type"] }],
     "no-plusplus": 0,
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
