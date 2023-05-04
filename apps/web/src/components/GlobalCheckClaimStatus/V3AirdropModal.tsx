@@ -68,8 +68,8 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss, onClic
     delay(showConfetti, 100)
   }, [])
 
-  const hasPart1 = useMemo(() => Object.values(data.part1).find((i) => i !== null), [data])
-  const hasPart2 = useMemo(() => Object.values(data.part2).find((i) => i !== null), [data])
+  const hasPart1 = useMemo(() => (data ? Object.values(data.part1).find((i) => i !== null) : false), [data])
+  const hasPart2 = useMemo(() => (data ? Object.values(data.part2).find((i) => i !== null) : false), [data])
 
   const textDisplay = (): string => {
     if (hasPart1 && hasPart2) {
@@ -105,16 +105,16 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss, onClic
                 {t('Part 1')}
               </Text>
               <Box>
-                {data.part1.btcb && (
+                {data?.part1.btcb && (
                   <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part1.btcb])}`}</Text>
                 )}
-                {data.part1.busd && (
+                {data?.part1.busd && (
                   <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part1.busd])}`}</Text>
                 )}
-                {data.part1.eth && (
+                {data?.part1.eth && (
                   <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part1.eth])}`}</Text>
                 )}
-                {data.part1.usdt && (
+                {data?.part1.usdt && (
                   <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part1.usdt])}`}</Text>
                 )}
               </Box>
@@ -129,16 +129,16 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss, onClic
                 {t('Part 2')}
               </Text>
               <Box>
-                {data.part2.btcb && (
+                {data?.part2.btcb && (
                   <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part2.btcb])}`}</Text>
                 )}
-                {data.part2.busd && (
+                {data?.part2.busd && (
                   <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part2.busd])}`}</Text>
                 )}
-                {data.part2.eth && (
+                {data?.part2.eth && (
                   <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part2.eth])}`}</Text>
                 )}
-                {data.part2.usdt && (
+                {data?.part2.usdt && (
                   <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part2.usdt])}`}</Text>
                 )}
               </Box>

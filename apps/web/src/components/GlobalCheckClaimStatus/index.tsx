@@ -68,7 +68,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
 
   const [onPresentV3AirdropModal, closeV3AirdropModal] = useModal(
     <V3AirdropModal
-      data={data?.v3WhitelistAddress[account.toLowerCase()] as WhitelistType}
+      data={account ? (data?.v3WhitelistAddress[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
       onClick={async () => {
         const { cakeAmountInWei, nft1, nft2 } = data.v3ForSC[account.toLowerCase()]
         const proof = data?.v3MerkleProofs?.merkleProofs?.[account.toLowerCase()]
