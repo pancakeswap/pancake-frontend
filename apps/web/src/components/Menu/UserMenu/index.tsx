@@ -75,11 +75,11 @@ const UserMenuItems = () => {
 const UserMenu = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { domainName } = useDomainNameForAddress(account)
+  const { domainName, avatar } = useDomainNameForAddress(account)
   const { isWrongNetwork } = useActiveChainId()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { profile } = useProfile()
-  const avatarSrc = profile?.nft?.image?.thumbnail
+  const avatarSrc = avatar ?? profile?.nft?.image?.thumbnail
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
 
