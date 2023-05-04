@@ -8,18 +8,20 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import styled, { css, keyframes } from 'styled-components'
 import * as S from './Styled'
-import {
-  v3LaunchBg,
-  v3LaunchBgMobile,
-  v3LaunchBunny,
-  v3LaunchBunnyMobile,
-  v3LaunchBnb,
-  v3LaunchEth,
-  v3LaunchFlag,
-} from './images'
+
+const { v3LaunchBg, v3LaunchBgMobile, v3LaunchBunny, v3LaunchBunnyMobile, v3LaunchBnb, v3LaunchEth, v3LaunchFlag } = {
+  v3LaunchBg: `${ASSET_CDN}/web/banners/v3LaunchBg.png`,
+  v3LaunchBgMobile: `${ASSET_CDN}/web/banners/v3LaunchBgMobile.png`,
+  v3LaunchBunny: `${ASSET_CDN}/web/banners/v3LaunchBunny.png`,
+  v3LaunchBunnyMobile: `${ASSET_CDN}/web/banners/v3LaunchBunnyMobile.png`,
+  v3LaunchBnb: `${ASSET_CDN}/web/banners/v3LaunchBnb.png`,
+  v3LaunchEth: `${ASSET_CDN}/web/banners/v3LaunchEth.png`,
+  v3LaunchFlag: `${ASSET_CDN}/web/banners/v3LaunchFlag.png`,
+}
 
 const flyingAnimBnb = keyframes`
   from {
@@ -257,18 +259,18 @@ const V3LaunchBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           {!isMobile ? (
-            <Image src={v3LaunchBg} alt="v3LaunchBg" width={595} height={192} placeholder="blur" />
+            <Image src={v3LaunchBg} alt="v3LaunchBg" width={595} height={192} unoptimized />
           ) : (
-            <Image src={v3LaunchBgMobile} alt="v3LaunchBgMobile" width={232} height={192} placeholder="blur" />
+            <Image src={v3LaunchBgMobile} alt="v3LaunchBgMobile" width={232} height={192} unoptimized />
           )}
           {isMobile ? (
-            <Image src={v3LaunchBunnyMobile} alt="v3LaunchBunnyMobile" width={176} height={201} placeholder="blur" />
+            <Image src={v3LaunchBunnyMobile} alt="v3LaunchBunnyMobile" width={176} height={201} unoptimized />
           ) : (
-            <Image src={v3LaunchBunny} alt="v3LaunchBunny" width={221} height={254} placeholder="blur" />
+            <Image src={v3LaunchBunny} alt="v3LaunchBunny" width={221} height={254} unoptimized />
           )}
-          {!isMobile && <Image src={v3LaunchBnb} alt="v3LaunchBnb" width={204} height={123} placeholder="blur" />}
-          {!isMobile && <Image src={v3LaunchEth} alt="v3LaunchEth" width={208} height={172} placeholder="blur" />}
-          {!isMobile && <Image src={v3LaunchFlag} alt="v3LaunchFlag" width={150} height={180} placeholder="blur" />}
+          {!isMobile && <Image src={v3LaunchBnb} alt="v3LaunchBnb" width={204} height={123} unoptimized />}
+          {!isMobile && <Image src={v3LaunchEth} alt="v3LaunchEth" width={208} height={172} unoptimized />}
+          {!isMobile && <Image src={v3LaunchFlag} alt="v3LaunchFlag" width={150} height={180} unoptimized />}
         </RightWrapper>
       </S.Inner>
     </S.Wrapper>

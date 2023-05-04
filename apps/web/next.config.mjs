@@ -170,6 +170,16 @@ const config = {
         source: '/info/pools/:address',
         destination: '/info/pairs/:address',
         permanent: true,
+      },
+      {
+        source: '/api/v3/:chainId/farms/liquidity/:address',
+        destination: 'https://farms-api.pancakeswap.com/v3/:chainId/liquidity/:address',
+        permanent: false,
+      },
+      {
+        source: '/images/tokens/:address',
+        destination: 'https://tokens.pancakeswap.finance/images/:address',
+        permanent: false,
       }
     ]
   },

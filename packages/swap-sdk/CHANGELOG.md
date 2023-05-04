@@ -1,5 +1,16 @@
 # @pancakeswap/sdk
 
+## 4.0.0
+
+### Major Changes
+
+- b5dbd2921: Remove JSBI and use BigInt native instead
+
+### Patch Changes
+
+- Updated dependencies [b5dbd2921]
+  - @pancakeswap/swap-sdk-core@1.0.0
+
 ## 3.2.1
 
 ### Patch Changes
