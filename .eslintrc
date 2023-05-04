@@ -17,6 +17,7 @@
     "lodash/import-scope": [2, "method"],
     "@next/next/no-img-element": 0,
     "no-sparse-arrays": 0,
+     "react/no-unknown-property": ["error", { "ignore": ["jsx"] }],
     "react-hooks/exhaustive-deps": [
       "warn",
       {
