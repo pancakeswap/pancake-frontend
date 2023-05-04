@@ -156,11 +156,16 @@ export const usePriceCakeUSD = (): BigNumber => {
 
 export const useFarmsV2Data = () => {
   const { chainId } = useActiveChainId()
+  const isTestnet = farmFetcher.isTestnet(chainId)
 
   return useSWRImmutable(chainId ? ['useFarmsV2Data', chainId] : null, async () => {
-    const mc = getMasterchefContract(undefined, chainId)
-    const totalRegularAllocPoint = await mc.totalRegularAllocPoint()
-    const cakePerBlock = await mc.cakePerBlock(true)
+    const farmsConfig = await getFarmConfig(chainId)
+
+    const { totalRegularAllocPoint, cakePerBlock } = await farmFetcher.fetchFarms({
+      chainId,
+      isTestnet,
+      farms: farmsConfig.filter((f) => f.pid !== 0),
+    })
 
     return {
       totalRegularAllocPoint,
