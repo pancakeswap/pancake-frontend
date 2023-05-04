@@ -16,7 +16,7 @@ export const getCoreProposal = async (type: ProposalState): Promise<Proposal[]> 
     `,
     { first: 1, skip: 0, state: type, admins: ADMINS },
   )
-  return response.proposals
+  return (response as any)?.proposals
 }
 
 export const useVotingStatus = () => {
