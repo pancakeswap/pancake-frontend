@@ -93,5 +93,5 @@ async function _getPoolTicksGreaterThan(
       pageSize,
     },
   )
-  return response.ticks
+  return (response as any)?.ticks
 }
