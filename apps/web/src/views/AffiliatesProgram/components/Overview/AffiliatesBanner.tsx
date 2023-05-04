@@ -58,13 +58,11 @@ const Decorations = styled(Box)`
     }
   }
 
-
   & :nth-child(2) {
     left: 0%;
     bottom: 55%;
     width: 126px;
     animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
-
 
     ${({ theme }) => theme.mediaQueries.xl} {
       left: 15%;
@@ -85,7 +83,7 @@ const Decorations = styled(Box)`
       width: auto;
     }
   }
-}`
+`
 
 const AffiliatesBanner = () => {
   const { t } = useTranslation()

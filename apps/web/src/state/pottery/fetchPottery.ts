@@ -14,7 +14,7 @@ const potteryDrawAddress = getPotteryDrawAddress()
 
 export const fetchLastVaultAddress = async () => {
   try {
-    const response = await request(
+    const response = await request<any>(
       GRAPH_API_POTTERY,
       gql`
         query getLastVaultAddress($contract: ID!) {
@@ -110,7 +110,7 @@ export const fetchTotalLockedValue = async (potteryVaultAddress: string) => {
 
 export const fetchLatestRoundId = async () => {
   try {
-    const response = await request(
+    const response = await request<any>(
       GRAPH_API_POTTERY,
       gql`
         query getLatestRoundId {

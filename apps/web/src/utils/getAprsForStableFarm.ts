@@ -10,19 +10,20 @@ export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<
     const [, , t7d] = getDeltaTimestamps()
     const [blockDay7Ago] = await getBlocksFromTimestamps([t7d])
 
-    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
-      gql`
-        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
-          virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
-            virtualPrice
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } =
+      await stableSwapClient.request<any>(
+        gql`
+          query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+            virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
+              virtualPrice
+            }
+            virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+              virtualPrice
+            }
           }
-          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
-            virtualPrice
-          }
-        }
-      `,
-      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo: blockDay7Ago.number },
-    )
+        `,
+        { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo: blockDay7Ago.number },
+      )
 
     const virtualPrice = virtualPriceAtLatestBlock?.virtualPrice
     const preVirtualPrice = virtualPrice7DayAgo?.virtualPrice

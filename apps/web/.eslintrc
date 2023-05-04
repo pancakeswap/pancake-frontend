@@ -22,6 +22,7 @@
         "additionalHooks": "(useFastRefreshEffect|useSlowRefreshEffect)"
       }
     ],
+    "react/no-unknown-property": ["error", { "ignore": ["css","jsx","global","mask-type"] }],
     // Start temporary rules
     // These rules are here just to keep the lint error to 0 during the migration to the new rule set
     // They need to be removed and fixed as soon as possible
