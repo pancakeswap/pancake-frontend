@@ -44,6 +44,7 @@ import {
   getStableSwapNativeHelperAddress,
   getMasterChefV3Address,
   getV3MigratorAddress,
+  getV3AirdropAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -102,6 +103,7 @@ import uns from 'config/abi/UNS.json'
 import sidResolver from 'config/abi/SIDResolver.json'
 import masterChefV3Abi from 'config/abi/masterChefV3.json'
 import v3MigratorAbi from 'config/abi/v3Migrator.json'
+import V3AirdropAbi from 'config/abi/v3Airdrop.json'
 
 // Types
 import type {
@@ -156,6 +158,7 @@ import type {
   SIDResolver,
   MasterChefV3,
   V3Migrator,
+  V3Airdrop,
   UNS,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
@@ -438,4 +441,12 @@ export const getV3MigratorContract = (signer?: Signer | Provider, chainId?: numb
     chainId,
     signer,
   }) as V3Migrator
+}
+
+export const getV3AirdropContract = (signer?: Signer | Provider) => {
+  return getContract({
+    abi: V3AirdropAbi,
+    address: getV3AirdropAddress(),
+    signer,
+  }) as V3Airdrop
 }

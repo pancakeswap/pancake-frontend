@@ -68,6 +68,7 @@ import {
   getSidContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
+  getV3AirdropContract,
   getUnsContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
@@ -446,4 +447,9 @@ export function useV3MigratorContract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
   return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
+}
+
+export const useV3AirdropContract = (withSignerIfPossible = true) => {
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
+  return useMemo(() => getV3AirdropContract(providerOrSigner), [providerOrSigner])
 }
