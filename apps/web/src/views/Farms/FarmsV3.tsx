@@ -536,12 +536,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               {t("Don't see the farm you are staking?")}
             </Text>
             <Flex>
-              <FinishedTextLink href="/migration" fontSize={['16px', null, '20px']} color="failure">
-                {t('Go to migration page')}
-              </FinishedTextLink>
-              <Text fontSize={['16px', null, '20px']} color="failure" padding="0px 4px">
-                or
-              </Text>
               <FinishedTextLink
                 external
                 color="failure"

@@ -5,7 +5,6 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, R
 import storage from 'redux-persist/lib/storage'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
-import farmsReducerV1 from './farmsV1'
 import { updateVersion } from './global/actions'
 import lotteryReducer from './lottery'
 import mint from './mint/reducer'
@@ -33,7 +32,6 @@ const persistedReducer = persistReducer(
   combineReducers({
     global: globalReducer,
     farms: farmsReducer,
-    farmsV1: farmsReducerV1,
     pools: poolsReducer,
     lottery: lotteryReducer,
     pottery: potteryReducer,
