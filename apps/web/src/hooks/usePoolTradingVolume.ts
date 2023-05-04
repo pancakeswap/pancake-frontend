@@ -32,7 +32,7 @@ export function usePoolAvgTradingVolume({ address, numberOfDays = 7, chainId }: 
           }
         }
       `
-      const { poolDayDatas } = await client.request(query, {
+      const { poolDayDatas } = await client.request<any>(query, {
         days: numberOfDays,
         address: address.toLocaleLowerCase(),
       })
