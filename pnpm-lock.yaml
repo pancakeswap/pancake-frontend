@@ -1254,7 +1254,7 @@ importers:
         specifier: ^5.0.0
         version: 5.7.0
       '@pancakeswap/multicall':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*

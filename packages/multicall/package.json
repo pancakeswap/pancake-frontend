@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/multicall",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -9,7 +9,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
-    "@pancakeswap/sdk": "^3.2.0"
+    "@pancakeswap/sdk": "^4.0.0"
   },
   "dependencies": {
     "@ethersproject/abi": "^5.0.0",
