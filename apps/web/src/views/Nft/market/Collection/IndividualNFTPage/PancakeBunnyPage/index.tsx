@@ -92,14 +92,14 @@ const IndividualPancakeBunnyPageBase: React.FC<React.PropsWithChildren<Individua
 
   const getBunnyIdCount = () => {
     if (distributionData && !isFetchingDistribution) {
-      return distributionData[bunnyId].tokenCount
+      return distributionData[bunnyId]?.tokenCount
     }
     return null
   }
 
   const getBunnyIdRarity = () => {
     if (distributionData && !isFetchingDistribution) {
-      return (distributionData[bunnyId].tokenCount / totalBunnyCount) * 100
+      return (distributionData[bunnyId]?.tokenCount / totalBunnyCount) * 100
     }
     return null
   }
