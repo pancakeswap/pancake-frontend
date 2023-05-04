@@ -97,7 +97,7 @@ const GridItem: React.FC<
         </Text>
         <SkeletonV2 width="24px" height="24px" ml={['16px', null, '16px']} borderRadius="50%" isDataReady={!isFetching}>
           <ProfileAvatar
-            src={avatar ?? profile?.nft?.image?.thumbnail}
+            src={profile?.nft?.image?.thumbnail ?? avatar}
             width={32}
             height={32}
             mr={['4px', null, '12px']}

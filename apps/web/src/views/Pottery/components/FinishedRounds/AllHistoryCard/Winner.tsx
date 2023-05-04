@@ -38,7 +38,7 @@ const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => 
             style={{ alignSelf: 'center' }}
             width={24}
             height={24}
-            src={avatar ?? profile?.nft?.image?.thumbnail}
+            src={profile?.nft?.image?.thumbnail ?? avatar}
           />
           <Box ml="4px">
             <Text fontSize="12px" color="primary">

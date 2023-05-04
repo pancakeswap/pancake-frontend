@@ -101,7 +101,7 @@ const GridItem: React.FC<
           isDataReady={!isProfileFetching}
         >
           <ProfileAvatar
-            src={avatar ?? profile?.nft?.image?.thumbnail}
+            src={profile?.nft?.image?.thumbnail ?? avatar}
             width={32}
             height={32}
             mr={['4px', null, '12px']}

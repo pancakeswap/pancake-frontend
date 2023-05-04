@@ -77,7 +77,7 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
             width={['32px', null, null, null, null, '40px']}
             height={['32px', null, null, null, null, '40px']}
           >
-            <ProfileAvatar src={avatar ?? profile?.nft?.image?.thumbnail} height={40} width={40} />
+            <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={40} width={40} />
           </AvatarWrapper>
         </Flex>
       }

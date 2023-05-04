@@ -50,7 +50,7 @@ const PodiumAvatar: React.FC<React.PropsWithChildren<PodiumAvatarProps>> = ({ ad
       ) : (
         <>
           {avatar || profile?.nft?.image?.thumbnail ? (
-            <ProfileAvatar width={imageSize} height={imageSize} src={avatar ?? profile?.nft?.image?.thumbnail} />
+            <ProfileAvatar width={imageSize} height={imageSize} src={profile?.nft?.image?.thumbnail ?? avatar} />
           ) : (
             <StyledNoProfileAvatarIcon />
           )}
