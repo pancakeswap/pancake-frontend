@@ -3,8 +3,8 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 import fromPairs_ from 'lodash/fromPairs.js'
 import { StableSwapPair } from './types'
 import { createStableSwapPair } from './stableSwap'
-import { getStableSwapPools } from '../constants/stableSwap'
-import { STABLE_SUPPORTED_CHAIN_IDS } from '../constants/stableSwap/pools'
+import { getStableSwapPools } from '../evm/constants/stableSwap'
+import { STABLE_SUPPORTED_CHAIN_IDS } from '../evm/constants/stableSwap/pools'
 
 export function getStableSwapPairs(chainId: ChainId): StableSwapPair[] {
   const pools = getStableSwapPools(chainId)

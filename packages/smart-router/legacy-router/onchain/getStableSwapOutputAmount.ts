@@ -3,9 +3,9 @@ import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Call, createMulticall } from '@pancakeswap/multicall'
 
 import { Provider, StableSwapPair } from '../types'
-import { wrappedCurrencyAmount } from '../../utils/currency'
+import { wrappedCurrencyAmount } from '../../evm/utils/currency'
 import { getOutputToken } from '../utils/pair'
-import IStableSwapABI from '../../abis/StableSwapPair.json'
+import IStableSwapABI from '../../evm/abis/StableSwapPair.json'
 
 interface Options {
   provider: Provider

@@ -12,25 +12,51 @@ import {
   BigintIsh,
   MINIMUM_LIQUIDITY,
 } from '@pancakeswap/swap-sdk-core'
-import { getCreate2Address, solidityKeccak256 as keccak256, solidityPack as pack } from 'ethers/lib/utils'
+import {
+  Address,
+  encodePacked,
+  keccak256,
+  GetCreate2AddressOptions,
+  toBytes,
+  Hex,
+  pad,
+  isBytes,
+  ByteArray,
+  getAddress,
+  slice,
+  concat,
+} from 'viem'
 import invariant from 'tiny-invariant'
 
 import { FACTORY_ADDRESS_MAP, INIT_CODE_HASH_MAP } from '../constants'
 import { ERC20Token } from './token'
 
-let PAIR_ADDRESS_CACHE: { [key: string]: string } = {}
+let PAIR_ADDRESS_CACHE: { [key: string]: Address } = {}
 
 const composeKey = (token0: ERC20Token, token1: ERC20Token) => `${token0.chainId}-${token0.address}-${token1.address}`
+
+function getCreate2Address(
+  from_: GetCreate2AddressOptions['from'],
+  salt_: GetCreate2AddressOptions['salt'],
+  initCodeHash: Hex
+) {
+  const from = toBytes(getAddress(from_))
+  const salt = pad(isBytes(salt_) ? salt_ : toBytes(salt_ as Hex), {
+    size: 32,
+  }) as ByteArray
+
+  return getAddress(slice(keccak256(concat([toBytes('0xff'), from, salt, toBytes(initCodeHash)])), 12))
+}
 
 export const computePairAddress = ({
   factoryAddress,
   tokenA,
   tokenB,
 }: {
-  factoryAddress: string
+  factoryAddress: Address
   tokenA: ERC20Token
   tokenB: ERC20Token
-}): string => {
+}): Address => {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
   const key = composeKey(token0, token1)
 
@@ -39,7 +65,7 @@ export const computePairAddress = ({
       ...PAIR_ADDRESS_CACHE,
       [key]: getCreate2Address(
         factoryAddress,
-        keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]),
+        keccak256(encodePacked(['address', 'address'], [token0.address, token1.address])),
         INIT_CODE_HASH_MAP[token0.chainId]
       ),
     }
@@ -53,7 +79,7 @@ export class Pair {
 
   private readonly tokenAmounts: [CurrencyAmount<ERC20Token>, CurrencyAmount<ERC20Token>]
 
-  public static getAddress(tokenA: ERC20Token, tokenB: ERC20Token): string {
+  public static getAddress(tokenA: ERC20Token, tokenB: ERC20Token): Address {
     return computePairAddress({ factoryAddress: FACTORY_ADDRESS_MAP[tokenA.chainId], tokenA, tokenB })
   }
 

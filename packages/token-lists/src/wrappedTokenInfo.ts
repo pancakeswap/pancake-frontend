@@ -3,7 +3,7 @@ import { TokenInfo, TokenList } from './types'
 
 export interface SerializedWrappedToken extends SerializedToken {
   chainId: number
-  address: string
+  address: `0x${string}`
   decimals: number
   symbol: string
   name?: string

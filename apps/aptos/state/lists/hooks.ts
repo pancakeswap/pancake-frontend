@@ -50,7 +50,7 @@ const activeListUrlsAtom = atom((get) => {
 })
 
 const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[]) => {
-  const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
+  const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST as TokenList)
   if (!urls) return defaultTokenMap
   return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
 }
@@ -124,7 +124,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   if (result) return result
 
   const tokenMap: WrappedTokenInfo[] = uniqBy(
-    list.tokens.map((token) => ({ ...token, address: new HexString(token.address).toShortString() })),
+    list.tokens.map((token) => ({ ...token, address: new HexString(token.address).toShortString() as `0x${string}` })),
     (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
   ).map((tokenInfo) => {
     return new WrappedTokenInfo(tokenInfo)

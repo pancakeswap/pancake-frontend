@@ -1,8 +1,8 @@
-import { Interface } from 'ethers/lib/utils'
+import { encodeFunctionData, Hex } from 'viem'
 import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
-import ISwapRouter from './abi/SwapRouter.json'
+import { swapRouterAbi } from './abi/SwapRouter'
 import { Trade } from './entities/trade'
 import { ADDRESS_ZERO } from './constants'
 import { PermitOptions, SelfPermit } from './selfPermit'
@@ -50,7 +50,8 @@ export interface SwapOptions {
  * Represents the Pancake V3 SwapRouter, and has static methods for helping execute trades.
  */
 export abstract class SwapRouter {
-  public static INTERFACE: Interface = new Interface(ISwapRouter)
+  // public static INTERFACE: Interface = new Interface(ISwapRouter)
+  public static ABI = swapRouterAbi
 
   /**
    * Cannot be constructed.
@@ -84,7 +85,7 @@ export abstract class SwapRouter {
       'TOKEN_OUT_DIFF'
     )
 
-    const calldatas: string[] = []
+    const calldatas: Hex[] = []
 
     const ZERO_IN: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(trades[0].inputAmount.currency, 0)
     const ZERO_OUT: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(trades[0].outputAmount.currency, 0)
@@ -111,13 +112,13 @@ export abstract class SwapRouter {
       calldatas.push(SelfPermit.encodePermit(sampleTrade.inputAmount.currency, options.inputTokenPermit))
     }
 
-    const recipient: string = validateAndParseAddress(options.recipient)
-    const deadline = toHex(options.deadline)
+    const recipient = validateAndParseAddress(options.recipient)
+    const deadline = BigInt(options.deadline)
 
     for (const trade of trades) {
       for (const { route, inputAmount, outputAmount } of trade.swaps) {
-        const amountIn: string = toHex(trade.maximumAmountIn(options.slippageTolerance, inputAmount).quotient)
-        const amountOut: string = toHex(trade.minimumAmountOut(options.slippageTolerance, outputAmount).quotient)
+        const amountIn = BigInt(trade.maximumAmountIn(options.slippageTolerance, inputAmount).quotient)
+        const amountOut = BigInt(trade.minimumAmountOut(options.slippageTolerance, outputAmount).quotient)
 
         // flag for whether the trade is single hop or not
         const singleHop = route.pools.length === 1
@@ -132,10 +133,15 @@ export abstract class SwapRouter {
               deadline,
               amountIn,
               amountOutMinimum: amountOut,
-              sqrtPriceLimitX96: toHex(options.sqrtPriceLimitX96 ?? 0),
+              sqrtPriceLimitX96: BigInt(options.sqrtPriceLimitX96 ?? 0),
             }
-
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInputSingle', [exactInputSingleParams]))
+            calldatas.push(
+              encodeFunctionData({
+                abi: SwapRouter.ABI,
+                functionName: 'exactInputSingle',
+                args: [exactInputSingleParams],
+              })
+            )
           } else {
             const exactOutputSingleParams = {
               tokenIn: route.tokenPath[0].address,
@@ -145,15 +151,21 @@ export abstract class SwapRouter {
               deadline,
               amountOut,
               amountInMaximum: amountIn,
-              sqrtPriceLimitX96: toHex(options.sqrtPriceLimitX96 ?? 0),
+              sqrtPriceLimitX96: BigInt(options.sqrtPriceLimitX96 ?? 0),
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutputSingle', [exactOutputSingleParams]))
+            calldatas.push(
+              encodeFunctionData({
+                abi: SwapRouter.ABI,
+                functionName: 'exactOutputSingle',
+                args: [exactOutputSingleParams],
+              })
+            )
           }
         } else {
           invariant(options.sqrtPriceLimitX96 === undefined, 'MULTIHOP_PRICE_LIMIT')
 
-          const path: string = encodeRouteToPath(route, trade.tradeType === TradeType.EXACT_OUTPUT)
+          const path = encodeRouteToPath(route, trade.tradeType === TradeType.EXACT_OUTPUT)
 
           if (trade.tradeType === TradeType.EXACT_INPUT) {
             const exactInputParams = {
@@ -164,7 +176,9 @@ export abstract class SwapRouter {
               amountOutMinimum: amountOut,
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInput', [exactInputParams]))
+            calldatas.push(
+              encodeFunctionData({ abi: SwapRouter.ABI, functionName: 'exactInput', args: [exactInputParams] })
+            )
           } else {
             const exactOutputParams = {
               path,
@@ -174,7 +188,9 @@ export abstract class SwapRouter {
               amountInMaximum: amountIn,
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutput', [exactOutputParams]))
+            calldatas.push(
+              encodeFunctionData({ abi: SwapRouter.ABI, functionName: 'exactOutput', args: [exactOutputParams] })
+            )
           }
         }
       }

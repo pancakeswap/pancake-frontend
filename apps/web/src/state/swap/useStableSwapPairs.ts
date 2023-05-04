@@ -1,4 +1,4 @@
-import { LegacyRouter } from '@pancakeswap/smart-router/evm'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 

@@ -5,6 +5,7 @@ import ERC20_INTERFACE from 'config/abi/erc20'
 import { useAllTokens } from 'hooks/Tokens'
 import { useMulticallContract } from 'hooks/useContract'
 import { isAddress } from 'utils'
+import { Address } from 'viem'
 import orderBy from 'lodash/orderBy'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
@@ -18,9 +19,9 @@ export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): 
   const native = useNativeCurrency()
   const multicallContract = useMulticallContract()
 
-  const addresses: string[] = useMemo(
+  const addresses: Address[] = useMemo(
     () =>
-      uncheckedAddresses ? orderBy(uncheckedAddresses.map(isAddress).filter((a): a is string => a !== false)) : [],
+      uncheckedAddresses ? orderBy(uncheckedAddresses.map(isAddress).filter((a): a is Address => a !== false)) : [],
     [uncheckedAddresses],
   )
 

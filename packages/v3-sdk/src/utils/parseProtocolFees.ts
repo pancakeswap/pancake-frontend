@@ -1,4 +1,4 @@
-import { Percent } from '@pancakeswap/sdk'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 
 const FEE_BASE = 10n ** 4n
 

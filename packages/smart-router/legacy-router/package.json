@@ -1,0 +1,5 @@
+{
+  "main": "../dist/legacy-router.js",
+  "module": "../dist/legacy-router.mjs",
+  "types": "../dist/legacy-router/index.d.ts"
+}

@@ -2,6 +2,7 @@ import { ChainId, Currency, CurrencyAmount, Pair, Percent, BigintIsh } from '@pa
 import { Call } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
+import { Address } from 'viem'
 
 import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../types'
 import IPancakePairABI from '../../abis/IPancakePair.json'
@@ -38,7 +39,7 @@ export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
 })
 
 interface StablePoolMeta extends PoolMeta {
-  address: string
+  address: Address
 }
 
 export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, StablePoolMeta>({
@@ -110,7 +111,7 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, Stable
 interface PoolMeta {
   currencyA: Currency
   currencyB: Currency
-  address: string
+  address: Address
 }
 
 export interface V3PoolMeta extends PoolMeta {

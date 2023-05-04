@@ -1,9 +1,10 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { Address } from 'viem'
 import { validateAndParseAddress } from '../utils'
 
 export interface SerializedToken {
   chainId: number
-  address: string
+  address: Address
   decimals: number
   symbol: string
   name?: string
@@ -16,7 +17,7 @@ export interface SerializedToken {
 export class ERC20Token extends Token {
   public constructor(
     chainId: number,
-    address: string,
+    address: Address,
     decimals: number,
     symbol: string,
     name?: string,

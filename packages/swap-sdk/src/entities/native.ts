@@ -35,6 +35,7 @@ export class Native extends NativeCurrency {
     }
     invariant(!!NATIVE[chainId], 'NATIVE_CURRENCY')
     const { decimals, name, symbol } = NATIVE[chainId]
+    // eslint-disable-next-line no-return-assign
     return (this.cache[chainId] = new Native({ chainId, decimals, symbol, name }))
   }
 

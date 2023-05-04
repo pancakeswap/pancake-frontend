@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, MaxUint256, Percent, Fraction, ZERO } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, MaxUint256, Percent, Fraction, ZERO } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 

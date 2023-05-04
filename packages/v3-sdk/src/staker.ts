@@ -1,6 +1,6 @@
 import { BigintIsh, Token, validateAndParseAddress } from '@pancakeswap/sdk'
-import { defaultAbiCoder, Interface } from 'ethers/lib/utils'
-import IV3Staker from './abi/V3Staker.json'
+import { Address, encodeAbiParameters, encodeFunctionData, Hex, parseAbiParameters } from 'viem'
+import { v3StakerAbi } from './abi/V3Staker'
 import { MethodParameters, toHex } from './utils/calldata'
 import { Pool } from './entities'
 import { Multicall } from './multicall'
@@ -67,7 +67,7 @@ export interface WithdrawOptions {
 }
 
 export abstract class Staker {
-  public static INTERFACE: Interface = new Interface(IV3Staker)
+  public static ABI = v3StakerAbi
 
   protected constructor() {}
 
@@ -80,18 +80,23 @@ export abstract class Staker {
    * @param options Options for producing the calldata to claim. Can't claim unless you unstake.
    * @returns The calldatas for 'unstakeToken' and 'claimReward'.
    */
-  private static encodeClaim(incentiveKey: IncentiveKey, options: ClaimOptions): string[] {
-    const calldatas: string[] = []
+  private static encodeClaim(incentiveKey: IncentiveKey, options: ClaimOptions): Hex[] {
+    const calldatas: Hex[] = []
     calldatas.push(
-      Staker.INTERFACE.encodeFunctionData('unstakeToken', [
-        this._encodeIncentiveKey(incentiveKey),
-        toHex(options.tokenId),
-      ])
+      encodeFunctionData({
+        abi: Staker.ABI,
+        functionName: 'unstakeToken',
+        args: [this._encodeIncentiveKey(incentiveKey), BigInt(options.tokenId)],
+      })
     )
-    const recipient: string = validateAndParseAddress(options.recipient)
+    const recipient = validateAndParseAddress(options.recipient)
     const amount = options.amount ?? 0
     calldatas.push(
-      Staker.INTERFACE.encodeFunctionData('claimReward', [incentiveKey.rewardToken.address, recipient, toHex(amount)])
+      encodeFunctionData({
+        abi: Staker.ABI,
+        functionName: 'claimReward',
+        args: [incentiveKey.rewardToken.address, recipient, BigInt(amount)],
+      })
     )
     return calldatas
   }
@@ -107,7 +112,7 @@ export abstract class Staker {
    */
   public static collectRewards(incentiveKeys: IncentiveKey | IncentiveKey[], options: ClaimOptions): MethodParameters {
     incentiveKeys = Array.isArray(incentiveKeys) ? incentiveKeys : [incentiveKeys]
-    let calldatas: string[] = []
+    let calldatas: Hex[] = []
 
     for (let i = 0; i < incentiveKeys.length; i++) {
       // the unique program tokenId is staked in
@@ -116,10 +121,11 @@ export abstract class Staker {
       calldatas = calldatas.concat(this.encodeClaim(incentiveKey, options))
       // re-stakes the position for the unique program
       calldatas.push(
-        Staker.INTERFACE.encodeFunctionData('stakeToken', [
-          this._encodeIncentiveKey(incentiveKey),
-          toHex(options.tokenId),
-        ])
+        encodeFunctionData({
+          abi: Staker.ABI,
+          functionName: 'stakeToken',
+          args: [this._encodeIncentiveKey(incentiveKey), BigInt(options.tokenId)],
+        })
       )
     }
     return {
@@ -138,7 +144,7 @@ export abstract class Staker {
     incentiveKeys: IncentiveKey | IncentiveKey[],
     withdrawOptions: FullWithdrawOptions
   ): MethodParameters {
-    let calldatas: string[] = []
+    let calldatas: Hex[] = []
 
     incentiveKeys = Array.isArray(incentiveKeys) ? incentiveKeys : [incentiveKeys]
 
@@ -154,11 +160,11 @@ export abstract class Staker {
     }
     const owner = validateAndParseAddress(withdrawOptions.owner)
     calldatas.push(
-      Staker.INTERFACE.encodeFunctionData('withdrawToken', [
-        toHex(withdrawOptions.tokenId),
-        owner,
-        withdrawOptions.data ? withdrawOptions.data : toHex(0),
-      ])
+      encodeFunctionData({
+        abi: Staker.ABI,
+        functionName: 'withdrawToken',
+        args: [BigInt(withdrawOptions.tokenId), owner, toHex(0)],
+      })
     )
     return {
       calldata: Multicall.encodeMulticall(calldatas),
@@ -176,14 +182,16 @@ export abstract class Staker {
     let data: string
 
     if (incentiveKeys.length > 1) {
-      const keys: { rewardToken: string; pool: string; startTime: string; endTime: string; refundee: string }[] = []
+      const keys: { rewardToken: Address; pool: Address; startTime: bigint; endTime: bigint; refundee: Address }[] = []
       for (let i = 0; i < incentiveKeys.length; i++) {
         const incentiveKey = incentiveKeys[i]
         keys.push(this._encodeIncentiveKey(incentiveKey))
       }
-      data = defaultAbiCoder.encode([`${Staker.INCENTIVE_KEY_ABI}[]`], [keys])
+      data = encodeAbiParameters(parseAbiParameters([`${Staker.INCENTIVE_KEY_ABI}[]`]), [keys])
     } else {
-      data = defaultAbiCoder.encode([Staker.INCENTIVE_KEY_ABI], [this._encodeIncentiveKey(incentiveKeys[0])])
+      data = encodeAbiParameters(parseAbiParameters(Staker.INCENTIVE_KEY_ABI), [
+        this._encodeIncentiveKey(incentiveKeys[0]),
+      ])
     }
     return data
   }
@@ -199,8 +207,8 @@ export abstract class Staker {
     return {
       rewardToken: incentiveKey.rewardToken.address,
       pool: Pool.getAddress(token0, token1, fee),
-      startTime: toHex(incentiveKey.startTime),
-      endTime: toHex(incentiveKey.endTime),
+      startTime: BigInt(incentiveKey.startTime),
+      endTime: BigInt(incentiveKey.endTime),
       refundee,
     }
   }

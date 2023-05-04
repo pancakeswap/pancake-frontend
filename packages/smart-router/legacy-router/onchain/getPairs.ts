@@ -2,8 +2,8 @@ import { ChainId, Currency, CurrencyAmount, Pair, Token } from '@pancakeswap/sdk
 import { BigNumber } from 'ethers'
 import { createMulticall, Call } from '@pancakeswap/multicall'
 
-import { wrappedCurrency } from '../../utils/currency'
-import IPancakePairABI from '../../abis/IPancakePair.json'
+import { wrappedCurrency } from '../../evm/utils/currency'
+import IPancakePairABI from '../../evm/abis/IPancakePair.json'
 import { Provider } from '../types'
 
 type CurrencyPair = [Currency, Currency]
