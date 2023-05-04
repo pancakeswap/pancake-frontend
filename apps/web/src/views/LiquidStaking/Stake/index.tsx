@@ -12,6 +12,7 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 
 import { ExchangeRateTitle } from '../components/ExchangeRateTitle'
+import { LiquidStakingApr } from '../components/LiquidStakingApr'
 
 export function LiquidStakingPageStake() {
   const { t } = useTranslation()
@@ -64,11 +65,13 @@ export function LiquidStakingPageStake() {
           ]}
           onOptionChange={handleSortOptionChange}
         />
-        <RowBetween mb="24px">
+        <RowBetween mb="8px">
           <ExchangeRateTitle />
 
           {exchangeRateAmount ? <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 6)} WBETH`}</Text> : '-'}
         </RowBetween>
+
+        <LiquidStakingApr />
         <NextLink href={`/liquid-staking/${selectedSymbol}`}>
           <Button width="100%">{t('Proceed')}</Button>
         </NextLink>
