@@ -182,7 +182,7 @@ const handler: NextApiHandler = async (req, res) => {
       },
     )
 
-    return resp.positions
+    return (resp as any)?.positions
   }
 
   let posId = '0'
