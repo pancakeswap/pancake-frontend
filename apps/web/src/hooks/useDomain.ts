@@ -5,12 +5,12 @@ import { useMemo } from 'react'
 import { useEnsName } from 'wagmi'
 import useActiveWeb3React from './useActiveWeb3React'
 
-export const useDomainNameForAddress = (address: `0x${string}`, fetchData = true) => {
+export const useDomainNameForAddress = (address: `0x${string}` | string, fetchData = true) => {
   const { chainId } = useActiveWeb3React()
   const { sidName, isLoading: isSidLoading } = useSidNameForAddress(address, fetchData)
   const { unsName, isLoading: isUnsLoading } = useUnsNameForAddress(address, fetchData && !sidName && !isSidLoading)
   const { data: ensName, isLoading: isEnsLoading } = useEnsName({
-    address,
+    address: address as `0x${string}`,
     chainId,
     cacheTime: 3_600,
     enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,

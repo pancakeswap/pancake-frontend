@@ -184,6 +184,7 @@ const CreateProposal = () => {
                 name="body"
                 onTextChange={handleEasyMdeChange}
                 value={body}
+                // @ts-ignore
                 options={options}
                 required
               />
