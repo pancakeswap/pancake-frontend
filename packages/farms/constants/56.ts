@@ -48,8 +48,8 @@ export const farmsV3 = [
   {
     pid: 38,
     lpSymbol: 'GAL-BNB LP',
-    token: bscTokens.gal,
-    quoteToken: bscTokens.bnb,
+    token: bscTokens.bnb,
+    quoteToken: bscTokens.gal,
     lpAddress: Pool.getAddress(bscTokens.gal, bscTokens.bnb, FeeAmount.MEDIUM),
     feeAmount: FeeAmount.MEDIUM,
   },
