@@ -151,3 +151,7 @@ export const getMasterChefV3Address = (chainId?: number) => {
 export const getV3MigratorAddress = (chainId?: number) => {
   return getAddress(addresses.v3Migrator, chainId)
 }
+
+export const getV3AirdropAddress = (chainId?: number) => {
+  return getAddress(addresses.v3Airdrop, chainId)
+}

@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import {
   createFarmFetcherV3,
   SerializedFarmsV3Response,

@@ -1,10 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Box, Button, Flex, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import styled, { keyframes } from 'styled-components'
 import * as S from './Styled'
-import {
+
+const {
   liquidStakingBunny,
   liquidStakingBunnyBg1,
   liquidStakingBunnyBg2,
@@ -14,7 +16,17 @@ import {
   liquidStakingBunnyMobile,
   liquidStakingTitle,
   liquidStakingTitleMobile,
-} from './images'
+} = {
+  liquidStakingBunny: `${ASSET_CDN}/web/banners/liquidStakingBunny.png`,
+  liquidStakingBunnyBg1: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg1.png`,
+  liquidStakingBunnyBg2: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg2.png`,
+  liquidStakingBunnyBg2Mobile: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg2Mobile.png`,
+  liquidStakingBunnyBg3: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg3.png`,
+  liquidStakingBunnyBg4: `${ASSET_CDN}/web/banners/liquidStakingBunnyBg4.png`,
+  liquidStakingBunnyMobile: `${ASSET_CDN}/web/banners/liquidStakingBunnyMobile.png`,
+  liquidStakingTitle: `${ASSET_CDN}/web/banners/liquidStakingTitle.png`,
+  liquidStakingTitleMobile: `${ASSET_CDN}/web/banners/liquidStakingTitleMobile.png`,
+}
 
 const fading = keyframes`
   from {
@@ -183,10 +195,10 @@ const PerpetualBanner = () => {
                 alt="liquidStakingTitleMobile"
                 width={212}
                 height={20}
-                placeholder="blur"
+                unoptimized
               />
             ) : (
-              <Image src={liquidStakingTitle} alt="liquidStakingTitle" width={403} height={29} placeholder="blur" />
+              <Image src={liquidStakingTitle} alt="liquidStakingTitle" width={403} height={29} unoptimized />
             )}
           </Box>
           <Header>{isMobile ? t('WBETH Liquid Staking') : t('Liquid Staking Integration for WBETH:')}</Header>
@@ -233,40 +245,28 @@ const PerpetualBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           {isDesktop ? (
-            <Image src={liquidStakingBunny} alt="liquidStakingBunny" width={334} height={222} placeholder="blur" />
+            <Image src={liquidStakingBunny} alt="liquidStakingBunny" width={334} height={222} unoptimized />
           ) : (
-            <Image
-              src={liquidStakingBunnyMobile}
-              alt="liquidStakingBunnyMobile"
-              width={159}
-              height={197}
-              placeholder="blur"
-            />
+            <Image src={liquidStakingBunnyMobile} alt="liquidStakingBunnyMobile" width={159} height={197} unoptimized />
           )}
           {isDesktop ? (
-            <Image src={liquidStakingBunnyBg1} alt="liquidStakingBunnyBg1" width={140} height={57} placeholder="blur" />
+            <Image src={liquidStakingBunnyBg1} alt="liquidStakingBunnyBg1" width={140} height={57} unoptimized />
           ) : (
-            <Image
-              src={liquidStakingBunnyBg1}
-              alt="liquidStakingBunnyBg1Mobile"
-              width={90}
-              height={37}
-              placeholder="blur"
-            />
+            <Image src={liquidStakingBunnyBg1} alt="liquidStakingBunnyBg1Mobile" width={90} height={37} unoptimized />
           )}
           {isDesktop ? (
-            <Image src={liquidStakingBunnyBg2} alt="liquidStakingBunnyBg2" width={61} height={78} placeholder="blur" />
+            <Image src={liquidStakingBunnyBg2} alt="liquidStakingBunnyBg2" width={61} height={78} unoptimized />
           ) : (
             <Image
               src={liquidStakingBunnyBg2Mobile}
               alt="liquidStakingBunnyBg2Mobile"
               width={57}
               height={57}
-              placeholder="blur"
+              unoptimized
             />
           )}
-          <Image src={liquidStakingBunnyBg3} alt="liquidStakingBunnyBg3" width={33} height={31} placeholder="blur" />
-          <Image src={liquidStakingBunnyBg4} alt="liquidStakingBunnyBg4" width={21} height={20} placeholder="blur" />
+          <Image src={liquidStakingBunnyBg3} alt="liquidStakingBunnyBg3" width={33} height={31} unoptimized />
+          <Image src={liquidStakingBunnyBg4} alt="liquidStakingBunnyBg4" width={21} height={20} unoptimized />
         </RightWrapper>
       </S.Inner>
     </S.Wrapper>

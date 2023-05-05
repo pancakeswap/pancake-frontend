@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { withSentryConfig } from '@sentry/nextjs'
 import { withAxiom } from 'next-axiom'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const withBundleAnalyzer = BundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -38,6 +42,10 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingExcludes: {
+      '*': ['**@swc+core*', '**/@esbuild**'],
+    },
   },
   transpilePackages: [
     '@pancakeswap/ui',
@@ -164,6 +172,16 @@ const config = {
         source: '/info/pools/:address',
         destination: '/info/pairs/:address',
         permanent: true,
+      },
+      {
+        source: '/api/v3/:chainId/farms/liquidity/:address',
+        destination: 'https://farms-api.pancakeswap.com/v3/:chainId/liquidity/:address',
+        permanent: false,
+      },
+      {
+        source: '/images/tokens/:address',
+        destination: 'https://tokens.pancakeswap.finance/images/:address',
+        permanent: false,
       },
       ...blocksPage.map((p) => ({
         source: p,

@@ -1,5 +1,5 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { SerializedFarmConfig } from '../..'
 
 const priceHelperLps: SerializedFarmConfig[] = [
   {

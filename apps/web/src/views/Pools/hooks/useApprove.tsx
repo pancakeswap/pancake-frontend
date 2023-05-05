@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'

@@ -35,11 +35,19 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2.2.4
+      - name: Set up node@18
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: 18
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm i --ignore-scripts
 
       - name: Build package
-        run: yarn build:packages
+        run: pnpm build:packages
 
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0

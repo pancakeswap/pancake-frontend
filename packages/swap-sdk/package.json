@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/sdk",
   "license": "MIT",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -29,12 +29,12 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "jest",
-    "prepublishOnly": "yarn run build",
+    "test": "vitest --run --globals",
+    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@pancakeswap/swap-sdk-core": "*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",
@@ -57,7 +57,7 @@
     "@swc/core": "^1.2.215",
     "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",
-    "@types/jest": "^24.0.25"
+    "tsup": "^6.7.0"
   },
   "engines": {
     "node": ">=10"

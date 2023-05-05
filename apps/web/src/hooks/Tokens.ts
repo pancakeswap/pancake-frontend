@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { arrayify } from '@ethersproject/bytes'
-import { parseBytes32String } from '@ethersproject/strings'
+import { arrayify, parseBytes32String } from 'ethers/lib/utils'
 import { Currency, ERC20Token, ChainId } from '@pancakeswap/sdk'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'

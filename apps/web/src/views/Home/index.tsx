@@ -6,6 +6,7 @@ import Container from 'components/Layout/Container'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
+import AffiliateModal from 'views/AffiliatesProgram/components/Dashboard/AffiliateModal'
 import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
 import MetricsSection from './components/MetricsSection'
@@ -81,6 +82,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           }
         `}
       </style>
+      <AffiliateModal />
       <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         containerProps={{
@@ -135,8 +137,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
         <SalesSection {...earnSectionData(t)} />
-        {/* TODO: until we are enable fetch multi-chain farms */}
-        {chainId === ChainId.BSC && <FarmsPoolsRow />}
+        <FarmsPoolsRow />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}

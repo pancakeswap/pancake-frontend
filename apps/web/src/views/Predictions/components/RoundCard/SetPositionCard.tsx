@@ -16,9 +16,9 @@ import {
   Box,
   AutoRenewIcon,
 } from '@pancakeswap/uikit'
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BigNumber, FixedNumber } from 'ethers'
 import { Zero } from '@ethersproject/constants'
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import { useAccount } from 'wagmi'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from '@pancakeswap/localization'

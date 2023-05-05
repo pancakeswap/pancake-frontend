@@ -6,6 +6,7 @@ import { useAtom } from 'jotai'
 import { useTranslation } from '@pancakeswap/localization'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
+import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 
 const showAffiliateModalAtom = atomWithStorageWithErrorCatch('pcs::showAffiliateModalAtom', true)
 
@@ -14,6 +15,7 @@ const AffiliateModal = () => {
   const router = useRouter()
   const { address } = useAccount()
   const { isAffiliateExist } = useAuthAffiliateExist()
+  const { isUserExist, isFetching } = useUserExist()
   const [isOpen, setIsOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   const [showModal, setShowModal] = useAtom(showAffiliateModalAtom)
@@ -21,8 +23,17 @@ const AffiliateModal = () => {
   useEffect(() => {
     const { ref, user, discount, noperps } = router.query
     // Close when switch address
-    setIsOpen(address && isAffiliateExist && showModal && !ref && !user && !discount && !noperps)
-  }, [address, isAffiliateExist, showModal, router])
+    setIsOpen(
+      (isAffiliateExist || isUserExist) &&
+        !isFetching &&
+        address &&
+        showModal &&
+        !ref &&
+        !user &&
+        !discount &&
+        !noperps,
+    )
+  }, [address, isAffiliateExist, isUserExist, isFetching, showModal, router])
 
   const handleCheckbox = () => setIsChecked(!isChecked)
 
@@ -38,11 +49,11 @@ const AffiliateModal = () => {
           <Text mb="24px">
             <Text as="span">
               {t(
-                'Our affiliate program’s terms and conditions have been updated as of May 2nd, 2023, with changes relating to',
+                'Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to',
               )}
             </Text>
             <Text as="span" bold m="0 4px">
-              {t('section 2.1 (b) on slippage during trades.')}
+              {t('section 2.1 (c) on slippage during trades.')}
             </Text>
             <Text as="span">{t('Please review the updates to ensure you agree with the revised terms.')}</Text>
           </Text>

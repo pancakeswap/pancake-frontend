@@ -1,20 +1,28 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Button, Link, Text, useMatchBreakpoints, useModal, Flex, Box } from '@pancakeswap/uikit'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import Image from 'next/legacy/image'
 import { memo, useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import {
+import * as S from './Styled'
+
+const {
   apolloXCampaignBg,
   apolloXCampaignBunny,
   apolloXCampaignTitle,
   apolloXCampaignBgMobile,
   apolloXCampaignBunnyMobile,
-} from './images'
-import * as S from './Styled'
+} = {
+  apolloXCampaignBg: `${ASSET_CDN}/web/banners/ApolloXCampaignBg.png`,
+  apolloXCampaignBunny: `${ASSET_CDN}/web/banners/ApolloXCampaignBunny.png`,
+  apolloXCampaignTitle: `${ASSET_CDN}/web/banners/ApolloXCampaignTitle.png`,
+  apolloXCampaignBgMobile: `${ASSET_CDN}/web/banners/ApolloXCampaignBgMobile.png`,
+  apolloXCampaignBunnyMobile: `${ASSET_CDN}/web/banners/ApolloXCampaignBunnyMobile.png`,
+}
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -161,7 +169,7 @@ const PerpetualBanner = () => {
               alt="apolloXCampaignTitle"
               width={266}
               height={26}
-              placeholder="blur"
+              unoptimized
               style={{
                 transform: `scale(${isMobile ? 0.8 : 1})`,
                 transformOrigin: 'top left',
@@ -218,20 +226,14 @@ const PerpetualBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           {isDesktop ? (
-            <Image src={apolloXCampaignBunny} alt="apolloXCampaignBunny" width={212} height={246} placeholder="blur" />
+            <Image src={apolloXCampaignBunny} alt="apolloXCampaignBunny" width={212} height={246} unoptimized />
           ) : (
-            <Image src={apolloXCampaignBunnyMobile} alt="PerpetualBanner" width={152} height={188} placeholder="blur" />
+            <Image src={apolloXCampaignBunnyMobile} alt="PerpetualBanner" width={152} height={188} unoptimized />
           )}
           {isDesktop ? (
-            <Image src={apolloXCampaignBg} alt="apolloXCampaignBg" width={422} height={192} placeholder="blur" />
+            <Image src={apolloXCampaignBg} alt="apolloXCampaignBg" width={422} height={192} unoptimized />
           ) : (
-            <Image
-              src={apolloXCampaignBgMobile}
-              alt="apolloXCampaignBgMobile"
-              width={200}
-              height={176}
-              placeholder="blur"
-            />
+            <Image src={apolloXCampaignBgMobile} alt="apolloXCampaignBgMobile" width={200} height={176} unoptimized />
           )}
         </RightWrapper>
       </S.Inner>

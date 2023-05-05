@@ -13,8 +13,8 @@ import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
-import { useSidNameForAddress } from '../../../../hooks/useSid'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -103,7 +103,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const chainName = useChainNameByQuery()
-  const { sidName } = useSidNameForAddress(transaction.sender)
+  const { domainName } = useDomainNameForAddress(transaction.sender)
   return (
     <ResponsiveGrid>
       <LinkExternal
@@ -129,7 +129,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
         isBscScan
         href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && ChainId.ETHEREUM)}
       >
-        {sidName || truncateHash(transaction.sender)}
+        {domainName || truncateHash(transaction.sender)}
       </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
     </ResponsiveGrid>

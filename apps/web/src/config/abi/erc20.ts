@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import ERC20_ABI from './erc20.json'
 import ERC20_BYTES32_ABI from './erc20_bytes32.json'
 

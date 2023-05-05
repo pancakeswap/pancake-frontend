@@ -1,6 +1,5 @@
-import { Interface, FunctionFragment } from '@ethersproject/abi'
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
+import { Interface, FunctionFragment } from 'ethers/lib/utils'
+import { BigNumber, Contract } from 'ethers'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import {

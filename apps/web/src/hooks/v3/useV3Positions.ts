@@ -1,6 +1,5 @@
-import { FormatTypes } from '@ethersproject/abi'
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
+import { FormatTypes } from 'ethers/lib/utils'
+import { BigNumber, Contract } from 'ethers'
 import { PositionDetails } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'

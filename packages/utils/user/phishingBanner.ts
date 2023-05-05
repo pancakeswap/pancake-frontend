@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai'
-import { differenceInDays } from 'date-fns'
+import differenceInDays from 'date-fns/differenceInDays'
 import { atomWithStorage } from 'jotai/utils'
 
 const phishingBannerAtom = atomWithStorage<number>('pcs:phishing-banner', 0)

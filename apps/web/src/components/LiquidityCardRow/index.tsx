@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 
 const TagCell = styled(Flex)`
   padding: 8px 0;

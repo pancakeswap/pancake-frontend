@@ -27,6 +27,7 @@ import { GetStaticPaths, GetStaticProps } from 'next/types'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
+import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingApr'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 // import { calculateGasMargin } from 'utils'
@@ -272,15 +273,15 @@ const LiquidStakingStakePage = () => {
               </Flex>
             </RowBetween>
           </LightGreyCard>
-          <RowBetween mb="24px">
+          <RowBetween mb="8px">
             <ExchangeRateTitle />
-
             {exchangeRateAmount ? (
               <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 8)} WBETH`}</Text>
             ) : (
               '-'
             )}
           </RowBetween>
+          <LiquidStakingApr />
           {/* 
           <RowBetween mb="24px">
             <Text color="textSubtle">Gas Fee</Text>-

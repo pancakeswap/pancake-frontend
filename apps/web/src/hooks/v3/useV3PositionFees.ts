@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
