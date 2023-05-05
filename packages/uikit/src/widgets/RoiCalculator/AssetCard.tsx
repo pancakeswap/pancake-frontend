@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Percent } from "@pancakeswap/sdk";
-import { memo, PropsWithChildren, ReactNode, useCallback, Ref } from "react";
+import { memo, PropsWithChildren, ReactNode, useCallback, Ref, MouseEvent } from "react";
 import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
@@ -104,6 +104,7 @@ export const AssetCard = memo(function AssetCard({
   ...rest
 }: AssetCardProps) {
   const { t } = useTranslation();
+  const { isMobile } = useMatchBreakpoints();
 
   const assetNodes = assets.map(({ price, value, amount, currency, priceChanged, key = "" }, index) => (
     <AssetRow
@@ -116,7 +117,13 @@ export const AssetCard = memo(function AssetCard({
       decimals={18}
       priceEditable={priceEditable}
       priceChanged={priceChanged}
-      name={<CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />}
+      name={
+        isMobile ? (
+          currency.symbol
+        ) : (
+          <CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />
+        )
+      }
       onPriceChange={(newPrice) =>
         onChange?.(
           assets.map<Asset>((a, i) => (i === index ? { ...a, price: newPrice, priceChanged: true } : a)),
@@ -180,7 +187,6 @@ export const AssetRow = memo(function AssetRow({
   onPriceChange,
   priceInputRef,
 }: AssetRowProps) {
-  const { isMobile } = useMatchBreakpoints();
   const onPriceUpdate = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
@@ -189,6 +195,13 @@ export const AssetRow = memo(function AssetRow({
     },
     [onPriceChange]
   );
+  const onMouseDown = useCallback((e: MouseEvent<HTMLInputElement>) => {
+    if (e.currentTarget !== document.activeElement) {
+      e.preventDefault();
+      e.currentTarget.focus();
+      e.currentTarget.select();
+    }
+  }, []);
 
   const textColor = priceChanged ? "primary" : "textSubtle";
 
@@ -208,10 +221,11 @@ export const AssetRow = memo(function AssetRow({
               min="0"
               color={textColor}
               value={price}
+              onMouseDown={onMouseDown}
               onChange={onPriceUpdate}
               disabled={!priceEditable}
             />
-            {priceChanged && !isMobile && <PencilIcon width="10px" color="primary" ml="0.25em" />}
+            {priceChanged && <PencilIcon width="10px" color="primary" ml="0.25em" />}
           </Row>
         </Td>
       )}
