@@ -69,6 +69,7 @@ import {
   getTradingRewardContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
+  getV3AirdropContract,
   getUnsContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
@@ -453,4 +454,9 @@ export const useTradingRewardContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
   return useMemo(() => getTradingRewardContract(chainId, signer), [signer, chainId])
+}
+
+export const useV3AirdropContract = (withSignerIfPossible = true) => {
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
+  return useMemo(() => getV3AirdropContract(providerOrSigner), [providerOrSigner])
 }

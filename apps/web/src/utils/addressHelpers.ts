@@ -155,3 +155,7 @@ export const getV3MigratorAddress = (chainId?: number) => {
 export const getTradingRewardAddress = (chainId?: number) => {
   return getAddress(addresses.tradingReward, chainId)
 }
+
+export const getV3AirdropAddress = (chainId?: number) => {
+  return getAddress(addresses.v3Airdrop, chainId)
+}

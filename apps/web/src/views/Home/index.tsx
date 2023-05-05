@@ -137,8 +137,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
         <SalesSection {...earnSectionData(t)} />
-        {/* TODO: until we are enable fetch multi-chain farms */}
-        {chainId === ChainId.BSC && <FarmsPoolsRow />}
+        <FarmsPoolsRow />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
