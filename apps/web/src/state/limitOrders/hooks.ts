@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, Trade, Token, Price, Native, TradeType } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
@@ -94,7 +93,7 @@ export const useOrderActionHandlers = (): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRateType: (rateType: Rate) => void
 } => {
-  const dispatch = useDispatch()
+  const [, dispatch] = useAtom(limitReducerAtom)
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -349,7 +348,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     }
     // Use trade amount as default
     // If we're in output basis mode - no matter what keep output as specified by user
-    let output: CurrencyAmount<Currency>
+    let output: CurrencyAmount<Currency> | undefined
     if (isOutputBasis) {
       output = outputAmount
     } else if (independentField === Field.OUTPUT) {
@@ -400,11 +399,11 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const rawAmounts = useMemo(
     () => ({
       input: inputCurrency
-        ? parsedAmounts.input?.multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals)).toFixed(0)
+        ? parsedAmounts?.input?.multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals))?.toFixed(0)
         : undefined,
 
       output: outputCurrency
-        ? parsedAmounts.output?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals)).toFixed(0)
+        ? parsedAmounts?.output?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals))?.toFixed(0)
         : undefined,
     }),
     [inputCurrency, outputCurrency, parsedAmounts],
