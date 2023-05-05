@@ -56,12 +56,8 @@ const FarmsPage = () => {
       {chosenFarmsMemoized?.map((farm) => {
         if (farm.version === 2) {
           const farmCakePerSecondNum =
-            farm.allocPoint && totalRegularAllocPoint && cakePerBlock
-              ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
-                  ethersToBigNumber(cakePerBlock).toNumber()) /
-                1e18 /
-                3
-              : 0
+            farm.poolWeight && cakePerSecond ? (Number(farm.poolWeight) * Number(cakePerBlock)) / 1e18 / 3 : 0
+
           const farmCakePerSecond =
             farmCakePerSecondNum === 0
               ? '-'

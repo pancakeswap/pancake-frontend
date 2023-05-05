@@ -30,11 +30,7 @@ const FarmsPage = () => {
           cakePrice={cakePrice}
           account={account}
           removed={false}
-          farmCakePerSecond={getDisplayFarmCakePerSecond(
-            farm.allocPoint?.toNumber(),
-            totalRegularAllocPoint,
-            cakePerBlock,
-          )}
+          farmCakePerSecond={getDisplayFarmCakePerSecond(farm.poolWeight?.toNumber(), cakePerBlock)}
           totalMultipliers={totalMultipliers}
         />
       ))}
