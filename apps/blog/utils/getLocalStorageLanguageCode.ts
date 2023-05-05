@@ -10,6 +10,7 @@ const storageLanguage: any = {
   'ja-JP': 'ja',
   'de-DE': 'de',
   'vi-VN': 'vi',
+  'fr-FR': 'fr',
 }
 // {label: 'Georgian', value: 'ka'}
 
