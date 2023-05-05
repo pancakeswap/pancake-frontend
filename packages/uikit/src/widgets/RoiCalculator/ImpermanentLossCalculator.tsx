@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
 
 import { Section } from "./Section";
-import { Box, Row, AutoColumn, Toggle, Button, RowBetween, DoubleCurrencyLogo, Flex } from "../../components";
+import { Box, Row, AutoColumn, Toggle, RowBetween, DoubleCurrencyLogo } from "../../components";
 import {
   AssetCard,
   Asset,
@@ -19,6 +19,7 @@ import {
 } from "./AssetCard";
 import { floatToPercent, toToken0Price } from "./utils";
 import { TwoColumns } from "./TwoColumns";
+import { EditableAssets } from "./EditableAssets";
 
 const Container = styled(Box)`
   background: ${({ theme }) => theme.colors.background};
@@ -274,36 +275,10 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     <>
       <TwoColumns>
         <AutoColumn alignSelf="stretch">
-          <CardSection
-            header={
-              <>
-                <SectionTitle>{t("Entry price")}</SectionTitle>
-                <Flex>
-                  <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
-                    {t("Current")}
-                  </Button>
-                </Flex>
-              </>
-            }
-          >
-            <AssetCard assets={entry} onChange={updateEntry} />
-          </CardSection>
+          <EditableAssets title={t("Entry price")} assets={entry} onChange={updateEntry} onReset={resetEntry} />
         </AutoColumn>
         <AutoColumn>
-          <CardSection
-            header={
-              <>
-                <SectionTitle>{t("Exit price")}</SectionTitle>
-                <Flex>
-                  <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
-                    {t("Current")}
-                  </Button>
-                </Flex>
-              </>
-            }
-          >
-            <AssetCard assets={exit} onChange={updateExit} />
-          </CardSection>
+          <EditableAssets title={t("Exit price")} assets={exit} onChange={updateExit} onReset={resetExit} />
         </AutoColumn>
       </TwoColumns>
       <CardSection header={<SectionTitle>{t("Projected results")}</SectionTitle>}>
@@ -337,7 +312,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
                 <AssetRow
                   name={
                     <CurrencyLogoDisplay
-                      logo={<DoubleCurrencyLogo currency0={exit?.[0].currency} currency1={exit?.[1].currency} />}
+                      logo={<DoubleCurrencyLogo currency0={exit?.[0]?.currency} currency1={exit?.[1]?.currency} />}
                       name={t("LP Rewards")}
                     />
                   }
