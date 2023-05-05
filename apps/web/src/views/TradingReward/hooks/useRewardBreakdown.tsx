@@ -3,11 +3,9 @@ import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
 import { getTradingRewardContract } from 'utils/contractHelpers'
-import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import { CampaignIdInfoResponse } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { AllTradingRewardPairDetail, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -58,11 +56,7 @@ const useRewardBreakdown = ({
     async () => {
       try {
         const dataInfo = await Promise.all(
-          allTradingRewardPairData.campaignIdsIncentive.map(async (incentive) => {
-            const response = await fetch(
-              `${TRADING_REWARD_API}/campaign/chainId/${chainId}/campaignId/${incentive.campaignId}/address/0x`,
-            )
-            const { data: result }: { data: CampaignIdInfoResponse } = await response.json()
+          allTradingRewardPairData?.campaignIdsIncentive.map(async (incentive) => {
             const userInfo = allUserCampaignInfo.find(
               (user) => user.campaignId.toLowerCase() === incentive.campaignId.toLowerCase(),
             )
@@ -72,11 +66,9 @@ const useRewardBreakdown = ({
             }
 
             const pairs = await Promise.all(
-              result?.tradingFeeArr?.map(async (volume) => {
-                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === volume.pool.toLowerCase())
-                const user = userInfo?.tradingFeeArr?.find(
-                  (arr) => arr.pool.toLowerCase() === volume.pool.toLowerCase(),
-                )
+              allTradingRewardPairData.campaignPairs?.[incentive.campaignId]?.map(async (lpAddress) => {
+                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
+                const user = userInfo?.tradingFeeArr?.find((arr) => arr.pool.toLowerCase() === lpAddress.toLowerCase())
                 const canClaimResponse = !user?.volume
                   ? BIG_ZERO
                   : await tradingRewardContract.canClaim(
@@ -94,7 +86,7 @@ const useRewardBreakdown = ({
                       ).toNumber() || 0
 
                 return {
-                  address: volume.pool,
+                  address: lpAddress,
                   lpSymbol: pairInfo?.lpSymbol ?? '',
                   token: pairInfo?.token,
                   quoteToken: pairInfo?.quoteToken,
@@ -110,7 +102,7 @@ const useRewardBreakdown = ({
               campaignId: incentive.campaignId,
               campaignStart: incentive?.campaignStart ?? 0,
               campaignClaimTime: incentive?.campaignClaimTime ?? 0,
-              pairs,
+              pairs: pairs.sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned)),
             }
           }),
         )
