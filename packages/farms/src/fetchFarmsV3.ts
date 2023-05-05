@@ -44,7 +44,6 @@ export async function farmV3FetchFarms({
         return null
       }
       const lmPoolAddress = v3PoolData[index][1][0]
-      const allocPoint = poolInfos[index]?.allocPoint
       return {
         ...f,
         token,
@@ -52,14 +51,13 @@ export async function farmV3FetchFarms({
         lmPool: lmPoolAddress,
         lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
         _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
-        allocPoint,
         ...getV3FarmsDynamicData({
           ...(v3PoolData[index][0] as any),
           token0: farm.token,
           token1: farm.quoteToken,
         }),
         ...getFarmAllocation({
-          allocPoint,
+          allocPoint: poolInfos[index]?.allocPoint,
           totalAllocPoint,
         }),
       }
@@ -115,13 +113,6 @@ const masterchefV3Abi = [
   {
     inputs: [],
     name: 'totalAllocPoint',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'PRECISION',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',

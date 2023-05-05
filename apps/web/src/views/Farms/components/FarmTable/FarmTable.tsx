@@ -170,12 +170,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
 
       if (farm.version === 2) {
         const farmCakePerSecond =
-          farm.allocPoint && totalRegularAllocPoint && cakePerBlock
-            ? ((farm.allocPoint.toNumber() / ethersToBigNumber(totalRegularAllocPoint).toNumber()) *
-                ethersToBigNumber(cakePerBlock).toNumber()) /
-              1e18 /
-              3
-            : 0
+          farm.poolWeight && cakePerSecond ? (Number(farm.poolWeight) * Number(cakePerBlock)) / 1e18 / 3 : 0
 
         const row: RowProps = {
           apr: {
