@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { ModalV2 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
@@ -36,6 +37,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   const { address: account } = useAccount()
   const { pathname } = useRouter()
   const v3Airdrop = useV3AirdropContract()
+  const [show, setShow] = useState(false)
 
   const { data: isAccountClaimed, status: accountClaimedStatus } = useSWR(
     account && [account, '/airdrop-claimed'],
@@ -52,15 +54,21 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     async () => (await fetch(`${GITHUB_ENDPOINT}/forFE.json`)).json(),
   )
 
+  useEffect(() => {
+    if (
+      accountClaimedStatus === FetchStatus.Fetched &&
+      !isAccountClaimed &&
+      v3WhitelistAddress?.[account?.toLowerCase()] &&
+      !excludeLocations.some((location) => pathname.includes(location))
+    ) {
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  }, [account, accountClaimedStatus, excludeLocations, isAccountClaimed, pathname, setShow, v3WhitelistAddress])
+
   return (
-    <ModalV2
-      isOpen={
-        accountClaimedStatus === FetchStatus.Fetched &&
-        !isAccountClaimed &&
-        v3WhitelistAddress?.[account?.toLowerCase()] &&
-        !excludeLocations.some((location) => pathname.includes(location))
-      }
-    >
+    <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>
       <V3AirdropModal
         data={account ? (v3WhitelistAddress?.[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
       />
