@@ -11,6 +11,8 @@ import {
   Pool,
   useTooltip,
   TooltipText,
+  Link,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -124,6 +126,12 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
                     unit="%"
                     fontWeight={[600, 400]}
                   />
+                  <Link
+                    external
+                    href="https://pancakeswap.finance/voting/proposal/0x707643dd2c2b941c7274f26a0362922198912e8549050ae9f2d1d9d71ada04bb"
+                  >
+                    <WarningIcon color="warning" width="20px" />
+                  </Link>
                   {!isMobile && (
                     <Button
                       onClick={(e) => {

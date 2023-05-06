@@ -1,4 +1,16 @@
-import { Flex, Text, Skeleton, useModal, Button, CalculateIcon, FlexGap, Balance, Pool } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Text,
+  Skeleton,
+  useModal,
+  Button,
+  CalculateIcon,
+  FlexGap,
+  Balance,
+  Pool,
+  Link,
+  WarningIcon,
+} from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -62,6 +74,12 @@ export const StakingApy = memo(({ pool }: { pool: Pool.DeserializedPool<Token> }
               </Text>
               <AprLabelContainer alignItems="center">
                 <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
+                <Link
+                  external
+                  href="https://pancakeswap.finance/voting/proposal/0x707643dd2c2b941c7274f26a0362922198912e8549050ae9f2d1d9d71ada04bb"
+                >
+                  <WarningIcon color="warning" width="20px" />
+                </Link>
                 <Button
                   onClick={(e) => {
                     e.stopPropagation()
