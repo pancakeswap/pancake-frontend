@@ -43,7 +43,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.POLYGON_ZKEVM]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
   // TODO: new chains
   [ChainId.ZKSYNC]: '0x1cb011040b91cd937ddff2327f17c9690653b05b6506e830baadf2493468d657',
-  [ChainId.ZKSYNC_TESTNET]: '0x1cb011040b91cd937ddff2327f17c9690653b05b6506e830baadf2493468d657',
+  [ChainId.ZKSYNC_TESTNET]: '0x0100045707a42494392b3558029b9869f865ff9df8f375dc1bf20b0555093f43',
 } as const satisfies Record<ChainId, Hash>
 
 export const WETH9 = {

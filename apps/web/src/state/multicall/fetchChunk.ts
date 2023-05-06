@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { getViemClients } from 'utils/viem'
 import { multicallABI } from 'config/abi/Multicall'
 import { getMulticallAddress } from 'utils/addressHelpers'
@@ -57,7 +58,7 @@ export async function fetchChunk(
     console.debug('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (Number(resultsBlockNumber) < minBlockNumber) {
+  if (Number(resultsBlockNumber) < minBlockNumber && chainId !== ChainId.ZKSYNC && chainId !== ChainId.ZKSYNC_TESTNET) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
   }
 

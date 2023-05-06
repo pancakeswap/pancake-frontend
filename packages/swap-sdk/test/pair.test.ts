@@ -1,4 +1,5 @@
 import { Token, CurrencyAmount, Price } from '@pancakeswap/swap-sdk-core'
+import { describe, it, expect } from 'vitest'
 import { Pair } from '../src/entities'
 import { ChainId, WNATIVE } from '../src/constants'
 
@@ -21,6 +22,12 @@ describe('Pair', () => {
   describe('#getAddress', () => {
     it('returns the correct address', () => {
       expect(Pair.getAddress(USDC, DAI)).toEqual('0xadBba1EF326A33FDB754f14e62A96D5278b942Bd')
+    })
+
+    it('returns the correct address for zkSync', () => {
+      const WETH = new Token(ChainId.ZKSYNC_TESTNET, '0x20b28B1e4665FFf290650586ad76E977EAb90c5D', 18, 'WETH', 'WETH')
+      const USDC_ = new Token(ChainId.ZKSYNC_TESTNET, '0x0faF6df7054946141266420b43783387A78d82A9', 18, 'USDC', 'USDC')
+      expect(Pair.getAddress(USDC_, WETH)).toEqual('0x06C4c41108D79B131D2D8456Ede66556eBF23aEa')
     })
   })
 
