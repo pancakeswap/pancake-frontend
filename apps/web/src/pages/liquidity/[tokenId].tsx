@@ -56,7 +56,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
+import { useTransactionAdder, useTransactionReceipt } from 'state/transactions/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { calculateGasMargin, getBlockExploreLink } from 'utils'
@@ -139,24 +139,25 @@ const useInverter = ({
 // }
 
 export default function PoolPage() {
+  const router = useRouter()
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
 
-  const [collecting, setCollecting] = useState<boolean>(false)
+  const [attemptTrx, setAttemptTrx] = useState<boolean>(false)
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
-  const [receiveWETH, setReceiveWETH] = useState(false)
+  const [receiveWNative, setReceiveWNative] = useState(false)
 
   const { data: signer } = useWalletClient()
   const { sendTransactionAsync } = useSendTransaction()
 
   const { account, chainId } = useAccountActiveChain()
 
-  const router = useRouter()
+  const collectTransactionReceipt = useTransactionReceipt(collectMigrationHash ?? undefined)
   const { tokenId: tokenIdFromUrl } = router.query
 
-  const parsedTokenId = tokenIdFromUrl ? BigInt(tokenIdFromUrl as string) : undefined
+  const parsedTokenId = useMemo(() => (tokenIdFromUrl ? BigInt(tokenIdFromUrl as string) : undefined), [tokenIdFromUrl])
 
   const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
 
@@ -182,8 +183,8 @@ export default function PoolPage() {
     [farmDetail],
   )
 
-  const currency0 = token0 ? unwrappedToken(token0) : undefined
-  const currency1 = token1 ? unwrappedToken(token1) : undefined
+  const currency0 = useMemo(() => (token0 ? unwrappedToken(token0) : undefined), [token0])
+  const currency1 = useMemo(() => (token1 ? unwrappedToken(token1) : undefined), [token1])
 
   // construct Position from details returned
   const [poolState, pool] = usePool(token0 ?? undefined, token1 ?? undefined, feeAmount)
@@ -209,7 +210,7 @@ export default function PoolPage() {
     invert: manuallyInverted,
   })
 
-  const inverted = token1 && base ? base.equals(token1) : undefined
+  const inverted = useMemo(() => (token1 && token1 ? base?.equals(token1) : undefined), [token1, base])
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
@@ -224,13 +225,17 @@ export default function PoolPage() {
   // }, [inverted, pool, priceLower, priceUpper])
 
   // fees
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWNative)
 
   // these currencies will match the feeValue{0,1} currencies for the purposes of fee collection
-  const currency0ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token0 : unwrappedToken(pool.token0)) : undefined
-  const currency1ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token1 : unwrappedToken(pool.token1)) : undefined
-
-  const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
+  const currency0ForFeeCollectionPurposes = useMemo(
+    () => (pool ? (receiveWNative ? pool.token0 : unwrappedToken(pool.token0)) : undefined),
+    [pool, receiveWNative],
+  )
+  const currency1ForFeeCollectionPurposes = useMemo(
+    () => (pool ? (receiveWNative ? pool.token1 : unwrappedToken(pool.token1)) : undefined),
+    [pool, receiveWNative],
+  )
 
   // usdc prices always in terms of tokens
   const price0 = useStablecoinPrice(token0 ?? undefined, { enabled: !!feeValue0 })
@@ -267,7 +272,7 @@ export default function PoolPage() {
     account,
   )
 
-  const isStakedInMCv3 = tokenId && Boolean(stakedTokenIds.find((id) => id === tokenId))
+  const isStakedInMCv3 = useMemo(() => tokenId && Boolean(stakedTokenIds.find((id) => id === tokenId)), [tokenId, stakedTokenIds])
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
@@ -284,7 +289,7 @@ export default function PoolPage() {
     )
       return
 
-    setCollecting(true)
+    setAttemptTrx(true)
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
@@ -313,7 +318,7 @@ export default function PoolPage() {
 
         return sendTransactionAsync(newTxn).then((response) => {
           setCollectMigrationHash(response.hash)
-          setCollecting(false)
+          setAttemptTrx(false)
 
           const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
           const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
@@ -370,13 +375,14 @@ export default function PoolPage() {
   const nativeCurrency = useNativeCurrency()
   const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
 
-  const showCollectAsWeth = Boolean(
-    ownsNFT &&
+  const isOwnNFT = isStakedInMCv3 || owner === account || positionDetails?.operator === account
+
+  const showCollectAsWNative = Boolean(
+    isOwnNFT &&
       (feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0)) &&
       currency0 &&
       currency1 &&
-      (currency0.isNative || currency1.isNative) &&
-      !collectMigrationHash,
+      (currency0.isNative || currency1.isNative),
   )
 
   const modalHeader = () => (
@@ -410,8 +416,8 @@ export default function PoolPage() {
   const [onClaimFee] = useModal(
     <TransactionConfirmationModal
       title={t('Claim fees')}
-      attemptingTxn={collecting}
-      hash={collectMigrationHash ?? ''}
+      attemptingTxn={attemptTrx}
+      hash={collectTransactionReceipt ? '' : collectMigrationHash ?? ''}
       content={() => (
         <ConfirmationModalContent
           topContent={modalHeader}
@@ -426,14 +432,12 @@ export default function PoolPage() {
     />,
     true,
     true,
-    'TransactionConfirmationModalColelctFees',
+    'TransactionConfirmationModalCollectFees',
   )
 
   const isLoading = loading || poolState === PoolState.LOADING || poolState === PoolState.INVALID || !feeAmount
 
   const { isMobile } = useMatchBreakpoints()
-
-  const isOwnNFT = isStakedInMCv3 || ownsNFT
 
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return <NotFound />
@@ -651,15 +655,15 @@ export default function PoolPage() {
                         scale="sm"
                         disabled={
                           !isOwnNFT ||
-                          collecting ||
-                          isCollectPending ||
+                          attemptTrx ||
+                          (!!collectMigrationHash && !collectTransactionReceipt) ||
                           !(feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash)
                         }
                         onClick={onClaimFee}
                       >
-                        {!!collectMigrationHash && !isCollectPending
+                        {!!collectMigrationHash && collectTransactionReceipt?.status
                           ? t('Collected')
-                          : isCollectPending || collecting
+                          : !!collectMigrationHash && !collectTransactionReceipt
                           ? t('Collecting...')
                           : t('Collect')}
                       </Button>
@@ -710,17 +714,17 @@ export default function PoolPage() {
                   </Box>
                 </Flex>
               </AutoRow>
-              {showCollectAsWeth && (
+              {showCollectAsWNative && (
                 <Flex mb="8px">
                   <Flex ml="auto" alignItems="center">
                     <Text mr="8px">
                       {t('Collect as')} {nativeWrappedSymbol}
                     </Text>
                     <Toggle
-                      id="receive-as-weth"
+                      id="receive-as-wnative"
                       scale="sm"
-                      checked={receiveWETH}
-                      onChange={() => setReceiveWETH((prevState) => !prevState)}
+                      checked={receiveWNative}
+                      onChange={() => setReceiveWNative((prevState) => !prevState)}
                     />
                   </Flex>
                 </Flex>

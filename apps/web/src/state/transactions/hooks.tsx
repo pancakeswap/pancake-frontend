@@ -22,6 +22,7 @@ import {
   NonBscFarmTransactionType,
   FarmTransactionStatus,
   NonBscFarmStepType,
+  SerializableTransactionReceipt,
 } from './actions'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -172,6 +173,14 @@ export function useIsTransactionPending(transactionHash?: string): boolean {
   if (!transactionHash || !transactions[transactionHash]) return false
 
   return !transactions[transactionHash].receipt
+}
+
+export function useTransactionReceipt(transactionHash?: string): SerializableTransactionReceipt {
+  const transactions = useAllActiveChainTransactions()
+
+  if (!transactionHash || !transactions[transactionHash]) return null
+
+  return transactions[transactionHash].receipt
 }
 
 /**
