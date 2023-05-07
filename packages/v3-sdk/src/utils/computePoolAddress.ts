@@ -1,6 +1,4 @@
-import { defaultAbiCoder } from '@ethersproject/abi'
-import { getCreate2Address } from '@ethersproject/address'
-import { keccak256 } from '@ethersproject/solidity'
+import { defaultAbiCoder, getCreate2Address, solidityKeccak256 as keccak256 } from 'ethers/lib/utils'
 import { Token } from '@pancakeswap/sdk'
 import { FeeAmount, POOL_INIT_CODE_HASH } from '../constants'
 

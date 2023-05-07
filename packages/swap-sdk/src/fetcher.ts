@@ -1,12 +1,12 @@
-import { Contract } from '@ethersproject/contracts'
-import { getNetwork } from '@ethersproject/networks'
-import { getDefaultProvider } from '@ethersproject/providers'
+import { Contract, providers } from 'ethers'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { Pair } from './entities/pair'
 import { ChainId } from './constants'
 import ERC20 from './abis/ERC20.json'
 import IPancakePair from './abis/IPancakePair.json'
+
+const { getNetwork, getDefaultProvider } = providers
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {
   [ChainId.BSC]: {},

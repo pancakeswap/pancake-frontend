@@ -1,5 +1,5 @@
 import { BigintIsh, Token, validateAndParseAddress } from '@pancakeswap/sdk'
-import { defaultAbiCoder, Interface } from '@ethersproject/abi'
+import { defaultAbiCoder, Interface } from 'ethers/lib/utils'
 import IV3Staker from './abi/V3Staker.json'
 import { MethodParameters, toHex } from './utils/calldata'
 import { Pool } from './entities'

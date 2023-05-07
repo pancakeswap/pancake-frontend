@@ -12,8 +12,7 @@ import {
   BigintIsh,
   MINIMUM_LIQUIDITY,
 } from '@pancakeswap/swap-sdk-core'
-import { getCreate2Address } from '@ethersproject/address'
-import { keccak256, pack } from '@ethersproject/solidity'
+import { getCreate2Address, solidityKeccak256 as keccak256, solidityPack as pack } from 'ethers/lib/utils'
 import invariant from 'tiny-invariant'
 
 import { FACTORY_ADDRESS_MAP, INIT_CODE_HASH_MAP } from '../constants'

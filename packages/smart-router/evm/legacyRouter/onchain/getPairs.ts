@@ -1,5 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, Pair, Token } from '@pancakeswap/sdk'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { createMulticall, Call } from '@pancakeswap/multicall'
 
 import { wrappedCurrency } from '../../utils/currency'

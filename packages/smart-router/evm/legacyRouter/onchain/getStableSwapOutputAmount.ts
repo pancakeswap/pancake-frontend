@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Call, createMulticall } from '@pancakeswap/multicall'
 

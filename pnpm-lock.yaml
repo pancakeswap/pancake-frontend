@@ -1232,24 +1232,6 @@ importers:
 
   packages/smart-router:
     dependencies:
-      '@ethersproject/abi':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/bignumber':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/contracts':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/providers':
-        specifier: ^5.0.0
-        version: 5.7.2
-      '@ethersproject/solidity':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/units':
-        specifier: ^5.0.0
-        version: 5.7.0
       '@pancakeswap/multicall':
         specifier: ^2.0.0
         version: link:../multicall
@@ -1274,6 +1256,9 @@ importers:
       debug:
         specifier: ^4.3.4
         version: 4.3.4(supports-color@8.1.1)
+      ethers:
+        specifier: ^5.0.0
+        version: 5.7.2
       graphql:
         specifier: ^16.6.0
         version: 16.6.0
@@ -1299,9 +1284,6 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
-      '@ethersproject/constants':
-        specifier: ^5.0.0
-        version: 5.7.0
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
@@ -1341,6 +1323,9 @@ importers:
       decimal.js-light:
         specifier: ^2.5.0
         version: 2.5.1
+      ethers:
+        specifier: ^5.0.0
+        version: 5.7.2
       tiny-invariant:
         specifier: ^1.1.0
         version: 1.2.0
@@ -1351,21 +1336,6 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
     devDependencies:
-      '@ethersproject/address':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/contracts':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/networks':
-        specifier: ^5.0.0
-        version: 5.7.1
-      '@ethersproject/providers':
-        specifier: ^5.0.0
-        version: 5.7.2
-      '@ethersproject/solidity':
-        specifier: ^5.0.0
-        version: 5.7.0
       '@swc/core':
         specifier: ^1.2.215
         version: 1.2.218
@@ -1854,6 +1824,9 @@ importers:
       decimal.js-light:
         specifier: ^2.5.0
         version: 2.5.1
+      ethers:
+        specifier: ^5.0.0
+        version: 5.7.2
       tiny-invariant:
         specifier: ^1.1.0
         version: 1.2.0
@@ -1864,18 +1837,6 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
     devDependencies:
-      '@ethersproject/abi':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/address':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/bignumber':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/solidity':
-        specifier: ^5.0.0
-        version: 5.7.0
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
