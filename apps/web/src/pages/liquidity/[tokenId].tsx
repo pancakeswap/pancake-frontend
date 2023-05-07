@@ -290,6 +290,7 @@ export default function PoolPage() {
       value,
     }
 
+    if (!signer) return
     signer
       .estimateGas(txn)
       .then((estimate) => {
@@ -562,7 +563,7 @@ export default function PoolPage() {
                         </Flex>
                         <Flex justifyContent="center">
                           <Text small mr="4px">
-                            <FormattedCurrencyAmount currencyAmount={positionValueUpper} />
+                            <FormattedCurrencyAmount currencyAmount={positionValueUpper} isShowExactAmount />
                           </Text>
                         </Flex>
                         <RowBetween justifyContent="flex-end">
@@ -584,7 +585,7 @@ export default function PoolPage() {
                         </Flex>
                         <Flex justifyContent="center">
                           <Text small mr="4px">
-                            <FormattedCurrencyAmount currencyAmount={positionValueLower} />
+                            <FormattedCurrencyAmount currencyAmount={positionValueLower} isShowExactAmount />
                           </Text>
                         </Flex>
                         <RowBetween justifyContent="flex-end">

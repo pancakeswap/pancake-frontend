@@ -5,13 +5,20 @@ const CURRENCY_AMOUNT_MIN = new Fraction(1n, 1000000n)
 interface FormatterCurrencyAmountProps {
   currencyAmount?: CurrencyAmount<Currency>
   significantDigits?: number
+  isShowExactAmount?: boolean
 }
 
-export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 }: FormatterCurrencyAmountProps) {
+export function formattedCurrencyAmount({
+  currencyAmount,
+  significantDigits = 4,
+  isShowExactAmount = false,
+}: FormatterCurrencyAmountProps) {
   return !currencyAmount || currencyAmount.equalTo(0n)
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
-    ? currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
+    ? isShowExactAmount
+      ? currencyAmount.toExact()
+      : currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
     : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
 }
 
