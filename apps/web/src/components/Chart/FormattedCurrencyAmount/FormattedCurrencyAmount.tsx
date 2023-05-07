@@ -17,7 +17,7 @@ export function formattedCurrencyAmount({
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
     ? isShowExactAmount
-      ? currencyAmount.toExact()
+      ? currencyAmount.toExact({ groupSeparator: ',' })
       : currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
     : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
 }
