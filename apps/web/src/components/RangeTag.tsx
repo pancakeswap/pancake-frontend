@@ -28,6 +28,7 @@ export function RangeTag({
             )}
             size="20px"
             color="white"
+            placement="bottom"
           />
         </Flex>
       )}
