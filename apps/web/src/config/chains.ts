@@ -7,8 +7,6 @@ import {
   mainnet,
   zkSync as zkSync_,
   zkSyncTestnet as zkSyncTestnet_,
-  arbitrum,
-  polygonZkEvm as polygonZkEvm_,
   Chain,
 } from 'wagmi/chains'
 
@@ -65,25 +63,32 @@ const zkSyncTestnet = {
   contracts: {
     multicall3: {
       address: '0x5640049C9e2d33127B34F1bef5C070509f14B5D0',
-      blockCreated: 5138198, // TODO: double check
+      blockCreated: 5137723,
     },
   },
 } as const satisfies Chain
 
-const polygonZkEvm = {
-  ...polygonZkEvm_,
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 57746,
-    },
-  },
-} as const satisfies Chain
-
-export const CHAINS = [bsc, mainnet, bscTestnet, goerli, zkSync, zkSyncTestnet, arbitrum, polygonZkEvm]
+// const polygonZkEvm = {
+//   ...polygonZkEvm_,
+//   contracts: {
+//     multicall3: {
+//       address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+//       blockCreated: 57746,
+//     },
+//   },
+// } as const satisfies Chain
 
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
  * The expectation is that all of these networks have immediate transaction confirmation.
  */
 export const L2_CHAIN_IDS: ChainId[] = []
+
+export const CHAINS = [
+  bsc,
+  mainnet,
+  bscTestnet,
+  goerli,
+  // zkSync,
+  zkSyncTestnet,
+]

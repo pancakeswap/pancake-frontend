@@ -30,6 +30,15 @@ function getCreate2Address(
   return getAddress(slice(keccak256(concat([toBytes('0xff'), from, salt, toBytes(initCodeHash)])), 12))
 }
 
+const EMPTY_INPU_HASH = '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
+const ZKSYNC_PREFIX = '0x2020dba91b30cc0006188af794c2fb30dd8520db7e2c088b7fc7c103c00ca494' // keccak256('zksyncCreate2')
+
+function getCreate2AddressZkSync(from: Address, salt: `0x${string}`, initCodeHash: `0x${string}`): `0x${string}` {
+  return getAddress(
+    keccak256(concat([ZKSYNC_PREFIX, pad(from, { size: 32 }), salt, initCodeHash, EMPTY_INPU_HASH])).slice(26)
+  )
+}
+
 /**
  * Computes a pool address
  * @param deployerAddress The Pancake V3 deployer address
@@ -54,11 +63,13 @@ export function computePoolAddress({
 }): Address {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
 
-  return getCreate2Address(
-    deployerAddress,
-    keccak256(
-      encodeAbiParameters(parseAbiParameters(['address, address, uint24']), [token0.address, token1.address, fee])
-    ),
-    initCodeHashManualOverride ?? POOL_INIT_CODE_HASH
+  const salt = keccak256(
+    encodeAbiParameters(parseAbiParameters(['address, address, uint24']), [token0.address, token1.address, fee])
   )
+
+  if (token0.chainId === ChainId.ZKSYNC || token0.chainId === ChainId.ZKSYNC_TESTNET) {
+    return getCreate2AddressZkSync(deployerAddress, salt, initCodeHashManualOverride ?? POOL_INIT_CODE_HASH)
+  }
+
+  return getCreate2Address(deployerAddress, salt, initCodeHashManualOverride ?? POOL_INIT_CODE_HASH)
 }
