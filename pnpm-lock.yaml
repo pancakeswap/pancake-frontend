@@ -1251,7 +1251,7 @@ importers:
   packages/smart-router:
     dependencies:
       '@pancakeswap/multicall':
-        specifier: ^2.0.0
+        specifier: workspace:*
         version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
@@ -1274,9 +1274,6 @@ importers:
       debug:
         specifier: ^4.3.4
         version: 4.3.4(supports-color@8.1.1)
-      ethers:
-        specifier: ^5.0.0
-        version: 5.7.2
       graphql:
         specifier: ^16.6.0
         version: 16.6.0
