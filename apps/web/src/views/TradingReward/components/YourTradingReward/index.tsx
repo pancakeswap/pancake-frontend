@@ -77,7 +77,7 @@ const Container = styled(Box)<{ showBackgroundColor: boolean }>`
   width: 100%;
   padding: 0 16px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     width: ${({ showBackgroundColor }) => (showBackgroundColor ? '760px' : '1140px')};
   }
 `

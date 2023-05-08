@@ -16,44 +16,93 @@ const Decorations = styled(Box)`
   position: absolute;
   top: 0;
   left: 50%;
-  width: 100%;
-  max-width: 1140px;
-  height: 100%;
-  display: none;
+  width: calc(100% - 32px);
+  height: 60%;
   pointer-events: none;
   overflow: hidden;
   transform: translateX(-50%);
   > img {
     position: absolute;
   }
+
   & :nth-child(1) {
     top: 10%;
-    left: 55%;
+    left: 5%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
+
   & :nth-child(2) {
     top: 50%;
     right: 0%;
     animation: ${floatingStarsLeft} 3s ease-in-out infinite;
   }
+
   & :nth-child(3) {
-    left: 48%;
+    left: 10%;
     bottom: 15%;
     animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
   }
+
   & :nth-child(4) {
-    left: 55%;
-    top: 20%;
+    left: 25%;
+    top: 18%;
+    width: 66px;
+    height: 48px;
     animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
   }
+
   & :nth-child(5) {
-    left: 60%;
-    bottom: 15%;
-    animation: ${floatingStarsRight} 4.5s ease-in-out infinite;
+    left: 26%;
+    bottom: 21%;
+    width: 67px;
+    height: 121px;
+    display: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 90%;
+    height: 70%;
+
+    & :nth-child(4) {
+      top: 10%;
+      left: 18%;
+      width: 186px;
+      height: 168px;
+    }
+
+    & :nth-child(5) {
+      left: 16%;
+      bottom: 18%;
+      width: 167px;
+      height: 261px;
+      display: block;
+    }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    display: block;
+    width: 100%;
+    max-width: 1140px;
+    height: 100%;
+
+    & :nth-child(1) {
+      left: 55%;
+    }
+
+    & :nth-child(3) {
+      left: 48%;
+    }
+
+    & :nth-child(4) {
+      left: 55%;
+      width: 186px;
+      height: 168px;
+    }
+
+    & :nth-child(5) {
+      left: 58%;
+      width: 167px;
+      height: 261px;
+    }
   }
 }`
 
