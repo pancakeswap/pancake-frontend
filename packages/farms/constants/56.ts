@@ -46,6 +46,14 @@ export const farmsV3 = [
   },
   // keep those farms on top
   {
+    pid: 39,
+    lpSymbol: 'ID-USDT LP',
+    token: bscTokens.id,
+    quoteToken: bscTokens.usdt,
+    lpAddress: Pool.getAddress(bscTokens.id, bscTokens.usdt, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 38,
     lpSymbol: 'GAL-BNB LP',
     token: bscTokens.bnb,
