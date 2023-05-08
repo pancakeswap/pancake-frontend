@@ -2482,5 +2482,8 @@
   "ETH to WBETH conversion and earn ETH staking rewards!": "ETHலிருந்து WBETH உருமாற்றல் மற்றும் ETH ஸ்டேக்கிங் வெகுமதிகள் ஈட்டல்!",
   "Get Started": "தொடங்குக",
   "V3 Farms": "V3 ஃபார்ம்கள்",
-  "V2 Farms": "V2 ஃபார்ம்கள்"
+  "V2 Farms": "V2 ஃபார்ம்கள்",
+  "Combined APR": "Combined APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
+  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
 }
