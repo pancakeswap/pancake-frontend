@@ -343,7 +343,6 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 ) : view === ChartView.TVL ? (
                   <LineChart
                     data={formattedTvlData}
-                    color={backgroundColor}
                     minHeight={340}
                     setValue={setLatestValue}
                     setLabel={setValueLabel}
