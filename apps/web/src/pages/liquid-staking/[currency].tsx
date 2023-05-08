@@ -114,7 +114,7 @@ const LiquidStakingStakePage = () => {
 
     const receipt = await fetchWithCatchTxError(() => {
       if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
-        const methodArgs = [account]
+        const methodArgs = [masterChefAddress]
         return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
           // gasLimit: calculateGasMargin(estimatedGas),
           value: convertedStakeAmount.toString(),
@@ -122,6 +122,7 @@ const LiquidStakingStakePage = () => {
       }
 
       const methodArgs = [convertedStakeAmount.toString(), masterChefAddress]
+
       return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
         // gasLimit: calculateGasMargin(estimatedGas),
       })
