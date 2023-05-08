@@ -202,7 +202,7 @@ const config = {
         __SENTRY_TRACING__: false,
       }),
     )
-    if (!isServer) {
+    if (!isServer && webpackConfig.optimization.splitChunks) {
       // webpack doesn't understand worker deps on quote worker, so we need to manually add them
       // https://github.com/webpack/webpack/issues/16895
       // eslint-disable-next-line no-param-reassign
