@@ -1,27 +1,27 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import { CAKE, USDC } from '@pancakeswap/tokens'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
+import { SLOW_INTERVAL } from 'config/constants'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import useSWRImmutable from 'swr/immutable'
 import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import getLpAddress from 'utils/getLpAddress'
 import { multicallv2 } from 'utils/multicall'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
-import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
-import { useAccount } from 'wagmi'
-import useSWRImmutable from 'swr/immutable'
-import { SLOW_INTERVAL } from 'config/constants'
+import { useAccount, useEnsAddress } from 'wagmi'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
@@ -126,10 +126,17 @@ export function useDerivedSwapInfo(
   v2Trade: Trade<Currency, Currency, TradeType> | undefined
   inputError?: string
 } {
+  const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
   const { t } = useTranslation()
+  const recipientENSAddress = useEnsAddress({
+    name: recipient,
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+  })
 
-  const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
+  const to: string | null =
+    (recipient === null ? account : isAddress(recipient) || isAddress(recipientENSAddress) || null) ?? null
 
   const relevantTokenBalances = useCurrencyBalances(
     account ?? undefined,
@@ -209,11 +216,14 @@ function parseIndependentFieldURLParameter(urlParam: any): Field {
   return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output' ? Field.OUTPUT : Field.INPUT
 }
 
+const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
+
 const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 function validatedRecipient(recipient: any): string | null {
   if (typeof recipient !== 'string') return null
   const address = isAddress(recipient)
   if (address) return address
+  if (ENS_NAME_REGEX.test(recipient)) return recipient
   if (ADDRESS_REGEX.test(recipient)) return recipient
   return null
 }

@@ -28,13 +28,18 @@ interface WinnerProps {
 
 const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => {
   const { profile, isFetching } = useProfileForAddress(address)
-  const { domainName } = useDomainNameForAddress(address)
+  const { domainName, avatar } = useDomainNameForAddress(address)
 
   return (
     <Container>
       {!isFetching ? (
         <>
-          <ProfileAvatar style={{ alignSelf: 'center' }} width={24} height={24} src={profile?.nft?.image?.thumbnail} />
+          <ProfileAvatar
+            style={{ alignSelf: 'center' }}
+            width={24}
+            height={24}
+            src={profile?.nft?.image?.thumbnail ?? avatar}
+          />
           <Box ml="4px">
             <Text fontSize="12px" color="primary">
               {domainName || truncateHash(address)}

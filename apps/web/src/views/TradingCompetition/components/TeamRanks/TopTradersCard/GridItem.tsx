@@ -82,7 +82,7 @@ const GridItem: React.FC<
 > = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
   const { profile, isFetching: isProfileFetching } = useProfileForAddress(address)
-  const { domainName } = useDomainNameForAddress(address)
+  const { domainName, avatar } = useDomainNameForAddress(address)
 
   return (
     <Wrapper>
@@ -100,7 +100,12 @@ const GridItem: React.FC<
           borderRadius="50%"
           isDataReady={!isProfileFetching}
         >
-          <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
+          <ProfileAvatar
+            src={profile?.nft?.image?.thumbnail ?? avatar}
+            width={32}
+            height={32}
+            mr={['4px', null, '12px']}
+          />
         </SkeletonV2>
         <Text color="primary">{domainName || truncateHash(address)}</Text>
       </Flex>

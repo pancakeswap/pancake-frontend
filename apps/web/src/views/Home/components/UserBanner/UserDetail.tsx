@@ -8,6 +8,7 @@ import {
   useMatchBreakpoints,
   VisibilityOff,
   VisibilityOn,
+  ProfileAvatar,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import styled from 'styled-components'
@@ -51,7 +52,7 @@ const UserDetail = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-  const { domainName, isLoading: isDomainNameLoading } = useDomainNameForAddress(account)
+  const { domainName, isLoading: isDomainNameLoading, avatar } = useDomainNameForAddress(account)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
     profile?.username,
   )
@@ -67,7 +68,15 @@ const UserDetail = () => {
       {(isTablet || isDesktop) && (
         <Desktop>
           <Box mr="24px">
-            <Sticker>{profile ? <ProfileAvatarWithTeam profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
+            <Sticker>
+              {profile ? (
+                <ProfileAvatarWithTeam profile={profile} />
+              ) : avatar ? (
+                <ProfileAvatar src={avatar} width={32} height={32} mr="16px" />
+              ) : (
+                <StyledNoProfileAvatarIcon />
+              )}
+            </Sticker>
           </Box>
           <Flex flexDirection="column">
             {profile ? (

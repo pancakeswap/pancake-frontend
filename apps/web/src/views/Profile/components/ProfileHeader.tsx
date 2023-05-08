@@ -50,7 +50,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { domainName } = useDomainNameForAddress(accountPath)
+  const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
     profile?.username,
   )
@@ -72,7 +72,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       : '-'
     : null
 
-  const avatarImage = profile?.nft?.image?.thumbnail || '/images/nfts/no-profile-md.png'
+  const avatarImage = profile?.nft?.image?.thumbnail ?? (avatarFromDomain || '/images/nfts/no-profile-md.png')
   const profileTeamId = profile?.teamId
   const profileUsername = isConnectedAccount ? usernameWithVisibility : profile?.username
   const hasProfile = !!profile
