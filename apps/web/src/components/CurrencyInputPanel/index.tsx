@@ -1,4 +1,4 @@
-import { useMemo, useState, memo, useCallback } from 'react'
+import { useMemo, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import {
   Button,
@@ -24,7 +24,7 @@ import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStabl
 
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useAccount } from 'wagmi'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
@@ -160,7 +160,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const handleUserInput = useCallback(
     (val: string) => {
       onUserInput(val)
-      setCurrentClickedPercent('')
     },
     [onUserInput],
   )
@@ -170,8 +169,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       onPresentCurrencyModal()
     }
   }, [onPresentCurrencyModal, disableCurrencySelect])
-
-  const [currentClickedPercent, setCurrentClickedPercent] = useState('')
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
@@ -289,7 +286,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   showQuickInputButton &&
                   onPercentInput &&
                   [25, 50, 75].map((percent) => {
-                    const isAtClickedPercent = currentClickedPercent === percent.toString()
                     const isAtCurrentPercent =
                       (maxAmount && value !== '0' && value === percentAmount[percent]) ||
                       (lpPercent && lpPercent === percent.toString())
@@ -299,11 +295,10 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                         key={`btn_quickCurrency${percent}`}
                         onClick={() => {
                           onPercentInput(percent)
-                          setCurrentClickedPercent(percent.toString())
                         }}
                         scale="xs"
                         mr="5px"
-                        variant={isAtClickedPercent || isAtCurrentPercent ? 'primary' : 'secondary'}
+                        variant={isAtCurrentPercent ? 'primary' : 'secondary'}
                         style={{ textTransform: 'uppercase' }}
                       >
                         {percent}%
@@ -316,7 +311,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                       e.stopPropagation()
                       e.preventDefault()
                       onMax?.()
-                      setCurrentClickedPercent('MAX')
                     }}
                     scale="xs"
                     variant={isAtPercentMax ? 'primary' : 'secondary'}
