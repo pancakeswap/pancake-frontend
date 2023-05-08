@@ -58,13 +58,12 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
         address: address.toLocaleLowerCase(),
       })
       const volumes = poolDayDatas.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
-      const tvlUSDs = poolDayDatas.map((d: { tvlUSD: string }) => Number(d.tvlUSD))
       const feeUSDs = poolDayDatas.map(
         (d: { feesUSD: string; protocolFeesUSD: string }) => Number(d.feesUSD) - Number(d.protocolFeesUSD),
       )
       return {
         volumeUSD: averageArray(volumes),
-        tvlUSD: averageArray(tvlUSDs),
+        tvlUSD: parseFloat(poolDayDatas[0]?.tvlUSD) || 0,
         feeUSD: averageArray(feeUSDs),
       }
     },
