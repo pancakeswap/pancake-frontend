@@ -77,13 +77,19 @@ const useRewardBreakdown = ({
                       new BigNumber(user?.volume?.toFixed(2)).times(1e18).toString(),
                     )
 
-                const rewardPrice = new BigNumber(reward.rewardPrice).div(reward.rewardTokenDecimal)
+                const rewardCakeUSDPriceAsBg = getBalanceAmount(
+                  new BigNumber(reward.rewardPrice),
+                  reward.rewardTokenDecimal,
+                )
+                const rewardCakeAmount = getBalanceAmount(
+                  new BigNumber(canClaimResponse.toString()),
+                  reward.rewardTokenDecimal,
+                )
+
                 const rewardEarned =
                   incentive.campaignClaimTime - currentDate > 0
                     ? user?.estimateRewardUSD || 0
-                    : new BigNumber(
-                        getBalanceAmount(new BigNumber(canClaimResponse.toString())).times(rewardPrice),
-                      ).toNumber() || 0
+                    : rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
 
                 return {
                   address: lpAddress,

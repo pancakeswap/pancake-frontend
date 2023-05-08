@@ -16,10 +16,12 @@ const useRewardInUSD = ({
   rewardPrice,
   rewardTokenDecimal = 18,
 }: UseRewardInUSDProps) => {
-  const rewardPriceAsBg = new BigNumber(rewardPrice).div(rewardTokenDecimal)
+  const rewardCakeUSDPriceAsBg = getBalanceAmount(new BigNumber(rewardPrice), rewardTokenDecimal)
+  const rewardCakeAmount = getBalanceAmount(new BigNumber(canClaim), rewardTokenDecimal)
+
   return timeRemaining > 0
     ? totalEstimateRewardUSD || 0
-    : new BigNumber(getBalanceAmount(new BigNumber(canClaim.toString())).times(rewardPriceAsBg)).toNumber() || 0
+    : rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
 }
 
 export default useRewardInUSD

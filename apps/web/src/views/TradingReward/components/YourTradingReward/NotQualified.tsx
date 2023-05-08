@@ -42,12 +42,12 @@ const NotQualified: React.FC<React.PropsWithChildren<NotQualifiedProps>> = ({
       .map((available) => {
         const currentReward = rewardInfo?.[available.campaignId]
         if (currentReward) {
-          const rewardPriceAsBg = new BigNumber(currentReward.rewardPrice).div(currentReward.rewardTokenDecimal)
-          return (
-            new BigNumber(
-              getBalanceAmount(new BigNumber(available.canClaim.toString())).times(rewardPriceAsBg),
-            ).toNumber() || 0
+          const rewardCakeUSDPriceAsBg = getBalanceAmount(
+            new BigNumber(currentReward.rewardPrice),
+            currentReward.rewardTokenDecimal,
           )
+          const rewardCakeAmount = getBalanceAmount(new BigNumber(available.canClaim), currentReward.rewardTokenDecimal)
+          return rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
         }
         return 0
       })
@@ -59,7 +59,7 @@ const NotQualified: React.FC<React.PropsWithChildren<NotQualifiedProps>> = ({
       .map((available) => {
         const currentReward = rewardInfo?.[available.campaignId]
         if (currentReward) {
-          const reward = getBalanceAmount(new BigNumber(available.canClaim))
+          const reward = getBalanceAmount(new BigNumber(available.canClaim), currentReward.rewardTokenDecimal)
           const rewardCakePrice = getBalanceAmount(
             new BigNumber(currentReward.rewardPrice ?? '0'),
             currentReward.rewardTokenDecimal ?? 0,
