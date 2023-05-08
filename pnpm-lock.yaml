@@ -1320,6 +1320,9 @@ importers:
       '@types/stats-lite':
         specifier: ^2.2.0
         version: 2.2.0
+      ethers:
+        specifier: ^5.0.0
+        version: 5.7.2
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
