@@ -70,7 +70,7 @@ const HowToEarn = () => {
                   flexDirection="column"
                   padding={['42px 22px', '42px 22px', '42px 22px', '0 22px']}
                 >
-                  <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step${index + 1}`}</Text>
+                  <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step ${index + 1}`}</Text>
                   <Box margin="0 auto">
                     <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
                   </Box>
