@@ -216,18 +216,18 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
         </AutoRow>
       ) : (
         <>
-          <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
-            <FarmUI.FarmApyButton
-              variant="text-and-button"
-              handleClickButton={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
-                roiModal.onOpen()
-              }}
-            >
+          <FarmUI.FarmApyButton
+            variant="text-and-button"
+            handleClickButton={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              roiModal.onOpen()
+            }}
+          >
+            <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
               {displayApr}%
-            </FarmUI.FarmApyButton>
-          </TooltipText>
+            </TooltipText>
+          </FarmUI.FarmApyButton>
           {aprTooltip.tooltipVisible && aprTooltip.tooltip}
         </>
       )}
