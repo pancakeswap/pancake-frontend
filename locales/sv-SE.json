@@ -2482,5 +2482,8 @@
   "ETH to WBETH conversion and earn ETH staking rewards!": "Konvertera ETH till WBETH och tjäna ETH-insatsbelöningar!",
   "Get Started": "Kom igång",
   "V3 Farms": "V3-farmar",
-  "V2 Farms": "V2-farmar"
+  "V2 Farms": "V2-farmar",
+  "Combined APR": "Combined APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
+  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
 }
