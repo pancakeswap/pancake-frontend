@@ -1,57 +1,52 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { FarmConfigV3, SerializedFarmConfig } from '..'
+import { SerializedFarmConfig } from '..'
+import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
-export const farmsV3 = [
+export const farmsV3 = defineFarmV3Configs([
   {
     pid: 1,
-    lpSymbol: 'USDT-BNB LP',
     lpAddress: '0x5147173E452AE4dd23dcEe7BaAaaAB7318F16F6B',
-    token: bscTestnetTokens.usdt,
-    quoteToken: bscTestnetTokens.wbnb,
+    token0: bscTestnetTokens.usdt,
+    token1: bscTestnetTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
   },
   {
     pid: 2,
-    lpSymbol: 'WBNB-CAKE2 LP',
     lpAddress: '0xe62C422c1E8083CE3b4526Ff0b16388354AB6E64',
-    token: bscTestnetTokens.cake2,
-    quoteToken: bscTestnetTokens.wbnb,
+    token0: bscTestnetTokens.cake2,
+    token1: bscTestnetTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
   },
   {
     pid: 3,
-    lpSymbol: 'MockB-MockA LP (0.05%)',
     lpAddress: '0xc0E0F94a79Aabc6c655f308Da21D6EbDE64b0995',
-    token: bscTestnetTokens.mockB,
-    quoteToken: bscTestnetTokens.mockA,
+    token0: bscTestnetTokens.mockB,
+    token1: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.LOW,
   },
   {
     pid: 4,
-    lpSymbol: 'MockB-MockA LP (0.01%)',
     lpAddress: '0xf7f2894abd4beE559521D754c5D481730E1C7d8C',
-    token: bscTestnetTokens.mockB,
-    quoteToken: bscTestnetTokens.mockA,
+    token0: bscTestnetTokens.mockB,
+    token1: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.LOWEST,
   },
   {
     pid: 5,
-    lpSymbol: 'MockB-MockA LP (1%)',
     lpAddress: '0x5d9550E870D42Ae03Fab91508cC5722A80CF0b5e',
-    token: bscTestnetTokens.mockB,
-    quoteToken: bscTestnetTokens.mockA,
+    token0: bscTestnetTokens.mockB,
+    token1: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.HIGH,
   },
   {
     pid: 6,
-    lpSymbol: 'BUSD-CAKE LP',
     lpAddress: '0x427d29C609A85AA3aaF87Aff65C392D72588ceC2',
-    token: bscTestnetTokens.cake2,
-    quoteToken: bscTestnetTokens.busd,
+    token0: bscTestnetTokens.cake2,
+    token1: bscTestnetTokens.busd,
     feeAmount: FeeAmount.MEDIUM,
   },
-] satisfies FarmConfigV3[]
+])
 
 const farms: SerializedFarmConfig[] = [
   /**
