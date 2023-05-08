@@ -15,7 +15,7 @@ import {
   ByteArray,
 } from 'viem'
 import { Token } from '@pancakeswap/sdk'
-import { FeeAmount, POOL_INIT_CODE_HASH } from '../constants'
+import { FeeAmount, POOL_INIT_CODE_HASHES } from '../constants'
 
 function getCreate2Address(
   from_: GetCreate2AddressOptions['from'],
@@ -68,8 +68,16 @@ export function computePoolAddress({
   )
 
   if (token0.chainId === ChainId.ZKSYNC || token0.chainId === ChainId.ZKSYNC_TESTNET) {
-    return getCreate2AddressZkSync(deployerAddress, salt, initCodeHashManualOverride ?? POOL_INIT_CODE_HASH)
+    return getCreate2AddressZkSync(
+      deployerAddress,
+      salt,
+      initCodeHashManualOverride ?? POOL_INIT_CODE_HASHES[token0.chainId as keyof typeof POOL_INIT_CODE_HASHES]
+    )
   }
 
-  return getCreate2Address(deployerAddress, salt, initCodeHashManualOverride ?? POOL_INIT_CODE_HASH)
+  return getCreate2Address(
+    deployerAddress,
+    salt,
+    initCodeHashManualOverride ?? POOL_INIT_CODE_HASHES[token0.chainId as keyof typeof POOL_INIT_CODE_HASHES]
+  )
 }

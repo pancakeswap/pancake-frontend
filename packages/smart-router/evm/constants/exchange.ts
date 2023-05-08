@@ -9,6 +9,7 @@ import {
   arbitrumTokens,
   polygonZkEvmTokens,
   zksyncTokens,
+  zkSyncTestnetTokens,
 } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
@@ -22,7 +23,7 @@ export const SWAP_ROUTER_ADDRESSES = {
   [ChainId.ARBITRUM_ONE]: '',
   [ChainId.POLYGON_ZKEVM]: '',
   [ChainId.ZKSYNC]: '',
-  [ChainId.ZKSYNC_TESTNET]: '',
+  [ChainId.ZKSYNC_TESTNET]: '0x9FaD4283dF84d3C06c75E20Fe59075486654D15e',
 } as const satisfies Record<ChainId, string>
 
 export const ROUTER_ADDRESS: ChainMap<string> = {
@@ -64,7 +65,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
-  [ChainId.ZKSYNC_TESTNET]: [zksyncTokens.usdc, zksyncTokens.weth],
+  [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
 }
 
 /**

@@ -18,7 +18,15 @@ export const DEPLOYER_ADDRESSES = {
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
-export const POOL_INIT_CODE_HASH = '0x6ce8eb472fa82df5469c6ab6d485f17c3ad13c8cd7af59b3d4a8026c5ce0f7e2'
+const POOL_INIT_CODE_HASH = '0x6ce8eb472fa82df5469c6ab6d485f17c3ad13c8cd7af59b3d4a8026c5ce0f7e2'
+
+export const POOL_INIT_CODE_HASHES = {
+  [ChainId.ETHEREUM]: POOL_INIT_CODE_HASH,
+  [ChainId.GOERLI]: POOL_INIT_CODE_HASH,
+  [ChainId.BSC]: POOL_INIT_CODE_HASH,
+  [ChainId.BSC_TESTNET]: POOL_INIT_CODE_HASH,
+  [ChainId.ZKSYNC_TESTNET]: '0x0100120308db54623214ef0918f713a740b58e9611fd8d7f345d8407c46c2808',
+} as const
 
 /**
  * The default factory enabled fee amounts, denominated in hundredths of bips.
