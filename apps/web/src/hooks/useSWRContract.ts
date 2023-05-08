@@ -8,6 +8,7 @@ import {
   unstable_serialize,
 } from 'swr'
 import { BlockingData } from 'swr/_internal'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 
 declare module 'swr' {
   interface SWRResponse<Data = any, Error = any, Config = any> {
@@ -27,14 +28,15 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
     return Object.defineProperty(swr, 'status', {
       get() {
         let status: TFetchStatus = FetchStatus.Idle
+        const isDataUndefinedOrNull = isUndefinedOrNull(swr.data)
 
-        if (!swr.isValidating && !swr.error && !swr.data) {
+        if (!swr.isValidating && !swr.error && isDataUndefinedOrNull) {
           status = FetchStatus.Idle
-        } else if (swr.isValidating && !swr.error && !swr.data) {
+        } else if (swr.isValidating && !swr.error && isDataUndefinedOrNull) {
           status = FetchStatus.Fetching
-        } else if (swr.data) {
+        } else if (!isDataUndefinedOrNull) {
           status = FetchStatus.Fetched
-        } else if (swr.error && !swr.data) {
+        } else if (swr.error && isDataUndefinedOrNull) {
           status = FetchStatus.Failed
         }
         return status
@@ -66,7 +68,7 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
     }
   }, [data, serializedKey])
 
-  let localStorageDataParsed
+  let localStorageDataParsed = null
 
   if (!data && typeof window !== 'undefined') {
     const localStorageData = localStorage?.getItem(serializedKey)
@@ -91,7 +93,7 @@ export const loggerMiddleware: Middleware = (useSWRNext) => {
     // Add logger to the original fetcher.
     const extendedFetcher = fetcher
       ? (...args: unknown[]) => {
-          console.debug('SWR Request:', key)
+          console.debug('SWR Request:', key || {})
           return fetcher(...args)
         }
       : null
