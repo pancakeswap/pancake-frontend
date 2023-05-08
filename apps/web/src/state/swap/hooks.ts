@@ -76,7 +76,7 @@ export function useSingleTokenSwapInfo(
     return null
   }
 
-  let inputTokenPrice: number
+  let inputTokenPrice = 0
   try {
     inputTokenPrice = parseFloat(
       new Price({
@@ -115,7 +115,7 @@ export function useDerivedSwapInfo(
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  const recipientENSAddress = useEnsAddress({
+  const { data: recipientENSAddress } = useEnsAddress({
     name: recipient,
     chainId,
     enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
@@ -320,7 +320,14 @@ export const useFetchPairPricesV3 = ({
       chainId &&
       token1Address && ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1, timeWindow }],
     async () => {
-      const data = await fetchDerivedPriceData(token0Address, token1Address, timeWindow, protocol0, protocol1, chainId)
+      const data = await fetchDerivedPriceData(
+        token0Address,
+        token1Address,
+        timeWindow,
+        protocol0 ?? 'v3',
+        protocol1 ?? 'v3',
+        chainId,
+      )
       return normalizeDerivedPairDataByActiveToken({
         activeToken: token0Address,
         pairData: normalizeDerivedChartData(data),
