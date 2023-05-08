@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { Percent, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import IPeripheryPaymentsWithFee from './abi/IPeripheryPaymentsWithFee.json'
 

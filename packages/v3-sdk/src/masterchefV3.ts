@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'

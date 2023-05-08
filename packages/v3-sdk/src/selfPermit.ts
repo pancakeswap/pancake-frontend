@@ -1,5 +1,5 @@
 import { BigintIsh, Token } from '@pancakeswap/sdk'
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import ISelfPermit from './abi/SelfPermit.json'
 import { toHex } from './utils'
 

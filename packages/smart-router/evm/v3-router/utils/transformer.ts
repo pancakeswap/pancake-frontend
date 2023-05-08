@@ -1,5 +1,5 @@
 import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, TradeType, Percent } from '@pancakeswap/sdk'
-import { AddressZero } from '@ethersproject/constants'
+import { ADDRESS_ZERO } from '@pancakeswap/v3-sdk'
 import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'
 import { isStablePool, isV2Pool, isV3Pool } from './pool'
 
@@ -60,7 +60,7 @@ interface SerializedTrade
 
 export function serializeCurrency(currency: Currency): SerializedCurrency {
   return {
-    address: currency.isNative ? AddressZero : currency.wrapped.address,
+    address: currency.isNative ? ADDRESS_ZERO : currency.wrapped.address,
     decimals: currency.decimals,
     symbol: currency.symbol,
   }
@@ -125,7 +125,7 @@ export function serializeTrade(trade: SmartRouterTrade<TradeType>): SerializedTr
 }
 
 export function parseCurrency(chainId: ChainId, currency: SerializedCurrency): Currency {
-  if (currency.address === AddressZero) {
+  if (currency.address === ADDRESS_ZERO) {
     return Native.onChain(chainId)
   }
   const { address, decimals, symbol } = currency
