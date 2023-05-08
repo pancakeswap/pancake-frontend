@@ -2482,5 +2482,8 @@
   "ETH to WBETH conversion and earn ETH staking rewards!": "ETH를 WBETH로 전환하고 ETH 스테이킹 리워드를 받으세요!",
   "Get Started": "시작하기",
   "V3 Farms": "V3 팜",
-  "V2 Farms": "V2 팜"
+  "V2 Farms": "V2 팜",
+  "Combined APR": "Combined APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
+  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
 }
