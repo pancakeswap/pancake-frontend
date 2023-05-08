@@ -58,9 +58,15 @@ export async function fetchChunk(
     console.debug('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (Number(resultsBlockNumber) < minBlockNumber && chainId !== ChainId.ZKSYNC && chainId !== ChainId.ZKSYNC_TESTNET) {
+
+  const l2DifferentBlockNumber = chainId === ChainId.ZKSYNC || chainId === ChainId.ZKSYNC_TESTNET
+
+  if (Number(resultsBlockNumber) < minBlockNumber && !l2DifferentBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
   }
 
-  return { results: returnData, blockNumber: Number(resultsBlockNumber) }
+  return {
+    results: returnData,
+    blockNumber: l2DifferentBlockNumber ? minBlockNumber : Number(resultsBlockNumber),
+  }
 }
