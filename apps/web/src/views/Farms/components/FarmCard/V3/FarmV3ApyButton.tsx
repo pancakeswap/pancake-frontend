@@ -89,7 +89,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
 
   const {
     volumeUSD: volume24H,
-    feesUSD,
+    feeUSD,
     tvlUSD,
   } = usePoolAvgInfo({
     address: farm.lpAddress,
@@ -99,7 +99,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
   const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
 
-  const globalLpApr = useMemo(() => (tvlUSD ? (100 * feesUSD * 365) / tvlUSD : 0), [feesUSD, tvlUSD])
+  const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
   const depositUsdAsBN = useMemo(
     () =>
