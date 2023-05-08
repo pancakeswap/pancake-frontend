@@ -2482,5 +2482,8 @@
   "ETH to WBETH conversion and earn ETH staking rewards!": "ETH átváltása WBETH-be és ETH tét jutalmak megszerzése!",
   "Get Started": "Fogj neki",
   "V3 Farms": "V3 hozamgazdaságok",
-  "V2 Farms": "V2 hozamgazdaságok"
+  "V2 Farms": "V2 hozamgazdaságok",
+  "Combined APR": "Combined APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
+  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
 }
