@@ -2483,7 +2483,7 @@
   "Get Started": "Aloita",
   "V3 Farms": "V3-viljelmät",
   "V2 Farms": "V2-viljelmät",
-  "Combined APR": "Combined APR",
-  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
-  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
+  "Combined APR": "Yhdistetty APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Lasketaan käyttämällä aktiivisen panostetun likviditeetin kokonaismäärää verrattuna viljelmän CAKE-palkintoemissioihin.",
+  "APRs for individual positions may vary depending on the configs.": "Yksittäisten positioiden APR:t voivat vaihdella määritysten mukaan."
 }
