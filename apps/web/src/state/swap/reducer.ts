@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { atomWithReducer } from 'jotai/utils'
 import {
   Field,
   replaceSwapState,
@@ -40,7 +41,7 @@ const initialState: SwapState = {
   recipient: null,
 }
 
-export default createReducer<SwapState>(initialState, (builder) =>
+const reducer = createReducer<SwapState>(initialState, (builder) =>
   builder
     .addCase(
       replaceSwapState,
@@ -108,3 +109,5 @@ export default createReducer<SwapState>(initialState, (builder) =>
       state.derivedPairDataById[pairId][timeWindow] = pairData
     }),
 )
+
+export const swapReducerAtom = atomWithReducer(initialState, reducer)

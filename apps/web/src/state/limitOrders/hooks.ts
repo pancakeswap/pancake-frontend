@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, Trade, Token, Price, Native, TradeType } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
@@ -7,6 +6,8 @@ import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useCurrency } from 'hooks/Tokens'
+import { useAtom, useAtomValue } from 'jotai'
+import { limitReducerAtom } from 'state/limitOrders/reducer'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
@@ -16,7 +17,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
-import { AppState, useAppDispatch } from '..'
 
 // Get desired input amount in output basis mode
 const getDesiredInput = (
@@ -81,9 +81,9 @@ const getDesiredOutput = (
   return CurrencyAmount.fromRawAmount(outputCurrency, resultAsFraction.quotient.toString())
 }
 
-// Just returns Redux state for limitOrders
-export const useOrderState = (): AppState['limitOrders'] => {
-  return useSelector<AppState, AppState['limitOrders']>((state) => state.limitOrders)
+// Just returns state for limitOrders
+export function useOrderState() {
+  return useAtomValue(limitReducerAtom)
 }
 
 // Returns handlers to change user-defined parts of limitOrders state
@@ -93,7 +93,7 @@ export const useOrderActionHandlers = (): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRateType: (rateType: Rate) => void
 } => {
-  const dispatch = useDispatch()
+  const [, dispatch] = useAtom(limitReducerAtom)
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -348,7 +348,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     }
     // Use trade amount as default
     // If we're in output basis mode - no matter what keep output as specified by user
-    let output: CurrencyAmount<Currency>
+    let output: CurrencyAmount<Currency> | undefined
     if (isOutputBasis) {
       output = outputAmount
     } else if (independentField === Field.OUTPUT) {
@@ -399,11 +399,11 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const rawAmounts = useMemo(
     () => ({
       input: inputCurrency
-        ? parsedAmounts.input?.multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals)).toFixed(0)
+        ? parsedAmounts?.input?.multiply(BIG_INT_TEN ** BigInt(inputCurrency.decimals))?.toFixed(0)
         : undefined,
 
       output: outputCurrency
-        ? parsedAmounts.output?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals)).toFixed(0)
+        ? parsedAmounts?.output?.multiply(BIG_INT_TEN ** BigInt(outputCurrency.decimals))?.toFixed(0)
         : undefined,
     }),
     [inputCurrency, outputCurrency, parsedAmounts],
@@ -493,7 +493,7 @@ export const useDefaultsFromURLSearch = ():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined => {
   const { chainId } = useActiveChainId()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(limitReducerAtom)
   const { query } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined

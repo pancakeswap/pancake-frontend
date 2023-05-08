@@ -2,11 +2,11 @@ import { useDebounce } from '@pancakeswap/hooks'
 import { Multicall } from 'config/abi/types'
 import { ResultStructOutput } from 'config/abi/types/Multicall'
 import { useEffect, useMemo, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useAtom } from 'jotai'
+import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
 import { useMulticallContract } from '../../hooks/useContract'
-import { AppState, useAppDispatch } from '../index'
 import {
   Call,
   errorFetchingMulticallResults,
@@ -87,7 +87,7 @@ async function fetchChunk(
  * @param chainId the current chain id
  */
 export function activeListeningKeys(
-  allListeners: AppState['multicall']['callListeners'],
+  allListeners: MulticallState['callListeners'],
   chainId?: number,
 ): { [callKey: string]: number } {
   if (!allListeners || !chainId) return {}
@@ -118,7 +118,7 @@ export function activeListeningKeys(
  * @param currentBlock the latest block number
  */
 export function outdatedListeningKeys(
-  callResults: AppState['multicall']['callResults'],
+  callResults: MulticallState['callResults'],
   listeningKeys: { [callKey: string]: number },
   chainId: number | undefined,
   currentBlock: number | undefined,
@@ -145,8 +145,7 @@ export function outdatedListeningKeys(
 }
 
 export default function Updater(): null {
-  const dispatch = useAppDispatch()
-  const state = useSelector<AppState, AppState['multicall']>((s) => s.multicall)
+  const [state, dispatch] = useAtom(multicallReducerAtom)
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const currentBlock = useCurrentBlock()
