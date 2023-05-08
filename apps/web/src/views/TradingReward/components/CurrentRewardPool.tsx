@@ -13,7 +13,7 @@ import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 
 const Container = styled(Flex)`
   position: relative;
-  width: 100%;
+  width: calc(100% - 32px);
   padding: 40px 16px;
   margin: 80px auto auto auto;
   flex-direction: column;
@@ -38,18 +38,6 @@ const StyledHeading = styled(Text)`
   -webkit-text-fill-color: transparent;
   margin: auto;
   text-align: center;
-
-  &::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 10px rgba(56, 50, 65, 1);
-  }
 
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 56px;
@@ -198,8 +186,8 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           </Flex>
         </Flex>
         {!isDesktop && (
-          <Link href="#rewards-breakdown">
-            <StyledButton width="fit-content" margin="14px auto auto auto" scale="sm">
+          <Link href="#rewards-breakdown" style={{ width: '100%' }}>
+            <StyledButton display="block" width="fit-content" margin="24px auto auto auto" scale="sm">
               {t('View Pairs')}
             </StyledButton>
           </Link>

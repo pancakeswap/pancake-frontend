@@ -66,7 +66,6 @@ const StyledHeading = styled(Text)`
 
     &::after {
       padding: 0;
-      -webkit-text-stroke: 10px rgb(101, 50, 205, 1);
     }
   }
 `

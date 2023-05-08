@@ -10,7 +10,7 @@ const stepList = [
     subTitle: (
       <Trans>Use the hot token list on the Swap page to check which pairs are eligible for trading rewards.</Trans>
     ),
-    imgUrl: '/images/trading-reward/step1.png',
+    imgUrl: '/images/trading-reward/step1-1.png',
   },
   {
     title: <Trans>Start trading</Trans>,
@@ -20,12 +20,12 @@ const stepList = [
         from the current reward pool.
       </Trans>
     ),
-    imgUrl: '/images/trading-reward/step2.png',
+    imgUrl: '/images/trading-reward/step2-1.png',
   },
   {
     title: <Trans>Track your volume and rewards</Trans>,
     subTitle: <Trans>Come back to this page to check your volume and rewards in real-time.</Trans>,
-    imgUrl: '/images/trading-reward/step3.png',
+    imgUrl: '/images/trading-reward/step3-1.png',
   },
   {
     title: <Trans>Claim your rewards</Trans>,
@@ -70,11 +70,22 @@ const HowToEarn = () => {
                   flexDirection="column"
                   padding={['42px 22px', '42px 22px', '42px 22px', '0 22px']}
                 >
-                  <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step ${index + 1}`}</Text>
-                  <Box margin="0 auto">
-                    <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
-                  </Box>
-                  <Text bold fontSize={['24px']} color="secondary" mb={['16px']}>
+                  <Flex
+                    flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'column-reverse', 'column']}
+                  >
+                    <Text
+                      fontSize="12px"
+                      bold
+                      textAlign={['left', 'left', 'left', 'left', 'right']}
+                      m={['0 0 8px 0', '0 0 8px 0', '0 0 8px 0', '0 0 8px 0', '0 0 32px 0']}
+                    >
+                      {`Step ${index + 1}`}
+                    </Text>
+                    <Box margin="0 auto">
+                      <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
+                    </Box>
+                  </Flex>
+                  <Text lineHeight="110%" bold fontSize={['24px']} color="secondary" mb={['16px']}>
                     {step.title}
                   </Text>
                   <Text color="textSubtle">{step.subTitle}</Text>

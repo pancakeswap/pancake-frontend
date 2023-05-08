@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { Card, Table, Th, Td, Text, Flex, PaginationButton } from '@pancakeswap/uikit'
+import { Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { AllTradingRewardPairDetail, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
@@ -36,6 +36,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     currentLanguage: { locale },
   } = useTranslation()
   const { address: account } = useAccount()
+  const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
   const [list, setList] = useState<RewardBreakdownDetail>(initList)
@@ -108,17 +109,30 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
         <Table>
           <thead>
             <tr>
-              <Th textAlign={['left']}> {t('Trading Pair')}</Th>
-              <Th textAlign={['left']}> {t('Your Volume')}</Th>
-              <Th textAlign={['left']}> {t('Your Trading Fee')}</Th>
-              <Th textAlign={['right']}> {t('Reward Earned')}</Th>
+              <Th textAlign={['left']}>{t('Trading Pair')}</Th>
+              {isDesktop ? (
+                <>
+                  <Th textAlign={['left']}>{t('Your Volume')}</Th>
+                  <Th textAlign={['left']}>{t('Your Trading Fee')}</Th>
+                </>
+              ) : (
+                <Th textAlign={['right']}>
+                  <Text fontSize="12px" bold color="secondary">
+                    {t('YOUR VOL. /')}
+                  </Text>
+                  <Text fontSize="12px" bold color="secondary">
+                    {t('YOUR TRADING FEE')}
+                  </Text>
+                </Th>
+              )}
+              <Th textAlign={['right']}>{t('Reward Earned')}</Th>
             </tr>
           </thead>
           <tbody>
             <>
               {isFetching ? (
                 <tr>
-                  <Td colSpan={4} textAlign="center">
+                  <Td colSpan={isDesktop ? 4 : 3} textAlign="center">
                     {t('Loading...')}
                   </Td>
                 </tr>
@@ -126,7 +140,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
                 <>
                   {list.pairs.length === 0 ? (
                     <tr>
-                      <Td colSpan={4} textAlign="center">
+                      <Td colSpan={isDesktop ? 4 : 3} textAlign="center">
                         {t('No results')}
                       </Td>
                     </tr>
@@ -143,16 +157,29 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
                               feeAmount={pair.feeAmount}
                             />
                           </Td>
-                          <Td>
-                            <Text color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
-                              {`$${formatNumber(pair.yourVolume, 0, 2)}`}
-                            </Text>
-                          </Td>
-                          <Td>
-                            <Text color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
-                              {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
-                            </Text>
-                          </Td>
+                          {isDesktop ? (
+                            <>
+                              <Td>
+                                <Text color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
+                                  {`$${formatNumber(pair.yourVolume, 0, 2)}`}
+                                </Text>
+                              </Td>
+                              <Td>
+                                <Text color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
+                                  {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
+                                </Text>
+                              </Td>
+                            </>
+                          ) : (
+                            <Td>
+                              <Text textAlign="right" color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
+                                {`$${formatNumber(pair.yourVolume, 0, 2)}`}
+                              </Text>
+                              <Text textAlign="right" color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
+                                {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
+                              </Text>
+                            </Td>
+                          )}
                           <Td textAlign="right">
                             <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
                               {`$${formatNumber(pair.rewardEarned, 2, 8)}`}

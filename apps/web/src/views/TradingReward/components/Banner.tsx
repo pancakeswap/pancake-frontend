@@ -15,12 +15,14 @@ const Container = styled(Box)<{ backgroundColor: string }>`
 const Decorations = styled(Box)`
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
   width: 100%;
+  max-width: 1140px;
   height: 100%;
   display: none;
   pointer-events: none;
   overflow: hidden;
+  transform: translateX(-50%);
   > img {
     position: absolute;
   }
@@ -31,13 +33,23 @@ const Decorations = styled(Box)`
   }
   & :nth-child(2) {
     top: 50%;
-    right: 22%;
+    right: 0%;
     animation: ${floatingStarsLeft} 3s ease-in-out infinite;
   }
   & :nth-child(3) {
     left: 48%;
     bottom: 15%;
     animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
+  }
+  & :nth-child(4) {
+    left: 55%;
+    top: 20%;
+    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
+  }
+  & :nth-child(5) {
+    left: 60%;
+    bottom: 15%;
+    animation: ${floatingStarsRight} 4.5s ease-in-out infinite;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -62,6 +74,8 @@ const TradingRewardBanner: React.FC<React.PropsWithChildren<CampaignIdInfo>> = (
         <img src="/images/trading-reward/star1.png" width="43px" height="43px" alt="star1" />
         <img src="/images/trading-reward/star2.png" width="71px" height="71px" alt="star2" />
         <img src="/images/trading-reward/star3.png" width="36px" height="36px" alt="star3" />
+        <img src="/images/trading-reward/butter-1.png" width="186px" height="168px" alt="butter1" />
+        <img src="/images/trading-reward/butter-2.png" width="167px" height="261px" alt="butter2" />
       </Decorations>
       <Flex
         position="relative"
@@ -111,9 +125,9 @@ const TradingRewardBanner: React.FC<React.PropsWithChildren<CampaignIdInfo>> = (
           </Flex>
         </Flex>
         <Box
-          width={['320px', '320px', '320px', '420px', '420px', '554px']}
-          height={['339px', '339px', '339px', '439px', '439px', '573px']}
-          m={['auto']}
+          width={['175px', '175px', '175px', '359px']}
+          height={['272px', '272px', '272px', '563px']}
+          m={['auto', 'auto', 'auto', 'auto', 'auto', '0 0 0 auto']}
         >
           <Image src={bunnyImage} alt="banner-image" />
         </Box>

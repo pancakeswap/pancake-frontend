@@ -34,19 +34,22 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
 }) => {
   if (!isReady) {
     return (
-      <Container>
+      <Flex alignItems="center">
         <Skeleton mr="8px" width={32} height={32} variant="circle" />
         <div>
           <Skeleton width={40} height={10} mb="4px" />
           <Skeleton width={60} height={24} />
         </div>
-      </Container>
+      </Flex>
     )
   }
 
   return (
     <Flex alignItems="center">
-      <Container>
+      <Flex
+        flexDirection={['column', 'column', 'column', 'column', 'row']}
+        alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-start', 'center']}
+      >
         {token && quoteToken && (
           <TokenWrapper>
             <TokenPairImage
@@ -58,10 +61,10 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
             />
           </TokenWrapper>
         )}
-        <Flex>
-          <Text bold>{`${lpSymbol} - ${feeAmount / 10000}%`}</Text>
+        <Flex mt={['4px', '4px', '4px', '4px', '0']}>
+          <Text lineHeight="110%" bold>{`${lpSymbol} - ${feeAmount / 10000}%`}</Text>
         </Flex>
-      </Container>
+      </Flex>
     </Flex>
   )
 }
