@@ -2482,5 +2482,8 @@
   "ETH to WBETH conversion and earn ETH staking rewards!": "تحويل ETH إلى WBETH وكسب مكافآت رهن ETH!",
   "Get Started": "بدء الاستخدام",
   "V3 Farms": "مزارع الإصدار 3",
-  "V2 Farms": "مزارع الإصدار 2"
+  "V2 Farms": "مزارع الإصدار 2",
+  "Combined APR": "Combined APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
+  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
 }
