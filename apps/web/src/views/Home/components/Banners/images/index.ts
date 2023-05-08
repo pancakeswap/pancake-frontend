@@ -23,6 +23,7 @@ import farmV3MigrationBunny from './farmV3MigrationBunny.png'
 import farmV3MigrationMobileBunny from './farmV3MigrationMobileBunny.png'
 import farmV3MigrationBunnyFull from './farmV3MigrationBunnyFull.png'
 import TradingRewardButter from './butter.png'
+import TradingRewardButter2 from './butter-2.png'
 import TradingRewardLoveButter from './love-butter.png'
 import TradingRewardBunny from './trading-reward-bunny.png'
 import TradingRewardBg from './trading-reward-bg.png'
@@ -79,6 +80,7 @@ export {
   TradingRewardLoveButter,
   TradingRewardBunny,
   TradingRewardBg,
+  TradingRewardButter2,
   ETHXPancakeSwap,
   ETHBunny,
   v3LaunchBg,
