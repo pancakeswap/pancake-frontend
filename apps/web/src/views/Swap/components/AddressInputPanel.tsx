@@ -81,7 +81,7 @@ export default function AddressInputPanel({
   const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
-  const recipientENSAddress = useEnsAddress({
+  const { data: recipientENSAddress } = useEnsAddress({
     name: value,
     chainId,
     enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
