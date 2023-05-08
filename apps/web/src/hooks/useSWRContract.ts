@@ -8,7 +8,6 @@ import {
   unstable_serialize,
 } from 'swr'
 import { BlockingData } from 'swr/_internal'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 
 declare module 'swr' {
   interface SWRResponse<Data = any, Error = any, Config = any> {
@@ -28,15 +27,15 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
     return Object.defineProperty(swr, 'status', {
       get() {
         let status: TFetchStatus = FetchStatus.Idle
-        const isDataUndefinedOrNull = isUndefinedOrNull(swr.data)
+        const isDataUndefined = typeof swr.data === 'undefined'
 
-        if (!swr.isValidating && !swr.error && isDataUndefinedOrNull) {
+        if (!swr.isValidating && !swr.error && isDataUndefined) {
           status = FetchStatus.Idle
-        } else if (swr.isValidating && !swr.error && isDataUndefinedOrNull) {
+        } else if (swr.isValidating && !swr.error && isDataUndefined) {
           status = FetchStatus.Fetching
-        } else if (!isDataUndefinedOrNull) {
+        } else if (!isDataUndefined) {
           status = FetchStatus.Fetched
-        } else if (swr.error && isDataUndefinedOrNull) {
+        } else if (swr.error && isDataUndefined) {
           status = FetchStatus.Failed
         }
         return status
