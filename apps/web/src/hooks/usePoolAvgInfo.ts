@@ -24,17 +24,17 @@ export const averageArray = (dataToCalculate: number[]): number => {
 interface Info {
   volumeUSD: number
   tvlUSD: number
-  feesUSD: number
+  feeUSD: number
 }
 
 const defaultInfo: Info = {
   volumeUSD: 0,
   tvlUSD: 0,
-  feesUSD: 0,
+  feeUSD: 0,
 }
 
 export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UsePoolAvgInfoParams) {
-  const { data } = useSWR<{ volumeUSD: number; tvlUSD: number; feesUSD: number }>(
+  const { data } = useSWR<Info>(
     address && chainId && [address, chainId],
     async () => {
       const client = v3Clients[chainId]
@@ -49,6 +49,7 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
             volumeUSD
             tvlUSD
             feesUSD
+            protocolFeesUSD
           }
         }
       `
@@ -58,11 +59,13 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
       })
       const volumes = poolDayDatas.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
       const tvlUSDs = poolDayDatas.map((d: { tvlUSD: string }) => Number(d.tvlUSD))
-      const feesUSDs = poolDayDatas.map((d: { feesUSD: string }) => Number(d.feesUSD))
+      const feeUSDs = poolDayDatas.map(
+        (d: { feesUSD: string; protocolFeesUSD: string }) => Number(d.feesUSD) - Number(d.protocolFeesUSD),
+      )
       return {
         volumeUSD: averageArray(volumes),
         tvlUSD: averageArray(tvlUSDs),
-        feesUSD: averageArray(feesUSDs),
+        feeUSD: averageArray(feeUSDs),
       }
     },
     {
