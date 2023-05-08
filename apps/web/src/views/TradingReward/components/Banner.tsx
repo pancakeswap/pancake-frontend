@@ -44,8 +44,8 @@ const Decorations = styled(Box)`
   }
 
   & :nth-child(4) {
-    left: 25%;
-    top: 18%;
+    left: 15%;
+    top: 20%;
     width: 66px;
     height: 48px;
     animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
@@ -57,6 +57,12 @@ const Decorations = styled(Box)`
     width: 67px;
     height: 121px;
     display: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & :nth-child(4) {
+      left: 28%;
+    }
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
