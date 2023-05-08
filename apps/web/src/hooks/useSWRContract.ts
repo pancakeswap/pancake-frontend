@@ -67,14 +67,14 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
     }
   }, [data, serializedKey])
 
-  let localStorageDataParsed = null
-
   if (!data && typeof window !== 'undefined') {
     const localStorageData = localStorage?.getItem(serializedKey)
 
     if (localStorageData) {
       try {
-        localStorageDataParsed = JSON.parse(localStorageData)
+        return Object.defineProperty(swr, 'data', {
+          value: JSON.parse(localStorageData),
+        })
       } catch (error) {
         localStorage?.removeItem(serializedKey)
       }
@@ -82,7 +82,7 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
   }
 
   return Object.defineProperty(swr, 'data', {
-    value: data || localStorageDataParsed,
+    value: data,
   })
 }
 
