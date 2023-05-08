@@ -17,6 +17,7 @@ import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
 import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
+import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -203,7 +204,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     const currentTime = new Date().getTime() / 1000
     const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
     const lockDuration = new BigNumber(incentives.campaignClaimTime).plus(thresholdLockTime).minus(minusTime)
-    return new BigNumber(lockDuration).toNumber()
+    const week = Math.floor(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
+    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
   }, [incentives, thresholdLockTime, userData])
 
   const isQualified = useMemo(
