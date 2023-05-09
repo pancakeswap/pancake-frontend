@@ -22,7 +22,7 @@ import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { isChainTestnet } from 'utils/wagmi'
-import { useProvider } from 'wagmi'
+import { usePublicClient } from 'wagmi'
 import { warningSeverity } from 'utils/exchange'
 import { usePairContract } from './useContract'
 import { PairState, useV2Pairs } from './usePairs'
@@ -252,7 +252,7 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
   const pairAddress = getLpAddress(tokenA, tokenB)
   const pairContract = usePairContract(pairAddress)
-  const provider = useProvider({ chainId: currencyA.chainId })
+  const provider = usePublicClient({ chainId: currencyA.chainId })
 
   const { data: price } = useSWR(
     currencyA && currencyB && ['pair-price', currencyA, currencyB],
