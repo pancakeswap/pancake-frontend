@@ -25,7 +25,7 @@
   "Increase": "Lisää",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH:n vaihtokurssi määräytyy kertyneeseen arvoon ETH:hon verrattuna. Kun saat palkintoja, WBETH:n määräsi ei muutu.",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR lasketaan panostuspalkinnoista ETH-verkosta. Tämä luku heijastaa edellisen päivän annualisoituja panostuspalkintoja.",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "Tuotonparannuskerroin päivitetään viimeisimmän panostustilanteen mukaan.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE on kerätty viljelmänparannussopimukseen ja lähetetään automaattisesti lompakkoosi seuraavan korjuun yhteydessä.",
   "One-time setup is required for activating farm yield boosters": "Viljelmän tuottoparannusten aktivointi vaatii kertamäärityksen",
