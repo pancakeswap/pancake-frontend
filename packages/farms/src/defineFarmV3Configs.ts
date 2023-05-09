@@ -1,5 +1,4 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { Pool } from '@pancakeswap/v3-sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { WNATIVE } from '@pancakeswap/sdk'
 import { unwrappedToken } from '@pancakeswap/utils/unwrappedToken'
@@ -37,7 +36,6 @@ export function defineFarmV3Configs(farmConfig: FarmConfigV3[]): ComputedFarmCon
       ...config,
       token,
       quoteToken,
-      lpAddress: Pool.getAddress(config.token0, config.token1, config.feeAmount),
       lpSymbol: `${unwrappedToken(token).symbol}-${unwrappedToken(quoteToken).symbol} LP`,
     }
   })

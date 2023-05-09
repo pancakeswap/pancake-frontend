@@ -193,7 +193,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 154,
     vaultPid: 7,
-    lpSymbol: 'CAPS-WETH LP',
+    lpSymbol: 'CAPS-ETH LP',
     lpAddress: '0x829e9CC8D05d0D55B4494Ecb5a43D71546dd4DDb',
     quoteToken: ethereumTokens.weth,
     token: ethereumTokens.caps,
@@ -201,7 +201,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 145,
     vaultPid: 6,
-    lpSymbol: 'FUSE-WETH LP',
+    lpSymbol: 'FUSE-ETH LP',
     lpAddress: '0xF9b026786522251c08d8C49e154d036Ef3Ad8Cc7',
     quoteToken: ethereumTokens.weth,
     token: ethereumTokens.fuse,
@@ -217,7 +217,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 141,
     vaultPid: 4,
-    lpSymbol: 'SDAO-WETH LP',
+    lpSymbol: 'SDAO-ETH LP',
     lpAddress: '0xDA7cF6a0CD5d5e8D10AB55d8bA58257813a239cA',
     quoteToken: ethereumTokens.weth,
     token: ethereumTokens.sdao,
