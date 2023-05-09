@@ -14,7 +14,7 @@ import {
 
 import { ChainMap, ChainTokenList } from '../types'
 
-export const SWAP_ROUTER_ADDRESSES = {
+export const SMART_ROUTER_ADDRESSES = {
   [ChainId.ETHEREUM]: '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
   [ChainId.GOERLI]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
   [ChainId.BSC]: '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
@@ -26,7 +26,7 @@ export const SWAP_ROUTER_ADDRESSES = {
   [ChainId.ZKSYNC_TESTNET]: '0x9FaD4283dF84d3C06c75E20Fe59075486654D15e',
 } as const satisfies Record<ChainId, string>
 
-export const ROUTER_ADDRESS: ChainMap<string> = {
+export const V2_ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.ETHEREUM]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
   [ChainId.GOERLI]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
   [ChainId.BSC]: '0x10ED43C718714eb63d5aA57B78B54704E256024E',

@@ -61,7 +61,7 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.POLYGON_ZKEVM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.ZKSYNC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
-  [ChainId.ZKSYNC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
+  [ChainId.ZKSYNC_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/v0.0.1',
 } satisfies Record<ChainId, string>
 
 export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'

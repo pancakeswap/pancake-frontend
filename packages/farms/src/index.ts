@@ -21,7 +21,7 @@ import {
 } from './fetchFarmsV3'
 import { ComputedFarmConfigV3, FarmV3DataWithPrice } from './types'
 
-export { type FarmSupportedChainId, supportedChainIdV3, bCakeSupportedChainId }
+export { type FarmSupportedChainId, supportedChainIdV3, bCakeSupportedChainId, supportedChainIdV2 }
 
 export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async (
