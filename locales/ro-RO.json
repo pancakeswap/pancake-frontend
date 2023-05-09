@@ -25,7 +25,7 @@
   "Increase": "Creștere",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "Multiplicatorul amplificării randamentului va fi actualizat pe baza celor mai recente condiții de investiții.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE au fost colectate în baza contractului de amplificare a randamentului fermei și vor fi trimise automat în portofelul tău la următoarea colectare.",
   "One-time setup is required for activating farm yield boosters": "Este necesară configurarea unică pentru activarea amplificatoarelor randamentului fermei",
