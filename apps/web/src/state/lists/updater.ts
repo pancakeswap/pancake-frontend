@@ -14,6 +14,7 @@ import { useListState, useListStateReady, initialState } from './lists'
 export default function Updater(): null {
   const { chainId } = useActiveWeb3React()
   const provider = useProvider({ chainId })
+
   const [listState, dispatch] = useListState()
   const router = useRouter()
   const includeListUpdater = useMemo(() => {
