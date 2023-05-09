@@ -25,7 +25,7 @@
   "Increase": "बढ़ाएं",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "नवीनतम स्टेकिंग स्थितियों के आधार पर यील्ड बूस्टर मल्टीप्लायर अपडेट किया जाएगा।",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE को फार्म बूस्टर कॉन्ट्रैक्ट में प्राप्त किया गया है और अगली बार प्राप्त करने पर इसे ऑटोमैटिकली आपके वॉलेट में भेजा जाएगा।",
   "One-time setup is required for activating farm yield boosters": "फार्म यील्ड बूस्टर एक्टिवेट करने के लिए वन-टाइम सेटअप आवश्यक है",
