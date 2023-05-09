@@ -51,9 +51,6 @@ const ResponsiveGrid = styled.div`
 
   @media screen and (max-width: 900px) {
     grid-template-columns: 2fr repeat(3, 1fr);
-    & :nth-child(4) {
-      display: none;
-    }
   }
 
   @media screen and (max-width: 800px) {
@@ -65,9 +62,6 @@ const ResponsiveGrid = styled.div`
 
   @media screen and (max-width: 670px) {
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    & :nth-child(4) {
-      display: block;
-    }
   }
 `
 
@@ -158,7 +152,7 @@ const DataRow: React.FC<
 > = ({ tokenData, type, handleOutputSelect }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { isXs, isSm, isMobile } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
   const chainName = useGetChainName()
@@ -211,14 +205,10 @@ const DataRow: React.FC<
           >
             {t('Trade')}
           </Button>
-          {!isMobile && (
-            <>
-              <Text pl="8px" pr="4px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
-                |
-              </Text>
-              <MoreIcon color={theme.colors.textSubtle} />
-            </>
-          )}
+          <Text pl="8px" pr="4px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
+            |
+          </Text>
+          <MoreIcon color={theme.colors.textSubtle} />
         </Flex>
       </ResponsiveGrid>
     </LinkWrapper>

@@ -81,7 +81,13 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
           <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
         </ButtonMenu>
       </MenuWrapper>
-      <Flex mb="24px" alignItems="center" onClick={() => setConfirmed(!confirmed)} style={{ cursor: 'pointer' }}>
+      <Flex
+        mb="24px"
+        alignItems="center"
+        ml={['24px', '24px', '24px', '24px', '0']}
+        onClick={() => setConfirmed(!confirmed)}
+        style={{ cursor: 'pointer' }}
+      >
         <Checkbox
           scale="sm"
           name="confirmed"

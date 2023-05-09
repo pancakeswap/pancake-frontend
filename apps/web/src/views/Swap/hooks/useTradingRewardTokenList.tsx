@@ -5,16 +5,32 @@ import useAllTradingRewardPair, { RewardStatus } from 'views/TradingReward/hooks
 
 const useTradingRewardTokenList = () => {
   const farms = farmsV3ConfigChainMap[ChainId.BSC]
-  const { data } = useAllTradingRewardPair(RewardStatus.ACTIVATED)
+  const { data } = useAllTradingRewardPair(RewardStatus.ALL)
+  const currentTime = new Date().getTime() / 1000
 
   const uniqueAddressList = useMemo(() => {
-    const tokenAddressArray = Object.values(data.campaignPairs).reduce((acc, val) => {
+    // eslint-disable-next-line array-callback-return, consistent-return
+    const activeRewardCampaignId = data.campaignIds.filter((campaignId) => {
+      const incentive = data.campaignIdsIncentive.find((i) => i.campaignId === campaignId)
+      if (incentive.campaignClaimTime > currentTime) {
+        return campaignId
+      }
+    })
+
+    const activeCampaignPairs: { [key in string]: Array<string> } = {}
+    activeRewardCampaignId.forEach((campaignId) => {
+      if (data.campaignPairs[campaignId]) {
+        activeCampaignPairs[campaignId] = data.campaignPairs[campaignId]
+      }
+    })
+
+    const tokenAddressArray = Object.values(activeCampaignPairs).reduce((acc, val) => {
       val.forEach((item) => acc.add(item))
       return acc
     }, new Set())
 
     return [...tokenAddressArray]
-  }, [data])
+  }, [data, currentTime])
 
   const tokenPairs = useMemo(
     () => farms.filter((farm) => uniqueAddressList.includes(farm.lpAddress.toLowerCase())),
