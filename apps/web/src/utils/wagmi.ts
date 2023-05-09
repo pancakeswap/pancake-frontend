@@ -4,7 +4,7 @@ import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
-import { configureChains, createClient } from 'wagmi'
+import { configureChains, createConfig } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -13,7 +13,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
-export const { provider, chains } = configureChains(CHAINS, [
+export const { publicClient, chains } = configureChains(CHAINS, [
   jsonRpcProvider({
     rpc: (chain) => {
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
@@ -89,9 +89,9 @@ export const trustWalletConnector = new TrustWalletConnector({
   },
 })
 
-export const client = createClient({
+export const client = createConfig({
   autoConnect: false,
-  provider,
+  publicClient,
   connectors: [
     metaMaskConnector,
     injectedConnector,

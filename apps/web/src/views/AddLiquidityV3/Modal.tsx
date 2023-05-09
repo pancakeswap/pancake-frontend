@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
+import { waitForTransaction } from 'wagmi/actions'
 import { AutoRow, Box, Modal, ModalV2, UseModalV2Props } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import GlobalSettings from 'components/Menu/GlobalSettings'
@@ -7,7 +8,6 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
-import { useProvider } from 'wagmi'
 import { useCallback } from 'react'
 import { AprCalculator } from './components/AprCalculator'
 import { UniversalAddLiquidity } from '.'
@@ -59,14 +59,15 @@ export function AddLiquidityV3Modal({
     }, 600)
   }, [onDismiss, router])
 
-  const provider = useProvider()
-
   return (
     <ModalV2 isOpen={isOpen} onDismiss={dismiss} closeOnOverlayClick>
       <LiquidityFormProvider
-        onAddLiquidityCallback={(hash) => {
+        onAddLiquidityCallback={(hash: `0x${string}`) => {
           if (hash) {
-            provider.waitForTransaction(hash).then(() => {
+            waitForTransaction({
+              hash,
+              chainId: currency0?.chainId,
+            }).then(() => {
               dismiss()
             })
           } else {
