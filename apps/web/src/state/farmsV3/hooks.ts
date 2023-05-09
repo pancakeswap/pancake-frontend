@@ -247,18 +247,18 @@ const usePositionsByUserFarms = (
   const farmsWithPositions = useMemo(
     () =>
       farmsV3.map((farm) => {
-        const { token, quoteToken, feeAmount } = farm
+        const { feeAmount, token0, token1 } = farm
 
         const unstaked = unstakedPositions.filter(
           (p) =>
-            toLower(p.token0) === toLower(token.address) &&
-            toLower(p.token1) === toLower(quoteToken.address) &&
+            toLower(p.token0) === toLower(token0.address) &&
+            toLower(p.token1) === toLower(token1.address) &&
             feeAmount === p.fee,
         )
         const staked = stakedPositions.filter((p) => {
           return (
-            toLower(p.token0) === toLower(token.address) &&
-            toLower(p.token1) === toLower(quoteToken.address) &&
+            toLower(p.token0) === toLower(token0.address) &&
+            toLower(p.token1) === toLower(token1.address) &&
             feeAmount === p.fee
           )
         })
