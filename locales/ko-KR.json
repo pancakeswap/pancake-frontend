@@ -23,7 +23,7 @@
   "Close": "닫기",
   "Boosted": "부스팅됨",
   "Increase": "증가",
-  "Est Daily APR": "예상 일일 APR",
+  "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH의 환율은 발생한 가치와 ETH에 의해 결정됩니다. 리워드를 받아도 WBETH 금액은 변경되지 않습니다.",
   "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR은 ETH 네트워크의 스테이킹 리워드에서 계산됩니다. 이 수치는 연간 기준으로 계산된 전날의 스테이킹 리워드를 반영합니다.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "일드 부스터 승수는 최신 스테이킹 조건에 따라 업데이트됩니다.",
@@ -2483,7 +2483,7 @@
   "Get Started": "시작하기",
   "V3 Farms": "V3 팜",
   "V2 Farms": "V2 팜",
-  "Combined APR": "Combined APR",
-  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
-  "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs."
+  "Combined APR": "복합 APR",
+  "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "스테이킹된 총 활성 유동성 대 팜의 CAKE 리워드 생성을 사용하여 계산됩니다.",
+  "APRs for individual positions may vary depending on the configs.": "개별 포지션의 APR은 구성에 따라 다를 수 있습니다."
 }
