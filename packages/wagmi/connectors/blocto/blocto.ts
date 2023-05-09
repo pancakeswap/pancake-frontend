@@ -2,18 +2,17 @@
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 import {
-  Chain,
-  ConnectorNotFoundError,
-  ResourceUnavailableError,
-  ChainNotConfiguredError,
-  RpcError,
-  UserRejectedRequestError,
   ProviderRpcError,
-} from 'wagmi'
-import { Connector, normalizeChainId } from '@wagmi/core'
+  ResourceNotFoundRpcError,
+  UserRejectedRequestError,
+  createWalletClient,
+  custom,
+  getAddress,
+} from 'viem'
+import { Connector, Chain, WalletClient } from '@wagmi/core'
+import { ChainNotConfiguredForConnectorError, ConnectorNotFoundError } from '@wagmi/connectors'
 import type { EthereumProviderInterface } from '@blocto/sdk'
-import { getAddress } from '@ethersproject/address'
-import { ExternalProvider, Web3Provider } from '@ethersproject/providers'
+import { normalizeChainId } from '../utils'
 
 const chainIdToNetwork: { [network: number]: string } = {
   1: 'mainnet',
@@ -35,7 +34,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
 
   readonly ready = typeof window !== 'undefined'
 
-  provider?: EthereumProviderInterface
+  #provider?: EthereumProviderInterface
 
   constructor(
     config: { chains?: Chain[]; options: { defaultChainId: number; appId?: string } } = {
@@ -69,15 +68,15 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
       this.disconnect()
-      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
-      if ((<RpcError>error).code === -32002) throw new ResourceUnavailableError(error)
+      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error as Error)
+      if ((<ProviderRpcError>error).code === -32002) throw new ResourceNotFoundRpcError(error as ProviderRpcError)
       throw error
     }
   }
 
   async getProvider({ chainId }: { chainId?: number } = {}) {
     // Force create new provider
-    if (!this.provider || chainId) {
+    if (!this.#provider || chainId) {
       const rpc = this.chains.reduce(
         // eslint-disable-next-line @typescript-eslint/no-shadow
         (rpc, chain) => ({ ...rpc, [chain.id]: chain.rpcUrls.default.http[0] }),
@@ -90,10 +89,11 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
         if (fallbackChainId && !this.isChainUnsupported(fallbackChainId)) targetChainId = fallbackChainId
       }
 
-      if (!targetChainId) throw new ChainNotConfiguredError({ chainId: targetChainId || 0, connectorId: this.id })
+      if (!targetChainId)
+        throw new ChainNotConfiguredForConnectorError({ chainId: targetChainId || 0, connectorId: this.id })
 
       const BloctoSDK = (await import('@blocto/sdk')).default
-      this.provider = new BloctoSDK({
+      this.#provider = new BloctoSDK({
         appId: this.options.appId,
         ethereum: {
           chainId: targetChainId,
@@ -102,9 +102,9 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
       }).ethereum
     }
 
-    if (!this.provider) throw new ConnectorNotFoundError()
+    if (!this.#provider) throw new ConnectorNotFoundError()
 
-    return this.provider
+    return this.#provider
   }
 
   async isAuthorized(): Promise<boolean> {
@@ -119,9 +119,15 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
     }
   }
 
-  async getSigner({ chainId }: { chainId?: number } = {}) {
+  async getWalletClient({ chainId }: { chainId?: number } = {}): Promise<WalletClient> {
     const [provider, account] = await Promise.all([this.getProvider({ chainId }), this.getAccount()])
-    return new Web3Provider(<ExternalProvider>provider, chainId).getSigner(account)
+    const chain = this.chains.find((x) => x.id === chainId) || this.chains[0]
+    if (!provider) throw new Error('provider is required.')
+    return createWalletClient({
+      account,
+      chain,
+      transport: custom(provider),
+    })
   }
 
   async getAccount() {

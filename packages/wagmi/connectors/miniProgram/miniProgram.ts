@@ -1,8 +1,8 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-import { getAddress } from '@ethersproject/address'
-import { Chain, ConnectorNotFoundError, ResourceUnavailableError, RpcError, UserRejectedRequestError } from 'wagmi'
+import { getAddress, ResourceUnavailableRpcError, ProviderRpcError, UserRejectedRequestError } from 'viem'
+import { Chain, ConnectorNotFoundError } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
 declare global {
@@ -59,8 +59,8 @@ export class MiniProgramConnector extends InjectedConnector {
 
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
-      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
-      if ((<RpcError>error).code === -32002) throw new ResourceUnavailableError(error)
+      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error as Error)
+      if ((<ProviderRpcError>error).code === -32002) throw new ResourceUnavailableRpcError(error as ProviderRpcError)
       throw error
     }
   }
