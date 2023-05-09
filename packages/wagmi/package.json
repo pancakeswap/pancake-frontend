@@ -18,8 +18,10 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
-    "wagmi": "1.0.0-next.9",
-    "@wagmi/core": "1.0.0-next.7",
+    "wagmi": "1.0.1",
+    "@wagmi/core": "*",
+    "@wagmi/connectors": "*",
+    "viem": "^0.3.19",
     "@blocto/sdk": "^0.3.1",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
@@ -35,8 +37,10 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
-    "wagmi": "1.0.0-next.9",
-    "@wagmi/core": "1.0.0-next.7",
+    "wagmi": "1.0.1",
+    "@wagmi/core": "*",
+    "@wagmi/connectors": "*",
+    "viem": "^0.3.19",
     "@blocto/sdk": "^0.3.1",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
