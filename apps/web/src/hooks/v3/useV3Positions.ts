@@ -73,8 +73,8 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
 }
 
 export function useV3TokenIdsByAccount(
-  contract: Contract,
-  account: string | null | undefined,
+  contract?: Contract,
+  account?: string | null,
 ): { tokenIds: BigNumber[]; loading: boolean } {
   const { chainId } = useActiveChainId()
   const {
@@ -82,8 +82,8 @@ export function useV3TokenIdsByAccount(
     data: accountBalance_,
     refetch: refetchBalance,
   } = useContractRead<any, any, BigNumber>({
-    abi: contract.interface.format(FormatTypes.json) as any,
-    address: contract.address as `0x${string}`,
+    abi: contract?.interface?.format(FormatTypes.json) as any,
+    address: contract?.address as `0x${string}`,
     args: [account ?? undefined],
     functionName: 'balanceOf',
     enabled: !!account,
@@ -95,7 +95,7 @@ export function useV3TokenIdsByAccount(
   const accountBalance: number | undefined = accountBalance_?.toNumber()
 
   const tokenIdsArgs = useMemo(() => {
-    if (accountBalance && account) {
+    if (accountBalance && account && contract) {
       const tokenRequests = []
       for (let i = 0; i < accountBalance; i++) {
         tokenRequests.push({
@@ -109,7 +109,7 @@ export function useV3TokenIdsByAccount(
       return tokenRequests
     }
     return []
-  }, [account, accountBalance, chainId, contract.address, contract.interface])
+  }, [account, accountBalance, chainId, contract])
 
   const {
     isLoading: someTokenIdsLoading,
