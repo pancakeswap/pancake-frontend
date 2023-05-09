@@ -631,15 +631,15 @@ const ifos: Ifo[] = [
   },
   {
     id: 'test',
-    address: '0x6DA6f3AFFB86633aDeE5DaD9059CE23db2004b59',
+    address: '0xcbCB78767868eed65Fd6a12b694bb2e980DfA243',
     isActive: true,
     name: 'USDT',
-    plannedStartTime: 1683547200, // Mon May 08 2023 20:00:00 GMT+0800
+    plannedStartTime: 1683607200, // Tuesday, 9 May 2023 04:40:00
     poolBasic: {
-      raiseAmount: '$10',
+      raiseAmount: '$0.1',
     },
     poolUnlimited: {
-      raiseAmount: '$20',
+      raiseAmount: '$2',
     },
     currency: bscTokens.cake,
     token: bscTokens.usdt,
