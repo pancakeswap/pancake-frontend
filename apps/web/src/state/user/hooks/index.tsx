@@ -10,7 +10,7 @@ import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
-import { useFeeData, useSigner } from 'wagmi'
+import { useFeeData, useWalletClient } from 'wagmi'
 
 import { AppState, useAppDispatch } from 'state'
 import {
@@ -297,13 +297,16 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
 export function useGasPrice(chainIdOverride?: number): string | undefined {
   const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
-  const { data: signer } = useSigner({ chainId })
+  const { data: signer } = useWalletClient({ chainId })
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
-      const gasPrice = await signer?.getGasPrice()
-      return gasPrice?.toString()
+      // TODO: wagmi
+      const gasPrice = await signer.request({
+        method: 'eth_gasPrice',
+      })
+      return String(parseInt(gasPrice, 16))
     },
     {
       revalidateOnFocus: false,

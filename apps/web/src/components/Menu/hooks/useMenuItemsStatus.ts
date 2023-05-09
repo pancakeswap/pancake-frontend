@@ -21,7 +21,7 @@ export const useMenuItemsStatus = (): Record<string, string> => {
 
   const ifoStatus =
     currentBlock && activeIfo && activeIfo.endBlock > currentBlock
-      ? getStatus(currentBlock, activeIfo.startBlock, activeIfo.endBlock)
+      ? getStatus(Number(currentBlock), activeIfo.startBlock, activeIfo.endBlock)
       : null
 
   return useMemo(() => {
