@@ -3,11 +3,6 @@ import { Text, Flex, Skeleton } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import { Token } from '@pancakeswap/swap-sdk-core'
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 const TokenWrapper = styled.div`
   padding-right: 8px;
   width: 32px;
