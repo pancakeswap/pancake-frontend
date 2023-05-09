@@ -6,9 +6,10 @@ import useAllTradingRewardPair, { RewardStatus } from 'views/TradingReward/hooks
 const useTradingRewardTokenList = () => {
   const farms = farmsV3ConfigChainMap[ChainId.BSC]
   const { data } = useAllTradingRewardPair(RewardStatus.ALL)
-  const currentTime = new Date().getTime() / 1000
 
   const uniqueAddressList = useMemo(() => {
+    const currentTime = new Date().getTime() / 1000
+
     // eslint-disable-next-line array-callback-return, consistent-return
     const activeRewardCampaignId = data.campaignIds.filter((campaignId) => {
       const incentive = data.campaignIdsIncentive.find((i) => i.campaignId === campaignId)
@@ -30,7 +31,7 @@ const useTradingRewardTokenList = () => {
     }, new Set())
 
     return [...tokenAddressArray]
-  }, [data, currentTime])
+  }, [data])
 
   const tokenPairs = useMemo(
     () => farms.filter((farm) => uniqueAddressList.includes(farm.lpAddress.toLowerCase())),
