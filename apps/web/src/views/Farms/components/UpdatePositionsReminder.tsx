@@ -2,7 +2,7 @@ import { useIsMounted } from '@pancakeswap/hooks'
 import { Trans } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
-import { MasterChefV3, Multicall, toHex } from '@pancakeswap/v3-sdk'
+import { MasterChefV3, Multicall } from '@pancakeswap/v3-sdk'
 import { BigNumber } from 'ethers'
 import { FormatTypes } from 'ethers/lib/utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -12,9 +12,8 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
-import { calculateGasMargin } from 'utils'
-import { useAccount, useContractReads, useSigner } from 'wagmi'
 import { encodeFunctionData } from 'viem'
+import { useAccount, useContractReads, useSendTransaction } from 'wagmi'
 
 const lmPoolAbi = [
   {
@@ -140,6 +139,7 @@ export function UpdatePositionsReminder_() {
   const modal = useModalV2()
 
   const { data: signer } = useSigner()
+  const { sendTransactionAsync } = useSendTransaction()
   const { toastSuccess } = useToast()
   const { loading: txLoading, fetchWithCatchTxError } = useCatchTxError()
 
@@ -178,20 +178,11 @@ export function UpdatePositionsReminder_() {
       )
     })
 
-    const txn = {
-      to: masterChefV3Address,
-      data: Multicall.encodeMulticall(calldata.flat()),
-      value: toHex(0),
-    }
-
     const resp = await fetchWithCatchTxError(() =>
-      signer?.estimateGas(txn)?.then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gasLimit: calculateGasMargin(estimate),
-        }
-
-        return signer?.sendTransaction(newTxn)
+      sendTransactionAsync({
+        to: masterChefV3Address,
+        data: Multicall.encodeMulticall(calldata.flat()),
+        value: 0n,
       }),
     )
 

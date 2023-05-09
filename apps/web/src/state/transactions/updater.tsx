@@ -3,7 +3,7 @@ import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import forEach from 'lodash/forEach'
 import { useTranslation } from '@pancakeswap/localization'
-import { useProvider } from 'wagmi'
+import { usePublicClient } from 'wagmi'
 import { poll } from 'ethers/lib/utils'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
@@ -30,7 +30,7 @@ export function shouldCheck(
 }
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
-  const provider = useProvider({ chainId })
+  const provider = usePublicClient({ chainId })
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()

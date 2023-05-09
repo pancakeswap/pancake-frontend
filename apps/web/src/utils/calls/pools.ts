@@ -15,7 +15,7 @@ const multicallAddress = getMulticallAddress()
 /**
  * Returns the total number of pools that were active at a given block
  */
-export const getActivePools = async (chainId: ChainId, block?: number) => {
+export const getActivePools = async (chainId: ChainId, block?: bigint | 0) => {
   const poolsConfig = getPoolsConfig(chainId)
   const eligiblePools = poolsConfig
     .filter((pool) => pool.sousId !== 0)
@@ -30,7 +30,8 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
     address: contractAddress,
     name: 'bonusEndBlock',
   }))
-  const blockCall = !block
+  const hasBlock = typeof block !== 'undefined'
+  const blockCall = !hasBlock
     ? {
         abi: multiCallAbi,
         address: multicallAddress,
@@ -38,9 +39,9 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
       }
     : null
 
-  const calls = !block ? [...startBlockCalls, ...endBlockCalls, blockCall] : [...startBlockCalls, ...endBlockCalls]
+  const calls = !hasBlock ? [...startBlockCalls, ...endBlockCalls, blockCall] : [...startBlockCalls, ...endBlockCalls]
   const resultsRaw = await multicallv3({ calls, chainId })
-  const blockNumber = block || resultsRaw.pop()[0].toNumber()
+  const blockNumber = hasBlock || resultsRaw.pop()[0].toNumber()
   const blockCallsRaw = chunk(resultsRaw, resultsRaw.length / 2)
   const startBlocks: any[] = blockCallsRaw[0]
   const endBlocks: any[] = blockCallsRaw[1]
