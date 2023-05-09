@@ -675,9 +675,6 @@ importers:
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
-      jsbi:
-        specifier: ^3.1.4
-        version: 3.1.4
       lightweight-charts:
         specifier: ^4.0.1
         version: 4.0.1
@@ -17727,10 +17724,6 @@ packages:
     hasBin: true
     dependencies:
       argparse: 2.0.1
-
-  /jsbi@3.1.4:
-    resolution: {integrity: sha512-52QRRFSsi9impURE8ZUbzAMCLjPm4THO7H2fcuIvaaeFTbSysvkodbQQXIVsNgq/ypDbq6dJiuGKL0vZ/i9hUg==}
-    dev: false
 
   /jsbn@0.1.1:
     resolution: {integrity: sha512-UVU9dibq2JcFWxQPA6KCqj5O42VOmAY3zQUfEKxU0KpTGXwNoCjkX1e13eHNvw/xPynt6pU0rZ1htjWTNTSXsg==}
