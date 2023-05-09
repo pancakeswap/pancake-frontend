@@ -23,7 +23,7 @@
   "Close": "Bezárja",
   "Boosted": "Felturbózott",
   "Increase": "Növeli",
-  "Est Daily APR": "Napi becsült APR",
+  "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "A WBETH árfolyamát az ETH-val szemben felhalmozott érték határozza meg. Ahogy jutalmakat kapsz, a WBETH összeged nem változik.",
   "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "Az APR értékét az ETH-hálózatból származó jutalmakból számítják ki. Ez az érték az előző napi tétjuttatásokat tükrözi éves szinten.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "A turbó hozamfokozó szorzót a legfrissebb tétfeltételek alapján frissítjük.",
