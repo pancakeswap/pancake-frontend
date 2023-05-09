@@ -23,7 +23,7 @@
   "Close": "Schließen",
   "Boosted": "Erhöht",
   "Increase": "Erhöhen",
-  "Est Daily APR": "Geschätzter täglicher APR",
+  "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "Der Wechselkurs von WBETH wird durch den aufgelaufenen Wert im Vergleich zu ETH bestimmt. Wenn Sie Belohnungen erhalten, wird sich Ihr WBETH-Betrag nicht ändern.",
   "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "Der effektive Jahreszins (APR) wird aus den Einsatzprämien des ETH-Netzwerks berechnet. Diese Zahl spiegelt die Einsatzprämien des Vortages auf Jahresbasis wider.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "Der Multiplikator der Ertragserhöhung wird auf der Grundlage der aktuellen Einsatzbedingungen aktualisiert.",
