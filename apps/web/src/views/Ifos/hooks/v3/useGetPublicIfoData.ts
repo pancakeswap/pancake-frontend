@@ -199,7 +199,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         poolBasic: {
           ...poolBasicFormatted,
-          taxRate: 0,
+          taxRate: taxRateNum,
           distributionRatio: round(
             poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
             ROUND_DIGIT,
