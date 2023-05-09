@@ -203,7 +203,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     const currentTime = new Date().getTime() / 1000
     const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
     const lockDuration = new BigNumber(incentives.campaignClaimTime).plus(thresholdLockTime).minus(minusTime)
-    const week = Math.floor(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
+    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
     return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
   }, [incentives, thresholdLockTime, userData])
 
