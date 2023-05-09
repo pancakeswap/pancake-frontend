@@ -67,7 +67,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useProvider, useSigner } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
@@ -144,10 +144,9 @@ export default function PoolPage() {
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
   const [receiveWETH, setReceiveWETH] = useState(false)
 
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
 
   const { account, chainId } = useAccountActiveChain()
-  const provider = useProvider({ chainId })
 
   const router = useRouter()
   const { tokenId: tokenIdFromUrl } = router.query
@@ -269,8 +268,7 @@ export default function PoolPage() {
       !positionManager ||
       !masterchefV3 ||
       !account ||
-      !tokenId ||
-      !provider
+      !tokenId
     )
       return
 
@@ -327,7 +325,6 @@ export default function PoolPage() {
     masterchefV3,
     account,
     tokenId,
-    provider,
     interfaceManager,
     feeValue0,
     feeValue1,

@@ -63,7 +63,7 @@ import {
   getV3AirdropContract,
   getUnsContract,
 } from 'utils/contractHelpers'
-import { useSigner } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from 'ethers'
@@ -86,17 +86,17 @@ import { useActiveChainId } from './useActiveChainId'
  */
 
 export const useIfoV1Contract = (address: string) => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getIfoV1Contract(address, signer), [address, signer])
 }
 
 export const useIfoV2Contract = (address: string) => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getIfoV2Contract(address, signer), [address, signer])
 }
 
 export const useIfoV3Contract = (address: string) => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getIfoV3Contract(address, signer), [address, signer])
 }
 
@@ -125,7 +125,7 @@ export const useCake = (): { reader: Cake; signer: Cake } => {
 }
 
 export const useBunnyFactory = () => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getBunnyFactoryContract(signer), [signer])
 }
 
@@ -146,18 +146,18 @@ export const useMasterchef = (withSignerIfPossible = true) => {
 }
 
 export const useMasterchefV1 = () => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getMasterchefV1Contract(signer), [signer])
 }
 
 export const useSousChef = (id) => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
   return useMemo(() => getPoolContractBySousId({ sousId: id, provider: signer, chainId }), [id, signer, chainId])
 }
 
 export const usePointCenterIfoContract = () => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getPointCenterIfoContract(signer), [signer])
 }
 
@@ -182,7 +182,7 @@ export const useTradingCompetitionContractMoD = (withSignerIfPossible = true) =>
 }
 
 export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | CakeFlexibleSideVaultV2 => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => {
     if (vaultKey === VaultKey.CakeVault) {
       return getCakeVaultV2Contract(signer)
@@ -204,7 +204,7 @@ export const useIfoCreditAddressContract = () => {
 }
 
 export const usePredictionsContract = (address: string, tokenSymbol: string) => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => {
     if (address === getPredictionsV1Address()) {
       return getPredictionsV1Contract(signer)
@@ -226,7 +226,7 @@ export const useAnniversaryAchievementContract = (withSignerIfPossible = true) =
 }
 
 export const useNftSaleContract = () => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getNftSaleContract(signer), [signer])
 }
 
@@ -236,14 +236,14 @@ export const useFarmAuctionContract = (withSignerIfPossible = true) => {
 }
 
 export const useNftMarketContract = () => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getNftMarketContract(signer), [signer])
 }
 
 export const useErc721CollectionContract = (
   collectionAddress: string,
 ): { reader: Erc721collection; signer: Erc721collection } => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(
     () => ({
       reader: getErc721CollectionContract(null, collectionAddress),
@@ -314,12 +314,12 @@ export function useMulticallContract() {
 }
 
 export const usePotterytVaultContract = (address) => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getPotteryVaultContract(address, signer), [address, signer])
 }
 
 export const usePotterytDrawContract = () => {
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getPotteryDrawContract(signer), [signer])
 }
 
@@ -371,7 +371,7 @@ export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfP
 
 export const useStableSwapNativeHelperContract = () => {
   const { chainId } = useActiveChainId()
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getStableSwapNativeHelperContract(signer, chainId), [signer, chainId])
 }
 
@@ -392,7 +392,7 @@ export function useMasterchefV3(withSignerIfPossible?: boolean) {
 
 export function useV3MigratorContract() {
   const { chainId } = useActiveChainId()
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
 }
 

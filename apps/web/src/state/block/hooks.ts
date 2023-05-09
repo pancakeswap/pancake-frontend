@@ -2,7 +2,7 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 // eslint-disable-next-line camelcase
 import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { useProvider } from 'wagmi'
+import { usePublicClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const REFRESH_BLOCK_INTERVAL = 6000
@@ -10,7 +10,7 @@ const REFRESH_BLOCK_INTERVAL = 6000
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
   const { chainId } = useActiveChainId()
-  const provider = useProvider({ chainId })
+  const provider = usePublicClient({ chainId })
 
   const { data } = useSWR(
     chainId && ['blockNumberFetcher', chainId],
@@ -21,7 +21,7 @@ export const usePollBlockNumber = () => {
         mutate(['initialBlockNumber', chainId], blockNumber)
       }
       if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
-        const block = await provider.getBlock(blockNumber)
+        const block = await provider.getBlock({ blockNumber })
         mutate(['initialBlockTimestamp', chainId], block.timestamp)
       }
       return blockNumber
@@ -60,7 +60,7 @@ export const useCurrentBlock = (): number => {
 
 export const useChainCurrentBlock = (chainId: number): number => {
   const { chainId: activeChainId } = useActiveChainId()
-  const provider = useProvider({ chainId })
+  const provider = usePublicClient({ chainId })
   const { data: currentBlock = 0 } = useSWR(
     chainId ? (activeChainId === chainId ? ['blockNumber', chainId] : ['chainBlockNumber', chainId]) : null,
     activeChainId !== chainId

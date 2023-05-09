@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { useSigner } from 'wagmi'
+import { useSendTransaction } from 'wagmi'
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -46,7 +46,7 @@ interface AddLiquidityV3PropsType {
 
 export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
   const router = useRouter()
-  const { data: signer } = useSigner()
+  const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   const [, , feeAmountFromUrl, tokenId] = router.query.currency || []
@@ -143,7 +143,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
   const onIncrease = useCallback(async () => {
-    if (!chainId || !signer || !account || !positionManager || !masterchefV3) return
+    if (!chainId || !sendTransactionAsync || !account || !positionManager || !masterchefV3) return
 
     if (tokenIdsInMCv3Loading || !positionManager || !baseCurrency || !quoteCurrency) {
       return
@@ -167,41 +167,30 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
               createPool: noLiquidity,
             })
 
-      const txn: { to: string; data: string; value: string } = {
+      setAttemptingTxn(true)
+      sendTransactionAsync({
         to: manager.address,
         data: calldata,
         value,
-      }
+      })
+        .then((response) => {
+          const baseAmount = formatRawAmount(
+            parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+            baseCurrency.decimals,
+            4,
+          )
+          const quoteAmount = formatRawAmount(
+            parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+            quoteCurrency.decimals,
+            4,
+          )
 
-      setAttemptingTxn(true)
-
-      signer
-        .estimateGas(txn)
-        .then((estimate) => {
-          const newTxn = {
-            ...txn,
-            gasLimit: calculateGasMargin(estimate),
-          }
-
-          return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-            const baseAmount = formatRawAmount(
-              parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-              baseCurrency.decimals,
-              4,
-            )
-            const quoteAmount = formatRawAmount(
-              parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-              quoteCurrency.decimals,
-              4,
-            )
-
-            setAttemptingTxn(false)
-            addTransaction(response, {
-              type: 'increase-liquidity-v3',
-              summary: `Increase ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
-            })
-            setTxHash(response.hash)
+          setAttemptingTxn(false)
+          addTransaction(response, {
+            type: 'increase-liquidity-v3',
+            summary: `Increase ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
           })
+          setTxHash(response.hash)
         })
         .catch((error) => {
           console.error('Failed to send transaction', error)
@@ -228,7 +217,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     position,
     positionManager,
     quoteCurrency,
-    signer,
+    sendTransactionAsync,
     tokenId,
     tokenIdsInMCv3Loading,
   ])
