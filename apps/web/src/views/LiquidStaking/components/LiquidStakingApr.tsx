@@ -29,7 +29,7 @@ export function LiquidStakingApr() {
   return (
     <RowBetween mb="24px">
       <Flex>
-        <Text color="textSubtle">{t('Est Daily APR')}</Text>
+        <Text color="textSubtle">{t('Est. APR')}</Text>
         <QuestionHelper ml="4px" text={tooltipMsg} size="20px" placement="bottom" />
       </Flex>
       <Text>{apr ? `${formatLocaleNumber({ number: apr, locale })}%` : '-'}</Text>
