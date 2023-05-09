@@ -23,7 +23,7 @@
   "Close": "Sluiten",
   "Boosted": "Geboost",
   "Increase": "Verhogen",
-  "Est Daily APR": "Geschatte dagelijkse APR",
+  "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "De wisselkoers voor WBETH wordt bepaald door de opgebouwde waarde t. o. v. ETH. Je hoeveelheid WBETH zal niet veranderen naarmate je beloningen ontvangt.",
   "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "De APR wordt berekend op basis van de stakingbeloningen van het ETH-netwerk. Dit cijfer weerspiegelt de stakingbeloningen van de vorige dag op jaarbasis.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "De opbrengstboostervermenigvuldiger wordt bijgewerkt op basis van de meest recente stakingomstandigheden.",
