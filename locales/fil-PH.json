@@ -25,7 +25,7 @@
   "Increase": "Taasan",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "Ia-update ang multiplier ng booster ng yield batay sa mga pinakabagong kundisyon sa pag-stake.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "Na-harvest ang CAKE sa kontrata ng booster ng farm at awtomatikong ipapadala sa iyong wallet sa susunod na harvest.",
   "One-time setup is required for activating farm yield boosters": "Kinakailangan ang minsanang pag-set up para sa ma-activate ang mga booster ng yield ng farm",
