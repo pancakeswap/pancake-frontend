@@ -33,10 +33,15 @@ const useTradingRewardTokenList = () => {
     return [...tokenAddressArray]
   }, [data])
 
-  const tokenPairs = useMemo(
-    () => farms.filter((farm) => uniqueAddressList.includes(farm.lpAddress.toLowerCase())),
-    [uniqueAddressList, farms],
-  )
+  const tokenPairs = useMemo(() => {
+    // eslint-disable-next-line array-callback-return, consistent-return
+    return uniqueAddressList
+      .map((list) => {
+        const pair = farms.find((farm) => farm.lpAddress.toLowerCase() === (list as string).toLowerCase())
+        if (pair) return pair
+      })
+      .filter((i) => Boolean(i))
+  }, [uniqueAddressList, farms])
 
   return {
     tokenPairs,
@@ -45,3 +50,6 @@ const useTradingRewardTokenList = () => {
 }
 
 export default useTradingRewardTokenList
+
+const list = ['0x1', '0x2', '0X3']
+const fakeFarms = [{ lpAddress: '0X1' }, { lpAddress: '0X3' }]

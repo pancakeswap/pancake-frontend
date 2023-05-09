@@ -98,7 +98,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
         {t('Rewards Breakdown')}
       </Text>
       <Text textAlign="center" color="textSubtle" bold>
-        {`${timeFormat(locale, list.campaignStart)} - ${timeFormat(locale, list.campaignStart)}`}
+        {`${timeFormat(locale, list.campaignStart)} - ${timeFormat(locale, list.campaignClaimTime)}`}
       </Text>
       <Text textAlign="center" color="textSubtle" mb="40px">
         {`${t('Campaign')} ${list.campaignId} ${
