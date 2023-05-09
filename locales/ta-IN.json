@@ -23,7 +23,7 @@
   "Close": "மூடுக",
   "Boosted": "மேம்படுத்தியது",
   "Increase": "அதிகரி",
-  "Est Daily APR": "தோராய தினசரி APR",
+  "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETHன் எக்ஸேஞ்ஜ் விகிதமானது ஒன்றுதிரட்டிய மதிப்பு அதற்கெதிராக ETH என்பதன் மூலம் தீர்மானிக்கப்படுகிறது. நீங்கள் வெகுமதிகளைப் பெறும்போது, உங்கள் WBETH அளவு மாறாது.",
   "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "ETH நெட்வொர்க்கிலிருந்து வெகுமதிகளை ஸ்டேக் செய்வதன் மூலம் APR கணக்கிடப்படுகிறது. இது முந்தைய நாளின் வருடாந்திரமாக்கிய ஸ்டேக்கிங் வெகுமதிகளின் பிரதிபலிப்பாகும்.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "சமீபத்திய ஸ்டேக்கிங் நிலைமைகளின் அடிப்படையில் மகசூல் பூஸ்டர் பெருக்கி புதுப்பிக்கப்படும்.",
