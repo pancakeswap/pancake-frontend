@@ -25,7 +25,7 @@
   "Increase": "বৃদ্ধি করুন",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH-এর বিনিময় হার অর্জিত মান বনাম ETH দ্বারা নির্ধারিত হয়। আপনি পুরস্কার পেলে আপনার WBETH এর পরিমাণ পরিবর্তিত হবে না।",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR গণনা করা হয় ETH নেটওয়ার্ক থেকে পুরস্কার স্টেক করে। এই পরিসংখ্যান আগের দিনের হিসাবকে বার্ষিকে রূপান্তর করে পুরস্কার স্টেক করা থেকে প্রাপ্ত।",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "সর্বশেষ স্টেকিং অবস্থার উপর ভিত্তি করে ইল্ড বুস্টার মাল্টিপ্লায়ার হালনাগাদ করা হবে।",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "ফার্ম বুস্টার চুক্তিতে CAKE সংগ্রহ করা হয়েছে এবং পরবর্তী সংগ্রহের সময় স্বয়ংক্রিয়ভাবে আপনার ওয়ালেটে পাঠানো হবে।",
   "One-time setup is required for activating farm yield boosters": "ফার্ম ইল্ড বুস্টার সক্রিয় করার জন্য এককালীন সেটআপ প্রয়োজন৷",
