@@ -13,6 +13,7 @@ const nextConfig = {
     '@pancakeswap/hooks',
     '@pancakeswap/localization',
     '@pancakeswap/utils',
+    '@0xsquid/widget',
   ],
   compiler: {
     styledComponents: true,
