@@ -25,7 +25,7 @@
   "Increase": "증가",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH의 환율은 발생한 가치와 ETH에 의해 결정됩니다. 리워드를 받아도 WBETH 금액은 변경되지 않습니다.",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "APR은 ETH 네트워크의 스테이킹 리워드에서 계산됩니다. 이 수치는 연간 기준으로 계산된 전날의 스테이킹 리워드를 반영합니다.",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "일드 부스터 승수는 최신 스테이킹 조건에 따라 업데이트됩니다.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE는 팜 부스터 계약으로 수확되었으며 다음 수확 때 자동으로 지갑에 전송됩니다.",
   "One-time setup is required for activating farm yield boosters": "팜 일드 부스터를 활성화하려면 1회 설정이 필요합니다.",
