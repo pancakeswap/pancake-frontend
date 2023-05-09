@@ -35,12 +35,12 @@ export type FarmTVL = {
 
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
 
-export type FarmV3Data = FarmConfigV3 & FarmsDynamicDataResultV2
+export type FarmV3Data = ComputedFarmConfigV3 & FarmsDynamicDataResultV2
 
-export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & FarmConfigV3
+export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3
 
 export type FarmV3DataWithPriceTVL = FarmV3DataWithPrice & FarmTVL
-export type SerializedFarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & SerializedFarmConfigV3
+export type SerializedFarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & SerializedComputedFarmConfigV3
 
 export interface FarmConfigBaseProps {
   pid: number
@@ -73,7 +73,7 @@ export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   quoteToken: SerializedWrappedToken
 }
 
-export type FarmConfigV3 = {
+export type ComputedFarmConfigV3 = {
   pid: number
   lpSymbol: string
   lpAddress: string
@@ -84,9 +84,25 @@ export type FarmConfigV3 = {
   feeAmount: FeeAmount
 }
 
-export type SerializedFarmConfigV3 = FarmConfigV3 & {
+export type SerializedComputedFarmConfigV3 = ComputedFarmConfigV3 & {
+  pid: number
+  lpSymbol: string
+  lpAddress: string
+  boosted?: boolean
+
   token: SerializedToken
   quoteToken: SerializedToken
+  feeAmount: FeeAmount
+}
+
+export type FarmConfigV3 = {
+  pid: number
+  lpAddress: string
+  boosted?: boolean
+
+  token0: Token
+  token1: Token
+  feeAmount: FeeAmount
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig

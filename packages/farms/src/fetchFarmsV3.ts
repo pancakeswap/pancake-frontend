@@ -8,7 +8,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { FIXED_ZERO } from './const'
-import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
+import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 
 export async function farmV3FetchFarms({
   farms,
@@ -18,7 +18,7 @@ export async function farmV3FetchFarms({
   totalAllocPoint,
   commonPrice,
 }: {
-  farms: FarmConfigV3[]
+  farms: ComputedFarmConfigV3[]
   multicallv2: MultiCallV2
   masterChefAddress: string
   chainId: number
@@ -159,7 +159,7 @@ export async function fetchMasterChefV3Data({
 }
 
 const fetchPoolInfos = async (
-  farms: FarmConfigV3[],
+  farms: ComputedFarmConfigV3[],
   chainId: number,
   multicallv2: MultiCallV2,
   masterChefAddress: string,
@@ -366,7 +366,7 @@ async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multical
   return lmPools
 }
 
-async function fetchV3Pools(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
+async function fetchV3Pools(farms: ComputedFarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
   const v3PoolCalls = farms.flatMap((f) => [
     {
       address: f.lpAddress,
