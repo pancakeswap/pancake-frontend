@@ -25,7 +25,7 @@
   "Increase": "Zwiększ",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "Kurs wymiany WBETH zależy od wartości naliczonej w stosunku do ETH. Kwota WBETH nie zmienia się wskutek otrzymywania nagród.",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "Stopa APR jest obliczana na podstawie nagród za staking z sieci ETH. Liczba ta odzwierciedla nagrody za staking z poprzedniego dnia w ujęciu rocznym.",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "Mnożnik zwiększający przychody będzie aktualizowany na podstawie najnowszych warunków stakowania.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE zebrano do kontraktu zwiększającego przychody z farmy i zostaną automatycznie wysłane do Twojego portfela przy następnych zbiorach.",
   "One-time setup is required for activating farm yield boosters": "Do aktywowania zwiększenia przychodów z farmy wymagana jest jednorazowa konfiguracja",
