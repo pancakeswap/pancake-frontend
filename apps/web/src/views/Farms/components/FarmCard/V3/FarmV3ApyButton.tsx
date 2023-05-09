@@ -87,6 +87,8 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const currencyAUsdPrice = +farm.tokenPriceBusd
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
 
+  const isSorted = farm.token.sortsBefore(farm.quoteToken)
+
   const {
     volumeUSD: volume24H,
     feeUSD,
@@ -96,8 +98,10 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     chainId: farm.token.chainId,
   })
 
-  const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
-  const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+  const balanceA =
+    (isSorted ? existingPosition_?.amount0 : existingPosition_?.amount1) ?? currencyBalances[Field.CURRENCY_A]
+  const balanceB =
+    (isSorted ? existingPosition_?.amount1 : existingPosition_?.amount0) ?? currencyBalances[Field.CURRENCY_B]
 
   const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
