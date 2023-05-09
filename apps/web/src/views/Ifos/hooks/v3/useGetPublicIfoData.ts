@@ -16,6 +16,9 @@ import { getStatus } from '../helpers'
 // https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
 // 1,000,000,000 / 100
 const TAX_PRECISION = new BigNumber(10000000000)
+const NEW_TAX_PRECISION = new BigNumber(10 ** 12)
+
+const getTaxPrecision = (version: number) => (version >= 3.3 ? NEW_TAX_PRECISION : TAX_PRECISION)
 
 const NO_QUALIFIED_NFT_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -110,6 +113,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         vestingStartTime,
         basicVestingInformation,
         unlimitedVestingInformation,
+        privateSaleTaxRate,
       ] = await multicallv2({
         abi,
         calls: [
@@ -152,19 +156,24 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             address,
             name: 'pointThreshold',
           },
-          version === 3.2 && {
+          version >= 3.2 && {
             address,
             name: 'vestingStartTime',
           },
-          version === 3.2 && {
+          version >= 3.2 && {
             address,
             name: 'viewPoolVestingInformation',
             params: [0],
           },
-          version === 3.2 && {
+          version >= 3.2 && {
             address,
             name: 'viewPoolVestingInformation',
             params: [1],
+          },
+          version >= 3.3 && {
+            address,
+            name: 'viewPoolTaxRateOverflow',
+            params: [0],
           },
         ].filter(Boolean),
       })
@@ -174,7 +183,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
       const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
       const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
-      const taxRateNum = taxRate ? new BigNumber(taxRate[0]._hex).div(TAX_PRECISION).toNumber() : 0
+      const taxPrecision = getTaxPrecision(version)
+      const taxRateNum = taxRate ? new BigNumber(taxRate[0]._hex).div(taxPrecision).toNumber() : 0
+      const privateSaleTaxRateNum = privateSaleTaxRate
+        ? new BigNumber(privateSaleTaxRate[0]._hex).div(taxPrecision).toNumber()
+        : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
@@ -192,7 +205,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         poolBasic: {
           ...poolBasicFormatted,
-          taxRate: taxRateNum,
+          taxRate: privateSaleTaxRateNum,
           distributionRatio: round(
             poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
             ROUND_DIGIT,
