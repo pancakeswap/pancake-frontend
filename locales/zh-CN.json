@@ -25,7 +25,7 @@
   "Increase": "添加",
   "Est. APR": "Est. APR",
   "WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.": "WBETH 的汇率是根据累计价值与 ETH 确定的。随着您获得奖励，您持有的 WBETH 数量不会改变。",
-  "APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.": "年化利率根据 ETH 网络的质押奖励计算得出。这个数字反映了前一天年化的质押奖励。",
+  "APR is calculated based on the past 24H of staking rewards from the ETH network.": "APR is calculated based on the past 24H of staking rewards from the ETH network.",
   "The yield booster multiplier will be updated based on the latest staking conditions.": "收益助推器倍数将根据最新的质押条件进行更新。",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE 已被收割到农场助推器合约，下次收割时将被自动发送到您的钱包。",
   "One-time setup is required for activating farm yield boosters": "激活农场收益助推器需要一次性设置",
