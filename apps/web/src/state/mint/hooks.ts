@@ -4,22 +4,22 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { PairState, useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { mintReducerAtom } from 'state/mint/reducer'
 import { useAccount } from 'wagmi'
-import { AppState, useAppDispatch } from '../index'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 
-export function useMintState(): AppState['mint'] {
-  return useSelector<AppState, AppState['mint']>((state) => state.mint)
+export function useMintState() {
+  return useAtomValue(mintReducerAtom)
 }
 
 export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(mintReducerAtom)
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {

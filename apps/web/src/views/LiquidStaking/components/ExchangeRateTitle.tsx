@@ -4,7 +4,9 @@ import { useTranslation } from '@pancakeswap/localization'
 export function ExchangeRateTitle() {
   const { t } = useTranslation()
 
-  const tooltipMsg = `WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.`
+  const tooltipMsg = t(
+    `WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.`,
+  )
 
   return (
     <Flex>

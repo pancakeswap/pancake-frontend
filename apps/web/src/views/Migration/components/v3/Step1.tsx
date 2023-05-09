@@ -1,11 +1,11 @@
 import { DeserializedFarm, FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import BigNumber from 'bignumber.js'
 import { CAKE_PER_YEAR } from 'config'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { useCallback, useMemo } from 'react'
 import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
-import { usePriceCakeBusd } from 'state/farmsV1/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { getFarmApr } from 'utils/apr'
 import { useAccount } from 'wagmi'
@@ -20,7 +20,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const {
     data: { farmsWithPrice },
   } = useFarmsV3Public()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = useCakePriceAsBN()
   const { chainId } = useActiveChainId()
 
   usePollFarmsWithUserData()
@@ -81,7 +81,6 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
       title={t('Old Farms')}
       noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
       account={account}
-      cakePrice={cakePrice}
       columnSchema={V3Step1DesktopColumnSchema}
       farms={chosenFarmsMemoized}
       userDataReady={userDataReady}

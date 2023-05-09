@@ -1,4 +1,4 @@
-import { pack } from '@ethersproject/solidity'
+import { solidityPack as pack } from 'ethers/lib/utils'
 import { Token } from '@pancakeswap/sdk'
 
 import { BaseRoute, Pool } from '../types'

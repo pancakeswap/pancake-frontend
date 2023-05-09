@@ -16,12 +16,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.0",
-    "@ethersproject/bignumber": "^5.0.0",
-    "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0",
-    "@ethersproject/solidity": "^5.0.0",
-    "@ethersproject/units": "^5.0.0",
+    "ethers": "^5.0.0",
     "@pancakeswap/multicall": "^2.0.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
@@ -40,7 +35,6 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@ethersproject/constants": "^5.0.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -55,6 +49,7 @@
     "typescript": "^4.9.4"
   },
   "exports": {
+    "./package.json": "./package.json",
     "./evm": {
       "types": "./dist/evm/index.d.ts",
       "import": "./dist/evm.mjs",

@@ -47,7 +47,7 @@ const UsernameWrapper = styled(Box)`
 const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, ...props }) => {
   const { t } = useTranslation()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
-  const { domainName } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
+  const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
   const { token, api } = useConfig()
 
@@ -77,7 +77,7 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
             width={['32px', null, null, null, null, '40px']}
             height={['32px', null, null, null, null, '40px']}
           >
-            <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={40} width={40} />
+            <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={40} width={40} />
           </AvatarWrapper>
         </Flex>
       }

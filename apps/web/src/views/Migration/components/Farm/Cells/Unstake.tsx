@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import UnstakeButton from '../UnstakeButton'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 const Container = styled.div`
   display: flex;
@@ -18,10 +18,12 @@ const Container = styled.div`
 `
 export interface UnstakeProps {
   pid: number
+  vaultPid: number
+  farm: FarmWithStakedValue
 }
 
-const Unstake: React.FC<React.PropsWithChildren<UnstakeProps>> = ({ pid, children }) => {
-  return <Container>{children || <UnstakeButton pid={pid} />}</Container>
+const Unstake: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <Container>{children}</Container>
 }
 
 export default Unstake

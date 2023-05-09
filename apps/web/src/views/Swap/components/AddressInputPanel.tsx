@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ChainId } from '@pancakeswap/sdk'
 import { Text, Link, BscScanIcon, AutoColumn } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
+import { useEnsAddress } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { RowBetween } from '../../../components/Layout/Row'
@@ -80,8 +81,13 @@ export default function AddressInputPanel({
   const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
+  const recipientENSAddress = useEnsAddress({
+    name: value,
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+  })
 
-  const address = isAddress(value) ? value : undefined
+  const address = isAddress(value) ? value : isAddress(recipientENSAddress) || undefined
 
   const handleInput = useCallback(
     (event) => {

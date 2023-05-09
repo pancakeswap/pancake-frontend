@@ -53,6 +53,14 @@ export const farmsV3 = [
   },
   // Keep those farms on top
   {
+    pid: 27,
+    lpSymbol: 'PEPE-ETH LP',
+    lpAddress: Pool.getAddress(ethereumTokens.pepe, ethereumTokens.weth, FeeAmount.HIGH),
+    token: ethereumTokens.pepe,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 26,
     lpSymbol: 'WBETH-ETH LP',
     lpAddress: Pool.getAddress(ethereumTokens.wbeth, ethereumTokens.weth, FeeAmount.LOW),

@@ -8,10 +8,11 @@ import {
   RoiCalculatorModalV2,
   Skeleton,
   Text,
-  TooltipText,
   useModalV2,
   useRoi,
   Flex,
+  useTooltip,
+  TooltipText,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
@@ -21,7 +22,7 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import { Bound } from 'config/constants/types'
-import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
+import { usePoolAvgInfo } from 'hooks/usePoolAvgInfo'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
@@ -86,13 +87,19 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const currencyAUsdPrice = +farm.tokenPriceBusd
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
 
-  const volume24H = usePoolAvgTradingVolume({
+  const {
+    volumeUSD: volume24H,
+    feeUSD,
+    tvlUSD,
+  } = usePoolAvgInfo({
     address: farm.lpAddress,
     chainId: farm.token.chainId,
   })
 
   const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
   const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+
+  const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
   const depositUsdAsBN = useMemo(
     () =>
@@ -116,7 +123,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
         .times(cakePrice.toFixed(3))
         .div(
           new BigNumber(farm.lmPoolLiquidity).plus(
-            isPositionStaked ? BIG_ZERO : existingPosition_?.liquidity.toString() ?? BIG_ZERO,
+            isPositionStaked ? BIG_ZERO : existingPosition_?.liquidity?.toString() ?? BIG_ZERO,
           ),
         )
         .times(100),
@@ -154,8 +161,33 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     volume24H,
   })
 
-  const positionDisplayApr = getDisplayApr(+positionCakeApr, +apr.toFixed(2))
-  const displayApr = getDisplayApr(+farm.cakeApr, +apr.toFixed(2))
+  const lpApr = existingPosition_ ? +apr.toFixed(2) : globalLpApr
+  const cakeApr = +farm.cakeApr
+  const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
+  const displayApr = getDisplayApr(cakeApr, lpApr)
+  const cakeAprDisplay = cakeApr.toFixed(2)
+  const lpAprDisplay = lpApr.toFixed(2)
+
+  const aprTooltip = useTooltip(
+    <>
+      <Text>
+        {t('Combined APR')}: <b>{displayApr}%</b>
+      </Text>
+      <ul>
+        <li>
+          {t('Farm APR')}: <b>{cakeAprDisplay}%</b>
+        </li>
+        <li>
+          {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
+        </li>
+      </ul>
+      <br />
+      <Text>
+        {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
+      </Text>
+      <Text>{t('APRs for individual positions may vary depending on the configs.')}</Text>
+    </>,
+  )
 
   if (farm.multiplier === '0X') {
     return <Text fontSize="14px">0%</Text>
@@ -183,16 +215,21 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           </ApyLabelContainer>
         </AutoRow>
       ) : (
-        <FarmUI.FarmApyButton
-          variant="text-and-button"
-          handleClickButton={(e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            roiModal.onOpen()
-          }}
-        >
-          {displayApr}%
-        </FarmUI.FarmApyButton>
+        <>
+          <FarmUI.FarmApyButton
+            variant="text-and-button"
+            handleClickButton={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              roiModal.onOpen()
+            }}
+          >
+            <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
+              {displayApr}%
+            </TooltipText>
+          </FarmUI.FarmApyButton>
+          {aprTooltip.tooltipVisible && aprTooltip.tooltip}
+        </>
       )}
       {cakePrice && cakeAprFactor && (
         <RoiCalculatorModalV2

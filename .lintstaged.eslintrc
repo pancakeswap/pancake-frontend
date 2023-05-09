@@ -5,6 +5,6 @@
   "plugins": ["strict-null-checks"],
   "extends": ["./.eslintrc"],
   "rules": {
-    "strict-null-checks/all": "warn"
+    "strict-null-checks/all": "error",
   }
 }

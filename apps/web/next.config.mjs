@@ -5,6 +5,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
+import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -33,6 +34,10 @@ const sentryWebpackPluginOptions =
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
 
+const workerDeps = Object.keys(smartRouterPkgs.dependencies)
+  .map((d) => d.replace('@pancakeswap/', 'packages/'))
+  .concat(['/packages/smart-router/', '/packages/swap-sdk/', '/packages/token-lists/'])
+
 /** @type {import('next').NextConfig} */
 const config = {
   compiler: {
@@ -53,7 +58,6 @@ const config = {
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
-    '@pancakeswap/tokens',
   ],
   reactStrictMode: true,
   swcMinify: true,
@@ -183,7 +187,7 @@ const config = {
       }
     ]
   },
-  webpack: (webpackConfig, { webpack }) => {
+  webpack: (webpackConfig, { webpack, isServer }) => {
     // tree shake sentry tracing
     webpackConfig.plugins.push(
       new webpack.DefinePlugin({
@@ -191,6 +195,21 @@ const config = {
         __SENTRY_TRACING__: false,
       }),
     )
+    if (!isServer && webpackConfig.optimization.splitChunks) {
+      // webpack doesn't understand worker deps on quote worker, so we need to manually add them
+      // https://github.com/webpack/webpack/issues/16895
+      // eslint-disable-next-line no-param-reassign
+      webpackConfig.optimization.splitChunks.cacheGroups.workerChunks = {
+        chunks: 'all',
+        test(module) {
+          const resource = module.nameForCondition?.() ?? ''
+          return resource ? workerDeps.some((d) => resource.includes(d)) : false
+        },
+        priority: 31,
+        name: 'worker-chunks',
+        reuseExistingChunk: true,
+      }
+    }
     return webpackConfig
   },
 }

@@ -120,8 +120,7 @@ export function Step3() {
   }, [priceLower, priceUpper])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
-    useV3MintActionHandlers(false, false)
+  const { onLeftRangeInput, onRightRangeInput } = useV3MintActionHandlers(false, false)
 
   const onBrushDomainChangeEnded = useCallback(
     (domain: [number, number], mode: string | undefined) => {
