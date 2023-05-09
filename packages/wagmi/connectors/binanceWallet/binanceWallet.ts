@@ -1,24 +1,17 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-import {
-  Chain,
-  ConnectorNotFoundError,
-  ResourceUnavailableError,
-  RpcError,
-  UserRejectedRequestError,
-  SwitchChainNotSupportedError,
-} from 'wagmi'
+import { Chain, ConnectorNotFoundError, SwitchChainNotSupportedError, WindowProvider } from 'wagmi'
+import { UserRejectedRequestError, ResourceUnavailableRpcError, ProviderRpcError } from 'viem'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { hexValue } from '@ethersproject/bytes'
-import type { Ethereum } from '@wagmi/core'
 
 declare global {
   interface Window {
     BinanceChain?: {
       bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>
       switchNetwork?: (networkId: string) => Promise<string>
-    } & Ethereum
+    } & WindowProvider
   }
 }
 
@@ -91,8 +84,8 @@ export class BinanceWalletConnector extends InjectedConnector {
 
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
-      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
-      if ((<RpcError>error).code === -32002) throw new ResourceUnavailableError(error)
+      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error as Error)
+      if ((<ProviderRpcError>error).code === -32002) throw new ResourceUnavailableRpcError(error as ProviderRpcError)
       throw error
     }
   }
@@ -132,7 +125,7 @@ export class BinanceWalletConnector extends InjectedConnector {
         )
       } catch (error) {
         if ((error as any).error === 'user rejected') {
-          throw new UserRejectedRequestError(error)
+          throw new UserRejectedRequestError(error as Error)
         }
       }
     }
