@@ -7,6 +7,7 @@ import { saturate } from "polished";
 import { useCallback, useMemo } from "react";
 import { batch } from "react-redux";
 import styled, { useTheme } from "styled-components";
+import { parseNumberToFraction, formatFraction } from "@pancakeswap/utils/formatFractions";
 
 import { InfoBox } from "./InfoBox";
 import { Chart } from "./Chart";
@@ -96,7 +97,7 @@ export function LiquidityChartRangeInput({
   const tokenBColor = "#7645D9";
 
   const isSorted = currencyA && currencyB && currencyA?.wrapped.sortsBefore(currencyB?.wrapped);
-  const priceStr = isSorted ? currentPrice?.toSignificant(6) : currentPrice?.invert().toSignificant(6);
+  const priceStr = isSorted ? currentPrice?.toSignificant(6) : currentPrice?.invert()?.toSignificant(6);
   const price = priceStr && parseFloat(priceStr);
 
   const { formattedData } = useDensityChartData({ tickCurrent, liquidity, feeAmount, currencyA, currencyB, ticks });
@@ -116,14 +117,20 @@ export function LiquidityChartRangeInput({
           (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === "handle" || mode === "reset") &&
           leftRangeValue > 0
         ) {
-          onLeftRangeInput(leftRangeValue.toFixed(6));
+          const formattedLeftRangeValue = formatFraction(parseNumberToFraction(leftRangeValue, 18));
+          if (formattedLeftRangeValue) {
+            onLeftRangeInput(formattedLeftRangeValue);
+          }
         }
 
         if ((!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === "reset") && rightRangeValue > 0) {
           // todo: remove this check. Upper bound for large numbers
           // sometimes fails to parse to tick.
           if (rightRangeValue < 1e35) {
-            onRightRangeInput(rightRangeValue.toFixed(6));
+            const formattedRightRangeValue = formatFraction(parseNumberToFraction(rightRangeValue, 18));
+            if (formattedRightRangeValue) {
+              onRightRangeInput(formattedRightRangeValue);
+            }
           }
         }
       });
