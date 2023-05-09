@@ -110,7 +110,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
       <Card style={{ width: '100%' }}>
         <Box padding={['24px']}>
           <Text bold textAlign="right" mb="24px">
-            {t('Total')}
+            {t('Previously Ended')}
           </Text>
           {unclaimData.length > 0 && (
             <GreyCard>

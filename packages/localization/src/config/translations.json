@@ -2500,5 +2500,6 @@
   "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
   "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs.",
   "YOUR VOL. /": "YOUR VOL. /",
-  "YOUR TRADING FEE": "YOUR TRADING FEE"
+  "YOUR TRADING FEE": "YOUR TRADING FEE",
+  "Previously Ended": "Previously Ended"
 }
