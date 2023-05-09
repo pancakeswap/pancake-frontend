@@ -46,6 +46,9 @@ import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsV3Context } from './context'
 
+const BIG_INT_ZERO = new BigNumber(0)
+const BIG_INT_ONE = new BigNumber(1)
+
 const ControlContainer = styled.div`
   display: flex;
   width: 100%;
@@ -274,15 +277,23 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const farmsList = useCallback(
     (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
+      const shouldMockApr = Boolean(urlQuery.mockApr)
       const farmsToDisplayWithAPR: any = farmsToDisplay.map((farm) => {
         if (farm.version === 3) {
+          if (!Number(farm.activeTvlUSD) && shouldMockApr) {
+            // Mock 1$ tvl if the farm doesn't have lp staked
+            return { ...farm, activeTvlUSD: '1' }
+          }
           return farm
         }
 
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        const totalLiquidityFromLp = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        // Mock 1$ tvl if the farm doesn't have lp staked
+        const totalLiquidity =
+          totalLiquidityFromLp.eq(BIG_INT_ZERO) && shouldMockApr ? BIG_INT_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(
               chainId,
@@ -299,7 +310,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
-    [query, isActive, chainId, cakePrice, regularCakePerBlock],
+    [query, isActive, chainId, cakePrice, regularCakePerBlock, urlQuery.mockApr],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
