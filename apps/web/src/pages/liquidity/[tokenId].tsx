@@ -68,7 +68,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useSigner } from 'wagmi'
+import { useProvider, useSigner } from 'wagmi'
 import dayjs from 'dayjs'
 
 export const BodyWrapper = styled(Card)`
@@ -146,7 +146,8 @@ export default function PoolPage() {
 
   const { data: signer } = useSigner()
 
-  const { account, chainId, provider } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const provider = useProvider({ chainId })
 
   const router = useRouter()
   const { tokenId: tokenIdFromUrl } = router.query
@@ -291,14 +292,14 @@ export default function PoolPage() {
     }
 
     signer
-      .estimateGas(txn)
-      .then((estimate) => {
+      ?.estimateGas(txn)
+      ?.then((estimate) => {
         const newTxn = {
           ...txn,
           gasLimit: calculateGasMargin(estimate),
         }
 
-        return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+        return signer?.sendTransaction(newTxn)?.then((response: TransactionResponse) => {
           setCollectMigrationHash(response.hash)
           setCollecting(false)
 
@@ -313,7 +314,7 @@ export default function PoolPage() {
           })
         })
       })
-      .catch((error) => {
+      ?.catch((error) => {
         setCollecting(false)
         console.error(error)
       })

@@ -1,11 +1,11 @@
 import { Box, Text, Button, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
+import { useAccount } from 'wagmi'
 
 const NoProfile = () => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
 
   return (
     <>

@@ -14,7 +14,7 @@ import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { calculateGasMargin } from 'utils'
-import { useContractReads, useSigner } from 'wagmi'
+import { useAccount, useContractReads, useSigner } from 'wagmi'
 
 const lmPoolAbi = [
   {
@@ -57,7 +57,7 @@ const lmPoolAbi = [
 ] as const
 
 export function UpdatePositionsReminder() {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const isMounted = useIsMounted()
   // eslint-disable-next-line react/jsx-pascal-case
@@ -66,8 +66,7 @@ export function UpdatePositionsReminder() {
 
 export function UpdatePositionsReminder_() {
   const { data: farmsV3 } = useFarmsV3Public()
-  const { account } = useActiveWeb3React()
-  const { chainId } = useActiveChainId()
+  const { account, chainId } = useActiveWeb3React()
 
   const masterchefV3 = useMasterchefV3(false)
   const { tokenIds: stakedTokenIds, loading } = useV3TokenIdsByAccount(masterchefV3, account)
@@ -88,12 +87,12 @@ export function UpdatePositionsReminder_() {
     enabled: !loading && stakedTokenIds.length > 0,
   })
 
-  const isOverRewardGrowthGlobalUserInfos = stakedUserInfos.data
+  const isOverRewardGrowthGlobalUserInfos = stakedUserInfos?.data
     ?.map((userInfo: any, i) => ({
       ...userInfo,
       tokenId: stakedTokenIds[i],
     }))
-    .filter((userInfo) => {
+    ?.filter((userInfo) => {
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       if (!farm) return false
       if (
@@ -130,7 +129,7 @@ export function UpdatePositionsReminder_() {
       }
       return false
     })
-    .map((u) => {
+    ?.map((u) => {
       return {
         ...u,
         needReduce: true,
@@ -181,13 +180,13 @@ export function UpdatePositionsReminder_() {
     }
 
     const resp = await fetchWithCatchTxError(() =>
-      signer.estimateGas(txn).then((estimate) => {
+      signer?.estimateGas(txn)?.then((estimate) => {
         const newTxn = {
           ...txn,
           gasLimit: calculateGasMargin(estimate),
         }
 
-        return signer.sendTransaction(newTxn)
+        return signer?.sendTransaction(newTxn)
       }),
     )
 

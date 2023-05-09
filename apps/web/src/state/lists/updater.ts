@@ -2,7 +2,8 @@ import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
 import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import useWeb3Provider from 'hooks/useActiveWeb3React'
+import { useProvider } from 'wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAllLists } from 'state/lists/hooks'
@@ -11,7 +12,8 @@ import { useActiveListUrls } from './hooks'
 import { useListState, useListStateReady, initialState } from './lists'
 
 export default function Updater(): null {
-  const { provider } = useWeb3Provider()
+  const { chainId } = useActiveWeb3React()
+  const provider = useProvider({ chainId })
   const [listState, dispatch] = useListState()
   const router = useRouter()
   const includeListUpdater = useMemo(() => {

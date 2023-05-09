@@ -112,7 +112,7 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
 
 export const usePoolsConfigInitialize = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   useEffect(() => {
     if (chainId) {
       dispatch(setInitialPoolConfig({ chainId }))

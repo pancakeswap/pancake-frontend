@@ -3,7 +3,7 @@ import { Flex, Text, LanguageIcon, SvgProps, Svg, TwitterIcon, Link, TelegramIco
 import { Ifo } from 'config/constants/types'
 import { getBlockExploreLinkDefault } from 'utils'
 import { IFO_ADDRESS } from 'views/Ifos/constants'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useNetwork'
 
 const SmartContractIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
@@ -55,7 +55,7 @@ const AchievementFlex = styled(Flex)<{ isFinished: boolean }>`
 
 const IfoCardFooter: React.FC<React.PropsWithChildren<Props>> = ({ status, ifo }) => {
   const projectUrl = ifo.token.projectLink
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
 
   return (
     <Container p="16px" pb="32px">

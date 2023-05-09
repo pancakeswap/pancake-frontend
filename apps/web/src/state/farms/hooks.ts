@@ -33,7 +33,7 @@ export function useFarmsLength() {
 }
 
 export function useFarmV2PublicAPI() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useSWRImmutable(chainId ? ['farm-v2-pubic-api', chainId] : null, async () => {
     return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
       .then((res) => res.json())
@@ -53,7 +53,7 @@ export const usePollFarmsWithUserData = () => {
   useSWRImmutable(
     chainId ? ['publicFarmData', chainId] : null,
     async () => {
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = (await getFarmConfig(chainId)) || []
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
@@ -70,7 +70,7 @@ export const usePollFarmsWithUserData = () => {
   useSWRImmutable(
     account && chainId && !isProxyContractLoading ? name : null,
     async () => {
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = (await getFarmConfig(chainId)) || []
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
       dispatch(fetchFarmUserDataAsync(params))

@@ -1,9 +1,9 @@
 import { Currency } from '@pancakeswap/sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
 import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, MMRfqTrade, QuoteRequest, RFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
@@ -14,7 +14,7 @@ export const useGetRFQId = (
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
 ): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
 
   if (rfqUserInputPath)
     // eslint-disable-next-line no-param-reassign
@@ -31,7 +31,7 @@ export const useGetRFQId = (
 
   const { data, refetch, isLoading } = useQuery(
     [`RFQ/${rfqUserInputPath.current}`],
-    () => sendRFQAndGetRFQId(param),
+    () => sendRFQAndGetRFQId(param as QuoteRequest),
     {
       refetchInterval: 20000,
       retry: true,

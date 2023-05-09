@@ -10,7 +10,8 @@ const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
-  const { chainId, provider } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
+  const provider = useProvider({ chainId })
 
   const { data } = useSWR(
     chainId && ['blockNumberFetcher', chainId],
