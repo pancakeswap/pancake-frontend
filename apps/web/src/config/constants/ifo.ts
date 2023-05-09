@@ -646,7 +646,7 @@ const ifos: Ifo[] = [
     campaignId: '512200000',
     articleUrl: 'https://pancakeswap.finance/voting/',
     tokenOfferingPrice: 1.0,
-    version: 3.2,
+    version: 3.3,
     twitterUrl: 'https://twitter.com/pancakeswap',
     description: 'Spend CAKE, buy USDT, but on vesting',
     vestingTitle: 'Use CAKE to buy USDT',

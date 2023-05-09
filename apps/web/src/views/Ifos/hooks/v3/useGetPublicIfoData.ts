@@ -17,6 +17,9 @@ import { getStatus } from '../helpers'
 // https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
 // 1,000,000,000 / 100
 const TAX_PRECISION = new BigNumber(10000000000)
+const NEW_TAX_PRECISION = new BigNumber(10 ** 12)
+
+const getTaxPrecision = (version: number) => (version >= 3.3 ? NEW_TAX_PRECISION : TAX_PRECISION)
 
 const NO_QUALIFIED_NFT_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -42,7 +45,7 @@ const ROUND_DIGIT = 3
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { address, plannedStartTime } = ifo
+  const { address, plannedStartTime, version } = ifo
   const cakePriceUsd = usePriceCakeUSD()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
@@ -97,50 +100,64 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
       const client = viemClients[ChainId.BSC]
-      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
-        await client.multicall({
-          contracts: [
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'startBlock',
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'endBlock',
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'viewPoolInformation',
-              args: [0n],
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'viewPoolInformation',
-              args: [1n],
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'viewPoolTaxRateOverflow',
-              args: [1n],
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'numberPoints',
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'thresholdPoints',
-            },
-          ],
-          allowFailure: false,
-        })
+      const [
+        startBlock,
+        endBlock,
+        poolBasic,
+        poolUnlimited,
+        taxRate,
+        numberPoints,
+        thresholdPoints,
+        privateSaleTaxRate,
+      ] = await client.multicall({
+        contracts: [
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'startBlock',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'endBlock',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolInformation',
+            args: [0n],
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolInformation',
+            args: [1n],
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolTaxRateOverflow',
+            args: [1n],
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'numberPoints',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'thresholdPoints',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolTaxRateOverflow',
+            args: [0n],
+          },
+        ],
+        allowFailure: false,
+      })
 
       const [admissionProfile, pointThreshold, vestingStartTime, basicVestingInformation, unlimitedVestingInformation] =
         await client.multicall({
@@ -181,7 +198,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
       const startBlockNum = startBlock ? Number(startBlock) : 0
       const endBlockNum = endBlock ? Number(endBlock) : 0
+      const taxPrecision = getTaxPrecision(version)
       const taxRateNum = taxRate ? new BigNumber(taxRate.toString()).div(TAX_PRECISION).toNumber() : 0
+      const privateSaleTaxRateNum = privateSaleTaxRate
+        ? new BigNumber(privateSaleTaxRate.toString()).div(taxPrecision).toNumber()
+        : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
@@ -199,7 +220,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         poolBasic: {
           ...poolBasicFormatted,
-          taxRate: taxRateNum,
+          taxRate: privateSaleTaxRateNum,
           distributionRatio: round(
             poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
             ROUND_DIGIT,
@@ -231,7 +252,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
       }))
     },
-    [plannedStartTime, address],
+    [plannedStartTime, address, version],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
