@@ -19,6 +19,7 @@ export interface PoolCharacteristics {
   needQualifiedNFT?: boolean
   needQualifiedPoints?: boolean
   vestingInformation?: VestingInformation
+  hasTax?: boolean
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
