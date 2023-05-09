@@ -82,6 +82,9 @@ export type ComputedFarmConfigV3 = {
   token: Token
   quoteToken: Token
   feeAmount: FeeAmount
+
+  token0: Token
+  token1: Token
 }
 
 export type SerializedComputedFarmConfigV3 = ComputedFarmConfigV3 & {
