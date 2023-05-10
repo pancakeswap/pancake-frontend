@@ -208,6 +208,14 @@ export const ethereumTokens = {
     'Pepe',
     'https://www.pepe.vip/',
   ),
+  blur: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x5283D291DBCF85356A21bA090E6db59121208b44',
+    18,
+    'BLUR',
+    'Blur',
+    'https://blur.io/',
+  ),
   ens: new ERC20Token(
     ChainId.ETHEREUM,
     '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
