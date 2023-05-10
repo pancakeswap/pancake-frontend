@@ -126,7 +126,7 @@ function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
 const POOL_SELECTION_CONFIG = {
   topN: 2,
   topNDirectSwaps: 2,
-  topNTokenInOut: 2,
+  topNTokenInOut: 3,
   topNSecondHop: 1,
   topNWithEachBaseToken: 3,
   topNWithBaseToken: 4,
@@ -137,11 +137,12 @@ const sortByTvl = (a: SubgraphV3Pool, b: SubgraphV3Pool) => (a.tvlUSD >= b.tvlUS
 export function v3PoolSubgraphSelection(
   currencyA: Currency,
   currencyB: Currency,
-  poolsFromSubgraph: SubgraphV3Pool[],
+  unorderedPoolsFromSubgraph: SubgraphV3Pool[],
 ): V3Pool[] {
-  if (!poolsFromSubgraph.length) {
+  if (!unorderedPoolsFromSubgraph.length) {
     return []
   }
+  const poolsFromSubgraph = unorderedPoolsFromSubgraph.sort(sortByTvl)
   const {
     token0: { chainId },
   } = poolsFromSubgraph[0]
