@@ -1,22 +1,22 @@
 import { createStore, Store } from 'redux'
 import { updateVersion } from '../global/actions'
-import reducer, { initialState, UserState } from './reducer'
+import { initialState, UserState, userReducer } from './reducer'
 
 describe('swap reducer', () => {
-  let store: Store<UserState>
+  let store: Store<UserState> | undefined
 
   beforeEach(() => {
-    store = createStore(reducer, initialState)
+    store = createStore(userReducer, initialState)
   })
 
   describe('updateVersion', () => {
     it('has no timestamp originally', () => {
-      expect(store.getState().lastUpdateVersionTimestamp).toBeUndefined()
+      expect(store?.getState()?.lastUpdateVersionTimestamp).toBeUndefined()
     })
     it('sets the lastUpdateVersionTimestamp', () => {
       const time = Date.now()
-      store.dispatch(updateVersion())
-      expect(store.getState().lastUpdateVersionTimestamp).toBeGreaterThanOrEqual(time)
+      store?.dispatch(updateVersion())
+      expect(store?.getState()?.lastUpdateVersionTimestamp).toBeGreaterThanOrEqual(time)
     })
   })
 })
