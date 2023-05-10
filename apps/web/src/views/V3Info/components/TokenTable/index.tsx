@@ -130,9 +130,6 @@ export default function TokenTable({
   const { chainId } = useActiveChainId()
   const chainPath = useMultiChainPath()
 
-  // theming
-  const { theme } = useTheme()
-
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)

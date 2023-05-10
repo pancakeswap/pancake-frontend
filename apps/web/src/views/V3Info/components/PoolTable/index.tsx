@@ -1,7 +1,6 @@
 import { ArrowBackIcon, ArrowForwardIcon, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
@@ -96,9 +95,6 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
   const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
-
-  // theming
-  const { theme } = useTheme()
 
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
