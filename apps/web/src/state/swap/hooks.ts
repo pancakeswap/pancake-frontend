@@ -1,28 +1,29 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import { CAKE, USDC } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSlippage } from '@pancakeswap/utils/user'
+import { SLOW_INTERVAL } from 'config/constants'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
+import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
+import useSWRImmutable from 'swr/immutable'
 import { isAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
-import { useAccount, useEnsAddress } from 'wagmi'
-import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
-import useSWRImmutable from 'swr/immutable'
-import { SLOW_INTERVAL } from 'config/constants'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAccount } from 'wagmi'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState } from './actions'
 import fetchDerivedPriceData, { getTokenBestTvlProtocol } from './fetch/fetchDerivedPriceData'
 import { normalizeDerivedChartData, normalizeDerivedPairDataByActiveToken } from './normalizers'
-import { swapReducerAtom, SwapState } from './reducer'
+import { SwapState, swapReducerAtom } from './reducer'
 import { PairDataTimeWindowEnum } from './types'
 
 export function useSwapState() {
@@ -112,14 +113,9 @@ export function useDerivedSwapInfo(
   v2Trade: Trade<Currency, Currency, TradeType> | undefined
   inputError?: string
 } {
-  const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  const { data: recipientENSAddress } = useEnsAddress({
-    name: recipient,
-    chainId,
-    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
-  })
+  const recipientENSAddress = useGetENSAddressByName(recipient)
 
   const to: string | null =
     (recipient === null ? account : isAddress(recipient) || isAddress(recipientENSAddress) || null) ?? null
