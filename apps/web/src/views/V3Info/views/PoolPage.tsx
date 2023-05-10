@@ -346,8 +346,6 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     minHeight={340}
                     setValue={setLatestValue}
                     setLabel={setValueLabel}
-                    value={latestValue}
-                    label={valueLabel}
                   />
                 ) : (
                   <DensityChart address={address} />
