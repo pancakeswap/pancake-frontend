@@ -62,6 +62,42 @@ const Squid = () => {
 
   return (
     <PageContainer>
+      <style jsx global>{`
+        #squid-header-title {
+          font-weight: 600 !important;
+        }
+
+        button > svg {
+          width: 16px;
+        }
+
+        [data-theme='light'] {
+          .tw-dsw-toggle-secondary:not(:checked) {
+            box-shadow: calc(1.5rem * -1) 0 0 2px #efebf4 inset, 0 0 0 2px #efebf4 inset, 0 0 !important;
+          }
+
+          .tw-flex ul li > span:first-child,
+          .tw-flex ul li > span:first-child a,
+          .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
+            color: #7645d9 !important;
+            font-weight: 600 !important;
+          }
+        }
+
+        [data-theme='dark'] {
+          .tw-dsw-toggle-secondary:not(:checked) {
+            box-shadow: calc(1.5rem * -1) 0 0 2px #372f46 inset, 0 0 0 2px #372f46 inset, 0 0 !important;
+          }
+
+          .tw-flex ul li > span:first-child,
+          .tw-flex ul li > span:first-child a,
+          .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
+            color: #a881fc !important;
+            font-weight: 600 !important;
+          }
+        }
+      `}</style>
+
       <Box width={['100%', null, '420px']} m="auto">
         <SquidWidget config={config} />
       </Box>
