@@ -73,16 +73,16 @@ export function UpdatePositionsReminder_() {
     contracts: useMemo(
       () =>
         stakedTokenIds.map((tokenId) => ({
-          abi: masterchefV3.abi,
-          address: masterchefV3.address,
+          abi: masterchefV3?.abi,
+          address: masterchefV3?.address,
           functionName: 'userPositionInfos',
           args: [tokenId.toString()],
           chainId,
         })),
-      [chainId, masterchefV3.abi, masterchefV3.address, stakedTokenIds],
+      [chainId, masterchefV3, stakedTokenIds],
     ),
     cacheTime: 0,
-    enabled: !loading && stakedTokenIds.length > 0,
+    enabled: Boolean(!loading && stakedTokenIds.length > 0 && masterchefV3),
   })
 
   const isOverRewardGrowthGlobalUserInfos = stakedUserInfos?.data
@@ -149,7 +149,7 @@ export function UpdatePositionsReminder_() {
 
   // eslint-disable-next-line consistent-return
   const handleUpdateAll = async () => {
-    if (!needRetrigger) return null
+    if (!needRetrigger || !signer) return null
     const calldata = []
     needRetrigger.forEach((userInfo) => {
       if (userInfo.needReduce) {

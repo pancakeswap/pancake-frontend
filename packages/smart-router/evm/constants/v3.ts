@@ -16,7 +16,7 @@ export const MIXED_ROUTE_QUOTER_ADDRESSES = {
   [ChainId.ARBITRUM_ONE]: '0x',
   [ChainId.POLYGON_ZKEVM]: '0x',
   [ChainId.ZKSYNC]: '0x',
-  [ChainId.ZKSYNC_TESTNET]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0x5d2D9b1B04735DFECF48E6be1A7F391e7071DDc9',
 } as const satisfies Record<ChainId, Address>
 
 export const V3_QUOTER_ADDRESSES = {
@@ -28,5 +28,5 @@ export const V3_QUOTER_ADDRESSES = {
   [ChainId.ARBITRUM_ONE]: '0x',
   [ChainId.POLYGON_ZKEVM]: '0x',
   [ChainId.ZKSYNC]: '0x',
-  [ChainId.ZKSYNC_TESTNET]: '0xF8625E75cff232C678a4C38Afa79C6eAfF45355d',
+  [ChainId.ZKSYNC_TESTNET]: '0x42929984eBFC7C3AF4e7dA2e33C9dEe593eB0e4F',
 } as const satisfies Record<ChainId, Address>

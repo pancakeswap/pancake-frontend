@@ -23,7 +23,7 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.ARBITRUM_ONE]: '',
   [ChainId.POLYGON_ZKEVM]: '',
   [ChainId.ZKSYNC]: '',
-  [ChainId.ZKSYNC_TESTNET]: '0x9FaD4283dF84d3C06c75E20Fe59075486654D15e',
+  [ChainId.ZKSYNC_TESTNET]: '0x2CecA0100bB12F3Ee164D260b058281809C7e1E8',
 } as const satisfies Record<ChainId, string>
 
 export const V2_ROUTER_ADDRESS: ChainMap<string> = {
