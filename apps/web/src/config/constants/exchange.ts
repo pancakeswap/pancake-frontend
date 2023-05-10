@@ -15,7 +15,7 @@ import { ChainTokenList } from './types'
 
 export {
   ADDITIONAL_BASES,
-  ROUTER_ADDRESS,
+  V2_ROUTER_ADDRESS,
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
 } from '@pancakeswap/smart-router/evm'
