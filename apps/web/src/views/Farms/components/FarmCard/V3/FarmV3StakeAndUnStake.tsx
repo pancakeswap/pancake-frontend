@@ -128,12 +128,14 @@ export function FarmV3LPPositionDetail({
 }) {
   const { t } = useTranslation()
   const { position } = useDerivedPositionInfo(position_)
-  const estimatedUSD =
-    position &&
-    new BigNumber(position.amount0.toExact())
-      .multipliedBy(farm.tokenPriceBusd)
-      .plus(new BigNumber(position.amount1.toExact()).multipliedBy(farm.quoteTokenPriceBusd))
-      .toNumber()
+  const isSorted = token.sortsBefore(quoteToken)
+  const [amountA, amountB] = isSorted ? [position?.amount0, position?.amount1] : [position?.amount1, position?.amount0]
+
+  const estimatedUSD = position && amountA && amountB
+  new BigNumber(amountA)
+    .multipliedBy(farm.tokenPriceBusd)
+    .plus(new BigNumber(amountB).multipliedBy(farm.quoteTokenPriceBusd))
+    .toNumber()
 
   return (
     <Box>
@@ -149,14 +151,14 @@ export function FarmV3LPPositionDetail({
           fontSize="12px"
           color="textSubtle"
           decimals={2}
-          value={position ? +position.amount0.toSignificant(6) : 0}
+          value={position ? +amountA.toSignificant(6) : 0}
           unit={` ${token.symbol}`}
         />
         <Balance
           fontSize="12px"
           color="textSubtle"
           decimals={2}
-          value={position ? +position.amount1.toSignificant(6) : 0}
+          value={position ? +amountB.toSignificant(6) : 0}
           unit={` ${quoteToken.symbol}`}
         />
       </AutoRow>
