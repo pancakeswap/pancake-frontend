@@ -8,6 +8,7 @@ import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
   getContract,
+  getBCakeFarmBoosterV3Contract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeProxyContract,
@@ -295,6 +296,11 @@ export function useZapContract() {
 export function useBCakeFarmBoosterContract() {
   const { data: signer } = useWalletClient()
   return useMemo(() => getBCakeFarmBoosterContract(signer), [signer])
+}
+
+export function useBCakeFarmBoosterContractV3() {
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getBCakeFarmBoosterV3Contract(signer), [signer])
 }
 
 export function useBCakeFarmBoosterProxyFactoryContract() {
