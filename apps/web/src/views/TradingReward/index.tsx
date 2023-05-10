@@ -50,14 +50,21 @@ const TradingReward = () => {
   )
 
   const totalAvailableClaimData = useMemo(() => {
-    return allUserCampaignInfo.map((item) => {
-      const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
-        (pair) => pair.campaignId === item.campaignId,
-      )
-      // eslint-disable-next-line no-param-reassign
-      item.campaignClaimEndTime = tradingRewardPair.campaignClaimEndTime
-      return item
-    })
+    const currentTime = new Date().getTime() / 1000
+
+    return allUserCampaignInfo
+      .map((item) => {
+        const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
+          (pair) => pair.campaignId === item.campaignId,
+        )
+
+        return {
+          ...item,
+          campaignClaimTime: tradingRewardPair.campaignClaimTime,
+          campaignClaimEndTime: tradingRewardPair.campaignClaimEndTime,
+        }
+      })
+      .filter((item) => currentTime > item.campaignClaimTime)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
   if (!showPage) {

@@ -27,6 +27,7 @@ export interface UserCampaignInfoDetail extends UserCampaignInfoResponse, Campai
   campaignId: string
   canClaim: string
   userClaimedIncentives: boolean
+  campaignClaimTime?: number
   campaignClaimEndTime?: number
 }
 
