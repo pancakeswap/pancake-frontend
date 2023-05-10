@@ -131,11 +131,14 @@ export function FarmV3LPPositionDetail({
   const isSorted = token.sortsBefore(quoteToken)
   const [amountA, amountB] = isSorted ? [position?.amount0, position?.amount1] : [position?.amount1, position?.amount0]
 
-  const estimatedUSD = position && amountA && amountB
-  new BigNumber(amountA.toExact())
-    .multipliedBy(farm.tokenPriceBusd)
-    .plus(new BigNumber(amountB.toExact()).multipliedBy(farm.quoteTokenPriceBusd))
-    .toNumber()
+  const estimatedUSD =
+    position &&
+    amountA &&
+    amountB &&
+    new BigNumber(amountA.toExact())
+      .multipliedBy(farm.tokenPriceBusd)
+      .plus(new BigNumber(amountB.toExact()).multipliedBy(farm.quoteTokenPriceBusd))
+      .toNumber()
 
   return (
     <Box>
