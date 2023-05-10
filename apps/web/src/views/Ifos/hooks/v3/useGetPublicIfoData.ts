@@ -17,9 +17,6 @@ import { getStatus } from '../helpers'
 // https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
 // 1,000,000,000 / 100
 const TAX_PRECISION = new BigNumber(10000000000)
-const NEW_TAX_PRECISION = new BigNumber(10 ** 12)
-
-const getTaxPrecision = (version: number) => (version >= 3.3 ? NEW_TAX_PRECISION : TAX_PRECISION)
 
 const NO_QUALIFIED_NFT_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -45,7 +42,7 @@ const ROUND_DIGIT = 3
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { address, plannedStartTime, version } = ifo
+  const { address, plannedStartTime } = ifo
   const cakePriceUsd = usePriceCakeUSD()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
@@ -198,10 +195,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
       const startBlockNum = startBlock ? Number(startBlock) : 0
       const endBlockNum = endBlock ? Number(endBlock) : 0
-      const taxPrecision = getTaxPrecision(version)
       const taxRateNum = taxRate ? new BigNumber(taxRate.toString()).div(TAX_PRECISION).toNumber() : 0
       const privateSaleTaxRateNum = privateSaleTaxRate
-        ? new BigNumber(privateSaleTaxRate.toString()).div(taxPrecision).toNumber()
+        ? new BigNumber(privateSaleTaxRate.toString()).div(TAX_PRECISION).toNumber()
         : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
@@ -252,7 +248,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
       }))
     },
-    [plannedStartTime, address, version],
+    [plannedStartTime, address],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
