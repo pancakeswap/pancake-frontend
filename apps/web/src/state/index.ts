@@ -20,10 +20,10 @@ import poolsReducer from './pools'
 import potteryReducer from './pottery'
 import globalReducer from './global/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions']
-
 const migrations = {
   2: (state) => {
+    localStorage.setItem('pcs:user', JSON.stringify(state.user))
+    localStorage.setItem('pcs:transactions', JSON.stringify(state.transactions))
     return {
       ...state,
       user: undefined,
@@ -34,8 +34,8 @@ const migrations = {
 
 const persistConfig = {
   key: 'primary',
-  whitelist: PERSISTED_KEYS,
-  blacklist: ['profile'],
+  whitelist: [],
+  blacklist: ['user', 'transactions', 'profile'],
   storage,
   version: 2,
   migrate: createMigrate(migrations, { debug: false }),
