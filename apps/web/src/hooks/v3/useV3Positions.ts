@@ -22,16 +22,16 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
 
   const inputs = useMemo(
     () =>
-      tokenIds
+      tokenIds && positionManager
         ? tokenIds.map((tokenId) => ({
-            abi: positionManager.interface.format(FormatTypes.json) as any,
-            address: positionManager.address as `0x${string}`,
+            abi: positionManager?.interface?.format(FormatTypes.json) as any,
+            address: positionManager?.address as `0x${string}`,
             functionName: 'positions',
             args: [tokenId],
             chainId,
           }))
         : [],
-    [chainId, positionManager.address, positionManager.interface, tokenIds],
+    [chainId, positionManager, tokenIds],
   )
   const { isLoading, data: positions = [] } = useContractReads<any, any, any>({
     contracts: inputs,
