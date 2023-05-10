@@ -21,6 +21,7 @@ export interface CampaignIdInfoDetail {
   totalVolume: number
   tradingFeeArr: CampaignVolume[]
   totalEstimateRewardUSD: number
+  totalTradingFee: number
 }
 
 export interface CampaignIdInfo {
@@ -33,6 +34,7 @@ export const initialState: CampaignIdInfoDetail = {
   totalVolume: 0,
   tradingFeeArr: [],
   totalEstimateRewardUSD: 0,
+  totalTradingFee: 0,
 }
 
 const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
@@ -49,14 +51,20 @@ const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
         const totalVolume = data.tradingFeeArr
           .map((i) => i.volume)
           .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+
         const totalEstimateRewardUSD = data.tradingFeeArr
           .map((i) => i.estimateRewardUSD)
+          .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+
+        const totalTradingFee = data.tradingFeeArr
+          .map((i) => i.tradingFee)
           .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
         const newData: CampaignIdInfoDetail = {
           ...data,
           totalVolume,
           totalEstimateRewardUSD,
+          totalTradingFee,
         }
         return newData
       } catch (error) {

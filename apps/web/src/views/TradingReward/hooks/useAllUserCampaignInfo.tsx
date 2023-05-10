@@ -8,7 +8,6 @@ import tradingRewardABI from 'config/abi/tradingReward.json'
 import { getTradingRewardAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 
 interface UserCampaignInfoResponse {
   id: string
@@ -64,6 +63,10 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               .map((i) => i.volume)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
+            const totalTradingFee = userCampaignInfo.tradingFeeArr
+              .map((i) => i.tradingFee)
+              .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+
             const totalEstimateRewardUSD = userCampaignInfo.tradingFeeArr
               .map((i) => i.estimateRewardUSD)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
@@ -72,7 +75,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               {
                 name: 'canClaim',
                 address: tradingRewardAddress,
-                params: [campaignId, account, new BigNumber(totalVolume.toFixed(2)).times(1e18).toString()],
+                params: [campaignId, account, new BigNumber(totalTradingFee).times(1e18).toString()],
               },
               {
                 name: 'userClaimedIncentives',
@@ -81,7 +84,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               },
             ]
 
-            const [canClaim, [userClaimedIncentives]] = await multicallv2({
+            const [[canClaim], [userClaimedIncentives]] = await multicallv2({
               abi: tradingRewardABI,
               calls,
               chainId,
@@ -94,7 +97,8 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               campaignId,
               totalVolume,
               totalEstimateRewardUSD,
-              canClaim: getBalanceNumber(new BigNumber(canClaim.toString())).toString(),
+              totalTradingFee,
+              canClaim: new BigNumber(canClaim.toString()).toString(),
               userClaimedIncentives,
             }
           }),

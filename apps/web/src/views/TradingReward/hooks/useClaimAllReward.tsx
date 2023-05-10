@@ -24,7 +24,8 @@ export const useClaimAllReward = (campaignIds: Array<string>, unclaimData: UserC
 
   const handleClaim = useCallback(async () => {
     const claimCampaignIds = unclaimData.map((i) => i.campaignId)
-    const selfVolumes = unclaimData.map((i) => [Number(new BigNumber(i.totalVolume.toFixed(2)).times(1e18))])
+    const tradingFee = unclaimData.map((i) => [Number(new BigNumber(i.totalTradingFee.toFixed(2)).times(1e18))])
+
     const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
         const volume = new BigNumber(i.totalVolume.toFixed(2)).times(1e18).toString()
@@ -34,12 +35,12 @@ export const useClaimAllReward = (campaignIds: Array<string>, unclaimData: UserC
           `${TRADING_REWARD_API}/hash/chainId/${chainId}/campaignId/${i.campaignId}/originHash/${originHash}`,
         )
         const result = await response.json()
-        return result.data
+        return result.data.merkleProof
       }),
     )
 
     const receipt = await fetchWithCatchTxError(() =>
-      contract.claimRewardMulti(claimCampaignIds, merkleProofs, selfVolumes),
+      contract.claimRewardMulti(claimCampaignIds, merkleProofs, tradingFee),
     )
 
     if (receipt?.status) {
