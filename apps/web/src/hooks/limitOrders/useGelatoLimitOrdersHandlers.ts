@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
-import { Field, Rate } from 'state/limitOrders/types'
+import { Field, LimitOrder, Rate } from 'state/limitOrders/types'
 import { Currency, Price } from '@pancakeswap/sdk'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useSWRConfig } from 'swr'
@@ -99,7 +99,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
           witness,
           status: 'open',
           updatedAt: now.toString(),
-        } as Order,
+        } as LimitOrder,
       })
 
       mutate(OPEN_ORDERS_SWR_KEY)

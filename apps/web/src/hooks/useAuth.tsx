@@ -6,12 +6,16 @@ import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { ConnectorNotFoundError, SwitchChainNotSupportedError, useConnect, useDisconnect, useNetwork } from 'wagmi'
+import { useUserState } from 'state/user/reducer'
+import { useTransactionState } from 'state/transactions/reducer'
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
 import { useSessionChainId } from './useSessionChainId'
 
 const useAuth = () => {
   const dispatch = useAppDispatch()
+  const [, userDispatch] = useUserState()
+  const [, transactionDispatch] = useTransactionState()
   const { connectAsync, connectors } = useConnect()
   const { chain } = useNetwork()
   const { disconnectAsync } = useDisconnect()
@@ -52,9 +56,9 @@ const useAuth = () => {
     } catch (error) {
       console.error(error)
     } finally {
-      clearUserStates(dispatch, { chainId: chain?.id })
+      clearUserStates(dispatch, transactionDispatch, userDispatch, { chainId: chain?.id })
     }
-  }, [disconnectAsync, dispatch, chain?.id])
+  }, [disconnectAsync, dispatch, userDispatch, transactionDispatch, chain?.id])
 
   return { login, logout }
 }

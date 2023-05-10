@@ -10,7 +10,6 @@ import { FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 import { TransactionNotFoundError } from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
-import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
   FarmTransactionStatus,
@@ -20,7 +19,7 @@ import {
 } from './actions'
 import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
-import { TransactionDetails } from './reducer'
+import { TransactionDetails, useTransactionState } from './reducer'
 
 export function shouldCheck(
   fetchedTransactions: { [txHash: string]: TransactionDetails },
@@ -34,7 +33,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
   const { t } = useTranslation()
 
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useTransactionState()
   const transactions = useAllChainTransactions(chainId)
 
   const { toastError, toastSuccess } = useToast()
@@ -114,7 +113,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           const previousIndex = pendingStep - 1
 
           if (previousIndex >= 0) {
-            const previousHash = steps[previousIndex]
+            const previousHash = steps?.[previousIndex]
             const checkHash = previousHash.tx || hash
 
             fetchCelerApi(checkHash)
@@ -127,7 +126,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                     : messageStatus === MsgStatus.MS_FAIL
                     ? FarmTransactionStatus.FAIL
                     : FarmTransactionStatus.PENDING
-                const isFinalStepComplete = status === FarmTransactionStatus.SUCCESS && steps.length === pendingStep + 1
+                const isFinalStepComplete =
+                  status === FarmTransactionStatus.SUCCESS && steps?.length === pendingStep + 1
 
                 const newSteps = transaction?.nonBscFarm?.steps?.map((step, index) => {
                   let newObj = {}
@@ -155,7 +155,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                   const toastTitle = isStakeType ? t('Staked!') : t('Unstaked!')
                   toastSuccess(
                     toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
+                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps?.[pendingStep]?.chainId}>
                       {isStakeType
                         ? t('Your LP Token have been staked in the Farm!')
                         : t('Your LP Token have been unstaked in the Farm!')}
@@ -166,7 +166,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                   const errorText = isStakeType ? t('Token fail to stake.') : t('Token fail to unstake.')
                   toastError(
                     toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
+                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps?.[pendingStep]?.chainId}>
                       <Box>
                         <Text
                           as="span"

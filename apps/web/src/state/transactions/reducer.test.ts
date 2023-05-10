@@ -7,19 +7,19 @@ import {
   finalizeTransaction,
   clearAllChainTransactions,
 } from './actions'
-import reducer, { initialState, TransactionState } from './reducer'
+import { transactionReducer, initialState, TransactionState } from './reducer'
 
 describe('transaction reducer', () => {
-  let store: Store<TransactionState>
+  let store: Store<TransactionState> | undefined
 
   beforeEach(() => {
-    store = createStore(reducer, initialState)
+    store = createStore(transactionReducer, initialState)
   })
 
   describe('addTransaction', () => {
     it('adds the transaction', () => {
       const beforeTime = Date.now()
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           chainId: ChainId.BSC,
           summary: 'hello world',
@@ -28,10 +28,10 @@ describe('transaction reducer', () => {
           from: 'abc',
         }),
       )
-      const txs = store.getState()
-      expect(txs[ChainId.BSC]).toBeTruthy()
-      expect(txs[ChainId.BSC]?.['0x0']).toBeTruthy()
-      const tx = txs[ChainId.BSC]?.['0x0']
+      const txs = store?.getState()
+      expect(txs?.[ChainId.BSC]).toBeTruthy()
+      expect(txs?.[ChainId.BSC]?.['0x0']).toBeTruthy()
+      const tx = txs?.[ChainId.BSC]?.['0x0']
       expect(tx).toBeTruthy()
       expect(tx?.hash).toEqual('0x0')
       expect(tx?.summary).toEqual('hello world')
@@ -43,7 +43,7 @@ describe('transaction reducer', () => {
 
   describe('finalizeTransaction', () => {
     it('no op if not valid transaction', () => {
-      store.dispatch(
+      store?.dispatch(
         finalizeTransaction({
           chainId: ChainId.BSC_TESTNET,
           hash: '0x0',
@@ -59,10 +59,10 @@ describe('transaction reducer', () => {
           },
         }),
       )
-      expect(store.getState()).toEqual({})
+      expect(store?.getState()).toEqual({})
     })
     it('sets receipt', () => {
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           hash: '0x0',
           chainId: ChainId.BSC_TESTNET,
@@ -72,7 +72,7 @@ describe('transaction reducer', () => {
         }),
       )
       const beforeTime = Date.now()
-      store.dispatch(
+      store?.dispatch(
         finalizeTransaction({
           chainId: ChainId.BSC_TESTNET,
           hash: '0x0',
@@ -88,7 +88,7 @@ describe('transaction reducer', () => {
           },
         }),
       )
-      const tx = store.getState()[ChainId.BSC_TESTNET]?.['0x0']
+      const tx = store?.getState()?.[ChainId.BSC_TESTNET]?.['0x0']
       expect(tx?.summary).toEqual('hello world')
       expect(tx?.confirmedTime).toBeGreaterThanOrEqual(beforeTime)
       expect(tx?.receipt).toEqual({
@@ -106,17 +106,17 @@ describe('transaction reducer', () => {
 
   describe('checkedTransaction', () => {
     it('no op if not valid transaction', () => {
-      store.dispatch(
+      store?.dispatch(
         checkedTransaction({
           chainId: ChainId.BSC_TESTNET,
           hash: '0x0',
           blockNumber: 1,
         }),
       )
-      expect(store.getState()).toEqual({})
+      expect(store?.getState()).toEqual({})
     })
     it('sets lastCheckedBlockNumber', () => {
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           hash: '0x0',
           chainId: ChainId.BSC_TESTNET,
@@ -125,18 +125,18 @@ describe('transaction reducer', () => {
           from: '0x0',
         }),
       )
-      store.dispatch(
+      store?.dispatch(
         checkedTransaction({
           chainId: ChainId.BSC_TESTNET,
           hash: '0x0',
           blockNumber: 1,
         }),
       )
-      const tx = store.getState()[ChainId.BSC_TESTNET]?.['0x0']
+      const tx = store?.getState()?.[ChainId.BSC_TESTNET]?.['0x0']
       expect(tx?.lastCheckedBlockNumber).toEqual(1)
     })
     it('never decreases', () => {
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           hash: '0x0',
           chainId: ChainId.BSC_TESTNET,
@@ -145,28 +145,28 @@ describe('transaction reducer', () => {
           from: '0x0',
         }),
       )
-      store.dispatch(
+      store?.dispatch(
         checkedTransaction({
           chainId: ChainId.BSC_TESTNET,
           hash: '0x0',
           blockNumber: 3,
         }),
       )
-      store.dispatch(
+      store?.dispatch(
         checkedTransaction({
           chainId: ChainId.BSC_TESTNET,
           hash: '0x0',
           blockNumber: 1,
         }),
       )
-      const tx = store.getState()[ChainId.BSC_TESTNET]?.['0x0']
+      const tx = store?.getState()?.[ChainId.BSC_TESTNET]?.['0x0']
       expect(tx?.lastCheckedBlockNumber).toEqual(3)
     })
   })
 
   describe('clearAllChainTransactions', () => {
     it('removes all transactions for the chain', () => {
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           chainId: ChainId.BSC,
           summary: 'hello world',
@@ -175,7 +175,7 @@ describe('transaction reducer', () => {
           from: 'abc',
         }),
       )
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           chainId: ChainId.BSC_TESTNET,
           summary: 'hello world',
@@ -184,21 +184,21 @@ describe('transaction reducer', () => {
           from: 'abc',
         }),
       )
-      expect(Object.keys(store.getState())).toHaveLength(2)
-      expect(Object.keys(store.getState())).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
-      expect(Object.keys(store.getState()[ChainId.BSC] ?? {})).toEqual(['0x0'])
-      expect(Object.keys(store.getState()[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
-      store.dispatch(clearAllChainTransactions({ chainId: ChainId.BSC }))
-      expect(Object.keys(store.getState())).toHaveLength(2)
-      expect(Object.keys(store.getState())).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
-      expect(Object.keys(store.getState()[ChainId.BSC] ?? {})).toEqual([])
-      expect(Object.keys(store.getState()[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
+      expect(Object.keys(store?.getState() || {})).toHaveLength(2)
+      expect(Object.keys(store?.getState() || {})).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
+      expect(Object.keys(store?.getState()?.[ChainId.BSC] ?? {})).toEqual(['0x0'])
+      expect(Object.keys(store?.getState()?.[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
+      store?.dispatch(clearAllChainTransactions({ chainId: ChainId.BSC }))
+      expect(Object.keys(store?.getState() || {})).toHaveLength(2)
+      expect(Object.keys(store?.getState() || {})).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
+      expect(Object.keys(store?.getState()?.[ChainId.BSC] ?? {})).toEqual([])
+      expect(Object.keys(store?.getState()?.[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
     })
   })
 
   describe('clearAllTransactions', () => {
     it('removes all transactions for all chains', () => {
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           chainId: ChainId.BSC,
           summary: 'hello world',
@@ -207,7 +207,7 @@ describe('transaction reducer', () => {
           from: 'abc',
         }),
       )
-      store.dispatch(
+      store?.dispatch(
         addTransaction({
           chainId: ChainId.BSC_TESTNET,
           summary: 'hello world',
@@ -216,12 +216,12 @@ describe('transaction reducer', () => {
           from: 'abc',
         }),
       )
-      expect(Object.keys(store.getState())).toHaveLength(2)
-      expect(Object.keys(store.getState())).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
-      expect(Object.keys(store.getState()[ChainId.BSC] ?? {})).toEqual(['0x0'])
-      expect(Object.keys(store.getState()[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
-      store.dispatch(clearAllTransactions())
-      expect(Object.keys(store.getState())).toHaveLength(0)
+      expect(Object.keys(store?.getState() || {})).toHaveLength(2)
+      expect(Object.keys(store?.getState() || {})).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
+      expect(Object.keys(store?.getState()?.[ChainId.BSC] ?? {})).toEqual(['0x0'])
+      expect(Object.keys(store?.getState()?.[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
+      store?.dispatch(clearAllTransactions())
+      expect(Object.keys(store?.getState() || {})).toHaveLength(0)
     })
   })
 })

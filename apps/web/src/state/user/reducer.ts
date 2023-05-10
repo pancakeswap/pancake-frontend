@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import omitBy from 'lodash/omitBy'
-import { DEFAULT_DEADLINE_FROM_NOW } from '../../config/constants'
+import { DEFAULT_DEADLINE_FROM_NOW } from 'config/constants'
+import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
 import { updateVersion } from '../global/actions'
 import {
   addSerializedPair,
@@ -28,8 +29,6 @@ import {
   updateUserLimitOrderAcceptedWarning,
 } from './actions'
 import { GAS_PRICE_GWEI } from '../types'
-
-const currentTimestamp = () => Date.now()
 
 export interface UserState {
   // the timestamp of the last updateVersion action
@@ -92,7 +91,7 @@ export const initialState: UserState = {
   hideTimestampPhishingWarningBanner: null,
 }
 
-export default createReducer(initialState, (builder) =>
+export const userReducer = createReducer(initialState, (builder) =>
   builder
     .addCase(updateVersion, (state) => {
       // slippage is'nt being tracked in local storage, reset to default
@@ -104,7 +103,7 @@ export default createReducer(initialState, (builder) =>
         state.userDeadline = DEFAULT_DEADLINE_FROM_NOW
       }
 
-      state.lastUpdateVersionTimestamp = currentTimestamp()
+      state.lastUpdateVersionTimestamp = Date.now()
     })
     .addCase(updateUserDeadline, (state, action) => {
       state.userDeadline = action.payload.userDeadline
@@ -203,3 +202,11 @@ export default createReducer(initialState, (builder) =>
       state.isSubgraphHealthIndicatorDisplayed = payload
     }),
 )
+
+const storage = createJSONStorage<UserState>(() => localStorage)
+
+export const userAtom = atomWithStorage('pcs:user', initialState, storage)
+
+export function useUserState() {
+  return useReducerAtom(userAtom, userReducer)
+}

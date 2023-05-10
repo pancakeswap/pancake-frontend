@@ -1,25 +1,44 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
+import {
+  createMigrate,
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import farmsReducer from './farms'
 import { updateVersion } from './global/actions'
 import lotteryReducer from './lottery'
 import poolsReducer from './pools'
-import transactions from './transactions/reducer'
-import user from './user/reducer'
 import potteryReducer from './pottery'
 import globalReducer from './global/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions']
+
+const migrations = {
+  2: (state) => {
+    return {
+      ...state,
+      user: undefined,
+      transactions: undefined,
+    }
+  },
+}
 
 const persistConfig = {
   key: 'primary',
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 1,
+  version: 2,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(
@@ -30,15 +49,11 @@ const persistedReducer = persistReducer(
     pools: poolsReducer,
     lottery: lotteryReducer,
     pottery: potteryReducer,
-
-    // Exchange
-    user,
-    transactions,
   }),
 )
 
 // eslint-disable-next-line import/no-mutable-exports
-let store: ReturnType<typeof makeStore>
+let store: ReturnType<typeof makeStore> | undefined
 
 export function makeStore(preloadedState = undefined) {
   return configureStore({
@@ -92,7 +107,7 @@ export const useAppDispatch = () => useDispatch<AppDispatch>()
 export default store
 
 export const persistor = persistStore(store, undefined, () => {
-  store.dispatch(updateVersion())
+  store?.dispatch(updateVersion())
 })
 
 export function useStore(initialState) {

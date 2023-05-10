@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
-import { Order } from '@gelatonetwork/limit-orders-lib'
+import { LimitOrder } from 'state/limitOrders/types'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
 import { Hash } from 'viem'
+import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
 import {
   addTransaction,
   checkedTransaction,
@@ -16,13 +17,11 @@ import {
 } from './actions'
 import { resetUserState } from '../global/actions'
 
-const now = () => Date.now()
-
 export interface TransactionDetails {
   hash: Hash
   approval?: { tokenAddress: string; spender: string }
   type?: TransactionType
-  order?: Order
+  order?: LimitOrder
   summary?: string
   translatableSummary?: { text: string; data?: Record<string, string | number> }
   claim?: { recipient: string }
@@ -42,7 +41,7 @@ export interface TransactionState {
 
 export const initialState: TransactionState = {}
 
-export default createReducer(initialState, (builder) =>
+export const transactionReducer = createReducer(initialState, (builder) =>
   builder
     .addCase(
       addTransaction,
@@ -61,7 +60,7 @@ export default createReducer(initialState, (builder) =>
           translatableSummary,
           claim,
           from,
-          addedTime: now(),
+          addedTime: Date.now(),
           type,
           order,
           nonBscFarm,
@@ -94,14 +93,14 @@ export default createReducer(initialState, (builder) =>
         return
       }
       tx.receipt = receipt
-      tx.confirmedTime = now()
+      tx.confirmedTime = Date.now()
 
       if (tx.type === 'limit-order-submission') {
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'non-bsc-farm') {
-        if (tx.nonBscFarm.steps[0].status === FarmTransactionStatus.PENDING) {
+        if (tx?.nonBscFarm?.steps?.[0]?.status === FarmTransactionStatus.PENDING) {
           if (receipt.status === FarmTransactionStatus.FAIL) {
             tx.nonBscFarm = { ...tx.nonBscFarm, status: receipt.status }
           }
@@ -121,3 +120,11 @@ export default createReducer(initialState, (builder) =>
       }
     }),
 )
+
+const storage = createJSONStorage<TransactionState>(() => localStorage)
+
+const transactionsAtom = atomWithStorage('pcs:transactions', initialState, storage)
+
+export function useTransactionState() {
+  return useReducerAtom(transactionsAtom, transactionReducer)
+}

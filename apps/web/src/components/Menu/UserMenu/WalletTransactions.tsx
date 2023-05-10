@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
 import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { clearAllTransactions } from 'state/transactions/actions'
 import isEmpty from 'lodash/isEmpty'
+import { useTransactionState } from 'state/transactions/reducer'
+import { chains } from 'utils/wagmi'
 import TransactionRow from './TransactionRow'
-import { chains } from '../../../utils/wagmi'
 
 const TransactionsContainer = styled(Box)`
   max-height: 300px;
@@ -18,7 +18,7 @@ interface WalletTransactionsProps {
 }
 
 const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsProps>> = ({ onDismiss }) => {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useTransactionState()
   const { t } = useTranslation()
   const sortedTransactions = useAllSortedRecentTransactions()
 

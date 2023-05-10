@@ -3,7 +3,6 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useSWRImmutable from 'swr/immutable'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
@@ -12,7 +11,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
 import { useFeeData, useWalletClient } from 'wagmi'
 import { Hex, hexToBigInt } from 'viem'
-import { AppState, useAppDispatch } from 'state'
+import { useUserState } from 'state/user/reducer'
 import {
   addSerializedPair,
   addSerializedToken,
@@ -41,10 +40,7 @@ import { GAS_PRICE_GWEI } from '../../types'
 // Get user preference for exchange price chart
 // For mobile layout chart is hidden by default
 export function useExchangeChartManager(isMobile: boolean): [boolean, (isDisplayed: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const isChartDisplayed = useSelector<AppState, AppState['user']['isExchangeChartDisplayed']>(
-    (state) => state.user.isExchangeChartDisplayed,
-  )
+  const [{ isExchangeChartDisplayed: isChartDisplayed }, dispatch] = useUserState()
 
   const setUserChartPreference = useCallback(
     (isDisplayed: boolean) => {
@@ -56,11 +52,7 @@ export function useExchangeChartManager(isMobile: boolean): [boolean, (isDisplay
   return [isMobile ? false : isChartDisplayed, setUserChartPreference]
 }
 export function useSubgraphHealthIndicatorManager() {
-  const dispatch = useAppDispatch()
-  const isSubgraphHealthIndicatorDisplayed = useSelector<
-    AppState,
-    AppState['user']['isSubgraphHealthIndicatorDisplayed']
-  >((state) => state.user.isSubgraphHealthIndicatorDisplayed)
+  const [{ isSubgraphHealthIndicatorDisplayed }, dispatch] = useUserState()
 
   const setSubgraphHealthIndicatorDisplayedPreference = useCallback(
     (newIsDisplayed: boolean) => {
@@ -73,10 +65,7 @@ export function useSubgraphHealthIndicatorManager() {
 }
 
 export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userFarmStakedOnly = useSelector<AppState, AppState['user']['userFarmStakedOnly']>((state) => {
-    return state.user.userFarmStakedOnly
-  })
+  const [{ userFarmStakedOnly }, dispatch] = useUserState()
 
   const setUserFarmStakedOnly = useCallback(
     (stakedOnly: boolean) => {
@@ -93,10 +82,7 @@ export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly:
 }
 
 export function useUserPoolStakedOnly(): [boolean, (stakedOnly: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userPoolStakedOnly = useSelector<AppState, AppState['user']['userPoolStakedOnly']>((state) => {
-    return state.user.userPoolStakedOnly
-  })
+  const [{ userPoolStakedOnly }, dispatch] = useUserState()
 
   const setUserPoolStakedOnly = useCallback(
     (stakedOnly: boolean) => {
@@ -109,10 +95,7 @@ export function useUserPoolStakedOnly(): [boolean, (stakedOnly: boolean) => void
 }
 
 export function useUserPoolsViewMode(): [ViewMode, (viewMode: ViewMode) => void] {
-  const dispatch = useAppDispatch()
-  const userPoolsViewMode = useSelector<AppState, AppState['user']['userPoolsViewMode']>((state) => {
-    return state.user.userPoolsViewMode
-  })
+  const [{ userPoolsViewMode }, dispatch] = useUserState()
 
   const setUserPoolsViewMode = useCallback(
     (viewMode: ViewMode) => {
@@ -125,10 +108,7 @@ export function useUserPoolsViewMode(): [ViewMode, (viewMode: ViewMode) => void]
 }
 
 export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void] {
-  const dispatch = useAppDispatch()
-  const userFarmsViewMode = useSelector<AppState, AppState['user']['userFarmsViewMode']>((state) => {
-    return state.user.userFarmsViewMode
-  })
+  const [{ userFarmsViewMode }, dispatch] = useUserState()
 
   const setUserFarmsViewMode = useCallback(
     (viewMode: ViewMode) => {
@@ -141,10 +121,7 @@ export function useUserFarmsViewMode(): [ViewMode, (viewMode: ViewMode) => void]
 }
 
 export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userPredictionAcceptedRisk = useSelector<AppState, AppState['user']['userPredictionAcceptedRisk']>((state) => {
-    return state.user.userPredictionAcceptedRisk
-  })
+  const [{ userPredictionAcceptedRisk }, dispatch] = useUserState()
 
   const setUserPredictionAcceptedRisk = useCallback(
     (acceptedRisk: boolean) => {
@@ -157,12 +134,7 @@ export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolea
 }
 
 export function useUserLimitOrderAcceptedWarning(): [boolean, (acceptedRisk: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userLimitOrderAcceptedWarning = useSelector<AppState, AppState['user']['userLimitOrderAcceptedWarning']>(
-    (state) => {
-      return state.user.userLimitOrderAcceptedWarning
-    },
-  )
+  const [{ userLimitOrderAcceptedWarning }, dispatch] = useUserState()
 
   const setUserLimitOrderAcceptedWarning = useCallback(
     (acceptedRisk: boolean) => {
@@ -175,13 +147,7 @@ export function useUserLimitOrderAcceptedWarning(): [boolean, (acceptedRisk: boo
 }
 
 export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userPredictionChartDisclaimerShow = useSelector<
-    AppState,
-    AppState['user']['userPredictionChartDisclaimerShow']
-  >((state) => {
-    return state.user.userPredictionChartDisclaimerShow
-  })
+  const [{ userPredictionChartDisclaimerShow }, dispatch] = useUserState()
 
   const setPredictionUserChartDisclaimerShow = useCallback(
     (showDisclaimer: boolean) => {
@@ -194,13 +160,7 @@ export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaime
 }
 
 export function useUserPredictionChainlinkChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userPredictionChainlinkChartDisclaimerShow = useSelector<
-    AppState,
-    AppState['user']['userPredictionChainlinkChartDisclaimerShow']
-  >((state) => {
-    return state.user.userPredictionChainlinkChartDisclaimerShow
-  })
+  const [{ userPredictionChainlinkChartDisclaimerShow }, dispatch] = useUserState()
 
   const setPredictionUserChainlinkChartDisclaimerShow = useCallback(
     (showDisclaimer: boolean) => {
@@ -213,10 +173,7 @@ export function useUserPredictionChainlinkChartDisclaimerShow(): [boolean, (show
 }
 
 export function useUserUsernameVisibility(): [boolean, (usernameVisibility: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userUsernameVisibility = useSelector<AppState, AppState['user']['userUsernameVisibility']>((state) => {
-    return state.user.userUsernameVisibility
-  })
+  const [{ userUsernameVisibility }, dispatch] = useUserState()
 
   const setUserUsernameVisibility = useCallback(
     (usernameVisibility: boolean) => {
@@ -229,10 +186,7 @@ export function useUserUsernameVisibility(): [boolean, (usernameVisibility: bool
 }
 
 export function useUserTransactionTTL(): [number, (slippage: number) => void] {
-  const dispatch = useAppDispatch()
-  const userDeadline = useSelector<AppState, AppState['user']['userDeadline']>((state) => {
-    return state.user.userDeadline
-  })
+  const [{ userDeadline }, dispatch] = useUserState()
 
   const setUserDeadline = useCallback(
     (deadline: number) => {
@@ -245,7 +199,7 @@ export function useUserTransactionTTL(): [number, (slippage: number) => void] {
 }
 
 export function useAddUserToken(): (token: ERC20Token) => void {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useUserState()
   return useCallback(
     (token: ERC20Token) => {
       dispatch(addSerializedToken({ serializedToken: token.serialize }))
@@ -255,7 +209,7 @@ export function useAddUserToken(): (token: ERC20Token) => void {
 }
 
 export function useRemoveUserAddedToken(): (chainId: number, address: string) => void {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useUserState()
   return useCallback(
     (chainId: number, address: string) => {
       dispatch(removeSerializedToken({ chainId, address }))
@@ -300,7 +254,7 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
   const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
   const { data: signer } = useWalletClient({ chainId })
-  const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
+  const [{ gasPrice: userGas }] = useUserState()
   const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useSWR(
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
@@ -325,8 +279,7 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
 }
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
-  const dispatch = useAppDispatch()
-  const userGasPrice = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
+  const [{ gasPrice: userGasPrice }, dispatch] = useUserState()
 
   const setGasPrice = useCallback(
     (gasPrice: string) => {
@@ -346,7 +299,7 @@ function serializePair(pair: Pair): SerializedPair {
 }
 
 export function usePairAdder(): (pair: Pair) => void {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useUserState()
 
   return useCallback(
     (pair: Pair) => {
@@ -412,7 +365,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   )
 
   // pairs saved by users
-  const savedSerializedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
+  const [{ pairs: savedSerializedPairs }] = useUserState()
 
   const userPairs: [ERC20Token, ERC20Token][] = useMemo(() => {
     if (!chainId || !savedSerializedPairs) return []
@@ -446,8 +399,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
 }
 
 export const useWatchlistTokens = (): [string[], (address: string) => void] => {
-  const dispatch = useAppDispatch()
-  const savedTokensFromSelector = useSelector((state: AppState) => state.user.watchlistTokens)
+  const [{ watchlistTokens: savedTokensFromSelector }, dispatch] = useUserState()
   const updatedSavedTokens = useCallback(
     (address: string) => {
       dispatch(addWatchlistToken({ address }))
@@ -461,8 +413,7 @@ export const useWatchlistTokens = (): [string[], (address: string) => void] => {
 }
 
 export const useWatchlistPools = (): [string[], (address: string) => void] => {
-  const dispatch = useAppDispatch()
-  const savedPoolsFromSelector = useSelector((state: AppState) => state.user.watchlistPools)
+  const [{ watchlistPools: savedPoolsFromSelector }, dispatch] = useUserState()
   const updateSavedPools = useCallback(
     (address: string) => {
       dispatch(addWatchlistPool({ address }))

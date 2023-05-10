@@ -3,8 +3,10 @@ import { ExtendEthereum } from 'global'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorData, useAccount } from 'wagmi'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import { useAppDispatch } from '../state'
-import { clearUserStates } from '../utils/clearUserStates'
+import { useAppDispatch } from 'state'
+import { useUserState } from 'state/user/reducer'
+import { useTransactionState } from 'state/transactions/reducer'
+import { clearUserStates } from 'utils/clearUserStates'
 import { useSessionChainId } from './useSessionChainId'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -14,6 +16,8 @@ export const useAccountEventListener = () => {
   const { connector, address } = useAccount()
   const [, setSessionChainId] = useSessionChainId()
   const dispatch = useAppDispatch()
+  const [, userDispatch] = useUserState()
+  const [, transactionDispatch] = useTransactionState()
 
   const isBloctoMobileApp = useMemo(() => {
     return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
@@ -29,12 +33,12 @@ export const useAccountEventListener = () => {
         // Blocto in-app browser throws change event when no account change which causes user state reset therefore
         // this event should not be handled to avoid unexpected behaviour.
         if (!isBloctoMobileApp) {
-          clearUserStates(dispatch, { chainId, newChainId: e?.chain?.id })
+          clearUserStates(dispatch, transactionDispatch, userDispatch, { chainId, newChainId: e?.chain?.id })
         }
       }
 
       const handleDeactiveEvent = () => {
-        clearUserStates(dispatch, { chainId })
+        clearUserStates(dispatch, transactionDispatch, userDispatch, { chainId })
       }
 
       connector.addListener('disconnect', handleDeactiveEvent)
@@ -46,5 +50,5 @@ export const useAccountEventListener = () => {
       }
     }
     return undefined
-  }, [chainId, dispatch, address, connector, setSessionChainId, isBloctoMobileApp])
+  }, [chainId, dispatch, address, connector, setSessionChainId, isBloctoMobileApp, transactionDispatch, userDispatch])
 }

@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { Order } from '@gelatonetwork/limit-orders-lib'
-import { AppState, useAppDispatch } from 'state'
+import { LimitOrder } from 'state/limitOrders/types'
 import pickBy from 'lodash/pickBy'
 import mapValues from 'lodash/mapValues'
 import keyBy from 'lodash/keyBy'
@@ -14,8 +12,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Hash } from 'viem'
 
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { TransactionDetails } from './reducer'
+import { TransactionDetails, useTransactionState } from './reducer'
 import {
   addTransaction,
   TransactionType,
@@ -33,7 +30,7 @@ export function useTransactionAdder(): (
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
     type?: TransactionType
-    order?: Order
+    order?: LimitOrder
     nonBscFarm?: NonBscFarmTransactionType
     // add/remove pool
     baseCurrencyId?: string
@@ -50,7 +47,7 @@ export function useTransactionAdder(): (
   },
 ) => void {
   const { account, chainId } = useAccountActiveChain()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useTransactionState()
 
   return useCallback(
     (
@@ -69,7 +66,7 @@ export function useTransactionAdder(): (
         claim?: { recipient: string }
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
-        order?: Order
+        order?: LimitOrder
         nonBscFarm?: NonBscFarmTransactionType
       } = {},
     ) => {
@@ -111,11 +108,7 @@ export function useTransactionAdder(): (
 export function useAllTransactions(): { [chainId: number]: { [txHash: string]: TransactionDetails } } {
   const { address: account } = useAccount()
 
-  const state: {
-    [chainId: number]: {
-      [txHash: string]: TransactionDetails
-    }
-  } = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
+  const [state] = useTransactionState()
 
   return useMemo(() => {
     return mapValues(state, (transactions) =>
@@ -153,12 +146,12 @@ export function useAllActiveChainTransactions(): { [txHash: string]: Transaction
 export function useAllChainTransactions(chainId: number): { [txHash: string]: TransactionDetails } {
   const { address: account } = useAccount()
 
-  const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
+  const [state] = useTransactionState()
 
   return useMemo(() => {
-    if (chainId && state[chainId]) {
+    if (chainId && state?.[chainId]) {
       return pickBy(
-        state[chainId],
+        state?.[chainId],
         (transactionDetails) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
       )
     }
