@@ -139,7 +139,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                 {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
               </Text>
             </Text>
-            {additionalAmount > 0 && (
+            {additionalAmount >= 0.01 && (
               <Message variant="warning" mt="10px">
                 <MessageText>
                   <Text as="span">{t('An additional amount of reward of')}</Text>
