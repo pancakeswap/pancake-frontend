@@ -23,7 +23,7 @@ it("renders correctly", () => {
       transition: background-color 0.2s ease-in-out;
       border: 0;
       border-radius: 8px;
-      background-color: var(--colors-input);
+      background-color: var(--colors-cardBorder);
       box-shadow: var(--shadows-inset);
     }
 
