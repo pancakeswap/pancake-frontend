@@ -28,5 +28,5 @@ export const V3_QUOTER_ADDRESSES = {
   [ChainId.ARBITRUM_ONE]: '0x',
   [ChainId.POLYGON_ZKEVM]: '0x',
   [ChainId.ZKSYNC]: '0x',
-  [ChainId.ZKSYNC_TESTNET]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0xF8625E75cff232C678a4C38Afa79C6eAfF45355d',
 } as const satisfies Record<ChainId, Address>
