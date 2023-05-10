@@ -115,22 +115,22 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
               name: 'isQualifiedPoints',
               params: [account],
             },
-            version === 3.2 && {
+            version >= 3.2 && {
               address,
               name: 'getVestingSchedule',
               params: [basicId],
             },
-            version === 3.2 && {
+            version >= 3.2 && {
               address,
               name: 'getVestingSchedule',
               params: [unlimitedId],
             },
-            version === 3.2 && {
+            version >= 3.2 && {
               address,
               name: 'computeReleasableAmount',
               params: [basicId],
             },
-            version === 3.2 && {
+            version >= 3.2 && {
               address,
               name: 'computeReleasableAmount',
               params: [unlimitedId],
