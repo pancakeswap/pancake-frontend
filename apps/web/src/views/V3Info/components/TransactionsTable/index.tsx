@@ -9,8 +9,6 @@ import {
   Text,
   Flex,
 } from '@pancakeswap/uikit'
-
-import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { multiChainId } from 'state/info/constant'
@@ -142,9 +140,6 @@ export default function TransactionTable({
   maxItems?: number
 }) {
   const { t } = useTranslation()
-
-  // theming
-  const { theme } = useTheme()
 
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.timestamp)
