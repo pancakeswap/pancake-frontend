@@ -8,13 +8,13 @@ import { Button } from '@pancakeswap/uikit/src/components/Button'
 import { Link } from '@pancakeswap/uikit/src/components/Link'
 import { ChevronRightIcon } from '@pancakeswap/uikit/src/components/Svg'
 import { Text } from '@pancakeswap/uikit/src/components/Text'
+import { unwrappedToken } from '@pancakeswap/utils/unwrappedToken'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
 import { Bound } from 'config/constants/types'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import styled from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
@@ -57,8 +57,8 @@ export const FarmV3LPTitle = ({
 
 export const FarmV3LPPosition = ({
   position: position_,
-  token: _token,
-  quoteToken: _quoteToken,
+  token,
+  quoteToken,
 }: {
   position: PositionDetails
   token: Token
@@ -71,10 +71,16 @@ export const FarmV3LPPosition = ({
 
   const { position } = useDerivedPositionInfo(position_)
   const { tickLower, tickUpper, fee: feeAmount } = position_
-  const { priceLower, priceUpper, quote, base } = getPriceOrderingFromPositionForUI(position)
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
   if (!position) return null
+
+  const priceLower = token.equals(position.amount0.currency)
+    ? position.token0PriceUpper.invert()
+    : position.token0PriceLower
+  const priceUpper = token.equals(position.amount1.currency)
+    ? position.token0PriceUpper
+    : position.token0PriceLower.invert()
 
   return (
     <Box>
@@ -97,8 +103,8 @@ export const FarmV3LPPosition = ({
         <Box>
           <Text bold fontSize="12px">
             {t('%assetA% per %assetB%', {
-              assetA: quote.symbol,
-              assetB: base.symbol,
+              assetA: unwrappedToken(token).symbol,
+              assetB: unwrappedToken(quoteToken).symbol,
             })}
           </Text>
         </Box>
@@ -122,11 +128,16 @@ export function FarmV3LPPositionDetail({
 }) {
   const { t } = useTranslation()
   const { position } = useDerivedPositionInfo(position_)
+  const isSorted = token.sortsBefore(quoteToken)
+  const [amountA, amountB] = isSorted ? [position?.amount0, position?.amount1] : [position?.amount1, position?.amount0]
+
   const estimatedUSD =
     position &&
-    new BigNumber(position.amount0.toExact())
+    amountA &&
+    amountB &&
+    new BigNumber(amountA.toExact())
       .multipliedBy(farm.tokenPriceBusd)
-      .plus(new BigNumber(position.amount1.toExact()).multipliedBy(farm.quoteTokenPriceBusd))
+      .plus(new BigNumber(amountB.toExact()).multipliedBy(farm.quoteTokenPriceBusd))
       .toNumber()
 
   return (
@@ -143,14 +154,14 @@ export function FarmV3LPPositionDetail({
           fontSize="12px"
           color="textSubtle"
           decimals={2}
-          value={position ? +position.amount0.toSignificant(6) : 0}
+          value={position ? +amountA.toSignificant(6) : 0}
           unit={` ${token.symbol}`}
         />
         <Balance
           fontSize="12px"
           color="textSubtle"
           decimals={2}
-          value={position ? +position.amount1.toSignificant(6) : 0}
+          value={position ? +amountB.toSignificant(6) : 0}
           unit={` ${quoteToken.symbol}`}
         />
       </AutoRow>
