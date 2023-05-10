@@ -97,11 +97,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     [cakePriceBusd, maxRewardCap],
   )
 
-  const showMaxRewardCap = useMemo(() => {
-    const lockCake = cakeAsBigNumber.times(currentRewardInfo.rewardToLockRatio)
-    return new BigNumber(maxRewardCap).gt(lockCake)
-  }, [maxRewardCap, cakeAsBigNumber, currentRewardInfo])
-
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
       <Card style={{ width: '100%' }}>
@@ -155,7 +150,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             )}
           </GreyCard>
 
-          {showMaxRewardCap && (
+          {additionalAmount >= 0.01 && (
             <GreyCard mt="24px">
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
                 {t('Your Current Max Reward Cap')}
