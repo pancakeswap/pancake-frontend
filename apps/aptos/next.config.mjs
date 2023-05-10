@@ -2,6 +2,7 @@ import bundleAnalyzer from '@next/bundle-analyzer'
 import { withAxiom } from 'next-axiom'
 
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
+import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
 
 const withVanillaExtract = createVanillaExtractPlugin()
 const withBundleAnalyzer = bundleAnalyzer({
@@ -35,4 +36,4 @@ const nextConfig = {
   },
 }
 
-export default withBundleAnalyzer(withVanillaExtract(withAxiom(nextConfig)))
+export default withBundleAnalyzer(withVanillaExtract(withAxiom(withWebSecurityHeaders(nextConfig))))
