@@ -183,6 +183,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
             text={t('Inactive positions will NOT earn CAKE rewards from farm.')}
             size="20px"
             color="white"
+            placement="bottom"
           />
         </RangeTag>
       )}
