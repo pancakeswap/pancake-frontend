@@ -98,7 +98,7 @@ const Squid = () => {
         }
       `}</style>
 
-      <Box width={['100%', null, '420px']} m="auto">
+      <Box width={['100%', '420px']} m="auto">
         <SquidWidget config={config} />
       </Box>
     </PageContainer>
