@@ -43,7 +43,7 @@ const darkStyle = {
   displayDivider: false,
 }
 
-const Squid = () => {
+const Axelar = () => {
   const theme = useTheme()
 
   const config = useMemo(() => {
@@ -105,4 +105,4 @@ const Squid = () => {
   )
 }
 
-export default Squid
+export default Axelar

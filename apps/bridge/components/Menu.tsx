@@ -87,8 +87,8 @@ const MenuConfig = [
         href: '/',
       },
       {
-        label: 'Squid',
-        href: '/squid',
+        label: 'Axelar',
+        href: '/axelar',
       },
     ],
   },
