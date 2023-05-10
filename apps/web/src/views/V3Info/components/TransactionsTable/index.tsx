@@ -248,7 +248,7 @@ export default function TransactionTable({
               {t('Removes')}
             </SortText>
           </RowFixed>
-          <ClickableColumnHeader color={theme.colors.textSubtle}>
+          <ClickableColumnHeader color="secondary">
             {t('Total Value')}
             <SortButton
               scale="sm"
@@ -259,7 +259,7 @@ export default function TransactionTable({
               <SortArrowIcon />
             </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle}>
+          <ClickableColumnHeader color="secondary">
             {t('Token%index% Amount', { index: '0' })}
             <SortButton
               scale="sm"
@@ -270,7 +270,7 @@ export default function TransactionTable({
               <SortArrowIcon />
             </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle}>
+          <ClickableColumnHeader color="secondary">
             {t('Token%index% Amount', { index: '1' })}
             <SortButton
               scale="sm"
@@ -281,7 +281,7 @@ export default function TransactionTable({
               <SortArrowIcon />
             </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle}>
+          <ClickableColumnHeader color="secondary">
             {t('Account')}
             <SortButton
               scale="sm"
@@ -292,7 +292,7 @@ export default function TransactionTable({
               <SortArrowIcon />
             </SortButton>
           </ClickableColumnHeader>
-          <ClickableColumnHeader color={theme.colors.textSubtle}>
+          <ClickableColumnHeader color="secondary">
             {`${t('Time')} `}
             <SortButton
               scale="sm"
