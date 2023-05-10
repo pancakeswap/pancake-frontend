@@ -56,6 +56,7 @@ it("renders correctly", () => {
     }
 
     .c0:checked {
+      border: 0;
       background-color: var(--colors-success);
     }
 
@@ -64,6 +65,7 @@ it("renders correctly", () => {
     }
 
     .c0:disabled {
+      border: 0;
       cursor: default;
       opacity: 0.6;
     }
