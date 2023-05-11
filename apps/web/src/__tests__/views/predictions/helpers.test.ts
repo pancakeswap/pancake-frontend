@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { formatRoundTime, padTime, formatTokenv2, formatUsdv2 } from 'views/Predictions/helpers'
 
 describe('padTime', () => {
@@ -48,7 +47,7 @@ describe('formatUsdv2', () => {
   `(
     'should format $priceDifference to $expectedPriceDifferenceFormatted',
     ({ priceDifference, expectedPriceDifferenceFormatted }) =>
-      expect(formatUsdv2(BigNumber.from(priceDifference), 4)).toEqual(expectedPriceDifferenceFormatted),
+      expect(formatUsdv2(BigInt(priceDifference), 4)).toEqual(expectedPriceDifferenceFormatted),
   )
 })
 
@@ -77,6 +76,6 @@ describe('formatTokenv2', () => {
   `(
     'should format $priceDifference to $expectedPriceDifferenceFormatted',
     ({ priceDifference, expectedPriceDifferenceFormatted }) =>
-      expect(formatTokenv2(BigNumber.from(priceDifference), 18, 4)).toEqual(expectedPriceDifferenceFormatted),
+      expect(formatTokenv2(BigInt(priceDifference), 18, 4)).toEqual(expectedPriceDifferenceFormatted),
   )
 })

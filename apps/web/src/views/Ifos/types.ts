@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from 'ethers'
 
 import { IfoStatus, PoolIds } from 'config/constants/types'
 import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract } from 'hooks/useContract'
@@ -34,7 +33,7 @@ export interface PublicIfoData {
   endBlockNum: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
-  thresholdPoints: EthersBigNumber
+  thresholdPoints: bigint
   plannedStartTime?: number
   vestingStartTime?: number
 

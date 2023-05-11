@@ -1,4 +1,4 @@
-import { parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'viem'
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 
 /**
@@ -13,7 +13,7 @@ export default function tryParseCurrencyAmount<T extends Currency>(
     return undefined
   }
   try {
-    const typedValueParsed = parseUnits(value, currency.decimals).toString()
+    const typedValueParsed = parseUnits(value as `${number}`, currency.decimals).toString()
     if (typedValueParsed !== '0') {
       return CurrencyAmount.fromRawAmount(currency, BigInt(typedValueParsed))
     }

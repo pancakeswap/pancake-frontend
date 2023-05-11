@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { getNftSaleAddress } from 'utils/addressHelpers'
 import { getPancakeSquadContract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { BigNumber } from 'ethers'
 import nftSaleAbi from 'config/abi/nftSale.json'
 
 const useEventInfos = ({ refreshCounter, setCallback }) => {
@@ -26,26 +25,26 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
         }))
 
         const [
-          [currentMaxSupply],
-          [currentMaxPerAddress],
-          [currentPricePerTicket],
-          [currentMaxPerTransaction],
-          [currentTotalTicketsDistributed],
-          [currentSaleStatus],
-          [currentStartTimestamp],
+          currentMaxSupply,
+          currentMaxPerAddress,
+          currentPricePerTicket,
+          currentMaxPerTransaction,
+          currentTotalTicketsDistributed,
+          currentSaleStatus,
+          currentStartTimestamp,
         ] = await multicallv2({ abi: nftSaleAbi, calls })
 
-        const currentTotalSupplyMinted = await pancakeSquadContract.totalSupply()
+        const currentTotalSupplyMinted = await pancakeSquadContract.read.totalSupply()
 
         setCallback({
-          maxSupply: currentMaxSupply.toNumber(),
-          maxPerAddress: currentMaxPerAddress.toNumber(),
-          pricePerTicket: BigNumber.from(currentPricePerTicket),
-          maxPerTransaction: currentMaxPerTransaction.toNumber(),
-          totalTicketsDistributed: currentTotalTicketsDistributed.toNumber(),
+          maxSupply: Number(currentMaxSupply),
+          maxPerAddress: Number(currentMaxPerAddress),
+          pricePerTicket: currentPricePerTicket,
+          maxPerTransaction: Number(currentMaxPerTransaction),
+          totalTicketsDistributed: Number(currentTotalTicketsDistributed),
           saleStatus: currentSaleStatus,
           startTimestamp: Number(currentStartTimestamp.toString().padEnd(13, '0')),
-          totalSupplyMinted: currentTotalSupplyMinted.toNumber(),
+          totalSupplyMinted: Number(currentTotalSupplyMinted),
         })
       } catch (e) {
         console.error(e)

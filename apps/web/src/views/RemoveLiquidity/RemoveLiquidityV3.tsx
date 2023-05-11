@@ -240,7 +240,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     addTransaction,
   ])
 
-  const removed = position?.liquidity?.eq(0)
+  const removed = position?.liquidity === 0n
 
   const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, { enabled: !!feeValue0 })
   const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, { enabled: !!feeValue1 })

@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
-import { multicall } from '@wagmi/core'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useState } from 'react'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { viemClients } from 'utils/viem'
 
 const useGetProfileCosts = () => {
   const { t } = useTranslation()
@@ -21,8 +22,9 @@ const useGetProfileCosts = () => {
     const fetchCosts = async () => {
       try {
         const pancakeProfileAddress = getPancakeProfileAddress()
-        const [numberCakeToReactivate, numberCakeToRegister, numberCakeToUpdate] = await multicall({
-          chainId,
+        const [numberCakeToReactivate, numberCakeToRegister, numberCakeToUpdate] = await viemClients[
+          ChainId.BSC
+        ].multicall({
           allowFailure: false,
           contracts: [
             {

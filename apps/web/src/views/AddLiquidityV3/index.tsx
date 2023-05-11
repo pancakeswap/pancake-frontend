@@ -31,7 +31,7 @@ import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStable
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
-import { getAddress } from 'ethers/lib/utils'
+import { getAddress } from 'viem'
 
 import noop from 'lodash/noop'
 import { useActiveChainId } from 'hooks/useActiveChainId'

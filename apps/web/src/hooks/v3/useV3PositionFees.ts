@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
@@ -8,12 +7,12 @@ import { useSingleCallResult } from 'state/multicall/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { Address } from 'wagmi'
 
-const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
+const MAX_UINT128 = 2n ** 128n - 1n
 
 // compute current + counterfactual fees for a v3 position
 export function useV3PositionFees(
   pool?: Pool,
-  tokenId?: BigNumber,
+  tokenId?: bigint,
   asWETH = false,
 ): [CurrencyAmount<Currency>, CurrencyAmount<Currency>] | [undefined, undefined] {
   const positionManager = useV3NFTPositionManagerContract()
@@ -21,29 +20,31 @@ export function useV3PositionFees(
     | Address
     | undefined
 
-  const tokenIdHexString = tokenId?.toHexString()
   const latestBlockNumber = useCurrentBlock()
 
   // we can't use multicall for this because we need to simulate the call from a specific address
   // latestBlockNumber is included to ensure data stays up-to-date every block
-  const [amounts, setAmounts] = useState<[BigNumber, BigNumber] | undefined>()
+  const [amounts, setAmounts] = useState<[bigint, bigint] | undefined>()
   useEffect(() => {
-    if (positionManager && tokenIdHexString && owner) {
-      positionManager.callStatic
+    if (positionManager && typeof tokenId !== 'undefined' && owner) {
+      positionManager.simulate
         .collect(
-          {
-            tokenId: tokenIdHexString,
-            recipient: owner, // some tokens might fail if transferred to address(0)
-            amount0Max: MAX_UINT128,
-            amount1Max: MAX_UINT128,
-          },
-          { from: owner }, // need to simulate the call as the owner
+          [
+            {
+              tokenId,
+              recipient: owner, // some tokens might fail if transferred to address(0)
+              amount0Max: MAX_UINT128,
+              amount1Max: MAX_UINT128,
+            },
+          ],
+          { account: owner, value: 0n }, // need to simulate the call as the owner
         )
         .then((results) => {
-          setAmounts([results.amount0, results.amount1])
+          const [amount0, amount1] = results.result
+          setAmounts([amount0, amount1])
         })
     }
-  }, [positionManager, tokenIdHexString, owner, latestBlockNumber])
+  }, [positionManager, owner, latestBlockNumber, tokenId])
 
   if (pool && amounts) {
     return [

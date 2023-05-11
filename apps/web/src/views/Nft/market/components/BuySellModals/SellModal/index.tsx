@@ -1,4 +1,4 @@
-import { parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'viem'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
@@ -91,9 +91,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
-  const { reader: collectionContractReader, signer: collectionContractSigner } = useErc721CollectionContract(
-    nftToSell.collectionAddress,
-  )
+  const collectionContract = useErc721CollectionContract(nftToSell.collectionAddress)
   const nftMarketContract = useNftMarketContract()
 
   const isInvalidTransferAddress = transferAddress.length > 0 && !isAddress(transferAddress)
@@ -168,14 +166,14 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const approvedForContract = await collectionContractReader.isApprovedForAll(account, nftMarketContract.address)
+        const approvedForContract = await collectionContract.read.isApprovedForAll([account, nftMarketContract.address])
         return !approvedForContract
       } catch (error) {
         return true
       }
     },
     onApprove: () => {
-      return callWithGasPrice(collectionContractSigner, 'setApprovalForAll', [nftMarketContract.address, true])
+      return callWithGasPrice(collectionContract, 'setApprovalForAll', [nftMarketContract.address, true])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -188,11 +186,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
         return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [nftToSell.collectionAddress, nftToSell.tokenId])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(collectionContractSigner, 'safeTransferFrom(address,address,uint256)', [
-          account,
-          transferAddress,
-          nftToSell.tokenId,
-        ])
+        return callWithGasPrice(collectionContract, 'safeTransferFrom', [account, transferAddress, nftToSell.tokenId])
       }
       const methodName = variant === 'sell' ? 'createAskOrder' : 'modifyAskOrder'
       const askPrice = parseUnits(price)

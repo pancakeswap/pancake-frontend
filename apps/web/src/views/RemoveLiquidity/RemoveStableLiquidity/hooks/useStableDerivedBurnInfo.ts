@@ -9,7 +9,7 @@ import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import useSWR from 'swr'
 import { useContext, useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { Contract } from 'ethers'
+import { getContract } from 'utils/contractHelpers'
 
 export function useGetRemovedTokenAmounts({ lpAmount }: { lpAmount: string }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
@@ -34,12 +34,12 @@ export function useGetRemovedTokenAmountsNoContext({
   stableSwapAddress: string
   token0: Token
   token1: Token
-  stableSwapInfoContract: Contract
+  stableSwapInfoContract: ReturnType<typeof getContract>
 }) {
   const { data } = useSWR(
     !lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', stableSwapAddress, lpAmount],
     async () => {
-      return stableSwapInfoContract.calc_coins_amount(stableSwapAddress, lpAmount)
+      return stableSwapInfoContract.read.calc_coins_amount([stableSwapAddress, lpAmount])
     },
   )
 

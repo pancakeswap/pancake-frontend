@@ -1,25 +1,25 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Contract } from '@ethersproject/contracts'
 import { ChainId } from '@pancakeswap/sdk'
-
-import cakeAbi from '../abis/ICake.json'
+import { Address, getContract } from 'viem'
+import { iCakeABI } from '../abis/ICake'
 import { ICAKE } from '../constants/contracts'
 import { OnChainProvider } from '../types'
 import { getContractAddress } from '../utils'
 
 const getIfoCreditAddressContract = (chainId: ChainId, provider: OnChainProvider) => {
   const address = getContractAddress(ICAKE, chainId)
-  if (!address) {
+  if (!address || address === '0x') {
     throw new Error(`ICAKE not supported on chain ${chainId}`)
   }
-  return new Contract(getContractAddress(ICAKE, chainId), cakeAbi, provider({ chainId }))
+
+  return getContract({ abi: iCakeABI, address, publicClient: provider({ chainId }) })
 }
 
 export const fetchPublicIfoData = async (chainId: ChainId, provider: OnChainProvider) => {
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
-    const ceiling = await ifoCreditAddressContract.ceiling()
+    const ceiling = await ifoCreditAddressContract.read.ceiling()
     return {
       ceiling: new BigNumber(ceiling.toString()).toJSON(),
     }
@@ -31,7 +31,7 @@ export const fetchPublicIfoData = async (chainId: ChainId, provider: OnChainProv
 }
 
 interface Params {
-  account: string
+  account: Address
   chainId: ChainId
   provider: OnChainProvider
 }
@@ -39,7 +39,7 @@ interface Params {
 export const fetchUserIfoCredit = async ({ account, chainId, provider }: Params) => {
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
-    const credit = await ifoCreditAddressContract.getUserCredit(account)
+    const credit = await ifoCreditAddressContract.read.getUserCredit([account])
     return new BigNumber(credit.toString()).toJSON()
   } catch (error) {
     console.error(error)

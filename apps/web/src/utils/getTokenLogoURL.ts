@@ -1,4 +1,4 @@
-import { getAddress } from 'ethers/lib/utils'
+import { getAddress } from 'viem'
 import memoize from 'lodash/memoize'
 import { ChainId, Token } from '@pancakeswap/sdk'
 

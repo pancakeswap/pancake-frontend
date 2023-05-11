@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import contract from 'config/constants/contracts'
-import { getAddress } from 'ethers/lib/utils'
+import { getAddress } from 'viem'
 
 export const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 

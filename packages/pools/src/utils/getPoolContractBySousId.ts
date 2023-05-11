@@ -1,22 +1,24 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Contract } from '@ethersproject/contracts'
-import { Provider } from '@ethersproject/providers'
-import type { Signer } from 'ethers'
+import { WalletClient, getContract, PublicClient, FallbackTransport, Chain } from 'viem'
 
 import { getPoolsConfig } from '../constants'
 import { isLegacyPool } from './isLegacyPool'
-import sousChefABI from '../abis/ISousChefV2.json'
-import sousChefBnbABI from '../abis/ISousChefBNB.json'
-import smartChefABI from '../abis/ISmartChef.json'
+// import sousChefABI from '../abis/ISousChefV2.json'
+// import sousChefBnbABI from '../abis/ISousChefBNB.json'
+// import smartChefABI from '../abis/ISmartChef.json'
+import { smartChefABI } from '../abis/ISmartChef'
 import { PoolCategory } from '../types'
+import { sousChefV2ABI } from '../abis/ISousChefV2'
+import { sousChefBnbABI } from '../abis/ISousChefBNB'
 
 interface Params {
   chainId?: ChainId
   sousId: number
-  provider: Signer | Provider
+  signer?: WalletClient
+  publicClient?: PublicClient<FallbackTransport, Chain>
 }
 
-export function getPoolContractBySousId({ chainId, sousId, provider }: Params) {
+export function getPoolContractBySousId({ chainId, sousId, signer, publicClient }: Params) {
   if (!chainId) {
     return null
   }
@@ -27,8 +29,16 @@ export function getPoolContractBySousId({ chainId, sousId, provider }: Params) {
   }
   const { contractAddress } = pool
   if (isLegacyPool(pool)) {
-    const abi = pool.poolCategory === PoolCategory.BINANCE ? sousChefBnbABI : sousChefABI
-    return new Contract(contractAddress, abi, provider)
+    const abi = pool.poolCategory === PoolCategory.BINANCE ? sousChefBnbABI : sousChefV2ABI
+    return {
+      ...getContract({ abi, address: contractAddress, walletClient: signer, publicClient }),
+      address: contractAddress,
+      abi,
+    }
   }
-  return new Contract(contractAddress, smartChefABI, provider)
+  return {
+    ...getContract({ abi: smartChefABI, address: contractAddress, walletClient: signer, publicClient }),
+    address: contractAddress,
+    abi: smartChefABI,
+  }
 }

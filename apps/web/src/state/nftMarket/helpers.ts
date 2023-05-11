@@ -1,7 +1,5 @@
-import { BigNumber } from 'ethers'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import erc721Abi from 'config/abi/erc721.json'
-import nftMarketAbi from 'config/abi/nftMarket.json'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { COLLECTIONS_WITH_WALLET_OF_OWNER } from 'config/constants/nftsCollections'
@@ -14,9 +12,13 @@ import range from 'lodash/range'
 import lodashSize from 'lodash/size'
 import { stringify } from 'querystring'
 import { isAddress } from 'utils'
+import { Address } from 'wagmi'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { nftMarketABI } from 'config/abi/nftMarket'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { baseNftFields, baseTransactionFields, collectionBaseFields } from './queries'
 import {
@@ -216,7 +218,7 @@ export const getNftApi = async (
  * @returns Array of NFT from API
  */
 export const getNftsFromDifferentCollectionsApi = async (
-  from: { collectionAddress: string; tokenId: string }[],
+  from: { collectionAddress: Address; tokenId: string }[],
 ): Promise<NftToken[]> => {
   const promises = from.map((nft) => getNftApi(nft.collectionAddress, nft.tokenId))
   const responses = await Promise.all(promises)
@@ -402,13 +404,16 @@ export const getMarketDataForTokenIds = async (
 }
 
 export const getNftsOnChainMarketData = async (
-  collectionAddress: string,
+  collectionAddress: Address,
   tokenIds: string[],
 ): Promise<TokenMarketData[]> => {
   try {
     const nftMarketContract = getNftMarketContract()
-    const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(collectionAddress.toLowerCase(), tokenIds)
-    const askInfo = response?.askInfo
+    const response = await nftMarketContract.read.viewAsksByCollectionAndTokenIds([
+      collectionAddress,
+      tokenIds.map((t) => BigInt(t)),
+    ])
+    const askInfo = response[1]
 
     if (!askInfo) return []
 
@@ -417,7 +422,7 @@ export const getNftsOnChainMarketData = async (
         if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
         const currentSeller = tokenAskInfo.seller
         const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
-        const currentAskPrice = tokenAskInfo.price && formatBigNumber(tokenAskInfo.price)
+        const currentAskPrice = tokenAskInfo.price && formatBigInt(tokenAskInfo.price)
 
         return {
           collection: { id: collectionAddress.toLowerCase() },
@@ -435,13 +440,16 @@ export const getNftsOnChainMarketData = async (
 }
 
 export const getNftsUpdatedMarketData = async (
-  collectionAddress: string,
+  collectionAddress: Address,
   tokenIds: string[],
-): Promise<{ tokenId: string; currentSeller: string; currentAskPrice: BigNumber; isTradable: boolean }[]> => {
+): Promise<{ tokenId: string; currentSeller: string; currentAskPrice: bigint; isTradable: boolean }[]> => {
   try {
     const nftMarketContract = getNftMarketContract()
-    const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(collectionAddress.toLowerCase(), tokenIds)
-    const askInfo = response?.askInfo
+    const response = await nftMarketContract.read.viewAsksByCollectionAndTokenIds([
+      collectionAddress,
+      tokenIds.map((t) => BigInt(t)),
+    ])
+    const askInfo = response?.[1]
 
     if (!askInfo) return null
 
@@ -463,27 +471,29 @@ export const getNftsUpdatedMarketData = async (
 
 export const getAccountNftsOnChainMarketData = async (
   collections: ApiCollections,
-  account: string,
+  account: Address,
 ): Promise<TokenMarketData[]> => {
   try {
     const nftMarketAddress = getNftMarketAddress()
     const collectionList = Object.values(collections)
-    const askCalls = collectionList.map((collection) => {
+
+    const call = collectionList.map((collection) => {
       const { address: collectionAddress } = collection
       return {
+        abi: nftMarketABI,
         address: nftMarketAddress,
-        name: 'viewAsksByCollectionAndSeller',
-        params: [collectionAddress, account, 0, 1000],
+        functionName: 'viewAsksByCollectionAndSeller',
+        args: [collectionAddress, account, 0n, 1000n] as const,
       }
     })
 
-    const askCallsResultsRaw = await multicallv2({
-      abi: nftMarketAbi,
-      calls: askCalls,
-      options: { requireSuccess: false },
+    const askCallsResultsRaw = await viemClients[ChainId.BSC].multicall({
+      contracts: call,
     })
+
     const askCallsResults = askCallsResultsRaw
       .map((askCallsResultRaw, askCallIndex) => {
+        // TODO: wagmi
         if (!askCallsResultRaw?.tokenIds || !askCallsResultRaw?.askInfo || !collectionList[askCallIndex]?.address)
           return null
         return askCallsResultRaw.tokenIds
@@ -491,7 +501,7 @@ export const getAccountNftsOnChainMarketData = async (
             if (!tokenId || !askCallsResultRaw.askInfo[tokenIdIndex] || !askCallsResultRaw.askInfo[tokenIdIndex].price)
               return null
 
-            const currentAskPrice = formatBigNumber(askCallsResultRaw.askInfo[tokenIdIndex].price)
+            const currentAskPrice = formatBigInt(askCallsResultRaw.askInfo[tokenIdIndex].price)
 
             return {
               collection: { id: collectionList[askCallIndex].address.toLowerCase() },

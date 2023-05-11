@@ -8,7 +8,11 @@ const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
 
 const isUserRejected = (err) => {
   // provider user rejected error code
-  return typeof err === 'object' && 'code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')
+  return (
+    typeof err === 'object' &&
+    (('code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) ||
+      ('cause' in err && 'code' in err.cause && err.cause.code === 4001))
+  )
 }
 
 const ENV = process.env.VERCEL_ENV || process.env.NODE_ENV

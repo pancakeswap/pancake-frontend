@@ -8,6 +8,7 @@ import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContr
 import { useCallback } from 'react'
 import { mutate } from 'swr'
 import { calculateGasMargin } from 'utils'
+import { viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
@@ -24,7 +25,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
   const { address: account } = useAccount()
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
-  const publicClient = usePublicClient({ chainId })
+  const publicClient = viemClients[chainId as keyof typeof viemClients]
 
   const { loading, fetchWithCatchTxError } = useCatchTxError()
 
@@ -35,6 +36,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     const { calldata, value } = MasterChefV3.withdrawCallParameters({ tokenId, to: account })
 
     const txn = {
+      account,
       to: masterChefV3Address,
       data: calldata,
       value: hexToBigInt(value),
@@ -106,23 +108,27 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
   ])
 
   const onHarvest = useCallback(async () => {
-    const { calldata, value } = MasterChefV3.harvestCallParameters({ tokenId, to: account })
+    const { calldata } = MasterChefV3.harvestCallParameters({ tokenId, to: account })
 
     const txn = {
       to: masterChefV3Address,
       data: calldata,
-      value,
     }
 
     const resp = await fetchWithCatchTxError(() =>
-      publicClient.estimateGas(txn).then((estimate) => {
-        const newTxn = {
+      publicClient
+        .estimateGas({
+          account,
           ...txn,
-          gasLimit: calculateGasMargin(estimate),
-        }
+        })
+        .then((estimate) => {
+          const newTxn = {
+            ...txn,
+            gas: calculateGasMargin(estimate),
+          }
 
-        return signer.sendTransaction(newTxn)
-      }),
+          return signer.sendTransaction(newTxn)
+        }),
     )
 
     if (resp?.status) {
@@ -186,7 +192,7 @@ export function useFarmsV3BatchHarvest() {
         mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
       }
     },
-    [account, fetchWithCatchTxError, masterChefV3Address, signer, t, toastSuccess],
+    [account, fetchWithCatchTxError, masterChefV3Address, publicClient, signer, t, toastSuccess],
   )
 
   return {

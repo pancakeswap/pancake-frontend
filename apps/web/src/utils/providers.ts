@@ -1,23 +1,15 @@
-import { StaticJsonRpcProvider } from '@ethersproject/providers'
-import { ChainId } from '@pancakeswap/sdk'
+import { createPublicClient, http } from 'viem'
+import { bsc, polygon } from 'viem/chains'
 
 export const BSC_PROD_NODE = process.env.NEXT_PUBLIC_NODE_PRODUCTION || 'https://bsc.nodereal.io'
 
-/**
- * @deprecated avoid using provider directly
- */
-export const bscRpcProvider = new StaticJsonRpcProvider(
-  {
-    url: BSC_PROD_NODE,
-    skipFetchSetup: true,
-  },
-  ChainId.BSC,
-)
 
-export const polygonRpcProvider = new StaticJsonRpcProvider(
-  {
-    url: 'https://polygon-rpc.com/',
-    skipFetchSetup: true,
-  },
-  137,
-)
+export const bscRpcProvider = createPublicClient({
+  transport: http(BSC_PROD_NODE),
+  chain: bsc,
+})
+
+export const polygonRpcProvider = createPublicClient({
+  transport: http(),
+  chain: polygon,
+})

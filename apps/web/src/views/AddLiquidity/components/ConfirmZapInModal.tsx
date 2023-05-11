@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react'
-import { BigNumber } from 'ethers'
 import { Currency, CurrencyAmount, Fraction, Pair, Percent, Token } from '@pancakeswap/sdk'
 import {
   InjectedModalProps,
@@ -41,8 +40,8 @@ interface ConfirmZapInModalProps {
   zapSwapTokenField: Field
   zapSwapOutTokenField: Field
   zapInEstimated: {
-    swapAmountIn: BigNumber
-    swapAmountOut: BigNumber
+    swapAmountIn: bigint
+    swapAmountOut: bigint
     isToken0Sold: boolean
   }
   zapMode: boolean

@@ -1,9 +1,8 @@
 import { useMemo, memo } from 'react'
 import CountUp from 'react-countup'
 import { Text } from '@pancakeswap/uikit'
-import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
+import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import styled from 'styled-components'
-import { BigNumber } from 'ethers'
 
 const Price = styled(Text)`
   height: 18px;
@@ -16,11 +15,11 @@ const Price = styled(Text)`
 `
 
 interface LabelPriceProps {
-  price: BigNumber
+  price: bigint
 }
 
 const LabelPrice: React.FC<React.PropsWithChildren<LabelPriceProps>> = ({ price }) => {
-  const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
+  const priceAsNumber = useMemo(() => parseFloat(formatBigIntToFixed(price, 4, 8)), [price])
 
   if (!Number.isFinite(priceAsNumber)) {
     return null

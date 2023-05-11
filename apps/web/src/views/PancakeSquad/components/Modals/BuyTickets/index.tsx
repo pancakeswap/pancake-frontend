@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-import { BigNumber } from 'ethers'
 import {
   Box,
   Button,
@@ -18,14 +17,14 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 interface BuyTicketsModalProps extends ModalProps {
   buyTicketCallBack: ({ ticketsNumber }: { ticketsNumber: number }) => void
   saleStatus: SaleStatusEnum
-  cakeBalance: BigNumber
-  pricePerTicket: BigNumber
+  cakeBalance: bigint
+  pricePerTicket: bigint
   maxPerAddress: number
   maxPerTransaction: number
   numberTicketsOfUser: number
@@ -56,9 +55,9 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
   const remainingTickets = isPreSale
     ? numberTicketsForGen0
     : maxPerAddress - (numberTicketsOfUser - numberTicketsUsedForGen0)
-  const isCakeBalanceInsufficient = cakeBalance.lt(pricePerTicket)
-  const maxBuyTickets = Math.min(cakeBalance.div(pricePerTicket).toNumber(), remainingTickets)
-  const totalCost = pricePerTicket.mul(BigNumber.from(ticketsNumber))
+  const isCakeBalanceInsufficient = cakeBalance < pricePerTicket
+  const maxBuyTickets = Math.min(Number(cakeBalance / pricePerTicket), remainingTickets)
+  const totalCost = pricePerTicket * BigInt(ticketsNumber)
   const maxBuyButtons =
     saleStatus === SaleStatusEnum.Presale
       ? Math.min(numberTicketsForGen0, DEFAULT_MAX_PER_TX)
@@ -97,14 +96,14 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
               <Text font-size="14px" color="textSubtle">
                 {t('Cost per Ticket')}
               </Text>
-              <Text font-size="14px">{formatBigNumber(pricePerTicket, 0)} CAKE</Text>
+              <Text font-size="14px">{formatBigInt(pricePerTicket, 0)} CAKE</Text>
             </Flex>
             <Flex mb="8px" justifyContent="space-between">
               <Text font-size="14px" color="textSubtle">
                 {t('Your CAKE Balance')}
               </Text>
               <Text font-size="14px" color={isCakeBalanceInsufficient ? 'failure' : 'text'}>
-                {formatBigNumber(cakeBalance, 3)} CAKE
+                {formatBigInt(cakeBalance, 3)} CAKE
               </Text>
             </Flex>
             <Flex
@@ -125,7 +124,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
                 {t('Total Cost')}
               </Text>
               <Text font-size="14px" bold>
-                {formatBigNumber(totalCost, 0)} CAKE
+                {formatBigInt(totalCost, 0)} CAKE
               </Text>
             </Flex>
           </Box>

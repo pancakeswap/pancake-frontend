@@ -1,4 +1,3 @@
-import { CallOverrides } from 'ethers'
 import { createMulticall, Call } from '@pancakeswap/multicall'
 import { CHAINS } from 'config/chains'
 import { SERVER_NODES } from 'config/nodes'
@@ -14,10 +13,6 @@ export const { publicClient, chains } = configureChains(CHAINS, [
 ])
 
 export type { Call }
-
-export interface MulticallOptions extends CallOverrides {
-  requireSuccess?: boolean
-}
 
 const { multicall, multicallv2 } = createMulticall(publicClient)
 

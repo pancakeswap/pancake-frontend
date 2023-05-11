@@ -1,5 +1,5 @@
 import { Price, Token, Currency, Percent, Fraction } from "@pancakeswap/sdk";
-import { parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "viem";
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -73,7 +73,7 @@ export function floatToFraction(num: number, decimals = 18) {
     const numFixed = num.toFixed(decimals);
     const numToParse =
       parseFloat(numFixed) > 10 ** decimals ? BigInt(Math.floor(parseFloat(numFixed))).toString() : numFixed;
-    const typedValueParsed = parseUnits(numToParse, decimals).toString();
+    const typedValueParsed = parseUnits(numToParse as `${number}`, decimals).toString();
     return new Fraction(typedValueParsed, 10n ** BigInt(decimals));
   } catch (e) {
     console.debug(`Failed to parse ${num} to fraction`, e);

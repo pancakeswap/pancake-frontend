@@ -1,4 +1,4 @@
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,

@@ -1,5 +1,4 @@
-import { BigNumber as EthersBigNumber } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits } from "viem";
 
 import orderBy from "lodash/orderBy";
 
@@ -51,13 +50,12 @@ export function sortPools<T>(account: string, sortOption: string, poolsToSort: D
             const vault = pool as DeserializedPoolVault<T>;
             if (pool.stakingTokenPrice && vault?.totalCakeInVault?.isFinite()) {
               totalStaked =
-                +formatUnits(EthersBigNumber.from(vault.totalCakeInVault.toString()), pool?.stakingToken?.decimals) *
+                +formatUnits(BigInt(vault.totalCakeInVault.toString()), pool?.stakingToken?.decimals) *
                 pool.stakingTokenPrice;
             }
           } else if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice) {
             totalStaked =
-              +formatUnits(EthersBigNumber.from(pool.totalStaked.toString()), pool?.stakingToken?.decimals) *
-              pool.stakingTokenPrice;
+              +formatUnits(BigInt(pool.totalStaked.toString()), pool?.stakingToken?.decimals) * pool.stakingTokenPrice;
           }
           return Number.isFinite(totalStaked) ? totalStaked : 0;
         },
