@@ -31,6 +31,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { formatRawAmount, formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
+import { hexToBigInt } from 'viem'
 import { isUserRejected } from 'utils/sentry'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
@@ -60,7 +61,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3?.address, account)
 
   const [txHash, setTxHash] = useState<string>('')
 
@@ -171,7 +172,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       sendTransactionAsync({
         to: manager.address,
         data: calldata,
-        value,
+        value: hexToBigInt(value),
       })
         .then((response) => {
           const baseAmount = formatRawAmount(

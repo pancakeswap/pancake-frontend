@@ -15,7 +15,7 @@ import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { viemClients } from 'utils/viem'
+import { getViemClients } from 'utils/viem'
 import { WorkerEvent } from 'quote-worker'
 import { QUOTING_API } from 'config/constants/endpoints'
 
@@ -329,7 +329,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   quoteProvider: SmartRouter.createOffChainQuoteProvider(),
 })
 
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
@@ -414,7 +414,7 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
 })
 
 const onChainQuoteProvider2 = SmartRouter.createQuoteProvider({
-  onChainProvider: viemClients,
+  onChainProvider: getViemClients,
   multicallConfigs: {
     ...BATCH_MULTICALL_CONFIGS,
     [ChainId.BSC]: {

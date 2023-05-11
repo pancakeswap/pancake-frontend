@@ -1,8 +1,9 @@
 import { createAction } from '@reduxjs/toolkit'
+import { Hex } from 'viem'
 
 export interface Call {
-  address: string
-  callData: string
+  address: Hex
+  callData: Hex
 }
 
 const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
@@ -23,14 +24,15 @@ export function parseCallKey(callKey: string): Call {
     throw new Error(`Invalid call key: ${callKey}`)
   }
   return {
-    address: pcs[0],
-    callData: pcs[1],
+    address: pcs[0] as Hex,
+    callData: pcs[1] as Hex,
   }
 }
 
 export interface ListenerOptions {
   // how often this data should be fetched, by default 1
   readonly blocksPerFetch?: number
+  enabled?: boolean
 }
 
 export interface ListenerOptionsWithGas extends ListenerOptions {

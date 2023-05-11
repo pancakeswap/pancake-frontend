@@ -1,9 +1,9 @@
-import { BigNumber } from 'ethers'
+import { Address } from 'wagmi';
 
 export type Actions =
   | { type: 'next_step' }
   | { type: 'set_team'; teamId: number }
-  | { type: 'set_selected_nft'; collectionAddress: string; tokenId: string }
+  | { type: 'set_selected_nft'; collectionAddress: Address; tokenId: string }
   | { type: 'set_username'; userName: string | null }
   | { type: 'initialize'; step: number }
 
@@ -13,18 +13,18 @@ export interface State {
   teamId: number
   selectedNft: {
     tokenId: string
-    collectionAddress: string
+    collectionAddress: Address
   }
   userName: string
-  minimumCakeRequired: BigNumber
-  allowance: BigNumber
+  minimumCakeRequired: bigint
+  allowance: bigint
 }
 
 export interface ContextType extends State {
   actions: {
     nextStep: () => void
     setTeamId: (teamId: number) => void
-    setSelectedNft: (tokenId: string, collectionAddress: string) => void
+    setSelectedNft: (tokenId: string, collectionAddress: Address) => void
     setUserName: (userName: string) => void
   }
 }

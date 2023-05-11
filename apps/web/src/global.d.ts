@@ -1,6 +1,6 @@
-import type { Ethereum } from '@wagmi/core'
+import type { WindowProvider } from '@wagmi/core'
 
-export interface ExtendEthereum extends Ethereum {
+export interface ExtendEthereum extends WindowProvider {
   isSafePal?: true
   isCoin98?: true
   isBlocto?: true

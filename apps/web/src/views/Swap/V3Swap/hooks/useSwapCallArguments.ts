@@ -10,12 +10,12 @@ import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { Address } from 'viem'
+import { Address, Hex } from 'viem'
 
 interface SwapCall {
-  address: string
-  calldata: string
-  value: string
+  address: Address
+  calldata: Hex
+  value: Hex
 }
 
 /**
@@ -30,7 +30,7 @@ export function useSwapCallArguments(
   allowedSlippage: Percent,
   recipientAddress: string | null | undefined,
   // signatureData: SignatureData | null | undefined,
-  deadline: BigNumber | undefined,
+  deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()

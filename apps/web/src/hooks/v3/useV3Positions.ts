@@ -1,10 +1,9 @@
-import { FormatTypes } from 'ethers/lib/utils'
-import { BigNumber, Contract } from 'ethers'
 import { PositionDetails } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
-import { useContractRead, useContractReads } from 'wagmi'
+import { useContractRead, useContractReads, Address } from 'wagmi'
+import { masterChefV3ABI } from 'config/abi/masterChefV3'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -16,7 +15,7 @@ interface UseV3PositionResults {
   position: PositionDetails | undefined
 }
 
-export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): UseV3PositionsResults {
+export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
   const { chainId } = useActiveChainId()
 
@@ -24,8 +23,8 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
     () =>
       tokenIds && positionManager
         ? tokenIds.map((tokenId) => ({
-            abi: positionManager?.interface?.format(FormatTypes.json) as any,
-            address: positionManager?.address as `0x${string}`,
+            abi: positionManager.abi,
+            address: positionManager.address,
             functionName: 'positions',
             args: [tokenId],
             chainId,
@@ -33,7 +32,7 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
         : [],
     [chainId, positionManager, tokenIds],
   )
-  const { isLoading, data: positions = [] } = useContractReads<any, any, any>({
+  const { isLoading, data: positions = [] } = useContractReads({
     contracts: inputs,
     watch: true,
     allowFailure: true,
@@ -45,9 +44,27 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
     loading: isLoading,
     positions: useMemo(
       () =>
-        (positions as Omit<PositionDetails, 'tokenId'>[])
-          ?.map((position, i) =>
-            position && inputs?.[i]?.args[0]
+        positions
+          .filter((p) => p.status === 'success')
+          .map((p) => {
+            const r = p.result
+            return {
+              nonce: r[0],
+              operator: r[1],
+              token0: r[2],
+              token1: r[3],
+              fee: r[4],
+              tickLower: r[5],
+              tickUpper: r[6],
+              liquidity: r[7],
+              feeGrowthInside0LastX128: r[8],
+              feeGrowthInside1LastX128: r[9],
+              tokensOwed0: r[10],
+              tokensOwed1: r[11],
+            } as Omit<PositionDetails, 'tokenId'>
+          })
+          .map((position, i) =>
+            position && typeof inputs?.[i]?.args[0] !== 'undefined'
               ? {
                   ...position,
                   tokenId: inputs?.[i]?.args[0],
@@ -60,7 +77,7 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
   }
 }
 
-export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3PositionResults {
+export function useV3PositionFromTokenId(tokenId: bigint | undefined): UseV3PositionResults {
   const position = useV3PositionsFromTokenIds(tokenId ? [tokenId] : undefined)
 
   return useMemo(
@@ -73,17 +90,17 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
 }
 
 export function useV3TokenIdsByAccount(
-  contract?: Contract,
-  account?: string | null,
-): { tokenIds: BigNumber[]; loading: boolean } {
+  contractAddress?: Address,
+  account?: Address | null | undefined,
+): { tokenIds: bigint[]; loading: boolean } {
   const { chainId } = useActiveChainId()
   const {
     isLoading: balanceLoading,
-    data: accountBalance_,
+    data: accountBalance,
     refetch: refetchBalance,
-  } = useContractRead<any, any, BigNumber>({
-    abi: contract?.interface?.format(FormatTypes.json) as any,
-    address: contract?.address as `0x${string}`,
+  } = useContractRead({
+    abi: masterChefV3ABI,
+    address: contractAddress as `0x${string}`,
     args: [account ?? undefined],
     functionName: 'balanceOf',
     enabled: !!account,
@@ -91,16 +108,19 @@ export function useV3TokenIdsByAccount(
     chainId,
   })
 
-  // we don't expect any account balance to ever exceed the bounds of max safe int
-  const accountBalance: number | undefined = accountBalance_?.toNumber()
-
   const tokenIdsArgs = useMemo(() => {
-    if (accountBalance && account && contract) {
-      const tokenRequests = []
+    if (accountBalance && account) {
+      const tokenRequests: {
+        abi: typeof masterChefV3ABI
+        address: Address
+        functionName: 'tokenOfOwnerByIndex'
+        args: [Address, number]
+        chainId: number
+      }[] = []
       for (let i = 0; i < accountBalance; i++) {
         tokenRequests.push({
-          abi: contract.interface.format(FormatTypes.json) as any,
-          address: contract.address as `0x${string}`,
+          abi: masterChefV3ABI,
+          address: contractAddress as `0x${string}`,
           functionName: 'tokenOfOwnerByIndex',
           args: [account, i],
           chainId,
@@ -109,7 +129,7 @@ export function useV3TokenIdsByAccount(
       return tokenRequests
     }
     return []
-  }, [account, accountBalance, chainId, contract])
+  }, [account, accountBalance, chainId, contractAddress])
 
   const {
     isLoading: someTokenIdsLoading,
@@ -133,29 +153,33 @@ export function useV3TokenIdsByAccount(
   }, [account, refetchBalance, refetchTokenIds])
 
   return {
-    tokenIds: useMemo(() => tokenIds.filter(Boolean) as BigNumber[], [tokenIds]),
+    tokenIds: useMemo(
+      () => tokenIds.map((r) => (r.status === 'success' ? r.result : null)).filter(Boolean) as bigint[],
+      [tokenIds],
+    ),
     loading: someTokenIdsLoading || balanceLoading,
   }
 }
 
-export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
+export function useV3Positions(account: Address | null | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
 
-  const { tokenIds, loading: tokenIdsLoading } = useV3TokenIdsByAccount(positionManager, account)
+  const { tokenIds, loading: tokenIdsLoading } = useV3TokenIdsByAccount(positionManager?.address, account)
 
-  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3?.address, account)
 
   const totalTokenIds = useMemo(() => [...stakedTokenIds, ...tokenIds], [stakedTokenIds, tokenIds])
 
   const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(totalTokenIds)
+  console.log(positions, positionsLoading, 'what?????')
 
   return useMemo(
     () => ({
       loading: tokenIdsLoading || positionsLoading,
       positions: positions?.map((position) => ({
         ...position,
-        isStaked: Boolean(stakedTokenIds?.find((s) => s.eq(position.tokenId))),
+        isStaked: Boolean(stakedTokenIds?.find((s) => s === position.tokenId)),
       })),
     }),
     [positions, positionsLoading, stakedTokenIds, tokenIdsLoading],

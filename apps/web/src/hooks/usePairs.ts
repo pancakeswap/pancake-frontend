@@ -1,13 +1,10 @@
 import { CurrencyAmount, Pair, Currency } from '@pancakeswap/sdk'
+import { pancakePairV2ABI } from 'config/abi/IPancakePair'
 import { useMemo } from 'react'
-import IPancakePairABI from 'config/abi/IPancakePair.json'
-import { Interface } from 'ethers/lib/utils'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useActiveChainId } from './useActiveChainId'
-
-const PAIR_INTERFACE = new Interface(IPancakePairABI)
 
 export enum PairState {
   LOADING,
@@ -47,7 +44,7 @@ export function useV2Pairs(currencies: [Currency | undefined, Currency | undefin
     [tokens],
   )
 
-  const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
+  const results = useMultipleContractSingleData(pairAddresses, pancakePairV2ABI, 'getReserves')
 
   return useMemo(() => {
     return results.map((result, i) => {

@@ -6,124 +6,124 @@ export interface Addresses {
   [chainId: number]: `0x${string}`
 }
 
-export const getAddress = (address: Addresses, chainId?: number): `0x${string}` => {
+export const getAddressFromMap = (address: Addresses, chainId?: number): `0x${string}` => {
   return address[chainId] ? address[chainId] : address[ChainId.BSC]
 }
 
-export const getMasterChefAddress = (chainId?: number) => {
-  return getAddress(addresses.masterChef, chainId)
+export const getMasterChefV2Address = (chainId?: number) => {
+  return getAddressFromMap(addresses.masterChef, chainId)
 }
 export const getMasterChefV1Address = () => {
-  return getAddress(addresses.masterChefV1)
+  return getAddressFromMap(addresses.masterChefV1)
 }
 export const getMulticallAddress = (chainId?: number) => {
-  return getAddress(addresses.multiCall, chainId)
+  return getAddressFromMap(addresses.multiCall, chainId)
 }
 export const getLotteryV2Address = () => {
-  return getAddress(addresses.lotteryV2)
+  return getAddressFromMap(addresses.lotteryV2)
 }
 export const getPancakeProfileAddress = () => {
-  return getAddress(addresses.pancakeProfile)
+  return getAddressFromMap(addresses.pancakeProfile)
 }
 export const getPancakeBunniesAddress = () => {
-  return getAddress(addresses.pancakeBunnies)
+  return getAddressFromMap(addresses.pancakeBunnies)
 }
 export const getBunnyFactoryAddress = () => {
-  return getAddress(addresses.bunnyFactory)
+  return getAddressFromMap(addresses.bunnyFactory)
 }
 export const getPredictionsV1Address = () => {
-  return getAddress(addresses.predictionsV1)
+  return getAddressFromMap(addresses.predictionsV1)
 }
 export const getPointCenterIfoAddress = () => {
-  return getAddress(addresses.pointCenterIfo)
+  return getAddressFromMap(addresses.pointCenterIfo)
 }
 export const getTradingCompetitionAddressEaster = () => {
-  return getAddress(addresses.tradingCompetitionEaster)
+  return getAddressFromMap(addresses.tradingCompetitionEaster)
 }
 export const getTradingCompetitionAddressFanToken = () => {
-  return getAddress(addresses.tradingCompetitionFanToken)
+  return getAddressFromMap(addresses.tradingCompetitionFanToken)
 }
 
 export const getTradingCompetitionAddressMobox = () => {
-  return getAddress(addresses.tradingCompetitionMobox)
+  return getAddressFromMap(addresses.tradingCompetitionMobox)
 }
 
 export const getTradingCompetitionAddressMoD = () => {
-  return getAddress(addresses.tradingCompetitionMoD)
+  return getAddressFromMap(addresses.tradingCompetitionMoD)
 }
 
 export const getVaultPoolAddress = (vaultKey: VaultKey) => {
   if (!vaultKey) {
     return null
   }
-  return getAddress(addresses[vaultKey])
+  return getAddressFromMap(addresses[vaultKey])
 }
 
 export const getCakeVaultAddress = () => {
-  return getAddress(addresses.cakeVault)
+  return getAddressFromMap(addresses.cakeVault)
 }
 
 export const getCakeFlexibleSideVaultAddress = () => {
-  return getAddress(addresses.cakeFlexibleSideVault)
+  return getAddressFromMap(addresses.cakeFlexibleSideVault)
 }
 
 export const getFarmAuctionAddress = () => {
-  return getAddress(addresses.farmAuction)
+  return getAddressFromMap(addresses.farmAuction)
 }
 export const getAnniversaryAchievement = () => {
-  return getAddress(addresses.AnniversaryAchievement)
+  return getAddressFromMap(addresses.AnniversaryAchievement)
 }
 
 export const getNftMarketAddress = () => {
-  return getAddress(addresses.nftMarket)
+  return getAddressFromMap(addresses.nftMarket)
 }
 export const getNftSaleAddress = () => {
-  return getAddress(addresses.nftSale)
+  return getAddressFromMap(addresses.nftSale)
 }
 export const getPancakeSquadAddress = () => {
-  return getAddress(addresses.pancakeSquad)
+  return getAddressFromMap(addresses.pancakeSquad)
 }
 export const getPotteryDrawAddress = () => {
-  return getAddress(addresses.potteryDraw)
+  return getAddressFromMap(addresses.potteryDraw)
 }
 
 export const getZapAddress = (chainId?: number) => {
-  return getAddress(addresses.zap, chainId)
+  return getAddressFromMap(addresses.zap, chainId)
 }
 export const getICakeAddress = () => {
-  return getAddress(addresses.iCake)
+  return getAddressFromMap(addresses.iCake)
 }
 
 export const getBCakeFarmBoosterAddress = () => {
-  return getAddress(addresses.bCakeFarmBooster)
+  return getAddressFromMap(addresses.bCakeFarmBooster)
 }
 
 export const getBCakeFarmBoosterProxyFactoryAddress = () => {
-  return getAddress(addresses.bCakeFarmBoosterProxyFactory)
+  return getAddressFromMap(addresses.bCakeFarmBoosterProxyFactory)
 }
 
 export const getNonBscVaultAddress = (chainId?: number) => {
-  return getAddress(addresses.nonBscVault, chainId)
+  return getAddressFromMap(addresses.nonBscVault, chainId)
 }
 
 export const getCrossFarmingSenderAddress = (chainId?: number) => {
-  return getAddress(addresses.crossFarmingSender, chainId)
+  return getAddressFromMap(addresses.crossFarmingSender, chainId)
 }
 
 export const getCrossFarmingReceiverAddress = (chainId?: number) => {
-  return getAddress(addresses.crossFarmingReceiver, chainId)
+  return getAddressFromMap(addresses.crossFarmingReceiver, chainId)
 }
 
 export const getStableSwapNativeHelperAddress = (chainId?: number) => {
-  return getAddress(addresses.stableSwapNativeHelper, chainId)
+  return getAddressFromMap(addresses.stableSwapNativeHelper, chainId)
 }
 
 export const getMasterChefV3Address = (chainId?: number) => {
-  return getAddress(addresses.masterChefV3, chainId)
+  return getAddressFromMap(addresses.masterChefV3, chainId)
 }
 
 export const getV3MigratorAddress = (chainId?: number) => {
-  return getAddress(addresses.v3Migrator, chainId)
+  return getAddressFromMap(addresses.v3Migrator, chainId)
 }
 
 export const getTradingRewardAddress = (chainId?: number) => {
@@ -131,5 +131,5 @@ export const getTradingRewardAddress = (chainId?: number) => {
 }
 
 export const getV3AirdropAddress = (chainId?: number) => {
-  return getAddress(addresses.v3Airdrop, chainId)
+  return getAddressFromMap(addresses.v3Airdrop, chainId)
 }

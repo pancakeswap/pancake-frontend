@@ -1,7 +1,5 @@
 import type { Signer } from 'ethers'
 import type { Provider } from '@ethersproject/providers'
-import { provider } from 'utils/wagmi'
-import { Contract } from 'ethers'
 import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
@@ -9,7 +7,7 @@ import {
   getPancakeProfileAddress,
   getBunnyFactoryAddress,
   getLotteryV2Address,
-  getMasterChefAddress,
+  getMasterChefV2Address,
   getMasterChefV1Address,
   getPointCenterIfoAddress,
   getTradingCompetitionAddressEaster,
@@ -66,7 +64,6 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
-import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
@@ -136,243 +133,282 @@ import type {
   UNS,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
+import { Address, erc20ABI, erc721ABI, WalletClient } from 'wagmi'
+import { GetContractArgs } from 'wagmi/actions'
+import { getContract as getContract_ } from 'viem'
+import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
+import { v3AirdropABI } from 'config/abi/v3Airdrop'
+import { Abi } from 'abitype'
+import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
+import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
+import { viemClients } from './viem'
+import { masterChefV3ABI } from 'config/abi/masterChefV3'
+import { masterChefV2ABI } from 'config/abi/masterchef'
 
-export const getContract = ({
+export const getContract = <TAbi extends Abi | unknown[]>({
   abi,
   address,
   chainId = ChainId.BSC,
   signer,
 }: {
-  abi: any
-  address: string
+  abi: TAbi
+  address: Address
   chainId?: ChainId
-  signer?: Signer | Provider
+  signer?: WalletClient
 }) => {
-  const signerOrProvider = signer ?? provider({ chainId })
-  return new Contract(address, abi, signerOrProvider)
+  const c = getContract_({
+    abi,
+    address,
+    publicClient: viemClients[chainId],
+    walletClient: signer,
+  })
+  return {
+    ...c,
+    abi,
+    address,
+  }
 }
 
-export const getBep20Contract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: bep20Abi, address, signer }) as Erc20
+export const getBep20Contract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: bep20Abi, address, signer })
 }
-export const getErc721Contract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: erc721Abi, address, signer }) as Erc721
+
+export const getErc721Contract = (address: Address, walletClient?: WalletClient) => {
+  return getContract_({
+    abi: erc721ABI,
+    address,
+    walletClient,
+  })
 }
-export const getLpContract = (address: string, chainId?: number, signer?: Signer | Provider) => {
-  return getContract({ abi: lpTokenAbi, address, signer, chainId }) as LpToken
+export const getLpContract = (address: Address, chainId?: number, signer?: WalletClient) => {
+  return getContract({ abi: lpTokenAbi, address, signer, chainId })
 }
-export const getIfoV1Contract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: ifoV1Abi, address, signer }) as IfoV1
+export const getIfoV1Contract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: ifoV1Abi, address, signer })
 }
-export const getIfoV2Contract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: ifoV2Abi, address, signer }) as IfoV2
+export const getIfoV2Contract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: ifoV2Abi, address, signer })
 }
-export const getIfoV3Contract = (address: string, signer?: Signer | Provider) => {
+export const getIfoV3Contract = (address: Address, signer?: WalletClient) => {
   return getContract({ abi: ifoV3Abi, address, signer })
 }
 
-export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: pointCenterIfo, address: getPointCenterIfoAddress(), signer }) as PointCenterIfo
+export const getPointCenterIfoContract = (signer?: WalletClient) => {
+  return getContract({ abi: pointCenterIfo, address: getPointCenterIfoAddress(), signer })
 }
-export const getCakeContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getCakeContract = (chainId?: number) => {
   return getContract({
-    abi: cakeAbi,
+    abi: erc20ABI,
     address: chainId ? CAKE[chainId].address : CAKE[ChainId.BSC].address,
-    signer,
-  }) as Cake
+    chainId,
+  })
 }
-export const getProfileContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: profileABI, address: getPancakeProfileAddress(), signer }) as PancakeProfile
+
+export const profileContractArgs = {
+  abi: pancakeProfileABI,
+  address: getPancakeProfileAddress(),
+  chainId: ChainId.BSC,
+} satisfies GetContractArgs
+
+export const profileContract = getContract_(profileContractArgs)
+
+export const getBunnyFactoryContract = (signer?: WalletClient) => {
+  return getContract({ abi: bunnyFactoryAbi, address: getBunnyFactoryAddress(), signer })
 }
-export const getBunnyFactoryContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: bunnyFactoryAbi, address: getBunnyFactoryAddress(), signer }) as BunnyFactory
+export const getLotteryV2Contract = (signer?: WalletClient) => {
+  return getContract({ abi: lotteryV2Abi, address: getLotteryV2Address(), signer })
 }
-export const getLotteryV2Contract = (signer?: Signer | Provider) => {
-  return getContract({ abi: lotteryV2Abi, address: getLotteryV2Address(), signer }) as LotteryV2
+export const getMasterchefV1Contract = (signer?: WalletClient) => {
+  return getContract({ abi: masterChefV1, address: getMasterChefV1Address(), signer })
 }
-export const getMasterchefContract = (signer?: Signer | Provider, chainId?: number) => {
-  return getContract({ abi: masterChef, address: getMasterChefAddress(chainId), signer }) as Masterchef
-}
-export const getMasterchefV1Contract = (signer?: Signer | Provider) => {
-  return getContract({ abi: masterChefV1, address: getMasterChefV1Address(), signer }) as MasterchefV1
-}
-export const getTradingCompetitionContractEaster = (signer?: Signer | Provider) => {
+
+export const getTradingCompetitionContractEaster = (signer?: WalletClient) => {
   return getContract({
     abi: tradingCompetitionEasterAbi,
     address: getTradingCompetitionAddressEaster(),
     signer,
-  }) as TradingCompetitionEaster
+  })
 }
 
-export const getTradingCompetitionContractFanToken = (signer?: Signer | Provider) => {
+export const getTradingCompetitionContractFanToken = (signer?: WalletClient) => {
   return getContract({
     abi: tradingCompetitionFanTokenAbi,
     address: getTradingCompetitionAddressFanToken(),
     signer,
-  }) as TradingCompetitionFanToken
+  })
 }
-export const getTradingCompetitionContractMobox = (signer?: Signer | Provider) => {
+export const getTradingCompetitionContractMobox = (signer?: WalletClient) => {
   return getContract({
     abi: tradingCompetitionMoboxAbi,
     address: getTradingCompetitionAddressMobox(),
     signer,
-  }) as TradingCompetitionMobox
+  })
 }
 
-export const getTradingCompetitionContractMoD = (signer?: Signer | Provider) => {
+export const getTradingCompetitionContractMoD = (signer?: WalletClient) => {
   return getContract({
     abi: tradingCompetitionMoDAbi,
     address: getTradingCompetitionAddressMoD(),
     signer,
-  }) as TradingCompetitionMoD
+  })
 }
 
-export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
-  return getContract({ abi: cakeVaultV2Abi, address: getCakeVaultAddress(), signer }) as CakeVaultV2
+export const getCakeVaultV2Contract = (signer?: WalletClient) => {
+  return getContract({ abi: cakeVaultV2Abi, address: getCakeVaultAddress(), signer })
 }
 
-export const getCakeFlexibleSideVaultV2Contract = (signer?: Signer | Provider) => {
+export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient) => {
   return getContract({
     abi: cakeFlexibleSideVaultV2Abi,
     address: getCakeFlexibleSideVaultAddress(),
     signer,
-  }) as CakeFlexibleSideVaultV2
+  })
 }
 
-export const getPredictionsContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: predictionsAbi, address, signer }) as Predictions
+export const getPredictionsContract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: predictionsAbi, address, signer })
 }
 
-export const getPredictionsV1Contract = (signer?: Signer | Provider) => {
-  return getContract({ abi: predictionsV1Abi, address: getPredictionsV1Address(), signer }) as PredictionsV1
+export const getPredictionsV1Contract = (signer?: WalletClient) => {
+  return getContract({ abi: predictionsV1Abi, address: getPredictionsV1Address(), signer })
 }
 
-export const getCakePredictionsContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: cakePredictionsAbi, address, signer }) as Predictions
+export const getCakePredictionsContract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: cakePredictionsAbi, address, signer })
 }
 
-export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider, chainId?: number) => {
-  return getContract({ abi: chainlinkOracleAbi, address, signer, chainId }) as ChainlinkOracle
+export const getChainlinkOracleContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: chainlinkOracleAbi, address, signer, chainId })
 }
-export const getFarmAuctionContract = (signer?: Signer | Provider) => {
+
+export const getFarmAuctionContract = (signer?: WalletClient) => {
   return getContract({ abi: farmAuctionAbi, address: getFarmAuctionAddress(), signer }) as unknown as FarmAuction
 }
-export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {
+export const getAnniversaryAchievementContract = (signer?: WalletClient) => {
   return getContract({
     abi: anniversaryAchievementAbi,
     address: getAnniversaryAchievement(),
     signer,
-  }) as AnniversaryAchievement
+  })
 }
 
-export const getNftMarketContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: nftMarketAbi, address: getNftMarketAddress(), signer }) as NftMarket
+export const getNftMarketContract = (signer?: WalletClient) => {
+  return getContract({ abi: nftMarketAbi, address: getNftMarketAddress(), signer })
 }
-export const getNftSaleContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: nftSaleAbi, address: getNftSaleAddress(), signer }) as NftSale
+export const getNftSaleContract = (signer?: WalletClient) => {
+  return getContract({ abi: nftSaleAbi, address: getNftSaleAddress(), signer })
 }
-export const getPancakeSquadContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: pancakeSquadAbi, address: getPancakeSquadAddress(), signer }) as PancakeSquad
+export const getPancakeSquadContract = (signer?: WalletClient) => {
+  return getContract({ abi: pancakeSquadAbi, address: getPancakeSquadAddress(), signer })
 }
-export const getErc721CollectionContract = (signer?: Signer | Provider, address?: string) => {
-  return getContract({ abi: erc721CollectionAbi, address, signer }) as Erc721collection
-}
-
-export const getPotteryVaultContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: potteryVaultAbi, address, signer }) as PotteryVaultAbi
+export const getErc721CollectionContract = (signer?: WalletClient, address?: Address) => {
+  return getContract({ abi: erc721CollectionAbi, address, signer })
 }
 
-export const getPotteryDrawContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: potteryDrawAbi, address: getPotteryDrawAddress(), signer }) as PotteryDrawAbi
+export const getPotteryVaultContract = (address: Address, walletClient?: WalletClient) => {
+  return getContract_({ abi: potteryVaultABI, address, walletClient })
 }
 
-export const getIfoCreditAddressContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: iCakeAbi, address: getICakeAddress(), signer }) as ICake
+export const getPotteryDrawContract = (walletClient: WalletClient) => {
+  return getContract_({ abi: potteryDrawABI, address: getPotteryDrawAddress(), walletClient })
 }
 
-export const getBCakeFarmBoosterContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: bCakeFarmBoosterAbi, address: getBCakeFarmBoosterAddress(), signer }) as BCakeFarmBooster
+export const getIfoCreditAddressContract = (signer?: WalletClient) => {
+  return getContract({ abi: iCakeAbi, address: getICakeAddress(), signer })
 }
 
-export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provider) => {
+export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
+  return getContract({ abi: bCakeFarmBoosterAbi, address: getBCakeFarmBoosterAddress(), signer })
+}
+
+export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
   return getContract({
     abi: bCakeFarmBoosterProxyFactoryAbi,
     address: getBCakeFarmBoosterProxyFactoryAddress(),
     signer,
-  }) as BCakeFarmBoosterProxyFactory
+  })
 }
 
-export const getBCakeProxyContract = (proxyContractAddress: string, signer?: Signer | Provider) => {
-  return getContract({ abi: bCakeProxyAbi, address: proxyContractAddress, signer }) as BCakeProxy
+export const getBCakeProxyContract = (proxyContractAddress: Address, signer?: WalletClient) => {
+  return getContract({ abi: bCakeProxyAbi, address: proxyContractAddress, signer })
 }
 
-export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: number) => {
-  return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
+export const getNonBscVaultContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer })
 }
 
-export const getSidContract = (address: string, chainId: number) => {
-  return getContract({ abi: sid, address, chainId }) as SID
+export const getSidContract = (address: Address, chainId: number) => {
+  return getContract({ abi: sid, address, chainId })
 }
 
-export const getUnsContract = (address: string, chainId?: ChainId, signer?: Signer | Provider) => {
-  return getContract({ abi: uns, chainId, address, signer }) as UNS
+export const getUnsContract = (address: Address, chainId?: ChainId, signer?: WalletClient) => {
+  return getContract({ abi: uns, chainId, address, signer })
 }
 
-export const getSidResolverContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: sidResolver, address, signer }) as SIDResolver
+export const getSidResolverContract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: sidResolver, address, signer })
 }
 
-export const getCrossFarmingSenderContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getCrossFarmingSenderContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: crossFarmingSenderAbi,
     address: getCrossFarmingSenderAddress(chainId),
     chainId,
     signer,
-  }) as CrossFarmingSender
+  })
 }
 
-export const getCrossFarmingReceiverContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getCrossFarmingReceiverContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: crossFarmingReceiverAbi,
     address: getCrossFarmingReceiverAddress(chainId),
     chainId,
     signer,
-  }) as CrossFarmingReceiver
+  })
 }
 
 export const getCrossFarmingProxyContract = (
-  proxyContractAddress: string,
-  signer?: Signer | Provider,
+  proxyContractAddress: Address,
+  signer?: WalletClient,
   chainId?: number,
 ) => {
-  return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer }) as CrossFarmingProxy
+  return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer })
 }
 
-export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getStableSwapNativeHelperContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: stableSwapNativeHelperAbi,
     address: getStableSwapNativeHelperAddress(chainId),
     chainId,
     signer,
-  }) as StableSwapNativeHelper
+  })
 }
 
-export const getMasterChefV3Contract = (signer?: Signer | Provider, chainId?: number) => {
+export const getMasterChefContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: masterChefV3Abi,
+    abi: masterChefV2ABI,
+    address: getMasterChefV2Address(chainId),
+    chainId,
+    signer,
+  })
+}
+export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: masterChefV3ABI,
     address: getMasterChefV3Address(chainId),
     chainId,
     signer,
-  }) as MasterChefV3
+  })
 }
 
-export const getV3MigratorContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getV3MigratorContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: v3MigratorAbi,
     address: getV3MigratorAddress(chainId),
     chainId,
     signer,
-  }) as V3Migrator
+  })
 }
 
 export const getTradingRewardContract = (chainId?: number, signer?: Signer | Provider) => {
@@ -384,10 +420,10 @@ export const getTradingRewardContract = (chainId?: number, signer?: Signer | Pro
   }) as TradingReward
 }
 
-export const getV3AirdropContract = (signer?: Signer | Provider) => {
+export const getV3AirdropContract = (signer?: WalletClient) => {
   return getContract({
-    abi: V3AirdropAbi,
+    abi: v3AirdropABI,
     address: getV3AirdropAddress(),
     signer,
-  }) as V3Airdrop
+  })
 }

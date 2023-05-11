@@ -9,7 +9,6 @@ import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { useAccount } from 'wagmi'
-import { SendTransactionResult } from '@wagmi/core'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -26,7 +25,7 @@ import {
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
-  response: SendTransactionResult,
+  response: { hash: string } | { transactionHash: string },
   customData?: {
     summary?: string
     translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -54,7 +53,7 @@ export function useTransactionAdder(): (
 
   return useCallback(
     (
-      response: SendTransactionResult,
+      response,
       {
         summary,
         translatableSummary,
@@ -76,13 +75,12 @@ export function useTransactionAdder(): (
       if (!account) return
       if (!chainId) return
 
-      const { hash } = response
-      if (!hash) {
+      if (!('hash' in response) || !('transactionHash' in response)) {
         throw Error('No transaction hash found.')
       }
       dispatch(
         addTransaction({
-          hash,
+          hash: response.hash || (response.transactionHash as string),
           from: account,
           chainId,
           approval,

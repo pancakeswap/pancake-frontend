@@ -1,5 +1,5 @@
 import type { Signer } from 'ethers'
-import { getAddress } from 'ethers/lib/utils'
+import { getAddress } from 'viem'
 import { BigNumber, Contract } from 'ethers'
 import { AddressZero } from '@ethersproject/constants'
 import type { Provider } from '@ethersproject/providers'

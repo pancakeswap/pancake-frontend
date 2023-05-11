@@ -6,11 +6,11 @@ import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePotterytVaultContract } from 'hooks/useContract'
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
-export const useDepositPottery = (amount: string, potteryVaultAddress: string) => {
+export const useDepositPottery = (amount: string, potteryVaultAddress: Address) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const dispatch = useAppDispatch()
@@ -20,7 +20,7 @@ export const useDepositPottery = (amount: string, potteryVaultAddress: string) =
 
   const handleDeposit = useCallback(async () => {
     const amountDeposit = new BigNumber(amount).multipliedBy(DEFAULT_TOKEN_DECIMAL).toString()
-    const receipt = await fetchWithCatchTxError(() => contract.deposit(amountDeposit, account))
+    const receipt = await fetchWithCatchTxError(() => contract.write.deposit([BigInt(amountDeposit), account]))
 
     if (receipt?.status) {
       toastSuccess(

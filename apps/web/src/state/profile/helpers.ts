@@ -13,16 +13,14 @@ export interface GetProfileResponse {
   profile?: Profile
 }
 
-const transformProfileResponse = (
-  profileResponse: Awaited<ReturnType<PancakeProfile['getUserProfile']>>,
-): Partial<Profile> => {
+const transformProfileResponse = (profileResponse): Partial<Profile> => {
   const { 0: userId, 1: numberPoints, 2: teamId, 3: collectionAddress, 4: tokenId, 5: isActive } = profileResponse
 
   return {
-    userId: userId.toNumber(),
-    points: numberPoints.toNumber(),
-    teamId: teamId.toNumber(),
-    tokenId: tokenId.toNumber(),
+    userId: Number(userId),
+    points: Number(numberPoints),
+    teamId: Number(teamId),
+    tokenId: Number(tokenId),
     collectionAddress,
     isActive,
   }
@@ -54,7 +52,7 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
       calls: profileCalls,
       options: { requireSuccess: false },
     })
-    const [[hasRegistered], profileResponse] = profileCallsResult
+    const [hasRegistered, profileResponse] = profileCallsResult
     if (!hasRegistered) {
       return { hasRegistered, profile: null }
     }

@@ -17,7 +17,7 @@ export const useClaimPottery = () => {
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const handleClaim = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => contract.claimReward())
+    const receipt = await fetchWithCatchTxError(() => contract.write.claimReward())
 
     if (receipt?.status) {
       toastSuccess(
