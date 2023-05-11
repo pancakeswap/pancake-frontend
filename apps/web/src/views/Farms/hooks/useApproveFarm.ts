@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { Contract } from 'ethers'
-import { getMasterChefAddress, getNonBscVaultAddress } from 'utils/addressHelpers'
+import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 
 const useApproveFarm = (lpContract: Contract, chainId: number) => {
   const isBscNetwork = verifyBscNetwork(chainId)
-  const contractAddress = isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
+  const contractAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
   const { callWithGasPrice } = useCallWithGasPrice()
   const handleApprove = useCallback(async () => {

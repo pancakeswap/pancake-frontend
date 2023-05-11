@@ -1,8 +1,7 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import BN from 'bignumber.js'
+import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
 import memoize from 'lodash/memoize'
 
-const BIG_TEN = BigNumber.from(10)
-
-export const getFullDecimalMultiplier = memoize((decimals: number): BigNumber => {
+export const getFullDecimalMultiplier = memoize((decimals: number): BN => {
   return BIG_TEN.pow(decimals)
 })

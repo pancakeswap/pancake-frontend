@@ -7,7 +7,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { farmFetcher } from 'state/farms'
 import { SerializedFarm } from '@pancakeswap/farms'
 import { SerializedFarmConfig } from '../../config/constants/types'
-import { getMasterChefAddress } from '../../utils/addressHelpers'
+import { getMasterChefV2Address } from '../../utils/addressHelpers'
 
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   try {
@@ -16,23 +16,23 @@ export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
       calls: [
         {
           name: 'poolLength',
-          address: getMasterChefAddress(chainId),
+          address: getMasterChefV2Address(chainId),
         },
       ],
       chainId,
     })
 
-    return new BigNumber(poolLength).toNumber()
+    return Number(poolLength)
   } catch (error) {
     console.error('Fetch MasterChef Farm Pool Length Error: ', error)
-    return BIG_ZERO.toNumber()
+    return 0
   }
 }
 
 const masterChefFarmCalls = async (farm: SerializedFarm) => {
   const { pid, quoteToken } = farm
   const multiCallChainId = farmFetcher.isTestnet(quoteToken.chainId) ? ChainId.BSC_TESTNET : ChainId.BSC
-  const masterChefAddress = getMasterChefAddress(multiCallChainId)
+  const masterChefAddress = getMasterChefV2Address(multiCallChainId)
   const masterChefPid = pid
 
   return masterChefPid || masterChefPid === 0

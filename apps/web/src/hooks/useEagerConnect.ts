@@ -1,9 +1,9 @@
-import { useClient, useConnect } from 'wagmi'
+import { useConfig, useConnect } from 'wagmi'
 import { useEffect } from 'react'
 import { CHAINS } from 'config/chains'
 
 const useEagerConnect = () => {
-  const client = useClient()
+  const config = useConfig()
   const { connectAsync, connectors } = useConnect()
   useEffect(() => {
     if (
@@ -15,13 +15,13 @@ const useEagerConnect = () => {
       import('wagmi/connectors/safe').then(({ SafeConnector }) => {
         const safe = new SafeConnector({ chains: CHAINS })
         connectAsync({ connector: safe }).catch(() => {
-          client.autoConnect()
+          config.autoConnect()
         })
       })
     } else {
-      client.autoConnect()
+      config.autoConnect()
     }
-  }, [client, connectAsync, connectors])
+  }, [config, connectAsync, connectors])
 }
 
 export default useEagerConnect

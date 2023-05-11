@@ -13,7 +13,7 @@ import { SWRConfig } from 'swr'
 import { vi } from 'vitest'
 import { WagmiConfig } from 'wagmi'
 import { useHydrateAtoms } from 'jotai/utils'
-import { client } from './utils/wagmi'
+import { wagmiConfig } from './utils/wagmi'
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -79,7 +79,7 @@ export const createSWRWrapper =
   (fallbackData = undefined) =>
   ({ children }) =>
     (
-      <WagmiConfig client={client}>
+      <WagmiConfig config={wagmiConfig}>
         <SWRConfig value={{ fallback: fallbackData }}>{children}</SWRConfig>
       </WagmiConfig>
     )
@@ -87,7 +87,7 @@ export const createSWRWrapper =
 export const createWagmiWrapper =
   () =>
   ({ children }) =>
-    <WagmiConfig client={client}>{children}</WagmiConfig>
+    <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
 
 // re-export everything
 export * from '@testing-library/react'

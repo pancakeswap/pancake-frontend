@@ -260,7 +260,7 @@ export default function PoolPage() {
 
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3?.address, account)
 
   const isStakedInMCv3 = tokenId && Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
 

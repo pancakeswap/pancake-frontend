@@ -1,35 +1,25 @@
-import { useMemo } from 'react'
-import { useAccount } from 'wagmi'
-import { useTokenContract } from 'hooks/useContract'
-import { useSWRContract, UseSWRContractKey } from 'hooks/useSWRContract'
-import BigNumber from 'bignumber.js'
 import { WETH9 } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
+import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
-export const useETHApprovalStatus = (spender: string) => {
+export const useETHApprovalStatus = (spender: Address) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
-  const ethContract = useTokenContract(WETH9[chainId]?.address)
-
-  const key = useMemo<UseSWRContractKey>(
-    () =>
-      account && spender
-        ? {
-            contract: ethContract,
-            methodName: 'allowance',
-            params: [account, spender],
-          }
-        : null,
-    [account, spender, ethContract],
-  )
-
-  const { data, mutate } = useSWRContract(key)
+  const { data, refetch } = useContractRead({
+    chainId,
+    abi: erc20ABI,
+    address: WETH9[chainId]?.address,
+    functionName: 'allowance',
+    args: [account, spender],
+    enabled: !!account && !!spender,
+  })
 
   return {
-    isApproved: data ? data.gt(0) : false,
+    isApproved: data ? data > 0 : false,
     allowance: new BigNumber(data?.toString()),
-    setLastUpdated: mutate,
+    setLastUpdated: refetch,
   }
 }
 

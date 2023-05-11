@@ -1,11 +1,4 @@
-import { FixedNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@pancakeswap/sdk'
-
-export const FIXED_ZERO = FixedNumber.from(0)
-export const FIXED_ONE = FixedNumber.from(1)
-export const FIXED_TWO = FixedNumber.from(2)
-
-export const FIXED_100 = FixedNumber.from(100)
 
 export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200
 

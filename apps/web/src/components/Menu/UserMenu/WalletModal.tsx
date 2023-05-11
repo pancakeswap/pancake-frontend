@@ -1,4 +1,4 @@
-import { parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'viem'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -67,7 +67,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data, isFetched } = useBalance({ address: account })
-  const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
+  const hasLowNativeBalance = isFetched && data && data.value <= LOW_NATIVE_BALANCE
 
   const handleClick = useCallback((newIndex: number) => {
     setView(newIndex)

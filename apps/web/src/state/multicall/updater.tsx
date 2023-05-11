@@ -1,10 +1,9 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { Multicall } from 'config/abi/types'
 import { ResultStructOutput } from 'config/abi/types/Multicall'
-import { useEffect, useMemo, useRef } from 'react'
-import { useCurrentBlock } from 'state/block/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
+import { useEffect, useMemo, useRef } from 'react'
+import { useCurrentBlock } from 'state/block/hooks'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
 import { useMulticallContract } from '../../hooks/useContract'
 import {
@@ -27,25 +26,19 @@ const CALL_CHUNK_SIZE = 500
  * @param minBlockNumber minimum block number of the result set
  */
 async function fetchChunk(
-  multicallContract: Multicall,
+  multicallContract: ReturnType<typeof useMulticallContract>,
   chunk: Call[],
   minBlockNumber: number,
 ): Promise<{ results: ResultStructOutput[]; blockNumber: number }> {
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
-  let resultsBlockNumber
+  let resultsBlockNumber: bigint
   let returnData
   try {
     // prettier-ignore
-    [resultsBlockNumber, , returnData] = await multicallContract.callStatic.tryBlockAndAggregate(
+    [resultsBlockNumber, , returnData] = await multicallContract.read.tryBlockAndAggregate([
       false,
-      chunk.map((obj) => ({
-        callData: obj.callData,
-        target: obj.address,
-      })),
-      {
-        blockTag: minBlockNumber,
-      }
-    )
+      chunk.map((obj) => ({ callData: obj.callData, target: obj.address })),
+    ])
   } catch (err) {
     const error = err as any
     if (
@@ -73,11 +66,11 @@ async function fetchChunk(
     console.debug('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (resultsBlockNumber?.toNumber() < minBlockNumber) {
+  if (Number(resultsBlockNumber) < minBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
   }
 
-  return { results: returnData, blockNumber: resultsBlockNumber?.toNumber() }
+  return { results: returnData, blockNumber: Number(resultsBlockNumber) }
 }
 
 /**
@@ -90,8 +83,10 @@ export function activeListeningKeys(
   allListeners: MulticallState['callListeners'],
   chainId?: number,
 ): { [callKey: string]: number } {
+  // console.log(allListeners, chainId)
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
+  // console.log(listeners, 'listeners')
   if (!listeners) return {}
 
   return Object.keys(listeners).reduce<{ [callKey: string]: number }>((memo, callKey) => {
@@ -99,6 +94,7 @@ export function activeListeningKeys(
 
     memo[callKey] = Object.keys(keyListeners)
       .filter((key) => {
+        // console.log(key, 'key')
         const blocksPerFetch = parseInt(key)
         if (blocksPerFetch <= 0) return false
         return keyListeners[blocksPerFetch] > 0
@@ -134,7 +130,7 @@ export function outdatedListeningKeys(
     if (!data) return true
 
     const blocksPerFetch = listeningKeys[callKey]
-    const minDataBlockNumber = currentBlock - (blocksPerFetch - 1)
+    const minDataBlockNumber = Number(currentBlock) - (blocksPerFetch - 1)
 
     // already fetching it for a recent enough block, don't refetch it
     if (data.fetchingBlockNumber && data.fetchingBlockNumber >= minDataBlockNumber) return false

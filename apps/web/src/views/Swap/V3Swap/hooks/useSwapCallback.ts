@@ -1,19 +1,18 @@
 // eslint-disable-next-line no-restricted-imports
-import { BigNumber } from 'ethers'
-import type { TransactionResponse } from '@ethersproject/providers'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { TradeType } from '@pancakeswap/sdk'
-import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { ReactNode, useMemo } from 'react'
 
-import { useSwapState } from 'state/swap/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { basisPointsToPercent } from 'utils/exchange'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
+import { useSwapState } from 'state/swap/hooks'
+import { basisPointsToPercent } from 'utils/exchange'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { SendTransactionResult } from '@wagmi/core'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
@@ -25,7 +24,7 @@ export enum SwapCallbackState {
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
-  callback?: () => Promise<TransactionResponse>
+  callback?: () => Promise<SendTransactionResult>
   error?: ReactNode
 }
 interface UseSwapCallbackArgs {
@@ -33,7 +32,7 @@ interface UseSwapCallbackArgs {
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   // signatureData: SignatureData | null | undefined
-  deadline?: BigNumber
+  deadline?: bigint
   feeOptions?: FeeOptions
 }
 
@@ -61,7 +60,7 @@ export function useSwapCallback({
     deadline,
     feeOptions,
   )
-  const { callback } = useSendSwapTransaction(account, chainId, provider, trade, swapCalls)
+  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
 
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId || !callback) {

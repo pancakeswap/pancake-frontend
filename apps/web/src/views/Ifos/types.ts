@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber, Contract } from 'ethers'
+import { BigNumber as EthersBigNumber } from 'ethers'
 
 import { IfoStatus, PoolIds } from 'config/constants/types'
+import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract } from 'hooks/useContract'
 
 // PoolCharacteristics retrieved from the contract
 export interface PoolCharacteristics {
@@ -82,7 +83,10 @@ export interface WalletIfoState {
 // Returned by useGetWalletIfoData
 export interface WalletIfoData extends WalletIfoState {
   allowance: BigNumber
-  contract: Contract
+  contract:
+    | ReturnType<typeof useIfoV1Contract>
+    | ReturnType<typeof useIfoV2Contract>
+    | ReturnType<typeof useIfoV3Contract>
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
   fetchIfoData: () => Promise<void>

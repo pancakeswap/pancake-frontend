@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import erc20 from 'config/abi/erc20.json'
 import chunk from 'lodash/chunk'
-import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { SerializedFarm } from '@pancakeswap/farms'
 import { SerializedFarmConfig } from '../../config/constants/types'
@@ -25,7 +25,7 @@ const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
     {
       address: lpAddress,
       name: 'balanceOf',
-      params: [getMasterChefAddress(chainId)],
+      params: [getMasterChefV2Address(chainId)],
     },
     // Total supply of LP tokens
     {

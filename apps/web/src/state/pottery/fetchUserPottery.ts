@@ -5,12 +5,14 @@ import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } fro
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { PotteryDepositStatus } from 'state/types'
-import { multicallv2 } from 'utils/multicall'
-import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
+import { Address } from 'wagmi'
+import { multicall } from '@wagmi/core'
+import { ChainId } from '@pancakeswap/sdk'
+import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 
 const potteryDrawContract = getPotteryDrawContract()
 
-export const fetchPotterysAllowance = async (account: string, potteryVaultAddress: string) => {
+export const fetchPotterysAllowance = async (account: Address, potteryVaultAddress: Address) => {
   try {
     const contract = getBep20Contract(bscTokens.cake.address)
     const allowances = await contract.allowance(account, potteryVaultAddress)
@@ -21,11 +23,11 @@ export const fetchPotterysAllowance = async (account: string, potteryVaultAddres
   }
 }
 
-export const fetchVaultUserData = async (account: string, potteryVaultAddress: string) => {
+export const fetchVaultUserData = async (account: Address, potteryVaultAddress: Address) => {
   try {
     const potteryVaultContract = getPotteryVaultContract(potteryVaultAddress)
-    const balance = await potteryVaultContract.balanceOf(account)
-    const previewDeposit = await potteryVaultContract.previewRedeem(balance)
+    const balance = await potteryVaultContract.read.balanceOf([account])
+    const previewDeposit = await potteryVaultContract.read.previewRedeem([balance])
     return {
       previewDepositBalance: new BigNumber(previewDeposit.toString()).toJSON(),
       stakingTokenBalance: new BigNumber(balance.toString()).toJSON(),
@@ -55,7 +57,7 @@ export const fetchUserDrawData = async (account: string) => {
   }
 }
 
-export const fetchWithdrawAbleData = async (account: string) => {
+export const fetchWithdrawAbleData = async (account: Address) => {
   try {
     const response = await request(
       GRAPH_API_POTTERY,
@@ -78,29 +80,33 @@ export const fetchWithdrawAbleData = async (account: string) => {
 
     const withdrawalsData = await Promise.all(
       response.withdrawals.map(async ({ id, shares, depositDate, vault }) => {
-        const calls = [
-          {
-            address: vault.id,
-            name: 'previewRedeem',
-            params: [shares],
-          },
-          {
-            address: vault.id,
-            name: 'totalSupply',
-          },
-          {
-            address: vault.id,
-            name: 'totalLockCake',
-          },
-          {
-            address: vault.id,
-            name: 'balanceOf',
-            params: [account],
-          },
-        ]
-        const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2({
-          abi: potteryVaultAbi,
-          calls,
+        const [previewRedeem, totalSupply, totalLockCake, balanceOf] = await multicall({
+          chainId: ChainId.BSC,
+          allowFailure: false,
+          contracts: [
+            {
+              address: vault.id,
+              abi: potteryVaultABI,
+              functionName: 'previewRedeem',
+              args: [BigInt(shares)],
+            },
+            {
+              address: vault.id,
+              abi: potteryVaultABI,
+              functionName: 'totalSupply',
+            },
+            {
+              address: vault.id,
+              abi: potteryVaultABI,
+              functionName: 'totalLockCake',
+            },
+            {
+              address: vault.id,
+              abi: potteryVaultABI,
+              functionName: 'balanceOf',
+              args: [account],
+            },
+          ],
         })
 
         return {

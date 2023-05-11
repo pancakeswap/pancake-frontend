@@ -2,12 +2,12 @@ import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
+import { Address } from 'viem'
 import BN from 'bignumber.js'
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BigNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
-import { FIXED_ZERO } from './const'
 import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getFarmApr } from './apr'
 
@@ -21,9 +21,9 @@ export async function farmV3FetchFarms({
 }: {
   farms: ComputedFarmConfigV3[]
   multicallv2: MultiCallV2
-  masterChefAddress: string
+  masterChefAddress: Address
   chainId: number
-  totalAllocPoint: BigNumber
+  totalAllocPoint: bigint
   commonPrice: CommonPrice
 }) {
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
@@ -33,7 +33,7 @@ export async function farmV3FetchFarms({
   ])
 
   const lmPoolInfos = await fetchLmPools(
-    v3PoolData.map((v3Pool) => (v3Pool[1] ? v3Pool[1][0] : null)).filter(Boolean) as string[],
+    v3PoolData.map((v3Pool) => (v3Pool[1] ? v3Pool[1] : null)).filter(Boolean) as Address[],
     chainId,
     multicallv2,
   )
@@ -44,7 +44,7 @@ export async function farmV3FetchFarms({
       if (!v3PoolData[index][1]) {
         return null
       }
-      const lmPoolAddress = v3PoolData[index][1][0]
+      const lmPoolAddress = v3PoolData[index][1]
       return {
         ...f,
         token,
@@ -53,12 +53,12 @@ export async function farmV3FetchFarms({
         lmPoolLiquidity: lmPoolInfos[lmPoolAddress].liquidity,
         _rewardGrowthGlobalX128: lmPoolInfos[lmPoolAddress].rewardGrowthGlobalX128,
         ...getV3FarmsDynamicData({
-          ...(v3PoolData[index][0] as any),
+          tick: v3PoolData[index][0][2],
           token0: farm.token,
           token1: farm.quoteToken,
         }),
         ...getFarmAllocation({
-          allocPoint: poolInfos[index]?.allocPoint,
+          allocPoint: poolInfos[index]?.[0],
           totalAllocPoint,
         }),
       }
@@ -126,14 +126,14 @@ export async function fetchMasterChefV3Data({
   chainId,
 }: {
   multicallv2: MultiCallV2
-  masterChefAddress: string
+  masterChefAddress: Address
   chainId: number
 }): Promise<{
-  poolLength: BigNumber
-  totalAllocPoint: BigNumber
-  latestPeriodCakePerSecond: BigNumber
+  poolLength: bigint
+  totalAllocPoint: bigint
+  latestPeriodCakePerSecond: bigint
 }> {
-  const [[poolLength], [totalAllocPoint], [latestPeriodCakePerSecond]] = await multicallv2({
+  const [poolLength, totalAllocPoint, latestPeriodCakePerSecond] = await multicallv2({
     abi: masterchefV3Abi,
     calls: [
       {
@@ -163,16 +163,23 @@ const fetchPoolInfos = async (
   farms: ComputedFarmConfigV3[],
   chainId: number,
   multicallv2: MultiCallV2,
-  masterChefAddress: string,
+  masterChefAddress: Address,
 ): Promise<
   {
-    allocPoint: BigNumber
-    v3Pool: string
-    token0: string
-    token1: string
-    fee: number
-    totalLiquidity: BigNumber
-    totalBoostLiquidity: BigNumber
+    // allocPoint: BigNumber
+    0: bigint
+    // v3Pool: string
+    1: Address
+    // token0: string
+    2: Address
+    // token1: string
+    3: Address
+    // fee: number
+    4: number
+    // totalLiquidity: BigNumber
+    5: bigint
+    // totalBoostLiquidity: BigNumber
+    6: bigint
   }[]
 > => {
   try {
@@ -221,22 +228,13 @@ const getV3FarmsDynamicData = ({ token0, token1, tick }: { token0: ERC20Token; t
   }
 }
 
-const getFarmAllocation = ({
-  allocPoint,
-  totalAllocPoint,
-}: {
-  allocPoint?: BigNumber
-  totalAllocPoint?: BigNumber
-}) => {
-  const _allocPoint = allocPoint ? FixedNumber.from(allocPoint) : FIXED_ZERO
-  const poolWeight =
-    !totalAllocPoint?.isZero() && !_allocPoint.isZero()
-      ? _allocPoint.divUnsafe(FixedNumber.from(totalAllocPoint))
-      : FIXED_ZERO
+const getFarmAllocation = ({ allocPoint, totalAllocPoint }: { allocPoint?: bigint; totalAllocPoint?: bigint }) => {
+  const _allocPoint = typeof allocPoint !== 'undefined' ? new BN(allocPoint.toString()) : BIG_ZERO
+  const poolWeight = !!totalAllocPoint && !_allocPoint.isZero() ? _allocPoint.div(totalAllocPoint.toString()) : BIG_ZERO
 
   return {
     poolWeight: poolWeight.toString(),
-    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(10)).toString()}X` : `0X`,
+    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.div(10).toString()}X` : `0X`,
   }
 }
 
@@ -294,21 +292,27 @@ const v3PoolAbi = [
   },
 ] as const
 
-type Slot0 = {
-  sqrtPriceX96: BigNumber
-  tick: number
-  observationIndex: number
-  observationCardinality: number
-  observationCardinalityNext: number
-  feeProtocol: number
-  unlocked: boolean
-}
+type Slot0 = [
+  // sqrtPriceX96: BigNumber
+  bigint,
+  // tick: number
+  number,
+  // observationIndex: number
+  number,
+  // observationCardinality: number
+  number,
+  // observationCardinalityNext: number
+  number,
+  // feeProtocol: number
+  // unlocked: boolean
+  boolean,
+]
 type LmPool = `0x${string}`
 
 type LmLiquidity = BigNumber
 type LmRewardGrowthGlobalX128 = BigNumber
 
-async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multicallv2: MultiCallV2) {
+async function fetchLmPools(lmPoolAddresses: Address[], chainId: number, multicallv2: MultiCallV2) {
   const lmPoolCalls = lmPoolAddresses.flatMap((address) => [
     {
       address,

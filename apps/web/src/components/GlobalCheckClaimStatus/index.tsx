@@ -43,8 +43,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [canClaimReward, setCanClaimReward] = useState(false)
-  const { claim } = useV3AirdropContract()
-  const { isClaimed } = useV3AirdropContract(false)
+  const v3Airdop = useV3AirdropContract()
   const { fetchWithCatchTxError } = useCatchTxError()
 
   const { data } = useSWRImmutable('/airdrop-json', async () => {
@@ -70,9 +69,9 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     <V3AirdropModal
       data={account ? (data?.v3WhitelistAddress[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
       onClick={async () => {
-        const { cakeAmountInWei, nft1, nft2 } = data?.v3ForSC[account?.toLowerCase()]
-        const proof = data?.v3MerkleProofs?.merkleProofs?.[account?.toLowerCase()]
-        const receipt = await fetchWithCatchTxError(() => claim(cakeAmountInWei, nft1, nft2, proof))
+        const { cakeAmountInWei, nft1, nft2 } = data.v3ForSC[account.toLowerCase()]
+        const proof = data?.v3MerkleProofs?.merkleProofs?.[account.toLowerCase()]
+        const receipt = await fetchWithCatchTxError(() => v3Airdop.write.claim([cakeAmountInWei, nft1, nft2, proof]))
         if (receipt?.status) {
           toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         }
@@ -83,8 +82,8 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
-      const canV3ClaimReward = await isClaimed(account)
-      const isWhitelistAddress = data && account ? data.v3WhitelistAddress[account.toLowerCase()] : false
+      const canV3ClaimReward = await v3Airdop.read.isClaimed([account])
+      const isWhitelistAddress = data?.v3WhitelistAddress[account.toLowerCase()]
       // TODO: also need check json acc is whitelisted or not.
       if (!canV3ClaimReward && isWhitelistAddress) {
         setCanClaimReward(true)
@@ -96,7 +95,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     if (account && chainId === ChainId.BSC) {
       fetchClaimAnniversaryStatus()
     }
-  }, [data, account, chainId, canClaimReward, isClaimed, closeV3AirdropModal])
+  }, [data, account, chainId, canClaimReward, closeV3AirdropModal, v3Airdop.read])
 
   // // Check if we need to display the modal
   useEffect(() => {

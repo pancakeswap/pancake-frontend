@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { Ifo } from 'config/constants/types'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useERC20 } from 'hooks/useContract'
