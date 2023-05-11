@@ -394,7 +394,7 @@ export function RoiCalculator({
       <PriceChart
         prices={useMemo(
           () =>
-            prices?.pairPriceData.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
+            prices?.pairPriceData?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
           [invertPrice, prices]
         )}
         onSpanChange={onPriceSpanChange}
@@ -414,8 +414,8 @@ export function RoiCalculator({
             : formatPrice(priceRange?.priceLower, 6)
         }
         priceCurrent={invertPrice ? formatPrice(priceCurrent?.invert(), 6) : formatPrice(priceCurrent, 6)}
-        maxPrice={invertPrice && prices?.maxPrice ? prices?.maxPrice : 1 / (prices?.maxPrice ?? 1)}
-        minPrice={invertPrice && prices?.minPrice ? prices?.minPrice : 1 / (prices?.minPrice ?? 1)}
+        maxPrice={invertPrice && prices?.maxPrice ? prices?.minPrice : 1 / (prices?.minPrice ?? 1)}
+        minPrice={invertPrice && prices?.minPrice ? prices?.maxPrice : 1 / (prices?.maxPrice ?? 1)}
       />
     </Section>
   );

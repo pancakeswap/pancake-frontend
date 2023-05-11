@@ -42,11 +42,11 @@ const DAY_PAIR_PRICE_CHART = (timestamps: number[]) => {
       t${d}:poolDayDatas(
         first: 1
         skip: 0
-        where: { pool: $address, periodStartUnix: ${d} }
-        orderBy: periodStartUnix
+        where: { pool: $address, date_gte: ${d} }
+        orderBy: date
         orderDirection: asc
       ) {
-        periodStartUnix
+        date
         high
         low
         open
@@ -169,7 +169,8 @@ export async function fetchTokenPriceData(
     }
 
     let data: {
-      periodStartUnix: number
+      periodStartUnix?: number
+      date?: number
       high: string
       low: string
       open: string
@@ -199,7 +200,7 @@ export async function fetchTokenPriceData(
 
     const formattedHistory = data.map((d) => {
       return {
-        time: d.periodStartUnix,
+        time: d?.periodStartUnix || d?.date,
         open: parseFloat(d.open),
         close: parseFloat(d.close),
         high: parseFloat(d.high),
@@ -268,6 +269,7 @@ export async function fetchPairPriceChartTokenData(
     const blocks = (await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)).filter(
       (d) => d.number >= subgraphStartBlock,
     )
+
     if (!blocks || blocks.length === 0) {
       console.error('Error fetching blocks')
       return {
@@ -277,13 +279,13 @@ export async function fetchPairPriceChartTokenData(
     }
 
     let data: {
-      periodStartUnix: number
+      periodStartUnix?: number
+      date?: number
       high: string
       low: string
       open: string
       close: string
     }[] = []
-
     // eslint-disable-next-line no-await-in-loop
     const priceData = await dataClient.request<PriceResultsForPairPriceChartResult>(
       isDay ? DAY_PAIR_PRICE_CHART(timestamps) : HOUR_PAIR_PRICE_CHART(timestamps),
@@ -306,14 +308,13 @@ export async function fetchPairPriceChartTokenData(
       if (high >= maxPrice) maxPrice = high
       if ((minPrice === -100 || low < minPrice) && low !== 0) minPrice = low
       return {
-        time: d.periodStartUnix,
+        time: d?.periodStartUnix || d?.date,
         open: parseFloat(d.open),
         close: parseFloat(d.close),
         high,
         low,
       }
     })
-
     return {
       data: formattedHistory,
       maxPrice,
