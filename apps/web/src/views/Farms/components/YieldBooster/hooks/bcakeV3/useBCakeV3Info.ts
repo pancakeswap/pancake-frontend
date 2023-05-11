@@ -1,11 +1,6 @@
-import { useCallback } from 'react'
-
-import { BOOSTED_FARM_GAS_LIMIT } from 'config' // TODO: check v3 BCake gas limit with Chef Snoopy later
-import { useBCakeFarmBoosterV3Contract } from 'hooks/useContract'
-import useCatchTxError from 'hooks/useCatchTxError'
-import useSWRImmutable from 'swr/immutable'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
+import useSWRImmutable from 'swr/immutable'
 
 const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
@@ -13,41 +8,45 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
   keepPreviousData: true,
 }
 
-export const useBakeV3Info = async (farmPid: number) => {
+export const useBakeV3farmCanBoost = async (farmPid: number) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
-    chainId && farmPid && `v3/bcake/${chainId}/${farmPid}`,
+    chainId && farmPid && `v3/bcake/farmCanBoost/${chainId}/${farmPid}`,
     () => farmBoosterV3Contract.whiteList(farmPid),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return { farmCanBoost: data }
 }
 
-export const useBoosterFarmV3Handlers = (tokenId: string, onDone: () => void) => {
+export const useBakeV3INfo = async (tokenId: string) => {
+  const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { data } = useSWRImmutable(
+    chainId && tokenId && `v3/bcake/isBoostedPool/${chainId}/${tokenId}`,
+    () => farmBoosterV3Contract.isBoostedPool(tokenId),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return { isBoosted: data?.[0], pid: data?.[1].toNumber() }
+}
 
-  const activate = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterV3Contract, 'activate', [tokenId], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
-    })
-
-    if (receipt?.status && onDone) {
-      onDone()
-    }
-  }, [tokenId, farmBoosterV3Contract, callWithGasPrice, fetchWithCatchTxError, onDone])
-
-  const deactivate = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterV3Contract, 'deactive', [tokenId], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
-    })
-
-    if (receipt?.status && onDone) {
-      onDone()
-    }
-  }, [tokenId, farmBoosterV3Contract, callWithGasPrice, fetchWithCatchTxError, onDone])
-
-  return { activate, deactivate, isConfirming }
+export const useUserPositionIfo = async (tokenId: string) => {
+  const { chainId } = useActiveChainId()
+  const masterChefV3 = useMasterchefV3()
+  const { data } = useSWRImmutable(
+    chainId && tokenId && `v3/masterChef/userPositionInfos/${chainId}/${tokenId}`,
+    () => masterChefV3.userPositionInfos(tokenId),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return {
+    liquidity: data?.[0],
+    boostLiquidity: data?.[1],
+    tickLower: data?.[2],
+    tickUpper: data?.[3],
+    rewardGrowthInside: data?.[4],
+    reward: data?.[5],
+    user: data?.[6],
+    pid: data?.[7],
+    boostMultiplier: data?.[8]?.toNumber(),
+  }
 }
