@@ -35,7 +35,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   `
 }
 
-const DAY_PAIR_PRICE_CHART = (timestamps: number[]) => {
+const DAY_PAIR_PRICE_CHART = (timestamps: number[] | string[]) => {
   let queryString = 'query poolHourDatas($address: String) {'
   timestamps.forEach((d) => {
     queryString += `
@@ -60,7 +60,7 @@ const DAY_PAIR_PRICE_CHART = (timestamps: number[]) => {
   `
 }
 
-const HOUR_PAIR_PRICE_CHART = (timestamps: number[]) => {
+const HOUR_PAIR_PRICE_CHART = (timestamps: number[] | string[]) => {
   let queryString = 'query poolHourDatas($address: String) {'
   timestamps.forEach((d) => {
     queryString += `
@@ -288,7 +288,9 @@ export async function fetchPairPriceChartTokenData(
     }[] = []
     // eslint-disable-next-line no-await-in-loop
     const priceData = await dataClient.request<PriceResultsForPairPriceChartResult>(
-      isDay ? DAY_PAIR_PRICE_CHART(timestamps) : HOUR_PAIR_PRICE_CHART(timestamps),
+      isDay
+        ? DAY_PAIR_PRICE_CHART(blocks.map((d) => d.timestamp))
+        : HOUR_PAIR_PRICE_CHART(blocks.map((d) => d.timestamp)),
       {
         address,
       },
