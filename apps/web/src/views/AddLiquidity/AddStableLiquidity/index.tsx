@@ -10,7 +10,6 @@ import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
-import { BigNumber } from 'ethers'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
@@ -69,7 +68,7 @@ export interface AddStableChildrenProps {
       txHash: string | undefined
     }>
   >
-  reserves: [BigNumber, BigNumber]
+  reserves: [bigint, bigint]
   pair: StablePair
 }
 
@@ -212,10 +211,10 @@ export default function AddStableLiquidity({
 
     let args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
 
-    let value: BigNumber | null = null
+    let value: bigint | null = null
     if (needWrapped) {
       args = [stableSwapContract.address, tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
-      value = BigNumber.from((currencyB?.isNative ? parsedAmountB : parsedAmountA)?.quotient?.toString())
+      value = (currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })

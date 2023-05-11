@@ -4,17 +4,18 @@ import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { usePublicClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { viemClients } from 'utils/viem'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
   const { chainId } = useActiveChainId()
-  const provider = usePublicClient({ chainId })
 
   const { data } = useSWR(
     chainId && ['blockNumberFetcher', chainId],
     async () => {
+      const provider = viemClients[chainId as keyof typeof viemClients]
       const blockNumber = await provider.getBlockNumber()
       mutate(['blockNumber', chainId], blockNumber)
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
@@ -78,13 +79,13 @@ export const useChainCurrentBlock = (chainId: number): number => {
   return currentBlock
 }
 
-export const useInitialBlock = (): number => {
+export const useInitialBlock = (): bigint => {
   const { chainId } = useActiveChainId()
   const { data: initialBlock = 0 } = useSWRImmutable(['initialBlockNumber', chainId])
   return initialBlock
 }
 
-export const useInitialBlockTimestamp = (): number => {
+export const useInitialBlockTimestamp = (): bigint => {
   const { chainId } = useActiveChainId()
   const { data: initialBlockTimestamp = 0 } = useSWRImmutable(['initialBlockTimestamp', chainId])
   return initialBlockTimestamp

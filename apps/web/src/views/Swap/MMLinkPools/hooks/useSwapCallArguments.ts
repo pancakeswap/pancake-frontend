@@ -1,4 +1,3 @@
-import { Contract } from 'ethers'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
@@ -9,7 +8,7 @@ import { RFQResponse, TradeWithMM } from '../types'
 import { useMMSwapContract } from '../utils/exchange'
 
 export interface SwapCall {
-  contract: Contract
+  contract: ReturnType<typeof useMMSwapContract>
   parameters: SwapParameters
 }
 

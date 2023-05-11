@@ -1,11 +1,9 @@
-import { BigNumber } from 'ethers'
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Call, createMulticall } from '@pancakeswap/multicall'
 
 import { Provider, StableSwapPair } from '../types'
 import { wrappedCurrencyAmount } from '../../evm/utils/currency'
 import { getOutputToken } from '../utils/pair'
-import IStableSwapABI from '../../evm/abis/StableSwapPair.json'
+import { stableSwapPairABI } from '../../evm/abis/StableSwapPair'
 
 interface Options {
   provider: Provider
@@ -16,8 +14,6 @@ export async function getStableSwapOutputAmount(
   inputAmount: CurrencyAmount<Currency>,
   { provider }: Options,
 ): Promise<CurrencyAmount<Currency>> {
-  const { multicallv2 } = createMulticall(provider)
-
   const wrappedInputAmount = wrappedCurrencyAmount(inputAmount, inputAmount.currency.chainId)
   if (!wrappedInputAmount) {
     throw new Error(`No wrapped token amount found for input amount: ${inputAmount.currency.name}`)
@@ -27,23 +23,23 @@ export async function getStableSwapOutputAmount(
   const chainId: ChainId = inputAmount.currency.chainId
   const inputToken = wrappedInputAmount.currency
   const outputToken = getOutputToken(pair, inputToken)
-  const inputRawAmount = inputAmount.wrapped.quotient.toString()
+  const inputRawAmount = inputAmount.wrapped.quotient
 
   const isOutputToken0 = pair.token0.equals(outputToken)
-  const args = isOutputToken0 ? [1, 0, inputRawAmount] : [0, 1, inputRawAmount]
-  const call: Call = {
-    address: pair.stableSwapAddress,
-    name: 'get_dy',
-    params: args,
-  }
-  const result = await multicallv2<BigNumber[]>({
-    abi: IStableSwapABI,
-    calls: [call],
-    chainId,
-    options: {
-      requireSuccess: true,
-    },
+  const args = isOutputToken0 ? ([1n, 0n, inputRawAmount] as const) : ([0n, 1n, inputRawAmount] as const)
+
+  const client = provider({ chainId })
+  const [result] = await client.multicall({
+    contracts: [
+      {
+        abi: stableSwapPairABI,
+        address: pair.stableSwapAddress,
+        functionName: 'get_dy',
+        args,
+      },
+    ],
+    allowFailure: false,
   })
 
-  return CurrencyAmount.fromRawAmount(outputToken, result.toString())
+  return CurrencyAmount.fromRawAmount(outputToken, result)
 }

@@ -39,18 +39,18 @@ function getLpInfo({
 }
 
 function farmLpTransformer(farmResult, masterChefResult) {
-  console.log('farmResult', farmResult)
   return (farm, index) => {
     const [
       tokenBalanceLP,
       quoteTokenBalanceLP,
       lpTokenBalanceMC,
       lpTotalSupply,
-      [tokenDecimals],
-      [quoteTokenDecimals],
+      tokenDecimals,
+      quoteTokenDecimals,
     ] = farmResult[index]
 
     const [info, totalRegularAllocPoint] = masterChefResult[index]
+    // TODO: wagmi
     const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
     const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
 

@@ -4,7 +4,6 @@ import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
 import BN from 'bignumber.js'
-import { BigNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
@@ -309,8 +308,8 @@ type Slot0 = [
 ]
 type LmPool = `0x${string}`
 
-type LmLiquidity = BigNumber
-type LmRewardGrowthGlobalX128 = BigNumber
+type LmLiquidity = bigint
+type LmRewardGrowthGlobalX128 = bigint
 
 async function fetchLmPools(lmPoolAddresses: Address[], chainId: number, multicallv2: MultiCallV2) {
   const lmPoolCalls = lmPoolAddresses.flatMap((address) => [

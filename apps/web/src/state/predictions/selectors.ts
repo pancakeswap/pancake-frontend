@@ -1,8 +1,7 @@
-import { BigNumber } from 'ethers'
 import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
-import { PredictionsState, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
-import { parseBigNumberObj } from './helpers'
+import { deserialize } from 'wagmi'
+import { PredictionsState, NodeRound, NodeLedger } from '../types'
 
 const selectCurrentEpoch = (state: PredictionsState) => state.currentEpoch
 const selectRounds = (state: PredictionsState) => state.rounds
@@ -12,7 +11,7 @@ const selectMinBetAmount = (state: PredictionsState) => state.minBetAmount
 const selectIntervalSeconds = (state: PredictionsState) => state.intervalSeconds
 
 export const makeGetBetByEpochSelector = (account: string, epoch: number) =>
-  createSelector([selectLedgers], (bets) => {
+  createSelector([selectLedgers], (bets): NodeLedger => {
     if (!bets[account]) {
       return null
     }
@@ -21,7 +20,11 @@ export const makeGetBetByEpochSelector = (account: string, epoch: number) =>
       return null
     }
 
-    return parseBigNumberObj<ReduxNodeLedger, NodeLedger>(bets[account][epoch])
+    return {
+      amount: BigInt(bets[account][epoch].amount),
+      claimed: bets[account][epoch].claimed,
+      position: bets[account][epoch].position,
+    }
   })
 
 export const makeGetIsClaimableSelector = (epoch: number) =>
@@ -31,7 +34,7 @@ export const makeGetIsClaimableSelector = (epoch: number) =>
 
 export const getRoundsByCloseOracleIdSelector = createSelector([selectRounds], (rounds) => {
   return Object.keys(rounds).reduce((accum, epoch) => {
-    const parsed = parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch])
+    const parsed = deserialize(rounds[epoch])
     return {
       ...accum,
       [parsed.closeOracleId]: parsed,
@@ -43,7 +46,7 @@ export const getBigNumberRounds = createSelector([selectRounds], (rounds) => {
   return Object.keys(rounds).reduce((accum, epoch) => {
     return {
       ...accum,
-      [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
+      [epoch]: deserialize(rounds[epoch]),
     }
   }, {}) as { [key: string]: NodeRound }
 })
@@ -62,7 +65,7 @@ export const getSortedRoundsCurrentEpochSelector = createSelector(
   },
 )
 
-export const getMinBetAmountSelector = createSelector([selectMinBetAmount], BigNumber.from)
+export const getMinBetAmountSelector = createSelector([selectMinBetAmount], (b) => BigInt(b))
 
 export const getCurrentRoundCloseTimestampSelector = createSelector(
   [selectCurrentEpoch, getBigNumberRounds, selectIntervalSeconds],

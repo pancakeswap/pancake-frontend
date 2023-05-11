@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BigNumber } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'viem'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import pickBy from 'lodash/pickBy'
@@ -17,6 +16,7 @@ import {
   PredictionsChartView,
   PredictionConfig,
 } from 'state/types'
+import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
 import {
@@ -77,7 +77,7 @@ type PredictionInitialization = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'rounds' | 'ledgers' | 'claimableStatuses'
 >
-export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
+export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Address, { extra: PredictionConfig }>(
   'predictions/fetchPredictionData',
   async (account = null, { extra }) => {
     // Static values
@@ -132,14 +132,14 @@ export const fetchLedgerData = createAsyncThunk<
 
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
-  { account: string; page?: number },
+  { account: Address; page?: number },
   { state: PredictionsState; extra: PredictionConfig }
 >('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState, extra }) => {
-  const userRoundsLength = await fetchUsersRoundsLength(account, extra.address)
-  const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
-  const maxPages = userRoundsLength.lte(ROUNDS_PER_PAGE) ? 1 : Math.ceil(userRoundsLength.toNumber() / ROUNDS_PER_PAGE)
+  const userRoundsLength = Number(await fetchUsersRoundsLength(account, extra.address))
+  const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength }
+  const maxPages = userRoundsLength <= ROUNDS_PER_PAGE ? 1 : Math.ceil(userRoundsLength / ROUNDS_PER_PAGE)
 
-  if (userRoundsLength.eq(0)) {
+  if (userRoundsLength === 0) {
     return emptyResult
   }
 
@@ -147,16 +147,14 @@ export const fetchNodeHistory = createAsyncThunk<
     return emptyResult
   }
 
-  const cursor = userRoundsLength.sub(ROUNDS_PER_PAGE * page)
+  const cursor = userRoundsLength - ROUNDS_PER_PAGE * page
 
   // If the page request is the final one we only want to retrieve the amount of rounds up to the next cursor.
   const size =
     maxPages === page
-      ? userRoundsLength
-          .sub(ROUNDS_PER_PAGE * (page - 1)) // Previous page's cursor
-          .toNumber()
+      ? userRoundsLength - ROUNDS_PER_PAGE * (page - 1) // Previous page's cursor
       : ROUNDS_PER_PAGE
-  const userRounds = await fetchUserRounds(account, cursor.lt(0) ? 0 : cursor.toNumber(), size, extra.address)
+  const userRounds = await fetchUserRounds(account, cursor < 0 ? 0 : cursor, size, extra.address)
 
   if (!userRounds) {
     return emptyResult

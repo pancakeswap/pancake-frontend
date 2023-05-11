@@ -1,14 +1,14 @@
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
-import { createMulticall } from '@pancakeswap/multicall'
+import { Address } from 'viem'
 
 import { OnChainProvider, SerializedLockedVaultUser, SerializedVaultUser } from '../types'
-import cakeVaultAbi from '../abis/ICakeVaultV2.json'
+import { cakeVaultV2ABI } from '../abis/ICakeVaultV2'
 import { getCakeVaultAddress } from './getAddresses'
 import { getCakeFlexibleSideVaultV2Contract } from './getContracts'
 
 interface Params {
-  account: string
+  account: Address
   chainId: ChainId
   provider: OnChainProvider
 }
@@ -16,29 +16,44 @@ interface Params {
 export const fetchVaultUser = async ({ account, chainId, provider }: Params): Promise<SerializedLockedVaultUser> => {
   try {
     const cakeVaultAddress = getCakeVaultAddress(chainId)
-    const calls = ['userInfo', 'calculatePerformanceFee', 'calculateOverdueFee'].map((method) => ({
-      address: cakeVaultAddress,
-      name: method,
-      params: [account],
-    }))
 
-    const { multicallv2 } = createMulticall(provider)
-    const [userContractResponse, [currentPerformanceFee], [currentOverdueFee]] = await multicallv2({
-      abi: cakeVaultAbi,
-      calls,
-      chainId,
+    const client = provider({ chainId })
+
+    const [userContractResponse, currentPerformanceFee, currentOverdueFee] = await client.multicall({
+      contracts: [
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'userInfo',
+          args: [account],
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'calculatePerformanceFee',
+          args: [account],
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'calculateOverdueFee',
+          args: [account],
+        },
+      ],
+      allowFailure: false,
     })
+
     return {
       isLoading: false,
-      userShares: new BigNumber(userContractResponse.shares.toString()).toJSON(),
-      lastDepositedTime: userContractResponse.lastDepositedTime.toString(),
-      lastUserActionTime: userContractResponse.lastUserActionTime.toString(),
-      cakeAtLastUserAction: new BigNumber(userContractResponse.cakeAtLastUserAction.toString()).toJSON(),
-      userBoostedShare: new BigNumber(userContractResponse.userBoostedShare.toString()).toJSON(),
-      locked: userContractResponse.locked,
-      lockEndTime: userContractResponse.lockEndTime.toString(),
-      lockStartTime: userContractResponse.lockStartTime.toString(),
-      lockedAmount: new BigNumber(userContractResponse.lockedAmount.toString()).toJSON(),
+      userShares: new BigNumber(userContractResponse[0].toString()).toJSON(),
+      lastDepositedTime: userContractResponse[1].toString(),
+      lastUserActionTime: userContractResponse[3].toString(),
+      cakeAtLastUserAction: new BigNumber(userContractResponse[2].toString()).toJSON(),
+      userBoostedShare: new BigNumber(userContractResponse[6].toString()).toJSON(),
+      locked: userContractResponse[7],
+      lockEndTime: userContractResponse[5].toString(),
+      lockStartTime: userContractResponse[4].toString(),
+      lockedAmount: new BigNumber(userContractResponse[8].toString()).toJSON(),
       currentPerformanceFee: new BigNumber(currentPerformanceFee.toString()).toJSON(),
       currentOverdueFee: new BigNumber(currentOverdueFee.toString()).toJSON(),
     }
@@ -67,13 +82,13 @@ export const fetchFlexibleSideVaultUser = async ({
 }: Params): Promise<SerializedVaultUser> => {
   try {
     const flexibleSideVaultContract = getCakeFlexibleSideVaultV2Contract(chainId, provider)
-    const userContractResponse = await flexibleSideVaultContract.userInfo(account)
+    const userContractResponse = await flexibleSideVaultContract.read.userInfo([account])
     return {
       isLoading: false,
-      userShares: new BigNumber(userContractResponse.shares.toString()).toJSON(),
-      lastDepositedTime: userContractResponse.lastDepositedTime.toString(),
-      lastUserActionTime: userContractResponse.lastUserActionTime.toString(),
-      cakeAtLastUserAction: new BigNumber(userContractResponse.cakeAtLastUserAction.toString()).toJSON(),
+      userShares: new BigNumber(userContractResponse[0].toString()).toJSON(),
+      lastDepositedTime: userContractResponse[1].toString(),
+      lastUserActionTime: userContractResponse[3].toString(),
+      cakeAtLastUserAction: new BigNumber(userContractResponse[2].toString()).toJSON(),
     }
   } catch (error) {
     return {

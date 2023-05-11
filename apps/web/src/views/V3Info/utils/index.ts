@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { getAddress } from 'ethers/lib/utils'
+import { getAddress } from 'viem'
+import { Address } from 'wagmi'
 
 export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
@@ -33,7 +34,7 @@ export function getEtherscanLink(
   }
 }
 
-export function isAddress(value: any): string | false {
+export function isAddress(value: any): Address | false {
   try {
     return getAddress(value)
   } catch {

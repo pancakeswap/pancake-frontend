@@ -6,7 +6,6 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { SendTransactionResult } from '@wagmi/core'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
 import { useSwapState } from 'state/swap/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -33,7 +32,7 @@ interface SwapCallEstimate {
 
 interface SuccessfulCall extends SwapCallEstimate {
   call: SwapCall
-  gasEstimate: BigNumber
+  gasEstimate: bigint
 }
 
 interface FailedCall extends SwapCallEstimate {

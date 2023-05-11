@@ -1,6 +1,5 @@
-import { BigNumber as EthersBigNumber } from 'ethers'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
-import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
 
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
@@ -232,11 +231,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           updatedAt: farm.activeTvlUSDUpdatedAt ? new Date(farm.activeTvlUSDUpdatedAt).getTime() : undefined,
         },
         earned: {
-          earnings: +formatBigNumber(
-            Object.values(farm.pendingCakeByTokenIds).reduce(
-              (total, vault) => total.add(vault),
-              EthersBigNumber.from('0'),
-            ),
+          earnings: +formatBigInt(
+            Object.values(farm.pendingCakeByTokenIds).reduce((total, vault) => total + vault, 0n),
             4,
           ),
           pid: farm.pid,

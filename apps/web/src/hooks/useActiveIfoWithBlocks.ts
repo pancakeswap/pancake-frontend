@@ -1,6 +1,7 @@
 import useSWRImmutable from 'swr/immutable'
-import ifoV3Abi from '../config/abi/ifoV3.json'
-import { multicallv2 } from '../utils/multicall'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { ifoV3ABI } from '../config/abi/ifoV3'
 import { ifosConfig } from '../config/constants'
 import { Ifo } from '../config/constants/types'
 
@@ -10,23 +11,26 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
   const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useSWRImmutable(
     activeIfo ? ['ifo', 'currentIfo'] : null,
     async () => {
-      const abi = ifoV3Abi
-      const [startBlock, endBlock] = await multicallv2({
-        abi,
-        calls: [
+      const bscClient = viemClients[ChainId.BSC]
+      const [startBlockResponse, endBlockResponse] = await bscClient.multicall({
+        contracts: [
           {
             address: activeIfo.address,
-            name: 'startBlock',
+            abi: ifoV3ABI,
+            functionName: 'startBlock',
           },
           {
             address: activeIfo.address,
-            name: 'endBlock',
+            abi: ifoV3ABI,
+            functionName: 'endBlock',
           },
         ],
-        options: { requireSuccess: false },
       })
 
-      return { startBlock: startBlock ? startBlock[0].toNumber() : 0, endBlock: endBlock ? endBlock[0].toNumber() : 0 }
+      return {
+        startBlock: startBlockResponse.status === 'success' ? Number(startBlockResponse.result) : 0,
+        endBlock: endBlockResponse.status === 'success' ? Number(endBlockResponse.result) : 0,
+      }
     },
   )
 

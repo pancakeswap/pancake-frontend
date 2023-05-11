@@ -4,7 +4,7 @@ import { CHAINS } from 'config/chains'
 import { SERVER_NODES } from 'config/nodes'
 import { createPublicClient, http } from 'viem'
 
-const clients = CHAINS.reduce((prev, cur) => {
+export const viemServerClients = CHAINS.reduce((prev, cur) => {
   return {
     ...prev,
     [cur.id]: createPublicClient({
@@ -20,6 +20,6 @@ const clients = CHAINS.reduce((prev, cur) => {
 }, {} as Record<ChainId, ReturnType<typeof createPublicClient>>)
 
 // @ts-ignore
-export const viemClients: OnChainProvider = ({ chainId }: { chainId?: ChainId }) => {
-  return clients[chainId]
+export const getViemClients: OnChainProvider = ({ chainId }: { chainId?: ChainId }) => {
+  return viemServerClients[chainId]
 }

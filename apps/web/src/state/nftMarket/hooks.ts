@@ -2,12 +2,11 @@ import { useMemo } from 'react'
 import { isAddress } from 'utils'
 import { useAtom } from 'jotai'
 import { FetchStatus } from 'config/constants/types'
-import erc721Abi from 'config/abi/erc721.json'
-import { useSWRMulticall } from 'hooks/useSWRContract'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import isEmpty from 'lodash/isEmpty'
+import { useContractReads, erc721ABI } from 'wagmi'
 import shuffle from 'lodash/shuffle'
 
 import fromPairs from 'lodash/fromPairs'
@@ -19,7 +18,7 @@ const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'as
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
 const EMPTY_OBJECT = {}
 
-export const useGetCollections = (): { data: ApiCollections; status: FetchStatus } => {
+export const useGetCollections = (): { data: ApiCollections; status: typeof FetchStatus } => {
   const { data, status } = useSWR(['nftMarket', 'collections'], async () => getCollections())
   const collections = data ?? ({} as ApiCollections)
   return { data: collections, status }
@@ -35,7 +34,7 @@ export const useGetCollection = (collectionAddress: string): Collection | undefi
   return collectionObject[checksummedCollectionAddress]
 }
 
-export const useGetShuffledCollections = (): { data: Collection[]; status: FetchStatus } => {
+export const useGetShuffledCollections = (): { data: Collection[]; status: typeof FetchStatus } => {
   const { data } = useSWRImmutable(['nftMarket', 'collections'], async () => getCollections())
   const collections = data ?? ({} as ApiCollections)
   const { data: shuffledCollections, status } = useSWRImmutable(
@@ -48,25 +47,21 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: Fetch
 }
 
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
-  const nftApprovalCalls = useMemo(
-    () =>
-      nftsInWallet.map((nft: NftToken) => {
-        const { tokenId, collectionAddress } = nft
+  const { data } = useContractReads({
+    contracts: nftsInWallet.map((f) => ({
+      abi: erc721ABI,
+      address: f.collectionAddress,
+      functionName: 'getApproved',
+      args: [f.tokenId],
+    })),
+    watch: true,
+  })
 
-        return {
-          address: collectionAddress,
-          name: 'getApproved',
-          params: [tokenId],
-        }
-      }),
-    [nftsInWallet],
-  )
-
-  const { data } = useSWRMulticall(erc721Abi, nftApprovalCalls)
   const profileAddress = getPancakeProfileAddress()
 
   const approvedTokenIds = Array.isArray(data)
-    ? fromPairs(data.flat().map((address, index) => [nftsInWallet[index].tokenId, profileAddress === address]))
+    ? // TODO: wagmi
+      fromPairs(data.flat().map((result, index) => [nftsInWallet[index].tokenId, profileAddress === result.result]))
     : null
 
   return { data: approvedTokenIds }

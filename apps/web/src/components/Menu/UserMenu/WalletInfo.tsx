@@ -20,7 +20,7 @@ import useTokenBalance, { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { formatBigNumber, getFullDisplayBalance, formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { getFullDisplayBalance, formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useBalance } from 'wagmi'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import CakeBenefitsCard from './CakeBenefitsCard'
@@ -153,7 +153,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           {cakeFetchStatus !== FetchStatus.Fetched ? (
             <Skeleton height="22px" width="60px" />
           ) : (
-            <Text>{formatBigNumber(cakeBalance, 3)}</Text>
+            <Text>{formatBigInt(cakeBalance, 3)}</Text>
           )}
         </Flex>
       </Box>

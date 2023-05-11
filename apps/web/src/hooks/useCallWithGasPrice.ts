@@ -1,5 +1,6 @@
 import { SendTransactionResult } from '@wagmi/core'
-import { CallOverrides } from 'ethers'
+// TODO: wagmi
+import type { CallOverrides } from 'ethers'
 import get from 'lodash/get'
 import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
@@ -25,7 +26,7 @@ export function useCallWithGasPrice() {
       const contractMethod = get(contract.write, methodName)
       const hasManualGasPriceOverride = overrides?.gasPrice
       const hash = await contractMethod(
-        ...methodArgs,
+        methodArgs,
         hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
       )
 

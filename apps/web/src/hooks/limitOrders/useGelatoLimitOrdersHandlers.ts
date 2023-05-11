@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { BigNumber, Overrides } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
+import type { Overrides } from 'ethers'
+import type { TransactionResponse } from '@ethersproject/providers'
 
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
@@ -86,7 +86,8 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         ...(overrides ?? {}),
         to: payload.to,
         data: payload.data,
-        value: BigNumber.from(payload.value),
+        // TODO: wagmi
+        value: payload.value.toString(),
       })
 
       const now = Math.round(Date.now() / 1000)

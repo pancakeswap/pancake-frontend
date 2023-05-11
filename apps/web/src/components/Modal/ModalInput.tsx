@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { parseUnits } from 'ethers/lib/utils'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { parseUnits } from 'viem'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 
 interface ModalInputProps {
   max: string
@@ -64,13 +64,13 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   const { t } = useTranslation()
   const isBalanceZero = max === '0' || !max
 
-  const displayBalance = (balance: string) => {
+  const displayBalance = (balance: `${number}`) => {
     if (isBalanceZero) {
       return '0'
     }
 
     const balanceUnits = parseUnits(balance, decimals)
-    return formatBigNumber(balanceUnits, decimals, decimals)
+    return formatBigInt(balanceUnits, decimals, decimals)
   }
 
   return (

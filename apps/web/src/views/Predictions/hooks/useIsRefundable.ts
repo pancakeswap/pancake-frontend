@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { getPredictionsContract } from 'utils/contractHelpers'
+import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { useConfig } from '../context/ConfigProvider'
 
 const useIsRefundable = (epoch: number) => {
@@ -10,7 +10,7 @@ const useIsRefundable = (epoch: number) => {
 
   useEffect(() => {
     const fetchRefundableStatus = async () => {
-      const predictionsContract = getPredictionsContract(address)
+      const predictionsContract = getPredictionsV2Contract(address)
       const refundable = await predictionsContract.refundable(epoch, account)
 
       if (refundable) {

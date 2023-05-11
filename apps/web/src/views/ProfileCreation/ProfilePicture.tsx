@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   AutoRenewIcon,
   Button,
@@ -10,6 +11,7 @@ import {
   Text,
   useToast,
 } from '@pancakeswap/uikit'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useContext, useEffect, useState } from 'react'
@@ -18,10 +20,10 @@ import { useProfile } from 'state/profile/hooks'
 import styled from 'styled-components'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract, profileContract, profileContractArgs } from 'utils/contractHelpers'
+import { viemClients } from 'utils/viem'
+import { ContractFunctionResult } from 'viem'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useAccount, useWalletClient } from 'wagmi'
-import profileABI from '../../config/abi/pancakeProfile.json'
-import multicall from '../../utils/multicall'
 import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import NextStepButton from './NextStepButton'
@@ -57,15 +59,18 @@ const ProfilePicture: React.FC = () => {
 
         if (nftsByCollection.length > 0) {
           const nftRole = await profileContract.read.NFT_ROLE()
-          const collectionsNftRoleCalls = nftsByCollection.map((collectionAddress) => {
-            return {
-              address: profileContractArgs.address,
-              name: 'hasRole',
-              params: [nftRole, collectionAddress],
-            }
-          })
-          const collectionRolesRaw = await multicall(profileABI, collectionsNftRoleCalls)
-          const collectionRoles = collectionRolesRaw.flat()
+          const collectionRoles = (await viemClients[ChainId.BSC].multicall({
+            contracts: nftsByCollection.map((collectionAddress) => {
+              return {
+                abi: pancakeProfileABI,
+                address: profileContractArgs.address,
+                functionName: 'hasRole',
+                params: [nftRole, collectionAddress],
+              }
+            }),
+            allowFailure: false,
+          })) as ContractFunctionResult<typeof pancakeProfileABI, 'hasRole'>[]
+
           setUserProfileCreationNfts(
             nfts.filter((nft) => collectionRoles[nftsByCollection.indexOf(nft.collectionAddress)]),
           )

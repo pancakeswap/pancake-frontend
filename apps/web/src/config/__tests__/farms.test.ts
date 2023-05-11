@@ -36,8 +36,8 @@ describe.concurrent('Config farms', () => {
     const quoteTokenAddress = farm.quoteToken.address
     const lpContract = getLpContract(farm.lpAddress, chainId)
 
-    const token0Address = (await lpContract.token0()).toLowerCase()
-    const token1Address = (await lpContract.token1()).toLowerCase()
+    const token0Address = (await lpContract.read.token0()).toLowerCase()
+    const token1Address = (await lpContract.read.token1()).toLowerCase()
 
     expect(
       token0Address === tokenAddress.toLowerCase() || token0Address === quoteTokenAddress.toLowerCase(),

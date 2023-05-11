@@ -12,6 +12,7 @@ export const useCakeApprovalStatus = (spender) => {
     ...getCakeContract(chainId),
     enabled: Boolean(account && spender),
     functionName: 'allowance',
+    args: [account, spender],
     watch: true,
   })
 

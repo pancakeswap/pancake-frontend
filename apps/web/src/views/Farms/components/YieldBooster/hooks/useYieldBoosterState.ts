@@ -1,14 +1,12 @@
 import { useFarmUser } from 'state/farms/hooks'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
-import { useSWRMulticall } from 'hooks/useSWRContract'
-import farmBoosterAbi from 'config/abi/farmBooster.json'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { useCallback } from 'react'
-import { useAccount } from 'wagmi'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useAccount, useContractRead } from 'wagmi'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -27,15 +25,18 @@ function useIsPoolActive(pid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { address: account } = useAccount()
 
-  const { data, mutate } = useSWRMulticall(
-    farmBoosterAbi,
-    [{ address: farmBoosterContract.address, name: 'isBoostedPool', params: [account, pid] }],
-    { isPaused: () => !account },
-  )
+  const { data, refetch } = useContractRead({
+    abi: farmBoosterContract.abi,
+    address: farmBoosterContract.address,
+    functionName: 'isBoostedPool',
+    args: [account, BigInt(pid)],
+    watch: true,
+    enabled: !!account,
+  })
 
   return {
     isActivePool: Array.isArray(data) ? data[0][0] : false,
-    refreshIsPoolActive: mutate,
+    refreshIsPoolActive: refetch,
   }
 }
 

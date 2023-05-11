@@ -129,7 +129,6 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
 
 export * from './apr'
 export * from './utils'
-export * from './v2/apr'
 export * from './v2/farmsPriceHelpers'
 export * from './types'
 export * from './v2/deserializeFarmUserData'

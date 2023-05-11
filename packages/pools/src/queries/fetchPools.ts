@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import fromPairs from 'lodash/fromPairs'
 import chunk from 'lodash/chunk'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { createMulticall } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
@@ -62,11 +61,11 @@ async function fetchUpgradedPoolsTimeLimits(
   }, [])
 
   return pools.map((cakePoolConfig, index) => {
-    const [[startTimestamp], [endTimestamp]] = startEndResult[index]
+    const [startTimestamp, endTimestamp] = startEndResult[index]
     return {
       sousId: cakePoolConfig.sousId,
-      startTimestamp: startTimestamp.toNumber(),
-      endTimestamp: endTimestamp.toNumber(),
+      startTimestamp: Number(startTimestamp),
+      endTimestamp: Number(endTimestamp),
     }
   })
 }
@@ -94,35 +93,32 @@ const fetchLegacyPoolsBlockLimits = async (
 
   const { multicall } = createMulticall(provider)
   const [block, startEndBlockRaw] = await Promise.all([
-    provider({ chainId }).getBlock('latest'),
+    provider({ chainId }).getBlock({ blockTag: 'latest' }),
     multicall(sousChefABI, startEndBlockCalls, chainId),
   ])
 
-  const startEndBlockResult = (startEndBlockRaw as [BigNumber][]).reduce<[BigNumber][][]>(
-    (resultArray, item, index) => {
-      const chunkIndex = Math.floor(index / 2)
+  const startEndBlockResult = (startEndBlockRaw as [bigint][]).reduce<[bigint][][]>((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 2)
 
-      if (!resultArray[chunkIndex]) {
-        // eslint-disable-next-line no-param-reassign
-        resultArray[chunkIndex] = [] // start a new chunk
-      }
+    if (!resultArray[chunkIndex]) {
+      // eslint-disable-next-line no-param-reassign
+      resultArray[chunkIndex] = [] // start a new chunk
+    }
 
-      resultArray[chunkIndex].push(item)
+    resultArray[chunkIndex].push(item)
 
-      return resultArray
-    },
-    [],
-  )
+    return resultArray
+  }, [])
 
   const getTimestampFromBlock = (targetBlock: number) => {
-    return block.timestamp + (targetBlock - block.number) * BSC_BLOCK_TIME
+    return Number(block.timestamp) + (targetBlock - Number(block.number)) * BSC_BLOCK_TIME
   }
   return pools.map((cakePoolConfig, index) => {
-    const [[startBlock], [endBlock]] = startEndBlockResult[index]
+    const [startBlock, endBlock] = startEndBlockResult[index]
     return {
       sousId: cakePoolConfig.sousId,
-      startTimestamp: getTimestampFromBlock(startBlock.toNumber()),
-      endTimestamp: getTimestampFromBlock(endBlock.toNumber()),
+      startTimestamp: getTimestampFromBlock(Number(startBlock)),
+      endTimestamp: getTimestampFromBlock(Number(endBlock)),
     }
   })
 }
@@ -206,10 +202,11 @@ export const fetchPoolsStakingLimitsByBlock = async ({
   const chunkSize = poolStakingCalls.length / validPools.length
   const poolStakingChunkedResultRaw = chunk(poolStakingResultRaw.flat(), chunkSize)
   return fromPairs(
-    poolStakingChunkedResultRaw.map((stakingLimitRaw, index) => {
-      const hasUserLimit = stakingLimitRaw[0]
-      const stakingLimit = hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
-      const numberBlocksForUserLimit = stakingLimitRaw[2] ? (stakingLimitRaw[2] as EthersBigNumber).toNumber() : 0
+    (poolStakingChunkedResultRaw as { result: any }[][]).map((stakingLimitRaw, index) => {
+      const hasUserLimit = stakingLimitRaw[0]?.result
+      const stakingLimit =
+        hasUserLimit && stakingLimitRaw[1].result ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
+      const numberBlocksForUserLimit = stakingLimitRaw[2].result ? Number(stakingLimitRaw[2].result) : 0
       const numberSecondsForUserLimit = numberBlocksForUserLimit * BSC_BLOCK_TIME
       return [validPools[index].sousId, { stakingLimit, numberSecondsForUserLimit }]
     }),
@@ -253,10 +250,11 @@ const fetchPoolsStakingLimitsByTime = async ({
   const chunkSize = poolStakingCalls.length / validPools.length
   const poolStakingChunkedResultRaw = chunk(poolStakingResultRaw.flat(), chunkSize)
   return fromPairs(
-    poolStakingChunkedResultRaw.map((stakingLimitRaw, index) => {
-      const hasUserLimit = stakingLimitRaw[0]
-      const stakingLimit = hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].toString()) : BIG_ZERO
-      const numberSecondsForUserLimit = stakingLimitRaw[2] ? (stakingLimitRaw[2] as EthersBigNumber).toNumber() : 0
+    (poolStakingChunkedResultRaw as { result: any }[][]).map((stakingLimitRaw, index) => {
+      const hasUserLimit = stakingLimitRaw[0].result
+      const stakingLimit =
+        hasUserLimit && stakingLimitRaw[1] ? new BigNumber(stakingLimitRaw[1].result.toString()) : BIG_ZERO
+      const numberSecondsForUserLimit = stakingLimitRaw[2] ? Number(stakingLimitRaw[2].result) : 0
       return [validPools[index].sousId, { stakingLimit, numberSecondsForUserLimit }]
     }),
   )
@@ -313,10 +311,10 @@ export const fetchPoolsProfileRequirement = async (
   const chunkSize = poolProfileRequireCalls.length / livePoolsWithV3.length
   const poolStakingChunkedResultRaw = chunk(poolProfileRequireResultRaw.flat(), chunkSize)
   return fromPairs(
-    poolStakingChunkedResultRaw.map((poolProfileRequireRaw, index) => {
-      const hasProfileRequired = poolProfileRequireRaw[0]
-      const profileThresholdPoints = poolProfileRequireRaw[1]
-        ? new BigNumber(poolProfileRequireRaw[1].toString())
+    (poolStakingChunkedResultRaw as { result: any }[][]).map((poolProfileRequireRaw, index) => {
+      const hasProfileRequired = poolProfileRequireRaw[0].result
+      const profileThresholdPoints = poolProfileRequireRaw[1].result
+        ? new BigNumber(poolProfileRequireRaw[1].result.toString())
         : BIG_ZERO
       return [
         livePoolsWithV3[index].sousId,

@@ -1,42 +1,43 @@
-import { BigNumber, FixedNumber } from 'ethers'
 import { BetPosition } from 'state/types'
-import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
+import BN from 'bignumber.js'
+import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { NegativeOne, One, Zero } from '@ethersproject/constants'
 import memoize from 'lodash/memoize'
 
+const abs = (n: bigint) => (n === -0n || n < 0n ? -n : n)
+
 const calculateMinDisplayed = memoize(
-  (decimals: number, displayedDecimals: number): BigNumber => {
-    return BigNumber.from(10).pow(decimals).div(BigNumber.from(10).pow(displayedDecimals))
+  (decimals: number, displayedDecimals: number): bigint => {
+    return 10n ** BigInt(decimals) / 10n ** BigInt(displayedDecimals)
   },
   (decimals, displayedDecimals) => `${decimals}#${displayedDecimals}`,
 )
 
 type formatPriceDifferenceProps = {
-  price?: BigNumber
-  minPriceDisplayed: BigNumber
+  price?: bigint
+  minPriceDisplayed: bigint
   unitPrefix: string
   displayedDecimals: number
   decimals: number
 }
 
 const formatPriceDifference = ({
-  price = Zero,
+  price = 0n,
   minPriceDisplayed,
   unitPrefix,
   displayedDecimals,
   decimals,
 }: formatPriceDifferenceProps) => {
-  if (price.abs().lt(minPriceDisplayed)) {
-    const sign = price.isNegative() ? NegativeOne : One
-    const signedPriceToFormat = minPriceDisplayed.mul(sign)
-    return `<${unitPrefix}${formatBigNumberToFixed(signedPriceToFormat, displayedDecimals, decimals)}`
+  if (abs(price) < minPriceDisplayed) {
+    const sign = price < 0n ? -1n : 1n
+    const signedPriceToFormat = minPriceDisplayed * sign
+    return `<${unitPrefix}${formatBigIntToFixed(signedPriceToFormat, displayedDecimals, decimals)}`
   }
 
-  return `${unitPrefix}${formatBigNumberToFixed(price, displayedDecimals, decimals)}`
+  return `${unitPrefix}${formatBigIntToFixed(price, displayedDecimals, decimals)}`
 }
 
-export const formatUsdv2 = (usd: BigNumber, displayedDecimals: number) => {
+export const formatUsdv2 = (usd: bigint, displayedDecimals: number) => {
   return formatPriceDifference({
     price: usd,
     minPriceDisplayed: calculateMinDisplayed(8, displayedDecimals),
@@ -46,7 +47,7 @@ export const formatUsdv2 = (usd: BigNumber, displayedDecimals: number) => {
   })
 }
 
-export const formatTokenv2 = (token: BigNumber, decimals: number, displayedDecimals: number) => {
+export const formatTokenv2 = (token: bigint, decimals: number, displayedDecimals: number) => {
   return formatPriceDifference({
     price: token,
     minPriceDisplayed: calculateMinDisplayed(decimals, displayedDecimals),
@@ -69,39 +70,39 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
-export const getMultiplierV2 = (total: BigNumber, amount: BigNumber) => {
+export const getMultiplierV2 = (total: bigint, amount: bigint) => {
   if (!total) {
-    return FixedNumber.from(0)
+    return 0n
   }
 
-  if (total.eq(0) || amount.eq(0)) {
-    return FixedNumber.from(0)
+  if (total === 0n || amount === 0n) {
+    return 0n
   }
 
-  const rewardAmountFixed = FixedNumber.from(total)
-  const multiplierAmountFixed = FixedNumber.from(amount)
+  const rewardAmountFixed = new BN(total.toString())
+  const multiplierAmountFixed = new BN(amount.toString())
 
-  return rewardAmountFixed.divUnsafe(multiplierAmountFixed)
+  return rewardAmountFixed.div(multiplierAmountFixed)
 }
 
-export const getPriceDifference = (price: BigNumber, lockPrice: BigNumber) => {
+export const getPriceDifference = (price: bigint, lockPrice: bigint) => {
   if (!price || !lockPrice) {
-    return Zero
+    return 0n
   }
 
-  return price.sub(lockPrice)
+  return price - lockPrice
 }
 
-export const getRoundPosition = (lockPrice: BigNumber, closePrice: BigNumber) => {
+export const getRoundPosition = (lockPrice: bigint, closePrice: bigint) => {
   if (!closePrice) {
     return null
   }
 
-  if (closePrice.eq(lockPrice)) {
+  if (closePrice === lockPrice) {
     return BetPosition.HOUSE
   }
 
-  return closePrice.gt(lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  return closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
 }
 
 export const CHART_DOT_CLICK_EVENT = 'CHART_DOT_CLICK_EVENT'
