@@ -1,31 +1,36 @@
-import { Flex, Pool } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
 import { DeserializedLockedVaultUser } from 'state/types'
-import { Token } from '@pancakeswap/sdk'
 import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
-interface ExpiringUnclaimProps {
+interface RewardPeriodProps {
   campaignIds: Array<string>
   campaignClaimTime: number
   incentives: Incentives
-  pool: Pool.DeserializedPool<Token>
   userData: DeserializedLockedVaultUser
   rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
   currentUserCampaignInfo: UserCampaignInfoDetail
+  isQualified: boolean
+  isLockPosition: boolean
+  isValidLockDuration: boolean
+  thresholdLockTime: number
 }
 
-const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> = ({
+const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignIds,
   campaignClaimTime,
   userData,
-  pool,
   incentives,
   currentUserCampaignInfo,
   rewardInfo,
   totalAvailableClaimData,
+  isQualified,
+  isLockPosition,
+  isValidLockDuration,
+  thresholdLockTime,
 }) => {
   return (
     <Flex
@@ -36,12 +41,16 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
       flexDirection={['column', 'column', 'column', 'row']}
     >
       <CurrentPeriod
-        pool={pool}
         userData={userData}
         incentives={incentives}
         rewardInfo={rewardInfo}
         campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
+        isQualified={isQualified}
+        isLockPosition={isLockPosition}
+        isValidLockDuration={isValidLockDuration}
+        thresholdLockTime={thresholdLockTime}
+        totalAvailableClaimData={totalAvailableClaimData}
       />
       <TotalPeriod
         campaignIds={campaignIds}
@@ -52,4 +61,4 @@ const ExpiringUnclaim: React.FC<React.PropsWithChildren<ExpiringUnclaimProps>> =
   )
 }
 
-export default ExpiringUnclaim
+export default RewardPeriod

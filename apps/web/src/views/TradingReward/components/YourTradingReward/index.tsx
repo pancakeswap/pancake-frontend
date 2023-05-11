@@ -5,19 +5,16 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useProfile } from 'state/profile/hooks'
-import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import { useDeserializedPoolByVaultKey, useCakeVault } from 'state/pools/hooks'
+import { useCakeVault } from 'state/pools/hooks'
 import { useCakeVaultPool } from 'views/TradingReward/hooks/useCakeVaultPool'
 import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
-import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
-import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
-import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
+import RewardPeriod from 'views/TradingReward/components/YourTradingReward/RewardPeriod'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -177,17 +174,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
 
   useCakeVaultPool()
 
-  const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
   const { userData } = useCakeVault() as DeserializedLockedCakeVault
   const vaultPosition = getVaultPosition(userData)
-
-  const hasClaimBalance = useMemo(() => {
-    const claimBalance = totalAvailableClaimData
-      .filter((i) => new BigNumber(i.canClaim).gt(0) && !i.userClaimedIncentives)
-      .map((available) => available.canClaim)
-      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-    return claimBalance > 0
-  }, [totalAvailableClaimData])
 
   const isLockPosition = useMemo(
     () => Boolean(userData?.locked) && vaultPosition === VaultPosition.Locked,
@@ -197,14 +185,6 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const isValidLockDuration = useMemo(() => {
     const minLockTime = new BigNumber(incentives.campaignClaimTime).plus(thresholdLockTime)
     return new BigNumber(userData.lockEndTime).gte(minLockTime)
-  }, [incentives, thresholdLockTime, userData])
-
-  const minLockWeekInSeconds = useMemo(() => {
-    const currentTime = new Date().getTime() / 1000
-    const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
-    const lockDuration = new BigNumber(incentives.campaignClaimTime).plus(thresholdLockTime).minus(minusTime)
-    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
-    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
   }, [incentives, thresholdLockTime, userData])
 
   const isQualified = useMemo(
@@ -217,85 +197,50 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     [account, isQualified, totalEstimateRewardUSD],
   )
 
-  const TradingRewardComponent = (): JSX.Element => {
-    if (isFetching) {
-      return (
+  return (
+    <StyledBackground showBackgroundColor={showBackgroundColor}>
+      <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
+      {isFetching && (
         <Skeleton
           height={380}
           borderRadius={16}
           margin="32px auto"
           width={['calc(100% - 32px)', 'calc(100% - 32px)', 'calc(100% - 32px)', 'calc(100% - 32px)', '900px']}
         />
-      )
-    }
+      )}
 
-    if (!account) {
-      return (
+      {!isFetching && !account && (
         <Container showBackgroundColor={showBackgroundColor}>
           <BaseContainer showBackgroundColor={showBackgroundColor}>
             <NoConnected />
           </BaseContainer>
         </Container>
-      )
-    }
+      )}
 
-    if (!profile?.isActive) {
-      return (
+      {!isFetching && account && !profile?.isActive && (
         <Container showBackgroundColor={showBackgroundColor}>
           <BaseContainer showBackgroundColor={showBackgroundColor}>
             <NoProfile />
           </BaseContainer>
         </Container>
-      )
-    }
+      )}
 
-    if (!isQualified) {
-      return (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <BaseContainer showBackgroundColor={showBackgroundColor}>
-            <NoCakeLockedOrExtendLock
-              pool={pool}
-              userData={userData}
-              rewardInfo={rewardInfo}
-              isLockPosition={isLockPosition}
-              minLockWeekInSeconds={minLockWeekInSeconds}
-              hasClaimBalance={hasClaimBalance}
-              isValidLockDuration={isValidLockDuration}
-              totalAvailableClaimData={totalAvailableClaimData}
-            />
-          </BaseContainer>
-        </Container>
-      )
-    }
+      {!isFetching && account && profile?.isActive && (
+        <RewardPeriod
+          userData={userData}
+          campaignIds={campaignIds}
+          incentives={incentives}
+          rewardInfo={rewardInfo}
+          currentUserCampaignInfo={currentUserCampaignInfo}
+          totalAvailableClaimData={totalAvailableClaimData}
+          campaignClaimTime={incentives.campaignClaimTime}
+          isQualified={isQualified}
+          isLockPosition={isLockPosition}
+          isValidLockDuration={isValidLockDuration}
+          thresholdLockTime={thresholdLockTime}
+        />
+      )}
 
-    if (isQualified && !totalEstimateRewardUSD) {
-      return (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <BaseContainer showBackgroundColor={showBackgroundColor}>
-            <ViewEligiblePairs />
-          </BaseContainer>
-        </Container>
-      )
-    }
-
-    return (
-      <ExpiringUnclaim
-        pool={pool}
-        userData={userData}
-        campaignIds={campaignIds}
-        incentives={incentives}
-        rewardInfo={rewardInfo}
-        currentUserCampaignInfo={currentUserCampaignInfo}
-        totalAvailableClaimData={totalAvailableClaimData}
-        campaignClaimTime={incentives.campaignClaimTime}
-      />
-    )
-  }
-
-  return (
-    <StyledBackground showBackgroundColor={showBackgroundColor}>
-      <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
-      <TradingRewardComponent />
       <Decorations showBackgroundColor={showBackgroundColor}>
         <img src="/images/trading-reward/left-bunny.png" width="93px" height="242px" alt="left-bunny" />
         <img src="/images/trading-reward/right-bunny.png" width="161px" height="161px" alt="right-bunny" />

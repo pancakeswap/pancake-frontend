@@ -8,12 +8,11 @@ import { DeserializedLockedVaultUser } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Actions from 'views/TradingReward/components/YourTradingReward/Actions'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 import formatSecondsToWeeks from 'views/Pools/components/utils/formatSecondsToWeeks'
-import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 
 const Container = styled(Flex)`
   justify-content: space-between;
@@ -53,23 +52,19 @@ export const BunnyButt = styled.div`
 interface NoCakeLockedOrExtendLockProps {
   pool: Pool.DeserializedPool<Token>
   userData: DeserializedLockedVaultUser
+  incentives: Incentives
   isLockPosition: boolean
   isValidLockDuration: boolean
-  minLockWeekInSeconds: number
-  hasClaimBalance: boolean
-  totalAvailableClaimData: UserCampaignInfoDetail[]
-  rewardInfo: { [key in string]: RewardInfo }
+  thresholdLockTime: number
 }
 
 const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrExtendLockProps>> = ({
   pool,
   userData,
+  incentives,
   isLockPosition,
-  minLockWeekInSeconds,
-  hasClaimBalance,
   isValidLockDuration,
-  totalAvailableClaimData,
-  rewardInfo,
+  thresholdLockTime,
 }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
@@ -100,9 +95,16 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     [cakePriceBusd, cakeAsNumberBalance],
   )
 
+  const minLockWeekInSeconds = useMemo(() => {
+    const currentTime = new Date().getTime() / 1000
+    const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
+    const lockDuration = new BigNumber(incentives.campaignClaimTime).plus(thresholdLockTime).minus(minusTime)
+    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
+    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
+  }, [incentives, thresholdLockTime, userData])
+
   return (
     <Flex flexDirection={['column', 'column', 'column', 'row']}>
-      {hasClaimBalance && <NotQualified totalAvailableClaimData={totalAvailableClaimData} rewardInfo={rewardInfo} />}
       <Flex flexDirection="column" width={['100%', '100%', '100%', '354px']}>
         {!isOnlyNeedExtendLock ? (
           <>
