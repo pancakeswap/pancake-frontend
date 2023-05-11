@@ -172,26 +172,26 @@ export default function AddLiquidity({
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
     }
 
-    let estimate = null
-    let method: ((...args: any) => Promise<TransactionResponse>) | undefined
-    let args: Array<string | string[] | number> | undefined
+    let estimate
+    let method: (...args: any) => Promise<TransactionResponse>
+    let args: Array<string | string[] | number | bigint>
     let value: BigNumber | null
     if (currencyA?.isNative || currencyB?.isNative) {
       const tokenBIsNative = currencyB?.isNative
       estimate = routerContract.estimateGas.addLiquidityETH
-      method = routerContract.addLiquidityETH
+      method = routerContract.write.sddLiquidityETH
       args = [
         (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
         (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
         amountsMin[tokenBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
         amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
         account,
-        deadline.toHexString(),
+        deadline,
       ]
       value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString())
     } else {
       estimate = routerContract.estimateGas.addLiquidity
-      method = routerContract.addLiquidity
+      method = routerContract.write.addLiquidity
       args = [
         currencyA?.wrapped?.address ?? '',
         currencyB?.wrapped?.address ?? '',
@@ -200,7 +200,7 @@ export default function AddLiquidity({
         amountsMin[Field.CURRENCY_A].toString(),
         amountsMin[Field.CURRENCY_B].toString(),
         account,
-        deadline.toHexString(),
+        deadline,
       ]
       value = null
     }

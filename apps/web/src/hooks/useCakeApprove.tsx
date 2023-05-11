@@ -1,17 +1,17 @@
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCake } from 'hooks/useContract'
 import { useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
+import { useCake } from 'hooks/useContract'
 
 const useCakeApprove = (setLastUpdated: () => void, spender, successMsg) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { signer: cakeContract } = useCake()
+  const cakeContract = useCake()
 
   const handleApprove = async () => {
     const receipt = await fetchWithCatchTxError(() => {

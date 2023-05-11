@@ -30,7 +30,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { getBlockExploreLink } from 'utils'
 import { DatePicker, DatePickerPortal, TimePicker } from 'views/Voting/components/DatePicker'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
@@ -69,7 +69,7 @@ const CreateProposal = () => {
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
   const formErrors = getFormErrors(state, t)
 
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
@@ -78,7 +78,10 @@ const CreateProposal = () => {
       setIsLoading(true)
 
       const web3 = {
-        getSigner: () => signer,
+        getSigner: () => {
+          // eslint-disable-next-line
+          _signTypedData: signer.signTypedData
+        },
       }
 
       const data: any = await client.proposal(web3 as any, account, {

@@ -1,7 +1,7 @@
 import { BestTradeOptions as BaseBestTradeOptions, ChainId, Currency, Pair } from '@pancakeswap/sdk'
-import { providers } from 'ethers'
+import { Chain, FallbackTransport, PublicClient } from 'viem'
 
-export type Provider = ({ chainId }: { chainId?: ChainId }) => providers.Provider
+export type Provider = ({ chainId }: { chainId?: ChainId }) => PublicClient<FallbackTransport, Chain>
 
 export interface BestTradeOptions extends BaseBestTradeOptions {
   provider: Provider

@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useCallback } from 'react'
 import noop from 'lodash/noop'
 import { useAccount } from 'wagmi'
-import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
+import { SendTransactionResult, WaitForTransactionResult } from '@wagmi/core'
 import useCatchTxError from './useCatchTxError'
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
@@ -63,12 +63,12 @@ const reducer = (state: State, actions: Action): State => {
 
 interface OnSuccessProps {
   state: State
-  receipt: TransactionReceipt
+  receipt: WaitForTransactionResult
 }
 
 interface ApproveConfirmTransaction {
-  onApprove: () => Promise<TransactionResponse>
-  onConfirm: (params?) => Promise<TransactionResponse>
+  onApprove: () => Promise<SendTransactionResult>
+  onConfirm: (params?) => Promise<SendTransactionResult>
   onRequiresApproval?: () => Promise<boolean>
   onSuccess: ({ state, receipt }: OnSuccessProps) => void
   onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void

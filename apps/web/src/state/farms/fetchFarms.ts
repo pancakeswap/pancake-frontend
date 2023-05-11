@@ -39,6 +39,7 @@ function getLpInfo({
 }
 
 function farmLpTransformer(farmResult, masterChefResult) {
+  console.log('farmResult', farmResult)
   return (farm, index) => {
     const [
       tokenBalanceLP,

@@ -120,7 +120,7 @@ const nodeRealProvider = new JsonRpcProvider('https://bsc-mainnet.nodereal.io/v1
 export const getVotingPower = async (
   account: string,
   poolAddresses: string[],
-  blockNumber?: number,
+  blockNumber?: bigint,
 ): Promise<GetVotingPowerType> => {
   if (blockNumber && (blockNumber >= VOTING_POWER_BLOCK.v0 || blockNumber >= VOTING_POWER_BLOCK.v1)) {
     const cakeVaultAddress = getCakeVaultAddress()
@@ -141,7 +141,7 @@ export const getVotingPower = async (
         },
       ],
       options: {
-        blockTag: blockNumber,
+        blockTag: blockNumber.toString(),
       },
     })
 
@@ -159,7 +159,7 @@ export const getVotingPower = async (
         ],
         NETWORK,
         [account],
-        blockNumber,
+        blockNumber.toString(),
       )
 
     const lockedCakeBalance = convertSharesToCake(
@@ -191,7 +191,7 @@ export const getVotingPower = async (
     }
   }
 
-  const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber)
+  const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber.toString())
 
   return {
     total: total[account] ? total[account] : 0,

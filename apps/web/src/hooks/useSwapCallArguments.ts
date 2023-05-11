@@ -43,7 +43,7 @@ export function useSwapCallArguments(
         feeOnTransfer: false,
         allowedSlippage: new Percent(BigInt(allowedSlippage), BIPS_BASE),
         recipient,
-        deadline: deadline.toNumber(),
+        deadline: Number(deadline),
       }),
     )
 
@@ -53,7 +53,7 @@ export function useSwapCallArguments(
           feeOnTransfer: true,
           allowedSlippage: new Percent(BigInt(allowedSlippage), BIPS_BASE),
           recipient,
-          deadline: deadline.toNumber(),
+          deadline: Number(deadline),
         }),
       )
     }

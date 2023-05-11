@@ -46,7 +46,7 @@ const AvatarWrapper = styled.div`
 const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToApprove, goToChange, goToRemove }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { reader: cakeContract } = useCake()
+  const cakeContract = useCake()
   const { profile } = useProfile()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const {

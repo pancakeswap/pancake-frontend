@@ -1,4 +1,4 @@
-import { formatEther } from '@ethersproject/units'
+import { formatEther } from 'viem'
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
@@ -38,14 +38,14 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
       masterChefAddress,
       isTestnet,
       chainId,
-      farms: farms.filter((f) => !f.pid || poolLength.gt(f.pid)),
+      farms: farms.filter((f) => !f.pid || poolLength > f.pid),
       totalRegularAllocPoint,
       totalSpecialAllocPoint,
     })
 
     return {
       farmsWithPrice,
-      poolLength: poolLength.toNumber(),
+      poolLength: Number(poolLength),
       regularCakePerBlock: +regularCakePerBlock,
       totalRegularAllocPoint: totalRegularAllocPoint.toString(),
     }
@@ -93,7 +93,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       })
 
       return {
-        poolLength: poolLength.toNumber(),
+        poolLength: Number(poolLength),
         farmsWithPrice,
         cakePerSecond,
         totalAllocPoint: totalAllocPoint.toString(),

@@ -119,6 +119,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^3.10.0
@@ -865,6 +868,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: 4.0.0
         version: 4.0.0(vite@4.3.1)
+      abitype:
+        specifier: '*'
+        version: 0.8.0(typescript@4.9.4)(zod@3.21.4)
       eslint:
         specifier: ^8.32.0
         version: 8.32.0
@@ -1089,6 +1095,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      viem:
+        specifier: ^0.3.19
+        version: 0.3.19(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@types/lodash':
         specifier: ^4.14.168
@@ -1158,15 +1167,9 @@ importers:
 
   packages/multicall:
     dependencies:
-      '@ethersproject/abi':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/contracts':
-        specifier: ^5.0.0
-        version: 5.7.0
-      '@ethersproject/providers':
-        specifier: ^5.0.0
-        version: 5.7.2
+      viem:
+        specifier: ^0.3.19
+        version: 0.3.19(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@pancakeswap/sdk':
         specifier: workspace:*
@@ -1222,6 +1225,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      viem:
+        specifier: ^0.3.19
+        version: 0.3.19(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@ethersproject/abi':
         specifier: ^5.0.0
@@ -11828,7 +11834,6 @@ packages:
     dependencies:
       typescript: 4.9.4
       zod: 3.21.4
-    dev: false
 
   /abitype@0.8.2(typescript@4.9.4)(zod@3.21.4):
     resolution: {integrity: sha512-B1ViNMGpfx/qjVQi0RTc2HEFHuR9uoCoTEkwELT5Y7pBPtBbctYijz9BK6+Kd0hQ3S70FhYTO2dWWk0QNUEXMA==}

@@ -6,12 +6,12 @@ import masterChefAbi from 'config/abi/masterchef.json'
 import { useCallback, useMemo } from 'react'
 import { useCakeVault } from 'state/pools/hooks'
 import useSWRImmutable from 'swr/immutable'
-import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { multicallv2 } from '../utils/multicall'
 
-const masterChefAddress = getMasterChefAddress()
+const masterChefAddress = getMasterChefV2Address()
 
 // default
 const DEFAULT_PERFORMANCE_FEE_DECIMALS = 2

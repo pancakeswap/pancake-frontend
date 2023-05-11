@@ -1,6 +1,6 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { viemClients } from 'utils/viem'
 import { log } from 'next-axiom'
+import { getViemClients } from 'utils/viem'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -41,7 +41,7 @@ const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
 
 globalThis.fetch = fetchWithLogging
 
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
 
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
@@ -78,7 +78,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
 
     const gasPrice = gasPriceWei
       ? BigInt(gasPriceWei)
-      : async () => BigInt(await (await viemClients({ chainId }).getGasPrice()).toString())
+      : async () => BigInt(await (await getViemClients({ chainId }).getGasPrice()).toString())
 
     SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
       gasPriceWei: gasPrice,

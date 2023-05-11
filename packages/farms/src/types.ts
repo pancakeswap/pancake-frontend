@@ -2,7 +2,7 @@ import { SerializedToken, Token } from '@pancakeswap/swap-sdk-core'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
-import { BigNumber as EtherBigNumber } from '@ethersproject/bignumber'
+import { Address } from 'viem'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -47,7 +47,7 @@ export interface FarmConfigBaseProps {
   v1pid?: number
   vaultPid?: number
   lpSymbol: string
-  lpAddress: string
+  lpAddress: Address
   multiplier?: string
   isCommunity?: boolean
   auctionHostingStartSeconds?: number
@@ -63,8 +63,8 @@ export interface FarmConfigBaseProps {
 export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
   token: SerializedWrappedToken
   quoteToken: SerializedWrappedToken
-  stableSwapAddress: string
-  infoStableSwapAddress: string
+  stableSwapAddress: Address
+  infoStableSwapAddress: Address
   stableLpFee?: number
 }
 
@@ -76,7 +76,7 @@ export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
 export type ComputedFarmConfigV3 = {
   pid: number
   lpSymbol: string
-  lpAddress: string
+  lpAddress: Address
   boosted?: boolean
 
   token: Token
@@ -121,7 +121,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   tokenPriceVsQuote?: string
   poolWeight?: string
   boosted?: boolean
-  infoStableSwapAddress?: string
+  infoStableSwapAddress?: Address
   stableSwapAddress?: string
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
@@ -240,22 +240,22 @@ export interface FarmsV3Response<T extends FarmV3DataWithPrice = FarmV3DataWithP
   totalAllocPoint: string
 }
 
-export type IPendingCakeByTokenId = Record<string, EtherBigNumber>
+export type IPendingCakeByTokenId = Record<string, bigint>
 
 export interface PositionDetails {
-  nonce: EtherBigNumber
-  tokenId: EtherBigNumber
+  nonce: bigint
+  tokenId: bigint
   operator: string
   token0: string
   token1: string
   fee: number
   tickLower: number
   tickUpper: number
-  liquidity: EtherBigNumber
-  feeGrowthInside0LastX128: EtherBigNumber
-  feeGrowthInside1LastX128: EtherBigNumber
-  tokensOwed0: EtherBigNumber
-  tokensOwed1: EtherBigNumber
+  liquidity: bigint
+  feeGrowthInside0LastX128: bigint
+  feeGrowthInside1LastX128: bigint
+  tokensOwed0: bigint
+  tokensOwed1: bigint
   isStaked?: boolean
 }
 

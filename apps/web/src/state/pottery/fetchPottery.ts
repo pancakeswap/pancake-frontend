@@ -9,6 +9,7 @@ import { getBep20Contract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
+import { Address } from 'wagmi'
 
 const potteryDrawAddress = getPotteryDrawAddress()
 
@@ -35,7 +36,7 @@ export const fetchLastVaultAddress = async () => {
   }
 }
 
-export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
+export const fetchPublicPotteryValue = async (potteryVaultAddress: Address) => {
   try {
     const calls = [
       'getStatus',
@@ -65,7 +66,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       getLockTime,
       getMaxTotalDeposit,
       [[lastDrawId, totalPrize]],
-    ] = await multicallv3({ calls: [...calls, getPotCall] })
+    ] = await multicallv3({ calls: [...calls, getPotCall], allowFailure: false })
 
     return {
       lastDrawId: new BigNumber(lastDrawId.toString()).toJSON(),

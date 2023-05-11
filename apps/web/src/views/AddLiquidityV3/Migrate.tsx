@@ -290,12 +290,12 @@ function V2PairMigrate({
       spender: migrator.address,
       value: pairBalance.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber(),
+      deadline: Number(deadline),
     }
 
     signTypedDataAsync({
-      domain,
       // @ts-ignore
+      domain,
       primaryType: 'Permit',
       types: {
         EIP712Domain,
@@ -309,7 +309,7 @@ function V2PairMigrate({
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber(),
+          deadline: Number(deadline),
         })
       })
       .catch((err) => {
