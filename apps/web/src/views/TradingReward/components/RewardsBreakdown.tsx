@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useAccount } from 'wagmi'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -35,7 +34,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { address: account } = useAccount()
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
@@ -81,10 +79,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       getActivitySlice()
     }
   }, [currentPage, sortData])
-
-  if (!account) {
-    return null
-  }
 
   return (
     <Flex

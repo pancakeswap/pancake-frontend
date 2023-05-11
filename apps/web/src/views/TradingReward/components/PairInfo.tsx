@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text, Flex, Skeleton } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Farm as FarmUI, Tag } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import { Token } from '@pancakeswap/swap-sdk-core'
 
@@ -11,6 +11,8 @@ const TokenWrapper = styled.div`
     width: 40px;
   }
 `
+
+const { V3FeeTag } = FarmUI.Tags
 
 interface PairInfoProps {
   isReady: boolean
@@ -56,8 +58,16 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
             />
           </TokenWrapper>
         )}
-        <Flex mt={['4px', '4px', '4px', '4px', '0']}>
-          <Text lineHeight="110%" bold>{`${lpSymbol} - ${feeAmount / 10000}%`}</Text>
+        <Flex flexDirection={['column', 'column', 'row']} mt={['4px', '4px', '4px', '4px', '0']}>
+          <Text style={{ alignSelf: 'center' }} lineHeight="110%" bold>
+            {lpSymbol}
+          </Text>
+          <Flex m={['4px 0 0 0', '4px 0 0 0', '0 0 0 4px']}>
+            <V3FeeTag style={{ alignSelf: 'flex-start' }} feeAmount={feeAmount} scale="sm" />
+            <Tag style={{ alignSelf: 'flex-start' }} ml="4px" variant="secondary" scale="sm">
+              V3
+            </Tag>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
