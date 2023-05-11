@@ -160,8 +160,8 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     amountA: existingPosition?.amount0,
     amountB: existingPosition?.amount1,
     compoundOn: false,
-    currencyAUsdPrice,
-    currencyBUsdPrice,
+    currencyAUsdPrice: isSorted ? currencyAUsdPrice : currencyBUsdPrice,
+    currencyBUsdPrice: isSorted ? currencyBUsdPrice : currencyAUsdPrice,
     volume24H,
   })
 
