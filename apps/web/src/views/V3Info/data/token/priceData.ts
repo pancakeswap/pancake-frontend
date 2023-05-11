@@ -232,12 +232,14 @@ export async function fetchPairPriceChartTokenData(
   data: PriceChartEntry[]
   maxPrice?: number
   minPrice?: number
+  averagePrice?: number
   error: boolean
 }> {
   const isDay = interval === ONE_DAY_SECONDS
   // start and end bounds
   let maxPrice = 0
   let minPrice = -100
+  let averagePrice = 0
   try {
     const endTimestamp = dayjs.utc().unix()
 
@@ -307,20 +309,24 @@ export async function fetchPairPriceChartTokenData(
     const formattedHistory = data.map((d) => {
       const high = parseFloat(d.high)
       const low = parseFloat(d.low)
+      const close = parseFloat(d.close)
       if (high >= maxPrice) maxPrice = high
       if ((minPrice === -100 || low < minPrice) && low !== 0) minPrice = low
+      averagePrice += close
       return {
         time: d?.periodStartUnix || d?.date,
         open: parseFloat(d.open),
-        close: parseFloat(d.close),
+        close,
         high,
         low,
       }
     })
+    averagePrice /= formattedHistory.length
     return {
       data: formattedHistory,
       maxPrice,
       minPrice,
+      averagePrice,
       error: false,
     }
   } catch (e) {
