@@ -20,7 +20,7 @@ import { useCallback } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import styled from 'styled-components'
-import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { harvestFarm } from 'utils/calls'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import useFarmsWithBalance, { FarmWithBalance } from 'views/Home/hooks/useFarmsWithBalance'
@@ -31,7 +31,7 @@ const StyledCard = styled(Card)`
   height: fit-content;
 `
 
-const masterChefAddress = getMasterChefAddress()
+const masterChefAddress = getMasterChefV2Address()
 
 const HarvestCard = () => {
   const { t } = useTranslation()

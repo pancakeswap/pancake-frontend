@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { parseUnits } from 'ethers/lib/utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'

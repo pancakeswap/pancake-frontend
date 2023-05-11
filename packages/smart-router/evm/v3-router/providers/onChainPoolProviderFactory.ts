@@ -176,7 +176,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
 interface OnChainPoolFactoryParams<TPool extends Pool, TPoolMeta extends PoolMeta> {
   abi: any[]
   getPossiblePoolMetas: (pair: [Currency, Currency]) => TPoolMeta[]
-  buildPoolInfoCalls: (poolAddress: string) => Call[]
+  buildPoolInfoCalls: (poolAddress: Address) => Call[]
   buildPool: (poolMeta: TPoolMeta, data: any[]) => TPool | null
 }
 

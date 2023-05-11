@@ -1,8 +1,8 @@
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BIG_ONE, BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BN from 'bignumber.js'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
-import _toNumber from 'lodash/toNumber'
+import toNumber from 'lodash/toNumber'
 import { SerializedFarmPublicData, FarmData, isStableFarm } from '../types'
-import { FIXED_ONE, FIXED_TWO, FIXED_ZERO } from '../const'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 // Find BUSD price for token
@@ -11,24 +11,26 @@ import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 export const getFarmBaseTokenPrice = (
   farm: SerializedFarmPublicData,
   quoteTokenFarm: SerializedFarmPublicData,
-  nativePriceUSD: FixedNumber,
+  nativePriceUSD: BN,
   wNative: string,
   stable: string,
   quoteTokenInBusd: any,
-): FixedNumber => {
+): BN => {
   const hasTokenPriceVsQuote = Boolean(farm.tokenPriceVsQuote)
 
   if (farm.quoteToken.symbol === stable) {
-    return hasTokenPriceVsQuote ? FixedNumber.from(farm.tokenPriceVsQuote) : FIXED_ONE
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return hasTokenPriceVsQuote ? new BN(farm.tokenPriceVsQuote!) : BIG_ONE
   }
 
   if (farm.quoteToken.symbol === wNative) {
-    return hasTokenPriceVsQuote ? nativePriceUSD.mulUnsafe(FixedNumber.from(farm.tokenPriceVsQuote)) : FIXED_ONE
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return hasTokenPriceVsQuote ? nativePriceUSD.times(new BN(farm.tokenPriceVsQuote!)) : BIG_ONE
   }
 
   // We can only calculate profits without a quoteTokenFarm for BUSD/BNB farms
   if (!quoteTokenFarm) {
-    return FIXED_ZERO
+    return BIG_ZERO
   }
 
   // Possible alternative farm quoteTokens:
@@ -38,23 +40,24 @@ export const getFarmBaseTokenPrice = (
   // from the BNB - pBTC price, we can calculate the PNT - BUSD price
   if (quoteTokenFarm.quoteToken.symbol === wNative || quoteTokenFarm.quoteToken.symbol === stable) {
     return hasTokenPriceVsQuote && quoteTokenInBusd
-      ? FixedNumber.from(farm.tokenPriceVsQuote).mulUnsafe(quoteTokenInBusd)
-      : FIXED_ONE
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        new BN(farm.tokenPriceVsQuote!).times(quoteTokenInBusd)
+      : BIG_ONE
   }
 
   // Catch in case token does not have immediate or once-removed BUSD/WBNB quoteToken
-  return FIXED_ZERO
+  return BIG_ZERO
 }
 
 export const getFarmQuoteTokenPrice = (
   farm: SerializedFarmPublicData,
   quoteTokenFarm: SerializedFarmPublicData,
-  nativePriceUSD: FixedNumber,
+  nativePriceUSD: BN,
   wNative: string,
   stable: string,
-): FixedNumber => {
+): BN => {
   if (farm.quoteToken.symbol === stable) {
-    return FIXED_ONE
+    return BIG_ZERO
   }
 
   if (farm.quoteToken.symbol === wNative) {
@@ -62,20 +65,18 @@ export const getFarmQuoteTokenPrice = (
   }
 
   if (!quoteTokenFarm) {
-    return FIXED_ZERO
+    return BIG_ZERO
   }
 
   if (quoteTokenFarm.quoteToken.symbol === wNative) {
-    return quoteTokenFarm.tokenPriceVsQuote
-      ? nativePriceUSD.mulUnsafe(FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote))
-      : FIXED_ZERO
+    return quoteTokenFarm.tokenPriceVsQuote ? nativePriceUSD.times(new BN(quoteTokenFarm.tokenPriceVsQuote)) : BIG_ZERO
   }
 
   if (quoteTokenFarm.quoteToken.symbol === stable) {
-    return quoteTokenFarm.tokenPriceVsQuote ? FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote) : FIXED_ZERO
+    return quoteTokenFarm.tokenPriceVsQuote ? new BN(quoteTokenFarm.tokenPriceVsQuote) : BIG_ZERO
   }
 
-  return FIXED_ZERO
+  return BIG_ZERO
 }
 
 const getFarmFromTokenAddress = (
@@ -101,45 +102,43 @@ const filterFarmsByQuoteToken = (
 }
 
 export const getStableLpTokenPrice = (
-  lpTotalSupply: FixedNumber,
-  tokenAmountTotal: FixedNumber,
-  tokenPriceBusd: FixedNumber,
-  quoteTokenAmountTotal: FixedNumber,
-  quoteTokenInBusd: FixedNumber,
+  lpTotalSupply: BN,
+  tokenAmountTotal: BN,
+  tokenPriceBusd: BN,
+  quoteTokenAmountTotal: BN,
+  quoteTokenInBusd: BN,
   decimals: number,
 ) => {
   if (lpTotalSupply.isZero()) {
-    return FIXED_ZERO
+    return BIG_ZERO
   }
-  const valueOfBaseTokenInFarm = tokenPriceBusd.mulUnsafe(tokenAmountTotal)
-  const valueOfQuoteTokenInFarm = quoteTokenInBusd.mulUnsafe(quoteTokenAmountTotal)
+  const valueOfBaseTokenInFarm = tokenPriceBusd.times(tokenAmountTotal)
+  const valueOfQuoteTokenInFarm = quoteTokenInBusd.times(quoteTokenAmountTotal)
 
-  const liquidity = valueOfBaseTokenInFarm.addUnsafe(valueOfQuoteTokenInFarm)
+  const liquidity = valueOfBaseTokenInFarm.plus(valueOfQuoteTokenInFarm)
 
-  const totalLpTokens = lpTotalSupply.divUnsafe(FixedNumber.from(getFullDecimalMultiplier(decimals)))
+  const totalLpTokens = lpTotalSupply.div(getFullDecimalMultiplier(decimals))
 
-  return liquidity.divUnsafe(totalLpTokens)
+  return liquidity.div(totalLpTokens)
 }
 
 export const getLpTokenPrice = (
-  lpTotalSupply: FixedNumber,
-  lpTotalInQuoteToken: FixedNumber,
-  tokenAmountTotal: FixedNumber,
-  tokenPriceBusd: FixedNumber,
+  lpTotalSupply: BN,
+  lpTotalInQuoteToken: BN,
+  tokenAmountTotal: BN,
+  tokenPriceBusd: BN,
   decimals: number,
 ) => {
   // LP token price
-  let lpTokenPrice = FIXED_ZERO
-  const lpTotalSupplyAsBigNumber = BigNumber.from(lpTotalSupply)
-  const lpTotalInQuoteTokenBigNumber = BigNumber.from(lpTotalInQuoteToken)
-  if (lpTotalSupplyAsBigNumber.gt(0) && lpTotalInQuoteTokenBigNumber.gt(0)) {
+  let lpTokenPrice = BIG_ZERO
+  if (lpTotalSupply.gt(0) && lpTotalInQuoteToken.gt(0)) {
     // Total value of base token in LP
-    const valueOfBaseTokenInFarm = tokenPriceBusd.mulUnsafe(tokenAmountTotal)
+    const valueOfBaseTokenInFarm = tokenPriceBusd.times(tokenAmountTotal)
     // Double it to get overall value in LP
-    const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.mulUnsafe(FIXED_TWO)
+    const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.times(BIG_TWO)
     // Divide total value of all tokens, by the number of LP tokens
-    const totalLpTokens = lpTotalSupply.divUnsafe(FixedNumber.from(getFullDecimalMultiplier(decimals)))
-    lpTokenPrice = overallValueOfAllTokensInFarm.divUnsafe(totalLpTokens)
+    const totalLpTokens = lpTotalSupply.div(getFullDecimalMultiplier(decimals))
+    lpTokenPrice = overallValueOfAllTokensInFarm.div(totalLpTokens)
   }
 
   return lpTokenPrice
@@ -165,11 +164,11 @@ export const getFarmsPrices = (
   const isNativeFirst = nativeStableFarm?.token.symbol === nativeStableLp.wNative
 
   const nativePriceUSD =
-    nativeStableFarm && _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
+    nativeStableFarm && toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
       ? isNativeFirst
-        ? FixedNumber.from(nativeStableFarm.tokenPriceVsQuote)
-        : FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
-      : FIXED_ZERO
+        ? new BN(nativeStableFarm.tokenPriceVsQuote)
+        : BIG_ONE.div(new BN(nativeStableFarm.tokenPriceVsQuote))
+      : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenAddress(farms, farm.quoteToken.address, [
@@ -196,17 +195,17 @@ export const getFarmsPrices = (
 
     const lpTokenPrice = isStableFarm(farm)
       ? getStableLpTokenPrice(
-          FixedNumber.from(farm.lpTotalSupply),
-          FixedNumber.from(farm.tokenAmountTotal),
+          new BN(farm.lpTotalSupply),
+          new BN(farm.tokenAmountTotal),
           tokenPriceBusd,
-          FixedNumber.from(farm.quoteTokenAmountTotal),
+          new BN(farm.quoteTokenAmountTotal),
           quoteTokenPriceBusd,
           decimals,
         )
       : getLpTokenPrice(
-          FixedNumber.from(farm.lpTotalSupply),
-          FixedNumber.from(farm.lpTotalInQuoteToken),
-          FixedNumber.from(farm.tokenAmountTotal),
+          new BN(farm.lpTotalSupply),
+          new BN(farm.lpTotalInQuoteToken),
+          new BN(farm.tokenAmountTotal),
           tokenPriceBusd,
           decimals,
         )

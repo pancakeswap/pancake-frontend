@@ -12,9 +12,7 @@
     "@pancakeswap/sdk": "^4.0.0"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.0",
-    "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0"
+    "viem": "^0.3.19"
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",

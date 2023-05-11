@@ -1,27 +1,22 @@
-import useSWRImmutable from 'swr/immutable'
-import { multicallv3 } from 'utils/multicall'
 import BigNumber from 'bignumber.js'
-import masterChefAbi from 'config/abi/masterchef.json'
-import { getMasterChefAddress } from 'utils/addressHelpers'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { masterChefV2ABI } from 'config/abi/masterchefV2'
+import { getMasterChefV2Address } from 'utils/addressHelpers'
+import { formatEther } from 'viem'
+import { useContractRead } from 'wagmi'
 
 const CAKE_PER_BLOCK = 40
-const masterChefAddress = getMasterChefAddress()
+const masterChefAddress = getMasterChefV2Address()
 
 export const useCakeEmissionPerBlock = (inView?: boolean) => {
-  const { data: emissionsPerBlock } = useSWRImmutable(inView && '/cakeEmissionPerBlock', async () => {
-    const [cakePerBlockToBurn] = await multicallv3({
-      calls: [
-        {
-          name: 'cakePerBlockToBurn',
-          address: masterChefAddress,
-          abi: masterChefAbi,
-        },
-      ],
-    })
-
-    const balance = getBalanceNumber(cakePerBlockToBurn)
-    return new BigNumber(CAKE_PER_BLOCK).minus(balance).toNumber()
+  const { data: emissionsPerBlock } = useContractRead({
+    abi: masterChefV2ABI,
+    address: masterChefAddress,
+    functionName: 'cakePerBlockToBurn',
+    enabled: inView,
+    select: (d) => {
+      const burn = formatEther(d)
+      return new BigNumber(CAKE_PER_BLOCK).minus(burn).toNumber()
+    },
   })
 
   return emissionsPerBlock

@@ -197,12 +197,12 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.quotient.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber(),
+      deadline: Number(deadline),
     }
 
     signTypedDataAsync({
-      domain,
       // @ts-ignore
+      domain,
       primaryType: 'Permit',
       types: {
         EIP712Domain,
@@ -216,7 +216,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber(),
+          deadline: Number(deadline),
         })
       })
       .catch((err) => {

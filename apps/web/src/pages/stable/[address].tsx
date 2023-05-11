@@ -17,13 +17,11 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 import styled from 'styled-components'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
-import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { useContract } from 'hooks/useContract'
 import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
 import { useAccount } from 'wagmi'
 import { useTokenBalance } from 'state/wallet/hooks'
@@ -32,6 +30,7 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import currencyId from 'utils/currencyId'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { stableSwapABI } from 'config/abi/stableSwapAbi'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -55,9 +54,14 @@ export default function StablePoolPage() {
 
   const selectedLp = lpTokens.find(({ liquidityToken }) => liquidityToken.address === poolAddress)
 
-  const stableSwapInfoContract = useContract(selectedLp?.infoStableSwapAddress, stableSwapInfoABI)
-
-  const { result } = useSingleCallResult(stableSwapInfoContract, 'balances', [selectedLp?.stableSwapAddress])
+  const { result } = useSingleCallResult(
+    {
+      abi: stableSwapABI,
+      address: selectedLp?.stableSwapAddress,
+    },
+    'balances',
+    [selectedLp?.stableSwapAddress],
+  )
 
   const reserves = useMemo(() => (result ? result[0] : ['0', '0']), [result])
 

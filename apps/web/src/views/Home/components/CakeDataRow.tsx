@@ -1,19 +1,19 @@
-import { Flex, Heading, Skeleton, Text, Balance } from '@pancakeswap/uikit'
-import cakeAbi from 'config/abi/cake.json'
-import { bscTokens } from '@pancakeswap/tokens'
-import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
+import { bscTokens } from '@pancakeswap/tokens'
+import { Balance, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { formatBigInt, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
+import { cakeVaultV2ABI } from 'config/abi/cakeVaultV2Abi'
+import { SLOW_INTERVAL } from 'config/constants'
 import { useEffect, useState } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import styled from 'styled-components'
-import { formatBigNumber, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { multicallv3 } from 'utils/multicall'
-import { getCakeVaultAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
-import { SLOW_INTERVAL } from 'config/constants'
-import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
-import { BigNumber } from 'ethers'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
+import { viemClients } from 'utils/viem'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
+import { erc20ABI } from 'wagmi'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -71,7 +71,7 @@ const Grid = styled.div`
  * https://twitter.com/PancakeSwap/status/1523913527626702849
  * https://bscscan.com/tx/0xd5ffea4d9925d2f79249a4ce05efd4459ed179152ea5072a2df73cd4b9e88ba7
  */
-const planetFinanceBurnedTokensWei = BigNumber.from('637407922445268000000000')
+const planetFinanceBurnedTokensWei = 637407922445268000000000n
 const cakeVaultAddress = getCakeVaultAddress()
 
 const CakeDataRow = () => {
@@ -89,30 +89,30 @@ const CakeDataRow = () => {
   } = useSWR(
     loadData ? ['cakeDataRow'] : null,
     async () => {
-      const totalSupplyCall = { abi: cakeAbi, address: bscTokens.cake.address, name: 'totalSupply' }
-      const burnedTokenCall = {
-        abi: cakeAbi,
-        address: bscTokens.cake.address,
-        name: 'balanceOf',
-        params: ['0x000000000000000000000000000000000000dEaD'],
-      }
-      const cakeVaultCall = {
-        abi: cakeVaultV2Abi,
-        address: cakeVaultAddress,
-        name: 'totalLockedAmount',
-      }
-
-      const [[totalSupply], [burned], [totalLockedAmount]] = await multicallv3({
-        calls: [totalSupplyCall, burnedTokenCall, cakeVaultCall],
-        allowFailure: true,
+      const [totalSupply, burned, totalLockedAmount] = await viemClients[ChainId.BSC].multicall({
+        contracts: [
+          { abi: erc20ABI, address: bscTokens.cake.address, functionName: 'totalSupply' },
+          {
+            abi: erc20ABI,
+            address: bscTokens.cake.address,
+            functionName: 'balanceOf',
+            args: ['0x000000000000000000000000000000000000dEaD'],
+          },
+          {
+            abi: cakeVaultV2ABI,
+            address: cakeVaultAddress,
+            functionName: 'totalLockedAmount',
+          },
+        ],
+        allowFailure: false,
       })
-      const totalBurned = planetFinanceBurnedTokensWei.add(burned)
-      const circulating = totalSupply.sub(totalBurned.add(totalLockedAmount))
+      const totalBurned = planetFinanceBurnedTokensWei + burned
+      const circulating = totalSupply - totalBurned + totalLockedAmount
 
       return {
-        cakeSupply: totalSupply && burned ? +formatBigNumber(totalSupply.sub(totalBurned)) : 0,
-        burnedBalance: burned ? +formatBigNumber(totalBurned) : 0,
-        circulatingSupply: circulating ? +formatBigNumber(circulating) : 0,
+        cakeSupply: totalSupply && burned ? +formatBigInt(totalSupply - totalBurned) : 0,
+        burnedBalance: burned ? +formatBigInt(totalBurned) : 0,
+        circulatingSupply: circulating ? +formatBigInt(circulating) : 0,
       }
     },
     {

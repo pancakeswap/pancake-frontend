@@ -1,24 +1,26 @@
-import { Modal, Flex, Text, useToast } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Modal, Text, useToast } from '@pancakeswap/uikit'
+import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCake, useProfileContract } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useProfile } from 'state/profile/hooks'
-import { requiresApproval } from 'utils/requiresApproval'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { useCake, useProfileContract } from 'hooks/useContract'
+import { useProfile } from 'state/profile/hooks'
+import { profileContractArgs } from 'utils/contractHelpers'
+import { requiresApproval } from 'utils/requiresApproval'
+import { Address } from 'wagmi'
 import { REGISTER_COST } from './config'
 import { State } from './contexts/types'
 
 interface Props {
   userName: string
   selectedNft: State['selectedNft']
-  account: string
+  account: Address
   teamId: number
-  minimumCakeRequired: BigNumber
-  allowance: BigNumber
+  minimumCakeRequired: bigint
+  allowance: bigint
   onDismiss?: () => void
 }
 
@@ -34,16 +36,16 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
   const profileContract = useProfileContract()
   const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
+  const cakeContract = useCake()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        return requiresApproval(cakeContractReader, account, profileContract.address, minimumCakeRequired)
+        return requiresApproval(cakeContract, account, profileContractArgs.address, minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [profileContract.address, allowance.toJSON()])
+        return callWithGasPrice(cakeContract, 'approve', [profileContractArgs.address, allowance])
       },
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [

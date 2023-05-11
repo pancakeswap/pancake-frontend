@@ -3,7 +3,7 @@ import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text, useToa
 import { useTranslation } from '@pancakeswap/localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useProfileContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -55,7 +55,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
         )}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {t('Cost to reactivate in the future: %cost% CAKE', { cost: formatBigNumber(numberCakeToReactivate) })}
+        {t('Cost to reactivate in the future: %cost% CAKE', { cost: formatBigInt(numberCakeToReactivate) })}
       </Text>
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">

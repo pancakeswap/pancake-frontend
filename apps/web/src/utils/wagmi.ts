@@ -82,7 +82,7 @@ export const trustWalletConnector = new TrustWalletConnector({
   },
 })
 
-export const client = createConfig({
+export const wagmiConfig = createConfig({
   autoConnect: false,
   publicClient,
   connectors: [

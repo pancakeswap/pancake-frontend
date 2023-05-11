@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { BigNumber as EthersBigNumber, FixedNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits as vFormatUnits } from 'viem'
 import { getLanguageCodeFromLS } from '@pancakeswap/localization'
 import _trimEnd from 'lodash/trimEnd'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
@@ -40,6 +41,11 @@ export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2)
     maximumFractionDigits: maxPrecision,
   }
   return number.toLocaleString(undefined, options)
+}
+
+export const formatBigInt = (value: bigint, displayDecimals = 18, decimals = 18) => {
+  const formatted = vFormatUnits(value, 18)
+  return parseFloat(formatted).toFixed(displayDecimals)
 }
 
 /**

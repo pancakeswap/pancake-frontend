@@ -1,15 +1,13 @@
-import { Interface } from 'ethers/lib/utils'
+// import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { computePoolAddress, FeeAmount, Pool, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
-import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
+import { v3PoolStateABI } from 'config/abi/v3PoolState'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from './types'
 
-// Philip TODO: Add IUniswapV3PoolStateInterface type
-const POOL_STATE_INTERFACE = new Interface(IUniswapV3PoolStateABI)
 
 // Classes are expensive to instantiate, so this caches the recently instantiated pools.
 // This avoids re-instantiating pools as the other pools in the same request are loaded.
@@ -106,8 +104,8 @@ export function usePools(
     return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value))
   }, [chainId, poolTokens])
 
-  const slot0s = useMultipleContractSingleData(poolAddresses, POOL_STATE_INTERFACE, 'slot0')
-  const liquidities = useMultipleContractSingleData(poolAddresses, POOL_STATE_INTERFACE, 'liquidity')
+  const slot0s = useMultipleContractSingleData(poolAddresses, v3PoolStateABI, 'slot0')
+  const liquidities = useMultipleContractSingleData(poolAddresses, v3PoolStateABI, 'liquidity')
 
   return useMemo(() => {
     return poolKeys.map((_key, index) => {

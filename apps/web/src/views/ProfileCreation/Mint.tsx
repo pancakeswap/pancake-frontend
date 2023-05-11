@@ -1,22 +1,23 @@
-import { useState, useEffect } from 'react'
-import { formatUnits } from 'ethers/lib/utils'
-import { Card, CardBody, Heading, Text, useToast } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCake, useBunnyFactory } from 'hooks/useContract'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { Card, CardBody, Heading, Text, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { FetchStatus } from 'config/constants/types'
+import { formatUnits } from 'ethers/lib/utils'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useBunnyFactory, useCake } from 'hooks/useContract'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useEffect, useState } from 'react'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
-import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { getBunnyFactoryAddress } from 'utils/addressHelpers'
 import { requiresApproval } from 'utils/requiresApproval'
-import { FetchStatus } from 'config/constants/types'
-import SelectionCard from './SelectionCard'
-import NextStepButton from './NextStepButton'
-import useProfileCreation from './contexts/hook'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { useAccount } from 'wagmi'
 import { MINT_COST, STARTER_NFT_BUNNY_IDS } from './config'
+import useProfileCreation from './contexts/hook'
+import NextStepButton from './NextStepButton'
+import SelectionCard from './SelectionCard'
 
 interface MintNftData extends ApiSingleTokenData {
   bunnyId?: string
@@ -29,7 +30,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
   const { toastSuccess } = useToast()
 
   const { address: account } = useAccount()
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
+  const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
@@ -57,10 +58,10 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        return requiresApproval(cakeContractReader, account, bunnyFactoryContract.address, minimumCakeRequired)
+        return requiresApproval(cakeContract, account, getBunnyFactoryAddress(), minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [bunnyFactoryContract.address, allowance.toString()])
+        return callWithGasPrice(cakeContract, 'approve', [getBunnyFactoryAddress(), allowance])
       },
       onConfirm: () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])

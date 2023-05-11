@@ -1,43 +1,32 @@
-import { useAccount } from 'wagmi'
-import BigNumber from 'bignumber.js'
-import { CAKE } from '@pancakeswap/tokens'
-import { FAST_INTERVAL } from 'config/constants'
-import { BigNumber as EthersBigNumber } from 'ethers'
 import { Zero } from '@ethersproject/constants'
 import { ChainId } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
-import useSWR from 'swr'
+import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { bscRpcProvider } from 'utils/providers'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useTokenContract } from './useContract'
-import { useSWRContract } from './useSWRContract'
+import BigNumber from 'bignumber.js'
+import { BigNumber as EthersBigNumber } from 'ethers'
+import useSWR from 'swr'
+import { bscRpcProvider } from 'utils/providers'
+import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
+import { useActiveChainId } from './useActiveChainId'
 
-const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
+const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
 
-  const contract = useTokenContract(tokenAddress, false)
-
-  const key = useMemo(
-    () =>
-      account
-        ? {
-            contract: forceBSC ? contract.connect(bscRpcProvider) : contract,
-            methodName: 'balanceOf',
-            params: [account],
-          }
-        : null,
-    [account, contract, forceBSC],
-  )
-
-  const { data, status, ...rest } = useSWRContract(key as any, {
-    refreshInterval: FAST_INTERVAL,
+  const { data, status, ...rest } = useContractRead({
+    chainId: forceBSC ? ChainId.BSC : chainId,
+    abi: erc20ABI,
+    address: tokenAddress,
+    functionName: 'balanceOf',
+    args: [account],
+    enabled: !!account,
   })
 
   return {
     ...rest,
     fetchStatus: status,
-    balance: data ? new BigNumber(data.toString()) : BIG_ZERO,
+    balance: typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO,
   }
 }
 

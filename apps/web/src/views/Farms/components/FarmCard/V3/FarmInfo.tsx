@@ -37,7 +37,7 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   const hasEarningTokenIds = useMemo(
     () =>
       Object.entries(pendingCakeByTokenIds)
-        .filter(([, value]) => value.gt(0))
+        .filter(([, value]) => value > 0)
         .map(([key]) => key),
     [pendingCakeByTokenIds],
   )
