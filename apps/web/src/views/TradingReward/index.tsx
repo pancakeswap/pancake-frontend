@@ -1,6 +1,5 @@
 import { Box } from '@pancakeswap/uikit'
-import { useEffect, useMemo } from 'react'
-import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import Banner from 'views/TradingReward/components/Banner'
 import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
 import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'
@@ -12,11 +11,9 @@ import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 const TradingReward = () => {
-  const router = useRouter()
-  const campaignId = router?.query?.campaignId?.toString() ?? ''
-
-  const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
   const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair()
+  const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
+  const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
   const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo(
     allTradingRewardPairData.campaignIds,
   )
@@ -25,16 +22,6 @@ const TradingReward = () => {
     () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo,
     [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo],
   )
-  const showPage = useMemo(
-    () => !isAllTradingRewardPairDataFetching && allTradingRewardPairData.campaignIds.includes(campaignId),
-    [isAllTradingRewardPairDataFetching, allTradingRewardPairData, campaignId],
-  )
-
-  useEffect(() => {
-    if (!isAllTradingRewardPairDataFetching && !allTradingRewardPairData.campaignIds.includes(campaignId)) {
-      router.push('/')
-    }
-  }, [allTradingRewardPairData, campaignId, isAllTradingRewardPairDataFetching, router])
 
   const currentUserIncentive = useMemo(
     () =>
@@ -67,7 +54,7 @@ const TradingReward = () => {
       .filter((item) => currentTime > item.campaignClaimTime)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  if (!showPage) {
+  if (isAllTradingRewardPairDataFetching) {
     return null
   }
 
@@ -91,7 +78,6 @@ const TradingReward = () => {
       />
       <HowToEarn />
       <RewardsBreakdown
-        campaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         rewardInfo={allTradingRewardPairData.rewardInfo}

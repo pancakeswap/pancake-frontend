@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
+import { useRouter } from 'next/router'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -9,7 +10,6 @@ import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/h
 import PairInfo from 'views/TradingReward/components/PairInfo'
 
 interface RewardsBreakdownProps {
-  campaignId: string
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
   rewardInfo: { [key in string]: RewardInfo }
@@ -25,7 +25,6 @@ const initList: RewardBreakdownDetail = {
 }
 
 const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>> = ({
-  campaignId,
   allUserCampaignInfo,
   allTradingRewardPairData,
   rewardInfo,
@@ -34,6 +33,8 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     t,
     currentLanguage: { locale },
   } = useTranslation()
+  const router = useRouter()
+  const campaignId = router?.query?.campaignId?.toString() ?? ''
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)

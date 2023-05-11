@@ -150,24 +150,28 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
             )}
           </GreyCard>
 
-          {additionalAmount >= 0.01 && (
-            <GreyCard mt="24px">
-              <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
-                {t('Your Current Max Reward Cap')}
+          <GreyCard mt="24px">
+            <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+              {t('Your Current Max Reward Cap')}
+            </Text>
+            <Text bold color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="24px">{`$${formatNumber(
+              maxRewardCap,
+            )}`}</Text>
+            <Text color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="14px">{`~${formatNumber(
+              maxRewardCapCakePrice,
+            )} CAKE`}</Text>
+            <Text width="100%" lineHeight="120%">
+              <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                {t('Equals to your amount of locked CAKE divided by')}
               </Text>
-              <Text bold color="failure" fontSize="24px">{`$${formatNumber(maxRewardCap)}`}</Text>
-              <Text color="failure" fontSize="14px">{`~${formatNumber(maxRewardCapCakePrice)} CAKE`}</Text>
-              <Text width="100%" lineHeight="120%">
-                <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-                  {t('Equals to your amount of locked CAKE divided by')}
-                </Text>
-                <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
-                  {t('10.')}
-                </Text>
-                <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-                  {t('Lock more CAKE to raise this limit')}
-                </Text>
+              <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
+                {t('10.')}
               </Text>
+              <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                {t('Lock more CAKE to raise this limit')}
+              </Text>
+            </Text>
+            {additionalAmount >= 0.01 && (
               <AddCakeButton
                 scale="sm"
                 mt="10px"
@@ -180,8 +184,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                 currentBalance={currentBalance}
                 stakingTokenBalance={currentBalance}
               />
-            </GreyCard>
-          )}
+            )}
+          </GreyCard>
 
           <GreyCard mt="24px">
             <Flex>

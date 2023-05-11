@@ -41,7 +41,7 @@ const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
   const { chainId } = useActiveChainId()
 
   const { data: campaignIdInfo, isLoading } = useSWR(
-    campaignId !== '' && chainId && ['/campaign-id-info', chainId, campaignId],
+    campaignId && chainId && ['/campaign-id-info', chainId, campaignId],
     async () => {
       try {
         const response = await fetch(
