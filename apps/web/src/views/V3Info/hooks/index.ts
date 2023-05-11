@@ -112,7 +112,7 @@ export const usePairPriceChartTokenData = (
   address: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
-): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number } => {
+): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const utcCurrentTime = dayjs()
@@ -136,7 +136,12 @@ export const usePairPriceChartTokenData = (
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return { data: data?.data ?? [], maxPrice: data?.maxPrice, minPrice: data?.minPrice }
+  return {
+    data: data?.data ?? [],
+    maxPrice: data?.maxPrice,
+    minPrice: data?.minPrice,
+    averagePrice: data?.averagePrice,
+  }
 }
 
 export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {

@@ -28,5 +28,10 @@ export const usePairTokensPrice = (pairAddress?: string, duration?: PairDataTime
     }))
   }, [pairPrice])
 
-  return { pairPriceData, maxPrice: pairPrice?.maxPrice, minPrice: pairPrice?.minPrice }
+  return {
+    pairPriceData,
+    maxPrice: pairPrice?.maxPrice,
+    minPrice: pairPrice?.minPrice,
+    averagePrice: pairPrice?.averagePrice,
+  }
 }
