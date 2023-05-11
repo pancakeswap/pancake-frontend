@@ -28,8 +28,8 @@ export const useClaimAllReward = (campaignIds: Array<string>, unclaimData: UserC
 
     const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
-        const volume = new BigNumber(i.totalVolume.toFixed(2)).times(1e18).toString()
-        const originHash = keccak256(keccak256(solidityPack(['address', 'uint256'], [account, volume])))
+        const fee = new BigNumber(i.totalTradingFee.toFixed(2)).times(1e18).toString()
+        const originHash = keccak256(keccak256(solidityPack(['address', 'uint256'], [account, fee])))
 
         const response = await fetch(
           `${TRADING_REWARD_API}/hash/chainId/${chainId}/campaignId/${i.campaignId}/originHash/${originHash}`,
