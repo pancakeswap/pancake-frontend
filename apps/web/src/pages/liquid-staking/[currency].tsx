@@ -17,7 +17,6 @@ import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
-import { useSWRContract } from 'hooks/useSWRContract'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
@@ -29,6 +28,7 @@ import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingApr'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useContractRead } from 'wagmi'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -66,7 +66,13 @@ const LiquidStakingStakePage = () => {
 
   const wbethCurrencyBalance = useCurrencyBalance(account, wbethCurrency)
 
-  const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
+  const { data } = useContractRead({
+    // @ts-ignore
+    abi: wbethContract.abi,
+    address: wbethContract.address,
+    functionName: 'exchangeRate',
+    watch: true,
+  })
 
   const { isApproved, allowance, setLastUpdated } = useETHApprovalStatus(wbethContract?.address)
 
@@ -267,7 +273,7 @@ const LiquidStakingStakePage = () => {
                     src={`/images/tokens/${wbethContract?.address}.png`}
                     width={24}
                     height={24}
-                    alt={wbethContract?.symbol}
+                    alt="WBETH"
                   />
                 </Box>
                 <Text ml="4px">WBETH</Text>
@@ -283,7 +289,7 @@ const LiquidStakingStakePage = () => {
             )}
           </RowBetween>
           <LiquidStakingApr />
-          {/* 
+          {/*
           <RowBetween mb="24px">
             <Text color="textSubtle">Gas Fee</Text>-
           </RowBetween> */}

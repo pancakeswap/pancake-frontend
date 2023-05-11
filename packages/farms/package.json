@@ -24,10 +24,5 @@
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "lodash": "^4.17.21"
-  },
-  "peerDependencies": {
-    "@ethersproject/bignumber": "^5.0.0",
-    "@ethersproject/units": "^5.0.0",
-    "ethers": "^5.0.0"
   }
 }

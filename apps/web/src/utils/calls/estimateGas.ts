@@ -1,7 +1,7 @@
-import { Contract, PayableOverrides } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
-import { calculateGasMargin } from 'utils'
-import { ContractMethodName, MaybeContract, ContractMethodParams } from 'utils/types'
+// import { PayableOverrides } from 'ethers'
+// import { TransactionResponse } from '@ethersproject/providers'
+import { calculateGasMargin } from 'utils''
+import { getContract } from 'utils/contractHelpers'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -11,17 +11,17 @@ import { ContractMethodName, MaybeContract, ContractMethodParams } from 'utils/t
  * @param args An array of arguments to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const estimateGas = async <C extends Contract = Contract, N extends ContractMethodName<C> = any>(
-  contract: MaybeContract<C>,
-  methodName: N,
-  methodArgs: ContractMethodParams<C, N>,
+export const estimateGas = async (
+  contract: ReturnType<typeof getContract>,
+  methodName: string,
+  methodArgs: any,
   overrides: PayableOverrides = {},
-  gasMarginPer10000: number,
+  gasMarginPer10000: bigint,
 ) => {
   if (!contract[methodName]) {
     throw new Error(`Method ${methodName} doesn't exist on ${contract.address}`)
   }
-  const rawGasEstimation = await contract.estimateGas[methodName](...methodArgs, overrides)
+  const rawGasEstimation = await contract.estimateGas[methodName]([methodArgs], overrides)
   // By convention, BigNumber values are multiplied by 1000 to avoid dealing with real numbers
   const gasEstimation = calculateGasMargin(rawGasEstimation, gasMarginPer10000)
   return gasEstimation
@@ -35,12 +35,12 @@ export const estimateGas = async <C extends Contract = Contract, N extends Contr
  * @param overrides An overrides object to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const callWithEstimateGas = async <C extends Contract = Contract, N extends ContractMethodName<C> = any>(
-  contract: MaybeContract<C>,
-  methodName: N,
-  methodArgs: ContractMethodParams<C, N>,
+export const callWithEstimateGas = async (
+  contract: ReturnType<typeof getContract>,
+  methodName: any,
+  methodArgs: any,
   overrides: PayableOverrides = {},
-  gasMarginPer10000 = 1000,
+  gasMarginPer10000 = 1000n,
 ): Promise<TransactionResponse> => {
   const gasEstimation = await estimateGas(contract, methodName, methodArgs, overrides, gasMarginPer10000)
   const tx = await contract[methodName](...methodArgs, {

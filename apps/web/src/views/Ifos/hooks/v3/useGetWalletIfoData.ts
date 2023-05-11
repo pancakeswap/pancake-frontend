@@ -3,13 +3,14 @@ import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV3Contract } from 'hooks/useContract'
-import { multicallv2 } from 'utils/multicall'
-import ifoV3Abi from 'config/abi/ifoV3.json'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
 import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { ifoV3ABI } from 'config/abi/ifoV3'
 
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
@@ -57,7 +58,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const { address: account } = useAccount()
   const contract = useIfoV3Contract(address)
-  const currencyContract = useERC20(currency.address, false)
+  const currencyContract = useERC20(currency.address)
   const allowance = useIfoAllowance(currencyContract, address)
 
   const setPendingTx = (status: boolean, poolId: PoolIds) =>
@@ -80,76 +81,118 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
-    const ifoCalls = ['viewUserInfo', 'viewUserOfferingAndRefundingAmountsForPools'].map((method) => ({
-      address,
-      name: method,
-      params: [account, [0, 1]],
-    }))
+    const bscClient = viemClients[ChainId.BSC]
+
+    const [userInfo, amounts] = await bscClient.multicall({
+      contracts: [
+        {
+          address,
+          abi: ifoV3ABI,
+          functionName: 'viewUserInfo',
+          args: [account, [0, 1]],
+        },
+        {
+          address,
+          abi: ifoV3ABI,
+          functionName: 'viewUserOfferingAndRefundingAmountsForPools',
+          args: [account, [0, 1]],
+        },
+      ],
+      allowFailure: false,
+    })
 
     let basicId = null
     let unlimitedId = null
     if (version >= 3.2) {
-      const [[basicIdData], [unlimitedIdData]] = await multicallv2({
-        abi: ifoV3Abi,
-        calls: [
-          { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 0] },
-          { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 1] },
+      const [basicIdDataResult, unlimitedIdDataResult] = await bscClient.multicall({
+        contracts: [
+          {
+            address,
+            abi: ifoV3ABI,
+            functionName: 'computeVestingScheduleIdForAddressAndPid',
+            args: [account, 0n],
+          },
+          {
+            address,
+            abi: ifoV3ABI,
+            functionName: 'computeVestingScheduleIdForAddressAndPid',
+            args: [account, 1n],
+          },
         ],
-        options: { requireSuccess: false },
       })
 
-      basicId = basicIdData
-      unlimitedId = unlimitedIdData
+      basicId = basicIdDataResult.result
+      unlimitedId = unlimitedIdDataResult.result
     }
 
-    const ifov3Calls =
-      version >= 3.1
-        ? [
-            {
-              address,
-              name: 'isQualifiedNFT',
-              params: [account],
-            },
-            {
-              address,
-              name: 'isQualifiedPoints',
-              params: [account],
-            },
-            version === 3.2 && {
-              address,
-              name: 'getVestingSchedule',
-              params: [basicId],
-            },
-            version === 3.2 && {
-              address,
-              name: 'getVestingSchedule',
-              params: [unlimitedId],
-            },
-            version === 3.2 && {
-              address,
-              name: 'computeReleasableAmount',
-              params: [basicId],
-            },
-            version === 3.2 && {
-              address,
-              name: 'computeReleasableAmount',
-              params: [unlimitedId],
-            },
-          ].filter(Boolean)
-        : []
-
-    dispatch(fetchCakeVaultUserData({ account, chainId }))
-
-    const [
-      userInfo,
-      amounts,
+    let [
       isQualifiedNFT,
       isQualifiedPoints,
       basicSchedule,
       unlimitedSchedule,
       basicReleasableAmount,
       unlimitedReleasableAmount,
-    ] = await multicallv2({ abi: ifoV3Abi, calls: [...ifoCalls, ...ifov3Calls], options: { requireSuccess: false } })
+    ] = [false, false, null, null, null, null]
+
+    if (version >= 3.1) {
+      const [
+        isQualifiedNFTResult,
+        isQualifiedPointsResult,
+        basicScheduleResult,
+        unlimitedScheduleResult,
+        basicReleasableAmountResult,
+        unlimitedReleasableAmountResult,
+      ] = await bscClient.multicall({
+        contracts: [
+          {
+            address,
+            abi: ifoV3ABI,
+            functionName: 'isQualifiedNFT',
+            args: [account],
+          },
+          {
+            abi: ifoV3ABI,
+            address,
+            functionName: 'isQualifiedPoints',
+            args: [account],
+          },
+          {
+            abi: ifoV3ABI,
+            address,
+            functionName: 'getVestingSchedule',
+            args: [basicId],
+          },
+          {
+            abi: ifoV3ABI,
+            address,
+            functionName: 'getVestingSchedule',
+            args: [unlimitedId],
+          },
+          {
+            abi: ifoV3ABI,
+            address,
+            functionName: 'computeReleasableAmount',
+            args: [basicId],
+          },
+          {
+            abi: ifoV3ABI,
+            address,
+            functionName: 'computeReleasableAmount',
+            args: [unlimitedId],
+          },
+        ],
+        allowFailure: true,
+      })
+
+      isQualifiedNFT = isQualifiedNFTResult.result
+      isQualifiedPoints = isQualifiedPointsResult.result
+      basicSchedule = basicScheduleResult.result
+      unlimitedSchedule = unlimitedScheduleResult.result
+      basicReleasableAmount = basicReleasableAmountResult.result
+      unlimitedReleasableAmount = unlimitedReleasableAmountResult.result
+    }
+
+    dispatch(fetchCakeVaultUserData({ account, chainId }))
 
     setState((prevState) => ({
       ...prevState,
@@ -157,15 +200,15 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       poolBasic: {
         ...prevState.poolBasic,
         amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
-        offeringAmountInToken: new BigNumber(amounts[0][0][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[0][0][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[0][0][2].toString()),
+        offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
+        refundingAmountInLP: new BigNumber(amounts[0][1].toString()),
+        taxAmountInLP: new BigNumber(amounts[0][2].toString()),
         hasClaimed: userInfo[1][0],
-        isQualifiedNFT: isQualifiedNFT ? isQualifiedNFT[0] : false,
-        isQualifiedPoints: isQualifiedPoints ? isQualifiedPoints[0] : false,
-        vestingReleased: basicSchedule ? new BigNumber(basicSchedule[0].released.toString()) : BIG_ZERO,
-        vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule[0].amountTotal.toString()) : BIG_ZERO,
-        isVestingInitialized: basicSchedule ? basicSchedule[0].isVestingInitialized : false,
+        isQualifiedNFT,
+        isQualifiedPoints,
+        vestingReleased: basicSchedule ? new BigNumber(basicSchedule.released.toString()) : BIG_ZERO,
+        vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule.amountTotal.toString()) : BIG_ZERO,
+        isVestingInitialized: basicSchedule ? basicSchedule.isVestingInitialized : false,
         vestingId: basicId ? basicId.toString() : '0',
         vestingComputeReleasableAmount: basicReleasableAmount
           ? new BigNumber(basicReleasableAmount.toString())
@@ -174,13 +217,13 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       poolUnlimited: {
         ...prevState.poolUnlimited,
         amountTokenCommittedInLP: new BigNumber(userInfo[0][1].toString()),
-        offeringAmountInToken: new BigNumber(amounts[0][1][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[0][1][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[0][1][2].toString()),
+        offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
+        refundingAmountInLP: new BigNumber(amounts[1][1].toString()),
+        taxAmountInLP: new BigNumber(amounts[1][2].toString()),
         hasClaimed: userInfo[1][1],
-        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
-        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
-        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule[0].isVestingInitialized : false,
+        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule.released.toString()) : BIG_ZERO,
+        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule.amountTotal.toString()) : BIG_ZERO,
+        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule.isVestingInitialized : false,
         vestingId: unlimitedId ? unlimitedId.toString() : '0',
         vestingComputeReleasableAmount: unlimitedReleasableAmount
           ? new BigNumber(unlimitedReleasableAmount.toString())

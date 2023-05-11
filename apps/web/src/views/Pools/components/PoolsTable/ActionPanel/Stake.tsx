@@ -77,7 +77,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
 
-  const stakingTokenContract = useERC20(stakingToken.address || '')
+  const stakingTokenContract = useERC20(stakingToken.address)
   const { handleApprove: handlePoolApprove, pendingTx: pendingPoolTx } = useApprovePool(
     stakingTokenContract,
     sousId,

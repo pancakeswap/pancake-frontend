@@ -1,9 +1,8 @@
-import { BigNumber } from 'ethers'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { NEVER_RELOAD, useSingleCallResult } from 'state/multicall/hooks'
 
-type TokenId = number | bigint | BigNumber
+type TokenId = number | bigint
 
 const STARTS_WITH = 'data:application/json;base64,'
 
@@ -28,10 +27,7 @@ type UsePositionTokenURIResult =
 
 export function usePositionTokenURI(tokenId: TokenId | undefined): UsePositionTokenURIResult {
   const contract = useV3NFTPositionManagerContract()
-  const inputs = useMemo(
-    () => [tokenId instanceof BigNumber ? tokenId.toHexString() : tokenId?.toString(16)],
-    [tokenId],
-  )
+  const inputs = useMemo(() => [BigInt(tokenId)], [tokenId])
   const { result, error, loading, valid } = useSingleCallResult(contract, 'tokenURI', inputs, {
     ...NEVER_RELOAD,
     gasRequired: 3_000_000,

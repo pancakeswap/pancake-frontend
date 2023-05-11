@@ -6,16 +6,16 @@ import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { PotteryDepositStatus } from 'state/types'
 import { Address } from 'wagmi'
-import { multicall } from '@wagmi/core'
 import { ChainId } from '@pancakeswap/sdk'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
+import { viemClients } from 'utils/viem'
 
 const potteryDrawContract = getPotteryDrawContract()
 
 export const fetchPotterysAllowance = async (account: Address, potteryVaultAddress: Address) => {
   try {
     const contract = getBep20Contract(bscTokens.cake.address)
-    const allowances = await contract.allowance(account, potteryVaultAddress)
+    const allowances = await contract.read.allowance([account, potteryVaultAddress])
     return new BigNumber(allowances.toString()).toJSON()
   } catch (error) {
     console.error('Failed to fetch pottery user allowance', error)
@@ -41,9 +41,9 @@ export const fetchVaultUserData = async (account: Address, potteryVaultAddress: 
   }
 }
 
-export const fetchUserDrawData = async (account: string) => {
+export const fetchUserDrawData = async (account: Address) => {
   try {
-    const [reward, winCount] = await potteryDrawContract.userInfos(account)
+    const [reward, winCount] = await potteryDrawContract.read.userInfos([account])
     return {
       rewards: new BigNumber(reward.toString()).toJSON(),
       winCount: new BigNumber(winCount.toString()).toJSON(),
@@ -78,10 +78,11 @@ export const fetchWithdrawAbleData = async (account: Address) => {
       { account: account.toLowerCase() },
     )
 
+    const bscClient = viemClients[ChainId.BSC]
+
     const withdrawalsData = await Promise.all(
       response.withdrawals.map(async ({ id, shares, depositDate, vault }) => {
-        const [previewRedeem, totalSupply, totalLockCake, balanceOf] = await multicall({
-          chainId: ChainId.BSC,
+        const [previewRedeem, totalSupply, totalLockCake, balanceOf] = await bscClient.multicall({
           allowFailure: false,
           contracts: [
             {

@@ -5,8 +5,8 @@ import { getPoolsConfig } from '@pancakeswap/pools'
 
 import sousChefV2 from 'config/abi/sousChefV2.json'
 import chunk from 'lodash/chunk'
+import { viemClients } from 'utils/viem'
 
-import { multicallv3 } from '../multicall'
 import { getMulticallAddress } from '../addressHelpers'
 import multiCallAbi from '../../config/abi/Multicall.json'
 
@@ -23,26 +23,32 @@ export const getActivePools = async (chainId: ChainId, block?: bigint | 0) => {
   const startBlockCalls = eligiblePools.map(({ contractAddress }) => ({
     abi: sousChefV2,
     address: contractAddress,
-    name: 'startBlock',
+    functionName: 'startBlock',
   }))
   const endBlockCalls = eligiblePools.map(({ contractAddress }) => ({
     abi: sousChefV2,
     address: contractAddress,
-    name: 'bonusEndBlock',
+    functionName: 'bonusEndBlock',
   }))
   const hasBlock = typeof block !== 'undefined'
   const blockCall = !hasBlock
     ? {
         abi: multiCallAbi,
         address: multicallAddress,
-        name: 'getBlockNumber',
+        functionName: 'getBlockNumber',
       }
     : null
 
   const calls = !hasBlock ? [...startBlockCalls, ...endBlockCalls, blockCall] : [...startBlockCalls, ...endBlockCalls]
-  const resultsRaw = await multicallv3({ calls, chainId })
+  const resultsRaw = await viemClients[chainId].multicall({
+    contracts: calls as any,
+    allowFailure: false,
+  })
+
   const blockNumber = hasBlock || resultsRaw.pop()[0].toNumber()
   const blockCallsRaw = chunk(resultsRaw, resultsRaw.length / 2)
+  // TODO: wagmi
+  console.log(blockCallsRaw, 'blockCallsRaw')
   const startBlocks: any[] = blockCallsRaw[0]
   const endBlocks: any[] = blockCallsRaw[1]
 

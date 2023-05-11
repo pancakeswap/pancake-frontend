@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
-import { Contract } from 'ethers'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
 import { VaultKey } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { useSousChef, useVaultPoolContract } from 'hooks/useContract'
+import { useERC20, useSousChef, useVaultPoolContract } from 'hooks/useContract'
 import { useToast } from '@pancakeswap/uikit'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -15,7 +14,7 @@ import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
 import useCakeApprove from 'hooks/useCakeApprove'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
-export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
+export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId, earningTokenSymbol) => {
   const { toastSuccess } = useToast()
   const { chainId } = useActiveChainId()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()

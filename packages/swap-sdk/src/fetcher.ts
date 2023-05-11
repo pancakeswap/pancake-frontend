@@ -42,7 +42,7 @@ export abstract class Fetcher {
   private constructor() {}
 
   /**
-   * Fetch information for a given token on the given chain, using the given ethers provider.
+   * Fetch information for a given token on the given chain, using the given viem provider.
    * @param chainId chain of the token
    * @param address address of the token on the chain
    * @param provider provider used to fetch the token

@@ -1,8 +1,4 @@
-import type { Signer } from 'ethers'
 import { getAddress } from 'viem'
-import { BigNumber, Contract } from 'ethers'
-import { AddressZero } from '@ethersproject/constants'
-import type { Provider } from '@ethersproject/providers'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { bsc } from 'wagmi/chains'
 import memoize from 'lodash/memoize'
@@ -57,17 +53,8 @@ export function getBscScanLinkForNft(collectionAddress: string, tokenId: string)
 }
 
 // add 10%
-export function calculateGasMargin(value: BigNumber, margin = 1000): BigNumber {
-  return value.mul(BigNumber.from(10000).add(BigNumber.from(margin))).div(BigNumber.from(10000))
-}
-
-// account is optional
-export function getContract(address: string, ABI: any, signer?: Signer | Provider): Contract {
-  if (!isAddress(address) || address === AddressZero) {
-    throw Error(`Invalid 'address' parameter '${address}'.`)
-  }
-
-  return new Contract(address, ABI, signer)
+export function calculateGasMargin(value: bigint, margin = 1000n): bigint {
+  return (value * (10000n + margin)) / 10000n
 }
 
 export function escapeRegExp(string: string): string {

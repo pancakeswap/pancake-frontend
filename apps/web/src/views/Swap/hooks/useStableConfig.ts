@@ -1,14 +1,13 @@
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
-import { Contract } from 'ethers'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { createContext, useMemo } from 'react'
 
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
-import stableLPABI from 'config/abi/stableLP.json'
-import stableSwapABI from 'config/abi/stableSwap.json'
+import { stableLPABI } from 'config/abi/stableLP'
 import { useContract } from 'hooks/useContract'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
+import { stableSwapABI } from 'config/abi/stableSwapAbi'
+import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 
 interface StableSwapConfigType extends LegacyStableSwapPair {
   liquidityToken: ERC20Token
@@ -64,16 +63,16 @@ export function useLPTokensWithBalanceByAccount(account) {
 }
 
 export const StableConfigContext = createContext<{
-  stableSwapInfoContract: Contract
-  stableSwapContract: Contract
-  stableSwapLPContract: Contract
+  stableSwapInfoContract: ReturnType<typeof useContract>
+  stableSwapContract: ReturnType<typeof useContract>
+  stableSwapLPContract: ReturnType<typeof useContract>
   stableSwapConfig: StableSwapConfig
 } | null>(null)
 
 export default function useStableConfig({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
   const stablePair = useFindStablePair({ tokenA, tokenB })
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
-  const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
+  const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, infoStableSwapABI)
   const stableSwapLPContract = useContract(stablePair?.liquidityToken.address, stableLPABI)
 
   return useMemo(

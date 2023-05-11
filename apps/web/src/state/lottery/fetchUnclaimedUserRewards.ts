@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from 'ethers'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
@@ -33,8 +32,8 @@ const fetchCakeRewardsForTickets = async (
   try {
     const cakeRewards = await multicallv2({ abi: lotteryV2Abi, calls })
 
-    const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: EthersBigNumber[]) => {
-      return accum.plus(new BigNumber(cakeReward[0].toString()))
+    const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: bigint) => {
+      return accum.plus(new BigNumber(cakeReward.toString()))
     }, BIG_ZERO)
 
     const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {

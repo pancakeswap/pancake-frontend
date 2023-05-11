@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Percent, Currency } from '@pancakeswap/sdk'
-import { BigNumber } from 'ethers'
 
 const TagCell = styled(Flex)`
   padding: 8px 0;
@@ -22,7 +21,7 @@ interface LiquidityCardRowProps {
   currency1: Currency
   pairText: string | React.ReactElement
   feeAmount?: number
-  tokenId?: BigNumber
+  tokenId?: bigint
   tags: React.ReactElement
   subtitle: string
   onSwitch?: () => void
@@ -49,7 +48,7 @@ export const LiquidityCardRow = ({
               {pairText}
             </Text>
           </Flex>
-          {tokenId && <Text mr="8px">{`(#${tokenId.toString()})`}</Text>}
+          {typeof tokenId !== 'undefined' && <Text mr="8px">{`(#${tokenId.toString()})`}</Text>}
           {!!feeAmount && (
             <Tag variant="secondary" mr="8px" outline>
               {new Percent(feeAmount, 1_000_000).toSignificant()}%

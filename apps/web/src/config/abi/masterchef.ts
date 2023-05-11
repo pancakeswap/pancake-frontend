@@ -467,4 +467,4 @@ export const masterChefV2ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-]
+] as const

@@ -190,6 +190,8 @@ export const FetchStatus = {
   Failed: 'error',
 } as const
 
+export type FetchStatusT = (typeof FetchStatus)[keyof typeof FetchStatus]
+
 export const isStableSwap = (trade: ITrade): trade is StableTrade => {
   return (
     Boolean((trade as StableTrade)?.maximumAmountIn) &&

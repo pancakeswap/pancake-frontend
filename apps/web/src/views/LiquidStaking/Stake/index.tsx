@@ -6,8 +6,8 @@ import { useState, useCallback, useEffect } from 'react'
 import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWBETHContract } from 'hooks/useContract'
-import { useSWRContract } from 'hooks/useSWRContract'
 import { useCurrency } from 'hooks/Tokens'
+import { useContractRead } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 
@@ -29,7 +29,13 @@ export function LiquidStakingPageStake() {
 
   const wbethContract = useWBETHContract()
 
-  const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
+  const { data } = useContractRead({
+    // @ts-ignore
+    abi: wbethContract.abi,
+    address: wbethContract.address,
+    enabled: !!wbethContract,
+    functionName: 'exchangeRate',
+  })
 
   useEffect(() => {
     setSymbol(eth?.symbol)

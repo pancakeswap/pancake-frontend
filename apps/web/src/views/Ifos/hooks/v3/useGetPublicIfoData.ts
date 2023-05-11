@@ -174,7 +174,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
       const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
       const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
-      const taxRateNum = taxRate ? new BigNumber(taxRate[0]._hex).div(TAX_PRECISION).toNumber() : 0
+      const taxRateNum = taxRate ? new BigNumber(taxRate[0].toString()).div(TAX_PRECISION).toNumber() : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
