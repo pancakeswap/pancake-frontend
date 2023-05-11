@@ -64,3 +64,25 @@ export const useUserBoostedPoolsPid = async () => {
     pids: data?.map((pid: any) => pid.toNumber()),
   }
 }
+
+export const useUserBoostedMultiplier = async (tokenId: string) => {
+  const { chainId } = useActiveChainId()
+  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const { data } = useSWRImmutable(
+    chainId && tokenId && `v3/bcake/userBoostedMultiplier/${chainId}/${tokenId}`,
+    () => farmBoosterV3Contract.getUserMultiplier(tokenId),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.toNumber()
+}
+
+export const useUserMaxBoostedPositionLimit = async () => {
+  const { chainId } = useActiveChainId()
+  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const { data } = useSWRImmutable(
+    chainId && `v3/bcake/userMaxBoostedPositionLimit/${chainId}`,
+    () => farmBoosterV3Contract.MAX_BOOST_POSITION(),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.toNumber()
+}
