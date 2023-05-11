@@ -183,6 +183,7 @@ export type V2StakeValueAndV3Farm = V3Farm | V2Farm
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
+  const mockApr = Boolean(urlQuery.mockApr)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { data: farmsV2, userDataLoaded: v2UserDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
@@ -191,7 +192,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     poolLength: v3PoolLength,
     isLoading,
     userDataLoaded: v3UserDataLoaded,
-  } = useFarmsV3WithPositions()
+  } = useFarmsV3WithPositions({ mockApr })
 
   const farmsLP: V2AndV3Farms = useMemo(() => {
     return [
@@ -277,13 +278,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const farmsList = useCallback(
     (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
-      const shouldMockApr = Boolean(urlQuery.mockApr)
       const farmsToDisplayWithAPR: any = farmsToDisplay.map((farm) => {
         if (farm.version === 3) {
-          if (!Number(farm.activeTvlUSD) && shouldMockApr) {
-            // Mock 1$ tvl if the farm doesn't have lp staked
-            return { ...farm, activeTvlUSD: '1' }
-          }
           return farm
         }
 
@@ -292,8 +288,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
         const totalLiquidityFromLp = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         // Mock 1$ tvl if the farm doesn't have lp staked
-        const totalLiquidity =
-          totalLiquidityFromLp.eq(BIG_INT_ZERO) && shouldMockApr ? BIG_INT_ONE : totalLiquidityFromLp
+        const totalLiquidity = totalLiquidityFromLp.eq(BIG_INT_ZERO) && mockApr ? BIG_INT_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(
               chainId,
@@ -310,7 +305,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
-    [query, isActive, chainId, cakePrice, regularCakePerBlock, urlQuery.mockApr],
+    [query, isActive, chainId, cakePrice, regularCakePerBlock, mockApr],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
