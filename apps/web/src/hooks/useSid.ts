@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
-import { namehash } from 'ethers/lib/utils'
+import { namehash } from 'viem'
 import { getSidResolverContract } from 'utils/contractHelpers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FetchStatus } from 'config/constants/types'
@@ -34,14 +34,14 @@ export const useSidNameForAddress = (address: string, fetchData = true) => {
     async () => {
       const reverseNode = `${address.slice(2)}.addr.reverse`
       const reverseNameHash = namehash(reverseNode)
-      const resolverAddress = await sidContract.resolver(reverseNameHash)
+      const resolverAddress = await sidContract.read.resolver([reverseNameHash])
       if (parseInt(resolverAddress, 16) === 0) {
         return {
           name: null,
         }
       }
       const resolverContract = getSidResolverContract(resolverAddress)
-      const resolvedName = await resolverContract.name(reverseNameHash)
+      const resolvedName = await resolverContract.read.name([reverseNameHash])
       return {
         name: resolvedName,
       }

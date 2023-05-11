@@ -1,33 +1,40 @@
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
-import erc20ABI from 'config/abi/erc20.json'
-import masterchefABI from 'config/abi/masterchef.json'
+import { masterChefV2ABI } from 'config/abi/masterchef'
 import nonBscVault from 'config/abi/nonBscVault.json'
-import multicall, { multicallv2 } from 'utils/multicall'
 import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
 import { farmFetcher } from 'state/farms'
-import { Address } from 'wagmi'
+import { Address, erc20ABI } from 'wagmi'
+import { viemClients } from 'utils/viem'
+import { ContractFunctionResult } from 'viem'
 
 export const fetchFarmUserAllowances = async (
-  account: string,
+  account: Address,
   farmsToFetch: SerializedFarmConfig[],
   chainId: number,
-  proxyAddress?: string,
+  proxyAddress?: Address,
 ) => {
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const calls = farmsToFetch.map((farm) => {
-    const lpContractAddress = farm.lpAddress
-    return { address: lpContractAddress, name: 'allowance', params: [account, proxyAddress || masterChefAddress] }
-  })
+  const lpAllowances = (await viemClients[chainId as keyof typeof viemClients].multicall({
+    contracts: farmsToFetch.map((farm) => {
+      const lpContractAddress = farm.lpAddress
+      return {
+        abi: erc20ABI,
+        address: lpContractAddress,
+        functionName: 'allowance',
+        params: [account, proxyAddress || masterChefAddress],
+      }
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof erc20ABI, 'allowance'>[]
 
-  const rawLpAllowances = await multicall<BigNumber[]>(erc20ABI, calls, chainId)
-  const parsedLpAllowances = rawLpAllowances.map((lpBalance) => {
-    return new BigNumber(lpBalance).toJSON()
+  const parsedLpAllowances = lpAllowances.map((lpBalance) => {
+    return new BigNumber(lpBalance.toString()).toJSON()
   })
 
   return parsedLpAllowances
@@ -38,18 +45,21 @@ export const fetchFarmUserTokenBalances = async (
   farmsToFetch: SerializedFarmConfig[],
   chainId: number,
 ) => {
-  const calls = farmsToFetch.map((farm) => {
-    const lpContractAddress = farm.lpAddress
-    return {
-      address: lpContractAddress,
-      name: 'balanceOf',
-      params: [account],
-    }
-  })
+  const rawTokenBalances = (await viemClients[chainId as keyof typeof viemClients].multicall({
+    contracts: farmsToFetch.map((farm) => {
+      const lpContractAddress = farm.lpAddress
+      return {
+        abi: erc20ABI,
+        address: lpContractAddress,
+        functionName: 'balanceOf',
+        params: [account],
+      }
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof erc20ABI, 'balanceOf'>[]
 
-  const rawTokenBalances = await multicall(erc20ABI, calls, chainId)
   const parsedTokenBalances = rawTokenBalances.map((tokenBalance) => {
-    return new BigNumber(tokenBalance).toJSON()
+    return new BigNumber(tokenBalance.toString()).toJSON()
   })
   return parsedTokenBalances
 }
@@ -62,20 +72,19 @@ export const fetchFarmUserStakedBalances = async (
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const calls = farmsToFetch.map((farm) => {
-    return {
-      address: masterChefAddress,
-      name: 'userInfo',
-      params: [farm.vaultPid ?? farm.pid, account],
-    }
-  })
+  const rawStakedBalances = (await viemClients[chainId as keyof typeof viemClients].multicall({
+    // @ts-ignor
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: isBscNetwork ? masterChefV2ABI : nonBscVault,
+        address: masterChefAddress,
+        functionName: 'userInfo',
+        args: [farm.vaultPid ?? farm.pid, account],
+      }
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof masterChefV2ABI, 'userInfo'>[]
 
-  const rawStakedBalances = await multicallv2({
-    abi: isBscNetwork ? masterchefABI : nonBscVault,
-    calls,
-    chainId,
-    options: { requireSuccess: true },
-  })
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0].toString()).toJSON()
   })
@@ -92,15 +101,18 @@ export const fetchFarmUserEarnings = async (
   const userAddress = isBscNetwork ? account : await fetchCProxyAddress(account, multiCallChainId)
   const masterChefAddress = getMasterChefV2Address(multiCallChainId)
 
-  const calls = farmsToFetch.map((farm) => {
-    return {
-      address: masterChefAddress,
-      name: 'pendingCake',
-      params: [farm.pid, userAddress],
-    }
-  })
+  const rawEarnings = (await viemClients[multiCallChainId as keyof typeof viemClients].multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: masterChefV2ABI,
+        address: masterChefAddress,
+        functionName: 'pendingCake',
+        args: [farm.pid, userAddress],
+      }
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof masterChefV2ABI, 'pendingCake'>[]
 
-  const rawEarnings = await multicallv2({ abi: masterchefABI, calls, chainId: multiCallChainId })
   const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings.toString()).toJSON()
   })

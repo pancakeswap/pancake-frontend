@@ -1,14 +1,12 @@
-import { BigNumber } from 'ethers'
-import { Call, createMulticall } from '@pancakeswap/multicall'
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
 import { wrappedCurrencyAmount } from '../../evm/utils/currency'
 import { getOutputToken } from '../utils/pair'
-import IStableSwapInfoABI from '../../evm/abis/InfoStableSwap.json'
 import { StableSwapPair, Provider, StableSwapFeeRaw } from '../types'
 import { STABLE_SWAP_INFO_ADDRESS } from '../../evm/constants'
+import { infoStableSwapABI } from '../../evm/abis/InfoStableSwap'
 
-export function getStableSwapFeeCall(pair: StableSwapPair, inputAmount: CurrencyAmount<Currency>): Call {
+export function getStableSwapFeeCall(pair: StableSwapPair, inputAmount: CurrencyAmount<Currency>) {
   const { chainId } = inputAmount.currency
   const wrappedInputAmount = wrappedCurrencyAmount(inputAmount, chainId)
   if (!wrappedInputAmount) {
@@ -18,15 +16,18 @@ export function getStableSwapFeeCall(pair: StableSwapPair, inputAmount: Currency
   const { stableSwapAddress } = pair
   const inputToken = wrappedInputAmount.currency
   const outputToken = getOutputToken(pair, inputToken)
-  const inputRawAmount = inputAmount.wrapped.quotient.toString()
+  const inputRawAmount = inputAmount.wrapped.quotient
 
   const isOutputToken0 = pair.token0.equals(outputToken)
-  const args = isOutputToken0 ? [stableSwapAddress, 1, 0, inputRawAmount] : [stableSwapAddress, 0, 1, inputRawAmount]
+  const args = isOutputToken0
+    ? ([stableSwapAddress, 1n, 0n, inputRawAmount] as const)
+    : ([stableSwapAddress, 0n, 1n, inputRawAmount] as const)
   return {
+    abi: infoStableSwapABI,
     address: pair.infoStableSwapAddress || STABLE_SWAP_INFO_ADDRESS[chainId as ChainId],
-    name: 'get_exchange_fee',
-    params: args,
-  }
+    functionName: 'get_exchange_fee',
+    args,
+  } as const
 }
 
 interface Options {
@@ -40,21 +41,18 @@ export async function getStableSwapFee(
 ): Promise<StableSwapFeeRaw> {
   // eslint-disable-next-line prefer-destructuring
   const chainId: ChainId = inputAmount.currency.chainId
-  const { multicallv2 } = createMulticall(provider)
   const call = getStableSwapFeeCall(pair, inputAmount)
   const outputToken = getOutputToken(pair, inputAmount.currency)
 
-  const [[feeRaw, adminFeeRaw]] = await multicallv2<[[BigNumber, BigNumber]]>({
-    abi: IStableSwapInfoABI,
-    calls: [call],
-    chainId,
-    options: {
-      requireSuccess: true,
-    },
+  const client = provider({ chainId })
+
+  const [[feeRaw, adminFeeRaw]] = await client.multicall({
+    contracts: [call],
+    allowFailure: false,
   })
 
   return {
-    fee: CurrencyAmount.fromRawAmount(outputToken, feeRaw.toString()),
-    adminFee: CurrencyAmount.fromRawAmount(outputToken, adminFeeRaw.toString()),
+    fee: CurrencyAmount.fromRawAmount(outputToken, feeRaw),
+    adminFee: CurrencyAmount.fromRawAmount(outputToken, adminFeeRaw),
   }
 }

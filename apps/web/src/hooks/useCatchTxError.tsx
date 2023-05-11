@@ -154,13 +154,11 @@ export default function useCatchTxError(): CatchTxErrorReturn {
          */
         tx = await callTx()
 
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx?.hash} />)
+        const hash = typeof tx === 'string' ? tx : tx.hash
 
-        return typeof tx === 'string'
-          ? {
-              hash: tx,
-            }
-          : tx
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={hash} />)
+
+        return { hash }
       } catch (error: any) {
         if (!isUserRejected(error)) {
           if (!tx) {

@@ -1,12 +1,6 @@
-import { ChainId } from '@pancakeswap/sdk'
 import fromPairs from 'lodash/fromPairs'
-import chunk from 'lodash/chunk'
-import uniq from 'lodash/uniq'
-import mapValues from 'lodash/mapValues'
 import { ONE_DAY_UNIX } from 'config/constants/info'
-import IPancakePairABI from 'config/abi/IPancakePair.json'
-import bep20Abi from 'config/abi/erc20.json'
-import { multicallv2 } from 'utils/multicall'
+
 import { getUnixTime } from 'date-fns'
 import { TransactionType } from 'state/info/types'
 import { ChartEntry } from '../types'
@@ -207,65 +201,4 @@ export const fetchChartDataWithAddress = async (
     data: Object.values(formattedDayDatas),
     error: false,
   }
-}
-
-export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' | 'BSC') {
-  let rawPairTokenResults: string[][]
-  const calls = poolAddresses
-    .map((poolAddress) => {
-      return [
-        { address: poolAddress, name: 'token0' },
-        { address: poolAddress, name: 'token1' },
-      ]
-    })
-    .flat()
-  try {
-    rawPairTokenResults = await multicallv2({
-      abi: IPancakePairABI,
-      calls,
-      options: { requireSuccess: false },
-      chainId: chainName === 'ETH' ? ChainId.ETHEREUM : ChainId.BSC,
-    })
-  } catch (error) {
-    console.info('Error fetching tokenIds from pair')
-  }
-  const pairTokenResults = rawPairTokenResults
-    ? rawPairTokenResults.map((rawPairTokenResult) => rawPairTokenResult[0].toLowerCase())
-    : []
-  const pairTokenMap: { [tokenAddress: string]: { token0: string; token1: string } } = chunk(
-    pairTokenResults,
-    2,
-  ).reduce((acc, tokenResult, index) => {
-    return { ...acc, [poolAddresses[index].toLowerCase()]: { token0: tokenResult[0], token1: tokenResult[1] } }
-  }, {})
-  let rawTokenResults
-  const uniquePairTokenResults = uniq(pairTokenResults)
-  const tokenCalls = uniquePairTokenResults
-    .map((pairToken) => {
-      return [
-        { address: pairToken, name: 'name' },
-        { address: pairToken, name: 'symbol' },
-      ]
-    })
-    .flat()
-  try {
-    rawTokenResults = await multicallv2({
-      abi: bep20Abi,
-      calls: tokenCalls,
-      options: { requireSuccess: false },
-      chainId: chainName === 'ETH' ? ChainId.ETHEREUM : ChainId.BSC,
-    })
-  } catch (error) {
-    console.info('Error fetching tokenIds from pair')
-  }
-  const tokenResults = rawTokenResults ? rawTokenResults.map((rawTokenResult) => rawTokenResult[0]) : []
-  const tokenMap = chunk(tokenResults, 2).reduce((acc, tokenResult, index) => {
-    return { ...acc, [uniquePairTokenResults[index].toLowerCase()]: { name: tokenResult[0], symbol: tokenResult[1] } }
-  }, {})
-  return mapValues(pairTokenMap, (pairTokenValue) => {
-    return {
-      token0: { id: pairTokenValue.token0, ...tokenMap[pairTokenValue.token0] },
-      token1: { id: pairTokenValue.token1, ...tokenMap[pairTokenValue.token1] },
-    }
-  })
 }

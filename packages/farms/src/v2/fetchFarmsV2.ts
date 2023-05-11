@@ -1,11 +1,8 @@
-// import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { Address, formatUnits } from 'viem'
 import BN from 'bignumber.js'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-// import { formatUnits } from '@ethersproject/units'
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
-// import { FIXED_TWO, FIXED_ZERO } from '../const'
 import { getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
@@ -162,7 +159,7 @@ const masterChefV2Abi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
 
 const masterChefFarmCalls = (farm: SerializedFarmConfig, masterChefAddress: string) => {
   const { pid } = farm
@@ -217,9 +214,7 @@ export const fetchMasterChefV2Data = async ({
   masterChefAddress: Address
 }) => {
   try {
-    const [poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock] = await multicallv2<
-      [bigint, bigint, bigint, bigint]
-    >({
+    const [poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock] = await multicallv2({
       abi: masterChefV2Abi,
       calls: [
         {

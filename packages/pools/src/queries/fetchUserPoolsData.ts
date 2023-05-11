@@ -4,10 +4,9 @@ import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
-
+import { erc20ABI } from 'wagmi'
 import { getPoolsConfig } from '../constants'
-import sousChefABI from '../abis/ISousChef.json'
-import erc20ABI from '../abis/IERC20.json'
+import { sousChefABI } from '../abis/ISousChef'
 import { OnChainProvider, SerializedPool } from '../types'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
@@ -47,34 +46,40 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
   const bnbPools = getBnbPools(chainId)
   // Non BNB pools
   const tokens = uniq(nonBnbPools.map((pool) => pool.stakingToken.address))
-  const tokenBalanceCalls = tokens.map((token) => ({
-    abi: erc20ABI,
-    address: token,
-    name: 'balanceOf',
-    params: [account],
-  }))
-  const bnbBalanceCall = {
-    abi: multiCallAbi,
-    address: multicallAddresses[chainId],
-    name: 'getEthBalance',
-    params: [account],
-  }
-  const { multicallv3 } = createMulticall(provider)
-  const tokenBnbBalancesRaw = await multicallv3({ calls: [...tokenBalanceCalls, bnbBalanceCall], chainId })
-  const bnbBalance = tokenBnbBalancesRaw.pop()
-  const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBnbBalancesRaw[index]]))
+  const client = provider({ chainId })
+  const tokenBalance = await client.multicall({
+    contracts: [
+      {
+        // @ts-ignore
+        abi: multiCallAbi,
+        address: multicallAddresses[chainId],
+        functionName: 'getEthBalance',
+        args: [account],
+      },
+      // @ts-ignore
+      ...tokens.map((token) => ({
+        abi: erc20ABI,
+        address: token,
+        functionName: 'balanceOf',
+        args: [account],
+      })),
+    ],
+  })
+  const [bnbBalance, ...tokenBalancesResults] = tokenBalance
+
+  const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBalancesResults[index].result as bigint]))
 
   const poolTokenBalances = fromPairs(
     nonBnbPools
       .map<[number, string] | null>((pool) => {
         if (!tokenBalances[pool.stakingToken.address]) return null
-        return [pool.sousId, new BigNumber(tokenBalances[pool.stakingToken.address]).toJSON()]
+        return [pool.sousId, new BigNumber(tokenBalances[pool.stakingToken.address].toString()).toJSON()]
       })
       .filter((p): p is [number, string] => Boolean(p)),
   )
 
   // BNB pools
-  const bnbBalanceJson = new BigNumber(bnbBalance.toString()).toJSON()
+  const bnbBalanceJson = new BigNumber((bnbBalance.result as bigint).toString()).toJSON()
   const bnbBalances = fromPairs(bnbPools.map((pool) => [pool.sousId, bnbBalanceJson]))
 
   return { ...poolTokenBalances, ...bnbBalances }
@@ -90,7 +95,7 @@ export const fetchUserStakeBalances = async ({ account, chainId, provider }: Fet
   const { multicall } = createMulticall(provider)
   const userInfo = await multicall(sousChefABI, calls, chainId)
   return fromPairs(
-    nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(userInfo[index].amount._hex).toJSON()]),
+    nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(userInfo[index][0].toString()).toJSON()]),
   )
 }
 
@@ -103,5 +108,5 @@ export const fetchUserPendingRewards = async ({ account, chainId, provider }: Fe
   }))
   const { multicall } = createMulticall(provider)
   const res = await multicall(sousChefABI, calls, chainId)
-  return fromPairs(nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(res[index]).toJSON()]))
+  return fromPairs(nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(res[index].toString()).toJSON()]))
 }

@@ -3,9 +3,10 @@ import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
-import { multicallv2 } from 'utils/multicall'
-import ifoV2Abi from 'config/abi/ifoV2.json'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { ifoV2ABI } from 'config/abi/ifoV2'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
 
@@ -62,13 +63,25 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
-    const ifoCalls = ['viewUserInfo', 'viewUserOfferingAndRefundingAmountsForPools'].map((method) => ({
-      address,
-      name: method,
-      params: [account, [0, 1]],
-    }))
+    const bscClient = viemClients[ChainId.BSC]
 
-    const [userInfo, amounts] = await multicallv2({ abi: ifoV2Abi, calls: ifoCalls })
+    const [userInfo, amounts] = await bscClient.multicall({
+      contracts: [
+        {
+          address,
+          abi: ifoV2ABI,
+          functionName: 'viewUserInfo',
+          args: [account, [0, 1]],
+        },
+        {
+          address,
+          abi: ifoV2ABI,
+          functionName: 'viewUserOfferingAndRefundingAmountsForPools',
+          args: [account, [0, 1]],
+        },
+      ],
+      allowFailure: false,
+    })
 
     setState((prevState) => ({
       ...prevState,
@@ -76,17 +89,17 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       poolBasic: {
         ...prevState.poolBasic,
         amountTokenCommittedInLP: new BigNumber(userInfo[0][0].toString()),
-        offeringAmountInToken: new BigNumber(amounts[0][0][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[0][0][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[0][0][2].toString()),
+        offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
+        refundingAmountInLP: new BigNumber(amounts[0][1].toString()),
+        taxAmountInLP: new BigNumber(amounts[0][2].toString()),
         hasClaimed: userInfo[1][0],
       },
       poolUnlimited: {
         ...prevState.poolUnlimited,
         amountTokenCommittedInLP: new BigNumber(userInfo[0][1].toString()),
-        offeringAmountInToken: new BigNumber(amounts[0][1][0].toString()),
-        refundingAmountInLP: new BigNumber(amounts[0][1][1].toString()),
-        taxAmountInLP: new BigNumber(amounts[0][1][2].toString()),
+        offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
+        refundingAmountInLP: new BigNumber(amounts[1][1].toString()),
+        taxAmountInLP: new BigNumber(amounts[1][2].toString()),
         hasClaimed: userInfo[1][1],
       },
     }))

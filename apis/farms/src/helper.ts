@@ -19,7 +19,7 @@ export const getProvider = ({ chainId }: { chainId?: number }) => {
   }
 }
 
-export const { multicallv2, multicallv3 } = createMulticall(getProvider)
+export const { multicallv2 } = createMulticall(getProvider)
 
 export const farmFetcher = createFarmFetcher(multicallv2)
 

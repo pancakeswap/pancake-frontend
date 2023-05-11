@@ -2,18 +2,27 @@ import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
-import { createMulticall } from '@pancakeswap/multicall'
+import { Address } from 'viem'
 
-import cakeAbi from '../abis/Cake.json'
-import cakeVaultAbi from '../abis/ICakeVaultV2.json'
+import { cakeVaultV2ABI } from '../abis/ICakeVaultV2'
 import { OnChainProvider } from '../types'
 import { getCakeFlexibleSideVaultAddress, getCakeVaultAddress } from './getAddresses'
 
 interface Params {
-  cakeVaultAddress?: string
+  cakeVaultAddress?: Address
   chainId: ChainId
   provider: OnChainProvider
 }
+
+const balanceOfAbi = [
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const
 
 export const fetchPublicVaultData = async ({
   chainId,
@@ -21,34 +30,49 @@ export const fetchPublicVaultData = async ({
   provider,
 }: Params) => {
   try {
-    const calls = ['getPricePerFullShare', 'totalShares', 'totalLockedAmount'].map((method) => ({
-      abi: cakeVaultAbi,
-      address: cakeVaultAddress,
-      name: method,
-    }))
+    const client = provider({ chainId })
 
-    const cakeBalanceOfCall = {
-      abi: cakeAbi,
-      address: CAKE[ChainId.BSC].address,
-      name: 'balanceOf',
-      params: [cakeVaultAddress],
-    }
-
-    const { multicallv3 } = createMulticall(provider)
-    const [[sharePrice], [shares], totalLockedAmount, [totalCakeInVault]] = await multicallv3({
-      calls: [...calls, cakeBalanceOfCall],
+    const [sharePrice, shares, totalLockedAmount, totalCakeInVault] = await client.multicall({
+      contracts: [
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'getPricePerFullShare',
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'totalShares',
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'totalLockedAmount',
+        },
+        {
+          abi: balanceOfAbi,
+          address: CAKE[ChainId.BSC].address,
+          functionName: 'balanceOf',
+          args: [cakeVaultAddress],
+        },
+      ],
       allowFailure: true,
-      chainId,
     })
 
-    const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
-    const totalLockedAmountAsBigNumber = totalLockedAmount ? new BigNumber(totalLockedAmount[0].toString()) : BIG_ZERO
-    const sharePriceAsBigNumber = sharePrice ? new BigNumber(sharePrice.toString()) : BIG_ZERO
+    const totalSharesAsBigNumber =
+      shares.status === 'success' && shares.result ? new BigNumber(shares.result.toString()) : BIG_ZERO
+    const totalLockedAmountAsBigNumber =
+      totalLockedAmount.status === 'success' && totalLockedAmount.result
+        ? new BigNumber(totalLockedAmount.result.toString())
+        : BIG_ZERO
+    const sharePriceAsBigNumber =
+      sharePrice.status === 'success' && sharePrice.result ? new BigNumber(sharePrice.result.toString()) : BIG_ZERO
+
     return {
       totalShares: totalSharesAsBigNumber.toJSON(),
       totalLockedAmount: totalLockedAmountAsBigNumber.toJSON(),
       pricePerFullShare: sharePriceAsBigNumber.toJSON(),
-      totalCakeInVault: new BigNumber(totalCakeInVault.toString()).toJSON(),
+      totalCakeInVault: totalCakeInVault.result ? new BigNumber(totalCakeInVault.result.toString()).toJSON() : '0',
     }
   } catch (error) {
     return {
@@ -66,32 +90,37 @@ export const fetchPublicFlexibleSideVaultData = async ({
   provider,
 }: Params) => {
   try {
-    const calls = ['getPricePerFullShare', 'totalShares'].map((method) => ({
-      abi: cakeVaultAbi,
-      address: cakeVaultAddress,
-      name: method,
-    }))
+    const client = provider({ chainId })
 
-    const cakeBalanceOfCall = {
-      abi: cakeAbi,
-      address: CAKE[ChainId.BSC].address,
-      name: 'balanceOf',
-      params: [cakeVaultAddress],
-    }
-
-    const { multicallv3 } = createMulticall(provider)
-    const [[sharePrice], [shares], [totalCakeInVault]] = await multicallv3({
-      calls: [...calls, cakeBalanceOfCall],
+    const [sharePrice, shares, totalCakeInVault] = await client.multicall({
+      contracts: [
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'getPricePerFullShare',
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'totalShares',
+        },
+        {
+          abi: balanceOfAbi,
+          address: CAKE[ChainId.BSC].address,
+          functionName: 'balanceOf',
+          args: [cakeVaultAddress],
+        },
+      ],
       allowFailure: true,
-      chainId,
     })
 
-    const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
-    const sharePriceAsBigNumber = sharePrice ? new BigNumber(sharePrice.toString()) : BIG_ZERO
+    const totalSharesAsBigNumber = shares.status === 'success' ? new BigNumber(shares.result.toString()) : BIG_ZERO
+    const sharePriceAsBigNumber =
+      sharePrice.status === 'success' ? new BigNumber(sharePrice.result.toString()) : BIG_ZERO
     return {
       totalShares: totalSharesAsBigNumber.toJSON(),
       pricePerFullShare: sharePriceAsBigNumber.toJSON(),
-      totalCakeInVault: new BigNumber(totalCakeInVault.toString()).toJSON(),
+      totalCakeInVault: new BigNumber((totalCakeInVault.result || '0').toString()).toJSON(),
     }
   } catch (error) {
     return {
@@ -108,22 +137,33 @@ export const fetchVaultFees = async ({
   provider,
 }: Params) => {
   try {
-    const calls = ['performanceFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
-      address: cakeVaultAddress,
-      name: method,
-    }))
+    const client = provider({ chainId })
 
-    const { multicallv2 } = createMulticall(provider)
-    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({
-      abi: cakeVaultAbi,
-      calls,
-      chainId,
+    const [performanceFee, withdrawalFee, withdrawalFeePeriod] = await client.multicall({
+      contracts: [
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'performanceFee',
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'withdrawFee',
+        },
+        {
+          abi: cakeVaultV2ABI,
+          address: cakeVaultAddress,
+          functionName: 'withdrawFeePeriod',
+        },
+      ],
+      allowFailure: false,
     })
 
     return {
-      performanceFee: performanceFee.toNumber(),
-      withdrawalFee: withdrawalFee.toNumber(),
-      withdrawalFeePeriod: withdrawalFeePeriod.toNumber(),
+      performanceFee: Number(performanceFee),
+      withdrawalFee: Number(withdrawalFee),
+      withdrawalFeePeriod: Number(withdrawalFeePeriod),
     }
   } catch (error) {
     return {

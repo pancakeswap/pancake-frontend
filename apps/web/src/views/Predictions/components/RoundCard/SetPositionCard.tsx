@@ -16,9 +16,9 @@ import {
   Box,
   AutoRenewIcon,
 } from '@pancakeswap/uikit'
-import { BigNumber, FixedNumber } from 'ethers'
-import { Zero } from '@ethersproject/constants'
-import { parseUnits } from 'ethers/lib/utils'
+// import { BigNumber, FixedNumber } from 'ethers'
+import BN from 'bignumber.js'
+import { parseUnits } from 'viem'
 import { useAccount } from 'wagmi'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -27,7 +27,7 @@ import { useGetBnbBalance, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
-import { formatBigNumber, formatFixedNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
@@ -52,34 +52,34 @@ interface SetPositionCardProps {
 const dust = parseUnits('0.001', 18)
 const percentShortcuts = [10, 25, 50, 75]
 
-const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: BigNumber) => {
+const getButtonProps = (value: bigint, bnbBalance: bigint, minBetAmountBalance: bigint) => {
   const hasSufficientBalance = () => {
-    if (value.gt(0)) {
-      return value.lte(bnbBalance)
+    if (value > 0) {
+      return value <= bnbBalance
     }
-    return bnbBalance.gt(0)
+    return bnbBalance > 0
   }
 
   if (!hasSufficientBalance()) {
     return { key: 'Insufficient %symbol% balance', disabled: true }
   }
 
-  if (value.eq(0)) {
+  if (value === 0n) {
     return { key: 'Enter an amount', disabled: true }
   }
 
-  return { key: 'Confirm', disabled: value.lt(minBetAmountBalance) }
+  return { key: 'Confirm', disabled: value < minBetAmountBalance }
 }
 
 const getValueAsEthersBn = (value: string) => {
   const valueAsFloat = parseFloat(value)
-  return Number.isNaN(valueAsFloat) ? Zero : parseUnits(value)
+  return Number.isNaN(valueAsFloat) ? 0n : parseUnits(value as `${number}`, 18)
 }
 
 const TOKEN_BALANCE_CONFIG = {
   BNB: useGetBnbBalance,
   CAKE: useGetCakeBalance,
-}
+} as const
 
 const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> = ({
   position,
@@ -100,7 +100,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const { address: predictionsAddress, token } = useConfig()
   const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
   const useTokenBalance = useMemo(() => {
-    return TOKEN_BALANCE_CONFIG[token.symbol]
+    return TOKEN_BALANCE_CONFIG[token.symbol as keyof typeof TOKEN_BALANCE_CONFIG]
   }, [token.symbol])
 
   const { isVaultApproved, setLastUpdated } = useCakeApprovalStatus(token.symbol === 'CAKE' ? predictionsAddress : null)
@@ -116,24 +116,24 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const { balance: bnbBalance } = useTokenBalance()
 
   const maxBalance = useMemo(() => {
-    return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : Zero
+    return bnbBalance > dust ? bnbBalance - dust : 0n
   }, [bnbBalance])
-  const balanceDisplay = formatBigNumber(bnbBalance)
+  const balanceDisplay = formatBigInt(bnbBalance)
 
   const valueAsBn = getValueAsEthersBn(value)
-  const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
+  const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
 
   const handleInputChange = (input: string) => {
     const inputAsBn = getValueAsEthersBn(input)
 
-    if (inputAsBn.eq(0)) {
+    if (inputAsBn === 0n) {
       setPercent(0)
     } else {
-      const inputAsFn = FixedNumber.from(inputAsBn)
-      const maxValueAsFn = FixedNumber.from(maxBalance)
-      const hundredAsFn = FixedNumber.from(100)
-      const percentage = inputAsFn.divUnsafe(maxValueAsFn).mulUnsafe(hundredAsFn)
-      const percentageAsFloat = percentage.toUnsafeFloat()
+      const inputAsFn = new BN(inputAsBn.toString())
+      const maxValueAsFn = new BN(maxBalance.toString())
+      const hundredAsFn = new BN(100)
+      const percentage = inputAsFn.div(maxValueAsFn).times(hundredAsFn)
+      const percentageAsFloat = percentage.toNumber()
 
       setPercent(percentageAsFloat > 100 ? 100 : percentageAsFloat)
     }
@@ -143,11 +143,11 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const handlePercentChange = useCallback(
     (sliderPercent: number) => {
       if (sliderPercent > 0) {
-        const maxValueAsFn = FixedNumber.from(maxBalance)
-        const hundredAsFn = FixedNumber.from(100)
-        const sliderPercentAsFn = FixedNumber.from(sliderPercent.toFixed(18)).divUnsafe(hundredAsFn)
-        const balancePercentage = maxValueAsFn.mulUnsafe(sliderPercentAsFn)
-        setValue(formatFixedNumber(balancePercentage))
+        const maxValueAsFn = new BN(maxBalance.toString())
+        const hundredAsFn = new BN(100)
+        const sliderPercentAsFn = new BN(sliderPercent.toFixed(18)).div(hundredAsFn)
+        const balancePercentage = maxValueAsFn.times(sliderPercentAsFn)
+        setValue(balancePercentage.toFixed(2))
       } else {
         setValue('')
       }
@@ -188,13 +188,13 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   // Warnings
   useEffect(() => {
     const inputAmount = getValueAsEthersBn(value)
-    const hasSufficientBalance = inputAmount.gt(0) && inputAmount.lte(maxBalance)
+    const hasSufficientBalance = inputAmount > 0n && inputAmount <= maxBalance
 
     if (!hasSufficientBalance) {
       setErrorMessage(t('Insufficient %symbol% balance', { symbol: token.symbol }))
-    } else if (inputAmount.gt(0) && inputAmount.lt(minBetAmount)) {
+    } else if (inputAmount > 0n && inputAmount < minBetAmount) {
       setErrorMessage(
-        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: token.symbol }),
+        t('A minimum amount of %num% %token% is required', { num: formatBigInt(minBetAmount), token: token.symbol }),
       )
     } else {
       setErrorMessage(null)

@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
@@ -23,7 +22,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useSendTransaction } from 'wagmi'
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
-import { TransactionResponse } from '@ethersproject/providers'
 
 import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -73,7 +71,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       : undefined
   // check for existing position if tokenId in url
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
-    tokenId ? BigNumber.from(tokenId) : undefined,
+    tokenId ? BigInt(tokenId) : undefined,
   )
 
   const hasExistingPosition = !!existingPositionDetails && !positionLoading

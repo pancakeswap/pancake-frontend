@@ -1,5 +1,4 @@
 import { captureException } from '@sentry/nextjs'
-import { ErrorCode } from '@ethersproject/logger'
 
 const assignError = (maybeError: any) => {
   if (typeof maybeError === 'string') {
@@ -20,7 +19,11 @@ const assignError = (maybeError: any) => {
 
 export const isUserRejected = (err) => {
   // provider user rejected error code
-  return typeof err === 'object' && 'code' in err && (err.code === 4001 || err.code === ErrorCode.ACTION_REJECTED)
+  return (
+    typeof err === 'object' &&
+    (('code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) ||
+      ('cause' in err && 'code' in err.cause && err.cause.code === 4001))
+  )
 }
 
 const ENABLED_LOG = false

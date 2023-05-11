@@ -1,8 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { Address, Chain, FallbackTransport, PublicClient } from 'viem'
 
-import multicallAbi from './Multicall.json'
-
 export const multicallAddresses = {
   1: '0xcA11bde05977b3631167028862bE2a173976CA11',
   4: '0xcA11bde05977b3631167028862bE2a173976CA11',
@@ -11,12 +9,6 @@ export const multicallAddresses = {
   97: '0xcA11bde05977b3631167028862bE2a173976CA11',
 } as const
 
-// export const getMulticallContract = (chainId: ChainId, provider: Provider) => {
-//   if (multicallAddresses[chainId as keyof typeof multicallAddresses]) {
-//     return new Contract(multicallAddresses[chainId as keyof typeof multicallAddresses], multicallAbi, provider)
-//   }
-//   return null
-// }
 
 export interface Call {
   address: Address // Address of the contract
@@ -50,13 +42,6 @@ export interface CallV3 extends Call {
   allowFailure?: boolean
 }
 
-interface MulticallV3Params {
-  calls: CallV3[]
-  chainId?: ChainId
-  allowFailure?: boolean
-  overrides?: CallOverrides
-}
-
 export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
 export type MultiCall = <T = any>(abi: any[], calls: Call[], chainId?: ChainId) => Promise<T>
 
@@ -82,7 +67,7 @@ export function createMulticall<TProvider extends PublicClient<FallbackTransport
   const multicallv2: MultiCallV2 = async ({ abi, calls, chainId = ChainId.BSC, options, provider: _provider }) => {
     const { requireSuccess = true, ...overrides } = options || {}
 
-    const publicClient = provider({ chainId })
+    const publicClient = _provider || provider({ chainId })
     const result = publicClient.multicall({
       contracts: calls.map((c) => ({
         address: c.address,
@@ -97,25 +82,8 @@ export function createMulticall<TProvider extends PublicClient<FallbackTransport
     return result as any
   }
 
-  const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
-    const publicClient = provider({ chainId })
-    const result = publicClient.multicall({
-      contracts: calls.map((c) => ({
-        address: c.address,
-        abi: c.abi,
-        functionName: c.name,
-        args: c.params,
-      })),
-      multicallAddress: multicallAddresses[chainId],
-      allowFailure,
-    })
-
-    return result
-  }
-
   return {
     multicall,
     multicallv2,
-    multicallv3,
   }
 }

@@ -1,4 +1,3 @@
-import { Contract } from 'ethers'
 import { Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE } from 'config/constants/exchange'
@@ -8,7 +7,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useTransactionDeadline from './useTransactionDeadline'
 
 export interface SwapCall {
-  contract: Contract
+  contract: ReturnType<typeof useRouterContract>
   parameters: SwapParameters
 }
 

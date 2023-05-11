@@ -1,5 +1,5 @@
-import { BigNumber, Contract } from 'ethers'
 import { useTranslation } from '@pancakeswap/localization'
+import { getContract } from 'wagmi/actions'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -20,12 +20,12 @@ export enum SwapCallbackState {
 }
 
 interface SwapCall {
-  contract: Contract
+  contract: ReturnType<typeof getContract>
   parameters: SwapParameters
 }
 
 interface SuccessfulCall extends SwapCallEstimate {
-  gasEstimate: BigNumber
+  gasEstimate: bigint
 }
 
 interface FailedCall extends SwapCallEstimate {
@@ -74,7 +74,7 @@ export function useSwapCallback(
             } = call
             const options = !value || isZero(value) ? {} : { value }
 
-            return contract.estimateGas[methodName](...args, options)
+            return contract.estimateGas[methodName]([args], options)
               .then((gasEstimate) => {
                 return {
                   call,
@@ -84,7 +84,7 @@ export function useSwapCallback(
               .catch((gasError) => {
                 console.error('Gas estimate failed, trying eth_call to extract error', call)
 
-                return contract.callStatic[methodName](...args, options)
+                return contract.simulate[methodName]([args], options)
                   .then((result) => {
                     console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return { call, error: t('Unexpected issue with estimating the gas. Please try again.') }

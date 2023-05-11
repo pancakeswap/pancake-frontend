@@ -1,19 +1,12 @@
 import { ChainId, Currency, CurrencyAmount, Pair, Token } from '@pancakeswap/sdk'
-import { BigNumber } from 'ethers'
-import { createMulticall, Call } from '@pancakeswap/multicall'
 import { Address } from 'viem'
 
 import { wrappedCurrency } from '../../evm/utils/currency'
-import IPancakePairABI from '../../evm/abis/IPancakePair.json'
+import { pancakePairABI } from '../../evm/abis/IPancakePair'
+
 import { Provider } from '../types'
 
 type CurrencyPair = [Currency, Currency]
-
-export interface PairReserve {
-  reserve0: BigNumber
-  reserve1: BigNumber
-  blockTimestampLast: BigNumber
-}
 
 export enum PairState {
   LOADING,
@@ -35,24 +28,19 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
 
   const pairAddresses = tokens.map(getPairAddress)
 
-  const { multicallv2 } = createMulticall(provider)
-  const reserveCalls: Call[] = pairAddresses.map((address) => ({
-    address,
-    name: 'getReserves',
-    params: [],
-  }))
+  const client = provider({ chainId })
 
-  const results = await multicallv2<PairReserve[]>({
-    abi: IPancakePairABI,
-    calls: reserveCalls,
-    chainId,
-    options: {
-      requireSuccess: false,
-    },
+  const results = await client.multicall({
+    contracts: pairAddresses.map((address) => ({
+      abi: pancakePairABI,
+      address,
+      functionName: 'getReserves',
+    })),
+    allowFailure: true,
   })
 
   const resultWithState: [PairState, Pair | null][] = results.map((result, i) => {
-    if (!result) return [PairState.NOT_EXISTS, null]
+    if (!result || result.status !== 'success') return [PairState.NOT_EXISTS, null]
 
     const tokenA = tokens[i][0]
     const tokenB = tokens[i][1]
@@ -61,13 +49,10 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
 
     const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
 
-    const { reserve0, reserve1 } = result
+    const [reserve0, reserve1] = result.result
     return [
       PairState.EXISTS,
-      new Pair(
-        CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
-        CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
-      ),
+      new Pair(CurrencyAmount.fromRawAmount(token0, reserve0), CurrencyAmount.fromRawAmount(token1, reserve1)),
     ]
   })
   const successfulResult: [PairState.EXISTS, Pair][] = resultWithState.filter(

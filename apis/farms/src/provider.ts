@@ -1,35 +1,46 @@
-import { providers } from 'ethers'
+import { ChainId } from '@pancakeswap/sdk'
+import { createPublicClient, http } from 'viem'
+import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
 
-const { StaticJsonRpcProvider } = providers
+const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE]
+requireCheck.forEach((node) => {
+  if (!node) {
+    throw new Error('Missing env var')
+  }
+})
 
-export const bscProvider = new StaticJsonRpcProvider(
-  {
-    url: BSC_NODE,
-    skipFetchSetup: true,
-  },
-  56,
-)
+const mainnetClient = createPublicClient({
+  chain: mainnet,
+  transport: http(ETH_NODE),
+})
 
-export const bscTestnetProvider = new StaticJsonRpcProvider(
-  {
-    url: BSC_TESTNET_NODE,
-    skipFetchSetup: true,
-  },
-  97,
-)
+const bscClient = createPublicClient({
+  chain: bsc,
+  transport: http(BSC_NODE),
+})
 
-export const goerliProvider = new StaticJsonRpcProvider(
-  {
-    url: GOERLI_NODE,
-    skipFetchSetup: true,
-  },
-  5,
-)
+const bscTestnetClient = createPublicClient({
+  chain: bscTestnet,
+  transport: http(BSC_TESTNET_NODE),
+})
 
-export const ethProvider = new StaticJsonRpcProvider(
-  {
-    url: ETH_NODE,
-    skipFetchSetup: true,
-  },
-  1,
-)
+const goerliClient = createPublicClient({
+  chain: goerli,
+  transport: http(GOERLI_NODE),
+})
+
+// @ts-ignore
+export const viemProviders: OnChainProvider = ({ chainId }: { chainId?: ChainId }) => {
+  switch (chainId) {
+    case ChainId.ETHEREUM:
+      return mainnetClient
+    case ChainId.BSC:
+      return bscClient
+    case ChainId.BSC_TESTNET:
+      return bscTestnetClient
+    case ChainId.GOERLI:
+      return goerliClient
+    default:
+      return bscClient
+  }
+}
