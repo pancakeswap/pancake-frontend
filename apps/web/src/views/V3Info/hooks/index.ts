@@ -259,7 +259,15 @@ export const useTokenPriceData = (
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenPriceData/${chainId}/${address}/${interval}/${timeWindow}`, chainId],
-    () => fetchTokenPriceData(address, interval, startTimestamp, v3InfoClients[chainId], multiChainName[chainId]),
+    () =>
+      fetchTokenPriceData(
+        address,
+        interval,
+        startTimestamp,
+        v3InfoClients[chainId],
+        multiChainName[chainId],
+        SUBGRAPH_START_BLOCK[chainId],
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
