@@ -1,5 +1,4 @@
 import { ChainId, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
-import { BigNumber } from 'ethers'
 import { bscTokens, bscTestnetTokens, USDC, USDT, BUSD, WBTC_ETH } from '@pancakeswap/tokens'
 import { ChainMap, ChainTokenList } from './types'
 
@@ -116,7 +115,7 @@ export const DEFAULT_OUTPUT_CURRENCY = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE
 
 // Handler string is passed to Gelato to use PCS router
 export const GELATO_HANDLER = 'pancakeswap'
-export const GENERIC_GAS_LIMIT_ORDER_EXECUTION = BigNumber.from(500000)
+export const GENERIC_GAS_LIMIT_ORDER_EXECUTION = 500000n
 
 export const LIMIT_ORDERS_DOCS_URL = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/limit-orders'
 

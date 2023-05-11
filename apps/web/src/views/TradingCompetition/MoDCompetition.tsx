@@ -79,8 +79,8 @@ const MoDCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.currentStatus()
-      setCurrentPhase(SmartContractPhases[competitionStatus])
+      const competitionStatus = await tradingCompetitionContract.read.currentStatus()
+      setCurrentPhase(SmartContractPhases[competitionStatus as number])
     }
 
     const fetchUserContract = async () => {

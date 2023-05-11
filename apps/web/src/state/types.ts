@@ -3,8 +3,16 @@ import { parseUnits } from 'ethers/lib/utils'
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
 import { SerializedPoolWithInfo } from '@pancakeswap/pools'
+import { Address } from 'wagmi'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FetchStatus, LotteryStatus, LotteryTicket, Team, TranslatableText } from 'config/constants/types'
+import {
+  CampaignType,
+  FetchStatusT,
+  LotteryStatus,
+  LotteryTicket,
+  Team,
+  TranslatableText,
+} from 'config/constants/types'
 import { NftToken } from './nftMarket/types'
 
 export enum GAS_PRICE {
@@ -273,18 +281,18 @@ export interface LedgerData {
 }
 
 export interface RoundData {
-  [key: string]: ReduxNodeRound
+  [key: string]: string
 }
 
 export interface ReduxNodeLedger {
   position: BetPosition
-  amount: BigNumberToJson
+  amount: string
   claimed: boolean
 }
 
 export interface NodeLedger {
   position: BetPosition
-  amount: EthersBigNumber
+  amount: bigint
   claimed: boolean
 }
 
@@ -293,13 +301,13 @@ export interface ReduxNodeRound {
   startTimestamp: number | null
   lockTimestamp: number | null
   closeTimestamp: number | null
-  lockPrice: BigNumberToJson | null
-  closePrice: BigNumberToJson | null
-  totalAmount: BigNumberToJson
-  bullAmount: BigNumberToJson
-  bearAmount: BigNumberToJson
-  rewardBaseCalAmount: BigNumberToJson
-  rewardAmount: BigNumberToJson
+  lockPrice: string | null
+  closePrice: string | null
+  totalAmount: string
+  bullAmount: string
+  bearAmount: string
+  rewardBaseCalAmount: string
+  rewardAmount: string
   oracleCalled: boolean
   lockOracleId: string
   closeOracleId: string
@@ -310,13 +318,13 @@ export interface NodeRound {
   startTimestamp: number | null
   lockTimestamp: number | null
   closeTimestamp: number | null
-  lockPrice: EthersBigNumber | null
-  closePrice: EthersBigNumber | null
-  totalAmount: EthersBigNumber
-  bullAmount: EthersBigNumber
-  bearAmount: EthersBigNumber
-  rewardBaseCalAmount: EthersBigNumber
-  rewardAmount: EthersBigNumber
+  lockPrice: bigint | null
+  closePrice: bigint | null
+  totalAmount: bigint
+  bullAmount: bigint
+  bearAmount: bigint
+  rewardBaseCalAmount: bigint
+  rewardAmount: bigint
   oracleCalled: boolean
   closeOracleId: string
   lockOracleId: string
@@ -353,7 +361,7 @@ export interface PredictionsState {
   }
   leaderboard: {
     selectedAddress: string
-    loadingState: FetchStatus
+    loadingState: FetchStatusT
     filters: LeaderboardFilter
     skip: number
     hasMoreResults: boolean
@@ -497,9 +505,9 @@ export interface UserRound {
 }
 
 export interface PredictionConfig {
-  address: string
+  address: Address
   api: string
-  chainlinkOracleAddress: string
+  chainlinkOracleAddress: Address
   displayedDecimals: number
   token: Token
 }

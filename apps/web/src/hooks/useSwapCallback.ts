@@ -1,4 +1,3 @@
-import { BigNumber, Contract } from 'ethers'
 import { useTranslation } from '@pancakeswap/localization'
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
@@ -23,12 +22,12 @@ export enum SwapCallbackState {
 }
 
 interface SwapCall {
-  contract: Contract
+  contract: any
   parameters: SwapParameters
 }
 
 interface SuccessfulCall extends SwapCallEstimate {
-  gasEstimate: BigNumber
+  gasEstimate: bigint
 }
 
 interface FailedCall extends SwapCallEstimate {
@@ -39,6 +38,7 @@ interface SwapCallEstimate {
   call: SwapCall
 }
 
+// TODO: wagmi should remove?
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(

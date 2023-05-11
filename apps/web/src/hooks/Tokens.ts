@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { arrayify, parseBytes32String } from 'ethers/lib/utils'
 import { Currency, ERC20Token, ChainId } from '@pancakeswap/sdk'
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
+import { useToken as useToken_ } from 'wagmi'
 import {
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
@@ -16,10 +15,6 @@ import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId } from './useActiveChainId'
-import multicall from '../utils/multicall'
-import erc20ABI from '../config/abi/erc20.json'
-import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
-import { FetchStatus } from '../config/constants/types'
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap<ChainId>, chainId: number) =>
   Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
@@ -126,18 +121,6 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
   return !!userAddedTokens.find((token) => currency?.equals(token))
 }
 
-// parse a name or symbol from a token response
-const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
-
-function parseStringOrBytes32(str: string | undefined, bytes32: string | undefined, defaultValue: string): string {
-  return str && str.length > 0
-    ? str
-    : // need to check for proper bytes string and valid terminator
-    bytes32 && BYTES32_REGEX.test(bytes32) && arrayify(bytes32)[31] === 0
-    ? parseBytes32String(bytes32)
-    : defaultValue
-}
-
 // undefined if invalid or does not exist
 // null if loading
 // otherwise returns the token
@@ -149,54 +132,28 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
 
   const token: ERC20Token | undefined = address ? tokens[address] : undefined
 
-  const { data, status } = useSWRImmutable(
-    !token && chainId && address && ['fetchTokenInfo', chainId, address],
-    async () => {
-      const calls = ['name', 'symbol', 'decimals'].map((method) => {
-        return { address: address.toString(), name: method }
-      })
-
-      return multicall(erc20ABI, calls, chainId)
-    },
-  )
-
-  const tokenName = data?.[0]?.[0]
-  const symbol = data?.[1]?.[0]
-  const decimals = data?.[2]?.[0]
-
-  const { data: dataBytes, status: statusBytes } = useSWRImmutable(
-    !token &&
-      chainId &&
-      address &&
-      (status === FetchStatus.Fetched || status === FetchStatus.Failed) &&
-      (!tokenName || !symbol) && ['fetchTokenInfo32', chainId, address],
-    async () => {
-      const calls = ['name', 'symbol'].map((method) => {
-        return { address: address.toString(), name: method }
-      })
-
-      return multicall(ERC20_BYTES32_ABI, calls, chainId)
-    },
-  )
-
-  const tokenNameBytes32 = dataBytes?.[0]?.[0]
-  const symbolBytes32 = dataBytes?.[1]?.[0]
+  const { data, isLoading } = useToken_({
+    address: address || undefined,
+    chainId,
+    enabled: Boolean(!!address && !token),
+    // consider longer stale time
+  })
 
   return useMemo(() => {
     if (token) return token
     if (!chainId || !address) return undefined
-    if (status !== FetchStatus.Fetched && statusBytes !== FetchStatus.Fetched) return null
-    if (Number.isInteger(decimals)) {
+    if (isLoading) return null
+    if (data) {
       return new ERC20Token(
         chainId,
-        address,
-        decimals,
-        parseStringOrBytes32(symbol, symbolBytes32, 'UNKNOWN'),
-        parseStringOrBytes32(tokenName, tokenNameBytes32, 'Unknown Token'),
+        data.address,
+        data.decimals,
+        data.symbol ?? 'UNKNOWN',
+        data.name ?? 'Unknown Token',
       )
     }
     return undefined
-  }, [address, chainId, status, statusBytes, decimals, symbol, symbolBytes32, token, tokenName, tokenNameBytes32])
+  }, [token, chainId, address, isLoading, data])
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {

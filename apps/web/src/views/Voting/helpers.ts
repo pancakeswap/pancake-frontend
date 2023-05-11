@@ -1,19 +1,18 @@
-import { providers } from 'ethers'
+import { createPublicClient, http } from 'viem'
 import { bscTokens } from '@pancakeswap/tokens'
 import BigNumber from 'bignumber.js'
-import cakeVaultAbiV2 from 'config/abi/cakeVaultV2.json'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
+import { bsc } from 'viem/chains'
+import { cakeVaultV2ABI } from 'config/abi/cakeVaultV2i'
+import { Address } from 'wagmi'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
-
-const { JsonRpcProvider } = providers
 
 export const isCoreProposal = (proposal: Proposal) => {
   return ADMINS.includes(proposal.author.toLowerCase())
@@ -115,35 +114,38 @@ interface GetVotingPowerType {
   lockedEndTime?: number
 }
 
-const nodeRealProvider = new JsonRpcProvider('https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24', 56)
+const nodeRealProvider = createPublicClient({
+  transport: http('https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24'),
+  chain: bsc,
+})
 
 export const getVotingPower = async (
-  account: string,
-  poolAddresses: string[],
+  account: Address,
+  poolAddresses: Address[],
   blockNumber?: bigint,
 ): Promise<GetVotingPowerType> => {
   if (blockNumber && (blockNumber >= VOTING_POWER_BLOCK.v0 || blockNumber >= VOTING_POWER_BLOCK.v1)) {
     const cakeVaultAddress = getCakeVaultAddress()
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
-    const [pricePerShare, { shares, lockEndTime, userBoostedShare }] = await multicallv2({
-      abi: cakeVaultAbiV2,
-      provider: nodeRealProvider,
-      calls: [
-        {
-          address: cakeVaultAddress,
-          name: 'getPricePerFullShare',
-        },
-        {
-          address: cakeVaultAddress,
-          params: [account],
-          name: 'userInfo',
-        },
-      ],
-      options: {
-        blockTag: blockNumber.toString(),
-      },
-    })
+    const [pricePerShare, [shares, _last, _lastAction, _lockStartTime, lockEndTime, userBoostedShare]] =
+      await nodeRealProvider.multicall({
+        contracts: [
+          {
+            address: cakeVaultAddress,
+            abi: cakeVaultV2ABI,
+            functionName: 'getPricePerFullShare',
+          },
+          {
+            address: cakeVaultAddress,
+            abi: cakeVaultV2ABI,
+            functionName: 'userInfo',
+            args: [account],
+          },
+        ],
+        blockNumber,
+        allowFailure: false,
+      })
 
     const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, cakeVaultBalance, poolsBalance, total, ifoPoolBalance] =
       await getScores(

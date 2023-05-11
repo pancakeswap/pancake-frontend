@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, Fraction, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 
-import { parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'viem'
 import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
 import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'

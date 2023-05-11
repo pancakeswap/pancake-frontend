@@ -1,6 +1,4 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react'
-import { BigNumber } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, CurrencyAmount, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -173,9 +171,9 @@ export default function AddLiquidity({
     }
 
     let estimate
-    let method: (...args: any) => Promise<TransactionResponse>
+    let method
     let args: Array<string | string[] | number | bigint>
-    let value: BigNumber | null
+    let value: bigint | null
     if (currencyA?.isNative || currencyB?.isNative) {
       const tokenBIsNative = currencyB?.isNative
       estimate = routerContract.estimateGas.addLiquidityETH
@@ -188,7 +186,7 @@ export default function AddLiquidity({
         account,
         deadline,
       ]
-      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString())
+      value = (tokenBIsNative ? parsedAmountB : parsedAmountA).quotient
     } else {
       estimate = routerContract.estimateGas.addLiquidity
       method = routerContract.write.addLiquidity

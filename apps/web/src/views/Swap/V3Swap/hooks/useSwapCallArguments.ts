@@ -2,7 +2,6 @@
 import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
 import { isAddress } from 'utils'
 

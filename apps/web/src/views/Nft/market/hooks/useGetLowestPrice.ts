@@ -1,7 +1,8 @@
 import { FetchStatus } from 'config/constants/types'
 import { getNftsMarketData, getNftsUpdatedMarketData } from 'state/nftMarket/helpers'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { NftToken } from 'state/nftMarket/types'
+import { Address } from 'wagmi'
 import useSWR from 'swr'
 import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../constants'
@@ -16,19 +17,19 @@ const getBunnyIdFromNft = (nft: NftToken): string => {
   return bunnyId ? bunnyId.toString() : null
 }
 
-export const getLowestUpdatedToken = async (collectionAddress: string, nftsMarketTokenIds: string[]) => {
-  const updatedMarketData = await getNftsUpdatedMarketData(collectionAddress.toLowerCase(), nftsMarketTokenIds)
+export const getLowestUpdatedToken = async (collectionAddress: Address, nftsMarketTokenIds: string[]) => {
+  const updatedMarketData = await getNftsUpdatedMarketData(collectionAddress, nftsMarketTokenIds)
 
   if (!updatedMarketData) return null
 
   return updatedMarketData
     .filter((tokenUpdatedPrice) => {
-      return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0) && tokenUpdatedPrice.isTradable
+      return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice > 0 && tokenUpdatedPrice.isTradable
     })
     .sort((askInfoA, askInfoB) => {
-      return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
+      return askInfoA.currentAskPrice > askInfoB.currentAskPrice
         ? 1
-        : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
+        : askInfoA.currentAskPrice > askInfoB.currentAskPrice
         ? 0
         : -1
     })[0]
@@ -41,10 +42,10 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
     if (!response.length) return null
 
     const nftsMarketTokenIds = response.map((marketData) => marketData.tokenId)
-    const lowestPriceUpdatedBunny = await getLowestUpdatedToken(pancakeBunniesAddress.toLowerCase(), nftsMarketTokenIds)
+    const lowestPriceUpdatedBunny = await getLowestUpdatedToken(pancakeBunniesAddress, nftsMarketTokenIds)
 
     if (lowestPriceUpdatedBunny) {
-      return parseFloat(formatBigNumber(lowestPriceUpdatedBunny.currentAskPrice))
+      return parseFloat(formatBigInt(lowestPriceUpdatedBunny.currentAskPrice))
     }
     return null
   })

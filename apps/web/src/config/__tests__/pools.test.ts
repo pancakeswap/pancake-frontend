@@ -1,7 +1,7 @@
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'viem'
 import { getPoolsConfig, getPoolContractBySousId, SUPPORTED_CHAIN_IDS, isLegacyPool } from '@pancakeswap/pools'
 import { describe, it } from 'vitest'
-import { provider } from 'utils/wagmi'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 
 describe.concurrent('Config pools', () => {
@@ -27,8 +27,8 @@ describe.concurrent('Config pools', () => {
     it.each(poolsToTest.filter((pool) => pool.earningToken.symbol !== 'BNB'))(
       'Pool %p has the correct earning token',
       async (pool) => {
-        const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, provider: provider({ chainId }) })
-        const rewardTokenAddress = await contract.rewardToken()
+        const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+        const rewardTokenAddress = await contract.read.rewardToken()
         expect(rewardTokenAddress.toLowerCase()).toBe(pool.earningToken.address.toLowerCase())
       },
       10000,
@@ -38,11 +38,11 @@ describe.concurrent('Config pools', () => {
       async (pool) => {
         let stakingTokenAddress = null
         try {
-          const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, provider: provider({ chainId }) })
-          stakingTokenAddress = await contract.stakedToken()
+          const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+          stakingTokenAddress = await contract.read.stakedToken()
         } catch (error) {
-          const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, provider: provider({ chainId }) })
-          stakingTokenAddress = await contract.syrup()
+          const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+          stakingTokenAddress = await contract.read.syrup()
         }
 
         expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address.toLowerCase())
@@ -53,13 +53,13 @@ describe.concurrent('Config pools', () => {
     it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
       'Pool %p has the correct tokenPerBlock',
       async (pool) => {
-        const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, provider: provider({ chainId }) })
+        const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
         if (isLegacyPool(pool)) {
-          const rewardPerBlock = await contract.rewardPerBlock()
+          const rewardPerBlock = await contract.read.rewardPerBlock()
 
           expect(String(parseFloat(formatUnits(rewardPerBlock, pool.earningToken.decimals)))).toBe(pool.tokenPerBlock)
         } else {
-          const rewardPerSecond = await contract.rewardPerSecond()
+          const rewardPerSecond = await contract.read.rewardPerSecond()
 
           expect(String(parseFloat(formatUnits(rewardPerSecond, pool.earningToken.decimals)))).toBe(pool.tokenPerSecond)
         }

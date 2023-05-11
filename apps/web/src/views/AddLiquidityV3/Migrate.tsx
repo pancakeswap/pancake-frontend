@@ -17,22 +17,18 @@ import { CurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
 import { usePairContract, useV3MigratorContract } from 'hooks/useContract'
-import { immutableMiddleware, useSWRContract } from 'hooks/useSWRContract'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-
-import { splitSignature } from 'ethers/lib/utils'
-import { TransactionResponse } from '@ethersproject/providers'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
-import { useSignTypedData } from 'wagmi'
+import { Address, useContractRead, useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -43,6 +39,7 @@ import { useIsTransactionPending, useTransactionAdder } from 'state/transactions
 import { calculateGasMargin } from 'utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { splitSignature } from 'utils/splitSignature'
 import { isUserRejected } from 'utils/sentry'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -54,11 +51,20 @@ import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3
 import { HandleFeePoolSelectFn } from './types'
 import { useV3FormState } from './formViews/V3FormView/form/reducer'
 
-export function Migrate({ v2PairAddress }: { v2PairAddress: string }) {
+export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const pairContract = usePairContract(v2PairAddress)
 
-  const { data: token0Address } = useSWRContract([pairContract, 'token0'], { use: [immutableMiddleware] })
-  const { data: token1Address } = useSWRContract([pairContract, 'token1'], { use: [immutableMiddleware] })
+  const { data: token0Address } = useContractRead({
+    abi: pairContract.abi,
+    address: v2PairAddress,
+    functionName: 'token0',
+  })
+
+  const { data: token1Address } = useContractRead({
+    abi: pairContract.abi,
+    address: v2PairAddress,
+    functionName: 'token1',
+  })
 
   const token0 = useToken(token0Address)
   const token1 = useToken(token1Address)

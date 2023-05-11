@@ -1,10 +1,20 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Contract } from '@ethersproject/contracts'
+import { getContract } from 'viem'
 
-import cakeFlexibleSideVaultV2Abi from '../abis/ICakeFlexibleSideVaultV2.json'
+import { cakeFlexibleSideVaultV2ABI } from '../abis/ICakeFlexibleSideVaultV2'
 import { OnChainProvider } from '../types'
 import { getCakeFlexibleSideVaultAddress } from './getAddresses'
 
 export function getCakeFlexibleSideVaultV2Contract(chainId: ChainId, provider: OnChainProvider) {
-  return new Contract(getCakeFlexibleSideVaultAddress(chainId), cakeFlexibleSideVaultV2Abi, provider({ chainId }))
+  const abi = cakeFlexibleSideVaultV2ABI
+  const address = getCakeFlexibleSideVaultAddress(chainId)
+  return {
+    ...getContract({
+      abi,
+      address,
+      publicClient: provider({ chainId }),
+    }),
+    address,
+    abi,
+  }
 }

@@ -1,12 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, FlexGap, FlexProps, Text } from '@pancakeswap/uikit'
-import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
+import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import { LineChartLoader } from 'components/ChartLoaders'
 import PairPriceDisplay from 'components/PairPriceDisplay'
-import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
-import { ChainlinkOracle } from 'config/abi/types'
+import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useChainlinkOracleContract } from 'hooks/useContract'
-import { useSWRContract, useSWRMulticall } from 'hooks/useSWRContract'
 import useTheme from 'hooks/useTheme'
 import { useCallback, useMemo } from 'react'
 import { Area, AreaChart, Dot, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
@@ -15,6 +14,7 @@ import { NodeRound } from 'state/types'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 import useSWRImmutable from 'swr/immutable'
+import { useContractRead, useContractReads } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -22,53 +22,43 @@ import useSwiper from '../hooks/useSwiper'
 
 function useChainlinkLatestRound() {
   const { chainlinkOracleAddress } = useConfig()
-  const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress, false)
-  // Can refactor to subscription later
-  const lastRound = useSWRContract([chainlinkOracleContract, 'latestRound'], {
-    dedupingInterval: 10 * 1000,
-    refreshInterval: 10 * 1000,
-    compare: (a, b) => {
-      if (!a && !b) return true
-      // check is equal
-      if (!a || !b) return false
-      return a.eq(b)
-    },
+  const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
+  return useContractRead({
+    abi: chainlinkOracleContract.abi,
+    address: chainlinkOracleContract.address,
+    functionName: 'latestRound',
+    enabled: !!chainlinkOracleContract,
+    watch: true,
   })
-
-  return lastRound
 }
 
 function useChainlinkRoundDataSet() {
+  const { chainId } = useActiveChainId()
   const lastRound = useChainlinkLatestRound()
   const { chainlinkOracleAddress } = useConfig()
 
-  const calls = useMemo(() => {
-    return lastRound.data
-      ? Array.from({ length: 50 }).map((_, i) => ({
-          address: chainlinkOracleAddress,
-          name: 'getRoundData',
-          params: [lastRound.data.sub(i)],
-        }))
-      : null
-  }, [lastRound.data, chainlinkOracleAddress])
-
-  const { data, error } = useSWRMulticall<Awaited<ReturnType<ChainlinkOracle['getRoundData']>>[]>(
-    chainlinkOracleAbi,
-    calls,
-    {
-      keepPreviousData: true,
-    },
-  )
+  const { data, error } = useContractReads({
+    contracts: Array.from({ length: 50 }).map((_, i) => ({
+      chainId,
+      abi: chainlinkOracleABI,
+      address: chainlinkOracleAddress,
+      functionName: 'getRoundData',
+      args: [lastRound.data - BigInt(i)],
+    })),
+    enabled: !!lastRound.data,
+    keepPreviousData: true,
+  })
 
   const computedData: ChartData[] = useMemo(() => {
     return (
       data
-        ?.filter((d) => !!d && d.answer.gt(0))
-        .map(({ answer, roundId, startedAt }) => {
+        ?.filter((d) => !!d && d.status === 'success' && d.result[1] > 0n)
+        .map(({ result }) => {
+          const [roundId, answer, startedAt] = result as bigint[]
           return {
-            answer: formatBigNumberToFixed(answer, 4, 8),
+            answer: formatBigIntToFixed(answer, 4, 8),
             roundId: roundId.toString(),
-            startedAt: startedAt.toNumber(),
+            startedAt: Number(startedAt),
           }
         }) ?? []
     )
@@ -122,7 +112,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   return (
     <PairPriceDisplay
       width="100%"
-      value={hoverData ? hoverData.answer : formatBigNumberToFixed(answerAsBigNumber, 4, 8)}
+      value={hoverData ? hoverData.answer : formatBigIntToFixed(answerAsBigNumber, 4, 8)}
       inputSymbol={token.symbol}
       outputSymbol="USD"
       format={false}

@@ -2,9 +2,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 import { Chain, ConnectorNotFoundError, SwitchChainNotSupportedError, WindowProvider } from 'wagmi'
-import { UserRejectedRequestError, ResourceUnavailableRpcError, ProviderRpcError } from 'viem'
+import { UserRejectedRequestError, ResourceUnavailableRpcError, ProviderRpcError, toHex } from 'viem'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { hexValue } from '@ethersproject/bytes'
 
 declare global {
   interface Window {
@@ -108,7 +107,7 @@ export class BinanceWalletConnector extends InjectedConnector {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
-    const id = hexValue(chainId)
+    const id = toHex(chainId)
 
     if (mappingNetwork[chainId]) {
       try {

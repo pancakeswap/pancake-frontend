@@ -1,43 +1,35 @@
-import { BigNumber, FixedNumber } from 'ethers'
-import { WeiPerEther } from '@ethersproject/constants'
-import _toString from 'lodash/toString'
+import BN from 'bignumber.js'
+import toString from 'lodash/toString'
 import { BLOCKS_PER_YEAR } from 'config'
-import masterChefAbi from 'config/abi/masterchef.json'
 import { useCallback, useMemo } from 'react'
 import { useCakeVault } from 'state/pools/hooks'
 import useSWRImmutable from 'swr/immutable'
+import { masterChefV2ABI } from 'config/abi/masterchef'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from '@pancakeswap/pools'
-import { multicallv2 } from '../utils/multicall'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 
 const masterChefAddress = getMasterChefV2Address()
 
 // default
 const DEFAULT_PERFORMANCE_FEE_DECIMALS = 2
 
-const PRECISION_FACTOR = BigNumber.from('1000000000000')
+const PRECISION_FACTOR = new BN('1000000000000')
+const WeiPerEther = new BN('1000000000000000000')
 
-const getFlexibleApy = (
-  totalCakePoolEmissionPerYear: FixedNumber,
-  pricePerFullShare: FixedNumber,
-  totalShares: FixedNumber,
-) =>
-  totalCakePoolEmissionPerYear
-    .mulUnsafe(FixedNumber.from(WeiPerEther))
-    .divUnsafe(pricePerFullShare)
-    .divUnsafe(totalShares)
-    .mulUnsafe(FixedNumber.from(100))
+const getFlexibleApy = (totalCakePoolEmissionPerYear: BN, pricePerFullShare: BN, totalShares: BN) =>
+  totalCakePoolEmissionPerYear.times(WeiPerEther).div(pricePerFullShare).div(totalShares).times(100)
 
-const _getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor: BigNumber) => {
-  return FixedNumber.from(boostWeight)
-    .mulUnsafe(FixedNumber.from(Math.max(duration, 0)))
-    .divUnsafe(FixedNumber.from(durationFactor))
-    .divUnsafe(FixedNumber.from(PRECISION_FACTOR))
+const _getBoostFactor = (boostWeight: bigint, duration: number, durationFactor: bigint) => {
+  return new BN(boostWeight.toString())
+    .times(new BN(Math.max(duration, 0)))
+    .div(new BN(durationFactor.toString()))
+    .div(PRECISION_FACTOR)
 }
 
-const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
-  FixedNumber.from(flexibleApy).mulUnsafe(boostFactor.addUnsafe(FixedNumber.from('1')))
+const getLockedApy = (flexibleApy: string, boostFactor: BN) => new BN(flexibleApy).times(boostFactor.plus(1))
 
 const cakePoolPID = 0
 
@@ -48,38 +40,39 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
     fees: { performanceFeeAsDecimal } = { performanceFeeAsDecimal: DEFAULT_PERFORMANCE_FEE_DECIMALS },
   } = useCakeVault()
 
-  const totalSharesAsEtherBN = useMemo(() => FixedNumber.from(totalShares.toString()), [totalShares])
-  const pricePerFullShareAsEtherBN = useMemo(() => FixedNumber.from(pricePerFullShare.toString()), [pricePerFullShare])
+  const totalSharesAsEtherBN = useMemo(() => new BN(totalShares.toString()), [totalShares])
+  const pricePerFullShareAsEtherBN = useMemo(() => new BN(pricePerFullShare.toString()), [pricePerFullShare])
 
   const { data: totalCakePoolEmissionPerYear } = useSWRImmutable('masterChef-total-cake-pool-emission', async () => {
-    const calls = [
-      {
-        address: masterChefAddress,
-        name: 'cakePerBlock',
-        params: [false],
-      },
-      {
-        address: masterChefAddress,
-        name: 'poolInfo',
-        params: [cakePoolPID],
-      },
-      {
-        address: masterChefAddress,
-        name: 'totalSpecialAllocPoint',
-      },
-    ]
+    const bscClient = viemClients[ChainId.BSC]
 
-    const [[specialFarmsPerBlock], cakePoolInfo, [totalSpecialAllocPoint]] = await multicallv2({
-      abi: masterChefAbi,
-      calls,
+    const [specialFarmsPerBlock, cakePoolInfo, totalSpecialAllocPoint] = await bscClient.multicall({
+      contracts: [
+        {
+          address: masterChefAddress,
+          abi: masterChefV2ABI,
+          functionName: 'cakePerBlock',
+          args: [false],
+        },
+        {
+          address: masterChefAddress,
+          abi: masterChefV2ABI,
+          functionName: 'poolInfo',
+          args: [BigInt(cakePoolPID)],
+        },
+        {
+          address: masterChefAddress,
+          abi: masterChefV2ABI,
+          functionName: 'totalSpecialAllocPoint',
+        },
+      ],
+      allowFailure: false,
     })
 
-    const cakePoolSharesInSpecialFarms = FixedNumber.from(cakePoolInfo.allocPoint).divUnsafe(
-      FixedNumber.from(totalSpecialAllocPoint),
-    )
-    return FixedNumber.from(specialFarmsPerBlock)
-      .mulUnsafe(FixedNumber.from(BLOCKS_PER_YEAR))
-      .mulUnsafe(cakePoolSharesInSpecialFarms)
+    const allocPoint = cakePoolInfo[2]
+
+    const cakePoolSharesInSpecialFarms = new BN(allocPoint.toString()).div(new BN(totalSpecialAllocPoint.toString()))
+    return new BN(specialFarmsPerBlock.toString()).times(BLOCKS_PER_YEAR).times(cakePoolSharesInSpecialFarms)
   })
 
   const flexibleApy = useMemo(
@@ -104,9 +97,9 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
 
   const flexibleApyNoFee = useMemo(() => {
     if (flexibleApy && performanceFeeAsDecimal) {
-      const rewardPercentageNoFee = _toString(1 - performanceFeeAsDecimal / 100)
+      const rewardPercentageNoFee = toString(1 - performanceFeeAsDecimal / 100)
 
-      return FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(rewardPercentageNoFee)).toString()
+      return new BN(flexibleApy).times(rewardPercentageNoFee).toString()
     }
 
     return flexibleApy
@@ -119,10 +112,7 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
       (adjustDuration: number) => flexibleApy && getLockedApy(flexibleApy, getBoostFactor(adjustDuration)).toString(),
       [flexibleApy, getBoostFactor],
     ),
-    boostFactor: useMemo(() => boostFactor.addUnsafe(FixedNumber.from('1')), [boostFactor]),
-    getBoostFactor: useCallback(
-      (adjustDuration: number) => getBoostFactor(adjustDuration).addUnsafe(FixedNumber.from('1')),
-      [getBoostFactor],
-    ),
+    boostFactor: useMemo(() => boostFactor.plus('1'), [boostFactor]),
+    getBoostFactor: useCallback((adjustDuration: number) => getBoostFactor(adjustDuration).plus('1'), [getBoostFactor]),
   }
 }

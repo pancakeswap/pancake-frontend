@@ -1,5 +1,5 @@
-import { MaxUint256, Zero } from '@ethersproject/constants'
-import { formatEther, parseUnits } from 'ethers/lib/utils'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { formatEther, parseUnits } from 'viem'
 import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
@@ -12,7 +12,7 @@ import useTheme from 'hooks/useTheme'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 import { NftToken } from 'state/nftMarket/types'
-import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { requiresApproval } from 'utils/requiresApproval'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -54,7 +54,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
 
   const { toastSuccess } = useToast()
 
-  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice, 'ether')
+  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice, 18)
   const nftPrice = parseFloat(nftToBuy?.marketData?.currentAskPrice)
 
   // BNB - returns ethers.BigNumber
@@ -68,12 +68,10 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
   const walletFetchStatus = paymentCurrency === PaymentCurrency.BNB ? bnbFetchStatus : wbnbFetchStatus
 
   const notEnoughBnbForPurchase =
-    paymentCurrency === PaymentCurrency.BNB
-      ? bnbBalance.lt(nftPriceWei)
-      : wbnbBalance.lt(ethersToBigNumber(nftPriceWei))
+    paymentCurrency === PaymentCurrency.BNB ? bnbBalance < nftPriceWei : wbnbBalance.lt(bigIntToBigNumber(nftPriceWei))
 
   useEffect(() => {
-    if (bnbBalance.lt(nftPriceWei) && wbnbBalance.gte(ethersToBigNumber(nftPriceWei)) && !isPaymentCurrentInitialized) {
+    if (bnbBalance < nftPriceWei && wbnbBalance.gte(bigIntToBigNumber(nftPriceWei)) && !isPaymentCurrentInitialized) {
       setPaymentCurrency(PaymentCurrency.WBNB)
       setIsPaymentCurrentInitialized(true)
     }
@@ -93,7 +91,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
       )
     },
     onConfirm: () => {
-      const payAmount = Number.isNaN(nftPrice) ? Zero : parseUnits(nftToBuy?.marketData?.currentAskPrice)
+      const payAmount = Number.isNaN(nftPrice) ? 0n : parseUnits(nftToBuy?.marketData?.currentAskPrice, 18)
       if (paymentCurrency === PaymentCurrency.BNB) {
         return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
           value: payAmount,

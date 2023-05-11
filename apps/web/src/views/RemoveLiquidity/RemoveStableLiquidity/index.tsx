@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
@@ -192,7 +190,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
-    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: BigNumber }
+    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint }
     for (let i = 0; i < methodNames.length; i++) {
       let safeGasEstimate
       try {
@@ -202,7 +200,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
 
-      if (BigNumber.isBigNumber(safeGasEstimate)) {
+      if (typeof safeGasEstimate === 'bigint') {
         methodSafeGasEstimate = { methodName: methodNames[i], safeGasEstimate }
         break
       }
@@ -219,7 +217,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
         gasLimit: safeGasEstimate,
         gasPrice,
       })
-        .then((response: TransactionResponse) => {
+        .then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
           const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
           const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)

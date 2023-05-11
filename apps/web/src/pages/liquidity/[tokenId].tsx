@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
@@ -36,7 +35,6 @@ import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
 import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
-import { TransactionResponse } from '@ethersproject/providers'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { LightGreyCard } from 'components/Card'
@@ -154,7 +152,7 @@ export default function PoolPage() {
   const router = useRouter()
   const { tokenId: tokenIdFromUrl } = router.query
 
-  const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
+  const parsedTokenId = tokenIdFromUrl ? BigInt(tokenIdFromUrl) : undefined
 
   const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
 
@@ -260,7 +258,10 @@ export default function PoolPage() {
 
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3?.address, account)
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(
+    masterchefV3?.address,
+    account,
+  )
 
   const isStakedInMCv3 = tokenId && Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
 
@@ -305,7 +306,7 @@ export default function PoolPage() {
           gasLimit: calculateGasMargin(estimate),
         }
 
-        return signer?.sendTransaction(newTxn)?.then((response: TransactionResponse) => {
+        return signer.sendTransaction(newTxn).then((response) => {
           setCollectMigrationHash(response.hash)
           setCollecting(false)
 

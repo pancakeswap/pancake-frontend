@@ -6,7 +6,6 @@
   "scripts": {
     "build": "pnpm typechain",
     "test": "vitest --run",
-    "typechain": "typechain --out-dir src/abis/types --target=ethers-v5 \"src/abis/*.json\"",
     "postinstall": "pnpm typechain"
   },
   "type": "module",
@@ -15,21 +14,16 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
-    "@pancakeswap/utils": "workspace:*",
-    "@ethersproject/bignumber": "^5.0.0",
-    "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0",
-    "ethers": "^5.0.0"
+    "@pancakeswap/utils": "workspace:*"
   },
   "dependencies": {
+    "wagmi": "^1.0.2",
     "viem": "^0.3.19",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@ethersproject/abi": "^5.0.0",
     "@types/lodash": "^4.14.168",
-    "@typechain/ethers-v5": "^8.0.5",
     "@pancakeswap/tsconfig": "workspace:*",
     "typechain": "^6.1.0",
     "typescript": "^4.9.4",

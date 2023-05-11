@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { getCollectionDistributionApi, getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiCollectionDistribution, ApiResponseCollectionTokens, ApiSingleTokenData } from 'state/nftMarket/types'
 import { getPancakeBunniesAddress } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
-import pancakeBunniesAbi from 'config/abi/pancakeBunnies.json'
 import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import mapValues from 'lodash/mapValues'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { pancakeBunniesABI } from 'config/abi/pancakeBunnies'
 import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string) => {
@@ -45,17 +46,20 @@ export const useGetCollectionDistributionPB = () => {
       }
       // Use on chain data to get most updated totalSupply and bunnyCount data. Nft Api Data not updated frequently.
       const tokenIds = Object.keys(apiResponse.attributesDistribution)
-      const bunnyCountCalls = tokenIds.map((tokenId) => ({
-        address: getPancakeBunniesAddress(),
-        name: 'bunnyCount',
-        params: [tokenId],
-      }))
       try {
-        const response = await multicallv2({ abi: pancakeBunniesAbi, calls: bunnyCountCalls })
+        const response = await viemClients[ChainId.BSC as keyof typeof viemClients].multicall({
+          contracts: tokenIds.map((tokenId) => ({
+            address: getPancakeBunniesAddress(),
+            functionName: 'bunnyCount',
+            abi: pancakeBunniesABI,
+            args: [Number(tokenId)],
+          })),
+          allowFailure: false,
+        })
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
           return {
             ...obj,
-            [tokenIds[index]]: { ...apiResponse.data[index], tokenCount: tokenCount[0].toNumber() },
+            [tokenIds[index]]: { ...apiResponse.data[index], tokenCount: Number(tokenCount) },
           }
         }, {})
         setState({

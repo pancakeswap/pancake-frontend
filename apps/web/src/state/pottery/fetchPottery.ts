@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { multicallv3 } from 'utils/multicall'
-import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
+import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { getPotteryDrawAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
@@ -8,8 +7,10 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { getBep20Contract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
-import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
+import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
 import { Address } from 'wagmi'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 
 const potteryDrawAddress = getPotteryDrawAddress()
 
@@ -38,40 +39,60 @@ export const fetchLastVaultAddress = async () => {
 
 export const fetchPublicPotteryValue = async (potteryVaultAddress: Address) => {
   try {
-    const calls = [
-      'getStatus',
-      'totalLockCake',
-      'totalSupply',
-      'lockStartTime',
-      'getLockTime',
-      'getMaxTotalDeposit',
-    ].map((method) => ({
-      abi: potteryVaultAbi,
-      address: potteryVaultAddress,
-      name: method,
-    }))
-
-    const getPotCall = {
-      abi: potteryDrawAbi,
-      address: potteryDrawAddress,
-      name: 'getPot',
-      params: [potteryVaultAddress],
-    }
-
     const [
       getStatus,
-      [totalLockCake],
-      [totalSupply],
-      [lockStartTime],
+      totalLockCake,
+      totalSupply,
+      lockStartTime,
       getLockTime,
       getMaxTotalDeposit,
-      [[lastDrawId, totalPrize]],
-    ] = await multicallv3({ calls: [...calls, getPotCall], allowFailure: false })
+      { lastDrawId, totalPrize },
+    ] = await viemClients[ChainId.BSC].multicall({
+      contracts: [
+        {
+          abi: potteryVaultABI,
+          address: potteryVaultAddress,
+          functionName: 'getStatus',
+        },
+        {
+          abi: potteryVaultABI,
+          address: potteryVaultAddress,
+          functionName: 'totalLockCake',
+        },
+        {
+          abi: potteryVaultABI,
+          address: potteryVaultAddress,
+          functionName: 'totalSupply',
+        },
+        {
+          abi: potteryVaultABI,
+          address: potteryVaultAddress,
+          functionName: 'lockStartTime',
+        },
+        {
+          abi: potteryVaultABI,
+          address: potteryVaultAddress,
+          functionName: 'getLockTime',
+        },
+        {
+          abi: potteryVaultABI,
+          address: potteryVaultAddress,
+          functionName: 'getMaxTotalDeposit',
+        },
+        {
+          abi: potteryDrawABI,
+          address: potteryDrawAddress,
+          functionName: 'getPot',
+          args: [potteryVaultAddress],
+        },
+      ],
+      allowFailure: false,
+    })
 
     return {
       lastDrawId: new BigNumber(lastDrawId.toString()).toJSON(),
       totalPrize: new BigNumber(totalPrize.toString()).toJSON(),
-      getStatus: getStatus[0],
+      getStatus,
       totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
       totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
       lockStartTime: lockStartTime.toString(),
@@ -93,10 +114,10 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: Address) => {
   }
 }
 
-export const fetchTotalLockedValue = async (potteryVaultAddress: string) => {
+export const fetchTotalLockedValue = async (potteryVaultAddress: Address) => {
   try {
     const contract = getBep20Contract(bscTokens.cake.address)
-    const totalLocked = await contract.balanceOf(potteryVaultAddress)
+    const totalLocked = await contract.read.balanceOf([potteryVaultAddress])
 
     return {
       totalLockedValue: new BigNumber(totalLocked.toString()).toJSON(),

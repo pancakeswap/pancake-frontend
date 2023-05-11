@@ -1,5 +1,4 @@
 import { Abi } from 'abitype'
-import { BigNumber, Contract } from 'ethers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -28,7 +27,7 @@ export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
 }
 
-type MethodArg = string | number | BigNumber
+type MethodArg = string | number | bigint
 type MethodArgs = Array<MethodArg | MethodArg[]>
 
 type OptionalMethodInputs = Array<MethodArg | MethodArg[] | undefined> | undefined
@@ -203,11 +202,11 @@ function toCallState(
   }
 }
 
-export interface MultiContractsMultiMethodsCallInput {
-  contract: Contract | null | undefined
-  methodName: string
-  inputs?: OptionalMethodInputs
-}
+// export interface MultiContractsMultiMethodsCallInput {
+//   contract: Contract | null | undefined
+//   methodName: string
+//   inputs?: OptionalMethodInputs
+// }
 
 // export function useMultiContractsMultiMethods(
 //   callInputs: MultiContractsMultiMethodsCallInput[],
