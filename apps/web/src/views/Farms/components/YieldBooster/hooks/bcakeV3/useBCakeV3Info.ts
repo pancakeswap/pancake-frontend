@@ -1,4 +1,5 @@
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
 import useSWRImmutable from 'swr/immutable'
 
@@ -48,5 +49,18 @@ export const useUserPositionIfo = async (tokenId: string) => {
     user: data?.[6],
     pid: data?.[7],
     boostMultiplier: data?.[8]?.toNumber(),
+  }
+}
+
+export const useUserBoostedPoolsPid = async () => {
+  const { account, chainId } = useActiveWeb3React()
+  const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
+  const { data } = useSWRImmutable(
+    chainId && account && `v3/bcake/userBoostedPools/${chainId}/${account}`,
+    () => farmBoosterV3Contract.activedPositions(account),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return {
+    pids: data?.map((pid: any) => pid.toNumber()),
   }
 }
