@@ -5,6 +5,7 @@ import { BASES_TO_CHECK_TRADES_AGAINST } from '../../constants'
 
 import { PoolType, SubgraphProvider, V3Pool } from '../types'
 import { metric } from '../utils'
+import { getV3PoolSelectorConfig } from '../utils/getPoolSelectorConfig'
 import { V3PoolMeta } from './onChainPoolProviderFactory'
 
 const query = gql`
@@ -123,15 +124,6 @@ function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
   })
 }
 
-const POOL_SELECTION_CONFIG = {
-  topN: 2,
-  topNDirectSwaps: 2,
-  topNTokenInOut: 3,
-  topNSecondHop: 1,
-  topNWithEachBaseToken: 3,
-  topNWithBaseToken: 4,
-}
-
 const sortByTvl = (a: SubgraphV3Pool, b: SubgraphV3Pool) => (a.tvlUSD >= b.tvlUSD ? -1 : 1)
 
 export function v3PoolSubgraphSelection(
@@ -139,6 +131,7 @@ export function v3PoolSubgraphSelection(
   currencyB: Currency,
   unorderedPoolsFromSubgraph: SubgraphV3Pool[],
 ): V3Pool[] {
+  const POOL_SELECTION_CONFIG = getV3PoolSelectorConfig(currencyA, currencyB)
   if (!unorderedPoolsFromSubgraph.length) {
     return []
   }
