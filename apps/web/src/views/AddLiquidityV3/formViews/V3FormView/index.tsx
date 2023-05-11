@@ -55,6 +55,7 @@ import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
+import { hexToBigInt } from 'viem'
 
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
@@ -229,7 +230,7 @@ export default function V3FormView({
       sendTransactionAsync({
         data: calldata,
         to: nftPositionManagerAddress,
-        value,
+        value: hexToBigInt(value),
       })
         .then((response) => {
           const baseAmount = formatRawAmount(

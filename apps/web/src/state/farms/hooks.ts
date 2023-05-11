@@ -28,7 +28,7 @@ export function useFarmsLength() {
   const { chainId } = useActiveChainId()
   return useSWRImmutable(chainId ? ['farmsLength', chainId] : null, async () => {
     const mc = getMasterchefContract(undefined, chainId)
-    return (await mc.poolLength()).toNumber()
+    return Number(await mc.read.poolLength())
   })
 }
 

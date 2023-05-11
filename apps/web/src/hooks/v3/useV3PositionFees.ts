@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { Address } from 'wagmi'
 
 const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 
@@ -15,10 +16,10 @@ export function useV3PositionFees(
   tokenId?: BigNumber,
   asWETH = false,
 ): [CurrencyAmount<Currency>, CurrencyAmount<Currency>] | [undefined, undefined] {
-  const positionManager = useV3NFTPositionManagerContract(false)
-  const owner: string | undefined = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [
-    tokenId?.toString(),
-  ]).result?.[0]
+  const positionManager = useV3NFTPositionManagerContract()
+  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result as
+    | Address
+    | undefined
 
   const tokenIdHexString = tokenId?.toHexString()
   const latestBlockNumber = useCurrentBlock()

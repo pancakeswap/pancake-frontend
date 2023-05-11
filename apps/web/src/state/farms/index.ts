@@ -15,6 +15,7 @@ import { multicallv2 } from 'utils/multicall'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { chains } from 'utils/wagmi'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
+import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmUserAllowances,
@@ -185,7 +186,7 @@ async function getNormalFarmsStakeValue(farms, account, chainId) {
 
 export const fetchFarmUserDataAsync = createAsyncThunk<
   FarmUserDataResponse[],
-  { account: string; pids: number[]; proxyAddress?: string; chainId: number },
+  { account: Address; pids: number[]; proxyAddress?: Address; chainId: number },
   {
     state: AppState
   }

@@ -4,7 +4,7 @@ import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancak
 import { useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
 import { useQuery } from '@tanstack/react-query'
-import { viemClients } from 'utils/viem'
+import { getViemClients } from 'utils/viem'
 
 import { v3Clients } from 'utils/graphql'
 
@@ -96,7 +96,7 @@ export function useV3CandidatePoolsWithoutTicks(
   const { data: poolsFromOnChain } = useQuery({
     queryKey: ['v3_pools_onchain', key],
     queryFn: async () => {
-      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, viemClients)
+      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, getViemClients)
     },
     enabled: Boolean(error && key && options.enabled),
     keepPreviousData: true,

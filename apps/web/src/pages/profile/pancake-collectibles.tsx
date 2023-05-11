@@ -5,7 +5,7 @@ import { getCollections } from 'state/nftMarket/helpers'
 import multicall from 'utils/multicall'
 import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeCollectiblesPageRouter'
 import profileABI from 'config/abi/pancakeProfile.json'
-import { getProfileContract } from 'utils/contractHelpers'
+import { profileContract, profileContractArgs } from 'utils/contractHelpers'
 
 const PancakeCollectiblesPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
@@ -31,11 +31,10 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   try {
-    const profileContract = getProfileContract(null)
-    const nftRole = await profileContract.NFT_ROLE()
+    const nftRole = await profileContract.read.NFT_ROLE()
     const collectionsNftRoleCalls = Object.keys(fetchedCollections).map((collectionAddress) => {
       return {
-        address: profileContract.address,
+        address: profileContractArgs.address,
         name: 'hasRole',
         params: [nftRole, collectionAddress],
       }

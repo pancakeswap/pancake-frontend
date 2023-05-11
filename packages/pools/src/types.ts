@@ -1,13 +1,13 @@
 import { ChainId } from '@pancakeswap/sdk'
-import type { Provider } from '@ethersproject/providers'
+import { PublicClient, Address } from 'viem'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
 
-export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => Provider
+export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
 
 export type SerializedBigNumber = string
 
-export interface Address {
+export interface Addresses {
   [chainId: number]: string
 }
 
@@ -21,7 +21,7 @@ export enum PoolCategory {
 // @deprecated
 export interface LegacyPoolConfigBaseProps {
   sousId: number
-  contractAddress: string
+  contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
   isFinished?: boolean
@@ -31,7 +31,7 @@ export interface LegacyPoolConfigBaseProps {
 
 export interface PoolConfigBaseProps {
   sousId: number
-  contractAddress: string
+  contractAddress: Address
   poolCategory: PoolCategory
   tokenPerSecond: string
   isFinished?: boolean

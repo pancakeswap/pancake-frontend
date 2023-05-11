@@ -1,6 +1,7 @@
 import { ChainId, Currency, CurrencyAmount, Pair, Token } from '@pancakeswap/sdk'
 import { BigNumber } from 'ethers'
 import { createMulticall, Call } from '@pancakeswap/multicall'
+import { Address } from 'viem'
 
 import { wrappedCurrency } from '../../evm/utils/currency'
 import IPancakePairABI from '../../evm/abis/IPancakePair.json'
@@ -36,7 +37,7 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
 
   const { multicallv2 } = createMulticall(provider)
   const reserveCalls: Call[] = pairAddresses.map((address) => ({
-    address: address as string,
+    address,
     name: 'getReserves',
     params: [],
   }))
@@ -75,10 +76,10 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
   return successfulResult.map(([, pair]) => pair)
 }
 
-function getPairAddress([tokenA, tokenB]: [Token | undefined, Token | undefined]): string {
-  let addr = ''
+function getPairAddress([tokenA, tokenB]: [Token | undefined, Token | undefined]): Address {
+  let addr: Address = '0x'
   try {
-    addr = tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : ''
+    addr = tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : '0x'
   } catch (error: any) {
     // Debug Invariant failed related to this line
     console.error(error.msg, `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`, `chainId: ${tokenA?.chainId}`)

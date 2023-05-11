@@ -33,7 +33,7 @@ const useFarmsWithBalance = () => {
   const masterChefContract = useMasterchef()
 
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3?.address, account)
 
   const { tokenIdResults: v3PendingCakes } = useStakedPositionsByUser(stakedTokenIds)
 
