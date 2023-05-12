@@ -13,7 +13,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
-import { Currency, Token, ChainId } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -187,9 +187,7 @@ const DataRow: React.FC<
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
         <Flex alignItems="center">
-          {chainId === ChainId.BSC && tokenData?.pairs?.length > 0 && (
-            <TradingRewardIcon pairs={tokenData.pairs} campaignId={tokenData.campaignId} />
-          )}
+          {tokenData?.pairs?.length > 0 && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
             variant="text"
             scale="sm"

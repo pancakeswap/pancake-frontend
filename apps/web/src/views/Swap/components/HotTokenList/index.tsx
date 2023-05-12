@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Checkbox, Text, ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { memo, useState, useMemo, useEffect } from 'react'
+import { memo, useState, useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 
@@ -37,13 +37,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const [confirmed, setConfirmed] = useState(false)
-  const { tokenPairs, campaignId } = useTradingRewardTokenList()
-
-  useEffect(() => {
-    if (chainId !== ChainId.BSC) {
-      setConfirmed(false)
-    }
-  }, [chainId, setConfirmed])
+  const { tokenPairs } = useTradingRewardTokenList()
 
   const formattedTokens = useMemo(
     () =>
@@ -65,10 +59,9 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
           return {
             ...i,
             pairs,
-            campaignId,
           }
         }),
-    [allTokens, chainId, tokenPairs, campaignId],
+    [allTokens, chainId, tokenPairs],
   )
 
   const filterFormattedTokens = useMemo(() => {
@@ -87,26 +80,24 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
           <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
         </ButtonMenu>
       </MenuWrapper>
-      {chainId === ChainId.BSC && (
-        <Flex
-          mb="24px"
-          alignItems="center"
-          ml={['24px', '24px', '24px', '24px', '0']}
-          onClick={() => setConfirmed(!confirmed)}
-          style={{ cursor: 'pointer' }}
-        >
-          <Checkbox
-            scale="sm"
-            name="confirmed"
-            type="checkbox"
-            checked={confirmed}
-            onChange={() => setConfirmed(!confirmed)}
-          />
-          <Text ml="8px" style={{ userSelect: 'none' }}>
-            {t('Show pairs with trading rewards')}
-          </Text>
-        </Flex>
-      )}
+      <Flex
+        mb="24px"
+        alignItems="center"
+        ml={['24px', '24px', '24px', '24px', '0']}
+        onClick={() => setConfirmed(!confirmed)}
+        style={{ cursor: 'pointer' }}
+      >
+        <Checkbox
+          scale="sm"
+          name="confirmed"
+          type="checkbox"
+          checked={confirmed}
+          onChange={() => setConfirmed(!confirmed)}
+        />
+        <Text ml="8px" style={{ userSelect: 'none' }}>
+          {t('Show pairs with trading rewards')}
+        </Text>
+      </Flex>
       {index === 0 ? (
         <TokenTable
           tokenDatas={filterFormattedTokens}

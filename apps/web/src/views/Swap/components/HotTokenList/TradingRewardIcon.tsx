@@ -6,17 +6,16 @@ import { FarmConfigV3 } from '@pancakeswap/farms'
 
 interface TradingRewardIconProps {
   pairs: FarmConfigV3[]
-  campaignId: string
 }
 
-const TradingRewardIcon = ({ pairs, campaignId }: TradingRewardIconProps) => {
+const TradingRewardIcon = ({ pairs }: TradingRewardIconProps) => {
   const { t } = useTranslation()
   const router = useRouter()
 
   const handleClick = (e) => {
     e.stopPropagation()
     e.preventDefault()
-    router.push(`/trading-reward?campaignId=${campaignId}`)
+    router.push('/trading-reward')
   }
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
