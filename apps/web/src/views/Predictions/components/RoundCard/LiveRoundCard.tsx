@@ -48,10 +48,10 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
 
   const isHouse = useMemo(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
-    return lockPrice && price.eq(lockPrice) && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE
+    return lockPrice && price === lockPrice && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE
   }, [closeTimestamp, lockPrice, price])
 
-  const isBull = lockPrice && price.gt(lockPrice)
+  const isBull = lockPrice && price > lockPrice
 
   const betPosition = isHouse ? BetPosition.HOUSE : isBull ? BetPosition.BULL : BetPosition.BEAR
 

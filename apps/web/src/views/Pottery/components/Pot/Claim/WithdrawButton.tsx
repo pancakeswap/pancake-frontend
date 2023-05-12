@@ -4,12 +4,13 @@ import { useWithdrawPottery } from 'views/Pottery/hooks/useWithdrawPottery'
 import { PotteryDepositStatus } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
+import { Address } from 'wagmi'
 
 interface WithdrawButtonProps {
   status: PotteryDepositStatus
   cakeNumber: BigNumber
   redeemShare: string
-  potteryVaultAddress: string
+  potteryVaultAddress: Address
   balanceOf: string
 }
 

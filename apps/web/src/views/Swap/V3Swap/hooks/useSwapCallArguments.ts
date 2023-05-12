@@ -27,7 +27,7 @@ interface SwapCall {
 export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
-  recipientAddress: string | null | undefined,
+  recipientAddress: Address | null | undefined,
   // signatureData: SignatureData | null | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,

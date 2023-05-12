@@ -49,7 +49,7 @@ const StakeModalContainer = ({
   const { onStake } = useStakePool(sousId, isBnbPool)
   const dispatch = useAppDispatch()
 
-  const stakingTokenContract = useERC20(stakingToken.address || '')
+  const stakingTokenContract = useERC20(stakingToken.address)
   const { handleApprove, pendingTx: enablePendingTx } = useApprovePool(
     stakingTokenContract,
     sousId,

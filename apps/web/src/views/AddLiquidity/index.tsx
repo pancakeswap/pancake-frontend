@@ -177,7 +177,7 @@ export default function AddLiquidity({
     if (currencyA?.isNative || currencyB?.isNative) {
       const tokenBIsNative = currencyB?.isNative
       estimate = routerContract.estimateGas.addLiquidityETH
-      method = routerContract.write.sddLiquidityETH
+      method = routerContract.write.addLiquidityETH
       args = [
         (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
         (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
