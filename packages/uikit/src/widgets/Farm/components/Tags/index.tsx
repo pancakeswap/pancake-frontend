@@ -16,6 +16,8 @@ import {
   RocketIcon,
   CheckmarkCircleIcon,
   CurrencyIcon,
+  BinanceChainIcon,
+  EthChainIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -183,11 +185,33 @@ const V2Tag: React.FC<TagProps> = (props) => (
   </Tag>
 );
 
+const V3Tag: React.FC<TagProps> = (props) => (
+  <Tag variant="secondary" {...props}>
+    V3
+  </Tag>
+);
+
 const V3FeeTag: React.FC<TagProps & { feeAmount: FeeAmount }> = ({ feeAmount, ...props }) => (
   <Tag variant="secondary" outline {...props}>
     {feeAmount / 10_000}%
   </Tag>
 );
+
+const EthTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: "#627EEA" }} startIcon={<EthChainIcon width="10px" mr="4px" />} {...props}>
+      ETH
+    </Tag>
+  );
+};
+
+const BscTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: "#08060B" }} startIcon={<BinanceChainIcon width="18px" mr="4px" />} {...props}>
+      BNB
+    </Tag>
+  );
+};
 
 const Tags = {
   CoreTag,
@@ -206,6 +230,9 @@ const Tags = {
   VotedTag,
   V2Tag,
   V3FeeTag,
+  V3Tag,
+  EthTag,
+  BscTag,
 };
 
 export default Tags;

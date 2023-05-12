@@ -172,4 +172,5 @@ export { default as YoutubeIcon } from "./Icons/YoutubeIcon";
 export { default as BridgeIcon } from "./Icons/BridgeIcon";
 export { default as ZoomInIcon } from "./Icons/ZoomIn";
 export { default as ZoomOutIcon } from "./Icons/ZoomOut";
+export { default as EthChainIcon } from "./Icons/EthChain";
 export type { SvgProps } from "./types";

@@ -18,6 +18,7 @@ interface UseRewardBreakdownProps {
 }
 
 export interface RewardBreakdownPair {
+  chainId: ChainId
   address: string
   lpSymbol: string
   token: Token
@@ -47,7 +48,6 @@ const useRewardBreakdown = ({
 }: UseRewardBreakdownProps): RewardBreakdown => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
-  const farms = farmsV3ConfigChainMap[chainId as ChainId]
   const tradingRewardContract = getTradingRewardContract(chainId)
   const currentDate = new Date().getTime() / 1000
 
@@ -56,9 +56,9 @@ const useRewardBreakdown = ({
     async () => {
       try {
         const dataInfo = await Promise.all(
-          allTradingRewardPairData?.campaignIdsIncentive.map(async (incentive) => {
-            const userInfo = allUserCampaignInfo.find(
-              (user) => user.campaignId.toLowerCase() === incentive.campaignId.toLowerCase(),
+          allUserCampaignInfo.map(async (info) => {
+            const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
+              (i) => i.campaignId.toLowerCase() === info.campaignId.toLowerCase(),
             )
             const reward = rewardInfo?.[incentive.campaignId] ?? {
               rewardPrice: 0,
@@ -66,15 +66,16 @@ const useRewardBreakdown = ({
             }
 
             const pairs = await Promise.all(
-              allTradingRewardPairData.campaignPairs?.[incentive.campaignId]?.map(async (lpAddress) => {
-                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
-                const user = userInfo?.tradingFeeArr?.find((arr) => arr.pool.toLowerCase() === lpAddress.toLowerCase())
-                const canClaimResponse = !user?.volume
+              info.tradingFeeArr.map(async (fee) => {
+                const farms = farmsV3ConfigChainMap[fee.chainId as ChainId]
+                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === fee.pool.toLowerCase())
+
+                const canClaimResponse = !fee.tradingFee
                   ? BIG_ZERO
                   : await tradingRewardContract.canClaim(
-                      userInfo?.campaignId,
+                      info.campaignId,
                       account,
-                      new BigNumber(user?.volume?.toFixed(2)).times(1e18).toString(),
+                      new BigNumber(Number(fee.tradingFee).toFixed(8)).times(1e18).toString(),
                     )
 
                 const rewardCakeUSDPriceAsBg = getBalanceAmount(
@@ -88,24 +89,25 @@ const useRewardBreakdown = ({
 
                 const rewardEarned =
                   incentive.campaignClaimTime - currentDate > 0
-                    ? user?.estimateRewardUSD || 0
+                    ? fee.estimateRewardUSD || 0
                     : rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
 
                 return {
-                  address: lpAddress,
+                  chainId: fee.chainId,
+                  address: fee.pool,
                   lpSymbol: pairInfo?.lpSymbol ?? '',
                   token: pairInfo?.token,
                   quoteToken: pairInfo?.quoteToken,
-                  yourVolume: user?.volume ?? 0,
+                  yourVolume: fee.volume,
                   rewardEarned,
-                  yourTradingFee: user?.tradingFee ?? '0',
+                  yourTradingFee: fee.tradingFee,
                   feeAmount: pairInfo?.feeAmount ?? 0,
                 }
               }),
             )
 
             return {
-              campaignId: incentive.campaignId,
+              campaignId: info.campaignId,
               campaignStart: incentive?.campaignStart ?? 0,
               campaignClaimTime: incentive?.campaignClaimTime ?? 0,
               pairs: pairs.sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned)),

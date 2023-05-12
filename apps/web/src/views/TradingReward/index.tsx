@@ -59,35 +59,34 @@ const TradingReward = () => {
   }
 
   // console.log({ allTradingRewardPairData, campaignId, campaignInfoData })
-  return null
 
-  // return (
-  //   <Box>
-  //     <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
-  //     <YourTradingReward
-  //       isFetching={isFetching}
-  //       incentives={currentUserIncentive}
-  //       qualification={allTradingRewardPairData.qualification}
-  //       campaignIds={allTradingRewardPairData.campaignIds}
-  //       rewardInfo={allTradingRewardPairData.rewardInfo}
-  //       currentUserCampaignInfo={currentUserCampaignInfo}
-  //       totalAvailableClaimData={totalAvailableClaimData}
-  //     />
-  //     <CurrentRewardPool
-  //       campaignId={campaignId}
-  //       incentives={currentUserIncentive}
-  //       campaignInfoData={campaignInfoData}
-  //       rewardInfo={allTradingRewardPairData.rewardInfo}
-  //     />
-  //     <HowToEarn />
-  //     <RewardsBreakdown
-  //       allUserCampaignInfo={allUserCampaignInfo}
-  //       allTradingRewardPairData={allTradingRewardPairData}
-  //       rewardInfo={allTradingRewardPairData.rewardInfo}
-  //     />
-  //     <Questions />
-  //   </Box>
-  // )
+  return (
+    <Box>
+      <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
+      {/* <YourTradingReward
+        isFetching={isFetching}
+        incentives={currentUserIncentive}
+        qualification={allTradingRewardPairData.qualification}
+        campaignIds={allTradingRewardPairData.campaignIds}
+        rewardInfo={allTradingRewardPairData.rewardInfo}
+        currentUserCampaignInfo={currentUserCampaignInfo}
+        totalAvailableClaimData={totalAvailableClaimData}
+      /> */}
+      <CurrentRewardPool
+        campaignId={campaignId}
+        incentives={currentUserIncentive}
+        campaignInfoData={campaignInfoData}
+        rewardInfo={allTradingRewardPairData.rewardInfo}
+      />
+      <HowToEarn />
+      <RewardsBreakdown
+        allUserCampaignInfo={allUserCampaignInfo}
+        allTradingRewardPairData={allTradingRewardPairData}
+        rewardInfo={allTradingRewardPairData.rewardInfo}
+      />
+      <Questions />
+    </Box>
+  )
 }
 TradingReward.chains = []
 

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Text, Flex, Skeleton, Farm as FarmUI, Tag } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { ChainId } from '@pancakeswap/sdk'
 
 const TokenWrapper = styled.div`
   padding-right: 8px;
@@ -12,7 +13,7 @@ const TokenWrapper = styled.div`
   }
 `
 
-const { V3FeeTag } = FarmUI.Tags
+const { V3Tag, V3FeeTag, EthTag, BscTag } = FarmUI.Tags
 
 interface PairInfoProps {
   isReady: boolean
@@ -20,6 +21,7 @@ interface PairInfoProps {
   token: Token
   quoteToken: Token
   feeAmount: number
+  chainId: ChainId
 }
 
 const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> = ({
@@ -28,6 +30,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
   token,
   quoteToken,
   feeAmount,
+  chainId,
 }) => {
   if (!isReady) {
     return (
@@ -59,14 +62,20 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
           </TokenWrapper>
         )}
         <Flex flexDirection={['column', 'column', 'row']} mt={['4px', '4px', '4px', '4px', '0']}>
-          <Text style={{ alignSelf: 'center' }} lineHeight="110%" bold>
-            {lpSymbol}
-          </Text>
-          <Flex m={['4px 0 0 0', '4px 0 0 0', '0 0 0 4px']}>
-            <V3FeeTag style={{ alignSelf: 'flex-start' }} feeAmount={feeAmount} scale="sm" />
-            <Tag style={{ alignSelf: 'flex-start' }} ml="4px" variant="secondary" scale="sm">
-              V3
-            </Tag>
+          <Flex alignSelf={['flex-start', 'flex-start', 'center']}>
+            <Text lineHeight="110%" bold>
+              {lpSymbol}
+            </Text>
+          </Flex>
+          <Flex flexDirection={['column', 'column', 'row']} m={['4px 0 0 0', '4px 0 0 0', '0 0 0 4px']}>
+            <Flex>
+              <V3FeeTag feeAmount={feeAmount} scale="sm" />
+              <V3Tag ml="4px" scale="sm" />
+            </Flex>
+            <Flex ml={['0', '0', '4px']} mt={['4px', '4px', '0']}>
+              {chainId === ChainId.ETHEREUM && <EthTag />}
+              {chainId === ChainId.BSC && <BscTag />}
+            </Flex>
           </Flex>
         </Flex>
       </Flex>

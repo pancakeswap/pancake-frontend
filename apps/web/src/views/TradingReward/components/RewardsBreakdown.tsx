@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useTheme } from '@pancakeswap/hooks'
+import { Box, Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { AllTradingRewardPairDetail, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
@@ -34,6 +35,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     currentLanguage: { locale },
   } = useTranslation()
   const router = useRouter()
+  const { theme } = useTheme()
   const campaignId = router?.query?.campaignId?.toString() ?? ''
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
@@ -101,94 +103,97 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
         }`}
       </Text>
       <Card>
-        <Table>
-          <thead>
-            <tr>
-              <Th textAlign={['left']}>{t('Trading Pair')}</Th>
-              {isDesktop ? (
-                <>
-                  <Th textAlign={['left']}>{t('Your Volume')}</Th>
-                  <Th textAlign={['left']}>{t('Your Trading Fee')}</Th>
-                </>
-              ) : (
-                <Th textAlign={['right']}>
-                  <Text fontSize="12px" bold color="secondary">
-                    {t('YOUR VOL. /')}
-                  </Text>
-                  <Text fontSize="12px" bold color="secondary">
-                    {t('YOUR TRADING FEE')}
-                  </Text>
-                </Th>
-              )}
-              <Th textAlign={['right']}>{t('Reward Earned')}</Th>
-            </tr>
-          </thead>
-          <tbody>
-            <>
-              {isFetching ? (
-                <tr>
-                  <Td colSpan={isDesktop ? 4 : 3} textAlign="center">
-                    {t('Loading...')}
-                  </Td>
-                </tr>
-              ) : (
-                <>
-                  {list.pairs.length === 0 ? (
-                    <tr>
-                      <Td colSpan={isDesktop ? 4 : 3} textAlign="center">
-                        {t('No results')}
-                      </Td>
-                    </tr>
-                  ) : (
-                    <>
-                      {list.pairs.map((pair) => (
-                        <tr key={pair.address}>
-                          <Td>
-                            <PairInfo
-                              isReady={!isFetching}
-                              lpSymbol={pair.lpSymbol}
-                              token={pair.token}
-                              quoteToken={pair.quoteToken}
-                              feeAmount={pair.feeAmount}
-                            />
-                          </Td>
-                          {isDesktop ? (
-                            <>
+        <Box maxHeight={500} overflowY="auto">
+          <Table>
+            <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: theme.card.background }}>
+              <tr>
+                <Th textAlign={['left']}>{t('Trading Pair')}</Th>
+                {isDesktop ? (
+                  <>
+                    <Th textAlign={['left']}>{t('Your Volume')}</Th>
+                    <Th textAlign={['left']}>{t('Your Trading Fee')}</Th>
+                  </>
+                ) : (
+                  <Th textAlign={['right']}>
+                    <Text fontSize="12px" bold color="secondary">
+                      {t('YOUR VOL. /')}
+                    </Text>
+                    <Text fontSize="12px" bold color="secondary">
+                      {t('YOUR TRADING FEE')}
+                    </Text>
+                  </Th>
+                )}
+                <Th textAlign={['right']}>{t('Reward Earned')}</Th>
+              </tr>
+            </thead>
+            <tbody>
+              <>
+                {isFetching ? (
+                  <tr>
+                    <Td colSpan={isDesktop ? 4 : 3} textAlign="center">
+                      {t('Loading...')}
+                    </Td>
+                  </tr>
+                ) : (
+                  <>
+                    {list.pairs.length === 0 ? (
+                      <tr>
+                        <Td colSpan={isDesktop ? 4 : 3} textAlign="center">
+                          {t('No results')}
+                        </Td>
+                      </tr>
+                    ) : (
+                      <>
+                        {list.pairs.map((pair) => (
+                          <tr key={pair.address}>
+                            <Td>
+                              <PairInfo
+                                chainId={pair.chainId}
+                                isReady={!isFetching}
+                                lpSymbol={pair.lpSymbol}
+                                token={pair.token}
+                                quoteToken={pair.quoteToken}
+                                feeAmount={pair.feeAmount}
+                              />
+                            </Td>
+                            {isDesktop ? (
+                              <>
+                                <Td>
+                                  <Text color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
+                                    {`$${formatNumber(pair.yourVolume, 0, 2)}`}
+                                  </Text>
+                                </Td>
+                                <Td>
+                                  <Text color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
+                                    {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
+                                  </Text>
+                                </Td>
+                              </>
+                            ) : (
                               <Td>
-                                <Text color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
+                                <Text textAlign="right" color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
                                   {`$${formatNumber(pair.yourVolume, 0, 2)}`}
                                 </Text>
-                              </Td>
-                              <Td>
-                                <Text color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
+                                <Text textAlign="right" color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
                                   {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
                                 </Text>
                               </Td>
-                            </>
-                          ) : (
-                            <Td>
-                              <Text textAlign="right" color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
-                                {`$${formatNumber(pair.yourVolume, 0, 2)}`}
-                              </Text>
-                              <Text textAlign="right" color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
-                                {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
+                            )}
+                            <Td textAlign="right">
+                              <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
+                                {`$${formatNumber(pair.rewardEarned, 2, 8)}`}
                               </Text>
                             </Td>
-                          )}
-                          <Td textAlign="right">
-                            <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
-                              {`$${formatNumber(pair.rewardEarned, 2, 8)}`}
-                            </Text>
-                          </Td>
-                        </tr>
-                      ))}
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          </tbody>
-        </Table>
+                          </tr>
+                        ))}
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            </tbody>
+          </Table>
+        </Box>
         <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
       </Card>
     </Flex>
