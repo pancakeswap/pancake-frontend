@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/sdk'
 
 export interface CampaignVolume {
   pool: string
@@ -9,6 +9,7 @@ export interface CampaignVolume {
   estimateRewardUSD: number
   tradingFee: string
   maxCap: number
+  chainId: ChainId
 }
 
 export interface CampaignIdInfoResponse {
@@ -38,15 +39,11 @@ export const initialState: CampaignIdInfoDetail = {
 }
 
 const useCampaignIdInfo = (campaignId: string): CampaignIdInfo => {
-  const { chainId } = useActiveChainId()
-
   const { data: campaignIdInfo, isLoading } = useSWR(
-    campaignId && chainId && ['/campaign-id-info', chainId, campaignId],
+    campaignId && ['/campaign-id-info', campaignId],
     async () => {
       try {
-        const response = await fetch(
-          `${TRADING_REWARD_API}/campaign/chainId/${chainId}/campaignId/${campaignId}/address/0x`,
-        )
+        const response = await fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/0x`)
         const { data }: { data: CampaignIdInfoResponse } = await response.json()
         const totalVolume = data.tradingFeeArr
           .map((i) => i.volume)

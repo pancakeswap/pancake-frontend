@@ -2,12 +2,12 @@ import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import tradingRewardABI from 'config/abi/tradingReward.json'
 import { getTradingRewardAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
+import { ChainId } from '@pancakeswap/sdk'
 
 interface UserCampaignInfoResponse {
   id: string
@@ -36,19 +36,18 @@ export interface AllUserCampaignInfo {
 }
 
 const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo => {
-  const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
-  const tradingRewardAddress = getTradingRewardAddress(chainId)
+  const tradingRewardAddress = getTradingRewardAddress(ChainId.BSC)
 
   const { data: allUserCampaignInfoData, isLoading } = useSWR(
-    campaignIds.length > 0 && chainId && account && ['/all-campaign-id-info', account, chainId, campaignIds],
+    campaignIds.length > 0 && account && ['/all-campaign-id-info', account, campaignIds],
     async () => {
       try {
         const allUserCampaignInfo = await Promise.all(
           campaignIds.map(async (campaignId: string) => {
             const [userCampaignInfoResponse, userInfoQualificationResponse] = await Promise.all([
-              fetch(`${TRADING_REWARD_API}/campaign/chainId/${chainId}/campaignId/${campaignId}/address/${account}`),
-              fetch(`${TRADING_REWARD_API}/user/chainId/${chainId}/campaignId/${campaignId}/address/${account}`),
+              fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/${account}`),
+              fetch(`${TRADING_REWARD_API}/user/campaignId/${campaignId}/address/${account}`),
             ])
 
             const [userCampaignInfoResult, userInfoQualificationResult] = await Promise.all([
@@ -75,7 +74,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               {
                 name: 'canClaim',
                 address: tradingRewardAddress,
-                params: [campaignId, account, new BigNumber(totalTradingFee).times(1e18).toString()],
+                params: [campaignId, account, new BigNumber(totalTradingFee.toFixed(8)).times(1e18).toString()],
               },
               {
                 name: 'userClaimedIncentives',
@@ -87,7 +86,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
             const [[canClaim], [userClaimedIncentives]] = await multicallv2({
               abi: tradingRewardABI,
               calls,
-              chainId,
+              chainId: ChainId.BSC,
               options: { requireSuccess: false },
             })
 

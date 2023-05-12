@@ -99,8 +99,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     const totalTradingFee = tradingFeeArr
       .map((fee) => fee.tradingFee)
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-    return new BigNumber(totalTradingFee).times(incentives.dynamicRate).toNumber()
-  }, [tradingFeeArr, incentives])
+    return new BigNumber(totalTradingFee).times(currentRewardInfo.rewardFeeRatio).toNumber()
+  }, [tradingFeeArr, currentRewardInfo])
 
   const maxRewardCapCakePrice = useMemo(
     () => new BigNumber(maxRewardCap).div(cakePriceBusd).toNumber(),

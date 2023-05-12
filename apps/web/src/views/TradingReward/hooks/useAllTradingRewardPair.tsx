@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ChainId } from '@pancakeswap/sdk'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { incentiveFormat } from 'views/TradingReward/utils/incentiveFormat'
@@ -28,7 +28,7 @@ export interface Incentives {
 
 export interface Qualification {
   thresholdLockTime: number
-  thresholdLockAmount: string
+  minAmountUSD: string
 }
 
 export interface RewardInfo {
@@ -41,7 +41,7 @@ export interface RewardInfo {
 
 export interface AllTradingRewardPairDetail {
   campaignIds: Array<string>
-  campaignPairs: { [key in string]: Array<string> }
+  campaignPairs: { [campaignId in string]: { [chainId in string]: Array<string> } }
   campaignIdsIncentive: Incentives[]
   qualification: Qualification
   rewardInfo: { [key in string]: RewardInfo }
@@ -52,13 +52,13 @@ interface AllTradingRewardPair {
   data: AllTradingRewardPairDetail
 }
 
-const fetchCampaignPairs = async (chainId: number, campaignIds: Array<string>) => {
-  const newData: { [key in string]: Array<string> } = {}
+const fetchCampaignPairs = async (campaignIds: Array<string>) => {
+  const newData: { [campaignId in string]: { [chainId in string]: Array<string> } } = {}
   await Promise.all(
     campaignIds.map(async (campaignId: string) => {
-      const pair = await fetch(`${TRADING_REWARD_API}/campaign/pair/chainId/${chainId}/campaignId/${campaignId}`)
+      const pair = await fetch(`${TRADING_REWARD_API}/campaign/pair/campaignId/${campaignId}`)
       const pairResult = await pair.json()
-      newData[campaignId] = [...pairResult.data]
+      newData[campaignId] = pairResult.data
     }),
   )
   return newData
@@ -81,15 +81,15 @@ const fetUserQualification = async (tradingRewardContract: TradingReward) => {
   const result = await tradingRewardContract.getUserQualification()
   return {
     thresholdLockTime: new BigNumber(result[0].toString()).toNumber(),
-    thresholdLockAmount: new BigNumber(result[1].toString()).toJSON(),
+    minAmountUSD: new BigNumber(result[0].toString()).toJSON(),
   } as Qualification
 }
 
-const fetchRewardInfo = async (chainId: number, campaignIds: Array<string>) => {
+const fetchRewardInfo = async (campaignIds: Array<string>) => {
   const newData: { [key in string]: RewardInfo } = {}
   await Promise.all(
     campaignIds.map(async (campaignId: string) => {
-      const reward = await fetch(`${TRADING_REWARD_API}/reward/chainId/${chainId}/campaignId/${campaignId}`)
+      const reward = await fetch(`${TRADING_REWARD_API}/reward/campaignId/${campaignId}`)
       const rewardResult = await reward.json()
       newData[campaignId] = rewardResult.data as RewardInfo
     }),
@@ -103,28 +103,27 @@ const initialAllTradingRewardState = {
   campaignIdsIncentive: [],
   qualification: {
     thresholdLockTime: 0,
-    thresholdLockAmount: '0',
+    minAmountUSD: '0',
   },
   rewardInfo: {},
 }
 
 const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTradingRewardPair => {
-  const { chainId } = useActiveChainId()
-  const tradingRewardContract = getTradingRewardContract(chainId)
+  const tradingRewardContract = getTradingRewardContract(ChainId.BSC)
 
   const { data: allPairs, isLoading } = useSWR(
-    chainId && status && ['/all-activated-trading-reward-pair', chainId, status],
+    status && ['/all-activated-trading-reward-pair', status],
     async () => {
       try {
-        const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/chainId/${chainId}`)
+        const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}`)
         const campaignsResult = await campaignsResponse.json()
         const campaignIds: Array<string> = campaignsResult.data
 
         const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
-          fetchCampaignPairs(chainId, campaignIds),
+          fetchCampaignPairs(campaignIds),
           fetchCampaignIdsIncentive(tradingRewardContract, campaignIds),
           fetUserQualification(tradingRewardContract),
-          fetchRewardInfo(chainId, campaignIds),
+          fetchRewardInfo(campaignIds),
         ])
 
         return {

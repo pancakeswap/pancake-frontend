@@ -49,8 +49,7 @@
     "inputs": [
       { "indexed": false, "internalType": "string", "name": "campaignId", "type": "string" },
       { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "indexed": false, "internalType": "bool", "name": "isDynamicReward", "type": "bool" },
-      { "indexed": false, "internalType": "uint16", "name": "dynamicRate", "type": "uint16" }
+      { "indexed": false, "internalType": "bool", "name": "isDynamicReward", "type": "bool" }
     ],
     "name": "IncentiveRewardDeposited",
     "type": "event"
@@ -90,7 +89,7 @@
       { "indexed": false, "internalType": "uint256", "name": "toLockRatio", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "feeRatio", "type": "uint256" }
     ],
-    "name": "RewardTokenParametersUpdated",
+    "name": "RewardTokenParamsUpdated",
     "type": "event"
   },
   { "anonymous": false, "inputs": [], "name": "Unpause", "type": "event" },
@@ -205,8 +204,7 @@
     "inputs": [
       { "internalType": "string", "name": "_campaignId", "type": "string" },
       { "internalType": "uint256", "name": "_amount", "type": "uint256" },
-      { "internalType": "bool", "name": "_isDynamicReward", "type": "bool" },
-      { "internalType": "uint16", "name": "_dynamicRate", "type": "uint16" }
+      { "internalType": "bool", "name": "_isDynamicReward", "type": "bool" }
     ],
     "name": "depositIncentiveReward",
     "outputs": [],
@@ -276,8 +274,7 @@
       { "internalType": "uint256", "name": "campaignClaimTime", "type": "uint256" },
       { "internalType": "uint256", "name": "campaignClaimEndTime", "type": "uint256" },
       { "internalType": "bool", "name": "isActivated", "type": "bool" },
-      { "internalType": "bool", "name": "isDynamicReward", "type": "bool" },
-      { "internalType": "uint16", "name": "dynamicRate", "type": "uint16" }
+      { "internalType": "bool", "name": "isDynamicReward", "type": "bool" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -388,7 +385,7 @@
       { "internalType": "uint256", "name": "_rewardToLockRatio", "type": "uint256" },
       { "internalType": "uint256", "name": "_rewardFeeRatio", "type": "uint256" }
     ],
-    "name": "updateRewardTokenParameters",
+    "name": "updateRewardTokenParams",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
