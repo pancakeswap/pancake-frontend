@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -7,7 +6,7 @@ import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMul
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
-  betAmount?: BigNumber
+  betAmount?: bigint
   multiplier?: string
   hasEntered?: boolean
   hasClaimed?: boolean

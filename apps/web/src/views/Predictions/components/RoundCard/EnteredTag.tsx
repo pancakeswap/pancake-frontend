@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { BigNumber } from 'ethers'
 import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
@@ -8,7 +7,7 @@ import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatTokenv2 } from '../../helpers'
 
 interface EnteredTagProps {
-  amount?: BigNumber
+  amount?: bigint
   hasClaimed?: boolean
   multiplier: string
 }
@@ -22,11 +21,9 @@ const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount
     if (hasClaimed) {
       if (amount) {
         const multiplierNumber = parseFloat(multiplier)
-        tokenAmount = BigNumber.from(
-          bigIntToBigNumber(amount)
-            .times(Number.isFinite(multiplierNumber) ? multiplierNumber * REWARD_RATE : 1)
-            .toFixed(0),
-        )
+        tokenAmount = bigIntToBigNumber(amount)
+          .times(Number.isFinite(multiplierNumber) ? multiplierNumber * REWARD_RATE : 1)
+          .toFixed(0)
       }
     } else {
       tokenAmount = amount

@@ -1,5 +1,5 @@
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import { parseUnits } from 'ethers/lib/utils'
+import { parseEther } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
 import {
@@ -45,7 +45,7 @@ interface Props {
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
 // Default value for transaction setting, tweak based on BSC network congestion.
-const gasPrice = parseUnits('10', 'gwei').toString()
+const gasPrice = parseEther('10', 'gwei').toString()
 
 const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
@@ -68,7 +68,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const [value, setValue] = useState('')
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContractReader = useERC20(currency.address, false)
+  const raisingTokenContractReader = useERC20(currency.address)
   const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)

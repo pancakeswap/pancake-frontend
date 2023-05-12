@@ -1,5 +1,6 @@
 import { TradeType, Token, CurrencyAmount, Currency, Percent } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
+import { Address, Hex } from 'viem'
 import { Trade } from './entities'
 import { validateAndParseAddress } from './utils'
 
@@ -47,14 +48,14 @@ export interface SwapParameters {
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (string | string[])[]
+  args: (Hex | Hex[])[]
   /**
    * The amount of wei to send in hex.
    */
-  value: string
+  value: Hex
 }
 
-function toHex(currencyAmount: CurrencyAmount<Currency>) {
+function toHex(currencyAmount: CurrencyAmount<Currency>): Hex {
   return `0x${currencyAmount.quotient.toString(16)}`
 }
 
@@ -79,11 +80,11 @@ export abstract class Router {
     invariant(!(etherIn && etherOut), 'ETHER_IN_OUT')
     invariant(!('ttl' in options) || options.ttl > 0, 'TTL')
 
-    const to: string = validateAndParseAddress(options.recipient)
-    const amountIn: string = toHex(trade.maximumAmountIn(options.allowedSlippage))
-    const amountOut: string = toHex(trade.minimumAmountOut(options.allowedSlippage))
-    const path: string[] = trade.route.path.map((token: Token) => token.address)
-    const deadline =
+    const to = validateAndParseAddress(options.recipient)
+    const amountIn = toHex(trade.maximumAmountIn(options.allowedSlippage))
+    const amountOut = toHex(trade.minimumAmountOut(options.allowedSlippage))
+    const path: Address[] = trade.route.path.map((token: Token) => token.address)
+    const deadline: Hex =
       'ttl' in options
         ? `0x${(Math.floor(new Date().getTime() / 1000) + options.ttl).toString(16)}`
         : `0x${options.deadline.toString(16)}`
@@ -91,8 +92,8 @@ export abstract class Router {
     const useFeeOnTransfer = Boolean(options.feeOnTransfer)
 
     let methodName: string
-    let args: (string | string[])[]
-    let value: string
+    let args: (Hex | Hex[])[]
+    let value: Hex
 
     // eslint-disable-next-line default-case
     switch (trade.tradeType) {

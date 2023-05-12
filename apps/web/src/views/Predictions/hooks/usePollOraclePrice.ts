@@ -5,7 +5,7 @@ import { useConfig } from '../context/ConfigProvider'
 const usePollOraclePrice = () => {
   const { chainlinkOracleAddress } = useConfig()
 
-  const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress, false)
+  const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
 
   const { data: price, refetch } = useContractRead({
     abi: chainlinkOracleContract?.abi,

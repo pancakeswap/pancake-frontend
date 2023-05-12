@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Address, Chain, FallbackTransport, PublicClient } from 'viem'
+import { Address, PublicClient } from 'viem'
 
 export const multicallAddresses = {
   1: '0xcA11bde05977b3631167028862bE2a173976CA11',
@@ -8,7 +8,6 @@ export const multicallAddresses = {
   56: '0xcA11bde05977b3631167028862bE2a173976CA11',
   97: '0xcA11bde05977b3631167028862bE2a173976CA11',
 } as const
-
 
 export interface Call {
   address: Address // Address of the contract
@@ -45,7 +44,7 @@ export interface CallV3 extends Call {
 export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
 export type MultiCall = <T = any>(abi: any[] | readonly any[], calls: Call[], chainId?: ChainId) => Promise<T>
 
-export function createMulticall<TProvider extends PublicClient<FallbackTransport, Chain>>(
+export function createMulticall<TProvider extends PublicClient>(
   provider: ({ chainId }: { chainId?: number | undefined }) => TProvider,
 ) {
   const multicall: MultiCall = async (abi: any[] | readonly any[], calls: Call[], chainId = ChainId.BSC) => {

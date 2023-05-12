@@ -73,7 +73,7 @@ export const fetchFarmUserStakedBalances = async (
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
   const rawStakedBalances = (await viemClients[chainId as keyof typeof viemClients].multicall({
-    // @ts-ignor
+    // @ts-ignore
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: isBscNetwork ? masterChefV2ABI : nonBscVault,

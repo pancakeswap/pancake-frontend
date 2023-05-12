@@ -1,4 +1,4 @@
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { useCallback } from 'react'
 import { useErc721CollectionContract } from 'hooks/useContract'
@@ -9,14 +9,14 @@ import useSWR from 'swr'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { isAddress } from 'utils'
 
-const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: TokenMarketData) => {
+const useNftOwn = (collectionAddress: Address, tokenId: string, marketData?: TokenMarketData) => {
   const { address: account } = useAccount()
-  const { reader: collectionContract } = useErc721CollectionContract(collectionAddress)
+  const collectionContract = useErc721CollectionContract(collectionAddress)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
 
   const { data: tokenOwner } = useSWR(
     collectionContract ? ['nft', 'ownerOf', collectionAddress, tokenId] : null,
-    async () => collectionContract.ownerOf(tokenId),
+    async () => collectionContract.read.ownerOf([BigInt(tokenId)]),
   )
 
   return useSWR(
@@ -50,7 +50,7 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
   )
 }
 
-export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
+export const useCompleteNft = (collectionAddress: Address, tokenId: string) => {
   const { data: nft, mutate } = useSWR(
     collectionAddress && tokenId ? ['nft', collectionAddress, tokenId] : null,
     async () => {
@@ -75,7 +75,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
     collectionAddress && tokenId ? ['nft', 'marketData', collectionAddress, tokenId] : null,
     async () => {
       const [onChainMarketDatas, marketDatas] = await Promise.all([
-        getNftsOnChainMarketData(collectionAddress.toLowerCase(), [tokenId]),
+        getNftsOnChainMarketData(collectionAddress, [tokenId]),
         getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1),
       ])
       const onChainMarketData = onChainMarketDatas[0]

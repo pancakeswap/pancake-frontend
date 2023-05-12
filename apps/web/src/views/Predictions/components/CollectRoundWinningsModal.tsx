@@ -21,7 +21,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -39,7 +39,7 @@ interface CollectRoundWinningsModalProps extends InjectedModalProps {
   dispatch: (action: AnyAction | AsyncThunkAction<any, { account: string }, any>) => void
   history: Bet[]
   isLoadingHistory: boolean
-  predictionsAddress: string
+  predictionsAddress: Address
   token: Token
   isV1Claim?: boolean
 }
