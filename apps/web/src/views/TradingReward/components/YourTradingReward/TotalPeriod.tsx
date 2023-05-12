@@ -8,18 +8,20 @@ import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
-import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { RewardInfo, Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
   rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
+  qualification: Qualification
 }
 
 const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   campaignIds,
   rewardInfo,
   totalAvailableClaimData,
+  qualification,
 }) => {
   const { t } = useTranslation()
 
@@ -27,14 +29,25 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
     placement: 'bottom',
   })
 
+  // Not Ready for claim
+  const notReadyForClaim = useMemo(
+    () =>
+      totalAvailableClaimData.filter(
+        (campaign) => new BigNumber(campaign.canClaim).gt(0) && !campaign.userClaimedIncentives && !campaign.isActive,
+      ),
+    [totalAvailableClaimData],
+  )
+
   // Unclaim data
   const unclaimData = useMemo(() => {
     return totalAvailableClaimData
-      .filter((campaign) => new BigNumber(campaign.canClaim).gt(0) && !campaign.userClaimedIncentives)
+      .filter(
+        (campaign) => new BigNumber(campaign.canClaim).gt(0) && !campaign.userClaimedIncentives && campaign.isActive,
+      )
       .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
   }, [totalAvailableClaimData])
 
-  const { isPending, handleClaim } = useClaimAllReward(campaignIds, unclaimData)
+  const { isPending, handleClaim } = useClaimAllReward({ campaignIds, unclaimData, qualification })
 
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
 
@@ -112,59 +125,69 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
           <Text bold textAlign="right" mb="24px">
             {t('Previously Ended')}
           </Text>
-          {unclaimData.length > 0 && (
-            <GreyCard>
-              <Flex flexDirection={['column', 'column', 'column', 'row']}>
-                <Box>
-                  <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
-                    {t('Your unclaimed trading rewards')}
+          <GreyCard>
+            <Flex flexDirection={['column', 'column', 'column', 'row']}>
+              <Box>
+                <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
+                  {t('Your unclaimed trading rewards')}
+                </Text>
+                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD)}`}</Text>
+                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
+              </Box>
+              <Button
+                width={['100%', '100%', '100%', 'fit-content']}
+                m={['10px 0 0 0', '10px 0 0 0', '10px 0 0 0', 'auto 0 auto auto']}
+                disabled={isPending || unclaimData.length === 0}
+                onClick={handleClaim}
+              >
+                {t('Claim All')}
+              </Button>
+            </Flex>
+            {notReadyForClaim.length > 0 && (
+              <Message variant="primary" mt="16px">
+                <MessageText>
+                  <TooltipText bold as="span">
+                    {`$${expiredUSDPrice}`}
+                  </TooltipText>
+                  <Text m="0 4px" as="span">
+                    {t('from the recent campaign period is under tallying and will be available for claiming soon.')}
                   </Text>
-                  <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD)}`}</Text>
-                  <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
-                </Box>
-                <Button
-                  width={['100%', '100%', '100%', 'fit-content']}
-                  m={['10px 0 0 0', '10px 0 0 0', '10px 0 0 0', 'auto 0 auto auto']}
-                  disabled={isPending}
-                  onClick={handleClaim}
-                >
-                  {t('Claim All')}
-                </Button>
-              </Flex>
-              {rewardExpiredSoonData && (
-                <Message variant="danger" mt="16px">
-                  <MessageText>
-                    <TooltipText bold as="span">
-                      {`$${expiredUSDPrice}`}
-                    </TooltipText>
-                    <Text m="0 4px" as="span">
-                      {t('unclaimed reward expiring in')}
-                    </Text>
-                    {timeRemaining > 0 && (
-                      <Text ref={targetRef} as="span">
-                        <Text bold as="span">
-                          {expiredTime.days ? (
-                            <Text bold as="span" ml="4px">
-                              {`${expiredTime.days}${t('d')}`}
-                            </Text>
-                          ) : null}
-                          {expiredTime.days || expiredTime.hours ? (
-                            <Text bold as="span" ml="4px">
-                              {`${expiredTime.hours}${t('h')}`}
-                            </Text>
-                          ) : null}
+                </MessageText>
+              </Message>
+            )}
+            {rewardExpiredSoonData && (
+              <Message variant="danger" mt="16px">
+                <MessageText>
+                  <TooltipText bold as="span">
+                    {`$${expiredUSDPrice}`}
+                  </TooltipText>
+                  <Text m="0 4px" as="span">
+                    {t('unclaimed reward expiring in')}
+                  </Text>
+                  {timeRemaining > 0 && (
+                    <Text ref={targetRef} as="span">
+                      <Text bold as="span">
+                        {expiredTime.days ? (
                           <Text bold as="span" ml="4px">
-                            {`${expiredTime.minutes}${t('m')}`}
+                            {`${expiredTime.days}${t('d')}`}
                           </Text>
+                        ) : null}
+                        {expiredTime.days || expiredTime.hours ? (
+                          <Text bold as="span" ml="4px">
+                            {`${expiredTime.hours}${t('h')}`}
+                          </Text>
+                        ) : null}
+                        <Text bold as="span" ml="4px">
+                          {`${expiredTime.minutes}${t('m')}`}
                         </Text>
                       </Text>
-                    )}
-                    {tooltipVisible && tooltip}
-                  </MessageText>
-                </Message>
-              )}
-            </GreyCard>
-          )}
+                    </Text>
+                  )}
+                  {tooltipVisible && tooltip}
+                </MessageText>
+              </Message>
+            )}
+          </GreyCard>
           <GreyCard mt="24px">
             <Box mb="24px">
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>

@@ -49,15 +49,19 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   })
 
   const sortData = useMemo(() => {
-    return data.sort((a, b) => {
-      if (a?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
-        return -1
-      }
-      if (b?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
-        return 1
-      }
-      return 0
-    })
+    if (campaignId) {
+      return data.sort((a, b) => {
+        if (a?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
+          return -1
+        }
+        if (b?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
+          return 1
+        }
+        return 0
+      })
+    }
+
+    return data.sort((a, b) => Number(b.campaignId) - Number(a.campaignId))
   }, [data, campaignId])
 
   useEffect(() => {

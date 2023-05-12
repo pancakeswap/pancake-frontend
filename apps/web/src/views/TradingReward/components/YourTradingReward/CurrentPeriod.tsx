@@ -49,7 +49,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
 
   const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
 
-  const { totalVolume, tradingFeeArr } = currentUserCampaignInfo
+  const { totalVolume, tradingFeeArr, totalTradingFee } = currentUserCampaignInfo
   const { stakingToken, userData: poolUserData } = pool ?? {}
   const {
     lockEndTime,
@@ -97,11 +97,8 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
 
   // MAX REWARD CAP
   const maxRewardCap = useMemo(() => {
-    const totalTradingFee = tradingFeeArr
-      .map((fee) => fee.tradingFee)
-      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
     return new BigNumber(totalTradingFee).times(currentRewardInfo.rewardFeeRatio).toNumber()
-  }, [tradingFeeArr, currentRewardInfo])
+  }, [totalTradingFee, currentRewardInfo])
 
   const maxRewardCapCakePrice = useMemo(
     () => new BigNumber(maxRewardCap).div(cakePriceBusd).toNumber(),

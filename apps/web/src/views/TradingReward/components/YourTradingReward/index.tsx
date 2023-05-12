@@ -233,6 +233,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             isLockPosition={isLockPosition}
             isValidLockDuration={isValidLockDuration}
             thresholdLockTime={thresholdLockTime}
+            qualification={qualification}
           />
         </Container>
       )}

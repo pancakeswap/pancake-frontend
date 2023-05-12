@@ -3,7 +3,7 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
 import { DeserializedLockedVaultUser } from 'state/types'
-import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives, RewardInfo, Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
@@ -17,6 +17,7 @@ interface RewardPeriodProps {
   isLockPosition: boolean
   isValidLockDuration: boolean
   thresholdLockTime: number
+  qualification: Qualification
 }
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
@@ -31,6 +32,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   isLockPosition,
   isValidLockDuration,
   thresholdLockTime,
+  qualification,
 }) => {
   return (
     <Flex
@@ -55,6 +57,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
       <TotalPeriod
         campaignIds={campaignIds}
         rewardInfo={rewardInfo}
+        qualification={qualification}
         totalAvailableClaimData={totalAvailableClaimData}
       />
     </Flex>
