@@ -1,4 +1,4 @@
-import { Address, formatUnits } from 'viem'
+import { Address, ContractFunctionResult, formatUnits } from 'viem'
 import BN from 'bignumber.js'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
@@ -178,7 +178,7 @@ export const fetchMasterChefData = async (
   isTestnet: boolean,
   multicallv2: MultiCallV2,
   masterChefAddress: string,
-): Promise<any[]> => {
+) => {
   try {
     const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, masterChefAddress))
     const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null) as Call[]
@@ -194,9 +194,18 @@ export const fetchMasterChefData = async (
       if (masterChefCall === null) {
         return null
       }
-      const data = masterChefMultiCallResult[masterChefChunkedResultCounter]
+      const data = masterChefMultiCallResult[masterChefChunkedResultCounter] as ContractFunctionResult<
+        typeof masterChefV2Abi,
+        'poolInfo'
+      >
       masterChefChunkedResultCounter++
-      return data
+      return {
+        accCakePerShare: data[0],
+        lastRewardBlock: data[1],
+        allocPoint: data[2],
+        totalBoostedShare: data[3],
+        isRegular: data[4],
+      }
     })
   } catch (error) {
     console.error('MasterChef Pool info data error', error)

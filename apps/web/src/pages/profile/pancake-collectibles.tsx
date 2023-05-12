@@ -41,7 +41,7 @@ export const getStaticProps: GetStaticProps = async () => {
           abi: pancakeProfileABI,
           address: profileContractArgs.address,
           functionName: 'hasRole',
-          params: [nftRole, collectionAddress],
+          args: [nftRole, collectionAddress],
         }
       }),
       allowFailure: false,
