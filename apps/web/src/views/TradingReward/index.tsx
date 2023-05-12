@@ -1,6 +1,8 @@
 import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import Banner from 'views/TradingReward/components/Banner'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
 import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'
 import HowToEarn from 'views/TradingReward/components/HowToEarn'
@@ -11,6 +13,8 @@ import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 const TradingReward = () => {
+  const { chainId } = useActiveChainId()
+
   const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair()
   const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
@@ -54,7 +58,7 @@ const TradingReward = () => {
       .filter((item) => currentTime > item.campaignClaimTime)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  if (isAllTradingRewardPairDataFetching) {
+  if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
     return null
   }
 

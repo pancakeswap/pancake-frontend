@@ -95,10 +95,12 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     return new BigNumber(totalMapCap).minus(currentUserCampaignInfo.totalEstimateRewardUSD).toNumber()
   }, [currentUserCampaignInfo, tradingFeeArr])
 
+  const showWarning = useMemo(() => new BigNumber(additionalAmount).gte(0.01), [additionalAmount])
+
   // MAX REWARD CAP
   const maxRewardCap = useMemo(() => {
-    return new BigNumber(totalTradingFee).times(currentRewardInfo.rewardFeeRatio).toNumber()
-  }, [totalTradingFee, currentRewardInfo])
+    return tradingFeeArr.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+  }, [tradingFeeArr])
 
   const maxRewardCapCakePrice = useMemo(
     () => new BigNumber(maxRewardCap).div(cakePriceBusd).toNumber(),
@@ -148,7 +150,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                         {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
                       </Text>
                     </Text>
-                    {additionalAmount >= 0.01 && (
+                    {showWarning && (
                       <Message variant="warning" mt="10px">
                         <MessageText>
                           <Text as="span">{t('An additional amount of reward of')}</Text>
@@ -168,10 +170,10 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                     <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
                       {t('Your Current Max Reward Cap')}
                     </Text>
-                    <Text bold color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="24px">{`$${formatNumber(
+                    <Text bold color={showWarning ? 'failure' : 'text'} fontSize="24px">{`$${formatNumber(
                       maxRewardCap,
                     )}`}</Text>
-                    <Text color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="14px">{`~${formatNumber(
+                    <Text color={showWarning ? 'failure' : 'text'} fontSize="14px">{`~${formatNumber(
                       maxRewardCapCakePrice,
                     )} CAKE`}</Text>
                     <Text width="100%" lineHeight="120%">
