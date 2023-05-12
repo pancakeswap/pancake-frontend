@@ -22,7 +22,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Token } from '@pancakeswap/sdk'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { FetchStatus } from 'config/constants/types'
+import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { NetWinningsView } from './Results/styles'
@@ -34,7 +34,7 @@ interface WalletStatsModalProps extends InjectedModalProps {
   onBeforeDismiss?: () => void
   address: string
   result: PredictionUser
-  leaderboardLoadingState: FetchStatus
+  leaderboardLoadingState: TFetchStatus
   token: Token
   api: string
 }

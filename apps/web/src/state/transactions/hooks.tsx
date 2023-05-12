@@ -12,6 +12,7 @@ import { useAccount } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { Hash } from 'viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TransactionDetails } from './reducer'
@@ -25,7 +26,7 @@ import {
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
-  response: { hash: string } | { transactionHash: string },
+  response: { hash: Hash } | { transactionHash: Hash },
   customData?: {
     summary?: string
     translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -75,12 +76,21 @@ export function useTransactionAdder(): (
       if (!account) return
       if (!chainId) return
 
-      if (!('hash' in response) || !('transactionHash' in response)) {
+      let hash: Hash
+
+      if ('hash' in response) {
+        // eslint-disable-next-line prefer-destructuring
+        hash = response.hash
+      } else if ('transactionHash' in response) {
+        hash = response.transactionHash
+      }
+
+      if (!hash) {
         throw Error('No transaction hash found.')
       }
       dispatch(
         addTransaction({
-          hash: response.hash || (response.transactionHash as string),
+          hash,
           from: account,
           chainId,
           approval,

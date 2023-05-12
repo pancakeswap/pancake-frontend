@@ -12,6 +12,7 @@ import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TradeWithMM } from '../types'
+import { hexToBigInt } from 'viem'
 
 export enum SwapCallbackState {
   INVALID,
@@ -72,7 +73,7 @@ export function useSwapCallback(
               parameters: { methodName, args, value },
               contract,
             } = call
-            const options = !value || isZero(value) ? {} : { value }
+            const options = !value || isZero(value) ? {} : { value: hexToBigInt(value) }
 
             return contract.estimateGas[methodName]([args], options)
               .then((gasEstimate) => {

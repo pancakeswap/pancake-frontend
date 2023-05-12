@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { BigNumber } from 'ethers'
 import { Flex } from '@pancakeswap/uikit'
+import { Address } from 'wagmi'
 import { ContextApi } from '@pancakeswap/localization'
 import { DefaultTheme } from 'styled-components'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
@@ -14,7 +14,7 @@ import { ButtonsEnum } from './types'
 
 export type CtaButtonsProps = {
   t: ContextApi['t']
-  account: string
+  account: Address
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
   theme: DefaultTheme
@@ -28,9 +28,9 @@ export type CtaButtonsProps = {
   totalSupplyMinted: number
   numberTokensOfUser: number
   startTimestamp: number
-  cakeBalance: BigNumber
-  pricePerTicket: BigNumber
-  ticketsOfUser: BigNumber[]
+  cakeBalance: bigint
+  pricePerTicket: bigint
+  ticketsOfUser: bigint[]
 }
 
 const CtaButtons: React.FC<React.PropsWithChildren<CtaButtonsProps>> = ({

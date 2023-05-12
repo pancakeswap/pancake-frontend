@@ -17,7 +17,7 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
   const currentEpoch = useGetCurrentEpoch()
   const { address: account } = useAccount()
   const ledger = useGetBetByEpoch(account, epoch)
-  const hasEntered = ledger ? ledger.amount.gt(0) : false
+  const hasEntered = ledger ? ledger.amount > 0n : false
   const hasEnteredUp = hasEntered && ledger.position === BetPosition.BULL
   const hasEnteredDown = hasEntered && ledger.position === BetPosition.BEAR
   const hasClaimedUp = hasEntered && ledger.claimed && ledger.position === BetPosition.BULL
@@ -31,8 +31,8 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
   const bullMultiplier = getMultiplierV2(totalAmount, bullAmount)
   const bearMultiplier = getMultiplierV2(totalAmount, bearAmount)
 
-  const formattedBullMultiplier = bullMultiplier.toUnsafeFloat().toFixed(bullMultiplier.isZero() ? 0 : 2)
-  const formattedBearMultiplier = bearMultiplier.toUnsafeFloat().toFixed(bearMultiplier.isZero() ? 0 : 2)
+  const formattedBullMultiplier = bullMultiplier.toFixed(bullMultiplier.isZero() ? 0 : 2)
+  const formattedBearMultiplier = bearMultiplier.toFixed(bearMultiplier.isZero() ? 0 : 2)
 
   // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {

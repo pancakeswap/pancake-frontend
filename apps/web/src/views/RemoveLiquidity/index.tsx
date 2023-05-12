@@ -441,7 +441,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-      await routerContract[methodName](...args, {
+      await routerContract.write[methodName](...args, {
         gasLimit: safeGasEstimate,
         gasPrice,
       })

@@ -3,6 +3,7 @@ import BN from 'bignumber.js'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import memoize from 'lodash/memoize'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 const abs = (n: bigint) => (n === -0n || n < 0n ? -n : n)
 
@@ -72,11 +73,11 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
 
 export const getMultiplierV2 = (total: bigint, amount: bigint) => {
   if (!total) {
-    return 0n
+    return BIG_ZERO
   }
 
   if (total === 0n || amount === 0n) {
-    return 0n
+    return BIG_ZERO
   }
 
   const rewardAmountFixed = new BN(total.toString())

@@ -86,7 +86,7 @@ const IFOBanner = () => {
 
   const isIfoAlive = !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
   const status = isIfoAlive
-    ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
+    ? getStatus(Number(currentBlock), activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
   const { isMobile } = useMatchBreakpoints()
   useEffect(() => {
