@@ -172,7 +172,6 @@ export function useV3Positions(account: Address | null | undefined): UseV3Positi
   const totalTokenIds = useMemo(() => [...stakedTokenIds, ...tokenIds], [stakedTokenIds, tokenIds])
 
   const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(totalTokenIds)
-  console.log(positions, positionsLoading, 'what?????')
 
   return useMemo(
     () => ({

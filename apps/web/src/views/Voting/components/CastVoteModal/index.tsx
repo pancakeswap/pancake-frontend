@@ -59,8 +59,16 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       setIsPending(true)
       const web3 = {
         getSigner: () => {
-          // eslint-disable-next-line
-          _signTypedData: signer.signTypedData
+          return {
+            _signTypedData: (domain, types, message) =>
+              signer.signTypedData({
+                account,
+                domain,
+                types,
+                message,
+                primaryType: 'Vote',
+              }),
+          }
         },
       }
 

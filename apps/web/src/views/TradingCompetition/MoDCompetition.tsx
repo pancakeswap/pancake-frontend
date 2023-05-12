@@ -48,7 +48,7 @@ const MoDCompetition = () => {
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { isMobile } = useMatchBreakpoints()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
+  const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.CLAIM)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] =

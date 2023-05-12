@@ -101,10 +101,10 @@ import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { sidABI } from 'config/abi/SID'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
-
-import { viemClients } from './viem'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { farmAuctionABI } from 'config/abi/farmAuction'
+
+import { viemClients } from './viem'
 
 export const getContract = <TAbi extends Abi | unknown[]>({
   abi,

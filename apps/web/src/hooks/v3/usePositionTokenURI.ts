@@ -52,7 +52,7 @@ export function usePositionTokenURI(tokenId: TokenId | undefined): UsePositionTo
         loading: false,
       }
     }
-    const [tokenURI] = result as [string]
+    const tokenURI = result
     if (!tokenURI || !tokenURI.startsWith(STARTS_WITH))
       return {
         valid: false,

@@ -190,7 +190,7 @@ export const FetchStatus = {
   Failed: 'error',
 } as const
 
-export type FetchStatusT = (typeof FetchStatus)[keyof typeof FetchStatus]
+export type TFetchStatus = (typeof FetchStatus)[keyof typeof FetchStatus]
 
 export const isStableSwap = (trade: ITrade): trade is StableTrade => {
   return (
