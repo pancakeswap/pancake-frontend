@@ -21,6 +21,7 @@ import {
   fetchUserDrawData,
   fetchWithdrawAbleData,
 } from './fetchUserPottery'
+import { Address } from 'wagmi'
 
 const initialState: PotteryState = Object.freeze({
   lastVaultAddress: '',
@@ -84,10 +85,10 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
       const state = getState()
       const potteryVaultAddress = (state as AppState).pottery.lastVaultAddress
       const [allowance, vaultUserData, drawData, withdrawAbleData] = await Promise.all([
-        fetchPotterysAllowance(account, potteryVaultAddress),
-        fetchVaultUserData(account, potteryVaultAddress),
-        fetchUserDrawData(account),
-        fetchWithdrawAbleData(account),
+        fetchPotterysAllowance(account as Address, potteryVaultAddress),
+        fetchVaultUserData(account as Address, potteryVaultAddress),
+        fetchUserDrawData(account as Address),
+        fetchWithdrawAbleData(account as Address),
       ])
 
       const userData = {

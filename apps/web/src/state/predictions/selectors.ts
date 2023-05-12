@@ -1,7 +1,7 @@
 import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
-import { deserialize } from 'wagmi'
 import { PredictionsState, NodeRound, NodeLedger } from '../types'
+import { deserializeRound } from '.'
 
 const selectCurrentEpoch = (state: PredictionsState) => state.currentEpoch
 const selectRounds = (state: PredictionsState) => state.rounds
@@ -34,7 +34,7 @@ export const makeGetIsClaimableSelector = (epoch: number) =>
 
 export const getRoundsByCloseOracleIdSelector = createSelector([selectRounds], (rounds) => {
   return Object.keys(rounds).reduce((accum, epoch) => {
-    const parsed = deserialize(rounds[epoch])
+    const parsed = deserializeRound(rounds[epoch])
     return {
       ...accum,
       [parsed.closeOracleId]: parsed,
@@ -46,7 +46,7 @@ export const getBigNumberRounds = createSelector([selectRounds], (rounds) => {
   return Object.keys(rounds).reduce((accum, epoch) => {
     return {
       ...accum,
-      [epoch]: deserialize(rounds[epoch]),
+      [epoch]: deserializeRound(rounds[epoch]),
     }
   }, {}) as { [key: string]: NodeRound }
 })

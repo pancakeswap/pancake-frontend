@@ -61,7 +61,7 @@ describe.concurrent('Config farms', () => {
 
   it.each(newFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
     const lpContract = getLpContract(farm.lpAddress)
-    const factory = await lpContract.factory()
+    const factory = await lpContract.read.factory()
     expect(factory.toLowerCase()).toEqual(FACTORY_ADDRESS)
   })
 
@@ -72,7 +72,7 @@ describe.concurrent('Config farms', () => {
 
   it.each(ethNewFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
     const lpContract = getLpContract(farm.lpAddress, farm.token.chainId)
-    const factory = await lpContract.factory()
+    const factory = await lpContract.read.factory()
     expect(factory.toLowerCase()).toEqual(ETH_FACTORY_ADDRESS)
   })
 })

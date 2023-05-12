@@ -8,7 +8,7 @@ import {
   combineApiAndSgResponseToNftToken,
 } from 'state/nftMarket/helpers'
 import { FAST_INTERVAL } from 'config/constants'
-import { FetchStatus } from 'config/constants/types'
+import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { pancakeBunniesAddress } from '../constants'
 import { getLowestUpdatedToken } from './useGetLowestPrice'
@@ -69,7 +69,7 @@ export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResp
 
   return {
     data,
-    isFetched: [FetchStatus.Failed, FetchStatus.Fetched].includes(status),
+    isFetched: ([FetchStatus.Failed, FetchStatus.Fetched] as TFetchStatus[]).includes(status),
     refresh: mutate,
   }
 }

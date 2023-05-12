@@ -74,6 +74,6 @@ const DELIST_COLLECTIONS = {
     verified: true,
     whitelistChecker: '',
   },
-}
+} as const
 
 export default DELIST_COLLECTIONS

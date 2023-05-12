@@ -69,7 +69,7 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
   const [message, setMessage] = useState('')
   const fetchAbortSignal = useRef<AbortController>(null)
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(REGISTER_COST)
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= REGISTER_COST
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}

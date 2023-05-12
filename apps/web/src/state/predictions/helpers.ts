@@ -7,7 +7,6 @@ import {
   PredictionsState,
   PredictionStatus,
   ReduxNodeLedger,
-  ReduxNodeRound,
   RoundData,
   HistoryFilter,
   NodeRound,
@@ -345,7 +344,7 @@ export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): 
   })
 }
 
-export const makeRoundData = (rounds: ReduxNodeRound[]): RoundData => {
+export const makeRoundData = (rounds: string[]): RoundData => {
   return rounds.reduce((accum, round) => {
     return {
       ...accum,

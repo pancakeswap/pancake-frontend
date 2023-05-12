@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { WalletClient, getContract, PublicClient, FallbackTransport, Chain } from 'viem'
+import { WalletClient, getContract, PublicClient } from 'viem'
 
 import { getPoolsConfig } from '../constants'
 import { isLegacyPool } from './isLegacyPool'
@@ -15,7 +15,7 @@ interface Params {
   chainId?: ChainId
   sousId: number
   signer?: WalletClient
-  publicClient?: PublicClient<FallbackTransport, Chain>
+  publicClient?: PublicClient
 }
 
 export function getPoolContractBySousId({ chainId, sousId, signer, publicClient }: Params) {

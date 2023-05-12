@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
-import { masterChefV2ABI } from 'config/abi/masterchef'
+import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import nonBscVault from 'config/abi/nonBscVault.json'
 import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'

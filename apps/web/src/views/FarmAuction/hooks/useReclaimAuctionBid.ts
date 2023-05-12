@@ -83,7 +83,7 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
 
   const [state, dispatch] = useReducer(reclaimReducer, initialState)
 
-  const farmAuctionContract = useFarmAuctionContract(false)
+  const farmAuctionContract = useFarmAuctionContract()
 
   const checkNextAuction = () => {
     dispatch({ type: 'checkNextAuction' })
@@ -100,11 +100,11 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
       try {
         dispatch({ type: 'setLoading', payload: { loading: true } })
 
-        const bidderAuctionsResponse = await farmAuctionContract.viewBidderAuctions(
+        const bidderAuctionsResponse = await farmAuctionContract.read.viewBidderAuctions([
           account,
-          state.currentCursor,
-          RECLAIM_AUCTIONS_TO_FETCH,
-        )
+          BigInt(state.currentCursor),
+          BigInt(RECLAIM_AUCTIONS_TO_FETCH),
+        ])
 
         const { auctions, nextCursor } = processBidderAuctions(bidderAuctionsResponse)
         if (auctions.length > 0) {
@@ -125,9 +125,13 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
     const checkIfAuctionIsClaimable = async (auctionToCheck: BidderAuction) => {
       dispatch({ type: 'setLoading', payload: { loading: true } })
       try {
-        const isClaimable = await farmAuctionContract.claimable(auctionToCheck.id, account)
+        const isClaimable = await farmAuctionContract.read.claimable([BigInt(auctionToCheck.id), account])
         if (isClaimable) {
-          const [auctionBidders] = await farmAuctionContract.viewBidsPerAuction(auctionToCheck.id, 0, 500)
+          const [auctionBidders] = await farmAuctionContract.read.viewBidsPerAuction([
+            BigInt(auctionToCheck.id),
+            0n,
+            500n,
+          ])
           const sortedBidders = sortAuctionBidders(auctionBidders)
           const accountBidderData = sortedBidders.find((bidder) => bidder.account === account)
           const position = accountBidderData?.position
