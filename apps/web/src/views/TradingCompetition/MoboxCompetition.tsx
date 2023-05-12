@@ -44,7 +44,7 @@ const MoboxCompetition = () => {
   const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
+  const tradingCompetitionContract = useTradingCompetitionContractMobox()
   const [currentPhase, setCurrentPhase] = useState(() => {
     const now = Date.now()
     const actualPhase = orderBy(
@@ -99,13 +99,13 @@ const MoboxCompetition = () => {
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.currentStatus()
+      const competitionStatus = await tradingCompetitionContract.read.currentStatus()
       setCurrentPhase(SmartContractPhases[competitionStatus])
     }
 
     const fetchUserContract = async () => {
       try {
-        const user = await tradingCompetitionContract.claimInformation(account)
+        const user = await tradingCompetitionContract.read.claimInformation([account])
         const userObject = {
           isLoading: false,
           account,

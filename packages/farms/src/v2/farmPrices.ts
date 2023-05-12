@@ -57,7 +57,7 @@ export const getFarmQuoteTokenPrice = (
   stable: string,
 ): BN => {
   if (farm.quoteToken.symbol === stable) {
-    return BIG_ZERO
+    return BIG_ONE
   }
 
   if (farm.quoteToken.symbol === wNative) {
