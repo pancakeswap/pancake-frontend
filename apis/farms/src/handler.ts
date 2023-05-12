@@ -51,7 +51,7 @@ const getCakePrice = async (isTestnet: boolean) => {
   const pairConfig = cakeBusdPairMap[isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC]
   const pairContract = new Contract(pairConfig.address, pairAbi, isTestnet ? bscTestnetProvider : bscProvider)
   const reserves = await pairContract.getReserves()
-  const { reserve0, reserve1 } = reserves
+  const [reserve0, reserve1] = reserves
   const { tokenA, tokenB } = pairConfig
 
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]

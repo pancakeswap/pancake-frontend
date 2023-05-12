@@ -22,9 +22,9 @@ export const useUnsNameForAddress = (address: string, fetchData = true) => {
   const { data: unsName, status } = useSWRImmutable(
     fetchData && address ? ['unsName', address.toLowerCase()] : null,
     async () => {
-      const etherDomainName = await unsEtherContract.read.reverseNameOf(address)
+      const etherDomainName = await unsEtherContract.read.reverseNameOf([address])
       if (!etherDomainName) {
-        const polyDomainName = await unsPolygonContract.read.reverseNameOf(address)
+        const polyDomainName = await unsPolygonContract.read.reverseNameOf([address])
         if (!polyDomainName) {
           return {
             name: null,

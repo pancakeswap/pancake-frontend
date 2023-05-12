@@ -1,7 +1,10 @@
 // import { PayableOverrides } from 'ethers'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { calculateGasMargin } from 'utils''
-import { getContract } from 'utils/contractHelpers'
+import { Abi } from 'abitype'
+import { useContract } from 'hooks/useContract'
+import { calculateGasMargin } from 'utils'
+import { Address } from 'wagmi'
+import { getContract } from 'wagmi/actions'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -11,8 +14,8 @@ import { getContract } from 'utils/contractHelpers'
  * @param args An array of arguments to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const estimateGas = async (
-  contract: ReturnType<typeof getContract>,
+export const estimateGas = async <T extends ReturnType<typeof getContract>>(
+  contract: T,
   methodName: string,
   methodArgs: any,
   overrides: PayableOverrides = {},
@@ -35,8 +38,8 @@ export const estimateGas = async (
  * @param overrides An overrides object to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const callWithEstimateGas = async (
-  contract: ReturnType<typeof getContract>,
+export const callWithEstimateGas = async <T extends ReturnType<typeof useContract>>(
+  contract: T,
   methodName: any,
   methodArgs: any,
   overrides: PayableOverrides = {},

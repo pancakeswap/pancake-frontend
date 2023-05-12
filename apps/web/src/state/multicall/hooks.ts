@@ -8,7 +8,7 @@ import {
   unstable_serialize,
   useSWRConfig,
 } from 'swr'
-import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
+import { Address, ContractFunctionResult, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import {
   addMulticallListeners,
   Call,
@@ -28,20 +28,20 @@ export interface Result extends ReadonlyArray<any> {
 }
 
 type MethodArg = string | number | bigint
-type MethodArgs = Array<MethodArg | MethodArg[]>
+// type MethodArgs = Array<MethodArg | MethodArg[]>
 
 type OptionalMethodInputs = Array<MethodArg | MethodArg[] | undefined> | undefined
 
-function isMethodArg(x: unknown): x is MethodArg {
-  return ['string', 'number'].indexOf(typeof x) !== -1
-}
+// function isMethodArg(x: unknown): x is MethodArg {
+//   return ['string', 'number'].indexOf(typeof x) !== -1
+// }
 
-function isValidMethodArgs(x: unknown): x is MethodArgs | undefined {
-  return (
-    x === undefined ||
-    (Array.isArray(x) && x.every((xi) => isMethodArg(xi) || (Array.isArray(xi) && xi.every(isMethodArg))))
-  )
-}
+// function isValidMethodArgs(x: unknown): x is MethodArgs | undefined {
+//   return (
+//     x === undefined ||
+//     (Array.isArray(x) && x.every((xi) => isMethodArg(xi) || (Array.isArray(xi) && xi.every(isMethodArg))))
+//   )
+// }
 
 interface CallResult {
   readonly valid: boolean
@@ -115,10 +115,10 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   )
 }
 
-export interface CallState {
+export interface CallState<T = any> {
   readonly valid: boolean
   // the result, or undefined if loading or errored/no data
-  readonly result: unknown | undefined
+  readonly result: T | undefined
   // true if the result has never been fetched
   readonly loading: boolean
   // true if the result is not for the latest block
@@ -160,7 +160,7 @@ const LOADING_CALL_STATE: CallState = { valid: true, result: undefined, loading:
 
 function toCallState(
   callResult: CallResult | undefined,
-  abi: Abi,
+  abi: Abi | unknown[],
   functionName: string,
   latestBlockNumber: number | undefined,
 ): CallState {
@@ -174,7 +174,9 @@ function toCallState(
   let result: Result | undefined
   if (success && data) {
     try {
+      // @ts-ignore FIXME: types
       result = decodeFunctionResult({
+        // @ts-ignore FIXME: types
         abi,
         data,
         functionName,
@@ -289,21 +291,22 @@ export function useSingleContractMultipleData(
 }
 
 const DEFAULT_OPTIONS = {
-  blockPerFetch: undefined,
+  blocksPerFetch: undefined as number | undefined,
 }
 
-export function useMultipleContractSingleData(
-  addresses: (string | undefined)[],
-  abi: Abi,
-  methodName: string,
+export function useMultipleContractSingleData<TAbi extends Abi | unknown[], TFunctionName extends string = string>(
+  addresses: (Address | undefined)[],
+  abi: TAbi,
+  methodName: TFunctionName,
   callInputs?: OptionalMethodInputs,
   options?: ListenerOptions,
-): CallState[] {
+): CallState<ContractFunctionResult<TAbi, TFunctionName>>[] {
   const { enabled, blocksPerFetch } = options ?? { enabled: true }
-  const callData: string | undefined = useMemo(
+  const callData: Hex | undefined = useMemo(
     () =>
       abi && enabled
-        ? encodeFunctionData({
+        ? // @ts-ignore FIXME: types
+          encodeFunctionData({
             abi,
             functionName: methodName,
             args: callInputs,
@@ -338,20 +341,21 @@ export function useMultipleContractSingleData(
   }, [cache, chainId, results, abi, methodName])
 }
 
-export function useSingleCallResult(
+export function useSingleCallResult<TAbi extends Abi | unknown[], TFunctionName extends string = string>(
   contract: {
-    abi?: any
+    abi?: TAbi
     address?: Address
   },
-  methodName: string,
+  methodName: TFunctionName,
   inputs?: OptionalMethodInputs,
   options?: ListenerOptionsWithGas,
-): CallState {
+): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
   const calls = useMemo<Call[]>(() => {
     return contract && contract.abi && contract.address
       ? [
           {
             address: contract.address,
+            // @ts-ignore FIXME: types
             callData: encodeFunctionData({
               abi: contract.abi,
               args: inputs,
