@@ -149,10 +149,10 @@ export const usePairPriceChartTokenData = (
   return data?.data ?? []
 }
 
-export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {
+export async function fetchTopTokens(dataClientNodeReal: GraphQLClient, dataClient: GraphQLClient, blocks: Block[]) {
   try {
-    const topTokenAddress = await fetchTopTokenAddresses(dataClient)
-    const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses ?? [], blocks)
+    const topTokenAddress = await fetchTopTokenAddresses(dataClient) // need to use the original one cus node real don't support the where filter yet
+    const data = await fetchedTokenDatas(dataClientNodeReal, topTokenAddress.addresses ?? [], blocks)
     return data
   } catch (e) {
     console.error(e)
@@ -178,6 +178,7 @@ export const useTopTokensData = ():
     () =>
       fetchTopTokens(
         v3InfoClients[chainId],
+        v3Clients[chainId],
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
