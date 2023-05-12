@@ -155,7 +155,7 @@ export const getLedgerData = async (
       address,
       abi: predictionsV2ABI,
       functionName: 'ledger',
-      params: [epoch, account],
+      args: [epoch, account],
     })),
     allowFailure: false,
   })) as ContractFunctionResult<typeof predictionsV2ABI, 'ledger'>[]

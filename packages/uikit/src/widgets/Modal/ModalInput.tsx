@@ -80,7 +80,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   const { t } = useTranslation();
   const isBalanceZero = max === "0" || !max;
 
-  const displayBalance = (balance: string) => {
+  const displayBalance = (balance: `${number}`) => {
     if (isBalanceZero) {
       return "0";
     }
