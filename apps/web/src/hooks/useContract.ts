@@ -78,7 +78,6 @@ import multiCallAbi from 'config/abi/Multicall.json'
 import WETH_ABI from 'config/abi/weth.json'
 import WBETH_BSC_ABI from 'config/abi/wbethBSC.json'
 import WBETH_ETH_ABI from 'config/abi/wbethETH.json'
-import { getContract } from 'utils'
 import { viemClients } from 'utils/viem'
 import { ifoV1ABI } from 'config/abi/ifoV1'
 import { ifoV2ABI } from 'config/abi/ifoV2'
@@ -102,63 +101,19 @@ import { erc721CollectionABI } from 'config/abi/erc721collection'
  */
 
 export const useIfoV1Contract = (address: Address) => {
-  const { chainId } = useActiveChainId()
-  const { data: walletClient } = useWalletClient()
-  return useMemo(
-    () =>
-      getContract__({
-        abi: ifoV1ABI,
-        chainId,
-        address,
-        walletClient,
-      }),
-    [address, chainId, walletClient],
-  )
+  return useContract(address, ifoV1ABI)
 }
 
 export const useIfoV2Contract = (address: Address) => {
-  const { chainId } = useActiveChainId()
-  const { data: walletClient } = useWalletClient()
-  return useMemo(
-    () =>
-      getContract__({
-        chainId,
-        abi: ifoV2ABI,
-        address,
-        walletClient,
-      }),
-    [address, chainId, walletClient],
-  )
+  return useContract(address, ifoV2ABI)
 }
 
 export const useIfoV3Contract = (address: Address) => {
-  const { chainId } = useActiveChainId()
-  const { data: walletClient } = useWalletClient()
-  return useMemo(
-    () =>
-      getContract__({
-        chainId,
-        abi: ifoV3ABI,
-        address,
-        walletClient,
-      }),
-    [address, chainId, walletClient],
-  )
+  return useContract(address, ifoV3ABI)
 }
 
 export const useERC20 = (address: Address) => {
-  const { chainId } = useActiveChainId()
-  const { data: walletClient } = useWalletClient()
-  return useMemo(
-    () =>
-      getContract__({
-        chainId,
-        abi: erc20ABI,
-        address,
-        walletClient,
-      }),
-    [address, chainId, walletClient],
-  )
+  return useContract(address, erc20ABI)
 }
 
 export const useCake = () => {
@@ -415,10 +370,6 @@ export const useStableSwapNativeHelperContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getStableSwapNativeHelperContract(signer, chainId), [signer, chainId])
-}
-
-export const useQuoterV2Contract = () => {
-  return useContract(addresses.quoter, QuoterV2Abi)
 }
 
 export function useV3NFTPositionManagerContract() {

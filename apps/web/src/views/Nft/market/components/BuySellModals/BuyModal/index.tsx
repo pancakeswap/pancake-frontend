@@ -48,13 +48,13 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
 
   const { account, chainId } = useAccountActiveChain()
   const wbnbAddress = chainId === ChainId.BSC_TESTNET ? TESTNET_WBNB_NFT_ADDRESS : bscTokens.wbnb.address
-  const wbnbContractReader = useERC20(wbnbAddress, false)
+  const wbnbContractReader = useERC20(wbnbAddress)
   const wbnbContractApprover = useERC20(wbnbAddress)
   const nftMarketContract = useNftMarketContract()
 
   const { toastSuccess } = useToast()
 
-  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice, 18)
+  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice as `${number}`, 18)
   const nftPrice = parseFloat(nftToBuy?.marketData?.currentAskPrice)
 
   // BNB - returns ethers.BigNumber
@@ -91,7 +91,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
       )
     },
     onConfirm: () => {
-      const payAmount = Number.isNaN(nftPrice) ? 0n : parseUnits(nftToBuy?.marketData?.currentAskPrice, 18)
+      const payAmount = Number.isNaN(nftPrice) ? 0n : parseUnits(nftToBuy?.marketData?.currentAskPrice as `${number}`, 18)
       if (paymentCurrency === PaymentCurrency.BNB) {
         return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
           value: payAmount,

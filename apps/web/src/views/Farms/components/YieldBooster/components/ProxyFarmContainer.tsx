@@ -1,5 +1,6 @@
 import { ReactElement, createContext, useMemo, memo } from 'react'
 import _noop from 'lodash/noop'
+import { Address } from 'wagmi'
 
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'
@@ -15,7 +16,7 @@ export const YieldBoosterStateContext = createContext({
   proxyFarm: {},
   shouldUseProxyFarm: false,
   refreshProxyAddress: _noop,
-  proxyAddress: '',
+  proxyAddress: undefined as Address | undefined,
 })
 
 const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, farm }) => {

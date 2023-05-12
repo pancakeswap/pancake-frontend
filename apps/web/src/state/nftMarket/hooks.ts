@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { isAddress } from 'utils'
 import { useAtom } from 'jotai'
-import { FetchStatus } from 'config/constants/types'
+import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
@@ -18,7 +18,7 @@ const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'as
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
 const EMPTY_OBJECT = {}
 
-export const useGetCollections = (): { data: ApiCollections; status: typeof FetchStatus } => {
+export const useGetCollections = (): { data: ApiCollections; status: TFetchStatus } => {
   const { data, status } = useSWR(['nftMarket', 'collections'], async () => getCollections())
   const collections = data ?? ({} as ApiCollections)
   return { data: collections, status }
@@ -34,7 +34,7 @@ export const useGetCollection = (collectionAddress: string): Collection | undefi
   return collectionObject[checksummedCollectionAddress]
 }
 
-export const useGetShuffledCollections = (): { data: Collection[]; status: typeof FetchStatus } => {
+export const useGetShuffledCollections = (): { data: Collection[]; status: TFetchStatus } => {
   const { data } = useSWRImmutable(['nftMarket', 'collections'], async () => getCollections())
   const collections = data ?? ({} as ApiCollections)
   const { data: shuffledCollections, status } = useSWRImmutable(
