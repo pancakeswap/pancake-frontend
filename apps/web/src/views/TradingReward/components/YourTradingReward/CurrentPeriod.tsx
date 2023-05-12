@@ -16,6 +16,7 @@ import { Incentives, RewardInfo } from 'views/TradingReward/hooks/useAllTradingR
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
 import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
+import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
 
 interface CurrentPeriodProps {
   incentives: Incentives
@@ -114,110 +115,116 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>
-          {isQualified ? (
+          {timeRemaining <= 0 ? (
+            <ComingSoon />
+          ) : (
             <>
-              <GreyCard>
-                <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
-                  {t('Your Current trading rewards')}
-                </Text>
-                <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
-                <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
-                <Text fontSize="12px" color="textSubtle" mt="4px">
-                  {t('Available for claiming')}
-                  {timeRemaining > 0 ? (
-                    <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
-                      {t('in')}
-                      {timeUntil.days ? (
+              {isQualified ? (
+                <>
+                  <GreyCard>
+                    <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
+                      {t('Your Current trading rewards')}
+                    </Text>
+                    <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
+                    <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
+                    <Text fontSize="12px" color="textSubtle" mt="4px">
+                      {t('Available for claiming')}
+                      {timeRemaining > 0 ? (
                         <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
-                          {`${timeUntil.days}${t('d')}`}
+                          {t('in')}
+                          {timeUntil.days ? (
+                            <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
+                              {`${timeUntil.days}${t('d')}`}
+                            </Text>
+                          ) : null}
+                          {timeUntil.days || timeUntil.hours ? (
+                            <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
+                              {`${timeUntil.hours}${t('h')}`}
+                            </Text>
+                          ) : null}
+                          <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
+                            {`${timeUntil.minutes}${t('m')}`}
+                          </Text>
                         </Text>
                       ) : null}
-                      {timeUntil.days || timeUntil.hours ? (
-                        <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
-                          {`${timeUntil.hours}${t('h')}`}
-                        </Text>
-                      ) : null}
-                      <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
-                        {`${timeUntil.minutes}${t('m')}`}
+                      <Text fontSize="12px" color="textSubtle" ml="4px" as="span">
+                        {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
                       </Text>
                     </Text>
-                  ) : null}
-                  <Text fontSize="12px" color="textSubtle" ml="4px" as="span">
-                    {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
-                  </Text>
-                </Text>
-                {additionalAmount >= 0.01 && (
-                  <Message variant="warning" mt="10px">
-                    <MessageText>
-                      <Text as="span">{t('An additional amount of reward of')}</Text>
-                      <Text as="span" bold m="0 4px">{`$${formatNumber(additionalAmount)}`}</Text>
-                      <Text as="span" mr="4px">
-                        {t('can not be claim due to the max reward cap.')}
-                      </Text>
-                      <Text as="span" bold>
-                        {t('Lock more CAKE to keep earning.')}
-                      </Text>
-                    </MessageText>
-                  </Message>
-                )}
-              </GreyCard>
+                    {additionalAmount >= 0.01 && (
+                      <Message variant="warning" mt="10px">
+                        <MessageText>
+                          <Text as="span">{t('An additional amount of reward of')}</Text>
+                          <Text as="span" bold m="0 4px">{`$${formatNumber(additionalAmount)}`}</Text>
+                          <Text as="span" mr="4px">
+                            {t('can not be claim due to the max reward cap.')}
+                          </Text>
+                          <Text as="span" bold>
+                            {t('Lock more CAKE to keep earning.')}
+                          </Text>
+                        </MessageText>
+                      </Message>
+                    )}
+                  </GreyCard>
 
-              <GreyCard mt="24px">
-                <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
-                  {t('Your Current Max Reward Cap')}
-                </Text>
-                <Text bold color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="24px">{`$${formatNumber(
-                  maxRewardCap,
-                )}`}</Text>
-                <Text color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="14px">{`~${formatNumber(
-                  maxRewardCapCakePrice,
-                )} CAKE`}</Text>
-                <Text width="100%" lineHeight="120%">
-                  <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-                    {t('Equals to your amount of locked CAKE divided by')}
-                  </Text>
-                  <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
-                    {t('10.')}
-                  </Text>
-                  <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-                    {t('Lock more CAKE to raise this limit')}
-                  </Text>
-                </Text>
-                {additionalAmount >= 0.01 && (
-                  <AddCakeButton
-                    scale="sm"
-                    mt="10px"
-                    width="fit-content"
-                    padding="0 16px !important"
-                    lockEndTime={lockEndTime}
-                    lockStartTime={lockStartTime}
-                    currentLockedAmount={cakeAsBigNumber}
-                    stakingToken={stakingToken}
-                    currentBalance={currentBalance}
-                    stakingTokenBalance={currentBalance}
-                  />
-                )}
-              </GreyCard>
+                  <GreyCard mt="24px">
+                    <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+                      {t('Your Current Max Reward Cap')}
+                    </Text>
+                    <Text bold color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="24px">{`$${formatNumber(
+                      maxRewardCap,
+                    )}`}</Text>
+                    <Text color={additionalAmount >= 0.01 ? 'failure' : 'text'} fontSize="14px">{`~${formatNumber(
+                      maxRewardCapCakePrice,
+                    )} CAKE`}</Text>
+                    <Text width="100%" lineHeight="120%">
+                      <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                        {t('Equals to your amount of locked CAKE divided by')}
+                      </Text>
+                      <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
+                        {t('10.')}
+                      </Text>
+                      <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                        {t('Lock more CAKE to raise this limit')}
+                      </Text>
+                    </Text>
+                    {additionalAmount >= 0.01 && (
+                      <AddCakeButton
+                        scale="sm"
+                        mt="10px"
+                        width="fit-content"
+                        padding="0 16px !important"
+                        lockEndTime={lockEndTime}
+                        lockStartTime={lockStartTime}
+                        currentLockedAmount={cakeAsBigNumber}
+                        stakingToken={stakingToken}
+                        currentBalance={currentBalance}
+                        stakingTokenBalance={currentBalance}
+                      />
+                    )}
+                  </GreyCard>
 
-              <GreyCard mt="24px">
-                <Flex>
-                  <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
-                    {t('Your Current Trading VOLUME')}
-                  </Text>
-                  <InfoIcon color="secondary" width={16} height={16} ml="4px" />
-                </Flex>
-                <Text bold fontSize="24px">{`$${formatNumber(totalVolume)}`}</Text>
-              </GreyCard>
+                  <GreyCard mt="24px">
+                    <Flex>
+                      <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+                        {t('Your Current Trading VOLUME')}
+                      </Text>
+                      <InfoIcon color="secondary" width={16} height={16} ml="4px" />
+                    </Flex>
+                    <Text bold fontSize="24px">{`$${formatNumber(totalVolume)}`}</Text>
+                  </GreyCard>
+                </>
+              ) : (
+                <NoCakeLockedOrExtendLock
+                  pool={pool}
+                  userData={userData}
+                  incentives={incentives}
+                  isLockPosition={isLockPosition}
+                  isValidLockDuration={isValidLockDuration}
+                  thresholdLockTime={thresholdLockTime}
+                />
+              )}
             </>
-          ) : (
-            <NoCakeLockedOrExtendLock
-              pool={pool}
-              userData={userData}
-              incentives={incentives}
-              isLockPosition={isLockPosition}
-              isValidLockDuration={isValidLockDuration}
-              thresholdLockTime={thresholdLockTime}
-            />
           )}
         </Box>
       </Card>
