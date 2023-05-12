@@ -49,7 +49,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
 
   const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
 
-  const { totalVolume, tradingFeeArr, totalTradingFee } = currentUserCampaignInfo
+  const { totalVolume, tradingFeeArr } = currentUserCampaignInfo
   const { stakingToken, userData: poolUserData } = pool ?? {}
   const {
     lockEndTime,
@@ -94,8 +94,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     const totalMapCap = tradingFeeArr.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
     return new BigNumber(totalMapCap).minus(currentUserCampaignInfo.totalEstimateRewardUSD).toNumber()
   }, [currentUserCampaignInfo, tradingFeeArr])
-
-  const showWarning = useMemo(() => new BigNumber(additionalAmount).gte(0.01), [additionalAmount])
 
   // MAX REWARD CAP
   const maxRewardCap = useMemo(() => {
@@ -150,7 +148,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                         {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
                       </Text>
                     </Text>
-                    {showWarning && (
+                    {additionalAmount >= 0.01 && (
                       <Message variant="warning" mt="10px">
                         <MessageText>
                           <Text as="span">{t('An additional amount of reward of')}</Text>
@@ -166,42 +164,40 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                     )}
                   </GreyCard>
 
-                  <GreyCard mt="24px">
-                    <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
-                      {t('Your Current Max Reward Cap')}
-                    </Text>
-                    <Text bold color={showWarning ? 'failure' : 'text'} fontSize="24px">{`$${formatNumber(
-                      maxRewardCap,
-                    )}`}</Text>
-                    <Text color={showWarning ? 'failure' : 'text'} fontSize="14px">{`~${formatNumber(
-                      maxRewardCapCakePrice,
-                    )} CAKE`}</Text>
-                    <Text width="100%" lineHeight="120%">
-                      <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-                        {t('Equals to your amount of locked CAKE divided by')}
+                  {additionalAmount >= 0.01 && (
+                    <GreyCard mt="24px">
+                      <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+                        {t('Your Current Max Reward Cap')}
                       </Text>
-                      <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
-                        {t('10.')}
+                      <Text bold color="failure" fontSize="24px">{`$${formatNumber(maxRewardCap)}`}</Text>
+                      <Text color="failure" fontSize="14px">{`~${formatNumber(maxRewardCapCakePrice)} CAKE`}</Text>
+                      <Text width="100%" lineHeight="120%">
+                        <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                          {t('Equals to your amount of locked CAKE divided by')}
+                        </Text>
+                        <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
+                          {t('10.')}
+                        </Text>
+                        <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
+                          {t('Lock more CAKE to raise this limit')}
+                        </Text>
                       </Text>
-                      <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-                        {t('Lock more CAKE to raise this limit')}
-                      </Text>
-                    </Text>
-                    {additionalAmount >= 0.01 && (
-                      <AddCakeButton
-                        scale="sm"
-                        mt="10px"
-                        width="fit-content"
-                        padding="0 16px !important"
-                        lockEndTime={lockEndTime}
-                        lockStartTime={lockStartTime}
-                        currentLockedAmount={cakeAsBigNumber}
-                        stakingToken={stakingToken}
-                        currentBalance={currentBalance}
-                        stakingTokenBalance={currentBalance}
-                      />
-                    )}
-                  </GreyCard>
+                      {additionalAmount >= 0.01 && (
+                        <AddCakeButton
+                          scale="sm"
+                          mt="10px"
+                          width="fit-content"
+                          padding="0 16px !important"
+                          lockEndTime={lockEndTime}
+                          lockStartTime={lockStartTime}
+                          currentLockedAmount={cakeAsBigNumber}
+                          stakingToken={stakingToken}
+                          currentBalance={currentBalance}
+                          stakingTokenBalance={currentBalance}
+                        />
+                      )}
+                    </GreyCard>
+                  )}
 
                   <GreyCard mt="24px">
                     <Flex>
