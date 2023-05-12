@@ -170,7 +170,6 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   const { profile } = useProfile()
 
   const { thresholdLockTime } = qualification
-  const { totalEstimateRewardUSD } = currentUserCampaignInfo ?? {}
 
   useCakeVaultPool()
 
@@ -192,13 +191,8 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
     [account, profile, isLockPosition, isValidLockDuration],
   )
 
-  const showBackgroundColor = useMemo(
-    () => !(!account || (isQualified && !totalEstimateRewardUSD)),
-    [account, isQualified, totalEstimateRewardUSD],
-  )
-
   return (
-    <StyledBackground showBackgroundColor={showBackgroundColor}>
+    <StyledBackground showBackgroundColor={!!account}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
       {isFetching && (
         <Skeleton
@@ -210,38 +204,40 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       )}
 
       {!isFetching && !account && (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <BaseContainer showBackgroundColor={showBackgroundColor}>
+        <Container showBackgroundColor={false}>
+          <BaseContainer showBackgroundColor={false}>
             <NoConnected />
           </BaseContainer>
         </Container>
       )}
 
       {!isFetching && account && !profile?.isActive && (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <BaseContainer showBackgroundColor={showBackgroundColor}>
+        <Container showBackgroundColor>
+          <BaseContainer showBackgroundColor>
             <NoProfile />
           </BaseContainer>
         </Container>
       )}
 
       {!isFetching && account && profile?.isActive && (
-        <RewardPeriod
-          userData={userData}
-          campaignIds={campaignIds}
-          incentives={incentives}
-          rewardInfo={rewardInfo}
-          currentUserCampaignInfo={currentUserCampaignInfo}
-          totalAvailableClaimData={totalAvailableClaimData}
-          campaignClaimTime={incentives.campaignClaimTime}
-          isQualified={isQualified}
-          isLockPosition={isLockPosition}
-          isValidLockDuration={isValidLockDuration}
-          thresholdLockTime={thresholdLockTime}
-        />
+        <Container showBackgroundColor>
+          <RewardPeriod
+            userData={userData}
+            campaignIds={campaignIds}
+            incentives={incentives}
+            rewardInfo={rewardInfo}
+            currentUserCampaignInfo={currentUserCampaignInfo}
+            totalAvailableClaimData={totalAvailableClaimData}
+            campaignClaimTime={incentives.campaignClaimTime}
+            isQualified={isQualified}
+            isLockPosition={isLockPosition}
+            isValidLockDuration={isValidLockDuration}
+            thresholdLockTime={thresholdLockTime}
+          />
+        </Container>
       )}
 
-      <Decorations showBackgroundColor={showBackgroundColor}>
+      <Decorations showBackgroundColor={!!account}>
         <img src="/images/trading-reward/left-bunny.png" width="93px" height="242px" alt="left-bunny" />
         <img src="/images/trading-reward/right-bunny.png" width="161px" height="161px" alt="right-bunny" />
         <img src="/images/trading-reward/love-butter.png" width="306px" height="306px" alt="love-butter" />

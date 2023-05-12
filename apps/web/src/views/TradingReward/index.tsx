@@ -58,12 +58,10 @@ const TradingReward = () => {
     return null
   }
 
-  // console.log({ allTradingRewardPairData, campaignId, campaignInfoData })
-
   return (
     <Box>
       <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
-      {/* <YourTradingReward
+      <YourTradingReward
         isFetching={isFetching}
         incentives={currentUserIncentive}
         qualification={allTradingRewardPairData.qualification}
@@ -71,7 +69,7 @@ const TradingReward = () => {
         rewardInfo={allTradingRewardPairData.rewardInfo}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
-      /> */}
+      />
       <CurrentRewardPool
         campaignId={campaignId}
         incentives={currentUserIncentive}

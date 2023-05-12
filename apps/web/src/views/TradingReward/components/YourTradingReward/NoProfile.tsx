@@ -4,6 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 
 const NoProfile = () => {
   const { t } = useTranslation()
@@ -28,7 +29,7 @@ const NoProfile = () => {
           </Message>
         </Box>
       )}
-      <Link mt="32px" external href={`/profile/${account}`}>
+      <Link mt="32px" external href={`/profile/${account}?chain=${CHAIN_QUERY_NAME[ChainId.BSC]}`}>
         <Button>{t('Activate Profile')}</Button>
       </Link>
     </>
