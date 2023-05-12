@@ -2,9 +2,11 @@ import { useMemo } from 'react'
 import { Box, Flex, Card, Text, Message, MessageText, TooltipText, Button } from '@pancakeswap/uikit'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import BigNumber from 'bignumber.js'
+import { ChainId } from '@pancakeswap/sdk'
 import { GreyCard } from 'components/Card'
 import { useTooltip } from '@pancakeswap/uikit/src/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
@@ -24,6 +26,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   qualification,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Claim your rewards before expiring.'), {
     placement: 'bottom',
@@ -143,6 +146,15 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 {t('Claim All')}
               </Button>
             </Flex>
+            {chainId !== ChainId.BSC && (
+              <Message variant="warning" mt="16px">
+                <MessageText>
+                  <Text m="0 4px" as="span">
+                    {t('Please switch your network to BNB Chain to claim your trading rewards.')}
+                  </Text>
+                </MessageText>
+              </Message>
+            )}
             {notReadyForClaim.length > 0 && (
               <Message variant="primary" mt="16px">
                 <MessageText>
