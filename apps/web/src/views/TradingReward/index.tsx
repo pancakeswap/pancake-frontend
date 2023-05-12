@@ -86,6 +86,5 @@ const TradingReward = () => {
     </Box>
   )
 }
-TradingReward.chains = []
 
 export default TradingReward
