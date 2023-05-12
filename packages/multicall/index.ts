@@ -48,7 +48,7 @@ export type MultiCall = <T = any>(abi: any[] | readonly any[], calls: Call[], ch
 export function createMulticall<TProvider extends PublicClient<FallbackTransport, Chain>>(
   provider: ({ chainId }: { chainId?: number | undefined }) => TProvider,
 ) {
-  const multicall: MultiCall = async (abi: any[] | readonly any[],, calls: Call[], chainId = ChainId.BSC) => {
+  const multicall: MultiCall = async (abi: any[] | readonly any[], calls: Call[], chainId = ChainId.BSC) => {
     const publicClient = provider({ chainId })
     const result = publicClient.multicall({
       contracts: calls.map((c) => ({
