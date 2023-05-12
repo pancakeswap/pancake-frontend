@@ -1,8 +1,9 @@
 import { createAction } from '@reduxjs/toolkit'
 import { Hex } from 'viem'
+import { Address } from 'wagmi'
 
 export interface Call {
-  address: Hex
+  address: Address
   callData: Hex
 }
 

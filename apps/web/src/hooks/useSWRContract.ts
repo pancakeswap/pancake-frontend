@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { FetchStatus, FetchStatusT } from 'config/constants/types'
+import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { useEffect, useMemo } from 'react'
 import {
   KeyedMutator,
@@ -17,7 +17,7 @@ declare module 'swr' {
     isValidating: boolean
     isLoading: BlockingData<Data, Config> extends true ? false : boolean
     // Add global fetchStatus to SWRResponse
-    status: FetchStatusT
+    status: TFetchStatus
   }
 }
 
@@ -26,7 +26,7 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
     const swr = useSWRNext(key, fetcher, config)
     return Object.defineProperty(swr, 'status', {
       get() {
-        let status: FetchStatusT = FetchStatus.Idle
+        let status: TFetchStatus = FetchStatus.Idle
 
         if (!swr.isValidating && !swr.error && !swr.data) {
           status = FetchStatus.Idle

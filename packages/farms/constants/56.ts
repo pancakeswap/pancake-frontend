@@ -1,5 +1,6 @@
 import { bscTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { getAddress } from 'viem'
 import { CAKE_BNB_LP_MAINNET } from './common'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 import { SerializedFarmConfig } from '..'
@@ -1502,6 +1503,11 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.abnbc,
     quoteToken: bscTokens.wbnb,
   },
-].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
+].map((p) => ({
+  ...p,
+  token: p.token.serialize,
+  quoteToken: p.quoteToken.serialize,
+  lpAddress: getAddress(p.lpAddress),
+}))
 
 export default farms

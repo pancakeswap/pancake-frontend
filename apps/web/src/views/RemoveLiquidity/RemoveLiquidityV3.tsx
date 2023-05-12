@@ -65,7 +65,7 @@ export default function RemoveLiquidityV3() {
 
   const parsedTokenId = useMemo(() => {
     try {
-      return BigInt(tokenId)
+      return BigInt(tokenId as string)
     } catch {
       return null
     }
