@@ -36,7 +36,6 @@ import {
 
 // ABI
 import profileABI from 'config/abi/pancakeProfile.json'
-import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'
 import bep20Abi from 'config/abi/erc20.json'
 import erc721Abi from 'config/abi/erc721.json'
 import lpTokenAbi from 'config/abi/lpToken.json'
@@ -79,22 +78,22 @@ import uns from 'config/abi/UNS.json'
 import sidResolver from 'config/abi/SIDResolver.json'
 import tradingRewardABI from 'config/abi/tradingReward.json'
 import masterChefV3Abi from 'config/abi/masterChefV3.json'
-import v3MigratorAbi from 'config/abi/v3Migrator.json'
 import V3AirdropAbi from 'config/abi/v3Airdrop.json'
 
 import { ChainId } from '@pancakeswap/sdk'
 import { Address, erc20ABI, erc721ABI, WalletClient } from 'wagmi'
 import { GetContractArgs } from 'wagmi/actions'
 import { getContract as getContract_ } from 'viem'
-import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
+import { getContract as getContract__ } from '@wagmi/core'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
+import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { Abi } from 'abitype'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
 import { masterChefV3ABI } from 'config/abi/masterChefV3'
-import { masterChefV2ABI } from 'config/abi/masterchef'
+import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { pancakeSquadABI } from 'config/abi/pancakeSquad'
 import { nftMarketABI } from 'config/abi/nftMarket'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
@@ -104,8 +103,14 @@ import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 
-import { viemClients } from './viem'
+import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { SIDResolverABI } from 'config/abi/SIDResolver'
+import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
+import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
+import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
+import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
+import { masterChefV1ABI } from 'config/abi/masterchefV1'
+import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 
 export const getContract = <TAbi extends Abi | unknown[]>({
   abi,
@@ -118,10 +123,10 @@ export const getContract = <TAbi extends Abi | unknown[]>({
   chainId?: ChainId
   signer?: WalletClient
 }) => {
-  const c = getContract_({
+  const c = getContract__({
+    chainId,
     abi,
     address,
-    publicClient: viemClients[chainId],
     walletClient: signer,
   })
   return {
@@ -171,18 +176,18 @@ export const getProfileContract = (signer?: WalletClient) => {
 }
 
 export const getBunnyFactoryContract = (signer?: WalletClient) => {
-  return getContract({ abi: bunnyFactoryAbi, address: getBunnyFactoryAddress(), signer })
+  return getContract({ abi: bunnyFactoryABI, address: getBunnyFactoryAddress(), signer })
 }
 export const getLotteryV2Contract = (signer?: WalletClient) => {
   return getContract({ abi: lotteryV2ABI, address: getLotteryV2Address(), signer })
 }
 export const getMasterchefV1Contract = (signer?: WalletClient) => {
-  return getContract({ abi: masterChefV1, address: getMasterChefV1Address(), signer })
+  return getContract({ abi: masterChefV1ABI, address: getMasterChefV1Address(), signer })
 }
 
 export const getTradingCompetitionContractEaster = (signer?: WalletClient) => {
   return getContract({
-    abi: tradingCompetitionEasterAbi,
+    abi: tradingCompetitionEasterABI,
     address: getTradingCompetitionAddressEaster(),
     signer,
   })
@@ -190,14 +195,14 @@ export const getTradingCompetitionContractEaster = (signer?: WalletClient) => {
 
 export const getTradingCompetitionContractFanToken = (signer?: WalletClient) => {
   return getContract({
-    abi: tradingCompetitionFanTokenAbi,
+    abi: tradingCompetitionFanTokenABI,
     address: getTradingCompetitionAddressFanToken(),
     signer,
   })
 }
 export const getTradingCompetitionContractMobox = (signer?: WalletClient) => {
   return getContract({
-    abi: tradingCompetitionMoboxAbi,
+    abi: tradingCompetitionMoboxABI,
     address: getTradingCompetitionAddressMobox(),
     signer,
   })
@@ -205,7 +210,7 @@ export const getTradingCompetitionContractMobox = (signer?: WalletClient) => {
 
 export const getTradingCompetitionContractMoD = (signer?: WalletClient) => {
   return getContract({
-    abi: tradingCompetitionMoDAbi,
+    abi: tradingCompetitionMoDABI,
     address: getTradingCompetitionAddressMoD(),
     signer,
   })
@@ -288,7 +293,7 @@ export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) =
 }
 
 export const getBCakeProxyContract = (proxyContractAddress: Address, signer?: WalletClient) => {
-  return getContract({ abi: bCakeProxyAbi, address: proxyContractAddress, signer })
+  return getContract({ abi: bCakeProxyABI, address: proxyContractAddress, signer })
 }
 
 export const getNonBscVaultContract = (signer?: WalletClient, chainId?: number) => {
@@ -386,7 +391,7 @@ export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number)
 
 export const getV3MigratorContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: v3MigratorAbi,
+    abi: v3MigratorABI,
     address: getV3MigratorAddress(chainId),
     chainId,
     signer,

@@ -5,8 +5,9 @@ import { bscRpcProvider } from 'utils/providers'
 import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { FarmAuction } from 'config/abi/types'
 import orderBy from 'lodash/orderBy'
+import { farmAuctionABI } from 'config/abi/farmAuction'
+import { ContractFunctionResult } from 'viem'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -31,7 +32,7 @@ export const sortAuctionBidders = (bidders: readonly BidsPerAuction[], auction?:
 
   return sortedBidders.map((bidder, index, unadjustedBidders) => {
     const amount = bigIntToBigNumber(bidder.amount)
-    const samePositionAsAbove = index === 0 ? false : bidder.amount.eq(unadjustedBidders[index - 1].amount)
+    const samePositionAsAbove = index === 0 ? false : bidder.amount === unadjustedBidders[index - 1].amount
     adjustedPosition = samePositionAsAbove ? adjustedPosition : adjustedPosition + 1
     // Reclaim and congratulations card don't need auction data or isTopPosition
     // in this case it is set to false just to avoid TS errors
@@ -134,13 +135,13 @@ export const processAuctionData = async (
 }
 
 export const processBidderAuctions = (
-  bidderAuctions: Awaited<ReturnType<FarmAuction['viewBidderAuctions']>>,
+  bidderAuctions: ContractFunctionResult<typeof farmAuctionABI, 'viewBidderAuctions'>,
 ): { auctions: BidderAuction[]; nextCursor: number } => {
   const [auctionIds, bids, claimed, nextCursor] = bidderAuctions
   const auctions = auctionIds.map((auctionId, index) => ({
-    id: auctionId.toNumber(),
+    id: Number(auctionId),
     amount: bigIntToBigNumber(bids[index]),
     claimed: claimed[index],
   }))
-  return { auctions, nextCursor: nextCursor.toNumber() }
+  return { auctions, nextCursor: Number(nextCursor) }
 }

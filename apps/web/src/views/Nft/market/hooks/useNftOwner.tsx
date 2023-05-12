@@ -17,7 +17,7 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { collectionAddress, tokenId } = nft
   const { data: tokenOwner } = useSWR(
     collectionContract ? ['nft', 'ownerOf', collectionAddress, tokenId] : null,
-    async () => collectionContract.read.ownerOf([tokenId]),
+    async () => collectionContract.read.ownerOf([BigInt(tokenId)]),
   )
 
   useEffect(() => {

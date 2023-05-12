@@ -2,6 +2,7 @@ import { Activity, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarke
 import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import uniqBy from 'lodash/uniqBy'
 import partition from 'lodash/partition'
+import { Address } from 'wagmi'
 import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../../constants'
 
@@ -13,7 +14,7 @@ export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<
 
   const activityNftTokenIds = uniqBy(
     nonPBCollections.map((activity): TokenIdWithCollectionAddress => {
-      return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
+      return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id as Address }
     }),
     (tokenWithCollectionAddress) =>
       `${tokenWithCollectionAddress.tokenId}#${tokenWithCollectionAddress.collectionAddress}`,

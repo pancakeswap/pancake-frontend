@@ -36,8 +36,8 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   const handleClaim = useCallback(async () => {
     const { vestingId } = data.userVestingData[poolId]
     const methods = isVestingInitialized
-      ? contract.release(vestingId)
-      : contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
+      ? contract.write.release([vestingId])
+      : contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1])
     const receipt = await fetchWithCatchTxError(() => methods)
 
     if (receipt?.status) {

@@ -40,6 +40,7 @@ import { calculateGasMargin } from 'utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { splitSignature } from 'utils/splitSignature'
+import { encodeFunctionData, Hex, toHex } from 'viem'
 import { isUserRejected } from 'utils/sentry'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -99,7 +100,7 @@ function V2PairMigrate({
   pair,
   v2LPTotalSupply,
 }: {
-  v2PairAddress: string
+  v2PairAddress: Address
   token0: ERC20Token
   token1: ERC20Token
   pair: Pair
@@ -260,17 +261,22 @@ function V2PairMigrate({
   const isMigrationPending = useIsTransactionPending(pendingMigrationHash ?? undefined)
 
   const migrator = useV3MigratorContract()
-  const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
+  const [signatureData, setSignatureData] = useState<{
+    v: number
+    r: `0x${string}`
+    s: `0x${string}`
+    deadline: number
+  } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
     ROUTER_ADDRESS[chainId],
   )
 
-  const pairContractRead = usePairContract(pair?.liquidityToken?.address, false)
+  const pairContractRead = usePairContract(pair?.liquidityToken?.address)
 
   const approve = useCallback(async () => {
     // try to gather a signature for permission
-    const nonce = await pairContractRead.nonces(account)
+    const nonce = await pairContractRead.read.nonces([account])
 
     const EIP712Domain = [
       { name: 'name', type: 'string' },
@@ -295,7 +301,7 @@ function V2PairMigrate({
       owner: account,
       spender: migrator.address,
       value: pairBalance.toString(),
-      nonce: nonce.toHexString(),
+      nonce: toHex(nonce),
       deadline: Number(deadline),
     }
 
@@ -349,55 +355,62 @@ function V2PairMigrate({
     )
       return
 
-    const deadlineToUse = signatureData?.deadline ?? deadline
+    const deadlineToUse = signatureData?.deadline ? BigInt(signatureData.deadline) : deadline
 
-    const data: string[] = []
+    const data: Hex[] = []
 
     // permit if necessary
     if (signatureData) {
       data.push(
-        migrator.interface.encodeFunctionData('selfPermit', [
-          pair.liquidityToken.address,
-          `0x${pairBalance.toString(16)}`,
-          deadlineToUse,
-          signatureData.v,
-          signatureData.r,
-          signatureData.s,
-        ]),
+        encodeFunctionData({
+          abi: migrator.abi,
+          functionName: 'selfPermit',
+          args: [
+            pair.liquidityToken.address,
+            BigInt(pairBalance.toString()),
+            deadlineToUse,
+            signatureData.v,
+            signatureData.r,
+            signatureData.s,
+          ],
+        }),
       )
     }
 
     // create/initialize pool if necessary
     if (noLiquidity) {
       data.push(
-        migrator.interface.encodeFunctionData('createAndInitializePoolIfNecessary', [
-          token0.address,
-          token1.address,
-          feeAmount,
-          `0x${sqrtPrice.toString(16)}`,
-        ]),
+        encodeFunctionData({
+          abi: migrator.abi,
+          functionName: 'createAndInitializePoolIfNecessary',
+          args: [token0.address, token1.address, feeAmount, sqrtPrice],
+        }),
       )
     }
 
     // TODO could save gas by not doing this in multicall
     data.push(
-      migrator.interface.encodeFunctionData('migrate', [
-        {
-          pair: pair.liquidityToken.address,
-          liquidityToMigrate: `0x${pairBalance.toString(16)}`,
-          percentageToMigrate,
-          token0: token0.address,
-          token1: token1.address,
-          fee: feeAmount,
-          tickLower,
-          tickUpper,
-          amount0Min: `0x${v3Amount0Min.toString(16)}`,
-          amount1Min: `0x${v3Amount1Min.toString(16)}`,
-          recipient: account,
-          deadline: deadlineToUse,
-          refundAsETH: true, // hard-code this for now
-        },
-      ]),
+      encodeFunctionData({
+        abi: migrator.abi,
+        functionName: 'migrate',
+        args: [
+          {
+            pair: pair.liquidityToken.address,
+            liquidityToMigrate: BigInt(pairBalance.toString()),
+            percentageToMigrate,
+            token0: token0.address,
+            token1: token1.address,
+            fee: feeAmount,
+            tickLower,
+            tickUpper,
+            amount0Min: v3Amount0Min,
+            amount1Min: v3Amount1Min,
+            recipient: account,
+            deadline: deadlineToUse,
+            refundAsETH: true, // hard-code this for now
+          },
+        ],
+      }),
     )
 
     setConfirmingMigration(true)
@@ -405,18 +418,16 @@ function V2PairMigrate({
     migrator.estimateGas
       .multicall(data)
       .then((gasEstimate) => {
-        return migrator
-          .multicall(data, { gasLimit: calculateGasMargin(gasEstimate) })
-          .then((response: TransactionResponse) => {
-            addTransaction(response, {
-              type: 'migrate-v3',
-              translatableSummary: {
-                text: 'Migrated %symbolA% %symbolB% V2 liquidity to V3',
-                data: { symbolA: currency0.symbol, symbolB: currency1.symbol },
-              },
-            })
-            setPendingMigrationHash(response.hash)
+        return migrator.write.multicall(data, { gasLimit: calculateGasMargin(gasEstimate) }).then((response) => {
+          addTransaction(response, {
+            type: 'migrate-v3',
+            translatableSummary: {
+              text: 'Migrated %symbolA% %symbolB% V2 liquidity to V3',
+              data: { symbolA: currency0.symbol, symbolB: currency1.symbol },
+            },
           })
+          setPendingMigrationHash(response.hash)
+        })
       })
       .catch((e) => {
         console.error(e)

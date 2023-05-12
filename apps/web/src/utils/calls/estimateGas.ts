@@ -1,5 +1,6 @@
 // import { PayableOverrides } from 'ethers'
 // import { TransactionResponse } from '@ethersproject/providers'
+import { SendTransactionResult } from '@wagmi/core'
 import { Abi } from 'abitype'
 import { useContract } from 'hooks/useContract'
 import { calculateGasMargin } from 'utils'
@@ -44,7 +45,7 @@ export const callWithEstimateGas = async <T extends ReturnType<typeof useContrac
   methodArgs: any,
   overrides: PayableOverrides = {},
   gasMarginPer10000 = 1000n,
-): Promise<TransactionResponse> => {
+): Promise<SendTransactionResult> => {
   const gasEstimation = await estimateGas(contract, methodName, methodArgs, overrides, gasMarginPer10000)
   const tx = await contract[methodName](...methodArgs, {
     gasLimit: gasEstimation,
