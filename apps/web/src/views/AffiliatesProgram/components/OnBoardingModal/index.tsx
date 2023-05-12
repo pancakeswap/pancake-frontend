@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { ethers } from 'ethers'
+import { encodePacked, keccak256, toBytes } from 'viem'
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 
@@ -42,9 +42,9 @@ const OnBoardingModal = () => {
       // BSC wallet sign message only accept string
       const message =
         connector?.id === 'bsc'
-          ? ethers.utils.solidityKeccak256(['string'], [router.query.ref])
-          : ethers.utils.arrayify(ethers.utils.solidityKeccak256(['string'], [router.query.ref]))
-      const signature = await signMessageAsync({ message })
+          ? keccak256(encodePacked(['string'], [router.query.ref as string]))
+          : toBytes(keccak256(encodePacked(['string'], [router.query.ref as string])))
+      const signature = await signMessageAsync({ message: message as any })
       const response = await fetch('/api/affiliates-program/user-register-fee', {
         method: 'POST',
         body: JSON.stringify({

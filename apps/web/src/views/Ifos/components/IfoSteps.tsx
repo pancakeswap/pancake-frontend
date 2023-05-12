@@ -22,7 +22,7 @@ import {
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 
 import { useTranslation } from '@pancakeswap/localization'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -34,7 +34,7 @@ import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
 import { getICakeWeekDisplay } from 'views/Pools/helpers'
 
 interface TypeProps {
-  ifoCurrencyAddress: string
+  ifoCurrencyAddress: Address
   hasClaimed: boolean
   isCommitted: boolean
   isLive?: boolean

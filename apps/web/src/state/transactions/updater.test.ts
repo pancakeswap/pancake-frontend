@@ -2,10 +2,10 @@ import { shouldCheck } from './updater'
 import { TransactionDetails } from './reducer'
 
 describe('transactions updater', () => {
-  const trxDetailInFetchedTransactions: TransactionDetails = { hash: 'Ox34567', addedTime: 5, from: '0x787213' }
-  const trxDetailNotInFetchedTransactions: TransactionDetails = { hash: 'Ox78903', addedTime: 6, from: '0x787213' }
+  const trxDetailInFetchedTransactions: TransactionDetails = { hash: 'Ox34567' as `0x${string}`, addedTime: 5, from: '0x787213' }
+  const trxDetailNotInFetchedTransactions: TransactionDetails = { hash: 'Ox78903' as `0x${string}`, addedTime: 6, from: '0x787213' }
   const trxDetailWithReceipt: TransactionDetails = {
-    hash: 'Ox78903',
+    hash: 'Ox78903' as `0x${string}`,
     addedTime: 6,
     from: '0x787213',
     receipt: {

@@ -96,8 +96,8 @@ export const useMMTrade = (
   const rfqUserInputPath = useRef<string>('')
   const isRFQLive = useRef<boolean>(false)
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
-  const mmParam = useMMParam(isMMQuotingPair, independentField, typedValue, inputCurrency, outputCurrency)
-  const mmRFQParam = useMMParam(isMMQuotingPair, independentField, typedValue, inputCurrency, outputCurrency, true)
+  const mmParam = useMMParam(isMMQuotingPair, independentField, typedValue as `${number}`, inputCurrency, outputCurrency)
+  const mmRFQParam = useMMParam(isMMQuotingPair, independentField, typedValue as `${number}`, inputCurrency, outputCurrency, true)
 
   const { data: mmQuote, isLoading } = useOrderBookQuote(mmParam, mmRFQParam, rfqUserInputPath, isRFQLive)
   const to: string | null = account ?? null

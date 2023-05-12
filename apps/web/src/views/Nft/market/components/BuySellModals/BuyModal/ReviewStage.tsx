@@ -4,7 +4,7 @@ import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@
 import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
-import { FetchStatus } from 'config/constants/types'
+import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { Divider, RoundedImage } from '../shared/styles'
 import { BorderedBox, BnbAmountCell } from './styles'
 import { PaymentCurrency } from './types'
@@ -15,7 +15,7 @@ interface ReviewStageProps {
   setPaymentCurrency: (index: number) => void
   nftPrice: number
   walletBalance: number
-  walletFetchStatus: FetchStatus
+  walletFetchStatus: TFetchStatus
   notEnoughBnbForPurchase: boolean
   continueToNextStage: () => void
 }

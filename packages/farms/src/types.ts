@@ -90,7 +90,7 @@ export type ComputedFarmConfigV3 = {
 export type SerializedComputedFarmConfigV3 = ComputedFarmConfigV3 & {
   pid: number
   lpSymbol: string
-  lpAddress: string
+  lpAddress: Address
   boosted?: boolean
 
   token: SerializedToken
@@ -100,7 +100,7 @@ export type SerializedComputedFarmConfigV3 = ComputedFarmConfigV3 & {
 
 export type FarmConfigV3 = {
   pid: number
-  lpAddress: string
+  lpAddress: Address
   boosted?: boolean
 
   token0: Token

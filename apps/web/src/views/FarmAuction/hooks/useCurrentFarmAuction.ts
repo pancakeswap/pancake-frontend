@@ -4,16 +4,17 @@ import useSWR from 'swr'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { ConnectedBidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
+import { Address } from 'wagmi'
 import { FAST_INTERVAL } from 'config/constants'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useFarmAuction } from './useFarmAuction'
 
-export const useCurrentFarmAuction = (account: string) => {
+export const useCurrentFarmAuction = (account: Address) => {
   const { data: currentAuctionId = null } = useSWR(
     ['farmAuction', 'currentAuctionId'],
     async () => {
-      const auctionId = await farmAuctionContract.currentAuctionId()
-      return auctionId.toNumber()
+      const auctionId = await farmAuctionContract.read.currentAuctionId()
+      return Number(auctionId)
     },
     { refreshInterval: FAST_INTERVAL },
   )
@@ -24,13 +25,13 @@ export const useCurrentFarmAuction = (account: string) => {
   } = useFarmAuction(currentAuctionId, { refreshInterval: FAST_INTERVAL })
   const [connectedBidder, setConnectedBidder] = useState<ConnectedBidder | null>(null)
 
-  const farmAuctionContract = useFarmAuctionContract(false)
+  const farmAuctionContract = useFarmAuctionContract()
 
   // Check if connected wallet is whitelisted
   useEffect(() => {
     const checkAccount = async () => {
       try {
-        const whitelistedStatus = await farmAuctionContract.whitelisted(account)
+        const whitelistedStatus = await farmAuctionContract.read.whitelisted([account])
         setConnectedBidder({
           account,
           isWhitelisted: whitelistedStatus,

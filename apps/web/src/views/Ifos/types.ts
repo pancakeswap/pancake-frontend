@@ -80,14 +80,24 @@ export interface WalletIfoState {
 }
 
 // Returned by useGetWalletIfoData
-export interface WalletIfoData extends WalletIfoState {
+export type WalletIfoData = {
   allowance: BigNumber
-  contract:
-    | ReturnType<typeof useIfoV1Contract>
-    | ReturnType<typeof useIfoV2Contract>
-    | ReturnType<typeof useIfoV3Contract>
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
   fetchIfoData: () => Promise<void>
   resetIfoData: () => void
+} & WalletIfoState &
+  (WalletIfoDataV1 | WalletIfoDataV2 | WalletIfoDataV3)
+
+type WalletIfoDataV1 = {
+  version: 1
+  contract: ReturnType<typeof useIfoV1Contract>
+}
+type WalletIfoDataV2 = {
+  version: 2
+  contract: ReturnType<typeof useIfoV2Contract>
+}
+type WalletIfoDataV3 = {
+  version: 3
+  contract: ReturnType<typeof useIfoV3Contract>
 }

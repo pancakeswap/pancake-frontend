@@ -189,7 +189,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
         return callWithGasPrice(collectionContract, 'safeTransferFrom', [account, transferAddress, nftToSell.tokenId])
       }
       const methodName = variant === 'sell' ? 'createAskOrder' : 'modifyAskOrder'
-      const askPrice = parseUnits(price, 18)
+      const askPrice = parseUnits(price as `${number}`, 18)
       return callWithGasPrice(nftMarketContract, methodName, [nftToSell.collectionAddress, nftToSell.tokenId, askPrice])
     },
     onSuccess: async ({ receipt }) => {

@@ -243,7 +243,17 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
 
-  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, ifoCredit }
+  return {
+    ...state,
+    allowance,
+    contract,
+    setPendingTx,
+    setIsClaimed,
+    fetchIfoData,
+    resetIfoData,
+    ifoCredit,
+    version: 3,
+  }
 }
 
 export default useGetWalletIfoData

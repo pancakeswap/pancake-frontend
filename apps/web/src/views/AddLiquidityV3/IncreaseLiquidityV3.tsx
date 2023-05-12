@@ -59,7 +59,10 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3?.address, account)
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(
+    masterchefV3?.address,
+    account,
+  )
 
   const [txHash, setTxHash] = useState<string>('')
 
@@ -129,7 +132,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const positionManager = useV3NFTPositionManagerContract()
   const [allowedSlippage] = useUserSlippage() // custom from users
 
-  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id.eq(tokenId)))
+  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id === BigInt(tokenId)))
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
