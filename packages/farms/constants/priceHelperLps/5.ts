@@ -1,4 +1,5 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
+import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '../..'
 
 const priceHelperLps: SerializedFarmConfig[] = [
@@ -9,6 +10,11 @@ const priceHelperLps: SerializedFarmConfig[] = [
     quoteToken: goerliTestnetTokens.usdc,
     token: goerliTestnetTokens.weth,
   },
-].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
+].map((p) => ({
+  ...p,
+  token: p.token.serialize,
+  quoteToken: p.quoteToken.serialize,
+  lpAddress: getAddress(p.lpAddress),
+}))
 
 export default priceHelperLps

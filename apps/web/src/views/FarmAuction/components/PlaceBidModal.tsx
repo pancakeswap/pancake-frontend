@@ -70,7 +70,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
 
   const cakePriceBusd = usePriceCakeUSD()
   const farmAuctionContract = useFarmAuctionContract()
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
+  const cakeContract = useCake()
 
   const { toastSuccess } = useToast()
 
@@ -104,10 +104,10 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        return requiresApproval(cakeContractReader, account, farmAuctionContract.address)
+        return requiresApproval(cakeContract, account, farmAuctionContract.address)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [farmAuctionContract.address, MaxUint256])
+        return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(

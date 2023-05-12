@@ -92,7 +92,7 @@ export const tryParseUnit = (typedValue?: `${number}`, decimals?: number) => {
   try {
     parseAmountString = parseUnits(typedValue, decimals).toString()
   } catch {
-    parseAmountString = parseUnits(`${toNumber(typedValue).toFixed(decimals)}`, decimals).toString()
+    parseAmountString = parseUnits(`${toNumber(typedValue).toFixed(decimals)}` as `${number}`, decimals).toString()
   } finally {
     // eslint-disable-next-line no-unsafe-finally
     return parseAmountString

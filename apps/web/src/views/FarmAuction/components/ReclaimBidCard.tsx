@@ -25,17 +25,17 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
 
   const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid()
 
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
+  const cakeContract = useCake()
   const farmAuctionContract = useFarmAuctionContract()
 
   const { toastSuccess } = useToast()
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
-      return requiresApproval(cakeContractReader, account, farmAuctionContract.address)
+      return requiresApproval(cakeContract, account, farmAuctionContract.address)
     },
     onApprove: () => {
-      return callWithGasPrice(cakeContractApprover, 'approve', [farmAuctionContract.address, MaxUint256])
+      return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(

@@ -95,12 +95,12 @@ const EasterCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.currentStatus()
+      const competitionStatus = await tradingCompetitionContract.read.currentStatus()
       setCurrentPhase(SmartContractPhases[competitionStatus])
     }
 
     const fetchUserContract = async () => {
-      const user = await tradingCompetitionContract.claimInformation(account)
+      const user = await tradingCompetitionContract.read.claimInformation([account])
       const userObject = {
         isLoading: false,
         account,

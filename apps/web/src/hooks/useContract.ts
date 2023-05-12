@@ -1,26 +1,13 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
-import {
-  Cake,
-  CakeFlexibleSideVaultV2,
-  CakeVaultV2,
-  Erc20,
-  Erc20Bytes32,
-  Erc721collection,
-  Multicall,
-  Weth,
-  Zap,
-  IPancakePair,
-} from 'config/abi/types'
-import QuoterV2Abi from 'config/abi/QuoterV2.json'
-import { erc20ABI, erc721ABI, useWalletClient, useContractWrite, useContractRead } from 'wagmi'
-import { getContract as getContract__ } from 'wagmi/actions'
+
+import { erc20ABI, erc721ABI, useWalletClient, useContractWrite, useContractRead, usePublicClient } from 'wagmi'
+import { getContract as getContract__ } from '@wagmi/core'
 import { Address } from 'viem'
 import { Abi } from 'abitype'
 
 import zapAbi from 'config/abi/zap.json'
 import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
 import addresses from 'config/constants/contracts'
-import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
 import { getAddressFromMap, getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
@@ -151,7 +138,18 @@ export const useMasterchefV1 = () => {
 export const useSousChef = (id) => {
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
-  return useMemo(() => getPoolContractBySousId({ sousId: id, provider: signer, chainId }), [id, signer, chainId])
+  const publicClient = usePublicClient({ chainId })
+  return useMemo(
+    () =>
+      getPoolContractBySousId({
+        sousId: id,
+        signer,
+        chainId,
+        // @ts-ignore FIXME: type
+        publicClient,
+      }),
+    [id, signer, chainId, publicClient],
+  )
 }
 
 export const usePointCenterIfoContract = () => {
@@ -179,7 +177,7 @@ export const useTradingCompetitionContractMoD = () => {
   return useMemo(() => getTradingCompetitionContractMoD(signer), [signer])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | CakeFlexibleSideVaultV2 => {
+export const useVaultPoolContract = (vaultKey: VaultKey) => {
   const { data: signer } = useWalletClient()
   return useMemo(() => {
     if (vaultKey === VaultKey.CakeVault) {

@@ -68,6 +68,7 @@
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "easymde": "^2.16.1",
+    "ethers": "^5.7.0",
     "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",

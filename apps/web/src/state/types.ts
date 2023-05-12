@@ -1,5 +1,4 @@
-import { BigNumber as EthersBigNumber } from 'ethers'
-import { parseUnits } from 'ethers/lib/utils'
+import { parseEther } from 'viem'
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
 import { SerializedPoolWithInfo } from '@pancakeswap/pools'
@@ -24,10 +23,10 @@ export enum GAS_PRICE {
 
 export const GAS_PRICE_GWEI = {
   rpcDefault: 'rpcDefault',
-  default: parseUnits(GAS_PRICE.default, 'gwei').toString(),
-  fast: parseUnits(GAS_PRICE.fast, 'gwei').toString(),
-  instant: parseUnits(GAS_PRICE.instant, 'gwei').toString(),
-  testnet: parseUnits(GAS_PRICE.testnet, 'gwei').toString(),
+  default: parseEther(GAS_PRICE.default, 'gwei').toString(),
+  fast: parseEther(GAS_PRICE.fast, 'gwei').toString(),
+  instant: parseEther(GAS_PRICE.instant, 'gwei').toString(),
+  testnet: parseEther(GAS_PRICE.testnet, 'gwei').toString(),
 }
 
 export interface BigNumberToJson {
@@ -52,7 +51,7 @@ export interface Profile {
   userId: number
   points: number
   teamId: number
-  collectionAddress: string
+  collectionAddress: Address
   tokenId: number
   isActive: boolean
   username: string
@@ -296,6 +295,7 @@ export interface NodeLedger {
   claimed: boolean
 }
 
+// TODO: wagmi remove this
 export interface ReduxNodeRound {
   epoch: number
   startTimestamp: number | null
@@ -514,7 +514,7 @@ export interface PredictionConfig {
 
 // Pottery
 export interface PotteryState {
-  lastVaultAddress: string
+  lastVaultAddress: Address
   publicData: SerializedPotteryPublicData
   userData: SerializedPotteryUserData
   finishedRoundInfo: PotteryRoundInfo
@@ -589,7 +589,7 @@ export interface PotteryWithdrawAbleData {
   depositDate: string
   previewRedeem: string
   status: PotteryDepositStatus
-  potteryVaultAddress: string
+  potteryVaultAddress: Address
   totalSupply: string
   totalLockCake: string
   lockedDate: string

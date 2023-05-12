@@ -79,14 +79,14 @@ export const useChainCurrentBlock = (chainId: number): number => {
   return currentBlock
 }
 
-export const useInitialBlock = (): bigint => {
+export const useInitialBlock = (): number => {
   const { chainId } = useActiveChainId()
   const { data: initialBlock = 0 } = useSWRImmutable(['initialBlockNumber', chainId])
-  return initialBlock
+  return Number(initialBlock)
 }
 
-export const useInitialBlockTimestamp = (): bigint => {
+export const useInitialBlockTimestamp = (): number => {
   const { chainId } = useActiveChainId()
   const { data: initialBlockTimestamp = 0 } = useSWRImmutable(['initialBlockTimestamp', chainId])
-  return initialBlockTimestamp
+  return Number(initialBlockTimestamp)
 }
