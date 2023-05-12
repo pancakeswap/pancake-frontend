@@ -31,7 +31,13 @@ export function getPoolContractBySousId({ chainId, sousId, signer, publicClient 
   if (isLegacyPool(pool)) {
     const abi = pool.poolCategory === PoolCategory.BINANCE ? sousChefBnbABI : sousChefV2ABI
     return {
-      ...getContract({ abi, address: contractAddress, walletClient: signer, publicClient }),
+      ...getContract({
+        // @ts-ignore
+        abi,
+        address: contractAddress,
+        walletClient: signer,
+        publicClient,
+      }),
       address: contractAddress,
       abi,
     }

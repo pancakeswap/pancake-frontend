@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useTokenContract } from 'hooks/useContract'
+import { useERC20, useTokenContract } from 'hooks/useContract'
 
 // Retrieve IFO allowance
 const useIfoAllowance = (
-  tokenContract: ReturnType<typeof useTokenContract>,
-  spenderAddress: string,
+  tokenContract: ReturnType<typeof useTokenContract> | ReturnType<typeof useERC20>, // TODO: merge hooks
+  spenderAddress: Address,
   dependency?: any,
 ): BigNumber => {
   const { address: account } = useAccount()

@@ -1,19 +1,19 @@
 import { Currency, CurrencyAmount, Fraction, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 
 import { parseUnits } from 'viem'
-import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
-import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { mmLinkedPoolABI } from 'config/abi/mmLinkedPool'
 import { useContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
+import { Address } from 'wagmi'
 import { Field } from 'state/swap/actions'
 import { MM_STABLE_TOKENS_WHITE_LIST, MM_SWAP_CONTRACT_ADDRESS, NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { OrderBookRequest, TradeWithMM } from '../types'
 
 export function useMMSwapContract() {
   const { chainId } = useActiveChainId()
-  return useContract<MmLinkedPool>(MM_SWAP_CONTRACT_ADDRESS[chainId], PancakeSwapMMLinkedPoolABI, true)
+  return useContract(MM_SWAP_CONTRACT_ADDRESS[chainId], mmLinkedPoolABI)
 }
 
 // computes price breakdown for the trade
@@ -86,13 +86,13 @@ export function formatExecutionPrice(trade?: TradeWithMM<Currency, Currency, Tra
       }`
 }
 
-export const tryParseUnit = (typedValue?: string, decimals?: number) => {
+export const tryParseUnit = (typedValue?: `${number}`, decimals?: number) => {
   let parseAmountString
   if (!typedValue || !decimals) return parseAmountString
   try {
     parseAmountString = parseUnits(typedValue, decimals).toString()
   } catch {
-    parseAmountString = parseUnits(toNumber(typedValue).toFixed(decimals), decimals).toString()
+    parseAmountString = parseUnits(`${toNumber(typedValue).toFixed(decimals)}`, decimals).toString()
   } finally {
     // eslint-disable-next-line no-unsafe-finally
     return parseAmountString
@@ -104,8 +104,8 @@ export const parseMMParameter = (
   inputCurrency?: Currency,
   outputCurrency?: Currency,
   independentField?: Field,
-  typedValue?: string,
-  account?: string,
+  typedValue?: `${number}`,
+  account?: Address,
   isForRFQ?: boolean,
 ): OrderBookRequest => {
   if (!chainId || !inputCurrency || !outputCurrency || !outputCurrency || !independentField || !typedValue) return null

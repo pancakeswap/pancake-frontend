@@ -11,13 +11,13 @@ const useNftOwner = (nft: NftToken, isOwnNft = false) => {
   const { address: account } = useAccount()
   const [owner, setOwner] = useState(null)
   const [isLoadingOwner, setIsLoadingOwner] = useState(true)
-  const { reader: collectionContract } = useErc721CollectionContract(nft.collectionAddress)
+  const collectionContract = useErc721CollectionContract(nft.collectionAddress)
   const currentSeller = nft.marketData?.currentSeller
   const pancakeProfileAddress = getPancakeProfileAddress()
   const { collectionAddress, tokenId } = nft
   const { data: tokenOwner } = useSWR(
     collectionContract ? ['nft', 'ownerOf', collectionAddress, tokenId] : null,
-    async () => collectionContract.ownerOf(tokenId),
+    async () => collectionContract.read.ownerOf([tokenId]),
   )
 
   useEffect(() => {

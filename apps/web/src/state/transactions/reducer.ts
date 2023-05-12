@@ -2,6 +2,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
+import { Hash } from 'viem'
 import {
   addTransaction,
   checkedTransaction,
@@ -18,7 +19,7 @@ import { resetUserState } from '../global/actions'
 const now = () => Date.now()
 
 export interface TransactionDetails {
-  hash: string
+  hash: Hash
   approval?: { tokenAddress: string; spender: string }
   type?: TransactionType
   order?: Order

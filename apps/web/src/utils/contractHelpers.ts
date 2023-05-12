@@ -105,6 +105,7 @@ import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 
 import { viemClients } from './viem'
+import { SIDResolverABI } from 'config/abi/SIDResolver'
 
 export const getContract = <TAbi extends Abi | unknown[]>({
   abi,
@@ -299,11 +300,36 @@ export const getSidContract = (address: Address, chainId: number) => {
 }
 
 export const getUnsContract = (address: Address, chainId?: ChainId, signer?: WalletClient) => {
-  return getContract({ abi: uns, chainId, address, signer })
+  return getContract({
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'addr',
+            type: 'address',
+          },
+        ],
+        name: 'reverseNameOf',
+        outputs: [
+          {
+            internalType: 'string',
+            name: 'reverseUri',
+            type: 'string',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ] as const,
+    chainId,
+    address,
+    signer,
+  })
 }
 
 export const getSidResolverContract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: sidResolver, address, signer })
+  return getContract({ abi: SIDResolverABI, address, signer })
 }
 
 export const getCrossFarmingSenderContract = (signer?: WalletClient, chainId?: number) => {

@@ -1,5 +1,4 @@
 import React, { memo, useMemo } from 'react'
-import { BigNumber } from 'ethers'
 import CountUp from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
@@ -7,7 +6,7 @@ import { BetPosition } from 'state/types'
 
 interface LiveRoundPriceProps {
   betPosition: BetPosition
-  price: BigNumber
+  price: bigint
 }
 
 const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = ({ betPosition, price }) => {
