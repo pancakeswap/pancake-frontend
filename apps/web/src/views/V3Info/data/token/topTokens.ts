@@ -4,7 +4,10 @@ const TVL_FILTER = 100_000 // 100k
 
 export const TOP_TOKENS = gql`
   query topPools {
-    tokens(first: 50,where:{ totalValueLockedUSD_gte:${TVL_FILTER},derivedUSD_gt:0 }, orderBy: totalValueLockedUSD, orderDirection: desc) {
+    tokens(first: 50, 
+    where:{ totalValueLockedUSD_gte:${TVL_FILTER}, derivedUSD_gt:0 },
+    orderBy: totalValueLockedUSD,
+    orderDirection: desc) {
       id
     }
   }
