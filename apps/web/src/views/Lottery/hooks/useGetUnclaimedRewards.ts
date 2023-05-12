@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
-import { FetchStatus } from 'config/constants/types'
+import { FetchStatus, TFetchStatus } from 'config/constants/types'
 
 const useGetUnclaimedRewards = () => {
   const { address: account } = useAccount()
@@ -10,7 +10,7 @@ const useGetUnclaimedRewards = () => {
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState([])
-  const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
+  const [fetchStatus, setFetchStatus] = useState<TFetchStatus>(FetchStatus.Idle)
 
   useEffect(() => {
     // Reset on account change and round transition

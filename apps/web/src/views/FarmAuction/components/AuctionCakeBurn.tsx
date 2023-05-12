@@ -19,7 +19,7 @@ const BurnedText = styled(Text)`
 const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
-  const farmAuctionContract = useFarmAuctionContract(false)
+  const farmAuctionContract = useFarmAuctionContract()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const cakePriceBusd = usePriceCakeUSD()
 
@@ -28,7 +28,7 @@ const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     const fetchBurnedCakeAmount = async () => {
       try {
-        const amount = await farmAuctionContract.totalCollected()
+        const amount = await farmAuctionContract.read.totalCollected()
         const amountAsBN = bigIntToBigNumber(amount)
         setBurnedCakeAmount(getBalanceNumber(amountAsBN))
       } catch (error) {

@@ -8,6 +8,7 @@ import useSWR from 'swr'
 import { FetchStatus } from 'config/constants/types'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { isAddress } from 'utils'
+import { getAddress } from 'viem'
 
 export const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
   const { data: collections } = useGetCollections()
@@ -36,7 +37,7 @@ export const useCollectionsNftsForAddress = (
     if (hasProfileNft) {
       return {
         tokenId: profileNftTokenId,
-        collectionAddress: profileNftCollectionAddress,
+        collectionAddress: getAddress(profileNftCollectionAddress),
         nftLocation: NftLocation.PROFILE,
       }
     }

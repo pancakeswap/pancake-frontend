@@ -9,14 +9,14 @@ import {
   HistoryFilter,
   PredictionsState,
   PredictionStatus,
-  ReduxNodeRound,
   BetPosition,
   PredictionUser,
   LeaderboardFilter,
   PredictionsChartView,
   PredictionConfig,
+  NodeRound,
 } from 'state/types'
-import { Address } from 'wagmi'
+import { Address, deserialize } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
 import {
@@ -89,12 +89,12 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Ad
 
     // Round data
     const roundsResponse = await getRoundsData(epochs, extra.address)
-    const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
+    const initialRoundData: { [key: string]: string } = roundsResponse.reduce((accum, roundResponse) => {
       const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
       return {
         ...accum,
-        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
+        [roundResponse.epoch.toString()]: reduxNodeRound,
       }
     }, {})
 
@@ -126,7 +126,7 @@ export const fetchLedgerData = createAsyncThunk<
   { account: string; epochs: number[] },
   { extra: PredictionConfig }
 >('predictions/fetchLedgerData', async ({ account, epochs }, { extra }) => {
-  const ledgers = await getLedgerData(account, epochs, extra.address)
+  const ledgers = await getLedgerData(account as Address, epochs, extra.address)
   return makeLedgerData(account, ledgers, epochs)
 })
 
@@ -171,8 +171,8 @@ export const fetchNodeHistory = createAsyncThunk<
 
   // Turn the data from the node into a Bet object that comes from the graph
   const bets: Bet[] = roundData.reduce((accum, round) => {
-    const ledger = userRounds[round.epoch.toNumber()]
-    const ledgerAmount = BigNumber.from(ledger.amount)
+    const ledger = userRounds[Number(round.epoch)]
+    const ledgerAmount = BigInt(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
     const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
 
@@ -181,11 +181,11 @@ export const fetchNodeHistory = createAsyncThunk<
         return null
       }
 
-      if (round.closePrice.eq(round.lockPrice)) {
+      if (round.closePrice === round.lockPrice) {
         return BetPosition.HOUSE
       }
 
-      return round.closePrice.gt(round.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+      return round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
     }
 
     return [
@@ -193,7 +193,7 @@ export const fetchNodeHistory = createAsyncThunk<
       {
         id: null,
         hash: null,
-        amount: parseFloat(formatUnits(ledgerAmount)),
+        amount: parseFloat(formatUnits(ledgerAmount, 18)),
         position: ledger.position,
         claimed: ledger.claimed,
         claimedAt: null,
@@ -205,16 +205,16 @@ export const fetchNodeHistory = createAsyncThunk<
         block: 0,
         round: {
           id: null,
-          epoch: round.epoch.toNumber(),
+          epoch: Number(round.epoch),
           failed: getHasRoundFailed(
             round.oracleCalled,
-            round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
+            round.closeTimestamp === 0n ? null : Number(round.closeTimestamp),
             bufferSeconds,
           ),
           startBlock: null,
-          startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
+          startAt: round.startTimestamp ? Number(round.startTimestamp) : null,
           startHash: null,
-          lockAt: round.lockTimestamp ? round.lockTimestamp.toNumber() : null,
+          lockAt: round.lockTimestamp ? Number(round.lockTimestamp) : null,
           lockBlock: null,
           lockPrice,
           lockHash: null,
@@ -225,18 +225,18 @@ export const fetchNodeHistory = createAsyncThunk<
           closePrice,
           closeBlock: null,
           totalBets: 0,
-          totalAmount: parseFloat(formatUnits(round.totalAmount)),
+          totalAmount: parseFloat(formatUnits(round.totalAmount, 18)),
           bullBets: 0,
-          bullAmount: parseFloat(formatUnits(round.bullAmount)),
+          bullAmount: parseFloat(formatUnits(round.bullAmount, 18)),
           bearBets: 0,
-          bearAmount: parseFloat(formatUnits(round.bearAmount)),
+          bearAmount: parseFloat(formatUnits(round.bearAmount, 18)),
           position: getRoundPosition(),
         },
       },
     ]
   }, [])
 
-  return { bets, claimableStatuses, page, totalHistory: userRoundsLength.toNumber() }
+  return { bets, claimableStatuses, page, totalHistory: Number(userRoundsLength) }
 })
 
 // Leaderboard
@@ -259,6 +259,8 @@ export const filterLeaderboard = createAsyncThunk<
 
   return { results: usersResponse.map(transformer) }
 })
+
+export const deserializeRound = (round: string) => deserialize(round) as NodeRound
 
 export const fetchAddressResult = createAsyncThunk<
   { account: string; data: PredictionUser },
@@ -412,10 +414,12 @@ export const predictionsSlice = createSlice({
         return Number(key) > state.currentEpoch - PAST_ROUND_COUNT
       })
 
-      const futureRounds: ReduxNodeRound[] = []
-      const currentRound = rounds[currentEpoch]
+      const futureRounds: string[] = []
+      const currentRound = deserializeRound(rounds[currentEpoch])
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRound.startTimestamp + intervalSeconds * i))
+        futureRounds.push(
+          makeFutureRoundResponse(currentEpoch + i, Number(currentRound.startTimestamp) + intervalSeconds * i),
+        )
       }
 
       newRounds = { ...newRounds, ...makeRoundData(futureRounds) }

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Flex, Text, Input, Box, Button, ArrowForwardIcon, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
+import { keccak256, encodePacked, toBytes } from 'viem'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -112,18 +112,22 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
       // BSC wallet sign message only accept string
       const message =
         connector?.id === 'bsc'
-          ? ethers.utils.solidityKeccak256(
-              ['string', 'uint256', 'uint256', 'uint256'],
-              [linkId, Number(percentage), Number(percentage), Number(percentage)],
-            )
-          : ethers.utils.arrayify(
-              ethers.utils.solidityKeccak256(
+          ? keccak256(
+              encodePacked(
                 ['string', 'uint256', 'uint256', 'uint256'],
-                [linkId, Number(percentage), Number(percentage), Number(percentage)],
+                [linkId, BigInt(percentage), BigInt(percentage), BigInt(percentage)],
+              ),
+            )
+          : toBytes(
+              keccak256(
+                encodePacked(
+                  ['string', 'uint256', 'uint256', 'uint256'],
+                  [linkId, BigInt(percentage), BigInt(percentage), BigInt(percentage)],
+                ),
               ),
             )
 
-      const signature = await signMessageAsync({ message })
+      const signature = await signMessageAsync({ message: message as any })
       const data = {
         fee: {
           linkId,

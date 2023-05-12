@@ -109,7 +109,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     setState({ ...initialState })
   }, [])
 
-  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData }
+  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, version: 2 }
 }
 
 export default useGetWalletIfoData

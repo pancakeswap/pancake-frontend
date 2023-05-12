@@ -1,4 +1,3 @@
-import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
 import { useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -23,6 +22,7 @@ import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
 import { useIsBloctoETH } from 'views/Farms'
+import { Hash } from 'viem'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useApproveFarm from '../../../hooks/useApproveFarm'
@@ -37,10 +37,10 @@ interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
   lpLabel?: string
   displayApr?: string
-  onStake?: (value: string) => Promise<TransactionResponse>
-  onUnstake?: (value: string) => Promise<TransactionResponse>
+  onStake?: (value: string) => Promise<Hash>
+  onUnstake?: (value: string) => Promise<Hash>
   onDone?: () => void
-  onApprove?: () => Promise<TransactionResponse>
+  onApprove?: () => Promise<Hash>
   isApproved?: boolean
   shouldUseProxyFarm?: boolean
 }

@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import type { Overrides } from 'ethers'
-import type { TransactionResponse } from '@ethersproject/providers'
 
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
@@ -22,8 +20,8 @@ export interface GelatoLimitOrdersHandlers {
     inputAmount: string
     outputAmount: string
     owner: string
-    overrides?: Overrides
-  }) => Promise<TransactionResponse>
+    overrides?: any
+  }) => Promise<any>
   handleLimitOrderCancellation: (
     order: Order,
     orderDetails?: {
@@ -32,8 +30,8 @@ export interface GelatoLimitOrdersHandlers {
       inputAmount: string
       outputAmount: string
     },
-    overrides?: Overrides,
-  ) => Promise<TransactionResponse>
+    overrides?: any,
+  ) => Promise<any>
   handleInput: (field: Field, value: string) => void
   handleCurrencySelection: (field: Field.INPUT | Field.OUTPUT, currency: Currency) => void
   handleSwitchTokens: () => void

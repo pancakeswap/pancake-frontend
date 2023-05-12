@@ -1,4 +1,4 @@
-import { parseUnits } from 'viem'
+import { parseEther } from 'viem'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -29,7 +29,7 @@ interface WalletModalProps extends InjectedModalProps {
   initialView?: WalletView
 }
 
-export const LOW_NATIVE_BALANCE = parseUnits('0.002', 'ether')
+export const LOW_NATIVE_BALANCE = parseEther('0.002', 'ether')
 
 const ModalHeader = styled(UIKitModalHeader)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};

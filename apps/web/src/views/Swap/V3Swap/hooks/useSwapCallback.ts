@@ -7,7 +7,6 @@ import { ReactNode, useMemo } from 'react'
 
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 
@@ -46,7 +45,6 @@ export function useSwapCallback({
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
-  const provider = useProviderOrSigner()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const { recipient: recipientAddress } = useSwapState()
@@ -63,7 +61,7 @@ export function useSwapCallback({
   const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
 
   return useMemo(() => {
-    if (!trade || !provider || !account || !chainId || !callback) {
+    if (!trade || !account || !chainId || !callback) {
       return { state: SwapCallbackState.INVALID, error: t('Missing dependencies') }
     }
     if (!recipient) {
@@ -77,5 +75,5 @@ export function useSwapCallback({
       state: SwapCallbackState.VALID,
       callback: async () => callback(),
     }
-  }, [trade, account, chainId, callback, recipient, recipientAddress, provider, t])
+  }, [trade, account, chainId, callback, recipient, recipientAddress, t])
 }
