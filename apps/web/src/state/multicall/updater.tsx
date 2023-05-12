@@ -38,7 +38,9 @@ async function fetchChunk(
     [resultsBlockNumber, , returnData] = await multicallContract.read.tryBlockAndAggregate([
       false,
       chunk.map((obj) => ({ callData: obj.callData, target: obj.address })),
-    ])
+    ], {
+      blockNumber: BigInt(minBlockNumber),
+    })
   } catch (err) {
     const error = err as any
     if (

@@ -27,7 +27,7 @@ export const fetchFarmUserAllowances = async (
         abi: erc20ABI,
         address: lpContractAddress,
         functionName: 'allowance',
-        params: [account, proxyAddress || masterChefAddress],
+        args: [account, proxyAddress || masterChefAddress],
       }
     }),
     allowFailure: false,
@@ -52,7 +52,7 @@ export const fetchFarmUserTokenBalances = async (
         abi: erc20ABI,
         address: lpContractAddress,
         functionName: 'balanceOf',
-        params: [account],
+        args: [account],
       }
     }),
     allowFailure: false,
