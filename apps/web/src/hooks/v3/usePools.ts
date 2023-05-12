@@ -7,7 +7,6 @@ import { v3PoolStateABI } from 'config/abi/v3PoolState'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from './types'
 
-
 // Classes are expensive to instantiate, so this caches the recently instantiated pools.
 // This avoids re-instantiating pools as the other pools in the same request are loaded.
 class PoolCache {
@@ -121,18 +120,11 @@ export function usePools(
       if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
       if (slot0Loading || liquidityLoading) return [PoolState.LOADING, null]
       if (!slot0 || !liquidity) return [PoolState.NOT_EXISTS, null]
-      if (!slot0.sqrtPriceX96 || slot0.sqrtPriceX96.eq(0)) return [PoolState.NOT_EXISTS, null]
+      const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
+      if (!sqrtPriceX96 || sqrtPriceX96 === 0n) return [PoolState.NOT_EXISTS, null]
 
       try {
-        const pool = PoolCache.getPool(
-          token0,
-          token1,
-          fee,
-          slot0.sqrtPriceX96,
-          liquidity[0],
-          slot0.tick,
-          slot0.feeProtocol,
-        )
+        const pool = PoolCache.getPool(token0, token1, fee, sqrtPriceX96, liquidity, tick, feeProtocol)
         return [PoolState.EXISTS, pool]
       } catch (error) {
         console.error('Error when constructing the pool', error)

@@ -79,8 +79,16 @@ const CreateProposal = () => {
 
       const web3 = {
         getSigner: () => {
-          // eslint-disable-next-line
-          _signTypedData: signer.signTypedData
+          return {
+            _signTypedData: (domain, types, message) =>
+              signer.signTypedData({
+                account,
+                domain,
+                types,
+                message,
+                primaryType: 'Proposal',
+              }),
+          }
         },
       }
 
@@ -155,7 +163,7 @@ const CreateProposal = () => {
     if (initialBlock > 0) {
       setState((prevState) => ({
         ...prevState,
-        snapshot: initialBlock,
+        snapshot: Number(initialBlock),
       }))
     }
   }, [initialBlock, setState])
