@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { PublicClient, Address, FallbackTransport, Chain } from 'viem'
+import { PublicClient, Address } from 'viem'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
 

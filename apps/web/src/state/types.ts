@@ -7,7 +7,7 @@ import { Address } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import {
   CampaignType,
-  FetchStatusT,
+  TFetchStatus,
   LotteryStatus,
   LotteryTicket,
   Team,
@@ -361,7 +361,7 @@ export interface PredictionsState {
   }
   leaderboard: {
     selectedAddress: string
-    loadingState: FetchStatusT
+    loadingState: TFetchStatus
     filters: LeaderboardFilter
     skip: number
     hasMoreResults: boolean
