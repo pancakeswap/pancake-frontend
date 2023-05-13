@@ -1,7 +1,7 @@
 import { useBCakeFarmBoosterContract, useMasterchef } from 'hooks/useContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
 import masterChefAbi from 'config/abi/masterchef.json'
-import { FixedNumber } from '@ethersproject/bignumber'
+import { FixedNumber } from 'ethers'
 import { multicallv2 } from 'utils/multicall'
 import { useCallback } from 'react'
 import useSWR from 'swr'

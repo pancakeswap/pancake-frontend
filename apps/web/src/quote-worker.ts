@@ -1,4 +1,3 @@
-import { JSBI } from '@pancakeswap/sdk'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { viemClients } from 'utils/viem'
 
@@ -48,8 +47,8 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
     const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
 
     const gasPrice = gasPriceWei
-      ? JSBI.BigInt(gasPriceWei)
-      : async () => JSBI.BigInt(await (await viemClients({ chainId }).getGasPrice()).toString())
+      ? BigInt(gasPriceWei)
+      : async () => BigInt(await (await viemClients({ chainId }).getGasPrice()).toString())
 
     SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
       gasPriceWei: gasPrice,

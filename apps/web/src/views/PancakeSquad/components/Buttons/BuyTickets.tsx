@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { ContextApi } from '@pancakeswap/localization'
 import { Button, useModal, useToast } from '@pancakeswap/uikit'

@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base",
+  "extends": "@pancakeswap/tsconfig/base",
   "include": ["./src"],
   "exclude": ["**/*.test.ts"],
   "compilerOptions": {

@@ -1,5 +1,5 @@
-import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
+import { Contract } from 'ethers'
+import { Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { BIPS_BASE } from 'config/constants/exchange'
@@ -41,7 +41,7 @@ export function useSwapCallArguments(
     swapMethods.push(
       Router.swapCallParameters(trade, {
         feeOnTransfer: false,
-        allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+        allowedSlippage: new Percent(BigInt(allowedSlippage), BIPS_BASE),
         recipient,
         deadline: deadline.toNumber(),
       }),
@@ -51,7 +51,7 @@ export function useSwapCallArguments(
       swapMethods.push(
         Router.swapCallParameters(trade, {
           feeOnTransfer: true,
-          allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+          allowedSlippage: new Percent(BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
         }),

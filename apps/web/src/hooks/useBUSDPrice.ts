@@ -2,7 +2,6 @@ import {
   ChainId,
   Currency,
   CurrencyAmount,
-  JSBI,
   Pair,
   Price,
   Token,
@@ -17,7 +16,6 @@ import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
@@ -47,12 +45,6 @@ export function useStablecoinPrice(
   const { chainId: currentChainId } = useActiveChainId()
   const chainId = currency?.chainId
   const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
-
-  const baseTradeAgainst = useMemo(
-    () =>
-      currency && BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId]?.find((c) => c.wrapped.equals(currency.wrapped)),
-    [chainId, currency],
-  )
 
   const cakePrice = useCakePriceAsBN()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
@@ -92,9 +84,9 @@ export function useStablecoinPrice(
     baseCurrency: stableCoin,
     tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
-    maxHops: baseTradeAgainst ? 2 : 3,
     enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
     autoRevalidate: false,
+    type: 'api',
   })
 
   const price = useMemo(() => {
@@ -217,10 +209,10 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
       busdBnbPair.reserve1.greaterThan('0')
 
     const bnbPairBNBAmount = isBnbPairExist && bnbPair?.reserveOf(wnative)
-    const bnbPairBNBBUSDValue: JSBI =
+    const bnbPairBNBBUSDValue: bigint =
       bnbPairBNBAmount && isBUSDPairExist && isBusdBnbPairExist
         ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient
-        : JSBI.BigInt(0)
+        : 0n
 
     // all other tokens
     // first try the busd pair

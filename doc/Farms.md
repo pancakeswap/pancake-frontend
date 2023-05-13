@@ -4,7 +4,7 @@
 
 - Add an entry in `packages/farms/constants/[chainId].ts`, below the farm with the pid 0
 - Insert informations, with the LP address and the correct tokens (See [Tokens](./Tokens.md))
-- Run `yarn test:config` to make sure the data you set in the config match the data on chain
+- Run `pnpm test:config` to make sure the data you set in the config match the data on chain
 
 ## Farms data
 

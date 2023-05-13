@@ -1,4 +1,4 @@
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 
 export const MINT_COST = parseUnits('1')
 export const REGISTER_COST = parseUnits('0.5')

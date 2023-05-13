@@ -1,21 +1,20 @@
 import { MaxUint256 } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { ONE } from '../internalConstants'
 import { mostSignificantBit } from './mostSignificantBit'
 
 describe('mostSignificantBit', () => {
   it('throws for zero', () => {
-    expect(() => mostSignificantBit(JSBI.BigInt(0))).toThrow('ZERO')
+    expect(() => mostSignificantBit(0n)).toThrow('ZERO')
   })
   it('correct value for every power of 2', () => {
     for (let i = 1; i < 256; i++) {
-      const x = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(i))
+      const x = 2n ** BigInt(i)
       expect(mostSignificantBit(x)).toEqual(i)
     }
   })
   it('correct value for every power of 2 - 1', () => {
     for (let i = 2; i < 256; i++) {
-      const x = JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(i)), JSBI.BigInt(1))
+      const x = 2n ** BigInt(i) - 1n
       expect(mostSignificantBit(x)).toEqual(i - 1)
     }
   })
@@ -25,6 +24,6 @@ describe('mostSignificantBit', () => {
   })
 
   it('throws for MaxUint256 + 1', () => {
-    expect(() => mostSignificantBit(JSBI.add(MaxUint256, ONE))).toThrow('MAX')
+    expect(() => mostSignificantBit(MaxUint256 + ONE)).toThrow('MAX')
   })
 })

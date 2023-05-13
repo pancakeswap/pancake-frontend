@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { BigintIsh } from '@pancakeswap/sdk'
 import { Multicall, toHex } from '@pancakeswap/v3-sdk'
 

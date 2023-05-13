@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { atomWithReducer } from 'jotai/utils'
 import { Field, resetMintState, typeInput } from './actions'
 
 export interface MintState {
@@ -13,7 +14,7 @@ const initialState: MintState = {
   otherTypedValue: '',
 }
 
-export default createReducer<MintState>(initialState, (builder) =>
+export const reducer = createReducer<MintState>(initialState, (builder) =>
   builder
     .addCase(resetMintState, () => initialState)
     .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {
@@ -43,3 +44,5 @@ export default createReducer<MintState>(initialState, (builder) =>
       }
     }),
 )
+
+export const mintReducerAtom = atomWithReducer(initialState, reducer)

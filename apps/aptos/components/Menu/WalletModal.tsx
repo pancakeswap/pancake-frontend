@@ -6,7 +6,7 @@ import {
   IconButton,
   InjectedModalProps,
   ModalBody,
-  ModalContainer,
+  ModalWrapper,
   ModalHeader as UIKitModalHeader,
   ModalTitle,
 } from '@pancakeswap/uikit'
@@ -72,7 +72,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   }, [])
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalWrapper minWidth="320px">
       <ModalHeader>
         <ModalTitle>
           <Heading>{t('Your Wallet')}</Heading>
@@ -88,7 +88,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
         )}
         {view === WalletView.TRANSACTIONS && <WalletTransactions />}
       </ModalBody>
-    </ModalContainer>
+    </ModalWrapper>
   )
 }
 

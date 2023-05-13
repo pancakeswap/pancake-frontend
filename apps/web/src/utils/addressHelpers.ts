@@ -1,9 +1,12 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Pool } from '@pancakeswap/uikit'
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 
-export const getAddress = (address: Pool.Address, chainId?: number): string => {
+export interface Addresses {
+  [chainId: number]: `0x${string}`
+}
+
+export const getAddress = (address: Addresses, chainId?: number): `0x${string}` => {
   return address[chainId] ? address[chainId] : address[ChainId.BSC]
 }
 
@@ -31,14 +34,8 @@ export const getBunnyFactoryAddress = () => {
 export const getPredictionsV1Address = () => {
   return getAddress(addresses.predictionsV1)
 }
-export const getClaimRefundAddress = () => {
-  return getAddress(addresses.claimRefund)
-}
 export const getPointCenterIfoAddress = () => {
   return getAddress(addresses.pointCenterIfo)
-}
-export const getBunnySpecialAddress = () => {
-  return getAddress(addresses.bunnySpecial)
 }
 export const getTradingCompetitionAddressEaster = () => {
   return getAddress(addresses.tradingCompetitionEaster)
@@ -53,10 +50,6 @@ export const getTradingCompetitionAddressMobox = () => {
 
 export const getTradingCompetitionAddressMoD = () => {
   return getAddress(addresses.tradingCompetitionMoD)
-}
-
-export const getEasterNftAddress = () => {
-  return getAddress(addresses.easterNft)
 }
 
 export const getVaultPoolAddress = (vaultKey: VaultKey) => {
@@ -74,18 +67,6 @@ export const getCakeFlexibleSideVaultAddress = () => {
   return getAddress(addresses.cakeFlexibleSideVault)
 }
 
-export const getBunnySpecialCakeVaultAddress = () => {
-  return getAddress(addresses.bunnySpecialCakeVault)
-}
-export const getBunnySpecialPredictionAddress = () => {
-  return getAddress(addresses.bunnySpecialPrediction)
-}
-export const getBunnySpecialLotteryAddress = () => {
-  return getAddress(addresses.bunnySpecialLottery)
-}
-export const getBunnySpecialXmasAddress = () => {
-  return getAddress(addresses.bunnySpecialXmas)
-}
 export const getFarmAuctionAddress = () => {
   return getAddress(addresses.farmAuction)
 }
@@ -133,10 +114,6 @@ export const getCrossFarmingReceiverAddress = (chainId?: number) => {
   return getAddress(addresses.crossFarmingReceiver, chainId)
 }
 
-export const getMMLinkedPoolAddress = (chainId?: number) => {
-  return getAddress(addresses.mmLinkedPool, chainId)
-}
-
 export const getStableSwapNativeHelperAddress = (chainId?: number) => {
   return getAddress(addresses.stableSwapNativeHelper, chainId)
 }
@@ -147,4 +124,8 @@ export const getMasterChefV3Address = (chainId?: number) => {
 
 export const getV3MigratorAddress = (chainId?: number) => {
   return getAddress(addresses.v3Migrator, chainId)
+}
+
+export const getV3AirdropAddress = (chainId?: number) => {
+  return getAddress(addresses.v3Airdrop, chainId)
 }

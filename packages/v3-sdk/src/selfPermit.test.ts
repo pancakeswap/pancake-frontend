@@ -1,5 +1,4 @@
 import { Token } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { AllowedPermitArguments, SelfPermit, StandardPermitArguments } from './selfPermit'
 
 const token = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0', 'token0')
@@ -7,15 +6,15 @@ const standardPermitOptions: StandardPermitArguments = {
   v: 0,
   r: '0x0000000000000000000000000000000000000000000000000000000000000001',
   s: '0x0000000000000000000000000000000000000000000000000000000000000002',
-  amount: JSBI.BigInt(123),
-  deadline: JSBI.BigInt(123),
+  amount: 123n,
+  deadline: 123n,
 }
 const allowedPermitOptions: AllowedPermitArguments = {
   v: 0,
   r: '0x0000000000000000000000000000000000000000000000000000000000000001',
   s: '0x0000000000000000000000000000000000000000000000000000000000000002',
-  nonce: JSBI.BigInt(123),
-  expiry: JSBI.BigInt(123),
+  nonce: 123n,
+  expiry: 123n,
 }
 
 describe('SelfPermit', () => {

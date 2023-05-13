@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Text, Flex, Checkbox, Button } from "@pancakeswap/uikit";
+import { Flex } from "../Box";
+import { Checkbox } from "../Checkbox";
+import { Text } from "../Text";
+import { Button } from "../Button";
 
 interface AcknowledgementProps {
   handleContinueClick: () => void;

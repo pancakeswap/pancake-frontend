@@ -16,10 +16,6 @@ import type {
 } from "@pancakeswap/pools";
 import { VaultKey } from "@pancakeswap/pools";
 
-export interface Address {
-  [chainId: number]: string;
-}
-
 export {
   PoolCategory,
   PoolConfigBaseProps,

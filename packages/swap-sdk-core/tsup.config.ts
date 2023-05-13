@@ -11,10 +11,12 @@ export default defineConfig((options) => ({
   splitting: true,
   clean: !options.watch,
   onSuccess: async () => {
-    exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
+    exec('tsc --emitDeclarationOnly --declaration', (err) => {
       if (err) {
-        console.error(stdout)
-        process.exit(1)
+        console.error(err)
+        if (!options.watch) {
+          process.exit(1)
+        }
       }
     })
   },

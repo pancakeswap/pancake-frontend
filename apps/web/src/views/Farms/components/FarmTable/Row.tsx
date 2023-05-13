@@ -118,7 +118,7 @@ const FarmMobileCell = styled.td`
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { initialActivity, userDataReady, farm } = props
   const hasSetInitialValue = useRef(false)
-  const hasStakedAmount = farm.isStaking ?? false
+  const hasStakedAmount = farm.isStaking || false
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
@@ -126,18 +126,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
-
-  const aprTooltip = useTooltip(
-    <>
-      <Text>
-        {t(
-          'Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.',
-        )}
-      </Text>
-      <br />
-      <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
-    </>,
-  )
 
   useEffect(() => {
     setActionPanelExpanded(hasStakedAmount)
@@ -206,10 +194,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner onClick={(e) => e.stopPropagation()}>
                         <CellLayout label={t('APR')}>
-                          <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
-                            <FarmV3ApyButton farm={props.details} />
-                          </TooltipText>
-                          {aprTooltip.tooltipVisible && aprTooltip.tooltip}
+                          <FarmV3ApyButton farm={props.details} />
                         </CellLayout>
                       </CellInner>
                     </td>

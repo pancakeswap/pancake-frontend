@@ -64,7 +64,14 @@ const handler: NextApiHandler = async (req, res) => {
 
   res.setHeader('Cache-Control', 's-maxage=86400, max-age=3600')
 
-  return res.status(response.status).json(json)
+  return res.status(response.status).json({
+    ...json,
+    data: {
+      trust_level: json.data.trust_level,
+      band: json.data.band,
+      scanned_ts: json.data.scanned_ts,
+    },
+  })
 }
 
 export default handler

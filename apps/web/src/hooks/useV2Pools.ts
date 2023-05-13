@@ -1,5 +1,5 @@
-import { CurrencyAmount, Pair as SDKPair, Currency, JSBI, Token, Price, ZERO } from '@pancakeswap/sdk'
-import { SmartRouter, V2Pool, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
+import { CurrencyAmount, Pair as SDKPair, Currency, Token, Price, ZERO } from '@pancakeswap/sdk'
+import { SmartRouter, V2Pool } from '@pancakeswap/smart-router/evm'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
@@ -37,7 +37,7 @@ export function useV2CandidatePools(currencyA?: Currency, currencyB?: Currency, 
   }, [currencyA, currencyB])
 
   const pairs = useMemo(() => {
-    SmartRouter.metric('Getting pairs from', currencyA?.symbol, currencyB?.symbol)
+    SmartRouter.metric('Getting pairs from', currencyA?.symbol || '', currencyB?.symbol || '')
     return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
   }, [currencyA, currencyB])
   const { data: poolsFromSubgraphState, isLoading, isValidating } = useV2PoolsFromSubgraph(pairs, { ...options, key })
@@ -73,9 +73,9 @@ export function useV2CandidatePoolsFromOnChain(
   params: V2PoolsHookParams = {},
 ) {
   const { data: baseTokenUsdPrices, isLoading: usdPriceLoading } = useSWR<Map<string, number>>(
-    currencyA && ['BasesUsdPrice', currencyA?.chainId],
+    currencyA && currencyB && ['BasesUsdPrice', currencyA?.chainId, currencyA?.symbol, currencyB?.symbol],
     async () => {
-      const baseTokens: Token[] = BASES_TO_CHECK_TRADES_AGAINST[currencyA?.chainId]
+      const baseTokens: Token[] = SmartRouter.getCheckAgainstBaseTokens(currencyA, currencyB)
       const client = v3Clients[currencyA?.chainId]
       if (!client || !baseTokens) {
         return null
@@ -136,7 +136,7 @@ export function useV2CandidatePoolsFromOnChain(
             }
             return {
               ...pool,
-              tvlUSD: JSBI.BigInt(Math.floor(getAmountUsd(pool.reserve0) + getAmountUsd(pool.reserve1))),
+              tvlUSD: BigInt(Math.floor(getAmountUsd(pool.reserve0) + getAmountUsd(pool.reserve1))),
               address: SDKPair.getAddress(pool.reserve0.wrapped.currency, pool.reserve1.wrapped.currency),
             }
           })
@@ -167,7 +167,7 @@ export function useV2PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
   }>(
     queryEnabled && ['V2PoolsFromSubgraph', key],
     async () => {
-      fetchingBlock.current = blockNumber.toString()
+      fetchingBlock.current = blockNumber?.toString()
       try {
         const pools = await SmartRouter.getV2PoolSubgraph({
           provider: ({ chainId }) => infoClientWithChain(chainId),

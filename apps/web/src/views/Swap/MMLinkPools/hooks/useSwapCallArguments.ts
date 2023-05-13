@@ -1,4 +1,4 @@
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'

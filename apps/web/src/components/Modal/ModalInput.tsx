@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 
 interface ModalInputProps {

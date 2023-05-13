@@ -9,8 +9,8 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
     tokenImage: {
-      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
-      secondarySrc: '/images/tokens/autorenew.svg',
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
+      secondarySrc: '/images/autorenew.svg',
     },
   },
   [VaultKey.CakeVault]: {
@@ -19,8 +19,8 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 600000,
     tokenImage: {
-      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
-      secondarySrc: '/images/tokens/autorenew.svg',
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
+      secondarySrc: '/images/autorenew.svg',
     },
   },
   [VaultKey.CakeFlexibleSideVault]: {
@@ -29,8 +29,8 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
-      secondarySrc: '/images/tokens/autorenew.svg',
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
+      secondarySrc: '/images/autorenew.svg',
     },
   },
   [VaultKey.IfoPool]: {
@@ -39,8 +39,8 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 1,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
-      secondarySrc: `/images/tokens/ifo-pool-icon.svg`,
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
+      secondarySrc: `/images/ifo-pool-icon.svg`,
     },
   },
 } as const

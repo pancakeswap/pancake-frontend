@@ -1,4 +1,4 @@
-import { BigintIsh, JSBI } from '@pancakeswap/sdk'
+import { BigintIsh } from '@pancakeswap/sdk'
 import { Abi, Address } from 'abitype'
 
 export type ProviderConfig = {
@@ -71,7 +71,7 @@ export abstract class IMulticallProvider<TMulticallConfig = any> {
   public abstract callSameFunctionOnMultipleContracts<TFunctionParams extends any[] | undefined, TReturn = any>(
     params: CallSameFunctionOnMultipleContractsParams<TFunctionParams, TMulticallConfig>,
   ): Promise<{
-    blockNumber: JSBI
+    blockNumber: bigint
     results: Result<TReturn>[]
   }>
 
@@ -93,14 +93,14 @@ export abstract class IMulticallProvider<TMulticallConfig = any> {
   >(
     params: CallSameFunctionOnContractWithMultipleParams<TFunctionParams, TMulticallConfig>,
   ): Promise<{
-    blockNumber: JSBI
+    blockNumber: bigint
     results: Result<TReturn>[]
   }>
 
   public abstract callMultipleFunctionsOnSameContract<TFunctionParams extends any[] | undefined, TReturn = any>(
     params: CallMultipleFunctionsOnSameContractParams<TFunctionParams, TMulticallConfig>,
   ): Promise<{
-    blockNumber: JSBI
+    blockNumber: bigint
     results: Result<TReturn>[]
   }>
 }

@@ -1,14 +1,14 @@
-import { JSBI, Price, ERC20Token, Percent } from '@pancakeswap/sdk'
+import { Price, ERC20Token, Percent } from '@pancakeswap/sdk'
 import getRatePercentageDifference from './getRatePercentageDifference'
 
 const CAKE = new ERC20Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token')
 const BUSD = new ERC20Token(56, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD')
 const DOGE = new ERC20Token(56, '0xbA2aE424d960c26247Dd6c32edC70B295c744C43', 8, 'DOGE', 'Binance-Peg Dogecoin')
 
-const EIGHTEEN_DECIMALS = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
-const FIVE = JSBI.multiply(JSBI.BigInt(5), EIGHTEEN_DECIMALS)
-const TEN = JSBI.multiply(JSBI.BigInt(10), EIGHTEEN_DECIMALS)
-const FIFTEEN = JSBI.multiply(JSBI.BigInt(15), EIGHTEEN_DECIMALS)
+const EIGHTEEN_DECIMALS = 10n ** 18n
+const FIVE = 5n * EIGHTEEN_DECIMALS
+const TEN = 10n * EIGHTEEN_DECIMALS
+const FIFTEEN = 15n * EIGHTEEN_DECIMALS
 
 describe('limitOrders/utils/getRatePercentageDifference', () => {
   describe('18 decimal tokens', () => {

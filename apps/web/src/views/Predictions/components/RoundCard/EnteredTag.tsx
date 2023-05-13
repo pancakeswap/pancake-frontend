@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'

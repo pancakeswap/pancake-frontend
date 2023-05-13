@@ -49,16 +49,6 @@ module.exports = {
     "react/no-multi-comp": 0,
     "arrow-body-style": 0,
     "prefer-arrow-callback": 0,
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        js: "never",
-        mjs: "never",
-        jsx: "never",
-        ts: "never",
-        tsx: "never",
-      },
-    ],
+    "import/extensions": ["off"],
   },
 };

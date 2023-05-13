@@ -1,15 +1,14 @@
 name: Farm Config
 on:
-  pull_request:
+  push:
+    branches:
+      - develop
     paths:
       - 'packages/farms/constants/**'
       - 'packages/tokens/**'
       - '!packages/tokens/src/common.ts'
       - '!packages/tokens/src/helpers.ts'
       - '!packages/tokens/src/index.ts'
-  push:
-    branches:
-      - develop
 
 jobs:
   publish:
@@ -26,14 +25,39 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2.2.4
+      - name: Set up node@18
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: 18
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm i --ignore-scripts
+
+      - name: Build package
+        run: pnpm build:packages
 
       - name: Test
-        run: yarn test:config
+        run: pnpm test:config
 
       - name: Build list
-        run: yarn turbo run build --filter=@pancakeswap/farms
+        run: pnpm turbo run build --filter=@pancakeswap/farms
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
@@ -44,4 +68,4 @@ jobs:
           projectName: farms-config
           directory: ./packages/farms/lists
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name == 'develop' && 'main' ||  null  }}
+          branch: ${{ github.ref_name == 'develop' && 'master' ||  null  }}

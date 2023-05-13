@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import CountUp from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'

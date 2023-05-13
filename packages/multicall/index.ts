@@ -11,11 +11,11 @@ export const multicallAddresses = {
   5: '0xcA11bde05977b3631167028862bE2a173976CA11',
   56: '0xcA11bde05977b3631167028862bE2a173976CA11',
   97: '0xcA11bde05977b3631167028862bE2a173976CA11',
-}
+} as const
 
 export const getMulticallContract = (chainId: ChainId, provider: Provider) => {
-  if (multicallAddresses[chainId]) {
-    return new Contract(multicallAddresses[chainId], multicallAbi, provider)
+  if (multicallAddresses[chainId as keyof typeof multicallAddresses]) {
+    return new Contract(multicallAddresses[chainId as keyof typeof multicallAddresses], multicallAbi, provider)
   }
   return null
 }

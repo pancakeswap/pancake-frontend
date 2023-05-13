@@ -1,4 +1,6 @@
-import { ChainId, Currency, CurrencyAmount, Native, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Token, WNATIVE } from '@pancakeswap/sdk'
+
+export { unwrappedToken } from '@pancakeswap/utils/unwrappedToken'
 
 export function wrappedCurrency(currency: Currency | undefined, chainId: ChainId | undefined): Token | undefined {
   return chainId && currency?.isNative ? WNATIVE[chainId] : currency?.isToken ? currency : undefined
@@ -10,9 +12,4 @@ export function wrappedCurrencyAmount(
 ): CurrencyAmount<Token> | undefined {
   const token = currencyAmount && chainId ? wrappedCurrency(currencyAmount.currency, chainId) : undefined
   return token && currencyAmount ? CurrencyAmount.fromRawAmount(token, currencyAmount.quotient) : undefined
-}
-
-export function unwrappedToken(token: Token): Currency {
-  if (token.equals(WNATIVE[token.chainId])) return Native.onChain(token.chainId)
-  return token
 }

@@ -1,6 +1,6 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import invariant from 'tiny-invariant'
-import { Currency, Percent, Token, JSBI } from '@pancakeswap/sdk'
+import { Currency, Percent, Token } from '@pancakeswap/sdk'
 import {
   MintSpecificOptions,
   IncreaseSpecificOptions,
@@ -80,10 +80,10 @@ export abstract class ApproveAndCall {
     // position.mintAmountsWithSlippage() can create amounts not dependenable in scenarios
     // such as range orders. Allow the option to provide a position with custom minimum amounts
     // for these scenarios
-    if (JSBI.lessThan(minimalPosition.amount0.quotient, amount0Min)) {
+    if (minimalPosition.amount0.quotient < amount0Min) {
       amount0Min = minimalPosition.amount0.quotient
     }
-    if (JSBI.lessThan(minimalPosition.amount1.quotient, amount1Min)) {
+    if (minimalPosition.amount1.quotient < amount1Min) {
       amount1Min = minimalPosition.amount1.quotient
     }
 

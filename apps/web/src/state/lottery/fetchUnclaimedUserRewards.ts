@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { BigNumber as EthersBigNumber } from 'ethers'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
 import { multicallv2 } from 'utils/multicall'

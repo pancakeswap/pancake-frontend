@@ -9,7 +9,7 @@ import Liquidity from '../Farm/Cells/Liquidity'
 import Multiplier from '../Farm/Cells/Multiplier'
 import Staked from '../Farm/Cells/Staked'
 import ExpandActionCell from '../Cells/ExpandActionCell'
-import Unstake from '../MigrationStep1/OldFarm/Cells/Unstake'
+import Unstake from '../Farm/Cells/Unstake'
 import { RowProps } from '../types'
 import UnstableButton from './UnstakeButton'
 
@@ -80,8 +80,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
         <RightContainer>
           {isLargerScreen || expanded ? (
             <ProxyFarmContainer farm={farm}>
-              <Unstake {...unstake}>
-                {/* @ts-ignore */}
+              <Unstake>
                 <UnstableButton {...unstake} />
               </Unstake>
             </ProxyFarmContainer>

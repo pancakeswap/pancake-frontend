@@ -1,11 +1,11 @@
 import { Price, Currency } from "@pancakeswap/swap-sdk-core";
-import { Loading, SyncAltIcon } from "@pancakeswap/uikit";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
 import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import { useState } from "react";
 import { iconButtonClass } from "./SwapWidget.css";
-import { AutoRenewIcon } from "../../components/Svg";
+import { AutoRenewIcon, SyncAltIcon } from "../../components/Svg";
 import { Text } from "../../components/Text";
+import { Loading } from "../../components";
 
 interface TradePriceProps {
   price?: Price<Currency, Currency>;
@@ -14,8 +14,8 @@ interface TradePriceProps {
 
 export function TradePrice({ price, loading }: TradePriceProps) {
   const [showInverted, setShowInverted] = useState<boolean>(false);
-  const formattedPrice = showInverted ? formatPrice(price, 6) : formatPrice(price?.invert(), 6);
 
+  const formattedPrice = showInverted ? formatPrice(price, 6) : formatPrice(price?.invert(), 6);
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency);
 
   return (

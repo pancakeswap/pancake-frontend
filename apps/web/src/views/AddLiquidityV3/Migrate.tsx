@@ -25,14 +25,14 @@ import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { splitSignature } from '@ethersproject/bytes'
+import { splitSignature } from 'ethers/lib/utils'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, ERC20Token, Fraction, JSBI, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
+import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
-import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
+import { useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -110,11 +110,13 @@ function V2PairMigrate({
 
   const { reserve0, reserve1 } = pair
 
+  const { signTypedDataAsync } = useSignTypedData()
+
   const token0Value = useMemo(
     () =>
       CurrencyAmount.fromRawAmount(
         token0,
-        JSBI.divide(JSBI.multiply(JSBI.BigInt(pairBalance.toString()), reserve0.quotient), v2LPTotalSupply.quotient),
+        (BigInt(pairBalance.toString()) * reserve0.quotient) / v2LPTotalSupply.quotient,
       ),
     [token0, pairBalance, reserve0.quotient, v2LPTotalSupply.quotient],
   )
@@ -122,7 +124,7 @@ function V2PairMigrate({
     () =>
       CurrencyAmount.fromRawAmount(
         token1,
-        JSBI.divide(JSBI.multiply(JSBI.BigInt(pairBalance.toString()), reserve1.quotient), v2LPTotalSupply.quotient),
+        (BigInt(pairBalance.toString()) * reserve1.quotient) / v2LPTotalSupply.quotient,
       ),
     [token1, pairBalance, reserve1.quotient, v2LPTotalSupply.quotient],
   )
@@ -130,7 +132,7 @@ function V2PairMigrate({
   const [feeAmount, setFeeAmount] = useState(FeeAmount.MEDIUM)
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(({ feeAmount: newFeeAmount }) => {
-    setFeeAmount(newFeeAmount)
+    if (newFeeAmount) setFeeAmount(newFeeAmount)
   }, [])
 
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
@@ -165,7 +167,7 @@ function V2PairMigrate({
     priceDifferenceFraction = priceDifferenceFraction.multiply(-1)
   }
 
-  const largePriceDifference = priceDifferenceFraction && !priceDifferenceFraction?.lessThan(JSBI.BigInt(2))
+  const largePriceDifference = priceDifferenceFraction && !priceDifferenceFraction?.lessThan(2n)
 
   // modal and loading
   // capital efficiency warning
@@ -227,13 +229,11 @@ function V2PairMigrate({
   )
 
   const refund0 = useMemo(
-    () =>
-      position && CurrencyAmount.fromRawAmount(token0, JSBI.subtract(token0Value.quotient, position.amount0.quotient)),
+    () => position && CurrencyAmount.fromRawAmount(token0, token0Value.quotient - position.amount0.quotient),
     [token0Value, position, token0],
   )
   const refund1 = useMemo(
-    () =>
-      position && CurrencyAmount.fromRawAmount(token1, JSBI.subtract(token1Value.quotient, position.amount1.quotient)),
+    () => position && CurrencyAmount.fromRawAmount(token1, token1Value.quotient - position.amount1.quotient),
     [token1Value, position, token1],
   )
 
@@ -259,7 +259,6 @@ function V2PairMigrate({
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
     ROUTER_ADDRESS[chainId],
   )
-  const library = useWeb3LibraryContext()
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address, false)
 
@@ -277,7 +276,7 @@ function V2PairMigrate({
       name: 'Pancake LPs',
       version: '1',
       chainId,
-      verifyingContract: pair.liquidityToken.address,
+      verifyingContract: pair.liquidityToken.address as `0x${string}`,
     }
     const Permit = [
       { name: 'owner', type: 'address' },
@@ -293,17 +292,17 @@ function V2PairMigrate({
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber(),
     }
-    const data = JSON.stringify({
+
+    signTypedDataAsync({
+      domain,
+      // @ts-ignore
+      primaryType: 'Permit',
       types: {
         EIP712Domain,
         Permit,
       },
-      domain,
-      primaryType: 'Permit',
-      message,
+      value: message,
     })
-    library
-      .send('eth_signTypedData_v4', [account, data])
       .then(splitSignature)
       .then((signature) => {
         setSignatureData({
@@ -327,7 +326,7 @@ function V2PairMigrate({
     migrator.address,
     pairBalance,
     deadline,
-    library,
+    signTypedDataAsync,
     approveCallback,
   ])
 
@@ -439,7 +438,7 @@ function V2PairMigrate({
     currency1,
   ])
 
-  const isSuccessfullyMigrated = !!pendingMigrationHash && JSBI.equal(JSBI.BigInt(pairBalance.toString()), ZERO)
+  const isSuccessfullyMigrated = !!pendingMigrationHash && BigInt(pairBalance.toString()) === ZERO
 
   return (
     <CardBody>
@@ -499,10 +498,10 @@ function V2PairMigrate({
                 {position && chainId && refund0 && refund1 ? (
                   <Text color="textSubtle">
                     At least {formatCurrencyAmount(refund0, 4, locale)}{' '}
-                    {chainId && WNATIVE[chainId]?.equals(token0) ? 'ETH' : token0.symbol} and{' '}
+                    {chainId && WNATIVE[chainId]?.equals(token0) ? NATIVE?.[chainId].symbol : token0.symbol} and{' '}
                     {formatCurrencyAmount(refund1, 4, locale)}{' '}
-                    {chainId && WNATIVE[chainId]?.equals(token1) ? 'ETH' : token1.symbol} will be refunded to your
-                    wallet due to selected price range.
+                    {chainId && WNATIVE[chainId]?.equals(token1) ? NATIVE?.[chainId].symbol : token1.symbol} will be
+                    refunded to your wallet due to selected price range.
                   </Text>
                 ) : null}
               </AutoColumn>

@@ -75,6 +75,7 @@ export function AddLiquidityV3Modal({
         }}
       >
         <Modal
+          bodyPadding="8px"
           title={t('Add Liquidity')}
           headerRightSlot={
             <AutoRow width="auto" gap="8px">

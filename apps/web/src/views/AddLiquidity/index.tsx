@@ -1,5 +1,5 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, CurrencyAmount, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'

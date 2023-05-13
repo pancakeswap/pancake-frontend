@@ -1,5 +1,4 @@
 import { BigintIsh } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { Q96 } from '../internalConstants'
 
 /**
@@ -13,13 +12,13 @@ import { Q96 } from '../internalConstants'
  * @param amount0 The token0 amount
  * @returns liquidity for amount0, imprecise
  */
-function maxLiquidityForAmount0Imprecise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount0: BigintIsh): JSBI {
-  if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
+function maxLiquidityForAmount0Imprecise(sqrtRatioAX96: bigint, sqrtRatioBX96: bigint, amount0: BigintIsh): bigint {
+  if (sqrtRatioAX96 > sqrtRatioBX96) {
     sqrtRatioAX96 = sqrtRatioBX96
     sqrtRatioBX96 = sqrtRatioAX96
   }
-  const intermediate = JSBI.divide(JSBI.multiply(sqrtRatioAX96, sqrtRatioBX96), Q96)
-  return JSBI.divide(JSBI.multiply(JSBI.BigInt(amount0), intermediate), JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96))
+  const intermediate = (sqrtRatioAX96 * sqrtRatioBX96) / Q96
+  return (BigInt(amount0) * intermediate) / (sqrtRatioBX96 - sqrtRatioAX96)
 }
 
 /**
@@ -30,16 +29,16 @@ function maxLiquidityForAmount0Imprecise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSB
  * @param amount0 The token0 amount
  * @returns liquidity for amount0, precise
  */
-function maxLiquidityForAmount0Precise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount0: BigintIsh): JSBI {
-  if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
+function maxLiquidityForAmount0Precise(sqrtRatioAX96: bigint, sqrtRatioBX96: bigint, amount0: BigintIsh): bigint {
+  if (sqrtRatioAX96 > sqrtRatioBX96) {
     sqrtRatioAX96 = sqrtRatioBX96
     sqrtRatioBX96 = sqrtRatioAX96
   }
 
-  const numerator = JSBI.multiply(JSBI.multiply(JSBI.BigInt(amount0), sqrtRatioAX96), sqrtRatioBX96)
-  const denominator = JSBI.multiply(Q96, JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96))
+  const numerator = BigInt(amount0) * sqrtRatioAX96 * sqrtRatioBX96
+  const denominator = Q96 * (sqrtRatioBX96 - sqrtRatioAX96)
 
-  return JSBI.divide(numerator, denominator)
+  return numerator / denominator
 }
 
 /**
@@ -49,12 +48,12 @@ function maxLiquidityForAmount0Precise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI,
  * @param amount1 The token1 amount
  * @returns liquidity for amount1
  */
-function maxLiquidityForAmount1(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount1: BigintIsh): JSBI {
-  if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
+function maxLiquidityForAmount1(sqrtRatioAX96: bigint, sqrtRatioBX96: bigint, amount1: BigintIsh): bigint {
+  if (sqrtRatioAX96 > sqrtRatioBX96) {
     sqrtRatioAX96 = sqrtRatioBX96
     sqrtRatioBX96 = sqrtRatioAX96
   }
-  return JSBI.divide(JSBI.multiply(JSBI.BigInt(amount1), Q96), JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96))
+  return (BigInt(amount1) * Q96) / (sqrtRatioBX96 - sqrtRatioAX96)
 }
 
 /**
@@ -69,27 +68,27 @@ function maxLiquidityForAmount1(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount
  * not what core can theoretically support
  */
 export function maxLiquidityForAmounts(
-  sqrtRatioCurrentX96: JSBI,
-  sqrtRatioAX96: JSBI,
-  sqrtRatioBX96: JSBI,
+  sqrtRatioCurrentX96: bigint,
+  sqrtRatioAX96: bigint,
+  sqrtRatioBX96: bigint,
   amount0: BigintIsh,
   amount1: BigintIsh,
   useFullPrecision: boolean
-): JSBI {
-  if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
+): bigint {
+  if (sqrtRatioAX96 > sqrtRatioBX96) {
     sqrtRatioAX96 = sqrtRatioBX96
     sqrtRatioBX96 = sqrtRatioAX96
   }
 
   const maxLiquidityForAmount0 = useFullPrecision ? maxLiquidityForAmount0Precise : maxLiquidityForAmount0Imprecise
 
-  if (JSBI.lessThanOrEqual(sqrtRatioCurrentX96, sqrtRatioAX96)) {
+  if (sqrtRatioCurrentX96 <= sqrtRatioAX96) {
     return maxLiquidityForAmount0(sqrtRatioAX96, sqrtRatioBX96, amount0)
   }
-  if (JSBI.lessThan(sqrtRatioCurrentX96, sqrtRatioBX96)) {
+  if (sqrtRatioCurrentX96 < sqrtRatioBX96) {
     const liquidity0 = maxLiquidityForAmount0(sqrtRatioCurrentX96, sqrtRatioBX96, amount0)
     const liquidity1 = maxLiquidityForAmount1(sqrtRatioAX96, sqrtRatioCurrentX96, amount1)
-    return JSBI.lessThan(liquidity0, liquidity1) ? liquidity0 : liquidity1
+    return liquidity0 < liquidity1 ? liquidity0 : liquidity1
   }
   return maxLiquidityForAmount1(sqrtRatioAX96, sqrtRatioBX96, amount1)
 }

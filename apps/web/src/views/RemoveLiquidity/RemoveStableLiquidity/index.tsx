@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'

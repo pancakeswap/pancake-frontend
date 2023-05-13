@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "cypress-run": "cypress run",
-    "start": "yarn workspace web start",
-    "integration-test": "start-server-and-test 'yarn start' http://localhost:3000 'yarn cypress run'"
+    "start": "pnpm workspace web start",
+    "integration-test": "start-server-and-test 'pnpm start' http://localhost:3000 'pnpm cypress run'"
   },
   "dependencies": {
     "@ethersproject/providers": "^5.0.0",

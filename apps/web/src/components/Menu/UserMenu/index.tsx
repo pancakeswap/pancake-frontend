@@ -20,7 +20,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
-import { useSidNameForAddress } from 'hooks/useSid'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
@@ -75,11 +75,11 @@ const UserMenuItems = () => {
 const UserMenu = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { sidName } = useSidNameForAddress(account)
+  const { domainName, avatar } = useDomainNameForAddress(account)
   const { isWrongNetwork } = useActiveChainId()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { profile } = useProfile()
-  const avatarSrc = profile?.nft?.image?.thumbnail
+  const avatarSrc = profile?.nft?.image?.thumbnail ?? avatar
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
 
@@ -96,8 +96,8 @@ const UserMenu = () => {
   if (account) {
     return (
       <UIKitUserMenu
-        account={sidName || account}
-        ellipsis={!sidName}
+        account={domainName || account}
+        ellipsis={!domainName}
         avatarSrc={avatarSrc}
         text={userMenuText}
         variant={userMenuVariable}

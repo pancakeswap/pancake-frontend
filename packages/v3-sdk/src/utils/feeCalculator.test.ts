@@ -1,4 +1,4 @@
-import { BigintIsh, ZERO, JSBI, CurrencyAmount, Fraction, Percent } from '@pancakeswap/swap-sdk-core'
+import { BigintIsh, ZERO, CurrencyAmount, Fraction, Percent } from '@pancakeswap/swap-sdk-core'
 import { bscTokens } from '@pancakeswap/tokens'
 import { vi } from 'vitest'
 
@@ -28,29 +28,29 @@ describe('#getLiquidityFromTick', () => {
   ]
 
   it('No liquidity when tick is out of initialized tick range', () => {
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 0), ZERO)).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 151), ZERO)).toBe(true)
+    expect(getLiquidityFromTick(ticks, 0) === ZERO).toBe(true)
+    expect(getLiquidityFromTick(ticks, 151) === ZERO).toBe(true)
   })
 
   it('Get liquidity at single tick', () => {
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 1), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 20), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 50), JSBI.BigInt(15))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 80), JSBI.BigInt(35))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 100), JSBI.BigInt(30))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 150), JSBI.BigInt(20))).toBe(true)
+    expect(getLiquidityFromTick(ticks, 1) === 10n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 20) === 10n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 50) === 15n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 80) === 35n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 100) === 30n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 150) === 20n).toBe(true)
   })
 
   it('Use lower tick liquidity if tick is between initialized ticks', () => {
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 10), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 30), JSBI.BigInt(15))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 70), JSBI.BigInt(35))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 90), JSBI.BigInt(30))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 120), JSBI.BigInt(20))).toBe(true)
+    expect(getLiquidityFromTick(ticks, 10) === 10n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 30) === 15n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 70) === 35n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 90) === 30n).toBe(true)
+    expect(getLiquidityFromTick(ticks, 120) === 20n).toBe(true)
   })
 
   it('#getLiquidityFromSqrtRatioX96', () => {
-    expect(getLiquidityFromSqrtRatioX96(ticks, JSBI.BigInt('79307426338960776842885539845'))).toEqual(JSBI.BigInt(10))
+    expect(getLiquidityFromSqrtRatioX96(ticks, 79307426338960776842885539845n)).toEqual(10n)
   })
 })
 
@@ -65,34 +65,34 @@ describe('#getAverageLiquidity', () => {
   ]
 
   it('Tick lower and upper cover initialied tick range', () => {
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 0, 50), JSBI.BigInt(22))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, -10, 100), JSBI.BigInt(10))).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 0, 50) === 22n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, -10, 100) === 10n).toBe(true)
   })
 
   it('Liquidity at tick', () => {
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, -1, -1), ZERO)).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 51, 51), ZERO)).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 0, 0), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 10, 10), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 20, 20), JSBI.BigInt(15))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 30, 30), JSBI.BigInt(35))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 40, 40), JSBI.BigInt(30))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 50, 50), JSBI.BigInt(20))).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, -1, -1) === ZERO).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 51, 51) === ZERO).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 0, 0) === 10n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 10, 10) === 10n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 20, 20) === 15n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 30, 30) === 35n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 40, 40) === 30n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 50, 50) === 20n).toBe(true)
   })
 
   it('Tick lower and upper are both initialized ticks', () => {
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 0, 10), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 10, 20), JSBI.BigInt(15))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 0, 20), JSBI.BigInt(12))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 10, 40), JSBI.BigInt(26))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 30, 50), JSBI.BigInt(25))).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 0, 10) === 10n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 10, 20) === 15n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 0, 20) === 12n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 10, 40) === 26n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 30, 50) === 25n).toBe(true)
   })
 
   it('Tick boundaries within adjacent initialied ticks', () => {
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 5, 15), JSBI.BigInt(12))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 15, 35), JSBI.BigInt(28))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, -5, 20), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 38, 53), JSBI.BigInt(17))).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 5, 15) === 12n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 15, 35) === 28n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, -5, 20) === 10n).toBe(true)
+    expect(getAverageLiquidity(ticks, 1, 38, 53) === 17n).toBe(true)
   })
 })
 
@@ -105,7 +105,7 @@ describe('#getLiquidityBySingleAmount', () => {
       tickUpper: 953,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
     })
-    expect(amount).toEqual(JSBI.BigInt(2149))
+    expect(amount).toEqual(2149n)
   })
 
   it('input with token 1 amount', () => {
@@ -116,7 +116,7 @@ describe('#getLiquidityBySingleAmount', () => {
       tickUpper: 953,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
     })
-    expect(amount).toEqual(JSBI.BigInt(4298))
+    expect(amount).toEqual(4298n)
   })
 })
 
@@ -129,7 +129,7 @@ describe('#getDependentAmount', () => {
       tickUpper: 1000,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
     })
-    expect(amount.quotient).toEqual(JSBI.BigInt(99))
+    expect(amount.quotient).toEqual(99n)
     expect(amount.currency).toEqual(bscTokens.busd)
   })
 
@@ -141,7 +141,7 @@ describe('#getDependentAmount', () => {
       tickUpper: 1000,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
     })
-    expect(amount.quotient).toEqual(JSBI.BigInt(99))
+    expect(amount.quotient).toEqual(99n)
     expect(amount.currency).toEqual(bscTokens.usdt)
   })
 })
@@ -153,14 +153,14 @@ describe('#getEstimatedLPFee', () => {
 
   it('100% in range', () => {
     const sqrtRatioX96 = encodeSqrtRatioX96(1, 1)
-    const mostActiveLiquidity = JSBI.BigInt(900)
+    const mostActiveLiquidity = 900n
 
     const getLiquidityByAmountsAndPriceSpy = vi
       .spyOn(FeeCalculator, 'getLiquidityByAmountsAndPrice')
-      .mockImplementationOnce(() => JSBI.BigInt(100))
+      .mockImplementationOnce(() => 100n)
     const getLiquidityFromSqrtRatioX96Spy = vi
       .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
-      .mockImplementationOnce(() => JSBI.BigInt(900))
+      .mockImplementationOnce(() => 900n)
     const amount = FeeCalculator.getEstimatedLPFee({
       amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
       currency: bscTokens.busd,
@@ -178,14 +178,14 @@ describe('#getEstimatedLPFee', () => {
 
   it('50% in range', () => {
     const sqrtRatioX96 = encodeSqrtRatioX96(1, 1)
-    const mostActiveLiquidity = JSBI.BigInt(900)
+    const mostActiveLiquidity = 900n
 
     const getLiquidityByAmountsAndPriceSpy = vi
       .spyOn(FeeCalculator, 'getLiquidityByAmountsAndPrice')
-      .mockImplementationOnce(() => JSBI.BigInt(100))
+      .mockImplementationOnce(() => 100n)
     const getLiquidityFromSqrtRatioX96Spy = vi
       .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
-      .mockImplementationOnce(() => JSBI.BigInt(900))
+      .mockImplementationOnce(() => 900n)
     const amount = FeeCalculator.getEstimatedLPFee({
       amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
       currency: bscTokens.busd,

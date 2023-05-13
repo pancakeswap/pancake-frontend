@@ -9,7 +9,7 @@ import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import useSWR from 'swr'
 import { useContext, useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { Contract } from '@ethersproject/contracts'
+import { Contract } from 'ethers'
 
 export function useGetRemovedTokenAmounts({ lpAmount }: { lpAmount: string }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)

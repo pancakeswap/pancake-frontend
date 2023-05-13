@@ -21,9 +21,9 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   width: ${getScale};
   vertical-align: middle;
   transition: background-color 0.2s ease-in-out;
-  border: 0;
+  border: ${({ theme }) => (theme.isDark ? `solid 1px ${theme.colors.disabled}` : "0")};
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.input};
+  background-color: ${({ theme }) => theme.colors.cardBorder};
   box-shadow: ${({ theme }) => theme.shadows.inset};
 
   &:after {
@@ -52,6 +52,7 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   }
 
   &:checked {
+    border: 0;
     background-color: ${({ theme }) => theme.colors.success};
     &:after {
       border-color: white;
@@ -59,6 +60,7 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   }
 
   &:disabled {
+    border: 0;
     cursor: default;
     opacity: 0.6;
   }

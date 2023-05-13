@@ -2,7 +2,7 @@ import { Box, Flex, SkeletonV2, Text, ProfileAvatar } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
 import styled from 'styled-components'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useSidNameForAddress } from 'hooks/useSid'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import { localiseTradingVolume } from '../../../helpers'
 import { LeaderboardDataItem } from '../../../types'
 
@@ -87,7 +87,7 @@ const GridItem: React.FC<
 > = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
   const { profile, isFetching } = useProfileForAddress(address)
-  const { sidName } = useSidNameForAddress(address)
+  const { domainName, avatar } = useDomainNameForAddress(address)
 
   return (
     <Wrapper>
@@ -96,7 +96,12 @@ const GridItem: React.FC<
           #{rank}
         </Text>
         <SkeletonV2 width="24px" height="24px" ml={['16px', null, '16px']} borderRadius="50%" isDataReady={!isFetching}>
-          <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
+          <ProfileAvatar
+            src={profile?.nft?.image?.thumbnail ?? avatar}
+            width={32}
+            height={32}
+            mr={['4px', null, '12px']}
+          />
         </SkeletonV2>
       </Flex>
       <VolumeAddressWrapper>
@@ -107,7 +112,7 @@ const GridItem: React.FC<
         </Flex>
         <Flex alignItems="center" justifyContent="flex-start">
           <Text color="primary" fontSize="12px">
-            {sidName || truncateHash(address)}
+            {domainName || truncateHash(address)}
           </Text>
         </Flex>
       </VolumeAddressWrapper>

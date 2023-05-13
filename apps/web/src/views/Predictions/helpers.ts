@@ -1,4 +1,4 @@
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BigNumber, FixedNumber } from 'ethers'
 import { BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'

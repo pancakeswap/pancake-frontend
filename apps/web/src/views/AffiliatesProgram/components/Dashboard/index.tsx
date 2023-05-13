@@ -1,43 +1,30 @@
-import { useEffect, useState } from 'react'
-import { Flex } from '@pancakeswap/uikit'
-import { useRouter } from 'next/router'
+import { Flex, Box, Card } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
 import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyReferralLink'
 import useAuthAffiliate from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
+import useUserInfo from 'views/AffiliatesProgram/hooks/useUserInfo'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButton'
 import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
 import ClaimReward from 'views/AffiliatesProgram/components/Dashboard/ClaimReward'
 import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/AffiliateLinks'
 
 const Dashboard = () => {
-  const router = useRouter()
+  const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isAffiliate, affiliate, refresh } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
-  const [isFirstTime, setIsFirstTime] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsFirstTime(false), 1000)
-
-    if ((isAffiliateExist === false && isAffiliateExist !== null) || (!isFirstTime && !account)) {
-      router.push('/affiliates-program')
-    }
-
-    return () => clearTimeout(timer)
-  }, [isAffiliateExist, isAffiliate, router, isFirstTime, account, setIsFirstTime])
-
-  if (!isAffiliateExist || (!isFirstTime && !account)) {
-    return null
-  }
+  const { userInfo } = useUserInfo()
 
   return (
     <AffiliatesProgramLayout>
-      <Banner />
-      {!isAffiliate ? (
-        <LoginButton />
+      <Banner title={t('Dashboard')} subTitle={t('Manage your affiliate link, see how much you’ve earned')} />
+      {!account ? (
+        <ConnectWalletButton display="block" m="40px auto" />
       ) : (
         <Flex
           padding="0 16px"
@@ -45,11 +32,31 @@ const Dashboard = () => {
           justifyContent={['center']}
           flexDirection={['column', 'column', 'column', 'column', 'column', 'row']}
         >
-          <CommissionInfo />
-          <Flex flexDirection="column">
-            <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
-            <AffiliateLinks affiliate={affiliate} />
-            <ClaimReward />
+          {isAffiliate && <CommissionInfo affiliate={affiliate} />}
+          <Flex
+            flexDirection="column"
+            width={['100%', '100%', '100%', '100%', '100%', '700px']}
+            m={['32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '0 0 0 32px']}
+          >
+            {isAffiliateExist && (
+              <Card mb="16px">
+                <Box padding={['24px']}>
+                  {!isAffiliate ? (
+                    <LoginButton />
+                  ) : (
+                    <>
+                      <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
+                      <AffiliateLinks affiliate={affiliate} />
+                    </>
+                  )}
+                </Box>
+              </Card>
+            )}
+            <ClaimReward
+              isAffiliate={isAffiliate}
+              userRewardFeeUSD={userInfo.availableFeeUSD}
+              affiliateRewardFeeUSD={affiliate.availableFeeUSD}
+            />
           </Flex>
         </Flex>
       )}

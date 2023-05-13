@@ -1,5 +1,5 @@
-import { ChainId, JSBI, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
-import { BigNumber } from '@ethersproject/bignumber'
+import { ChainId, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { BigNumber } from 'ethers'
 import { bscTokens, bscTestnetTokens, USDC, USDT, BUSD, WBTC_ETH } from '@pancakeswap/tokens'
 import { ChainMap, ChainTokenList } from './types'
 
@@ -84,29 +84,29 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   ],
 }
 
-export const BIG_INT_ZERO = JSBI.BigInt(0)
-export const BIG_INT_TEN = JSBI.BigInt(10)
+export const BIG_INT_ZERO = 0n
+export const BIG_INT_TEN = 10n
 
 // one basis point
-export const BIPS_BASE = JSBI.BigInt(10000)
-export const ONE_BIPS = new Percent(JSBI.BigInt(1), BIPS_BASE)
+export const BIPS_BASE = 10000n
+export const ONE_BIPS = new Percent(1n, BIPS_BASE)
 // used for warning states
-export const ALLOWED_PRICE_IMPACT_LOW: Percent = new Percent(JSBI.BigInt(100), BIPS_BASE) // 1%
-export const ALLOWED_PRICE_IMPACT_MEDIUM: Percent = new Percent(JSBI.BigInt(300), BIPS_BASE) // 3%
-export const ALLOWED_PRICE_IMPACT_HIGH: Percent = new Percent(JSBI.BigInt(500), BIPS_BASE) // 5%
+export const ALLOWED_PRICE_IMPACT_LOW: Percent = new Percent(100n, BIPS_BASE) // 1%
+export const ALLOWED_PRICE_IMPACT_MEDIUM: Percent = new Percent(300n, BIPS_BASE) // 3%
+export const ALLOWED_PRICE_IMPACT_HIGH: Percent = new Percent(500n, BIPS_BASE) // 5%
 // if the price slippage exceeds this number, force the user to type 'confirm' to execute
-export const PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN: Percent = new Percent(JSBI.BigInt(1000), BIPS_BASE) // 10%
+export const PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN: Percent = new Percent(1000n, BIPS_BASE) // 10%
 // for non expert mode disable swaps above this
-export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(1500), BIPS_BASE) // 15%
+export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(1500n, BIPS_BASE) // 15%
 
 // used to ensure the user doesn't send so much BNB so they end up with <.01
-export const MIN_BNB: JSBI = JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(16)) // .01 BNB
-export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), BIPS_BASE)
+export const MIN_BNB: bigint = BIG_INT_TEN ** 16n // .01 BNB
+export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(50n, BIPS_BASE)
 
 export const ZERO_PERCENT = new Percent('0')
 export const ONE_HUNDRED_PERCENT = new Percent('1')
 
-export const BASE_FEE = new Percent(JSBI.BigInt(25), BIPS_BASE)
+export const BASE_FEE = new Percent(25n, BIPS_BASE)
 export const INPUT_FRACTION_AFTER_FEE = ONE_HUNDRED_PERCENT.subtract(BASE_FEE)
 
 // BNB

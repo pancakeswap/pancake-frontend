@@ -1,5 +1,3 @@
-import { Language } from '@pancakeswap/uikit'
-
 import translations from './config/translations.json'
 
 export type ContextData = {
@@ -22,3 +20,9 @@ type MaybeObject = Record<never, never>
 export type TranslationKey = keyof typeof translations | (string & MaybeObject)
 
 export type TranslateFunction = (key: TranslationKey, data?: ContextData) => string
+
+export interface Language {
+  code: string
+  language: string
+  locale: string
+}

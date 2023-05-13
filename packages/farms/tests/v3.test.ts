@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { describe, it, expect } from 'vitest'
 import { farmsV3ConfigChainMap } from '../constants/v3'
 import { priceHelperTokens } from '../constants/common'
+import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
 const mainnetFarms = [farmsV3ConfigChainMap[ChainId.BSC], farmsV3ConfigChainMap[ChainId.ETHEREUM]]
 
@@ -17,10 +17,6 @@ describe('Config farms V3', () => {
     expect(hasDuplicates(pids)).toBeFalsy()
   })
 
-  it.each(mainnetFarms.flat())('All tokens should be sorted', (farm) => {
-    expect(farm.token.sortsBefore(farm.quoteToken), `${farm.token.chainId} ${farm.pid}: ${farm.lpAddress}`).toBeTruthy()
-  })
-
   it.each(mainnetFarms.flat())('All tokens same chainId', (farm) => {
     expect(farm.token.chainId === farm.quoteToken.chainId).toBeTruthy()
   })
@@ -30,22 +26,30 @@ describe('Config farms V3', () => {
   })
 
   it.each(mainnetFarms)('should has related common price', (...farms) => {
-    for (const farm of farms) {
-      const priceHelper = priceHelperTokens[farm.token.chainId].list
-      let isOneOfPriceHelper = false
-      let isOneOfCake = false
+    const commonPrice: CommonPrice = {}
+    for (const commonToken of priceHelperTokens[farms[0].token.chainId as keyof typeof priceHelperTokens].list) {
+      commonPrice[commonToken.address] = '1'
+    }
 
-      if (priceHelper.some((t) => t.equals(farm.token) || t.equals(farm.quoteToken))) {
-        isOneOfPriceHelper = true
-      }
-      if (farm.token.equals(CAKE[farm.token.chainId]) || farm.quoteToken.equals(CAKE[farm.quoteToken.chainId])) {
-        isOneOfCake = true
-      }
+    const farmPrices = getFarmsPrices(
+      farms.map((f) => ({
+        ...f,
+        tokenPriceVsQuote: '1',
+        lmPool: '0x',
+        lmPoolLiquidity: '',
+        multiplier: '',
+        poolWeight: '',
+      })),
+      '30',
+      commonPrice,
+    )
 
+    for (const farmPrice of farmPrices) {
+      expect(farmPrice.tokenPriceBusd, `${farmPrice.token.chainId} ${farmPrice.token.address} price`).not.toEqual('0')
       expect(
-        isOneOfPriceHelper || isOneOfCake,
-        `farm is missing price helper. chainId: ${farm.token.chainId} pid: ${farm.pid}`,
-      ).toBeTruthy()
+        farmPrice.quoteTokenPriceBusd,
+        `${farmPrice.quoteToken.chainId} ${farmPrice.quoteToken.address} price`,
+      ).not.toEqual('0')
     }
   })
 })

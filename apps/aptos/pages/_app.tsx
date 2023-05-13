@@ -3,7 +3,6 @@ import '../css/theme.css'
 
 import BigNumber from 'bignumber.js'
 import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
-import { Analytics } from '@vercel/analytics/react'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'
 import { NextPage } from 'next'
@@ -17,6 +16,12 @@ import { Fragment } from 'react'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
 import { WrongNetworkModal } from 'components/WrongNetworkModal'
+
+// @ts-ignore
+// eslint-disable-next-line func-names
+BigInt.prototype.toJSON = function () {
+  return this.toString()
+}
 
 // This config is required for number formatting
 BigNumber.config({
@@ -61,7 +66,6 @@ function MyApp(props: AppProps) {
         <App {...props} />
         <ToastListener />
       </Providers>
-      <Analytics />
       {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
         <Script
           strategy="afterInteractive"

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition, NodeRound, Round } from 'state/types'

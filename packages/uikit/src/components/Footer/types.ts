@@ -15,5 +15,6 @@ export type FooterProps = {
   cakePriceUsd?: number;
   currentLang: string;
   langs: Language[];
+  chainId: number;
   setLang: (lang: Language) => void;
 } & FlexProps;

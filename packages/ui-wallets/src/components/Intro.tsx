@@ -42,7 +42,7 @@ const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 
   </AtomBox>
 )
 
-export const StepIntro = ({ docLink, docText }: { docLink: string; docText: string }) => {
+const StepIntro = ({ docLink, docText }: { docLink: string; docText: string }) => {
   const [step, setStep] = useState(0)
   const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
@@ -107,3 +107,5 @@ export const StepIntro = ({ docLink, docText }: { docLink: string; docText: stri
     </AtomBox>
   )
 }
+
+export default StepIntro

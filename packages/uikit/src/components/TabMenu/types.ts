@@ -7,6 +7,7 @@ export interface TabMenuProps {
   fullWidth?: boolean;
   gap?: string;
   isColorInverse?: boolean;
+  isShowBorderBottom?: boolean;
 }
 export interface TabProps extends ColorProps {
   isActive?: boolean;

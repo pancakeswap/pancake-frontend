@@ -15,7 +15,9 @@ export default defineConfig((options) => {
       exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
         if (err) {
           console.error(stdout)
-          process.exit(1)
+          if (!options.watch) {
+            process.exit(1)
+          }
         }
       })
     },

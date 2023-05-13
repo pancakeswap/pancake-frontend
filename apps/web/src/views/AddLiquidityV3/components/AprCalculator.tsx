@@ -15,6 +15,7 @@ import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
+import { useRouter } from 'next/router'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -26,6 +27,7 @@ import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { batch } from 'react-redux'
 import { PositionDetails } from '@pancakeswap/farms'
+import currencyId from 'utils/currencyId'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
@@ -82,6 +84,7 @@ export function AprCalculator({
     existingPosition,
     formState,
   )
+  const router = useRouter()
   const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
 
   const prices = usePairTokensPrice(poolAddress, priceSpan, baseCurrency?.chainId)
@@ -162,9 +165,26 @@ export function AprCalculator({
 
         onFieldAInput(position.amountA.toExact())
       })
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            currency: [
+              position.amountA ? currencyId(position.amountA.currency) : undefined,
+              position.amountB ? currencyId(position.amountB.currency) : undefined,
+              feeAmount ? feeAmount.toString() : '',
+            ],
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
       closeModal()
     },
-    [closeModal, onBothRangeInput, onFieldAInput, onSetFullRange],
+    [closeModal, feeAmount, onBothRangeInput, onFieldAInput, onSetFullRange, router],
   )
 
   if (!data || !data.length) {

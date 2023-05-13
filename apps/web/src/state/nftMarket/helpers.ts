@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import erc721Abi from 'config/abi/erc721.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'

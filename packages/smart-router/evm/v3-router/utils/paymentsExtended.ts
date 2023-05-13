@@ -1,5 +1,5 @@
-import { Interface } from '@ethersproject/abi'
-import { Percent, Token, validateAndParseAddress, JSBI } from '@pancakeswap/sdk'
+import { Interface } from 'ethers/lib/utils'
+import { Percent, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import { FeeOptions, Payments, toHex } from '@pancakeswap/v3-sdk'
 
 import abi from '../../abis/IPeripheryPaymentsWithFeeExtended.json'
@@ -17,7 +17,7 @@ export abstract class PaymentsExtended {
   // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static encodeUnwrapWETH9(amountMinimum: JSBI, recipient?: string, feeOptions?: FeeOptions): string {
+  public static encodeUnwrapWETH9(amountMinimum: bigint, recipient?: string, feeOptions?: FeeOptions): string {
     // if there's a recipient, just pass it along
     if (typeof recipient === 'string') {
       return Payments.encodeUnwrapWETH9(amountMinimum, recipient, feeOptions)
@@ -39,7 +39,7 @@ export abstract class PaymentsExtended {
 
   public static encodeSweepToken(
     token: Token,
-    amountMinimum: JSBI,
+    amountMinimum: bigint,
     recipient?: string,
     feeOptions?: FeeOptions,
   ): string {
@@ -66,11 +66,11 @@ export abstract class PaymentsExtended {
     ])
   }
 
-  public static encodePull(token: Token, amount: JSBI): string {
+  public static encodePull(token: Token, amount: bigint): string {
     return PaymentsExtended.INTERFACE.encodeFunctionData('pull', [token.address, toHex(amount)])
   }
 
-  public static encodeWrapETH(amount: JSBI): string {
+  public static encodeWrapETH(amount: bigint): string {
     return PaymentsExtended.INTERFACE.encodeFunctionData('wrapETH', [toHex(amount)])
   }
 }

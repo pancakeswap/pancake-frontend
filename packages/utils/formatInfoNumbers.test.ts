@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { formatAmount, getFirstThreeNonZeroDecimals } from './formatInfoNumbers'
 
 const SUPER_BIG_NUMBER = 10 ** 100

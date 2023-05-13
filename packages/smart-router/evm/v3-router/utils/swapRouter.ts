@@ -1,8 +1,7 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress, WNATIVE } from '@pancakeswap/sdk'
 import { FeeOptions, MethodParameters, Payments, PermitOptions, Position, SelfPermit, toHex } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
-import JSBI from 'jsbi'
 
 import abi from '../../abis/ISwapRouter02.json'
 import { ADDRESS_THIS, MSG_SENDER } from '../../constants'
@@ -18,8 +17,8 @@ import { buildBaseRoute } from './route'
 import { getOutputOfPools } from './getOutputOfPools'
 import { getPriceImpact } from './getPriceImpact'
 
-const ZERO = JSBI.BigInt(0)
-const REFUND_ETH_PRICE_IMPACT_THRESHOLD = new Percent(JSBI.BigInt(50), JSBI.BigInt(100))
+const ZERO = 0n
+const REFUND_ETH_PRICE_IMPACT_THRESHOLD = new Percent(50n, 100n)
 
 /**
  * Options for producing the arguments to send calls to the router.
@@ -671,7 +670,7 @@ export abstract class SwapRouter {
       calldatas.push(PaymentsExtended.encodeSweepToken(tokenOut, ZERO))
     }
 
-    let value: JSBI
+    let value: bigint
     if (inputIsNative) {
       value = totalAmountSwapped.wrapped.add(positionAmountIn.wrapped).quotient
     } else if (outputIsNative) {

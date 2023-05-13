@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, WNATIVE } from '@pancakeswap/sdk'

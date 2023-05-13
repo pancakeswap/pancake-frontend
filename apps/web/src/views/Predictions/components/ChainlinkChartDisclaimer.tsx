@@ -1,5 +1,5 @@
 import {
-  ModalContainer,
+  ModalWrapper,
   ModalBody,
   Text,
   Button,
@@ -34,7 +34,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
   }
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalWrapper minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
         <Flex justifyContent="center" mb="32px">
           <Image src="/images/predictions/chartwarning2.svg" width={190} height={118} />
@@ -68,7 +68,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
           </Flex>
         </label>
       </ModalBody>
-    </ModalContainer>
+    </ModalWrapper>
   )
 }
 

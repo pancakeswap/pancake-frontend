@@ -1,6 +1,5 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'
 import { Position } from './entities'
@@ -40,7 +39,7 @@ export abstract class MasterChefV3 {
   // Copy from NonfungiblePositionManager
   // Only support increaseLiquidity
   public static addCallParameters(position: Position, options: AddLiquidityOptions): MethodParameters {
-    invariant(JSBI.greaterThan(position.liquidity, ZERO), 'ZERO_LIQUIDITY')
+    invariant(position.liquidity > ZERO, 'ZERO_LIQUIDITY')
 
     const calldatas: string[] = []
 
@@ -163,7 +162,7 @@ export abstract class MasterChefV3 {
       tickLower: position.tickLower,
       tickUpper: position.tickUpper,
     })
-    invariant(JSBI.greaterThan(partialPosition.liquidity, ZERO), 'ZERO_LIQUIDITY')
+    invariant(partialPosition.liquidity > ZERO, 'ZERO_LIQUIDITY')
 
     // slippage-adjusted underlying amounts
     const { amount0: amount0Min, amount1: amount1Min } = partialPosition.burnAmountsWithSlippage(

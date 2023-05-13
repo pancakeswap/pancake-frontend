@@ -3,6 +3,8 @@ import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancakeswap/v3-sdk'
 import { useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
+import { viemClients } from 'utils/viem'
 
 import { v3Clients } from 'utils/graphql'
 
@@ -23,6 +25,7 @@ export interface V3PoolsResult {
   loading: boolean
   syncing: boolean
   blockNumber?: number
+  error?: Error
 }
 
 export function useV3CandidatePools(
@@ -37,6 +40,7 @@ export function useV3CandidatePools(
     key,
     blockNumber,
     refresh,
+    error,
   } = useV3CandidatePoolsWithoutTicks(currencyA, currencyB, options)
 
   const {
@@ -53,6 +57,7 @@ export function useV3CandidatePools(
 
   return {
     refresh,
+    error,
     pools: candidatePools,
     loading: isLoading || ticksLoading,
     syncing: isValidating || ticksValidating,
@@ -85,14 +90,29 @@ export function useV3CandidatePoolsWithoutTicks(
     isLoading,
     isValidating,
     mutate,
+    error,
   } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
+  const { data: poolsFromOnChain } = useQuery({
+    queryKey: ['v3_pools_onchain', key],
+    queryFn: async () => {
+      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, viemClients)
+    },
+    enabled: Boolean(error && key && options.enabled),
+  })
+
   const candidatePools = useMemo<V3Pool[] | null>(() => {
-    if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
+    if (!currencyA || !currencyB) {
+      return null
+    }
+    if (error && poolsFromOnChain) {
+      return poolsFromOnChain
+    }
+    if (!poolsFromSubgraphState?.pools) {
       return null
     }
     return SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, poolsFromSubgraphState.pools)
-  }, [poolsFromSubgraphState, currencyA, currencyB])
+  }, [poolsFromSubgraphState, currencyA, currencyB, error, poolsFromOnChain])
 
   return {
     refresh: mutate,
@@ -101,6 +121,7 @@ export function useV3CandidatePoolsWithoutTicks(
     syncing: isValidating,
     blockNumber: poolsFromSubgraphState?.blockNumber,
     key: poolsFromSubgraphState?.key,
+    error,
   }
 }
 
@@ -186,6 +207,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     },
     {
       revalidateOnFocus: false,
+      errorRetryCount: 5,
     },
   )
 

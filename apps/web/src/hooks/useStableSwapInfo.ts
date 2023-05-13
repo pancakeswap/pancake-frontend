@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { JSBI, Percent } from '@pancakeswap/sdk'
+import { Percent } from '@pancakeswap/sdk'
 
 import StableSwapABI from 'config/abi/stableSwap.json'
 import LPTokenABI from 'config/abi/lpToken.json'
@@ -7,12 +7,12 @@ import { useContract } from 'hooks/useContract'
 import { useMultiContractsMultiMethods, CallState } from 'state/multicall/hooks'
 
 function parseCallStates(states: CallState[]) {
-  let balance0: JSBI | undefined
-  let balance1: JSBI | undefined
-  let amplifier: JSBI | undefined
-  let totalSupply: JSBI | undefined
-  let feeNumerator: JSBI | undefined
-  let feeDenominator: JSBI | undefined
+  let balance0: bigint | undefined
+  let balance1: bigint | undefined
+  let amplifier: bigint | undefined
+  let totalSupply: bigint | undefined
+  let feeNumerator: bigint | undefined
+  let feeDenominator: bigint | undefined
   let loading = false
   let error = false
   let valid = true
@@ -20,22 +20,22 @@ function parseCallStates(states: CallState[]) {
     // Should match info inputs
     switch (i) {
       case 0:
-        balance0 = result && JSBI.BigInt(result[0].toString())
+        balance0 = result && BigInt(result[0].toString())
         break
       case 1:
-        balance1 = result && JSBI.BigInt(result[0].toString())
+        balance1 = result && BigInt(result[0].toString())
         break
       case 2:
-        amplifier = result && JSBI.BigInt(result[0].toString())
+        amplifier = result && BigInt(result[0].toString())
         break
       case 3:
-        totalSupply = result && JSBI.BigInt(result[0].toString())
+        totalSupply = result && BigInt(result[0].toString())
         break
       case 4:
-        feeNumerator = result && JSBI.BigInt(result[0].toString())
+        feeNumerator = result && BigInt(result[0].toString())
         break
       case 5:
-        feeDenominator = result && JSBI.BigInt(result[0].toString())
+        feeDenominator = result && BigInt(result[0].toString())
         break
       default:
         break

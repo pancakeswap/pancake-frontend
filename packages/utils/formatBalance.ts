@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber, FixedNumber } from '@ethersproject/bignumber'
-import { formatUnits } from '@ethersproject/units'
+import { BigNumber as EthersBigNumber, FixedNumber } from 'ethers'
+import { formatUnits } from 'ethers/lib/utils'
 import { getLanguageCodeFromLS } from '@pancakeswap/localization'
-import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import _trimEnd from 'lodash/trimEnd'
+import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000

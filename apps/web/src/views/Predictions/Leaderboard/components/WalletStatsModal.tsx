@@ -7,7 +7,7 @@ import {
   IconButton,
   InjectedModalProps,
   LinkExternal,
-  ModalContainer,
+  ModalWrapper,
   ModalHeader,
   ProfileAvatar,
   Skeleton,
@@ -24,7 +24,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
-import { useSidNameForAddress } from 'hooks/useSid'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import { NetWinningsView } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
@@ -59,7 +59,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(address)
-  const { sidName } = useSidNameForAddress(address, !profile && !isProfileLoading)
+  const { domainName, avatar } = useDomainNameForAddress(address, !profile && !isProfileLoading)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
@@ -72,11 +72,11 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
   }
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalWrapper minWidth="320px">
       <ModalHeader background={theme.colors.gradientBubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
-            <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={96} width={96} />
+            <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={96} width={96} />
           </Box>
           <Box>
             {profile?.username && (
@@ -85,7 +85,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
               </Heading>
             )}
             <ExternalLink isBscScan href={getBlockExploreLink(address, 'address')}>
-              {sidName || truncateHash(address)}
+              {domainName || truncateHash(address)}
             </ExternalLink>
           </Box>
         </Flex>
@@ -155,7 +155,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
           )}
         </Box>
       )}
-    </ModalContainer>
+    </ModalWrapper>
   )
 }
 

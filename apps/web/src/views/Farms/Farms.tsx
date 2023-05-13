@@ -345,7 +345,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         case 'liquidity':
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
         case 'latest':
-          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc')
+          return orderBy(
+            orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc'),
+            ['version'],
+            'desc',
+          )
         default:
           return farms
       }

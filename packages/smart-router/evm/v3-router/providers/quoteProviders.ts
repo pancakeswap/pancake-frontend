@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { BatchMulticallConfigs } from '../../types'
+import { BatchMulticallConfigs, ChainMap } from '../../types'
 import { QuoteProvider, OnChainProvider, RouteWithoutQuote, RouteWithQuote, RouteType, QuoterOptions } from '../types'
 import { isV3Pool } from '../utils'
 import { createOffChainQuoteProvider } from './offChainQuoteProvider'
@@ -7,7 +7,7 @@ import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } fr
 
 interface Config {
   onChainProvider: OnChainProvider
-  multicallConfigs?: BatchMulticallConfigs
+  multicallConfigs?: ChainMap<BatchMulticallConfigs>
 }
 
 // For evm

@@ -5,31 +5,38 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "apis/*"
+    "apis/*",
+    "scripts"
   ],
+  "packageManager": "pnpm@8.3.1",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web...",
-    "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
-    "dev:blog": "yarn turbo run dev --filter=blog...",
+    "dev:aptos": "pnpm turbo run dev --filter=aptos-web...",
+    "dev:blog": "pnpm turbo run dev --filter=blog...",
+    "dev:bridge": "pnpm turbo run dev --filter=bridge...",
     "storybook": "turbo run start --filter=uikit...",
     "build:storybook": "turbo run build:storybook --filter=uikit...",
     "build": "turbo run build --filter=web...",
+    "build:blog": "turbo run build --filter=blog...",
+    "build:aptos": "turbo run build --filter=aptos-web...",
+    "build:bridge": "turbo run build --filter=bridge...",
     "build:packages": "turbo run build --filter=./packages/*",
     "start": "turbo run start --filter=web",
-    "test:config": "yarn turbo run test:config --filter=[HEAD^1]",
-    "test:ci": "yarn turbo run test --filter=[HEAD^1]",
+    "test:config": "pnpm turbo run test:config --filter=[HEAD^1]",
+    "test:ci": "pnpm turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
     "lint:report": "eslint --no-error-on-unmatched-pattern --max-warnings=0",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:check:staged": "lint-staged",
     "e2e:ci": "turbo run build --filter=web...[HEAD^1] && turbo run integration-test --filter=e2e...[HEAD^1]",
-    "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/farms && NODE_PATH=./apps/web/src tsx --tsconfig ./apps/web/tsconfig.json scripts/updateLPsAPR.ts",
-    "updateAptosLPsAPR": "yarn turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src tsx --tsconfig ./apps/aptos/tsconfig.json  scripts/updateAptosLpsAPR/index.ts",
+    "updateLPsAPR": "pnpm turbo run build --filter=@pancakeswap/farms && NODE_PATH=./apps/web/src tsx --tsconfig ./apps/web/tsconfig.json scripts/updateLPsAPR.ts",
+    "updateAptosLPsAPR": "pnpm turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src tsx --tsconfig ./apps/aptos/tsconfig.json  scripts/updateAptosLpsAPR/index.ts",
     "postinstall": "turbo run postinstall",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "version-packages": "changeset version && pnpm i --lockfile-only",
     "release-packages": "turbo run build --filter=./packages/* && changeset version && changeset publish",
     "prepare": "husky install"
   },
@@ -37,6 +44,7 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "@types/node": "^18.16.2",
     "@changesets/cli": "^2.25.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "eslint-plugin-lodash": "^7.4.0",
@@ -54,14 +62,17 @@
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
     "tsx": "^3.12.6",
-    "tsconfig": "*",
-    "turbo": "1.7.0",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/eslint-config-pancake": "workspace:*",
+    "typescript": "^4.9.4",
+    "turbo": "1.8.3",
     "vitest": "^0.27.2"
   },
   "volta": {
     "node": "18.16.0"
   },
   "dependencies": {
+    "encoding": "^0.1.13",
     "ws": "^8.13.0"
   }
 }

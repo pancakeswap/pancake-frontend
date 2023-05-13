@@ -48,6 +48,22 @@ export const WETH9 = {
     'Wrapped Ether',
     'https://weth.io'
   ),
+  [ChainId.BSC]: new ERC20Token(
+    ChainId.BSC,
+    '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+    18,
+    'ETH',
+    'Binance-Peg Ethereum Token',
+    'https://ethereum.org'
+  ),
+  [ChainId.BSC_TESTNET]: new ERC20Token(
+    ChainId.BSC,
+    '0xE7bCB9e341D546b66a46298f4893f5650a56e99E',
+    18,
+    'ETH',
+    'ETH',
+    'https://ethereum.org'
+  ),
 }
 
 export const WBNB = {

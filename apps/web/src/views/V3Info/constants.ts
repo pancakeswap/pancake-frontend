@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { BigNumber } from '@ethersproject/bignumber'
-import { OpUnitType } from 'dayjs'
+import { BigNumber } from 'ethers'
+import { ManipulateType } from 'dayjs'
 
 export const v3InfoPath = `info/v3`
 
@@ -44,7 +44,7 @@ export const TOKEN_HIDE: { [key: string]: string[] } = {
 }
 
 export const TimeWindow: {
-  [key: string]: OpUnitType
+  [key: string]: ManipulateType
 } = {
   DAY: 'day',
   WEEK: 'week',

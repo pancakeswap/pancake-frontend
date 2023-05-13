@@ -1,3 +1,4 @@
+import { useIsMounted } from '@pancakeswap/hooks'
 import { Trans } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
@@ -58,8 +59,9 @@ const lmPoolAbi = [
 export function UpdatePositionsReminder() {
   const { account } = useActiveWeb3React()
   const { chainId } = useActiveChainId()
+  const isMounted = useIsMounted()
   // eslint-disable-next-line react/jsx-pascal-case
-  return account && chainId && <UpdatePositionsReminder_ key={`${account}-${chainId}`} />
+  return account && chainId && isMounted && <UpdatePositionsReminder_ key={`${account}-${chainId}`} />
 }
 
 export function UpdatePositionsReminder_() {
@@ -82,6 +84,7 @@ export function UpdatePositionsReminder_() {
         })),
       [chainId, masterchefV3.address, masterchefV3.interface, stakedTokenIds],
     ),
+    cacheTime: 0,
     enabled: !loading && stakedTokenIds.length > 0,
   })
 
@@ -93,7 +96,6 @@ export function UpdatePositionsReminder_() {
     .filter((userInfo) => {
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
       if (!farm) return false
-
       if (
         (userInfo.rewardGrowthInside as BigNumber).gt(
           // @ts-ignore
@@ -117,6 +119,7 @@ export function UpdatePositionsReminder_() {
         chainId,
       }
     }),
+    cacheTime: 0,
     enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
   })
 

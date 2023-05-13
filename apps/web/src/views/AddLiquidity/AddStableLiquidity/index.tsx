@@ -11,7 +11,7 @@ import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 

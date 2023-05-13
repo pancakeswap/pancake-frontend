@@ -1,6 +1,5 @@
 import multiplyPriceByAmount from '@pancakeswap/utils/multiplyPriceByAmount'
-
-import { Coin, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Coin, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { memo, useMemo } from 'react'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -10,16 +9,12 @@ import currencyId from 'utils/currencyId'
 export function useBUSDPrice(currency?: Coin): Price<Coin, Coin> | undefined {
   if (!currency) return undefined
 
-  return new Price(currency, currency, JSBI.BigInt(0), JSBI.BigInt(0))
+  return new Price(currency, currency, 0n, 0n)
 }
 
 const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   return useMemo(() => {
-    return !!pair &&
-      !!totalPoolTokens &&
-      !!userPoolBalance &&
-      // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-      JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+    return !!pair && !!totalPoolTokens && !!userPoolBalance && totalPoolTokens.quotient >= userPoolBalance.quotient
       ? [
           pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
           pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
@@ -46,9 +41,7 @@ const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposit
 const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
   return useMemo(
     () =>
-      !!userPoolBalance &&
-      !!totalPoolTokens &&
-      JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+      !!userPoolBalance && !!totalPoolTokens && totalPoolTokens.quotient >= userPoolBalance.quotient
         ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
         : undefined,
     [userPoolBalance, totalPoolTokens],

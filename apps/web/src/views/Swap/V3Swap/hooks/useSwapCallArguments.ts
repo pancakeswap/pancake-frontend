@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BigNumber } from '@ethersproject/bignumber'
-import { SwapRouter, SmartRouterTrade, SWAP_ROUTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
-import { Percent, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Percent, TradeType } from '@pancakeswap/sdk'
+import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
+import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
+import { isAddress } from 'utils'
+import { useEnsAddress } from 'wagmi'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
@@ -32,7 +34,19 @@ export function useSwapCallArguments(
   const { account, chainId } = useActiveWeb3React()
   const provider = useProviderOrSigner()
 
-  const recipient = recipientAddress === null ? account : recipientAddress
+  const { data: recipientENSAddress } = useEnsAddress({
+    name: recipientAddress,
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+  })
+  const recipient =
+    recipientAddress === null
+      ? account
+      : isAddress(recipientAddress)
+      ? recipientAddress
+      : isAddress(recipientENSAddress)
+      ? recipientENSAddress
+      : null
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId) return []

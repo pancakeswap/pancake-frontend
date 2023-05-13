@@ -7,10 +7,12 @@ import noop from 'lodash/noop'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
 import { NextRouter } from 'next/router'
 import Provider from 'Providers'
+import { Provider as JotaiProvider } from 'jotai'
 import { initializeStore, makeStore } from 'state'
 import { SWRConfig } from 'swr'
 import { vi } from 'vitest'
 import { WagmiConfig } from 'wagmi'
+import { useHydrateAtoms } from 'jotai/utils'
 import { client } from './utils/wagmi'
 
 const mockRouter: NextRouter = {
@@ -50,6 +52,23 @@ export function renderWithProvider(
   }
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
 }
+
+const HydrateAtoms = ({ initialValues, children }) => {
+  // initialising on state with prop on render here
+  useHydrateAtoms(initialValues)
+  return children
+}
+
+export const createJotaiWrapper =
+  (reduxState = undefined, testAtom, initState = undefined) =>
+  ({ children }) =>
+    (
+      <Provider store={makeStore(reduxState)}>
+        <JotaiProvider>
+          {initState ? <HydrateAtoms initialValues={[[testAtom, initState]]}>{children}</HydrateAtoms> : children}
+        </JotaiProvider>
+      </Provider>
+    )
 
 export const createReduxWrapper =
   (initState = undefined) =>

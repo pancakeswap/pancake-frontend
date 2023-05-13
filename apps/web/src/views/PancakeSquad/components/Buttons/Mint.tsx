@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { ContextApi } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useModal, useToast } from '@pancakeswap/uikit'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'

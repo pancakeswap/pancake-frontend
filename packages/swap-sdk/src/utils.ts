@@ -1,4 +1,4 @@
-import { getAddress } from '@ethersproject/address'
+import { getAddress } from 'ethers/lib/utils'
 import invariant from 'tiny-invariant'
 import warning from 'tiny-warning'
 

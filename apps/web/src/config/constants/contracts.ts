@@ -36,7 +36,7 @@ export default {
   },
   claimRefund: {
     56: '0xE7e53A7e9E3Cf6b840f167eF69519175c497e149',
-    97: '',
+    97: '0x',
   },
   pointCenterIfo: {
     56: '0x3C6919b132462C1FEc572c6300E83191f4F0012a',
@@ -52,15 +52,15 @@ export default {
   },
   tradingCompetitionFanToken: {
     56: '0xA8FECf847e28aa1Df39E995a45b7FCfb91b676d4',
-    97: '',
+    97: '0x',
   },
   tradingCompetitionMobox: {
     56: '0x1C5161CdB145dE35a8961F82b065fd1F75C3BaDf',
-    97: '',
+    97: '0x',
   },
   tradingCompetitionMoD: {
     56: '0xbDd9a61c67ee16c10f5E37b1D0c907a9EC959f33',
-    97: '',
+    97: '0x',
   },
   easterNft: {
     56: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
@@ -72,35 +72,35 @@ export default {
   },
   cakeFlexibleSideVault: {
     56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
-    97: '',
+    97: '0x',
   },
   predictionsBNB: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
-    97: '',
+    97: '0x',
   },
   predictionsCAKE: {
     56: '0x0E3A8078EDD2021dadcdE733C6b4a86E51EE8f07',
-    97: '',
+    97: '0x',
   },
   chainlinkOracleBNB: {
     56: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
-    97: '',
+    97: '0x',
   },
   chainlinkOracleCAKE: {
     56: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
-    97: '',
+    97: '0x',
   },
   predictionsV1: {
     56: '0x516ffd7d1e0ca40b1879935b2de87cb20fc1124b',
-    97: '',
+    97: '0x',
   },
   bunnySpecialCakeVault: {
     56: '0x5B4a770Abe7Eafb2601CA4dF9d73EA99363E60a4',
-    97: '',
+    97: '0x',
   },
   bunnySpecialPrediction: {
     56: '0x342c99e9aC24157657095eC69CB04b73257e7A9C',
-    97: '',
+    97: '0x',
   },
   bunnySpecialLottery: {
     56: '0x24ED31d31C5868e5a96aA77fdcB890f3511fa0b2',
@@ -108,7 +108,7 @@ export default {
   },
   bunnySpecialXmas: {
     56: '0x59EdDF3c21509dA3b0aCCd7c5ccc596d930f4783',
-    97: '',
+    97: '0x',
   },
   farmAuction: {
     56: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2',
@@ -144,15 +144,15 @@ export default {
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
-    97: '',
+    97: '0x',
   },
   bCakeFarmBooster: {
     56: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
-    97: '',
+    97: '0x',
   },
   bCakeFarmBoosterProxyFactory: {
     56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
-    97: '',
+    97: '0x',
   },
   nonBscVault: {
     56: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841', // Only for pass contracts test
@@ -187,4 +187,9 @@ export default {
     97: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
   },
   quoter: V3_QUOTER_ADDRESSES,
-}
+  v3Airdrop: {
+    1: '0x',
+    56: '0xe934d2C5bE5db0295A4de3177762A9E8c74Ae4f4',
+    97: '0x',
+  },
+} as const satisfies Record<string, Record<number, `0x${string}`>>

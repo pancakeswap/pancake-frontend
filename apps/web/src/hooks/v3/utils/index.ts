@@ -7,7 +7,6 @@ import {
   TICK_SPACINGS,
   TickMath,
 } from '@pancakeswap/v3-sdk'
-import JSBI from 'jsbi'
 
 export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: string) {
   if (!baseToken || !quoteToken || !value) {
@@ -21,13 +20,13 @@ export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: str
   const [whole, fraction] = value.split('.')
 
   const decimals = fraction?.length ?? 0
-  const withoutDecimals = JSBI.BigInt((whole ?? '') + (fraction ?? ''))
+  const withoutDecimals = BigInt((whole ?? '') + (fraction ?? ''))
 
   return new Price(
     baseToken,
     quoteToken,
-    JSBI.multiply(JSBI.BigInt(10 ** decimals), JSBI.BigInt(10 ** baseToken.decimals)),
-    JSBI.multiply(withoutDecimals, JSBI.BigInt(10 ** quoteToken.decimals)),
+    BigInt(10 ** decimals) * BigInt(10 ** baseToken.decimals),
+    withoutDecimals * BigInt(10 ** quoteToken.decimals),
   )
 }
 
@@ -52,9 +51,9 @@ export function tryParseTick(
   // check price is within min/max bounds, if outside return min/max
   const sqrtRatioX96 = encodeSqrtRatioX96(price.numerator, price.denominator)
 
-  if (JSBI.greaterThanOrEqual(sqrtRatioX96, TickMath.MAX_SQRT_RATIO)) {
+  if (sqrtRatioX96 >= TickMath.MAX_SQRT_RATIO) {
     tick = TickMath.MAX_TICK
-  } else if (JSBI.lessThanOrEqual(sqrtRatioX96, TickMath.MIN_SQRT_RATIO)) {
+  } else if (sqrtRatioX96 <= TickMath.MIN_SQRT_RATIO) {
     tick = TickMath.MIN_TICK
   } else {
     // this function is agnostic to the base, will always return the correct tick
