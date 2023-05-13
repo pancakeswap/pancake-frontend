@@ -47,7 +47,7 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 4fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr 2fr;
 
   @media screen and (max-width: 900px) {
     grid-template-columns: 2fr repeat(3, 1fr);
@@ -61,7 +61,7 @@ const ResponsiveGrid = styled.div`
   }
 
   @media screen and (max-width: 670px) {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
   }
 `
 
@@ -185,8 +185,12 @@ const DataRow: React.FC<
           </Text>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
-        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
-        <Flex alignItems="center">
+        {type === 'liquidity' && (
+          <Text style={{ border: 'solid 1px red' }} fontWeight={400}>
+            ${formatAmount(tokenData.liquidityUSD)}
+          </Text>
+        )}
+        <Flex alignItems="center" justifyContent="flex-end">
           {tokenData?.pairs?.length > 0 && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
             variant="text"
