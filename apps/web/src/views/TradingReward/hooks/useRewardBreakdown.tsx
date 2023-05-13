@@ -129,7 +129,7 @@ const useRewardBreakdown = ({
               return campaignPairs?.[campaignId]?.[campaignChainId].map((lpAddress) => {
                 const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
                 return {
-                  chainId: Number(campaignChainId),
+                  chainId: ChainId[ChainId[campaignChainId]],
                   address: lpAddress,
                   lpSymbol: pairInfo?.lpSymbol ?? '',
                   token: pairInfo?.token,
