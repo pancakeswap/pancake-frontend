@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text, Flex, Skeleton, Farm as FarmUI, Tag } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/sdk'

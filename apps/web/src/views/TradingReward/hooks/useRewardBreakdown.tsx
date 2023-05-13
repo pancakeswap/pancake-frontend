@@ -124,12 +124,13 @@ const useRewardBreakdown = ({
 
           const pairs = Object.keys(campaignPairs?.[campaignId])
             .map((campaignChainId) => {
-              const farms = farmsV3ConfigChainMap[campaignChainId as ChainId]
+              // @ts-ignore
+              const farms = farmsV3ConfigChainMap?.[campaignChainId as ChainId]
 
               return campaignPairs?.[campaignId]?.[campaignChainId].map((lpAddress) => {
                 const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
                 return {
-                  chainId: ChainId[ChainId[campaignChainId]],
+                  chainId: Number(campaignChainId) as ChainId,
                   address: lpAddress,
                   lpSymbol: pairInfo?.lpSymbol ?? '',
                   token: pairInfo?.token,
