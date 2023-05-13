@@ -138,7 +138,7 @@ const useRewardBreakdown = ({
                   yourVolume: 0,
                   rewardEarned: 0,
                   yourTradingFee: '0',
-                  feeAmount: 0,
+                  feeAmount: pairInfo?.feeAmount ?? 0,
                 }
               })
             })
