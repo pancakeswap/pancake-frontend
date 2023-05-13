@@ -15,6 +15,7 @@ interface UseRewardBreakdownProps {
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
   rewardInfo: { [key in string]: RewardInfo }
+  campaignPairs: { [campaignId in string]: { [chainId in string]: Array<string> } }
 }
 
 export interface RewardBreakdownPair {
@@ -45,6 +46,7 @@ const useRewardBreakdown = ({
   allUserCampaignInfo,
   allTradingRewardPairData,
   rewardInfo,
+  campaignPairs,
 }: UseRewardBreakdownProps): RewardBreakdown => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
@@ -115,7 +117,42 @@ const useRewardBreakdown = ({
           }),
         )
 
-        return dataInfo
+        const nowConnectDataInfo = Object.keys(campaignPairs).map((campaignId) => {
+          const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
+            (i) => i.campaignId.toLowerCase() === campaignId.toLowerCase(),
+          )
+
+          const pairs = Object.keys(campaignPairs?.[campaignId])
+            .map((campaignChainId) => {
+              const farms = farmsV3ConfigChainMap[campaignChainId as ChainId]
+
+              return campaignPairs?.[campaignId]?.[campaignChainId].map((lpAddress) => {
+                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
+                return {
+                  chainId: Number(campaignChainId),
+                  address: lpAddress,
+                  lpSymbol: pairInfo?.lpSymbol ?? '',
+                  token: pairInfo?.token,
+                  quoteToken: pairInfo?.quoteToken,
+                  yourVolume: 0,
+                  rewardEarned: 0,
+                  yourTradingFee: '0',
+                  feeAmount: 0,
+                }
+              })
+            })
+            .reduce((a, b) => a.concat(b), [])
+            .sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned))
+
+          return {
+            campaignId,
+            campaignStart: incentive?.campaignStart ?? 0,
+            campaignClaimTime: incentive?.campaignClaimTime ?? 0,
+            pairs,
+          }
+        })
+
+        return account ? dataInfo : nowConnectDataInfo
       } catch (error) {
         console.info(`Fetch Reward Breakdown Error: ${error}`)
         return []

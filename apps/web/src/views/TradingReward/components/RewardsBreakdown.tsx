@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useAccount } from 'wagmi'
 import { useRouter } from 'next/router'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { useTheme } from '@pancakeswap/hooks'
@@ -15,6 +14,7 @@ interface RewardsBreakdownProps {
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
   rewardInfo: { [key in string]: RewardInfo }
+  campaignPairs: { [campaignId in string]: { [chainId in string]: Array<string> } }
 }
 
 const MAX_PER_PAGE = 1
@@ -30,6 +30,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   allUserCampaignInfo,
   allTradingRewardPairData,
   rewardInfo,
+  campaignPairs,
 }) => {
   const {
     t,
@@ -37,7 +38,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   } = useTranslation()
   const router = useRouter()
   const { theme } = useTheme()
-  const { address: account } = useAccount()
   const campaignId = router?.query?.campaignId?.toString() ?? ''
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
@@ -48,6 +48,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     allUserCampaignInfo,
     allTradingRewardPairData,
     rewardInfo,
+    campaignPairs,
   })
 
   const sortData = useMemo(() => {
@@ -88,10 +89,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       getActivitySlice()
     }
   }, [currentPage, sortData])
-
-  if (!account) {
-    return null
-  }
 
   return (
     <Flex
