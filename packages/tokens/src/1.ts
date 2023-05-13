@@ -200,4 +200,28 @@ export const ethereumTokens = {
     'Wrapped Binance Beacon ETH',
     'https://ethereum.org/en/roadmap/beacon-chain/',
   ),
+  pepe: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x6982508145454Ce325dDbE47a25d4ec3d2311933',
+    18,
+    'PEPE',
+    'Pepe',
+    'https://www.pepe.vip/',
+  ),
+  blur: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x5283D291DBCF85356A21bA090E6db59121208b44',
+    18,
+    'BLUR',
+    'Blur',
+    'https://blur.io/',
+  ),
+  ens: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72',
+    18,
+    'ENS',
+    'Ethereum Name Service',
+    'https://ens.domains/',
+  ),
 }

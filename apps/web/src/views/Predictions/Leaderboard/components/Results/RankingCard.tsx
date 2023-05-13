@@ -55,7 +55,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
-  const { domainName } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
+  const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
   const { token, api } = useConfig()
 
@@ -82,7 +82,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
                 <Flex mb="4px">
                   <RotatedLaurelLeftIcon color={rankColor} width="32px" />
                   <Box width={['40px', null, null, '64px']} height={['40px', null, null, '64px']}>
-                    <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={64} width={64} />
+                    <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} />
                   </Box>
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>

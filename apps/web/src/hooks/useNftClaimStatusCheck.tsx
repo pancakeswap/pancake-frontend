@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useModal } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
-import { getBunnySpecialXmasContract } from 'utils/contractHelpers'
-import { bscRpcProvider } from 'utils/providers'
 import ClaimNftModal from 'components/ClaimNftModal/ClaimNftModal'
 import noop from 'lodash/noop'
 
@@ -14,7 +12,7 @@ const useNftClaimStatusCheck = () => {
   useEffect(() => {
     const checkClaimStatus = async () => {
       try {
-        const canClaim = await getBunnySpecialXmasContract(bscRpcProvider).canClaim(account)
+        const canClaim = /* await getBunnySpecialXmasContract(bscRpcProvider).canClaim(account) */ true
         if (canClaim) {
           onPresentNftClaimModal()
           setHasDisplayedModal(true)

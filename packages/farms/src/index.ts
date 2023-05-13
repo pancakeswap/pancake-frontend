@@ -12,7 +12,7 @@ import {
   LPTvl,
   getCakeApr,
 } from './fetchFarmsV3'
-import { FarmConfigV3, FarmV3DataWithPrice } from './types'
+import { ComputedFarmConfigV3, FarmV3DataWithPrice } from './types'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 const supportedChainIdV3 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
@@ -66,7 +66,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
     commonPrice,
   }: {
     chainId: ChainId
-    farms: FarmConfigV3[]
+    farms: ComputedFarmConfigV3[]
     commonPrice: CommonPrice
   }) => {
     const masterChefAddress = masterChefV3Addresses[chainId]
@@ -106,9 +106,10 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
   }
 
   const getCakeAprAndTVL = (farm: FarmV3DataWithPrice, lpTVL: LPTvl, cakePrice: string, cakePerSecond: string) => {
-    const tvl = new BigNumber(farm.tokenPriceBusd)
-      .times(lpTVL.token0)
-      .plus(new BigNumber(farm.quoteTokenPriceBusd).times(lpTVL.token1))
+    const [token0Price, token1Price] = farm.token.sortsBefore(farm.quoteToken)
+      ? [farm.tokenPriceBusd, farm.quoteTokenPriceBusd]
+      : [farm.quoteTokenPriceBusd, farm.tokenPriceBusd]
+    const tvl = new BigNumber(token0Price).times(lpTVL.token0).plus(new BigNumber(token1Price).times(lpTVL.token1))
 
     const cakeApr = getCakeApr(farm.poolWeight, tvl, cakePrice, cakePerSecond)
 

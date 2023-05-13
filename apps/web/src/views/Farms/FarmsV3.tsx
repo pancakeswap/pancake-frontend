@@ -46,6 +46,9 @@ import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsV3Context } from './context'
 
+const BIG_INT_ZERO = new BigNumber(0)
+const BIG_INT_ONE = new BigNumber(1)
+
 const ControlContainer = styled.div`
   display: flex;
   width: 100%;
@@ -180,6 +183,7 @@ export type V2StakeValueAndV3Farm = V3Farm | V2Farm
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
+  const mockApr = Boolean(urlQuery.mockApr)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { data: farmsV2, userDataLoaded: v2UserDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
@@ -188,7 +192,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     poolLength: v3PoolLength,
     isLoading,
     userDataLoaded: v3UserDataLoaded,
-  } = useFarmsV3WithPositions()
+  } = useFarmsV3WithPositions({ mockApr })
 
   const farmsLP: V2AndV3Farms = useMemo(() => {
     return [
@@ -282,7 +286,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        const totalLiquidityFromLp = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        // Mock 1$ tvl if the farm doesn't have lp staked
+        const totalLiquidity = totalLiquidityFromLp.eq(BIG_INT_ZERO) && mockApr ? BIG_INT_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(
               chainId,
@@ -299,7 +305,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
-    [query, isActive, chainId, cakePrice, regularCakePerBlock],
+    [query, isActive, chainId, cakePrice, regularCakePerBlock, mockApr],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -536,12 +542,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               {t("Don't see the farm you are staking?")}
             </Text>
             <Flex>
-              <FinishedTextLink href="/migration" fontSize={['16px', null, '20px']} color="failure">
-                {t('Go to migration page')}
-              </FinishedTextLink>
-              <Text fontSize={['16px', null, '20px']} color="failure" padding="0px 4px">
-                or
-              </Text>
               <FinishedTextLink
                 external
                 color="failure"

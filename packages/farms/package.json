@@ -1,9 +1,8 @@
 {
   "name": "@pancakeswap/farms",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "sideEffects": false,
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "npx tsx scripts/build.ts",
     "test": "vitest --run"

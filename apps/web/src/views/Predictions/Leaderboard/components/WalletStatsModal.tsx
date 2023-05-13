@@ -59,7 +59,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(address)
-  const { domainName } = useDomainNameForAddress(address, !profile && !isProfileLoading)
+  const { domainName, avatar } = useDomainNameForAddress(address, !profile && !isProfileLoading)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
@@ -76,7 +76,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
       <ModalHeader background={theme.colors.gradientBubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
-            <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={96} width={96} />
+            <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={96} width={96} />
           </Box>
           <Box>
             {profile?.username && (

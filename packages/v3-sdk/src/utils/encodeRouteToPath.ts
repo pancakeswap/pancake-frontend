@@ -1,4 +1,4 @@
-import { pack } from '@ethersproject/solidity'
+import { solidityPack as pack } from 'ethers/lib/utils'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { Pool } from '../entities/pool'
 import { Route } from '../entities/route'

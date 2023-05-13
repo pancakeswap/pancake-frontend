@@ -3,18 +3,12 @@ import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import burn from './burn/reducer'
 import farmsReducer from './farms'
-import farmsReducerV1 from './farmsV1'
 import { updateVersion } from './global/actions'
 import lotteryReducer from './lottery'
-import mint from './mint/reducer'
-import multicall from './multicall/reducer'
 import poolsReducer from './pools'
-import swap from './swap/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
-import limitOrders from './limitOrders/reducer'
 import potteryReducer from './pottery'
 import globalReducer from './global/reducer'
 
@@ -33,20 +27,13 @@ const persistedReducer = persistReducer(
   combineReducers({
     global: globalReducer,
     farms: farmsReducer,
-    farmsV1: farmsReducerV1,
     pools: poolsReducer,
     lottery: lotteryReducer,
     pottery: potteryReducer,
 
-    limitOrders,
-
     // Exchange
     user,
     transactions,
-    swap,
-    mint,
-    burn,
-    multicall,
   }),
 )
 

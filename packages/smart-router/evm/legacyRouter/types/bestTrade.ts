@@ -1,7 +1,7 @@
 import { BestTradeOptions as BaseBestTradeOptions, ChainId, Currency, Pair } from '@pancakeswap/sdk'
-import { Provider as IProvider } from '@ethersproject/providers'
+import { providers } from 'ethers'
 
-export type Provider = ({ chainId }: { chainId?: ChainId }) => IProvider
+export type Provider = ({ chainId }: { chainId?: ChainId }) => providers.Provider
 
 export interface BestTradeOptions extends BaseBestTradeOptions {
   provider: Provider

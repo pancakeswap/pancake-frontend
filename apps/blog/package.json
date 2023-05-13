@@ -38,6 +38,7 @@
     "eslint": "^8.32.0",
     "@types/styled-system": "^5.1.15",
     "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/next-config": "workspace:*",
     "@types/qs": "^6.0.0"
   }
 }

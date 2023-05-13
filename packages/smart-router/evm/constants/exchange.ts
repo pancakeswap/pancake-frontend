@@ -50,6 +50,10 @@ export const ADDITIONAL_BASES: {
   [ChainId.BSC]: {
     // SNFTS-SFUND
     [bscTokens.snfts.address]: [bscTokens.sfund],
+
+    [bscTokens.ankr.address]: [bscTokens.ankrbnb],
+    [bscTokens.ankrbnb.address]: [bscTokens.ankrETH, bscTokens.ankr],
+    [bscTokens.ankrETH.address]: [bscTokens.ankrbnb],
   },
 }
 

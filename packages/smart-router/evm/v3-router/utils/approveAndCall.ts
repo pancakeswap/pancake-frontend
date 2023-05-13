@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import invariant from 'tiny-invariant'
 import { Currency, Percent, Token } from '@pancakeswap/sdk'
 import {

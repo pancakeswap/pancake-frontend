@@ -8,10 +8,7 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import TableHeader from './MigrationTable/TableHeader'
 import EmptyText from './MigrationTable/EmptyText'
 import TableStyle from './MigrationTable/StyledTable'
-import NewRow from './MigrationStep2/NewFarm/FarmRow'
-import OldRow from './MigrationStep1/OldFarm/FarmRow'
-import { getDisplayApr } from '../../Farms/components/getDisplayApr'
-import { ColumnsDefTypes, DesktopV2ColumnSchema, RowProps, V3Step1DesktopColumnSchema } from './types'
+import { ColumnsDefTypes, RowProps, V3Step1DesktopColumnSchema } from './types'
 import { V3OldFarmRow } from './v3/OldFarmRow'
 
 const Container = styled.div`
@@ -26,7 +23,6 @@ export interface ITableProps {
   title: string
   noStakedFarmText: string
   account: string
-  cakePrice: BigNumber
   columnSchema: ColumnsDefTypes[]
   farms: FarmWithStakedValue[]
   userDataReady: boolean
@@ -37,7 +33,6 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   title,
   noStakedFarmText,
   account,
-  cakePrice,
   columnSchema,
   farms,
   userDataReady,
@@ -45,31 +40,9 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   const { t } = useTranslation()
 
   const rowData = farms.map((farm) => {
-    const { token, quoteToken } = farm
-    const tokenAddress = token.address
-    const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
-    const customRows =
-      columnSchema === DesktopV2ColumnSchema
-        ? {
-            apr: {
-              value: getDisplayApr(farm.apr, farm.lpRewardsApr),
-              pid: farm.pid,
-              multiplier: farm.multiplier,
-              lpLabel,
-              lpSymbol: farm.lpSymbol,
-              lpTokenPrice: farm.lpTokenPrice,
-              tokenAddress,
-              quoteTokenAddress,
-              cakePrice,
-              lpRewardsApr: farm.lpRewardsApr,
-              originalValue: farm.apr,
-            },
-          }
-        : { unstake: { pid: farm.pid, vaultPid: farm.vaultPid, farm } }
 
     const row: RowProps = {
-      ...customRows,
       farm: {
         ...farm,
         label: lpLabel,
@@ -83,6 +56,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         pid: farm.pid,
         stakedBalance: farm.boosted ? farm.userData?.proxy?.stakedBalance : farm.userData.stakedBalance,
       },
+      unstake: { pid: farm.pid, vaultPid: farm.vaultPid, farm },
       earned: {
         earnings: farm.boosted
           ? getBalanceNumber(farm.userData.proxy.earnings)
@@ -145,13 +119,10 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         {account &&
           userDataReady &&
           sortedRows.map((row) => {
-            if (columnSchema === DesktopV2ColumnSchema) {
-              return <NewRow {...row} key={`table-row-${row.farm.pid}`} />
-            }
             if (columnSchema === V3Step1DesktopColumnSchema) {
               return <V3OldFarmRow {...row} key={`table-row-${row.farm.pid}`} />
             }
-            return <OldRow {...row} key={`table-row-${row.farm.pid}`} />
+            return null
           })}
       </TableStyle>
     </Container>

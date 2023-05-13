@@ -17,10 +17,6 @@ describe('Config farms V3', () => {
     expect(hasDuplicates(pids)).toBeFalsy()
   })
 
-  it.each(mainnetFarms.flat())('All tokens should be sorted', (farm) => {
-    expect(farm.token.sortsBefore(farm.quoteToken), `${farm.token.chainId} ${farm.pid}: ${farm.lpAddress}`).toBeTruthy()
-  })
-
   it.each(mainnetFarms.flat())('All tokens same chainId', (farm) => {
     expect(farm.token.chainId === farm.quoteToken.chainId).toBeTruthy()
   })

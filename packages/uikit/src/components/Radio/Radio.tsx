@@ -32,9 +32,9 @@ const Radio = styled.input.attrs({ type: "radio" })<RadioProps>`
   width: ${getScale};
   vertical-align: middle;
   transition: background-color 0.2s ease-in-out;
-  border: 0;
+  border: ${({ theme }) => (theme.isDark ? `solid 1px ${theme.colors.disabled}` : "0")};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.input};
+  background-color: ${({ theme }) => theme.colors.cardBorder};
   box-shadow: ${({ theme }) => theme.shadows.inset};
 
   &:after {
@@ -57,6 +57,7 @@ const Radio = styled.input.attrs({ type: "radio" })<RadioProps>`
   }
 
   &:checked {
+    border: 0;
     background-color: ${({ theme }) => theme.colors.success};
     &:after {
       background-color: ${({ theme }) => theme.radio.handleBackground};
@@ -64,6 +65,7 @@ const Radio = styled.input.attrs({ type: "radio" })<RadioProps>`
   }
 
   &:disabled {
+    border: 0;
     cursor: default;
     opacity: 0.6;
   }

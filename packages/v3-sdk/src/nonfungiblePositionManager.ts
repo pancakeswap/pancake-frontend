@@ -9,7 +9,7 @@ import {
 } from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import INonfungiblePositionManager from './abi/NonfungiblePositionManager.json'
 import { Position } from './entities/position'
 import { ONE, ZERO } from './internalConstants'

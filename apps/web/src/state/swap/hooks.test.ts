@@ -1,12 +1,15 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
+import { useEffect } from 'react'
 import { renderHook } from '@testing-library/react-hooks'
+import { useAtom } from 'jotai'
 import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { parse } from 'querystring'
-import { vi, Mock } from 'vitest'
+import { Mock, vi } from 'vitest'
+import { swapReducerAtom } from 'state/swap/reducer'
 import { useCurrency } from 'hooks/Tokens'
 import { createReduxWrapper } from 'testUtils'
-import { Field } from './actions'
+import { Field, replaceSwapState } from './actions'
 import { queryParametersToSwapState, useDerivedSwapInfo, useSwapState } from './hooks'
 
 describe('hooks', () => {
@@ -151,6 +154,18 @@ describe('#useDerivedSwapInfo', () => {
     mockAccount.mockReturnValue({ address: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     const { result, rerender } = renderHook(
       () => {
+        const [, dispatch] = useAtom(swapReducerAtom)
+        useEffect(() => {
+          dispatch(
+            replaceSwapState({
+              field: Field.INPUT,
+              typedValue: '0.11',
+              inputCurrencyId: 'BNB',
+              outputCurrencyId: 'BNB',
+              recipient: undefined,
+            }),
+          )
+        }, [dispatch])
         const {
           independentField,
           typedValue,
@@ -163,18 +178,11 @@ describe('#useDerivedSwapInfo', () => {
         return useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
       },
       {
-        wrapper: createReduxWrapper({
-          swap: {
-            typedValue: '0.11',
-            [Field.INPUT]: { currencyId: 'BNB' },
-            [Field.OUTPUT]: { currencyId: 'BNB' },
-          },
-        }),
+        wrapper: createReduxWrapper(),
       },
     )
 
     rerender()
-
     expect(result.current.inputError).toBe('Enter a recipient')
     mockAccount.mockClear()
   })
@@ -182,6 +190,18 @@ describe('#useDerivedSwapInfo', () => {
   it('should return undefined when no pair', async () => {
     const { result } = renderHook(
       () => {
+        const [, dispatch] = useAtom(swapReducerAtom)
+        useEffect(() => {
+          dispatch(
+            replaceSwapState({
+              field: Field.INPUT,
+              typedValue: '',
+              inputCurrencyId: '',
+              outputCurrencyId: '',
+              recipient: null,
+            }),
+          )
+        }, [dispatch])
         const {
           independentField,
           typedValue,

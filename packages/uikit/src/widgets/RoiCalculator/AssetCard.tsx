@@ -1,9 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Percent } from "@pancakeswap/sdk";
-import { memo, PropsWithChildren, ReactNode, useCallback } from "react";
+import { memo, PropsWithChildren, ReactNode, useCallback, Ref, MouseEvent } from "react";
 import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
+
+import { useMatchBreakpoints } from "../../contexts";
 
 import {
   Flex,
@@ -40,7 +42,7 @@ export function SectionTitle({ children }: PropsWithChildren) {
   );
 }
 
-interface Props extends SpaceProps {
+export interface AssetCardProps extends SpaceProps {
   assets?: Asset[];
   header?: ReactNode;
   showPrice?: boolean;
@@ -48,6 +50,7 @@ interface Props extends SpaceProps {
   isActive?: boolean;
   onChange?: (assets: Asset[], info: { index: number }) => void;
   extraRows?: ReactNode;
+  firstPriceInputRef?: Ref<HTMLInputElement>;
 }
 
 export interface Asset {
@@ -96,16 +99,17 @@ export const AssetCard = memo(function AssetCard({
   isActive = false,
   assets = [],
   extraRows,
-  onChange = () => {
-    // default
-  },
+  onChange,
+  firstPriceInputRef,
   ...rest
-}: Props) {
+}: AssetCardProps) {
   const { t } = useTranslation();
+  const { isMobile } = useMatchBreakpoints();
 
   const assetNodes = assets.map(({ price, value, amount, currency, priceChanged, key = "" }, index) => (
     <AssetRow
       key={currency.symbol + key}
+      priceInputRef={index === 0 ? firstPriceInputRef : undefined}
       price={price}
       value={value}
       amount={amount}
@@ -113,9 +117,15 @@ export const AssetCard = memo(function AssetCard({
       decimals={18}
       priceEditable={priceEditable}
       priceChanged={priceChanged}
-      name={<CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />}
+      name={
+        isMobile ? (
+          currency.symbol
+        ) : (
+          <CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />
+        )
+      }
       onPriceChange={(newPrice) =>
-        onChange(
+        onChange?.(
           assets.map<Asset>((a, i) => (i === index ? { ...a, price: newPrice, priceChanged: true } : a)),
           { index }
         )
@@ -154,6 +164,7 @@ export const AssetCard = memo(function AssetCard({
 
 interface AssetRowProps {
   name: ReactNode;
+  priceInputRef?: Ref<HTMLInputElement>;
   amount?: string | number;
   price?: string;
   priceChanged?: boolean;
@@ -173,18 +184,24 @@ export const AssetRow = memo(function AssetRow({
   showPrice = true,
   priceChanged = false,
   priceEditable = true,
-  onPriceChange = () => {
-    // default
-  },
+  onPriceChange,
+  priceInputRef,
 }: AssetRowProps) {
   const onPriceUpdate = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        onPriceChange(e.currentTarget.value.replace(/,/g, ".") || "0");
+        onPriceChange?.(e.currentTarget.value.replace(/,/g, ".") || "0");
       }
     },
     [onPriceChange]
   );
+  const onMouseDown = useCallback((e: MouseEvent<HTMLInputElement>) => {
+    if (e.currentTarget !== document.activeElement) {
+      e.preventDefault();
+      e.currentTarget.focus();
+      e.currentTarget.select();
+    }
+  }, []);
 
   const textColor = priceChanged ? "primary" : "textSubtle";
 
@@ -198,11 +215,13 @@ export const AssetRow = memo(function AssetRow({
           <Row>
             <Text color={textColor}>$</Text>
             <StyledInput
+              ref={priceInputRef}
               pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
               inputMode="decimal"
               min="0"
               color={textColor}
               value={price}
+              onMouseDown={onMouseDown}
               onChange={onPriceUpdate}
               disabled={!priceEditable}
             />

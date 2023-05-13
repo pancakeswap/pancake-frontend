@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/sdk",
   "license": "MIT",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -35,25 +35,14 @@
   },
   "dependencies": {
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "ethers": "^5.0.0",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0"
   },
-  "peerDependencies": {
-    "@ethersproject/address": "^5.0.0",
-    "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/networks": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0",
-    "@ethersproject/solidity": "^5.0.0"
-  },
   "devDependencies": {
-    "@ethersproject/address": "^5.0.0",
-    "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/networks": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0",
-    "@ethersproject/solidity": "^5.0.0",
     "@swc/core": "^1.2.215",
     "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",

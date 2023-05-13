@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress, WNATIVE } from '@pancakeswap/sdk'
 import { FeeOptions, MethodParameters, Payments, PermitOptions, Position, SelfPermit, toHex } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'

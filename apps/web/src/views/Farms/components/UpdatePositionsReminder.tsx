@@ -84,7 +84,7 @@ export function UpdatePositionsReminder_() {
         })),
       [chainId, masterchefV3.address, masterchefV3.interface, stakedTokenIds],
     ),
-    cacheOnBlock: true,
+    cacheTime: 0,
     enabled: !loading && stakedTokenIds.length > 0,
   })
 
@@ -119,7 +119,7 @@ export function UpdatePositionsReminder_() {
         chainId,
       }
     }),
-    cacheOnBlock: true,
+    cacheTime: 0,
     enabled: isOverRewardGrowthGlobalUserInfos?.length > 0,
   })
 

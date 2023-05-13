@@ -134,7 +134,7 @@ export default function TokenTable({
   const { theme } = useTheme()
 
   // for sorting
-  const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
+  const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
 
   // pagination

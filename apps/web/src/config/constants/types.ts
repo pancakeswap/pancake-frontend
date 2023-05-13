@@ -189,22 +189,10 @@ export enum FetchStatus {
   Failed = 'FAILED',
 }
 
-export const isV2SwapOrStableSwap = (trade: ITrade): trade is V2TradeAndStableSwap => {
-  return Boolean((trade as V2TradeAndStableSwap)?.maximumAmountIn)
-}
-
 export const isStableSwap = (trade: ITrade): trade is StableTrade => {
   return (
     Boolean((trade as StableTrade)?.maximumAmountIn) &&
     !(trade as Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType>)?.route
-  )
-}
-
-export const isV2SwapOrMixSwap = (
-  trade: ITrade,
-): trade is Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType> => {
-  return Boolean(
-    (trade as Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType>)?.route,
   )
 }
 

@@ -5,7 +5,7 @@ export function formatPercent(percent?: Percent, precision?: number) {
 }
 
 export function formatFraction(fraction?: Fraction, precision = 6) {
-  if (!fraction) {
+  if (!fraction || fraction.denominator === 0n) {
     return undefined
   }
   if (fraction.greaterThan(10n ** BigInt(precision))) {
@@ -15,10 +15,16 @@ export function formatFraction(fraction?: Fraction, precision = 6) {
 }
 
 export function formatPrice(price?: Price<Currency, Currency>, precision?: number) {
+  if (!price) {
+    return undefined
+  }
   return formatFraction(price?.asFraction.multiply(price?.scalar), precision)
 }
 
 export function formatAmount(amount?: CurrencyAmount<Currency>, precision?: number) {
+  if (!amount) {
+    return undefined
+  }
   return formatFraction(amount?.asFraction.divide(10n ** BigInt(amount?.currency.decimals)), precision)
 }
 

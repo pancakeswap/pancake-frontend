@@ -187,4 +187,9 @@ export default {
     97: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
   },
   quoter: V3_QUOTER_ADDRESSES,
+  v3Airdrop: {
+    1: '0x',
+    56: '0xe934d2C5bE5db0295A4de3177762A9E8c74Ae4f4',
+    97: '0x',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
