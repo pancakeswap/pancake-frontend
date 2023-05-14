@@ -1,4 +1,3 @@
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useFarmUser } from 'state/farms/hooks'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import { useSWRMulticall } from 'hooks/useSWRContract'
@@ -9,6 +8,7 @@ import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyCon
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -45,7 +45,7 @@ interface UseYieldBoosterStateArgs {
 
 export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoosterStateArgs) {
   const { farmPid } = yieldBoosterStateArgs
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { remainingCounts, refreshActivePools } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance, proxy } = useFarmUser(farmPid)

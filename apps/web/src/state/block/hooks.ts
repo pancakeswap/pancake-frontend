@@ -2,7 +2,6 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 // eslint-disable-next-line camelcase
 import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProvider } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -10,7 +9,7 @@ const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const provider = useProvider({ chainId })
 
   const { data } = useSWR(
@@ -60,7 +59,7 @@ export const useCurrentBlock = (): number => {
 }
 
 export const useChainCurrentBlock = (chainId: number): number => {
-  const { chainId: activeChainId } = useActiveWeb3React()
+  const { chainId: activeChainId } = useActiveChainId()
   const provider = useProvider({ chainId })
   const { data: currentBlock = 0 } = useSWR(
     chainId ? (activeChainId === chainId ? ['blockNumber', chainId] : ['chainBlockNumber', chainId]) : null,

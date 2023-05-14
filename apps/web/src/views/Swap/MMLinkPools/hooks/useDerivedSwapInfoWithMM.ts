@@ -5,7 +5,7 @@ import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMMDevMode } from '../components/MMAndAMMDealDisplay'
 import { MMOrderBookTrade, MMRfqTrade } from '../types'
 import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
@@ -44,7 +44,7 @@ export function useDerivedSwapInfoWithMM(
   const [isExpertMode] = useExpertMode()
   const isMMDev = useMMDevMode()
   const [allowedSlippage] = useUserSlippage()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const deBounceTypedValue = useDebounce(typedValue, 300)
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
 
@@ -57,7 +57,7 @@ export function useDerivedSwapInfoWithMM(
   })
 
   const { refreshRFQ, rfqId } = useGetRFQId(
-    (!mmOrderBookTrade.inputError || isMMDev) && mmOrderBookTrade?.mmParam,
+    (!mmOrderBookTrade?.inputError || isMMDev) && mmOrderBookTrade?.mmParam,
     isMMOrderBookTradeBetter,
     mmOrderBookTrade?.rfqUserInputPath,
     mmOrderBookTrade?.isRFQLive,

@@ -10,7 +10,7 @@ import {
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import { fetchCommonTokenUSDValue, LPTvl, TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
+import { fetchCommonTokenUSDValue, TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'

@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { multicallv3 } from 'utils/multicall'
 import masterChefABI from 'config/abi/masterchef.json'
 import cakeAbi from 'config/abi/cake.json'
@@ -17,6 +16,7 @@ import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { Masterchef, BCakeProxy } from 'config/abi/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContractAddress } from '../../Farms/hooks/useBCakeProxyContractAddress'
 import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
 
@@ -26,7 +26,7 @@ export type FarmWithBalance = {
 } & SerializedFarmConfig
 
 const useFarmsWithBalance = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { data: poolLength } = useFarmsLength()
   const { proxyAddress, isLoading: isProxyContractAddressLoading } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
@@ -38,10 +38,13 @@ const useFarmsWithBalance = () => {
   const { tokenIdResults: v3PendingCakes } = useStakedPositionsByUser(stakedTokenIds)
 
   const getFarmsWithBalances = async (
-    farms: SerializedFarmConfig[],
+    farms: SerializedFarmConfig[] | null | undefined,
     accountToCheck: string,
     contract: Masterchef | BCakeProxy,
   ) => {
+    if (!farms) {
+      return { farmsWithBalances: [], totalEarned: 0 }
+    }
     const masterChefCalls = farms.map((farm) => ({
       abi: masterChefABI,
       address: masterChefContract.address,
@@ -92,7 +95,7 @@ const useFarmsWithBalance = () => {
       : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
-      const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
+      const farmsCanFetch = farmsConfig?.filter((f) => poolLength > f.pid)
       const normalBalances = await getFarmsWithBalances(farmsCanFetch, account, masterChefContract)
       if (proxyAddress && farmsCanFetch?.length && verifyBscNetwork(chainId)) {
         const { farmsWithProxy } = splitProxyFarms(farmsCanFetch)

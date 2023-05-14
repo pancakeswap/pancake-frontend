@@ -27,7 +27,6 @@ import {
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
@@ -70,6 +69,7 @@ import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/Rat
 import Page from 'views/Page'
 import { useProvider, useSigner } from 'wagmi'
 import dayjs from 'dayjs'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -146,7 +146,7 @@ export default function PoolPage() {
 
   const { data: signer } = useSigner()
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const provider = useProvider({ chainId })
 
   const router = useRouter()

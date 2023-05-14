@@ -6,7 +6,6 @@ import { MasterChefV3, Multicall, toHex } from '@pancakeswap/v3-sdk'
 import { BigNumber } from 'ethers'
 import { FormatTypes } from 'ethers/lib/utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3 } from 'hooks/useContract'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
@@ -66,7 +65,8 @@ export function UpdatePositionsReminder() {
 
 export function UpdatePositionsReminder_() {
   const { data: farmsV3 } = useFarmsV3Public()
-  const { account, chainId } = useActiveWeb3React()
+  const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
 
   const masterchefV3 = useMasterchefV3(false)
   const { tokenIds: stakedTokenIds, loading } = useV3TokenIdsByAccount(masterchefV3, account)

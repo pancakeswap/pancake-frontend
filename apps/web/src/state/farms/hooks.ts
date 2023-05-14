@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -13,6 +12,7 @@ import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } fr
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -43,7 +43,7 @@ export function useFarmV2PublicAPI() {
 
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const {
     proxyAddress,
     proxyCreated,

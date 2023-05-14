@@ -1,10 +1,10 @@
 import useSWRImmutable from 'swr/immutable'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getCrossFarmingSenderContract } from 'utils/contractHelpers'
 import { useMemo } from 'react'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
-export const useFirstTimeCrossFarming = (vaultPid: number) => {
-  const { account, chainId } = useActiveWeb3React()
+export const useFirstTimeCrossFarming = (vaultPid: number | undefined) => {
+  const { account, chainId } = useAccountActiveChain()
   const crossFarmingAddress = useMemo(() => {
     return vaultPid && chainId ? getCrossFarmingSenderContract(null, chainId) : null
   }, [chainId, vaultPid])
