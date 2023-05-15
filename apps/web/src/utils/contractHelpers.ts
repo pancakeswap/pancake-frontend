@@ -81,10 +81,9 @@ import masterChefV3Abi from 'config/abi/masterChefV3.json'
 import V3AirdropAbi from 'config/abi/v3Airdrop.json'
 
 import { ChainId } from '@pancakeswap/sdk'
-import { Address, erc20ABI, erc721ABI, WalletClient } from 'wagmi'
+import { Address, erc20ABI, erc721ABI } from 'wagmi'
 import { GetContractArgs } from 'wagmi/actions'
-import { getContract as getContract_ } from 'viem'
-import { getContract as getContract__ } from '@wagmi/core'
+import { getContract as viemGetContract, WalletClient } from 'viem'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
@@ -102,7 +101,7 @@ import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { farmAuctionABI } from 'config/abi/farmAuction'
-
+import { cakeVaultV2ABI } from 'config/abi/cakeVaultV2'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { SIDResolverABI } from 'config/abi/SIDResolver'
 import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
@@ -111,6 +110,7 @@ import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanT
 import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
 import { masterChefV1ABI } from 'config/abi/masterchefV1'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
+import { viemClients } from './viem'
 
 export const getContract = <TAbi extends Abi | unknown[]>({
   abi,
@@ -123,8 +123,7 @@ export const getContract = <TAbi extends Abi | unknown[]>({
   chainId?: ChainId
   signer?: WalletClient
 }) => {
-  const c = getContract__({
-    chainId,
+  const c = viemGetContract({
     abi,
     address,
     walletClient: signer,
@@ -141,7 +140,7 @@ export const getBep20Contract = (address: Address, signer?: WalletClient) => {
 }
 
 export const getErc721Contract = (address: Address, walletClient?: WalletClient) => {
-  return getContract_({
+  return viemGetContract({
     abi: erc721ABI,
     address,
     walletClient,
@@ -170,7 +169,12 @@ export const profileContractArgs = {
 } satisfies GetContractArgs
 
 // TODO: wagmi
-export const profileContract = getContract_(profileContractArgs)
+export const profileContract = viemGetContract({
+  abi: pancakeProfileABI,
+  address: getPancakeProfileAddress(),
+  // publicClient: viemClients[56],
+})
+
 export const getProfileContract = (signer?: WalletClient) => {
   return getContract({ abi: pancakeProfileABI, address: getPancakeProfileAddress(), signer })
 }
@@ -217,7 +221,7 @@ export const getTradingCompetitionContractMoD = (signer?: WalletClient) => {
 }
 
 export const getCakeVaultV2Contract = (signer?: WalletClient) => {
-  return getContract({ abi: cakeVaultV2Abi, address: getCakeVaultAddress(), signer })
+  return getContract({ abi: cakeVaultV2ABI, address: getCakeVaultAddress(), signer })
 }
 
 export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient) => {
@@ -269,11 +273,11 @@ export const getErc721CollectionContract = (signer?: WalletClient, address?: Add
 }
 
 export const getPotteryVaultContract = (address: Address, walletClient?: WalletClient) => {
-  return getContract_({ abi: potteryVaultABI, address, walletClient })
+  return viemGetContract({ abi: potteryVaultABI, address, walletClient })
 }
 
 export const getPotteryDrawContract = (walletClient?: WalletClient) => {
-  return getContract_({ abi: potteryDrawABI, address: getPotteryDrawAddress(), walletClient })
+  return viemGetContract({ abi: potteryDrawABI, address: getPotteryDrawAddress(), walletClient })
 }
 
 export const getIfoCreditAddressContract = (signer?: WalletClient) => {
@@ -407,10 +411,10 @@ export const getTradingRewardContract = (chainId?: number, signer?: Signer | Pro
   }) as TradingReward
 }
 
-export const getV3AirdropContract = (signer?: WalletClient) => {
-  return getContract({
+export const getV3AirdropContract = (walletClient?: WalletClient) => {
+  return viemGetContract({
     abi: v3AirdropABI,
     address: getV3AirdropAddress(),
-    signer,
+    walletClient,
   })
 }
