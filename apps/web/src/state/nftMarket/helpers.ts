@@ -15,7 +15,6 @@ import { isAddress } from 'utils'
 import { Address } from 'wagmi'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
-import { multicallv2 } from 'utils/multicall'
 import { viemClients } from 'utils/viem'
 import { ChainId } from '@pancakeswap/sdk'
 import { ContractFunctionResult } from 'viem'
@@ -66,18 +65,22 @@ export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
 const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
   const totalSupplyCalls = collections
     .filter((collection) => collection?.address)
-    .map((collection) => ({
-      address: collection.address.toLowerCase() as Address,
-      name: 'totalSupply',
-    }))
+    .map(
+      (collection) =>
+        ({
+          abi: erc721CollectionABI,
+          address: collection.address as Address,
+          functionName: 'totalSupply',
+        } as const),
+    )
   if (totalSupplyCalls.length > 0) {
-    const totalSupplyRaw = await multicallv2({
-      abi: erc721CollectionABI,
-      calls: totalSupplyCalls,
-      options: { requireSuccess: false },
+    const client = viemClients[ChainId.BSC]
+    const totalSupplyRaw = await client.multicall({
+      contracts: totalSupplyCalls,
     })
-    const totalSupply = totalSupplyRaw.flat()
-    return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
+
+    const totalSupply = totalSupplyRaw.map((r) => r.result)
+    return totalSupply.map((totalCount) => (totalCount ? Number(totalCount) : 0))
   }
   return []
 }
@@ -959,40 +962,44 @@ export const fetchWalletTokenIdsForCollections = async (
   const balanceOfCalls = tokenOfOwnerByIndexCollections.map((collection) => {
     const { address: collectionAddress } = collection
     return {
+      abi: erc721CollectionABI,
       address: collectionAddress,
-      name: 'balanceOf',
-      params: [account],
-    }
+      functionName: 'balanceOf',
+      args: [account as Address],
+    } as const
   })
 
-  const balanceOfCallsResultRaw = await multicallv2({
-    abi: erc721CollectionABI,
-    calls: balanceOfCalls,
-    options: { requireSuccess: false },
+  const client = viemClients[ChainId.BSC]
+
+  const balanceOfCallsResultRaw = await client.multicall({
+    contracts: balanceOfCalls,
+    allowFailure: true,
   })
-  const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
+
+  const balanceOfCallsResult = balanceOfCallsResultRaw.map((r) => r.result)
 
   const tokenIdCalls = tokenOfOwnerByIndexCollections
     .map((collection, index) => {
-      const balanceOf = balanceOfCallsResult[index]?.toNumber() ?? 0
+      const balanceOf = balanceOfCallsResult[index] ? Number(balanceOfCallsResult[index]) : 0
       const { address: collectionAddress } = collection
 
       return range(balanceOf).map((tokenIndex) => {
         return {
+          abi: erc721CollectionABI,
           address: collectionAddress,
-          name: 'tokenOfOwnerByIndex',
-          params: [account, tokenIndex],
-        }
+          functionName: 'tokenOfOwnerByIndex',
+          args: [account as Address, BigInt(tokenIndex)] as const,
+        } as const
       })
     })
     .flat()
 
-  const tokenIdResultRaw = await multicallv2({
-    abi: erc721CollectionABI,
-    calls: tokenIdCalls,
-    options: { requireSuccess: false },
+  const tokenIdResultRaw = await client.multicall({
+    contracts: tokenIdCalls,
+    allowFailure: true,
   })
-  const tokenIdResult = tokenIdResultRaw.flat()
+
+  const tokenIdResult = tokenIdResultRaw.map((r) => r.result)
 
   const nftLocation = NftLocation.WALLET
 
@@ -1008,32 +1015,35 @@ export const fetchWalletTokenIdsForCollections = async (
     .filter((c) => COLLECTIONS_WITH_WALLET_OF_OWNER.includes(c.address))
     .map((c) => {
       return {
+        abi: [
+          {
+            inputs: [{ internalType: 'address', name: '_owner', type: 'address' }],
+            name: 'walletOfOwner',
+            outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ] as const,
         address: c.address,
-        name: 'walletOfOwner',
-        params: [account],
-      }
+        functionName: 'walletOfOwner',
+        args: [account as Address],
+      } as const
     })
 
-  const walletOfOwnerCallResult = await multicallv2({
-    abi: [
-      {
-        inputs: [{ internalType: 'address', name: '_owner', type: 'address' }],
-        name: 'walletOfOwner',
-        outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ],
-    calls: walletOfOwnerCalls,
+  const walletOfOwnerCallResult = await client.multicall({
+    contracts: walletOfOwnerCalls,
+    allowFailure: true,
   })
 
-  const walletNftsWithWO = walletOfOwnerCallResult.flat().reduce((acc, wo, index) => {
-    if (wo) {
-      const { address: collectionAddress } = walletOfOwnerCalls[index]
-      acc.push(wo.map((w) => ({ tokenId: w.toString(), collectionAddress, nftLocation })))
-    }
-    return acc
-  }, [])
+  const walletNftsWithWO = walletOfOwnerCallResult
+    .map((r) => r.result)
+    .reduce((acc, wo, index) => {
+      if (wo) {
+        const { address: collectionAddress } = walletOfOwnerCalls[index]
+        acc.push(wo.map((w) => ({ tokenId: w.toString(), collectionAddress, nftLocation })))
+      }
+      return acc
+    }, [] as any[])
 
   return walletNfts.concat(walletNftsWithWO.flat())
 }

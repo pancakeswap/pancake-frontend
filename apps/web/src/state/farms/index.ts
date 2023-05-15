@@ -11,9 +11,9 @@ import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import stringify from 'fast-json-stable-stringify'
 import keyBy from 'lodash/keyBy'
 import type { AppState } from 'state'
-import { multicallv2 } from 'utils/multicall'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { chains } from 'utils/wagmi'
+import { getViemClients } from 'utils/viem'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
@@ -42,7 +42,7 @@ const fetchFarmPublicDataPkg = async ({
   return [farmsWithPrice, poolLength, regularCakePerBlock, totalRegularAllocPoint]
 }
 
-export const farmFetcher = createFarmFetcher(multicallv2)
+export const farmFetcher = createFarmFetcher(getViemClients)
 
 const initialState: SerializedFarmsState = {
   data: [],

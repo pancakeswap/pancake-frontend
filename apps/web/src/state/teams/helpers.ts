@@ -2,11 +2,12 @@ import merge from 'lodash/merge'
 import teamsList from 'config/constants/teams'
 import { getProfileContract } from 'utils/contractHelpers'
 import { Team } from 'config/constants/types'
-import { multicallv2 } from 'utils/multicall'
 import { TeamsById } from 'state/types'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import fromPairs from 'lodash/fromPairs'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const getTeam = async (teamId: number): Promise<Team> => {
   try {
@@ -39,16 +40,20 @@ export const getTeams = async (): Promise<TeamsById> => {
     const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))
     const nbTeams = await profileContract.read.numberTeams()
 
-    const calls = []
-    for (let i = 1; i <= nbTeams; i++) {
-      calls.push({
-        address: getPancakeProfileAddress(),
-        name: 'getTeamProfile',
-        params: [i],
-      })
-    }
-    // TODO: wagmi
-    const teamData = await multicallv2({ abi: pancakeProfileABI, calls })
+    const calls = Array.from({ length: Number(nbTeams) }).map(
+      (_, i) =>
+        ({
+          abi: pancakeProfileABI,
+          address: getPancakeProfileAddress(),
+          functionName: 'getTeamProfile',
+          args: [BigInt(i + 1)] as const,
+        } as const),
+    )
+    const client = viemClients[ChainId.BSC]
+    const teamData = await client.multicall({
+      contracts: calls,
+      allowFailure: false,
+    })
 
     const onChainTeamData = fromPairs(
       teamData.map((team, index) => {
@@ -58,8 +63,8 @@ export const getTeams = async (): Promise<TeamsById> => {
           index + 1,
           {
             name: teamName,
-            users: numberUsers.toNumber(),
-            points: numberPoints.toNumber(),
+            users: Number(numberUsers),
+            points: Number(numberPoints),
             isJoinable,
           },
         ]

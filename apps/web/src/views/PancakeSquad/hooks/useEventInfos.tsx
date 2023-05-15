@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { getNftSaleAddress } from 'utils/addressHelpers'
 import { getPancakeSquadContract } from 'utils/contractHelpers'
-import { multicallv2 } from 'utils/multicall'
-import nftSaleAbi from 'config/abi/nftSale.json'
+import { nftSaleABI } from 'config/abi/nftSale'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 
 const useEventInfos = ({ refreshCounter, setCallback }) => {
   useEffect(() => {
@@ -11,18 +12,26 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
         const nftSaleAddress = getNftSaleAddress()
         const pancakeSquadContract = getPancakeSquadContract()
 
-        const calls = [
-          'maxSupply',
-          'maxPerAddress',
-          'pricePerTicket',
-          'maxPerTransaction',
-          'totalTicketsDistributed',
-          'currentStatus',
-          'startTimestamp',
-        ].map((method) => ({
-          address: nftSaleAddress,
-          name: method,
-        }))
+        const calls = (
+          [
+            'maxSupply',
+            'maxPerAddress',
+            'pricePerTicket',
+            'maxPerTransaction',
+            'totalTicketsDistributed',
+            'currentStatus',
+            'startTimestamp',
+          ] as const
+        ).map(
+          (method) =>
+            ({
+              abi: nftSaleABI,
+              address: nftSaleAddress,
+              functionName: method,
+            } as const),
+        )
+
+        const client = viemClients[ChainId.BSC]
 
         const [
           currentMaxSupply,
@@ -32,7 +41,10 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
           currentTotalTicketsDistributed,
           currentSaleStatus,
           currentStartTimestamp,
-        ] = await multicallv2({ abi: nftSaleAbi, calls })
+        ] = await client.multicall({
+          contracts: calls,
+          allowFailure: false,
+        })
 
         const currentTotalSupplyMinted = await pancakeSquadContract.read.totalSupply()
 
@@ -51,7 +63,7 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
       }
     }
 
-    if (nftSaleAbi.length > 0) {
+    if (nftSaleABI.length > 0) {
       fetchEventInfos()
     }
   }, [refreshCounter, setCallback])

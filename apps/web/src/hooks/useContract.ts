@@ -1,7 +1,6 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
 
 import { erc20ABI, useWalletClient, usePublicClient } from 'wagmi'
-import { getContract as getContract__ } from '@wagmi/core'
 import { Address } from 'viem'
 import { Abi } from 'abitype'
 
@@ -9,6 +8,7 @@ import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
+  getContract,
   getAnniversaryAchievementContract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
@@ -240,11 +240,11 @@ export function useContract<TAbi extends Abi>(
     else address = addressOrAddressMap[chainId]
     if (!address) return null
     try {
-      const c = getContract__({
+      const c = getContract({
         abi,
         address,
         chainId,
-        walletClient,
+        signer: walletClient,
       })
       return {
         ...c,

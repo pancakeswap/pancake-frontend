@@ -1,5 +1,4 @@
-import { parseUnits } from 'viem'
-import { Call, MultiCallV2 } from '@pancakeswap/multicall'
+import { PublicClient, parseUnits } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
 import { SerializedStableFarmConfig } from '../types'
@@ -30,42 +29,48 @@ const stableSwapAbi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
 
 export async function fetchStableFarmData(
   farms: SerializedStableFarmConfig[],
   chainId = ChainId.BSC,
-  multicallv2: MultiCallV2,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
 ) {
-  const calls: Call[] = farms.flatMap((f) => [
-    {
-      address: f.stableSwapAddress,
-      name: 'balances',
-      params: [0],
-    },
-    {
-      address: f.stableSwapAddress,
-      name: 'balances',
-      params: [1],
-    },
-    {
-      address: f.stableSwapAddress,
-      name: 'get_dy',
-      params: [0, 1, parseUnits('1', f.token.decimals)],
-    },
-    {
-      address: f.stableSwapAddress,
-      name: 'get_dy',
-      params: [1, 0, parseUnits('1', f.quoteToken.decimals)],
-    },
-  ])
+  const calls = farms.flatMap(
+    (f) =>
+      [
+        {
+          abi: stableSwapAbi,
+          address: f.stableSwapAddress,
+          functionName: 'balances',
+          args: [0n],
+        },
+        {
+          abi: stableSwapAbi,
+          address: f.stableSwapAddress,
+          functionName: 'balances',
+          args: [1n],
+        },
+        {
+          abi: stableSwapAbi,
+          address: f.stableSwapAddress,
+          functionName: 'get_dy',
+          args: [0n, 1n, parseUnits('1', f.token.decimals)],
+        },
+        {
+          abi: stableSwapAbi,
+          address: f.stableSwapAddress,
+          functionName: 'get_dy',
+          args: [1n, 0n, parseUnits('1', f.quoteToken.decimals)],
+        },
+      ] as const,
+  )
 
   const chunkSize = calls.length / farms.length
 
-  const results = await multicallv2({
-    abi: stableSwapAbi,
-    calls,
-    chainId,
+  const results = await provider({ chainId }).multicall({
+    contracts: calls,
+    allowFailure: false,
   })
 
   return chunk(results, chunkSize)

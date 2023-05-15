@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { erc20ABI } from 'wagmi'
 import chunk from 'lodash/chunk'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
+import { getViemClients } from 'utils/viem'
 import { SerializedFarm } from '@pancakeswap/farms'
 import { SerializedFarmConfig } from '../../config/constants/types'
 
@@ -11,43 +11,53 @@ const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
   return [
     // Balance of token in the LP contract
     {
+      abi: erc20ABI,
       address: token.address,
-      name: 'balanceOf',
-      params: [lpAddress],
+      functionName: 'balanceOf',
+      args: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
+      abi: erc20ABI,
       address: quoteToken.address,
-      name: 'balanceOf',
-      params: [lpAddress],
+      functionName: 'balanceOf',
+      args: [lpAddress],
     },
     // Balance of LP tokens in the master chef contract
     {
+      abi: erc20ABI,
       address: lpAddress,
-      name: 'balanceOf',
-      params: [getMasterChefV2Address(chainId)],
+      functionName: 'balanceOf',
+      args: [getMasterChefV2Address(chainId)],
     },
     // Total supply of LP tokens
     {
+      abi: erc20ABI,
       address: lpAddress,
-      name: 'totalSupply',
+      functionName: 'totalSupply',
     },
     // Token decimals
     {
+      abi: erc20ABI,
       address: token.address,
-      name: 'decimals',
+      functionName: 'decimals',
     },
     // Quote token decimals
     {
+      abi: erc20ABI,
       address: quoteToken.address,
-      name: 'decimals',
+      functionName: 'decimals',
     },
-  ]
+  ] as const
 }
 
-export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[], chainId = ChainId.BSC): Promise<any[]> => {
+export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[], chainId = ChainId.BSC) => {
   const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm, chainId))
+  const client = getViemClients({ chainId })
+  const farmMultiCallResult = await client.multicall({
+    contracts: farmCalls,
+    allowFailure: false,
+  })
   const chunkSize = farmCalls.length / farms.length
-  const farmMultiCallResult = await multicallv2({ abi: erc20ABI, calls: farmCalls, chainId })
   return chunk(farmMultiCallResult, chunkSize)
 }
