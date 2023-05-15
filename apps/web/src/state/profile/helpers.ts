@@ -45,14 +45,6 @@ export const getUsername = async (address: string): Promise<string> => {
 
 export const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const profileCalls = (['hasRegistered', 'getUserProfile'] as const).map((method) => {
-      return {
-        abi: pancakeProfileABI,
-        address: getPancakeProfileAddress(),
-        functionName: method,
-        args: [address as Address] as const,
-      } as const
-    })
     const client = viemClients[ChainId.BSC]
 
     const profileCallsResult = await client.multicall({
