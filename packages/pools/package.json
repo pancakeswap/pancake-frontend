@@ -4,9 +4,7 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "pnpm typechain",
-    "test": "vitest --run",
-    "postinstall": "pnpm typechain"
+    "test": "vitest --run"
   },
   "type": "module",
   "peerDependencies": {

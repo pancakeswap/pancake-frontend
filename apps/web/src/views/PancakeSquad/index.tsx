@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import nftSaleAbi from 'config/abi/nftSale.json'
+import { nftSaleABI } from 'config/abi/nftSale'
 import { useProfile } from 'state/profile/hooks'
 import ArtistSection from './components/ArtistSection'
 import BunniesSection from './components/BunniesSection'
@@ -24,7 +24,7 @@ const PancakeSquad: React.FC<React.PropsWithChildren> = () => {
   const [userInfos, setUserInfos] = useState<UserInfos>()
   const [refreshCounter, setRefreshCounter] = useState(0)
   const [isUserEnabled, setIsUserEnabled] = useState(false)
-  const isLoading = (!eventInfos || !userInfos) && nftSaleAbi?.length > 0
+  const isLoading = (!eventInfos || !userInfos) && nftSaleABI?.length > 0
 
   useEventInfos({ setCallback: setEventInfo, refreshCounter })
   useUserInfos({ setCallback: setUserInfos, refreshCounter, account })

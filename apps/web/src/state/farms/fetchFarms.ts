@@ -3,7 +3,7 @@ import { SerializedFarmConfig } from 'config/constants/types'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { SerializedFarm } from '@pancakeswap/farms'
-import { fetchMasterChefData } from './fetchMasterChefData'
+import { fetchMasterChefData, PoolInfo, TotalRegularAllocPoint } from './fetchMasterChefData'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 
 function getLpInfo({
@@ -38,21 +38,16 @@ function getLpInfo({
   }
 }
 
-function farmLpTransformer(farmResult, masterChefResult) {
+function farmLpTransformer(farmResult, masterChefResult: [PoolInfo, TotalRegularAllocPoint][]) {
   return (farm, index) => {
-    const [
-      tokenBalanceLP,
-      quoteTokenBalanceLP,
-      lpTokenBalanceMC,
-      lpTotalSupply,
-      tokenDecimals,
-      quoteTokenDecimals,
-    ] = farmResult[index]
+    const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply, tokenDecimals, quoteTokenDecimals] =
+      farmResult[index].map((v: number | bigint) => v.toString())
 
     const [info, totalRegularAllocPoint] = masterChefResult[index]
-    // TODO: wagmi
-    const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
-    const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
+    const allocPoint = info ? new BigNumber(info[2].toString()) : BIG_ZERO
+    const poolWeight = totalRegularAllocPoint
+      ? allocPoint.div(new BigNumber(totalRegularAllocPoint.toString()))
+      : BIG_ZERO
 
     return {
       ...farm,
