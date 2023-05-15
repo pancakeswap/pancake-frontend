@@ -1,4 +1,4 @@
-import type { WindowProvider } from '@wagmi/core'
+import type { WindowProvider } from 'wagmi/window'
 
 export interface ExtendEthereum extends WindowProvider {
   isSafePal?: true
