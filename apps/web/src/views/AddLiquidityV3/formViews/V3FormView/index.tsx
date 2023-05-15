@@ -46,6 +46,7 @@ import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
+import { hexToBigInt } from 'viem'
 
 import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 import RangeSelector from './components/RangeSelector'
@@ -55,7 +56,6 @@ import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
-import { hexToBigInt } from 'viem'
 
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
@@ -231,6 +231,7 @@ export default function V3FormView({
         data: calldata,
         to: nftPositionManagerAddress,
         value: hexToBigInt(value),
+        account,
       })
         .then((response) => {
           const baseAmount = formatRawAmount(

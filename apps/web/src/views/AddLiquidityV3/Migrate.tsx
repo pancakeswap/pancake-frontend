@@ -416,18 +416,25 @@ function V2PairMigrate({
     setConfirmingMigration(true)
 
     migrator.estimateGas
-      .multicall(data)
+      .multicall([data])
       .then((gasEstimate) => {
-        return migrator.write.multicall(data, { gasLimit: calculateGasMargin(gasEstimate) }).then((response) => {
-          addTransaction(response, {
-            type: 'migrate-v3',
-            translatableSummary: {
-              text: 'Migrated %symbolA% %symbolB% V2 liquidity to V3',
-              data: { symbolA: currency0.symbol, symbolB: currency1.symbol },
-            },
+        return migrator.write
+          .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
+          .then((response) => {
+            addTransaction(
+              {
+                hash: response,
+              },
+              {
+                type: 'migrate-v3',
+                translatableSummary: {
+                  text: 'Migrated %symbolA% %symbolB% V2 liquidity to V3',
+                  data: { symbolA: currency0.symbol, symbolB: currency1.symbol },
+                },
+              },
+            )
+            setPendingMigrationHash(response)
           })
-          setPendingMigrationHash(response.hash)
-        })
       })
       .catch((e) => {
         console.error(e)

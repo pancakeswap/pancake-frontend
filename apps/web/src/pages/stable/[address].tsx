@@ -30,7 +30,7 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import currencyId from 'utils/currencyId'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
-import { stableSwapABI } from 'config/abi/stableSwapAbi'
+import { useInfoStableSwapContract } from 'hooks/useContract'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -54,14 +54,9 @@ export default function StablePoolPage() {
 
   const selectedLp = lpTokens.find(({ liquidityToken }) => liquidityToken.address === poolAddress)
 
-  const { result } = useSingleCallResult(
-    {
-      abi: stableSwapABI,
-      address: selectedLp?.stableSwapAddress,
-    },
-    'balances',
-    [selectedLp?.stableSwapAddress],
-  )
+  const stableSwapInfoContract = useInfoStableSwapContract(selectedLp?.infoStableSwapAddress)
+
+  const { result } = useSingleCallResult(stableSwapInfoContract, 'balances', [selectedLp?.stableSwapAddress])
 
   const reserves = useMemo(() => (result ? result[0] : ['0', '0']), [result])
 

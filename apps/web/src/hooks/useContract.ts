@@ -1,30 +1,24 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
 
-import { erc20ABI, erc721ABI, useWalletClient, useContractWrite, useContractRead, usePublicClient } from 'wagmi'
+import { erc20ABI, useWalletClient, usePublicClient } from 'wagmi'
 import { getContract as getContract__ } from '@wagmi/core'
 import { Address } from 'viem'
 import { Abi } from 'abitype'
 
-import zapAbi from 'config/abi/zap.json'
-import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
 import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'
-import { getAddressFromMap, getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
+import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
   getAnniversaryAchievementContract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeProxyContract,
-  getBep20Contract,
   getBunnyFactoryContract,
-  getCakeContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
   getChainlinkOracleContract,
   getCrossFarmingProxyContract,
-  getErc721CollectionContract,
-  getErc721Contract,
   getFarmAuctionContract,
   getIfoCreditAddressContract,
   getLotteryV2Contract,
@@ -38,7 +32,6 @@ import {
   getPotteryVaultContract,
   getPredictionsV2Contract,
   getPredictionsV1Contract,
-  profileContract,
   getProfileContract,
   getTradingCompetitionContractEaster,
   getTradingCompetitionContractFanToken,
@@ -51,18 +44,10 @@ import {
   getMasterChefV3Contract,
   getV3AirdropContract,
   getUnsContract,
-  profileContractArgs,
 } from 'utils/contractHelpers'
 
 // Imports below migrated from Exchange useContract.ts
 import { WNATIVE, ChainId } from '@pancakeswap/sdk'
-import ERC20_ABI from 'config/abi/erc20.json'
-import IPancakePairABI from 'config/abi/IPancakePair.json'
-import multiCallAbi from 'config/abi/Multicall.json'
-import WETH_ABI from 'config/abi/weth.json'
-import WBETH_BSC_ABI from 'config/abi/wbethBSC.json'
-import WBETH_ETH_ABI from 'config/abi/wbethETH.json'
-import { viemClients } from 'utils/viem'
 import { ifoV1ABI } from 'config/abi/ifoV1'
 import { ifoV2ABI } from 'config/abi/ifoV2'
 import { ifoV3ABI } from 'config/abi/ifoV3'
@@ -80,6 +65,7 @@ import { pancakePairV2ABI } from 'config/abi/IPancakePair'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { wethABI } from 'config/abi/weth'
 import { erc721CollectionABI } from 'config/abi/erc721collection'
+import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
@@ -392,4 +378,8 @@ export const useTradingRewardContract = () => {
 export const useV3AirdropContract = () => {
   const { data: signer } = useWalletClient()
   return useMemo(() => getV3AirdropContract(signer), [signer])
+}
+
+export const useInfoStableSwapContract = (infoAddress?: Address) => {
+  return useContract(infoAddress, infoStableSwapABI)
 }

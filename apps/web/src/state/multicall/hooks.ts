@@ -8,7 +8,15 @@ import {
   unstable_serialize,
   useSWRConfig,
 } from 'swr'
-import { Address, ContractFunctionResult, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
+import {
+  Address,
+  ContractFunctionResult,
+  decodeFunctionResult,
+  encodeFunctionData,
+  GetFunctionArgs,
+  Hex,
+  InferFunctionName,
+} from 'viem'
 import {
   addMulticallListeners,
   Call,
@@ -341,15 +349,28 @@ export function useMultipleContractSingleData<TAbi extends Abi | unknown[], TFun
   }, [cache, chainId, results, abi, methodName])
 }
 
-export function useSingleCallResult<TAbi extends Abi | unknown[], TFunctionName extends string = string>(
+export function useSingleCallResult<
+  TAbi extends Abi | unknown[],
+  TFunctionName extends string = string,
+  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+>(
   contract: {
     abi?: TAbi
     address?: Address
   },
-  methodName: TFunctionName,
-  inputs?: OptionalMethodInputs,
+  methodName: _FunctionName extends string ? _FunctionName : TFunctionName,
+  inputs?: TFunctionName extends string
+    ? GetFunctionArgs<TAbi, TFunctionName>['args']
+    : _FunctionName extends string
+    ? GetFunctionArgs<TAbi, _FunctionName>['args']
+    : never,
   options?: ListenerOptionsWithGas,
-): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
+): CallState<
+  ContractFunctionResult<
+    TAbi,
+    TFunctionName extends string ? TFunctionName : _FunctionName extends _FunctionName ? TFunctionName : never
+  >
+> {
   const calls = useMemo<Call[]>(() => {
     return contract && contract.abi && contract.address
       ? [
@@ -358,6 +379,7 @@ export function useSingleCallResult<TAbi extends Abi | unknown[], TFunctionName 
             // @ts-ignore FIXME: types
             callData: encodeFunctionData({
               abi: contract.abi,
+              // @ts-ignore FIXME: types
               args: inputs,
               functionName: methodName,
             }),

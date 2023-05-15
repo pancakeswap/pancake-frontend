@@ -14,7 +14,7 @@ const useBlockCountdown = (blockNumber: number) => {
       const currentBlock = await bscRpcProvider.getBlockNumber()
 
       if (blockNumber > currentBlock) {
-        setSecondsRemaining((blockNumber - currentBlock) * BSC_BLOCK_TIME)
+        setSecondsRemaining((blockNumber - Number(currentBlock)) * BSC_BLOCK_TIME)
 
         // Clear previous interval
         if (timer.current) {

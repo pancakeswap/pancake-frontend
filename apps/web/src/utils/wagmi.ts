@@ -98,6 +98,7 @@ export const wagmiConfig = createConfig({
     coinbaseConnector,
     walletConnectConnector,
     bscConnector,
+    // @ts-ignore FIXME: wagmi
     bloctoConnector,
     ledgerConnector,
     trustWalletConnector,

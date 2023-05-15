@@ -12,7 +12,7 @@ import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 import { isDesktop } from 'react-device-detect'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
-import { provider } from 'utils/wagmi'
+import { publicClient } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { getViemClients } from 'utils/viem'
@@ -275,7 +275,7 @@ function bestTradeHookFactory({
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
             ? BigInt(gasPrice)
-            : async () => BigInt(await (await provider({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
+            : async () => BigInt(await (await publicClient({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
           maxHops,
           poolProvider,
           maxSplits,

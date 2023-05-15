@@ -95,7 +95,7 @@ export function usePools(
     })
   }, [chainId, poolKeys])
 
-  const poolAddresses: (string | undefined)[] = useMemo(() => {
+  const poolAddresses: (Address | undefined)[] = useMemo(() => {
     const v3CoreDeployerAddress = chainId && DEPLOYER_ADDRESSES[chainId]
     if (!v3CoreDeployerAddress) return new Array(poolTokens.length)
 

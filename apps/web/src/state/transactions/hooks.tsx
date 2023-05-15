@@ -26,7 +26,7 @@ import {
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
-  response: { hash: Hash } | { transactionHash: Hash },
+  response: { hash: Hash | string } | { transactionHash: Hash | string },
   customData?: {
     summary?: string
     translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -76,7 +76,7 @@ export function useTransactionAdder(): (
       if (!account) return
       if (!chainId) return
 
-      let hash: Hash
+      let hash: Hash | string
 
       if ('hash' in response) {
         // eslint-disable-next-line prefer-destructuring

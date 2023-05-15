@@ -1,9 +1,7 @@
-import masterchefABI from 'config/abi/masterchef.json'
 import chunk from 'lodash/chunk'
 import { ChainId } from '@pancakeswap/sdk'
-import BigNumber from 'bignumber.js'
+import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { multicallv2 } from 'utils/multicall'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { farmFetcher } from 'state/farms'
 import { SerializedFarm } from '@pancakeswap/farms'
 import { SerializedFarmConfig } from '../../config/constants/types'
@@ -12,7 +10,7 @@ import { getMasterChefV2Address } from '../../utils/addressHelpers'
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   try {
     const [poolLength] = await multicallv2({
-      abi: masterchefABI,
+      abi: masterChefV2ABI,
       calls: [
         {
           name: 'poolLength',
@@ -59,7 +57,7 @@ export const fetchMasterChefData = async (farms: SerializedFarmConfig[], chainId
 
   const multiCallChainId = farmFetcher.isTestnet(chainId) ? ChainId.BSC_TESTNET : ChainId.BSC
   const masterChefMultiCallResult = await multicallv2({
-    abi: masterchefABI,
+    abi: masterChefV2ABI,
     calls: masterChefAggregatedCalls,
     chainId: multiCallChainId,
   })

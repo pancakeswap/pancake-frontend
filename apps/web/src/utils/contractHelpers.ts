@@ -35,54 +35,21 @@ import {
 } from 'utils/addressHelpers'
 
 // ABI
-import profileABI from 'config/abi/pancakeProfile.json'
-import bep20Abi from 'config/abi/erc20.json'
-import erc721Abi from 'config/abi/erc721.json'
-import lpTokenAbi from 'config/abi/lpToken.json'
-import cakeAbi from 'config/abi/cake.json'
-import ifoV1Abi from 'config/abi/ifoV1.json'
-import ifoV2Abi from 'config/abi/ifoV2.json'
-import pointCenterIfo from 'config/abi/pointCenterIfo.json'
-import lotteryV2Abi from 'config/abi/lotteryV2.json'
-import masterChef from 'config/abi/masterchef.json'
-import masterChefV1 from 'config/abi/masterchefV1.json'
-import tradingCompetitionEasterAbi from 'config/abi/tradingCompetitionEaster.json'
-import tradingCompetitionFanTokenAbi from 'config/abi/tradingCompetitionFanToken.json'
-import tradingCompetitionMoboxAbi from 'config/abi/tradingCompetitionMobox.json'
-import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
-import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
-import cakeFlexibleSideVaultV2Abi from 'config/abi/cakeFlexibleSideVaultV2.json'
-import predictionsAbi from 'config/abi/predictions.json'
+import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
+import { cakeFlexibleSideVaultV2ABI } from 'config/abi/cakeFlexibleSideVaultV2'
 import predictionsV1Abi from 'config/abi/predictionsV1.json'
-import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
-import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
-import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
-import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
-import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
 import iCakeAbi from 'config/abi/iCake.json'
-import ifoV3Abi from 'config/abi/ifoV3.json'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
-import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
-import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
-import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
 import nonBscVault from 'config/abi/nonBscVault.json'
 import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
-import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
 import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
 import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
-import sid from 'config/abi/SID.json'
-import uns from 'config/abi/UNS.json'
-import sidResolver from 'config/abi/SIDResolver.json'
-import tradingRewardABI from 'config/abi/tradingReward.json'
-import masterChefV3Abi from 'config/abi/masterChefV3.json'
-import V3AirdropAbi from 'config/abi/v3Airdrop.json'
 
 import { ChainId } from '@pancakeswap/sdk'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
-import { GetContractArgs } from 'wagmi/actions'
 import { getContract as viemGetContract, WalletClient } from 'viem'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
@@ -96,7 +63,6 @@ import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { pancakeSquadABI } from 'config/abi/pancakeSquad'
 import { nftMarketABI } from 'config/abi/nftMarket'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
-import { sidABI } from 'config/abi/SID'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
@@ -108,9 +74,12 @@ import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
 import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
+import { sidABI } from 'config/abi/SID'
 import { masterChefV1ABI } from 'config/abi/masterchefV1'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
-import { viemClients } from './viem'
+import { viemClients } from 'utils/viem'
+import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
+import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 
 export const getContract = <TAbi extends Abi | unknown[]>({
   abi,
@@ -126,12 +95,15 @@ export const getContract = <TAbi extends Abi | unknown[]>({
   const c = viemGetContract({
     abi,
     address,
+    publicClient: viemClients[chainId],
     walletClient: signer,
   })
   return {
     ...c,
     abi,
     address,
+    account: signer?.account,
+    chain: signer?.chain,
   }
 }
 
@@ -140,10 +112,10 @@ export const getBep20Contract = (address: Address, signer?: WalletClient) => {
 }
 
 export const getErc721Contract = (address: Address, walletClient?: WalletClient) => {
-  return viemGetContract({
+  return getContract({
     abi: erc721ABI,
     address,
-    walletClient,
+    signer: walletClient,
   })
 }
 export const getLpContract = (address: Address, chainId?: number, signer?: WalletClient) => {
@@ -151,7 +123,7 @@ export const getLpContract = (address: Address, chainId?: number, signer?: Walle
 }
 
 export const getPointCenterIfoContract = (signer?: WalletClient) => {
-  return getContract({ abi: pointCenterIfo, address: getPointCenterIfoAddress(), signer })
+  return getContract({ abi: pointCenterIfoABI, address: getPointCenterIfoAddress(), signer })
 }
 export const getCakeContract = (chainId?: number) => {
   return getContract({
@@ -160,20 +132,6 @@ export const getCakeContract = (chainId?: number) => {
     chainId,
   })
 }
-
-// TODO: wagmi
-export const profileContractArgs = {
-  abi: pancakeProfileABI,
-  address: getPancakeProfileAddress(),
-  chainId: ChainId.BSC,
-} satisfies GetContractArgs
-
-// TODO: wagmi
-export const profileContract = viemGetContract({
-  abi: pancakeProfileABI,
-  address: getPancakeProfileAddress(),
-  // publicClient: viemClients[56],
-})
 
 export const getProfileContract = (signer?: WalletClient) => {
   return getContract({ abi: pancakeProfileABI, address: getPancakeProfileAddress(), signer })
@@ -226,7 +184,7 @@ export const getCakeVaultV2Contract = (signer?: WalletClient) => {
 
 export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient) => {
   return getContract({
-    abi: cakeFlexibleSideVaultV2Abi,
+    abi: cakeFlexibleSideVaultV2ABI,
     address: getCakeFlexibleSideVaultAddress(),
     signer,
   })
@@ -273,11 +231,11 @@ export const getErc721CollectionContract = (signer?: WalletClient, address?: Add
 }
 
 export const getPotteryVaultContract = (address: Address, walletClient?: WalletClient) => {
-  return viemGetContract({ abi: potteryVaultABI, address, walletClient })
+  return getContract({ abi: potteryVaultABI, address, signer: walletClient })
 }
 
 export const getPotteryDrawContract = (walletClient?: WalletClient) => {
-  return viemGetContract({ abi: potteryDrawABI, address: getPotteryDrawAddress(), walletClient })
+  return getContract({ abi: potteryDrawABI, address: getPotteryDrawAddress(), signer: walletClient })
 }
 
 export const getIfoCreditAddressContract = (signer?: WalletClient) => {
@@ -290,7 +248,7 @@ export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
 
 export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
   return getContract({
-    abi: bCakeFarmBoosterProxyFactoryAbi,
+    abi: bCakeFarmBoosterProxyFactoryABI,
     address: getBCakeFarmBoosterProxyFactoryAddress(),
     signer,
   })
@@ -352,7 +310,7 @@ export const getCrossFarmingSenderContract = (signer?: WalletClient, chainId?: n
 
 export const getCrossFarmingReceiverContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: crossFarmingReceiverAbi,
+    abi: crossFarmingReceiverABI,
     address: getCrossFarmingReceiverAddress(chainId),
     chainId,
     signer,
@@ -412,9 +370,9 @@ export const getTradingRewardContract = (chainId?: number, signer?: Signer | Pro
 }
 
 export const getV3AirdropContract = (walletClient?: WalletClient) => {
-  return viemGetContract({
+  return getContract({
     abi: v3AirdropABI,
     address: getV3AirdropAddress(),
-    walletClient,
+    signer: walletClient,
   })
 }

@@ -2,7 +2,7 @@
   "name": "farms-api",
   "version": "0.0.0",
   "dependencies": {
-    "viem": "^0.3.21",
+    "viem": "0.3.24",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",

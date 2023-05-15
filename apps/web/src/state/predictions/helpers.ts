@@ -25,6 +25,8 @@ import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransfor
 import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB } from './bnbQueries'
 import { BetResponseCAKE } from './cakeQueries'
+// eslint-disable-next-line import/no-cycle
+import { deserializeRound } from '.'
 
 // TODO: refactor it when multi-chain
 const bscClient = getViemClients({ chainId: ChainId.BSC })
@@ -346,9 +348,10 @@ export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): 
 
 export const makeRoundData = (rounds: string[]): RoundData => {
   return rounds.reduce((accum, round) => {
+    const round_ = deserializeRound(round)
     return {
       ...accum,
-      [round.epoch.toString()]: round,
+      [round_.epoch.toString()]: round_,
     }
   }, {})
 }
