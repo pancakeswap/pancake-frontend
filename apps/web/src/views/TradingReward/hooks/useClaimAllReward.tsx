@@ -10,7 +10,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { useTradingRewardContract } from 'hooks/useContract'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
@@ -23,7 +22,6 @@ interface UseClaimAllRewardProps {
 export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: UseClaimAllRewardProps) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = useTradingRewardContract()
@@ -32,21 +30,20 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
   const handleClaim = useCallback(async () => {
     const claimCampaignIds = unclaimData.map((i) => i.campaignId)
     const tradingFee = unclaimData.map((i) => {
-      const isQualification = new BigNumber(i.totalTradingFee).gt(qualification.minAmountUSD)
+      const isQualification = new BigNumber(i.totalTradingFee).gt(new BigNumber(qualification.minAmountUSD).div(1e18))
       const totalFee = isQualification ? i.totalTradingFee.toFixed(8) : i.totalTradingFee
-      return [Number(new BigNumber(totalFee).times(1e18))]
+      return new BigNumber(totalFee).times(1e18).toNumber()
     })
 
     const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
-        const isQualification = new BigNumber(i.totalTradingFee).gt(qualification.minAmountUSD)
+        const isQualification = new BigNumber(i.totalTradingFee).gt(new BigNumber(qualification.minAmountUSD).div(1e18))
         const totalFee = isQualification ? i.totalTradingFee.toFixed(8) : i.totalTradingFee
-
-        const originHash = keccak256(keccak256(solidityPack(['address', 'uint256'], [account, totalFee])))
-
-        const response = await fetch(
-          `${TRADING_REWARD_API}/hash/chainId/${chainId}/campaignId/${i.campaignId}/originHash/${originHash}`,
+        const originHash = keccak256(
+          keccak256(solidityPack(['address', 'uint256'], [account, new BigNumber(totalFee).times(1e18).toNumber()])),
         )
+
+        const response = await fetch(`${TRADING_REWARD_API}/hash/campaignId/${i.campaignId}/originHash/${originHash}`)
         const result = await response.json()
         return result.data.merkleProof
       }),
@@ -63,21 +60,10 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
-      mutate(['/all-campaign-id-info', account, chainId, campaignIds])
+      mutate(['/all-campaign-id-info', account, campaignIds])
     }
     return null
-  }, [
-    account,
-    campaignIds,
-    chainId,
-    contract,
-    fetchWithCatchTxError,
-    mutate,
-    qualification,
-    t,
-    toastSuccess,
-    unclaimData,
-  ])
+  }, [account, campaignIds, contract, fetchWithCatchTxError, mutate, qualification, t, toastSuccess, unclaimData])
 
   return { isPending, handleClaim }
 }
