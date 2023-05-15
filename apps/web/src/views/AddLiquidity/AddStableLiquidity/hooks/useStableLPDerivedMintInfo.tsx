@@ -11,7 +11,7 @@ import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext, UseStableSwapInfoContract } from 'views/Swap/hooks/useStableConfig'
-import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
+import { useEstimatedAmount } from 'views/Swap/hooks/useEstimatedAmount'
 import { useMintState } from 'state/mint/hooks'
 import { Address } from 'viem'
 
@@ -52,7 +52,7 @@ export function useStablePair(currencyA?: Currency, currencyB?: Currency): UseSt
   })
 
   const pair = useMemo(() => {
-    if (!token0 || !token1) {
+    if (!token0 || !token1 || !currencyB) {
       return undefined
     }
     const isPriceValid = token0AmountQuotient && estimatedToken1Amount
@@ -222,7 +222,7 @@ export function useStableLPDerivedMintInfo(
 
   const { data: estimatedOutputAmount } = useEstimatedAmount({
     estimatedCurrency: currencyAAmountQuotient ? currencyB : currencyA,
-    quotient: targetAmount?.quotient.toString(),
+    quotient: targetAmount?.quotient?.toString(),
     stableSwapConfig,
     stableSwapContract,
   })
