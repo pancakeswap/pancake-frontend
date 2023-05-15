@@ -7,7 +7,7 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useProfileContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
-import { profileContractArgs } from 'utils/contractHelpers'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { requiresApproval } from 'utils/requiresApproval'
 import { Address } from 'wagmi'
 import { REGISTER_COST } from './config'
@@ -41,10 +41,10 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
-        return requiresApproval(cakeContract, account, profileContractArgs.address, minimumCakeRequired)
+        return requiresApproval(cakeContract, account, getPancakeProfileAddress(), minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [profileContractArgs.address, allowance])
+        return callWithGasPrice(cakeContract, 'approve', [getPancakeProfileAddress(), allowance])
       },
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [

@@ -4,11 +4,11 @@ import { ChainId } from '@pancakeswap/sdk'
 import { getPoolsConfig } from '@pancakeswap/pools'
 
 import sousChefV2 from 'config/abi/sousChefV2.json'
+import { multicallABI } from 'config/abi/Multicall'
 import chunk from 'lodash/chunk'
 import { viemClients } from 'utils/viem'
 
 import { getMulticallAddress } from '../addressHelpers'
-import multiCallAbi from '../../config/abi/Multicall.json'
 
 const multicallAddress = getMulticallAddress()
 
@@ -33,7 +33,7 @@ export const getActivePools = async (chainId: ChainId, block?: bigint | 0) => {
   const hasBlock = typeof block !== 'undefined'
   const blockCall = !hasBlock
     ? {
-        abi: multiCallAbi,
+        abi: multicallABI,
         address: multicallAddress,
         functionName: 'getBlockNumber',
       }

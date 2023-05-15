@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
-import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { NUM_ROUNDS_TO_CHECK_FOR_REWARDS } from 'config/constants/lottery'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -30,7 +30,7 @@ const fetchCakeRewardsForTickets = async (
   })
 
   try {
-    const cakeRewards = await multicallv2({ abi: lotteryV2Abi, calls })
+    const cakeRewards = await multicallv2({ abi: lotteryV2ABI, calls })
 
     const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: bigint) => {
       return accum.plus(new BigNumber(cakeReward.toString()))

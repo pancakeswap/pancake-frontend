@@ -25,7 +25,7 @@ type TxError = {
 }
 
 // -32000 is insufficient funds for gas * price + value
-const isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
+const _isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
 
 export default function useCatchTxError(): CatchTxErrorReturn {
   const { t } = useTranslation()

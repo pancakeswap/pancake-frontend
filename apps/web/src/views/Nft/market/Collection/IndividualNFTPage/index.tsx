@@ -20,7 +20,7 @@ const IndividualNFTPageRouter = () => {
     return <IndividualPancakeBunnyPage bunnyId={String(tokenId)} />
   }
 
-  return <IndividualNFTPage collectionAddress={getAddress(collectionAddress)} tokenId={String(tokenId)} />
+  return <IndividualNFTPage collectionAddress={getAddress(collectionAddress as string)} tokenId={String(tokenId)} />
 }
 
 export default IndividualNFTPageRouter

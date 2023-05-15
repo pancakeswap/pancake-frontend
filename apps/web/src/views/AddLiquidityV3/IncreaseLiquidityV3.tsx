@@ -170,7 +170,9 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             })
 
       setAttemptingTxn(true)
+      // TODO: wagmi calculateGasMargin
       sendTransactionAsync({
+        account,
         to: manager.address,
         data: calldata,
         value: hexToBigInt(value),

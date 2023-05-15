@@ -40,7 +40,7 @@ import {
   SerializedVaultUser,
   SerializedLockedCakeVault,
 } from 'state/types'
-import cakeAbi from 'config/abi/cake.json'
+import { Address, erc20ABI } from 'wagmi'
 import { multicallv2 } from 'utils/multicall'
 import { isAddress } from 'utils'
 import { getViemClients } from 'utils/viem'
@@ -51,7 +51,6 @@ import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
-import { Address } from 'wagmi'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -125,7 +124,7 @@ export const fetchCakePoolUserDataAsync =
       params: [account],
     }
     const cakeContractCalls = [allowanceCall, balanceOfCall]
-    const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: cakeAbi, calls: cakeContractCalls })
+    const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: erc20ABI, calls: cakeContractCalls })
 
     dispatch(
       setPoolUserData({

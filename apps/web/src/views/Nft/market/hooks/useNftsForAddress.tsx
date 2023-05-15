@@ -47,7 +47,7 @@ export const useCollectionsNftsForAddress = (
   // @ts-ignore
   const { status, data, mutate, resetLaggy } = useSWR(
     !isProfileFetching && !isEmpty(collections) && isAddress(account) ? [account, 'userNfts'] : null,
-    async () => getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress),
+    async () => getCompleteAccountNftData(getAddress(account), collections, profileNftWithCollectionAddress),
     {
       keepPreviousData: true,
     },

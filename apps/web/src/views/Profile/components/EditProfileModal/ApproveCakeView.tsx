@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCake } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
@@ -15,6 +16,7 @@ interface ApproveCakePageProps extends InjectedModalProps {
 const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> = ({ goToChange, onDismiss }) => {
   const { profile } = useProfile()
   const { t } = useTranslation()
+  const { account, chain } = useWeb3React()
   const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()
   const {
     costs: { numberCakeToUpdate, numberCakeToReactivate },
@@ -29,7 +31,10 @@ const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> =
 
   const handleApprove = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return cakeContract.write.approve([getPancakeProfileAddress(), cost * 2n])
+      return cakeContract.write.approve([getPancakeProfileAddress(), cost * 2n], {
+        account,
+        chain,
+      })
     })
     if (receipt?.status) {
       goToChange()

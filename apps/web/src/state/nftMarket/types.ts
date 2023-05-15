@@ -109,7 +109,7 @@ export interface NftAttribute {
 // Internal type used to refer to a collection
 // Most fields are populated from API (via ApiCollection type)
 export interface Collection {
-  id: string
+  id: Address
   address: Address
   name: string
   createdAt?: string
@@ -256,7 +256,7 @@ export enum MarketEvent {
  */
 
 export interface CollectionMarketDataBaseFields {
-  id: string
+  id: Address
   name: string
   symbol: string
   active: boolean

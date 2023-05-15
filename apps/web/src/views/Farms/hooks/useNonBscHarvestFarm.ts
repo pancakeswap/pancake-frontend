@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
+import { Address } from 'viem'
 import { useCrossFarmingProxy } from 'hooks/useContract'
 
-const useNonBscHarvestFarm = (farmPid: number, cProxyAddress: string) => {
+const useNonBscHarvestFarm = (farmPid: number, cProxyAddress: Address) => {
   const contract = useCrossFarmingProxy(cProxyAddress)
 
   const handleHarvest = useCallback(async () => {

@@ -5,7 +5,7 @@ import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
-import ifoV1Abi from 'config/abi/ifoV1.json'
+import { ifoV1ABI  } from 'config/abi/ifoV1'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -42,7 +42,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         name: method,
       }))
 
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2({ abi: ifoV1Abi, calls: ifoCalls })
+      // TODO: wagmi
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2({ abi: ifoV1ABI, calls: ifoCalls })
 
       const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
       const endBlockNum = endBlock ? endBlock[0].toNumber() : 0

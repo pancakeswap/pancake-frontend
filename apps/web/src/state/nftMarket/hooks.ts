@@ -1,7 +1,6 @@
-import { useMemo } from 'react'
 import { isAddress } from 'utils'
 import { useAtom } from 'jotai'
-import { FetchStatus, TFetchStatus } from 'config/constants/types'
+import { TFetchStatus } from 'config/constants/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'

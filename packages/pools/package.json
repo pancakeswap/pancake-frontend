@@ -17,8 +17,8 @@
     "@pancakeswap/utils": "workspace:*"
   },
   "dependencies": {
-    "wagmi": "^1.0.2",
-    "viem": "^0.3.19",
+    "wagmi": "1.0.4",
+    "viem": "0.3.24",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21"
   },
