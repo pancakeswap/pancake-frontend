@@ -31,7 +31,7 @@ export const useBakeV3INfo = async (tokenId: string) => {
   return { isBoosted: data?.[0], pid: data?.[1].toNumber() }
 }
 
-export const useUserPositionIfo = async (tokenId: string) => {
+export const useUserPositionInfo = async (tokenId: string) => {
   const { chainId } = useActiveChainId()
   const masterChefV3 = useMasterchefV3()
   const { data } = useSWRImmutable(
