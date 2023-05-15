@@ -14,9 +14,8 @@ import {
   LeaderboardFilter,
   PredictionsChartView,
   PredictionConfig,
-  NodeRound,
 } from 'state/types'
-import { Address, deserialize } from 'wagmi'
+import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
 import {
@@ -35,6 +34,7 @@ import {
   LEADERBOARD_RESULTS_PER_PAGE,
   getPredictionUser,
   getHasRoundFailed,
+  deserializeRound,
 } from './helpers'
 import { resetUserState } from '../global/actions'
 
@@ -259,8 +259,6 @@ export const filterLeaderboard = createAsyncThunk<
 
   return { results: usersResponse.map(transformer) }
 })
-
-export const deserializeRound = (round: string) => deserialize(round) as NodeRound
 
 export const fetchAddressResult = createAsyncThunk<
   { account: string; data: PredictionUser },
