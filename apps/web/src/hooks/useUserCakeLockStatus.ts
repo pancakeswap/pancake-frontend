@@ -7,12 +7,12 @@ import { useActiveChainId } from './useActiveChainId'
 export const useUserCakeLockStatus = () => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
-  const cakeVaultContract = useCakeVaultContract(false)
+  const cakeVaultContract = useCakeVaultContract()
 
   const { data: userCakeLockStatus = null } = useSWRImmutable(
     account && chainId === ChainId.BSC ? ['userCakeLockStatus', account] : null,
     async () => {
-      const { locked, lockEndTime } = await cakeVaultContract.userInfo(account)
+      const [, , , , , lockEndTime, , locked] = await cakeVaultContract.read.userInfo([account])
       const lockEndTimeStr = lockEndTime.toString()
       return locked && (lockEndTimeStr === '0' || Date.now() > parseInt(lockEndTimeStr) * 1000)
     },
