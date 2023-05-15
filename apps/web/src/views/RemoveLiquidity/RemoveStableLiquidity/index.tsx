@@ -195,7 +195,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]](...args))
+        safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]]([args]))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
@@ -213,10 +213,11 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-      await contract[methodName](...args, {
-        gasLimit: safeGasEstimate,
-        gasPrice,
-      })
+      await contract[methodName]
+        .write([args], {
+          gasLimit: safeGasEstimate,
+          gasPrice,
+        })
         .then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
           const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)

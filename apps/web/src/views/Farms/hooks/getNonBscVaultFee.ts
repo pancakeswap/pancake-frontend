@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getNonBscVaultContract, getCrossFarmingSenderContract } from 'utils/contractHelpers'
+import { Address } from 'wagmi'
 
 export enum MessageTypes {
   Deposit = 0,
@@ -44,14 +45,20 @@ export const getNonBscVaultContractFee = async ({
     const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
     const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice).times(ORACLE_PRECISION) // invert into BNB/ETH price
 
-    const getNonce = await crossFarmingAddress.read.nonces([userAddress, pid])
+    const getNonce = await crossFarmingAddress.read.nonces([userAddress as Address, BigInt(pid)])
     const nonce = new BigNumber(getNonce.toString()).toJSON()
     const [encodeMessage, hasFirstTime, estimateGaslimit] = await Promise.all([
-      nonBscVaultContract.read.encodeMessage([userAddress, pid, amount, messageType, nonce]),
-      crossFarmingAddress.read.is1st([userAddress]),
-      crossFarmingAddress.read.estimateGaslimit([Chains.BSC, userAddress, messageType]),
+      nonBscVaultContract.read.encodeMessage([
+        userAddress as Address,
+        BigInt(pid),
+        BigInt(amount),
+        messageType,
+        BigInt(nonce),
+      ]),
+      crossFarmingAddress.read.is1st([userAddress as Address]),
+      crossFarmingAddress.read.estimateGaslimit([Chains.BSC, userAddress as Address, messageType]),
     ])
-    const calcFee = await nonBscVaultContract.read.calcFee(encodeMessage)
+    const calcFee = await nonBscVaultContract.read.calcFee([encodeMessage])
 
     const msgBusFee = new BigNumber(calcFee.toString())
     const destTxFee = new BigNumber(gasPrice)
@@ -69,7 +76,7 @@ export const getNonBscVaultContractFee = async ({
     if (messageType >= MessageTypes.Withdraw) {
       const estimateEvmGaslimit = await crossFarmingAddress.read.estimateGaslimit([
         Chains.EVM,
-        userAddress,
+        userAddress as Address,
         messageType,
       ])
       const fee = msgBusFee.times(exchangeRate).div(ORACLE_PRECISION)

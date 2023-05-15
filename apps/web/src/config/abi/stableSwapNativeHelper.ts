@@ -1,0 +1,71 @@
+export const stableSwapNativeHelperABI = [
+  {
+    inputs: [],
+    name: 'N_COINS',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'WBNB',
+    outputs: [{ internalType: 'contract IWBNB', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'contract IPancakeStableSwap', name: 'swap', type: 'address' },
+      { internalType: 'uint256[2]', name: 'amounts', type: 'uint256[2]' },
+      { internalType: 'uint256', name: 'min_mint_amount', type: 'uint256' },
+    ],
+    name: 'add_liquidity',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'isWhitelist',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'contract IPancakeStableSwap', name: 'swap', type: 'address' },
+      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'uint256[2]', name: 'min_amounts', type: 'uint256[2]' },
+    ],
+    name: 'remove_liquidity',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  { inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [
+      { internalType: 'address', name: '_swap', type: 'address' },
+      { internalType: 'bool', name: '_status', type: 'bool' },
+    ],
+    name: 'setWhiteList',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  { stateMutability: 'payable', type: 'receive' },
+] as const

@@ -11,7 +11,7 @@ import {
   FARMS_SMALL_AMOUNT_THRESHOLD,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
-import { SendTransactionResult } from '@wagmi/core'
+import { SendTransactionResult } from 'wagmi/actions'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'

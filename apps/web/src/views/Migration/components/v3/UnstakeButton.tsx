@@ -18,7 +18,7 @@ import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/ac
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { ChainId } from '@pancakeswap/sdk'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { waitForTransaction } from '@wagmi/core'
+import { waitForTransaction } from 'wagmi/actions'
 
 export interface UnstakeButtonProps {
   pid: number

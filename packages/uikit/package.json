@@ -86,7 +86,8 @@
     "remark-gfm": "*",
     "react-device-detect": "*",
     "react-transition-group": "*",
-    "js-cookie": "*"
+    "js-cookie": "*",
+    "wagmi": "*"
   },
   "peerDependencies": {
     "react": "^18.2.0",
