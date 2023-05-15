@@ -1,12 +1,13 @@
-import { LotteryV2 } from 'config/abi/types'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { TICKET_LIMIT_PER_REQUEST } from 'config/constants/lottery'
 import { LotteryTicket } from 'config/constants/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
+import { ContractFunctionResult, Address } from 'viem'
 
 const lotteryContract = getLotteryV2Contract()
 
 export const processRawTicketsResponse = (
-  ticketsResponse: Awaited<ReturnType<LotteryV2['viewUserInfoForLotteryId']>>,
+  ticketsResponse: ContractFunctionResult<typeof lotteryV2ABI, 'viewUserInfoForLotteryId'>,
 ): LotteryTicket[] => {
   const [ticketIds, ticketNumbers, ticketStatuses] = ticketsResponse
 
@@ -29,7 +30,12 @@ export const viewUserInfoForLotteryId = async (
   perRequestLimit: number,
 ): Promise<LotteryTicket[]> => {
   try {
-    const data = await lotteryContract.viewUserInfoForLotteryId(account, lotteryId, cursor, perRequestLimit)
+    const data = await lotteryContract.read.viewUserInfoForLotteryId([
+      account as Address,
+      BigInt(lotteryId),
+      BigInt(cursor),
+      BigInt(perRequestLimit),
+    ])
     return processRawTicketsResponse(data)
   } catch (error) {
     console.error('viewUserInfoForLotteryId', error)

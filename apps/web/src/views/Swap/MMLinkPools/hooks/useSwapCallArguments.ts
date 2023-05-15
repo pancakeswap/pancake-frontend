@@ -1,4 +1,5 @@
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { toHex } from '@pancakeswap/v3-sdk'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
@@ -81,6 +82,6 @@ function swapCallParameters(
     methodName,
     // @ts-ignore
     args,
-    value,
+    value: toHex(value),
   }
 }

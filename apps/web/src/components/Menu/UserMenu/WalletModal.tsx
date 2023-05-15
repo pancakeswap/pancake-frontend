@@ -29,7 +29,7 @@ interface WalletModalProps extends InjectedModalProps {
   initialView?: WalletView
 }
 
-export const LOW_NATIVE_BALANCE = parseEther('0.002', 'ether')
+export const LOW_NATIVE_BALANCE = parseEther('0.002', 'wei')
 
 const ModalHeader = styled(UIKitModalHeader)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};

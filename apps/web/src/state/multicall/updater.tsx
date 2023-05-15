@@ -1,5 +1,4 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { ResultStructOutput } from 'config/abi/types/Multicall'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
@@ -29,7 +28,7 @@ async function fetchChunk(
   multicallContract: ReturnType<typeof useMulticallContract>,
   chunk: Call[],
   minBlockNumber: number,
-): Promise<{ results: ResultStructOutput[]; blockNumber: number }> {
+): Promise<{ results: any[]; blockNumber: number }> {
   console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
   let resultsBlockNumber: bigint
   let returnData

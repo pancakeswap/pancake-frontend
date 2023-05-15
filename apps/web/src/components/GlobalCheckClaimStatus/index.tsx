@@ -71,7 +71,12 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
       onClick={async () => {
         const { cakeAmountInWei, nft1, nft2 } = data.v3ForSC[account.toLowerCase()]
         const proof = data?.v3MerkleProofs?.merkleProofs?.[account.toLowerCase()]
-        const receipt = await fetchWithCatchTxError(() => v3Airdop.write.claim([cakeAmountInWei, nft1, nft2, proof]))
+        const receipt = await fetchWithCatchTxError(() =>
+          v3Airdop.write.claim([cakeAmountInWei, nft1, nft2, proof], {
+            account: v3Airdop.account,
+            chain: v3Airdop.chain,
+          }),
+        )
         if (receipt?.status) {
           toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         }

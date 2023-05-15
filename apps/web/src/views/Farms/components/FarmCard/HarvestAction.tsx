@@ -11,11 +11,11 @@ import {
   FARMS_SMALL_AMOUNT_THRESHOLD,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
+import { SendTransactionResult } from '@wagmi/core'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 
-import { TransactionResponse } from '@ethersproject/providers'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -30,7 +30,7 @@ interface FarmCardActionsProps {
   vaultPid?: number
   proxyCakeBalance?: number
   lpSymbol?: string
-  onReward?: () => Promise<TransactionResponse>
+  onReward?: () => Promise<SendTransactionResult>
   onDone?: () => void
 }
 

@@ -126,9 +126,6 @@ export default function useSendSwapTransaction(
         const {
           call: { address, calldata, value },
         } = bestCallOption
-        console.log(bestCallOption, 'bestCallOption')
-
-        // const signer = Signer.isSigner(provider) ? provider : provider.getSigner()
 
         return sendTransactionAsync({
           account,

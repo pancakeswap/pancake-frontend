@@ -14,8 +14,7 @@ export const { publicClient, chains } = configureChains(CHAINS, [
 
 export type { Call }
 
-const { multicall, multicallv2 } = createMulticall(publicClient)
-
-export default multicall
+// @ts-ignore FIXME: wagmi
+const { multicallv2 } = createMulticall(publicClient)
 
 export { multicallv2 }

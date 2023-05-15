@@ -28,7 +28,7 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
     return null
   }
 
-  if (price.lt(0)) {
+  if (price < 0n) {
     return <Skeleton height="36px" width="94px" />
   }
 

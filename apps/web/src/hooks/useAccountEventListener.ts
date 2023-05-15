@@ -19,7 +19,7 @@ export const useAccountEventListener = () => {
 
   useEffect(() => {
     if (account && connector) {
-      const handleUpdateEvent = (e: ConnectorData<any>) => {
+      const handleUpdateEvent = (e: ConnectorData) => {
         if (e?.chain?.id && !(e?.chain?.unsupported ?? false)) {
           replaceBrowserHistory('chain', CHAIN_QUERY_NAME[e.chain.id])
           setSessionChainId(e.chain.id)

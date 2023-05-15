@@ -1,5 +1,5 @@
 import { Currency, BigintIsh, ChainId } from '@pancakeswap/sdk'
-import { PublicClient, HttpTransport, Chain } from 'viem'
+import { PublicClient } from 'viem'
 import type { GraphQLClient } from 'graphql-request'
 
 import { Pool, PoolType } from './pool'
@@ -27,6 +27,6 @@ export interface QuoteProvider {
   getRouteWithQuotesExactOut: (routes: RouteWithoutQuote[], options: QuoterOptions) => Promise<RouteWithQuote[]>
 }
 
-export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient<HttpTransport, Chain, true>
+export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
 
 export type SubgraphProvider = ({ chainId }: { chainId?: ChainId }) => GraphQLClient

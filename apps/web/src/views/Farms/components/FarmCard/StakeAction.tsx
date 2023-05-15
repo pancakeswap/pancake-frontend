@@ -5,11 +5,11 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import { useCallback, useContext, useState, useMemo } from 'react'
 import styled from 'styled-components'
-import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
+import { SendTransactionResult } from '@wagmi/core'
 import BigNumber from 'bignumber.js'
 import { useIsBloctoETH } from 'views/Farms'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -29,10 +29,10 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
   addLiquidityUrl?: string
   displayApr?: string
-  onStake?: (value: string) => Promise<TransactionResponse>
-  onUnstake?: (value: string) => Promise<TransactionResponse>
+  onStake?: (value: string) => Promise<SendTransactionResult>
+  onUnstake?: (value: string) => Promise<SendTransactionResult>
   onDone?: () => void
-  onApprove?: () => Promise<TransactionResponse>
+  onApprove?: () => Promise<SendTransactionResult>
   isApproved?: boolean
 }
 

@@ -1,5 +1,5 @@
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
-import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { LotteryResponse } from 'state/types'
@@ -88,7 +88,8 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
     params: [id],
   }))
   try {
-    const multicallRes = await multicallv2({ abi: lotteryV2Abi, calls, options: { requireSuccess: false } })
+    // TODO: wagmi
+    const multicallRes = await multicallv2({ abi: lotteryV2ABI, calls, options: { requireSuccess: false } })
     const processedResponses = multicallRes.map((res, index) =>
       processViewLotterySuccessResponse(res[0], lotteryIds[index]),
     )
@@ -109,8 +110,9 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
       address: getLotteryV2Address(),
       name: method,
     }))
+    // TODO: wagmi
     const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2({
-      abi: lotteryV2Abi,
+      abi: lotteryV2ABI,
       calls,
     })) as bigint[][]
 

@@ -251,7 +251,7 @@ const usePositionsByUserFarms = (
 
   const pendingCakeByTokenIds = useMemo(
     () =>
-      tokenIdResults?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
+      (tokenIdResults as bigint[])?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
         const position = stakedPositions[i]
 
         return pendingCake && position?.tokenId ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
