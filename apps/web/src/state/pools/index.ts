@@ -41,9 +41,8 @@ import {
   SerializedLockedCakeVault,
 } from 'state/types'
 import { Address, erc20ABI } from 'wagmi'
-import { multicallv2 } from 'utils/multicall'
 import { isAddress } from 'utils'
-import { getViemClients } from 'utils/viem'
+import { getViemClients, viemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 
@@ -113,18 +112,24 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
 export const fetchCakePoolUserDataAsync =
   ({ account, chainId }: { account: string; chainId: ChainId }) =>
   async (dispatch) => {
-    const allowanceCall = {
-      address: bscTokens.cake.address,
-      name: 'allowance',
-      params: [account, getCakeVaultAddress(chainId)],
-    }
-    const balanceOfCall = {
-      address: bscTokens.cake.address,
-      name: 'balanceOf',
-      params: [account],
-    }
-    const cakeContractCalls = [allowanceCall, balanceOfCall]
-    const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: erc20ABI, calls: cakeContractCalls })
+    const client = viemClients[ChainId.BSC]
+    const [allowance, stakingTokenBalance] = await client.multicall({
+      contracts: [
+        {
+          abi: erc20ABI,
+          address: bscTokens.cake.address,
+          functionName: 'allowance',
+          args: [account as Address, getCakeVaultAddress(chainId)],
+        },
+        {
+          abi: erc20ABI,
+          address: bscTokens.cake.address,
+          functionName: 'balanceOf',
+          args: [account as Address],
+        },
+      ],
+      allowFailure: false,
+    })
 
     dispatch(
       setPoolUserData({
@@ -153,7 +158,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
           .filter((pool) => {
             const poolTimeLimit = timeLimitsSousIdMap[pool.sousId]
             if (poolTimeLimit) {
-              return poolTimeLimit.endTimestamp > block.timestamp
+              return poolTimeLimit.endTimestamp > Number(block.timestamp)
             }
             return false
           }).length > 0

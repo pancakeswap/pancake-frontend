@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { getNftSaleAddress } from 'utils/addressHelpers'
 import { getPancakeSquadContract } from 'utils/contractHelpers'
-import { multicallv2 } from 'utils/multicall'
-import nftSaleAbi from 'config/abi/nftSale.json'
+import { nftSaleABI } from 'config/abi/nftSale'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 
 const useUserInfos = ({ account, refreshCounter, setCallback }) => {
   useEffect(() => {
@@ -12,25 +13,36 @@ const useUserInfos = ({ account, refreshCounter, setCallback }) => {
         const pancakeSquadContract = getPancakeSquadContract()
 
         if (account) {
-          const calls = [
-            'canClaimForGen0',
-            'numberTicketsForGen0',
-            'numberTicketsUsedForGen0',
-            'viewNumberTicketsOfUser',
-            'ticketsOfUserBySize',
-          ].map((method) => ({
-            address: nftSaleAddress,
-            name: method,
-            params: method === 'ticketsOfUserBySize' ? [account, 0, 600] : [account],
-          }))
+          const calls = (
+            ['canClaimForGen0', 'numberTicketsForGen0', 'numberTicketsUsedForGen0', 'viewNumberTicketsOfUser'] as const
+          ).map(
+            (method) =>
+              ({
+                abi: nftSaleABI,
+                address: nftSaleAddress,
+                functionName: method,
+                args: [account] as const,
+              } as const),
+          )
+
+          const client = viemClients[ChainId.BSC]
 
           const [
             currentCanClaimForGen0,
             currentNumberTicketsForGen0,
             currentNumberTicketsUsedForGen0,
             currentNumberTicketsOfUser,
-            currentTicketsOfUser,
-          ] = await multicallv2({ abi: nftSaleAbi, calls })
+          ] = await client.multicall({
+            contracts: calls,
+            allowFailure: false,
+          })
+
+          const currentTicketsOfUser = await client.readContract({
+            abi: nftSaleABI,
+            address: nftSaleAddress,
+            functionName: 'ticketsOfUserBySize',
+            args: [account, 0n, 600n],
+          })
 
           const currentNumberTokensOfUser = await pancakeSquadContract.read.balanceOf(account)
 
@@ -47,7 +59,7 @@ const useUserInfos = ({ account, refreshCounter, setCallback }) => {
         console.error(e)
       }
     }
-    if (nftSaleAbi.length > 0) {
+    if (nftSaleABI.length > 0) {
       fetchUserInfos()
     }
   }, [account, refreshCounter, setCallback])

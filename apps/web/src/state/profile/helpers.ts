@@ -4,8 +4,10 @@ import { API_PROFILE } from 'config/constants/endpoints'
 import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
-import { multicallv2 } from 'utils/multicall'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { Address } from 'wagmi'
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -43,15 +45,34 @@ export const getUsername = async (address: string): Promise<string> => {
 
 export const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const profileCalls = ['hasRegistered', 'getUserProfile'].map((method) => {
-      return { address: getPancakeProfileAddress(), name: method, params: [address] }
+    const profileCalls = (['hasRegistered', 'getUserProfile'] as const).map((method) => {
+      return {
+        abi: pancakeProfileABI,
+        address: getPancakeProfileAddress(),
+        functionName: method,
+        args: [address as Address] as const,
+      } as const
     })
-    const profileCallsResult = await multicallv2({
-      abi: pancakeProfileABI,
-      calls: profileCalls,
-      options: { requireSuccess: false },
+    const client = viemClients[ChainId.BSC]
+
+    const profileCallsResult = await client.multicall({
+      contracts: [
+        {
+          address: getPancakeProfileAddress(),
+          abi: pancakeProfileABI,
+          functionName: 'hasRegistered',
+          args: [address as Address],
+        },
+        {
+          address: getPancakeProfileAddress(),
+          abi: pancakeProfileABI,
+          functionName: 'getUserProfile',
+          args: [address as Address],
+        },
+      ],
     })
-    const [hasRegistered, profileResponse] = profileCallsResult
+
+    const [{ result: hasRegistered }, { result: profileResponse }] = profileCallsResult
     if (!hasRegistered) {
       return { hasRegistered, profile: null }
     }

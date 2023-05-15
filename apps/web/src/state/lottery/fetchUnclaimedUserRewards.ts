@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
-import { multicallv2 } from 'utils/multicall'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { NUM_ROUNDS_TO_CHECK_FOR_REWARDS } from 'config/constants/lottery'
 import { getLotteryV2Address } from 'utils/addressHelpers'
@@ -23,21 +24,26 @@ const fetchCakeRewardsForTickets = async (
   const calls = winningTickets.map((winningTicket) => {
     const { roundId, id, rewardBracket } = winningTicket
     return {
-      name: 'viewRewardsForTicketId',
+      abi: lotteryV2ABI,
+      functionName: 'viewRewardsForTicketId',
       address: lotteryAddress,
-      params: [roundId, id, rewardBracket],
-    }
+      args: [BigInt(roundId), BigInt(id), rewardBracket],
+    } as const
   })
 
   try {
-    const cakeRewards = await multicallv2({ abi: lotteryV2ABI, calls })
+    const client = viemClients[ChainId.BSC]
+    const cakeRewards = await client.multicall({
+      contracts: calls,
+      allowFailure: false,
+    })
 
     const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: bigint) => {
       return accum.plus(new BigNumber(cakeReward.toString()))
     }, BIG_ZERO)
 
     const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
-      return { ...winningTicket, cakeReward: cakeRewards[index] }
+      return { ...winningTicket, cakeReward: cakeRewards[index].toString() }
     })
     return { ticketsWithUnclaimedRewards, cakeTotal }
   } catch (error) {
