@@ -60,6 +60,40 @@ const DAY_PAIR_PRICE_CHART = (timestamps: number[] | string[]) => {
   `
 }
 
+const DAY_PAIR_MAX = (timestamp: number | string) => {
+  const queryString = `query maxPrice($address: String) {
+      poolDayDatas(
+        first: 1
+        skip: 0
+        where: { pool: $address, date_gte: ${timestamp} }
+        orderBy: high
+        orderDirection: desc
+      ) {
+        high
+      }
+  }`
+  return gql`
+    ${queryString}
+  `
+}
+
+const DAY_PAIR_MIN = (timestamp: number | string) => {
+  const queryString = `query minPrice($address: String) {
+     poolDayDatas(
+        first: 1
+        skip: 0
+        where: { pool: $address, date_gte: ${timestamp} }
+        orderBy: low
+        orderDirection: asc
+      ) {
+        low
+      }
+  }`
+  return gql`
+    ${queryString}
+  `
+}
+
 const HOUR_PAIR_PRICE_CHART = (timestamps: number[] | string[]) => {
   let queryString = 'query poolHourDatas($address: String) {'
   timestamps.forEach((d) => {
@@ -116,6 +150,7 @@ interface PriceResults {
 }
 
 type PriceResultsForPairPriceChartResult = Record<string, TokenHourDatas[]>
+type PairPriceMinMAxResults = Record<string, TokenHourDatas>
 
 export async function fetchTokenPriceData(
   address: string,
@@ -237,8 +272,6 @@ export async function fetchPairPriceChartTokenData(
 }> {
   const isDay = interval === ONE_DAY_SECONDS
   // start and end bounds
-  let maxPrice = 0
-  let minPrice = -100
   let averagePrice = 0
   try {
     const endTimestamp = dayjs.utc().unix()
@@ -288,6 +321,7 @@ export async function fetchPairPriceChartTokenData(
       open: string
       close: string
     }[] = []
+
     // eslint-disable-next-line no-await-in-loop
     const priceData = await dataClient.request<PriceResultsForPairPriceChartResult>(
       isDay
@@ -297,6 +331,16 @@ export async function fetchPairPriceChartTokenData(
         address,
       },
     )
+    const maxQueryPrice = (
+      await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MAX(blocks?.[0].timestamp), {
+        address,
+      })
+    )?.poolDayDatas?.[0]?.high
+    const minQueryPrice = (
+      await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MIN(blocks?.[0].timestamp), {
+        address,
+      })
+    )?.poolDayDatas?.[0]?.low
 
     if (Object.keys(priceData)?.length > 0) {
       if (priceData) {
@@ -310,8 +354,6 @@ export async function fetchPairPriceChartTokenData(
       const high = parseFloat(d.high)
       const low = parseFloat(d.low)
       const close = parseFloat(d.close)
-      if (high >= maxPrice) maxPrice = high
-      if ((minPrice === -100 || low < minPrice) && low !== 0) minPrice = low
       averagePrice += close
       return {
         time: d?.periodStartUnix || d?.date,
@@ -324,8 +366,8 @@ export async function fetchPairPriceChartTokenData(
     averagePrice /= formattedHistory.length
     return {
       data: formattedHistory,
-      maxPrice,
-      minPrice,
+      maxPrice: parseFloat(maxQueryPrice),
+      minPrice: parseFloat(minQueryPrice),
       averagePrice,
       error: false,
     }
