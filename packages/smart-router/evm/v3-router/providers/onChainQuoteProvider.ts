@@ -8,8 +8,8 @@ import uniq from 'lodash/uniq.js'
 import chunk from 'lodash/chunk.js'
 
 import { GasModel, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
-import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
-import IQuoterV2ABI from '../../abis/IQuoterV2.json'
+import { mixedRouteQuoterV1ABI } from '../../abis/IMixedRouteQuoterV1'
+import { quoterV2ABI } from '../../abis/IQuoterV2'
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
 import { PancakeMulticallProvider } from './multicallSwapProvider'
@@ -602,7 +602,7 @@ function processQuoteResults(
 export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory({
   getQuoterAddress: (chainId) => MIXED_ROUTE_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: () => 'quoteExactInput',
-  abi: IMixedRouteQuoterV1ABI,
+  abi: mixedRouteQuoterV1ABI,
   getCallInputs: (route, isExactIn) => [
     encodeMixedRouteToPath(route, !isExactIn),
     route.pools
@@ -631,7 +631,7 @@ export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory(
 export const createV3OnChainQuoteProvider = onChainQuoteProviderFactory({
   getQuoterAddress: (chainId) => V3_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: (isExactIn) => (isExactIn ? 'quoteExactInput' : 'quoteExactOutput'),
-  abi: IQuoterV2ABI,
+  abi: quoterV2ABI,
   getCallInputs: (route, isExactIn) => [
     encodeMixedRouteToPath(route, !isExactIn),
     `0x${route.amount.quotient.toString(16)}`,
