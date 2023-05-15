@@ -84,7 +84,7 @@ export type ComputedFarmConfigV3 = {
   token: Token
   quoteToken: Token
   feeAmount: FeeAmount
-  allocPoint?: EtherBigNumber
+
   token0: Token
   token1: Token
 }
