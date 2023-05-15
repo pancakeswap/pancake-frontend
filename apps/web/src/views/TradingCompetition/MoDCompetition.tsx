@@ -7,6 +7,7 @@ import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/sdk'
+import { viemClients } from 'utils/viem'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import {
   SmartContractPhases,
@@ -40,7 +41,6 @@ import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
 import PrizesInfoSection from './components/PrizesInfoSection'
-import { viemClients } from 'utils/viem'
 
 const MoDCompetition = () => {
   const { account, chainId } = useAccountActiveChain()
