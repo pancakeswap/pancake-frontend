@@ -6,7 +6,10 @@ const useNonBscHarvestFarm = (farmPid: number, cProxyAddress: Address) => {
   const contract = useCrossFarmingProxy(cProxyAddress)
 
   const handleHarvest = useCallback(async () => {
-    return contract.write.harvest([farmPid])
+    return contract.write.harvest([BigInt(farmPid)], {
+      account: contract.account,
+      chain: contract.chain,
+    })
   }, [contract, farmPid])
 
   return { onReward: handleHarvest }

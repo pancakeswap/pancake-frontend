@@ -1,4 +1,4 @@
-import { SendTransactionResult } from '@wagmi/core'
+import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
 
 /**
