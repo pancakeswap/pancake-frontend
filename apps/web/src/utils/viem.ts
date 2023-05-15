@@ -24,6 +24,11 @@ const viemClients = CHAINS.reduce((prev, cur) => {
     [cur.id]: createPublicClient({
       chain: cur,
       transport,
+      batch: {
+        multicall: {
+          batchSize: 1_024 * 10,
+        },
+      },
     }),
   }
 }, {} as Record<ChainId, PublicClient>)
