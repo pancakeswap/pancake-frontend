@@ -5,7 +5,7 @@ import { useAccount } from 'wagmi'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { tradingRewardPairConfigChainMap } from 'views/TradingReward/config/pairs'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { AllTradingRewardPairDetail, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -69,7 +69,7 @@ const useRewardBreakdown = ({
 
             const pairs = await Promise.all(
               info.tradingFeeArr.map(async (fee) => {
-                const farms = farmsV3ConfigChainMap[fee.chainId as ChainId]
+                const farms = tradingRewardPairConfigChainMap[fee.chainId as ChainId]
                 const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === fee.pool.toLowerCase())
 
                 const canClaimResponse = !fee.tradingFee
@@ -125,7 +125,7 @@ const useRewardBreakdown = ({
           const pairs = Object.keys(campaignPairs?.[campaignId])
             .map((campaignChainId) => {
               // @ts-ignore
-              const farms = farmsV3ConfigChainMap?.[campaignChainId as ChainId]
+              const farms = tradingRewardPairConfigChainMap?.[campaignChainId as ChainId]
 
               return campaignPairs?.[campaignId]?.[campaignChainId].map((lpAddress) => {
                 const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
