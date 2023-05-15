@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
-import nonBscVault from 'config/abi/nonBscVault'
+import { nonBscVaultABI } from 'config/abi/nonBscVault'
 import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
@@ -72,11 +72,11 @@ export const fetchFarmUserStakedBalances = async (
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const rawStakedBalances = (await viemClients[chainId as keyof typeof viemClients].multicall({
+  const rawStakedBalances = (await viemClients[chainId].multicall({
     // @ts-ignore
     contracts: farmsToFetch.map((farm) => {
       return {
-        abi: isBscNetwork ? masterChefV2ABI : nonBscVault,
+        abi: isBscNetwork ? masterChefV2ABI : nonBscVaultABI,
         address: masterChefAddress,
         functionName: 'userInfo',
         args: [farm.vaultPid ?? farm.pid, account],
