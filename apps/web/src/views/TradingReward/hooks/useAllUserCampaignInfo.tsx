@@ -95,11 +95,13 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
             })
 
             const totalCanClaimData =
-              contractData
-                .slice(1, contractData?.length)
-                .map((i) => i[0].toString() ?? 0)
-                .reduce((a, b) => new BigNumber(a).plus(b))
-                .toString() ?? '0'
+              contractData.length > 1
+                ? contractData
+                    .slice(1, contractData?.length)
+                    .map((i) => i[0].toString() ?? 0)
+                    .reduce((a, b) => new BigNumber(a).plus(b))
+                    .toString() ?? '0'
+                : '0'
 
             return {
               ...userCampaignInfo,
