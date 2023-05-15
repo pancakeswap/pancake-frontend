@@ -11,6 +11,7 @@ import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/h
 import PairInfo from 'views/TradingReward/components/PairInfo'
 
 interface RewardsBreakdownProps {
+  latestCampaignId: string
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
   rewardInfo: { [key in string]: RewardInfo }
@@ -27,6 +28,7 @@ const initList: RewardBreakdownDetail = {
 }
 
 const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>> = ({
+  latestCampaignId,
   allUserCampaignInfo,
   allTradingRewardPairData,
   rewardInfo,
@@ -38,7 +40,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   } = useTranslation()
   const router = useRouter()
   const { theme } = useTheme()
-  const campaignId = router?.query?.campaignId?.toString() ?? ''
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
@@ -50,6 +51,11 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     rewardInfo,
     campaignPairs,
   })
+
+  const campaignId = useMemo(
+    () => router?.query?.campaignId?.toString() || latestCampaignId,
+    [router, latestCampaignId],
+  )
 
   const sortData = useMemo(() => {
     if (campaignId) {
@@ -63,13 +69,14 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
         return 0
       })
     }
+    console.log('campaignId', campaignId)
 
-    return data.sort((a, b) => Number(b.campaignId) - Number(a.campaignId))
+    return data
   }, [data, campaignId])
 
   useEffect(() => {
-    if (sortData.length > 0) {
-      const max = Math.ceil(sortData.length / MAX_PER_PAGE)
+    if (sortData.length > 0 && campaignId) {
+      const max = Math.ceil(sortData?.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
 
@@ -78,7 +85,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       setCurrentPage(1)
       setList(initList)
     }
-  }, [sortData])
+  }, [sortData, campaignId])
 
   useEffect(() => {
     const getActivitySlice = () => {
@@ -106,7 +113,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       </Text>
       <Text textAlign="center" color="textSubtle" mb="40px">
         {`${t('Campaign')} ${list.campaignId} ${
-          list.campaignId?.toLowerCase() === campaignId?.toLowerCase() ? t('(current period)') : ''
+          list.campaignId?.toLowerCase() === campaignId?.toLowerCase() ? t('(latest)') : ''
         }`}
       </Text>
       <Card>

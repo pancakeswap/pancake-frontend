@@ -95,7 +95,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   // Expired Soon Data
   const expiredUSDPrice = useMemo(() => {
     const balance = getBalanceAmount(new BigNumber(rewardExpiredSoonData?.canClaim ?? 0)).toNumber()
-    return formatNumber(balance)
+    return formatNumber(balance, 2, 8)
   }, [rewardExpiredSoonData])
 
   const totalTradingReward = useMemo(() => {
@@ -134,8 +134,8 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                   {t('Your unclaimed trading rewards')}
                 </Text>
-                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD)}`}</Text>
-                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
+                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD, 2, 8)}`}</Text>
+                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake, 2, 8)} CAKE`}</Text>
               </Box>
               <Button
                 width={['100%', '100%', '100%', 'fit-content']}
@@ -206,7 +206,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 {t('Your TOTAL trading Reward')}
               </Text>
               <Text bold fontSize={['24px']}>
-                {`$${formatNumber(totalTradingReward)}`}
+                {`$${formatNumber(totalTradingReward, 2, 8)}`}
               </Text>
             </Box>
             <Box>
