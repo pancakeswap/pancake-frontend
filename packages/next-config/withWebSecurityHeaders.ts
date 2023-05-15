@@ -2,14 +2,14 @@ import type { NextConfig } from 'next'
 
 type Headers = Awaited<ReturnType<NonNullable<NextConfig['headers']>>>
 
-function createCSP() {
-  const IFRAME_WHITE_LIST = ['https://*.safe.global']
-
-  return {
-    key: 'Content-Security-Policy',
-    value: `frame-ancestors 'self' ${IFRAME_WHITE_LIST.join(' ')}`,
-  }
-}
+// function createCSP() {
+//   const IFRAME_WHITE_LIST = ['https://*.safe.global']
+//
+//   return {
+//     key: 'Content-Security-Policy',
+//     value: `frame-ancestors 'self' ${IFRAME_WHITE_LIST.join(' ')}`,
+//   }
+// }
 
 export function withWebSecurityHeaders(config: NextConfig): NextConfig {
   const originalHeaders = config.headers || []
@@ -31,7 +31,7 @@ export function withWebSecurityHeaders(config: NextConfig): NextConfig {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
-          createCSP(),
+          // createCSP(),
         ],
       },
     ]
