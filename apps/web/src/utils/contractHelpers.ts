@@ -11,7 +11,6 @@ import {
   getTradingCompetitionAddressEaster,
   getCakeVaultAddress,
   getFarmAuctionAddress,
-  getAnniversaryAchievement,
   getNftMarketAddress,
   getNftSaleAddress,
   getPancakeSquadAddress,
@@ -37,16 +36,14 @@ import {
 // ABI
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { cakeFlexibleSideVaultV2ABI } from 'config/abi/cakeFlexibleSideVaultV2'
-import predictionsV1Abi from 'config/abi/predictionsV1.json'
-import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
+import { predictionsV1ABI } from 'config/abi/predictionsV1'
 import { nftSaleABI } from 'config/abi/nftSale'
-import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import { iCakeABI } from 'config/abi/iCake'
-import cakePredictionsAbi from 'config/abi/cakePredictions.json'
-import nonBscVault from 'config/abi/nonBscVault.json'
-import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
-import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
-import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
+import { cakePredictionsABI } from 'config/abi/cakePredictions'
+import { nonBscVaultABI } from 'config/abi/nonBscVault'
+import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
+import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
+import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
 import { ChainId } from '@pancakeswap/sdk'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
@@ -195,11 +192,11 @@ export const getPredictionsV2Contract = (address: Address, signer?: WalletClient
 }
 
 export const getPredictionsV1Contract = (signer?: WalletClient) => {
-  return getContract({ abi: predictionsV1Abi, address: getPredictionsV1Address(), signer })
+  return getContract({ abi: predictionsV1ABI, address: getPredictionsV1Address(), signer })
 }
 
 export const getCakePredictionsContract = (address: Address, signer?: WalletClient) => {
-  return getContract({ abi: cakePredictionsAbi, address, signer })
+  return getContract({ abi: cakePredictionsABI, address, signer })
 }
 
 export const getChainlinkOracleContract = (address: Address, signer?: WalletClient, chainId?: number) => {
@@ -208,13 +205,6 @@ export const getChainlinkOracleContract = (address: Address, signer?: WalletClie
 
 export const getFarmAuctionContract = (signer?: WalletClient) => {
   return getContract({ abi: farmAuctionABI, address: getFarmAuctionAddress(), signer })
-}
-export const getAnniversaryAchievementContract = (signer?: WalletClient) => {
-  return getContract({
-    abi: anniversaryAchievementAbi,
-    address: getAnniversaryAchievement(),
-    signer,
-  })
 }
 
 export const getNftMarketContract = (signer?: WalletClient) => {
@@ -225,9 +215,6 @@ export const getNftSaleContract = (signer?: WalletClient) => {
 }
 export const getPancakeSquadContract = (signer?: WalletClient) => {
   return getContract({ abi: pancakeSquadABI, address: getPancakeSquadAddress(), signer })
-}
-export const getErc721CollectionContract = (signer?: WalletClient, address?: Address) => {
-  return getContract({ abi: erc721CollectionAbi, address, signer })
 }
 
 export const getPotteryVaultContract = (address: Address, walletClient?: WalletClient) => {
@@ -259,7 +246,7 @@ export const getBCakeProxyContract = (proxyContractAddress: Address, signer?: Wa
 }
 
 export const getNonBscVaultContract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer })
+  return getContract({ abi: nonBscVaultABI, address: getNonBscVaultAddress(chainId), chainId, signer })
 }
 
 export const getSidContract = (address: Address, chainId: number) => {
@@ -301,7 +288,7 @@ export const getSidResolverContract = (address: Address, signer?: WalletClient) 
 
 export const getCrossFarmingSenderContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: crossFarmingSenderAbi,
+    abi: crossFarmingSenderABI,
     address: getCrossFarmingSenderAddress(chainId),
     chainId,
     signer,
@@ -322,12 +309,12 @@ export const getCrossFarmingProxyContract = (
   signer?: WalletClient,
   chainId?: number,
 ) => {
-  return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer })
+  return getContract({ abi: crossFarmingProxyABI, address: proxyContractAddress, chainId, signer })
 }
 
 export const getStableSwapNativeHelperContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: stableSwapNativeHelperAbi,
+    abi: stableSwapNativeHelperABI,
     address: getStableSwapNativeHelperAddress(chainId),
     chainId,
     signer,

@@ -11,7 +11,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { SendTransactionResult } from '@wagmi/core'
+import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
 

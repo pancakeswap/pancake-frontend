@@ -58,7 +58,11 @@ export const nonBscStakeFarm = async (
   })
   console.info(totalFee, 'stake totalFee')
   logGTMClickStakeFarmEvent()
-  return contract.write.deposit([pid, BigInt(value)], { value: BigInt(totalFee) })
+  return contract.write.deposit([pid, BigInt(value)], {
+    value: BigInt(totalFee),
+    account: contract.account,
+    chain: contract.chain,
+  })
 }
 
 export const nonBscUnstakeFarm = async (
@@ -81,5 +85,9 @@ export const nonBscUnstakeFarm = async (
     messageType: MessageTypes.Withdraw,
   })
   console.info(totalFee, 'unstake totalFee')
-  return contract.write.withdraw([pid, BigInt(value)], { value: BigInt(totalFee) })
+  return contract.write.withdraw([pid, BigInt(value)], {
+    value: BigInt(totalFee),
+    account: contract.account,
+    chain: contract.chain,
+  })
 }

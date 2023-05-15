@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useCallback } from 'react'
 import noop from 'lodash/noop'
 import { useAccount } from 'wagmi'
-import { SendTransactionResult, WaitForTransactionResult } from '@wagmi/core'
+import { SendTransactionResult, WaitForTransactionResult } from 'wagmi/actions'
 import useCatchTxError from './useCatchTxError'
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'

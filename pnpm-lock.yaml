@@ -554,7 +554,7 @@ importers:
         version: 4.1.0(encoding@0.1.13)
       '@gnosis.pm/safe-apps-wagmi':
         specifier: ^1.2.0
-        version: 1.2.0(@wagmi/core@1.0.1)(encoding@0.1.13)
+        version: 1.2.0(@wagmi/core@0.7.9)(encoding@0.1.13)
       '@next/bundle-analyzer':
         specifier: 13.0.7
         version: 13.0.7
@@ -621,9 +621,6 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: ^2.1.1
         version: 2.1.1(@types/node@13.13.52)(next@13.3.4)(webpack@5.74.0)
-      '@wagmi/core':
-        specifier: 1.0.1
-        version: 1.0.1(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4)
       ajv:
         specifier: ^6.12.3
         version: 6.12.6
@@ -1730,6 +1727,9 @@ importers:
       vitest:
         specifier: ^0.27.2
         version: 0.27.2
+      wagmi:
+        specifier: '*'
+        version: 1.0.4(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4)
 
   packages/utils:
     dependencies:
@@ -1845,10 +1845,10 @@ importers:
         version: 18.2.0
       '@wagmi/connectors':
         specifier: '*'
-        version: 1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4)
+        version: 1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)
       '@wagmi/core':
         specifier: '*'
-        version: 1.0.1(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4)
+        version: 1.0.1(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)
       react:
         specifier: ^18.0.0
         version: 18.2.0
@@ -6211,14 +6211,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@1.0.1)(encoding@0.1.13):
+  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@0.7.9)(encoding@0.1.13):
     resolution: {integrity: sha512-ecDiNMkQ01m2yM/eKKtt08bTvYjWfacG+vwAeb4Lpiitm8RBI8wkW1jUoOgvd9tNhHZtdykgGETUZGmMo1XDuw==}
     peerDependencies:
       '@wagmi/core': '>= 0.3.8 < 0.8.0'
     dependencies:
       '@gnosis.pm/safe-apps-provider': 0.15.1(encoding@0.1.13)
       '@gnosis.pm/safe-apps-sdk': 7.8.0(encoding@0.1.13)
-      '@wagmi/core': 1.0.1(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4)
+      '@wagmi/core': 0.7.9(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -11521,7 +11521,7 @@ packages:
     dependencies:
       typescript: 5.0.4
 
-  /@wagmi/connectors@1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4):
+  /@wagmi/connectors@1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24):
     resolution: {integrity: sha512-fl01vym19DE1uoE+MlASw5zo3Orr/YXlJRjOKLaKYtV+Q7jOLY4TwHgq7sEMs+JYOvFICFBEAlWNNxidr51AqQ==}
     peerDependencies:
       '@wagmi/chains': '>=0.2.0'
@@ -11555,6 +11555,7 @@ packages:
       - supports-color
       - utf-8-validate
       - zod
+    dev: true
 
   /@wagmi/connectors@1.0.2(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4):
     resolution: {integrity: sha512-uoUkWXv3cwwypxDblrNGWo3VGwUbxNAlIzGIDqg4oGO6Kekphj/FjRWMn2Yb9sVmFifh9h/aiJ1cr75Mv+E2fA==}
@@ -11591,7 +11592,29 @@ packages:
       - utf-8-validate
       - zod
 
-  /@wagmi/core@1.0.1(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4):
+  /@wagmi/core@0.7.9(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-97KCELUP5Q1AagRyE7SmpLh4/v3xdcy/XMbybLvvtQbgmi3y5oEzy4h/wJMY1hEZlmicqyWZAHHm6xIr1tP5HA==}
+    peerDependencies:
+      '@coinbase/wallet-sdk': '>=3.3.0'
+      '@walletconnect/ethereum-provider': '>=1.7.5'
+      ethers: '>=5.5.1'
+    peerDependenciesMeta:
+      '@coinbase/wallet-sdk':
+        optional: true
+      '@walletconnect/ethereum-provider':
+        optional: true
+    dependencies:
+      abitype: 0.1.8(typescript@5.0.4)
+      ethers: 5.7.2
+      eventemitter3: 4.0.7
+      zustand: 4.3.1(react@18.2.0)
+    transitivePeerDependencies:
+      - immer
+      - react
+      - typescript
+    dev: false
+
+  /@wagmi/core@1.0.1(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24):
     resolution: {integrity: sha512-Zzg4Ob92QMF9NsC+z5/8JZjMn3NCCnwVWGJlv79qRX9mp5Ku40OzJNvqDnjcSGjshe6H0L/KtFZAqTlmu8lT7w==}
     peerDependencies:
       typescript: '>=4.9.4'
@@ -11601,7 +11624,7 @@ packages:
         optional: true
     dependencies:
       '@wagmi/chains': 0.2.22(typescript@5.0.4)
-      '@wagmi/connectors': 1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4)
+      '@wagmi/connectors': 1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)
       abitype: 0.8.1(typescript@5.0.4)(zod@3.21.4)
       eventemitter3: 4.0.7
       typescript: 5.0.4
@@ -11618,6 +11641,7 @@ packages:
       - supports-color
       - utf-8-validate
       - zod
+    dev: true
 
   /@wagmi/core@1.0.4(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4):
     resolution: {integrity: sha512-CviDdioSWubghMnmEodB9R/ZE2OhuHVbr3Q1XTJjHIIrhhrPJSCjESr5pLx7X3lVdpf2FofapfWRCaxdYqg9sQ==}
@@ -12112,6 +12136,15 @@ packages:
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
     dev: true
+
+  /abitype@0.1.8(typescript@5.0.4):
+    resolution: {integrity: sha512-2pde0KepTzdfu19ZrzYTYVIWo69+6UbBCY4B1RDiwWgo2XZtFSJhF6C+XThuRXbbZ823J0Rw1Y5cP0NXYVcCdQ==}
+    engines: {pnpm: '>=7'}
+    peerDependencies:
+      typescript: '>=4.7.4'
+    dependencies:
+      typescript: 5.0.4
+    dev: false
 
   /abitype@0.8.0(typescript@5.0.4)(zod@3.21.4):
     resolution: {integrity: sha512-QqBuwc2trtaNd/kp4k0dSjVu3OQIYRAB4ww4LCPwfSECXcCGTD3imYovNYNjx0SyN3OHV0XUOzUVwnXP1kLsVQ==}
