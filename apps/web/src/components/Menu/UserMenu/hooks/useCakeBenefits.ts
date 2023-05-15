@@ -93,7 +93,7 @@ const useCakeBenefits = () => {
     let iCake = ''
     let vCake = { vaultScore: '0', totalScore: '0' }
     if (lockPosition === VaultPosition.Locked) {
-      const credit = await ifoCreditAddressContract.read.getUserCredit(account)
+      const credit = await ifoCreditAddressContract.read.getUserCredit([account])
       iCake = getBalanceNumber(new BigNumber(credit.toString())).toLocaleString('en', { maximumFractionDigits: 3 })
 
       const eligiblePools = await getActivePools(ChainId.BSC, currentBscBlock)
