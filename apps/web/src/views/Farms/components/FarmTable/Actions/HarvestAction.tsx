@@ -1,4 +1,3 @@
-import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
 import { Skeleton, useToast, useModal, Farm as FarmUI } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
@@ -11,6 +10,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useCallback } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { SendTransactionResult } from '@wagmi/core'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
@@ -22,7 +22,7 @@ const { FarmTableHarvestAction } = FarmUI.FarmTable
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
-  onReward?: () => Promise<TransactionResponse>
+  onReward?: () => Promise<SendTransactionResult>
   proxyCakeBalance?: number
   onDone?: () => void
 }

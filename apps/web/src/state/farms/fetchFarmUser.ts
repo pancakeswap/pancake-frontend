@@ -123,7 +123,7 @@ export const fetchCProxyAddress = async (address: Address, chainId: number) => {
   try {
     const crossFarmingAddress = getCrossFarmingReceiverContract(null, chainId)
     const cProxyAddress = await crossFarmingAddress.read.cProxy([address])
-    return cProxyAddress.toString()
+    return cProxyAddress
   } catch (error) {
     console.error('Failed Fetch CProxy Address', error)
     return address

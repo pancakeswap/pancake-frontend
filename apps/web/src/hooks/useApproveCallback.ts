@@ -2,7 +2,7 @@ import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { useAccount, Address } from 'wagmi'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useCallback, useMemo } from 'react'
 import { isUserRejected, logError } from 'utils/sentry'
@@ -85,10 +85,10 @@ export function useApproveCallback(
 
     let useExact = false
 
-    const estimatedGas = await tokenContract.estimateGas.approve([spender, MaxUint256]).catch(() => {
+    const estimatedGas = await tokenContract.estimateGas.approve([spender as Address, MaxUint256]).catch(() => {
       // general fallback for tokens who restrict approval amounts
       useExact = true
-      return tokenContract.estimateGas.approve([spender, amountToApprove.quotient.toString()]).catch(() => {
+      return tokenContract.estimateGas.approve([spender  as Address, amountToApprove.quotient]).catch(() => {
         console.error('estimate gas failure')
         toastError(t('Error'), t('Unexpected error. Could not estimate gas for the approve.'))
         return null
@@ -100,7 +100,7 @@ export function useApproveCallback(
     return callWithGasPrice(
       tokenContract,
       'approve',
-      [spender, useExact ? amountToApprove.quotient.toString() : MaxUint256],
+      [spender, useExact ? amountToApprove.quotient : MaxUint256],
       {
         gasLimit: calculateGasMargin(estimatedGas),
       },

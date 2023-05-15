@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
-import ifoV2Abi from 'config/abi/ifoV2.json'
+import { ifoV2ABI } from 'config/abi/ifoV2'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 
@@ -64,9 +64,10 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
+      // TODO: wagmi
       const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
         await multicallv2({
-          abi: ifoV2Abi,
+          abi: ifoV2ABI,
           calls: [
             {
               address,

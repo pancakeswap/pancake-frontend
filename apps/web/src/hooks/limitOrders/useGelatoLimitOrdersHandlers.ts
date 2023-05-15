@@ -58,7 +58,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         outputAmount: string
         owner: string
       },
-      overrides?: Overrides,
+      overrides?: any,
     ) => {
       if (!gelatoLimitOrders) {
         throw new Error('Could not reach Gelato Limit Orders library')
@@ -120,7 +120,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         inputAmount: string
         outputAmount: string
       },
-      overrides?: Overrides,
+      overrides?: any,
     ) => {
       if (!gelatoLimitOrders) {
         throw new Error('Could not reach Gelato Limit Orders library')

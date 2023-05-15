@@ -40,16 +40,18 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       to: masterChefV3Address,
       data: calldata,
       value: hexToBigInt(value),
+      chain: signer.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
       publicClient.estimateGas(txn).then((estimate) => {
         const newTxn = {
           ...txn,
-          // TODO: wagmi
-          // gasLimit: calculateGasMargin(estimate),
+          gas: calculateGasMargin(estimate),
         }
 
+        // FIXME: wagmi
+        // @ts-ignore
         return signer.sendTransaction(newTxn)
       }),
     )
@@ -73,16 +75,20 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     const txn = {
       to: nftPositionManagerAddress,
       data: calldata,
-      value,
+      value: hexToBigInt(value),
+      account,
+      chain: signer.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
       publicClient.estimateGas(txn).then((estimate) => {
         const newTxn = {
           ...txn,
-          gasLimit: calculateGasMargin(estimate),
+          gas: calculateGasMargin(estimate),
         }
 
+        // FIXME: wagmi
+        // @ts-ignore
         return signer.sendTransaction(newTxn)
       }),
     )
@@ -124,9 +130,13 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
         .then((estimate) => {
           const newTxn = {
             ...txn,
+            account,
+            chain: signer.chain,
             gas: calculateGasMargin(estimate),
           }
 
+          // FIXME: wagmi
+          // @ts-ignore
           return signer.sendTransaction(newTxn)
         }),
     )
@@ -168,16 +178,20 @@ export function useFarmsV3BatchHarvest() {
       const txn = {
         to: masterChefV3Address,
         data: calldata,
-        value,
+        value: hexToBigInt(value),
       }
 
       const resp = await fetchWithCatchTxError(() =>
+        // FIXME: wagmi
+        // @ts-ignore
         publicClient.estimateGas(txn).then((estimate) => {
           const newTxn = {
             ...txn,
-            // gasLimit: calculateGasMargin(estimate),
+            gas: calculateGasMargin(estimate),
           }
 
+          // FIXME: wagmi
+          // @ts-ignore
           return signer.sendTransaction(newTxn)
         }),
       )

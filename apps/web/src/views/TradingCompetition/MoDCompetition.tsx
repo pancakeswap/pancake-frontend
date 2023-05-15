@@ -8,7 +8,7 @@ import useTheme from 'hooks/useTheme'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
 import { ChainId } from '@pancakeswap/sdk'
-import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
+import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -86,7 +86,7 @@ const MoDCompetition = () => {
     const fetchUserContract = async () => {
       try {
         const [user, [userClaimed]] = await multicallv2({
-          abi: tradingCompetitionMoDAbi,
+          abi: tradingCompetitionMoDABI,
           calls: [
             {
               address: tradingCompetitionContract.address,

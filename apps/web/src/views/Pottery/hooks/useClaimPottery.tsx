@@ -5,19 +5,24 @@ import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePotterytDrawContract } from 'hooks/useContract'
-import { useAccount } from 'wagmi'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 export const useClaimPottery = () => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
+  const { account, chain } = useWeb3React()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const contract = usePotterytDrawContract()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const handleClaim = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => contract.write.claimReward())
+    const receipt = await fetchWithCatchTxError(() =>
+      contract.write.claimReward({
+        account,
+        chain,
+      }),
+    )
 
     if (receipt?.status) {
       toastSuccess(
@@ -28,7 +33,7 @@ export const useClaimPottery = () => {
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }
-  }, [account, contract, t, dispatch, fetchWithCatchTxError, toastSuccess])
+  }, [fetchWithCatchTxError, contract.write, account, chain, toastSuccess, t, dispatch])
 
   return { isPending, handleClaim }
 }
