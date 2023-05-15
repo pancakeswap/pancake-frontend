@@ -1,11 +1,5 @@
-// import { PayableOverrides } from 'ethers'
-// import { TransactionResponse } from '@ethersproject/providers'
 import { SendTransactionResult } from '@wagmi/core'
-import { Abi } from 'abitype'
-import { useContract } from 'hooks/useContract'
 import { calculateGasMargin } from 'utils'
-import { Address } from 'wagmi'
-import { getContract } from 'wagmi/actions'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -15,16 +9,21 @@ import { getContract } from 'wagmi/actions'
  * @param args An array of arguments to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const estimateGas = async <T extends ReturnType<typeof getContract>>(
+export const estimateGas = async <T>(
   contract: T,
   methodName: string,
   methodArgs: any,
-  overrides: PayableOverrides = {},
+  // FIXME: wagmi types
+  overrides: any = {},
   gasMarginPer10000: bigint,
 ) => {
   if (!contract[methodName]) {
+    // TODO: wagmi
+    // @ts-ignore
     throw new Error(`Method ${methodName} doesn't exist on ${contract.address}`)
   }
+  // TODO: wagmi
+  // @ts-ignore
   const rawGasEstimation = await contract.estimateGas[methodName]([methodArgs], overrides)
   // By convention, BigNumber values are multiplied by 1000 to avoid dealing with real numbers
   const gasEstimation = calculateGasMargin(rawGasEstimation, gasMarginPer10000)
@@ -39,17 +38,22 @@ export const estimateGas = async <T extends ReturnType<typeof getContract>>(
  * @param overrides An overrides object to pass to the method
  * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const callWithEstimateGas = async <T extends ReturnType<typeof useContract>>(
+export const callWithEstimateGas = async <T>(
   contract: T,
   methodName: any,
   methodArgs: any,
-  overrides: PayableOverrides = {},
+  // FIXME: wagmi types
+  overrides: any = {},
   gasMarginPer10000 = 1000n,
 ): Promise<SendTransactionResult> => {
   const gasEstimation = await estimateGas(contract, methodName, methodArgs, overrides, gasMarginPer10000)
-  const tx = await contract[methodName](...methodArgs, {
-    gasLimit: gasEstimation,
+  // TODO: wagmi
+  // @ts-ignore
+  const tx = await contract.write[methodName]([methodArgs], {
+    gas: gasEstimation,
     ...overrides,
   })
-  return tx
+  return {
+    hash: tx,
+  }
 }

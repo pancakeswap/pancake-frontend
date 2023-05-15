@@ -65,6 +65,7 @@ const HarvestCard = () => {
       // eslint-disable-next-line no-await-in-loop
       const receipt = await fetchWithCatchTxError(() => {
         return harvestFarm(
+          // @ts-ignore
           farmWithBalance.contract,
           farmWithBalance.pid,
           gasPrice,

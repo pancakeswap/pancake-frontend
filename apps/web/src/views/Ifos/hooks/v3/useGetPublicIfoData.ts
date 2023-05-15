@@ -2,8 +2,8 @@ import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
 import round from 'lodash/round'
-import ifoV2Abi from 'config/abi/ifoV2.json'
-import ifoV3Abi from 'config/abi/ifoV3.json'
+import { ifoV2ABI } from 'config/abi/ifoV2'
+import { ifoV3ABI } from 'config/abi/ifoV3'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 
@@ -93,10 +93,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     plannedStartTime: 0,
   })
 
-  const abi = version >= 3.1 ? ifoV3Abi : ifoV2Abi // ifoV2Abi use for version 3.0
+  const abi = version >= 3.1 ? ifoV3ABI : ifoV2ABI // ifoV2Abi use for version 3.0
 
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
+      // TODO: wagmi
       const [
         startBlock,
         endBlock,

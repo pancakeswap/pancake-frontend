@@ -6,13 +6,13 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
+import { hexToBigInt } from 'viem'
 import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TradeWithMM } from '../types'
-import { hexToBigInt } from 'viem'
 
 export enum SwapCallbackState {
   INVALID,
@@ -73,9 +73,13 @@ export function useSwapCallback(
               parameters: { methodName, args, value },
               contract,
             } = call
-            const options = !value || isZero(value) ? {} : { value: hexToBigInt(value) }
+            const options = !value || isZero(value) ? { value: undefined } : { value: hexToBigInt(value) }
 
-            return contract.estimateGas[methodName]([args], options)
+            return contract.estimateGas[methodName](
+              [args],
+              // @ts-ignore FIXME: wagmi
+              options,
+            )
               .then((gasEstimate) => {
                 return {
                   call,
@@ -85,7 +89,11 @@ export function useSwapCallback(
               .catch((gasError) => {
                 console.error('Gas estimate failed, trying eth_call to extract error', call)
 
-                return contract.simulate[methodName]([args], options)
+                return contract.simulate[methodName](
+                  [args],
+                  // @ts-ignore FIXME: wagmi
+                  options,
+                )
                   .then((result) => {
                     console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return { call, error: t('Unexpected issue with estimating the gas. Please try again.') }

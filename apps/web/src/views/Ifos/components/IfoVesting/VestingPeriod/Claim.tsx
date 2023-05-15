@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { Address } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from 'config/constants/types'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -22,6 +24,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   isVestingInitialized,
   fetchUserVestingData,
 }) => {
+  const { account, chain } = useWeb3React()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address, token } = data.ifo
@@ -36,8 +39,8 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   const handleClaim = useCallback(async () => {
     const { vestingId } = data.userVestingData[poolId]
     const methods = isVestingInitialized
-      ? contract.write.release([vestingId])
-      : contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1])
+      ? contract.write.release([vestingId as Address], { account, chain })
+      : contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
     const receipt = await fetchWithCatchTxError(() => methods)
 
     if (receipt?.status) {
@@ -49,7 +52,18 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
       )
       fetchUserVestingData()
     }
-  }, [isVestingInitialized, data, poolId, contract, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
+  }, [
+    data.userVestingData,
+    poolId,
+    isVestingInitialized,
+    contract.write,
+    account,
+    chain,
+    fetchWithCatchTxError,
+    toastSuccess,
+    t,
+    fetchUserVestingData,
+  ])
 
   return (
     <Button

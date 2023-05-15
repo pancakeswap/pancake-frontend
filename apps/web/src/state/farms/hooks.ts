@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import useSWRImmutable from 'swr/immutable'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
-import { getMasterchefContract } from 'utils/contractHelpers'
+import { getMasterChefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
@@ -27,7 +27,7 @@ import {
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
   return useSWRImmutable(chainId ? ['farmsLength', chainId] : null, async () => {
-    const mc = getMasterchefContract(undefined, chainId)
+    const mc = getMasterChefContract(undefined, chainId)
     return Number(await mc.read.poolLength())
   })
 }

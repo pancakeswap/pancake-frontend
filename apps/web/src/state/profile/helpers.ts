@@ -1,6 +1,5 @@
 import { Profile } from 'state/types'
-import { PancakeProfile } from 'config/abi/types/PancakeProfile'
-import profileABI from 'config/abi/pancakeProfile.json'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { API_PROFILE } from 'config/constants/endpoints'
 import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'
@@ -48,7 +47,7 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
       return { address: getPancakeProfileAddress(), name: method, params: [address] }
     })
     const profileCallsResult = await multicallv2({
-      abi: profileABI,
+      abi: pancakeProfileABI,
       calls: profileCalls,
       options: { requireSuccess: false },
     })

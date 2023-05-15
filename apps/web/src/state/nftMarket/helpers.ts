@@ -1,5 +1,5 @@
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
-import erc721Abi from 'config/abi/erc721.json'
+import { erc721CollectionABI } from 'config/abi/erc721collection'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { COLLECTIONS_WITH_WALLET_OF_OWNER } from 'config/constants/nftsCollections'
@@ -72,7 +72,7 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
     }))
   if (totalSupplyCalls.length > 0) {
     const totalSupplyRaw = await multicallv2({
-      abi: erc721Abi,
+      abi: erc721CollectionABI,
       calls: totalSupplyCalls,
       options: { requireSuccess: false },
     })
@@ -219,9 +219,9 @@ export const getNftApi = async (
  * @returns Array of NFT from API
  */
 export const getNftsFromDifferentCollectionsApi = async (
-  from: { collectionAddress: Address; tokenId: string }[],
+  from: { collectionAddress: string; tokenId: string }[],
 ): Promise<NftToken[]> => {
-  const promises = from.map((nft) => getNftApi(nft.collectionAddress, nft.tokenId))
+  const promises = from.map((nft) => getNftApi(nft.collectionAddress as Address, nft.tokenId))
   const responses = await Promise.all(promises)
   // Sometimes API can't find some tokens (e.g. 404 response)
   // at least return the ones that returned successfully
@@ -231,7 +231,7 @@ export const getNftsFromDifferentCollectionsApi = async (
       tokenId: res.tokenId,
       name: res.name,
       collectionName: res.collection.name,
-      collectionAddress: from[index].collectionAddress,
+      collectionAddress: from[index].collectionAddress as Address,
       description: res.description,
       attributes: res.attributes,
       createdAt: res.createdAt,
@@ -509,7 +509,7 @@ export const getAccountNftsOnChainMarketData = async (
             const currentAskPrice = formatBigInt(askCallsResult.askInfo[tokenIdIndex].price)
 
             return {
-              collection: { id: collectionList[askCallIndex].address.toLowerCase() },
+              collection: { id: collectionList[askCallIndex].address.toLowerCase() as Address },
               tokenId: tokenId.toString(),
               account,
               isTradable: true,
@@ -521,6 +521,7 @@ export const getAccountNftsOnChainMarketData = async (
       .flat()
       .filter(Boolean)
 
+    // @ts-ignore FIXME: wagmi
     return askCallsResults
   } catch (error) {
     console.error('Failed to fetch NFTs onchain market data', error)
@@ -965,7 +966,7 @@ export const fetchWalletTokenIdsForCollections = async (
   })
 
   const balanceOfCallsResultRaw = await multicallv2({
-    abi: erc721Abi,
+    abi: erc721CollectionABI,
     calls: balanceOfCalls,
     options: { requireSuccess: false },
   })
@@ -987,7 +988,7 @@ export const fetchWalletTokenIdsForCollections = async (
     .flat()
 
   const tokenIdResultRaw = await multicallv2({
-    abi: erc721Abi,
+    abi: erc721CollectionABI,
     calls: tokenIdCalls,
     options: { requireSuccess: false },
   })
@@ -1053,6 +1054,7 @@ export const combineCollectionData = (
       .filter((collection) => collection?.address)
       .map((current) => {
         const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
+        // @ts-ignore FIXME: wagmi
         const collection: Collection = {
           ...current,
           ...collectionMarket,

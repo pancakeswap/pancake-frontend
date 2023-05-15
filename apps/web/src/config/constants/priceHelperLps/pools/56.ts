@@ -1,4 +1,5 @@
 import { bscTokens } from '@pancakeswap/tokens'
+import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '../../types'
 
 const priceHelperLps: SerializedFarmConfig[] = [
@@ -30,6 +31,11 @@ const priceHelperLps: SerializedFarmConfig[] = [
     lpSymbol: 'XCAD-BUSD LP',
     lpAddress: '0x43d86605F8d22407b959D668B2689eafba23571B',
   },
-].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
+].map((p) => ({
+  ...p,
+  token: p.token.serialize,
+  quoteToken: p.quoteToken.serialize,
+  lpAddress: getAddress(p.lpAddress),
+}))
 
 export default priceHelperLps

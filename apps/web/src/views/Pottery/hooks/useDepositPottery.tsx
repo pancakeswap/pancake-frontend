@@ -6,13 +6,14 @@ import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePotterytVaultContract } from 'hooks/useContract'
-import { Address, useAccount } from 'wagmi'
+import { Address } from 'wagmi'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 export const useDepositPottery = (amount: string, potteryVaultAddress: Address) => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
+  const { account, chain } = useWeb3React()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
@@ -20,7 +21,12 @@ export const useDepositPottery = (amount: string, potteryVaultAddress: Address) 
 
   const handleDeposit = useCallback(async () => {
     const amountDeposit = new BigNumber(amount).multipliedBy(DEFAULT_TOKEN_DECIMAL).toString()
-    const receipt = await fetchWithCatchTxError(() => contract.write.deposit([BigInt(amountDeposit), account]))
+    const receipt = await fetchWithCatchTxError(() =>
+      contract.write.deposit([BigInt(amountDeposit), account], {
+        account,
+        chain,
+      }),
+    )
 
     if (receipt?.status) {
       toastSuccess(
@@ -31,7 +37,7 @@ export const useDepositPottery = (amount: string, potteryVaultAddress: Address) 
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }
-  }, [account, contract, amount, t, dispatch, fetchWithCatchTxError, toastSuccess])
+  }, [amount, fetchWithCatchTxError, contract.write, account, chain, toastSuccess, t, dispatch])
 
   return { isPending, handleDeposit }
 }

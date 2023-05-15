@@ -1,4 +1,5 @@
 import IndividualNFT from 'views/Nft/market/Collection/IndividualNFTPage'
+import { Address } from 'viem'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { getCollection, getNftApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
@@ -44,7 +45,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const nft: NftToken = {
     tokenId,
-    collectionAddress,
+    collectionAddress: collectionAddress as Address,
     collectionName: metadata.collection.name,
     name: metadata.name,
     description: metadata.description,

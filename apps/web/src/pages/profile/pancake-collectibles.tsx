@@ -4,10 +4,11 @@ import { unstable_serialize, SWRConfig } from 'swr'
 import { getCollections } from 'state/nftMarket/helpers'
 import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeCollectiblesPageRouter'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
-import { profileContract, profileContractArgs } from 'utils/contractHelpers'
+import { getProfileContract } from 'utils/contractHelpers'
 import { viemServerClients } from 'utils/viem.server'
 import { ChainId } from '@pancakeswap/sdk'
 import { ContractFunctionResult } from 'viem'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 const PancakeCollectiblesPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
@@ -33,13 +34,14 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   try {
+    const profileContract = getProfileContract()
     const nftRole = await profileContract.read.NFT_ROLE()
 
     const collectionRoles = (await viemServerClients[ChainId.BSC].multicall({
       contracts: Object.keys(fetchedCollections).map((collectionAddress) => {
         return {
           abi: pancakeProfileABI,
-          address: profileContractArgs.address,
+          address: getPancakeProfileAddress(),
           functionName: 'hasRole',
           args: [nftRole, collectionAddress],
         }

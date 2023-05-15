@@ -7,6 +7,7 @@ import type SwiperCore from 'swiper'
 import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
 import useSWRImmutable from 'swr/immutable'
+import { Address } from 'wagmi'
 import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import Trans from 'components/Trans'
@@ -76,7 +77,7 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
             name: apiMetadata.name,
             description: apiMetadata.description,
             collectionName: apiMetadata.collection.name,
-            collectionAddress,
+            collectionAddress: collectionAddress as Address,
             image: apiMetadata.image,
             attributes: apiMetadata.attributes,
             marketData,

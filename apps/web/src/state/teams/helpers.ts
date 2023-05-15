@@ -1,15 +1,16 @@
 import merge from 'lodash/merge'
 import teamsList from 'config/constants/teams'
-import { profileContract } from 'utils/contractHelpers'
+import { getProfileContract } from 'utils/contractHelpers'
 import { Team } from 'config/constants/types'
 import { multicallv2 } from 'utils/multicall'
 import { TeamsById } from 'state/types'
-import profileABI from 'config/abi/pancakeProfile.json'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import fromPairs from 'lodash/fromPairs'
 
 export const getTeam = async (teamId: number): Promise<Team> => {
   try {
+    const profileContract = getProfileContract()
     const {
       0: teamName,
       2: numberUsers,
@@ -34,6 +35,7 @@ export const getTeam = async (teamId: number): Promise<Team> => {
  */
 export const getTeams = async (): Promise<TeamsById> => {
   try {
+    const profileContract = getProfileContract()
     const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))
     const nbTeams = await profileContract.read.numberTeams()
 
@@ -45,7 +47,8 @@ export const getTeams = async (): Promise<TeamsById> => {
         params: [i],
       })
     }
-    const teamData = await multicallv2({ abi: profileABI, calls })
+    // TODO: wagmi
+    const teamData = await multicallv2({ abi: pancakeProfileABI, calls })
 
     const onChainTeamData = fromPairs(
       teamData.map((team, index) => {
