@@ -40,7 +40,7 @@
     "@pancakeswap/utils": "workspace:*",
     "vitest": "^0.30.1",
     "tsup": "^6.7.0",
-    "typescript": "^4.9.4"
+    "typescript": "^5.0.4"
   },
   "engines": {
     "node": ">=10"

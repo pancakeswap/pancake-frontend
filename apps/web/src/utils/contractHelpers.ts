@@ -41,7 +41,7 @@ import predictionsV1Abi from 'config/abi/predictionsV1.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
-import iCakeAbi from 'config/abi/iCake.json'
+import { iCakeABI } from 'config/abi/iCake'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 import nonBscVault from 'config/abi/nonBscVault.json'
 import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
@@ -239,7 +239,7 @@ export const getPotteryDrawContract = (walletClient?: WalletClient) => {
 }
 
 export const getIfoCreditAddressContract = (signer?: WalletClient) => {
-  return getContract({ abi: iCakeAbi, address: getICakeAddress(), signer })
+  return getContract({ abi: iCakeABI, address: getICakeAddress(), signer })
 }
 
 export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
