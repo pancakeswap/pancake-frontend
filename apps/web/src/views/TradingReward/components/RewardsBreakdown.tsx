@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useRouter } from 'next/router'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { useTheme } from '@pancakeswap/hooks'
 import { Box, Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -38,7 +37,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const router = useRouter()
   const { theme } = useTheme()
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
@@ -52,29 +50,10 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     campaignPairs,
   })
 
-  const campaignId = useMemo(
-    () => router?.query?.campaignId?.toString() || latestCampaignId,
-    [router, latestCampaignId],
-  )
-
-  const sortData = useMemo(() => {
-    if (campaignId) {
-      return data.sort((a, b) => {
-        if (a?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
-          return -1
-        }
-        if (b?.campaignId?.toLowerCase() === campaignId?.toLowerCase()) {
-          return 1
-        }
-        return 0
-      })
-    }
-
-    return data
-  }, [data, campaignId])
+  const sortData = useMemo(() => data.sort((a, b) => Number(b.campaignId) - Number(a.campaignId)), [data])
 
   useEffect(() => {
-    if (sortData.length > 0 && campaignId) {
+    if (sortData.length > 0) {
       const max = Math.ceil(sortData?.length / MAX_PER_PAGE)
       setMaxPages(max)
     }
@@ -84,7 +63,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       setCurrentPage(1)
       setList(initList)
     }
-  }, [sortData, campaignId])
+  }, [sortData])
 
   useEffect(() => {
     const getActivitySlice = () => {
@@ -112,7 +91,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       </Text>
       <Text textAlign="center" color="textSubtle" mb="40px">
         {`${t('Campaign')} ${list.campaignId} ${
-          list.campaignId?.toLowerCase() === campaignId?.toLowerCase() ? t('(latest)') : ''
+          list.campaignId?.toLowerCase() === latestCampaignId?.toLowerCase() ? t('(latest)') : ''
         }`}
       </Text>
       <Card>

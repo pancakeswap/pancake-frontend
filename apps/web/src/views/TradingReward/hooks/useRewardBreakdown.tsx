@@ -58,9 +58,9 @@ const useRewardBreakdown = ({
     async () => {
       try {
         const dataInfo = await Promise.all(
-          allUserCampaignInfo.map(async (info) => {
+          Object.keys(campaignPairs).map(async (campaignId) => {
             const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
-              (i) => i.campaignId.toLowerCase() === info.campaignId.toLowerCase(),
+              (i) => i.campaignId.toLowerCase() === campaignId.toLowerCase(),
             )
             const reward = rewardInfo?.[incentive.campaignId] ?? {
               rewardPrice: 0,
@@ -68,92 +68,69 @@ const useRewardBreakdown = ({
             }
 
             const pairs = await Promise.all(
-              info.tradingFeeArr.map(async (fee) => {
-                const farms = tradingRewardPairConfigChainMap[fee.chainId as ChainId]
-                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === fee.pool.toLowerCase())
+              Object.keys(campaignPairs?.[campaignId]).map(async (campaignChainId) => {
+                // @ts-ignore
+                const farms = tradingRewardPairConfigChainMap?.[campaignChainId as ChainId]
 
-                const canClaimResponse = !fee.tradingFee
-                  ? BIG_ZERO
-                  : await tradingRewardContract.canClaim(
-                      info.campaignId,
-                      account,
-                      new BigNumber(Number(fee.tradingFee).toFixed(8)).times(1e18).toString(),
+                const data = await Promise.all(
+                  campaignPairs?.[campaignId]?.[campaignChainId].map(async (lpAddress) => {
+                    const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
+                    const userData = allUserCampaignInfo
+                      .find((user) => user.campaignId.toLowerCase() === campaignId.toLowerCase())
+                      ?.tradingFeeArr.find((i) => i.pool.toLowerCase() === lpAddress.toLowerCase())
+
+                    const canClaimResponse = !userData?.tradingFee
+                      ? BIG_ZERO
+                      : await tradingRewardContract.canClaim(
+                          campaignId,
+                          account,
+                          new BigNumber(Number(userData?.tradingFee ?? 0).toFixed(8)).times(1e18).toString(),
+                        )
+
+                    const rewardCakeUSDPriceAsBg = getBalanceAmount(
+                      new BigNumber(reward.rewardPrice),
+                      reward.rewardTokenDecimal,
+                    )
+                    const rewardCakeAmount = getBalanceAmount(
+                      new BigNumber(canClaimResponse.toString()),
+                      reward.rewardTokenDecimal,
                     )
 
-                const rewardCakeUSDPriceAsBg = getBalanceAmount(
-                  new BigNumber(reward.rewardPrice),
-                  reward.rewardTokenDecimal,
-                )
-                const rewardCakeAmount = getBalanceAmount(
-                  new BigNumber(canClaimResponse.toString()),
-                  reward.rewardTokenDecimal,
+                    const rewardEarned =
+                      incentive.campaignClaimTime - currentDate > 0
+                        ? userData?.estimateRewardUSD || 0
+                        : rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
+
+                    return {
+                      chainId: Number(campaignChainId) as ChainId,
+                      address: lpAddress,
+                      lpSymbol: pairInfo?.lpSymbol ?? '',
+                      token: pairInfo?.token,
+                      quoteToken: pairInfo?.quoteToken,
+                      yourVolume: userData?.volume ?? 0,
+                      rewardEarned,
+                      yourTradingFee: userData?.tradingFee ?? '0',
+                      feeAmount: pairInfo?.feeAmount ?? 0,
+                    }
+                  }),
                 )
 
-                const rewardEarned =
-                  incentive.campaignClaimTime - currentDate > 0
-                    ? fee.estimateRewardUSD || 0
-                    : rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
-
-                return {
-                  chainId: fee.chainId,
-                  address: fee.pool,
-                  lpSymbol: pairInfo?.lpSymbol ?? '',
-                  token: pairInfo?.token,
-                  quoteToken: pairInfo?.quoteToken,
-                  yourVolume: fee.volume,
-                  rewardEarned,
-                  yourTradingFee: fee.tradingFee,
-                  feeAmount: pairInfo?.feeAmount ?? 0,
-                }
+                return data
               }),
             )
 
             return {
-              campaignId: info.campaignId,
+              campaignId,
               campaignStart: incentive?.campaignStart ?? 0,
               campaignClaimTime: incentive?.campaignClaimTime ?? 0,
-              pairs: pairs.sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned)),
+              pairs: pairs
+                .reduce((a, b) => a.concat(b), [])
+                .sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned)),
             }
           }),
         )
 
-        const nowConnectDataInfo = Object.keys(campaignPairs).map((campaignId) => {
-          const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
-            (i) => i.campaignId.toLowerCase() === campaignId.toLowerCase(),
-          )
-
-          const pairs = Object.keys(campaignPairs?.[campaignId])
-            .map((campaignChainId) => {
-              // @ts-ignore
-              const farms = tradingRewardPairConfigChainMap?.[campaignChainId as ChainId]
-
-              return campaignPairs?.[campaignId]?.[campaignChainId].map((lpAddress) => {
-                const pairInfo = farms.find((farm) => farm.lpAddress.toLowerCase() === lpAddress.toLowerCase())
-                return {
-                  chainId: Number(campaignChainId) as ChainId,
-                  address: lpAddress,
-                  lpSymbol: pairInfo?.lpSymbol ?? '',
-                  token: pairInfo?.token,
-                  quoteToken: pairInfo?.quoteToken,
-                  yourVolume: 0,
-                  rewardEarned: 0,
-                  yourTradingFee: '0',
-                  feeAmount: pairInfo?.feeAmount ?? 0,
-                }
-              })
-            })
-            .reduce((a, b) => a.concat(b), [])
-            .sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned))
-
-          return {
-            campaignId,
-            campaignStart: incentive?.campaignStart ?? 0,
-            campaignClaimTime: incentive?.campaignClaimTime ?? 0,
-            pairs,
-          }
-        })
-
-        return account ? dataInfo : nowConnectDataInfo
+        return dataInfo
       } catch (error) {
         console.info(`Fetch Reward Breakdown Error: ${error}`)
         return []
