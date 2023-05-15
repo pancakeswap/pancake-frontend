@@ -104,6 +104,9 @@ importers:
       '@pancakeswap/worker-utils':
         specifier: workspace:*
         version: link:../../packages/worker-utils
+      bignumber.js:
+        specifier: ^9.0.0
+        version: 9.1.1
       date-fns:
         specifier: ^2.29.3
         version: 2.29.3
