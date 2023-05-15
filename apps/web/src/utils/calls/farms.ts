@@ -2,9 +2,9 @@ import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { getNonBscVaultContractFee, MessageTypes } from 'views/Farms/hooks/getNonBscVaultFee'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
-import { getMasterChefContract, getNonBscVaultContract } from 'utils/contractHelpers'
+import { getBCakeProxyContract, getMasterChefContract, getNonBscVaultContract } from 'utils/contractHelpers'
 
-type MasterChefContract = ReturnType<typeof getMasterChefContract>
+type MasterChefContract = ReturnType<typeof getMasterChefContract> | ReturnType<typeof getBCakeProxyContract>
 
 export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: number) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()

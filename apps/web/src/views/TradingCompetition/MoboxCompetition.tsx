@@ -122,7 +122,7 @@ const MoboxCompetition = () => {
           // that returns wrong canClaimNFT.
           // The bug is only in view function though, all other code is OK
           // recalculating canClaimNFT here to get proper boolean
-          canClaimNFT: user[3].gt(1),
+          canClaimNFT: user[3] > 1n,
         }
         setUserTradingInformation(userObject)
       } catch (error) {

@@ -14,12 +14,12 @@ const useBCakeProxyBalance = () => {
   const { account, chainId } = useAccountActiveChain()
   const { proxyAddress, isLoading: isProxyContractAddressLoading } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
-  const { reader: cakeContract } = useCake()
+  const cakeContract = useCake()
 
   const { data, status } = useSWR(
     account && bCakeProxy && !isProxyContractAddressLoading && ['bCakeProxyBalance', account],
     async () => {
-      const rawBalance = await cakeContract.balanceOf(bCakeProxy.address)
+      const rawBalance = await cakeContract.read.balanceOf([bCakeProxy.address])
       return new BigNumber(rawBalance.toString())
     },
   )
