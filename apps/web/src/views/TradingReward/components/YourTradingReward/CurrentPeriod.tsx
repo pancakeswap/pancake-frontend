@@ -49,7 +49,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
 
   const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
 
-  const { totalVolume, tradingFeeArr } = currentUserCampaignInfo
+  const { totalVolume, tradingFeeArr } = currentUserCampaignInfo ?? {}
   const { stakingToken, userData: poolUserData } = pool ?? {}
   const {
     lockEndTime,
@@ -62,7 +62,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     [poolUserData],
   )
   const currentRewardInfo = useMemo(
-    () => rewardInfo?.[currentUserCampaignInfo.campaignId],
+    () => rewardInfo?.[currentUserCampaignInfo?.campaignId],
     [rewardInfo, currentUserCampaignInfo],
   )
 
