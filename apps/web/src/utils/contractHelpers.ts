@@ -39,7 +39,7 @@ import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { cakeFlexibleSideVaultV2ABI } from 'config/abi/cakeFlexibleSideVaultV2'
 import predictionsV1Abi from 'config/abi/predictionsV1.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
-import nftSaleAbi from 'config/abi/nftSale.json'
+import { nftSaleABI } from 'config/abi/nftSale'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import { iCakeABI } from 'config/abi/iCake'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
@@ -221,7 +221,7 @@ export const getNftMarketContract = (signer?: WalletClient) => {
   return getContract({ abi: nftMarketABI, address: getNftMarketAddress(), signer })
 }
 export const getNftSaleContract = (signer?: WalletClient) => {
-  return getContract({ abi: nftSaleAbi, address: getNftSaleAddress(), signer })
+  return getContract({ abi: nftSaleABI, address: getNftSaleAddress(), signer })
 }
 export const getPancakeSquadContract = (signer?: WalletClient) => {
   return getContract({ abi: pancakeSquadABI, address: getPancakeSquadAddress(), signer })

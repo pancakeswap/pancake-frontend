@@ -26,7 +26,6 @@ const initialState: LotteryState = {
     discountDivisor: '',
     treasuryFee: '',
     firstTicketId: '',
-    lastTicketId: '',
     amountCollectedInCake: '',
     finalNumber: null,
     cakePerBracket: [],

@@ -1,8 +1,7 @@
-import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
-import { Address } from 'viem'
+import { Address, PublicClient } from 'viem'
 import BN from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
@@ -12,29 +11,29 @@ import { getFarmApr } from './apr'
 
 export async function farmV3FetchFarms({
   farms,
-  multicallv2,
+  provider,
   masterChefAddress,
   chainId,
   totalAllocPoint,
   commonPrice,
 }: {
   farms: ComputedFarmConfigV3[]
-  multicallv2: MultiCallV2
+  provider: ({ chainId }: { chainId: number }) => PublicClient
   masterChefAddress: Address
   chainId: number
   totalAllocPoint: bigint
   commonPrice: CommonPrice
 }) {
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
-    fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress),
+    fetchPoolInfos(farms, chainId, provider, masterChefAddress),
     (await fetch('https://farms-api.pancakeswap.com/price/cake')).json(),
-    fetchV3Pools(farms, chainId, multicallv2),
+    fetchV3Pools(farms, chainId, provider),
   ])
 
   const lmPoolInfos = await fetchLmPools(
     v3PoolData.map((v3Pool) => (v3Pool[1] ? v3Pool[1] : null)).filter(Boolean) as Address[],
     chainId,
-    multicallv2,
+    provider,
   )
 
   const farmsData = farms
@@ -117,14 +116,14 @@ const masterchefV3Abi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
 
 export async function fetchMasterChefV3Data({
-  multicallv2,
+  provider,
   masterChefAddress,
   chainId,
 }: {
-  multicallv2: MultiCallV2
+  provider: ({ chainId }: { chainId: number }) => PublicClient
   masterChefAddress: Address
   chainId: number
 }): Promise<{
@@ -132,23 +131,25 @@ export async function fetchMasterChefV3Data({
   totalAllocPoint: bigint
   latestPeriodCakePerSecond: bigint
 }> {
-  const [poolLength, totalAllocPoint, latestPeriodCakePerSecond] = await multicallv2({
-    abi: masterchefV3Abi,
-    calls: [
+  const [poolLength, totalAllocPoint, latestPeriodCakePerSecond] = await provider({ chainId }).multicall({
+    contracts: [
       {
         address: masterChefAddress,
-        name: 'poolLength',
+        abi: masterchefV3Abi,
+        functionName: 'poolLength',
       },
       {
         address: masterChefAddress,
-        name: 'totalAllocPoint',
+        abi: masterchefV3Abi,
+        functionName: 'totalAllocPoint',
       },
       {
         address: masterChefAddress,
-        name: 'latestPeriodCakePerSecond',
+        abi: masterchefV3Abi,
+        functionName: 'latestPeriodCakePerSecond',
       },
     ],
-    chainId,
+    allowFailure: false,
   })
 
   return {
@@ -161,7 +162,7 @@ export async function fetchMasterChefV3Data({
 const fetchPoolInfos = async (
   farms: ComputedFarmConfigV3[],
   chainId: number,
-  multicallv2: MultiCallV2,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
   masterChefAddress: Address,
 ): Promise<
   {
@@ -182,16 +183,19 @@ const fetchPoolInfos = async (
   }[]
 > => {
   try {
-    const calls: Call[] = farms.map((farm) => ({
-      address: masterChefAddress,
-      name: 'poolInfo',
-      params: [farm.pid],
-    }))
+    const calls = farms.map(
+      (farm) =>
+        ({
+          abi: masterchefV3Abi,
+          address: masterChefAddress,
+          functionName: 'poolInfo',
+          args: [BigInt(farm.pid)] as const,
+        } as const),
+    )
 
-    const masterChefMultiCallResult = await multicallv2({
-      abi: masterchefV3Abi,
-      calls,
-      chainId,
+    const masterChefMultiCallResult = await provider({ chainId }).multicall({
+      contracts: calls,
+      allowFailure: false,
     })
 
     let masterChefChunkedResultCounter = 0
@@ -311,24 +315,32 @@ type LmPool = `0x${string}`
 type LmLiquidity = bigint
 type LmRewardGrowthGlobalX128 = bigint
 
-async function fetchLmPools(lmPoolAddresses: Address[], chainId: number, multicallv2: MultiCallV2) {
-  const lmPoolCalls = lmPoolAddresses.flatMap((address) => [
-    {
-      address,
-      name: 'lmLiquidity',
-    },
-    {
-      address,
-      name: 'rewardGrowthGlobalX128',
-    },
-  ])
+async function fetchLmPools(
+  lmPoolAddresses: Address[],
+  chainId: number,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
+) {
+  const lmPoolCalls = lmPoolAddresses.flatMap(
+    (address) =>
+      [
+        {
+          abi: lmPoolAbi,
+          address,
+          functionName: 'lmLiquidity',
+        },
+        {
+          abi: lmPoolAbi,
+          address,
+          functionName: 'rewardGrowthGlobalX128',
+        },
+      ] as const,
+  )
 
   const chunkSize = lmPoolCalls.length / lmPoolAddresses.length
 
-  const resp = await multicallv2({
-    abi: lmPoolAbi,
-    calls: lmPoolCalls,
-    chainId,
+  const resp = await provider({ chainId }).multicall({
+    contracts: lmPoolCalls,
+    allowFailure: false,
   })
 
   const chunked = chunk(resp, chunkSize) as [LmLiquidity, LmRewardGrowthGlobalX128][]
@@ -351,23 +363,31 @@ async function fetchLmPools(lmPoolAddresses: Address[], chainId: number, multica
   return lmPools
 }
 
-async function fetchV3Pools(farms: ComputedFarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
-  const v3PoolCalls = farms.flatMap((f) => [
-    {
-      address: f.lpAddress,
-      name: 'slot0',
-    },
-    {
-      address: f.lpAddress,
-      name: 'lmPool',
-    },
-  ])
+async function fetchV3Pools(
+  farms: ComputedFarmConfigV3[],
+  chainId: number,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
+) {
+  const v3PoolCalls = farms.flatMap(
+    (f) =>
+      [
+        {
+          abi: v3PoolAbi,
+          address: f.lpAddress,
+          functionName: 'slot0',
+        },
+        {
+          abi: v3PoolAbi,
+          address: f.lpAddress,
+          functionName: 'lmPool',
+        },
+      ] as const,
+  )
 
   const chunkSize = v3PoolCalls.length / farms.length
-  const resp = await multicallv2({
-    abi: v3PoolAbi,
-    calls: v3PoolCalls,
-    chainId,
+  const resp = await provider({ chainId }).multicall({
+    contracts: v3PoolCalls,
+    allowFailure: false,
   })
 
   return chunk(resp, chunkSize) as [Slot0, LmPool][]

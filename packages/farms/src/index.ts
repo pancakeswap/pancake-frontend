@@ -1,5 +1,4 @@
-import { formatEther } from 'viem'
-import { MultiCallV2 } from '@pancakeswap/multicall'
+import { PublicClient, formatEther } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
@@ -18,7 +17,7 @@ const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, Chai
 const supportedChainIdV3 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 export const bCakeSupportedChainId = [ChainId.BSC]
 
-export function createFarmFetcher(multicallv2: MultiCallV2) {
+export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async (
     params: {
       isTestnet: boolean
@@ -28,12 +27,12 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
     const masterChefAddress = isTestnet ? masterChefAddresses[ChainId.BSC_TESTNET] : masterChefAddresses[ChainId.BSC]
     const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } = await fetchMasterChefV2Data({
       isTestnet,
-      multicallv2,
+      provider,
       masterChefAddress,
     })
     const regularCakePerBlock = formatEther(cakePerBlock)
     const farmsWithPrice = await farmV2FetchFarms({
-      multicallv2,
+      provider,
       masterChefAddress,
       isTestnet,
       chainId,
@@ -58,7 +57,7 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
   }
 }
 
-export function createFarmFetcherV3(multicallv2: MultiCallV2) {
+export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async ({
     farms,
     chainId,
@@ -75,7 +74,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
 
     try {
       const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
-        multicallv2,
+        provider,
         masterChefAddress,
         chainId,
       })
@@ -85,7 +84,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       const farmsWithPrice = await farmV3FetchFarms({
         farms,
         chainId,
-        multicallv2,
+        provider,
         masterChefAddress,
         totalAllocPoint,
         commonPrice,

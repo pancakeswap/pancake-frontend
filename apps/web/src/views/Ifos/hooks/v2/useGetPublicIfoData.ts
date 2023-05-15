@@ -7,7 +7,8 @@ import { Ifo, IfoStatus } from 'config/constants/types'
 
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { multicallv2 } from 'utils/multicall'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -64,51 +65,58 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
-      // TODO: wagmi
+      const client = viemClients[ChainId.BSC]
       const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
-        await multicallv2({
-          abi: ifoV2ABI,
-          calls: [
+        await client.multicall({
+          contracts: [
             {
+              abi: ifoV2ABI,
               address,
-              name: 'startBlock',
+              functionName: 'startBlock',
             },
             {
+              abi: ifoV2ABI,
               address,
-              name: 'endBlock',
+              functionName: 'endBlock',
             },
             {
+              abi: ifoV2ABI,
               address,
-              name: 'viewPoolInformation',
-              params: [0],
+              functionName: 'viewPoolInformation',
+              args: [0n],
             },
             {
+              abi: ifoV2ABI,
               address,
-              name: 'viewPoolInformation',
-              params: [1],
+              functionName: 'viewPoolInformation',
+              args: [1n],
             },
             {
+              abi: ifoV2ABI,
               address,
-              name: 'viewPoolTaxRateOverflow',
-              params: [1],
+              functionName: 'viewPoolTaxRateOverflow',
+              args: [1n],
             },
             {
+              abi: ifoV2ABI,
               address,
-              name: 'numberPoints',
+              functionName: 'numberPoints',
             },
             {
+              abi: ifoV2ABI,
               address,
-              name: 'thresholdPoints',
+              functionName: 'thresholdPoints',
             },
-          ].filter(Boolean),
+          ],
+          allowFailure: false,
         })
 
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)
 
-      const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
-      const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
-      const taxRateNum = taxRate ? new BigNumber(taxRate[0]).div(TAX_PRECISION).toNumber() : 0
+      const startBlockNum = startBlock ? Number(startBlock) : 0
+      const endBlockNum = endBlock ? Number(endBlock) : 0
+      const taxRateNum = taxRate ? new BigNumber(taxRate.toString()).div(TAX_PRECISION).toNumber() : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
@@ -132,8 +140,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         blocksRemaining,
         startBlockNum,
         endBlockNum,
-        thresholdPoints: thresholdPoints && thresholdPoints[0],
-        numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
+        thresholdPoints: thresholdPoints && thresholdPoints,
+        numberPoints: numberPoints ? Number(numberPoints) : 0,
       }))
     },
     [address],

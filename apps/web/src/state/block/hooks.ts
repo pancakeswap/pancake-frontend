@@ -16,13 +16,14 @@ export const usePollBlockNumber = () => {
     chainId && ['blockNumberFetcher', chainId],
     async () => {
       const provider = viemClients[chainId as keyof typeof viemClients]
-      const blockNumber = await provider.getBlockNumber()
+      const blockNumberBigInt = await provider.getBlockNumber()
+      const blockNumber = Number(blockNumberBigInt)
       mutate(['blockNumber', chainId], blockNumber)
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
         mutate(['initialBlockNumber', chainId], blockNumber)
       }
       if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
-        const block = await provider.getBlock({ blockNumber })
+        const block = await provider.getBlock({ blockNumber: blockNumberBigInt })
         mutate(['initialBlockTimestamp', chainId], block.timestamp)
       }
       return blockNumber
@@ -67,7 +68,7 @@ export const useChainCurrentBlock = (chainId: number): number => {
     activeChainId !== chainId
       ? async () => {
           const blockNumber = await provider.getBlockNumber()
-          return blockNumber
+          return Number(blockNumber)
         }
       : undefined,
     activeChainId !== chainId

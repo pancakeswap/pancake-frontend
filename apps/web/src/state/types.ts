@@ -444,7 +444,6 @@ interface LotteryRoundGenerics {
   endTime: string
   treasuryFee: string
   firstTicketId: string
-  lastTicketId: string
   finalNumber: number
 }
 
