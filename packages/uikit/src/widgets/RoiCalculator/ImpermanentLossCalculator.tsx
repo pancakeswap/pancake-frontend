@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
 
 import { Section } from "./Section";
-import { Box, Row, AutoColumn, Toggle, RowBetween, DoubleCurrencyLogo } from "../../components";
+import { Box, Row, AutoColumn, Toggle, RowBetween, DoubleCurrencyLogo, Message } from "../../components";
 import {
   AssetCard,
   Asset,
@@ -166,6 +166,11 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     [exitRate, hodlRate]
   );
 
+  const isExitPriceOutOfRange = useMemo(
+    () => principal && exit && exit.length >= 2 && exit.slice(0, 2).some((asset) => Number(asset.amount) === 0),
+    [exit, principal]
+  );
+
   const getPriceAdjustedAssets = useCallback(
     (newAssets?: Asset[]) => {
       if (
@@ -271,6 +276,14 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     return null;
   }
 
+  const outofRangeWarning = isExitPriceOutOfRange ? (
+    <Message variant="warning">
+      {t(
+        "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range."
+      )}
+    </Message>
+  ) : null;
+
   const calculator = on ? (
     <>
       <TwoColumns>
@@ -324,6 +337,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
           </AutoColumn>
         </TwoColumns>
       </CardSection>
+      {outofRangeWarning}
     </>
   ) : null;
 
