@@ -28,7 +28,7 @@ const useTradingRewardTokenList = () => {
     })
 
     const tokenAddressArray = Object.values(activeCampaignPairs).reduce((acc, val) => {
-      val.forEach((item) => acc.add(item))
+      val?.forEach((item) => acc.add(item))
       return acc
     }, new Set())
 
