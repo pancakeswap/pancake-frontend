@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { getFarmsPrices, FarmWithPrices } from './farmPrices'
 
 describe('getFarmPrices tests', () => {
@@ -97,7 +98,7 @@ describe('getFarmPrices tests', () => {
       },
       18,
     )
-    expect(farmWithPrices[0].tokenPriceBusd).toEqual('4.696250514367906823')
+    expect(farmWithPrices[0].tokenPriceBusd).toEqual('4.69625051436790682381334465120648352396')
     expect(farmWithPrices[0].quoteTokenPriceBusd).toEqual('331.387574149367784825')
     expect(farmWithPrices[0].lpTokenPrice).toEqual('83.350538798823178681')
 

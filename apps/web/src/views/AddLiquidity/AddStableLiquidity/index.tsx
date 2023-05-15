@@ -197,54 +197,80 @@ export default function AddStableLiquidity({
 
     const lpMintedSlippage = calculateSlippageAmount(liquidityMinted, noLiquidity ? 0 : allowedSlippage)[0]
 
-    const estimate = contract.estimateGas.add_liquidity
-    const method = contract.add_liquidity
-
-    const quotientA = parsedAmountA?.quotient?.toString() || '0'
-    const quotientB = parsedAmountB?.quotient?.toString() || '0'
+    const quotientA = parsedAmountA?.quotient || 0n
+    const quotientB = parsedAmountB?.quotient || 0n
 
     // Ensure the token order [token0, token1]
     const tokenAmounts =
       stableSwapConfig?.token0?.wrapped.address === parsedAmountA?.currency?.wrapped?.address
-        ? [quotientA, quotientB]
-        : [quotientB, quotientA]
+        ? ([quotientA, quotientB] as const)
+        : ([quotientB, quotientA] as const)
 
-    let args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
+    let args_
 
-    let value: bigint | null = null
+    let value_: bigint | null = null
+    let call: Promise<`0x${string}`>
     if (needWrapped) {
-      args = [stableSwapContract.address, tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
-      value = (currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient
+      const args = [stableSwapContract.address, tokenAmounts, minLPOutput || lpMintedSlippage] as const
+      args_ = args
+      const value = (currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient
+      value_ = value
+      call = nativeHelperContract.estimateGas
+        .add_liquidity(args, {
+          value,
+          account: contract.account,
+        })
+        .then((estimatedGasLimit) => {
+          return nativeHelperContract.write.add_liquidity(args, {
+            gas: calculateGasMargin(estimatedGasLimit),
+            gasPrice: BigInt(gasPrice),
+            value,
+            account: contract.account,
+            chain: contract.chain,
+          })
+        })
+    } else {
+      const args = [tokenAmounts, minLPOutput || lpMintedSlippage] as const
+      args_ = args
+      call = stableSwapContract.estimateGas
+        .add_liquidity(args, {
+          account: contract.account,
+        })
+        .then((estimatedGasLimit) => {
+          return stableSwapContract.write.add_liquidity(args, {
+            gas: calculateGasMargin(estimatedGasLimit),
+            gasPrice: BigInt(gasPrice),
+            account: contract.account,
+            chain: contract.chain,
+          })
+        })
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    await estimate(...(args as [string, [string, string], string]), value ? { value } : {})
-      .then((estimatedGasLimit) =>
-        method(...args, {
-          ...(value ? { value } : {}),
-          gasLimit: calculateGasMargin(estimatedGasLimit),
-          gasPrice,
-        }).then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+    await call
+      .then((response) => {
+        setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
 
-          const symbolA = currencies[Field.CURRENCY_A]?.symbol
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) || '0'
-          const symbolB = currencies[Field.CURRENCY_B]?.symbol
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) || '0'
-          addTransaction(response, {
+        const symbolA = currencies[Field.CURRENCY_A]?.symbol
+        const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) || '0'
+        const symbolB = currencies[Field.CURRENCY_B]?.symbol
+        const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) || '0'
+        addTransaction(
+          { hash: response },
+          {
             summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
             translatableSummary: {
               text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
               data: { amountA, symbolA, amountB, symbolB },
             },
             type: 'add-liquidity',
-          })
-        }),
-      )
+          },
+        )
+      })
       .catch((err) => {
         if (err && !isUserRejected(err)) {
           logError(err)
-          console.error(`Add Liquidity failed`, err, args, value)
+          console.error(`Add Liquidity failed`, err, args_, value_)
         }
         setLiquidityState({
           attemptingTxn: false,
