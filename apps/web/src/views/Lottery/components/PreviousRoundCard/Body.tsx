@@ -69,7 +69,7 @@ const PreviousRoundCardBody: React.FC<
     <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryNodeData?.status} />,
   )
 
-  const totalTicketNumber = userDataForRound ? userDataForRound.totalTickets : 0
+  const totalTicketNumber = userDataForRound ? Number(userDataForRound.totalTickets) : 0
   const ticketRoundText =
     totalTicketNumber > 1
       ? t('You had %amount% tickets this round', { amount: totalTicketNumber })
