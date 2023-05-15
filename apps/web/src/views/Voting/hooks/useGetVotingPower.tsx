@@ -23,7 +23,7 @@ const useGetVotingPower = (block?: number): State & { isLoading: boolean; isErro
   const { address: account } = useAccount()
   const { data, status, error } = useSWRImmutable(account ? [account, block, 'votingPower'] : null, async () => {
     const blockNumber = block ? BigInt(block) : await getViemClients({ chainId: ChainId.BSC }).getBlockNumber()
-    const eligiblePools = await getActivePools(ChainId.BSC, blockNumber)
+    const eligiblePools = await getActivePools(ChainId.BSC, Number(blockNumber))
     const poolAddresses: string[] = eligiblePools
       .filter((pair) => pair.stakingToken.address.toLowerCase() === bscTokens.cake.address.toLowerCase())
       .map(({ contractAddress }) => contractAddress)
@@ -38,7 +38,7 @@ const useGetVotingPower = (block?: number): State & { isLoading: boolean; isErro
       ifoPoolBalance,
       lockedCakeBalance,
       lockedEndTime,
-    } = await getVotingPower(account ?? '', poolAddresses, blockNumber)
+    } = await getVotingPower(account, poolAddresses, blockNumber)
     return {
       cakeBalance,
       cakeBnbLpBalance,

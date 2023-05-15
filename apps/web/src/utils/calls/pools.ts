@@ -36,7 +36,7 @@ const ABI = [
 /**
  * Returns the total number of pools that were active at a given block
  */
-export const getActivePools = async (chainId: ChainId, block?: bigint | 0) => {
+export const getActivePools = async (chainId: ChainId, block?: number) => {
   const poolsConfig = getPoolsConfig(chainId)
   const eligiblePools = poolsConfig
     .filter((pool) => pool.sousId !== 0)
@@ -64,7 +64,7 @@ export const getActivePools = async (chainId: ChainId, block?: bigint | 0) => {
     allowFailure: false,
   })
 
-  const blockNumber = block || (await viemClients[chainId].getBlockNumber())
+  const blockNumber = block ? BigInt(block) : await viemClients[chainId].getBlockNumber()
 
   const blockCallsRaw = chunk(resultsRaw, resultsRaw.length / 2)
 
