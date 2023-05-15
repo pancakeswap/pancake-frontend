@@ -4,6 +4,7 @@ import { FARM_AUCTION_HOSTING_IN_SECONDS } from '@pancakeswap/farms'
 import { BSC_BLOCK_TIME } from 'config'
 import { add, sub } from 'date-fns'
 import { viemClients } from 'utils/viem'
+import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ChainId } from '@pancakeswap/sdk'
 import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
@@ -17,13 +18,13 @@ const fetchFarmsWithAuctions = async (
     contracts: [
       {
         address: farmAuctionContract.address,
-        abi: farmAuctionContract.abi,
+        abi: farmAuctionABI,
         functionName: 'auctions',
         args: [currentAuctionId],
       },
       {
         address: farmAuctionContract.address,
-        abi: farmAuctionContract.abi,
+        abi: farmAuctionABI,
         functionName: 'viewBidsPerAuction',
         args: [currentAuctionId, 0n, 500n],
       },
