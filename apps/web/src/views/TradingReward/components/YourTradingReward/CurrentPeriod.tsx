@@ -152,7 +152,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                       <Message variant="warning" mt="10px">
                         <MessageText>
                           <Text as="span">{t('An additional amount of reward of')}</Text>
-                          <Text as="span" bold m="0 4px">{`$${formatNumber(additionalAmount)}`}</Text>
+                          <Text as="span" bold m="0 4px">{`~$${formatNumber(additionalAmount)}`}</Text>
                           <Text as="span" mr="4px">
                             {t('can not be claim due to the max reward cap.')}
                           </Text>
