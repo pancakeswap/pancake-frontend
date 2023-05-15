@@ -1,7 +1,6 @@
-import { Address, ContractFunctionResult, formatUnits } from 'viem'
+import { Address, PublicClient, formatUnits } from 'viem'
 import BN from 'bignumber.js'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
@@ -38,7 +37,7 @@ export const getTokenAmount = (balance: BN, decimals: number) => {
 
 export type FetchFarmsParams = {
   farms: SerializedFarmConfig[]
-  multicallv2: MultiCallV2
+  provider: ({ chainId }: { chainId: number }) => PublicClient
   isTestnet: boolean
   masterChefAddress: string
   chainId: number
@@ -48,7 +47,7 @@ export type FetchFarmsParams = {
 
 export async function farmV2FetchFarms({
   farms,
-  multicallv2,
+  provider,
   isTestnet,
   masterChefAddress,
   chainId,
@@ -58,9 +57,9 @@ export async function farmV2FetchFarms({
   const stableFarms = farms.filter(isStableFarm)
 
   const [stableFarmsResults, poolInfos, lpDataResults] = await Promise.all([
-    fetchStableFarmData(stableFarms, chainId, multicallv2),
-    fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress),
-    fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress),
+    fetchStableFarmData(stableFarms, chainId, provider),
+    fetchMasterChefData(farms, isTestnet, provider, masterChefAddress),
+    fetchPublicFarmsData(farms, chainId, provider, masterChefAddress),
   ])
 
   const stableFarmsData = (stableFarmsResults as StableLpData[]).map(formatStableFarm)
@@ -165,28 +164,29 @@ const masterChefFarmCalls = (farm: SerializedFarmConfig, masterChefAddress: stri
   const { pid } = farm
 
   return pid || pid === 0
-    ? {
-        address: masterChefAddress,
-        name: 'poolInfo',
-        params: [pid],
-      }
+    ? ({
+        abi: masterChefV2Abi,
+        address: masterChefAddress as Address,
+        functionName: 'poolInfo',
+        args: [BigInt(pid)],
+      } as const)
     : null
 }
 
 export const fetchMasterChefData = async (
   farms: SerializedFarmConfig[],
   isTestnet: boolean,
-  multicallv2: MultiCallV2,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
   masterChefAddress: string,
 ) => {
   try {
     const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, masterChefAddress))
-    const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null) as Call[]
+    const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null)
 
-    const masterChefMultiCallResult = await multicallv2({
-      abi: masterChefV2Abi,
-      calls: masterChefAggregatedCalls,
-      chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+    const chainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+    const masterChefMultiCallResult = await provider({ chainId }).multicall({
+      contracts: masterChefAggregatedCalls,
+      allowFailure: false,
     })
 
     let masterChefChunkedResultCounter = 0
@@ -194,10 +194,7 @@ export const fetchMasterChefData = async (
       if (masterChefCall === null) {
         return null
       }
-      const data = masterChefMultiCallResult[masterChefChunkedResultCounter] as ContractFunctionResult<
-        typeof masterChefV2Abi,
-        'poolInfo'
-      >
+      const data = masterChefMultiCallResult[masterChefChunkedResultCounter]
       masterChefChunkedResultCounter++
       return {
         accCakePerShare: data[0],
@@ -214,37 +211,43 @@ export const fetchMasterChefData = async (
 }
 
 export const fetchMasterChefV2Data = async ({
+  provider,
   isTestnet,
-  multicallv2,
   masterChefAddress,
 }: {
+  provider: ({ chainId }: { chainId: number }) => PublicClient
   isTestnet: boolean
-  multicallv2: MultiCallV2
   masterChefAddress: Address
 }) => {
   try {
-    const [poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock] = await multicallv2({
-      abi: masterChefV2Abi,
-      calls: [
+    const chainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+    const [poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock] = await provider({
+      chainId,
+    }).multicall({
+      contracts: [
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'poolLength',
+          functionName: 'poolLength',
         },
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'totalRegularAllocPoint',
+          functionName: 'totalRegularAllocPoint',
         },
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'totalSpecialAllocPoint',
+          functionName: 'totalSpecialAllocPoint',
         },
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'cakePerBlock',
-          params: [true],
+          functionName: 'cakePerBlock',
+          args: [true],
         },
       ],
-      chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+      allowFailure: false,
     })
 
     return {
@@ -319,16 +322,8 @@ const getStableFarmDynamicData = ({
 }
 
 type balanceResponse = bigint
-type decimalsResponse = number
 
-export type ClassicLPData = [
-  balanceResponse,
-  balanceResponse,
-  balanceResponse,
-  balanceResponse,
-  decimalsResponse,
-  decimalsResponse,
-]
+export type ClassicLPData = [balanceResponse, balanceResponse, balanceResponse, balanceResponse]
 
 type FormatClassicFarmResponse = {
   tokenBalanceLP: BN

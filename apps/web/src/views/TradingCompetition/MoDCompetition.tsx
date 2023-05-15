@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
-import { multicallv2 } from 'utils/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import {
@@ -41,6 +40,7 @@ import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
 import PrizesInfoSection from './components/PrizesInfoSection'
+import { viemClients } from 'utils/viem'
 
 const MoDCompetition = () => {
   const { account, chainId } = useAccountActiveChain()
@@ -85,21 +85,23 @@ const MoDCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const [user, [userClaimed]] = await multicallv2({
-          abi: tradingCompetitionMoDABI,
-          calls: [
+        const client = viemClients[ChainId.BSC]
+        const [user, userClaimed] = await client.multicall({
+          contracts: [
             {
               address: tradingCompetitionContract.address,
-              name: 'claimInformation',
-              params: [account],
+              abi: tradingCompetitionMoDABI,
+              functionName: 'claimInformation',
+              args: [account],
             },
             {
               address: tradingCompetitionContract.address,
-              name: 'userTradingStats',
-              params: [account],
+              abi: tradingCompetitionMoDABI,
+              functionName: 'userTradingStats',
+              args: [account],
             },
           ],
-          options: { requireSuccess: false },
+          allowFailure: false,
         })
         const userObject: UserTradingInformation = {
           isLoading: false,

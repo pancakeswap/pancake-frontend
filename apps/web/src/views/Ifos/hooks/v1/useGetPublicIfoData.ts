@@ -4,8 +4,9 @@ import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { multicallv2 } from 'utils/multicall'
-import { ifoV1ABI  } from 'config/abi/ifoV1'
+import { viemClients } from 'utils/viem'
+import { ChainId } from '@pancakeswap/sdk'
+import { ifoV1ABI } from 'config/abi/ifoV1'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
@@ -37,16 +38,30 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   })
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
-      const ifoCalls = ['startBlock', 'endBlock', 'raisingAmount', 'totalAmount'].map((method) => ({
-        address,
-        name: method,
-      }))
+      const ifoCalls = (['startBlock', 'endBlock', 'raisingAmount', 'totalAmount'] as const).map(
+        (method) =>
+          ({
+            abi: ifoV1ABI,
+            address,
+            functionName: method,
+          } as const),
+      )
 
-      // TODO: wagmi
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2({ abi: ifoV1ABI, calls: ifoCalls })
+      const client = viemClients[ChainId.BSC]
 
-      const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
-      const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
+      const [startBlockResult, endBlockResult, raisingAmountResult, totalAmountResult] = await client.multicall({
+        contracts: ifoCalls,
+      })
+
+      const [startBlock, endBlock, raisingAmount, totalAmount] = [
+        startBlockResult.result,
+        endBlockResult.result,
+        raisingAmountResult.result,
+        totalAmountResult.result,
+      ]
+
+      const startBlockNum = startBlock ? Number(startBlock) : 0
+      const endBlockNum = endBlock ? Number(endBlock) : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
@@ -67,8 +82,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         endBlockNum,
         [PoolIds.poolUnlimited]: {
           ...prev.poolUnlimited,
-          raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount[0].toString()) : BIG_ZERO,
-          totalAmountPool: totalAmount ? new BigNumber(totalAmount[0].toString()) : BIG_ZERO,
+          raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount.toString()) : BIG_ZERO,
+          totalAmountPool: totalAmount ? new BigNumber(totalAmount.toString()) : BIG_ZERO,
         },
       }))
     },

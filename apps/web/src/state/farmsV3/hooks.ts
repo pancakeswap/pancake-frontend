@@ -21,7 +21,7 @@ import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/use
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import useSWR from 'swr'
-import { multicallv2 } from 'utils/multicall'
+import { getViemClients } from 'utils/viem'
 import { decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import { useAccount } from 'wagmi'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
@@ -51,7 +51,7 @@ const fallback: Awaited<ReturnType<typeof farmFetcherV3.fetchFarms>> = {
 
 const API_FLAG = false
 
-const farmFetcherV3 = createFarmFetcherV3(multicallv2)
+const farmFetcherV3 = createFarmFetcherV3(getViemClients)
 
 export const useFarmsV3Public = () => {
   const { chainId } = useActiveChainId()

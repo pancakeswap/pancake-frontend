@@ -1,5 +1,5 @@
-import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
+import { Address, PublicClient } from 'viem'
 import chunk from 'lodash/chunk'
 import { SerializedFarmPublicData, SerializedFarmConfig } from '../types'
 import { nonBSCVaultAddresses } from '../const'
@@ -38,50 +38,54 @@ const abi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
 
 const fetchFarmCalls = (farm: SerializedFarmPublicData, masterChefAddress: string, vaultAddress?: string) => {
   const { lpAddress, token, quoteToken } = farm
   return [
     // Balance of token in the LP contract
     {
+      abi,
       address: token.address,
-      name: 'balanceOf',
-      params: [lpAddress],
+      functionName: 'balanceOf',
+      args: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
+      abi,
       address: quoteToken.address,
-      name: 'balanceOf',
-      params: [lpAddress],
+      functionName: 'balanceOf',
+      args: [lpAddress],
     },
     // Balance of LP tokens in the master chef contract
     {
+      abi,
       address: lpAddress,
-      name: 'balanceOf',
-      params: [vaultAddress || masterChefAddress],
+      functionName: 'balanceOf',
+      args: [(vaultAddress || masterChefAddress) as Address],
     },
     // Total supply of LP tokens
     {
+      abi,
       address: lpAddress,
-      name: 'totalSupply',
+      functionName: 'totalSupply',
     },
-  ]
+  ] as const
 }
 
 export const fetchPublicFarmsData = async (
   farms: SerializedFarmConfig[],
   chainId = ChainId.BSC,
-  multicall: MultiCallV2,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
   masterChefAddress: string,
-): Promise<any[]> => {
+) => {
   try {
     const farmCalls = farms.flatMap((farm) =>
       fetchFarmCalls(farm, masterChefAddress, nonBSCVaultAddresses[chainId as keyof typeof nonBSCVaultAddresses]),
     )
     const chunkSize = farmCalls.length / farms.length
-    const farmMultiCallResult = await multicall({ abi, calls: farmCalls, chainId })
-    return chunk(farmMultiCallResult, chunkSize)
+    const farmMultiCallResult = await provider({ chainId }).multicall({ contracts: farmCalls, allowFailure: false })
+    return chunk(farmMultiCallResult, chunkSize) as [bigint, bigint, bigint, bigint][]
   } catch (error) {
     console.error('MasterChef Public Data error ', error)
     throw error
