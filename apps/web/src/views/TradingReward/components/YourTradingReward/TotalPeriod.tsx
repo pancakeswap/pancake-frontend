@@ -94,9 +94,20 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   // Expired Soon Data
   const expiredUSDPrice = useMemo(() => {
-    const balance = getBalanceAmount(new BigNumber(rewardExpiredSoonData?.canClaim ?? 0)).toNumber()
-    return formatNumber(balance, 2, 8)
-  }, [rewardExpiredSoonData])
+    const currentReward = rewardInfo?.[rewardExpiredSoonData.campaignId]
+    if (currentReward) {
+      const rewardCakeUSDPriceAsBg = getBalanceAmount(
+        new BigNumber(currentReward.rewardPrice),
+        currentReward.rewardTokenDecimal,
+      )
+      const rewardCakeAmount = getBalanceAmount(
+        new BigNumber(rewardExpiredSoonData.canClaim),
+        currentReward.rewardTokenDecimal,
+      )
+      return rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
+    }
+    return 0
+  }, [rewardExpiredSoonData, rewardInfo])
 
   const totalTradingReward = useMemo(() => {
     return totalAvailableClaimData
@@ -159,7 +170,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="primary" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${expiredUSDPrice}`}
+                    {`$${formatNumber(expiredUSDPrice, 2, 8)}`}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('from the recent campaign period is under tallying and will be available for claiming soon.')}
@@ -171,7 +182,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="danger" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${expiredUSDPrice}`}
+                    {`$${formatNumber(expiredUSDPrice, 2, 8)}`}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('unclaimed reward expiring in')}
