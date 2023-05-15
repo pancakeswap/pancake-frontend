@@ -60,14 +60,14 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   const getUSDValue = useCallback(
     (userCampaignInfoDetail: UserCampaignInfoDetail) => {
-      const currentReward = rewardInfo?.[userCampaignInfoDetail.campaignId]
+      const currentReward = rewardInfo?.[userCampaignInfoDetail?.campaignId]
       if (currentReward) {
         const rewardCakeUSDPriceAsBg = getBalanceAmount(
           new BigNumber(currentReward.rewardPrice),
           currentReward.rewardTokenDecimal,
         )
         const rewardCakeAmount = getBalanceAmount(
-          new BigNumber(userCampaignInfoDetail.canClaim),
+          new BigNumber(userCampaignInfoDetail?.canClaim),
           currentReward.rewardTokenDecimal,
         )
         return rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0

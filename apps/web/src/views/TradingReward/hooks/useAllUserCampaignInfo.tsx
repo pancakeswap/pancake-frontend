@@ -70,25 +70,36 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               .map((i) => i.estimateRewardUSD)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
-            const calls = [
-              {
+            const canClaimDataCalls = userCampaignInfo.tradingFeeArr
+              .filter((a) => new BigNumber(a.tradingFee).gt(0))
+              .map((i) => ({
                 name: 'canClaim',
                 address: tradingRewardAddress,
-                params: [campaignId, account, new BigNumber(totalTradingFee.toFixed(8)).times(1e18).toString()],
-              },
+                params: [campaignId, account, new BigNumber(Number(i.tradingFee).toFixed(8)).times(1e18).toString()],
+              }))
+
+            const calls = [
               {
                 name: 'userClaimedIncentives',
                 address: tradingRewardAddress,
                 params: [campaignId, account],
               },
+              ...canClaimDataCalls,
             ]
 
-            const [[canClaim], [userClaimedIncentives]] = await multicallv2({
+            const contractData = await multicallv2({
               abi: tradingRewardABI,
               calls,
               chainId: ChainId.BSC,
               options: { requireSuccess: false },
             })
+
+            const totalCanClaimData =
+              contractData
+                .slice(1, contractData?.length)
+                .map((i) => i[0].toString() ?? 0)
+                .reduce((a, b) => new BigNumber(a).plus(b))
+                .toString() ?? '0'
 
             return {
               ...userCampaignInfo,
@@ -97,8 +108,8 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               totalVolume,
               totalEstimateRewardUSD,
               totalTradingFee,
-              canClaim: new BigNumber(canClaim.toString()).toString(),
-              userClaimedIncentives,
+              canClaim: totalCanClaimData,
+              userClaimedIncentives: contractData[0][0],
             }
           }),
         )
