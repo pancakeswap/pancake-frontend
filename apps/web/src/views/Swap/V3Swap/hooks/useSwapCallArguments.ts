@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChainId, Percent, TradeType } from '@pancakeswap/sdk'
+import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
 import { isAddress } from 'utils'
-import { useEnsAddress } from 'wagmi'
+
+import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
@@ -33,12 +34,7 @@ export function useSwapCallArguments(
 ): SwapCall[] {
   const { account, chainId } = useActiveWeb3React()
   const provider = useProviderOrSigner()
-
-  const { data: recipientENSAddress } = useEnsAddress({
-    name: recipientAddress,
-    chainId,
-    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
-  })
+  const recipientENSAddress = useGetENSAddressByName(recipientAddress)
   const recipient =
     recipientAddress === null
       ? account
