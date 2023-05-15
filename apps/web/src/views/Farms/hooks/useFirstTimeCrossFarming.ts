@@ -12,7 +12,7 @@ export const useFirstTimeCrossFarming = (vaultPid: number | undefined) => {
   const { data, mutate } = useSWRImmutable(
     account && crossFarmingAddress && ['isFirstTimeCrossFarming', account, chainId],
     async () => {
-      const firstTimeDeposit = await crossFarmingAddress.is1st(account)
+      const firstTimeDeposit = await crossFarmingAddress.read.is1st([account])
       return !firstTimeDeposit
     },
   )
