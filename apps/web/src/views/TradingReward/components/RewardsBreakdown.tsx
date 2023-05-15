@@ -69,7 +69,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
         return 0
       })
     }
-    console.log('campaignId', campaignId)
 
     return data
   }, [data, campaignId])
