@@ -11,7 +11,7 @@ import {
   HistoryFilter,
   NodeRound,
 } from 'state/types'
-import { Address, serialize } from 'wagmi'
+import { Address, deserialize, serialize } from 'wagmi'
 import { ContractFunctionResult } from 'viem'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
@@ -25,8 +25,8 @@ import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransfor
 import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB } from './bnbQueries'
 import { BetResponseCAKE } from './cakeQueries'
-// eslint-disable-next-line import/no-cycle
-import { deserializeRound } from '.'
+
+export const deserializeRound = (round: string) => deserialize(round) as NodeRound
 
 // TODO: refactor it when multi-chain
 const bscClient = getViemClients({ chainId: ChainId.BSC })
