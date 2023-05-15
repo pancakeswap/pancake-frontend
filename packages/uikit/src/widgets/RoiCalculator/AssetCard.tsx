@@ -48,7 +48,7 @@ export interface AssetCardProps extends SpaceProps {
   showPrice?: boolean;
   priceEditable?: boolean;
   isActive?: boolean;
-  onChange?: (assets: Asset[], info: { index: number }) => void;
+  onChange?: (assets: Asset[], info: { indexes: number[] }) => void;
   extraRows?: ReactNode;
   firstPriceInputRef?: Ref<HTMLInputElement>;
 }
@@ -106,6 +106,25 @@ export const AssetCard = memo(function AssetCard({
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
 
+  const onAssetPriceChange = useCallback(
+    (price: string, index: number) => {
+      const updatedAsset = assets[index];
+      const indexes: number[] = [];
+      // Update all prices with same currency
+      const newAssets = updatedAsset
+        ? assets.map((a, i) => {
+            if (a.currency.equals(updatedAsset.currency)) {
+              indexes.push(i);
+              return { ...a, price, priceChanged: true };
+            }
+            return a;
+          })
+        : assets;
+      return onChange?.(newAssets, { indexes });
+    },
+    [onChange, assets]
+  );
+
   const assetNodes = assets.map(({ price, value, amount, currency, priceChanged, key = "" }, index) => (
     <AssetRow
       key={currency.symbol + key}
@@ -124,12 +143,7 @@ export const AssetCard = memo(function AssetCard({
           <CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />
         )
       }
-      onPriceChange={(newPrice) =>
-        onChange?.(
-          assets.map<Asset>((a, i) => (i === index ? { ...a, price: newPrice, priceChanged: true } : a)),
-          { index }
-        )
-      }
+      onPriceChange={(newPrice) => onAssetPriceChange(newPrice, index)}
     />
   ));
 
