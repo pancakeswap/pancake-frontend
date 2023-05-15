@@ -1,5 +1,5 @@
 import { ChainId, Token, WBNB, WNATIVE } from '@pancakeswap/sdk'
-import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT, WBTC_ETH } from '@pancakeswap/tokens'
+import { ethereumTokens, bscTokens, bscTestnetTokens, BUSD, USDC, USDT, WBTC_ETH } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
 
@@ -54,6 +54,18 @@ export const ADDITIONAL_BASES: {
     [bscTokens.ankr.address]: [bscTokens.ankrbnb],
     [bscTokens.ankrbnb.address]: [bscTokens.ankrETH, bscTokens.ankr],
     [bscTokens.ankrETH.address]: [bscTokens.ankrbnb],
+
+    // REVV - EDU
+    [bscTokens.revv.address]: [bscTokens.edu],
+    [bscTokens.edu.address]: [bscTokens.revv],
+    // unshETH - USH
+    [bscTokens.unshETH.address]: [bscTokens.ush],
+    [bscTokens.ush.address]: [bscTokens.unshETH],
+  },
+  [ChainId.ETHEREUM]: {
+    // alETH - ALCX
+    [ethereumTokens.alcx.address]: [ethereumTokens.alETH],
+    [ethereumTokens.alETH.address]: [ethereumTokens.alcx],
   },
 }
 
