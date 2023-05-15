@@ -9,7 +9,6 @@ import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
   getContract,
-  getAnniversaryAchievementContract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeProxyContract,
@@ -46,7 +45,6 @@ import {
   getUnsContract,
 } from 'utils/contractHelpers'
 
-// Imports below migrated from Exchange useContract.ts
 import { WNATIVE, ChainId } from '@pancakeswap/sdk'
 import { ifoV1ABI } from 'config/abi/ifoV1'
 import { ifoV2ABI } from 'config/abi/ifoV2'
@@ -197,11 +195,6 @@ export const usePredictionsContract = (address: Address, tokenSymbol: string) =>
 export const useChainlinkOracleContract = (address) => {
   const { data: signer } = useWalletClient()
   return useMemo(() => getChainlinkOracleContract(address, signer), [signer, address])
-}
-
-export const useAnniversaryAchievementContract = () => {
-  const { data: signer } = useWalletClient()
-  return useMemo(() => getAnniversaryAchievementContract(signer), [signer])
 }
 
 export const useNftSaleContract = () => {

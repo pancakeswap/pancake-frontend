@@ -2,8 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
-
-import { SendTransactionResult, waitForTransaction, WaitForTransactionResult } from '@wagmi/core'
+import { waitForTransaction, WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
 import { isUserRejected, logError } from 'utils/sentry'
 import { Hash } from 'viem'
 

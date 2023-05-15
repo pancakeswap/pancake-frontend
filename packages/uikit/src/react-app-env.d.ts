@@ -1,8 +1,8 @@
-import type { Ethereum } from "@wagmi/core";
+import type { WindowProvider } from "wagmi/window";
 
 interface Window {
   coin98?: true;
-  ethereum?: Ethereum & {
+  ethereum?: WindowProvider & {
     isSafePal?: true;
     isCoin98?: true;
     isBlocto?: true;

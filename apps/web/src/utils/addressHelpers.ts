@@ -70,9 +70,6 @@ export const getCakeFlexibleSideVaultAddress = () => {
 export const getFarmAuctionAddress = () => {
   return getAddressFromMap(addresses.farmAuction)
 }
-export const getAnniversaryAchievement = () => {
-  return getAddressFromMap(addresses.AnniversaryAchievement)
-}
 
 export const getNftMarketAddress = () => {
   return getAddressFromMap(addresses.nftMarket)
