@@ -129,6 +129,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
 
 export * from './v2/farmsPriceHelpers'
 export * from './types'
+export type { FarmWithPrices } from './v2/farmPrices'
 export * from './v2/deserializeFarmUserData'
 export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
