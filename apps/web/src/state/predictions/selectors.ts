@@ -1,7 +1,7 @@
 import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
 import { PredictionsState, NodeRound, NodeLedger } from '../types'
-import { deserializeRound } from '.'
+import { deserializeRound } from './helpers'
 
 const selectCurrentEpoch = (state: PredictionsState) => state.currentEpoch
 const selectRounds = (state: PredictionsState) => state.rounds
