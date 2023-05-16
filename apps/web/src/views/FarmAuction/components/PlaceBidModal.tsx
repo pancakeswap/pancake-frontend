@@ -117,7 +117,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
       },
       onConfirm: () => {
         const bidAmount = new BigNumber(bid).times(DEFAULT_TOKEN_DECIMAL).toString()
-        return callWithGasPrice(farmAuctionContract, 'bid', [bidAmount])
+        return callWithGasPrice(farmAuctionContract, 'bid', [BigInt(bidAmount)])
       },
       onSuccess: async ({ receipt }) => {
         refreshBidders()

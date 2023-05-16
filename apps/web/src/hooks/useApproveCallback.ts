@@ -103,25 +103,36 @@ export function useApproveCallback(
 
     if (!estimatedGas) return undefined
 
-    return callWithGasPrice(tokenContract, 'approve', [spender, useExact ? amountToApprove.quotient : MaxUint256], {
-      gasLimit: calculateGasMargin(estimatedGas),
-    })
-      .then((response) => {
-        addTransaction(response, {
-          summary: `Approve ${amountToApprove.currency.symbol}`,
-          translatableSummary: { text: 'Approve %symbol%', data: { symbol: amountToApprove.currency.symbol } },
-          approval: { tokenAddress: token.address, spender },
-          type: 'approve',
+    return (
+      callWithGasPrice(
+        tokenContract,
+        'approve' as const,
+        [spender as Address, useExact ? amountToApprove.quotient : MaxUint256],
+        {
+          gas: calculateGasMargin(estimatedGas),
+        },
+      )
+        //   tokenContract, 'approve', [spender, useExact ? amountToApprove.quotient : MaxUint256], {
+        //   // ^?
+        //   gasLimit: calculateGasMargin(estimatedGas),
+        // })
+        .then((response) => {
+          addTransaction(response, {
+            summary: `Approve ${amountToApprove.currency.symbol}`,
+            translatableSummary: { text: 'Approve %symbol%', data: { symbol: amountToApprove.currency.symbol } },
+            approval: { tokenAddress: token.address, spender },
+            type: 'approve',
+          })
         })
-      })
-      .catch((error: any) => {
-        logError(error)
-        console.error('Failed to approve token', error)
-        if (!isUserRejected(error)) {
-          toastError(t('Error'), error.message)
-        }
-        throw error
-      })
+        .catch((error: any) => {
+          logError(error)
+          console.error('Failed to approve token', error)
+          if (!isUserRejected(error)) {
+            toastError(t('Error'), error.message)
+          }
+          throw error
+        })
+    )
   }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, callWithGasPrice, t, toastError])
 
   return [approvalState, approve]

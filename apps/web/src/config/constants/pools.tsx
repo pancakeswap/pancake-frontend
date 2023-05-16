@@ -7,7 +7,7 @@ export const vaultPoolConfig = {
     name: <Trans>Auto CAKE</Trans>,
     description: <Trans>Automatic restaking</Trans>,
     autoCompoundFrequency: 5000,
-    gasLimit: 380000,
+    gasLimit: 380000n,
     tokenImage: {
       primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
       secondarySrc: '/images/autorenew.svg',
@@ -17,7 +17,7 @@ export const vaultPoolConfig = {
     name: <Trans>Stake CAKE</Trans>,
     description: <Trans>Stake, Earn – And more!</Trans>,
     autoCompoundFrequency: 5000,
-    gasLimit: 600000,
+    gasLimit: 600000n,
     tokenImage: {
       primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
       secondarySrc: '/images/autorenew.svg',
@@ -27,7 +27,7 @@ export const vaultPoolConfig = {
     name: <Trans>Flexible CAKE</Trans>,
     description: <Trans>Flexible staking on the side.</Trans>,
     autoCompoundFrequency: 5000,
-    gasLimit: 500000,
+    gasLimit: 500000n,
     tokenImage: {
       primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
       secondarySrc: '/images/autorenew.svg',
@@ -37,7 +37,7 @@ export const vaultPoolConfig = {
     name: 'IFO CAKE',
     description: <Trans>Stake CAKE to participate in IFOs</Trans>,
     autoCompoundFrequency: 1,
-    gasLimit: 500000,
+    gasLimit: 500000n,
     tokenImage: {
       primarySrc: `/images/tokens/${bscTokens.cake.address}.png`,
       secondarySrc: `/images/ifo-pool-icon.svg`,
