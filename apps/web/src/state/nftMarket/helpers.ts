@@ -17,7 +17,6 @@ import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { viemClients } from 'utils/viem'
 import { ChainId } from '@pancakeswap/sdk'
-import { ContractFunctionResult } from 'viem'
 import { nftMarketABI } from 'config/abi/nftMarket'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { baseNftFields, baseTransactionFields, collectionBaseFields } from './queries'
@@ -488,13 +487,13 @@ export const getAccountNftsOnChainMarketData = async (
         address: nftMarketAddress,
         functionName: 'viewAsksByCollectionAndSeller',
         args: [collectionAddress, account, 0n, 1000n] as const,
-      }
+      } as const
     })
 
-    const askCallsResultsRaw = (await viemClients[ChainId.BSC].multicall({
+    const askCallsResultsRaw = await viemClients[ChainId.BSC].multicall({
       contracts: call,
       allowFailure: false,
-    })) as ContractFunctionResult<typeof nftMarketABI, 'viewAsksByCollectionAndSeller'>[]
+    })
 
     const askCallsResults = askCallsResultsRaw
       .map((askCallsResultRaw, askCallIndex) => {
@@ -502,7 +501,6 @@ export const getAccountNftsOnChainMarketData = async (
           tokenIds: askCallsResultRaw?.[0],
           askInfo: askCallsResultRaw?.[1],
         }
-        // TODO: wagmi
         if (!askCallsResult?.tokenIds || !askCallsResult?.askInfo || !collectionList[askCallIndex]?.address) return null
         return askCallsResult.tokenIds
           .map((tokenId, tokenIdIndex) => {

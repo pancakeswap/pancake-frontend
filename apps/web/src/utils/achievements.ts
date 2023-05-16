@@ -6,7 +6,7 @@ import { Achievement } from 'state/types'
 import { ChainId } from '@pancakeswap/sdk'
 import { getPointCenterIfoAddress } from 'utils/addressHelpers'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
-import { ContractFunctionResult } from 'viem'
+import { Address, ContractFunctionResult } from 'viem'
 import { viemClients } from './viem'
 
 interface IfoMapResponse {
@@ -47,18 +47,19 @@ export const getClaimableIfoData = async (account: string, t: TranslateFunction)
 
   // Returns the claim status of every IFO with a campaign ID
   const claimStatusesResults = await bscClient.multicall({
-    contracts: ifoCampaigns.map(({ address }) => ({
-      abi: pointCenterIfoABI,
-      address: getPointCenterIfoAddress(),
-      functionName: 'checkClaimStatus',
-      args: [account, address],
-    })),
+    contracts: ifoCampaigns.map(
+      ({ address }) =>
+        ({
+          abi: pointCenterIfoABI,
+          address: getPointCenterIfoAddress(),
+          functionName: 'checkClaimStatus',
+          args: [account as Address, address] as const,
+        } as const),
+    ),
     allowFailure: true,
   })
 
-  const claimStatuses = claimStatusesResults.map(
-    (result) => result.result as ContractFunctionResult<typeof pointCenterIfoABI, 'checkClaimStatus'>,
-  )
+  const claimStatuses = claimStatusesResults.map((result) => result.result)
 
   const calls = claimStatuses.reduce((accum, claimStatusArr, index) => {
     if (claimStatusArr === true) {

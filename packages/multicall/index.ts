@@ -44,6 +44,9 @@ export interface CallV3 extends Call {
 export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
 export type MultiCall = <T = any>(abi: any[] | readonly any[], calls: Call[], chainId?: ChainId) => Promise<T>
 
+/**
+ * @deprecated
+ */
 export function createMulticall<TProvider extends PublicClient>(
   provider: ({ chainId }: { chainId?: number | undefined }) => TProvider,
 ) {
