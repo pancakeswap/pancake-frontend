@@ -29,14 +29,14 @@ import { Field } from 'state/limitOrders/types'
 import { useExchangeChartManager } from 'state/user/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
-import ClaimWarning from './components/ClaimWarning'
 
+import { CommonBasesType } from 'components/SearchModal/types'
+import { useAllTokens, useCurrency } from 'hooks/Tokens'
+import { currencyId } from 'utils/currencyId'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
-import { CommonBasesType } from '../../components/SearchModal/types'
-import { useAllTokens, useCurrency } from '../../hooks/Tokens'
-import { currencyId } from '../../utils/currencyId'
+import ClaimWarning from './components/ClaimWarning'
 import Page from '../Page'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
@@ -48,7 +48,7 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 
 const LimitOrders = () => {
   // Helpers
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { t } = useTranslation()
   const router = useRouter()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
@@ -302,7 +302,9 @@ const LimitOrders = () => {
       currentMarketRateInverted={currentMarketRate?.invert().toSignificant(4)}
       limitPrice={price?.toSignificant(6)}
       limitPriceInverted={price?.invert().toSignificant(6)}
-      percentageRateDifference={parseFloat(percentageRateDifference?.toSignificant(3)).toLocaleString(undefined, {
+      percentageRateDifference={parseFloat(
+        percentageRateDifference ? percentageRateDifference.toSignificant(3) : '',
+      ).toLocaleString(undefined, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 3,
       })}

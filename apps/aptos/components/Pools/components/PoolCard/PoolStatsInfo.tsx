@@ -8,7 +8,7 @@ import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { getBlockExploreLinkDefault } from 'utils'
 import getContactAddress from 'utils/getContactAddress'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
@@ -52,7 +52,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 }) => {
   const { t } = useTranslation()
   const getNow = useLedgerTimestamp()
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
 
   const {
     stakingToken,

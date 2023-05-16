@@ -10,6 +10,7 @@ import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 interface SwapCall {
   address: string
@@ -32,7 +33,7 @@ export function useSwapCallArguments(
   deadline: BigNumber | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const provider = useProviderOrSigner()
   const recipientENSAddress = useGetENSAddressByName(recipientAddress)
   const recipient =

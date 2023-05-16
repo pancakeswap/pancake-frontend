@@ -36,7 +36,6 @@ import { useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -46,6 +45,7 @@ import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { isUserRejected } from 'utils/sentry'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
 import RateToggle from './formViews/V3FormView/components/RateToggle'
@@ -103,7 +103,7 @@ function V2PairMigrate({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { chainId, account } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { balance: pairBalance } = useTokenBalance(v2PairAddress)
 
   const router = useRouter()

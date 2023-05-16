@@ -9,7 +9,6 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { useIsBloctoETH } from 'views/Farms'
@@ -21,6 +20,7 @@ import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/tran
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
 import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
@@ -69,7 +69,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const addTransaction = useTransactionAdder()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const native = useNativeCurrency()
   const { tokenBalance, stakedBalance, allowance } = userData
   const cakePrice = usePriceCakeUSD()

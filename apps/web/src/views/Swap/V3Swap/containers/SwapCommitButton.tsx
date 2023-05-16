@@ -35,13 +35,13 @@ import { useExpertMode } from '@pancakeswap/utils/user'
 import { warningSeverity } from 'utils/exchange'
 import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 
+import { useAccount } from 'wagmi'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
@@ -63,7 +63,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   tradeLoading,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
   const {
     typedValue,
@@ -83,7 +83,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
   const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
-  const routerAddress = SWAP_ROUTER_ADDRESSES[trade?.inputAmount?.currency.chainId]
+  const routerAddress = SWAP_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId]
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -226,7 +226,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // Reset approval flow if input currency changed
   useEffect(() => {
     setApprovalSubmitted(false)
-  }, [trade?.inputAmount.currency])
+  }, [trade?.inputAmount?.currency])
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
@@ -258,7 +258,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     )
   }
 
-  const noRoute = !(trade?.routes.length > 0) || tradeError
+  const noRoute = !(trade?.routes?.length > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),

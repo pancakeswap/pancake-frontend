@@ -3,7 +3,6 @@ import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
 import { PoolState } from 'hooks/v3/types'
@@ -11,6 +10,7 @@ import { SelectButton } from 'components/SelectButton'
 import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
 import { Currency } from '@pancakeswap/sdk'
 
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeOption } from '../formViews/V3FormView/components/FeeOption'
 import { FEE_AMOUNT_DETAIL, SelectContainer } from '../formViews/V3FormView/components/shared'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from '../types'
@@ -31,7 +31,7 @@ export function StableV3Selector({
 }) {
   const { t } = useTranslation()
   const [showOptions, setShowOptions] = useState(false)
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
 

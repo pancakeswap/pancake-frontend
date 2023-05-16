@@ -27,7 +27,6 @@ import {
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
@@ -68,8 +67,9 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useSigner } from 'wagmi'
+import { useProvider, useSigner } from 'wagmi'
 import dayjs from 'dayjs'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -146,7 +146,8 @@ export default function PoolPage() {
 
   const { data: signer } = useSigner()
 
-  const { account, chainId, provider } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
+  const provider = useProvider({ chainId })
 
   const router = useRouter()
   const { tokenId: tokenIdFromUrl } = router.query
@@ -291,14 +292,14 @@ export default function PoolPage() {
     }
 
     signer
-      .estimateGas(txn)
-      .then((estimate) => {
+      ?.estimateGas(txn)
+      ?.then((estimate) => {
         const newTxn = {
           ...txn,
           gasLimit: calculateGasMargin(estimate),
         }
 
-        return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+        return signer?.sendTransaction(newTxn)?.then((response: TransactionResponse) => {
           setCollectMigrationHash(response.hash)
           setCollecting(false)
 
@@ -313,7 +314,7 @@ export default function PoolPage() {
           })
         })
       })
-      .catch((error) => {
+      ?.catch((error) => {
         setCollecting(false)
         console.error(error)
       })

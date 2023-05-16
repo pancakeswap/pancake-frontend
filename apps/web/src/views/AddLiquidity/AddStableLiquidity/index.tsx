@@ -3,7 +3,6 @@ import { CurrencyAmount, Token, Percent, Currency, Price } from '@pancakeswap/sd
 import { useModal } from '@pancakeswap/uikit'
 import { isUserRejected, logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
@@ -15,15 +14,16 @@ import { BigNumber } from 'ethers'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
-import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
-import { Field } from '../../../state/mint/actions'
-import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { Field } from 'state/mint/actions'
+import { useMintActionHandlers, useMintState } from 'state/mint/hooks'
 
-import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { useGasPrice } from '../../../state/user/hooks'
-import { calculateGasMargin } from '../../../utils'
-import { calculateSlippageAmount } from '../../../utils/exchange'
-import { maxAmountSpend } from '../../../utils/maxAmountSpend'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { useGasPrice } from 'state/user/hooks'
+import { calculateGasMargin } from 'utils'
+import { calculateSlippageAmount } from 'utils/exchange'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
 
 import { StablePair, useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
@@ -82,7 +82,7 @@ export default function AddStableLiquidity({
   currencyB: Currency
   children: (props: AddStableChildrenProps) => ReactElement
 }) {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const expertMode = useIsExpertMode()
 
@@ -215,7 +215,7 @@ export default function AddStableLiquidity({
     let value: BigNumber | null = null
     if (needWrapped) {
       args = [stableSwapContract.address, tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
-      value = BigNumber.from((currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient.toString())
+      value = BigNumber.from((currencyB?.isNative ? parsedAmountB : parsedAmountA)?.quotient?.toString())
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })

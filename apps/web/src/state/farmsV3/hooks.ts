@@ -17,13 +17,13 @@ import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { FAST_INTERVAL } from 'config/constants'
 import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { multicallv2 } from 'utils/multicall'
+import { useAccount } from 'wagmi'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -173,7 +173,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
 }
 
 export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const masterchefV3 = useMasterchefV3(false)
 
   const harvestCalls = useMemo(() => {
@@ -221,7 +221,7 @@ const usePositionsByUserFarms = (
   farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
   userDataLoaded: boolean
 } => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
 

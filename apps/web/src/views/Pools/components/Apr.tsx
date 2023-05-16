@@ -1,12 +1,12 @@
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Pool } from '@pancakeswap/uikit'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
+import { useAccount } from 'wagmi'
 
 const withShownApr = (AprComp) => (props) => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
 
   const currentBlock = useCurrentBlock()
 
