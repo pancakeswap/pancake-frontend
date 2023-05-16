@@ -1,4 +1,4 @@
-import { FarmConfigV3 } from '@pancakeswap/farms'
+import { ComputedFarmConfigV3 } from '@pancakeswap/farms'
 
 export interface Block {
   number: number
@@ -135,7 +135,7 @@ export type TokenData = {
   priceUSDChangeWeek: number
 
   campaignId?: string
-  pairs?: FarmConfigV3[]
+  pairs?: ComputedFarmConfigV3[]
 }
 
 export interface TokensState {
