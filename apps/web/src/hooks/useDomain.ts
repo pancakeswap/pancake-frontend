@@ -8,7 +8,10 @@ import useActiveWeb3React from './useActiveWeb3React'
 export const useDomainNameForAddress = (address: `0x${string}` | string, fetchData = true) => {
   const { chainId } = useActiveWeb3React()
   const { sidName, isLoading: isSidLoading } = useSidNameForAddress(address as Address, fetchData)
-  const { unsName, isLoading: isUnsLoading } = useUnsNameForAddress(address as Address, fetchData && !sidName && !isSidLoading)
+  const { unsName, isLoading: isUnsLoading } = useUnsNameForAddress(
+    address as Address,
+    fetchData && !sidName && !isSidLoading,
+  )
   const { data: ensName, isLoading: isEnsLoading } = useEnsName({
     address: address as Address,
     chainId,
