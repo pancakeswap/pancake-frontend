@@ -120,7 +120,6 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.3.4",
-    "@pancakeswap/tsconfig": "workspace:*",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^13.3.0",
@@ -161,6 +160,8 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/next-config": "workspace:*",
     "typechain": "^6.1.0",
     "vite-tsconfig-paths": "^4.0.3",
     "vitest": "^0.30.1"

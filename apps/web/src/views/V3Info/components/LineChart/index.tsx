@@ -52,8 +52,7 @@ const LineChart = ({
 }: LineChartProps) => {
   // theming
   const { theme } = useTheme()
-  const textColor = theme.colors.text
-
+  const textColor = theme.isDark ? '$F4EEFF' : '#280D5F'
   // chart pointer
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
@@ -127,7 +126,10 @@ const LineChart = ({
         },
         crosshair: {
           horzLine: {
-            visible: false,
+            visible: true,
+            style: 0,
+            width: 2,
+            color: '#505050',
             labelVisible: false,
           },
           vertLine: {
@@ -149,7 +151,7 @@ const LineChart = ({
       const series = chartCreated.addAreaSeries({
         lineColor: color,
         topColor: darken(0.36, color),
-        bottomColor: theme.colors.background,
+        bottomColor: theme.isDark ? '#08060B' : '#FAF9FA',
         lineWidth: 2,
         priceLineVisible: false,
       })
@@ -187,7 +189,7 @@ const LineChart = ({
         }
       })
     }
-  }, [chartCreated, color, currentValue, data, height, setLabel, setValue, theme.colors.background])
+  }, [chartCreated, color, currentValue, data, height, setLabel, setValue, theme.isDark])
 
   return (
     <Wrapper minHeight={minHeight}>

@@ -321,6 +321,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: 13.3.4
         version: 13.3.4
+      '@pancakeswap/next-config':
+        specifier: workspace:*
+        version: link:../../packages/next-config
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -415,6 +418,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: 13.3.4
         version: 13.3.4
+      '@pancakeswap/next-config':
+        specifier: workspace:*
+        version: link:../../packages/next-config
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -497,6 +503,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: 13.3.4
         version: 13.3.4
+      '@pancakeswap/next-config':
+        specifier: workspace:*
+        version: link:../../packages/next-config
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -784,6 +793,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: 13.3.4
         version: 13.3.4
+      '@pancakeswap/next-config':
+        specifier: workspace:*
+        version: link:../../packages/next-config
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1174,6 +1186,12 @@ importers:
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
+
+  packages/next-config:
+    devDependencies:
+      next:
+        specifier: 13.3.4
+        version: 13.3.4(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
 
   packages/pools:
     dependencies:
@@ -7033,7 +7051,6 @@ packages:
 
   /@next/env@13.3.4:
     resolution: {integrity: sha512-oTK/wRV2qga86m/4VdrR1+/56UA6U1Qv3sIgowB+bZjahniZLEG5BmmQjfoGv7ZuLXBZ8Eec6hkL9BqJcrEL2g==}
-    dev: false
 
   /@next/eslint-plugin-next@13.3.4:
     resolution: {integrity: sha512-mvS+HafOPy31oJbAi920WJXMdjbyb4v5FAMr9PeGZfRIdEcsLkA3mU/ZvmwzovJgP3nAWw2e2yM8iIFW8VpvIA==}
@@ -7074,7 +7091,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-darwin-x64@13.2.4:
@@ -7092,7 +7108,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-freebsd-x64@13.2.4:
@@ -7128,7 +7143,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-arm64-musl@13.2.4:
@@ -7146,7 +7160,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-x64-gnu@13.2.4:
@@ -7164,7 +7177,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-x64-musl@13.2.4:
@@ -7182,7 +7194,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-win32-arm64-msvc@13.2.4:
@@ -7200,7 +7211,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-win32-ia32-msvc@13.2.4:
@@ -7218,7 +7228,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-win32-x64-msvc@13.2.4:
@@ -7236,7 +7245,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@noble/curves@0.8.3:
@@ -9128,7 +9136,6 @@ packages:
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
     dependencies:
       tslib: 2.4.0
-    dev: false
 
   /@swc/jest@0.2.22(@swc/core@1.2.218):
     resolution: {integrity: sha512-PIUIk9IdB1oAVfF9zNIfYoMBoEhahrrSvyryFANas7swC1cF0L5HR0f9X4qfet46oyCHCBtNcSpN0XJEOFIKlw==}
@@ -19209,7 +19216,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-    dev: false
 
   /nice-try@1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
@@ -21906,7 +21912,6 @@ packages:
       '@babel/core': 7.21.4
       client-only: 0.0.1
       react: 18.2.0
-    dev: false
 
   /styled-jsx@5.1.2(@babel/core@7.21.4)(react@18.2.0):
     resolution: {integrity: sha512-FI5r0a5ED2/+DSdG2ZRz3a4FtNQnKPLadauU5v76a9QsscwZrWggQKOmyxGGP5EWKbyY3bsuWAJYzyKaDAVAcw==}

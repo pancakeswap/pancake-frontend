@@ -10,9 +10,7 @@ export function LiquidStakingApr() {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const tooltipMsg = t(
-    `APR is calculated from staking rewards from the ETH network. This figure is reflective of staking rewards from the previous day annualised.`,
-  )
+  const tooltipMsg = t(`APR is calculated based on the past 24H of staking rewards from the ETH network.`)
 
   const { data: apr } = useSWR<number>('liquid-staking-apr', async () => {
     const { data: responseData } = await fetch(
@@ -29,7 +27,7 @@ export function LiquidStakingApr() {
   return (
     <RowBetween mb="24px">
       <Flex>
-        <Text color="textSubtle">{t('Est Daily APR')}</Text>
+        <Text color="textSubtle">{t('Est. APR')}</Text>
         <QuestionHelper ml="4px" text={tooltipMsg} size="20px" placement="bottom" />
       </Flex>
       <Text>{apr ? `${formatLocaleNumber({ number: apr, locale })}%` : '-'}</Text>

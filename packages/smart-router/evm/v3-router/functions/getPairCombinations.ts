@@ -1,11 +1,11 @@
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap.js'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
 import { isCurrenciesSameChain } from '../utils'
 
-export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
+export const getCheckAgainstBaseTokens = (currencyA?: Currency, currencyB?: Currency): Token[] => {
   // eslint-disable-next-line prefer-destructuring
   const chainId: ChainId | undefined = currencyA?.chainId
   if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
@@ -24,7 +24,25 @@ export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency):
   const additionalA = tokenA ? ADDITIONAL_BASES[chainId]?.[tokenA.address] ?? [] : []
   const additionalB = tokenB ? ADDITIONAL_BASES[chainId]?.[tokenB.address] ?? [] : []
 
-  const bases: Currency[] = [...common, ...additionalA, ...additionalB]
+  return [...common, ...additionalA, ...additionalB]
+}
+
+export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
+  // eslint-disable-next-line prefer-destructuring
+  const chainId: ChainId | undefined = currencyA?.chainId
+  if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
+    return []
+  }
+
+  const [tokenA, tokenB] = chainId
+    ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+    : [undefined, undefined]
+
+  if (!tokenA || !tokenB) {
+    return []
+  }
+
+  const bases = getCheckAgainstBaseTokens(currencyA, currencyB)
 
   const basePairs: [Currency, Currency][] = flatMap(bases, (base): [Currency, Currency][] =>
     bases.map((otherBase) => [base, otherBase]),
