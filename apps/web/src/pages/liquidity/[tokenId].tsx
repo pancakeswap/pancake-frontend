@@ -208,7 +208,7 @@ export default function PoolPage() {
     invert: manuallyInverted,
   })
 
-  const inverted = token1 ? base?.equals(token1) : undefined
+  const inverted = token1 && token1 ? base?.equals(token1) : undefined
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 

@@ -30,10 +30,10 @@ const formatPool = (pool) => ({
 })
 
 const formatVestingInfo = (pool) => ({
-  percentage: pool ? pool[0].toNumber() : 0,
-  cliff: pool ? pool[1].toNumber() : 0,
-  duration: pool ? pool[2].toNumber() : 0,
-  slicePeriodSeconds: pool ? pool[3].toNumber() : 0,
+  percentage: pool ? Number(pool[0]) : 0,
+  cliff: pool ? Number(pool[1]) : 0,
+  duration: pool ? Number(pool[2]) : 0,
+  slicePeriodSeconds: pool ? Number(pool[3]) : 0,
 })
 
 const ROUND_DIGIT = 3
