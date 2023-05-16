@@ -5,7 +5,7 @@ type Headers = Awaited<ReturnType<NonNullable<NextConfig['headers']>>>
 function createCSP() {
   const IFRAME_WHITE_LIST = ['https://*.safe.global']
 
-  const rules = [`frame-ancestors 'self' ${IFRAME_WHITE_LIST.join(' ')}`, 'report-to /api/_report/csp']
+  const rules = [`frame-ancestors 'self' ${IFRAME_WHITE_LIST.join(' ')}`, 'report-uri /api/_report/csp']
 
   return {
     key: 'Content-Security-Policy',
