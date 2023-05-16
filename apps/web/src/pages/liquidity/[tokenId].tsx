@@ -303,15 +303,14 @@ export default function PoolPage() {
           setCollectMigrationHash(response.hash)
           setCollecting(false)
 
-            const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
-            const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
+          const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
+          const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
 
-            addTransaction(response, {
-              type: 'collect-fee',
-              summary: `Collect fee ${amount0.toExact()} ${
-                currency0ForFeeCollectionPurposes.symbol
-              } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
-            })
+          addTransaction(response, {
+            type: 'collect-fee',
+            summary: `Collect fee ${amount0.toExact()} ${
+              currency0ForFeeCollectionPurposes.symbol
+            } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
           })
         })
       })
