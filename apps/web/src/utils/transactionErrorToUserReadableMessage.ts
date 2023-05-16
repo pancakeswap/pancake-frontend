@@ -53,9 +53,13 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
       )
     default:
       if (reason?.indexOf('undefined is not an object') !== -1) {
-        console.error(error, reason)
         return t(
           'An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.',
+        )
+      }
+      if (reason === 'header not found') {
+        return t(
+          'There appears to be issues with the current node provider on this network. You could try to add a new RPC URL connection in your wallet and try the swap again from that provider or wait for your current RPC provider to resolve.',
         )
       }
       return t('Unknown error%reason%. Try increasing your slippage tolerance.', {
