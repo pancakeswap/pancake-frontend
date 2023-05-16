@@ -44,7 +44,7 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
       )
     },
     onConfirm: () => {
-      return callWithGasPrice(farmAuctionContract, 'claimAuction', [reclaimableAuction.id])
+      return callWithGasPrice(farmAuctionContract, 'claimAuction', [BigInt(reclaimableAuction.id)])
     },
     onSuccess: async ({ receipt }) => {
       checkForNextReclaimableAuction()

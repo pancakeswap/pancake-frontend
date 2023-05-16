@@ -169,15 +169,15 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     const callOptions =
       token.symbol === 'CAKE'
         ? {
-            gasLimit: 300000,
-            value: 0,
+            gas: 300000n,
+            value: 0n,
           }
-        : { value: valueAsBn.toString() }
+        : { value: BigInt(valueAsBn.toString()) }
 
     const args = token.symbol === 'CAKE' ? [epoch, valueAsBn.toString()] : [epoch]
 
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(predictionsContract, betMethod, args, callOptions)
+      return callWithGasPrice(predictionsContract as any, betMethod, args, callOptions)
     })
     if (receipt?.status) {
       onSuccess(receipt.transactionHash)

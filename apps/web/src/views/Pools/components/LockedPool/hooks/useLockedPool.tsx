@@ -56,13 +56,11 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const handleDeposit = useCallback(
     async (convertedStakeAmount: BigNumber, lockDuration: number) => {
       const callOptions = {
-        gasLimit: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
+        gas: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
       }
 
       const receipt = await fetchWithCatchTxError(() => {
-        // .toString() being called to fix a BigNumber error in prod
-        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-        const methodArgs = [convertedStakeAmount.toString(), lockDuration]
+        const methodArgs = [BigInt(convertedStakeAmount.toString()), BigInt(lockDuration)] as const
         return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
       })
 

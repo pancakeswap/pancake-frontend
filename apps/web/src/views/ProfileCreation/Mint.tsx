@@ -64,7 +64,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
         return callWithGasPrice(cakeContract, 'approve', [getBunnyFactoryAddress(), allowance])
       },
       onConfirm: () => {
-        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])
+        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [BigInt(selectedBunnyId)])
       },
       onApproveSuccess: () => {
         toastSuccess(t('Enabled'), t("Press 'confirm' to mint this NFT"))

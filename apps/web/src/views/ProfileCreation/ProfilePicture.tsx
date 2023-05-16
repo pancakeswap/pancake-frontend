@@ -100,7 +100,7 @@ const ProfilePicture: React.FC = () => {
   const handleApprove = async () => {
     const contract = getErc721Contract(selectedNft.collectionAddress, walletClient)
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
+      return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), BigInt(selectedNft.tokenId)])
     })
     if (receipt?.status) {
       toastSuccess(t('Enabled'), t('Please progress to the next step.'))
