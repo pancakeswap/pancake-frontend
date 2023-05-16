@@ -26,7 +26,7 @@ import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB } from './bnbQueries'
 import { BetResponseCAKE } from './cakeQueries'
 
-const convertBigInt = (value: string | null) => (!value ? 0n : BigInt(value))
+const convertBigInt = (value: string | null) => (!value ? null : BigInt(value))
 
 export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
   ...round,
