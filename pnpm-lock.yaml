@@ -141,9 +141,6 @@ importers:
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.186
-      ethers:
-        specifier: ^5.0.0
-        version: 5.7.2
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -459,7 +456,7 @@ importers:
     dependencies:
       '@0xsquid/widget':
         specifier: ^1.4.75
-        version: 1.4.75(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.4)
+        version: 1.4.75(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
       '@material-ui/core':
         specifier: ^4.12.4
         version: 4.12.4(@types/react@18.2.0)(react-dom@18.2.0)(react@18.2.0)
@@ -1899,13 +1896,13 @@ importers:
 
 packages:
 
-  /@0xsquid/sdk@1.5.0(encoding@0.1.13)(typescript@4.9.4):
+  /@0xsquid/sdk@1.5.0(encoding@0.1.13)(typescript@5.0.4):
     resolution: {integrity: sha512-gE17k2qS/j1cXMnajAQ36W0oe3xQHHHD8tfkUzNQyqWKhh7BIJnMU3fZhMq8NdBHXPkYC6yNTNwQ6duQARIqGw==}
     dependencies:
       '@release-it/conventional-changelog': github.com/release-it/conventional-changelog/ff9f1aae654dc378d5ed4703a2802ef9591e1a96(release-it@15.10.3)
       axios: 0.27.2
       ethers: 5.7.2
-      release-it: 15.10.3(encoding@0.1.13)(typescript@4.9.4)
+      release-it: 15.10.3(encoding@0.1.13)(typescript@5.0.4)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -1915,14 +1912,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsquid/widget@1.4.75(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.4):
+  /@0xsquid/widget@1.4.75(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4):
     resolution: {integrity: sha512-tV/ZSrWTxMqU1igLV7U93wmnzl+CJra0LPvtxQAQQYRZdq2h3VCrXZLNkuFuojFpSw8w1jjUCMPMA0qMSaAhXQ==}
     peerDependencies:
       ethers: ^5.7.2 || ^4.0.49
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@0xsquid/sdk': 1.5.0(encoding@0.1.13)(typescript@4.9.4)
+      '@0xsquid/sdk': 1.5.0(encoding@0.1.13)(typescript@5.0.4)
       '@cosmjs/stargate': 0.29.5
       '@floating-ui/react-dom': 1.3.0(react-dom@18.2.0)(react@18.2.0)
       '@floating-ui/react-dom-interactions': 0.12.0(react-dom@18.2.0)(react@18.2.0)
@@ -1931,7 +1928,7 @@ packages:
       '@tanstack/react-query-devtools': 4.29.6(@tanstack/react-query@4.29.1)(react-dom@18.2.0)(react@18.2.0)
       '@types/color': 3.0.3
       '@types/lodash': 4.14.194
-      '@wagmi/connectors': 0.3.8(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@4.9.4)
+      '@wagmi/connectors': 0.3.8(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4)
       axios: 0.27.2
       bignumber.js: 9.1.1
       clsx: 1.2.1
@@ -1945,7 +1942,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-icons: 4.8.0(react@18.2.0)
       secretjs: 1.9.0(encoding@0.1.13)
-      wagmi: 0.12.12(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.4)(zod@3.21.4)
+      wagmi: 0.12.13(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
       zustand: 4.3.1(react@18.2.0)
     transitivePeerDependencies:
       - '@react-native-async-storage/async-storage'
@@ -11521,6 +11518,77 @@ packages:
     dependencies:
       typescript: 5.0.4
 
+  /@wagmi/connectors@0.3.19(@wagmi/core@0.10.11)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-1EnVdNjP5dAfWoW8dlUDZS+Lva8MYabWK+vwzSUBeSyJcAslXInoiHLb+cz9p8oAAqXspcPLRX3XPErYav23gA==}
+    peerDependencies:
+      '@wagmi/core': '>=0.9.x'
+      ethers: '>=5.5.1 <6'
+      typescript: '>=4.9.4'
+    peerDependenciesMeta:
+      '@wagmi/core':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@coinbase/wallet-sdk': 3.6.6(encoding@0.1.13)
+      '@ledgerhq/connect-kit-loader': 1.0.1
+      '@safe-global/safe-apps-provider': 0.15.2(encoding@0.1.13)
+      '@safe-global/safe-apps-sdk': 7.10.1(encoding@0.1.13)
+      '@wagmi/core': 0.10.11(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4)
+      '@walletconnect/ethereum-provider': 2.7.2(@web3modal/standalone@2.3.7)(encoding@0.1.13)
+      '@walletconnect/legacy-provider': 2.0.0(encoding@0.1.13)
+      '@web3modal/standalone': 2.3.7(react@18.2.0)
+      abitype: 0.3.0(typescript@5.0.4)
+      ethers: 5.7.2
+      eventemitter3: 4.0.7
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - bufferutil
+      - debug
+      - encoding
+      - lokijs
+      - react
+      - supports-color
+      - utf-8-validate
+      - zod
+    dev: false
+
+  /@wagmi/connectors@0.3.8(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-SLukavwDqFiMO+GmAdxdEXKnAbNcBcOUtVu6QjhOPzmcETA59f2QWleUPDBZx62SE40HAiA/Z53exAiWUqIelA==}
+    peerDependencies:
+      '@wagmi/core': '>=0.9.x'
+      ethers: '>=5.5.1 <6'
+      typescript: '>=4.9.4'
+    peerDependenciesMeta:
+      '@wagmi/core':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@coinbase/wallet-sdk': 3.6.6(encoding@0.1.13)
+      '@ledgerhq/connect-kit-loader': 1.0.1
+      '@safe-global/safe-apps-provider': 0.15.2(encoding@0.1.13)
+      '@safe-global/safe-apps-sdk': 7.10.1(encoding@0.1.13)
+      '@walletconnect/ethereum-provider': 2.7.2(@web3modal/standalone@2.3.7)(encoding@0.1.13)
+      '@walletconnect/legacy-provider': 2.0.0(encoding@0.1.13)
+      '@web3modal/standalone': 2.3.7(react@18.2.0)
+      abitype: 0.3.0(typescript@5.0.4)
+      ethers: 5.7.2
+      eventemitter3: 4.0.7
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - bufferutil
+      - debug
+      - encoding
+      - lokijs
+      - react
+      - supports-color
+      - utf-8-validate
+      - zod
+    dev: false
+
   /@wagmi/connectors@1.0.1(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24):
     resolution: {integrity: sha512-fl01vym19DE1uoE+MlASw5zo3Orr/YXlJRjOKLaKYtV+Q7jOLY4TwHgq7sEMs+JYOvFICFBEAlWNNxidr51AqQ==}
     peerDependencies:
@@ -11591,6 +11659,35 @@ packages:
       - supports-color
       - utf-8-validate
       - zod
+
+  /@wagmi/core@0.10.11(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-WOmG2RG65U6i+p09/aFztFSLPCeC+CYnkPh+OXrxQ8Q3m829983sH7xUTRbFAl561lRevUHmB+XS/na+Oj2bYQ==}
+    peerDependencies:
+      ethers: '>=5.5.1 <6'
+      typescript: '>=4.9.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@wagmi/chains': 0.2.22(typescript@5.0.4)
+      '@wagmi/connectors': 0.3.19(@wagmi/core@0.10.11)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4)
+      abitype: 0.3.0(typescript@5.0.4)
+      ethers: 5.7.2
+      eventemitter3: 4.0.7
+      typescript: 5.0.4
+      zustand: 4.3.1(react@18.2.0)
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - bufferutil
+      - debug
+      - encoding
+      - immer
+      - lokijs
+      - react
+      - supports-color
+      - utf-8-validate
+      - zod
+    dev: false
 
   /@wagmi/core@0.7.9(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4):
     resolution: {integrity: sha512-97KCELUP5Q1AagRyE7SmpLh4/v3xdcy/XMbybLvvtQbgmi3y5oEzy4h/wJMY1hEZlmicqyWZAHHm6xIr1tP5HA==}
@@ -12146,6 +12243,19 @@ packages:
       typescript: 5.0.4
     dev: false
 
+  /abitype@0.3.0(typescript@5.0.4):
+    resolution: {integrity: sha512-0YokyAV4hKMcy97Pl+6QgZBlBdZJN2llslOs7kiFY+cu7kMlVXDBpxMExfv0krzBCQt2t7hNovpQ3y/zvEm18A==}
+    engines: {pnpm: '>=7'}
+    peerDependencies:
+      typescript: '>=4.9.4'
+      zod: '>=3.19.1'
+    peerDependenciesMeta:
+      zod:
+        optional: true
+    dependencies:
+      typescript: 5.0.4
+    dev: false
+
   /abitype@0.8.0(typescript@5.0.4)(zod@3.21.4):
     resolution: {integrity: sha512-QqBuwc2trtaNd/kp4k0dSjVu3OQIYRAB4ww4LCPwfSECXcCGTD3imYovNYNjx0SyN3OHV0XUOzUVwnXP1kLsVQ==}
     peerDependencies:
@@ -12348,11 +12458,11 @@ packages:
       type-fest: 0.21.3
     dev: true
 
-  /ansi-escapes@6.2.0(typescript@4.9.4):
+  /ansi-escapes@6.2.0(typescript@5.0.4):
     resolution: {integrity: sha512-kzRaCqXnpzWs+3z5ABPQiVke+iq0KXkHo8xiWV4RPTi5Yli0l97BEQuhXV1s7+aSU/fu1kUuxgS4MsQ0fRuygw==}
     engines: {node: '>=14.16'}
     dependencies:
-      type-fest: 3.10.0(typescript@4.9.4)
+      type-fest: 3.10.0(typescript@5.0.4)
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -17903,11 +18013,11 @@ packages:
     resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==}
     dev: true
 
-  /inquirer@9.2.0(typescript@4.9.4):
+  /inquirer@9.2.0(typescript@5.0.4):
     resolution: {integrity: sha512-WWERbVqjsTXjXub1ZW0ZHDit1dyHqy0T9XIkky9TnmKAPrjU9Jkd59nZPK0dUuM3s73GZAZu2Jo4iFU3XSPVLA==}
     engines: {node: '>=14.18.0'}
     dependencies:
-      ansi-escapes: 6.2.0(typescript@4.9.4)
+      ansi-escapes: 6.2.0(typescript@5.0.4)
       chalk: 5.2.0
       cli-cursor: 4.0.0
       cli-width: 4.0.0
@@ -23075,7 +23185,7 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /release-it@15.10.3(encoding@0.1.13)(typescript@4.9.4):
+  /release-it@15.10.3(encoding@0.1.13)(typescript@5.0.4):
     resolution: {integrity: sha512-OSdHOg76gwkpLbSLBK09GZQj5XWXwBP+S6v//rSoQKkjqklaCLK04Gl5NkTwNrQOHHiihs4ToesDNh2+w55k3w==}
     engines: {node: '>=14.9'}
     hasBin: true
@@ -23089,7 +23199,7 @@ packages:
       git-url-parse: 13.1.0
       globby: 13.1.4
       got: 12.6.0
-      inquirer: 9.2.0(typescript@4.9.4)
+      inquirer: 9.2.0(typescript@5.0.4)
       is-ci: 3.0.1
       issue-parser: 6.0.0
       lodash: 4.17.21
@@ -25241,13 +25351,13 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
-  /type-fest@3.10.0(typescript@4.9.4):
+  /type-fest@3.10.0(typescript@5.0.4):
     resolution: {integrity: sha512-hmAPf1datm+gt3c2mvu0sJyhFy6lTkIGf0GzyaZWxRLnabQfPUqg6tF95RPg6sLxKI7nFLGdFxBcf2/7+GXI+A==}
     engines: {node: '>=14.16'}
     peerDependencies:
       typescript: '>=4.7.0'
     dependencies:
-      typescript: 4.9.4
+      typescript: 5.0.4
     dev: false
 
   /type-is@1.6.18:
@@ -26129,6 +26239,39 @@ packages:
       xml-name-validator: 4.0.0
     dev: true
 
+  /wagmi@0.12.13(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-1J+F68MztodPUo2OIFImiC3OoZD4gdryxTidfwQz9LJawXdBNmAOFvq0LQClrrqgFk0Gd3EoLo/MKGiEn2RsMg==}
+    peerDependencies:
+      ethers: '>=5.5.1 <6'
+      react: '>=17.0.0'
+      typescript: '>=4.9.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@tanstack/query-sync-storage-persister': 4.29.1
+      '@tanstack/react-query': 4.29.1(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-query-persist-client': 4.29.1(@tanstack/react-query@4.29.1)
+      '@wagmi/core': 0.10.11(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.0.4)
+      abitype: 0.3.0(typescript@5.0.4)
+      ethers: 5.7.2
+      react: 18.2.0
+      typescript: 5.0.4
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - bufferutil
+      - debug
+      - encoding
+      - immer
+      - lokijs
+      - react-dom
+      - react-native
+      - supports-color
+      - utf-8-validate
+      - zod
+    dev: false
+
   /wagmi@1.0.4(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(viem@0.3.24)(zod@3.21.4):
     resolution: {integrity: sha512-Vk3AQbxEHNTo7hE/AWQlRIDtXJ5eUwWxhvbveYRJTIdDUxGymmQQBviYKVr4jA0uKeI6A7M1cYl4OGjs5R43wQ==}
     peerDependencies:
@@ -26856,6 +26999,6 @@ packages:
       concat-stream: 2.0.0
       conventional-changelog: 3.1.25
       conventional-recommended-bump: 6.1.0
-      release-it: 15.10.3(encoding@0.1.13)(typescript@4.9.4)
+      release-it: 15.10.3(encoding@0.1.13)(typescript@5.0.4)
       semver: 7.3.8
     dev: false
