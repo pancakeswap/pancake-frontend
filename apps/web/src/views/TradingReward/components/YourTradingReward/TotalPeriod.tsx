@@ -173,7 +173,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 </MessageText>
               </Message>
             )}
-            {notReadyForClaim.length > 0 && (
+            {notReadyForClaim.length > 0 && notReadyForClaimUSDPrice > 0 && (
               <Message variant="primary" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
