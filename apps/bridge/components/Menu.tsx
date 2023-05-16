@@ -83,12 +83,12 @@ const MenuConfig = [
     href: '/',
     items: [
       {
-        label: 'Stargate',
+        label: 'Axelar',
         href: '/',
       },
       {
-        label: 'Axelar',
-        href: '/axelar',
+        label: 'Stargate',
+        href: '/stargate',
       },
     ],
   },
@@ -157,7 +157,7 @@ export function Menu() {
         <Box mr="16px">
           <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
         </Box>
-        {nextRouter.pathname === '/' && <User />}
+        {nextRouter.pathname === '/stargate' && <User />}
       </Flex>
     </Flex>
   )
