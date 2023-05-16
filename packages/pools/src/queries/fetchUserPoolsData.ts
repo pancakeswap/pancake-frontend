@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
 import { erc20ABI } from 'wagmi'
-import { ContractFunctionResult } from 'viem'
+import { Address } from 'viem'
 import { getPoolsConfig } from '../constants'
 import { sousChefABI } from '../abis/ISousChef'
 import { OnChainProvider, SerializedPool } from '../types'
@@ -33,15 +33,18 @@ export const fetchPoolsAllowance = async ({ account, chainId, provider }: FetchU
   const nonBnbPools = getNonBnbPools(chainId)
 
   const client = provider({ chainId })
-  const allowances = (await client.multicall({
-    contracts: nonBnbPools.map(({ contractAddress, stakingToken }) => ({
-      address: stakingToken.address,
-      abi: erc20ABI,
-      functionName: 'allowance',
-      args: [account, contractAddress],
-    })),
+  const allowances = await client.multicall({
+    contracts: nonBnbPools.map(
+      ({ contractAddress, stakingToken }) =>
+        ({
+          address: stakingToken.address,
+          abi: erc20ABI,
+          functionName: 'allowance',
+          args: [account as Address, contractAddress] as const,
+        } as const),
+    ),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof erc20ABI, 'allowance'>[]
+  })
   return fromPairs(
     nonBnbPools.map((pool, index) => [pool.sousId, new BigNumber(allowances[index].toString()).toJSON()]),
   )
@@ -95,15 +98,18 @@ export const fetchUserStakeBalances = async ({ account, chainId, provider }: Fet
   const nonMasterPools = getNonMasterPools(chainId)
 
   const client = provider({ chainId })
-  const userInfo = (await client.multicall({
-    contracts: nonMasterPools.map(({ contractAddress }) => ({
-      abi: sousChefABI,
-      address: contractAddress,
-      functionName: 'userInfo',
-      args: [account],
-    })),
+  const userInfo = await client.multicall({
+    contracts: nonMasterPools.map(
+      ({ contractAddress }) =>
+        ({
+          abi: sousChefABI,
+          address: contractAddress,
+          functionName: 'userInfo',
+          args: [account as Address] as const,
+        } as const),
+    ),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof sousChefABI, 'userInfo'>[]
+  })
 
   return fromPairs(
     nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(userInfo[index][0].toString()).toJSON()]),
@@ -114,14 +120,17 @@ export const fetchUserPendingRewards = async ({ account, chainId, provider }: Fe
   const nonMasterPools = getNonMasterPools(chainId)
 
   const client = provider({ chainId })
-  const res = (await client.multicall({
-    contracts: nonMasterPools.map(({ contractAddress }) => ({
-      abi: sousChefABI,
-      address: contractAddress,
-      functionName: 'pendingReward',
-      args: [account],
-    })),
+  const res = await client.multicall({
+    contracts: nonMasterPools.map(
+      ({ contractAddress }) =>
+        ({
+          abi: sousChefABI,
+          address: contractAddress,
+          functionName: 'pendingReward',
+          args: [account as Address] as const,
+        } as const),
+    ),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof sousChefABI, 'pendingReward'>[]
+  })
   return fromPairs(nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(res[index].toString()).toJSON()]))
 }
