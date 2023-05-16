@@ -47,20 +47,29 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: TFetc
 
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   const { data } = useContractReads({
-    contracts: nftsInWallet.map((f) => ({
-      abi: erc721ABI,
-      address: f.collectionAddress,
-      functionName: 'getApproved',
-      args: [f.tokenId],
-    })),
+    contracts: nftsInWallet.map(
+      (f) =>
+        ({
+          abi: erc721ABI,
+          address: f.collectionAddress,
+          functionName: 'getApproved',
+          args: [BigInt(f.tokenId)],
+        } as const),
+    ),
     watch: true,
   })
 
   const profileAddress = getPancakeProfileAddress()
 
   const approvedTokenIds = Array.isArray(data)
-    ? // TODO: wagmi
-      fromPairs(data.flat().map((result, index) => [nftsInWallet[index].tokenId, profileAddress === result.result]))
+    ? fromPairs(
+        data
+          .flat()
+          .map((result, index) => [
+            nftsInWallet[index].tokenId,
+            profileAddress.toLowerCase() === result.result.toLowerCase(),
+          ]),
+      )
     : null
 
   return { data: approvedTokenIds }

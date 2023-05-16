@@ -8,9 +8,9 @@ import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContr
 import { useCallback } from 'react'
 import { mutate } from 'swr'
 import { calculateGasMargin } from 'utils'
-import { viemClients } from 'utils/viem'
+import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
+import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
@@ -25,6 +25,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
   const { address: account } = useAccount()
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
+  const { sendTransactionAsync } = useSendTransaction()
   const publicClient = viemClients[chainId as keyof typeof viemClients]
 
   const { loading, fetchWithCatchTxError } = useCatchTxError()
@@ -50,9 +51,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
           gas: calculateGasMargin(estimate),
         }
 
-        // FIXME: wagmi
-        // @ts-ignore
-        return signer.sendTransaction(newTxn)
+        return sendTransactionAsync(newTxn)
       }),
     )
     if (resp?.status) {
@@ -63,7 +62,17 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
         </ToastDescriptionWithTx>,
       )
     }
-  }, [account, fetchWithCatchTxError, masterChefV3Address, publicClient, signer, t, toastSuccess, tokenId])
+  }, [
+    account,
+    fetchWithCatchTxError,
+    masterChefV3Address,
+    publicClient,
+    sendTransactionAsync,
+    signer,
+    t,
+    toastSuccess,
+    tokenId,
+  ])
 
   const onStake = useCallback(async () => {
     const { calldata, value } = NonfungiblePositionManager.safeTransferFromParameters({
@@ -87,9 +96,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
           gas: calculateGasMargin(estimate),
         }
 
-        // FIXME: wagmi
-        // @ts-ignore
-        return signer.sendTransaction(newTxn)
+        return sendTransactionAsync(newTxn)
       }),
     )
 
@@ -107,6 +114,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     masterChefV3Address,
     nftPositionManagerAddress,
     publicClient,
+    sendTransactionAsync,
     signer,
     t,
     toastSuccess,
@@ -135,9 +143,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
             gas: calculateGasMargin(estimate),
           }
 
-          // FIXME: wagmi
-          // @ts-ignore
-          return signer.sendTransaction(newTxn)
+          return sendTransactionAsync(newTxn)
         }),
     )
 
@@ -150,7 +156,17 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       )
       mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
     }
-  }, [account, fetchWithCatchTxError, masterChefV3Address, publicClient, signer, t, toastSuccess, tokenId])
+  }, [
+    account,
+    fetchWithCatchTxError,
+    masterChefV3Address,
+    publicClient,
+    sendTransactionAsync,
+    signer,
+    t,
+    toastSuccess,
+    tokenId,
+  ])
 
   return {
     attemptingTxn: loading,
@@ -163,9 +179,9 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
 export function useFarmsV3BatchHarvest() {
   const { t } = useTranslation()
   const { data: signer } = useWalletClient()
-  const publicClient = usePublicClient()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
+  const { sendTransactionAsync } = useSendTransaction()
   const { loading, fetchWithCatchTxError } = useCatchTxError()
 
   const masterChefV3Address = useMasterchefV3()?.address
@@ -179,20 +195,18 @@ export function useFarmsV3BatchHarvest() {
         to: masterChefV3Address,
         data: calldata,
         value: hexToBigInt(value),
+        account,
       }
+      const publicClient = getViemClients({ chainId: signer.chain.id })
 
       const resp = await fetchWithCatchTxError(() =>
-        // FIXME: wagmi
-        // @ts-ignore
         publicClient.estimateGas(txn).then((estimate) => {
           const newTxn = {
             ...txn,
             gas: calculateGasMargin(estimate),
           }
 
-          // FIXME: wagmi
-          // @ts-ignore
-          return signer.sendTransaction(newTxn)
+          return sendTransactionAsync(newTxn)
         }),
       )
 
@@ -206,7 +220,7 @@ export function useFarmsV3BatchHarvest() {
         mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
       }
     },
-    [account, fetchWithCatchTxError, masterChefV3Address, publicClient, signer, t, toastSuccess],
+    [account, fetchWithCatchTxError, masterChefV3Address, sendTransactionAsync, signer, t, toastSuccess],
   )
 
   return {

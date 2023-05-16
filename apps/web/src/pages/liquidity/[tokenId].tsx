@@ -68,11 +68,11 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useWalletClient } from 'wagmi'
+import { useSendTransaction, useWalletClient } from 'wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
-import { viemClients } from 'utils/viem'
+import { getViemClients } from 'utils/viem'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -148,6 +148,7 @@ export default function PoolPage() {
   const [receiveWETH, setReceiveWETH] = useState(false)
 
   const { data: signer } = useWalletClient()
+  const { sendTransactionAsync } = useSendTransaction()
 
   const { account, chainId } = useAccountActiveChain()
 
@@ -302,7 +303,7 @@ export default function PoolPage() {
       chain: signer.chain,
     }
 
-    viemClients[chainId as keyof typeof viemClients]
+    getViemClients({ chainId })
       .estimateGas(txn)
       .then((estimate) => {
         const newTxn = {
@@ -310,28 +311,23 @@ export default function PoolPage() {
           gas: calculateGasMargin(estimate),
         }
 
-        return signer
-          .sendTransaction(
-            // @ts-ignore FIXME: wagmi
-            newTxn,
+        return sendTransactionAsync(newTxn).then((response) => {
+          setCollectMigrationHash(response.hash)
+          setCollecting(false)
+
+          const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
+          const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
+
+          addTransaction(
+            { hash: response.hash },
+            {
+              type: 'collect-fee',
+              summary: `Collect fee ${amount0.toExact()} ${
+                currency0ForFeeCollectionPurposes.symbol
+              } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
+            },
           )
-          .then((response) => {
-            setCollectMigrationHash(response)
-            setCollecting(false)
-
-            const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
-            const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
-
-            addTransaction(
-              { hash: response },
-              {
-                type: 'collect-fee',
-                summary: `Collect fee ${amount0.toExact()} ${
-                  currency0ForFeeCollectionPurposes.symbol
-                } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
-              },
-            )
-          })
+        })
       })
       ?.catch((error) => {
         setCollecting(false)
@@ -351,6 +347,7 @@ export default function PoolPage() {
     feeValue1,
     manager.address,
     signer,
+    sendTransactionAsync,
     addTransaction,
   ])
 
