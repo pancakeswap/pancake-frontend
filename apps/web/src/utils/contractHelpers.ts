@@ -78,7 +78,7 @@ import { viemClients } from 'utils/viem'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 
-export const getContract = <TAbi extends Abi | unknown[]>({
+export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
   address,
   chainId = ChainId.BSC,
@@ -87,7 +87,7 @@ export const getContract = <TAbi extends Abi | unknown[]>({
   abi: TAbi
   address: Address
   chainId?: ChainId
-  signer?: WalletClient
+  signer?: TWalletClient
 }) => {
   const c = viemGetContract({
     abi,

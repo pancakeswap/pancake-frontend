@@ -158,7 +158,13 @@ export const useTradingCompetitionContractMoD = () => {
   return useMemo(() => getTradingCompetitionContractMoD(signer), [signer])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey) => {
+export const useVaultPoolContract = <T extends VaultKey>(
+  vaultKey: T,
+):
+  | (T extends VaultKey.CakeVault
+      ? ReturnType<typeof getCakeVaultV2Contract>
+      : ReturnType<typeof getCakeFlexibleSideVaultV2Contract>)
+  | null => {
   const { data: signer } = useWalletClient()
   return useMemo(() => {
     if (vaultKey === VaultKey.CakeVault) {
@@ -168,7 +174,7 @@ export const useVaultPoolContract = (vaultKey: VaultKey) => {
       return getCakeFlexibleSideVaultV2Contract(signer)
     }
     return null
-  }, [signer, vaultKey])
+  }, [signer, vaultKey]) as any
 }
 
 export const useCakeVaultContract = () => {

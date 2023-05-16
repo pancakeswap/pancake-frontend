@@ -48,7 +48,7 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithGasPrice(wbnbContract, 'deposit', undefined, {
-                    value: `0x${inputAmount.quotient.toString(16)}`,
+                    value: inputAmount.quotient,
                   })
                   const amount = inputAmount.toSignificant(6)
                   const native = inputCurrency.symbol
@@ -75,9 +75,7 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
-                    `0x${inputAmount.quotient.toString(16)}`,
-                  ])
+                  const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [inputAmount.quotient])
                   const amount = inputAmount.toSignificant(6)
                   const wrap = WNATIVE[chainId].symbol
                   const native = outputCurrency.symbol

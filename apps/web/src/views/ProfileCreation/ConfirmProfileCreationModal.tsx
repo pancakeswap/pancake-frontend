@@ -48,9 +48,9 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
       },
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [
-          teamId,
+          BigInt(teamId),
           selectedNft.collectionAddress,
-          selectedNft.tokenId,
+          BigInt(selectedNft.tokenId),
         ])
       },
       onSuccess: async ({ receipt }) => {
