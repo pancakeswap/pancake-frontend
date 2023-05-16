@@ -53,13 +53,13 @@ export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddr
     ],
   })
 
-  const feeNumerator = results[4]?.result
-  const feeDenominator = results[5]?.result
+  const feeNumerator = results?.[4]?.result
+  const feeDenominator = results?.[5]?.result
 
   return {
-    balances: [results[0].result, results[1].result],
-    amplifier: results[2].result,
-    totalSupply: results[3].result,
+    balances: [results?.[0].result, results?.[1].result],
+    amplifier: results?.[2].result,
+    totalSupply: results?.[3].result,
     fee: feeNumerator && feeDenominator && new Percent(feeNumerator, feeDenominator),
     loading: isLoading,
   }
