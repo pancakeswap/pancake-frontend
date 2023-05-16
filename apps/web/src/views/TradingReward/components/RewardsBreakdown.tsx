@@ -4,7 +4,7 @@ import { useTheme } from '@pancakeswap/hooks'
 import { Box, Card, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import { AllTradingRewardPairDetail, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { AllTradingRewardPairDetail } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useRewardBreakdown, { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
 import PairInfo from 'views/TradingReward/components/PairInfo'
@@ -13,7 +13,6 @@ interface RewardsBreakdownProps {
   latestCampaignId: string
   allUserCampaignInfo: UserCampaignInfoDetail[]
   allTradingRewardPairData: AllTradingRewardPairDetail
-  rewardInfo: { [key in string]: RewardInfo }
   campaignPairs: { [campaignId in string]: { [chainId in string]: Array<string> } }
 }
 
@@ -30,7 +29,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   latestCampaignId,
   allUserCampaignInfo,
   allTradingRewardPairData,
-  rewardInfo,
   campaignPairs,
 }) => {
   const {
@@ -46,7 +44,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   const { data, isFetching } = useRewardBreakdown({
     allUserCampaignInfo,
     allTradingRewardPairData,
-    rewardInfo,
     campaignPairs,
   })
 

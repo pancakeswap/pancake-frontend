@@ -85,7 +85,6 @@ const TradingReward = () => {
         latestCampaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
-        rewardInfo={allTradingRewardPairData.rewardInfo}
         campaignPairs={allTradingRewardPairData.campaignPairs}
       />
       <Questions />
