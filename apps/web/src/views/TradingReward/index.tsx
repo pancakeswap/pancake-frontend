@@ -51,11 +51,11 @@ const TradingReward = () => {
 
         return {
           ...item,
-          campaignClaimTime: tradingRewardPair.campaignClaimTime,
-          campaignClaimEndTime: tradingRewardPair.campaignClaimEndTime,
+          campaignClaimTime: tradingRewardPair?.campaignClaimTime,
+          campaignClaimEndTime: tradingRewardPair?.campaignClaimEndTime,
         }
       })
-      .filter((item) => currentTime > item.campaignClaimTime)
+      .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
   if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {

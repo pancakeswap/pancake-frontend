@@ -122,7 +122,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
             </Text>
           ) : null}
           <Text fontSize="12px" color="textSubtle" ml="4px" as="span">
-            {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime) })}
+            {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime ?? 0) })}
           </Text>
         </Text>
         {additionalAmount >= 0.01 && (

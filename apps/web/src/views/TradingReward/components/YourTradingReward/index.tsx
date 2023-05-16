@@ -181,7 +181,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   )
 
   const isValidLockDuration = useMemo(() => {
-    const minLockTime = new BigNumber(incentives.campaignClaimTime).plus(thresholdLockTime)
+    const minLockTime = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime)
     return new BigNumber(userData.lockEndTime).gte(minLockTime)
   }, [incentives, thresholdLockTime, userData])
 
@@ -227,7 +227,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             rewardInfo={rewardInfo}
             currentUserCampaignInfo={currentUserCampaignInfo}
             totalAvailableClaimData={totalAvailableClaimData}
-            campaignClaimTime={incentives.campaignClaimTime}
+            campaignClaimTime={incentives?.campaignClaimTime}
             isQualified={isQualified}
             isLockPosition={isLockPosition}
             isValidLockDuration={isValidLockDuration}
