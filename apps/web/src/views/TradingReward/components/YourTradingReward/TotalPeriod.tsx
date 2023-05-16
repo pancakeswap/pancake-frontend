@@ -55,21 +55,23 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   // Unclaim data
   const unclaimData = useMemo(() => {
-    // eslint-disable-next-line array-callback-return, consistent-return
-    return totalAvailableClaimData
-      .filter((campaign) => {
-        const campaignIncentive = campaignIdsIncentive.find(
-          (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
-        )
-        if (
-          new BigNumber(campaign.canClaim).gt(0) &&
-          !campaign.userClaimedIncentives &&
-          campaignIncentive.isActivated
-        ) {
-          return campaign
-        }
-      })
-      .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
+    return (
+      totalAvailableClaimData
+        // eslint-disable-next-line array-callback-return, consistent-return
+        .filter((campaign) => {
+          const campaignIncentive = campaignIdsIncentive.find(
+            (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
+          )
+          if (
+            new BigNumber(campaign.canClaim).gt(0) &&
+            !campaign.userClaimedIncentives &&
+            campaignIncentive.isActivated
+          ) {
+            return campaign
+          }
+        })
+        .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
+    )
   }, [campaignIdsIncentive, totalAvailableClaimData])
 
   const { isPending, handleClaim } = useClaimAllReward({ campaignIds, unclaimData, qualification })
