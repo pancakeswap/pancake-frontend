@@ -521,9 +521,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.6
         version: 18.2.1
-      '@types/styled-components':
-        specifier: ^5.1.26
-        version: 5.1.26
       eslint:
         specifier: ^8.32.0
         version: 8.32.0
