@@ -2486,5 +2486,6 @@
   "Combined APR": "Combined APR",
   "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.": "Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.",
   "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs.",
-  "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range.": "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range."
+  "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range.": "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range.",
+  "Data and ranking may not be accurate due to heavy spamming. Please pay attention to the risk scanner always DYOR before trading": "Data and ranking may not be accurate due to heavy spamming. Please pay attention to the risk scanner always DYOR before trading"
 }
