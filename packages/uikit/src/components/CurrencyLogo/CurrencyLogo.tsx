@@ -6,7 +6,7 @@ import { useHttpLocations } from "@pancakeswap/hooks";
 
 import { TokenLogo } from "../TokenLogo";
 import { BinanceIcon } from "../Svg";
-import { getTokenLogoURL } from "./utils";
+import { getCurrencyLogoUrls } from "./utils";
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
@@ -29,14 +29,12 @@ export function CurrencyLogo({
     if (currency?.isNative) return [];
 
     if (currency?.isToken) {
-      const tokenLogoURL = getTokenLogoURL(currency);
+      const logoUrls = getCurrencyLogoUrls(currency);
 
       if (currency instanceof WrappedTokenInfo) {
-        if (!tokenLogoURL) return [...uriLocations];
-        return [...uriLocations, tokenLogoURL];
+        return [...uriLocations, ...logoUrls];
       }
-      if (!tokenLogoURL) return [];
-      return [tokenLogoURL];
+      return [...logoUrls];
     }
     return [];
   }, [currency, uriLocations]);
