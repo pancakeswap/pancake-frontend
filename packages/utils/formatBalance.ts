@@ -41,9 +41,9 @@ export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2)
   return number.toLocaleString(undefined, options)
 }
 
-export const formatBigInt = (value: bigint, displayDecimals = 18, decimals = 18) => {
+export const formatBigInt = (value: bigint, displayDecimals = 18, decimals = 18): string => {
   const formatted = formatUnits(value, decimals)
-  return parseFloat(formatted).toFixed(displayDecimals)
+  return parseFloat(parseFloat(formatted).toFixed(displayDecimals)).toString()
 }
 
 /**

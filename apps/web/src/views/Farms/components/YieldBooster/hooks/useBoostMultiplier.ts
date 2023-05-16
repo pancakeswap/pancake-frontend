@@ -42,7 +42,7 @@ async function getPublicMultiplier({ farmBoosterContract }): Promise<number> {
     .times(PRECISION_FACTOR)
     .minus(new BN(BOOST_PRECISION.toString()))
 
-  const boostPercent = PRECISION_FACTOR.times(MAX_BOOST_PRECISION).div(PRECISION_FACTOR)
+  const boostPercent = PRECISION_FACTOR.plus(MAX_BOOST_PRECISION).div(PRECISION_FACTOR)
 
   return _toNumber(boostPercent.toFixed(3).toString())
 }
