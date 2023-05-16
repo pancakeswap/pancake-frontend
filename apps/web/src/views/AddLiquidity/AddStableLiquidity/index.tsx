@@ -68,7 +68,7 @@ export interface AddStableChildrenProps {
       txHash: string | undefined
     }>
   >
-  reserves: [bigint, bigint]
+  reserves: readonly [bigint, bigint]
   pair: StablePair
 }
 

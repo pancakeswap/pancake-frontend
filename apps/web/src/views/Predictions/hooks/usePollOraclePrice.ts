@@ -7,7 +7,7 @@ const usePollOraclePrice = () => {
 
   const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
 
-  const { data: price, refetch } = useContractRead({
+  const { data: price = 0n, refetch } = useContractRead({
     abi: chainlinkOracleContract?.abi,
     address: chainlinkOracleAddress,
     functionName: 'latestAnswer',

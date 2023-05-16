@@ -1,6 +1,7 @@
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { get, set, clear } from 'local-storage'
 import orderBy from 'lodash/orderBy'
+import { getAddress } from 'viem'
 
 export const LS_ORDERS = 'gorders_'
 
@@ -70,7 +71,7 @@ export function removeOrder(chainId: number, account: string, order: Order, pend
 
 export function confirmOrderCancellation(chainId: number, account: string, cancellationHash: string, success = true) {
   const cancelHash = cancellationHash.toLowerCase()
-  const pendingKey = lsKey(`${LS_ORDERS}pending_`, account, chainId)
+  const pendingKey = lsKey(`${LS_ORDERS}pending_`, getAddress(account), chainId)
   const pendingOrders = get<Order[]>(pendingKey)
   const confirmedOrder = pendingOrders.find((order) => order.cancelledTxHash?.toLowerCase() === cancelHash)
 
@@ -99,7 +100,7 @@ export function confirmOrderCancellation(chainId: number, account: string, cance
 
 export function confirmOrderSubmission(chainId: number, account: string, submissionHash: string, success = true) {
   const creationHash = submissionHash.toLowerCase()
-  const pendingKey = lsKey(`${LS_ORDERS}pending_`, account, chainId)
+  const pendingKey = lsKey(`${LS_ORDERS}pending_`, getAddress(account), chainId)
   const pendingOrders = get<Order[]>(pendingKey)
   const confirmedOrder = pendingOrders.find((order) => order.createdTxHash?.toLowerCase() === creationHash)
 

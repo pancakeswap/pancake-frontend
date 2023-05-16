@@ -8,10 +8,11 @@ function useTokenAllowance(token?: Token, owner?: string, spender?: string): Cur
   const contract = useTokenContract(token?.address)
 
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
-  const allowance = useSingleCallResult(spender ? contract : null, 'allowance', inputs).result
+  const allowance = useSingleCallResult(spender && owner ? contract : null, 'allowance', inputs).result
 
   return useMemo(
-    () => (token && allowance ? CurrencyAmount.fromRawAmount(token, allowance.toString()) : undefined),
+    () =>
+      token && typeof allowance !== 'undefined' ? CurrencyAmount.fromRawAmount(token, allowance.toString()) : undefined,
     [token, allowance],
   )
 }

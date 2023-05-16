@@ -354,7 +354,7 @@ export default function PoolPage() {
     addTransaction,
   ])
 
-  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId]).result?.[0]
+  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId]).result
   const ownsNFT = owner === account || positionDetails?.operator === account
 
   const feeValueUpper = inverted ? feeValue0 : feeValue1

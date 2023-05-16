@@ -280,7 +280,7 @@ export interface LedgerData {
 }
 
 export interface RoundData {
-  [key: string]: string
+  [key: string]: ReduxNodeRound
 }
 
 export interface ReduxNodeLedger {
@@ -295,7 +295,6 @@ export interface NodeLedger {
   claimed: boolean
 }
 
-// TODO: wagmi remove this
 export interface ReduxNodeRound {
   epoch: number
   startTimestamp: number | null

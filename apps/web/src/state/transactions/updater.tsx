@@ -5,7 +5,6 @@ import forEach from 'lodash/forEach'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePublicClient } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
-// import { poll } from 'ethers/lib/utils'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
 import { FAST_INTERVAL } from 'config/constants'
@@ -80,6 +79,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
           } catch (error) {
+            console.error(error)
             if (error instanceof TransactionNotFoundError) {
               throw new RetryableError(`Transaction not found: ${transaction.hash}`)
             }

@@ -16,7 +16,6 @@ import {
   Box,
   AutoRenewIcon,
 } from '@pancakeswap/uikit'
-// import { BigNumber, FixedNumber } from 'ethers'
 import BN from 'bignumber.js'
 import { parseUnits } from 'viem'
 import { useAccount } from 'wagmi'
