@@ -9,9 +9,10 @@ import {
   ReduxNodeLedger,
   RoundData,
   HistoryFilter,
+  ReduxNodeRound,
   NodeRound,
 } from 'state/types'
-import { Address, deserialize, serialize } from 'wagmi'
+import { Address } from 'wagmi'
 import { ContractFunctionResult } from 'viem'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
@@ -26,7 +27,18 @@ import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB } from './bnbQueries'
 import { BetResponseCAKE } from './cakeQueries'
 
-export const deserializeRound = (round: string) => deserialize(round) as NodeRound
+const convertBigInt = (value: string | null) => (!value ? 0n : BigInt(value))
+
+export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
+  ...round,
+  bearAmount: convertBigInt(round.bearAmount),
+  bullAmount: convertBigInt(round.bullAmount),
+  totalAmount: convertBigInt(round.totalAmount),
+  lockPrice: convertBigInt(round.lockPrice),
+  closePrice: convertBigInt(round.closePrice),
+  rewardBaseCalAmount: convertBigInt(round.rewardBaseCalAmount),
+  rewardAmount: convertBigInt(round.rewardAmount),
+})
 
 // TODO: refactor it when multi-chain
 const bscClient = getViemClients({ chainId: ChainId.BSC })
@@ -327,31 +339,30 @@ export const getRoundsData = async (epochs: number[], address: Address): Promise
   }))
 }
 
-export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): string => {
-  return serialize({
+export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): ReduxNodeRound => {
+  return {
     epoch,
     startTimestamp,
     lockTimestamp: null,
     closeTimestamp: null,
     lockPrice: null,
     closePrice: null,
-    totalAmount: 0n,
-    bullAmount: 0n,
-    bearAmount: 0n,
-    rewardBaseCalAmount: 0n,
-    rewardAmount: 0n,
+    totalAmount: '0',
+    bullAmount: '0',
+    bearAmount: '0',
+    rewardBaseCalAmount: '0',
+    rewardAmount: '0',
     oracleCalled: false,
     lockOracleId: null,
     closeOracleId: null,
-  })
+  }
 }
 
-export const makeRoundData = (rounds: string[]): RoundData => {
+export const makeRoundData = (rounds: ReduxNodeRound[]): RoundData => {
   return rounds.reduce((accum, round) => {
-    const round_ = deserializeRound(round)
     return {
       ...accum,
-      [round_.epoch.toString()]: round_,
+      [round.epoch.toString()]: round,
     }
   }, {})
 }
@@ -388,7 +399,7 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
 /**
  * Serializes the return from the "rounds" call for redux
  */
-export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): string => {
+export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
   const {
     epoch,
     startTimestamp,
@@ -406,24 +417,22 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     closeOracleId,
   } = response
 
-  const preSerialize: NodeRound = {
+  return {
     oracleCalled,
     epoch: Number(epoch),
     startTimestamp: startTimestamp === 0n ? null : Number(startTimestamp),
     lockTimestamp: lockTimestamp === 0n ? null : Number(lockTimestamp),
     closeTimestamp: closeTimestamp === 0n ? null : Number(closeTimestamp),
-    lockPrice: lockPrice === 0n ? null : lockPrice,
-    closePrice: closePrice === 0n ? null : closePrice,
-    totalAmount,
-    bullAmount,
-    bearAmount,
-    rewardBaseCalAmount,
-    rewardAmount,
+    lockPrice: lockPrice === 0n ? null : lockPrice.toString(),
+    closePrice: closePrice === 0n ? null : closePrice.toString(),
+    totalAmount: totalAmount.toString(),
+    bullAmount: bullAmount.toString(),
+    bearAmount: bearAmount.toString(),
+    rewardBaseCalAmount: rewardBaseCalAmount.toString(),
+    rewardAmount: rewardAmount.toString(),
     lockOracleId: lockOracleId.toString(),
     closeOracleId: closeOracleId.toString(),
   }
-
-  return serialize(preSerialize)
 }
 
 export const fetchUsersRoundsLength = async (account: Address, address: Address) => {

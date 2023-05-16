@@ -1,4 +1,3 @@
-// import { FixedNumber } from 'ethers'
 import BN from 'bignumber.js'
 import { formatUnits } from 'viem'
 import { SerializedFarmConfig, FarmWithPrices } from '@pancakeswap/farms'

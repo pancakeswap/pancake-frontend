@@ -58,7 +58,7 @@ export default function StablePoolPage() {
 
   const { result } = useSingleCallResult(stableSwapInfoContract, 'balances', [selectedLp?.stableSwapAddress])
 
-  const reserves = useMemo(() => (result ? result[0] : ['0', '0']), [result])
+  const reserves = useMemo(() => result || [0n, 0n], [result])
 
   const stableLp = useMemo(() => {
     return selectedLp

@@ -85,26 +85,27 @@ export function useApproveCallback(
 
     let useExact = false
 
-    const estimatedGas = await tokenContract.estimateGas.approve([spender as Address, MaxUint256]).catch(() => {
-      // general fallback for tokens who restrict approval amounts
-      useExact = true
-      return tokenContract.estimateGas.approve([spender  as Address, amountToApprove.quotient]).catch(() => {
-        console.error('estimate gas failure')
-        toastError(t('Error'), t('Unexpected error. Could not estimate gas for the approve.'))
-        return null
+    const estimatedGas = await tokenContract.estimateGas
+      .approve([spender as Address, MaxUint256], {
+        account: tokenContract.account,
       })
-    })
+      .catch(() => {
+        // general fallback for tokens who restrict approval amounts
+        useExact = true
+        return tokenContract.estimateGas
+          .approve([spender as Address, amountToApprove.quotient], { account: tokenContract.account })
+          .catch((e) => {
+            console.error('estimate gas failure', e)
+            toastError(t('Error'), t('Unexpected error. Could not estimate gas for the approve.'))
+            return null
+          })
+      })
 
     if (!estimatedGas) return undefined
 
-    return callWithGasPrice(
-      tokenContract,
-      'approve',
-      [spender, useExact ? amountToApprove.quotient : MaxUint256],
-      {
-        gasLimit: calculateGasMargin(estimatedGas),
-      },
-    )
+    return callWithGasPrice(tokenContract, 'approve', [spender, useExact ? amountToApprove.quotient : MaxUint256], {
+      gasLimit: calculateGasMargin(estimatedGas),
+    })
       .then((response) => {
         addTransaction(response, {
           summary: `Approve ${amountToApprove.currency.symbol}`,

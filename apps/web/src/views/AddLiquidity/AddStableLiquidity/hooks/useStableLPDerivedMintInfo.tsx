@@ -10,9 +10,10 @@ import { useContext, useMemo } from 'react'
 import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
+import { StableConfigContext, UseStableSwapInfoContract } from 'views/Swap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
+import { Address } from 'viem'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -92,24 +93,24 @@ function useMintedStableLP({
   currencyInputAmount,
   currencyOutputAmount,
 }: {
-  stableSwapInfoContract: any
+  stableSwapInfoContract: UseStableSwapInfoContract
   stableSwapConfig: any
   stableSwapAddress: string
   currencyInput: Currency | undefined
   currencyInputAmount: bigint | undefined
   currencyOutputAmount: bigint | undefined
 }) {
-  const quotient0Str = currencyInputAmount?.toString() || '0'
-  const quotient1Str = currencyOutputAmount?.toString() || '0'
+  const quotient0 = currencyInputAmount || 0n
+  const quotient1 = currencyOutputAmount || 0n
 
   const isToken0 =
     currencyInput && stableSwapConfig?.token0 ? currencyInput?.wrapped?.equals(stableSwapConfig?.token0) : false
   const amounts = useMemo(() => {
-    return isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
-  }, [isToken0, quotient0Str, quotient1Str])
+    return isToken0 ? ([quotient0, quotient1] as const) : ([quotient1, quotient0] as const)
+  }, [isToken0, quotient0, quotient1])
 
   const inputs = useMemo(() => {
-    return [stableSwapAddress, amounts]
+    return [stableSwapAddress as Address, amounts] as const
   }, [stableSwapAddress, amounts])
 
   const { result, error, loading, syncing } = useSingleCallResult(
@@ -119,12 +120,12 @@ function useMintedStableLP({
   )
 
   // TODO: Combine get_add_liquidity_mint_amount + balances in one call
-  const balanceResult = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress])
+  const balanceResult = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress as Address])
 
   return useMemo(
     () => ({
-      reserves: balanceResult?.result?.[0] || [0n, 0n],
-      data: result?.[0],
+      reserves: balanceResult?.result || [0n, 0n],
+      data: result,
       loading: loading || syncing,
       error,
     }),
@@ -149,7 +150,7 @@ export function useStableLPDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
   addError?: string
-  reserves: [bigint, bigint]
+  reserves: readonly [bigint, bigint]
 } {
   const { address: account } = useAccount()
 

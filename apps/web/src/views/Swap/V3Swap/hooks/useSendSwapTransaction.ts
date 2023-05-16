@@ -9,7 +9,7 @@ import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useMemo } from 'react'
 import { useSwapState } from 'state/swap/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { isAddress } from 'utils'
+import { calculateGasMargin, isAddress } from 'utils'
 import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
@@ -133,19 +133,9 @@ export default function useSendSwapTransaction(
           to: address,
           data: calldata,
           value: value && !isZero(value) ? hexToBigInt(value) : undefined,
-          // TODO: wagmi
-          // ...('gasEstimate' in bestCallOption ? { gas: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
+          ...('gasEstimate' in bestCallOption ? { gas: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
         })
           .then((response) => {
-            // TODO: wagmi
-            // if (calldata !== response.data) {
-            //   throw new InvalidSwapError(
-            //     t(
-            //       'Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.',
-            //     ),
-            //   )
-            // }
-
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             const pct = basisPointsToPercent(allowedSlippage)

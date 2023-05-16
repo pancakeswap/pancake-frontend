@@ -204,9 +204,14 @@ export default function AddLiquidity({
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    await estimate?.(...args, value ? { value } : {})
-      ?.then((estimatedGasLimit) =>
-        method(...args, {
+    await estimate(
+      args,
+      value
+        ? { value, account: routerContract.account, chain: routerContract.chain }
+        : { account: routerContract.account, chain: routerContract.chain },
+    )
+      .then((estimatedGasLimit) =>
+        method(args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
           gasPrice,
