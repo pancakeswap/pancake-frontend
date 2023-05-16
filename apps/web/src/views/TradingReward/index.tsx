@@ -23,8 +23,8 @@ const TradingReward = () => {
   )
 
   const isFetching = useMemo(
-    () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo,
-    [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo],
+    () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo || isCampaignInfoFetching,
+    [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo, isCampaignInfoFetching],
   )
 
   const currentUserIncentive = useMemo(

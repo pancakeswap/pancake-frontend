@@ -97,7 +97,7 @@ const useRewardBreakdown = ({
                     )
 
                     const rewardEarned =
-                      incentive.campaignClaimTime - currentDate > 0
+                      incentive?.campaignClaimTime - currentDate > 0
                         ? userData?.estimateRewardUSD || 0
                         : rewardCakeAmount.times(rewardCakeUSDPriceAsBg).toNumber() || 0
 
