@@ -31,6 +31,7 @@ import { formatRawAmount, formatCurrencyAmount } from 'utils/formatCurrencyAmoun
 import { basisPointsToPercent } from 'utils/exchange'
 import { hexToBigInt } from 'viem'
 import { isUserRejected } from 'utils/sentry'
+import { getViemClients } from 'utils/viem'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
@@ -170,13 +171,23 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             })
 
       setAttemptingTxn(true)
-      // TODO: wagmi calculateGasMargin
-      sendTransactionAsync({
-        account,
-        to: manager.address,
-        data: calldata,
-        value: hexToBigInt(value),
-      })
+      getViemClients({ chainId })
+        .estimateGas({
+          account,
+          to: manager.address,
+          data: calldata,
+          value: hexToBigInt(value),
+        })
+        .then((gasLimit) => {
+          return sendTransactionAsync({
+            account,
+            to: manager.address,
+            data: calldata,
+            value: hexToBigInt(value),
+            gas: calculateGasMargin(gasLimit),
+            chainId,
+          })
+        })
         .then((response) => {
           const baseAmount = formatRawAmount(
             parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',

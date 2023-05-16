@@ -14,6 +14,7 @@ import {
   LeaderboardFilter,
   PredictionsChartView,
   PredictionConfig,
+  ReduxNodeRound,
 } from 'state/types'
 import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
@@ -34,7 +35,6 @@ import {
   LEADERBOARD_RESULTS_PER_PAGE,
   getPredictionUser,
   getHasRoundFailed,
-  deserializeRound,
 } from './helpers'
 import { resetUserState } from '../global/actions'
 
@@ -89,7 +89,7 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Ad
 
     // Round data
     const roundsResponse = await getRoundsData(epochs, extra.address)
-    const initialRoundData: { [key: string]: string } = roundsResponse.reduce((accum, roundResponse) => {
+    const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
       const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
       return {
@@ -412,8 +412,8 @@ export const predictionsSlice = createSlice({
         return Number(key) > state.currentEpoch - PAST_ROUND_COUNT
       })
 
-      const futureRounds: string[] = []
-      const currentRound = deserializeRound(rounds[currentEpoch])
+      const futureRounds: ReduxNodeRound[] = []
+      const currentRound = rounds[currentEpoch]
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
         futureRounds.push(
           makeFutureRoundResponse(currentEpoch + i, Number(currentRound.startTimestamp) + intervalSeconds * i),

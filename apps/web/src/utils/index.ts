@@ -8,7 +8,11 @@ import { chains } from './wagmi'
 // returns the checksummed address if the address is valid, otherwise returns false
 export const isAddress = memoize((value: any): `0x${string}` | false => {
   try {
-    return getAddress(value)
+    let value_ = value
+    if (typeof value === 'string' && !value.startsWith('0x')) {
+      value_ = `0x${value}`
+    }
+    return getAddress(value_)
   } catch {
     return false
   }
