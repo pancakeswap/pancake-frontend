@@ -1,4 +1,4 @@
-import { parseUnits } from 'viem'
+import { Address, parseUnits } from 'viem'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
@@ -183,14 +183,25 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
     },
     onConfirm: () => {
       if (stage === SellingStage.CONFIRM_REMOVE_FROM_MARKET) {
-        return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [nftToSell.collectionAddress, nftToSell.tokenId])
+        return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [
+          nftToSell.collectionAddress,
+          BigInt(nftToSell.tokenId),
+        ])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(collectionContract, 'safeTransferFrom', [account, transferAddress, nftToSell.tokenId])
+        return callWithGasPrice(collectionContract, 'safeTransferFrom', [
+          account,
+          transferAddress as Address,
+          BigInt(nftToSell.tokenId),
+        ])
       }
       const methodName = variant === 'sell' ? 'createAskOrder' : 'modifyAskOrder'
       const askPrice = parseUnits(price as `${number}`, 18)
-      return callWithGasPrice(nftMarketContract, methodName, [nftToSell.collectionAddress, nftToSell.tokenId, askPrice])
+      return callWithGasPrice(nftMarketContract, methodName, [
+        nftToSell.collectionAddress,
+        BigInt(nftToSell.tokenId),
+        askPrice,
+      ])
     },
     onSuccess: async ({ receipt }) => {
       toastSuccess(getToastText(variant, stage, t), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)

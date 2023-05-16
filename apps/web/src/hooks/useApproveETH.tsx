@@ -5,6 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { Address } from 'viem'
 import { useTokenContract } from 'hooks/useContract'
 import { WETH9 } from '@pancakeswap/sdk'
 import { useActiveChainId } from './useActiveChainId'
@@ -20,7 +21,7 @@ export const useApproveETH = (spender: string) => {
 
   const onApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(ethContract, 'approve', [spender, MaxUint256])
+      return callWithGasPrice(ethContract, 'approve', [spender as Address, MaxUint256])
     })
 
     if (receipt?.status) {

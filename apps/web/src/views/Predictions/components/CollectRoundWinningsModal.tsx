@@ -115,7 +115,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
 
   const handleClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(predictionsContract, 'claim', [epochs])
+      return callWithGasPrice(predictionsContract as any, 'claim', [epochs])
     })
     if (receipt?.status) {
       if (!isV1Claim) {

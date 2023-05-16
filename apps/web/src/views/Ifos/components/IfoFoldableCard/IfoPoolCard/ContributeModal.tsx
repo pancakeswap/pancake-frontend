@@ -45,7 +45,7 @@ interface Props {
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
 // Default value for transaction setting, tweak based on BSC network congestion.
-const gasPrice = parseEther('10', 'gwei').toString()
+const gasPrice = parseEther('10', 'gwei')
 
 const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
@@ -94,7 +94,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
       },
       onConfirm: () => {
         return callWithGasPrice(
-          contract,
+          contract as any,
           'depositPool',
           [valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1],
           {
