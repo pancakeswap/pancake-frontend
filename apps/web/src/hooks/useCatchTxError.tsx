@@ -5,7 +5,8 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { ToastDescriptionWithTx } from 'components/Toast'
 
 import { logError, isUserRejected } from 'utils/sentry'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useProvider } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export type TxResponse = TransactionResponse | null
 
@@ -30,11 +31,12 @@ type TxError = {
 const isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
 
 export default function useCatchTxError(): CatchTxErrorReturn {
-  const { provider } = useActiveWeb3React()
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
   const [txResponseLoading, setTxResponseLoading] = useState(false)
+  const { chainId } = useActiveChainId()
+  const provider = useProvider({ chainId })
 
   const handleNormalError = useCallback(
     (error, tx?: TxResponse) => {
@@ -68,9 +70,9 @@ export default function useCatchTxError(): CatchTxErrorReturn {
          */
         tx = await callTx()
 
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx?.hash} />)
 
-        const receipt = await tx.wait()
+        const receipt = await tx?.wait()
 
         return receipt
       } catch (error: any) {
@@ -110,11 +112,11 @@ export default function useCatchTxError(): CatchTxErrorReturn {
                   const indexInfo = reason?.indexOf(REVERT_STR)
                   const isRevertedError = indexInfo >= 0
 
-                  if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
+                  if (isRevertedError) reason = reason?.substring(indexInfo + REVERT_STR.length)
 
                   toastError(
                     t('Failed'),
-                    <ToastDescriptionWithTx txHash={tx.hash}>
+                    <ToastDescriptionWithTx txHash={tx?.hash}>
                       {isRevertedError
                         ? t('Transaction failed with error: %reason%', { reason })
                         : t('Transaction failed. For detailed error message:')}
@@ -147,7 +149,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
          */
         tx = await callTx()
 
-        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx?.hash} />)
 
         return tx
       } catch (error: any) {
@@ -187,11 +189,11 @@ export default function useCatchTxError(): CatchTxErrorReturn {
                   const indexInfo = reason?.indexOf(REVERT_STR)
                   const isRevertedError = indexInfo >= 0
 
-                  if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
+                  if (isRevertedError) reason = reason?.substring(indexInfo + REVERT_STR.length)
 
                   toastError(
                     t('Failed'),
-                    <ToastDescriptionWithTx txHash={tx.hash}>
+                    <ToastDescriptionWithTx txHash={tx?.hash}>
                       {isRevertedError
                         ? t('Transaction failed with error: %reason%', { reason })
                         : t('Transaction failed. For detailed error message:')}

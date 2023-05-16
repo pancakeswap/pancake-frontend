@@ -5,7 +5,6 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useSWR from 'swr'
@@ -13,7 +12,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
 import { useFeeData, useSigner } from 'wagmi'
 
-import { AppState, useAppDispatch } from '../../index'
+import { AppState, useAppDispatch } from 'state'
 import {
   addSerializedPair,
   addSerializedToken,
@@ -270,7 +269,7 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   maxFeePerGas?: string
   maxPriorityFeePerGas?: string
 } {
-  const { chainId: chainId_ } = useActiveWeb3React()
+  const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
   const gasPrice = useGasPrice(chainId)
   const { data } = useFeeData({
@@ -296,15 +295,15 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
  * Note that this hook will only works well for BNB chain
  */
 export function useGasPrice(chainIdOverride?: number): string | undefined {
-  const { chainId: chainId_ } = useActiveWeb3React()
+  const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
   const { data: signer } = useSigner({ chainId })
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
-      const gasPrice = await signer.getGasPrice()
-      return gasPrice.toString()
+      const gasPrice = await signer?.getGasPrice()
+      return gasPrice?.toString()
     },
     {
       revalidateOnFocus: false,
@@ -374,9 +373,9 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
     const farms = await getFarmConfig(chainId)
 
-    const fPairs: [ERC20Token, ERC20Token][] = farms
-      .filter((farm) => farm.pid !== 0)
-      .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+    const fPairs: [ERC20Token, ERC20Token][] | undefined = farms
+      ?.filter((farm) => farm.pid !== 0)
+      ?.map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
 
     return fPairs
   })

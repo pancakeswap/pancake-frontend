@@ -2,7 +2,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { AppState, useAppDispatch } from 'state'
 import pickBy from 'lodash/pickBy'
 import mapValues from 'lodash/mapValues'
 import keyBy from 'lodash/keyBy'
@@ -14,6 +14,7 @@ import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TransactionDetails } from './reducer'
 import {
   addTransaction,
@@ -22,7 +23,6 @@ import {
   FarmTransactionStatus,
   NonBscFarmStepType,
 } from './actions'
-import { AppState, useAppDispatch } from '../index'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
@@ -49,7 +49,7 @@ export function useTransactionAdder(): (
     expectedCurrencyOwed1?: string
   },
 ) => void {
-  const { chainId, account } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const dispatch = useAppDispatch()
 
   return useCallback(
@@ -224,7 +224,7 @@ export function usePendingTransactions(): {
 
   const nonBscFarmPendingList = sortedRecentTransactions
     .filter((tx) => pending.includes(tx.hash) && !!tx.nonBscFarm)
-    .map((tx) => ({ txid: tx.hash, lpAddress: tx.nonBscFarm.lpAddress, type: tx.nonBscFarm.type }))
+    .map((tx) => ({ txid: tx?.hash, lpAddress: tx?.nonBscFarm?.lpAddress, type: tx?.nonBscFarm?.type }))
 
   return {
     hasPendingTransactions,

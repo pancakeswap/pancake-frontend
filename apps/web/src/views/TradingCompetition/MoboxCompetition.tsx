@@ -15,8 +15,8 @@ import {
   OVER,
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@pancakeswap/sdk'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import { RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
@@ -39,7 +39,7 @@ import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParti
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
 
 const MoboxCompetition = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading: isProfileLoading } = useProfile()

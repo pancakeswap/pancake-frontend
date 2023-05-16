@@ -14,12 +14,12 @@ import {
   MessageText,
   Message,
 } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import useBCakeProxyBalance from '../hooks/useBCakeProxyBalance'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
@@ -143,7 +143,7 @@ export const BCakeBoosterCard = () => {
 
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()

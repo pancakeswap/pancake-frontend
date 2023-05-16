@@ -13,7 +13,6 @@ import {
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { FC, useContext, useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import styled, { css, keyframes } from 'styled-components'
@@ -23,6 +22,7 @@ import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { useAccount } from 'wagmi'
 import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
@@ -163,7 +163,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const farm = details
   const isActive = farm.multiplier !== '0X'
   const lpLabel = useMemo(() => farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, ''), [farm.lpSymbol])

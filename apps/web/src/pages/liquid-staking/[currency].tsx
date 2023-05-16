@@ -18,7 +18,6 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
 import { useSWRContract } from 'hooks/useSWRContract'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
@@ -29,6 +28,7 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingApr'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 // import { calculateGasMargin } from 'utils'
 
@@ -40,7 +40,7 @@ const LiquidStakingStakePage = () => {
   // const [estimatedGas, setEstimatedGas] = useState()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading } = useCatchTxError()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const masterChefAddress = masterChefV3Addresses[chainId]
 

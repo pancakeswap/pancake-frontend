@@ -12,7 +12,7 @@ export const getDecimalAmount = (amount: BigNumber, decimals = 18) => {
   return new BigNumber(amount).times(getFullDecimalMultiplier(decimals))
 }
 
-export const getBalanceAmount = (amount: BigNumber, decimals = 18) => {
+export const getBalanceAmount = (amount: BigNumber, decimals: number | undefined = 18) => {
   return new BigNumber(amount).dividedBy(getFullDecimalMultiplier(decimals))
 }
 

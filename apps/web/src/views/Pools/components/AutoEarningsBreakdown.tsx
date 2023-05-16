@@ -60,6 +60,13 @@ const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakd
           </Text>
         </Box>
       ) : null}
+      <Box mt="12px">
+        <Text>
+          {t(
+            '*Please note that any deposit, withdraw, extend or convert action will combine earned rewards with the original staked amount. Resetting this number to 0.',
+          )}
+        </Text>
+      </Box>
     </>
   )
 }

@@ -1,9 +1,9 @@
 import { CSSProperties } from 'react'
 import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { APTOS_COIN } from '@pancakeswap/awgmi'
+import { useActiveChainId } from 'hooks/useNetwork'
 import ImportTokenRow from './ImportTokenRow'
 
 export default function ImportRow({
@@ -22,7 +22,7 @@ export default function ImportRow({
   setImportToken: (token: Token) => void
 }) {
   // globals
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
 
   // check if token comes from list
   const inactiveTokenList = useCombinedInactiveList()

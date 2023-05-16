@@ -2,6 +2,17 @@ import type { NextConfig } from 'next'
 
 type Headers = Awaited<ReturnType<NonNullable<NextConfig['headers']>>>
 
+function createCSP() {
+  const IFRAME_WHITE_LIST = ['https://*.safe.global']
+
+  const rules = [`frame-ancestors 'self' ${IFRAME_WHITE_LIST.join(' ')}`, 'report-uri /api/_report/csp']
+
+  return {
+    key: 'Content-Security-Policy',
+    value: rules.join('; '),
+  }
+}
+
 export function withWebSecurityHeaders(config: NextConfig): NextConfig {
   const originalHeaders = config.headers || []
   // eslint-disable-next-line no-param-reassign
@@ -15,10 +26,6 @@ export function withWebSecurityHeaders(config: NextConfig): NextConfig {
             value: 'nosniff',
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains',
           },
@@ -26,6 +33,7 @@ export function withWebSecurityHeaders(config: NextConfig): NextConfig {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          createCSP(),
         ],
       },
     ]

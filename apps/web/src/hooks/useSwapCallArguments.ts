@@ -1,10 +1,10 @@
 import { Contract } from 'ethers'
 import { Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useRouterContract } from 'utils/exchange'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useTransactionDeadline from './useTransactionDeadline'
 
 export interface SwapCall {
@@ -23,7 +23,7 @@ export function useSwapCallArguments(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const recipient = recipientAddress === null ? account : recipientAddress
   const deadline = useTransactionDeadline()

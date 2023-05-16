@@ -10,7 +10,7 @@ import {
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/swap'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useNetwork'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
 import formatAmountDisplay from '../../utils/formatAmountDisplay'
@@ -86,7 +86,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   txHash,
   openSettingModal,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
   const { t } = useTranslation()
 
   const handleDismiss = useCallback(() => {

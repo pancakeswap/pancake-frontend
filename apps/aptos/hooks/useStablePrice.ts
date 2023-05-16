@@ -10,6 +10,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import useNativeCurrency from './useNativeCurrency'
 import { usePairs } from './usePairs'
 import getCurrencyPrice from '../utils/getCurrencyPrice'
+import { useActiveChainId } from './useNetwork'
 
 /**
  * Returns the price in stable of the input currency
@@ -70,13 +71,13 @@ export const useStableCakeAmount = (_amount: number): number | undefined => {
 export { useCakePrice }
 
 export const usePriceCakeUsdc = () => {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
   const cakePrice = useTokenUsdcPrice(CAKE[chainId])
   return useMemo(() => (cakePrice ? new BigNumber(cakePrice) : BIG_ZERO), [cakePrice])
 }
 
 export const useTokenUsdcPrice = (currency?: Currency): BigNumber => {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
   const USDC = L0_USDC[currency?.chainId || chainId]
 
   const allowedPairs = useAllCommonPairs(currency, USDC)

@@ -24,7 +24,7 @@ export function useCallWithGasPrice() {
     async (
       contract: Contract,
       methodName: string,
-      methodArgs: any[] = [],
+      methodArgs: any[] | undefined = [],
       overrides: CallOverrides = null,
     ): Promise<TransactionResponse> => {
       addBreadcrumb({

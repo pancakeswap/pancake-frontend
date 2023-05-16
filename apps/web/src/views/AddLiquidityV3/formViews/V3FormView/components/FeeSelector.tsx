@@ -5,7 +5,6 @@ import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, useV2Pair } from 'hooks/usePairs'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
@@ -13,6 +12,7 @@ import { usePools } from 'hooks/v3/usePools'
 import { useEffect, useMemo, useState } from 'react'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeOption } from './FeeOption'
 import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL, SelectContainer } from './shared'
@@ -36,7 +36,7 @@ export default function FeeSelector({
   handleSelectV2?: () => void
 }) {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const farmV3Config = farmsV3ConfigChainMap[currencyA?.chainId as ChainId]
 
   const farmV3 = useMemo(() => {

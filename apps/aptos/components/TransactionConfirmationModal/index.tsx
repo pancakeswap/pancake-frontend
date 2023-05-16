@@ -13,10 +13,10 @@ import {
   ModalProps,
   Text,
 } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { useActiveChainId } from 'hooks/useNetwork'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -77,7 +77,7 @@ interface ConfirmationModalProps {
 const TransactionConfirmationModal: React.FC<
   React.PropsWithChildren<InjectedModalProps & ConfirmationModalProps & ModalProps>
 > = ({ title, onDismiss, customOnDismiss, attemptingTxn, hash, pendingText, content, ...props }) => {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {

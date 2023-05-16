@@ -15,11 +15,11 @@ import {
 } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAddUserToken } from 'state/user'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { useActiveChainId } from 'hooks/useNetwork'
 
 interface ImportProps {
   tokens: Token[]
@@ -27,7 +27,7 @@ interface ImportProps {
 }
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
 
   const { t } = useTranslation()
 

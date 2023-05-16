@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -18,6 +17,8 @@ import {
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { multicallv2 } from 'utils/multicall'
+
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -38,7 +39,7 @@ export function useFarmsLength() {
 }
 
 export function useFarmV2PublicAPI() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useSWRImmutable(chainId ? ['farm-v2-pubic-api', chainId] : null, async () => {
     return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
       .then((res) => res.json())
@@ -48,7 +49,7 @@ export function useFarmV2PublicAPI() {
 
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const {
     proxyAddress,
     proxyCreated,
@@ -58,7 +59,7 @@ export const usePollFarmsWithUserData = () => {
   useSWRImmutable(
     chainId ? ['publicFarmData', chainId] : null,
     async () => {
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = (await getFarmConfig(chainId)) || []
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
@@ -75,7 +76,7 @@ export const usePollFarmsWithUserData = () => {
   useSWRImmutable(
     account && chainId && !isProxyContractLoading ? name : null,
     async () => {
-      const farmsConfig = await getFarmConfig(chainId)
+      const farmsConfig = (await getFarmConfig(chainId)) || []
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
       dispatch(fetchFarmUserDataAsync(params))

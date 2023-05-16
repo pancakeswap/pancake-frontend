@@ -1,5 +1,4 @@
 import { Order, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
@@ -8,6 +7,7 @@ import { getLSOrders, saveOrder, saveOrders, hashOrderSet, hashOrder } from 'uti
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 
 import orderBy from 'lodash/orderBy'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
 export const OPEN_ORDERS_SWR_KEY = ['gelato', 'openOrders']
@@ -70,7 +70,7 @@ async function syncOrderToLocalStorage({
 }
 
 const useOpenOrders = (turnOn: boolean): Order[] => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
@@ -118,7 +118,7 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
 }
 
 const useHistoryOrders = (turnOn: boolean): Order[] => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
@@ -166,7 +166,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
 }
 
 const useExpiredOrders = (turnOn: boolean): Order[] => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId

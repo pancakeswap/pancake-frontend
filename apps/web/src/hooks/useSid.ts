@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { namehash } from 'ethers/lib/utils'
 import { getSidResolverContract } from 'utils/contractHelpers'
-import { FetchStatus } from '../config/constants/types'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { FetchStatus } from 'config/constants/types'
 import { useSIDContract } from './useContract'
 
 function getSidAddress(networkId) {
@@ -26,7 +26,7 @@ function getSidAddress(networkId) {
 }
 
 export const useSidNameForAddress = (address: string, fetchData = true) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const sidContract = useSIDContract(getSidAddress(chainId), chainId)
 
   const { data: sidName, status } = useSWRImmutable(
