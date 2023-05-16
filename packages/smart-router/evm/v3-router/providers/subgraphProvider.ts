@@ -1,10 +1,11 @@
-import { ChainId, Currency, JSBI, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token, WNATIVE } from '@pancakeswap/sdk'
 import { parseProtocolFees, Pool, FeeAmount } from '@pancakeswap/v3-sdk'
 import { gql } from 'graphql-request'
 import { BASES_TO_CHECK_TRADES_AGAINST } from '../../constants'
 
 import { PoolType, SubgraphProvider, V3Pool } from '../types'
 import { metric } from '../utils'
+import { getV3PoolSelectorConfig } from '../utils/getPoolSelectorConfig'
 import { V3PoolMeta } from './onChainPoolProviderFactory'
 
 const query = gql`
@@ -32,7 +33,7 @@ type V3PoolSubgraphResult = {
 }
 
 interface PoolWithTvl {
-  tvlUSD: JSBI
+  tvlUSD: bigint
 }
 
 export type SubgraphV3Pool = V3Pool & PoolWithTvl
@@ -84,11 +85,11 @@ export const getV3PoolSubgraph = async ({
       fee,
       token0,
       token1,
-      liquidity: JSBI.BigInt(liquidity),
-      sqrtRatioX96: JSBI.BigInt(sqrtPrice),
+      liquidity: BigInt(liquidity),
+      sqrtRatioX96: BigInt(sqrtPrice),
       tick: Number(tick),
       address,
-      tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
+      tvlUSD: BigInt(Number.parseInt(totalValueLockedUSD)),
       token0ProtocolFee,
       token1ProtocolFee,
     }
@@ -123,25 +124,18 @@ function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
   })
 }
 
-const POOL_SELECTION_CONFIG = {
-  topN: 2,
-  topNDirectSwaps: 2,
-  topNTokenInOut: 2,
-  topNSecondHop: 1,
-  topNWithEachBaseToken: 3,
-  topNWithBaseToken: 3,
-}
-
-const sortByTvl = (a: SubgraphV3Pool, b: SubgraphV3Pool) => (JSBI.greaterThanOrEqual(a.tvlUSD, b.tvlUSD) ? -1 : 1)
+const sortByTvl = (a: SubgraphV3Pool, b: SubgraphV3Pool) => (a.tvlUSD >= b.tvlUSD ? -1 : 1)
 
 export function v3PoolSubgraphSelection(
   currencyA: Currency,
   currencyB: Currency,
-  poolsFromSubgraph: SubgraphV3Pool[],
+  unorderedPoolsFromSubgraph: SubgraphV3Pool[],
 ): V3Pool[] {
-  if (!poolsFromSubgraph.length) {
+  const POOL_SELECTION_CONFIG = getV3PoolSelectorConfig(currencyA, currencyB)
+  if (!unorderedPoolsFromSubgraph.length) {
     return []
   }
+  const poolsFromSubgraph = unorderedPoolsFromSubgraph.sort(sortByTvl)
   const {
     token0: { chainId },
   } = poolsFromSubgraph[0]

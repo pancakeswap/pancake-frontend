@@ -1,4 +1,4 @@
-import { BigNumberish } from '@ethersproject/bignumber'
+import { BigNumberish } from 'ethers'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs

@@ -1,4 +1,4 @@
-import { BigintIsh, CurrencyAmount, Currency, JSBI, ZERO, Percent } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, Currency, ZERO, Percent } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { getD } from './amm'
@@ -26,13 +26,13 @@ export function getLPOutput({
   const lpToken = totalSupply.currency
   const lpTotalSupply = totalSupply.quotient
   // No liquidity in pool
-  if (JSBI.equal(lpTotalSupply, ZERO) || !balances.length || balances.every((b) => JSBI.equal(b.quotient, ZERO))) {
+  if (lpTotalSupply === ZERO || !balances.length || balances.every((b) => b.quotient === ZERO)) {
     const d = getD({ amplifier, balances: amounts.map(getRawAmount) })
     return CurrencyAmount.fromRawAmount(lpToken, d)
   }
 
-  const currentBalances: JSBI[] = []
-  const newBalances: JSBI[] = []
+  const currentBalances: bigint[] = []
+  const newBalances: bigint[] = []
   for (const [i, balance] of balances.entries()) {
     const amount = amounts[i] || CurrencyAmount.fromRawAmount(balance.currency, 0)
     invariant(
@@ -42,14 +42,14 @@ export function getLPOutput({
     const balanceRaw = getRawAmount(balance)
     const amountRaw = getRawAmount(amount)
     currentBalances.push(balanceRaw)
-    newBalances.push(JSBI.add(balanceRaw, amountRaw))
+    newBalances.push(balanceRaw + amountRaw)
   }
 
   const d0 = getD({ amplifier, balances: currentBalances })
   const d1 = getD({ amplifier, balances: newBalances })
-  invariant(JSBI.greaterThanOrEqual(d1, d0), 'D1 should be greater than or equal than d0.')
+  invariant(d1 >= d0, 'D1 should be greater than or equal than d0.')
 
-  const isFirstSupply = JSBI.lessThanOrEqual(lpTotalSupply, ZERO)
+  const isFirstSupply = lpTotalSupply <= ZERO
   if (isFirstSupply) {
     return CurrencyAmount.fromRawAmount(totalSupply.currency, d1)
   }
@@ -59,18 +59,19 @@ export function getLPOutput({
 
   let d2 = d1
   for (const [i, b] of currentBalances.entries()) {
-    const idealBalance = JSBI.divide(JSBI.multiply(d1, b), d0)
+    const idealBalance = (d1 * b) / d0
     let diff = ZERO
-    if (JSBI.greaterThan(idealBalance, newBalances[i])) {
-      diff = JSBI.subtract(idealBalance, newBalances[i])
+    if (idealBalance > newBalances[i]) {
+      diff = idealBalance - newBalances[i]
     } else {
-      diff = JSBI.subtract(newBalances[i], idealBalance)
+      diff = newBalances[i] - idealBalance
     }
     const feeAmount = eachTokenFee.multiply(diff).quotient
-    newBalances[i] = JSBI.subtract(newBalances[i], feeAmount)
+    // eslint-disable-next-line operator-assignment
+    newBalances[i] = newBalances[i] - feeAmount
   }
   d2 = getD({ amplifier, balances: newBalances })
 
-  const expectedMintLP = JSBI.divide(JSBI.multiply(lpTotalSupply, JSBI.subtract(d2, d0)), d0)
+  const expectedMintLP = (lpTotalSupply * (d2 - d0)) / d0
   return CurrencyAmount.fromRawAmount(totalSupply.currency, expectedMintLP)
 }

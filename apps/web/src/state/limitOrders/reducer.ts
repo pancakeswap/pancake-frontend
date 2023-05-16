@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { atomWithReducer } from 'jotai/utils'
 import { replaceLimitOrdersState, selectCurrency, typeInput, switchCurrencies, setRateType } from './actions'
 import { Field, Rate, OrderState } from './types'
 
@@ -17,7 +18,7 @@ export const initialState: OrderState = {
   rateType: Rate.MUL,
 }
 
-export default createReducer<OrderState>(initialState, (builder) =>
+const reducer = createReducer<OrderState>(initialState, (builder) =>
   builder
     .addCase(replaceLimitOrdersState, (state, { payload }) => {
       return payload
@@ -77,3 +78,5 @@ export default createReducer<OrderState>(initialState, (builder) =>
       state.rateType = rateType
     }),
 )
+
+export const limitReducerAtom = atomWithReducer(initialState, reducer)

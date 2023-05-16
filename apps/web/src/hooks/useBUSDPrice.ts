@@ -2,7 +2,6 @@ import {
   ChainId,
   Currency,
   CurrencyAmount,
-  JSBI,
   Pair,
   Price,
   Token,
@@ -17,27 +16,35 @@ import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
+import { warningSeverity } from 'utils/exchange'
 import { usePairContract } from './useContract'
 import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
 
-export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
+type UseStablecoinPriceConfig = {
+  enabled?: boolean
+  hideIfPriceImpactTooHigh?: boolean
+}
+const DEFAULT_CONFIG: UseStablecoinPriceConfig = {
+  enabled: true,
+  hideIfPriceImpactTooHigh: false,
+}
+
+export function useStablecoinPrice(
+  currency?: Currency,
+  config: UseStablecoinPriceConfig = DEFAULT_CONFIG,
+): Price<Currency, Currency> | undefined {
   const { chainId: currentChainId } = useActiveChainId()
   const chainId = currency?.chainId
-
-  const baseTradeAgainst = useMemo(
-    () =>
-      currency && BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId]?.find((c) => c.wrapped.equals(currency.wrapped)),
-    [chainId, currency],
-  )
+  const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
   const cakePrice = useCakePriceAsBN()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
@@ -77,9 +84,9 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     baseCurrency: stableCoin,
     tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
-    maxHops: baseTradeAgainst ? 2 : 3,
     enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
     autoRevalidate: false,
+    type: 'api',
   })
 
   const price = useMemo(() => {
@@ -115,11 +122,31 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     if (trade) {
       const { inputAmount, outputAmount } = trade
 
+      // if price impact is too high, don't show price
+      if (hideIfPriceImpactTooHigh) {
+        const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+
+        if (!priceImpactWithoutFee || warningSeverity(priceImpactWithoutFee) > 2) {
+          return undefined
+        }
+      }
+
       return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
     }
 
     return undefined
-  }, [cakePrice, currency, enableLlama, isCake, isStableCoin, priceFromLlama, enabled, stableCoin, trade])
+  }, [
+    currency,
+    stableCoin,
+    enabled,
+    isCake,
+    cakePrice,
+    isStableCoin,
+    priceFromLlama,
+    enableLlama,
+    trade,
+    hideIfPriceImpactTooHigh,
+  ])
 
   return price
 }
@@ -182,10 +209,10 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
       busdBnbPair.reserve1.greaterThan('0')
 
     const bnbPairBNBAmount = isBnbPairExist && bnbPair?.reserveOf(wnative)
-    const bnbPairBNBBUSDValue: JSBI =
+    const bnbPairBNBBUSDValue: bigint =
       bnbPairBNBAmount && isBUSDPairExist && isBusdBnbPairExist
         ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient
-        : JSBI.BigInt(0)
+        : 0n
 
     // all other tokens
     // first try the busd pair
@@ -250,8 +277,12 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   return price
 }
 
-export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const stablePrice = useStablecoinPrice(currency, !!currency)
+export const useStablecoinPriceAmount = (
+  currency?: Currency,
+  amount?: number,
+  config?: UseStablecoinPriceConfig,
+): number | undefined => {
+  const stablePrice = useStablecoinPrice(currency, { enabled: !!currency, ...config })
 
   if (amount) {
     if (stablePrice) {

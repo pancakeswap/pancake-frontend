@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/react-library",
+  "extends": "@pancakeswap/tsconfig/react-library",
   "compilerOptions": {
     "esModuleInterop": true,
     "isolatedModules": true,

@@ -44,7 +44,7 @@ const PoolRow: React.FC<
         />
       )}
       <Pool.AprCell<Coin> pool={pool} aprComp={Apr} />
-      <Pool.EndsInCell<Coin> pool={pool} getNow={getNow} />
+      {isLargerScreen && <Pool.EndsInCell<Coin> pool={pool} getNow={getNow} />}
     </Pool.ExpandRow>
   )
 }

@@ -1,7 +1,6 @@
 import '@pancakeswap/ui/css/reset.css'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { Analytics } from '@vercel/analytics/react'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
@@ -32,6 +31,12 @@ import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
+
+// @ts-ignore
+// eslint-disable-next-line func-names
+BigInt.prototype.toJSON = function () {
+  return this.toString()
+}
 
 // This config is required for number formatting
 BigNumber.config({
@@ -99,7 +104,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           </PersistGate>
         </Blocklist>
       </Providers>
-      <Analytics />
       <Script
         strategy="afterInteractive"
         id="google-tag"

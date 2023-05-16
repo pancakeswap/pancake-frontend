@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "@pancakeswap/tsconfig/base.json",
   "compilerOptions": {
     "target": "es2021",
     "lib": ["es2021"],

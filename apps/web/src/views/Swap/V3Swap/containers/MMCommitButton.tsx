@@ -2,7 +2,6 @@ import { Currency } from '@pancakeswap/sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useEffect, useMemo, useState } from 'react'
@@ -10,6 +9,7 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
+import { useAccount } from 'wagmi'
 
 export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
   const {
@@ -21,7 +21,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({

@@ -1,12 +1,12 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "@pancakeswap/tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": "./",
     "strictNullChecks": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
-    "target": "es5",
+    "target": "ES2020",
     "paths": {
       "*": ["./src/*"]
     }

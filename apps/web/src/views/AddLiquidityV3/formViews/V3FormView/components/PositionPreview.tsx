@@ -7,7 +7,6 @@ import { DoubleCurrencyLogo } from 'components/Logo'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import JSBI from 'jsbi'
 import { ReactNode, useState, useCallback } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { Bound } from 'config/constants/types'
@@ -59,14 +58,14 @@ export const PositionPreview = ({
   const priceLower = sorted ? position.token0PriceLower : position.token0PriceUpper.invert()
   const priceUpper = sorted ? position.token0PriceUpper : position.token0PriceLower.invert()
 
-  const price0 = useStablecoinPrice(position.pool.token0 ?? undefined, !!position.amount0)
-  const price1 = useStablecoinPrice(position.pool.token1 ?? undefined, !!position.amount1)
+  const price0 = useStablecoinPrice(position.pool.token0 ?? undefined, { enabled: !!position.amount0 })
+  const price1 = useStablecoinPrice(position.pool.token1 ?? undefined, { enabled: !!position.amount1 })
 
   const handleRateChange = useCallback(() => {
     setBaseCurrency(quoteCurrency)
   }, [quoteCurrency])
 
-  const removed = position?.liquidity && JSBI.equal(position?.liquidity, JSBI.BigInt(0))
+  const removed = position?.liquidity && position?.liquidity === 0n
 
   return (
     <AutoColumn gap="md" style={{ marginTop: '0.5rem' }}>

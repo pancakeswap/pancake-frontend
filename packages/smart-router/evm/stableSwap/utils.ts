@@ -1,20 +1,11 @@
-import { JSBI, CurrencyAmount, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, Currency } from '@pancakeswap/sdk'
 
-const PRECISION = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+const PRECISION = 10n ** 18n
 
 export const getRawAmount = (amount: CurrencyAmount<Currency>) => {
-  return JSBI.divide(
-    JSBI.multiply(amount.quotient, PRECISION),
-    JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(amount.currency.decimals)),
-  )
+  return (amount.quotient * PRECISION) / 10n ** BigInt(amount.currency.decimals)
 }
 
-export const parseAmount = (currency: Currency, rawAmount: JSBI) => {
-  return CurrencyAmount.fromRawAmount(
-    currency,
-    JSBI.divide(
-      JSBI.multiply(rawAmount, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(currency.decimals))),
-      PRECISION,
-    ),
-  )
+export const parseAmount = (currency: Currency, rawAmount: bigint) => {
+  return CurrencyAmount.fromRawAmount(currency, (rawAmount * 10n ** BigInt(currency.decimals)) / PRECISION)
 }

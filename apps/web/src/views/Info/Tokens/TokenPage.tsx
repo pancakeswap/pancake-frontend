@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   Box,
   Breadcrumbs,
@@ -8,35 +9,35 @@ import {
   Flex,
   Heading,
   Image,
-  Link as UIKitLink,
   LinkExternal,
+  NextLinkFromReactRouter,
   Spinner,
   Text,
+  Link as UIKitLink,
   useMatchBreakpoints,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
+import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { NextSeo } from 'next-seo'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { CHAIN_QUERY_NAME } from 'config/chains'
+
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { Duration } from 'date-fns'
 import { useMemo } from 'react'
 import { multiChainId, multiChainScan, v2SubgraphTokenName } from 'state/info/constant'
 import {
+  useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
   usePoolDatasSWR,
   usePoolsForTokenSWR,
+  useStableSwapPath,
   useTokenChartDataSWR,
   useTokenDataSWR,
   useTokenPriceDataSWR,
   useTokenTransactionsSWR,
-  useStableSwapPath,
 } from 'state/info/hooks'
-import { useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -73,7 +74,8 @@ const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
-  const { chainId } = useActiveChainId()
+  const chainId = useChainIdByQuery()
+  const { savedTokens, addToken } = useInfoUserSavedTokensAndPools(chainId)
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
@@ -105,7 +107,6 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
     return undefined
   }, [priceData, tokenData])
 
-  const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
   const infoTypeParam = useStableSwapPath()
@@ -155,7 +156,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />
                   </StyledCMCLink>
                 )}
-                <SaveIcon fill={watchlistTokens.includes(address)} onClick={() => addWatchlistToken(address)} />
+                <SaveIcon fill={savedTokens.includes(address)} onClick={() => addToken(address)} />
               </Flex>
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>

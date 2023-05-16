@@ -8,7 +8,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useSidNameForAddress } from 'hooks/useSid'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import ActivityEventText from './ActivityEventText'
 import NFTMedia from '../NFTMedia'
 
@@ -33,9 +33,9 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   const { theme } = useTheme()
   const priceAsFloat = parseFloat(activity.price)
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
-  const { sidName: otherPartySidName } = useSidNameForAddress(activity.otherParty)
-  const { sidName: sellerSidName } = useSidNameForAddress(activity.seller)
-  const { sidName: buyerSidName } = useSidNameForAddress(activity.buyer)
+  const { domainName: otherPartySidName } = useDomainNameForAddress(activity.otherParty)
+  const { domainName: sellerSidName } = useDomainNameForAddress(activity.seller)
+  const { domainName: buyerSidName } = useDomainNameForAddress(activity.buyer)
 
   return (
     <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>

@@ -26,19 +26,12 @@ import {
   getBCakeProxyContract,
   getBep20Contract,
   getBunnyFactoryContract,
-  getBunnySpecialCakeVaultContract,
-  getBunnySpecialContract,
-  getBunnySpecialLotteryContract,
-  getBunnySpecialPredictionContract,
-  getBunnySpecialXmasContract,
   getCakeContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
   getChainlinkOracleContract,
-  getClaimRefundContract,
   getCrossFarmingProxyContract,
-  getEasterNftContract,
   getErc721CollectionContract,
   getErc721Contract,
   getFarmAuctionContract,
@@ -52,8 +45,6 @@ import {
   getNftMarketContract,
   getNftSaleContract,
   getNonBscVaultContract,
-  getPancakeBunniesContract,
-  getPancakeSquadContract,
   getPointCenterIfoContract,
   getPotteryDrawContract,
   getPotteryVaultContract,
@@ -68,19 +59,24 @@ import {
   getSidContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
+  getV3AirdropContract,
+  getUnsContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
 // Imports below migrated from Exchange useContract.ts
-import { Contract } from '@ethersproject/contracts'
-import { WNATIVE } from '@pancakeswap/sdk'
+import { Contract } from 'ethers'
+import { WNATIVE, ChainId } from '@pancakeswap/sdk'
 import { ERC20_BYTES32_ABI } from 'config/abi/erc20'
 import ERC20_ABI from 'config/abi/erc20.json'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
 import multiCallAbi from 'config/abi/Multicall.json'
 import WETH_ABI from 'config/abi/weth.json'
+import WBETH_BSC_ABI from 'config/abi/wbethBSC.json'
+import WBETH_ETH_ABI from 'config/abi/wbethETH.json'
 import { getContract } from 'utils'
 
+import { WBETH } from 'config/constants/liquidStaking'
 import { VaultKey } from 'state/types'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -132,11 +128,6 @@ export const useBunnyFactory = () => {
   return useMemo(() => getBunnyFactoryContract(signer), [signer])
 }
 
-export const usePancakeBunnies = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getPancakeBunniesContract(signer), [signer])
-}
-
 export const useProfileContract = (withSignerIfPossible = true) => {
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getProfileContract(providerOrSigner), [providerOrSigner])
@@ -169,16 +160,6 @@ export const usePointCenterIfoContract = () => {
   return useMemo(() => getPointCenterIfoContract(signer), [signer])
 }
 
-export const useBunnySpecialContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getBunnySpecialContract(signer), [signer])
-}
-
-export const useClaimRefundContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getClaimRefundContract(signer), [signer])
-}
-
 export const useTradingCompetitionContractEaster = (withSignerIfPossible = true) => {
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getTradingCompetitionContractEaster(providerOrSigner), [providerOrSigner])
@@ -197,11 +178,6 @@ export const useTradingCompetitionContractMobox = (withSignerIfPossible = true) 
 export const useTradingCompetitionContractMoD = (withSignerIfPossible = true) => {
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getTradingCompetitionContractMoD(providerOrSigner), [providerOrSigner])
-}
-
-export const useEasterNftContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getEasterNftContract(signer), [signer])
 }
 
 export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | CakeFlexibleSideVaultV2 => {
@@ -243,26 +219,6 @@ export const useChainlinkOracleContract = (address, withSignerIfPossible = true)
   return useMemo(() => getChainlinkOracleContract(address, providerOrSigner), [providerOrSigner, address])
 }
 
-export const useSpecialBunnyCakeVaultContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getBunnySpecialCakeVaultContract(signer), [signer])
-}
-
-export const useSpecialBunnyPredictionContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getBunnySpecialPredictionContract(signer), [signer])
-}
-
-export const useBunnySpecialLotteryContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getBunnySpecialLotteryContract(signer), [signer])
-}
-
-export const useBunnySpecialXmasContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getBunnySpecialXmasContract(signer), [signer])
-}
-
 export const useAnniversaryAchievementContract = (withSignerIfPossible = true) => {
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getAnniversaryAchievementContract(providerOrSigner), [providerOrSigner])
@@ -271,11 +227,6 @@ export const useAnniversaryAchievementContract = (withSignerIfPossible = true) =
 export const useNftSaleContract = () => {
   const { data: signer } = useSigner()
   return useMemo(() => getNftSaleContract(signer), [signer])
-}
-
-export const usePancakeSquadContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getPancakeSquadContract(signer), [signer])
 }
 
 export const useFarmAuctionContract = (withSignerIfPossible = true) => {
@@ -337,6 +288,17 @@ export function useWNativeContract(withSignerIfPossible?: boolean): Contract | n
   return useContract<Weth>(chainId ? WNATIVE[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
+export function useWBETHContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveChainId()
+
+  const abi = useMemo(
+    () => ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? WBETH_ETH_ABI : WBETH_BSC_ABI),
+    [chainId],
+  )
+
+  return useContract<Weth>(chainId ? WBETH[chainId] : undefined, abi, withSignerIfPossible)
+}
+
 export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
@@ -389,8 +351,12 @@ export const useNonBscVault = (withSignerIfPossible = true) => {
   return useMemo(() => getNonBscVaultContract(providerOrSigner, chainId), [providerOrSigner, chainId])
 }
 
-export const useSIDContract = (address) => {
-  return useMemo(() => getSidContract(address), [address])
+export const useSIDContract = (address, chainId) => {
+  return useMemo(() => getSidContract(address, chainId), [address, chainId])
+}
+
+export const useUNSContract = (address, chainId, provider) => {
+  return useMemo(() => getUnsContract(address, chainId, provider), [chainId, address, provider])
 }
 
 export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfPossible = true) => {
@@ -427,4 +393,9 @@ export function useV3MigratorContract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
   return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
+}
+
+export const useV3AirdropContract = (withSignerIfPossible = true) => {
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
+  return useMemo(() => getV3AirdropContract(providerOrSigner), [providerOrSigner])
 }

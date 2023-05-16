@@ -111,11 +111,26 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
         },
       },
     });
+
+    const precision =
+      priceLineData
+        ?.find((x) => x.title === "current")
+        ?.price?.toString()
+        ?.split(".")?.[1]?.length ?? 2;
+
     const newSeries = chart.addAreaSeries({
       lineWidth: 2,
       lineColor: colors.gradient1,
       topColor: colors.gradient1,
       bottomColor: isDark ? "#3c3742" : "white",
+      priceFormat: { type: "price", precision, minMove: 1 / 10 ** precision },
+    });
+    newSeries.applyOptions({
+      priceFormat: {
+        type: "price",
+        precision: 4,
+        minMove: 0.0001,
+      },
     });
     setChart(chart);
     newSeries.setData(transformedData);

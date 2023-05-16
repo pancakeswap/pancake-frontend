@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 import IQuoter from './abi/Quoter.json'
@@ -70,7 +70,7 @@ export abstract class SwapQuoter {
 
       const v2QuoteParams = {
         ...baseQuoteParams,
-        ...(tradeType == TradeType.EXACT_INPUT ? { amountIn: quoteAmount } : { amount: quoteAmount }),
+        ...(tradeType === TradeType.EXACT_INPUT ? { amountIn: quoteAmount } : { amount: quoteAmount }),
       }
 
       const v1QuoteParams = [

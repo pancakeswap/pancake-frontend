@@ -15,8 +15,7 @@ import BigNumber from 'bignumber.js'
 import { APT, L0_USDC } from 'config/coins'
 import { CAKE_PID } from 'config/constants'
 import { getFarmConfig } from 'config/constants/farms'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useActiveNetwork } from 'hooks/useNetwork'
+import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { usePairReservesQueries } from 'hooks/usePairs'
 import fromPairs from 'lodash/fromPairs'
@@ -51,7 +50,7 @@ export function useMasterChefResource<TData = FarmResource>(select?: ((data: Far
 }
 
 export const useFarms = () => {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
   const poolLength = useFarmsLength()
   const { networkName } = useActiveNetwork()
 
@@ -201,7 +200,7 @@ export function useFarmsUserInfo() {
     queries:
       data?.data.pids.map((pid) => ({
         staleTime: Infinity,
-        enable: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
+        enabled: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
         refetchInterval: 3_000,
         queryKey: [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
         queryFn: async () => {

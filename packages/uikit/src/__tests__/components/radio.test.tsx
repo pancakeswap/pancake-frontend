@@ -1,4 +1,3 @@
-import React from "react";
 import { renderWithProvider } from "../../testHelpers";
 import Radio from "../../components/Radio/Radio";
 
@@ -21,7 +20,7 @@ it("renders correctly", () => {
       transition: background-color 0.2s ease-in-out;
       border: 0;
       border-radius: 50%;
-      background-color: var(--colors-input);
+      background-color: var(--colors-cardBorder);
       box-shadow: var(--shadows-inset);
       margin: 0;
     }
@@ -46,6 +45,7 @@ it("renders correctly", () => {
     }
 
     .c0:checked {
+      border: 0;
       background-color: var(--colors-success);
     }
 
@@ -54,6 +54,7 @@ it("renders correctly", () => {
     }
 
     .c0:disabled {
+      border: 0;
       cursor: default;
       opacity: 0.6;
     }

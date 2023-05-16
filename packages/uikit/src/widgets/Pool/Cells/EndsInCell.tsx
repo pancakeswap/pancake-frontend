@@ -1,10 +1,13 @@
-import { Flex, TimerIcon, useTooltip } from "@pancakeswap/uikit";
 import getTimePeriods from "@pancakeswap/utils/getTimePeriods";
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo } from "react";
 import { CellContent, BaseCell } from "./BaseCell";
+import { Flex } from "../../../components/Box";
+
 import { Text } from "../../../components/Text";
 import { DeserializedPool } from "../types";
+import { useTooltip } from "../../../hooks";
+import { TimerIcon } from "../../../components/Svg";
 
 interface EndsInCellProps<T> {
   pool: DeserializedPool<T>;

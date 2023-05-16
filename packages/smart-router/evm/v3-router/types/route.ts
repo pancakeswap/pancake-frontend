@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
 import { GasCost } from './gasCost'
 import { Pool } from './pool'
@@ -51,7 +51,7 @@ export type RouteWithoutGasEstimate = Omit<
 >
 
 export interface BestRoutes {
-  gasEstimate: JSBI
+  gasEstimate: bigint
   gasEstimateInUSD: CurrencyAmount<Currency>
   routes: Route[]
   inputAmount: CurrencyAmount<Currency>

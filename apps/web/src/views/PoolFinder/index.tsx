@@ -1,4 +1,4 @@
-import { Currency, JSBI } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import {
   AddIcon,
   Button,
@@ -63,12 +63,12 @@ export default function PoolFinder() {
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
+        pair.reserve0.quotient === BIG_INT_ZERO &&
+        pair.reserve1.quotient === BIG_INT_ZERO,
     )
 
   const position = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const hasPosition = Boolean(position && JSBI.greaterThan(position.quotient, BIG_INT_ZERO))
+  const hasPosition = Boolean(position && position.quotient > BIG_INT_ZERO)
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

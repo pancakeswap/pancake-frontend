@@ -192,39 +192,60 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
-  const activeFarms = farmsLP.filter(
-    (farm) =>
-      farm.lpAddress !== '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' &&
-      farm.pid !== 0 &&
-      farm.multiplier !== '0X' &&
-      (!poolLength || poolLength > farm.pid),
+  const activeFarms = useMemo(
+    () =>
+      farmsLP.filter(
+        (farm) =>
+          farm.lpAddress !== '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' &&
+          farm.pid !== 0 &&
+          farm.multiplier !== '0X' &&
+          (!poolLength || poolLength > farm.pid),
+      ),
+    [farmsLP, poolLength],
   )
 
-  const inactiveFarms = farmsLP.filter(
-    (farm) =>
-      farm.lpAddress === '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' || (farm.pid !== 0 && farm.multiplier === '0X'),
+  const inactiveFarms = useMemo(
+    () =>
+      farmsLP.filter(
+        (farm) =>
+          farm.lpAddress === '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' ||
+          (farm.pid !== 0 && farm.multiplier === '0X'),
+      ),
+    [farmsLP],
   )
   const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = activeFarms.filter(
-    (farm) =>
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  const stakedOnlyFarms = useMemo(
+    () =>
+      activeFarms.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      ),
+    [activeFarms],
   )
 
-  const stakedInactiveFarms = inactiveFarms.filter(
-    (farm) =>
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  const stakedInactiveFarms = useMemo(
+    () =>
+      inactiveFarms.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      ),
+    [inactiveFarms],
   )
 
-  const stakedArchivedFarms = archivedFarms.filter(
-    (farm) =>
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  const stakedArchivedFarms = useMemo(
+    () =>
+      archivedFarms.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      ),
+    [archivedFarms],
   )
 
   const farmsList = useCallback(
@@ -254,9 +275,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     [query, isActive, chainId, cakePrice, regularCakePerBlock],
   )
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeQuery = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
-  }
+  }, [])
 
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
@@ -324,7 +345,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         case 'liquidity':
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
         case 'latest':
-          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc')
+          return orderBy(
+            orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc'),
+            ['version'],
+            'desc',
+          )
         default:
           return farms
       }
@@ -346,9 +371,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [isIntersecting])
 
-  const handleSortOptionChange = (option: OptionProps): void => {
+  const handleSortOptionChange = useCallback((option: OptionProps): void => {
     setSortOption(option.value)
-  }
+  }, [])
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 

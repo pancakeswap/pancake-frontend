@@ -1,5 +1,4 @@
 import { Price, Token } from '@pancakeswap/sdk'
-import JSBI from 'jsbi'
 import { Q192 } from '../internalConstants'
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'
 import { TickMath } from './tickMath'
@@ -14,7 +13,7 @@ import { TickMath } from './tickMath'
 export function tickToPrice(baseToken: Token, quoteToken: Token, tick: number): Price<Token, Token> {
   const sqrtRatioX96 = TickMath.getSqrtRatioAtTick(tick)
 
-  const ratioX192 = JSBI.multiply(sqrtRatioX96, sqrtRatioX96)
+  const ratioX192 = sqrtRatioX96 * sqrtRatioX96
 
   return baseToken.sortsBefore(quoteToken)
     ? new Price(baseToken, quoteToken, Q192, ratioX192)

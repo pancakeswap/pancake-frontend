@@ -19,7 +19,6 @@ import {
 import { atom, useAtom } from 'jotai'
 import { lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import dynamic from 'next/dynamic'
 import {
   desktopWalletSelectionClass,
   modalWrapperClass,
@@ -28,7 +27,7 @@ import {
   walletSelectWrapperClass,
 } from './WalletModal.css'
 
-const StepIntro = dynamic(() => import('./components/Intro').then((mod) => mod.StepIntro), { ssr: false })
+const StepIntro = lazy(() => import('./components/Intro'))
 
 const Qrcode = lazy(() => import('./components/QRCode'))
 
@@ -81,7 +80,7 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
   return (
     <AtomBox position="relative" zIndex="modal" className={modalWrapperClass}>
       <AtomBox position="absolute" style={{ top: '-50px' }}>
-        <TabMenu activeIndex={index} onItemClick={setIndex} gap="0px" isColorInverse>
+        <TabMenu activeIndex={index} onItemClick={setIndex} gap="0px" isColorInverse isShowBorderBottom={false}>
           <Tab>{t('Connect Wallet')}</Tab>
           <Tab>{t('What’s a Web3 Wallet?')}</Tab>
         </TabMenu>
@@ -99,7 +98,11 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
         width="100%"
       >
         {index === 0 && children}
-        {index === 1 && <StepIntro docLink={docLink} docText={docText} />}
+        {index === 1 && (
+          <Suspense>
+            <StepIntro docLink={docLink} docText={docText} />
+          </Suspense>
+        )}
       </AtomBox>
     </AtomBox>
   )

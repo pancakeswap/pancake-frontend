@@ -11,7 +11,7 @@ export interface InjectedProps {
   mode?: string;
 }
 
-export interface ModalWrapperProps extends InjectedProps, Omit<BoxProps, "title"> {
+export interface ModalWrapperProps extends InjectedProps, Omit<BoxProps, "title" | "content"> {
   hideCloseButton?: boolean;
 }
 

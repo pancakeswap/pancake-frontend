@@ -1,4 +1,3 @@
-import JSBI from 'jsbi'
 import { BigintIsh, sqrt } from '@pancakeswap/sdk'
 
 /**
@@ -8,9 +7,9 @@ import { BigintIsh, sqrt } from '@pancakeswap/sdk'
  * @returns The sqrt ratio
  */
 
-export function encodeSqrtRatioX96(amount1: BigintIsh, amount0: BigintIsh): JSBI {
-  const numerator = JSBI.leftShift(JSBI.BigInt(amount1), JSBI.BigInt(192))
-  const denominator = JSBI.BigInt(amount0)
-  const ratioX192 = JSBI.divide(numerator, denominator)
+export function encodeSqrtRatioX96(amount1: BigintIsh, amount0: BigintIsh): bigint {
+  const numerator = BigInt(amount1) << 192n
+  const denominator = BigInt(amount0)
+  const ratioX192 = numerator / denominator
   return sqrt(ratioX192)
 }

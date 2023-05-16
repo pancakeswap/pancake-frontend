@@ -1,7 +1,6 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { computePoolAddress, FeeAmount, Pool, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
-import JSBI from 'jsbi'
 import { useMemo } from 'react'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
@@ -66,8 +65,8 @@ class PoolCache {
         pool.token0 === tokenA &&
         pool.token1 === tokenB &&
         pool.fee === fee &&
-        JSBI.EQ(pool.sqrtRatioX96, sqrtPriceX96) &&
-        JSBI.EQ(pool.liquidity, liquidity) &&
+        pool.sqrtRatioX96 === sqrtPriceX96 &&
+        pool.liquidity === liquidity &&
         pool.tickCurrent === tick,
     )
     if (found) return found

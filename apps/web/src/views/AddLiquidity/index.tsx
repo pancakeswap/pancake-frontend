@@ -1,5 +1,5 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, CurrencyAmount, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
@@ -8,13 +8,13 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useLPApr } from 'state/swap/useLPApr'
 import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { PairState } from '../../hooks/usePairs'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -81,7 +81,7 @@ export default function AddLiquidity({
   currencyB: Currency
   children: (props: LP2ChildrenProps) => ReactElement
 }) {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const addPair = usePairAdder()
 
@@ -172,9 +172,9 @@ export default function AddLiquidity({
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
     }
 
-    let estimate
-    let method: (...args: any) => Promise<TransactionResponse>
-    let args: Array<string | string[] | number>
+    let estimate = null
+    let method: ((...args: any) => Promise<TransactionResponse>) | undefined
+    let args: Array<string | string[] | number> | undefined
     let value: BigNumber | null
     if (currencyA?.isNative || currencyB?.isNative) {
       const tokenBIsNative = currencyB?.isNative
@@ -206,8 +206,8 @@ export default function AddLiquidity({
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    await estimate(...args, value ? { value } : {})
-      .then((estimatedGasLimit) =>
+    await estimate?.(...args, value ? { value } : {})
+      ?.then((estimatedGasLimit) =>
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
@@ -233,7 +233,7 @@ export default function AddLiquidity({
           }
         }),
       )
-      .catch((err) => {
+      ?.catch((err) => {
         if (err && !isUserRejected(err)) {
           logError(err)
           console.error(`Add Liquidity failed`, err, args, value)

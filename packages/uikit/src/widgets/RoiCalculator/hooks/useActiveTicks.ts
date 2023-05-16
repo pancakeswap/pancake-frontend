@@ -1,4 +1,4 @@
-import { Currency, JSBI } from "@pancakeswap/sdk";
+import { Currency } from "@pancakeswap/sdk";
 import { tickToPrice } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
 
@@ -10,7 +10,7 @@ interface Props {
   currencyA?: Currency;
   currencyB?: Currency;
   ticks?: TickData[];
-  liquidity?: JSBI;
+  liquidity?: bigint;
   tickCurrent?: number;
 }
 
@@ -35,9 +35,9 @@ export function useActiveTicks({ currencyA, currencyB, ticks, liquidity, tickCur
     }
 
     const activeTickProcessed: TickProcessed = {
-      liquidityActive: JSBI.BigInt(liquidity ?? 0),
+      liquidityActive: BigInt(liquidity ?? 0),
       tick: activeTick,
-      liquidityNet: Number(ticks[pivot].tick) === activeTick ? JSBI.BigInt(ticks[pivot].liquidityNet) : JSBI.BigInt(0),
+      liquidityNet: Number(ticks[pivot].tick) === activeTick ? BigInt(ticks[pivot].liquidityNet) : 0n,
       price0: tickToPrice(token0, token1, activeTick).toFixed(PRICE_FIXED_DIGITS),
     };
 

@@ -4,14 +4,14 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { FetchStatus } from 'config/constants/types'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBCakeProxyContract, useCake } from 'hooks/useContract'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContractAddress } from './useBCakeProxyContractAddress'
 
 const SMALL_AMOUNT_THRESHOLD = new BigNumber(0.001)
 
 const useBCakeProxyBalance = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { proxyAddress, isLoading: isProxyContractAddressLoading } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const { reader: cakeContract } = useCake()
@@ -24,7 +24,10 @@ const useBCakeProxyBalance = () => {
     },
   )
 
-  const balanceAmount = useMemo(() => getBalanceAmount(data, CAKE[chainId].decimals), [data, chainId])
+  const balanceAmount = useMemo(
+    () => (data ? getBalanceAmount(data, CAKE[chainId].decimals) : new BigNumber(NaN)),
+    [data, chainId],
+  )
 
   return useMemo(() => {
     return {

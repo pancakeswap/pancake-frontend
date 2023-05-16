@@ -10,10 +10,15 @@ import {
   ArrowForwardIcon,
   LogoIcon,
 } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
-import { farmV3MigrationBunny, farmV3MigrationMobileBunny } from './images'
 import * as S from './Styled'
+
+const { farmV3MigrationBunny, farmV3MigrationMobileBunny } = {
+  farmV3MigrationBunny: `${ASSET_CDN}/web/banners/farmV3MigrationBunny.png`,
+  farmV3MigrationMobileBunny: `${ASSET_CDN}/web/banners/farmV3MigrationMobileBunny.png`,
+}
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -147,10 +152,10 @@ const FarmV3MigrationBanner = () => {
               alt="farmV3MigrationMobileBunny"
               width={200}
               height={200}
-              placeholder="blur"
+              unoptimized
             />
           ) : (
-            <Image src={farmV3MigrationBunny} alt="farmV3MigrationBunny" width={300} height={230} placeholder="blur" />
+            <Image src={farmV3MigrationBunny} alt="farmV3MigrationBunny" width={300} height={230} unoptimized />
           )}
         </RightWrapper>
       </S.Inner>

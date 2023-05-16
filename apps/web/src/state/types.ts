@@ -1,5 +1,5 @@
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
-import { parseUnits } from '@ethersproject/units'
+import { BigNumber as EthersBigNumber } from 'ethers'
+import { parseUnits } from 'ethers/lib/utils'
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
 import { SerializedPoolWithInfo } from '@pancakeswap/pools'
@@ -88,6 +88,7 @@ export interface DeserializedVaultUser {
   cakeAtLastUserAction: BigNumber
   lastDepositedTime: string
   lastUserActionTime: string
+  lockedAmount: BigNumber
   balance: {
     cakeAsNumberBalance: number
     cakeAsBigNumber: BigNumber

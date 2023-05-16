@@ -1,5 +1,5 @@
 import { useState, useMemo, useContext } from 'react'
-import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -55,11 +55,7 @@ export interface PositionCardProps extends CardProps {
 
 export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   const [token0Deposited, token1Deposited] =
-    !!pair &&
-    !!totalPoolTokens &&
-    !!userPoolBalance &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+    !!pair && !!totalPoolTokens && !!userPoolBalance && totalPoolTokens.quotient >= userPoolBalance.quotient
       ? [
           pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
           pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
@@ -83,9 +79,7 @@ export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1
 }
 
 export const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
-  return !!userPoolBalance &&
-    !!totalPoolTokens &&
-    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+  return !!userPoolBalance && !!totalPoolTokens && totalPoolTokens.quotient >= userPoolBalance.quotient
     ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
     : undefined
 }
@@ -168,7 +162,7 @@ function MinimalPositionCardView({
 
   return (
     <>
-      {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) ? (
+      {userPoolBalance && userPoolBalance.quotient > BIG_INT_ZERO ? (
         <Card>
           <CardBody>
             <AutoColumn gap="16px">
@@ -388,7 +382,7 @@ function FullPositionCard({
             </Text>
           </FixedHeightRow>
 
-          {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) && (
+          {userPoolBalance && userPoolBalance.quotient > BIG_INT_ZERO && (
             <Flex flexDirection="column">
               <Button
                 as={NextLinkFromReactRouter}

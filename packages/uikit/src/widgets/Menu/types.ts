@@ -1,14 +1,9 @@
 import { ElementType, ReactElement, ReactNode } from "react";
+import type { Language } from "@pancakeswap/localization";
 import { FooterLinkType } from "../../components/Footer/types";
 import { MenuItemsType } from "../../components/MenuItems/types";
 import { SubMenuItemsType } from "../../components/SubMenuItems/types";
 import { Colors } from "../../theme/types";
-
-export interface Language {
-  code: string;
-  language: string;
-  locale: string;
-}
 
 export interface LinkStatus {
   text: string;
@@ -31,5 +26,6 @@ export interface NavProps {
   buyCakeLabel: string;
   buyCakeLink: string;
   langs: Language[];
+  chainId: number;
   setLang: (lang: Language) => void;
 }

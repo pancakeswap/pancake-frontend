@@ -1,7 +1,6 @@
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { Spinner, Flex } from '@pancakeswap/uikit'
 import { FeeAmount, Pool, TickMath, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
-import JSBI from 'jsbi'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import styled from 'styled-components'
@@ -111,7 +110,7 @@ export default function DensityChart({ address }: DensityChartProps) {
               {
                 index: t.tickIdx - TICK_SPACINGS[feeAmount],
                 liquidityGross: t.liquidityGross,
-                liquidityNet: JSBI.multiply(t.liquidityNet, JSBI.BigInt('-1')),
+                liquidityNet: t.liquidityNet * BigInt('-1'),
               },
               {
                 index: t.tickIdx,

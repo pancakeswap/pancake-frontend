@@ -1,10 +1,9 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
-import JSBI from 'jsbi'
 import { useMemo } from 'react'
 import { NEVER_RELOAD, useSingleCallResult } from 'state/multicall/hooks'
 
-type TokenId = number | JSBI | BigNumber
+type TokenId = number | bigint | BigNumber
 
 const STARTS_WITH = 'data:application/json;base64,'
 

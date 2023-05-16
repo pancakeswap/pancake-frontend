@@ -1,15 +1,14 @@
-import { Interface, FunctionFragment } from '@ethersproject/abi'
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
+import { Interface, FunctionFragment } from 'ethers/lib/utils'
+import { BigNumber, Contract } from 'ethers'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import {
   useSWRConfig,
   // eslint-disable-next-line camelcase
   unstable_serialize,
 } from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { AppState, useAppDispatch } from '../index'
+import { useAtom } from 'jotai'
+import { multicallReducerAtom } from 'state/multicall/reducer'
 import {
   addMulticallListeners,
   Call,
@@ -60,10 +59,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): CallResult[] {
   const { chainId } = useActiveChainId()
-  const callResults = useSelector<AppState, AppState['multicall']['callResults']>(
-    (state) => state.multicall.callResults,
-  )
-  const dispatch = useAppDispatch()
+  const [{ callResults }, dispatch] = useAtom(multicallReducerAtom)
 
   const serializedCallKeys: string = useMemo(
     () =>

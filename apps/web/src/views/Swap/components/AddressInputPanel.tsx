@@ -1,10 +1,12 @@
+import { useDebounce } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
+import { AutoColumn, BscScanIcon, Link, Text } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { useCallback } from 'react'
 import styled from 'styled-components'
-import { ChainId } from '@pancakeswap/sdk'
-import { Text, Link, BscScanIcon, AutoColumn } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
-import { useTranslation } from '@pancakeswap/localization'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { RowBetween } from '../../../components/Layout/Row'
 import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
 
@@ -80,8 +82,10 @@ export default function AddressInputPanel({
   const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
+  const debounceEnsName = useDebounce(value, 500)
+  const recipientENSAddress = useGetENSAddressByName(debounceEnsName)
 
-  const address = isAddress(value) ? value : undefined
+  const address = isAddress(value) ? value : isAddress(recipientENSAddress) || undefined
 
   const handleInput = useCallback(
     (event) => {

@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount } from "@pancakeswap/sdk";
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 
 interface Params {
@@ -8,7 +8,7 @@ interface Params {
   price?: number | string;
   priceLower?: number | string;
   priceUpper?: number | string;
-  sqrtRatioX96?: JSBI;
+  sqrtRatioX96?: bigint;
   currencyAUsdPrice?: number;
   currencyBUsdPrice?: number;
 }

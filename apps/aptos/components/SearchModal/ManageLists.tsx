@@ -18,7 +18,6 @@ import {
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists'
@@ -34,6 +33,7 @@ import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from 'state/lists/hooks'
 
+import { useActiveChainId } from 'hooks/useNetwork'
 import { CurrencyModalView } from './types'
 
 function listVersionLabel(version: Version): string {
@@ -61,7 +61,7 @@ function listUrlRowHTMLId(listUrl: string) {
 }
 
 const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
   const { t } = useTranslation()
   const isActive = useIsListActive(listUrl)
 

@@ -10,9 +10,9 @@ import CollectModalContainer from './CollectModalContainer'
 
 const CollectModal = ({ poolAddress = '', ...rest }: React.PropsWithChildren<Pool.CollectModalProps>) => {
   const queryClient = useQueryClient()
-  const { account, networkName, chainId } = useActiveWeb3React()
+  const { account, networkName } = useActiveWeb3React()
 
-  const [stakingTokenAddress, earningTokenAddress, sousId] = splitTypeTag(poolAddress[chainId])
+  const [stakingTokenAddress, earningTokenAddress, sousId] = splitTypeTag(poolAddress)
 
   const onReward = useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId })
 

@@ -1,12 +1,11 @@
 import { createContext, useCallback, useEffect, useState, useMemo } from 'react'
-import { Language } from '@pancakeswap/uikit'
 import { useLastUpdated } from '@pancakeswap/hooks'
 import memoize from 'lodash/memoize'
 import omitBy from 'lodash/omitBy'
 import reduce from 'lodash/reduce'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { EN, languages } from './config/languages'
-import { ContextApi, ProviderState, TranslateFunction } from './types'
+import { ContextApi, ProviderState, TranslateFunction, Language } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
 
 const initialState: ProviderState = {

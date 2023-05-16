@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
-import dayjs, { OpUnitType } from 'dayjs'
+import dayjs, { ManipulateType } from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
@@ -10,7 +10,7 @@ import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients, v3Clients } from 'utils/graphql'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { SUBGRAPH_START_BLOCK } from '../constants'
+import { SUBGRAPH_START_BLOCK, DURATION_INTERVAL } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
@@ -36,18 +36,6 @@ import {
   TokenData,
   Transaction,
 } from '../types'
-
-const ONE_HOUR_SECONDS = 3600
-const SIX_HOUR_SECONDS = 21600
-const ONE_DAY_SECONDS = 86400
-const ONE_WEEK_SECONDS = 604800
-
-const DURATION_INTERVAL = {
-  day: ONE_HOUR_SECONDS,
-  week: SIX_HOUR_SECONDS,
-  month: ONE_DAY_SECONDS,
-  year: ONE_WEEK_SECONDS,
-}
 
 const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
@@ -112,6 +100,7 @@ export const useTokenPriceChartData = (
         startTimestamp,
         v3InfoClients[targetChianId ?? chainId],
         multiChainName[targetChianId ?? chainId],
+        SUBGRAPH_START_BLOCK[chainId],
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
@@ -123,7 +112,7 @@ export const usePairPriceChartTokenData = (
   address: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
-): PriceChartEntry[] | undefined => {
+): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const utcCurrentTime = dayjs()
@@ -143,10 +132,16 @@ export const usePairPriceChartTokenData = (
         startTimestamp,
         v3Clients[targetChianId ?? chainId],
         multiChainName[targetChianId ?? chainId],
+        SUBGRAPH_START_BLOCK[chainId],
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data ?? []
+  return {
+    data: data?.data ?? [],
+    maxPrice: data?.maxPrice,
+    minPrice: data?.minPrice,
+    averagePrice: data?.averagePrice,
+  }
 }
 
 export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {
@@ -257,7 +252,7 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 export const useTokenPriceData = (
   address: string,
   interval: number,
-  timeWindow: OpUnitType,
+  timeWindow: ManipulateType,
 ): PriceChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
@@ -269,7 +264,15 @@ export const useTokenPriceData = (
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/tokenPriceData/${chainId}/${address}/${interval}/${timeWindow}`, chainId],
-    () => fetchTokenPriceData(address, interval, startTimestamp, v3InfoClients[chainId], multiChainName[chainId]),
+    () =>
+      fetchTokenPriceData(
+        address,
+        interval,
+        startTimestamp,
+        v3InfoClients[chainId],
+        multiChainName[chainId],
+        SUBGRAPH_START_BLOCK[chainId],
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data

@@ -2,7 +2,7 @@ import { isStableFarm } from '@pancakeswap/farms'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useAppDispatch } from 'state'
+import { useAtom } from 'jotai'
 import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { resetMintState } from 'state/mint/actions'
@@ -11,10 +11,11 @@ import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { mintReducerAtom } from 'state/mint/reducer'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(mintReducerAtom)
 
   // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
   const { data: farmsV2Public } = useFarmV2PublicAPI()

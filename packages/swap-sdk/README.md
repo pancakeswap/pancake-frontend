@@ -6,7 +6,7 @@ You can refer to the Uniswap SDK documentation [uniswap.org](https://docs.uniswa
 
 ## Running tests
 
-To run the tests, follow these steps. You must have at least node v10 and [yarn](https://yarnpkg.com/) installed.
+To run the tests, follow these steps. You must have at least node v10 and [pnpm](https://pnpm.io) installed.
 
 First clone the repository:
 
@@ -23,19 +23,19 @@ cd pancakeswap-sdk/
 Install dependencies
 
 ```sh
-yarn install
+pnpm install
 ```
 
 Run tests
 
 ```sh
-yarn test
+pnpm test
 ```
 
 You should see output like the following:
 
 ```sh
-yarn run v1.22.4
+pnpm run v1.22.4
 $ tsdx test
  PASS  test/constants.test.ts
  PASS  test/pair.test.ts

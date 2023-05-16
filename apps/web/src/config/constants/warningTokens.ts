@@ -35,5 +35,3 @@ export const bscWarningTokens = {
     'https://xcadnetwork.com/',
   ),
 }
-
-export const bscTestnetWarningTokens = {}

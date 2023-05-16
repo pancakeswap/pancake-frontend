@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { createAction, createReducer } from '@reduxjs/toolkit'
@@ -128,12 +128,12 @@ export function useDerivedMintInfo(
 
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
+    Boolean(totalSupply && totalSupply.quotient === BIG_INT_ZERO) ||
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
+        pair.reserve0.quotient === BIG_INT_ZERO &&
+        pair.reserve1.quotient === BIG_INT_ZERO,
     )
 
   // balances

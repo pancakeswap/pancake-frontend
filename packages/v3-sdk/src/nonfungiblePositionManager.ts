@@ -8,9 +8,8 @@ import {
   validateAndParseAddress,
 } from '@pancakeswap/sdk'
 
-import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
-import { Interface } from '@ethersproject/abi'
+import { Interface } from 'ethers/lib/utils'
 import INonfungiblePositionManager from './abi/NonfungiblePositionManager.json'
 import { Position } from './entities/position'
 import { ONE, ZERO } from './internalConstants'
@@ -21,7 +20,7 @@ import { Pool } from './entities'
 import { Multicall } from './multicall'
 import { Payments } from './payments'
 
-export const MaxUint128 = toHex(JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)), JSBI.BigInt(1)))
+export const MaxUint128 = toHex(2n ** 128n - 1n)
 
 export interface MintSpecificOptions {
   /**
@@ -199,7 +198,7 @@ export abstract class NonfungiblePositionManager {
   }
 
   public static addCallParameters(position: Position, options: AddLiquidityOptions): MethodParameters {
-    invariant(JSBI.greaterThan(position.liquidity, ZERO), 'ZERO_LIQUIDITY')
+    invariant(position.liquidity > ZERO, 'ZERO_LIQUIDITY')
 
     const calldatas: string[] = []
 
@@ -272,7 +271,7 @@ export abstract class NonfungiblePositionManager {
       const wrappedValue = position.pool.token0.equals(wrapped) ? amount0Desired : amount1Desired
 
       // we only need to refund if we're actually sending ETH
-      if (JSBI.greaterThan(wrappedValue, ZERO)) {
+      if (wrappedValue > ZERO) {
         calldatas.push(Payments.encodeRefundETH())
       }
 
@@ -353,7 +352,7 @@ export abstract class NonfungiblePositionManager {
       tickLower: position.tickLower,
       tickUpper: position.tickUpper,
     })
-    invariant(JSBI.greaterThan(partialPosition.liquidity, ZERO), 'ZERO_LIQUIDITY')
+    invariant(partialPosition.liquidity > ZERO, 'ZERO_LIQUIDITY')
 
     // slippage-adjusted underlying amounts
     const { amount0: amount0Min, amount1: amount1Min } = partialPosition.burnAmountsWithSlippage(

@@ -1,10 +1,10 @@
-import { Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
 import { GasCost } from './gasCost'
 import { RouteWithoutGasEstimate } from './route'
 
 export type L1ToL2GasCosts = {
-  gasUsedL1: JSBI
+  gasUsedL1: bigint
   gasCostL1USD: CurrencyAmount<Currency>
   gasCostL1QuoteToken: CurrencyAmount<Currency>
 }

@@ -14,7 +14,6 @@ import RugPullWarning from './RugPullWarning'
 import FREEWarning from './FREEWarning'
 import GalaWarning from './GalaWarning'
 import ABNBWarning from './ABNBWarning'
-import EURWarning from './EURWarning'
 import XCADWarning from './XCADWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
@@ -71,10 +70,6 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
     [SwapWarningTokensConfig.abnbc.address]: {
       symbol: SwapWarningTokensConfig.abnbc.symbol,
       component: <ABNBWarning />,
-    },
-    [SwapWarningTokensConfig.ageur.address]: {
-      symbol: SwapWarningTokensConfig.ageur.symbol,
-      component: <EURWarning />,
     },
     [SwapWarningTokensConfig.xcad.address]: {
       symbol: SwapWarningTokensConfig.xcad.symbol,

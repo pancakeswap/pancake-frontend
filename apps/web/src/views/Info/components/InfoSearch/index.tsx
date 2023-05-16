@@ -1,15 +1,22 @@
-import { Flex, Input, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import { useDebounce } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Input, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
+import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR, useChainNameByQuery } from 'state/info/hooks'
+
 import { checkIsStableSwap, v2SubgraphTokenName } from 'state/info/constant'
+import {
+  useChainIdByQuery,
+  useChainNameByQuery,
+  useMultiChainPath,
+  usePoolDatasSWR,
+  useTokenDatasSWR,
+} from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
-import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -158,6 +165,8 @@ const Search = () => {
 
   const [tokensShown, setTokensShown] = useState(3)
   const [poolsShown, setPoolsShown] = useState(3)
+  const chainId = useChainIdByQuery()
+  const { savedPools, savedTokens, addPool, addToken } = useInfoUserSavedTokensAndPools(chainId)
 
   useEffect(() => {
     setTokensShown(3)
@@ -189,10 +198,6 @@ const Search = () => {
       document.removeEventListener('click', handleOutsideClick)
     }
   }, [showMenu])
-
-  // watchlist
-  const [savedTokens, addSavedToken] = useWatchlistTokens()
-  const [savedPools, addSavedPool] = useWatchlistPools()
 
   const handleItemClick = (to: string) => {
     setShowMenu(false)
@@ -326,7 +331,7 @@ const Search = () => {
                         fill={savedTokens.includes(token.address)}
                         onClick={(e) => {
                           e.stopPropagation()
-                          addSavedToken(token.address)
+                          addToken(token.address)
                         }}
                       />
                     </Flex>
@@ -393,7 +398,7 @@ const Search = () => {
                         fill={savedPools.includes(p.address)}
                         onClick={(e) => {
                           e.stopPropagation()
-                          addSavedPool(p.address)
+                          addPool(p.address)
                         }}
                       />
                     </Flex>

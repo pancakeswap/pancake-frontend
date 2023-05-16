@@ -4,7 +4,6 @@ import { useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL, DEFAULT_TOKEN_DECIMAL } from 'config'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import { useRouter } from 'next/router'
@@ -25,6 +24,7 @@ import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
 import { useIsBloctoETH } from 'views/Farms'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -46,7 +46,7 @@ interface StackedActionProps extends FarmWithStakedValue {
 }
 
 export function useStakedActions(lpContract, pid, vaultPid) {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { onStake } = useStakeFarms(pid, vaultPid)
   const { onUnstake } = useUnstakeFarms(pid, vaultPid)
   const dispatch = useAppDispatch()
@@ -143,7 +143,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const addTransaction = useTransactionAdder()
   const isBloctoETH = useIsBloctoETH()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const { tokenBalance, stakedBalance, allowance } = userData || {}
 
@@ -374,7 +374,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     )
   }
 
-  if (!isApproved && stakedBalance.eq(0)) {
+  if (!isApproved && stakedBalance?.eq(0)) {
     return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
   }
 
@@ -382,7 +382,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     return <FarmUI.FarmTable.StakeActionDataNotReady />
   }
 
-  if (stakedBalance.gt(0)) {
+  if (stakedBalance?.gt(0)) {
     return (
       <FarmUI.FarmTable.StakedActionComponent
         lpSymbol={lpSymbol}

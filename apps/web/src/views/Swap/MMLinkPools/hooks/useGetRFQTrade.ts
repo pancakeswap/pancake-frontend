@@ -1,9 +1,9 @@
 import { Currency } from '@pancakeswap/sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
 import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, MMRfqTrade, QuoteRequest, RFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
@@ -11,10 +11,10 @@ import { parseMMTrade } from '../utils/exchange'
 export const useGetRFQId = (
   param: QuoteRequest | null,
   isMMBetter: boolean,
-  rfqUserInputPath: MutableRefObject<string>,
-  isRFQLive: MutableRefObject<boolean>,
+  rfqUserInputPath: MutableRefObject<string> | null | undefined,
+  isRFQLive: MutableRefObject<boolean> | null | undefined,
 ): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
 
   if (rfqUserInputPath)
     // eslint-disable-next-line no-param-reassign
@@ -30,8 +30,8 @@ export const useGetRFQId = (
   )
 
   const { data, refetch, isLoading } = useQuery(
-    [`RFQ/${rfqUserInputPath.current}`],
-    () => sendRFQAndGetRFQId(param),
+    [`RFQ/${rfqUserInputPath?.current}`],
+    () => sendRFQAndGetRFQId(param as QuoteRequest),
     {
       refetchInterval: 20000,
       retry: true,
@@ -40,12 +40,12 @@ export const useGetRFQId = (
     }, // 20sec
   )
   // eslint-disable-next-line no-param-reassign
-  if (!data?.message?.rfqId) isRFQLive.current = false
+  if (!data?.message?.rfqId && isRFQLive) isRFQLive.current = false
 
   return {
     rfqId: data?.message?.rfqId ?? '',
     refreshRFQ: refetch,
-    rfqUserInputCache: rfqUserInputPath.current,
+    rfqUserInputCache: rfqUserInputPath?.current,
     isLoading: enabled && isLoading,
   }
 }
@@ -57,7 +57,7 @@ export const useGetRFQTrade = (
   outputCurrency: Currency | undefined,
   isMMBetter: boolean,
   refreshRFQ: () => void,
-  isRFQLive: MutableRefObject<boolean>,
+  isRFQLive: MutableRefObject<boolean> | null | undefined,
 ): MMRfqTrade | null => {
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)

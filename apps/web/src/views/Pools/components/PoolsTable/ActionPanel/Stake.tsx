@@ -46,9 +46,13 @@ import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
 import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
+import OriginalLockedInfo from '../../OriginalLockedInfo'
 
 const IconButtonWrapper = styled.div`
   display: flex;
+`
+const HelpIconWrapper = styled.div`
+  align-self: center;
 `
 
 interface StackedActionProps {
@@ -190,7 +194,16 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     placement: 'bottom',
   })
 
+  const {
+    targetRef: tagTargetRefOfLocked,
+    tooltip: tagTooltipOfLocked,
+    tooltipVisible: tagTooltipVisibleOfLocked,
+  } = useTooltip(<OriginalLockedInfo pool={pool} />, {
+    placement: 'bottom',
+  })
+
   const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
+  const isLocked = vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
 
   if (!account) {
     return (
@@ -267,20 +280,29 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   {stakingToken.symbol}{' '}
                 </Text>
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                  {vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
-                    ? t('Locked')
-                    : t('Staked')}
+                  {isLocked ? t('Locked') : t('Staked')}
                 </Text>
               </ActionTitles>
-              <ActionContent>
+              <Flex mt={2}>
                 <Box position="relative">
-                  <Balance
-                    lineHeight="1"
-                    bold
-                    fontSize="20px"
-                    decimals={5}
-                    value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
-                  />
+                  <Flex>
+                    <Balance
+                      lineHeight="1"
+                      bold
+                      fontSize="20px"
+                      decimals={5}
+                      value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
+                    />
+                    {isLocked ? (
+                      <>
+                        {' '}
+                        {tagTooltipVisibleOfLocked && tagTooltipOfLocked}
+                        <HelpIconWrapper ref={tagTargetRefOfLocked}>
+                          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                        </HelpIconWrapper>
+                      </>
+                    ) : null}
+                  </Flex>
                   <SkeletonV2
                     isDataReady={Number.isFinite(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance)}
                     width={120}
@@ -298,7 +320,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                     />
                   </SkeletonV2>
                 </Box>
-              </ActionContent>
+              </Flex>
               {vaultPosition === VaultPosition.Locked && (
                 <Box mt="16px">
                   <AddCakeButton
@@ -317,19 +339,20 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {t('Unlocks In')}
                 </Text>
-                <Text
-                  lineHeight="1"
-                  mt="5px"
-                  bold
-                  fontSize="20px"
-                  color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
-                >
-                  {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                <Flex mt={2}>
+                  <Text
+                    lineHeight="1"
+                    bold
+                    fontSize="20px"
+                    color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
+                  >
+                    {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                  </Text>
                   {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
                   <span ref={tagTargetRefOfBurn}>
                     <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
                   </span>
-                </Text>
+                </Flex>
                 <Text
                   height="20px"
                   fontSize="12px"
@@ -403,7 +426,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           </ActionContent>
         </ActionContainer>
         {isMobile && vaultPosition >= VaultPosition.LockedEnd && (
-          <Flex mb="24px" justifyContent="space-between">
+          <Flex mb="24px" mr="4px" ml="4px" justifyContent="space-between">
             <Text fontSize="14px" color="failure" as="span">
               {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
             </Text>

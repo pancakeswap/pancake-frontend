@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
@@ -7,13 +7,13 @@ import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { ReactNode, useMemo } from 'react'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSwapState } from 'state/swap/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { basisPointsToPercent } from 'utils/exchange'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
@@ -46,7 +46,7 @@ export function useSwapCallback({
   feeOptions,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { t } = useTranslation()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const provider = useProviderOrSigner()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])

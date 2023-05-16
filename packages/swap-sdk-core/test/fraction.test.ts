@@ -1,121 +1,77 @@
-import JSBI from 'jsbi'
+import {} from 'vitest/globals'
 import { Fraction } from '../src'
 
 describe('Fraction', () => {
   describe('#quotient', () => {
     it('floor division', () => {
-      expect(new Fraction(JSBI.BigInt(8), JSBI.BigInt(3)).quotient).toEqual(JSBI.BigInt(2)) // one below
-      expect(new Fraction(JSBI.BigInt(12), JSBI.BigInt(4)).quotient).toEqual(JSBI.BigInt(3)) // exact
-      expect(new Fraction(JSBI.BigInt(16), JSBI.BigInt(5)).quotient).toEqual(JSBI.BigInt(3)) // one above
+      expect(new Fraction(8n, 3n).quotient).toEqual(2n) // one below
+      expect(new Fraction(12n, 4n).quotient).toEqual(3n) // exact
+      expect(new Fraction(16n, 5n).quotient).toEqual(3n) // one above
     })
   })
   describe('#remainder', () => {
     it('returns fraction after divison', () => {
-      expect(new Fraction(JSBI.BigInt(8), JSBI.BigInt(3)).remainder).toEqual(
-        new Fraction(JSBI.BigInt(2), JSBI.BigInt(3))
-      )
-      expect(new Fraction(JSBI.BigInt(12), JSBI.BigInt(4)).remainder).toEqual(
-        new Fraction(JSBI.BigInt(0), JSBI.BigInt(4))
-      )
-      expect(new Fraction(JSBI.BigInt(16), JSBI.BigInt(5)).remainder).toEqual(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(5))
-      )
+      expect(new Fraction(8n, 3n).remainder).toEqual(new Fraction(2n, 3n))
+      expect(new Fraction(12n, 4n).remainder).toEqual(new Fraction(0n, 4n))
+      expect(new Fraction(16n, 5n).remainder).toEqual(new Fraction(1n, 5n))
     })
   })
   describe('#invert', () => {
     it('flips num and denom', () => {
-      expect(new Fraction(JSBI.BigInt(5), JSBI.BigInt(10)).invert().numerator).toEqual(JSBI.BigInt(10))
-      expect(new Fraction(JSBI.BigInt(5), JSBI.BigInt(10)).invert().denominator).toEqual(JSBI.BigInt(5))
+      expect(new Fraction(5n, 10n).invert().numerator).toEqual(10n)
+      expect(new Fraction(5n, 10n).invert().denominator).toEqual(5n)
     })
   })
   describe('#add', () => {
     it('multiples denoms and adds nums', () => {
-      expect(new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).add(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))).toEqual(
-        new Fraction(JSBI.BigInt(52), JSBI.BigInt(120))
-      )
+      expect(new Fraction(1n, 10n).add(new Fraction(4n, 12n))).toEqual(new Fraction(52n, 120n))
     })
 
     it('same denom', () => {
-      expect(new Fraction(JSBI.BigInt(1), JSBI.BigInt(5)).add(new Fraction(JSBI.BigInt(2), JSBI.BigInt(5)))).toEqual(
-        new Fraction(JSBI.BigInt(3), JSBI.BigInt(5))
-      )
+      expect(new Fraction(1n, 5n).add(new Fraction(2n, 5n))).toEqual(new Fraction(3n, 5n))
     })
   })
   describe('#subtract', () => {
     it('multiples denoms and subtracts nums', () => {
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).subtract(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(-28), JSBI.BigInt(120)))
+      expect(new Fraction(1n, 10n).subtract(new Fraction(4n, 12n))).toEqual(new Fraction(BigInt(-28), 120n))
     })
     it('same denom', () => {
-      expect(
-        new Fraction(JSBI.BigInt(3), JSBI.BigInt(5)).subtract(new Fraction(JSBI.BigInt(2), JSBI.BigInt(5)))
-      ).toEqual(new Fraction(JSBI.BigInt(1), JSBI.BigInt(5)))
+      expect(new Fraction(3n, 5n).subtract(new Fraction(2n, 5n))).toEqual(new Fraction(1n, 5n))
     })
   })
   describe('#lessThan', () => {
     it('correct', () => {
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).lessThan(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toBe(true)
-      expect(new Fraction(JSBI.BigInt(1), JSBI.BigInt(3)).lessThan(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))).toBe(
-        false
-      )
-      expect(
-        new Fraction(JSBI.BigInt(5), JSBI.BigInt(12)).lessThan(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toBe(false)
+      expect(new Fraction(1n, 10n).lessThan(new Fraction(4n, 12n))).toBe(true)
+      expect(new Fraction(1n, 3n).lessThan(new Fraction(4n, 12n))).toBe(false)
+      expect(new Fraction(5n, 12n).lessThan(new Fraction(4n, 12n))).toBe(false)
     })
   })
   describe('#equalTo', () => {
     it('correct', () => {
-      expect(new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).equalTo(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))).toBe(
-        false
-      )
-      expect(new Fraction(JSBI.BigInt(1), JSBI.BigInt(3)).equalTo(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))).toBe(
-        true
-      )
-      expect(new Fraction(JSBI.BigInt(5), JSBI.BigInt(12)).equalTo(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))).toBe(
-        false
-      )
+      expect(new Fraction(1n, 10n).equalTo(new Fraction(4n, 12n))).toBe(false)
+      expect(new Fraction(1n, 3n).equalTo(new Fraction(4n, 12n))).toBe(true)
+      expect(new Fraction(5n, 12n).equalTo(new Fraction(4n, 12n))).toBe(false)
     })
   })
   describe('#greaterThan', () => {
     it('correct', () => {
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).greaterThan(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toBe(false)
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(3)).greaterThan(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toBe(false)
-      expect(
-        new Fraction(JSBI.BigInt(5), JSBI.BigInt(12)).greaterThan(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toBe(true)
+      expect(new Fraction(1n, 10n).greaterThan(new Fraction(4n, 12n))).toBe(false)
+      expect(new Fraction(1n, 3n).greaterThan(new Fraction(4n, 12n))).toBe(false)
+      expect(new Fraction(5n, 12n).greaterThan(new Fraction(4n, 12n))).toBe(true)
     })
   })
   describe('#multiplty', () => {
     it('correct', () => {
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).multiply(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(4), JSBI.BigInt(120)))
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(3)).multiply(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(4), JSBI.BigInt(36)))
-      expect(
-        new Fraction(JSBI.BigInt(5), JSBI.BigInt(12)).multiply(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(20), JSBI.BigInt(144)))
+      expect(new Fraction(1n, 10n).multiply(new Fraction(4n, 12n))).toEqual(new Fraction(4n, 120n))
+      expect(new Fraction(1n, 3n).multiply(new Fraction(4n, 12n))).toEqual(new Fraction(4n, 36n))
+      expect(new Fraction(5n, 12n).multiply(new Fraction(4n, 12n))).toEqual(new Fraction(20n, 144n))
     })
   })
   describe('#divide', () => {
     it('correct', () => {
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(10)).divide(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(12), JSBI.BigInt(40)))
-      expect(
-        new Fraction(JSBI.BigInt(1), JSBI.BigInt(3)).divide(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(12), JSBI.BigInt(12)))
-      expect(
-        new Fraction(JSBI.BigInt(5), JSBI.BigInt(12)).divide(new Fraction(JSBI.BigInt(4), JSBI.BigInt(12)))
-      ).toEqual(new Fraction(JSBI.BigInt(60), JSBI.BigInt(48)))
+      expect(new Fraction(1n, 10n).divide(new Fraction(4n, 12n))).toEqual(new Fraction(12n, 40n))
+      expect(new Fraction(1n, 3n).divide(new Fraction(4n, 12n))).toEqual(new Fraction(12n, 12n))
+      expect(new Fraction(5n, 12n).divide(new Fraction(4n, 12n))).toEqual(new Fraction(60n, 48n))
     })
   })
   describe('#asFraction', () => {

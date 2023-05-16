@@ -12,11 +12,8 @@ import {
   MobileColumnSchema,
   useMatchBreakpoints,
   V3DesktopColumnSchema,
-  Text,
-  useTooltip,
-  TooltipText,
 } from '@pancakeswap/uikit'
-import { createElement, useEffect, useRef, useState } from 'react'
+import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
@@ -33,7 +30,7 @@ export type RowProps = {
   earned: FarmTableEarnedProps
   initialActivity?: boolean
   multiplier: FarmTableMultiplierProps
-} & (V2RowProps | V3RowProps | CommunityRowPRops)
+} & (V2RowProps | V3RowProps | CommunityRowProps)
 
 export type V2RowProps = {
   type: 'v2'
@@ -43,7 +40,7 @@ export type V2RowProps = {
   details: V2Farm
 }
 
-export type CommunityRowPRops = Omit<V2RowProps, 'type'> & {
+export type CommunityRowProps = Omit<V2RowProps, 'type'> & {
   type: 'community'
 }
 
@@ -117,26 +114,14 @@ const FarmMobileCell = styled.td`
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { initialActivity, userDataReady, farm } = props
   const hasSetInitialValue = useRef(false)
-  const hasStakedAmount = farm.isStaking
+  const hasStakedAmount = farm.isStaking || false
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
 
-  const toggleActionPanel = () => {
+  const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
-  }
-
-  const aprTooltip = useTooltip(
-    <>
-      <Text>
-        {t(
-          'Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.',
-        )}
-      </Text>
-      <br />
-      <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
-    </>,
-  )
+  }, [actionPanelExpanded])
 
   useEffect(() => {
     setActionPanelExpanded(hasStakedAmount)
@@ -151,15 +136,15 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const isSmallerScreen = !isDesktop
-  const tableSchema = isSmallerScreen
-    ? MobileColumnSchema
-    : props.type === 'v3'
-    ? V3DesktopColumnSchema
-    : DesktopColumnSchema
-  const columnNames = tableSchema.map((column) => column.name)
-  const handleRenderRow = () => {
-    if (!isMobile) {
-      return (
+
+  const tableSchema = useMemo(() => {
+    return isSmallerScreen ? MobileColumnSchema : props.type === 'v3' ? V3DesktopColumnSchema : DesktopColumnSchema
+  }, [isSmallerScreen, props.type])
+  const columnNames = useMemo(() => tableSchema.map((column) => column.name), [tableSchema])
+
+  return (
+    <>
+      {!isMobile ? (
         <StyledTr onClick={toggleActionPanel}>
           {Object.keys(props).map((key) => {
             const columnIndex = columnNames.indexOf(key)
@@ -205,10 +190,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner onClick={(e) => e.stopPropagation()}>
                         <CellLayout label={t('APR')}>
-                          <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
-                            <FarmV3ApyButton farm={props.details} />
-                          </TooltipText>
-                          {aprTooltip.tooltipVisible && aprTooltip.tooltip}
+                          <FarmV3ApyButton farm={props.details} />
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -260,93 +242,87 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             }
           })}
         </StyledTr>
-      )
-    }
+      ) : (
+        <>
+          <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
+            <FarmMobileCell colSpan={3}>
+              <Flex justifyContent="space-between" alignItems="center">
+                <FarmCell {...props.farm} />
 
-    return (
-      <>
-        <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
-          <FarmMobileCell colSpan={3}>
-            <Flex justifyContent="space-between" alignItems="center">
-              <FarmCell {...props.farm} />
-
-              {props.type === 'community' ? (
-                <FarmAuctionTag marginRight="16px" scale="sm" />
-              ) : (
-                <Flex
-                  mr="16px"
-                  alignItems={isMobile ? 'end' : 'center'}
-                  flexDirection={isMobile ? 'column' : 'row'}
-                  style={{ gap: '4px' }}
-                >
-                  {props.type === 'v2' ? (
-                    props?.details?.isStable ? (
-                      <StableFarmTag scale="sm" />
-                    ) : (
-                      <V2Tag scale="sm" />
-                    )
-                  ) : null}
-                  {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
-                  {props?.details?.boosted ? (
-                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
-                  ) : null}
-                </Flex>
-              )}
-            </Flex>
-          </FarmMobileCell>
-        </tr>
-        <StyledTr onClick={toggleActionPanel}>
-          <td width="33%">
-            <EarnedMobileCell>
-              <CellLayout label={t('Earned')}>
-                <Earned {...props.earned} userDataReady={userDataReady} />
-              </CellLayout>
-            </EarnedMobileCell>
-          </td>
-          <td width="33%">
-            <AprMobileCell>
-              <CellLayout label={t('APR')}>
-                {props.type === 'v3' ? (
-                  <FarmV3ApyButton farm={props.details} />
+                {props.type === 'community' ? (
+                  <FarmAuctionTag marginRight="16px" scale="sm" />
                 ) : (
-                  <>
-                    <Apr
-                      {...props.apr}
-                      hideButton
-                      strikethrough={props?.details?.boosted}
-                      boosted={props?.details?.boosted}
-                    />
-                    {props?.details?.boosted && userDataReady ? (
-                      <BoostedApr
-                        lpRewardsApr={props?.apr?.lpRewardsApr}
-                        apr={props?.apr?.originalValue}
-                        pid={props.farm?.pid}
-                        lpTotalSupply={props.details?.lpTotalSupply}
-                        userBalanceInFarm={
-                          props.details.userData.stakedBalance.plus(props.details.userData.tokenBalance).gt(0)
-                            ? props.details.userData.stakedBalance.plus(props.details.userData.tokenBalance)
-                            : props.details.userData.proxy.stakedBalance.plus(props.details.userData.proxy.tokenBalance)
-                        }
-                      />
+                  <Flex
+                    mr="16px"
+                    alignItems={isMobile ? 'end' : 'center'}
+                    flexDirection={isMobile ? 'column' : 'row'}
+                    style={{ gap: '4px' }}
+                  >
+                    {props.type === 'v2' ? (
+                      props?.details?.isStable ? (
+                        <StableFarmTag scale="sm" />
+                      ) : (
+                        <V2Tag scale="sm" />
+                      )
                     ) : null}
-                  </>
+                    {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
+                    {props?.details?.boosted ? (
+                      <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
+                    ) : null}
+                  </Flex>
                 )}
-              </CellLayout>
-            </AprMobileCell>
-          </td>
-          <td width="33%">
-            <CellInner style={{ justifyContent: 'flex-end' }}>
-              <Details actionPanelToggled={actionPanelExpanded} />
-            </CellInner>
-          </td>
-        </StyledTr>
-      </>
-    )
-  }
-
-  return (
-    <>
-      {handleRenderRow()}
+              </Flex>
+            </FarmMobileCell>
+          </tr>
+          <StyledTr onClick={toggleActionPanel}>
+            <td width="33%">
+              <EarnedMobileCell>
+                <CellLayout label={t('Earned')}>
+                  <Earned {...props.earned} userDataReady={userDataReady} />
+                </CellLayout>
+              </EarnedMobileCell>
+            </td>
+            <td width="33%">
+              <AprMobileCell>
+                <CellLayout label={t('APR')}>
+                  {props.type === 'v3' ? (
+                    <FarmV3ApyButton farm={props.details} />
+                  ) : (
+                    <>
+                      <Apr
+                        {...props.apr}
+                        hideButton
+                        strikethrough={props?.details?.boosted}
+                        boosted={props?.details?.boosted}
+                      />
+                      {props?.details?.boosted && userDataReady ? (
+                        <BoostedApr
+                          lpRewardsApr={props?.apr?.lpRewardsApr}
+                          apr={props?.apr?.originalValue}
+                          pid={props.farm?.pid}
+                          lpTotalSupply={props.details?.lpTotalSupply}
+                          userBalanceInFarm={
+                            props.details.userData.stakedBalance.plus(props.details.userData.tokenBalance).gt(0)
+                              ? props.details.userData.stakedBalance.plus(props.details.userData.tokenBalance)
+                              : props.details.userData.proxy.stakedBalance.plus(
+                                  props.details.userData.proxy.tokenBalance,
+                                )
+                          }
+                        />
+                      ) : null}
+                    </>
+                  )}
+                </CellLayout>
+              </AprMobileCell>
+            </td>
+            <td width="33%">
+              <CellInner style={{ justifyContent: 'flex-end' }}>
+                <Details actionPanelToggled={actionPanelExpanded} />
+              </CellInner>
+            </td>
+          </StyledTr>
+        </>
+      )}
       {shouldRenderChild && (
         <tr>
           <td colSpan={9}>

@@ -1,19 +1,19 @@
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { AppState, useAppDispatch } from '../index'
+import { useAtom, useAtomValue } from 'jotai'
+import { burnReducerAtom } from 'state/burn/reducer'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 
-export function useBurnState(): AppState['burn'] {
-  return useSelector<AppState, AppState['burn']>((state) => state.burn)
+export function useBurnState() {
+  return useAtomValue(burnReducerAtom)
 }
 
 export function useDerivedBurnInfo(
@@ -34,7 +34,7 @@ export function useDerivedBurnInfo(
   tokenToReceive?: string
   estimateZapOutAmount?: CurrencyAmount<Token>
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const { independentField, typedValue } = useBurnState()
 
@@ -60,22 +60,12 @@ export function useDerivedBurnInfo(
   // liquidity values
   const totalSupply = useTotalSupply(pair?.liquidityToken)
   const liquidityValueA =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenA &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
+    pair && totalSupply && userLiquidity && tokenA && totalSupply.quotient >= userLiquidity.quotient
       ? CurrencyAmount.fromRawAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).quotient)
       : undefined
 
   const liquidityValueB =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenB &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
+    pair && totalSupply && userLiquidity && tokenB && totalSupply.quotient >= userLiquidity.quotient
       ? CurrencyAmount.fromRawAmount(tokenB, pair.getLiquidityValue(tokenB, totalSupply, userLiquidity, false).quotient)
       : undefined
   const liquidityValues: { [Field.CURRENCY_A]?: CurrencyAmount<Token>; [Field.CURRENCY_B]?: CurrencyAmount<Token> } = {
@@ -151,20 +141,20 @@ export function useDerivedBurnInfo(
     [Field.LIQUIDITY]: liquidityToRemove,
     [Field.CURRENCY_A]: !zapMode
       ? amountA
-      : amountA && removalCheckedA && !removalCheckedB && estimateZapOutAmount
+      : amountA && removalCheckedA && !removalCheckedB && estimateZapOutAmount && liquidityValueA
       ? CurrencyAmount.fromRawAmount(
           tokenA,
-          JSBI.add(percentToRemove.multiply(liquidityValueA.quotient).quotient, estimateZapOutAmount.quotient),
+          percentToRemove.multiply(liquidityValueA.quotient).quotient + estimateZapOutAmount.quotient,
         )
       : !removalCheckedA
       ? undefined
       : amountA,
     [Field.CURRENCY_B]: !zapMode
       ? amountB
-      : amountB && removalCheckedB && !removalCheckedA && estimateZapOutAmount
+      : amountB && removalCheckedB && !removalCheckedA && estimateZapOutAmount && liquidityValueB
       ? CurrencyAmount.fromRawAmount(
           tokenB,
-          JSBI.add(percentToRemove.multiply(liquidityValueB.quotient).quotient, estimateZapOutAmount.quotient),
+          percentToRemove.multiply(liquidityValueB.quotient).quotient + estimateZapOutAmount.quotient,
         )
       : !removalCheckedB
       ? undefined
@@ -190,7 +180,7 @@ export function useDerivedBurnInfo(
 export function useBurnActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
 } {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useAtom(burnReducerAtom)
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {

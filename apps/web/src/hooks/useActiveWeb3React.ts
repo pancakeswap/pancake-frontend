@@ -3,7 +3,6 @@ import { useRouter, NextRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { isChainSupported } from 'utils/wagmi'
-import { useProvider } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { getChainId, CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from './useActiveChainId'
@@ -61,10 +60,8 @@ export function useNetworkConnectorUpdater() {
 const useActiveWeb3React = () => {
   const web3React = useWeb3React()
   const { chainId, isWrongNetwork } = useActiveChainId()
-  const provider = useProvider({ chainId })
 
   return {
-    provider,
     ...web3React,
     chainId,
     isWrongNetwork,

@@ -1,6 +1,5 @@
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
-import JSBI from 'jsbi'
 
 /**
  * Parses a CurrencyAmount from the passed string.
@@ -16,7 +15,7 @@ export default function tryParseCurrencyAmount<T extends Currency>(
   try {
     const typedValueParsed = parseUnits(value, currency.decimals).toString()
     if (typedValueParsed !== '0') {
-      return CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(typedValueParsed))
+      return CurrencyAmount.fromRawAmount(currency, BigInt(typedValueParsed))
     }
   } catch (error) {
     // fails if the user specifies too many decimal places of precision (or maybe exceed max uint?)

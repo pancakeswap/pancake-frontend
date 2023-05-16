@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import {
   createFarmFetcherV3,
   SerializedFarmsV3Response,
@@ -15,14 +15,15 @@ import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { FAST_INTERVAL } from 'config/constants'
+import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { multicallv2 } from 'utils/multicall'
+import { useAccount } from 'wagmi'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -90,7 +91,12 @@ export const useFarmsV3Public = () => {
   )
 }
 
-export const useFarmsV3 = () => {
+interface UseFarmsOptions {
+  // mock apr when tvl is 0
+  mockApr?: boolean
+}
+
+export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   const { chainId } = useActiveChainId()
 
   const farmV3 = useFarmsV3Public()
@@ -100,13 +106,11 @@ export const useFarmsV3 = () => {
   const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
-      const HOST = process.env.NEXT_PUBLIC_VERCEL_URL ? `` : 'http://localhost:3000'
-
       const tvls: TvlMap = {}
       if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {
         const results = await Promise.allSettled(
           farmV3.data.farmsWithPrice.map((f) =>
-            fetch(`${HOST}/api/v3/${chainId}/farms/liquidity/${f.lpAddress}`)
+            fetch(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`)
               .then((r) => r.json())
               .catch((err) => {
                 console.error(err)
@@ -124,9 +128,19 @@ export const useFarmsV3 = () => {
         if (!tvls[f.lpAddress]) {
           return f
         }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const tvl = tvls[f.lpAddress]!
+        // Mock 1$ tvl if the farm doesn't have lp staked
+        if (mockApr && tvl?.token0 === '0' && tvl?.token1 === '0') {
+          const [token0Price, token1Price] = f.token.sortsBefore(f.quoteToken)
+            ? [f.tokenPriceBusd, f.quoteTokenPriceBusd]
+            : [f.quoteTokenPriceBusd, f.tokenPriceBusd]
+          tvl.token0 = token0Price ? String(1 / Number(token0Price)) : '1'
+          tvl.token1 = token1Price ? String(1 / Number(token1Price)) : '1'
+        }
         const { activeTvlUSD, activeTvlUSDUpdatedAt, cakeApr } = farmFetcherV3.getCakeAprAndTVL(
           f,
-          tvls[f.lpAddress],
+          tvl,
           cakePrice.toString(),
           farmV3.data.cakePerSecond,
         )
@@ -159,7 +173,7 @@ export const useFarmsV3 = () => {
 }
 
 export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const masterchefV3 = useMasterchefV3(false)
 
   const harvestCalls = useMemo(() => {
@@ -207,7 +221,7 @@ const usePositionsByUserFarms = (
   farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
   userDataLoaded: boolean
 } => {
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
 
@@ -248,18 +262,18 @@ const usePositionsByUserFarms = (
   const farmsWithPositions = useMemo(
     () =>
       farmsV3.map((farm) => {
-        const { token, quoteToken, feeAmount } = farm
+        const { feeAmount, token0, token1 } = farm
 
         const unstaked = unstakedPositions.filter(
           (p) =>
-            toLower(p.token0) === toLower(token.address) &&
-            toLower(p.token1) === toLower(quoteToken.address) &&
+            toLower(p.token0) === toLower(token0.address) &&
+            toLower(p.token1) === toLower(token1.address) &&
             feeAmount === p.fee,
         )
         const staked = stakedPositions.filter((p) => {
           return (
-            toLower(p.token0) === toLower(token.address) &&
-            toLower(p.token1) === toLower(quoteToken.address) &&
+            toLower(p.token0) === toLower(token0.address) &&
+            toLower(p.token1) === toLower(token1.address) &&
             feeAmount === p.fee
           )
         })
@@ -291,14 +305,14 @@ const usePositionsByUserFarms = (
   }
 }
 
-export function useFarmsV3WithPositions(): {
+export function useFarmsV3WithPositions(options: UseFarmsOptions = {}): {
   farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
   userDataLoaded: boolean
   cakePerSecond: string
   poolLength: number
   isLoading: boolean
 } {
-  const { data, error: _error, isLoading } = useFarmsV3()
+  const { data, error: _error, isLoading } = useFarmsV3(options)
 
   return {
     ...usePositionsByUserFarms(data.farmsWithPrice),

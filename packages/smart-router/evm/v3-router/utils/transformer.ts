@@ -1,9 +1,9 @@
-import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, JSBI, TradeType, Percent } from '@pancakeswap/sdk'
-import { AddressZero } from '@ethersproject/constants'
+import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, TradeType, Percent } from '@pancakeswap/sdk'
+import { ADDRESS_ZERO } from '@pancakeswap/v3-sdk'
 import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'
 import { isStablePool, isV2Pool, isV3Pool } from './pool'
 
-const ONE_HUNDRED = JSBI.BigInt(100)
+const ONE_HUNDRED = 100n
 
 interface SerializedCurrency {
   address: string
@@ -60,7 +60,7 @@ interface SerializedTrade
 
 export function serializeCurrency(currency: Currency): SerializedCurrency {
   return {
-    address: currency.isNative ? AddressZero : currency.wrapped.address,
+    address: currency.isNative ? ADDRESS_ZERO : currency.wrapped.address,
     decimals: currency.decimals,
     symbol: currency.symbol,
   }
@@ -125,7 +125,7 @@ export function serializeTrade(trade: SmartRouterTrade<TradeType>): SerializedTr
 }
 
 export function parseCurrency(chainId: ChainId, currency: SerializedCurrency): Currency {
-  if (currency.address === AddressZero) {
+  if (currency.address === ADDRESS_ZERO) {
     return Native.onChain(chainId)
   }
   const { address, decimals, symbol } = currency
@@ -149,8 +149,8 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
       ...pool,
       token0: parseCurrency(chainId, pool.token0),
       token1: parseCurrency(chainId, pool.token1),
-      liquidity: JSBI.BigInt(pool.liquidity),
-      sqrtRatioX96: JSBI.BigInt(pool.sqrtRatioX96),
+      liquidity: BigInt(pool.liquidity),
+      sqrtRatioX96: BigInt(pool.sqrtRatioX96),
       token0ProtocolFee: new Percent(pool.token0ProtocolFee, ONE_HUNDRED),
       token1ProtocolFee: new Percent(pool.token1ProtocolFee, ONE_HUNDRED),
     }
@@ -159,8 +159,8 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
     return {
       ...pool,
       balances: pool.balances.map((b) => parseCurrencyAmount(chainId, b)),
-      amplifier: JSBI.BigInt(pool.amplifier),
-      fee: new Percent(parseFloat(pool.fee) * 1000000, JSBI.multiply(ONE_HUNDRED, JSBI.BigInt(100000))),
+      amplifier: BigInt(pool.amplifier),
+      fee: new Percent(parseFloat(pool.fee) * 1000000, ONE_HUNDRED * 100000n),
     }
   }
 
@@ -183,7 +183,7 @@ export function parseTrade(chainId: ChainId, trade: SerializedTrade): SmartRoute
     inputAmount: parseCurrencyAmount(chainId, trade.inputAmount),
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
-    gasEstimate: JSBI.BigInt(trade.gasEstimate),
+    gasEstimate: BigInt(trade.gasEstimate),
     gasEstimateInUSD: parseCurrencyAmount(chainId, trade.gasEstimateInUSD),
   }
 }

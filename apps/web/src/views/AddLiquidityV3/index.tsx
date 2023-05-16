@@ -27,14 +27,14 @@ import styled from 'styled-components'
 import { atom, useAtom } from 'jotai'
 
 import { useCurrency } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 import { usePreviousValue } from '@pancakeswap/hooks'
-import { getAddress } from '@ethersproject/address'
+import { getAddress } from 'ethers/lib/utils'
 
 import noop from 'lodash/noop'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -85,7 +85,7 @@ export function UniversalAddLiquidity({
   preferredSelectType,
   preferredFeeAmount,
 }: UniversalAddLiquidityPropsType) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
 
   const router = useRouter()

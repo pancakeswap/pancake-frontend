@@ -1,6 +1,6 @@
-import { JSBI, Percent } from '@pancakeswap/sdk'
+import { Percent } from '@pancakeswap/sdk'
 
-const FEE_BASE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(4))
+const FEE_BASE = 10n ** 4n
 
 export function parseProtocolFees(feeProtocol: number | string) {
   const packed = Number(feeProtocol)

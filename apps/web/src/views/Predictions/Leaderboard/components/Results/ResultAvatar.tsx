@@ -18,7 +18,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useTranslation } from '@pancakeswap/localization'
 import { useStatModalProps } from 'state/predictions/hooks'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { useSidNameForAddress } from 'hooks/useSid'
+import { useDomainNameForAddress } from 'hooks/useDomain'
 import WalletStatsModal from '../WalletStatsModal'
 
 interface ResultAvatarProps extends FlexProps {
@@ -47,7 +47,7 @@ const UsernameWrapper = styled(Box)`
 const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, ...props }) => {
   const { t } = useTranslation()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
-  const { sidName } = useSidNameForAddress(user.id, !profile && !isProfileLoading)
+  const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
   const { token, api } = useConfig()
 
@@ -70,14 +70,14 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
         <Flex alignItems="center" {...props}>
           <UsernameWrapper>
             <Text color="primary" fontWeight="bold">
-              {profile?.username || sidName || truncateHash(user.id)}
+              {profile?.username || domainName || truncateHash(user.id)}
             </Text>{' '}
           </UsernameWrapper>
           <AvatarWrapper
             width={['32px', null, null, null, null, '40px']}
             height={['32px', null, null, null, null, '40px']}
           >
-            <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={40} width={40} />
+            <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={40} width={40} />
           </AvatarWrapper>
         </Flex>
       }

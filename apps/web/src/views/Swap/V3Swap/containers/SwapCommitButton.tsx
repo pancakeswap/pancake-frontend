@@ -10,6 +10,7 @@ import {
   Message,
   MessageText,
   AutoColumn,
+  Dots,
 } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
@@ -34,13 +35,13 @@ import { useExpertMode } from '@pancakeswap/utils/user'
 import { warningSeverity } from 'utils/exchange'
 import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 
+import { useAccount } from 'wagmi'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
@@ -62,7 +63,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   tradeLoading,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
   const {
     typedValue,
@@ -82,7 +83,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
   const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
-  const routerAddress = SWAP_ROUTER_ADDRESSES[trade?.inputAmount?.currency.chainId]
+  const routerAddress = SWAP_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId]
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -225,7 +226,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // Reset approval flow if input currency changed
   useEffect(() => {
     setApprovalSubmitted(false)
-  }, [trade?.inputAmount.currency])
+  }, [trade?.inputAmount?.currency])
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
@@ -257,13 +258,13 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     )
   }
 
-  const noRoute = !(trade?.routes.length > 0) || tradeError
+  const noRoute = !(trade?.routes?.length > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
-  if (noRoute && userHasSpecifiedInputOutput) {
+  if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return (
       <AutoColumn gap="12px">
         <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
@@ -334,11 +335,16 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           id="swap-button"
           disabled={!isValid || !approved || (priceImpactSeverity > 3 && !isExpertMode)}
         >
-          {priceImpactSeverity > 3 && !isExpertMode
-            ? t('Price Impact High')
-            : priceImpactSeverity > 2
-            ? t('Swap Anyway')
-            : t('Swap')}
+          {(tradeLoading && (
+            <>
+              <Dots>{t('Searching For The Best Price')}</Dots>
+            </>
+          )) ||
+            (priceImpactSeverity > 3 && !isExpertMode
+              ? t('Price Impact High')
+              : priceImpactSeverity > 2
+              ? t('Swap Anyway')
+              : t('Swap'))}
         </CommitButton>
       </RowBetween>
       <Column style={{ marginTop: '1rem' }}>
@@ -358,6 +364,11 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
       >
         {swapInputError ||
+          (tradeLoading && (
+            <>
+              <Dots>{t('Searching For The Best Price')}</Dots>
+            </>
+          )) ||
           (priceImpactSeverity > 3 && !isExpertMode
             ? t('Price Impact Too High')
             : priceImpactSeverity > 2

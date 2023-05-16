@@ -1,19 +1,18 @@
 import { useCallback } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { BigNumber } from '@ethersproject/bignumber'
-import { Overrides } from '@ethersproject/contracts'
-import { TransactionResponse } from '@ethersproject/abstract-provider'
+import { BigNumber, Overrides } from 'ethers'
+import { TransactionResponse } from '@ethersproject/providers'
 
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
 import { Currency, Price } from '@pancakeswap/sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useSWRConfig } from 'swr'
 import {
   OPEN_ORDERS_SWR_KEY,
   EXECUTED_CANCELLED_ORDERS_SWR_KEY,
-} from '../../views/LimitOrders/hooks/useGelatoLimitOrdersHistory'
+} from 'views/LimitOrders/hooks/useGelatoLimitOrdersHistory'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useGelatoLimitOrdersLib from './useGelatoLimitOrdersLib'
 
 export interface GelatoLimitOrdersHandlers {
@@ -42,7 +41,7 @@ export interface GelatoLimitOrdersHandlers {
 }
 
 const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
-  const { chainId, account } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const { mutate } = useSWRConfig()
 

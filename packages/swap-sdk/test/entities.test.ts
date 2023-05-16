@@ -1,5 +1,4 @@
 import invariant from 'tiny-invariant'
-import JSBI from 'jsbi'
 import { TradeType, Rounding, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { Pair, Route, Trade } from '../src/entities'
 import { ChainId, WNATIVE as _WETH } from '../src/constants'
@@ -17,8 +16,8 @@ const DECIMAL_PERMUTATIONS: [number, number, number][] = [
   [18, 18, 18],
 ]
 
-function decimalize(amount: number, decimals: number): JSBI {
-  return JSBI.multiply(JSBI.BigInt(amount), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals)))
+function decimalize(amount: number, decimals: number): bigint {
+  return BigInt(amount) * 10n ** BigInt(decimals)
 }
 
 describe('entities', () => {
@@ -159,11 +158,7 @@ describe('entities', () => {
                   CurrencyAmount.fromRawAmount(tokens[1], decimalize(1, tokens[1].decimals)),
                   CurrencyAmount.fromRawAmount(
                     WETH,
-                    JSBI.add(
-                      decimalize(10, WETH.decimals),
-
-                      tokens[1].decimals === 9 ? JSBI.BigInt('30090280812437312') : JSBI.BigInt('30090270812437322')
-                    )
+                    decimalize(10, WETH.decimals) + (tokens[1].decimals === 9 ? 30090280812437312n : 30090270812437322n)
                   )
                 ),
               ],

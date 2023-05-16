@@ -6,8 +6,8 @@ export default defineConfig((options) => ({
     evm: 'evm/index.ts',
   },
   format: ['esm', 'cjs'],
-  // FIXME not sure why core will be bundled if not specify explicitly
-  external: ['@pancakeswap/swap-sdk-core', 'jsbi'],
+  skipNodeModulesBundle: true,
+  noExternal: ['@pancakeswap/utils'],
   dts: false,
   treeshake: true,
   splitting: true,
@@ -16,7 +16,9 @@ export default defineConfig((options) => ({
     exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
       if (err) {
         console.error(stdout)
-        process.exit(1)
+        if (!options.watch) {
+          process.exit(1)
+        }
       }
     })
   },

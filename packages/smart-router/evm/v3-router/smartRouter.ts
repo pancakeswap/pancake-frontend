@@ -27,4 +27,5 @@ export {
   log,
   Transformer,
 } from './utils'
-export { getPairCombinations } from './functions'
+export { getPairCombinations, getCheckAgainstBaseTokens } from './functions'
+export * as APISchema from './schema'

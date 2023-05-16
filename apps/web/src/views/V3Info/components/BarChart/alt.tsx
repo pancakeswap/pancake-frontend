@@ -31,7 +31,7 @@ export type LineChartProps = {
   height?: number | undefined
   minHeight?: number
   setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of valye
+  setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
   value?: number
   label?: string
   activeWindow?: VolumeWindow
@@ -63,7 +63,7 @@ const CustomBar = ({
 
 const Chart = ({
   data,
-  color = '#56B2A4',
+  color = '#1FC7D4',
   setValue,
   setLabel,
   value,

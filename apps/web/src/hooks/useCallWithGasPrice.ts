@@ -2,7 +2,7 @@ import { AppState } from 'state'
 import { useSelector } from 'react-redux'
 import { useCallback } from 'react'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Contract, CallOverrides } from '@ethersproject/contracts'
+import { Contract, CallOverrides } from 'ethers'
 import { useGasPrice } from 'state/user/hooks'
 import get from 'lodash/get'
 import { addBreadcrumb } from '@sentry/nextjs'
@@ -24,7 +24,7 @@ export function useCallWithGasPrice() {
     async (
       contract: Contract,
       methodName: string,
-      methodArgs: any[] = [],
+      methodArgs: any[] | undefined = [],
       overrides: CallOverrides = null,
     ): Promise<TransactionResponse> => {
       addBreadcrumb({

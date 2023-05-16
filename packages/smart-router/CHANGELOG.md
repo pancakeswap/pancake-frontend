@@ -1,5 +1,32 @@
 # @pancakeswap/smart-router
 
+## 3.0.0
+
+### Major Changes
+
+- b5dbd2921: Remove JSBI and use BigInt native instead
+
+### Patch Changes
+
+- Updated dependencies [b5dbd2921]
+  - @pancakeswap/sdk@4.0.0
+  - @pancakeswap/swap-sdk-core@1.0.0
+  - @pancakeswap/v3-sdk@2.0.0
+  - @pancakeswap/multicall@2.0.0
+  - @pancakeswap/tokens@0.1.2
+
+## 2.0.3
+
+### Patch Changes
+
+- 8daeddeae: Remove used typechain and install error on postinstall
+
+## 2.0.2
+
+### Patch Changes
+
+- 078ee23fb: Fix multicall chunk config types
+
 ## 2.0.1
 
 ### Patch Changes

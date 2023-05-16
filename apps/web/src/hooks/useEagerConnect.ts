@@ -1,20 +1,22 @@
 import { useClient, useConnect } from 'wagmi'
 import { useEffect } from 'react'
-
-const SAFE_ID = 'safe'
+import { CHAINS } from 'config/chains'
 
 const useEagerConnect = () => {
   const client = useClient()
   const { connectAsync, connectors } = useConnect()
   useEffect(() => {
-    const connectorInstance = connectors.find((c) => c.id === SAFE_ID && c.ready)
     if (
-      connectorInstance &&
+      !(typeof window === 'undefined') &&
+      window?.parent !== window &&
       // @ts-ignore
       !window.cy
     ) {
-      connectAsync({ connector: connectorInstance }).catch(() => {
-        client.autoConnect()
+      import('wagmi/connectors/safe').then(({ SafeConnector }) => {
+        const safe = new SafeConnector({ chains: CHAINS })
+        connectAsync({ connector: safe }).catch(() => {
+          client.autoConnect()
+        })
       })
     } else {
       client.autoConnect()

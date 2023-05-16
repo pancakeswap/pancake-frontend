@@ -54,11 +54,11 @@ export function useDerivedV3BurnInfo(
     : undefined
 
   const liquidityValue0 =
-    token0 && discountedAmount0
+    token0 && typeof discountedAmount0 !== 'undefined'
       ? CurrencyAmount.fromRawAmount(asWETH ? token0 : unwrappedToken(token0), discountedAmount0)
       : undefined
   const liquidityValue1 =
-    token1 && discountedAmount1
+    token1 && typeof discountedAmount1 !== 'undefined'
       ? CurrencyAmount.fromRawAmount(asWETH ? token1 : unwrappedToken(token1), discountedAmount1)
       : undefined
 

@@ -1,4 +1,4 @@
-import { BigintIsh, JSBI } from "@pancakeswap/sdk";
+import { BigintIsh } from "@pancakeswap/sdk";
 
 export interface PriceData {
   time: Date;
@@ -13,7 +13,7 @@ export interface TickData {
 
 export interface TickProcessed {
   tick: number;
-  liquidityNet: JSBI;
-  liquidityActive: JSBI;
+  liquidityNet: bigint;
+  liquidityActive: bigint;
   price0: string;
 }

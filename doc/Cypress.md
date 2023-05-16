@@ -3,8 +3,8 @@
 ### Run all tests
 
 ```bash
-yarn build
-yarn integration-test
+pnpm build
+pnpm integration-test
 ```
 
 ### Run just one test
@@ -12,7 +12,7 @@ yarn integration-test
 If you want to run single test you first need to build an app and then serve it
 
 ```bash
-yarn build
+pnpm build
 serve -s build -p 3000
 ```
 

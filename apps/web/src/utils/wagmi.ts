@@ -12,7 +12,6 @@ import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { SafeConnector } from './safeConnector'
 
 export const { provider, chains } = configureChains(CHAINS, [
   jsonRpcProvider({
@@ -87,7 +86,6 @@ export const client = createClient({
   autoConnect: false,
   provider,
   connectors: [
-    new SafeConnector({ chains }),
     metaMaskConnector,
     injectedConnector,
     coinbaseConnector,

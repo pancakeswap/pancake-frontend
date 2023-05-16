@@ -41,6 +41,14 @@ const iconConfig: Record<VaultPosition, any> = {
   [VaultPosition.AfterBurning]: HotIcon,
 }
 
+const iconColorConfig: Record<VaultPosition, any> = {
+  [VaultPosition.None]: null,
+  [VaultPosition.Flexible]: 'white',
+  [VaultPosition.Locked]: 'white',
+  [VaultPosition.LockedEnd]: null,
+  [VaultPosition.AfterBurning]: null,
+}
+
 const positionLabel: Record<VaultPosition, ReactNode> = {
   [VaultPosition.None]: '',
   [VaultPosition.Flexible]: <Trans>Flexible</Trans>,
@@ -52,7 +60,7 @@ const positionLabel: Record<VaultPosition, ReactNode> = {
 const VaultPositionTag: React.FC<React.PropsWithChildren<{ position: VaultPosition }>> = ({ position }) => {
   return (
     <Tag {...tagConfig[position]}>
-      <Box as={iconConfig[position]} mr="4px" />
+      <Box as={iconConfig[position]} mr="4px" color={iconColorConfig[position]} />
       {positionLabel[position]}
     </Tag>
   )

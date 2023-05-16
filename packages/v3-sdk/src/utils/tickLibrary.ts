@@ -1,18 +1,17 @@
-import JSBI from 'jsbi'
 import { ZERO } from '../internalConstants'
 
 interface FeeGrowthOutside {
-  feeGrowthOutside0X128: JSBI
-  feeGrowthOutside1X128: JSBI
+  feeGrowthOutside0X128: bigint
+  feeGrowthOutside1X128: bigint
 }
 
-const Q256 = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(256))
+const Q256 = 2n ** 256n
 
-export function subIn256(x: JSBI, y: JSBI): JSBI {
-  const difference = JSBI.subtract(x, y)
+export function subIn256(x: bigint, y: bigint): bigint {
+  const difference = x - y
 
-  if (JSBI.lessThan(difference, ZERO)) {
-    return JSBI.add(Q256, difference)
+  if (difference < ZERO) {
+    return Q256 + difference
   }
   return difference
 }
@@ -29,11 +28,11 @@ export abstract class TickLibrary {
     tickLower: number,
     tickUpper: number,
     tickCurrent: number,
-    feeGrowthGlobal0X128: JSBI,
-    feeGrowthGlobal1X128: JSBI
+    feeGrowthGlobal0X128: bigint,
+    feeGrowthGlobal1X128: bigint
   ) {
-    let feeGrowthBelow0X128: JSBI
-    let feeGrowthBelow1X128: JSBI
+    let feeGrowthBelow0X128: bigint
+    let feeGrowthBelow1X128: bigint
     if (tickCurrent >= tickLower) {
       feeGrowthBelow0X128 = feeGrowthOutsideLower.feeGrowthOutside0X128
       feeGrowthBelow1X128 = feeGrowthOutsideLower.feeGrowthOutside1X128
@@ -42,8 +41,8 @@ export abstract class TickLibrary {
       feeGrowthBelow1X128 = subIn256(feeGrowthGlobal1X128, feeGrowthOutsideLower.feeGrowthOutside1X128)
     }
 
-    let feeGrowthAbove0X128: JSBI
-    let feeGrowthAbove1X128: JSBI
+    let feeGrowthAbove0X128: bigint
+    let feeGrowthAbove1X128: bigint
     if (tickCurrent < tickUpper) {
       feeGrowthAbove0X128 = feeGrowthOutsideUpper.feeGrowthOutside0X128
       feeGrowthAbove1X128 = feeGrowthOutsideUpper.feeGrowthOutside1X128

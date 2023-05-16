@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import {
   AutoColumn,
@@ -27,7 +27,6 @@ import {
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
@@ -68,8 +67,9 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useSigner } from 'wagmi'
+import { useProvider, useSigner } from 'wagmi'
 import dayjs from 'dayjs'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -146,7 +146,8 @@ export default function PoolPage() {
 
   const { data: signer } = useSigner()
 
-  const { account, chainId, provider } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
+  const provider = useProvider({ chainId })
 
   const router = useRouter()
   const { tokenId: tokenIdFromUrl } = router.query
@@ -223,8 +224,8 @@ export default function PoolPage() {
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
   // usdc prices always in terms of tokens
-  const price0 = useStablecoinPrice(token0 ?? undefined, !!feeValue0)
-  const price1 = useStablecoinPrice(token1 ?? undefined, !!feeValue1)
+  const price0 = useStablecoinPrice(token0 ?? undefined, { enabled: !!feeValue0 })
+  const price1 = useStablecoinPrice(token1 ?? undefined, { enabled: !!feeValue1 })
 
   const fiatValueOfFees: CurrencyAmount<Currency> | null = useMemo(() => {
     if (!price0 || !price1 || !feeValue0 || !feeValue1) return null
@@ -290,18 +291,17 @@ export default function PoolPage() {
       value,
     }
 
-    if (signer) {
-      signer
-        .estimateGas(txn)
-        .then((estimate) => {
-          const newTxn = {
-            ...txn,
-            gasLimit: calculateGasMargin(estimate),
-          }
+    signer
+      ?.estimateGas(txn)
+      ?.then((estimate) => {
+        const newTxn = {
+          ...txn,
+          gasLimit: calculateGasMargin(estimate),
+        }
 
-          return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-            setCollectMigrationHash(response.hash)
-            setCollecting(false)
+        return signer?.sendTransaction(newTxn)?.then((response: TransactionResponse) => {
+          setCollectMigrationHash(response.hash)
+          setCollecting(false)
 
             const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
             const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
@@ -314,11 +314,11 @@ export default function PoolPage() {
             })
           })
         })
-        .catch((error) => {
-          setCollecting(false)
-          console.error(error)
-        })
-    }
+      })
+      ?.catch((error) => {
+        setCollecting(false)
+        console.error(error)
+      })
   }, [
     tokenIdsInMCv3Loading,
     currency0ForFeeCollectionPurposes,

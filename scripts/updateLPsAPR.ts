@@ -7,10 +7,9 @@ import _toLower from 'lodash/toLower'
 import { sub, getUnixTime } from 'date-fns'
 import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
-import { StaticJsonRpcProvider } from '@ethersproject/providers'
-import { BlockResponse } from 'web/src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT_WITH_CHAIN } from 'web/src/config/constants/endpoints'
-import { stableSwapClient, infoClientWithChain } from 'web/src/utils/graphql'
+import { BlockResponse } from '../apps/web/src/components/SubgraphHealthIndicator'
+import { BLOCKS_CLIENT_WITH_CHAIN } from '../apps/web/src/config/constants/endpoints'
+import { stableSwapClient, infoClientWithChain } from '../apps/web/src/utils/graphql'
 
 interface SingleFarmResponse {
   id: string
@@ -95,15 +94,6 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, ch
     throw new Error(`Failed to fetch LP APR data: ${error}`)
   }
 }
-
-// Copy paste of Stable farm logic
-export const bscProvider = new StaticJsonRpcProvider(
-  {
-    url: 'https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24',
-    skipFetchSetup: true,
-  },
-  56,
-)
 
 interface SplitFarmResult {
   normalFarms: any[]

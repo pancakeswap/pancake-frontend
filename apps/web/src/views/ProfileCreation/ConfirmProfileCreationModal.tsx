@@ -1,6 +1,6 @@
 import { Modal, Flex, Text, useToast } from '@pancakeswap/uikit'
-import { BigNumber } from '@ethersproject/bignumber'
-import { formatUnits } from '@ethersproject/units'
+import { BigNumber } from 'ethers'
+import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCake, useProfileContract } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'

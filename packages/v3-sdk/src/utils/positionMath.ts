@@ -1,5 +1,3 @@
-import { JSBI } from '@pancakeswap/sdk'
-
 import { SqrtPriceMath, TickMath } from '.'
 import { ZERO } from '../internalConstants'
 
@@ -7,9 +5,9 @@ function getToken0Amount(
   tickCurrent: number,
   tickLower: number,
   tickUpper: number,
-  sqrtRatioX96: JSBI,
-  liquidity: JSBI
-): JSBI {
+  sqrtRatioX96: bigint,
+  liquidity: bigint
+): bigint {
   if (tickCurrent < tickLower) {
     return SqrtPriceMath.getAmount0Delta(
       TickMath.getSqrtRatioAtTick(tickLower),
@@ -28,9 +26,9 @@ function getToken1Amount(
   tickCurrent: number,
   tickLower: number,
   tickUpper: number,
-  sqrtRatioX96: JSBI,
-  liquidity: JSBI
-): JSBI {
+  sqrtRatioX96: bigint,
+  liquidity: bigint
+): bigint {
   if (tickCurrent < tickLower) {
     return ZERO
   }

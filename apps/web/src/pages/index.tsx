@@ -1,4 +1,4 @@
-import { formatEther } from '@ethersproject/units'
+import { formatEther } from 'ethers/lib/utils'
 import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
@@ -55,8 +55,8 @@ export const getStaticProps: GetStaticProps = async () => {
       throw new Error('No block found for 30 days ago')
     }
 
-    const totalTx = await infoServerClient.request(totalTxQuery)
-    const totalTx30DaysAgo = await infoServerClient.request(totalTxQuery, {
+    const totalTx = await infoServerClient.request<any>(totalTxQuery)
+    const totalTx30DaysAgo = await infoServerClient.request<any>(totalTxQuery, {
       block: {
         number: days30AgoBlock.number,
       },
@@ -88,7 +88,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   if (process.env.BIT_QUERY_HEADER) {
     try {
-      const result = await bitQueryServerClient.request(usersQuery, {
+      const result = await bitQueryServerClient.request<any>(usersQuery, {
         since: days30Ago.toISOString(),
         till: new Date().toISOString(),
       })
@@ -103,7 +103,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   try {
-    const result = await infoServerClient.request(gql`
+    const result = await infoServerClient.request<any>(gql`
       query tvl {
         pancakeFactories(first: 1) {
           totalLiquidityUSD

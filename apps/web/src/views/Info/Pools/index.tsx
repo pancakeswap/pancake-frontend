@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { useMemo } from 'react'
-import { usePoolDatasSWR } from 'state/info/hooks'
-import { useWatchlistPools } from 'state/user/hooks'
+import { useChainIdByQuery, usePoolDatasSWR } from 'state/info/hooks'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import { usePoolsData } from '../hooks/usePoolsData'
 
 const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { poolsData, stableSwapsAprs } = usePoolsData()
-
-  const [savedPools] = useWatchlistPools()
+  const chainId = useChainIdByQuery()
+  const { savedPools } = useInfoUserSavedTokensAndPools(chainId)
   const watchlistPools = usePoolDatasSWR(savedPools)
   const watchlistPoolsData = useMemo(
     () =>

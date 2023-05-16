@@ -1,8 +1,13 @@
-/* eslint-disable no-console */
 import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useMemo } from 'react'
-import { SmartRouter, PoolType, QuoteProvider, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
+import {
+  SmartRouter,
+  PoolType,
+  QuoteProvider,
+  SmartRouterTrade,
+  BATCH_MULTICALL_CONFIGS,
+} from '@pancakeswap/smart-router/evm'
+import { ChainId, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 import { isDesktop } from 'react-device-detect'
 
@@ -11,6 +16,8 @@ import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { viemClients } from 'utils/viem'
+import { WorkerEvent } from 'quote-worker'
+import { QUOTING_API } from 'config/constants/endpoints'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -18,6 +25,55 @@ import {
   PoolsWithState,
   CommonPoolsParams,
 } from './useCommonPools'
+
+class WorkerProxy {
+  id = 0
+
+  // eslint-disable-next-line no-useless-constructor
+  constructor(protected worker: Worker) {}
+
+  public postMessage = async (message: any) => {
+    if (!this.worker) {
+      throw new Error('Worker not initialized')
+    }
+
+    const id = this.id++
+    const promise = new Promise((resolve, reject) => {
+      const handler = (e) => {
+        const [eventId, data] = e.data
+        if (id === eventId) {
+          this.worker.removeEventListener('message', handler)
+          if (data.success === false) {
+            reject(data.error)
+          } else {
+            resolve(data.result)
+          }
+        }
+      }
+      this.worker.addEventListener('message', handler)
+    })
+
+    this.worker.postMessage([id, message])
+    return promise
+  }
+
+  public getBestTrade = async (params: WorkerEvent[1]['params']) => {
+    return this.postMessage({
+      cmd: 'getBestTrade',
+      params,
+    })
+  }
+}
+
+const worker =
+  typeof window !== 'undefined' && typeof Worker !== 'undefined'
+    ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
+    : undefined
+
+const worker2 =
+  typeof window !== 'undefined' && typeof Worker !== 'undefined'
+    ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
+    : undefined
 
 // Revalidate interval in milliseconds
 const REVALIDATE_AFTER = {
@@ -53,7 +109,7 @@ interface Options {
 }
 
 interface useBestAMMTradeOptions extends Options {
-  type?: 'offchain' | 'quoter' | 'auto'
+  type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
 const isLowEndDevice = typeof window !== 'undefined' && !(isDesktop && typeof window.requestIdleCallback === 'function')
@@ -62,25 +118,17 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
 
-  const isOffChainEnabled = useMemo(
-    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
-    [type, isWrapping],
-  )
-
-  // const isQuoterEnabled = useMemo(
-  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && !isLowEndDevice),
-  //   [type, isWrapping],
-  // )
   const isQuoterEnabled = useMemo(
     () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto')),
     [type, isWrapping],
   )
 
-  const isQuoterAPIEnabled = false
-  // const isQuoterAPIEnabled = useMemo(
-  //   () => Boolean(!isWrapping && (type === 'quoter' || type === 'auto') && isLowEndDevice),
-  //   [isWrapping, type],
-  // )
+  const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
+
+  const isOffChainEnabled = useMemo(
+    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
+    [isWrapping, type],
+  )
 
   const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
@@ -91,7 +139,13 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const apiAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
 
-  const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+  // switch to api when it's stable
+  // const _bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
+  //   ...params,
+  //   enabled: Boolean(enabled && isQuoterAPIEnabled),
+  //   autoRevalidate: apiAutoRevalidate,
+  // })
+  const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
     enabled: Boolean(enabled && isQuoterAPIEnabled),
     autoRevalidate: apiAutoRevalidate,
@@ -99,19 +153,20 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const quoterAutoRevalidate =
     typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
+
+  const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled),
+    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
 
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
-    const { trade: tradeFromQuoter } = bestTradeFromQuoter
+    const { trade: tradeFromQuoterWorker } = bestTradeFromQuoterWorker
     const { trade: tradeFromApi } = bestTradeFromQuoterApi
 
-    const quoterTrade = tradeFromApi || tradeFromQuoter
-    const bestTradeFromQuoter_ = isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoter
+    const quoterTrade = tradeFromApi || tradeFromQuoterWorker
+    const bestTradeFromQuoter_ = isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker
 
     if (!tradeFromOffchain && !quoterTrade) {
       return bestTradeFromOffchain
@@ -127,7 +182,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     if (
       quoterTrade.blockNumber &&
       tradeFromOffchain.blockNumber &&
-      JSBI.greaterThan(JSBI.BigInt(quoterTrade.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))
+      BigInt(quoterTrade.blockNumber) > BigInt(tradeFromOffchain.blockNumber)
     ) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
       return bestTradeFromQuoter_
@@ -135,7 +190,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
     return bestTradeFromOffchain
-  }, [bestTradeFromOffchain, bestTradeFromQuoter, bestTradeFromQuoterApi, isQuoterAPIEnabled])
+  }, [bestTradeFromOffchain, bestTradeFromQuoterApi, bestTradeFromQuoterWorker, isQuoterAPIEnabled])
 }
 
 function bestTradeHookFactory({
@@ -217,8 +272,8 @@ function bestTradeHookFactory({
         SmartRouter.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
-            ? JSBI.BigInt(gasPrice)
-            : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+            ? BigInt(gasPrice)
+            : async () => BigInt(await (await provider({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
           maxHops,
           poolProvider,
           maxSplits,
@@ -272,10 +327,12 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   quoteProvider: SmartRouter.createOffChainQuoteProvider(),
 })
 
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
+
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
+  quoteProvider: onChainQuoteProvider,
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
@@ -283,7 +340,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemClients }),
+  quoteProvider: onChainQuoteProvider,
   getBestTrade: async (
     amount,
     currency,
@@ -294,7 +351,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       protocols: allowedPoolTypes,
     })
 
-    const serverRes = await fetch(`${process.env.NEXT_PUBLIC_ROUTING_API}/v0/quote`, {
+    const serverRes = await fetch(`${QUOTING_API}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -307,7 +364,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
           currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
           value: amount.quotient.toString(),
         },
-        gasPriceWei: gasPriceWei?.toString(),
+        gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
         maxHops,
         maxSplits,
         poolTypes: allowedPoolTypes,
@@ -317,6 +374,61 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
     const serializedRes = await serverRes.json()
     return SmartRouter.Transformer.parseTrade(currency.chainId, serializedRes)
   },
+  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
+  quoterOptimization: false,
+})
+
+const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRouter.getBestTrade => {
+  return async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei }) => {
+    const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
+      protocols: allowedPoolTypes,
+    })
+
+    const result = await quoteWorker.getBestTrade({
+      chainId: currency.chainId,
+      currency: SmartRouter.Transformer.serializeCurrency(currency),
+      tradeType,
+      amount: {
+        currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+        value: amount.quotient.toString(),
+      },
+      gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+      maxHops,
+      maxSplits,
+      poolTypes: allowedPoolTypes,
+      candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+    })
+    return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
+  }
+}
+
+export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
+  key: 'useBestAMMTradeFromQuoterWorker',
+  useCommonPools: useCommonPoolsLite,
+  quoteProvider: onChainQuoteProvider,
+  getBestTrade: createWorkerGetBestTrade(worker),
+  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
+  quoterOptimization: false,
+})
+
+const onChainQuoteProvider2 = SmartRouter.createQuoteProvider({
+  onChainProvider: viemClients,
+  multicallConfigs: {
+    ...BATCH_MULTICALL_CONFIGS,
+    [ChainId.BSC]: {
+      ...BATCH_MULTICALL_CONFIGS[ChainId.BSC],
+      defaultConfig: {
+        multicallChunk: 150,
+        gasLimitOverride: 1_000_000,
+      },
+    },
+  },
+})
+export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
+  key: 'useBestAMMTradeFromQuoterWorker2',
+  useCommonPools: useCommonPoolsLite,
+  quoteProvider: onChainQuoteProvider2,
+  getBestTrade: createWorkerGetBestTrade(worker2),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })

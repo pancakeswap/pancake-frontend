@@ -13,9 +13,9 @@ import { useEffect, useState, useMemo } from 'react'
 import { VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getRoi } from '@pancakeswap/utils/compoundApyHelpers'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Token } from '@pancakeswap/sdk'
 
+import { useAccount } from 'wagmi'
 import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
 
@@ -32,7 +32,7 @@ export const VaultRoiCalculatorModal = ({
 
   const { getLockedApy, flexibleApy } = useVaultApy()
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
 
   const [cakeVaultView, setCakeVaultView] = useState(initialView || 0)
 

@@ -1,11 +1,10 @@
-/* eslint-disable no-await-in-loop */
 /* eslint-disable no-param-reassign */
 import { NextApiHandler } from 'next'
 import { PositionMath } from '@pancakeswap/v3-sdk'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import { JSBI, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { string as zString, object as zObject, enum as zEnum } from 'zod'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { request, gql } from 'graphql-request'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
@@ -190,6 +189,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    // eslint-disable-next-line no-await-in-loop
     const pos = await fetchPositionByMasterChefId(posId)
     allActivePositions = [...allActivePositions, ...pos]
     if (pos.length < 1000) {
@@ -219,10 +219,10 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   const currentTick = slot0.tick
-  const sqrtRatio = JSBI.BigInt(slot0.sqrtPriceX96.toString())
+  const sqrtRatio = BigInt(slot0.sqrtPriceX96.toString())
 
-  let totalToken0 = JSBI.BigInt(0)
-  let totalToken1 = JSBI.BigInt(0)
+  let totalToken0 = 0n
+  let totalToken1 = 0n
 
   for (const position of allActivePositions.filter(
     // double check that the position is within the current tick range
@@ -233,7 +233,7 @@ const handler: NextApiHandler = async (req, res) => {
       +position.tickLower.tickIdx,
       +position.tickUpper.tickIdx,
       sqrtRatio,
-      JSBI.BigInt(position.liquidity),
+      BigInt(position.liquidity),
     )
 
     const token1 = PositionMath.getToken1Amount(
@@ -241,10 +241,10 @@ const handler: NextApiHandler = async (req, res) => {
       +position.tickLower.tickIdx,
       +position.tickUpper.tickIdx,
       sqrtRatio,
-      JSBI.BigInt(position.liquidity),
+      BigInt(position.liquidity),
     )
-    totalToken0 = JSBI.add(totalToken0, token0)
-    totalToken1 = JSBI.add(totalToken1, token1)
+    totalToken0 += token0
+    totalToken1 += token1
   }
 
   const curr0 = CurrencyAmount.fromRawAmount(farm.token, totalToken0.toString()).toExact()

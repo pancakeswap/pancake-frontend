@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, WNATIVE } from '@pancakeswap/sdk'
@@ -25,7 +25,6 @@ import {
 import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
@@ -51,6 +50,7 @@ import Divider from 'components/Divider'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
 
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBurnV3ActionHandlers } from './form/hooks'
 
 const BorderCard = styled.div`
@@ -89,7 +89,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const { percent } = useLocalSelector<{ percent: number }>((s) => s) as { percent: number }
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { data: signer } = useSigner()
   const addTransaction = useTransactionAdder()
 
@@ -218,8 +218,8 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const removed = position?.liquidity?.eq(0)
 
-  const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, !!feeValue0)
-  const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, !!feeValue1)
+  const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, { enabled: !!feeValue0 })
+  const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, { enabled: !!feeValue1 })
 
   function modalHeader() {
     return (

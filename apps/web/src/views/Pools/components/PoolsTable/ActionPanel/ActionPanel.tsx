@@ -1,10 +1,12 @@
 import styled, { keyframes, css } from 'styled-components'
-import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, Pool, BalanceWithLoading } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import BigNumber from 'bignumber.js'
 import { VaultKey, DeserializedLockedCakeVault, DeserializedLockedVaultUser } from 'state/types'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
 import Harvest from './Harvest'
 import Stake from './Stake'
@@ -109,6 +111,7 @@ const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
 }
 
 const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ account, pool, expanded }) => {
+  const { t } = useTranslation()
   const { userData, vaultKey } = pool
   const { isMobile } = useMatchBreakpoints()
 
@@ -130,6 +133,8 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
     ? cakeAsBigNumber.plus(stakingTokenBalance)
     : stakedBalance.plus(stakingTokenBalance)
 
+  const originalLockedAmount = getBalanceNumber(vaultData.userData?.lockedAmount)
+
   return (
     <StyledActionPanel expanded={expanded}>
       <InfoSection>
@@ -139,6 +144,12 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
               lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
               lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
             />
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+                {t('Original locked amount')}
+              </Text>
+              <BalanceWithLoading color="text" bold fontSize="16px" value={originalLockedAmount} decimals={2} />
+            </Flex>
           </Box>
         )}
         <Flex flexDirection="column" mb="8px">
@@ -167,7 +178,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            {pool.vaultKey ? <AutoHarvest {...pool} /> : <Harvest {...pool} />}
+            {pool.vaultKey ? <AutoHarvest pool={pool} /> : <Harvest {...pool} />}
             <Stake pool={pool} />
           </ActionContainer>
         </Box>
