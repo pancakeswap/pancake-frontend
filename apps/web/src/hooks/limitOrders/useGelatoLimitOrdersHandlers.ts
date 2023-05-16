@@ -84,7 +84,6 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         ...(overrides ?? {}),
         to: payload.to,
         data: payload.data,
-        // TODO: wagmi
         value: payload.value.toString(),
       })
 

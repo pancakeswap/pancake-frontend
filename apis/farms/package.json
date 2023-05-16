@@ -22,7 +22,6 @@
     "@types/itty-router-extras": "^0.4.0",
     "@types/lodash": "^4.14.168",
     "@pancakeswap/tsconfig": "workspace:*",
-    "ethers": "^5.0.0",
     "@cloudflare/workers-types": "^3.10.0",
     "typescript": "^5.0.4",
     "wrangler": "2.15.0"

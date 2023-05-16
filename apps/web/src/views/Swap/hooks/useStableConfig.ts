@@ -67,6 +67,8 @@ function useStableSwapContract(address?: Address) {
   return useContract(address, stableSwapABI)
 }
 
+export type UseStableSwapInfoContract = ReturnType<typeof useStableSwapInfoContract>
+
 function useStableSwapInfoContract(address?: Address) {
   return useContract(address, infoStableSwapABI)
 }
@@ -76,7 +78,7 @@ function useStableSwapLPContract(address?: Address) {
 }
 
 export const StableConfigContext = createContext<{
-  stableSwapInfoContract: ReturnType<typeof useStableSwapInfoContract>
+  stableSwapInfoContract: UseStableSwapInfoContract
   stableSwapContract: ReturnType<typeof useStableSwapContract>
   stableSwapLPContract: ReturnType<typeof useStableSwapLPContract>
   stableSwapConfig: StableSwapConfig
