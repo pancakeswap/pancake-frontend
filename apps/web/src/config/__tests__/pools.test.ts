@@ -27,7 +27,11 @@ describe.concurrent('Config pools', () => {
     it.each(poolsToTest.filter((pool) => pool.earningToken.symbol !== 'BNB'))(
       'Pool %p has the correct earning token',
       async (pool) => {
-        const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+        const contract = getPoolContractBySousId({
+          sousId: pool.sousId,
+          chainId,
+          publicClient: publicClient({ chainId }),
+        })
         const rewardTokenAddress = await contract.read.rewardToken()
         expect(rewardTokenAddress.toLowerCase()).toBe(pool.earningToken.address.toLowerCase())
       },
@@ -38,10 +42,18 @@ describe.concurrent('Config pools', () => {
       async (pool) => {
         let stakingTokenAddress = null
         try {
-          const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+          const contract = getPoolContractBySousId({
+            sousId: pool.sousId,
+            chainId,
+            publicClient: publicClient({ chainId }),
+          })
           stakingTokenAddress = await contract.read.stakedToken()
         } catch (error) {
-          const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+          const contract = getPoolContractBySousId({
+            sousId: pool.sousId,
+            chainId,
+            publicClient: publicClient({ chainId }),
+          })
           stakingTokenAddress = await contract.read.syrup()
         }
 
@@ -53,7 +65,11 @@ describe.concurrent('Config pools', () => {
     it.each(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
       'Pool %p has the correct tokenPerBlock',
       async (pool) => {
-        const contract = getPoolContractBySousId({ sousId: pool.sousId, chainId, publicClient: publicClient({ chainId }) })
+        const contract = getPoolContractBySousId({
+          sousId: pool.sousId,
+          chainId,
+          publicClient: publicClient({ chainId }),
+        })
         if (isLegacyPool(pool)) {
           const rewardPerBlock = await contract.read.rewardPerBlock()
 

@@ -275,7 +275,8 @@ function bestTradeHookFactory({
         const res = await getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
             ? BigInt(gasPrice)
-            : async () => BigInt(await (await publicClient({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
+            : async () =>
+                BigInt(await (await publicClient({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
           maxHops,
           poolProvider,
           maxSplits,
