@@ -13,7 +13,6 @@ import {
   NodeRound,
 } from 'state/types'
 import { Address } from 'wagmi'
-import { ContractFunctionResult } from 'viem'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
 import { getViemClients } from 'utils/viem'
@@ -163,15 +162,18 @@ export const getLedgerData = async (
   epochs: number[],
   address: Address,
 ): Promise<PredictionsLedgerResponse[]> => {
-  const response = (await bscClient.multicall({
-    contracts: epochs.map((epoch) => ({
-      address,
-      abi: predictionsV2ABI,
-      functionName: 'ledger',
-      args: [epoch, account],
-    })),
+  const response = await bscClient.multicall({
+    contracts: epochs.map(
+      (epoch) =>
+        ({
+          address,
+          abi: predictionsV2ABI,
+          functionName: 'ledger',
+          args: [BigInt(epoch), account] as const,
+        } as const),
+    ),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof predictionsV2ABI, 'ledger'>[]
+  })
 
   return response.map((r) => ({
     position: r[0] as 1 | 0,
@@ -254,15 +256,18 @@ export const getClaimStatuses = async (
   epochs: number[],
   address: Address,
 ): Promise<PredictionsState['claimableStatuses']> => {
-  const response = (await bscClient.multicall({
-    contracts: epochs.map((epoch) => ({
-      address,
-      abi: predictionsV2ABI,
-      functionName: 'claimable',
-      args: [epoch, account],
-    })),
+  const response = await bscClient.multicall({
+    contracts: epochs.map(
+      (epoch) =>
+        ({
+          address,
+          abi: predictionsV2ABI,
+          functionName: 'claimable',
+          args: [BigInt(epoch), account] as const,
+        } as const),
+    ),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof predictionsV2ABI, 'claimable'>[]
+  })
 
   return response.reduce((accum, claimable, index) => {
     const epoch = epochs[index]
@@ -311,15 +316,18 @@ export const getPredictionData = async (address: Address): Promise<MarketData> =
 }
 
 export const getRoundsData = async (epochs: number[], address: Address): Promise<PredictionsRoundsResponse[]> => {
-  const response = (await bscClient.multicall({
-    contracts: epochs.map((epoch) => ({
-      address,
-      abi: predictionsV2ABI,
-      functionName: 'rounds',
-      args: [epoch],
-    })),
+  const response = await bscClient.multicall({
+    contracts: epochs.map(
+      (epoch) =>
+        ({
+          address,
+          abi: predictionsV2ABI,
+          functionName: 'rounds',
+          args: [BigInt(epoch)] as const,
+        } as const),
+    ),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof predictionsV2ABI, 'rounds'>[]
+  })
 
   return response.map((r) => ({
     epoch: r[0],

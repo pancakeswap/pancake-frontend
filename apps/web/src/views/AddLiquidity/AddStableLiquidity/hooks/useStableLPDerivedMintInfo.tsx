@@ -248,7 +248,6 @@ export function useStableLPDerivedMintInfo(
     loading,
   } = useMintedStableLP({
     stableSwapAddress: stableSwapConfig?.stableSwapAddress,
-    // TODO: wagmi
     stableSwapInfoContract,
     stableSwapConfig,
     currencyInput: currencyAAmountQuotient ? currencyA : currencyB,

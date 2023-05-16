@@ -302,7 +302,6 @@ export function useGasPrice(chainIdOverride?: number): string | undefined {
   const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
-      // TODO: wagmi
       const gasPrice = await signer.request({
         method: 'eth_gasPrice',
       })
