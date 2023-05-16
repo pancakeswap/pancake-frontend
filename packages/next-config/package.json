@@ -1,0 +1,23 @@
+{
+  "name": "@pancakeswap/next-config",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "peerDependencies": {
+    "next": "13.3.4"
+  },
+  "devDependencies": {
+    "next": "13.3.4"
+  },
+  "exports": {
+    "./withWebSecurityHeaders": {
+      "types": "./dist/withWebSecurityHeaders.d.ts",
+      "import": "./dist/withWebSecurityHeaders.js",
+      "require": "./dist/withWebSecurityHeaders.js"
+    }
+  }
+}

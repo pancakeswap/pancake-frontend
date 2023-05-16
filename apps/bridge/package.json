@@ -30,11 +30,11 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.3.4",
-    "@pancakeswap/tsconfig": "workspace:*",
     "@types/node": "18.0.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "@types/styled-components": "^5.1.26",
-    "eslint": "^8.32.0"
+    "eslint": "^8.32.0",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/next-config": "workspace:*"
   }
 }

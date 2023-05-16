@@ -28,7 +28,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { splitSignature } from 'ethers/lib/utils'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, ERC20Token, Fraction, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
+import { CurrencyAmount, ERC20Token, Fraction, NATIVE, Pair, Price, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
@@ -132,7 +132,7 @@ function V2PairMigrate({
   const [feeAmount, setFeeAmount] = useState(FeeAmount.MEDIUM)
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(({ feeAmount: newFeeAmount }) => {
-    setFeeAmount(newFeeAmount)
+    if (newFeeAmount) setFeeAmount(newFeeAmount)
   }, [])
 
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
@@ -498,10 +498,10 @@ function V2PairMigrate({
                 {position && chainId && refund0 && refund1 ? (
                   <Text color="textSubtle">
                     At least {formatCurrencyAmount(refund0, 4, locale)}{' '}
-                    {chainId && WNATIVE[chainId]?.equals(token0) ? 'ETH' : token0.symbol} and{' '}
+                    {chainId && WNATIVE[chainId]?.equals(token0) ? NATIVE?.[chainId].symbol : token0.symbol} and{' '}
                     {formatCurrencyAmount(refund1, 4, locale)}{' '}
-                    {chainId && WNATIVE[chainId]?.equals(token1) ? 'ETH' : token1.symbol} will be refunded to your
-                    wallet due to selected price range.
+                    {chainId && WNATIVE[chainId]?.equals(token1) ? NATIVE?.[chainId].symbol : token1.symbol} will be
+                    refunded to your wallet due to selected price range.
                   </Text>
                 ) : null}
               </AutoColumn>

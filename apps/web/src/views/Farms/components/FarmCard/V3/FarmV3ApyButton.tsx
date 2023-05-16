@@ -87,6 +87,8 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const currencyAUsdPrice = +farm.tokenPriceBusd
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
 
+  const isSorted = farm.token.sortsBefore(farm.quoteToken)
+
   const {
     volumeUSD: volume24H,
     feeUSD,
@@ -96,8 +98,10 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     chainId: farm.token.chainId,
   })
 
-  const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
-  const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+  const balanceA =
+    (isSorted ? existingPosition_?.amount0 : existingPosition_?.amount1) ?? currencyBalances[Field.CURRENCY_A]
+  const balanceB =
+    (isSorted ? existingPosition_?.amount1 : existingPosition_?.amount0) ?? currencyBalances[Field.CURRENCY_B]
 
   const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
@@ -156,8 +160,8 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     amountA: existingPosition?.amount0,
     amountB: existingPosition?.amount1,
     compoundOn: false,
-    currencyAUsdPrice,
-    currencyBUsdPrice,
+    currencyAUsdPrice: isSorted ? currencyAUsdPrice : currencyBUsdPrice,
+    currencyBUsdPrice: isSorted ? currencyBUsdPrice : currencyAUsdPrice,
     volume24H,
   })
 
@@ -166,6 +170,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
   const displayApr = getDisplayApr(cakeApr, lpApr)
   const cakeAprDisplay = cakeApr.toFixed(2)
+  const positionCakeAprDisplay = positionCakeApr.toFixed(2)
   const lpAprDisplay = lpApr.toFixed(2)
 
   const aprTooltip = useTooltip(
@@ -188,6 +193,21 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
       <Text>{t('APRs for individual positions may vary depending on the configs.')}</Text>
     </>,
   )
+  const existingPositionAprTooltip = useTooltip(
+    <>
+      <Text>
+        {t('Combined APR')}: <b>{positionDisplayApr}%</b>
+      </Text>
+      <ul>
+        <li>
+          {t('Farm APR')}: <b>{positionCakeAprDisplay}%</b>
+        </li>
+        <li>
+          {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
+        </li>
+      </ul>
+    </>,
+  )
 
   if (farm.multiplier === '0X') {
     return <Text fontSize="14px">0%</Text>
@@ -207,7 +227,12 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
                 {positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%
               </TooltipText>
             ) : (
-              <Text fontSize="14px">{positionDisplayApr}%</Text>
+              <>
+                <TooltipText ref={existingPositionAprTooltip.targetRef} decorationColor="secondary">
+                  <Text fontSize="14px">{positionDisplayApr}%</Text>
+                </TooltipText>
+                {existingPositionAprTooltip.tooltipVisible && existingPositionAprTooltip.tooltip}
+              </>
             )}
             <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm">
               <CalculateIcon width="18px" color="textSubtle" />

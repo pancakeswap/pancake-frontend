@@ -130,11 +130,8 @@ export default function TokenTable({
   const { chainId } = useActiveChainId()
   const chainPath = useMultiChainPath()
 
-  // theming
-  const { theme } = useTheme()
-
   // for sorting
-  const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
+  const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
 
   // pagination
@@ -185,8 +182,8 @@ export default function TokenTable({
       {sortedTokens.length > 0 ? (
         <AutoColumn gap="16px">
           <ResponsiveGrid>
-            <Text color={theme.colors.textSubtle}>#</Text>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <Text color="secondary">#</Text>
+            <ClickableColumnHeader color="secondary">
               {t('Name')}
               <SortButton
                 scale="sm"
@@ -197,7 +194,7 @@ export default function TokenTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('Price')}
               <SortButton
                 scale="sm"
@@ -208,7 +205,7 @@ export default function TokenTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('Price Change')}
               <SortButton
                 scale="sm"
@@ -222,7 +219,7 @@ export default function TokenTable({
             {/* <ClickableText onClick={() => handleSort(SORT_FIELD.priceUSDChangeWeek)}>
             7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
           </ClickableText> */}
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('Volume 24H')}
               <SortButton
                 scale="sm"
@@ -233,7 +230,7 @@ export default function TokenTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('TVL')}
               <SortButton
                 scale="sm"

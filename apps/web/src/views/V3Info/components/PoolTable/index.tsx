@@ -1,7 +1,6 @@
 import { ArrowBackIcon, ArrowForwardIcon, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
@@ -97,9 +96,6 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
 
   const { t } = useTranslation()
 
-  // theming
-  const { theme } = useTheme()
-
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
@@ -152,8 +148,8 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
       {sortedPools.length > 0 ? (
         <>
           <ResponsiveGrid>
-            <Text color={theme.colors.textSubtle}>#</Text>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <Text color="secondary">#</Text>
+            <ClickableColumnHeader color="secondary">
               {t('Pair')}
               <SortButton
                 scale="sm"
@@ -164,7 +160,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('TVL')}
               <SortButton
                 scale="sm"
@@ -175,7 +171,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('Volume 24H')}
               <SortButton
                 scale="sm"
@@ -186,7 +182,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color={theme.colors.textSubtle}>
+            <ClickableColumnHeader color="secondary">
               {t('Volume 7D')}
               <SortButton
                 scale="sm"

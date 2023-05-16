@@ -158,6 +158,7 @@
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
     "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/next-config": "workspace:*",
     "typechain": "^6.1.0",
     "@vanilla-extract/vite-plugin": "^3.8.0",
     "@vitejs/plugin-react": "4.0.0",
