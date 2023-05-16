@@ -29,8 +29,7 @@ import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingAp
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useContractRead } from 'wagmi'
-
-// import { calculateGasMargin } from 'utils'
+import { calculateGasMargin } from 'utils'
 
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
@@ -120,17 +119,17 @@ const LiquidStakingStakePage = () => {
 
     const receipt = await fetchWithCatchTxError(() => {
       if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
-        const methodArgs = [masterChefAddress]
+        const methodArgs = [masterChefAddress] as const
         return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-          // gasLimit: calculateGasMargin(estimatedGas),
-          value: convertedStakeAmount.toString(),
+          // gas: calculateGasMargin(estimatedGas),
+          value: BigInt(convertedStakeAmount.toString()),
         })
       }
 
-      const methodArgs = [convertedStakeAmount.toString(), masterChefAddress]
+      const methodArgs = [BigInt(convertedStakeAmount.toString()), masterChefAddress] as const
 
       return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-        // gasLimit: calculateGasMargin(estimatedGas),
+        // gas: calculateGasMargin(estimatedGas),
       })
     })
 

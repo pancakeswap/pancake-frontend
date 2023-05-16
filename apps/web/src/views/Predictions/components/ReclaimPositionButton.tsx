@@ -29,7 +29,7 @@ const ReclaimPositionButton: React.FC<React.PropsWithChildren<ReclaimPositionBut
 
   const handleReclaim = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(predictionsContract, 'claim', [[epoch]])
+      return callWithGasPrice(predictionsContract as any, 'claim', [[epoch]])
     })
     if (receipt?.status) {
       await onSuccess?.()

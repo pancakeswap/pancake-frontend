@@ -6,6 +6,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake } from 'hooks/useContract'
+import { Address } from 'viem'
 
 export const useApprovePottery = (potteryVaultAddress: string) => {
   const { t } = useTranslation()
@@ -16,7 +17,7 @@ export const useApprovePottery = (potteryVaultAddress: string) => {
 
   const onApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(cakeContract, 'approve', [potteryVaultAddress, MaxUint256])
+      return callWithGasPrice(cakeContract, 'approve', [potteryVaultAddress as Address, MaxUint256])
     })
 
     if (receipt?.status) {

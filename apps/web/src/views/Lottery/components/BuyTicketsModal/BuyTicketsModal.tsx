@@ -257,7 +257,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
       },
       onConfirm: () => {
         const ticketsForPurchase = getTicketsForPurchase()
-        return callWithGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
+        return callWithGasPrice(lotteryContract, 'buyTickets', [BigInt(currentLotteryId), ticketsForPurchase])
       },
       onSuccess: async ({ receipt }) => {
         onDismiss?.()

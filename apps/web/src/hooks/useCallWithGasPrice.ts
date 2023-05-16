@@ -1,43 +1,89 @@
-import { SendTransactionResult } from 'wagmi/actions'
-// TODO: wagmi
-import type { CallOverrides } from 'ethers'
-import get from 'lodash/get'
+import { Abi } from 'abitype'
 import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
+import { getViemClients } from 'utils/viem'
+import { Account, Address, CallParameters, Chain, GetFunctionArgs, InferFunctionName } from 'viem'
+import { useWalletClient } from 'wagmi'
+import { SendTransactionResult } from 'wagmi/actions'
+import { useActiveChainId } from './useActiveChainId'
 
 export function useCallWithGasPrice() {
   const gasPrice = useGasPrice()
+  const { chainId } = useActiveChainId()
+  const { data: walletClient } = useWalletClient()
 
-  /**
-   * Perform a contract call with a gas price returned from useGasPrice
-   * @param contract Used to perform the call
-   * @param methodName The name of the method called
-   * @param methodArgs An array of arguments to pass to the method
-   * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
-   * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
-   */
   const callWithGasPrice = useCallback(
-    async (
-      contract: any,
-      methodName: string,
-      methodArgs: any[] | undefined = [],
-      overrides: CallOverrides = null,
+    async <
+      TAbi extends Abi | unknown[],
+      TFunctionName extends string = string,
+      _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+      Args = TFunctionName extends string
+        ? GetFunctionArgs<TAbi, TFunctionName>['args']
+        : _FunctionName extends string
+        ? GetFunctionArgs<TAbi, _FunctionName>['args']
+        : never,
+    >(
+      contract: { abi: TAbi; account: Account; chain: Chain; address: Address },
+      methodName: InferFunctionName<TAbi, TFunctionName>,
+      methodArgs?: Args extends never ? undefined : Args,
+      overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
-      const contractMethod = get(contract.write, methodName)
-      const hasManualGasPriceOverride = overrides?.gasPrice
-      const hash = await contractMethod(
-        methodArgs,
-        hasManualGasPriceOverride
-          ? { ...overrides, account: contract.account, chain: contract.chain }
-          : { ...overrides, gasPrice, account: contract.account, chain: contract.chain },
-      )
+      const res = await walletClient.writeContract({
+        abi: contract.abi,
+        address: contract.address,
+        functionName: methodName,
+        args: methodArgs,
+        account: walletClient.account,
+        gasPrice: BigInt(gasPrice),
+        ...overrides,
+      } as any) // TODO: fix types
+
+      const hash = res
 
       return {
         hash,
       }
     },
-    [gasPrice],
+    [gasPrice, walletClient],
   )
 
-  return { callWithGasPrice }
+  const callWithGasPriceWithSimulate = useCallback(
+    async <
+      TAbi extends Abi | unknown[],
+      TFunctionName extends string = string,
+      _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+      Args = TFunctionName extends string
+        ? GetFunctionArgs<TAbi, TFunctionName>['args']
+        : _FunctionName extends string
+        ? GetFunctionArgs<TAbi, _FunctionName>['args']
+        : never,
+    >(
+      contract: { abi: TAbi; account: Account; chain: Chain; address: Address },
+      methodName: InferFunctionName<TAbi, TFunctionName>,
+      methodArgs?: Args extends never ? undefined : Args,
+      overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
+    ): Promise<SendTransactionResult> => {
+      const publicClient = getViemClients({ chainId })
+      const { request } = await publicClient.simulateContract({
+        abi: contract.abi,
+        address: contract.address,
+        functionName: methodName,
+        args: methodArgs,
+        gasPrice: BigInt(gasPrice),
+        ...overrides,
+      } as any) // TODO: fix types
+      const res = await walletClient.writeContract({
+        ...request,
+      })
+
+      const hash = res
+
+      return {
+        hash,
+      }
+    },
+    [chainId, gasPrice, walletClient],
+  )
+
+  return { callWithGasPrice, callWithGasPriceWithSimulate }
 }
