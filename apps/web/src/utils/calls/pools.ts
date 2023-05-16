@@ -58,7 +58,7 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
       } as const),
   )
 
-  const calls = [...startBlockCalls, ...endBlockCalls] as const
+  const calls = [...startBlockCalls, ...endBlockCalls]
   const resultsRaw = await viemClients[chainId].multicall({
     contracts: calls,
     allowFailure: false,

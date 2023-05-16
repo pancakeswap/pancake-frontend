@@ -269,12 +269,7 @@ const LiquidStakingStakePage = () => {
               </Text>
               <Flex>
                 <Box width={24} height={24}>
-                  <Image
-                    src={`/images/tokens/${wbethContract?.address}.png`}
-                    width={24}
-                    height={24}
-                    alt="WBETH"
-                  />
+                  <Image src={`/images/tokens/${wbethContract?.address}.png`} width={24} height={24} alt="WBETH" />
                 </Box>
                 <Text ml="4px">WBETH</Text>
               </Flex>

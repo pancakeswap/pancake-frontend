@@ -99,15 +99,15 @@ describe('getFarmPrices tests', () => {
       18,
     )
     expect(farmWithPrices[0].tokenPriceBusd).toEqual('4.69625051436790682381334465120648352396')
-    expect(farmWithPrices[0].quoteTokenPriceBusd).toEqual('331.387574149367784825')
+    expect(farmWithPrices[0].quoteTokenPriceBusd).toEqual('331.38757414936778482507')
     expect(farmWithPrices[0].lpTokenPrice).toEqual('83.350538798823178681')
 
     expect(farmWithPrices[1].tokenPriceBusd).toEqual('0.999999999999999999')
-    expect(farmWithPrices[1].quoteTokenPriceBusd).toEqual('331.387574149367784825')
+    expect(farmWithPrices[1].quoteTokenPriceBusd).toEqual('331.38757414936778482507')
     expect(farmWithPrices[1].lpTokenPrice).toEqual('48.678783745190691397')
 
     expect(farmWithPrices[2].tokenPriceBusd).toEqual('0.408633326124777852')
-    expect(farmWithPrices[2].quoteTokenPriceBusd).toEqual('331.387574149367784825')
+    expect(farmWithPrices[2].quoteTokenPriceBusd).toEqual('331.38757414936778482507')
     expect(farmWithPrices[2].lpTokenPrice).toEqual('26.48047925297142946')
   })
 })
