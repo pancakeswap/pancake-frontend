@@ -10,13 +10,14 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
-import { RewardInfo, Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { RewardInfo, Qualification, Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
   rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
+  campaignIdsIncentive: Incentives[]
 }
 
 const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
@@ -24,6 +25,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   rewardInfo,
   totalAvailableClaimData,
   qualification,
+  campaignIdsIncentive,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -33,22 +35,42 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   })
 
   // Not Ready for claim
-  const notReadyForClaim = useMemo(
-    () =>
-      totalAvailableClaimData.filter(
-        (campaign) => new BigNumber(campaign.canClaim).gt(0) && !campaign.userClaimedIncentives && !campaign.isActive,
-      ),
-    [totalAvailableClaimData],
-  )
+  const notReadyForClaim = useMemo(() => {
+    // eslint-disable-next-line array-callback-return, consistent-return
+    return totalAvailableClaimData.filter((campaign) => {
+      const campaignIncentive = campaignIdsIncentive.find(
+        (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
+      )
+      if (!campaignIncentive.isActivated) {
+        return campaign
+      }
+    })
+  }, [campaignIdsIncentive, totalAvailableClaimData])
+
+  const notReadyForClaimUSDPrice = useMemo(() => {
+    return notReadyForClaim
+      .map((available) => available.totalTradingFee)
+      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+  }, [notReadyForClaim])
 
   // Unclaim data
   const unclaimData = useMemo(() => {
+    // eslint-disable-next-line array-callback-return, consistent-return
     return totalAvailableClaimData
-      .filter(
-        (campaign) => new BigNumber(campaign.canClaim).gt(0) && !campaign.userClaimedIncentives && campaign.isActive,
-      )
+      .filter((campaign) => {
+        const campaignIncentive = campaignIdsIncentive.find(
+          (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
+        )
+        if (
+          new BigNumber(campaign.canClaim).gt(0) &&
+          !campaign.userClaimedIncentives &&
+          campaignIncentive.isActivated
+        ) {
+          return campaign
+        }
+      })
       .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
-  }, [totalAvailableClaimData])
+  }, [campaignIdsIncentive, totalAvailableClaimData])
 
   const { isPending, handleClaim } = useClaimAllReward({ campaignIds, unclaimData, qualification })
 
@@ -153,7 +175,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="primary" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(expiredUSDPrice, 2, 8)}`}
+                    {`$${formatNumber(notReadyForClaimUSDPrice, 2, 8)}`}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('from the recent campaign period is under tallying and will be available for claiming soon.')}

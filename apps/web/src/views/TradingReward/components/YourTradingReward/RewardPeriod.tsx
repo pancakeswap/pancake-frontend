@@ -18,6 +18,7 @@ interface RewardPeriodProps {
   isValidLockDuration: boolean
   thresholdLockTime: number
   qualification: Qualification
+  campaignIdsIncentive: Incentives[]
 }
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
@@ -33,6 +34,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   isValidLockDuration,
   thresholdLockTime,
   qualification,
+  campaignIdsIncentive,
 }) => {
   return (
     <Flex
@@ -59,6 +61,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
         rewardInfo={rewardInfo}
         qualification={qualification}
         totalAvailableClaimData={totalAvailableClaimData}
+        campaignIdsIncentive={campaignIdsIncentive}
       />
     </Flex>
   )

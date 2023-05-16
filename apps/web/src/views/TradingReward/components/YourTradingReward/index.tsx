@@ -153,6 +153,7 @@ interface YourTradingRewardProps {
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
   rewardInfo: { [key in string]: RewardInfo }
+  campaignIdsIncentive: Incentives[]
 }
 
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
@@ -163,6 +164,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   totalAvailableClaimData,
   currentUserCampaignInfo,
   rewardInfo,
+  campaignIdsIncentive,
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
@@ -233,6 +235,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             isValidLockDuration={isValidLockDuration}
             thresholdLockTime={thresholdLockTime}
             qualification={qualification}
+            campaignIdsIncentive={campaignIdsIncentive}
           />
         </Container>
       )}

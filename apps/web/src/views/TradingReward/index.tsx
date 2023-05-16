@@ -70,6 +70,7 @@ const TradingReward = () => {
         incentives={currentUserIncentive}
         qualification={allTradingRewardPairData.qualification}
         campaignIds={allTradingRewardPairData.campaignIds}
+        campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive}
         rewardInfo={allTradingRewardPairData.rewardInfo}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
