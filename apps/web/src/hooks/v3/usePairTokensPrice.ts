@@ -22,11 +22,16 @@ export const usePairTokensPrice = (pairAddress?: string, duration?: PairDataTime
   const pairPrice = usePairPriceChartTokenData(pairAddress?.toLowerCase(), priceTimeWindow, chianId)
 
   const pairPriceData: { time: Date; value: number }[] = useMemo(() => {
-    return pairPrice.map((d) => ({
+    return pairPrice?.data?.map((d) => ({
       time: new Date(d.time * 1000),
       value: d.close,
     }))
   }, [pairPrice])
 
-  return pairPriceData
+  return {
+    pairPriceData,
+    maxPrice: pairPrice?.maxPrice,
+    minPrice: pairPrice?.minPrice,
+    averagePrice: pairPrice?.averagePrice,
+  }
 }

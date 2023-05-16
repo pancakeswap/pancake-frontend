@@ -2503,5 +2503,6 @@
   "APRs for individual positions may vary depending on the configs.": "APRs for individual positions may vary depending on the configs.",
   "YOUR VOL. /": "YOUR VOL. /",
   "YOUR TRADING FEE": "YOUR TRADING FEE",
-  "Previously Ended": "Previously Ended"
+  "Previously Ended": "Previously Ended",
+  "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range.": "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range."
 }

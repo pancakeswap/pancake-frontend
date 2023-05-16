@@ -1,11 +1,20 @@
 import { Route, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
-import { Modal, ModalV2, QuestionHelper, Text, Flex, useTooltip, AutoColumn, UseModalV2Props } from '@pancakeswap/uikit'
+import {
+  Modal,
+  ModalV2,
+  QuestionHelper,
+  Text,
+  Flex,
+  useTooltip,
+  AutoColumn,
+  UseModalV2Props,
+  CurrencyLogo,
+} from '@pancakeswap/uikit'
 import { Currency } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { useMemo, memo } from 'react'
 
-import { CurrencyLogo } from 'components/Logo'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { RouterBox, RouterPoolBox, RouterTypeText, CurrencyLogoWrapper } from 'views/Swap/components/RouterViewer'
 import { v3FeeToPercent } from '../utils/exchange'

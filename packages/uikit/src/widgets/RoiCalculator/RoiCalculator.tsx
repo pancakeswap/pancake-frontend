@@ -20,7 +20,7 @@ import { RoiRate } from "./RoiRate";
 import { Details } from "./Details";
 import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
-import { PriceData, TickData } from "./types";
+import { TickData } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
@@ -47,7 +47,15 @@ export type RoiCalculatorProps = {
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
   protocolFee?: Percent;
-  prices?: PriceData[];
+  prices?: {
+    pairPriceData: {
+      time: Date;
+      value: number;
+    }[];
+    maxPrice: number;
+    minPrice: number;
+    averagePrice: number;
+  };
   ticks?: TickData[];
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
@@ -386,7 +394,8 @@ export function RoiCalculator({
       <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <PriceChart
         prices={useMemo(
-          () => prices?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
+          () =>
+            prices?.pairPriceData?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
           [invertPrice, prices]
         )}
         onSpanChange={onPriceSpanChange}
@@ -406,6 +415,9 @@ export function RoiCalculator({
             : formatPrice(priceRange?.priceLower, 6)
         }
         priceCurrent={invertPrice ? formatPrice(priceCurrent?.invert(), 6) : formatPrice(priceCurrent, 6)}
+        maxPrice={invertPrice && prices?.maxPrice ? prices?.maxPrice : 1 / (prices?.minPrice ?? 1)}
+        minPrice={invertPrice && prices?.minPrice ? prices?.minPrice : 1 / (prices?.maxPrice ?? 1)}
+        averagePrice={invertPrice && prices?.averagePrice ? prices?.averagePrice : 1 / (prices?.averagePrice ?? 1)}
       />
     </Section>
   );

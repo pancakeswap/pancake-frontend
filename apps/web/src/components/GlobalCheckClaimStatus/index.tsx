@@ -6,10 +6,10 @@ import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useV3AirdropContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import useSWRImmutable from 'swr/immutable'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
 
 interface GlobalCheckClaimStatusProps {
@@ -20,7 +20,7 @@ interface GlobalCheckClaimStatusProps {
 const enable = true
 
 const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = (props) => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   if (!enable || chainId !== ChainId.BSC) {
     return null
   }
@@ -70,8 +70,8 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     <V3AirdropModal
       data={account ? (data?.v3WhitelistAddress[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
       onClick={async () => {
-        const { cakeAmountInWei, nft1, nft2 } = data.v3ForSC[account.toLowerCase()]
-        const proof = data?.v3MerkleProofs?.merkleProofs?.[account.toLowerCase()]
+        const { cakeAmountInWei, nft1, nft2 } = data?.v3ForSC[account?.toLowerCase()]
+        const proof = data?.v3MerkleProofs?.merkleProofs?.[account?.toLowerCase()]
         const receipt = await fetchWithCatchTxError(() => claim(cakeAmountInWei, nft1, nft2, proof))
         if (receipt?.status) {
           toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
@@ -84,7 +84,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
       const canV3ClaimReward = await isClaimed(account)
-      const isWhitelistAddress = data?.v3WhitelistAddress[account.toLowerCase()]
+      const isWhitelistAddress = data && account ? data.v3WhitelistAddress[account.toLowerCase()] : false
       // TODO: also need check json acc is whitelisted or not.
       if (!canV3ClaimReward && isWhitelistAddress) {
         setCanClaimReward(true)

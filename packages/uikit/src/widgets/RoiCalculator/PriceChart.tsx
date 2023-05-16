@@ -27,6 +27,9 @@ interface Props {
   priceCurrent?: number | string;
   priceUpper?: number | string;
   priceLower?: number | string;
+  maxPrice?: number;
+  minPrice?: number;
+  averagePrice?: number;
   onSpanChange?: (spanIndex: number) => void;
 }
 
@@ -37,6 +40,9 @@ export const PriceChart = memo(function PriceChart({
   priceUpper,
   priceLower,
   priceCurrent,
+  maxPrice,
+  minPrice,
+  averagePrice,
 }: Props) {
   const { t } = useTranslation();
   const priceLimits = useMemo(
@@ -54,29 +60,6 @@ export const PriceChart = memo(function PriceChart({
       ].filter((limit) => !!limit) as { title: string; color: string; price: number }[],
     [priceCurrent, priceUpper, priceLower]
   );
-
-  const priceKeyValues = useMemo(() => {
-    if (!prices?.length) {
-      return {
-        min: 0,
-        max: 0,
-        average: 0,
-      };
-    }
-    let sum = 0;
-    let min = Number.MAX_VALUE;
-    let max = 0;
-    for (const { value } of prices) {
-      sum += value;
-      min = Math.min(min, value);
-      max = Math.max(max, value);
-    }
-    return {
-      min,
-      max,
-      average: sum / prices.length,
-    };
-  }, [prices]);
 
   const chart =
     prices && prices.length ? (
@@ -102,11 +85,11 @@ export const PriceChart = memo(function PriceChart({
     prices && prices.length ? (
       <>
         <Flex flexDirection="row" justifyContent="space-between" mt="0.5em" width="100%">
-          <PriceDisplay title={t("Min")} value={priceKeyValues.min.toPrecision(6)} />
-          <PriceDisplay title={t("Max")} value={priceKeyValues.max.toPrecision(6)} ml="0.5em" />
+          <PriceDisplay title={t("Min")} value={minPrice?.toPrecision(6)} />
+          <PriceDisplay title={t("Max")} value={maxPrice?.toPrecision(6)} ml="0.5em" />
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" mt="0.5em" width="100%">
-          <PriceDisplay title={t("Avg")} value={priceKeyValues.average.toPrecision(6)} />
+          <PriceDisplay title={t("Avg")} value={averagePrice?.toPrecision(6)} />
           <PriceDisplay title={t("Current")} value={priceCurrent} ml="0.5em" />
         </Flex>
       </>

@@ -2,11 +2,11 @@ import { APTOS_COIN } from '@pancakeswap/awgmi'
 import { createAction, createReducer } from '@reduxjs/toolkit'
 import { TxnBuilderTypes } from 'aptos'
 import { CAKE } from 'config/coins'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import { ParsedUrlQuery } from 'querystring'
 import { useDeferredValue, useEffect, useState } from 'react'
+import { useActiveChainId } from 'hooks/useNetwork'
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('swap/selectCurrency')
 export const switchCurrencies = createAction<void>('swap/switchCurrencies')
@@ -101,7 +101,7 @@ const reducer = createReducer<SwapState>(initialState, (builder) =>
 
 function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
-    let valid
+    let valid: boolean | undefined
     try {
       TxnBuilderTypes.StructTag.fromString(decodeURIComponent(urlParam))
       valid = true
@@ -159,7 +159,7 @@ function paramsToObject(entries) {
 }
 
 export function useDefaultsFromURLSearch() {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useActiveChainId()
   const [, dispatch] = useSwapState()
   const [isFirstLoaded, setIsFirstLoaded] = useState(false)
 

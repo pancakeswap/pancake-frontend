@@ -6,7 +6,6 @@ import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text, useMatchBreakpoint
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, useV2Pairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
@@ -22,6 +21,7 @@ import RemoveLiquidity from 'views/RemoveLiquidity'
 import RemoveStableLiquidity from 'views/RemoveLiquidity/RemoveStableLiquidity'
 import useStableConfig, { StableConfigContext, useLPTokensWithBalanceByAccount } from 'views/Swap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 export const STABLE_LP_TO_MIGRATE = [
   '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
@@ -140,7 +140,7 @@ const LPCard_ = ({
   pair,
   type,
 }: MigrationPositionCardProps) => {
-  const { chainId, account } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const [, setRemovedPairs] = useAtom(removedPairsAtom)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)

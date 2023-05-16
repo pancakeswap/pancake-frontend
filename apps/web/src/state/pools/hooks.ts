@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
@@ -12,6 +11,7 @@ import { Token } from '@pancakeswap/sdk'
 import { getLivePoolsConfig } from '@pancakeswap/pools'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -112,7 +112,7 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
 
 export const usePoolsConfigInitialize = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   useEffect(() => {
     if (chainId) {
       dispatch(setInitialPoolConfig({ chainId }))
@@ -122,7 +122,7 @@ export const usePoolsConfigInitialize = () => {
 
 export const usePoolsPageFetch = () => {
   const dispatch = useAppDispatch()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   usePoolsConfigInitialize()
 
@@ -176,7 +176,7 @@ export const useCakeVaultPublicData = () => {
 }
 
 export const useFetchIfo = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const dispatch = useAppDispatch()
 
   usePoolsConfigInitialize()

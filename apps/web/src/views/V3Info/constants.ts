@@ -52,9 +52,17 @@ export const TimeWindow: {
 }
 
 export const ONE_HOUR_SECONDS = 3600
+export const ONE_DAY_SECONDS = 86400
 export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 
 export const SUBGRAPH_START_BLOCK = {
   [ChainId.BSC]: 26956207,
   [ChainId.ETHEREUM]: 16950686,
+}
+
+export const DURATION_INTERVAL = {
+  day: ONE_HOUR_SECONDS,
+  week: ONE_DAY_SECONDS,
+  month: ONE_DAY_SECONDS,
+  year: ONE_DAY_SECONDS,
 }

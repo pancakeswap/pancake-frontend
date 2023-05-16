@@ -1,15 +1,13 @@
 import { Box, Text, Button, Link, Message, MessageText } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ChainId } from '@pancakeswap/sdk'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 
 const NoProfile = () => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
-  const { chainId } = useActiveChainId()
+  const { account, chainId } = useAccountActiveChain()
 
   return (
     <>

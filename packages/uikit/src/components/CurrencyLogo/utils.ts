@@ -1,6 +1,6 @@
 import { getAddress } from "ethers/lib/utils";
 import memoize from "lodash/memoize";
-import { ChainId, Token } from "@pancakeswap/sdk";
+import { ChainId, Token, Currency } from "@pancakeswap/sdk";
 
 const mapping: { [key: number]: string } = {
   [ChainId.BSC]: "smartchain",
@@ -29,4 +29,22 @@ export const getTokenLogoURLByAddress = memoize(
     return null;
   },
   (address, chainId) => `${chainId}#${address}`
+);
+
+const chainName: { [key: number]: string } = {
+  [ChainId.BSC]: "",
+  [ChainId.ETHEREUM]: "eth",
+};
+
+export const getCurrencyLogoUrls = memoize(
+  (currency?: Currency): string[] => {
+    const chainId = currency?.chainId || ChainId.BSC;
+    const tokenAddress = getAddress(currency?.wrapped?.address || "");
+    const trustWalletLogo = getTokenLogoURL(currency?.wrapped);
+    const logoUrl = `https://tokens.pancakeswap.finance/images/${
+      chainId === ChainId.BSC ? "" : `${chainName[chainId]}/`
+    }${tokenAddress}.png`;
+    return [trustWalletLogo, logoUrl].filter((url) => Boolean(url)) as string[];
+  },
+  (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}`
 );

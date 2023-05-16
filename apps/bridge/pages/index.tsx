@@ -1,97 +1,107 @@
-import Script from 'next/script'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import styled, { useTheme } from 'styled-components'
-import { Flex, Text, Box } from '@pancakeswap/uikit'
-import { STARGATE_JS } from '../components/stargate/config'
-import { StargateWidget } from '../components/stargate'
+import { useMemo } from 'react'
+import { SquidWidget } from '@0xsquid/widget'
+import { AppConfig } from '@0xsquid/widget/widget/core/types/config'
+import { Box, PancakeTheme } from '@pancakeswap/uikit'
+import { useTheme } from 'styled-components'
+import PageContainer from 'components/Page'
 
-const Page = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  min-height: calc(100% - 56px);
-  align-items: center;
-  flex-direction: column;
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
+const lightStyle = {
+  neutralContent: '#7a6eaa',
+  baseContent: '#280d5f',
+  base100: '#eeeaf4',
+  base200: '#ffffff',
+  base300: '#ffffff',
+  error: '#ed4b9e',
+  warning: '#ffb237',
+  success: '#31d0aa',
+  primary: '#1fc7d4',
+  secondary: '#1fc7d4',
+  secondaryContent: '#280d5f',
+  neutral: '#FFFFFF',
+  roundedBtn: '26px',
+  roundedBox: '1rem',
+  roundedDropDown: '20rem',
+  displayDivider: false,
+}
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: grid;
-    place-content: center;
-  }
-`
-
-declare global {
-  interface Window {
-    // Stargate custom element api
-    stargate?: any
-  }
+const darkStyle = {
+  neutralContent: '#b8add2',
+  baseContent: '#ffffff',
+  base100: '#372f47',
+  base200: '#26272c',
+  base300: '#26272c',
+  error: '#ed4b9e',
+  warning: '#ffb237',
+  success: '#31d0aa',
+  primary: '#1fc7d4',
+  secondary: '#1fc7d4',
+  secondaryContent: '#280d5f',
+  neutral: '#26272c',
+  roundedBtn: '26px',
+  roundedBox: '1rem',
+  roundedDropDown: '20rem',
+  displayDivider: false,
 }
 
 function Bridge() {
   const theme = useTheme()
 
-  const [show, setShow] = useState(false)
+  const config = useMemo(() => {
+    const style = (theme as PancakeTheme).isDark ? darkStyle : lightStyle
+    return {
+      slippage: 1.5,
+      instantExec: true,
+      infiniteApproval: false,
+      style,
+      mainLogoUrl: '',
+      hideAnimations: true,
+      apiUrl: 'https://api.squidrouter.com',
+      // apiUrl: "https://dev.api.0xsquid.com",
+    } as unknown as AppConfig
+  }, [theme])
 
-  useEffect(() => {
-    customElements.whenDefined('stargate-widget').then(() => {
-      setTimeout(() => {
-        if (window.stargate) {
-          window.stargate.setDstChainId(102)
+  return (
+    <PageContainer>
+      <style jsx global>{`
+        #squid-header-title {
+          font-weight: 600 !important;
         }
-      }, 600)
-      console.info('stargate widget mount')
-      setShow(true)
-    })
-  }, [])
 
-  return (
-    <Page>
-      <Script crossOrigin="anonymous" src={STARGATE_JS.src} integrity={STARGATE_JS.integrity} />
-      <Flex
-        flexDirection="column"
-        width={['100%', null, '420px']}
-        bg="backgroundAlt"
-        borderRadius={[0, null, 24]}
-        alignItems="center"
-        height="100%"
-      >
-        <StargateWidget theme={theme} />
-        {show && (
-          <Box display={['block', null, 'none']}>
-            <PoweredBy />
-          </Box>
-        )}
-      </Flex>
-      {show && (
-        <Box display={['none', null, 'block']}>
-          <PoweredBy />
-        </Box>
-      )}
-    </Page>
-  )
-}
+        button > svg {
+          width: 16px;
+        }
 
-function PoweredBy() {
-  const { isDark } = useTheme()
-  return (
-    <Flex py="10px" alignItems="center" justifyContent="center">
-      <Text small color="textSubtle" mr="8px">
-        Powered By
-      </Text>
-      <a href="https://stargate.finance" target="_blank" rel="noreferrer noopener">
-        <Image
-          width={78}
-          height={20}
-          src="/stargate.png"
-          alt="Powered By Stargate"
-          unoptimized
-          style={{
-            filter: isDark ? 'invert(1)' : 'unset',
-          }}
-        />
-      </a>
-    </Flex>
+        [data-theme='light'] {
+          .tw-dsw-toggle-secondary:not(:checked) {
+            box-shadow: calc(1.5rem * -1) 0 0 2px #efebf4 inset, 0 0 0 2px #efebf4 inset, 0 0 !important;
+          }
+
+          .tw-flex ul li > span:first-child,
+          .tw-flex ul li > span:first-child a,
+          .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
+            color: #7645d9 !important;
+            font-weight: 600 !important;
+          }
+        }
+
+        [data-theme='dark'] {
+          .tw-dsw-toggle-secondary:not(:checked) {
+            box-shadow: calc(1.5rem * -1) 0 0 2px #372f46 inset, 0 0 0 2px #372f46 inset, 0 0 !important;
+          }
+
+          .tw-flex ul li > span:first-child,
+          .tw-flex ul li > span:first-child a,
+          .tw-rounded-t-box.tw-flex.tw-flex-col span.tw-flex.tw-flex-row.tw-items-center:first-child {
+            color: #a881fc !important;
+            font-weight: 600 !important;
+          }
+        }
+      `}</style>
+
+      <Box width={['100%', '420px']} m="auto">
+        <SquidWidget config={config} />
+      </Box>
+    </PageContainer>
   )
 }
 

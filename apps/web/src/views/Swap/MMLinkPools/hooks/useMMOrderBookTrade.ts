@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Pair, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useQuery } from '@tanstack/react-query'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useMemo, useRef } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
@@ -10,6 +9,7 @@ import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 
 import { isAddress } from 'utils'
 
+import { useAccount } from 'wagmi'
 import { getMMOrderBook } from '../apis'
 import { MMOrderBookTrade, OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
@@ -78,7 +78,7 @@ export const useOrderBookQuote = (
       request.takerSideTokenAmount !== '0' &&
       checkOrderBookShouldRefetch(rfqInputPath, rfqUserInputPath, isRFQLive),
   )
-  const { data, isLoading } = useQuery([`orderBook/${inputPath}`], () => getMMOrderBook(request), {
+  const { data, isLoading } = useQuery([`orderBook/${inputPath}`], () => getMMOrderBook(request as OrderBookRequest), {
     refetchInterval: 5000,
     enabled,
   })
@@ -92,7 +92,7 @@ export const useMMTrade = (
   outputCurrency: Currency | undefined,
 ): MMOrderBookTrade | null => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const rfqUserInputPath = useRef<string>('')
   const isRFQLive = useRef<boolean>(false)
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
