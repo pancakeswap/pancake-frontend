@@ -8,13 +8,13 @@ import { getCakeVaultV2Contract } from './contractHelpers'
 describe.concurrent('cakePool', () => {
   it.each([
     ['BOOST_WEIGHT', BOOST_WEIGHT],
-    ['UNLOCK_FREE_DURATION', UNLOCK_FREE_DURATION],
+    ['UNLOCK_FREE_DURATION', BigInt(UNLOCK_FREE_DURATION)],
     ['DURATION_FACTOR', DURATION_FACTOR],
-    ['MAX_LOCK_DURATION', MAX_LOCK_DURATION],
+    ['MAX_LOCK_DURATION', BigInt(MAX_LOCK_DURATION)],
   ])('%s should be equal to SC: %s', async (method, result) => {
     const cakeVault = getCakeVaultV2Contract()
-    const got = await cakeVault[method]()
-    expect(got.eq(result)).toBe(true)
+    const got = await cakeVault.read[method]()
+    expect(got).toBe(result)
   })
   const NOW = new Date('2022-01-01').getTime()
 
