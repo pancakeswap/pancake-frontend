@@ -18,7 +18,7 @@
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/wagmi": "workspace:*",
     "@vanilla-extract/next-plugin": "^2.1.1",
-    "next": "13.3.4",
+    "next": "13.4.2",
     "next-axiom": "^0.16.0",
     "next-themes": "^0.2.0",
     "react": "^18.2.0",
@@ -29,7 +29,7 @@
     "wagmi": "1.0.5"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.3.4",
+    "@next/eslint-plugin-next": "13.4.2",
     "@types/node": "18.0.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
