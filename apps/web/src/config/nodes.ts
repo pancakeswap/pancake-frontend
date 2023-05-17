@@ -22,7 +22,7 @@ export const SERVER_NODES = {
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
-  [ChainId.LINEA_TESTNET]: ['https://rpc.goerli.linea.build'],
+  [ChainId.LINEA_TESTNET]: ['https://linea-testnet.rpc.thirdweb.com', 'https://rpc.goerli.linea.build'],
 } satisfies Record<ChainId, string[]>
 
 export const PUBLIC_NODES = {
@@ -46,5 +46,5 @@ export const PUBLIC_NODES = {
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
-  [ChainId.LINEA_TESTNET]: ['https://rpc.goerli.linea.build'],
+  [ChainId.LINEA_TESTNET]: ['https://linea-testnet.rpc.thirdweb.com', 'https://rpc.goerli.linea.build'],
 } satisfies Record<ChainId, string[]>
