@@ -96,7 +96,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   const { totalReward, campaignClaimTime } = incentives ?? {}
 
   const currentDate = new Date().getTime() / 1000
-  const timeRemaining = campaignClaimTime ?? 0 - currentDate
+  const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
   const currentRewardInfo = useMemo(() => rewardInfo?.[campaignId], [rewardInfo, campaignId])
