@@ -175,7 +175,7 @@ export default {
   },
   tradingReward: {
     1: '0x',
-    56: '0x1C80D50C3C63A268BDB3a67C2E9184c26f9834Ce',
+    56: '0xe3eaa7e64d0be72c02c897c3ce93a655747baff5',
     97: '0x',
   },
   nftPositionManager: {
