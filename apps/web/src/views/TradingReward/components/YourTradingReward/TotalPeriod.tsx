@@ -49,7 +49,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   const notReadyForClaimUSDPrice = useMemo(() => {
     return notReadyForClaim
-      .map((available) => available.totalTradingFee)
+      .map((available) => available.totalEstimateRewardUSD)
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
   }, [notReadyForClaim])
 
