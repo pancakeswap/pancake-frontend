@@ -30,7 +30,7 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.POLYGON_ZKEVM]: 7_000,
   [ChainId.ZKSYNC]: 3_000,
   [ChainId.ZKSYNC_TESTNET]: 3_000,
-  [ChainId.LINEA_TESTNET]: 7_000,
+  [ChainId.LINEA_TESTNET]: 12_000,
 } as const satisfies Record<ChainId, number>
 
 // used for display in the default list when adding liquidity
