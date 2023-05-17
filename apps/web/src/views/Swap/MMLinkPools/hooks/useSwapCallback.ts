@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { getContract } from 'wagmi/actions'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -13,6 +12,7 @@ import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TradeWithMM } from '../types'
+import { useMMSwapContract } from '../utils/exchange'
 
 export enum SwapCallbackState {
   INVALID,
@@ -21,7 +21,7 @@ export enum SwapCallbackState {
 }
 
 interface SwapCall {
-  contract: ReturnType<typeof getContract>
+  contract: ReturnType<typeof useMMSwapContract>
   parameters: SwapParameters
 }
 
@@ -73,13 +73,11 @@ export function useSwapCallback(
               parameters: { methodName, args, value },
               contract,
             } = call
-            const options = !value || isZero(value) ? { value: undefined } : { value: hexToBigInt(value) }
-
-            return contract.estimateGas[methodName](
-              [args],
-              // @ts-ignore FIXME: wagmi
-              options,
-            )
+            const options =
+              !value || isZero(value)
+                ? { value: undefined, account }
+                : { value: hexToBigInt(value), account }
+            return contract.estimateGas[methodName](args, options)
               .then((gasEstimate) => {
                 return {
                   call,
@@ -89,11 +87,7 @@ export function useSwapCallback(
               .catch((gasError) => {
                 console.error('Gas estimate failed, trying eth_call to extract error', call)
 
-                return contract.simulate[methodName](
-                  [args],
-                  // @ts-ignore FIXME: wagmi
-                  options,
-                )
+                return contract.simulate[methodName](args, options)
                   .then((result) => {
                     console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return { call, error: t('Unexpected issue with estimating the gas. Please try again.') }
@@ -127,10 +121,10 @@ export function useSwapCallback(
           gasEstimate,
         } = successfulEstimation
 
-        return contract[methodName](...args, {
-          gasLimit: calculateGasMargin(gasEstimate),
+        return contract.write[methodName](args, {
+          gas: calculateGasMargin(gasEstimate),
           gasPrice,
-          ...(value && !isZero(value) ? { value, from: account } : { from: account }),
+          ...(value && !isZero(value) ? { value, account } : { account }),
         })
           .then((response: any) => {
             const inputSymbol = trade.inputAmount.currency.symbol

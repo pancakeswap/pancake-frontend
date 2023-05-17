@@ -1,5 +1,8 @@
 import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
+import { Abi } from 'abitype'
+import { Account, Address, CallParameters, GetFunctionArgs, InferFunctionName } from 'viem'
+import { Chain } from 'wagmi'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -7,19 +10,24 @@ import { calculateGasMargin } from 'utils'
  * @param methodName The name of the method called
  * @param gasMarginPer10000 The gasMargin per 10000 (i.e. 10% -> 1000)
  * @param args An array of arguments to pass to the method
- * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const estimateGas = async <T>(
-  contract: T,
-  methodName: string,
-  methodArgs: any,
-  // FIXME: wagmi types
-  overrides: any = {},
+export const estimateGas = async <
+  TAbi extends Abi | unknown[],
+  TFunctionName extends string = string,
+  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+  Args = TFunctionName extends string
+    ? GetFunctionArgs<TAbi, TFunctionName>['args']
+    : _FunctionName extends string
+    ? GetFunctionArgs<TAbi, _FunctionName>['args']
+    : never,
+>(
+  contract: { abi: TAbi; account: Account; chain: Chain; address: Address; write: any; estimateGas: any },
+  methodName: _FunctionName,
+  methodArgs: Args,
+  overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
   gasMarginPer10000: bigint,
 ) => {
-  if (!contract[methodName]) {
-    // TODO: wagmi
-    // @ts-ignore
+  if (!contract.estimateGas[methodName]) {
     throw new Error(`Method ${methodName} doesn't exist on ${contract.address}`)
   }
   // TODO: wagmi
@@ -36,20 +44,26 @@ export const estimateGas = async <T>(
  * @param methodName The name of the method called
  * @param methodArgs An array of arguments to pass to the method
  * @param overrides An overrides object to pass to the method
- * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const callWithEstimateGas = async <T>(
-  contract: T,
-  methodName: any,
-  methodArgs: any,
-  // FIXME: wagmi types
-  overrides: any = {},
+export const callWithEstimateGas = async <
+  TAbi extends Abi | unknown[],
+  TFunctionName extends string = string,
+  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+  Args = TFunctionName extends string
+    ? GetFunctionArgs<TAbi, TFunctionName>['args']
+    : _FunctionName extends string
+    ? GetFunctionArgs<TAbi, _FunctionName>['args']
+    : never,
+>(
+  contract: { abi: TAbi; account: Account; chain: Chain; address: Address; write: any; estimateGas: any },
+  methodName: InferFunctionName<TAbi, TFunctionName>,
+  methodArgs: Args,
+  overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
   gasMarginPer10000 = 1000n,
 ): Promise<SendTransactionResult> => {
   const gasEstimation = await estimateGas(contract, methodName, methodArgs, overrides, gasMarginPer10000)
-  // TODO: wagmi
   // @ts-ignore
-  const tx = await contract.write[methodName]([methodArgs], {
+  const tx = await contract.write[methodName](methodArgs, {
     gas: gasEstimation,
     ...overrides,
   })
