@@ -290,7 +290,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     }
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     callWithEstimateGas(zapContract, methodName, args, {
-      gasPrice,
+      gasPrice: BigInt(gasPrice),
     })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
@@ -423,7 +423,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]]([args]))
+        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
@@ -441,7 +441,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-      await routerContract.write[methodName](...args, {
+      await routerContract.write[methodName](args, {
         gasLimit: safeGasEstimate,
         gasPrice,
       })

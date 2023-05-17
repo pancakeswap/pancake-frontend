@@ -82,6 +82,6 @@ function swapCallParameters(
     methodName,
     // @ts-ignore
     args,
-    value: toHex(value),
+    value: value ? toHex(value) : undefined,
   }
 }

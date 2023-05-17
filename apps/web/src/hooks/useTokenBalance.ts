@@ -37,7 +37,7 @@ export const useGetBnbBalance = () => {
     enabled: !!account,
   })
 
-  return { balance: data.value || 0n, fetchStatus: status, refresh: refetch }
+  return { balance: data.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
 
 export const useGetCakeBalance = () => {
