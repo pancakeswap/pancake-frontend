@@ -129,7 +129,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   const totalTradingReward = useMemo(() => {
     return totalAvailableClaimData
-      .map((available) => available.totalTradingFee)
+      .map((available) => available.totalEstimateRewardUSD)
       .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
   }, [totalAvailableClaimData])
 
