@@ -168,6 +168,13 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.LINEA_TESTNET]: new ERC20Token(
+    ChainId.LINEA_TESTNET,
+    '0xf56dc6695cF1f5c364eDEbC7Dc7077ac9B586068',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
 }
 
 export const USDT = {
@@ -206,4 +213,5 @@ export const STABLE_COIN = {
   [ChainId.ZKSYNC]: USDC[ChainId.ZKSYNC],
   [ChainId.ZKSYNC_TESTNET]: USDC[ChainId.ZKSYNC_TESTNET],
   [ChainId.POLYGON_ZKEVM]: USDC[ChainId.POLYGON_ZKEVM],
+  [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
 } satisfies Record<ChainId, ERC20Token>

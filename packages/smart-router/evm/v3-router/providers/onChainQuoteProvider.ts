@@ -28,6 +28,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.POLYGON_ZKEVM]: 0.1,
   [ChainId.ZKSYNC]: 0.1,
   [ChainId.ZKSYNC_TESTNET]: 0.1,
+  [ChainId.LINEA_TESTNET]: 0.1,
 } as const satisfies Record<ChainId, number>
 
 type V3Inputs = [string, string]

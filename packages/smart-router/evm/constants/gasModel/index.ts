@@ -1,5 +1,5 @@
 import { ChainId, Token } from '@pancakeswap/sdk'
-import { ethereumTokens, bscTokens, bscTestnetTokens, goerliTestnetTokens, zkSyncTestnetTokens, zksyncTokens } from '@pancakeswap/tokens'
+import { ethereumTokens, bscTokens, bscTestnetTokens, goerliTestnetTokens, zkSyncTestnetTokens, zksyncTokens, lineaTestnetTokens } from '@pancakeswap/tokens'
 
 export const usdGasTokensByChain = {
   [ChainId.ETHEREUM]: [ethereumTokens.usdt],
@@ -11,6 +11,7 @@ export const usdGasTokensByChain = {
   [ChainId.POLYGON_ZKEVM]: [],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc],
+  [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc],
 } satisfies Record<ChainId, Token[]>
 
 export * from './v2'

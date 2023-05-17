@@ -39,4 +39,5 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.POLYGON_ZKEVM]: DEFAULT,
   [ChainId.ZKSYNC]: DEFAULT,
   [ChainId.ZKSYNC_TESTNET]: DEFAULT,
+  [ChainId.LINEA_TESTNET]: DEFAULT,
 }

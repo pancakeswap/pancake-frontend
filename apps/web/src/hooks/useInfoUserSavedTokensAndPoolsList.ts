@@ -37,6 +37,10 @@ const defaultTokenAndPoolList: TokenAndPoolList = {
     tokens: [],
     pools: [],
   },
+  [ChainId.LINEA_TESTNET]: {
+    tokens: [],
+    pools: [],
+  },
 }
 
 const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList)

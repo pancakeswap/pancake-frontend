@@ -141,6 +141,7 @@ const SHORT_SYMBOL = {
   [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'tZkSync',
+  [ChainId.LINEA_TESTNET]: 'tLinea',
 } as const satisfies Record<ChainId, string>
 
 export const NetworkSwitcher = () => {

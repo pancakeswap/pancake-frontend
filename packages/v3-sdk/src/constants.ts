@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Address } from 'viem'
+import { Address, Hash } from 'viem'
 
 const FACTORY_ADDRESS = '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865'
 
@@ -16,7 +16,8 @@ export const FACTORY_ADDRESSES = {
   [ChainId.POLYGON_ZKEVM]: FACTORY_ADDRESS,
   [ChainId.ZKSYNC]: FACTORY_ADDRESS,
   [ChainId.ZKSYNC_TESTNET]: '0x57d01Fbde077C04381a28840A24aCbEeF8314062',
-} as const satisfies Record<ChainId, `0x${string}`>
+  [ChainId.LINEA_TESTNET]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
+} as const satisfies Record<ChainId, Address>
 
 const DEPLOYER_ADDRESS = '0x41ff9AA7e16B8B1a8a8dc4f0eFacd93D02d071c9'
 
@@ -30,6 +31,7 @@ export const DEPLOYER_ADDRESSES = {
   [ChainId.POLYGON_ZKEVM]: DEPLOYER_ADDRESS,
   [ChainId.ZKSYNC]: DEPLOYER_ADDRESS,
   [ChainId.ZKSYNC_TESTNET]: '0x71df5b7ea5355180EAb2A54de8aA534016040008',
+  [ChainId.LINEA_TESTNET]: '0xdAecee3C08e953Bd5f89A5Cc90ac560413d709E3',
 } as const satisfies Record<ChainId, Address>
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
@@ -46,7 +48,8 @@ export const POOL_INIT_CODE_HASHES = {
   // TODO: new chains
   [ChainId.ZKSYNC]: '0x01001487f1c11a662dda518635f8e1f03a41f505cbf7d981c899ba11bf847a8a',
   [ChainId.ZKSYNC_TESTNET]: '0x01001487f1c11a662dda518635f8e1f03a41f505cbf7d981c899ba11bf847a8a',
-} as const satisfies Record<ChainId, `0x${string}`>
+  [ChainId.LINEA_TESTNET]: POOL_INIT_CODE_HASH,
+} as const satisfies Record<ChainId, Hash>
 
 /**
  * The default factory enabled fee amounts, denominated in hundredths of bips.

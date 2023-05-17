@@ -11,6 +11,7 @@ export enum ChainId {
   ZKSYNC = 324,
   POLYGON_ZKEVM = 1101,
   ARBITRUM_ONE = 42161,
+  LINEA_TESTNET = 59140,
 }
 
 export const ZERO_PERCENT = new Percent('0')
@@ -29,6 +30,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.POLYGON_ZKEVM]: '0xb3dF6321C8e3f71bf15Bc8810c26Bd4200BfFdA2',
   [ChainId.ZKSYNC]: '0x0F70cE1e2c0FB5FC3B67E13ed4F422fE82d832bD',
   [ChainId.ZKSYNC_TESTNET]: '0xA4370037e4C151449Fb7166DccB9FcF30B812baF',
+  [ChainId.LINEA_TESTNET]: '0xB6FAfd4ADbCd21cF665909767e0eD0D05709abfB',
 } as const satisfies Record<ChainId, Address>
 
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
@@ -44,6 +46,7 @@ export const INIT_CODE_HASH_MAP = {
   // TODO: new chains
   [ChainId.ZKSYNC]: '0x1cb011040b91cd937ddff2327f17c9690653b05b6506e830baadf2493468d657',
   [ChainId.ZKSYNC_TESTNET]: '0x0100045707a42494392b3558029b9869f865ff9df8f375dc1bf20b0555093f43',
+  [ChainId.LINEA_TESTNET]: INIT_CODE_HASH_ETH,
 } as const satisfies Record<ChainId, Hash>
 
 export const WETH9 = {
@@ -111,6 +114,14 @@ export const WETH9 = {
     'Wrapped Ether',
     'https://weth.io'
   ),
+  [ChainId.LINEA_TESTNET]: new ERC20Token(
+    ChainId.LINEA_TESTNET,
+    '0x2C1b868d6596a18e32E61B901E4060C872647b6C',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
 }
 
 export const WBNB = {
@@ -149,6 +160,7 @@ export const WNATIVE = {
   [ChainId.POLYGON_ZKEVM]: WETH9[ChainId.POLYGON_ZKEVM],
   [ChainId.ZKSYNC]: WETH9[ChainId.ZKSYNC],
   [ChainId.ZKSYNC_TESTNET]: WETH9[ChainId.ZKSYNC_TESTNET],
+  [ChainId.LINEA_TESTNET]: WETH9[ChainId.LINEA_TESTNET],
 } satisfies Record<ChainId, ERC20Token>
 
 const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
@@ -170,6 +182,7 @@ export const NATIVE = {
   [ChainId.POLYGON_ZKEVM]: ETHER,
   [ChainId.ZKSYNC]: ETHER,
   [ChainId.ZKSYNC_TESTNET]: ETHER,
+  [ChainId.LINEA_TESTNET]: ETHER,
 } satisfies Record<
   ChainId,
   {
