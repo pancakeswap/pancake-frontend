@@ -100,7 +100,7 @@
     "styled-system": "^5.1.5",
     "swiper": "^8.4.2",
     "swr": "^2.1.5",
-    "typescript": "^4.9.4",
+    "typescript": "^5.0.4",
     "wagmi": "1.0.5",
     "zod": "^3.21.4",
     "polished": "^4.2.2",
