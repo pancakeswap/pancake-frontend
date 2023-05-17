@@ -148,7 +148,7 @@ export interface User {
  */
 
 export interface ApiCollection {
-  address: string
+  address: Address
   owner: string
   name: string
   description: string

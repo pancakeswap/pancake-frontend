@@ -1062,7 +1062,6 @@ export const combineCollectionData = (
       .filter((collection) => collection?.address)
       .map((current) => {
         const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
-        // @ts-ignore FIXME: wagmi
         const collection: Collection = {
           ...current,
           ...collectionMarket,
