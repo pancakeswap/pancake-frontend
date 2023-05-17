@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text, Card, TwitterIcon, LinkExternal } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import Trans from 'components/Trans'
