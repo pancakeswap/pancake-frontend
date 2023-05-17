@@ -5,7 +5,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
-import { hexToBigInt } from 'viem'
+import { Hash, hexToBigInt } from 'viem'
 import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
@@ -74,9 +74,7 @@ export function useSwapCallback(
               contract,
             } = call
             const options =
-              !value || isZero(value)
-                ? { value: undefined, account }
-                : { value: hexToBigInt(value), account }
+              !value || isZero(value) ? { value: undefined, account } : { value: hexToBigInt(value), account }
             return contract.estimateGas[methodName](args, options)
               .then((gasEstimate) => {
                 return {
@@ -126,7 +124,7 @@ export function useSwapCallback(
           gasPrice,
           ...(value && !isZero(value) ? { value, account } : { account }),
         })
-          .then((response: any) => {
+          .then((response: Hash) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             // const pct = basisPointsToPercent(allowedSlippage)
@@ -154,20 +152,23 @@ export function useSwapCallback(
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
 
-            addTransaction(response, {
-              summary: withRecipient,
-              translatableSummary: {
-                text: translatableWithRecipient,
-                data: {
-                  inputAmount,
-                  inputSymbol,
-                  outputAmount,
-                  outputSymbol,
-                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
+            addTransaction(
+              { hash: response },
+              {
+                summary: withRecipient,
+                translatableSummary: {
+                  text: translatableWithRecipient,
+                  data: {
+                    inputAmount,
+                    inputSymbol,
+                    outputAmount,
+                    outputSymbol,
+                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                  },
                 },
+                type: 'swap',
               },
-              type: 'swap',
-            })
+            )
             logSwap({
               chainId,
               inputAmount,
@@ -176,9 +177,9 @@ export function useSwapCallback(
               output: trade.outputAmount.currency,
               type: 'MarketMakerSwap',
             })
-            logTx({ account, chainId, hash: response.hash })
+            logTx({ account, chainId, hash: response })
 
-            return response.hash
+            return response
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along

@@ -29,7 +29,7 @@ import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingAp
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useContractRead } from 'wagmi'
-import { calculateGasMargin } from 'utils'
+// import { calculateGasMargin } from 'utils'
 
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()

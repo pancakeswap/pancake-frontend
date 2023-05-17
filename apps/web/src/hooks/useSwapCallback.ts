@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
+import { Hash } from 'viem'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -127,7 +128,7 @@ export function useSwapCallback(
           gasPrice,
           ...(value && !isZero(value) ? { value, account } : { account }),
         })
-          .then((response: any) => {
+          .then((response: Hash) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             const pct = basisPointsToPercent(allowedSlippage)
@@ -161,20 +162,23 @@ export function useSwapCallback(
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
 
-            addTransaction(response, {
-              summary: withRecipient,
-              translatableSummary: {
-                text: translatableWithRecipient,
-                data: {
-                  inputAmount,
-                  inputSymbol,
-                  outputAmount,
-                  outputSymbol,
-                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
+            addTransaction(
+              { hash: response },
+              {
+                summary: withRecipient,
+                translatableSummary: {
+                  text: translatableWithRecipient,
+                  data: {
+                    inputAmount,
+                    inputSymbol,
+                    outputAmount,
+                    outputSymbol,
+                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                  },
                 },
+                type: 'swap',
               },
-              type: 'swap',
-            })
+            )
             logSwap({
               chainId,
               inputAmount,
@@ -183,9 +187,9 @@ export function useSwapCallback(
               output: trade.outputAmount.currency,
               type: isStableSwap(trade) ? 'StableSwap' : 'V2Swap',
             })
-            logTx({ account, chainId, hash: response.hash })
+            logTx({ account, chainId, hash: response })
 
-            return response.hash
+            return response
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along
