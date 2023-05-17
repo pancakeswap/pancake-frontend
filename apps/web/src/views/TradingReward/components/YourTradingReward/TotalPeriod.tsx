@@ -128,10 +128,21 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   const expiredUSDPrice = useMemo(() => getUSDValue(rewardExpiredSoonData), [getUSDValue, rewardExpiredSoonData])
 
   const totalTradingReward = useMemo(() => {
-    return totalAvailableClaimData
-      .map((available) => available.totalEstimateRewardUSD)
-      .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
-  }, [totalAvailableClaimData])
+    return (
+      totalAvailableClaimData
+        // eslint-disable-next-line array-callback-return, consistent-return
+        .filter((campaign) => {
+          const campaignIncentive = campaignIdsIncentive.find(
+            (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
+          )
+          if (campaignIncentive.isActivated) {
+            return campaign
+          }
+        })
+        .map((available) => available.totalEstimateRewardUSD)
+        .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    )
+  }, [campaignIdsIncentive, totalAvailableClaimData])
 
   const totalVolumeTrade = useMemo(() => {
     return totalAvailableClaimData
