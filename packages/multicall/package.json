@@ -19,7 +19,7 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.4"
+    "typescript": "^4.9.4"
   },
   "exports": {
     "./package.json": "./package.json",
