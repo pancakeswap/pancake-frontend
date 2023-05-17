@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { useRouter } from 'next/router'
 import { Flex, Checkbox, Text, ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { memo, useState, useMemo } from 'react'
+import { memo, useState, useMemo, useEffect } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 
@@ -32,12 +33,19 @@ const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
 const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
 }) => {
+  const router = useRouter()
   const { chainId } = useActiveChainId()
   const allTokens = useTokenHighLightList()
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const [confirmed, setConfirmed] = useState(false)
   const { tokenPairs } = useTradingRewardTokenList()
+
+  useEffect(() => {
+    if (router.query.showTradingReward) {
+      setConfirmed(true)
+    }
+  }, [router])
 
   const formattedTokens = useMemo(
     () =>

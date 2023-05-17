@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button, Link } from '@pancakeswap/uikit'
 import { useTheme } from '@pancakeswap/hooks'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -159,10 +159,14 @@ const TradingRewardBanner = () => {
             {t('Earn CAKE while trading your favorite tokens on PancakeSwap.')}
           </Text>
           <Flex>
-            <Button>{t('Start Trading')}</Button>
-            <Button ml="12px" variant="secondary">
-              {`${t('How to Earn')}?`}
-            </Button>
+            <Link href="/swap?showTradingReward=true" external>
+              <Button>{t('Start Trading')}</Button>
+            </Link>
+            <Link href="#howToEarn">
+              <Button ml="12px" variant="secondary">
+                {`${t('How to Earn')}?`}
+              </Button>
+            </Link>
           </Flex>
         </Flex>
         <Box

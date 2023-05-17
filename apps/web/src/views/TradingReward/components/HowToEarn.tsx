@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text, Card, TwitterIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, TwitterIcon, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import Trans from 'components/Trans'
@@ -55,7 +55,7 @@ const HowToEarn = () => {
   const { t } = useTranslation()
 
   return (
-    <Box padding="0 16px" m={['72px 0', '72px 0', '72px 0', '143px 0 108px 0']}>
+    <Box id="howToEarn" padding="0 16px" m={['72px 0', '72px 0', '72px 0', '143px 0 108px 0']}>
       <Box margin={['auto']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1140px']}>
         <StyledCard>
           <Flex flexDirection="column" padding={['50px 0 0 0', '50px 0 0 0', '50px 0 0 0', '50px 0']}>
@@ -95,16 +95,9 @@ const HowToEarn = () => {
           </Flex>
         </StyledCard>
       </Box>
-      <Flex
-        justifyContent="center"
-        width={['226px', '226px', '226px', '100%']}
-        margin={['auto', 'auto', 'auto', '42px 0 0 0 ']}
-      >
-        <TwitterIcon width={24} height={24} color="primary" />
-        <Text textAlign={['center', 'center', 'center', 'left']} bold color="primary" ml="4px">
-          {t('+Follow For New Pairs and Reward Pool Updates')}
-        </Text>
-      </Flex>
+      <LinkExternal external href="" margin={['auto', 'auto', 'auto', '42px auto 0 auto']}>
+        {t('Learn More')}
+      </LinkExternal>
     </Box>
   )
 }

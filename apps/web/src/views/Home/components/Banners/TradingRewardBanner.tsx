@@ -164,10 +164,10 @@ const TradingRewardBanner = () => {
         <S.LeftWrapper>
           <StyledBox>{t('Trade to Earn Rewards')}</StyledBox>
           <Flex flexDirection={['column', 'row']} mb={['8px', '8px', '12px']}>
-            <Title>{t('$40,000 worth of CAKE in Total!')}</Title>
+            <Title>{t('5% trading rebate to be earned!')}</Title>
           </Flex>
           <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'} flexDirection={['column', 'row']}>
-            <NextLinkFromReactRouter to="/swap">
+            <NextLinkFromReactRouter to="/swap?showTradingReward=true">
               <StyledButtonLeft scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
                   {t('Trade Now')}
@@ -175,7 +175,7 @@ const TradingRewardBanner = () => {
                 {!isMobile && <ArrowForwardIcon color="white" />}
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
-            <NextLinkFromReactRouter target="_blank" to="/" rel='"noopener noreferrer'>
+            <NextLinkFromReactRouter target="_blank" to="/trading-reward" rel='"noopener noreferrer'>
               <StyledButtonRight scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
                   {t('Learn More')}
