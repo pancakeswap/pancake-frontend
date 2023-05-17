@@ -50,10 +50,6 @@ const config = {
     outputFileTracingExcludes: {
       '*': ['**@swc+core*', '**/@esbuild**'],
     },
-    swcTraceProfiling: true,
-    turbotrace: {
-      logAll: true,
-    },
   },
   transpilePackages: [
     '@pancakeswap/ui',
