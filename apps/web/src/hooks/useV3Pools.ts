@@ -85,6 +85,7 @@ export function useV3CandidatePoolsWithoutTicks(
     }
     return POOLS_FAST_REVALIDATE[currencyA.chainId] || 0
   }, [currencyA?.chainId])
+
   const {
     data,
     refetch,
