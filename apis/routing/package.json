@@ -14,7 +14,7 @@
     "@types/itty-router-extras": "^0.4.0",
     "@pancakeswap/tsconfig": "workspace:*",
     "@cloudflare/workers-types": "^3.10.0",
-    "typescript": "^5.0.4",
+    "typescript": "^4.9.4",
     "wrangler": "2.13.0"
   },
   "private": true,
