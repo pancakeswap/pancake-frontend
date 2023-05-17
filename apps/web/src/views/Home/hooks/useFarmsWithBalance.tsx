@@ -19,7 +19,7 @@ import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitPr
 
 export type FarmWithBalance = {
   balance: BigNumber
-  contract: ReturnType<typeof useBCakeProxyContract> | ReturnType<typeof useMasterchef>
+  contract: any
 } & SerializedFarmConfig
 
 const useFarmsWithBalance = () => {
