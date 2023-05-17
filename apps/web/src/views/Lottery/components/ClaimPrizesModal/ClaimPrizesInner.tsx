@@ -86,7 +86,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     const receipt = await fetchWithCatchTxError(() => {
       return callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
-        gasPrice,
+        gasPrice: BigInt(gasPrice),
       })
     })
     if (receipt?.status) {
@@ -105,6 +105,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
     const ticketBatches = getTicketBatches(ticketIds, brackets)
     const transactionsToFire = ticketBatches.length
     const receipts = []
+    const gasPrice_ = BigInt(gasPrice)
     // eslint-disable-next-line no-restricted-syntax
     for (const ticketBatch of ticketBatches) {
       /* eslint-disable no-await-in-loop */
@@ -113,7 +114,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
           lotteryContract,
           'claimTickets',
           [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
-          { gasPrice },
+          { gasPrice: gasPrice_ },
         )
       })
       if (receipt?.status) {

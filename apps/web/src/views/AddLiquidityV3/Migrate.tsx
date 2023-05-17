@@ -313,7 +313,7 @@ function V2PairMigrate({
         EIP712Domain,
         Permit,
       },
-      value: message,
+      message,
     })
       .then(splitSignature)
       .then((signature) => {
