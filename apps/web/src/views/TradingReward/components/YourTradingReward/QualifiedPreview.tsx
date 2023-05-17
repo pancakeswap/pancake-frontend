@@ -93,6 +93,11 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
     [cakePriceBusd, maxRewardCap],
   )
 
+  const maxRewardCapInfoAmount = useMemo(
+    () => new BigNumber(currentRewardInfo.rewardFeeRatio).div(1e10).toNumber(),
+    [currentRewardInfo],
+  )
+
   return (
     <>
       <GreyCard>
@@ -150,13 +155,10 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
           <Text color="failure" fontSize="14px">{`~${formatNumber(maxRewardCapCakePrice)} CAKE`}</Text>
           <Text width="100%" lineHeight="120%">
             <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-              {t('Equals to your amount of locked CAKE divided by')}
+              {t('Equals to your %amount%% of locked CAKE divided by', { amount: maxRewardCapInfoAmount })}
             </Text>
-            <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" bold m="0 4px">
-              {t('10.')}
-            </Text>
-            <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span">
-              {t('Lock more CAKE to raise this limit')}
+            <Text color="textSubtle" fontSize="14px" lineHeight="120%" as="span" ml="4px">
+              {t('of the amount of your locked CAKE. Lock more CAKE to raise this limit')}
             </Text>
           </Text>
           {additionalAmount >= 0.01 && (
