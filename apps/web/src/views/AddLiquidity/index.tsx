@@ -11,6 +11,7 @@ import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { Hash } from 'viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -215,21 +216,24 @@ export default function AddLiquidity({
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
           gasPrice,
-        }).then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        }).then((response: Hash) => {
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
 
           const symbolA = currencies[Field.CURRENCY_A]?.symbol
           const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
           const symbolB = currencies[Field.CURRENCY_B]?.symbol
           const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
-          addTransaction(response, {
-            summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
-            translatableSummary: {
-              text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA, amountB, symbolB },
+          addTransaction(
+            { hash: response },
+            {
+              summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+              translatableSummary: {
+                text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+                data: { amountA, symbolA, amountB, symbolB },
+              },
+              type: 'add-liquidity',
             },
-            type: 'add-liquidity',
-          })
+          )
 
           if (pair) {
             addPair(pair)

@@ -20,7 +20,7 @@ const mappingNetwork: Record<number, string> = {
   97: 'bsc-testnet',
 }
 
-export function getTrustWalletProvider() {
+export function getTrustWalletProvider(): WindowProvider | undefined {
   const isTrustWallet = (ethereum: NonNullable<Window['ethereum']>) => {
     // Identify if Trust Wallet injected provider is present.
     const trustWallet = !!ethereum.isTrust
