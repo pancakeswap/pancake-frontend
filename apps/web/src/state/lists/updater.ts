@@ -2,7 +2,7 @@ import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
 import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import { useProvider } from 'wagmi'
+import { usePublicClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
@@ -13,7 +13,7 @@ import { useListState, useListStateReady, initialState } from './lists'
 
 export default function Updater(): null {
   const { chainId } = useActiveChainId()
-  const provider = useProvider({ chainId })
+  const provider = usePublicClient({ chainId })
 
   const [listState, dispatch] = useListState()
   const router = useRouter()
