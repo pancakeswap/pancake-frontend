@@ -33,7 +33,10 @@ export function useDerivedV3BurnInfo(
 
   const positionSDK = useMemo(
     () =>
-      pool && position?.liquidity && typeof position?.tickLower === 'number' && typeof position?.tickUpper === 'number'
+      pool &&
+      typeof position?.liquidity === 'bigint' &&
+      typeof position?.tickLower === 'number' &&
+      typeof position?.tickUpper === 'number'
         ? new Position({
             pool,
             liquidity: position.liquidity.toString(),

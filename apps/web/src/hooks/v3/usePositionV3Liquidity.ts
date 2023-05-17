@@ -21,7 +21,7 @@ export function useV3LiquidityTotal({
   const [, pool] = usePool(token0 ?? undefined, token1 ?? undefined, feeAmount)
   const positions = useMemo(() => {
     return positionsDetailsList.map(({ liquidity, tickLower, tickUpper }) => {
-      if (pool && liquidity && typeof tickLower === 'number' && typeof tickUpper === 'number') {
+      if (pool && typeof liquidity === 'bigint' && typeof tickLower === 'number' && typeof tickUpper === 'number') {
         return new Position({ pool, liquidity: liquidity.toString(), tickLower, tickUpper })
       }
 
