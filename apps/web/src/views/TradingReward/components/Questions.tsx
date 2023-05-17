@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardBody, Text, Flex } from '@pancakeswap/uikit'
+import { Card, CardBody, Text, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 
@@ -49,11 +49,62 @@ const Questions = () => {
         </Text>
         <Card style={{ width: '100%' }}>
           <StyledCardBody>
-            <FoldableText title={t('Eligible trading pairs')} mt="24px">
-              <StyledListText color="textSubtle">123</StyledListText>
+            <FoldableText title={t('Why my traded volume was not tracked?')} mt="24px">
+              <StyledListText color="textSubtle">
+                {t('Volume numbers take time to update and are subject to SubGraph delays. Please check back later')}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t(
+                  'Please ensure your trade is routed through the trading pairs eligible for trading rewards.Check out',
+                )}
+                <Link
+                  style={{ display: 'inline-block' }}
+                  external
+                  href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/fees-and-routes#check-the-fee-rate-and-fee-amount-that-is-currently-applied"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('this tutorial')}
+                  </Text>
+                </Link>
+                <Text color="textSubtle" ml="4px" as="span">
+                  {t('for how to view your trading routes')}
+                </Text>
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t(
+                  'If you are trading on Ethereum, please use the same wallet address eligible for the trading reward program',
+                )}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t('If your trading volume within a pair is too small, you may not be eligible to claim any rewards')}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t(
+                  'Using third-party trading aggregators may result in trades being routed through other liquidity providers and not being tracked',
+                )}
+              </StyledListText>
             </FoldableText>
-            <FoldableText title={t('Calculating team ranks and winners')} mt="24px">
-              <StyledListText color="textSubtle">123</StyledListText>
+            <FoldableText title={t('Why I traded a lot but only received a very small amount of rewards')} mt="24px">
+              <StyledListText color="textSubtle">
+                {t(
+                  'The amount of the trading reward is based on the trading fee paid in those trades.If your trades are routed through pairs with a low fee tier, for example, 0.01%, you are paying a very small fee for your trade. Therefore the number of rewards will become lower accordingly.',
+                )}
+              </StyledListText>
+            </FoldableText>
+            <FoldableText
+              title={t('My address was previously eligible. Why is it showing not eligible now?')}
+              mt="24px"
+            >
+              <StyledListText color="textSubtle">
+                {t(
+                  'Each campaign has its own eligibility requirements, like the unlock time of the CAKE staking position.',
+                )}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t(
+                  'You may need to extend your locked CAKE staking position. Please follow the instructions on the page.',
+                )}
+              </StyledListText>
             </FoldableText>
           </StyledCardBody>
         </Card>

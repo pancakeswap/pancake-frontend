@@ -64,7 +64,7 @@ const TradingReward = () => {
 
   return (
     <Box>
-      <Banner data={campaignInfoData} isFetching={isCampaignInfoFetching} />
+      <Banner />
       <YourTradingReward
         isFetching={isFetching}
         incentives={currentUserIncentive}

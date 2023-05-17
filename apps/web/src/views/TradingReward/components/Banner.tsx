@@ -1,10 +1,9 @@
-import { Box, Flex, Text, Button, Balance, Skeleton } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button } from '@pancakeswap/uikit'
 import { useTheme } from '@pancakeswap/hooks'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import Image from 'next/image'
-import { CampaignIdInfo } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import bunnyImage from '../../../../public/images/trading-reward/trading-reward-banner-bunny.png'
 
 const Container = styled(Box)<{ backgroundColor: string }>`
@@ -112,7 +111,7 @@ const Decorations = styled(Box)`
   }
 }`
 
-const TradingRewardBanner: React.FC<React.PropsWithChildren<CampaignIdInfo>> = ({ data, isFetching }) => {
+const TradingRewardBanner = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
@@ -152,21 +151,8 @@ const TradingRewardBanner: React.FC<React.PropsWithChildren<CampaignIdInfo>> = (
             {t('Trading Reward')}
           </Text>
           <Flex mb="16px" flexWrap="wrap">
-            {isFetching || data.totalVolume === 0 ? (
-              <Skeleton width={100} height={40} />
-            ) : (
-              <Balance
-                bold
-                prefix="$"
-                fontSize="40px"
-                color="secondary"
-                lineHeight="110%"
-                decimals={0}
-                value={data.totalVolume}
-              />
-            )}
             <Text bold fontSize="40px" color="secondary" as="span" ml="4px" lineHeight="110%">
-              {t('in total to be earn!')}
+              {t('5% trading rebate to be earned!')}
             </Text>
           </Flex>
           <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
