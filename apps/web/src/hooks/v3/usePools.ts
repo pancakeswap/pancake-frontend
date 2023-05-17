@@ -119,7 +119,7 @@ export function usePools(
 
       if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
       if (slot0Loading || liquidityLoading) return [PoolState.LOADING, null]
-      if (!slot0 || !liquidity) return [PoolState.NOT_EXISTS, null]
+      if (!slot0 || typeof liquidity === 'undefined') return [PoolState.NOT_EXISTS, null]
       const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
       if (!sqrtPriceX96 || sqrtPriceX96 === 0n) return [PoolState.NOT_EXISTS, null]
 
