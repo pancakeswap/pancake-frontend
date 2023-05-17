@@ -13,7 +13,7 @@ export const requiresApproval = async (
     if (hasMinimumRequired) {
       return response < minimumRequired
     }
-    return response > 0
+    return response <= 0
   } catch (error) {
     return true
   }
