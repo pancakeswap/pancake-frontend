@@ -13,7 +13,7 @@
     "wrangler": "2.15.0"
   },
   "dependencies": {
-    "viem": "0.3.24",
+    "viem": "0.3.26",
     "date-fns": "^2.29.3",
     "bignumber.js": "^9.0.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
