@@ -21,7 +21,7 @@
     "wagmi": "1.0.5",
     "@wagmi/core": "*",
     "@wagmi/connectors": "*",
-    "viem": "0.3.27",
+    "viem": "0.3.28",
     "@blocto/sdk": "^0.3.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
@@ -31,7 +31,7 @@
     "wagmi": "1.0.5",
     "@wagmi/core": "*",
     "@wagmi/connectors": "*",
-    "viem": "0.3.27",
+    "viem": "0.3.28",
     "@blocto/sdk": "^0.3.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
