@@ -174,7 +174,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
 
       if (pool.vaultKey === VaultKey.CakeFlexibleSideVault) {
         const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-        return callWithGasPrice(vaultPoolContract, 'withdraw', [sharesAsBigNumber.toString()], callOptions)
+        return callWithGasPrice(vaultPoolContract, 'withdraw', [parseInt(sharesAsBigNumber.toString())], callOptions)
       }
 
       return callWithGasPrice(vaultPoolContract, 'withdrawByAmount', [convertedStakeAmount.toString()], callOptions)
