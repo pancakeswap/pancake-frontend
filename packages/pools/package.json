@@ -16,7 +16,7 @@
     "wagmi": "1.0.5"
   },
   "dependencies": {
-    "viem": "0.3.27",
+    "viem": "0.3.28",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21"
   },
