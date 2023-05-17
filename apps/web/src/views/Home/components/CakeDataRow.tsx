@@ -107,7 +107,7 @@ const CakeDataRow = () => {
         allowFailure: false,
       })
       const totalBurned = planetFinanceBurnedTokensWei + burned
-      const circulating = totalSupply - totalBurned + totalLockedAmount
+      const circulating = totalSupply - (totalBurned + totalLockedAmount)
 
       return {
         cakeSupply: totalSupply && burned ? +formatBigInt(totalSupply - totalBurned) : 0,
