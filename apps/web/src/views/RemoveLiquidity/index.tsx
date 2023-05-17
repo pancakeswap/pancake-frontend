@@ -38,6 +38,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { useLPApr } from 'state/swap/useLPApr'
 import { formattedCurrencyAmount } from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { splitSignature } from 'utils/splitSignature'
+import { Hash } from 'viem'
 
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -206,7 +207,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
         EIP712Domain,
         Permit,
       },
-      value: message,
+      message,
     })
       .then(splitSignature)
       .then((signature) => {
@@ -423,7 +424,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args))
+        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args, { account }))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
@@ -445,18 +446,21 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
         gasLimit: safeGasEstimate,
         gasPrice,
       })
-        .then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        .then((response: Hash) => {
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
           const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
           const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
-          addTransaction(response, {
-            summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
-            translatableSummary: {
-              text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+          addTransaction(
+            { hash: response },
+            {
+              summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
+              translatableSummary: {
+                text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+                data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+              },
+              type: 'remove-liquidity',
             },
-            type: 'remove-liquidity',
-          })
+          )
         })
         .catch((err) => {
           if (err && !isUserRejected(err)) {

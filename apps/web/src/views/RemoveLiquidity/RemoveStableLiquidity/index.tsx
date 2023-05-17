@@ -27,6 +27,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { useUserSlippage } from '@pancakeswap/utils/user'
+import { Hash } from 'viem'
 
 import { LightGreyCard } from '../../../components/Card'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
@@ -195,7 +196,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]](args))
+        safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]](args, { account }))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
@@ -217,18 +218,21 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
         gas: safeGasEstimate,
         gasPrice,
       })
-        .then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        .then((response: Hash) => {
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
           const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
           const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
-          addTransaction(response, {
-            summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
-            translatableSummary: {
-              text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+          addTransaction(
+            { hash: response },
+            {
+              summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
+              translatableSummary: {
+                text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+                data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+              },
+              type: 'remove-liquidity',
             },
-            type: 'remove-liquidity',
-          })
+          )
         })
         .catch((err) => {
           if (err && !isUserRejected(err)) {
