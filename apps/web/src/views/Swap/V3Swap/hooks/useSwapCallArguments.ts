@@ -36,7 +36,7 @@ export function useSwapCallArguments(
   const { account, chainId } = useAccountActiveChain()
   const provider = useProviderOrSigner()
   const recipientENSAddress = useGetENSAddressByName(recipientAddress)
-  const recipient =
+  const recipient = (
     recipientAddress === null
       ? account
       : isAddress(recipientAddress)
@@ -44,6 +44,7 @@ export function useSwapCallArguments(
       : isAddress(recipientENSAddress)
       ? recipientENSAddress
       : null
+  ) as Address | null
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId) return []
