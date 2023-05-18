@@ -4,7 +4,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
 import { WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Hash } from 'viem'
+import { Hash, RpcError, UnknownRpcError } from 'viem'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
@@ -14,28 +14,21 @@ export type CatchTxErrorReturn = {
   txResponseLoading: boolean
 }
 
-type ErrorData = {
-  code: number
-  message: string
-}
-
-type TxError = {
-  data: ErrorData
-  error: string
-}
-
-// -32000 is insufficient funds for gas * price + value
-const _isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
-
-function parseError(err) {
-  if (typeof err === 'object') {
-    if ('shortMessage' in err) {
-      return err
-    }
-    return parseError(err?.cause)
+/// only show corrected parsed viem error
+function parseError<TError>(err: TError): RpcError | null {
+  if (err instanceof RpcError) {
+    return err
+  }
+  if (typeof err === 'string') {
+    return new UnknownRpcError(new Error(err))
+  }
+  if (err instanceof Error) {
+    return new UnknownRpcError(err)
   }
   return null
 }
+
+const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 
 export default function useCatchTxError(): CatchTxErrorReturn {
   const { t } = useTranslation()
@@ -48,7 +41,6 @@ export default function useCatchTxError(): CatchTxErrorReturn {
     (error) => {
       logError(error)
       const err = parseError(error)
-      const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
       if (err) {
         toastError(
           t('Error'),
@@ -59,6 +51,24 @@ export default function useCatchTxError(): CatchTxErrorReturn {
       } else {
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
+    },
+    [t, toastError],
+  )
+
+  const handleTxError = useCallback(
+    (error, hash) => {
+      logError(error)
+      const err = parseError(error)
+      toastError(
+        t('Failed'),
+        <ToastDescriptionWithTx txHash={hash}>
+          {err
+            ? t('Transaction failed with error: %reason%', {
+                reason: notPreview ? err.shortMessage || err.message : err.message,
+              })
+            : t('Transaction failed. For detailed error message:')}
+        </ToastDescriptionWithTx>,
+      )
     },
     [t, toastError],
   )
@@ -90,18 +100,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
           if (!tx) {
             handleNormalError(error)
           } else {
-            const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
-            const err = parseError(error)
-            toastError(
-              t('Failed'),
-              <ToastDescriptionWithTx txHash={typeof tx === 'string' ? tx : tx.hash}>
-                {err
-                  ? t('Transaction failed with error: %reason%', {
-                      reason: notPreview ? err.shortMessage || err.message : err.message,
-                    })
-                  : t('Transaction failed. For detailed error message:')}
-              </ToastDescriptionWithTx>,
-            )
+            handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
         }
       } finally {
@@ -110,7 +109,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
       return null
     },
-    [toastSuccess, t, waitForTransaction, handleNormalError, toastError],
+    [toastSuccess, t, waitForTransaction, handleNormalError, handleTxError],
   )
 
   const fetchTxResponse = useCallback(
@@ -133,22 +132,11 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
         return { hash }
       } catch (error: any) {
-        const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
           } else {
-            const err = parseError(error)
-            toastError(
-              t('Failed'),
-              <ToastDescriptionWithTx txHash={typeof tx === 'string' ? tx : tx.hash}>
-                {err
-                  ? t('Transaction failed with error: %reason%', {
-                      reason: notPreview ? err.shortMessage || err.message : err.message,
-                    })
-                  : t('Transaction failed. For detailed error message:')}
-              </ToastDescriptionWithTx>,
-            )
+            handleTxError(error, typeof tx === 'string' ? tx : tx.hash)
           }
         }
       } finally {
@@ -157,7 +145,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
       return null
     },
-    [handleNormalError, toastError, toastSuccess, t],
+    [toastSuccess, t, handleNormalError, handleTxError],
   )
 
   return {
