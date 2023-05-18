@@ -154,7 +154,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
                                 </Td>
                                 <Td>
                                   <Text color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
-                                    {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
+                                    {`$${formatNumber(Number(pair.yourTradingFee))}`}
                                   </Text>
                                 </Td>
                               </>
@@ -164,13 +164,13 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
                                   {`$${formatNumber(pair.yourVolume, 0, 2)}`}
                                 </Text>
                                 <Text textAlign="right" color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
-                                  {`$${formatNumber(Number(pair.yourTradingFee), 2, 8)}`}
+                                  {`$${formatNumber(Number(pair.yourTradingFee))}`}
                                 </Text>
                               </Td>
                             )}
                             <Td textAlign="right">
                               <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
-                                {`$${formatNumber(pair.rewardEarned, 2, 8)}`}
+                                {`$${formatNumber(pair.rewardEarned)}`}
                               </Text>
                             </Td>
                           </tr>

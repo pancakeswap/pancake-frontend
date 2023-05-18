@@ -152,8 +152,8 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                   {t('Your unclaimed trading rewards')}
                 </Text>
-                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD, 2, 8)}`}</Text>
-                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake, 2, 8)} CAKE`}</Text>
+                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD)}`}</Text>
+                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
               </Box>
               <Button
                 width={['100%', '100%', '100%', 'fit-content']}
@@ -177,7 +177,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="primary" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(notReadyForClaimUSDPrice, 2, 8)}`}
+                    {`$${formatNumber(notReadyForClaimUSDPrice)}`}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('from the recent campaign period is under tallying and will be available for claiming soon.')}
@@ -189,7 +189,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="danger" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(expiredUSDPrice, 2, 8)}`}
+                    {`$${formatNumber(expiredUSDPrice)}`}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('unclaimed reward expiring in')}
@@ -224,7 +224,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 {t('Your TOTAL trading Reward')}
               </Text>
               <Text bold fontSize={['24px']}>
-                {`$${formatNumber(totalTradingReward, 2, 8)}`}
+                {`$${formatNumber(totalTradingReward)}`}
               </Text>
             </Box>
             <Box>
