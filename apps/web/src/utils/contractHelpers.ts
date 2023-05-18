@@ -77,6 +77,7 @@ import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { viemClients } from 'utils/viem'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
+import { tradingRewardABI } from 'config/abi/tradingReward'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -347,13 +348,13 @@ export const getV3MigratorContract = (signer?: WalletClient, chainId?: number) =
   })
 }
 
-export const getTradingRewardContract = (chainId?: number, signer?: Signer | Provider) => {
+export const getTradingRewardContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: tradingRewardABI,
     address: getTradingRewardAddress(chainId),
     signer,
     chainId,
-  }) as TradingReward
+  })
 }
 
 export const getV3AirdropContract = (walletClient?: WalletClient) => {
