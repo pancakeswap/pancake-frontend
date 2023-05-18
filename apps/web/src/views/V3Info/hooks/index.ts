@@ -114,7 +114,7 @@ export const usePairPriceChartTokenData = (
   targetChianId?: ChainId,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
   const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
+  const chainId = targetChianId || multiChainId[chainName]
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime
     .subtract(1, duration ?? 'day')
