@@ -1,5 +1,3 @@
-import { multicallAddresses } from '@pancakeswap/multicall'
-import multiCallAbi from '@pancakeswap/multicall/Multicall.json'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import uniq from 'lodash/uniq'
@@ -59,19 +57,28 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
   const tokenBalance = await client.multicall({
     contracts: [
       {
-        // @ts-ignore
-        abi: multiCallAbi,
-        address: multicallAddresses[chainId],
+        abi: [
+          {
+            inputs: [{ internalType: 'address', name: 'addr', type: 'address' }],
+            name: 'getEthBalance',
+            outputs: [{ internalType: 'uint256', name: 'balance', type: 'uint256' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ] as const,
+        address: '0xcA11bde05977b3631167028862bE2a173976CA11',
         functionName: 'getEthBalance',
-        args: [account],
-      },
-      // @ts-ignore
-      ...tokens.map((token) => ({
-        abi: erc20ABI,
-        address: token,
-        functionName: 'balanceOf',
-        args: [account],
-      })),
+        args: [account as Address] as const,
+      } as const,
+      ...tokens.map(
+        (token) =>
+          ({
+            abi: erc20ABI,
+            address: token,
+            functionName: 'balanceOf',
+            args: [account] as const,
+          } as const),
+      ),
     ],
   })
   const [bnbBalance, ...tokenBalancesResults] = tokenBalance
