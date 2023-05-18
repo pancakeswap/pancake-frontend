@@ -24,7 +24,7 @@ export const usePollBlockNumber = () => {
       }
       if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
         const block = await provider.getBlock({ blockNumber: blockNumberBigInt })
-        mutate(['initialBlockTimestamp', chainId], block.timestamp)
+        mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
       }
       return blockNumber
     },

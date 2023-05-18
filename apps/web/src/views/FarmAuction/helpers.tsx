@@ -85,7 +85,7 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
   if (currentBlock > block) {
     try {
       const { timestamp } = await bscRpcProvider.getBlock({ blockNumber: BigInt(block) })
-      return toDate(timestamp * 1000)
+      return toDate(Number(timestamp) * 1000)
     } finally {
       // Use logic below
     }

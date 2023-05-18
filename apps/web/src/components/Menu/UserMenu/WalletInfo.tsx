@@ -135,7 +135,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           {!bnbBalance.isFetched ? (
             <Skeleton height="22px" width="60px" />
           ) : (
-            <Text>{formatBigInt(bnbBalance.data.value, 6)}</Text>
+            <Text>{formatBigInt(bnbBalance.data.value ?? 0n, 6)}</Text>
           )}
         </Flex>
         {wBNBBalance.gt(0) && (
