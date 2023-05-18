@@ -29,13 +29,13 @@ export class Pair {
     return [token0, token1]
   }
 
-  public static getAddress(tokenA: Currency, tokenB: Currency): string {
+  public static getAddress(tokenA: Currency, tokenB: Currency): `0x${string}` {
     const [token0, token1] = this.sortToken(tokenA, tokenB)
 
     return `${PAIR_LP_TYPE_TAG}<${token0.address}, ${token1.address}>`
   }
 
-  public static getReservesAddress(tokenA: Currency, tokenB: Currency): string {
+  public static getReservesAddress(tokenA: Currency, tokenB: Currency): `0x${string}` {
     const [token0, token1] = this.sortToken(tokenA, tokenB)
 
     return `${PAIR_RESERVE_TYPE_TAG}<${token0.address}, ${token1.address}>`
