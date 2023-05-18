@@ -11,15 +11,11 @@ import { sousChefBnbABI } from '../abis/ISousChefBNB'
 interface Params {
   chainId?: ChainId
   sousId: number
-  signer?: WalletClient
-  publicClient?: PublicClient
+  signer?: any
+  publicClient?: any
 }
 
-type GetContractReturnType_<TAbi extends readonly unknown[]> = GetContractReturnType<
-  TAbi,
-  PublicClient,
-  WalletClient
-> & {
+type GetContractReturnType_<TAbi extends readonly unknown[]> = GetContractReturnType<TAbi, any, any> & {
   abi: TAbi
   address: Address
   account?: Account
@@ -95,16 +91,7 @@ function getSmartChefChefV2Contract({
   }
 }
 
-export function getPoolContractBySousId({
-  chainId,
-  sousId,
-  signer,
-  publicClient,
-}: Params):
-  | ReturnType<typeof getSousChefBNBContract>
-  | ReturnType<typeof getSousChefV2Contract>
-  | ReturnType<typeof getSmartChefChefV2Contract>
-  | null {
+export function getPoolContractBySousId({ chainId, sousId, signer, publicClient }: Params): any | null {
   if (!chainId) {
     return null
   }
