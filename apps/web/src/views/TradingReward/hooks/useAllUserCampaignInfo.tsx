@@ -103,7 +103,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
             const totalCanClaimData = canClaimResult
               ? canClaimResult
                   .map((canClaim) => (canClaim.result ? canClaim.result : 0n))
-                  .reduce((a, b) => a + b)
+                  .reduce((a, b) => a + b, 0n)
                   .toString() ?? '0'
               : '0'
 
