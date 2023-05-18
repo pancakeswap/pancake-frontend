@@ -26,6 +26,16 @@ type TxError = {
 // -32000 is insufficient funds for gas * price + value
 const _isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
 
+function parseError(err) {
+  if (typeof err === 'object') {
+    if ('shortMessage' in err) {
+      return err
+    }
+    return parseError(err?.cause)
+  }
+  return null
+}
+
 export default function useCatchTxError(): CatchTxErrorReturn {
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
@@ -35,17 +45,18 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   const handleNormalError = useCallback(
     (error) => {
       logError(error)
-
-      // if (tx) {
-      //   toastError(
-      //     t('Error'),
-      //     <ToastDescriptionWithTx txHash={tx.hash}>
-      //       {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-      //     </ToastDescriptionWithTx>,
-      //   )
-      // } else {
-      // }
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      const err = parseError(error)
+      const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
+      if (err) {
+        toastError(
+          t('Error'),
+          t('Transaction failed with error: %reason%', {
+            reason: notPreview ? error.shortMessage || error.message : error.message,
+          }),
+        )
+      } else {
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      }
     },
     [t, toastError],
   )
@@ -80,58 +91,17 @@ export default function useCatchTxError(): CatchTxErrorReturn {
             handleNormalError(error)
           } else {
             const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
+            const err = parseError(error)
             toastError(
               t('Failed'),
               <ToastDescriptionWithTx txHash={typeof tx === 'string' ? tx : tx.hash}>
-                {t('Transaction failed with error: %reason%', {
-                  reason: notPreview ? error.shortMessage || error.message : error.message,
-                })}
+                {err
+                  ? t('Transaction failed with error: %reason%', {
+                      reason: notPreview ? err.shortMessage || err.message : err.message,
+                    })
+                  : t('Transaction failed. For detailed error message:')}
               </ToastDescriptionWithTx>,
             )
-            // provider
-            //   .call(tx, tx.blockNumber)
-            //   .then(() => {
-            //     handleNormalError(error, tx)
-            //   })
-            //   .catch((err: any) => {
-            //     if (isGasEstimationError(err)) {
-            //       handleNormalError(error, tx)
-            //     } else {
-            //       logError(err)
-
-            //       let recursiveErr = err
-
-            //       let reason: string | undefined
-
-            //       // for MetaMask
-            //       if (recursiveErr?.data?.message) {
-            //         reason = recursiveErr?.data?.message
-            //       } else {
-            //         // for other wallets
-            //         // Reference
-            //         // https://github.com/Uniswap/interface/blob/ac962fb00d457bc2c4f59432d7d6d7741443dfea/src/hooks/useSwapCallback.tsx#L216-L222
-            //         while (recursiveErr) {
-            //           reason = recursiveErr.reason ?? recursiveErr.message ?? reason
-            //           recursiveErr = recursiveErr.error ?? recursiveErr.data?.originalError
-            //         }
-            //       }
-
-            //       const REVERT_STR = 'execution reverted: '
-            //       const indexInfo = reason?.indexOf(REVERT_STR)
-            //       const isRevertedError = indexInfo >= 0
-
-            //       if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
-
-            //       toastError(
-            //         t('Failed'),
-            //         <ToastDescriptionWithTx txHash={tx.hash}>
-            //           {isRevertedError
-            //             ? t('Transaction failed with error: %reason%', { reason })
-            //             : t('Transaction failed. For detailed error message:')}
-            //         </ToastDescriptionWithTx>,
-            //       )
-            //     }
-            //   })
           }
         }
       } finally {
@@ -168,52 +138,17 @@ export default function useCatchTxError(): CatchTxErrorReturn {
           if (!tx) {
             handleNormalError(error)
           } else {
+            const err = parseError(error)
             toastError(
               t('Failed'),
               <ToastDescriptionWithTx txHash={typeof tx === 'string' ? tx : tx.hash}>
-                {t('Transaction failed with error: %reason%', {
-                  reason: notPreview ? error.shortMessage || error.message : error.message,
-                })}
+                {err
+                  ? t('Transaction failed with error: %reason%', {
+                      reason: notPreview ? err.shortMessage || err.message : err.message,
+                    })
+                  : t('Transaction failed. For detailed error message:')}
               </ToastDescriptionWithTx>,
             )
-            // provider
-            //   .call(tx, tx.blockNumber)
-            //   .then(() => {
-            //     handleNormalError(error, tx)
-            //   })
-            //   .catch((err: any) => {
-            //     if (isGasEstimationError(err)) {
-            //       handleNormalError(error, tx)
-            //     } else {
-            //       logError(err)
-            //       let recursiveErr = err
-            //       let reason: string | undefined
-            //       // for MetaMask
-            //       if (recursiveErr?.data?.message) {
-            //         reason = recursiveErr?.data?.message
-            //       } else {
-            //         // for other wallets
-            //         // Reference
-            //         // https://github.com/Uniswap/interface/blob/ac962fb00d457bc2c4f59432d7d6d7741443dfea/src/hooks/useSwapCallback.tsx#L216-L222
-            //         while (recursiveErr) {
-            //           reason = recursiveErr.reason ?? recursiveErr.message ?? reason
-            //           recursiveErr = recursiveErr.error ?? recursiveErr.data?.originalError
-            //         }
-            //       }
-            //       const REVERT_STR = 'execution reverted: '
-            //       const indexInfo = reason?.indexOf(REVERT_STR)
-            //       const isRevertedError = indexInfo >= 0
-            //       if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
-            //       toastError(
-            //         t('Failed'),
-            //         <ToastDescriptionWithTx txHash={tx.hash}>
-            //           {isRevertedError
-            //             ? t('Transaction failed with error: %reason%', { reason })
-            //             : t('Transaction failed. For detailed error message:')}
-            //         </ToastDescriptionWithTx>,
-            //       )
-            //     }
-            //   })
           }
         }
       } finally {

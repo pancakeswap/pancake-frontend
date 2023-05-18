@@ -42,10 +42,10 @@ export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2)
 }
 
 export const formatBigInt = (value: bigint, displayDecimals = 18, decimals = 18): string => {
-  const formatted = formatUnits(value, decimals)
-  return parseFloat(formatted)
-    .toFixed(displayDecimals)
-    .replace(/\.?0+$/, '') // remove trailing zeros
+  const remainder = value % 10n ** BigInt(decimals - displayDecimals)
+
+  const formatted = formatUnits(value - remainder, decimals)
+  return formatted
 }
 
 /**
