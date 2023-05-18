@@ -158,13 +158,11 @@ export async function fetchMasterChefV3Data({
   }
 }
 
-const fetchPoolInfos = async (
-  farms: ComputedFarmConfigV3[],
-  chainId: number,
-  provider: ({ chainId }: { chainId: number }) => PublicClient,
-  masterChefAddress: Address,
-): Promise<
-  {
+/**
+ *
+ * @returns
+ * ```
+   {
     // allocPoint: BigNumber
     0: bigint
     // v3Pool: string
@@ -180,7 +178,14 @@ const fetchPoolInfos = async (
     // totalBoostLiquidity: BigNumber
     6: bigint
   }[]
-> => {
+ * ```
+ */
+const fetchPoolInfos = async (
+  farms: ComputedFarmConfigV3[],
+  chainId: number,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
+  masterChefAddress: Address,
+) => {
   try {
     const calls = farms.map(
       (farm) =>

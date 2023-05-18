@@ -173,6 +173,10 @@ const masterChefFarmCalls = (farm: SerializedFarmConfig, masterChefAddress: stri
     : null
 }
 
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}
+
 export const fetchMasterChefData = async (
   farms: SerializedFarmConfig[],
   isTestnet: boolean,
@@ -181,7 +185,7 @@ export const fetchMasterChefData = async (
 ) => {
   try {
     const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, masterChefAddress))
-    const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null)
+    const masterChefAggregatedCalls = masterChefCalls.filter(notEmpty)
 
     const chainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
     const masterChefMultiCallResult = await provider({ chainId }).multicall({
