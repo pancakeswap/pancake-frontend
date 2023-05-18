@@ -42,6 +42,13 @@ export const farmsV3 = defineFarmV3Configs([
   },
   // keep those farms on top
   {
+    pid: 41,
+    token0: bscTokens.c98,
+    token1: bscTokens.bnb,
+    lpAddress: Pool.getAddress(bscTokens.c98, bscTokens.bnb, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 40,
     token0: bscTokens.ush,
     token1: bscTokens.bnb,
