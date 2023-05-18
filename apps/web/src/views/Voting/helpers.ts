@@ -115,7 +115,7 @@ interface GetVotingPowerType {
 }
 
 const nodeRealProvider = createPublicClient({
-  transport: http('https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24'),
+  transport: http(`https://bsc-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}`),
   chain: bsc,
 })
 
@@ -128,24 +128,34 @@ export const getVotingPower = async (
     const cakeVaultAddress = getCakeVaultAddress()
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
-    const [pricePerShare, [shares, _last, _lastAction, _lockStartTime, lockEndTime, userBoostedShare]] =
-      await nodeRealProvider.multicall({
-        contracts: [
-          {
-            address: cakeVaultAddress,
-            abi: cakeVaultV2ABI,
-            functionName: 'getPricePerFullShare',
-          },
-          {
-            address: cakeVaultAddress,
-            abi: cakeVaultV2ABI,
-            functionName: 'userInfo',
-            args: [account],
-          },
-        ],
-        blockNumber,
-        allowFailure: false,
-      })
+    const [
+      pricePerShare,
+      [
+        shares,
+        _lastDepositedTime,
+        _cakeAtLastUserAction,
+        _lastUserActionTime,
+        _lockStartTime,
+        lockEndTime,
+        userBoostedShare,
+      ],
+    ] = await nodeRealProvider.multicall({
+      contracts: [
+        {
+          address: cakeVaultAddress,
+          abi: cakeVaultV2ABI,
+          functionName: 'getPricePerFullShare',
+        },
+        {
+          address: cakeVaultAddress,
+          abi: cakeVaultV2ABI,
+          functionName: 'userInfo',
+          args: [account],
+        },
+      ],
+      blockNumber,
+      allowFailure: false,
+    })
 
     const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, cakeVaultBalance, poolsBalance, total, ifoPoolBalance] =
       await getScores(
