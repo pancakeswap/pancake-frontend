@@ -136,8 +136,12 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
     const accounts = await provider.request({
       method: 'eth_requestAccounts',
     })
+    let account = accounts[0]
+    if (typeof account === 'string' && !account.startsWith('0x')) {
+      account = `0x${account}`
+    }
     // return checksum address
-    return getAddress(accounts[0] as string)
+    return getAddress(account)
   }
 
   async getChainId() {
@@ -148,10 +152,15 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
 
   protected onAccountsChanged = (accounts: string[]) => {
     if (accounts.length === 0) this.emit('disconnect')
-    else
+    else {
+      let account = accounts[0]
+      if (typeof account === 'string' && !account.startsWith('0x')) {
+        account = `0x${account}`
+      }
       this.emit('change', {
-        account: getAddress(accounts[0] as string),
+        account: getAddress(account),
       })
+    }
   }
 
   protected onChainChanged = (chainId: number | string) => {

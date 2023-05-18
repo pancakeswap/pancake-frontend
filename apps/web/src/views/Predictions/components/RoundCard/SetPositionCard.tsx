@@ -26,7 +26,7 @@ import { useGetBnbBalance, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
@@ -146,7 +146,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
         const hundredAsFn = new BN(100)
         const sliderPercentAsFn = new BN(sliderPercent.toFixed(18)).div(hundredAsFn)
         const balancePercentage = maxValueAsFn.times(sliderPercentAsFn)
-        setValue(balancePercentage.toFixed(2))
+        setValue(getFullDisplayBalance(balancePercentage, 18, 18))
       } else {
         setValue('')
       }

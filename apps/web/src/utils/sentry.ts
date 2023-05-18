@@ -19,11 +19,19 @@ const assignError = (maybeError: any) => {
 
 export const isUserRejected = (err) => {
   // provider user rejected error code
-  return (
-    typeof err === 'object' &&
-    (('code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) ||
-      ('cause' in err && 'code' in err.cause && err.cause.code === 4001))
-  )
+  if (typeof err === 'object') {
+    if (
+      ('code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) ||
+      ('cause' in err && 'code' in err.cause && err.cause.code === 4001)
+    ) {
+      return true
+    }
+
+    if ('cause' in err) {
+      return isUserRejected(err.cause)
+    }
+  }
+  return false
 }
 
 const ENABLED_LOG = false
