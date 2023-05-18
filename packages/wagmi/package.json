@@ -23,7 +23,7 @@
     "@wagmi/core": "^1.0.0",
     "react-dom": "^18.0.0",
     "react": "^18.0.0",
-    "viem": "^0.3.29",
+    "viem": "^0.3.30",
     "wagmi": "1.0.5"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "react-dom": "^18.0.0",
     "react": "^18.0.0",
     "tsup": "^6.7.0",
-    "viem": "^0.3.29",
+    "viem": "^0.3.30",
     "wagmi": "1.0.5"
   },
   "exports": {
