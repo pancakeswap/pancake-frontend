@@ -223,7 +223,7 @@ export default function AddStableLiquidity({
         .then((estimatedGasLimit) => {
           return nativeHelperContract.write.add_liquidity(args, {
             gas: calculateGasMargin(estimatedGasLimit),
-            gasPrice: BigInt(gasPrice),
+            gasPrice,
             value,
             account: contract.account,
             chain: contract.chain,
@@ -239,7 +239,7 @@ export default function AddStableLiquidity({
         .then((estimatedGasLimit) => {
           return stableSwapContract.write.add_liquidity(args, {
             gas: calculateGasMargin(estimatedGasLimit),
-            gasPrice: BigInt(gasPrice),
+            gasPrice,
             account: contract.account,
             chain: contract.chain,
           })

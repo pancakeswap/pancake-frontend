@@ -8,7 +8,7 @@ const options = {
   gas: DEFAULT_GAS_LIMIT,
 }
 
-const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: string) => {
+const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: bigint) => {
   const units = parseUnits(amount as `${number}`, decimals)
 
   return sousChefContract.write.withdraw([units.toString()], {
@@ -17,7 +17,7 @@ const sousUnstake = (sousChefContract: any, amount: string, decimals: number, ga
   })
 }
 
-const sousEmergencyUnstake = (sousChefContract: any, gasPrice: string) => {
+const sousEmergencyUnstake = (sousChefContract: any, gasPrice: bigint) => {
   return sousChefContract.emergencyWithdraw({ ...options, gasPrice })
 }
 

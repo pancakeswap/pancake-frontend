@@ -9,14 +9,14 @@ const options = {
   gas: DEFAULT_GAS_LIMIT,
 }
 
-const sousStake = async (sousChefContract, amount, gasPrice: string, decimals = 18) => {
+const sousStake = async (sousChefContract, amount, gasPrice: bigint, decimals = 18) => {
   return sousChefContract.write.deposit([new BigNumber(amount).times(getFullDecimalMultiplier(decimals)).toString()], {
     ...options,
     gasPrice,
   })
 }
 
-const sousStakeBnb = async (sousChefContract, amount, gasPrice: string) => {
+const sousStakeBnb = async (sousChefContract, amount, gasPrice: bigint) => {
   return sousChefContract.write.deposit([new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()], {
     ...options,
     gasPrice,
