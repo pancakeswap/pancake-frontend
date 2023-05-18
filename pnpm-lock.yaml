@@ -86,9 +86,6 @@ importers:
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../../packages/farms
-      '@pancakeswap/multicall':
-        specifier: workspace:*
-        version: link:../../packages/multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../../packages/swap-sdk
@@ -567,9 +564,6 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../../packages/localization
-      '@pancakeswap/multicall':
-        specifier: workspace:*
-        version: link:../../packages/multicall
       '@pancakeswap/pools':
         specifier: workspace:*
         version: link:../../packages/pools
@@ -1041,9 +1035,6 @@ importers:
 
   packages/farms:
     dependencies:
-      '@pancakeswap/multicall':
-        specifier: workspace:*
-        version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1141,28 +1132,6 @@ importers:
         specifier: ^18.0.17
         version: 18.2.0
 
-  packages/multicall:
-    dependencies:
-      viem:
-        specifier: ^0.3.30
-        version: 0.3.30(typescript@5.0.4)(zod@3.21.4)
-    devDependencies:
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
-      '@pancakeswap/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      abitype:
-        specifier: '*'
-        version: 0.8.0(typescript@5.0.4)(zod@3.21.4)
-      tsup:
-        specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
-      typescript:
-        specifier: ^5.0.4
-        version: 5.0.4
-
   packages/next-config:
     devDependencies:
       next:
@@ -1171,9 +1140,6 @@ importers:
 
   packages/pools:
     dependencies:
-      '@pancakeswap/multicall':
-        specifier: workspace:*
-        version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1217,9 +1183,6 @@ importers:
 
   packages/smart-router:
     dependencies:
-      '@pancakeswap/multicall':
-        specifier: workspace:*
-        version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk

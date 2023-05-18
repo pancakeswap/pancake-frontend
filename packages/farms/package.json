@@ -21,7 +21,6 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
-    "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "lodash": "^4.17.21"
   }
