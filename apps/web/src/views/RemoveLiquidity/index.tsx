@@ -291,7 +291,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     }
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     callWithEstimateGas(zapContract, methodName, args, {
-      gasPrice: BigInt(gasPrice),
+      gasPrice,
     })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
