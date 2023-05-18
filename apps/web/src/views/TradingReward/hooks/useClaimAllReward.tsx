@@ -1,9 +1,7 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { useSWRConfig } from 'swr'
-import { solidityPack } from 'ethers/lib/utils'
-import { utils } from 'ethers'
-import { keccak256 } from '@ethersproject/keccak256'
+import { parseEther, encodePacked, keccak256 } from 'viem'
 import { useAccount } from 'wagmi'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -33,15 +31,15 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
     const tradingFee = unclaimData.map((i) => {
       const isQualification = new BigNumber(i.totalTradingFee).gt(new BigNumber(qualification.minAmountUSD).div(1e18))
       const totalFee = isQualification ? i.totalTradingFee.toFixed(8) : i.totalTradingFee.toString()
-      return new BigNumber(totalFee).times(1e18).toString()
+      return BigInt(new BigNumber(totalFee).times(1e18).toString())
     })
 
     const merkleProofs = await Promise.all(
       unclaimData.map(async (i) => {
         const isQualification = new BigNumber(i.totalTradingFee).gt(new BigNumber(qualification.minAmountUSD).div(1e18))
         const totalFee = isQualification ? i.totalTradingFee.toFixed(8) : i.totalTradingFee.toString()
-        const value = utils.parseEther(totalFee)
-        const originHash = keccak256(keccak256(solidityPack(['address', 'uint256'], [account, value])))
+        const value = parseEther(totalFee as `${number}`)
+        const originHash = keccak256(keccak256(encodePacked(['address', 'uint256'], [account, value])))
 
         const response = await fetch(`${TRADING_REWARD_API}/hash/campaignId/${i.campaignId}/originHash/${originHash}`)
         const result = await response.json()
@@ -50,7 +48,10 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
     )
 
     const receipt = await fetchWithCatchTxError(() =>
-      contract.claimRewardMulti(claimCampaignIds, merkleProofs, tradingFee),
+      contract.write.claimRewardMulti([claimCampaignIds, merkleProofs, tradingFee], {
+        account: contract.account,
+        chain: contract.chain,
+      }),
     )
 
     if (receipt?.status) {
