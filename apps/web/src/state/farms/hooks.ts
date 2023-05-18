@@ -8,15 +8,9 @@ import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyCon
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import {
-  DeserializedFarm,
-  DeserializedFarmsState,
-  DeserializedFarmUserData,
-  createFarmFetcher,
-} from '@pancakeswap/farms'
+import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
-import { multicallv2 } from 'utils/multicall'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
@@ -154,25 +148,3 @@ export const useLpTokenPrice = (symbol: string) => {
 export const usePriceCakeUSD = (): BigNumber => {
   return useCakePriceAsBN()
 }
-
-export const useFarmsV2Data = () => {
-  const { chainId } = useActiveChainId()
-  const isTestnet = farmFetcher.isTestnet(chainId)
-
-  return useSWRImmutable(chainId ? ['useFarmsV2Data', chainId] : null, async () => {
-    const farmsConfig = await getFarmConfig(chainId)
-
-    const { totalRegularAllocPoint, cakePerBlock } = await farmFetcher.fetchFarms({
-      chainId,
-      isTestnet,
-      farms: farmsConfig.filter((f) => f.pid !== 0),
-    })
-
-    return {
-      totalRegularAllocPoint,
-      cakePerBlock,
-    }
-  })
-}
-
-export const farmFetcher = createFarmFetcher(multicallv2)

@@ -72,6 +72,5 @@ export const deserializeFarm = (
     stableLpFee,
     stableLpFeeRateOfTotalFee,
     lpTokenStakedAmount: farm.lpTokenStakedAmount ? new BigNumber(farm.lpTokenStakedAmount) : BIG_ZERO,
-    allocPoint: farm.allocPoint ? new BigNumber(farm.allocPoint) : BIG_ZERO,
   }
 }

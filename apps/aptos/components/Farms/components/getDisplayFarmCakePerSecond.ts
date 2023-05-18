@@ -2,7 +2,7 @@ import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 
 export const getDisplayFarmCakePerSecond = (poolWeight?: number, cakePerBlock?: EthersBigNumber) => {
-  if (!poolWeight || !cakePerBlock) return '-'
+  if (!poolWeight || !cakePerBlock) return '0'
 
   const farmCakePerSecond = (poolWeight * ethersToBigNumber(cakePerBlock).toNumber()) / 1e8
 

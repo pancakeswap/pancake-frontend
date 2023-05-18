@@ -59,7 +59,6 @@ function farmLpTransformer(farmResult, masterChefResult) {
       quoteToken: farm.quoteToken,
       poolWeight: poolWeight.toJSON(),
       multiplier: `${allocPoint.div(10).toString()}X`,
-      allocPoint,
       ...getLpInfo({
         tokenBalanceLP,
         quoteTokenBalanceLP,

@@ -137,7 +137,6 @@ export const useFarms = () => {
               : '0',
           poolWeight: poolWeight.toString(),
           multiplier: `${allocPoint.div(100).toString()}X`,
-          allocPoint,
         }
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])

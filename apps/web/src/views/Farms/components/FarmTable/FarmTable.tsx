@@ -1,9 +1,9 @@
-import { BigNumber as EthersBigNumber } from 'ethers'
+import { BigNumber as EthersBigNumber, ethers } from 'ethers'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
 import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
-import { useFarmsV2Data } from 'state/farms/hooks'
+import { useFarms } from 'state/farms/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 
 import BigNumber from 'bignumber.js'
@@ -71,15 +71,13 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  let earnings
   const existingEarnings = new BigNumber(farm.userData.earnings)
+  let earnings: BigNumber = existingEarnings
 
   if (farm.boosted) {
     const proxyEarnings = new BigNumber(farm.userData?.proxy?.earnings)
 
     earnings = proxyEarnings.gt(0) ? proxyEarnings : existingEarnings
-  } else {
-    earnings = existingEarnings
   }
 
   return getBalanceNumber(earnings)
@@ -149,8 +147,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
-  const { data: farmV2 } = useFarmsV2Data()
-  const { totalRegularAllocPoint, cakePerBlock } = farmV2 || { totalRegularAllocPoint: null, cakePerBlock: null }
+  const { totalRegularAllocPoint, regularCakePerBlock: cakePerBlock } = useFarms()
   const totalMultipliersV2 = totalRegularAllocPoint
     ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
     : '-'
@@ -170,7 +167,9 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
 
       if (farm.version === 2) {
         const farmCakePerSecond =
-          farm.poolWeight && cakePerSecond ? (Number(farm.poolWeight) * Number(cakePerBlock)) / 1e18 / 3 : 0
+          farm.poolWeight && cakePerSecond
+            ? (Number(farm.poolWeight) * Number(ethers.utils.parseEther(cakePerBlock.toString()))) / 1e18 / 3
+            : 0
 
         const row: RowProps = {
           apr: {
@@ -208,7 +207,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             multiplier: farm.multiplier,
             farmCakePerSecond:
               farmCakePerSecond === 0
-                ? '-'
+                ? '0'
                 : farmCakePerSecond < 0.000001
                 ? '<0.000001'
                 : `~${farmCakePerSecond.toFixed(6)}`,
@@ -246,7 +245,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           multiplier: farm.multiplier,
           farmCakePerSecond:
             farmCakePerSecond === 0
-              ? '-'
+              ? '0'
               : farmCakePerSecond < 0.000001
               ? '<0.000001'
               : `~${farmCakePerSecond.toFixed(6)}`,
