@@ -34,7 +34,7 @@ export function useCallWithGasPrice() {
         functionName: methodName,
         args: methodArgs,
         account: walletClient.account,
-        gasPrice: BigInt(gasPrice),
+        gasPrice,
         ...overrides,
       } as any) // TODO: fix types
 
@@ -69,7 +69,7 @@ export function useCallWithGasPrice() {
         address: contract.address,
         functionName: methodName,
         args: methodArgs,
-        gasPrice: BigInt(gasPrice),
+        gasPrice,
         ...overrides,
       } as any) // TODO: fix types
       const res = await walletClient.writeContract({
