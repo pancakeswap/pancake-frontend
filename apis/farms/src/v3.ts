@@ -6,8 +6,9 @@ import { gql, GraphQLClient } from 'graphql-request'
 import { Request } from 'itty-router'
 import { error, json } from 'itty-router-extras'
 import { z } from 'zod'
+import { Address } from 'viem'
 
-import { multicallv3 } from './helper'
+import { viemProviders } from './provider'
 
 export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ETHEREUM]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth', {
@@ -139,34 +140,34 @@ const handler_ = async (req: Request) => {
 
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const [pid] = await multicallv3({
-    calls: [
+  const client = viemProviders({ chainId: Number(chainId) })
+
+  const [pid] = await client.multicall({
+    contracts: [
       {
         abi: masterchefV3Abi,
         address: masterChefV3Address,
-        name: 'v3PoolAddressPid',
-        params: [address as `0x${string}`],
+        functionName: 'v3PoolAddressPid',
+        args: [address as `0x${string}`],
       },
     ],
-    chainId: +chainId,
+    allowFailure: false,
   })
 
-  if (!pid) {
+  if (typeof pid !== 'bigint') {
     return error(400, { error: 'Invalid LP address' })
   }
 
-  const [slot0, poolInfo] = await multicallv3({
-    calls: [
-      { abi: v3PoolAbi, address, name: 'slot0' },
+  const [slot0, poolInfo] = await client.multicall({
+    contracts: [
+      { abi: v3PoolAbi, address: address as Address, functionName: 'slot0' },
       {
         abi: masterchefV3Abi,
         address: masterChefV3Address,
-        name: 'poolInfo',
-        // @ts-ignore
-        params: [pid.toString()],
+        functionName: 'poolInfo',
+        args: [pid],
       },
     ],
-    chainId: +chainId,
     allowFailure: false,
   })
 
@@ -200,8 +201,11 @@ const handler_ = async (req: Request) => {
 
   const updatedAt = new Date().toISOString()
 
+  const [allocPoint, , , , , totalLiquidity] = poolInfo
+  const [sqrtPriceX96, tick] = slot0
+
   // don't cache when pool is not active or has no liquidity
-  if (poolInfo.allocPoint.isZero() || poolInfo.totalLiquidity.isZero()) {
+  if (!allocPoint || !totalLiquidity) {
     return json(
       {
         tvl: {
@@ -249,7 +253,7 @@ const handler_ = async (req: Request) => {
       {
         poolAddress: address,
         owner: masterChefV3Address.toLowerCase(),
-        currentTick: slot0.tick.toString(),
+        currentTick: tick.toString(),
         posId,
       },
     )
@@ -297,15 +301,15 @@ const handler_ = async (req: Request) => {
     )
   }
 
-  const currentTick = slot0.tick
-  const sqrtRatio = BigInt(slot0.sqrtPriceX96.toString())
+  const currentTick = tick
+  const sqrtRatio = sqrtPriceX96
 
   let totalToken0 = 0n
   let totalToken1 = 0n
 
   for (const position of allActivePositions.filter(
     // double check that the position is within the current tick range
-    (p) => +p.tickLower.tickIdx <= slot0.tick && +p.tickUpper.tickIdx > slot0.tick,
+    (p) => +p.tickLower.tickIdx <= currentTick && +p.tickUpper.tickIdx > currentTick,
   )) {
     const token0 = PositionMath.getToken0Amount(
       currentTick,
