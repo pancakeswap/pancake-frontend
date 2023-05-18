@@ -67,6 +67,7 @@ export function useCallWithGasPrice() {
       const { request } = await publicClient.simulateContract({
         abi: contract.abi,
         address: contract.address,
+        account: walletClient.account,
         functionName: methodName,
         args: methodArgs,
         gasPrice,
