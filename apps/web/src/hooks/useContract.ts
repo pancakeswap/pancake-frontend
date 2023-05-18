@@ -368,10 +368,10 @@ export function useV3MigratorContract() {
   return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
 }
 
-export const useTradingRewardContract = () => {
+export const useTradingRewardContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
   const { chainId } = useActiveChainId()
-  const { data: signer } = useSigner()
-  return useMemo(() => getTradingRewardContract(chainId, signer), [signer, chainId])
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getTradingRewardContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
 }
 
 export const useV3AirdropContract = () => {

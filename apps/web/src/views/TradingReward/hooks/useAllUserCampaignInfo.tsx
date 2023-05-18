@@ -3,11 +3,12 @@ import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
 import { SLOW_INTERVAL } from 'config/constants'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
-import tradingRewardABI from 'config/abi/tradingReward.json'
+import { tradingRewardABI } from 'config/abi/tradingReward'
 import { getTradingRewardAddress } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import { ChainId } from '@pancakeswap/sdk'
+import { getViemClients } from 'utils/viem'
+import { Address } from 'viem'
 
 interface UserCampaignInfoResponse {
   id: string
@@ -72,36 +73,39 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
 
             const canClaimDataCalls = userCampaignInfo.tradingFeeArr
               .filter((a) => new BigNumber(a.tradingFee).gt(0))
-              .map((i) => ({
-                name: 'canClaim',
-                address: tradingRewardAddress,
-                params: [campaignId, account, new BigNumber(Number(i.tradingFee).toFixed(8)).times(1e18).toString()],
-              }))
+              .map(
+                (i) =>
+                  ({
+                    abi: tradingRewardABI,
+                    functionName: 'canClaim',
+                    address: tradingRewardAddress as Address,
+                    args: [
+                      campaignId,
+                      account,
+                      BigInt(new BigNumber(Number(i.tradingFee).toFixed(8)).times(1e18).toString()),
+                    ] as const,
+                  } as const),
+              )
 
-            const calls = [
-              {
-                name: 'userClaimedIncentives',
-                address: tradingRewardAddress,
-                params: [campaignId, account],
-              },
-              ...canClaimDataCalls,
-            ]
+            const bscClient = getViemClients({ chainId: ChainId.BSC })
 
-            const contractData = await multicallv2({
+            const userClaimedIncentives = await bscClient.readContract({
               abi: tradingRewardABI,
-              calls,
-              chainId: ChainId.BSC,
-              options: { requireSuccess: false },
+              address: tradingRewardAddress,
+              functionName: 'userClaimedIncentives',
+              args: [campaignId, account],
             })
 
-            const totalCanClaimData =
-              contractData.length > 1
-                ? contractData
-                    .slice(1, contractData?.length)
-                    .map((i) => i[0].toString() ?? 0)
-                    .reduce((a, b) => new BigNumber(a).plus(b))
-                    .toString() ?? '0'
-                : '0'
+            const canClaimResult = await getViemClients({ chainId: ChainId.BSC }).multicall({
+              contracts: canClaimDataCalls,
+            })
+
+            const totalCanClaimData = canClaimResult
+              ? canClaimResult
+                  .map((canClaim) => (canClaim.result ? canClaim.result : 0n))
+                  .reduce((a, b) => a + b)
+                  .toString() ?? '0'
+              : '0'
 
             return {
               ...userCampaignInfo,
@@ -111,7 +115,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               totalEstimateRewardUSD,
               totalTradingFee,
               canClaim: totalCanClaimData,
-              userClaimedIncentives: contractData[0][0],
+              userClaimedIncentives,
             }
           }),
         )

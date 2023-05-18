@@ -3,8 +3,7 @@ import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
-import { incentiveFormat } from 'views/TradingReward/utils/incentiveFormat'
-import { TradingReward } from 'config/abi/types'
+import { useTradingRewardContract } from 'hooks/useContract'
 
 export enum RewardStatus {
   ALL = '0',
@@ -64,21 +63,47 @@ const fetchCampaignPairs = async (campaignIds: Array<string>) => {
   return newData
 }
 
-const fetchCampaignIdsIncentive = async (tradingRewardContract: TradingReward, campaignIds: Array<string>) => {
+const fetchCampaignIdsIncentive = async (
+  tradingRewardContract: ReturnType<typeof getTradingRewardContract>,
+  campaignIds: Array<string>,
+) => {
   const campaignIdsIncentive: Incentives[] = await Promise.all(
     campaignIds.map(async (campaignId: string) => {
-      const incentives = await tradingRewardContract.incentives(campaignId)
+      const incentives = await tradingRewardContract.read.incentives([campaignId])
+      const [
+        totalRewardUnclaimed,
+        totalReward,
+        totalTradingFee,
+        proofRoot,
+        campaignStart,
+        campaignClaimTime,
+        campaignClaimEndTime,
+        isActivated,
+        isDynamicReward,
+      ] = incentives
+
+      const formatted = {
+        proofRoot,
+        isActivated,
+        isDynamicReward,
+        totalReward: new BigNumber(totalReward.toString()).toJSON(),
+        totalTradingFee: new BigNumber(totalTradingFee.toString()).toNumber(),
+        campaignStart: new BigNumber(campaignStart.toString()).toNumber(),
+        campaignClaimTime: new BigNumber(campaignClaimTime.toString()).toNumber(),
+        campaignClaimEndTime: new BigNumber(campaignClaimEndTime.toString()).toNumber(),
+        totalRewardUnclaimed: new BigNumber(totalRewardUnclaimed.toString()).toJSON(),
+      }
       return {
         campaignId,
-        ...incentiveFormat(incentives),
+        ...formatted,
       } as Incentives
     }),
   )
   return campaignIdsIncentive
 }
 
-const fetUserQualification = async (tradingRewardContract: TradingReward) => {
-  const result = await tradingRewardContract.getUserQualification()
+const fetUserQualification = async (tradingRewardContract: ReturnType<typeof getTradingRewardContract>) => {
+  const result = await tradingRewardContract.read.getUserQualification()
   return {
     thresholdLockTime: new BigNumber(result[0].toString()).toNumber(),
     minAmountUSD: new BigNumber(result[0].toString()).toJSON(),
@@ -109,7 +134,7 @@ const initialAllTradingRewardState = {
 }
 
 const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTradingRewardPair => {
-  const tradingRewardContract = getTradingRewardContract(ChainId.BSC)
+  const tradingRewardContract = useTradingRewardContract({ chainId: ChainId.BSC })
 
   const { data: allPairs, isLoading } = useSWR(
     status && ['/all-activated-trading-reward-pair', status],
