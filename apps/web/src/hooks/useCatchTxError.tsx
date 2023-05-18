@@ -81,7 +81,6 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
         const receipt = await waitForTransaction({
           hash,
-          timeout: 1000,
         })
 
         return receipt

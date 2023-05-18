@@ -67,7 +67,6 @@ export function AddLiquidityV3Modal({
             waitForTransaction({
               hash,
               chainId: currency0?.chainId,
-              timeout: 1000,
             }).then(() => {
               dismiss()
             })
