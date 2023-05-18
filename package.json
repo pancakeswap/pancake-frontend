@@ -33,7 +33,6 @@
     "e2e:ci": "turbo run build --filter=web...[HEAD^1] && turbo run integration-test --filter=e2e...[HEAD^1]",
     "updateLPsAPR": "pnpm turbo run build --filter=@pancakeswap/farms && NODE_PATH=./apps/web/src tsx --tsconfig ./apps/web/tsconfig.json scripts/updateLPsAPR.ts",
     "updateAptosLPsAPR": "pnpm turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src tsx --tsconfig ./apps/aptos/tsconfig.json  scripts/updateAptosLpsAPR/index.ts",
-    "postinstall": "turbo run postinstall",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm i --lockfile-only",
