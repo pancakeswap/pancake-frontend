@@ -1158,9 +1158,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      viem:
-        specifier: ^0.3.30
-        version: 0.3.30(typescript@5.0.4)(zod@3.21.4)
     devDependencies:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
@@ -1174,6 +1171,9 @@ importers:
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
+      viem:
+        specifier: ^0.3.30
+        version: 0.3.30(typescript@5.0.4)(zod@3.21.4)
       vitest:
         specifier: ^0.27.2
         version: 0.27.2

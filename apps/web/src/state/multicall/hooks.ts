@@ -8,14 +8,7 @@ import {
   unstable_serialize,
   useSWRConfig,
 } from 'swr'
-import {
-  Address,
-  ContractFunctionResult,
-  decodeFunctionResult,
-  encodeFunctionData,
-  GetFunctionArgs,
-  Hex,
-} from 'viem'
+import { Address, ContractFunctionResult, decodeFunctionResult, encodeFunctionData, GetFunctionArgs, Hex } from 'viem'
 import {
   addMulticallListeners,
   Call,
