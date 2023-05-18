@@ -1,8 +1,7 @@
 import { ChainId, Currency, CurrencyAmount, Pair, Percent, BigintIsh } from '@pancakeswap/sdk'
-import { Call } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
-import { Address } from 'viem'
+import { Address, ContractFunctionConfig } from 'viem'
 import { Abi } from 'abitype'
 
 import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../types'
@@ -11,7 +10,7 @@ import { stableSwapPairABI } from '../../abis/StableSwapPair'
 import { pancakeV3PoolABI } from '../../abis/IPancakeV3Pool'
 import { getStableSwapPools } from '../../constants/stableSwap'
 
-export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
+export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool, PoolMeta>({
   abi: pancakePairABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => [
     { address: Pair.getAddress(currencyA.wrapped, currencyB.wrapped), currencyA, currencyB },
@@ -19,8 +18,8 @@ export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
   buildPoolInfoCalls: (address) => [
     {
       address,
-      name: 'getReserves',
-      params: [],
+      functionName: 'getReserves',
+      args: [],
     },
   ],
   buildPool: ({ currencyA, currencyB }, [reserves]) => {
@@ -65,28 +64,28 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, Stable
   buildPoolInfoCalls: (address) => [
     {
       address,
-      name: 'balances',
-      params: [0],
+      functionName: 'balances',
+      args: [0],
     },
     {
       address,
-      name: 'balances',
-      params: [1],
+      functionName: 'balances',
+      args: [1],
     },
     {
       address,
-      name: 'A',
-      params: [],
+      functionName: 'A',
+      args: [],
     },
     {
       address,
-      name: 'fee',
-      params: [],
+      functionName: 'fee',
+      args: [],
     },
     {
       address,
-      name: 'FEE_DENOMINATOR',
-      params: [],
+      functionName: 'FEE_DENOMINATOR',
+      args: [],
     },
   ],
   buildPool: ({ currencyA, currencyB, address }, [balance0, balance1, a, fee, feeDenominator]) => {
@@ -141,13 +140,11 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
   buildPoolInfoCalls: (address) => [
     {
       address,
-      name: 'liquidity',
-      params: [],
+      functionName: 'liquidity',
     },
     {
       address,
-      name: 'slot0',
-      params: [],
+      functionName: 'slot0',
     },
   ],
   buildPool: ({ currencyA, currencyB, fee, address }, [liquidity, slot0]) => {
@@ -177,7 +174,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
 interface OnChainPoolFactoryParams<TPool extends Pool, TPoolMeta extends PoolMeta, TAbi extends Abi | unknown[] = Abi> {
   abi: TAbi
   getPossiblePoolMetas: (pair: [Currency, Currency]) => TPoolMeta[]
-  buildPoolInfoCalls: (poolAddress: Address) => Call[]
+  buildPoolInfoCalls: (poolAddress: Address) => Omit<ContractFunctionConfig<TAbi>, 'abi'>[]
   buildPool: (poolMeta: TPoolMeta, data: any[]) => TPool | null
 }
 
@@ -210,10 +207,10 @@ function createOnChainPoolFactory<
       }
     }
 
-    let calls: Call[] = []
+    let calls: Omit<ContractFunctionConfig<TAbi>, 'abi'>[] = []
     let poolCallSize = 0
     for (const { address } of poolMetas) {
-      const poolCalls: Call[] = buildPoolInfoCalls(address)
+      const poolCalls = buildPoolInfoCalls(address)
       if (!poolCallSize) {
         poolCallSize = poolCalls.length
       }
@@ -231,8 +228,8 @@ function createOnChainPoolFactory<
       contracts: calls.map((call) => ({
         abi: abi as any,
         address: call.address as `0x${string}`,
-        functionName: call.name,
-        args: call.params,
+        functionName: call.functionName,
+        args: call.args as any,
       })),
       allowFailure: true,
       blockNumber: blockNumber ? BigInt(Number(BigInt(blockNumber))) : undefined,

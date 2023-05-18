@@ -1,4 +1,3 @@
-import { multicallAddresses } from '@pancakeswap/multicall'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
@@ -21,7 +20,13 @@ export default {
     97: '0x5790c3534F30437641541a0FA04C992799602998',
     56: '0x5aF6D33DE2ccEC94efb1bDF8f92Bd58085432d2c',
   },
-  multiCall: multicallAddresses,
+  multiCall: {
+    1: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    4: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    5: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    56: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    97: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  },
   pancakeProfile: {
     56: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a',
     97: '0x4B683C7E13B6d5D7fd1FeA9530F451954c1A7c8A',
