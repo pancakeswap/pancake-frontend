@@ -129,7 +129,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
               {t('Not enough remaining lock duration')}
             </Text>
             <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
-              <Text as="span">{t('Extend your position to unlock in')}</Text>
+              <Text as="span">{t('Extend your position to for')}</Text>
               <Text as="span" m="0 4px" bold>
                 {formatSecondsToWeeks(minLockWeekInSeconds)}
               </Text>
