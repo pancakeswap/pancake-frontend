@@ -126,7 +126,6 @@ export const useSousChef = (id) => {
         sousId: id,
         signer,
         chainId,
-        // @ts-ignore FIXME: type
         publicClient,
       }),
     [id, signer, chainId, publicClient],
