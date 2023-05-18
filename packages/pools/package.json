@@ -12,14 +12,15 @@
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
+    "viem": "^0.3.30",
     "wagmi": "1.0.5"
   },
   "dependencies": {
-    "viem": "^0.3.30",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "viem": "^0.3.30",
     "@types/lodash": "^4.14.168",
     "@pancakeswap/tsconfig": "workspace:*",
     "typechain": "^6.1.0",
