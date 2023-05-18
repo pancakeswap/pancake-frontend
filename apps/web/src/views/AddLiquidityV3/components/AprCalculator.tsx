@@ -155,8 +155,8 @@ export function AprCalculator({
     priceLower,
     priceUpper,
     sqrtRatioX96,
-    currencyAUsdPrice,
-    currencyBUsdPrice,
+    currencyAUsdPrice: inverted ? currencyBUsdPrice : currencyAUsdPrice,
+    currencyBUsdPrice: inverted ? currencyAUsdPrice : currencyBUsdPrice,
   })
 
   const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || aprAmountA
