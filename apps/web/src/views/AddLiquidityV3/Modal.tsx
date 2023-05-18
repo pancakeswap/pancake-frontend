@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { waitForTransaction } from 'wagmi/actions'
+import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { AutoRow, Box, Modal, ModalV2, UseModalV2Props } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import GlobalSettings from 'components/Menu/GlobalSettings'
@@ -37,6 +37,8 @@ export function AddLiquidityV3Modal({
 
   const baseCurrency = useCurrency(currencyIdA)
   const quoteCurrency = useCurrency(currencyIdB)
+
+  const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   const dismiss = useCallback(() => {
     onDismiss?.()
