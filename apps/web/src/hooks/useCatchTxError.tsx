@@ -2,9 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
-import { waitForTransaction, WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
+import { WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
 import { isUserRejected, logError } from 'utils/sentry'
 import { Hash } from 'viem'
+import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
   fetchWithCatchTxError: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<WaitForTransactionResult>
@@ -40,6 +41,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
+  const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const [txResponseLoading, setTxResponseLoading] = useState(false)
 
   const handleNormalError = useCallback(
@@ -82,7 +84,6 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         const receipt = await waitForTransaction({
           hash,
         })
-
         return receipt
       } catch (error: any) {
         if (!isUserRejected(error)) {
@@ -109,7 +110,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
       return null
     },
-    [handleNormalError, toastError, toastSuccess, t],
+    [toastSuccess, t, waitForTransaction, handleNormalError, toastError],
   )
 
   const fetchTxResponse = useCallback(
