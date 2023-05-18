@@ -55,6 +55,7 @@ const farms: SerializedFarmConfig[] = [
   },
 ].map((p) => ({
   ...p,
+  lpAddress: p.lpAddress as `0x${string}`,
   token: p.token.equals(p.quoteToken) ? p.token.serialize : Pair.sortToken(p.token, p.quoteToken)[1].serialize,
   quoteToken: p.token.equals(p.quoteToken)
     ? p.quoteToken.serialize
