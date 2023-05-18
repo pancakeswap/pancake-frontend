@@ -185,11 +185,7 @@ const DataRow: React.FC<
           </Text>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
-        {type === 'liquidity' && (
-          <Text style={{ border: 'solid 1px red' }} fontWeight={400}>
-            ${formatAmount(tokenData.liquidityUSD)}
-          </Text>
-        )}
+        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
         <Flex alignItems="center" justifyContent="flex-end">
           {tokenData?.pairs?.length > 0 && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
