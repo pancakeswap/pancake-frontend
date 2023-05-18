@@ -129,6 +129,11 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           {timeRemaining > 0 ? (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {t('in')}
+              {timeUntil.months ? (
+                <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+                  {`${timeUntil.months}${t('m')}`}
+                </Text>
+              ) : null}
               {timeUntil.days ? (
                 <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
                   {`${timeUntil.days}${t('d')}`}

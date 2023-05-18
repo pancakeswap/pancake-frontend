@@ -111,6 +111,11 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
           {timeRemaining > 0 ? (
             <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
               {t('in')}
+              {timeUntil.months ? (
+                <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
+                  {`${timeUntil.months}${t('m')}`}
+                </Text>
+              ) : null}
               {timeUntil.days ? (
                 <Text bold fontSize="12px" color="textSubtle" as="span" ml="4px">
                   {`${timeUntil.days}${t('d')}`}
