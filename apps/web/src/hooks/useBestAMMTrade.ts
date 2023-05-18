@@ -273,10 +273,10 @@ function bestTradeHookFactory({
         SmartRouter.log(label)
         SmartRouter.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
-          gasPriceWei: gasPrice
-            ? BigInt(gasPrice)
-            : async () =>
-                BigInt(await (await publicClient({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
+          gasPriceWei:
+            typeof gasPrice === 'bigint'
+              ? gasPrice
+              : async () => publicClient({ chainId: amount.currency.chainId }).getGasPrice(),
           maxHops,
           poolProvider,
           maxSplits,
