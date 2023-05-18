@@ -15,7 +15,6 @@ import {
   encodeFunctionData,
   GetFunctionArgs,
   Hex,
-  InferFunctionName,
 } from 'viem'
 import {
   addMulticallListeners,
@@ -349,28 +348,15 @@ export function useMultipleContractSingleData<TAbi extends Abi | unknown[], TFun
   }, [cache, chainId, results, abi, methodName])
 }
 
-export function useSingleCallResult<
-  TAbi extends Abi | unknown[],
-  TFunctionName extends string = string,
-  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
->(
+export function useSingleCallResult<TAbi extends Abi | unknown[], TFunctionName extends string = string>(
   contract: {
     abi?: TAbi
     address?: Address
   },
-  methodName: _FunctionName extends string ? _FunctionName : TFunctionName,
-  inputs?: TFunctionName extends string
-    ? GetFunctionArgs<TAbi, TFunctionName>['args']
-    : _FunctionName extends string
-    ? GetFunctionArgs<TAbi, _FunctionName>['args']
-    : never,
+  methodName: TFunctionName,
+  inputs?: GetFunctionArgs<TAbi, TFunctionName>['args'],
   options?: ListenerOptionsWithGas,
-): CallState<
-  ContractFunctionResult<
-    TAbi,
-    TFunctionName extends string ? TFunctionName : _FunctionName extends _FunctionName ? TFunctionName : never
-  >
-> {
+): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
   const calls = useMemo<Call[]>(() => {
     return contract && contract.abi && contract.address
       ? [
