@@ -33,7 +33,7 @@ const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
 const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
 }) => {
-  const router = useRouter()
+  const { query } = useRouter()
   const { chainId } = useActiveChainId()
   const allTokens = useTokenHighLightList()
   const [index, setIndex] = useState(0)
@@ -42,10 +42,10 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
   const { tokenPairs } = useTradingRewardTokenList()
 
   useEffect(() => {
-    if (router.query.showTradingReward) {
+    if (query.showTradingReward) {
       setConfirmed(true)
     }
-  }, [router])
+  }, [query, setConfirmed])
 
   const formattedTokens = useMemo(
     () =>
