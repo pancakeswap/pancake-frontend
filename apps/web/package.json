@@ -106,7 +106,7 @@
     "polished": "^4.2.2",
     "tiny-invariant": "^1.1.0",
     "uuid": "^8.0.0",
-    "viem": "^0.3.29"
+    "viem": "^0.3.30"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",
