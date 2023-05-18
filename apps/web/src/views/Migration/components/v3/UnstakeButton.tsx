@@ -104,7 +104,6 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
 
       const resp = await waitForTransaction({
         hash: receipt.hash,
-        timeout: 1000,
       })
 
       setIsLoading(false)
