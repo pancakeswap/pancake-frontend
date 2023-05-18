@@ -76,13 +76,20 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
         </Box>
       </NavWrapper>
       {chainId === ChainId.BSC && !isStableSwap && (
-        <Message my="24px" mx="24px" variant="warning">
-          <MessageText fontSize="17px">
-            {t(
-              'Data and ranking may not be accurate due to heavy spamming. Please pay attention to the risk scanner always DYOR before trading',
-            )}
-          </MessageText>
-        </Message>
+        <Box maxWidth="1200px" m="0 auto">
+          <Message my="24px" mx="24px" variant="warning">
+            <MessageText fontSize="17px">
+              <Text color="warning">
+                {t(
+                  'The markets for some of the newer and low-cap tokens displayed on the v2 info page are highly volatile, and as a result, token information may not be accurate.',
+                )}
+              </Text>
+              <Text color="warning">
+                {t('Before trading any token, please DYOR, and pay attention to the risk scanner.')}
+              </Text>
+            </MessageText>
+          </Message>
+        </Box>
       )}
     </>
   )
