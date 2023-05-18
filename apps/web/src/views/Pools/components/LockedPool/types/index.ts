@@ -13,6 +13,8 @@ export interface GenericModalProps {
   stakingToken: Token
   currentBalance: BigNumber
   stakingTokenBalance: BigNumber
+  customLockAmount?: string
+  customLockWeekInSeconds?: number
 }
 
 export interface ValidatorArg {
@@ -34,6 +36,7 @@ export interface ExtendDurationModal {
   currentBalance?: BigNumber
   lockStartTime: string
   isRenew?: boolean
+  customLockWeekInSeconds?: number
 }
 
 export interface AddButtonProps {
@@ -43,6 +46,7 @@ export interface AddButtonProps {
   lockEndTime: string
   lockStartTime: string
   stakingTokenBalance: BigNumber
+  customLockAmount?: string
 }
 
 export interface OverviewPropsType {
@@ -67,6 +71,7 @@ export interface AddAmountModalProps {
   lockStartTime?: string
   lockEndTime?: string
   stakingTokenBalance: BigNumber
+  customLockAmount?: string
 }
 
 export interface ModalValidator {
@@ -95,6 +100,7 @@ export interface LockedModalBodyPropsType {
     duration: number
     isMaxSelected?: boolean
   }) => React.ReactElement
+  customLockWeekInSeconds?: number
 }
 
 export interface ExtendDurationButtonPropsType {
@@ -106,6 +112,7 @@ export interface ExtendDurationButtonPropsType {
   children: React.ReactNode
   modalTitle?: string
   isRenew?: boolean
+  customLockWeekInSeconds?: number
 }
 
 export interface AfterLockedActionsPropsType {

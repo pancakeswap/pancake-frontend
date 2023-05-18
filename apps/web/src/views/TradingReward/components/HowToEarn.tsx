@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text, Card, TwitterIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import Trans from 'components/Trans'
@@ -10,7 +10,7 @@ const stepList = [
     subTitle: (
       <Trans>Use the hot token list on the Swap page to check which pairs are eligible for trading rewards.</Trans>
     ),
-    imgUrl: '/images/trading-reward/step1.png',
+    imgUrl: '/images/trading-reward/step1-1.png',
   },
   {
     title: <Trans>Start trading</Trans>,
@@ -20,19 +20,19 @@ const stepList = [
         from the current reward pool.
       </Trans>
     ),
-    imgUrl: '/images/trading-reward/step2.png',
+    imgUrl: '/images/trading-reward/step2-1.png',
   },
   {
     title: <Trans>Track your volume and rewards</Trans>,
     subTitle: <Trans>Come back to this page to check your volume and rewards in real-time.</Trans>,
-    imgUrl: '/images/trading-reward/step3.png',
+    imgUrl: '/images/trading-reward/step3-1.png',
   },
   {
     title: <Trans>Claim your rewards</Trans>,
     subTitle: (
       <Trans>After each period ends, come back to this page and claim your rewards from the previous periods.</Trans>
     ),
-    imgUrl: '/images/trading-reward/step4.png',
+    imgUrl: '/images/trading-reward/step4-1.png',
   },
 ]
 
@@ -55,7 +55,7 @@ const HowToEarn = () => {
   const { t } = useTranslation()
 
   return (
-    <Box padding="0 16px" mt={['72px', '72px', '72px', '143px']}>
+    <Box id="howToEarn" padding="0 16px" m={['72px 0', '72px 0', '72px 0', '143px 0 108px 0']}>
       <Box margin={['auto']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1140px']}>
         <StyledCard>
           <Flex flexDirection="column" padding={['50px 0 0 0', '50px 0 0 0', '50px 0 0 0', '50px 0']}>
@@ -70,11 +70,22 @@ const HowToEarn = () => {
                   flexDirection="column"
                   padding={['42px 22px', '42px 22px', '42px 22px', '0 22px']}
                 >
-                  <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step${index + 1}`}</Text>
-                  <Box margin="auto">
-                    <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
-                  </Box>
-                  <Text bold fontSize={['24px']} color="secondary" mb={['16px']}>
+                  <Flex
+                    flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'column-reverse', 'column']}
+                  >
+                    <Text
+                      fontSize="12px"
+                      bold
+                      textAlign={['left', 'left', 'left', 'left', 'right']}
+                      m={['0 0 8px 0', '0 0 8px 0', '0 0 8px 0', '0 0 8px 0', '0 0 32px 0']}
+                    >
+                      {`Step ${index + 1}`}
+                    </Text>
+                    <Box margin="0 auto">
+                      <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
+                    </Box>
+                  </Flex>
+                  <Text lineHeight="110%" bold fontSize={['24px']} color="secondary" mb={['16px']}>
                     {step.title}
                   </Text>
                   <Text color="textSubtle">{step.subTitle}</Text>
@@ -84,16 +95,13 @@ const HowToEarn = () => {
           </Flex>
         </StyledCard>
       </Box>
-      <Flex
-        justifyContent="center"
-        width={['226px', '226px', '226px', '100%']}
-        margin={['auto', 'auto', 'auto', '42px 0 0 0 ']}
+      <LinkExternal
+        external
+        href="https://docs.pancakeswap.finance/products/trading-reward/how-to-participate"
+        margin={['auto', 'auto', 'auto', '42px auto 0 auto']}
       >
-        <TwitterIcon width={24} height={24} color="primary" />
-        <Text textAlign={['center', 'center', 'center', 'left']} bold color="primary" ml="4px">
-          {t('+Follow For New Pairs and Reward Pool Updates')}
-        </Text>
-      </Flex>
+        {t('Learn More')}
+      </LinkExternal>
     </Box>
   )
 }

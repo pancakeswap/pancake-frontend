@@ -10,9 +10,27 @@ import {
   ArrowForwardIcon,
 } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
-import styled, { css } from 'styled-components'
-import { TradingRewardButter, TradingRewardLoveButter, TradingRewardBunny, TradingRewardBg } from './images'
+import styled, { css, keyframes } from 'styled-components'
+import {
+  TradingRewardButter,
+  TradingRewardLoveButter,
+  TradingRewardBunny,
+  TradingRewardBg,
+  TradingRewardButter2,
+} from './images'
 import * as S from './Styled'
+
+const flyingAnim = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(-5px, 5px);
+  }
+  to {
+    transform: translate(0, 0px);
+  }
+`
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -37,6 +55,7 @@ const RightWrapper = styled.div`
     position: absolute !important;
     top: -8%;
     right: 20%;
+    animation: ${flyingAnim} 5.5s ease-in-out infinite;
 
     ${({ theme }) => theme.mediaQueries.sm} {
       top: -12%;
@@ -50,17 +69,26 @@ const RightWrapper = styled.div`
   }
 
   > span:nth-child(3) {
+    // TradingRewardButter2
+    position: absolute !important;
+    right: 28%;
+    bottom: 18%;
+    animation: ${flyingAnim} 2.5s ease-in-out infinite;
+  }
+
+  > span:nth-child(4) {
     // TradingRewardBg
     position: absolute !important;
     right: 0px;
     bottom: 0px;
   }
 
-  > span:nth-child(4) {
+  > span:nth-child(5) {
     // TradingRewardLoveButter
     position: absolute !important;
     top: -30%;
     left: 55%;
+    animation: ${flyingAnim} 3.5s ease-in-out infinite;
   }
 `
 
@@ -136,10 +164,10 @@ const TradingRewardBanner = () => {
         <S.LeftWrapper>
           <StyledBox>{t('Trade to Earn Rewards')}</StyledBox>
           <Flex flexDirection={['column', 'row']} mb={['8px', '8px', '12px']}>
-            <Title>{t('$40,000 worth of CAKE in Total!')}</Title>
+            <Title>{t('5% trading rebate to be earned!')}</Title>
           </Flex>
           <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'} flexDirection={['column', 'row']}>
-            <NextLinkFromReactRouter to="/trading-reward">
+            <NextLinkFromReactRouter to="/swap?showTradingReward=true">
               <StyledButtonLeft scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
                   {t('Trade Now')}
@@ -147,7 +175,7 @@ const TradingRewardBanner = () => {
                 {!isMobile && <ArrowForwardIcon color="white" />}
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
-            <NextLinkFromReactRouter target="_blank" to="/" rel='"noopener noreferrer'>
+            <NextLinkFromReactRouter target="_blank" to="/trading-reward" rel='"noopener noreferrer'>
               <StyledButtonRight scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
                   {t('Learn More')}
@@ -168,17 +196,18 @@ const TradingRewardBanner = () => {
           ) : (
             <Image src={TradingRewardButter} alt="TradingRewardButter" width={72} height={60} placeholder="blur" />
           )}
-          {!isMobile && (
-            <Image src={TradingRewardBg} alt="TradingRewardBg" width={1112} height={192} placeholder="blur" />
-          )}
           {isDesktop && (
-            <Image
-              src={TradingRewardLoveButter}
-              alt="TradingRewardLoveButter"
-              width={147}
-              height={147}
-              placeholder="blur"
-            />
+            <>
+              <Image src={TradingRewardButter2} alt="TradingRewardButter2" width={70} height={60} placeholder="blur" />
+              <Image src={TradingRewardBg} alt="TradingRewardBg" width={1112} height={192} placeholder="blur" />
+              <Image
+                src={TradingRewardLoveButter}
+                alt="TradingRewardLoveButter"
+                width={147}
+                height={147}
+                placeholder="blur"
+              />
+            </>
           )}
         </RightWrapper>
       </S.Inner>

@@ -549,6 +549,9 @@ importers:
       '@ethersproject/experimental':
         specifier: ^5.0.0
         version: 5.7.0
+      '@ethersproject/keccak256':
+        specifier: ^5.7.0
+        version: 5.7.0
       '@ethersproject/logger':
         specifier: ^5.0.0
         version: 5.7.0

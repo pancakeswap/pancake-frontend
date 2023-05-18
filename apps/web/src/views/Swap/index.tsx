@@ -3,7 +3,8 @@ import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
-import { useCallback, useContext } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
@@ -20,11 +21,29 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
 export default function Swap() {
+  const { query } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
+  const [firstTime, setFirstTime] = useState(true)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const toggleChartDisplayed = () => {
+    setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
+  }
+
+  useEffect(() => {
+    if (firstTime && query.showTradingReward) {
+      setFirstTime(false)
+      setIsSwapHotTokenDisplay(true)
+
+      if (!isSwapHotTokenDisplay && isChartDisplayed) {
+        toggleChartDisplayed()
+      }
+    }
+  }, [firstTime, isChartDisplayed, isSwapHotTokenDisplay, query, setIsSwapHotTokenDisplay, toggleChartDisplayed])
 
   // swap state & price data
   const {

@@ -1,23 +1,34 @@
-import { Box, Text, Button, Link } from '@pancakeswap/uikit'
+import { Box, Text, Button, Link, Message, MessageText } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { useAccount } from 'wagmi'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { ChainId } from '@pancakeswap/sdk'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 
 const NoProfile = () => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
+  const { account, chainId } = useAccountActiveChain()
 
   return (
     <>
       <Text bold mb="8px">
-        {t('You have no CAKE profile.')}
+        {t('You have no active Pancake Profile.')}
       </Text>
       <Text mb="32px">{t('Create a Pancake Profile to start earning from trades')}</Text>
       <Box>
         <Image src="/images/trading-reward/create-profile.png" width={420} height={128} alt="create-profile" />
       </Box>
-      <Link mt="32px" external href={`/profile/${account}`}>
-        <Button>{t('Create Profile')}</Button>
+      {chainId !== ChainId.BSC && (
+        <Box maxWidth={365} mt="24px">
+          <Message variant="primary">
+            <MessageText>
+              {t('To create Pancake Profile, you will need to switch your network to BNB Chain.')}
+            </MessageText>
+          </Message>
+        </Box>
+      )}
+      <Link mt="32px" external href={`/profile/${account}?chain=${CHAIN_QUERY_NAME[ChainId.BSC]}`}>
+        <Button>{t('Activate Profile')}</Button>
       </Link>
     </>
   )

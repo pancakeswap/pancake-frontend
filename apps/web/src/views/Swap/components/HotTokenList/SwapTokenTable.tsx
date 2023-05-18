@@ -28,6 +28,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
+import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
 
 /**
  *  Columns on different layouts
@@ -46,13 +47,10 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 4fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr 2fr;
 
   @media screen and (max-width: 900px) {
     grid-template-columns: 2fr repeat(3, 1fr);
-    & :nth-child(4) {
-      display: none;
-    }
   }
 
   @media screen and (max-width: 800px) {
@@ -63,10 +61,7 @@ const ResponsiveGrid = styled.div`
   }
 
   @media screen and (max-width: 670px) {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    & :nth-child(4) {
-      display: block;
-    }
+    grid-template-columns: 2fr 1fr 1fr 2fr;
   }
 `
 
@@ -157,7 +152,7 @@ const DataRow: React.FC<
 > = ({ tokenData, type, handleOutputSelect }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { isXs, isSm, isMobile } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
   const chainName = useGetChainName()
@@ -191,7 +186,8 @@ const DataRow: React.FC<
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="flex-end">
+          {tokenData?.pairs?.length > 0 && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
             variant="text"
             scale="sm"
@@ -207,14 +203,10 @@ const DataRow: React.FC<
           >
             {t('Trade')}
           </Button>
-          {!isMobile && (
-            <>
-              <Text pl="8px" pr="4px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
-                |
-              </Text>
-              <MoreIcon color={theme.colors.textSubtle} />
-            </>
-          )}
+          <Text pl="8px" pr="4px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
+            |
+          </Text>
+          <MoreIcon color={theme.colors.textSubtle} />
         </Flex>
       </ResponsiveGrid>
     </LinkWrapper>

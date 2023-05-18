@@ -35,8 +35,6 @@ const sentryWebpackPluginOptions =
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
 
-const blocksPage = ['/trading-reward', '/api/routing']
-
 const workerDeps = Object.keys(smartRouterPkgs.dependencies)
   .map((d) => d.replace('@pancakeswap/', 'packages/'))
   .concat(['/packages/smart-router/', '/packages/swap-sdk/', '/packages/token-lists/'])
@@ -187,12 +185,7 @@ const config = {
         source: '/images/tokens/:address',
         destination: 'https://tokens.pancakeswap.finance/images/:address',
         permanent: false,
-      },
-      ...blocksPage.map((p) => ({
-        source: p,
-        destination: '/404',
-        permanent: false,
-      })),
+      }
     ]
   },
   webpack: (webpackConfig, { webpack, isServer }) => {

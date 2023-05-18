@@ -1,17 +1,19 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Skeleton } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
+import BigNumber from 'bignumber.js'
 import { useProfile } from 'state/profile/hooks'
+import { DeserializedLockedCakeVault } from 'state/types'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { useCakeVault, useFetchIfo as useCakeVaultPool } from 'state/pools/hooks'
+import { Incentives, Qualification, RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-// import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
-// import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
-// import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
-import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
+import RewardPeriod from 'views/TradingReward/components/YourTradingReward/RewardPeriod'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -60,7 +62,6 @@ const StyledHeading = styled(Text)`
 
     &::after {
       padding: 0;
-      -webkit-text-stroke: 10px rgb(101, 50, 205, 1);
     }
   }
 `
@@ -72,7 +73,7 @@ const Container = styled(Box)<{ showBackgroundColor: boolean }>`
   width: 100%;
   padding: 0 16px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     width: ${({ showBackgroundColor }) => (showBackgroundColor ? '760px' : '1140px')};
   }
 `
@@ -131,39 +132,115 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
   }
 }`
 
-const YourTradingReward = () => {
+const BaseContainer = styled(Flex)<{ showBackgroundColor: boolean }>`
+  width: 100%;
+  border-radius: 32px;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: ${({ theme, showBackgroundColor }) => (showBackgroundColor ? theme.card.background : BACKGROUND_COLOR)};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding: 48px 0;
+  }
+`
+
+interface YourTradingRewardProps {
+  isFetching: boolean
+  incentives: Incentives
+  campaignIds: Array<string>
+  currentUserCampaignInfo: UserCampaignInfoDetail
+  totalAvailableClaimData: UserCampaignInfoDetail[]
+  qualification: Qualification
+  rewardInfo: { [key in string]: RewardInfo }
+  campaignIdsIncentive: Incentives[]
+}
+
+const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
+  isFetching,
+  incentives,
+  campaignIds,
+  qualification,
+  totalAvailableClaimData,
+  currentUserCampaignInfo,
+  rewardInfo,
+  campaignIdsIncentive,
+}) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { profile } = useProfile()
-  const { theme } = useTheme()
 
-  const showBackgroundColor = useMemo(() => !account, [account])
-  const isClaimable = useMemo(() => account && profile?.isActive && false, [account, profile])
+  const { thresholdLockTime } = qualification
+
+  useCakeVaultPool()
+
+  const { userData } = useCakeVault() as DeserializedLockedCakeVault
+  const vaultPosition = getVaultPosition(userData)
+
+  const isLockPosition = useMemo(
+    () => Boolean(userData?.locked) && vaultPosition === VaultPosition.Locked,
+    [userData, vaultPosition],
+  )
+
+  const isValidLockDuration = useMemo(() => {
+    const minLockTime = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime)
+    return new BigNumber(userData.lockEndTime).gte(minLockTime)
+  }, [incentives, thresholdLockTime, userData])
+
+  const isQualified = useMemo(
+    () => account && profile?.isActive && isLockPosition && isValidLockDuration,
+    [account, profile, isLockPosition, isValidLockDuration],
+  )
 
   return (
-    <StyledBackground showBackgroundColor={showBackgroundColor}>
+    <StyledBackground showBackgroundColor={!!account}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
-      {isClaimable ? (
-        <ExpiringUnclaim />
-      ) : (
-        <Container showBackgroundColor={showBackgroundColor}>
-          <Flex
-            width="100%"
-            borderRadius={32}
-            padding={['24px', '24px', '24px', '48px 0']}
-            flexDirection="column"
-            alignItems={['center']}
-            style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
-          >
-            {!account && <NoConnected />}
-            {account && !profile?.isActive && <NoProfile />}
-            {/* <ViewEligiblePairs /> */}
-            {/* <NoCakeLockedOrExtendLock /> */}
-            {/* <NotQualified /> */}
-          </Flex>
+      {isFetching && (
+        <Skeleton
+          height={380}
+          borderRadius={16}
+          margin="32px auto"
+          width={['calc(100% - 32px)', 'calc(100% - 32px)', 'calc(100% - 32px)', 'calc(100% - 32px)', '900px']}
+        />
+      )}
+
+      {!isFetching && !account && (
+        <Container showBackgroundColor={false}>
+          <BaseContainer showBackgroundColor={false}>
+            <NoConnected />
+          </BaseContainer>
         </Container>
       )}
-      <Decorations showBackgroundColor={showBackgroundColor}>
+
+      {!isFetching && account && !profile?.isActive && (
+        <Container showBackgroundColor>
+          <BaseContainer showBackgroundColor>
+            <NoProfile />
+          </BaseContainer>
+        </Container>
+      )}
+
+      {!isFetching && account && profile?.isActive && (
+        <Container showBackgroundColor>
+          <RewardPeriod
+            userData={userData}
+            campaignIds={campaignIds}
+            incentives={incentives}
+            rewardInfo={rewardInfo}
+            currentUserCampaignInfo={currentUserCampaignInfo}
+            totalAvailableClaimData={totalAvailableClaimData}
+            campaignClaimTime={incentives?.campaignClaimTime}
+            isQualified={isQualified}
+            isLockPosition={isLockPosition}
+            isValidLockDuration={isValidLockDuration}
+            thresholdLockTime={thresholdLockTime}
+            qualification={qualification}
+            campaignIdsIncentive={campaignIdsIncentive}
+          />
+        </Container>
+      )}
+
+      <Decorations showBackgroundColor={!!account}>
         <img src="/images/trading-reward/left-bunny.png" width="93px" height="242px" alt="left-bunny" />
         <img src="/images/trading-reward/right-bunny.png" width="161px" height="161px" alt="right-bunny" />
         <img src="/images/trading-reward/love-butter.png" width="306px" height="306px" alt="love-butter" />

@@ -33,6 +33,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
   validator,
   customOverview,
   isRenew,
+  customLockWeekInSeconds,
 }) => {
   const { t } = useTranslation()
   const ceiling = useIfoCeiling()
@@ -42,7 +43,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
     onDismiss,
     lockedAmount,
     prepConfirmArg,
-    defaultDuration: isRenew && avgLockDurationsInSeconds,
+    defaultDuration: customLockWeekInSeconds || (isRenew && avgLockDurationsInSeconds),
   })
   const [isMaxSelected, setIsMaxSelected] = useState(false)
 
@@ -122,7 +123,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
           duration,
           isMaxSelected,
         })
-      ) : (
+      ) : customLockWeekInSeconds ? null : (
         <Overview
           isValidDuration={isValidDuration}
           openCalculator={_noop}

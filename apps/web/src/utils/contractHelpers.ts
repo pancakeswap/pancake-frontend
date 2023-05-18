@@ -32,6 +32,7 @@ import {
   getCrossFarmingSenderAddress,
   getCrossFarmingReceiverAddress,
   getStableSwapNativeHelperAddress,
+  getTradingRewardAddress,
   getMasterChefV3Address,
   getV3MigratorAddress,
   getV3AirdropAddress,
@@ -81,6 +82,7 @@ import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
 import sid from 'config/abi/SID.json'
 import uns from 'config/abi/UNS.json'
 import sidResolver from 'config/abi/SIDResolver.json'
+import tradingRewardABI from 'config/abi/tradingReward.json'
 import masterChefV3Abi from 'config/abi/masterChefV3.json'
 import v3MigratorAbi from 'config/abi/v3Migrator.json'
 import V3AirdropAbi from 'config/abi/v3Airdrop.json'
@@ -127,6 +129,7 @@ import type {
   StableSwapNativeHelper,
   SID,
   SIDResolver,
+  TradingReward,
   MasterChefV3,
   V3Migrator,
   V3Airdrop,
@@ -370,6 +373,15 @@ export const getV3MigratorContract = (signer?: Signer | Provider, chainId?: numb
     chainId,
     signer,
   }) as V3Migrator
+}
+
+export const getTradingRewardContract = (chainId?: number, signer?: Signer | Provider) => {
+  return getContract({
+    abi: tradingRewardABI,
+    address: getTradingRewardAddress(chainId),
+    signer,
+    chainId,
+  }) as TradingReward
 }
 
 export const getV3AirdropContract = (signer?: Signer | Provider) => {

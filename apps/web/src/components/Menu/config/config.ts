@@ -112,6 +112,10 @@ const config: (
       supportChainIds: SUPPORT_ONLY_BSC,
       items: [
         {
+          label: t('Trading Reward'),
+          href: '/trading-reward',
+        },
+        {
           label: t('Trading Competition'),
           href: '/competition',
           image: '/images/decorations/tc.png',

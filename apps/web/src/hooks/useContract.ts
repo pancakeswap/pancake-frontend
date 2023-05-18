@@ -57,6 +57,7 @@ import {
   getTradingCompetitionContractMoD,
   getStableSwapNativeHelperContract,
   getSidContract,
+  getTradingRewardContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
   getV3AirdropContract,
@@ -393,6 +394,12 @@ export function useV3MigratorContract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
   return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
+}
+
+export const useTradingRewardContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useSigner()
+  return useMemo(() => getTradingRewardContract(chainId, signer), [signer, chainId])
 }
 
 export const useV3AirdropContract = (withSignerIfPossible = true) => {
