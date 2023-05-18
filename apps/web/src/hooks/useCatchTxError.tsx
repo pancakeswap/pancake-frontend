@@ -70,6 +70,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
         const receipt = await waitForTransaction({
           hash,
+          timeout: 1000,
         })
 
         return receipt
@@ -78,10 +79,13 @@ export default function useCatchTxError(): CatchTxErrorReturn {
           if (!tx) {
             handleNormalError(error)
           } else {
+            const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
             toastError(
               t('Failed'),
               <ToastDescriptionWithTx txHash={typeof tx === 'string' ? tx : tx.hash}>
-                {t('Transaction failed with error: %reason%', { reason: error.message })}
+                {t('Transaction failed with error: %reason%', {
+                  reason: notPreview ? error.shortMessage || error.message : error.message,
+                })}
               </ToastDescriptionWithTx>,
             )
             // provider
@@ -159,6 +163,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
         return { hash }
       } catch (error: any) {
+        const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
@@ -166,7 +171,9 @@ export default function useCatchTxError(): CatchTxErrorReturn {
             toastError(
               t('Failed'),
               <ToastDescriptionWithTx txHash={typeof tx === 'string' ? tx : tx.hash}>
-                {t('Transaction failed with error: %reason%', { reason: error.message })}
+                {t('Transaction failed with error: %reason%', {
+                  reason: notPreview ? error.shortMessage || error.message : error.message,
+                })}
               </ToastDescriptionWithTx>,
             )
             // provider
