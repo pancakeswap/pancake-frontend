@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "devDependencies": {
-    "viem": "^0.3.29",
+    "viem": "^0.3.30",
     "ethers": "^5.0.0",
     "@types/lodash": "^4.14.168",
     "node-fetch": "^2.6.7",
