@@ -1196,8 +1196,8 @@ importers:
         specifier: workspace:*
         version: link:../v3-sdk
       abitype:
-        specifier: ^0.8.0
-        version: 0.8.0(typescript@5.0.4)(zod@3.21.4)
+        specifier: ^0.8.2
+        version: 0.8.2(typescript@5.0.4)(zod@3.21.4)
       async-retry:
         specifier: ^1.3.1
         version: 1.3.3
@@ -1807,11 +1807,11 @@ importers:
         specifier: ^18.0.17
         version: 18.2.0
       '@wagmi/connectors':
-        specifier: ^1.0.0
-        version: 1.0.2(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)
+        specifier: ^1.0.3
+        version: 1.0.3(@wagmi/chains@0.2.23)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)(zod@3.21.4)
       '@wagmi/core':
-        specifier: ^1.0.0
-        version: 1.0.4(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)
+        specifier: ^1.0.5
+        version: 1.0.5(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)(zod@3.21.4)
       react:
         specifier: ^18.0.0
         version: 18.2.0
@@ -10957,42 +10957,6 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/connectors@1.0.2(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30):
-    resolution: {integrity: sha512-uoUkWXv3cwwypxDblrNGWo3VGwUbxNAlIzGIDqg4oGO6Kekphj/FjRWMn2Yb9sVmFifh9h/aiJ1cr75Mv+E2fA==}
-    peerDependencies:
-      '@wagmi/chains': '>=0.2.0'
-      typescript: '>=4.9.4'
-      viem: ~0.3.18
-    peerDependenciesMeta:
-      '@wagmi/chains':
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@coinbase/wallet-sdk': 3.6.6(encoding@0.1.13)
-      '@ledgerhq/connect-kit-loader': 1.0.1
-      '@safe-global/safe-apps-provider': 0.15.2(encoding@0.1.13)
-      '@safe-global/safe-apps-sdk': 7.10.1(encoding@0.1.13)
-      '@wagmi/chains': 0.2.22(typescript@5.0.4)
-      '@walletconnect/ethereum-provider': 2.7.2(@web3modal/standalone@2.4.1)(encoding@0.1.13)
-      '@walletconnect/legacy-provider': 2.0.0(encoding@0.1.13)
-      '@web3modal/standalone': 2.4.1(react@18.2.0)
-      abitype: 0.8.1(typescript@5.0.4)(zod@3.21.4)
-      eventemitter3: 4.0.7
-      typescript: 5.0.4
-      viem: 0.3.30(typescript@5.0.4)(zod@3.21.4)
-    transitivePeerDependencies:
-      - '@react-native-async-storage/async-storage'
-      - bufferutil
-      - debug
-      - encoding
-      - lokijs
-      - react
-      - supports-color
-      - utf-8-validate
-      - zod
-    dev: true
-
   /@wagmi/connectors@1.0.3(@wagmi/chains@0.2.23)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)(zod@3.21.4):
     resolution: {integrity: sha512-5uB+dUDop8s9scdE+S4IhgcfP8oRwdULVvpJ2MusDp+C00+OgvS3SnwZM6+Pjc9tyj5pi143zqsYtDynxFrMEA==}
     peerDependencies:
@@ -11077,35 +11041,6 @@ packages:
       - react
       - typescript
     dev: false
-
-  /@wagmi/core@1.0.4(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30):
-    resolution: {integrity: sha512-CviDdioSWubghMnmEodB9R/ZE2OhuHVbr3Q1XTJjHIIrhhrPJSCjESr5pLx7X3lVdpf2FofapfWRCaxdYqg9sQ==}
-    peerDependencies:
-      typescript: '>=4.9.4'
-      viem: ~0.3.18
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@wagmi/chains': 0.2.22(typescript@5.0.4)
-      '@wagmi/connectors': 1.0.2(@wagmi/chains@0.2.22)(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)
-      abitype: 0.8.1(typescript@5.0.4)(zod@3.21.4)
-      eventemitter3: 4.0.7
-      typescript: 5.0.4
-      viem: 0.3.30(typescript@5.0.4)(zod@3.21.4)
-      zustand: 4.3.1(react@18.2.0)
-    transitivePeerDependencies:
-      - '@react-native-async-storage/async-storage'
-      - bufferutil
-      - debug
-      - encoding
-      - immer
-      - lokijs
-      - react
-      - supports-color
-      - utf-8-validate
-      - zod
-    dev: true
 
   /@wagmi/core@1.0.5(encoding@0.1.13)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)(zod@3.21.4):
     resolution: {integrity: sha512-n8Y84WJkofGjhd4a+vpZzPPEQiHnkIGMe0uHOXfkm4eKJZyaJqvVJFPMWE6xFJkk0hxZ+1zw5xn0ZhdroHwHvg==}
@@ -11757,6 +11692,7 @@ packages:
     dependencies:
       typescript: 5.0.4
       zod: 3.21.4
+    dev: true
 
   /abitype@0.8.1(typescript@5.0.4)(zod@3.21.4):
     resolution: {integrity: sha512-n8Di6AWb3i7HnEkBvecU6pG0a5nj5YwMvdAIwPLsQK95ulRy/XS113s/RXvSfTX1iOQJYFrEO3/q4SMWu7OwTA==}
