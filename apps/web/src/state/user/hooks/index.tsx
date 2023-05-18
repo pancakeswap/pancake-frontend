@@ -11,7 +11,7 @@ import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
 import { useFeeData, useWalletClient } from 'wagmi'
-
+import { hexToBigInt } from 'viem'
 import { AppState, useAppDispatch } from 'state'
 import {
   addSerializedPair,
@@ -265,9 +265,9 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useFeeDataWithGasPrice(chainIdOverride?: number): {
-  gasPrice: string
-  maxFeePerGas?: string
-  maxPriorityFeePerGas?: string
+  gasPrice?: bigint
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
 } {
   const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
@@ -284,28 +284,30 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
     }
   }
 
-  return (
-    data?.formatted ?? {
-      gasPrice: undefined,
-    }
-  )
+  return {
+    gasPrice: data?.gasPrice,
+    maxFeePerGas: data?.maxFeePerGas,
+    maxPriorityFeePerGas: data?.maxPriorityFeePerGas,
+  }
 }
 
+const DEFAULT_BSC_GAS_BIGINT = BigInt(GAS_PRICE_GWEI.default)
+const DEFAULT_BSC_TESTNET_GAS_BIGINT = BigInt(GAS_PRICE_GWEI.testnet)
 /**
  * Note that this hook will only works well for BNB chain
  */
-export function useGasPrice(chainIdOverride?: number): string | undefined {
+export function useGasPrice(chainIdOverride?: number): bigint | undefined {
   const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
   const { data: signer } = useWalletClient({ chainId })
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
+  const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useSWR(
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
       const gasPrice = await signer.request({
         method: 'eth_gasPrice',
       })
-      return String(parseInt(gasPrice, 16))
+      return hexToBigInt(gasPrice)
     },
     {
       revalidateOnFocus: false,
@@ -313,10 +315,10 @@ export function useGasPrice(chainIdOverride?: number): string | undefined {
     },
   )
   if (chainId === ChainId.BSC) {
-    return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : userGas
+    return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : BigInt(userGas)
   }
   if (chainId === ChainId.BSC_TESTNET) {
-    return GAS_PRICE_GWEI.testnet
+    return DEFAULT_BSC_TESTNET_GAS_BIGINT
   }
   return undefined
 }

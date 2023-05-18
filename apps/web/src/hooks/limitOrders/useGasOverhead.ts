@@ -17,13 +17,12 @@ export default function useGasOverhead(
 ): {
   realExecutionPrice: Price<Currency, Currency> | undefined | null
   realExecutionPriceAsString: string | undefined
-  gasPrice: string | undefined
 } {
   const { chainId } = useActiveChainId()
   const native = useNativeCurrency()
 
   const gasPrice = useGasPrice()
-  const requiredGas = formatUnits(gasPrice ? BigInt(gasPrice) * GENERIC_GAS_LIMIT_ORDER_EXECUTION : 0n, 18)
+  const requiredGas = formatUnits(gasPrice ? gasPrice * GENERIC_GAS_LIMIT_ORDER_EXECUTION : 0n, 18)
   const requiredGasAsCurrencyAmount = tryParseAmount(requiredGas, native)
 
   const inputIsBNB = inputAmount?.currency.symbol === 'BNB'
@@ -57,10 +56,9 @@ export default function useGasOverhead(
   }, [rateType, realExecutionPrice])
 
   return chainId
-    ? { realExecutionPrice, gasPrice, realExecutionPriceAsString }
+    ? { realExecutionPrice, realExecutionPriceAsString }
     : {
         realExecutionPrice: undefined,
         realExecutionPriceAsString: undefined,
-        gasPrice: undefined,
       }
 }
