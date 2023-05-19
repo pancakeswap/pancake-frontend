@@ -28,6 +28,7 @@ interface CustomDescriptions {
   delayed: string
   slow: string
   healthy: string
+  down?: string
 }
 
 const indicator = (t: TranslateFunction, customDescriptions?: CustomDescriptions) =>
@@ -55,6 +56,13 @@ const indicator = (t: TranslateFunction, customDescriptions?: CustomDescriptions
       color: 'success',
       description: customDescriptions?.healthy ?? t('No issues with the subgraph.'),
     },
+    down: {
+      label: t('Down'),
+      color: 'failure',
+      description:
+        customDescriptions?.down ??
+        t('Subgraph is currently experiencing issues. Performance may suffer until subgraph is restored.'),
+    },
   } as const)
 
 type Indicator = keyof ReturnType<typeof indicator>
@@ -66,6 +74,10 @@ const getIndicator = (sgStatus: SubgraphStatus): Indicator => {
 
   if (sgStatus === SubgraphStatus.WARNING) {
     return 'slow'
+  }
+
+  if (sgStatus === SubgraphStatus.DOWN) {
+    return 'down'
   }
 
   return 'healthy'
@@ -93,7 +105,8 @@ export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = (
   const { t } = useTranslation()
   const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(subgraphName)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
-  const forceIndicatorDisplay = status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK
+  const forceIndicatorDisplay =
+    status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK || status === SubgraphStatus.DOWN
   const showIndicator = (obeyGlobalSetting && alwaysShowIndicator) || forceIndicatorDisplay
 
   const indicatorProps = indicator(t, customDescriptions)
@@ -109,6 +122,7 @@ export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = (
       currentBlock={currentBlock}
       secondRemainingBlockSync={secondRemainingBlockSync}
       blockNumberFromSubgraph={latestBlock}
+      showBlockInfo={status !== SubgraphStatus.DOWN}
       {...current}
     />,
     {
@@ -157,6 +171,7 @@ const TooltipContent = ({
   color,
   label,
   description,
+  showBlockInfo = true,
   currentBlock,
   secondRemainingBlockSync,
   blockNumberFromSubgraph,
@@ -168,16 +183,20 @@ const TooltipContent = ({
         <Dot $color={color} />
         <Text>{label}</Text>
       </IndicatorWrapper>
-      <Text pb="24px">{description}</Text>
-      <Text>
-        <strong>{t('Chain Head Block')}:</strong> {currentBlock}
-      </Text>
-      <Text>
-        <strong>{t('Latest Subgraph Block')}:</strong> {blockNumberFromSubgraph}
-      </Text>
-      <Text>
-        <strong>{t('Delay')}:</strong> {currentBlock - blockNumberFromSubgraph} ({secondRemainingBlockSync}s)
-      </Text>
+      <Text>{description}</Text>
+      {showBlockInfo ? (
+        <>
+          <Text mt="24px">
+            <strong>{t('Chain Head Block')}:</strong> {currentBlock}
+          </Text>
+          <Text>
+            <strong>{t('Latest Subgraph Block')}:</strong> {blockNumberFromSubgraph}
+          </Text>
+          <Text>
+            <strong>{t('Delay')}:</strong> {currentBlock - blockNumberFromSubgraph} ({secondRemainingBlockSync}s)
+          </Text>
+        </>
+      ) : null}
     </Box>
   )
 }
