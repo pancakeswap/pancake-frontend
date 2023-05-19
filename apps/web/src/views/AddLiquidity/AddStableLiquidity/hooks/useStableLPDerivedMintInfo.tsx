@@ -113,14 +113,18 @@ function useMintedStableLP({
     return [stableSwapAddress as Address, amounts] as const
   }, [stableSwapAddress, amounts])
 
-  const { result, error, loading, syncing } = useSingleCallResult(
-    stableSwapInfoContract,
-    'get_add_liquidity_mint_amount',
-    inputs,
-  )
+  const { result, error, loading, syncing } = useSingleCallResult({
+    contract: stableSwapInfoContract,
+    functionName: 'get_add_liquidity_mint_amount',
+    args: inputs,
+  })
 
   // TODO: Combine get_add_liquidity_mint_amount + balances in one call
-  const balanceResult = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress as Address])
+  const balanceResult = useSingleCallResult({
+    contract: stableSwapInfoContract,
+    functionName: 'balances',
+    args: [stableSwapAddress as Address],
+  })
 
   return useMemo(
     () => ({
