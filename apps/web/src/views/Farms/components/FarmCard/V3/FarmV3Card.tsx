@@ -16,6 +16,7 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
+import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -52,8 +53,6 @@ interface FarmCardProps {
   removed: boolean
   cakePrice?: BigNumber
   account?: string
-  farmCakePerSecond?: string
-  totalMultipliers?: string
 }
 
 export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -61,12 +60,14 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   removed,
   // cakePrice,
   account,
-  farmCakePerSecond,
-  totalMultipliers,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
+
+  const { totalMultipliers, getFarmCakePerSecond } = useFarmV3Multiplier()
+
+  const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
   const earnLabel = t('CAKE + Fees')

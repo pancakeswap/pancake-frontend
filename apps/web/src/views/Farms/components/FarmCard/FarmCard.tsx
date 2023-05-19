@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import ApyButton from './ApyButton'
@@ -51,8 +52,6 @@ interface FarmCardProps {
   cakePrice?: BigNumber
   account?: string
   originalLiquidity?: BigNumber
-  farmCakePerSecond?: string
-  totalMultipliers?: string
 }
 
 const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -62,12 +61,14 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   cakePrice,
   account,
   originalLiquidity,
-  farmCakePerSecond,
-  totalMultipliers,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
+
+  const { totalMultipliers, getFarmCakePerSecond } = useFarmV2Multiplier()
+
+  const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
 
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity

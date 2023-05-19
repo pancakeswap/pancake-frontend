@@ -1,11 +1,10 @@
-import { BigNumber as EthersBigNumber, ethers } from 'ethers'
+import { BigNumber as EthersBigNumber } from 'ethers'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
-import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
-import { useFarms } from 'state/farms/hooks'
-import { useFarmsV3Public } from 'state/farmsV3/hooks'
 
+import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
+import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
@@ -147,14 +146,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
-  const { totalRegularAllocPoint, regularCakePerBlock: cakePerBlock } = useFarms()
-  const totalMultipliersV2 = totalRegularAllocPoint
-    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 10).toString()
-    : '-'
-
-  const { data: farmV3 } = useFarmsV3Public()
-  const { totalAllocPoint, cakePerSecond } = farmV3
-  const totalMultipliersV3 = totalAllocPoint ? (ethersToBigNumber(totalAllocPoint).toNumber() / 10).toString() : '-'
+  const farmV3Multiplier = useFarmV3Multiplier()
+  const farmV2Multiplier = useFarmV2Multiplier()
 
   const generateRow = useCallback(
     (farm: V2StakeValueAndV3Farm): RowProps => {
@@ -166,11 +159,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
       if (farm.version === 2) {
-        const farmCakePerSecond =
-          farm.poolWeight && cakePerSecond
-            ? (Number(farm.poolWeight) * Number(ethers.utils.parseEther(cakePerBlock.toString()))) / 1e18 / 3
-            : 0
-
         const row: RowProps = {
           apr: {
             value: getDisplayApr(farm.apr, farm.lpRewardsApr),
@@ -205,13 +193,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           },
           multiplier: {
             multiplier: farm.multiplier,
-            farmCakePerSecond:
-              farmCakePerSecond === 0
-                ? '0'
-                : farmCakePerSecond < 0.000001
-                ? '<0.000001'
-                : `~${farmCakePerSecond.toFixed(6)}`,
-            totalMultipliers: totalMultipliersV2,
+            farmCakePerSecond: farmV2Multiplier.getFarmCakePerSecond(farm.poolWeight),
+            totalMultipliers: farmV2Multiplier.totalMultipliers,
           },
           type: farm.isCommunity ? 'community' : 'v2',
           details: farm,
@@ -219,9 +202,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         }
         return row
       }
-
-      // V3
-      const farmCakePerSecond = farm.poolWeight && cakePerSecond ? Number(farm.poolWeight) * Number(cakePerSecond) : 0
 
       return {
         initialActivity,
@@ -243,13 +223,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         details: farm,
         multiplier: {
           multiplier: farm.multiplier,
-          farmCakePerSecond:
-            farmCakePerSecond === 0
-              ? '0'
-              : farmCakePerSecond < 0.000001
-              ? '<0.000001'
-              : `~${farmCakePerSecond.toFixed(6)}`,
-          totalMultipliers: totalMultipliersV3,
+          farmCakePerSecond: farmV3Multiplier.getFarmCakePerSecond(farm.poolWeight),
+          totalMultipliers: farmV3Multiplier.totalMultipliers,
         },
         stakedLiquidity: {
           inactive: farm.multiplier === '0X',
@@ -276,7 +251,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         },
       }
     },
-    [cakePrice, query.search, cakePerBlock, totalMultipliersV2, totalMultipliersV3, cakePerSecond],
+    [query.search, farmV3Multiplier, cakePrice, farmV2Multiplier],
   )
 
   const sortedRows = useMemo(() => {
