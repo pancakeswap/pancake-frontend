@@ -10,6 +10,11 @@ export const viemServerClients = CHAINS.reduce((prev, cur) => {
     [cur.id]: createPublicClient({
       chain: cur,
       transport: http(SERVER_NODES[cur.id]),
+      batch: {
+        multicall: {
+          batchSize: 1024 * 1000,
+        },
+      },
     }),
   }
 }, {} as Record<ChainId, PublicClient>)
