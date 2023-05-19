@@ -70,7 +70,7 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
     const name = affiliate.nickName ? affiliate.nickName : affiliate.name
     const displayName = name.replaceAll(' ', '_')
     const discount = new BigNumber(percentage).gt(0) ? new BigNumber(percentage).times(3).div(100).toFixed(2) : 0
-    return `${hostname}/affiliates-program?ref=${linkId}&user=${displayName}&discount=${discount}&noperps=${affiliate.ablePerps}`
+    return `${hostname}/affiliates-program?ref=${linkId}&user=${displayName}&discount=${discount}&perps=${affiliate.ablePerps}`
   }
 
   const handleCopyText = ({ linkId, percentage }: { linkId: string; percentage: number }) => {
