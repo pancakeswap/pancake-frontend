@@ -30,8 +30,8 @@ const OnBoardingModal = () => {
   const [currentView, setCurrentView] = useState(Views.STEP1)
 
   useEffect(() => {
-    const { ref, user, discount, noperps } = router.query
-    if (ref && user && discount && noperps) {
+    const { ref, user, discount, perps } = router.query
+    if (ref && user && discount && perps) {
       setIsOpen(true)
     }
   }, [router])
@@ -61,7 +61,7 @@ const OnBoardingModal = () => {
         setCurrentView(Views.STEP2)
         toastSuccess(t('Congratulations! You’re all set!'))
       } else {
-        toastError(result.error)
+        toastError(result?.error || '')
       }
     } catch (error) {
       console.error(`Submit Start Now Error: ${error}`)

@@ -21,17 +21,10 @@ const AffiliateModal = () => {
   const [showModal, setShowModal] = useAtom(showAffiliateModalAtom)
 
   useEffect(() => {
-    const { ref, user, discount, noperps } = router.query
+    const { ref, user, discount, perps } = router.query
     // Close when switch address
     setIsOpen(
-      (isAffiliateExist || isUserExist) &&
-        !isFetching &&
-        address &&
-        showModal &&
-        !ref &&
-        !user &&
-        !discount &&
-        !noperps,
+      (isAffiliateExist || isUserExist) && !isFetching && address && showModal && !ref && !user && !discount && !perps,
     )
   }, [address, isAffiliateExist, isUserExist, isFetching, showModal, router])
 

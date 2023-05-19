@@ -18,14 +18,14 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
   const router = useRouter()
   const { address } = useAccount()
   const { isUserExist } = useUserExist()
-  const { user, discount, noperps } = router.query
+  const { user, discount, perps } = router.query
   const [isChecked, setIsChecked] = useState(false)
 
   const handleCheckbox = () => setIsChecked(!isChecked)
 
   const isDiscountZero = useMemo(() => new BigNumber((discount as string) ?? '0').eq(0), [discount])
 
-  const noPerps = useMemo(() => (noperps as string) === 'true', [noperps])
+  const noPerps = useMemo(() => (perps as string) === 'true', [perps])
 
   const isReady = useMemo(() => !isLoading && isChecked, [isLoading, isChecked])
 
