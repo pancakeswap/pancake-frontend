@@ -1,9 +1,9 @@
 import { PositionDetails } from '@pancakeswap/farms'
+import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
 import { useContractRead, useContractReads, Address } from 'wagmi'
-import { masterChefV3ABI } from 'config/abi/masterChefV3'
 
 interface UseV3PositionsResults {
   loading: boolean

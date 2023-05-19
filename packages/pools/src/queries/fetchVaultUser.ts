@@ -4,8 +4,8 @@ import { Address } from 'viem'
 
 import { OnChainProvider, SerializedLockedVaultUser, SerializedVaultUser } from '../types'
 import { cakeVaultV2ABI } from '../abis/ICakeVaultV2'
-import { getCakeVaultAddress } from './getAddresses'
-import { getCakeFlexibleSideVaultV2Contract } from './getContracts'
+import { getCakeFlexibleSideVaultAddress, getCakeVaultAddress } from './getAddresses'
+import { cakeFlexibleSideVaultV2ABI } from '../abis/ICakeFlexibleSideVaultV2'
 
 interface Params {
   account: Address
@@ -81,8 +81,12 @@ export const fetchFlexibleSideVaultUser = async ({
   provider,
 }: Params): Promise<SerializedVaultUser> => {
   try {
-    const flexibleSideVaultContract = getCakeFlexibleSideVaultV2Contract(chainId, provider)
-    const userContractResponse = await flexibleSideVaultContract.read.userInfo([account])
+    const userContractResponse = await await provider({ chainId }).readContract({
+      abi: cakeFlexibleSideVaultV2ABI,
+      address: getCakeFlexibleSideVaultAddress(chainId),
+      functionName: 'userInfo',
+      args: [account],
+    })
     return {
       isLoading: false,
       userShares: new BigNumber(userContractResponse[0].toString()).toJSON(),
