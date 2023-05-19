@@ -25,7 +25,7 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
 
   const isDiscountZero = useMemo(() => new BigNumber((discount as string) ?? '0').eq(0), [discount])
 
-  const noPerps = useMemo(() => (perps as string) === 'true', [perps])
+  const noPerps = useMemo(() => (perps as string) === 'false', [perps])
 
   const isReady = useMemo(() => !isLoading && isChecked, [isLoading, isChecked])
 
