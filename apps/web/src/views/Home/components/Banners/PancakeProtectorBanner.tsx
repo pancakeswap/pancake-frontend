@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints, Logo } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
