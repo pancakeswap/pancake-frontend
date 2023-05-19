@@ -15,7 +15,7 @@ export type CatchTxErrorReturn = {
 }
 
 /// only show corrected parsed viem error
-function parseError<TError>(err: TError): RpcError | null {
+export function parseError<TError>(err: TError): RpcError | null {
   if (err instanceof RpcError) {
     return err
   }

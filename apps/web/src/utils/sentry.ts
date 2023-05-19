@@ -25,7 +25,7 @@ export const isUserRejected = (err) => {
   }
   if (err instanceof UnknownRpcError) {
     // fallback for some wallets that don't follow EIP 1193, trust, safe
-    if (err.details.includes('cancel')) {
+    if (err.details?.includes('cancel')) {
       return true
     }
   }
