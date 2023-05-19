@@ -145,7 +145,7 @@ const PancakeProtectorBanner = () => {
               style={{ textDecoration: 'none' }}
               external
             >
-              <StyledButton variant="text" scale={isMobile ? 'sm' : 'md'} style={{ color: 'white' }}>
+              <StyledButton variant="text" scale={isMobile ? 'sm' : 'md'} style={{ color: 'white', paddingLeft: 0 }}>
                 {t('Details')}
               </StyledButton>
             </Link>
