@@ -1,4 +1,5 @@
 import { TranslateFunction } from '@pancakeswap/localization'
+import { parseError } from 'hooks/useCatchTxError'
 
 /**
  * This is hacking out the revert reason from the ethers provider thrown error however it can.
@@ -8,10 +9,15 @@ import { TranslateFunction } from '@pancakeswap/localization'
  */
 export function transactionErrorToUserReadableMessage(error: any, t: TranslateFunction) {
   let reason: string | undefined
-  while (error) {
-    reason = error.reason ?? error.data?.message ?? error.message ?? reason
-    // eslint-disable-next-line no-param-reassign
-    error = error.error ?? error.data?.originalError
+  const parsedError = parseError(error)
+  if (parsedError) {
+    reason = parsedError.shortMessage || parsedError.message
+  } else {
+    while (error) {
+      reason = error.reason ?? error.data?.message ?? error.message ?? reason
+      // eslint-disable-next-line no-param-reassign
+      error = error.error ?? error.data?.originalError
+    }
   }
 
   if (reason?.indexOf('execution reverted: ') === 0) reason = reason.substring('execution reverted: '.length)
