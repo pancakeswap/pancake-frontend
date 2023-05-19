@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/aptos-swap-sdk",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "🛠 An SDK for building applications on top of Pancakeswap Aptos.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
