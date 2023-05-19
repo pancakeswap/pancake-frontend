@@ -47,7 +47,7 @@ import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
 import { ChainId } from '@pancakeswap/sdk'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
-import { getContract as viemGetContract, WalletClient } from 'viem'
+import { getContract as viemGetContract, WalletClient, PublicClient } from 'viem'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
@@ -83,17 +83,19 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   abi,
   address,
   chainId = ChainId.BSC,
+  publicClient,
   signer,
 }: {
   abi: TAbi
   address: Address
   chainId?: ChainId
   signer?: TWalletClient
+  publicClient?: PublicClient
 }) => {
   const c = viemGetContract({
     abi,
     address,
-    publicClient: viemClients[chainId],
+    publicClient: publicClient ?? viemClients[chainId],
     walletClient: signer,
   })
   return {
@@ -254,7 +256,7 @@ export const getSidContract = (address: Address, chainId: number) => {
   return getContract({ abi: sidABI, address, chainId })
 }
 
-export const getUnsContract = (address: Address, chainId?: ChainId, signer?: WalletClient) => {
+export const getUnsContract = (address: Address, chainId?: ChainId, publicClient?: PublicClient) => {
   return getContract({
     abi: [
       {
@@ -279,7 +281,7 @@ export const getUnsContract = (address: Address, chainId?: ChainId, signer?: Wal
     ] as const,
     chainId,
     address,
-    signer,
+    publicClient,
   })
 }
 
