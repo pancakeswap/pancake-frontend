@@ -1,4 +1,4 @@
-import { useCallback, useTransition } from 'react'
+import { useCallback } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { useAtom } from 'jotai'
 import { swapReducerAtom } from 'state/swap/reducer'
@@ -10,7 +10,6 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
-  const [, startTransition] = useTransition()
   const [, dispatch] = useAtom(swapReducerAtom)
 
   const onSwitchTokens = useCallback(() => {
@@ -29,9 +28,7 @@ export function useSwapActionHandlers(): {
   }, [])
 
   const onUserInput = useCallback((field: Field, typedValue: string) => {
-    startTransition(() => {
-      dispatch(typeInput({ field, typedValue }))
-    })
+    dispatch(typeInput({ field, typedValue }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
