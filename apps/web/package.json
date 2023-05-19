@@ -36,7 +36,6 @@
   "dependencies": {
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/constants": "^5.0.0",
-    "@ethersproject/experimental": "^5.0.0",
     "@ethersproject/keccak256": "^5.7.0",
     "@ethersproject/logger": "^5.0.0",
     "@ethersproject/providers": "^5.0.0",
