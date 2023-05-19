@@ -25,12 +25,13 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
       return menuItems.map((item) => {
-        const innerItems = item.items.map((innerItem) => {
+        const innerItems = item?.items?.map((innerItem) => {
           const itemStatus = menuItemsStatus[innerItem.href]
           const modalId = innerItem.confirmModalId
           const isInfo = innerItem.href === '/info/v3'
+          const isProtector = innerItem.href === 'https://protectors.pancakeswap.finance'
           if (itemStatus) {
-            let itemMenuStatus
+            let itemMenuStatus = null
             if (itemStatus === 'soon') {
               itemMenuStatus = <LinkStatus>{ text: t('Soon'), color: 'warning' }
             } else if (itemStatus === 'live') {
@@ -47,7 +48,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             return { ...innerItem, status: itemMenuStatus }
           }
           if (modalId) {
-            let onClickEvent
+            let onClickEvent = null
             if (modalId === 'usCitizenConfirmModal') {
               onClickEvent = (e: React.MouseEvent<HTMLElement>) => {
                 if (!userNotUsCitizenAcknowledgement && onUsCitizenModalPresent) {
@@ -60,11 +61,13 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             return { ...innerItem, onClick: onClickEvent }
           }
           if (isInfo) {
-            const itemMenuStatus = <LinkStatus>{ text: t('New'), color: 'success' }
             const href = `${innerItem.href}${multiChainPaths[chainId] ?? ''}`
-            return { ...innerItem, status: itemMenuStatus, href }
+            return { ...innerItem, href }
           }
-
+          if (isProtector) {
+            const itemMenuStatus = <LinkStatus>{ text: t('Beta'), color: 'success' }
+            return { ...innerItem, status: itemMenuStatus }
+          }
           return innerItem
         })
         return { ...item, items: innerItems }

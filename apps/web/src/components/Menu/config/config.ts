@@ -199,6 +199,11 @@ const config: (
           type: DropdownMenuItemType.DIVIDER,
         },
         {
+          label: t('Pancake Protectors'),
+          href: 'https://protectors.pancakeswap.finance',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
           label: t('Blog'),
           href: 'https://blog.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
