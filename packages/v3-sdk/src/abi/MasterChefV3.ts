@@ -1,4 +1,4 @@
-export const masterChefV3Abi = [
+export const masterChefV3ABI = [
   {
     inputs: [
       { internalType: 'contract IERC20', name: '_CAKE', type: 'address' },

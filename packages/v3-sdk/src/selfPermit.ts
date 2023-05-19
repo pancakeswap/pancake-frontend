@@ -1,6 +1,6 @@
 import { BigintIsh, Token } from '@pancakeswap/swap-sdk-core'
 import { encodeFunctionData, Hash } from 'viem'
-import { selfPermitAbi } from './abi/SelfPermit'
+import { selfPermitABI } from './abi/SelfPermit'
 
 export interface StandardPermitArguments {
   v: 0 | 1 | 27 | 28
@@ -25,7 +25,7 @@ function isAllowedPermit(permitOptions: PermitOptions): permitOptions is Allowed
 }
 
 export abstract class SelfPermit {
-  public static ABI = selfPermitAbi
+  public static ABI = selfPermitABI
 
   /**
    * Cannot be constructed.

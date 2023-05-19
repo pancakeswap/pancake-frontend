@@ -1,37 +1,4 @@
 export const bCakeProxyABI = [
-  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'proxy', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'DepositByProxy',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'proxy', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-    ],
-    name: 'EmergencyWithdrawByProxy',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'proxy', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'WithdrawByProxy',
-    type: 'event',
-  },
   {
     inputs: [],
     name: 'FARM_BOOSTER_PROXY_FACTORY',

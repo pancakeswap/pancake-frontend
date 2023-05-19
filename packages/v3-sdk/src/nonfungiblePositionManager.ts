@@ -10,7 +10,7 @@ import {
 import { Address, encodeFunctionData, Hex } from 'viem'
 
 import invariant from 'tiny-invariant'
-import { nonfungiblePositionManagerAbi } from './abi/NonfungiblePositionManager'
+import { nonfungiblePositionManagerABI } from './abi/NonfungiblePositionManager'
 import { Position } from './entities/position'
 import { ONE, ZERO } from './internalConstants'
 import { MethodParameters, toHex } from './utils/calldata'
@@ -173,7 +173,7 @@ export interface RemoveLiquidityOptions {
 }
 
 export abstract class NonfungiblePositionManager {
-  public static ABI = nonfungiblePositionManagerAbi
+  public static ABI = nonfungiblePositionManagerABI
 
   /**
    * Cannot be constructed.

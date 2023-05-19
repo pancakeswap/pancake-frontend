@@ -1,4 +1,4 @@
-export const v3StakerAbi = [
+export const v3StakerABI = [
   {
     inputs: [
       {
