@@ -1,6 +1,8 @@
 import styled from 'styled-components'
-import { Flex, Card } from '@pancakeswap/uikit'
+import { Flex, Card, Message, MessageText } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import { Views } from 'views/AffiliatesProgram/components/OnBoardingModal/index'
+import useShowWarningMessage from 'views/AffiliatesProgram/hooks/useShowWarningMessage'
 import WelcomePage from './WelcomePage'
 import Congratulations from './Congratulations'
 import StepIntro from './StepIntro'
@@ -26,8 +28,19 @@ const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = ({
   onDismiss,
   handleStartNow,
 }) => {
+  const { t } = useTranslation()
+  const showWarningMessage = useShowWarningMessage()
   return (
-    <Container>
+    <Container flexDirection="column">
+      {showWarningMessage && (
+        <Message variant="warning" mb="16px">
+          <MessageText>
+            {t(
+              'Affiliate program registration is paused at the moment. Please check back after subgraph status is restored',
+            )}
+          </MessageText>
+        </Message>
+      )}
       <Flex width="100%">
         <Flex width="50%" pr="12px">
           <Card style={{ width: '100%' }}>

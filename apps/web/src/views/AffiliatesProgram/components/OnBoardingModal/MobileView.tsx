@@ -1,6 +1,8 @@
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Message, MessageText } from '@pancakeswap/uikit'
 import { Views } from 'views/AffiliatesProgram/components/OnBoardingModal/index'
+import useShowWarningMessage from 'views/AffiliatesProgram/hooks/useShowWarningMessage'
 import WelcomePage from './WelcomePage'
 import Congratulations from './Congratulations'
 import StepIntro from './StepIntro'
@@ -34,9 +36,20 @@ const MobileView: React.FC<React.PropsWithChildren<MobileViewProps>> = ({
   onDismiss,
   handleStartNow,
 }) => {
+  const { t } = useTranslation()
+  const showWarningMessage = useShowWarningMessage()
   return (
     <Container>
       <WhiteBackground>
+        {showWarningMessage && (
+          <Message variant="warning" m="16px 16px 0 16px">
+            <MessageText>
+              {t(
+                'Affiliate program registration is paused at the moment. Please check back after subgraph status is restored',
+              )}
+            </MessageText>
+          </Message>
+        )}
         {currentView === Views.STEP1 ? (
           <WelcomePage isLoading={isLoading} handleStartNow={handleStartNow} onDismiss={onDismiss} />
         ) : (
