@@ -12,6 +12,7 @@ import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/for
 import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { mintReducerAtom } from 'state/mint/reducer'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -87,6 +88,7 @@ const AddLiquidityPage = () => {
           isV2={!feeAmount ? preferFarmType?.type === SELECTOR_TYPE.V2 : undefined}
           preferredFeeAmount={!feeAmount ? preferFarmType?.feeAmount : undefined}
         />
+        <V3SubgraphHealthIndicator />
       </AddLiquidityV3Layout>
     </LiquidityFormProvider>
   )

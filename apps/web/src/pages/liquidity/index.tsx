@@ -42,6 +42,7 @@ import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
 import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -248,6 +249,7 @@ export default function PoolListPage() {
             </Button>
           </NextLink>
         </CardFooter>
+        <V3SubgraphHealthIndicator />
       </AppBody>
     </Page>
   )

@@ -42,6 +42,7 @@ import styled from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsV3Context } from './context'
@@ -567,6 +568,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         )}
         {chosenFarms.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        <V3SubgraphHealthIndicator />
       </Page>
     </FarmsV3Context.Provider>
   )
