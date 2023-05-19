@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { Address } from 'wagmi'
 
 const MAX_UINT128 = 2n ** 128n - 1n
 
@@ -16,9 +15,11 @@ export function useV3PositionFees(
   asWETH = false,
 ): [CurrencyAmount<Currency>, CurrencyAmount<Currency>] | [undefined, undefined] {
   const positionManager = useV3NFTPositionManagerContract()
-  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId]).result as
-    | Address
-    | undefined
+  const owner = useSingleCallResult({
+    contract: tokenId ? positionManager : null,
+    functionName: 'ownerOf',
+    args: [tokenId],
+  }).result
 
   const latestBlockNumber = useCurrentBlock()
 

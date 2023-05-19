@@ -24,14 +24,14 @@ export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): 
     [uncheckedAddresses],
   )
 
-  const results = useSingleContractMultipleData(
-    {
+  const results = useSingleContractMultipleData({
+    contract: {
       abi: multicallABI,
       address: getMulticallAddress(native.chainId),
     },
-    'getEthBalance',
-    useMemo(() => addresses.map((address) => [address]), [addresses]),
-  )
+    functionName: 'getEthBalance',
+    args: useMemo(() => addresses.map((address) => [address] as const), [addresses]),
+  })
 
   return useMemo(
     () =>
@@ -58,15 +58,15 @@ export function useTokenBalancesWithLoadingIndicator(
 
   const validatedTokenAddresses = useMemo(() => validatedTokens.map((vt) => vt.address), [validatedTokens])
 
-  const balances = useMultipleContractSingleData(
-    validatedTokenAddresses,
-    erc20ABI,
-    'balanceOf',
-    useMemo(() => [address], [address]),
-    {
+  const balances = useMultipleContractSingleData({
+    abi: erc20ABI,
+    addresses: validatedTokenAddresses,
+    functionName: 'balanceOf',
+    args: useMemo(() => [address as Address] as const, [address]),
+    options: {
       enabled: Boolean(address && validatedTokenAddresses.length > 0),
     },
-  )
+  })
 
   const anyLoading: boolean = useMemo(() => balances.some((callState) => callState.loading), [balances])
 
