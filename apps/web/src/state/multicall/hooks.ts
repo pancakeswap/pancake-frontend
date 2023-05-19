@@ -8,7 +8,7 @@ import {
   unstable_serialize,
   useSWRConfig,
 } from 'swr'
-import { Address, ContractFunctionResult, decodeFunctionResult, encodeFunctionData, GetFunctionArgs, Hex } from 'viem'
+import { Address, ContractFunctionResult, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import {
   addMulticallListeners,
   Call,
@@ -347,7 +347,8 @@ export function useSingleCallResult<TAbi extends Abi | unknown[], TFunctionName 
     address?: Address
   },
   methodName: TFunctionName,
-  inputs?: GetFunctionArgs<TAbi, TFunctionName>['args'],
+  // inputs?: GetFunctionArgs<TAbi, TFunctionName>['args'],
+  inputs?: any,
   options?: ListenerOptionsWithGas,
 ): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
   const calls = useMemo<Call[]>(() => {
