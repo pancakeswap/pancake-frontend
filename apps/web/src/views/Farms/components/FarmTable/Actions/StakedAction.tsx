@@ -173,7 +173,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const handleStake = async (amount: string) => {
     if (vaultPid) {
       await handleNonBscStake(amount)
-      refreshFirstTime()
+      void refreshFirstTime()
     } else {
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
 

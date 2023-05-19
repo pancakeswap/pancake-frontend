@@ -16,7 +16,7 @@ const PoolsMpPageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ childre
     const handleLoad = async () => {
       const account = await getAccount()
       if (account) {
-        handleActive(false)
+        void handleActive(false)
       }
     }
     handleLoad()

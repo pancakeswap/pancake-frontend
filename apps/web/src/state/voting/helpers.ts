@@ -92,7 +92,7 @@ export const getAllVotes = async (proposal: Proposal, votesPerChunk = 1000): Pro
           resolve(votes)
         } else {
           votes = [...votes, ...voteChunk]
-          fetchVoteChunk(newSkip + votesPerChunk)
+          void fetchVoteChunk(newSkip + votesPerChunk)
         }
       } catch (error) {
         reject(error)

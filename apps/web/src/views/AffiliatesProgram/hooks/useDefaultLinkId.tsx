@@ -19,7 +19,7 @@ const useDefaultLinkId = () => {
 
         if (result.exist) {
           randomNanoId = nanoid(20)
-          mutate('/affiliate-fee-exist')
+          void mutate('/affiliate-fee-exist')
         }
         return randomNanoId
       } catch (error) {

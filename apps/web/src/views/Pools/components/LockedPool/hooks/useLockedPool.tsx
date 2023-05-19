@@ -75,7 +75,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
         )
         onDismiss?.()
         dispatch(fetchCakeVaultUserData({ account, chainId }))
-        mutate(['userCakeLockStatus', account])
+        void mutate(['userCakeLockStatus', account])
       }
     },
     [
@@ -98,7 +98,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
 
     const convertedStakeAmount: BigNumber = getDecimalAmount(new BigNumber(finalLockedAmount), stakingToken.decimals)
 
-    handleDeposit(convertedStakeAmount, finalDuration)
+    void handleDeposit(convertedStakeAmount, finalDuration)
   }, [prepConfirmArg, stakingToken, handleDeposit, duration, lockedAmount])
 
   return { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick }

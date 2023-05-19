@@ -136,7 +136,7 @@ const LiquidStakingStakePage = () => {
         </ToastDescriptionWithTx>,
       )
 
-      router.push('/liquid-staking')
+      void router.push('/liquid-staking')
     }
   }, [
     account,

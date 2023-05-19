@@ -136,7 +136,7 @@ export async function saveLPsAPR(chainId: number, farmsConfig?: SerializedFarmCo
     }
     if (data) {
       const aprMap = (await updateLPsAPR(chainId, data)) || null
-      FarmKV.saveApr(chainId, aprMap)
+      void FarmKV.saveApr(chainId, aprMap)
       return aprMap || null
     }
     return null

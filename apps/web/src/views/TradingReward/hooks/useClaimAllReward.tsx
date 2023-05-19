@@ -60,7 +60,7 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
-      mutate(['/all-campaign-id-info', account, campaignIds])
+      void mutate(['/all-campaign-id-info', account, campaignIds])
     }
     return null
   }, [account, campaignIds, contract, fetchWithCatchTxError, mutate, qualification, t, toastSuccess, unclaimData])

@@ -181,7 +181,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
       return callWithGasPrice(predictionsContract, betMethod, args, callOptions)
     })
     if (receipt?.status) {
-      onSuccess(receipt.transactionHash)
+      void onSuccess(receipt.transactionHash)
     }
   }
 

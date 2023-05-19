@@ -193,7 +193,7 @@ export function UpdatePositionsReminder_() {
     if (resp?.status) {
       toastSuccess(`Updated!`)
 
-      stakedUserInfos.refetch()
+      void stakedUserInfos.refetch()
       modal.onDismiss()
     }
   }

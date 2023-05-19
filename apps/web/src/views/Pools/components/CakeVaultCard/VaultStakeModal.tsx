@@ -216,10 +216,10 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const handleConfirmClick = async () => {
     if (isRemovingStake) {
       // unstaking
-      handleWithdrawal()
+      void handleWithdrawal()
     } else {
       // staking
-      handleDeposit()
+      void handleDeposit()
     }
   }
 

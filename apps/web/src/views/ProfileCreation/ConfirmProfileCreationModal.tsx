@@ -53,7 +53,7 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
         ])
       },
       onSuccess: async ({ receipt }) => {
-        refreshProfile()
+        void refreshProfile()
         onDismiss()
         toastSuccess(t('Profile created!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       },

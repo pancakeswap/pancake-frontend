@@ -219,7 +219,7 @@ const IfoFoldableCard = ({
     const hash = asPath.split('#')[1]
     if (hash === ifo.id) {
       setIsExpanded(true)
-      wrapperEl.current.scrollIntoView({ behavior: 'smooth' })
+      wrapperEl?.current?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [asPath, ifo])
 
@@ -293,7 +293,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
         ? ['fetchPublicIfoData', ifo.id]
         : null),
     async () => {
-      fetchPublicIfoData(currentBlock)
+      void fetchPublicIfoData(currentBlock)
     },
   )
 
@@ -302,7 +302,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
       (isRecentlyActive || !isWalletDataInitialized || hasVesting) &&
       account && ['fetchWalletIfoData', account, ifo.id],
     async () => {
-      fetchWalletIfoData()
+      void fetchWalletIfoData()
     },
     isRecentlyActive || hasVesting
       ? {

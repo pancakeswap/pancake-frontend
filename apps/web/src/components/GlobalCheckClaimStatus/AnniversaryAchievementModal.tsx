@@ -45,7 +45,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
     } finally {
       onDismiss()
       if (address) {
-        router.push(`/profile/${address}/achievements`)
+        void router.push(`/profile/${address}/achievements`)
       }
     }
   }

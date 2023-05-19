@@ -29,7 +29,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
   const [, pool] = usePool(farm.token, farm.quoteToken, farm.feeAmount)
 
   const harvestAllFarms = useCallback(async () => {
-    onHarvestAll(stakedPositions.map((value) => value.tokenId.toString()))
+    void onHarvestAll(stakedPositions.map((value) => value.tokenId.toString()))
   }, [onHarvestAll, stakedPositions])
 
   return (

@@ -104,8 +104,8 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         } as Order,
       })
 
-      mutate(OPEN_ORDERS_SWR_KEY)
-      mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
+      void mutate(OPEN_ORDERS_SWR_KEY)
+      void mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
 
       return tx
     },
@@ -181,8 +181,8 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         },
       })
 
-      mutate(OPEN_ORDERS_SWR_KEY)
-      mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
+      void mutate(OPEN_ORDERS_SWR_KEY)
+      void mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
 
       return tx
     },

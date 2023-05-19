@@ -36,7 +36,7 @@ const NftProfilePage = () => {
           onSuccessSale={refreshUserNfts}
           onSuccessEditProfile={async () => {
             await refreshProfile()
-            refreshUserNfts()
+            void refreshUserNfts()
           }}
         />
       ) : (

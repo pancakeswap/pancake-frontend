@@ -68,7 +68,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
 
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
-      this.disconnect()
+      void this.disconnect()
       if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
       if ((<RpcError>error).code === -32002) throw new ResourceUnavailableError(error)
       throw error

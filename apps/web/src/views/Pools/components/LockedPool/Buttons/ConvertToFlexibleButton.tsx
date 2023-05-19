@@ -44,7 +44,7 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
         </ToastDescriptionWithTx>,
       )
       dispatch(fetchCakeVaultUserData({ account, chainId }))
-      mutate(['userCakeLockStatus', account])
+      void mutate(['userCakeLockStatus', account])
     }
   }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract, mutate, chainId])
 

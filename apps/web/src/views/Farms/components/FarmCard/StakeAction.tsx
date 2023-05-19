@@ -98,7 +98,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const handleStake = async (amount: string) => {
     if (vaultPid) {
       await handleNonBscStake(amount)
-      refreshFirstTime()
+      void refreshFirstTime()
     } else {
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
       if (receipt?.status) {

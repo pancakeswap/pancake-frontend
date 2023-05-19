@@ -22,7 +22,7 @@ export function CoinRegisterButton({ currency }: { currency: Currency }) {
         <IconButton
           variant="text"
           onClick={() => {
-            fetchWithCatchTxError(() =>
+            void fetchWithCatchTxError(() =>
               sendTransactionAsync({
                 payload: {
                   type: 'entry_function_payload',

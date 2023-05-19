@@ -340,7 +340,7 @@ function DesktopModal<T>({
             connectToWallet(w)
             setQrCode(undefined)
             if (w.qrCode) {
-              w.qrCode().then((uri) => {
+              void w.qrCode().then((uri) => {
                 setQrCode(uri)
               })
             }

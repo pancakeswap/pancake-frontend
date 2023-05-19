@@ -49,7 +49,7 @@ const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) =>
 
   const onSuccess = useCallback(async () => {
     await refreshProfile()
-    refreshUserNfts()
+    void refreshUserNfts()
   }, [refreshProfile, refreshUserNfts])
 
   if (invalidAddress) {

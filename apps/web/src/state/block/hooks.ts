@@ -16,13 +16,13 @@ export const usePollBlockNumber = () => {
     chainId && ['blockNumberFetcher', chainId],
     async () => {
       const blockNumber = await provider.getBlockNumber()
-      mutate(['blockNumber', chainId], blockNumber)
+      void mutate(['blockNumber', chainId], blockNumber)
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
-        mutate(['initialBlockNumber', chainId], blockNumber)
+        void mutate(['initialBlockNumber', chainId], blockNumber)
       }
       if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
         const block = await provider.getBlock(blockNumber)
-        mutate(['initialBlockTimestamp', chainId], block.timestamp)
+        void mutate(['initialBlockTimestamp', chainId], block.timestamp)
       }
       return blockNumber
     },

@@ -46,7 +46,7 @@ export const getAllV1History = (where = {}): Promise<Record<string, any>[]> => {
         if (betHistory.length === 0) {
           resolve(flatten(Object.values(bets)))
         } else {
-          getHistoryChunk(skip + 1000)
+          void getHistoryChunk(skip + 1000)
         }
       } catch (error) {
         reject(error)

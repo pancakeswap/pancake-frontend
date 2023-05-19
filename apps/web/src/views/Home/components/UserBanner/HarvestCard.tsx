@@ -81,7 +81,7 @@ const HarvestCard = () => {
       }
     }
 
-    onHarvestAll(v3Farms.map((farm) => farm.sendTx.tokenId))
+    void onHarvestAll(v3Farms.map((farm) => farm.sendTx.tokenId))
   }, [farmsWithStakedBalance, onHarvestAll, fetchWithCatchTxError, gasPrice, toastSuccess, t])
 
   return (

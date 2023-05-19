@@ -14,7 +14,7 @@ export const useLedgerTimestamp = () => {
     async () => {
       /* eslint-disable camelcase */
       const { ledger_timestamp } = await fetchLedgerInfo()
-      mutate(['ledgerTimestampLastCheck', chainId], Date.now(), { revalidate: false })
+      void mutate(['ledgerTimestampLastCheck', chainId], Date.now(), { revalidate: false })
       return Math.floor(parseInt(ledger_timestamp) / 1000)
       /* eslint-enable camelcase */
     },

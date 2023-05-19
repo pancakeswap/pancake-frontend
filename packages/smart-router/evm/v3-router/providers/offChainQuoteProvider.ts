@@ -140,8 +140,9 @@ function createGetV3Quote(isExactIn = true) {
     }
     try {
       const v3Pool = new V3Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick, ticks)
-      const getQuotePromise = isExactIn ? v3Pool.getOutputAmount(amount.wrapped) : v3Pool.getInputAmount(amount.wrapped)
-      const [quote, poolAfter] = await getQuotePromise
+      const [quote, poolAfter] = isExactIn
+        ? await v3Pool.getOutputAmount(amount.wrapped)
+        : await v3Pool.getInputAmount(amount.wrapped)
       const { tickCurrent: tickAfter } = poolAfter
       const numOfTicksCrossed = TickList.countInitializedTicksCrossed(ticks, tick, tickAfter)
       return {
