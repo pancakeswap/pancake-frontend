@@ -12,21 +12,41 @@ requireCheck.forEach((node) => {
 const mainnetClient = createPublicClient({
   chain: mainnet,
   transport: http(ETH_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 1000,
+    },
+  },
 })
 
 export const bscClient: PublicClient = createPublicClient({
   chain: bsc,
   transport: http(BSC_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 1000,
+    },
+  },
 })
 
 export const bscTestnetClient: PublicClient = createPublicClient({
   chain: bscTestnet,
   transport: http(BSC_TESTNET_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 1000,
+    },
+  },
 })
 
 const goerliClient = createPublicClient({
   chain: goerli,
   transport: http(GOERLI_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 1000,
+    },
+  },
 })
 
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {

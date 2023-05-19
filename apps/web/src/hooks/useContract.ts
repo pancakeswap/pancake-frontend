@@ -45,12 +45,12 @@ import {
   getUnsContract,
 } from 'utils/contractHelpers'
 
-import { WNATIVE, ChainId } from '@pancakeswap/sdk'
+import { WNATIVE, ChainId, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { ifoV1ABI } from 'config/abi/ifoV1'
 import { ifoV2ABI } from 'config/abi/ifoV2'
 import { ifoV3ABI } from 'config/abi/ifoV3'
-import { nftPositionManagerABI } from 'config/abi/nftPositionManager'
-import { CAKE } from '@pancakeswap/tokens'
 import { multicallABI } from 'config/abi/Multicall'
 import { WBETH } from 'config/constants/liquidStaking'
 import { VaultKey } from 'state/types'
@@ -58,7 +58,6 @@ import { wbethEthABI } from 'config/abi/wbethETH'
 import { wbethBscABI } from 'config/abi/wbethBSC'
 import { zapABI } from 'config/abi/zap'
 import { erc20Bytes32ABI } from 'config/abi/erc20_bytes32'
-import { pancakePairV2ABI } from 'config/abi/IPancakePair'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { wethABI } from 'config/abi/weth'
@@ -352,7 +351,7 @@ export const useStableSwapNativeHelperContract = () => {
 }
 
 export function useV3NFTPositionManagerContract() {
-  return useContract(addresses.nftPositionManager, nftPositionManagerABI)
+  return useContract(addresses.nftPositionManager, nonfungiblePositionManagerABI)
 }
 
 export function useMasterchefV3() {
