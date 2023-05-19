@@ -9,6 +9,7 @@ import chunk from 'lodash/chunk'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { FIXED_ZERO } from './const'
 import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
+import { getFarmApr } from './apr'
 
 export async function farmV3FetchFarms({
   farms,
@@ -203,32 +204,13 @@ const fetchPoolInfos = async (
 }
 
 export const getCakeApr = (poolWeight: string, activeTvlUSD: BN, cakePriceUSD: string, cakePerSecond: string) => {
-  let cakeApr = '0'
-
-  if (
-    !cakePriceUSD ||
-    !activeTvlUSD ||
-    activeTvlUSD.isZero() ||
-    !cakePerSecond ||
-    +cakePerSecond === 0 ||
-    !poolWeight
-  ) {
-    return cakeApr
-  }
-
-  const cakeRewardPerYear = new BN(cakePerSecond).times(365 * 60 * 60 * 24)
-
-  const cakeRewardPerYearForPool = new BN(poolWeight)
-    .times(cakeRewardPerYear)
-    .times(cakePriceUSD)
-    .div(activeTvlUSD.toString())
-    .times(100)
-
-  if (!cakeRewardPerYearForPool.isZero()) {
-    cakeApr = cakeRewardPerYearForPool.toFixed(6)
-  }
-
-  return cakeApr
+  return getFarmApr({
+    poolWeight,
+    tvlUsd: activeTvlUSD,
+    cakePriceUsd: cakePriceUSD,
+    cakePerSecond,
+    precision: 6,
+  })
 }
 
 const getV3FarmsDynamicData = ({ token0, token1, tick }: { token0: ERC20Token; token1: ERC20Token; tick: number }) => {

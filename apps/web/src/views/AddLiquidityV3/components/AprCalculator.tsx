@@ -10,12 +10,15 @@ import {
   IconButton,
   QuestionHelper,
 } from '@pancakeswap/uikit'
-import { encodeSqrtRatioX96, parseProtocolFees, Pool } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { useRouter } from 'next/router'
+import { batch } from 'react-redux'
+import { PositionDetails, getPositionFarmApr } from '@pancakeswap/farms'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -25,9 +28,8 @@ import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
-import { batch } from 'react-redux'
-import { PositionDetails } from '@pancakeswap/farms'
 import currencyId from 'utils/currencyId'
+import { useFarm } from 'hooks/useFarm'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
@@ -51,8 +53,8 @@ const AprButtonContainer = styled(Flex)`
 
 const deriveUSDPrice = (baseUSDPrice?: Price<Currency, Currency>, pairPrice?: Price<Currency, Currency>) => {
   if (baseUSDPrice && pairPrice && pairPrice.greaterThan(ZERO)) {
-    const baseUSDPriceFloat = parseFloat(formatPrice(baseUSDPrice, 6))
-    return baseUSDPriceFloat / parseFloat(formatPrice(pairPrice, 6))
+    const baseUSDPriceFloat = parseFloat(formatPrice(baseUSDPrice, 6) || '0')
+    return baseUSDPriceFloat / parseFloat(formatPrice(pairPrice, 6) || '0')
   }
   return undefined
 }
@@ -72,6 +74,8 @@ export function AprCalculator({
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
   const [priceSpan, setPriceSpan] = useState(0)
+  const { data: farm } = useFarm({ currencyA: baseCurrency, currencyB: quoteCurrency, feeAmount })
+  const cakePrice = useCakePriceAsBN()
 
   const formState = useV3FormState()
 
@@ -131,20 +135,60 @@ export function AprCalculator({
 
   const applyProtocolFee = defaultDepositUsd ? undefined : protocolFee
 
+  const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0)
+  const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1)
+  const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
   const { apr } = useRoi({
     tickLower,
     tickUpper,
     sqrtRatioX96,
     fee: feeAmount,
     mostActiveLiquidity: pool?.liquidity,
-    amountA: amountA || (inverted ? tokenAmount1 : tokenAmount0),
-    amountB: amountB || (inverted ? tokenAmount0 : tokenAmount1),
+    amountA: validAmountA,
+    amountB: validAmountB,
     compoundOn: false,
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
     protocolFee: applyProtocolFee,
   })
+
+  const positionLiquidity = useMemo(
+    () =>
+      existingPosition?.liquidity ||
+      (validAmountA &&
+        validAmountB &&
+        sqrtRatioX96 &&
+        typeof tickLower === 'number' &&
+        typeof tickUpper === 'number' &&
+        FeeCalculator.getLiquidityByAmountsAndPrice({
+          amountA: validAmountA,
+          amountB: validAmountB,
+          tickUpper,
+          tickLower,
+          sqrtRatioX96,
+        })),
+    [existingPosition, validAmountA, validAmountB, tickUpper, tickLower, sqrtRatioX96],
+  )
+  const positionFarmApr = useMemo(() => {
+    if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1) {
+      return '0'
+    }
+    const { farm: farmDetail, cakePerSecond } = farm
+    const { poolWeight, token, quoteToken, tokenPriceBusd, quoteTokenPriceBusd, lmPoolLiquidity } = farmDetail
+    const [token0Price, token1Price] = token.sortsBefore(quoteToken)
+      ? [tokenPriceBusd, quoteTokenPriceBusd]
+      : [quoteTokenPriceBusd, tokenPriceBusd]
+    const positionTvlUsd = +amount0.toExact() * +token0Price + +amount1.toExact() * +token1Price
+    return getPositionFarmApr({
+      poolWeight,
+      positionTvlUsd,
+      cakePriceUsd: cakePrice,
+      liquidity: positionLiquidity,
+      cakePerSecond,
+      totalStakedLiquidity: lmPoolLiquidity,
+    })
+  }, [farm, cakePrice, positionLiquidity, amount0, amount1])
 
   // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)
@@ -153,17 +197,20 @@ export function AprCalculator({
   const onApply = useCallback(
     (position: RoiCalculatorPositionInfo) => {
       batch(() => {
-        const isToken0Price = position.amountA?.wrapped.currency.sortsBefore(position.amountB?.wrapped.currency)
+        const isToken0Price =
+          position.amountA?.wrapped?.currency &&
+          position.amountB?.wrapped?.currency &&
+          position.amountA.wrapped.currency.sortsBefore(position.amountB.wrapped.currency)
         if (position.fullRange) {
           onSetFullRange()
         } else {
           onBothRangeInput({
-            leftTypedValue: isToken0Price ? position.priceLower?.toFixed() : position.priceUpper?.invert().toFixed(),
-            rightTypedValue: isToken0Price ? position.priceUpper?.toFixed() : position.priceLower?.invert().toFixed(),
+            leftTypedValue: isToken0Price ? position.priceLower?.toFixed() : position?.priceUpper?.invert()?.toFixed(),
+            rightTypedValue: isToken0Price ? position.priceUpper?.toFixed() : position?.priceLower?.invert()?.toFixed(),
           })
         }
 
-        onFieldAInput(position.amountA.toExact())
+        onFieldAInput(position.amountA?.toExact() || '')
       })
       router.replace(
         {
@@ -191,16 +238,30 @@ export function AprCalculator({
     return null
   }
 
+  const hasFarmApr = positionFarmApr && +positionFarmApr > 0
+  const combinedApr = hasFarmApr ? +apr.toSignificant(6) + +positionFarmApr : +apr.toSignificant(6)
+  const aprDisplay = combinedApr.toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  })
+  const farmAprTips = hasFarmApr ? (
+    <>
+      <Text bold>{t('This position must be staking in farm to apply the combined APR with farming rewards.')}</Text>
+      <br />
+    </>
+  ) : null
+  const AprText = hasFarmApr ? TooltipText : Text
+
   return (
     <>
       <Flex flexDirection="column">
         {showTitle && (
           <Text color="textSubtle" fontSize="12px">
-            {t('APR')}
+            {hasFarmApr ? t('APR (with farming)') : t('APR')}
           </Text>
         )}
         <AprButtonContainer onClick={() => setOpen(true)} alignItems="center">
-          <TooltipText>{apr.toSignificant(2)}%</TooltipText>
+          <AprText>{aprDisplay}%</AprText>
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
           </IconButton>
@@ -208,6 +269,7 @@ export function AprCalculator({
             <QuestionHelper
               text={
                 <>
+                  {farmAprTips}
                   {t(
                     'Calculated at the current rates with historical trading volume data, and subject to change based on various external variables.',
                   )}
