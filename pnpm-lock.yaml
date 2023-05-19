@@ -708,9 +708,6 @@ importers:
       next-themes:
         specifier: ^0.2.0
         version: 0.2.0(next@13.3.4)(react-dom@18.2.0)(react@18.2.0)
-      numbro:
-        specifier: ^2.3.6
-        version: 2.3.6
       polished:
         specifier: ^4.2.2
         version: 4.2.2
@@ -1812,9 +1809,6 @@ importers:
       jotai:
         specifier: ^2.0.3
         version: 2.0.3(react@18.2.0)
-      numbro:
-        specifier: ^2.3.6
-        version: 2.3.6
       styled-components:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
@@ -12769,9 +12763,6 @@ packages:
     dependencies:
       bindings: 1.5.0
 
-  /bignumber.js@8.1.1:
-    resolution: {integrity: sha512-QD46ppGintwPGuL1KqmwhR0O+N2cZUg8JG/VzwI2e28sM9TqHjQB10lI4QAaMHVbLzwVLLAwEglpKPViWX+5NQ==}
-
   /bignumber.js@9.0.2:
     resolution: {integrity: sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==}
 
@@ -20976,11 +20967,6 @@ packages:
       semver: 7.5.0
       validate-npm-package-name: 4.0.0
     dev: true
-
-  /numbro@2.3.6:
-    resolution: {integrity: sha512-pxpoTT3hVxQGaOA2RTzXR/muonQNd1K1HPJbWo7QOmxPwiPmoFCFfsG9XXgW3uqjyzezJ0P9IvCPDXUtJexjwg==}
-    dependencies:
-      bignumber.js: 8.1.1
 
   /nwsapi@2.2.2:
     resolution: {integrity: sha512-90yv+6538zuvUMnN+zCr8LuV6bPFdq50304114vJYJ8RDyK8D5O9Phpbd6SZWgI7PwzmmfN1upeOJlvybDSgCw==}
