@@ -1,8 +1,8 @@
 import { Address, encodeFunctionData, Hex } from 'viem'
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
-import { quoterAbi } from './abi/Quoter'
-import { quoterV2Abi } from './abi/QuoterV2'
+import { quoterABI } from './abi/Quoter'
+import { quoterV2ABI } from './abi/QuoterV2'
 import { Route } from './entities'
 import { encodeRouteToPath, MethodParameters, toHex } from './utils'
 import { FeeAmount } from './constants'
@@ -34,9 +34,9 @@ interface BaseQuoteParams {
  * calldata needed to call the quoter contract.
  */
 export abstract class SwapQuoter {
-  public static V1ABI = quoterAbi
+  public static V1ABI = quoterABI
 
-  public static V2ABI = quoterV2Abi
+  public static V2ABI = quoterV2ABI
 
   /**
    * Produces the on-chain method name of the appropriate function within QuoterV2,

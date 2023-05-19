@@ -1,4 +1,4 @@
-export const selfPermitAbi = [
+export const selfPermitABI = [
   {
     inputs: [
       {

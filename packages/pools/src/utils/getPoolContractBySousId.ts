@@ -22,7 +22,7 @@ type GetContractReturnType_<TAbi extends readonly unknown[]> = GetContractReturn
   chain?: Chain
 }
 
-function getSousChefBNBContract({
+export function getSousChefBNBContract({
   address,
   signer,
   publicClient,
@@ -45,7 +45,7 @@ function getSousChefBNBContract({
   }
 }
 
-function getSousChefV2Contract({
+export function getSousChefV2Contract({
   address,
   signer,
   publicClient,
@@ -68,7 +68,7 @@ function getSousChefV2Contract({
   }
 }
 
-function getSmartChefChefV2Contract({
+export function getSmartChefChefV2Contract({
   address,
   signer,
   publicClient,

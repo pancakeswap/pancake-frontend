@@ -1,29 +1,5 @@
 export const iCakeABI = [
   {
-    inputs: [
-      { internalType: 'contract ICaKePool', name: '_cakePool', type: 'address' },
-      { internalType: 'address', name: '_admin', type: 'address' },
-      { internalType: 'uint256', name: '_ceiling', type: 'uint256' },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
-    ],
-    name: 'OwnershipTransferred',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [{ indexed: false, internalType: 'uint256', name: 'newCeiling', type: 'uint256' }],
-    name: 'UpdateCeiling',
-    type: 'event',
-  },
-  {
     inputs: [],
     name: 'MIN_CEILING_DURATION',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
