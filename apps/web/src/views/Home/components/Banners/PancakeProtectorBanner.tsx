@@ -150,7 +150,7 @@ const PancakeProtectorBanner = () => {
               </StyledButton>
             </Link>
             <Devider />
-            <Link href="protectors.pancakeswap.finance" external style={{ textDecoration: 'none' }}>
+            <Link href="https://protectors.pancakeswap.finance" external style={{ textDecoration: 'none' }}>
               <StyledButton variant="text" style={{ color: 'white' }} scale={isMobile ? 'sm' : 'md'}>
                 {isMobile ? t('Beta') : t('Explore Beta')}
                 <ArrowForwardIcon color="white" />
