@@ -5,7 +5,7 @@ import invariant from 'tiny-invariant'
 import { Pair } from './entities/pair'
 import { ChainId } from './constants'
 import { erc20ABI } from './abis/ERC20'
-import { pancakePairABI } from './abis/IPancakePair'
+import { pancakePairV2ABI } from './abis/IPancakePair'
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {
   [ChainId.BSC]: {},
@@ -91,7 +91,7 @@ export abstract class Fetcher {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB)
     const pairContract = getContract({
-      abi: pancakePairABI,
+      abi: pancakePairV2ABI,
       address,
       publicClient: publicClient as PublicClient,
     })
