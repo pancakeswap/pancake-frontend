@@ -4,6 +4,7 @@ import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
+import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 import ChartDisclaimer from './components/ChartDisclaimer'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
@@ -62,6 +63,7 @@ const Predictions = () => {
           <CollectWinningsPopup />
         </Container>
       </SwiperProvider>
+      <PredictionSubgraphHealthIndicator />
     </>
   )
 }

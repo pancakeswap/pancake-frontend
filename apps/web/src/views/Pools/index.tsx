@@ -9,6 +9,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ChainId, Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 import CardActions from './components/PoolCard/CardActions'
 import AprRow from './components/PoolCard/AprRow'
@@ -151,6 +152,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
             </>
           )}
         </PoolControls>
+        <V3SubgraphHealthIndicator />
       </Page>
     </>
   )

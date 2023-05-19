@@ -5,6 +5,7 @@ import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
+import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import {
   TITLE_BG,
   GET_TICKETS_BG,
@@ -113,6 +114,7 @@ const Lottery = () => {
         >
           <HowToPlay />
         </PageSection>
+        <LotterySubgraphHealthIndicator />
       </LotteryPage>
     </>
   )
