@@ -3,16 +3,18 @@ import useAllTradingRewardPair from 'views/TradingReward/hooks/useAllTradingRewa
 
 export const useTradingRewardStatus = () => {
   const { data: allTradingRewardPairData } = useAllTradingRewardPair()
-  const latestCampaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
+  const latestCampaignId = allTradingRewardPairData.campaignIds?.[allTradingRewardPairData.campaignIds.length - 1]
 
   return useMemo(() => {
     const currentTime = new Date().getTime() / 1000
-    const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
-      (i) => i.campaignId.toLowerCase() === latestCampaignId.toLowerCase(),
-    )
+    if (latestCampaignId) {
+      const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
+        (i) => i.campaignId.toLowerCase() === latestCampaignId.toLowerCase(),
+      )
 
-    if (currentTime >= incentive?.campaignStart && currentTime <= incentive?.campaignClaimTime) {
-      return 'live'
+      if (currentTime >= incentive?.campaignStart && currentTime <= incentive?.campaignClaimTime) {
+        return 'live'
+      }
     }
 
     return ''
