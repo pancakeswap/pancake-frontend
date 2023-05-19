@@ -1,5 +1,4 @@
-import { CurrencyAmount, Pair, Currency } from '@pancakeswap/sdk'
-import { pancakePairV2ABI } from 'config/abi/IPancakePair'
+import { CurrencyAmount, Pair, Currency, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'

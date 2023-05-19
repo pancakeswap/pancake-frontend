@@ -4,8 +4,8 @@ import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { Pair } from './entities/pair'
 import { ChainId } from './constants'
-import { erc20Abi } from './abis/ERC20'
-import { pancakePairAbi } from './abis/IPancakePair'
+import { erc20ABI } from './abis/ERC20'
+import { pancakePairABI } from './abis/IPancakePair'
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {
   [ChainId.BSC]: {},
@@ -57,7 +57,7 @@ export abstract class Fetcher {
     name?: string
   ): Promise<Token> {
     const erc20 = getContract({
-      abi: erc20Abi,
+      abi: erc20ABI,
       address,
       publicClient: publicClient as PublicClient,
     })
@@ -91,7 +91,7 @@ export abstract class Fetcher {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB)
     const pairContract = getContract({
-      abi: pancakePairAbi,
+      abi: pancakePairABI,
       address,
       publicClient: publicClient as PublicClient,
     })
