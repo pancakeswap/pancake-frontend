@@ -9,7 +9,7 @@ export const useTradingRewardStatus = () => {
     const currentTime = new Date().getTime() / 1000
     if (latestCampaignId) {
       const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
-        (i) => i.campaignId.toLowerCase() === latestCampaignId.toLowerCase(),
+        (i) => i.campaignId.toLowerCase() === latestCampaignId?.toLowerCase(),
       )
 
       if (currentTime >= incentive?.campaignStart && currentTime <= incentive?.campaignClaimTime) {
