@@ -15,7 +15,6 @@ export const useDomainNameForAddress = (address: `0x${string}` | string, fetchDa
   const { data: ensName, isLoading: isEnsLoading } = useEnsName({
     address: address as Address,
     chainId,
-    cacheTime: 3_600,
     enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
   })
   const { data: ensAvatar, isLoading: isEnsAvatarLoading } = useEnsAvatar({
