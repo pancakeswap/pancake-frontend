@@ -6,6 +6,7 @@ import RewardCalculate from 'views/AffiliatesProgram/components/Overview/RewardC
 import Question from 'views/AffiliatesProgram/components/Overview/Question'
 import OnBoardingModal from 'views/AffiliatesProgram/components/OnBoardingModal'
 import AffiliateModal from 'views/AffiliatesProgram/components/Dashboard/AffiliateModal'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 const AffiliatesProgram = () => {
   return (
@@ -17,6 +18,7 @@ const AffiliatesProgram = () => {
       <RewardCalculate />
       <Benefits />
       <Question />
+      <V3SubgraphHealthIndicator />
     </AffiliatesProgramLayout>
   )
 }
