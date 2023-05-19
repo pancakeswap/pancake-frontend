@@ -1,5 +1,4 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { useCallback, useMemo } from 'react'
@@ -18,9 +17,7 @@ export function useFarmV2Multiplier() {
     getFarmCakePerSecond: useCallback(
       (poolWeight: BigNumber) => {
         const farmCakePerSecondNum =
-          poolWeight && regularCakePerBlock
-            ? getBalanceAmount(poolWeight.times(regularCakePerBlock).dividedBy(BSC_BLOCK_TIME))
-            : BIG_ZERO
+          poolWeight && regularCakePerBlock ? poolWeight.times(regularCakePerBlock).dividedBy(BSC_BLOCK_TIME) : BIG_ZERO
 
         const farmCakePerSecond = farmCakePerSecondNum.isZero()
           ? '0'
