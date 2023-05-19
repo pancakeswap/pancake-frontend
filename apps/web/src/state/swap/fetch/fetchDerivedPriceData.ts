@@ -1,5 +1,11 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { INFO_CLIENT, INFO_CLIENT_ETH, STABLESWAP_SUBGRAPH_CLIENT, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import {
+  INFO_CLIENT,
+  INFO_CLIENT_ETH,
+  INFO_CLIENT_WITH_CHAIN,
+  STABLESWAP_SUBGRAPH_CLIENT,
+  V3_SUBGRAPH_URLS,
+} from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import request from 'graphql-request'
@@ -36,7 +42,10 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.POLYGON_ZKEVM]: {},
   [ChainId.ZKSYNC]: {},
   [ChainId.ZKSYNC_TESTNET]: {},
-  [ChainId.LINEA_TESTNET]: {},
+  [ChainId.LINEA_TESTNET]: {
+    v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],
+    v3: V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],
+  },
 } satisfies Record<ChainId, Partial<ProtocolEndpoint>>
 
 export const getTokenBestTvlProtocol = async (tokenAddress: string, chainId: ChainId): Promise<Protocol | null> => {

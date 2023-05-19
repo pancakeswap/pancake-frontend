@@ -42,6 +42,7 @@ export const CELER_API = 'https://api.celerscan.com/scan'
 export const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.BSC]: INFO_CLIENT,
   [ChainId.ETHEREUM]: INFO_CLIENT_ETH,
+  [ChainId.LINEA_TESTNET]: 'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exhange-eth/',
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = {
@@ -62,7 +63,8 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.POLYGON_ZKEVM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.ZKSYNC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.ZKSYNC_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/v0.0.1',
-  [ChainId.LINEA_TESTNET]: '',
+  [ChainId.LINEA_TESTNET]:
+    'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
 } satisfies Record<ChainId, string>
 
 export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'
