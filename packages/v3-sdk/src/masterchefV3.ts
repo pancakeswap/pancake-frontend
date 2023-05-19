@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'
 import { Position } from './entities'
 import { Multicall } from './multicall'
-import { masterChefV3Abi } from './abi/MasterChefV3'
+import { masterChefV3ABI } from './abi/MasterChefV3'
 
 import {
   type AddLiquidityOptions,
@@ -28,7 +28,7 @@ interface HarvestOptions {
 }
 
 export abstract class MasterChefV3 {
-  public static ABI = masterChefV3Abi
+  public static ABI = masterChefV3ABI
 
   /**
    * Cannot be constructed.

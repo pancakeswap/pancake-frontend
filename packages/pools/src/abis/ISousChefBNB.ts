@@ -1,54 +1,5 @@
 export const sousChefBnbABI = [
   {
-    inputs: [
-      { internalType: 'contract IBEP20', name: '_lp', type: 'address' },
-      { internalType: 'contract IBEP20', name: '_rewardToken', type: 'address' },
-      { internalType: 'uint256', name: '_rewardPerBlock', type: 'uint256' },
-      { internalType: 'uint256', name: '_startBlock', type: 'uint256' },
-      { internalType: 'uint256', name: '_bonusEndBlock', type: 'uint256' },
-      { internalType: 'address', name: '_adminAddress', type: 'address' },
-      { internalType: 'address', name: '_wbnb', type: 'address' },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'Deposit',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'EmergencyWithdraw',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
-    ],
-    name: 'OwnershipTransferred',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'Withdraw',
-    type: 'event',
-  },
-  {
     inputs: [],
     name: 'WBNB',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],

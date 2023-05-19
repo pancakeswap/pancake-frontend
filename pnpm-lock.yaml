@@ -848,8 +848,8 @@ importers:
         specifier: 4.0.0
         version: 4.0.0(vite@4.3.1)
       abitype:
-        specifier: '*'
-        version: 0.8.0(typescript@5.0.4)(zod@3.21.4)
+        specifier: ^0.8.2
+        version: 0.8.2(typescript@5.0.4)(zod@3.21.4)
       eslint:
         specifier: ^8.32.0
         version: 8.32.0
@@ -11680,19 +11680,6 @@ packages:
         optional: true
     dependencies:
       typescript: 5.0.4
-
-  /abitype@0.8.0(typescript@5.0.4)(zod@3.21.4):
-    resolution: {integrity: sha512-QqBuwc2trtaNd/kp4k0dSjVu3OQIYRAB4ww4LCPwfSECXcCGTD3imYovNYNjx0SyN3OHV0XUOzUVwnXP1kLsVQ==}
-    peerDependencies:
-      typescript: '>=4.9.4'
-      zod: ^3 >=3.19.1
-    peerDependenciesMeta:
-      zod:
-        optional: true
-    dependencies:
-      typescript: 5.0.4
-      zod: 3.21.4
-    dev: true
 
   /abitype@0.8.1(typescript@5.0.4)(zod@3.21.4):
     resolution: {integrity: sha512-n8Di6AWb3i7HnEkBvecU6pG0a5nj5YwMvdAIwPLsQK95ulRy/XS113s/RXvSfTX1iOQJYFrEO3/q4SMWu7OwTA==}
