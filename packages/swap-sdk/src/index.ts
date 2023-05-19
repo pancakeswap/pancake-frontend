@@ -10,3 +10,5 @@ export * from './ether'
 export * from './fetcher'
 
 export * from '@pancakeswap/swap-sdk-core'
+
+export * from './abis/IPancakePair'
