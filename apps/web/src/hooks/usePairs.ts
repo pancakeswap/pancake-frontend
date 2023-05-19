@@ -42,8 +42,11 @@ export function useV2Pairs(currencies: [Currency | undefined, Currency | undefin
       }),
     [tokens],
   )
-
-  const results = useMultipleContractSingleData(pairAddresses, pancakePairV2ABI, 'getReserves')
+  const results = useMultipleContractSingleData({
+    addresses: pairAddresses,
+    abi: pancakePairV2ABI,
+    functionName: 'getReserves',
+  })
 
   return useMemo(() => {
     return results.map((result, i) => {
