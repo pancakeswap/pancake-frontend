@@ -2,7 +2,7 @@ import { encodeFunctionData, Hex } from 'viem'
 import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
-import { swapRouterAbi } from './abi/SwapRouter'
+import { swapRouterABI } from './abi/SwapRouter'
 import { Trade } from './entities/trade'
 import { ADDRESS_ZERO } from './constants'
 import { PermitOptions, SelfPermit } from './selfPermit'
@@ -51,7 +51,7 @@ export interface SwapOptions {
  */
 export abstract class SwapRouter {
   // public static INTERFACE: Interface = new Interface(ISwapRouter)
-  public static ABI = swapRouterAbi
+  public static ABI = swapRouterABI
 
   /**
    * Cannot be constructed.

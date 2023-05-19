@@ -1,6 +1,6 @@
 import { Percent, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import { Address, encodeFunctionData } from 'viem'
-import { peripheryPaymentsWithFeeAbi } from './abi/PeripheryPaymentsWithFee'
+import { peripheryPaymentsWithFeeABI } from './abi/PeripheryPaymentsWithFee'
 
 export interface FeeOptions {
   /**
@@ -15,7 +15,7 @@ export interface FeeOptions {
 }
 
 export abstract class Payments {
-  public static ABI = peripheryPaymentsWithFeeAbi
+  public static ABI = peripheryPaymentsWithFeeABI
 
   /**
    * Cannot be constructed.

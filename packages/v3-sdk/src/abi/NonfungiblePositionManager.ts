@@ -1,4 +1,4 @@
-export const nonfungiblePositionManagerAbi = [
+export const nonfungiblePositionManagerABI = [
   {
     inputs: [
       { internalType: 'address', name: '_deployer', type: 'address' },

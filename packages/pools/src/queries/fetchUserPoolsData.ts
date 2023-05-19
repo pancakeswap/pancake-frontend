@@ -109,7 +109,7 @@ export const fetchUserStakeBalances = async ({ account, chainId, provider }: Fet
     contracts: nonMasterPools.map(
       ({ contractAddress }) =>
         ({
-          abi: sousChefABI,
+          abi: sousChefABI.filter((r) => r.name === 'userInfo'),
           address: contractAddress,
           functionName: 'userInfo',
           args: [account as Address] as const,
@@ -131,7 +131,7 @@ export const fetchUserPendingRewards = async ({ account, chainId, provider }: Fe
     contracts: nonMasterPools.map(
       ({ contractAddress }) =>
         ({
-          abi: sousChefABI,
+          abi: sousChefABI.filter((r) => r.name === 'pendingReward'),
           address: contractAddress,
           functionName: 'pendingReward',
           args: [account as Address] as const,

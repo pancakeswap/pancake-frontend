@@ -132,7 +132,7 @@
     "@types/uuid": "^8.0.0",
     "@vanilla-extract/vite-plugin": "^3.8.0",
     "@vitejs/plugin-react": "4.0.0",
-    "abitype": "*",
+    "abitype": "^0.8.2",
     "eslint": "^8.32.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-lodash": "^7.4.0",

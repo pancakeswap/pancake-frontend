@@ -1,4 +1,4 @@
-export const peripheryPaymentsWithFeeAbi = [
+export const peripheryPaymentsWithFeeABI = [
   {
     inputs: [],
     name: 'refundETH',

@@ -1,4 +1,4 @@
-export const swapRouterAbi = [
+export const swapRouterABI = [
   {
     inputs: [
       {

@@ -1,6 +1,6 @@
 import { BigintIsh, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import { Address, encodeAbiParameters, encodeFunctionData, Hex, parseAbiParameters } from 'viem'
-import { v3StakerAbi } from './abi/V3Staker'
+import { v3StakerABI } from './abi/V3Staker'
 import { MethodParameters, toHex } from './utils/calldata'
 import { Pool } from './entities'
 import { Multicall } from './multicall'
@@ -67,7 +67,7 @@ export interface WithdrawOptions {
 }
 
 export abstract class Staker {
-  public static ABI = v3StakerAbi
+  public static ABI = v3StakerABI
 
   protected constructor() {}
 
