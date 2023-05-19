@@ -102,8 +102,16 @@ export function usePools(
     return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value))
   }, [chainId, poolTokens])
 
-  const slot0s = useMultipleContractSingleData(poolAddresses, v3PoolStateABI, 'slot0')
-  const liquidities = useMultipleContractSingleData(poolAddresses, v3PoolStateABI, 'liquidity')
+  const slot0s = useMultipleContractSingleData({
+    addresses: poolAddresses,
+    abi: v3PoolStateABI,
+    functionName: 'slot0',
+  })
+  const liquidities = useMultipleContractSingleData({
+    addresses: poolAddresses,
+    abi: v3PoolStateABI,
+    functionName: 'liquidity',
+  })
 
   return useMemo(() => {
     return poolKeys.map((_key, index) => {
