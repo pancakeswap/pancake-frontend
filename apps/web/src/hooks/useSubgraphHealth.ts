@@ -80,6 +80,13 @@ const useSubgraphHealth = (subgraphName: string) => {
           }
         } catch (error) {
           console.error(`Failed to perform health check for ${subgraphName} subgraph`, error)
+          setSgHealth({
+            status: SubgraphStatus.NOT_OK,
+            currentBlock: -1,
+            chainHeadBlock: 0,
+            latestBlock: -1,
+            blockDifference: 0,
+          })
         }
       }
       getSubgraphHealth()
