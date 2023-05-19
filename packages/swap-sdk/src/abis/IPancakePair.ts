@@ -1,4 +1,4 @@
-export const pancakePairAbi = [
+export const pancakePairABI = [
   {
     anonymous: false,
     inputs: [
