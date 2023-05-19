@@ -335,7 +335,7 @@ export default function PoolPage() {
         })
       })
       ?.catch((error) => {
-        setCollecting(false)
+        setAttemptTrx(false)
         console.error(error)
       })
   }, [
