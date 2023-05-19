@@ -8,6 +8,7 @@ import { getStatus } from 'views/Ifos/hooks/helpers'
 import { useCompetitionStatus } from './useCompetitionStatus'
 import { usePotteryStatus } from './usePotteryStatus'
 import { useVotingStatus } from './useVotingStatus'
+import { useTradingRewardStatus } from './useTradingRewardStatus'
 
 export const useMenuItemsStatus = (): Record<string, string> => {
   const currentBlock = useChainCurrentBlock(ChainId.BSC)
@@ -16,6 +17,7 @@ export const useMenuItemsStatus = (): Record<string, string> => {
   const potteryStatus = usePotteryStatus()
   const votingStatus = useVotingStatus()
   const isUserLocked = useUserCakeLockStatus()
+  const tradingRewardStatus = useTradingRewardStatus()
 
   const ifoStatus =
     currentBlock && activeIfo && activeIfo.endBlock > currentBlock
@@ -35,6 +37,9 @@ export const useMenuItemsStatus = (): Record<string, string> => {
       ...(isUserLocked && {
         '/pools': 'lock_end',
       }),
+      ...(tradingRewardStatus && {
+        '/trading-reward': tradingRewardStatus,
+      }),
     }
-  }, [competitionStatus, ifoStatus, potteryStatus, votingStatus, isUserLocked])
+  }, [competitionStatus, ifoStatus, potteryStatus, votingStatus, isUserLocked, tradingRewardStatus])
 }
