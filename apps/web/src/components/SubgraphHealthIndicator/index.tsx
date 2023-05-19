@@ -1,6 +1,6 @@
-import { SubgraphHealthIndicator, BlockResponse } from './SubgraphHealthIndicator'
+import { SubgraphHealthIndicator } from './SubgraphHealthIndicator'
 
-export { BlockResponse }
+export type { BlockResponse } from './SubgraphHealthIndicator'
 
 export * from './FloatingSubgraphHealthIndicators'
 
