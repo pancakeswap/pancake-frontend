@@ -10,7 +10,7 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 export const { provider, chains } = configureChains(CHAINS, [
@@ -39,17 +39,19 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
   },
 })
 
-export const walletConnectConnector = new WalletConnectLegacyConnector({
+export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
-    qrcode: true,
+    projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+    showQrModal: true,
   },
 })
 
-export const walletConnectNoQrCodeConnector = new WalletConnectLegacyConnector({
+export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
-    qrcode: false,
+    projectId: process.env.WALLET_CONNECT_PROJECT_ID,
+    showQrModal: false,
   },
 })
 
