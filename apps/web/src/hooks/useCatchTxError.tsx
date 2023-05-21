@@ -4,7 +4,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
 import { WaitForTransactionResult, SendTransactionResult } from 'wagmi/actions'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Hash, RpcError, UnknownRpcError } from 'viem'
+import { BaseError, Hash, UnknownRpcError } from 'viem'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 export type CatchTxErrorReturn = {
@@ -15,8 +15,8 @@ export type CatchTxErrorReturn = {
 }
 
 /// only show corrected parsed viem error
-export function parseError<TError>(err: TError): RpcError | null {
-  if (err instanceof RpcError) {
+export function parseError<TError>(err: TError): BaseError | null {
+  if (err instanceof BaseError) {
     return err
   }
   if (typeof err === 'string') {

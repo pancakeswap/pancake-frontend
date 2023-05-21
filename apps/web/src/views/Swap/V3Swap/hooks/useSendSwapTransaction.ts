@@ -40,8 +40,6 @@ interface FailedCall extends SwapCallEstimate {
   error: Error
 }
 
-class InvalidSwapError extends Error {}
-
 export class TransactionRejectedError extends Error {}
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -89,19 +87,7 @@ export default function useSendSwapTransaction(
               })
               .catch((gasError) => {
                 console.debug('Gas estimate failed, trying eth_call to extract error', call)
-                return publicClient
-                  .call(tx)
-                  .then((result) => {
-                    console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
-                    return {
-                      call,
-                      error: t('Unexpected issue with estimating the gas.Please try again.'),
-                    }
-                  })
-                  .catch((callError) => {
-                    console.debug('Call threw error', call, callError)
-                    return { call, error: transactionErrorToUserReadableMessage(callError, t) }
-                  })
+                return { call, error: transactionErrorToUserReadableMessage(gasError, t) }
               })
           }),
         )
@@ -200,11 +186,7 @@ export default function useSendSwapTransaction(
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, address, calldata, value)
 
-              if (error instanceof InvalidSwapError) {
-                throw error
-              } else {
-                throw new Error(`Swap failed: ${transactionErrorToUserReadableMessage(error, t)}`)
-              }
+              throw new Error(`Swap failed: ${transactionErrorToUserReadableMessage(error, t)}`)
             }
           })
       },

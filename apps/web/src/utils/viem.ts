@@ -26,7 +26,7 @@ const viemClients = CHAINS.reduce((prev, cur) => {
       transport,
       batch: {
         multicall: {
-          batchSize: 1_024 * 10,
+          batchSize: 1024 * 1024,
         },
       },
     }),
