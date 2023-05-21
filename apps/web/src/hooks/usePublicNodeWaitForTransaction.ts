@@ -16,7 +16,7 @@ const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
       }),
       batch: {
         multicall: {
-          batchSize: 1_024 * 10,
+          batchSize: 1024 * 200,
         },
       },
     }),
