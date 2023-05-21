@@ -14,7 +14,7 @@ const mainnetClient = createPublicClient({
   transport: http(ETH_NODE),
   batch: {
     multicall: {
-      batchSize: 1024 * 1000,
+      batchSize: 1024 * 1024,
     },
   },
 })
@@ -24,7 +24,7 @@ export const bscClient: PublicClient = createPublicClient({
   transport: http(BSC_NODE),
   batch: {
     multicall: {
-      batchSize: 1024 * 1000,
+      batchSize: 1024 * 1024,
     },
   },
 })
@@ -34,7 +34,7 @@ export const bscTestnetClient: PublicClient = createPublicClient({
   transport: http(BSC_TESTNET_NODE),
   batch: {
     multicall: {
-      batchSize: 1024 * 1000,
+      batchSize: 1024 * 1024,
     },
   },
 })
@@ -44,7 +44,7 @@ const goerliClient = createPublicClient({
   transport: http(GOERLI_NODE),
   batch: {
     multicall: {
-      batchSize: 1024 * 1000,
+      batchSize: 1024 * 1024,
     },
   },
 })
