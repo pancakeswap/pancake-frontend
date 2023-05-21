@@ -12,7 +12,7 @@ export const viemServerClients = CHAINS.reduce((prev, cur) => {
       transport: http(SERVER_NODES[cur.id]),
       batch: {
         multicall: {
-          batchSize: 1024 * 1000,
+          batchSize: 1024 * 1024,
         },
       },
     }),
