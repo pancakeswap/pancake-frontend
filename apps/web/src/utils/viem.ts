@@ -13,7 +13,7 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
       }),
       batch: {
         multicall: {
-          batchSize: 1024 * 1024,
+          batchSize: 1024 * 200,
         },
       },
     }),
