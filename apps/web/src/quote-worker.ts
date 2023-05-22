@@ -34,15 +34,25 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
   const [id, message] = data
   if (message.cmd === 'multicallChunk') {
-    fetchChunk(message.params.chainId, message.params.chunk, message.params.minBlockNumber).then((res) => {
-      postMessage([
-        id,
-        {
-          success: true,
-          result: res,
-        },
-      ])
-    })
+    fetchChunk(message.params.chainId, message.params.chunk, message.params.minBlockNumber)
+      .then((res) => {
+        postMessage([
+          id,
+          {
+            success: true,
+            result: res,
+          },
+        ])
+      })
+      .catch((err) => {
+        postMessage([
+          id,
+          {
+            success: false,
+            error: err,
+          },
+        ])
+      })
   }
   if (message.cmd === 'getBestTrade') {
     const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(message.params)
