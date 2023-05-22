@@ -5,25 +5,27 @@ import { getViemClients } from 'utils/viem'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
-export type WorkerEvent =
-  | [
-      id: number,
-      message: {
-        cmd: 'getBestTrade'
-        params: SmartRouter.APISchema.RouterPostParams
-      },
-    ]
-  | [
-      id: number,
-      message: {
-        cmd: 'multicallChunk'
-        params: {
-          chainId: number
-          chunk: Call[]
-          minBlockNumber: number
-        }
-      },
-    ]
+export type WorkerGetBestTradeEvent = [
+  id: number,
+  message: {
+    cmd: 'getBestTrade'
+    params: SmartRouter.APISchema.RouterPostParams
+  },
+]
+
+export type WorkerMultiChunkEvent = [
+  id: number,
+  message: {
+    cmd: 'multicallChunk'
+    params: {
+      chainId: number
+      chunk: Call[]
+      minBlockNumber: number
+    }
+  },
+]
+
+export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent
 
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
 
