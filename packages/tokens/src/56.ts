@@ -2594,4 +2594,12 @@ export const bscTokens = {
     'EDU Coin',
     'https://www.opencampus.xyz/',
   ),
+  pepe: new ERC20Token(
+    ChainId.BSC,
+    '0x25d887Ce7a35172C62FeBFD67a1856F20FaEbB00',
+    18,
+    'PEPE',
+    'Pepe',
+    'https://www.pepe.vip/',
+  ),
 }
