@@ -26,6 +26,11 @@ import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
 import { PriceInvertSwitch } from "./PriceInvertSwitch";
 import { FarmingRewardsToggle } from "./FarmingRewardsToggle";
+import {
+  LIQUIDITY_QUICK_ACTION_CONFIGS,
+  LIQUIDITY_ZOOM_LEVELS,
+  ZoomLevels,
+} from "../../components/LiquidityChartRangeInput/types";
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Currency, Currency>;
@@ -121,6 +126,7 @@ export function RoiCalculator({
   const [compoundIndex, setCompoundIndex] = useState(3);
   const [invertBase, setInvertBase] = useState(false);
   const onSwitchBaseCurrency = useCallback(() => setInvertBase(!invertBase), [invertBase]);
+  const [activeQuickAction, setActiveQuickAction] = useState<number>();
 
   const { currencyA, currencyB, balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice } = useMemo(
     () =>
@@ -365,6 +371,26 @@ export function RoiCalculator({
     </Section>
   ) : null;
 
+  const handleRefresh = useCallback(
+    (zoomLevel?: ZoomLevels) => {
+      setActiveQuickAction(undefined);
+      const currentPrice = price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined;
+      if (currentPrice) {
+        priceRange?.onLeftRangeInput(
+          (
+            currentPrice * (zoomLevel?.initialMin ?? LIQUIDITY_ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin)
+          ).toString()
+        );
+        priceRange?.onRightRangeInput(
+          (
+            currentPrice * (zoomLevel?.initialMax ?? LIQUIDITY_ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax)
+          ).toString()
+        );
+      }
+    },
+    [price, feeAmount, invertPrice, priceRange]
+  );
+
   const priceRangeSettings = (
     <Section title={t("Set price range")}>
       <LiquidityChartRangeInput
@@ -397,14 +423,51 @@ export function RoiCalculator({
           feeAmount={feeAmount}
           ticksAtLimit={priceRange?.ticksAtLimit || {}}
         />
-        <Button
-          onClick={priceRange?.toggleFullRange}
-          variant={priceRange?.fullRange ? "primary" : "secondary"}
-          mb="16px"
-          scale="sm"
-        >
-          {t("Full Range")}
-        </Button>
+        <Flex justifyContent="space-between" width="100%" style={{ gap: "8px" }}>
+          {feeAmount &&
+            LIQUIDITY_QUICK_ACTION_CONFIGS[feeAmount] &&
+            Object.entries<ZoomLevels>(LIQUIDITY_QUICK_ACTION_CONFIGS[feeAmount])
+              ?.sort(([a], [b]) => +a - +b)
+              .map(([quickAction, zoomLevel]) => {
+                return (
+                  <Button
+                    width="100%"
+                    key={`quickActions${quickAction}`}
+                    onClick={() => {
+                      if (priceRange?.fullRange) {
+                        priceRange?.toggleFullRange();
+                      }
+                      if (+quickAction === activeQuickAction) {
+                        handleRefresh(LIQUIDITY_ZOOM_LEVELS[feeAmount]);
+                        return;
+                      }
+                      handleRefresh(zoomLevel);
+
+                      setActiveQuickAction(+quickAction);
+                    }}
+                    variant={+quickAction === activeQuickAction ? "primary" : "secondary"}
+                    scale="sm"
+                  >
+                    {quickAction}%
+                  </Button>
+                );
+              })}
+          <Button
+            width="200%"
+            onClick={() => {
+              priceRange?.toggleFullRange();
+              if (activeQuickAction === 100) {
+                setActiveQuickAction(undefined);
+              } else {
+                setActiveQuickAction(100);
+              }
+            }}
+            variant={activeQuickAction === 100 ? "primary" : "secondary"}
+            scale="sm"
+          >
+            {t("Full Range")}
+          </Button>
+        </Flex>
       </DynamicSection>
     </Section>
   );
