@@ -80,7 +80,6 @@ export const useFarmsV3Public = () => {
 
         return data
       } catch (error) {
-        console.error(error, 'v3?')
         // return fallback for now since not all chains supported
         return fallback
       }
@@ -166,8 +165,6 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
       keepPreviousData: true,
     },
   )
-
-  console.log(error, 'error', data, farmV3.data, farmV3.error)
 
   return {
     data: error ? farmV3.data : ((data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>),
