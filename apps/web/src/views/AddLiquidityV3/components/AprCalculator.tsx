@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
 import {
   useRoi,
   RoiCalculatorModalV2,
@@ -18,7 +19,7 @@ import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { useRouter } from 'next/router'
 import { batch } from 'react-redux'
-import { PositionDetails, getPositionFarmApr } from '@pancakeswap/farms'
+import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -170,9 +171,12 @@ export function AprCalculator({
         })),
     [existingPosition, validAmountA, validAmountB, tickUpper, tickLower, sqrtRatioX96],
   )
-  const positionFarmApr = useMemo(() => {
+  const { positionFarmApr, positionFarmAprFactor } = useMemo(() => {
     if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1) {
-      return '0'
+      return {
+        positionFarmApr: '0',
+        positionFarmAprFactor: new BigNumber(0),
+      }
     }
     const { farm: farmDetail, cakePerSecond } = farm
     const { poolWeight, token, quoteToken, tokenPriceBusd, quoteTokenPriceBusd, lmPoolLiquidity } = farmDetail
@@ -180,14 +184,23 @@ export function AprCalculator({
       ? [tokenPriceBusd, quoteTokenPriceBusd]
       : [quoteTokenPriceBusd, tokenPriceBusd]
     const positionTvlUsd = +amount0.toExact() * +token0Price + +amount1.toExact() * +token1Price
-    return getPositionFarmApr({
-      poolWeight,
-      positionTvlUsd,
-      cakePriceUsd: cakePrice,
-      liquidity: positionLiquidity,
-      cakePerSecond,
-      totalStakedLiquidity: lmPoolLiquidity,
-    })
+    return {
+      positionFarmApr: getPositionFarmApr({
+        poolWeight,
+        positionTvlUsd,
+        cakePriceUsd: cakePrice,
+        liquidity: positionLiquidity,
+        cakePerSecond,
+        totalStakedLiquidity: lmPoolLiquidity,
+      }),
+      positionFarmAprFactor: getPositionFarmAprFactor({
+        poolWeight,
+        cakePriceUsd: cakePrice,
+        liquidity: positionLiquidity,
+        cakePerSecond,
+        totalStakedLiquidity: lmPoolLiquidity,
+      }),
+    }
   }, [farm, cakePrice, positionLiquidity, amount0, amount1])
 
   // NOTE: Assume no liquidity when opening modal
@@ -233,10 +246,6 @@ export function AprCalculator({
     },
     [closeModal, feeAmount, onBothRangeInput, onFieldAInput, onSetFullRange, router],
   )
-
-  if (!data || !data.length) {
-    return null
-  }
 
   const hasFarmApr = positionFarmApr && +positionFarmApr > 0
   const combinedApr = hasFarmApr ? +apr.toSignificant(6) + +positionFarmApr : +apr.toSignificant(6)
@@ -310,6 +319,9 @@ export function AprCalculator({
         priceSpan={priceSpan}
         onPriceSpanChange={setPriceSpan}
         onApply={onApply}
+        isFarm={hasFarmApr}
+        cakeAprFactor={positionFarmAprFactor}
+        cakePrice={cakePrice.toFixed(3)}
       />
     </>
   )

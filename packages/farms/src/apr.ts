@@ -60,25 +60,45 @@ export function getPositionFarmApr({
   totalStakedLiquidity,
   precision = 6,
 }: PositionFarmAprParams) {
+  const aprFactor = getPositionFarmAprFactor({
+    poolWeight,
+    cakePriceUsd,
+    cakePerSecond,
+    liquidity,
+    totalStakedLiquidity,
+  })
+  if (!isValid(aprFactor) || !isValid(positionTvlUsd)) {
+    return '0'
+  }
+
+  const positionApr = aprFactor.times(liquidity.toString()).div(positionTvlUsd).times(100)
+
+  return formatNumber(positionApr, precision)
+}
+
+export function getPositionFarmAprFactor({
+  poolWeight,
+  cakePriceUsd,
+  cakePerSecond,
+  liquidity,
+  totalStakedLiquidity,
+}: Omit<PositionFarmAprParams, 'positionTvlUsd' | 'precision'>) {
   if (
     !isValid(poolWeight) ||
-    !isValid(positionTvlUsd) ||
     !isValid(cakePriceUsd) ||
     !isValid(cakePerSecond) ||
     BigInt(liquidity) === ZERO ||
     BigInt(totalStakedLiquidity) === ZERO
   ) {
-    return '0'
+    return new BN(0)
   }
 
   const cakeRewardPerYear = new BN(cakePerSecond).times(SECONDS_FOR_YEAR)
-  const positionApr = new BN(poolWeight)
+  const aprFactor = new BN(poolWeight)
     .times(cakeRewardPerYear)
     .times(cakePriceUsd)
-    .times(liquidity.toString())
     .div((BigInt(liquidity) + BigInt(totalStakedLiquidity)).toString())
-    .div(positionTvlUsd)
     .times(100)
 
-  return formatNumber(positionApr, precision)
+  return aprFactor
 }
