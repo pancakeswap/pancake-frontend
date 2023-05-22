@@ -19,7 +19,14 @@ export const { provider, chains } = configureChains(CHAINS, [
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
       }
-      return PUBLIC_NODES[chain.id] ? { http: PUBLIC_NODES[chain.id] } : { http: chain.rpcUrls.default.http[0] }
+      return PUBLIC_NODES[chain.id]
+        ? {
+            http:
+              typeof PUBLIC_NODES[chain.id] === 'string'
+                ? (PUBLIC_NODES[chain.id] as string)
+                : PUBLIC_NODES[chain.id][0],
+          }
+        : { http: chain.rpcUrls.default.http[0] }
     },
   }),
 ])
