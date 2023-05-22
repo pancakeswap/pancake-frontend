@@ -84,10 +84,8 @@ export function activeListeningKeys(
   allListeners: MulticallState['callListeners'],
   chainId?: number,
 ): { [callKey: string]: number } {
-  // console.log(allListeners, chainId)
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
-  // console.log(listeners, 'listeners')
   if (!listeners) return {}
 
   return Object.keys(listeners).reduce<{ [callKey: string]: number }>((memo, callKey) => {
@@ -95,7 +93,6 @@ export function activeListeningKeys(
 
     memo[callKey] = Object.keys(keyListeners)
       .filter((key) => {
-        // console.log(key, 'key')
         const blocksPerFetch = parseInt(key)
         if (blocksPerFetch <= 0) return false
         return keyListeners[blocksPerFetch] > 0
@@ -131,7 +128,7 @@ export function outdatedListeningKeys(
     if (!data) return true
 
     const blocksPerFetch = listeningKeys[callKey]
-    const minDataBlockNumber = Number(currentBlock) - (blocksPerFetch - 1)
+    const minDataBlockNumber = currentBlock - (blocksPerFetch - 1)
 
     // already fetching it for a recent enough block, don't refetch it
     if (data.fetchingBlockNumber && data.fetchingBlockNumber >= minDataBlockNumber) return false
