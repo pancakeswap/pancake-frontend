@@ -80,6 +80,7 @@ export const useFarmsV3Public = () => {
 
         return data
       } catch (error) {
+        console.error(error)
         // return fallback for now since not all chains supported
         return fallback
       }
