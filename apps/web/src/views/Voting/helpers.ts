@@ -94,8 +94,8 @@ export const sendSnapshotData = async (message: Message) => {
 }
 
 export const VOTING_POWER_BLOCK = {
-  v0: 16300686,
-  v1: 17137653,
+  v0: 16300686n,
+  v1: 17137653n,
 }
 
 /**
@@ -171,7 +171,7 @@ export const getVotingPower = async (
         ],
         NETWORK,
         [account],
-        blockNumber.toString(),
+        Number(blockNumber),
       )
 
     const lockedCakeBalance = convertSharesToCake(
@@ -203,7 +203,7 @@ export const getVotingPower = async (
     }
   }
 
-  const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber.toString())
+  const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], Number(blockNumber))
 
   return {
     total: total[account] ? total[account] : 0,
