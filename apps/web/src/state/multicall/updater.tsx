@@ -2,9 +2,9 @@ import { useDebounce } from '@pancakeswap/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
-import { worker } from 'hooks/useBestAMMTrade'
 import { useCurrentBlock } from 'state/block/hooks'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
+import { worker2 } from 'utils/worker'
 import { useMulticallContract } from '../../hooks/useContract'
 import {
   Call,
@@ -131,7 +131,7 @@ export default function Updater(): null {
       cancellations: chunkedCalls.map((chunk, index) => {
         const { cancel, promise } = retry(
           () =>
-            worker.fetchChunk({
+            worker2.fetchChunk({
               chainId,
               chunk,
               minBlockNumber: currentBlock,

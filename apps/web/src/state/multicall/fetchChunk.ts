@@ -4,6 +4,8 @@ import { getMulticallAddress } from 'utils/addressHelpers'
 import { Call } from './actions'
 import { RetryableError } from './retry'
 
+export type FetchChunkResult = ReturnType<typeof fetchChunk>
+
 /**
  * Fetches a chunk of calls, enforcing a minimum block number constraint
  * @param chainId
