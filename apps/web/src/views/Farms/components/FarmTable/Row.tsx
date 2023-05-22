@@ -112,7 +112,7 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { initialActivity, userDataReady, farm } = props
+  const { initialActivity, userDataReady, farm, multiplier } = props
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = farm.isStaking || false
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
@@ -208,6 +208,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           hideButton={isSmallerScreen}
                           strikethrough={props?.details?.boosted}
                           boosted={props?.details?.boosted}
+                          farmCakePerSecond={multiplier.farmCakePerSecond}
+                          totalMultipliers={multiplier.totalMultipliers}
                         />
                         {props?.details?.boosted && userDataReady ? (
                           <BoostedApr
@@ -294,6 +296,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         hideButton
                         strikethrough={props?.details?.boosted}
                         boosted={props?.details?.boosted}
+                        farmCakePerSecond={multiplier.farmCakePerSecond}
+                        totalMultipliers={multiplier.totalMultipliers}
                       />
                       {props?.details?.boosted && userDataReady ? (
                         <BoostedApr

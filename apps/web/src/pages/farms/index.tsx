@@ -53,6 +53,7 @@ const FarmsPage = () => {
             />
           )
         }
+
         return (
           <FarmV3Card
             key={`${farm.pid}-${farm.version}`}

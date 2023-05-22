@@ -80,6 +80,8 @@ export interface RoiCalculatorModalProps {
   isLocked?: boolean;
   stableSwapAddress?: string;
   stableLpFee?: number;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
@@ -111,6 +113,8 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   isLocked = false,
   stableSwapAddress,
   stableLpFee,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -313,6 +317,8 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
         isLocked={isLocked}
         stableSwapAddress={stableSwapAddress}
         stableLpFee={stableLpFee}
+        farmCakePerSecond={farmCakePerSecond}
+        totalMultipliers={totalMultipliers}
       />
     </StyledModal>
   );

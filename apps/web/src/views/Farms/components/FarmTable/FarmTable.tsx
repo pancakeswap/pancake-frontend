@@ -2,6 +2,9 @@ import { BigNumber as EthersBigNumber } from 'ethers'
 import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
+
+import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
+import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
@@ -67,15 +70,13 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  let earnings
   const existingEarnings = new BigNumber(farm.userData.earnings)
+  let earnings: BigNumber = existingEarnings
 
   if (farm.boosted) {
     const proxyEarnings = new BigNumber(farm.userData?.proxy?.earnings)
 
     earnings = proxyEarnings.gt(0) ? proxyEarnings : existingEarnings
-  } else {
-    earnings = existingEarnings
   }
 
   return getBalanceNumber(earnings)
@@ -145,6 +146,9 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
+  const farmV3Multiplier = useFarmV3Multiplier()
+  const farmV2Multiplier = useFarmV2Multiplier()
+
   const generateRow = useCallback(
     (farm: V2StakeValueAndV3Farm): RowProps => {
       const { token, quoteToken } = farm
@@ -153,6 +157,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
       const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
       const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
+
       if (farm.version === 2) {
         const row: RowProps = {
           apr: {
@@ -188,6 +193,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           },
           multiplier: {
             multiplier: farm.multiplier,
+            farmCakePerSecond: farmV2Multiplier.getFarmCakePerSecond(farm.poolWeight),
+            totalMultipliers: farmV2Multiplier.totalMultipliers,
           },
           type: farm.isCommunity ? 'community' : 'v2',
           details: farm,
@@ -216,6 +223,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         details: farm,
         multiplier: {
           multiplier: farm.multiplier,
+          farmCakePerSecond: farmV3Multiplier.getFarmCakePerSecond(farm.poolWeight),
+          totalMultipliers: farmV3Multiplier.totalMultipliers,
         },
         stakedLiquidity: {
           inactive: farm.multiplier === '0X',
@@ -242,7 +251,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         },
       }
     },
-    [cakePrice, query.search],
+    [query.search, farmV3Multiplier, cakePrice, farmV2Multiplier],
   )
 
   const sortedRows = useMemo(() => {

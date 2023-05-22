@@ -31,6 +31,8 @@ export interface ApyButtonProps {
   boosted?: boolean
   stableSwapAddress?: string
   stableLpFee?: number
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -51,6 +53,8 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   boosted,
   stableSwapAddress,
   stableLpFee,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
@@ -97,6 +101,8 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       }
       stableSwapAddress={stableSwapAddress}
       stableLpFee={stableLpFee}
+      farmCakePerSecond={farmCakePerSecond}
+      totalMultipliers={totalMultipliers}
     />,
     false,
     true,

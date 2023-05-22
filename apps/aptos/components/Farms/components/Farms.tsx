@@ -137,7 +137,14 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+  const {
+    data: farmsLP,
+    userDataLoaded,
+    poolLength,
+    regularCakePerBlock,
+    totalRegularAllocPoint,
+    cakePerBlock,
+  } = useFarms()
   const lpRewardsAprs = useLpRewardsAprs()
 
   const [_query, setQuery] = useState('')
@@ -350,7 +357,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         </ControlContainer>
         <NoSSR>
           {viewMode === ViewMode.TABLE ? (
-            <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+            <Table
+              farms={chosenFarmsMemoized}
+              cakePrice={cakePrice}
+              userDataReady={userDataReady}
+              totalRegularAllocPoint={totalRegularAllocPoint}
+              cakePerBlock={cakePerBlock}
+            />
           ) : (
             <FlexLayout>{children}</FlexLayout>
           )}

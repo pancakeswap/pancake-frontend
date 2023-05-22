@@ -24,17 +24,21 @@ import {
 } from './fetchFarmUser'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 
-const fetchFarmPublicDataPkg = async ({ pids, chainId, chain }): Promise<[SerializedFarm[], number, number]> => {
+const fetchFarmPublicDataPkg = async ({
+  pids,
+  chainId,
+  chain,
+}): Promise<[SerializedFarm[], number, number, string]> => {
   const farmsConfig = await getFarmConfig(chainId)
   const farmsCanFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
   const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
 
-  const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
+  const { farmsWithPrice, poolLength, regularCakePerBlock, totalRegularAllocPoint } = await farmFetcher.fetchFarms({
     chainId,
     isTestnet: chain.testnet,
     farms: farmsCanFetch.concat(priceHelperLpsConfig),
   })
-  return [farmsWithPrice, poolLength, regularCakePerBlock]
+  return [farmsWithPrice, poolLength, regularCakePerBlock, totalRegularAllocPoint]
 }
 
 export const farmFetcher = createFarmFetcher(multicallv2)
@@ -44,6 +48,7 @@ const initialState: SerializedFarmsState = {
   chainId: null,
   loadArchivedFarmsData: false,
   userDataLoaded: false,
+  totalRegularAllocPoint: '0',
   loadingKeys: {},
 }
 
@@ -72,7 +77,7 @@ export const fetchInitialFarmsData = createAsyncThunk<
 })
 
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
-  [SerializedFarm[], number, number],
+  [SerializedFarm[], number, number, string],
   { pids: number[]; chainId: number },
   {
     state: AppState
@@ -267,7 +272,7 @@ export const farmsSlice = createSlice({
 
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
-      const [farmPayload, poolLength, regularCakePerBlock] = action.payload
+      const [farmPayload, poolLength, regularCakePerBlock, totalRegularAllocPoint] = action.payload
       const farmPayloadPidMap = keyBy(farmPayload, 'pid')
 
       state.data = state.data.map((farm) => {
@@ -276,6 +281,7 @@ export const farmsSlice = createSlice({
       })
       state.poolLength = poolLength
       state.regularCakePerBlock = regularCakePerBlock
+      state.totalRegularAllocPoint = totalRegularAllocPoint
     })
 
     // Update farms with user data

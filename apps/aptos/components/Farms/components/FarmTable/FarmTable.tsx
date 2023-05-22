@@ -2,6 +2,8 @@ import { useRef, useMemo } from 'react'
 import styled from 'styled-components'
 import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -15,6 +17,8 @@ export interface ITableProps {
   userDataReady: boolean
   cakePrice: BigNumber
   sortColumn?: string
+  totalRegularAllocPoint?: EthersBigNumber
+  cakePerBlock?: EthersBigNumber
 }
 
 const Container = styled.div`
@@ -63,7 +67,13 @@ const TableContainer = styled.div`
   position: relative;
 `
 
-const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
+  farms,
+  cakePrice,
+  userDataReady,
+  totalRegularAllocPoint,
+  cakePerBlock,
+}) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
@@ -93,6 +103,10 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     [],
   )
 
+  const totalMultipliers = totalRegularAllocPoint
+    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 100).toString()
+    : '-'
+
   const getFarmEarnings = (farm) => {
     const earnings = new BigNumber(farm?.userData?.earnings)
     return getBalanceNumber(earnings, FARM_DEFAULT_DECIMALS)
@@ -105,6 +119,12 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     const lpLabel = farm.lpSymbol
     const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
+
+    const farmCakePerSecond =
+      farm.poolWeight && cakePerBlock
+        ? (Number(farm.poolWeight) * ethersToBigNumber(cakePerBlock).toNumber()) / 1e8
+        : 10
+
     const row: RowProps = {
       apr: {
         value: getDisplayApr(farm.apr, farm.lpRewardsApr) || '0',
@@ -138,6 +158,13 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       multiplier: {
         multiplier: farm.multiplier,
         rewardCakePerSecond: true,
+        farmCakePerSecond:
+          farmCakePerSecond === 0
+            ? '0'
+            : farmCakePerSecond < 0.000001
+            ? '<0.000001'
+            : `~${farmCakePerSecond.toFixed(6)}`,
+        totalMultipliers,
       },
       type: farm.isCommunity ? 'community' : 'core',
       details: farm,
