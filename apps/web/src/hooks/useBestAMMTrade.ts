@@ -189,7 +189,9 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     }
 
     // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
-    return bestTradeFromOffchain
+    return bestTradeFromQuoter_.trade.outputAmount.greaterThan(bestTradeFromOffchain.trade.outputAmount)
+      ? bestTradeFromQuoter_
+      : bestTradeFromOffchain
   }, [bestTradeFromOffchain, bestTradeFromQuoterApi, bestTradeFromQuoterWorker, isQuoterAPIEnabled])
 }
 
