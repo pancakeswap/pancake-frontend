@@ -13,7 +13,7 @@ import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { encodeFunctionData } from 'viem'
 import { useAccount, useContractReads, useSendTransaction } from 'wagmi'
 
-const lmPoolAbi = [
+const lmPoolABI = [
   {
     inputs: [
       {
@@ -90,7 +90,8 @@ export function UpdatePositionsReminder_() {
       ...userInfo,
       tokenId: stakedTokenIds[i],
     }))
-    .filter((userInfo) => {
+    ?.filter((userInfo) => {
+      if (!userInfo?.pid) return false
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === Number(userInfo.pid))
       if (!farm) return false
       if (
@@ -110,7 +111,7 @@ export function UpdatePositionsReminder_() {
     contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
       const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === Number(userInfo.pid))
       return {
-        abi: lmPoolAbi,
+        abi: lmPoolABI,
         address: farm?.lmPool as `0x${string}`,
         functionName: 'rewardGrowthGlobalX128',
         args: [],

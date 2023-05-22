@@ -169,6 +169,7 @@ export interface SerializedFarmsState {
   loadingKeys: Record<string, boolean>
   poolLength?: number
   regularCakePerBlock?: number
+  totalRegularAllocPoint: string
 }
 
 export interface DeserializedFarmConfig extends FarmConfigBaseProps {
@@ -212,8 +213,9 @@ export interface DeserializedFarmsState {
   data: DeserializedFarm[]
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
-  poolLength?: number
-  regularCakePerBlock?: number
+  poolLength: number
+  regularCakePerBlock: number
+  totalRegularAllocPoint: string
 }
 
 export interface FarmWithStakedValue extends DeserializedFarm {
@@ -227,12 +229,14 @@ export interface SerializedFarmsV3Response {
   poolLength: number
   farmsWithPrice: SerializedFarmV3DataWithPrice[]
   cakePerSecond: string
+  totalAllocPoint: string
 }
 
 export interface FarmsV3Response<T extends FarmV3DataWithPrice = FarmV3DataWithPrice> {
   poolLength: number
   farmsWithPrice: T[]
   cakePerSecond: string
+  totalAllocPoint: string
 }
 
 export type IPendingCakeByTokenId = Record<string, bigint>

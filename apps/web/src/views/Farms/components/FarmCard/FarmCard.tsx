@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import ApyButton from './ApyButton'
@@ -65,6 +66,10 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
+  const { totalMultipliers, getFarmCakePerSecond } = useFarmV2Multiplier()
+
+  const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
+
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
 
@@ -112,6 +117,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isStable={farm.isStable}
           version={2}
           pid={farm.pid}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -150,6 +157,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     boosted={farm.boosted}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
+                    farmCakePerSecond={farmCakePerSecond}
+                    totalMultipliers={totalMultipliers}
                   />
                 </>
               ) : (
@@ -190,6 +199,9 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               onAddLiquidity={addLiquidityModal.onOpen}
               isCommunity={farm.isCommunity}
               auctionHostingEndDate={farm.auctionHostingEndDate}
+              multiplier={farm.multiplier}
+              farmCakePerSecond={farmCakePerSecond}
+              totalMultipliers={totalMultipliers}
             />
           </>
         )}

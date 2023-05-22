@@ -59,6 +59,8 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.ETHEREUM]: 16950686,
 }
 
+export const NODE_REAL_ADDRESS_LIMIT = 50
+
 export const DURATION_INTERVAL = {
   day: ONE_HOUR_SECONDS,
   week: ONE_DAY_SECONDS,

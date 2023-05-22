@@ -16,6 +16,7 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
+import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -64,6 +65,10 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
+  const { totalMultipliers, getFarmCakePerSecond } = useFarmV3Multiplier()
+
+  const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
+
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
   const earnLabel = t('CAKE + Fees')
   const { lpAddress } = farm
@@ -101,6 +106,8 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           quoteToken={farm.quoteToken}
           version={3}
           feeAmount={farm.feeAmount}
+          farmCakePerSecond={farmCakePerSecond}
+          totalMultipliers={totalMultipliers}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -139,6 +146,9 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               lpLabel={lpLabel}
               onAddLiquidity={addLiquidityModal.onOpen}
               isCommunity={false}
+              multiplier={farm.multiplier}
+              farmCakePerSecond={farmCakePerSecond}
+              totalMultipliers={totalMultipliers}
             />
           </>
         )}

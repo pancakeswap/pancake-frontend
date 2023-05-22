@@ -157,12 +157,17 @@ export const useFarms = () => {
         .toNumber()
     : 0
 
+  const totalRegularAllocPoint = masterChef?.data.total_regular_alloc_point
+  const cakePerBlock = masterChef?.data.cake_per_second
+
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
       regularCakePerBlock: regularCakePerSeconds,
       loadArchivedFarmsData: false,
+      totalRegularAllocPoint,
+      cakePerBlock,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
         .map(deserializeFarm)
@@ -184,7 +189,16 @@ export const useFarms = () => {
           }
         }),
     } as DeserializedFarmsState
-  }, [poolLength, regularCakePerSeconds, farmsWithPrices, masterChef, userInfos, getNow])
+  }, [
+    poolLength,
+    regularCakePerSeconds,
+    farmsWithPrices,
+    masterChef,
+    userInfos,
+    getNow,
+    totalRegularAllocPoint,
+    cakePerBlock,
+  ])
 }
 
 export function useFarmsUserInfo() {

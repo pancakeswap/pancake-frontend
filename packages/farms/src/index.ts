@@ -45,6 +45,7 @@ export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) =
       farmsWithPrice,
       poolLength: Number(poolLength),
       regularCakePerBlock: +regularCakePerBlock,
+      totalRegularAllocPoint: totalRegularAllocPoint.toString(),
     }
   }
 
@@ -93,6 +94,7 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
         poolLength: Number(poolLength),
         farmsWithPrice,
         cakePerSecond,
+        totalAllocPoint: totalAllocPoint.toString(),
       }
     } catch (error) {
       console.error(error)

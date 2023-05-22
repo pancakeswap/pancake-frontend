@@ -150,7 +150,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isSmallerScreen} />
+                        <Apr
+                          {...props.apr}
+                          hideButton={isSmallerScreen}
+                          farmCakePerSecond={multiplier.farmCakePerSecond}
+                          totalMultipliers={multiplier.totalMultipliers}
+                        />
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -198,7 +203,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton />
+                <Apr
+                  {...props.apr}
+                  hideButton
+                  farmCakePerSecond={multiplier.farmCakePerSecond}
+                  totalMultipliers={multiplier.totalMultipliers}
+                />
               </CellLayout>
             </AprMobileCell>
           </td>

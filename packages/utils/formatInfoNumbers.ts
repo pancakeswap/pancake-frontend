@@ -1,5 +1,3 @@
-import numbro from 'numbro'
-
 // Returns first 2 digits after first non-zero decimal
 // i.e. 0.001286 -> 0.0012, 0.9845 -> 0.98, 0.0102 -> 0.010, etc
 // Intended to be used for tokens whose value is less than $1
@@ -11,6 +9,8 @@ export const getFirstThreeNonZeroDecimals = (value: number) => {
 export type formatAmountNotation = 'compact' | 'standard'
 
 export type tokenPrecisionStyle = 'normal' | 'enhanced'
+
+const GROUPING_FALSE_LARGER_THAN_THIS = 1_000_000_000_000_000_000
 
 /**
  * This function is used to format token prices, liquidity, amount of tokens in TX, and in general any numbers on info section
@@ -56,19 +56,12 @@ export const formatAmount = (
     precision = amount < 1 || tokenPrecision === 'enhanced' ? 3 : 2
   }
 
-  let format = `0.${'0'.repeat(precision)}a`
-
-  if (notation === 'standard') {
-    format = `0,0.${'0'.repeat(precision)}`
-  }
-
-  if (isInteger && amount < 1000) {
-    format = '0'
-  }
-
   const amountWithPrecision = parseFloat(amount?.toFixed(precision))
 
-  // toUpperCase is needed cause numeral doesn't have support for capital K M B out of the box
-  // TODO: numbro support though, need to convert the format string to new format
-  return numbro(amountWithPrecision).format(format).toUpperCase()
+  return Intl.NumberFormat('en-US', {
+    notation,
+    minimumFractionDigits: isInteger && amount < 1000 ? 0 : precision,
+    maximumFractionDigits: isInteger && amount < 1000 ? 0 : precision,
+    useGrouping: amountWithPrecision < GROUPING_FALSE_LARGER_THAN_THIS,
+  }).format(amountWithPrecision)
 }

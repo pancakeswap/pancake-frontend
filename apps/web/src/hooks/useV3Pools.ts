@@ -99,6 +99,7 @@ export function useV3CandidatePoolsWithoutTicks(
       return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, getViemClients)
     },
     enabled: Boolean(error && key && options.enabled),
+    keepPreviousData: true,
   })
 
   const candidatePools = useMemo<V3Pool[] | null>(() => {
@@ -161,21 +162,23 @@ export function useV3PoolsWithTicks(
       }
     },
     {
+      errorRetryCount: 5,
       revalidateOnFocus: false,
     },
   )
 
-  const { mutate, data } = poolsWithTicks
+  const { mutate, data, error } = poolsWithTicks
   useEffect(() => {
     // Revalidate pools if block number increases
     if (
       blockNumber &&
+      !error &&
       fetchingBlock.current !== blockNumber.toString() &&
       (!data?.blockNumber || blockNumber - data.blockNumber > 5)
     ) {
       mutate()
     }
-  }, [blockNumber, mutate, data?.blockNumber])
+  }, [blockNumber, mutate, data?.blockNumber, error])
 
   return poolsWithTicks
 }
@@ -211,18 +214,19 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     },
   )
 
-  const { mutate, data } = result
+  const { mutate, data, error } = result
   useEffect(() => {
     // Revalidate pools if block number increases
     if (
       queryEnabled &&
       blockNumber &&
+      !error &&
       fetchingBlock.current !== blockNumber.toString() &&
       (!data?.blockNumber || blockNumber - data.blockNumber > 5)
     ) {
       mutate()
     }
-  }, [blockNumber, mutate, data?.blockNumber, queryEnabled])
+  }, [blockNumber, mutate, data?.blockNumber, queryEnabled, error])
   return result
 }
 

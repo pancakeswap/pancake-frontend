@@ -4,6 +4,9 @@ import { Flex } from "../../../../components/Box";
 import { LinkExternal } from "../../../../components/Link";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Text } from "../../../../components/Text";
+import { HelpIcon } from "../../../../components/Svg";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import { FarmMultiplierInfo } from "../FarmMultiplierInfo";
 
 export interface ExpandableSectionProps {
   scanAddressLink?: string;
@@ -16,6 +19,9 @@ export interface ExpandableSectionProps {
   auctionHostingEndDate?: string;
   alignLinksToRight?: boolean;
   totalValueLabel?: string;
+  multiplier?: string;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 const Wrapper = styled.div`
@@ -44,11 +50,23 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   isCommunity,
   auctionHostingEndDate,
   alignLinksToRight = true,
+  multiplier,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation();
+
+  const multiplierTooltipContent = FarmMultiplierInfo({
+    farmCakePerSecond: farmCakePerSecond ?? "-",
+    totalMultipliers: totalMultipliers ?? "-",
+  });
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
+    placement: "bottom",
+  });
 
   return (
     <Wrapper>
@@ -67,6 +85,20 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       <Flex justifyContent="space-between">
         <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text>{t("Multiplier")}:</Text>
+        {multiplier ? (
+          <Flex>
+            <Text>{multiplier}</Text>
+            {tooltipVisible && tooltip}
+            <Flex ref={targetRef}>
+              <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+            </Flex>
+          </Flex>
+        ) : (
+          <Skeleton width={75} height={25} />
+        )}
       </Flex>
       {!removed && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>

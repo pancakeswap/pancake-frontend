@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Tag, Flex, Heading, Box, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Tag, Flex, Heading, Box, Skeleton, Farm as FarmUI, useTooltip } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/aptos-swap-sdk'
 import { TokenPairImage } from 'components/TokenImage'
 
@@ -11,6 +11,8 @@ export interface ExpandableSectionProps {
   isCommunityFarm?: boolean
   token: Token
   quoteToken: Token
+  farmCakePerSecond?: string
+  totalMultipliers?: string
 }
 
 const Wrapper = styled(Flex)`
@@ -29,8 +31,19 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   isCommunityFarm,
   token,
   quoteToken,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const isReady = multiplier !== undefined
+
+  const multiplierTooltipContent = FarmUI.FarmMultiplierInfo({
+    farmCakePerSecond: farmCakePerSecond ?? '-',
+    totalMultipliers: totalMultipliers ?? '-',
+  })
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
+    placement: 'bottom',
+  })
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
@@ -44,7 +57,10 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         <Flex justifyContent="center">
           {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
           {isReady ? (
-            <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+            <Flex ref={targetRef}>
+              <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+              {tooltipVisible && tooltip}
+            </Flex>
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}

@@ -10,6 +10,7 @@ import { ExpandableLabel } from "../Button";
 import { Link, LinkExternal } from "../Link";
 import { HelpIcon } from "../Svg";
 import { Text } from "../Text";
+import { FarmMultiplierInfo } from "../../widgets/Farm/components/FarmMultiplierInfo";
 
 export const Footer = styled(Flex)`
   width: 100%;
@@ -48,6 +49,8 @@ interface RoiCalculatorFooterProps {
   isLocked?: boolean;
   stableSwapAddress?: string;
   stableLpFee?: number;
+  farmCakePerSecond?: string;
+  totalMultipliers?: string;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -64,59 +67,22 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   isLocked = false,
   stableSwapAddress,
   stableLpFee,
+  farmCakePerSecond,
+  totalMultipliers,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
   const isAptos = rewardCakePerSecond === true;
 
+  const multiplierTooltipContent = FarmMultiplierInfo({
+    farmCakePerSecond: farmCakePerSecond ?? "-",
+    totalMultipliers: totalMultipliers ?? "-",
+  });
   const {
     targetRef: multiplierRef,
     tooltip: multiplierTooltip,
     tooltipVisible: multiplierTooltipVisible,
-  } = useTooltip(
-    <>
-      {isAptos ? (
-        <>
-          <Text>
-            {t(
-              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second."
-            )}
-          </Text>
-          <Text my="24px">
-            {" "}
-            {t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")}
-          </Text>
-          <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
-        </>
-      ) : (
-        <>
-          <Text>
-            {t(
-              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
-            )}
-          </Text>
-          <Text my="24px">
-            {" "}
-            {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
-          </Text>
-          <Text>
-            {t(
-              "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives."
-            )}
-          </Text>
-          <Link
-            mt="8px"
-            display="inline"
-            href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
-            external
-          >
-            {t("Read more")}
-          </Link>
-        </>
-      )}
-    </>,
-    { placement: "top-end", tooltipOffset: [20, 10] }
-  );
+  } = useTooltip(multiplierTooltipContent, { placement: "top-end", tooltipOffset: [20, 10] });
 
   const gridRowCount = isFarm ? 4 : 2;
   const lpRewardsAPR = useMemo(
