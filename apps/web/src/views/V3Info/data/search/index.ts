@@ -140,17 +140,17 @@ export async function fetchSearchResults(
       ...tokens.asAddress.map((d) => d.id),
       ...tokens.asName.map((d) => d.id),
       ...tokens.asSymbol.map((d) => d.id),
-    ]
+    ].slice(0, 50)
 
     const poolAddress = [
       ...pools.as0.map((d) => d.id),
       ...pools.as1.map((d) => d.id),
       ...pools.asAddress.map((d) => d.id),
-    ]
+    ].slice(0, 50)
 
     const tokensData = await fetchedTokenDatas(client, tokenAddress, blocks)
     const poolsData = await fetchPoolDatas(client, poolAddress, blocks)
-    const filteredSortedTokens = Object.values(tokensData.data)
+    const filteredSortedTokens = Object.values(tokensData?.data ?? {})
       .filter(notEmpty)
       .filter((t) => {
         const regexMatches = Object.keys(t).map((tokenEntryKey) => {
@@ -169,7 +169,7 @@ export async function fetchSearchResults(
         return regexMatches.some((m) => m)
       })
 
-    const filteredSortedPools = Object.values(poolsData.data)
+    const filteredSortedPools = Object.values(poolsData?.data ?? {})
       .filter(notEmpty)
       .filter((t) => {
         const regexMatches = Object.keys(t).map((key) => {
