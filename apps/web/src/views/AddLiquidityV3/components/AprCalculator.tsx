@@ -247,6 +247,10 @@ export function AprCalculator({
     [closeModal, feeAmount, onBothRangeInput, onFieldAInput, onSetFullRange, router],
   )
 
+  if (!data || !data.length) {
+    return null
+  }
+
   const hasFarmApr = positionFarmApr && +positionFarmApr > 0
   const combinedApr = hasFarmApr ? +apr.toSignificant(6) + +positionFarmApr : +apr.toSignificant(6)
   const aprDisplay = combinedApr.toLocaleString(undefined, {
