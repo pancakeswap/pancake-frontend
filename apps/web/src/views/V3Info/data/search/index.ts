@@ -5,6 +5,7 @@ import { PoolData, TokenData } from '../../types'
 import { escapeRegExp, notEmpty } from '../../utils'
 import { fetchPoolDatas } from '../pool/poolData'
 import { fetchedTokenDatas } from '../token/tokenData'
+import { NODE_REAL_ADDRESS_LIMIT } from '../../constants'
 
 export const TOKEN_SEARCH = gql`
   query tokens($value: String, $id: ID) {
@@ -132,7 +133,7 @@ export async function fetchSearchResults(
       id: value,
     })
     const pools = await client.request<PoolRes>(POOL_SEARCH, {
-      tokens: tokens.asSymbol?.map((t) => t.id),
+      tokens: tokens.asSymbol?.map((t) => t.id).slice(0, NODE_REAL_ADDRESS_LIMIT),
       id: value,
     })
 
@@ -140,13 +141,13 @@ export async function fetchSearchResults(
       ...tokens.asAddress.map((d) => d.id),
       ...tokens.asName.map((d) => d.id),
       ...tokens.asSymbol.map((d) => d.id),
-    ].slice(0, 50)
+    ].slice(0, NODE_REAL_ADDRESS_LIMIT)
 
     const poolAddress = [
       ...pools.as0.map((d) => d.id),
       ...pools.as1.map((d) => d.id),
       ...pools.asAddress.map((d) => d.id),
-    ].slice(0, 50)
+    ].slice(0, NODE_REAL_ADDRESS_LIMIT)
 
     const tokensData = await fetchedTokenDatas(client, tokenAddress, blocks)
     const poolsData = await fetchPoolDatas(client, poolAddress, blocks)
