@@ -18,6 +18,7 @@ import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { getViemClients } from 'utils/viem'
 import { WorkerEvent } from 'quote-worker'
 import { QUOTING_API } from 'config/constants/endpoints'
+import { fetchChunk } from 'state/multicall/fetchChunk'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -32,13 +33,13 @@ class WorkerProxy {
   // eslint-disable-next-line no-useless-constructor
   constructor(protected worker: Worker) {}
 
-  public postMessage = async (message: any) => {
+  public postMessage = async <T>(message: any) => {
     if (!this.worker) {
       throw new Error('Worker not initialized')
     }
 
     const id = this.id++
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise<T>((resolve, reject) => {
       const handler = (e) => {
         const [eventId, data] = e.data
         if (id === eventId) {
@@ -57,6 +58,13 @@ class WorkerProxy {
     return promise
   }
 
+  public fetchChunk = async (params: WorkerEvent[1]['params']): ReturnType<typeof fetchChunk> => {
+    return this.postMessage({
+      cmd: 'multicallChunk',
+      params,
+    })
+  }
+
   public getBestTrade = async (params: WorkerEvent[1]['params']) => {
     return this.postMessage({
       cmd: 'getBestTrade',
@@ -65,7 +73,7 @@ class WorkerProxy {
   }
 }
 
-const worker =
+export const worker =
   typeof window !== 'undefined' && typeof Worker !== 'undefined'
     ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
     : undefined

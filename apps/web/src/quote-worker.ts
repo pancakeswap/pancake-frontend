@@ -1,15 +1,29 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { Call } from 'state/multicall/actions'
+import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getViemClients } from 'utils/viem'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
-export type WorkerEvent = [
-  id: number,
-  message: {
-    cmd: 'getBestTrade'
-    params: SmartRouter.APISchema.RouterPostParams
-  },
-]
+export type WorkerEvent =
+  | [
+      id: number,
+      message: {
+        cmd: 'getBestTrade'
+        params: SmartRouter.APISchema.RouterPostParams
+      },
+    ]
+  | [
+      id: number,
+      message: {
+        cmd: 'multicallChunk'
+        params: {
+          chainId: number
+          chunk: Call[]
+          minBlockNumber: number
+        }
+      },
+    ]
 
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
 
@@ -17,6 +31,17 @@ const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: 
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
   const [id, message] = data
+  if (message.cmd === 'multicallChunk') {
+    fetchChunk(message.params.chainId, message.params.chunk, message.params.minBlockNumber).then((res) => {
+      postMessage([
+        id,
+        {
+          success: true,
+          result: res,
+        },
+      ])
+    })
+  }
   if (message.cmd === 'getBestTrade') {
     const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(message.params)
     if (parsed.success === false) {
