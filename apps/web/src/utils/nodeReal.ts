@@ -41,6 +41,11 @@ export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
         host = `eth-goerli.nodereal.io/v1/${key}`
       }
       break
+    case 56:
+      if (key) {
+        host = `bsc-mainnet.nodereal.io/v1/${key}`
+      }
+      break
     default:
       host = null
   }

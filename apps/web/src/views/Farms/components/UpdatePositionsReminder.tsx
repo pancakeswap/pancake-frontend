@@ -93,7 +93,7 @@ export function UpdatePositionsReminder_() {
       tokenId: stakedTokenIds[i],
     }))
     ?.filter((userInfo) => {
-      const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
+      const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber)?.toNumber())
       if (!farm) return false
       if (
         (userInfo.rewardGrowthInside as BigNumber).gt(
@@ -109,7 +109,7 @@ export function UpdatePositionsReminder_() {
   // getting it on client side to final confirm
   const { data: rewardGrowthGlobalX128s, isLoading } = useContractReads({
     contracts: isOverRewardGrowthGlobalUserInfos?.map((userInfo) => {
-      const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber).toNumber())
+      const farm = farmsV3?.farmsWithPrice.find((f) => f.pid === (userInfo.pid as BigNumber)?.toNumber())
       return {
         abi: lmPoolAbi,
         address: farm?.lmPool as `0x${string}`,
