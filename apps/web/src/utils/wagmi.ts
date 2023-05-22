@@ -20,7 +20,12 @@ export const { provider, chains } = configureChains(CHAINS, [
         return { http: 'https://cloudflare-eth.com' }
       }
       return PUBLIC_NODES[chain.id]
-        ? { http: typeof PUBLIC_NODES[chain.id] === 'string' ? PUBLIC_NODES[chain.id] as string : PUBLIC_NODES[chain.id][0] }
+        ? {
+            http:
+              typeof PUBLIC_NODES[chain.id] === 'string'
+                ? (PUBLIC_NODES[chain.id] as string)
+                : PUBLIC_NODES[chain.id][0],
+          }
         : { http: chain.rpcUrls.default.http[0] }
     },
   }),
