@@ -1,12 +1,12 @@
-import { getViemClients } from 'utils/viem';
-import { multicallABI } from 'config/abi/Multicall';
-import { getMulticallAddress } from 'utils/addressHelpers';
+import { getViemClients } from 'utils/viem'
+import { multicallABI } from 'config/abi/Multicall'
+import { getMulticallAddress } from 'utils/addressHelpers'
 import { Call } from './actions'
-import { RetryableError } from './retry';
+import { RetryableError } from './retry'
 
 /**
  * Fetches a chunk of calls, enforcing a minimum block number constraint
- * @param multicallContract multicall contract to fetch against
+ * @param chainId
  * @param chunk chunk of calls to make
  * @param minBlockNumber minimum block number of the result set
  */
@@ -28,12 +28,6 @@ export async function fetchChunk(
       args: [false, chunk.map((obj) => ({ callData: obj.callData, target: obj.address }))],
       blockNumber: BigInt(minBlockNumber),
     })
-    // [resultsBlockNumber, , returnData] = await multicallContract.read.tryBlockAndAggregate([
-    //   false,
-    //   chunk.map((obj) => ({ callData: obj.callData, target: obj.address })),
-    // ], {
-    //   blockNumber: BigInt(minBlockNumber),
-    // })
   } catch (err) {
     const error = err as any
     if (
