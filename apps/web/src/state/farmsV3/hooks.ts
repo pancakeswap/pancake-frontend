@@ -104,7 +104,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
 
   const cakePrice = useCakePriceAsBN()
 
-  const { data, error } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
+  const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
       const tvls: TvlMap = {}
@@ -167,7 +167,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   )
 
   return {
-    data: error ? farmV3.data : ((data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>),
+    data: ((data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>),
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }
