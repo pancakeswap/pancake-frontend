@@ -13,7 +13,10 @@ export const SERVER_NODES = {
     'https://eth.llamarpc.com',
     'https://cloudflare-eth.com',
   ],
-  [ChainId.GOERLI]: [getNodeRealUrlV2(ChainId.GOERLI, process.env.SERVER_NODE_REAL_API_GOERLI)],
+  [ChainId.GOERLI]: [
+    getNodeRealUrlV2(ChainId.GOERLI, process.env.SERVER_NODE_REAL_API_GOERLI),
+    'https://eth-goerli.public.blastapi.io',
+  ].filter(Boolean),
 } satisfies Record<ChainId, string[]>
 
 export const PUBLIC_NODES = {
@@ -28,6 +31,9 @@ export const PUBLIC_NODES = {
     getNodeRealUrlV2(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
     'https://eth.llamarpc.com',
     'https://cloudflare-eth.com',
-  ],
-  [ChainId.GOERLI]: [getNodeRealUrlV2(ChainId.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI)],
+  ].filter(Boolean),
+  [ChainId.GOERLI]: [
+    getNodeRealUrlV2(ChainId.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI),
+    'https://eth-goerli.public.blastapi.io',
+  ].filter(Boolean),
 } satisfies Record<ChainId, string[]>
