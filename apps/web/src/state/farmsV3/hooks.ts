@@ -24,6 +24,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { multicallv2 } from 'utils/multicall'
 import { useAccount } from 'wagmi'
+import fetchWithTimeout from 'utils/fetchWithTimeout'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -111,7 +112,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
       if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {
         const results = await Promise.allSettled(
           farmV3.data.farmsWithPrice.map((f) =>
-            fetch(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`)
+            fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`)
               .then((r) => r.json())
               .catch((err) => {
                 console.error(err)
