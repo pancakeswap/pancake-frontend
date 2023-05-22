@@ -168,7 +168,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   )
 
   return {
-    data: ((data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>),
+    data: (data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }
