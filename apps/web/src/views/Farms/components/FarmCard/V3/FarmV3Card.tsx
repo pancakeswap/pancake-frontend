@@ -25,7 +25,7 @@ import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
-import { useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useBoostStatus, BoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 
 const { DetailsSection } = FarmUI.FarmCard
 
@@ -112,6 +112,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
           isCommunityFarm={farm.isCommunity}
+          boosted={boostStatus !== BoostStatus.CanNotBoost}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
