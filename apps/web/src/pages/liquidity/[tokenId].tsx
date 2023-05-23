@@ -444,7 +444,7 @@ export default function PoolPage() {
           </Text>
           <NextLinkFromReactRouter to="/farms">
             <Text display="inline" bold ml="0.25em" style={{ textDecoration: 'underline' }}>
-              {t('Go to Farms >>')}
+              {t('Go to Farms')} {' >>'}
             </Text>
           </NextLinkFromReactRouter>
         </Box>
