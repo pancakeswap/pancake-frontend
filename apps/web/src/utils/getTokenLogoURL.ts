@@ -7,12 +7,25 @@ const mapping = {
   [ChainId.ETHEREUM]: 'ethereum',
 }
 
+const chainName: { [key: number]: string } = {
+  [ChainId.BSC]: '',
+  [ChainId.ETHEREUM]: 'eth',
+}
+
 const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId]) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${getAddress(
-        token.address,
-      )}/logo.png`
+      const { chainId } = token
+      const tokenAddress = getAddress(token.address)
+      const trustWalletLogoUrl = `https://assets-cdn.trustwallet.com/blockchains/${
+        mapping[chainId]
+      }/assets/${getAddress(token.address)}/logo.png`
+
+      const logoUrl = `https://tokens.pancakeswap.finance/images/${
+        chainId === ChainId.BSC ? '' : `${chainName[chainId]}/`
+      }${tokenAddress}.png`
+
+      return [logoUrl, trustWalletLogoUrl].filter((url) => Boolean(url)) as string[]
     }
     return null
   },
