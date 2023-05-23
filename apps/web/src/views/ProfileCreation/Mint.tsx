@@ -25,7 +25,7 @@ interface MintNftData extends ApiSingleTokenData {
 const Mint: React.FC<React.PropsWithChildren> = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
-  const { actions, minimumCakeRequired, allowance: _allowance } = useProfileCreation()
+  const { actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { toastSuccess } = useToast()
 
   const bunnyFactoryContract = useBunnyFactory()
@@ -56,7 +56,8 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
     useApproveConfirmTransaction({
       token: bscTokens.cake,
       spender: getBunnyFactoryAddress(),
-      amount: minimumCakeRequired,
+      minAmount: minimumCakeRequired,
+      targetAmount: allowance,
       onConfirm: () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [BigInt(selectedBunnyId)])
       },

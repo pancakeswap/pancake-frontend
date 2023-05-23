@@ -8,7 +8,6 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useProfileContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { REGISTER_COST } from './config'
 import { State } from './contexts/types'
 
@@ -16,17 +15,11 @@ interface Props {
   userName: string
   selectedNft: State['selectedNft']
   teamId: number
-  minimumCakeRequired: bigint
   allowance: bigint
   onDismiss?: () => void
 }
 
-const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
-  teamId,
-  selectedNft,
-  minimumCakeRequired,
-  onDismiss,
-}) => {
+const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({ teamId, selectedNft, onDismiss }) => {
   const { t } = useTranslation()
   const profileContract = useProfileContract()
   const { refresh: refreshProfile } = useProfile()
@@ -36,8 +29,8 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       token: bscTokens.cake,
-      spender: getPancakeProfileAddress(),
-      amount: minimumCakeRequired,
+      spender: profileContract.address,
+      minAmount: REGISTER_COST,
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [
           BigInt(teamId),

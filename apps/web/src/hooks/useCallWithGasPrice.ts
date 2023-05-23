@@ -9,10 +9,12 @@ import {
   Chain,
   GetFunctionArgs,
   InferFunctionName,
-  SimulateContractParameters,
+  WriteContractParameters,
 } from 'viem'
 import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
+import { calculateGasMargin } from 'utils'
+import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/estimateContractGas'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useCallWithGasPrice() {
@@ -72,7 +74,7 @@ export function useCallWithGasPrice() {
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
       const publicClient = getViemClients({ chainId })
-      const { request } = await publicClient.simulateContract({
+      const gas = await publicClient.estimateContractGas({
         abi: contract.abi,
         address: contract.address,
         account: walletClient.account,
@@ -80,10 +82,17 @@ export function useCallWithGasPrice() {
         args: methodArgs,
         gasPrice,
         ...overrides,
-      } as unknown as SimulateContractParameters)
+      } as unknown as EstimateContractGasParameters)
       const res = await walletClient.writeContract({
-        ...request,
-      })
+        abi: contract.abi,
+        address: contract.address,
+        account: walletClient.account,
+        functionName: methodName,
+        args: methodArgs,
+        gasPrice: 1000000000n,
+        gas: calculateGasMargin(gas),
+        ...overrides,
+      } as unknown as WriteContractParameters)
 
       const hash = res
 
