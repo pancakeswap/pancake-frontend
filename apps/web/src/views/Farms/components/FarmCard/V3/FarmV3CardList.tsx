@@ -43,23 +43,25 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
             {partition_(unstakedPositions, (position) => !isPositionOutOfRange(pool?.tickCurrent, position))
               .flat()
               .map((position) => (
-                <SingleFarmV3Card
-                  farm={farm}
-                  style={{
-                    minWidth: '49%',
-                  }}
-                  pool={pool}
-                  flex={1}
-                  direction={direction}
-                  positionType="unstaked"
-                  key={position.tokenId.toString()}
-                  lpSymbol={lpSymbol}
-                  position={position}
-                  token={token}
-                  quoteToken={quoteToken}
-                  pendingCakeByTokenIds={pendingCakeByTokenIds}
-                  onDismiss={onDismiss}
-                />
+                <>
+                  <SingleFarmV3Card
+                    farm={farm}
+                    style={{
+                      minWidth: '49%',
+                    }}
+                    pool={pool}
+                    flex={1}
+                    direction={direction}
+                    positionType="unstaked"
+                    key={position.tokenId.toString()}
+                    lpSymbol={lpSymbol}
+                    position={position}
+                    token={token}
+                    quoteToken={quoteToken}
+                    pendingCakeByTokenIds={pendingCakeByTokenIds}
+                    onDismiss={onDismiss}
+                  />
+                </>
               ))}
           </AutoRow>
         </Flex>
@@ -71,21 +73,23 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           </PreTitle>
           <Flex flexWrap="wrap" width="100%">
             {stakedPositions.map((position) => (
-              <SingleFarmV3Card
-                harvesting={harvesting}
-                pool={pool}
-                width="100%"
-                direction={direction}
-                positionType="staked"
-                farm={farm}
-                key={position.tokenId.toString()}
-                lpSymbol={lpSymbol}
-                position={position}
-                token={token}
-                quoteToken={quoteToken}
-                pendingCakeByTokenIds={pendingCakeByTokenIds}
-                onDismiss={onDismiss}
-              />
+              <>
+                <SingleFarmV3Card
+                  harvesting={harvesting}
+                  pool={pool}
+                  width="100%"
+                  direction={direction}
+                  positionType="staked"
+                  farm={farm}
+                  key={position.tokenId.toString()}
+                  lpSymbol={lpSymbol}
+                  position={position}
+                  token={token}
+                  quoteToken={quoteToken}
+                  pendingCakeByTokenIds={pendingCakeByTokenIds}
+                  onDismiss={onDismiss}
+                />
+              </>
             ))}
             {showHarvestAll && stakedPositions.length > 1 && (
               <Button

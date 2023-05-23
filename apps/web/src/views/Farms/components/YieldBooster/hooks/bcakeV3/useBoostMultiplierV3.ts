@@ -42,22 +42,22 @@ export async function getPublicMultiplier({ farmBoosterContract, chainId }): Pro
   return _toNumber(boostPercent.round(3).toString())
 }
 
-export async function getUserMultiplier({ farmBoosterContract, account, pid }): Promise<number> {
+export async function getUserMultiplier({ address, tokenId, chainId }): Promise<number> {
   const calls = [
     {
-      address: farmBoosterContract.address,
+      address,
       name: 'getUserMultiplier',
       abi: farmBoosterAbi,
-      params: [account, pid],
+      params: [tokenId],
     },
     {
-      address: farmBoosterContract.address,
+      address,
       abi: farmBoosterAbi,
       name: 'BOOST_PRECISION',
     },
   ]
 
-  const data = await multicallv3({ calls })
+  const data = await multicallv3({ calls, chainId: +chainId })
 
   if (!data) return 0
 

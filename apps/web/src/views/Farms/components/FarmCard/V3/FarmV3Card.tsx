@@ -9,17 +9,17 @@ import {
   useModalV2,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { unwrappedToken } from 'utils/wrappedCurrency'
-import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
-import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { unwrappedToken } from 'utils/wrappedCurrency'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
@@ -81,7 +81,6 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const toggleExpandableSection = useCallback(() => {
     setShowExpandableSection((prev) => !prev)
   }, [])
-
   const aprTooltip = useTooltip(
     <>
       <Text>
@@ -124,7 +123,6 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         </Flex>
         <CardActionsContainer farm={farm} lpLabel={lpLabel} account={account} />
       </FarmCardInnerContainer>
-
       <ExpandingWrapper>
         <ExpandableSectionButton onClick={toggleExpandableSection} expanded={showExpandableSection} />
         {showExpandableSection && (
