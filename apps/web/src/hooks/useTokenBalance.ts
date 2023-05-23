@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 
 import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
@@ -40,9 +39,8 @@ export const useGetBnbBalance = () => {
   return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
 
-export const useGetCakeBalance = () => {
-  const { chainId } = useWeb3React()
-  const { balance, fetchStatus } = useTokenBalance(CAKE[chainId]?.address || CAKE[ChainId.BSC]?.address, true)
+export const useBSCCakeBalance = () => {
+  const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 
   return { balance: BigInt(balance.toString()), fetchStatus }
 }
