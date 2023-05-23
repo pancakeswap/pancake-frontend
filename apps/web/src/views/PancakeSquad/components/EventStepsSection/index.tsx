@@ -3,7 +3,7 @@ import { Box, Button, Card, CardBody, Flex, Step, Stepper, Text } from '@pancake
 import { useTranslation } from '@pancakeswap/localization'
 import { StyledWaveContainer, LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import useTheme from 'hooks/useTheme'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import EventStepsBottomWave from '../../assets/EventStepsBottomWave'
 import EventStepsTopWave from '../../assets/EventStepsTopWave'
 import stepsConfigBuilder from './config'
@@ -19,7 +19,7 @@ const EventStepsSection: React.FC<React.PropsWithChildren<EventStepsProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
-  const { balance: cakeBalance } = useGetCakeBalance()
+  const { balance: cakeBalance } = useBSCCakeBalance()
   const stepsConfig = stepsConfigBuilder({ t, eventInfos, userInfos, userStatus, account, theme, cakeBalance })
   const isMintingFinished = userInfos && eventInfos && eventInfos.maxSupply === eventInfos.totalSupplyMinted
   return (

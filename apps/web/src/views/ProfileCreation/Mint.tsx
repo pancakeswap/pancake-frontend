@@ -6,7 +6,7 @@ import { formatUnits } from 'viem'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useBunnyFactory } from 'hooks/useContract'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
@@ -30,7 +30,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
 
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
-  const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
+  const { balance: cakeBalance, fetchStatus } = useBSCCakeBalance()
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= MINT_COST
   const { callWithGasPrice } = useCallWithGasPrice()
 
