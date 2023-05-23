@@ -18,7 +18,7 @@ import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/es
 import { useActiveChainId } from './useActiveChainId'
 
 export function useCallWithGasPrice() {
-  const _gasPrice = useGasPrice()
+  const gasPrice = useGasPrice()
   const { chainId } = useActiveChainId()
   const { data: walletClient } = useWalletClient()
 
@@ -80,7 +80,7 @@ export function useCallWithGasPrice() {
         account: walletClient.account,
         functionName: methodName,
         args: methodArgs,
-        // gasPrice,
+        gasPrice,
         ...overrides,
       } as unknown as EstimateContractGasParameters)
       const res = await walletClient.writeContract({
@@ -100,7 +100,7 @@ export function useCallWithGasPrice() {
         hash,
       }
     },
-    [chainId, walletClient],
+    [chainId, gasPrice, walletClient],
   )
 
   return { callWithGasPrice: callWithGasPriceWithSimulate }
