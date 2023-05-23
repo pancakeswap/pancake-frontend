@@ -47,6 +47,8 @@ import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmoun
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
 import { hexToBigInt } from 'viem'
+import { getViemClients } from 'utils/viem'
+import { calculateGasMargin } from 'utils'
 
 import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 import RangeSelector from './components/RangeSelector'
@@ -227,39 +229,47 @@ export default function V3FormView({
       })
 
       setAttemptingTxn(true)
-      sendTransactionAsync({
+      const txn = {
         data: calldata,
         to: nftPositionManagerAddress,
         value: hexToBigInt(value),
         account,
-      })
-        .then((response) => {
-          const baseAmount = formatRawAmount(
-            parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-            baseCurrency.decimals,
-            4,
-          )
-          const quoteAmount = formatRawAmount(
-            parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-            quoteCurrency.decimals,
-            4,
-          )
-
-          setAttemptingTxn(false)
-          addTransaction(response, {
-            type: 'add-liquidity-v3',
-            summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
+      }
+      getViemClients({ chainId })
+        .estimateGas(txn)
+        .then((gas) => {
+          sendTransactionAsync({
+            ...txn,
+            gas: calculateGasMargin(gas),
           })
-          setTxHash(response.hash)
-          onAddLiquidityCallback(response.hash)
-        })
-        .catch((error) => {
-          console.error('Failed to send transaction', error)
-          setAttemptingTxn(false)
-          // we only care if the error is something _other_ than the user rejected the tx
-          if (!isUserRejected(error)) {
-            console.error(error)
-          }
+            .then((response) => {
+              const baseAmount = formatRawAmount(
+                parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+                baseCurrency.decimals,
+                4,
+              )
+              const quoteAmount = formatRawAmount(
+                parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+                quoteCurrency.decimals,
+                4,
+              )
+
+              setAttemptingTxn(false)
+              addTransaction(response, {
+                type: 'add-liquidity-v3',
+                summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
+              })
+              setTxHash(response.hash)
+              onAddLiquidityCallback(response.hash)
+            })
+            .catch((error) => {
+              console.error('Failed to send transaction', error)
+              setAttemptingTxn(false)
+              // we only care if the error is something _other_ than the user rejected the tx
+              if (!isUserRejected(error)) {
+                console.error(error)
+              }
+            })
         })
     }
   }, [

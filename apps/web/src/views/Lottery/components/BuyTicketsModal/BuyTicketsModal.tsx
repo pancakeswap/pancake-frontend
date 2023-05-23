@@ -243,7 +243,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     useApproveConfirmTransaction({
       token: bscTokens.cake,
       spender: lotteryContract.address,
-      amount: parseEther(totalCost as `${number}`),
+      minAmount: parseEther(totalCost as `${number}`),
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(
           t('Contract enabled - you can now purchase tickets'),

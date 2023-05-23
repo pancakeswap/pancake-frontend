@@ -1,4 +1,4 @@
-import { parseEther } from 'viem'
+import { parseEther, parseUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
 import {
@@ -71,7 +71,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     useApproveConfirmTransaction({
       token: currency,
       spender: contract.address,
-      amount: BigInt(valueWithTokenDecimals.toString()),
+      minAmount: value ? parseUnits(value as `${number}`, currency.decimals) : undefined,
       onApproveSuccess: ({ receipt }) => {
         toastSuccess(
           t('Successfully Enabled!'),
@@ -225,7 +225,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
             </Link>
           </Text>
           <ApproveConfirmButtons
-            isApproveDisabled={isConfirmed || isConfirming || isApproved}
+            isApproveDisabled={isConfirmed || isConfirming || isApproved || !value}
             isApproving={isApproving}
             isConfirmDisabled={
               !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0) || isWarning

@@ -47,6 +47,8 @@ import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
+import { getViemClients } from 'utils/viem'
+import { calculateGasMargin } from 'utils'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBurnV3ActionHandlers } from './form/hooks'
@@ -170,56 +172,34 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     const txn = {
       to: manager.address,
       data: calldata,
-      value,
+      value: hexToBigInt(value),
+      account,
     }
 
-    sendTransactionAsync({
-      to: txn.to,
-      account,
-      chainId,
-      data: txn.data,
-      value: hexToBigInt(txn.value),
-    })
-      .then((response) => {
-        const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
-        const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
+    const publicClient = getViemClients({ chainId })
 
-        setTxnHash(response.hash)
-        setAttemptingTxn(false)
-        addTransaction(response, {
-          type: 'remove-liquidity-v3',
-          summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
+    publicClient.estimateGas(txn).then((gas) => {
+      sendTransactionAsync({
+        ...txn,
+        gas: calculateGasMargin(gas),
+        chainId,
+      })
+        .then((response) => {
+          const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
+          const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
+
+          setTxnHash(response.hash)
+          setAttemptingTxn(false)
+          addTransaction(response, {
+            type: 'remove-liquidity-v3',
+            summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
+          })
         })
-      })
-      .catch((err) => {
-        setAttemptingTxn(false)
-        console.error(err)
-      })
-
-    // signer
-    //   .estimateGas(txn)
-    //   .then((estimate) => {
-    //     const newTxn = {
-    //       ...txn,
-    //       gasLimit: calculateGasMargin(estimate),
-    //     }
-
-    //     return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-    //       const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
-    //       const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
-
-    //       setTxnHash(response.hash)
-    //       setAttemptingTxn(false)
-    //       addTransaction(response, {
-    //         type: 'remove-liquidity-v3',
-    //         summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
-    //       })
-    //     })
-    //   })
-    //   .catch((err) => {
-    //     setAttemptingTxn(false)
-    //     console.error(err)
-    //   })
+        .catch((err) => {
+          setAttemptingTxn(false)
+          console.error(err)
+        })
+    })
   }, [
     tokenIdsInMCv3Loading,
     masterchefV3,
