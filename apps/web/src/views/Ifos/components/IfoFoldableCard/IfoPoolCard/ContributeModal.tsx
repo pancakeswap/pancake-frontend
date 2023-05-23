@@ -1,4 +1,4 @@
-import { parseUnits } from 'viem'
+import { parseEther, parseUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
 import {
