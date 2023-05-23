@@ -228,8 +228,8 @@ export function RoiCalculator({
     if (
       !amountA ||
       !amountB ||
-      !priceRange?.tickUpper ||
-      !priceRange?.tickLower ||
+      typeof priceRange?.tickUpper !== "number" ||
+      typeof priceRange?.tickLower !== "number" ||
       !sqrtRatioX96 ||
       !farmingRewardsEnabled ||
       !cakeAprFactor

@@ -71,7 +71,7 @@ export function getPositionFarmApr({
     return '0'
   }
 
-  const positionApr = aprFactor.times(liquidity.toString()).div(positionTvlUsd).times(100)
+  const positionApr = aprFactor.times(liquidity.toString()).div(positionTvlUsd)
 
   return formatNumber(positionApr, precision)
 }
