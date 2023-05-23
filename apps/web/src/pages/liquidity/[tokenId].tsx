@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers'
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
   AutoColumn,
   AutoRow,
@@ -21,12 +22,14 @@ import {
   Tag,
   Text,
   Toggle,
+  Message,
   useMatchBreakpoints,
   useModal,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
+import { useFarm } from 'hooks/useFarm'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
@@ -172,6 +175,11 @@ export default function PoolPage() {
 
   const token0 = useToken(token0Address)
   const token1 = useToken(token1Address)
+  const { data: farmDetail } = useFarm({ currencyA: token0, currencyB: token1, feeAmount })
+  const hasActiveFarm = useMemo(
+    () => farmDetail && isActiveV3Farm(farmDetail.farm, farmDetail.poolLength),
+    [farmDetail],
+  )
 
   const currency0 = token0 ? unwrappedToken(token0) : undefined
   const currency1 = token1 ? unwrappedToken(token1) : undefined
@@ -424,6 +432,25 @@ export default function PoolPage() {
     return <NotFound />
   }
 
+  const farmingTips =
+    hasActiveFarm && !isStakedInMCv3 ? (
+      <Message variant="primary" mb="2em">
+        <Box>
+          <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
+          <Text display="inline">
+            {t(
+              'has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.',
+            )}
+          </Text>
+          <NextLinkFromReactRouter to="/farms">
+            <Text display="inline" bold ml="0.25em" style={{ textDecoration: 'underline' }}>
+              {t('Go to Farms')} {' >>'}
+            </Text>
+          </NextLinkFromReactRouter>
+        </Box>
+      </Message>
+    ) : null
+
   return (
     <Page>
       {!isLoading && <NextSeo title={`${currencyQuote?.symbol}-${currencyBase?.symbol} V3 LP #${tokenIdFromUrl}`} />}
@@ -515,6 +542,7 @@ export default function PoolPage() {
                   )}
                 </>
               )}
+              {farmingTips}
               <AutoRow>
                 <Flex
                   alignItems="center"

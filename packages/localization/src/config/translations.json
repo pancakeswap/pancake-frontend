@@ -2526,5 +2526,10 @@
   "Beta": "Beta",
   "Explore Beta": "Explore Beta",
   "Pancake Protectors": "Pancake Protectors",
-  "Please be extra careful during this period as altcoin trading volumes are on the surge recently.": "Please be extra careful during this period as altcoin trading volumes are on the surge recently."
+  "Please be extra careful during this period as altcoin trading volumes are on the surge recently.": "Please be extra careful during this period as altcoin trading volumes are on the surge recently.",
+  "Go to Farms": "Go to Farms",
+  "has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.": "has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.",
+  "This position must be staking in farm to apply the combined APR with farming rewards.": "This position must be staking in farm to apply the combined APR with farming rewards.",
+  "APR (with farming)": "APR (with farming)",
+  "Include farming rewards": "Include farming rewards"
 }
