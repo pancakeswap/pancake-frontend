@@ -89,7 +89,7 @@ export function useCallWithGasPrice() {
         account: walletClient.account,
         functionName: methodName,
         args: methodArgs,
-        gasPrice: 1000000000n,
+        gasPrice,
         gas: calculateGasMargin(gas),
         ...overrides,
       } as unknown as WriteContractParameters)
