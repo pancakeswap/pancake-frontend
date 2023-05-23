@@ -1,4 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
+import { describe, it, expect } from 'vitest'
 import { FeeAmount } from '../constants'
 import { computePoolAddress } from './computePoolAddress'
 
@@ -17,7 +18,7 @@ describe('#computePoolAddress', () => {
     expect(result).toEqual('0x993B1e86fFEf6609e47416212C17B0df746fa985')
   })
 
-  it('should correctly compute the pool address', () => {
+  it('should correctly compute the pool address2', () => {
     const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 18, 'USDC', 'USD Coin')
     const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
     let tokenA = USDC

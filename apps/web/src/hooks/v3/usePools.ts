@@ -2,6 +2,7 @@ import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { computePoolAddress, FeeAmount, Pool, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
+import { Address } from 'viem'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -21,7 +22,7 @@ class PoolCache {
 
   private static addresses: { key: string; address: string }[] = []
 
-  static getPoolAddress(deployerAddress: string, tokenA: Token, tokenB: Token, fee: FeeAmount): string {
+  static getPoolAddress(deployerAddress: Address, tokenA: Token, tokenB: Token, fee: FeeAmount): string {
     if (this.addresses.length > this.MAX_ENTRIES) {
       this.addresses = this.addresses.slice(0, this.MAX_ENTRIES / 2)
     }

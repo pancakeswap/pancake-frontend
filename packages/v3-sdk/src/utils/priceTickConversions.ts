@@ -1,4 +1,4 @@
-import { Price, Token } from '@pancakeswap/sdk'
+import { Price, Token } from '@pancakeswap/swap-sdk-core'
 import { Q192 } from '../internalConstants'
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'
 import { TickMath } from './tickMath'

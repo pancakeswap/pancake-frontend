@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { PositionLibrary } from '.'
 import { ZERO } from '../internalConstants'
 

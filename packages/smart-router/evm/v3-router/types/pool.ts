@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { FeeAmount, Tick } from '@pancakeswap/v3-sdk'
+import { Address } from 'viem'
 
 export enum PoolType {
   V2,
@@ -18,7 +19,7 @@ export interface V2Pool extends BasePool {
 }
 
 export interface StablePool extends BasePool {
-  address: string
+  address: Address
   type: PoolType.STABLE
   // Could be 2 token pool or more
   balances: CurrencyAmount<Currency>[]
@@ -36,7 +37,7 @@ export interface V3Pool extends BasePool {
   liquidity: bigint
   sqrtRatioX96: bigint
   tick: number
-  address: string
+  address: Address
   token0ProtocolFee: Percent
   token1ProtocolFee: Percent
 

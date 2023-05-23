@@ -2,6 +2,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 import keyBy from 'lodash/keyBy'
 import { TickMath, tickToPrice } from '@pancakeswap/v3-sdk'
 import { Token, ChainId } from '@pancakeswap/sdk'
+import { Address } from 'viem'
 
 const PRICE_FIXED_DIGITS = 4
 const DEFAULT_SURROUNDING_TICKS = 300
@@ -197,8 +198,8 @@ export const fetchTicksSurroundingPrice = async (
 
     const tickIdxToInitializedTick = keyBy(initializedTicks, 'tickIdx')
 
-    const token0 = new Token(chainId, token0Address, parseInt(token0Decimals), token0Symbol)
-    const token1 = new Token(chainId, token1Address, parseInt(token1Decimals), token1Symbol)
+    const token0 = new Token(chainId, token0Address as Address, parseInt(token0Decimals), token0Symbol)
+    const token1 = new Token(chainId, token1Address as Address, parseInt(token1Decimals), token1Symbol)
 
     // console.log({ activeTickIdx, poolCurrentTickIdx }, 'Active ticks')
 

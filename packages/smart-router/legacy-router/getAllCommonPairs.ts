@@ -1,10 +1,10 @@
 import { ChainId, Currency, Pair, Token } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap.js'
 
-import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
+import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../evm/constants'
 import { getPairs } from './onchain'
 import { Provider } from './types'
-import { wrappedCurrency } from '../utils/currency'
+import { wrappedCurrency } from '../evm/utils/currency'
 
 export enum PairState {
   LOADING,
