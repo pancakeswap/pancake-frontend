@@ -74,7 +74,6 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
     <ConfirmProfileCreationModal
       userName={userName}
       selectedNft={selectedNft}
-      account={account}
       teamId={teamId}
       minimumCakeRequired={minimumCakeRequired}
       allowance={allowance}

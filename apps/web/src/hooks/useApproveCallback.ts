@@ -1,11 +1,12 @@
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { useAccount, Address } from 'wagmi'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useCallback, useMemo } from 'react'
 import { isUserRejected, logError } from 'utils/sentry'
+import { SendTransactionResult } from 'wagmi/actions'
 import { Field } from '../state/swap/actions'
 import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin } from '../utils'
@@ -26,7 +27,8 @@ export enum ApprovalState {
 export function useApproveCallback(
   amountToApprove?: CurrencyAmount<Currency>,
   spender?: string,
-): [ApprovalState, () => Promise<void>] {
+  addToTransaction = true,
+): [ApprovalState, () => Promise<SendTransactionResult>] {
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
@@ -53,7 +55,7 @@ export function useApproveCallback(
   const tokenContract = useTokenContract(token?.address)
   const addTransaction = useTransactionAdder()
 
-  const approve = useCallback(async (): Promise<void> => {
+  const approve = useCallback(async (): Promise<SendTransactionResult> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       toastError(t('Error'), t('Approve was called unnecessarily'))
       console.error('approve was called unnecessarily')
@@ -103,37 +105,45 @@ export function useApproveCallback(
 
     if (!estimatedGas) return undefined
 
-    return (
-      callWithGasPrice(
-        tokenContract,
-        'approve' as const,
-        [spender as Address, useExact ? amountToApprove.quotient : MaxUint256],
-        {
-          gas: calculateGasMargin(estimatedGas),
-        },
-      )
-        //   tokenContract, 'approve', [spender, useExact ? amountToApprove.quotient : MaxUint256], {
-        //   // ^?
-        //   gasLimit: calculateGasMargin(estimatedGas),
-        // })
-        .then((response) => {
+    return callWithGasPrice(
+      tokenContract,
+      'approve' as const,
+      [spender as Address, useExact ? amountToApprove.quotient : MaxUint256],
+      {
+        gas: calculateGasMargin(estimatedGas),
+      },
+    )
+      .then((response) => {
+        if (addToTransaction) {
           addTransaction(response, {
             summary: `Approve ${amountToApprove.currency.symbol}`,
             translatableSummary: { text: 'Approve %symbol%', data: { symbol: amountToApprove.currency.symbol } },
             approval: { tokenAddress: token.address, spender },
             type: 'approve',
           })
-        })
-        .catch((error: any) => {
-          logError(error)
-          console.error('Failed to approve token', error)
-          if (!isUserRejected(error)) {
-            toastError(t('Error'), error.message)
-          }
-          throw error
-        })
-    )
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, callWithGasPrice, t, toastError])
+        }
+        return response
+      })
+      .catch((error: any) => {
+        logError(error)
+        console.error('Failed to approve token', error)
+        if (!isUserRejected(error)) {
+          toastError(t('Error'), error.message)
+        }
+        throw error
+      })
+  }, [
+    approvalState,
+    token,
+    tokenContract,
+    amountToApprove,
+    spender,
+    callWithGasPrice,
+    toastError,
+    t,
+    addToTransaction,
+    addTransaction,
+  ])
 
   return [approvalState, approve]
 }
@@ -150,6 +160,25 @@ export function useApproveCallbackFromTrade(
   )
 
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId])
+}
+
+export function useApproveCallbackFromAmount({
+  token,
+  amount,
+  spender,
+  addToTransaction,
+}: {
+  token?: ERC20Token
+  amount?: bigint
+  spender?: string
+  addToTransaction?: boolean
+}) {
+  const amountToApprove = useMemo(() => {
+    if (!amount || !token) return undefined
+    return CurrencyAmount.fromRawAmount(token, amount)
+  }, [amount, token])
+
+  return useApproveCallback(amountToApprove, spender, addToTransaction)
 }
 
 // Wraps useApproveCallback in the context of a Gelato Limit Orders

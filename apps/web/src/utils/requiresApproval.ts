@@ -5,11 +5,11 @@ export const requiresApproval = async (
   contract: ReturnType<typeof useERC20>,
   account: Address,
   spenderAddress: Address,
-  minimumRequired: number | bigint = 0,
+  minimumRequired = 0n,
 ) => {
   try {
     const response = await contract.read.allowance([account, spenderAddress])
-    const hasMinimumRequired = typeof minimumRequired !== 'undefined' && minimumRequired > 0
+    const hasMinimumRequired = typeof minimumRequired !== 'undefined' && minimumRequired > 0n
     if (hasMinimumRequired) {
       return response < minimumRequired
     }
