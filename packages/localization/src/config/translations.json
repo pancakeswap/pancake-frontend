@@ -2529,5 +2529,6 @@
   "has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.": "has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.",
   "This position must be staking in farm to apply the combined APR with farming rewards.": "This position must be staking in farm to apply the combined APR with farming rewards.",
   "APR (with farming)": "APR (with farming)",
-  "Include farming rewards": "Include farming rewards"
+  "Include farming rewards": "Include farming rewards",
+  "Start staking to activate yield booster.": "Start staking to activate yield booster."
 }

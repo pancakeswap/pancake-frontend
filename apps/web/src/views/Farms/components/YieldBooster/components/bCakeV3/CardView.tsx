@@ -40,7 +40,7 @@ export const BCakeV3CardView: React.FC<{
               color: theme.colors.primary,
             }}
           >
-            {t('UnSet')}
+            {t('Unset')}
           </Button>
         )}
       </Box>
