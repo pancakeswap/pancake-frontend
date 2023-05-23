@@ -8,6 +8,7 @@ import {
   TooltipText,
   useModalV2,
   useTooltip,
+  Box,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -23,6 +24,8 @@ import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
+import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
+import { useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 
 const { DetailsSection } = FarmUI.FarmCard
 
@@ -73,6 +76,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const earnLabel = t('CAKE + Fees')
   const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
+  const boostStatus = useBoostStatus(farm.pid)
 
   const infoUrl = useMemo(() => {
     return `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
@@ -116,6 +120,11 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               <FarmV3ApyButton farm={farm} />
             </Text>
           </Flex>
+        )}
+        {!account && (
+          <Box mt="24px" mb="16px">
+            <StatusView status={boostStatus} />
+          </Box>
         )}
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
