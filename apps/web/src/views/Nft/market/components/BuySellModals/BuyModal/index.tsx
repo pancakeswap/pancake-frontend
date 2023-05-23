@@ -44,7 +44,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
   const [isPaymentCurrentInitialized, setIsPaymentCurrentInitialized] = useState(false)
   const { theme } = useTheme()
   const { t } = useTranslation()
-  const { callWithGasPriceWithSimulate } = useCallWithGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const { account, chainId } = useAccountActiveChain()
   const wbnbAddress = chainId === ChainId.BSC_TESTNET ? TESTNET_WBNB_NFT_ADDRESS : bscTokens.wbnb.address
@@ -82,7 +82,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
       return requiresApproval(wbnbContractReader, account, nftMarketContract.address)
     },
     onApprove: () => {
-      return callWithGasPriceWithSimulate(wbnbContractApprover, 'approve', [nftMarketContract.address, MaxUint256])
+      return callWithGasPrice(wbnbContractApprover, 'approve', [nftMarketContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -95,7 +95,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
         ? 0n
         : parseUnits(nftToBuy?.marketData?.currentAskPrice as `${number}`, 18)
       if (paymentCurrency === PaymentCurrency.BNB) {
-        return callWithGasPriceWithSimulate(
+        return callWithGasPrice(
           nftMarketContract,
           'buyTokenUsingBNB',
           [nftToBuy.collectionAddress, BigInt(nftToBuy.tokenId)],
@@ -104,7 +104,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
           },
         )
       }
-      return callWithGasPriceWithSimulate(nftMarketContract, 'buyTokenUsingWBNB', [
+      return callWithGasPrice(nftMarketContract, 'buyTokenUsingWBNB', [
         nftToBuy.collectionAddress,
         BigInt(nftToBuy.tokenId),
         payAmount,

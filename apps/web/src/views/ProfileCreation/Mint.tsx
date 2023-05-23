@@ -5,15 +5,14 @@ import { FetchStatus } from 'config/constants/types'
 import { formatUnits } from 'viem'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useBunnyFactory, useCake } from 'hooks/useContract'
+import { useBunnyFactory } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
 import { getBunnyFactoryAddress } from 'utils/addressHelpers'
-import { requiresApproval } from 'utils/requiresApproval'
+import { bscTokens } from '@pancakeswap/tokens'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
-import { useAccount } from 'wagmi'
 import { MINT_COST, STARTER_NFT_BUNNY_IDS } from './config'
 import useProfileCreation from './contexts/hook'
 import NextStepButton from './NextStepButton'
@@ -26,11 +25,9 @@ interface MintNftData extends ApiSingleTokenData {
 const Mint: React.FC<React.PropsWithChildren> = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
-  const { actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { actions, minimumCakeRequired, allowance: _allowance } = useProfileCreation()
   const { toastSuccess } = useToast()
 
-  const { address: account } = useAccount()
-  const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
@@ -57,12 +54,9 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(cakeContract, account, getBunnyFactoryAddress(), minimumCakeRequired)
-      },
-      onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [getBunnyFactoryAddress(), allowance])
-      },
+      token: bscTokens.cake,
+      spender: getBunnyFactoryAddress(),
+      amount: minimumCakeRequired,
       onConfirm: () => {
         return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [BigInt(selectedBunnyId)])
       },
