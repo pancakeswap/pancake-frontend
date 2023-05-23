@@ -204,7 +204,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
             ROUND_DIGIT,
           ),
-          pointThreshold: pointThreshold ? Number(pointThreshold) : 0,
+          pointThreshold: pointThreshold.result ? Number(pointThreshold.result) : 0,
           admissionProfile:
             Boolean(admissionProfile && admissionProfile.result) && admissionProfile.result !== NO_QUALIFIED_NFT_ADDRESS
               ? admissionProfile.result
@@ -228,7 +228,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         thresholdPoints: thresholdPoints && thresholdPoints,
         numberPoints: numberPoints ? Number(numberPoints) : 0,
         plannedStartTime: plannedStartTime ?? 0,
-        vestingStartTime: vestingStartTime ? Number(vestingStartTime) : 0,
+        vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
       }))
     },
     [plannedStartTime, address],
