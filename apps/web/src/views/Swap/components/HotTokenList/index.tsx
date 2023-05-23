@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 const MenuWrapper = styled.div`
   padding: 0px 24px 12px;
   ${({ theme }) => theme.mediaQueries.lg} {
+    padding: 0px 0px 12px;
     margin-bottom: 24px;
   }
 `
