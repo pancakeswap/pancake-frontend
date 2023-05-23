@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { isSorted } from './isSorted'
 
 describe('#isSorted', () => {

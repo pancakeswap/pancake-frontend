@@ -778,8 +778,8 @@ importers:
         specifier: ^8.0.0
         version: 8.3.2
       viem:
-        specifier: ^0.2.12
-        version: 0.2.12(typescript@4.9.4)(zod@3.21.4)
+        specifier: ^0.3.29
+        version: 0.3.29(typescript@4.9.4)(zod@3.21.4)
       wagmi:
         specifier: ^0.12.12
         version: 0.12.12(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.4)(zod@3.21.4)
@@ -1013,7 +1013,7 @@ importers:
         version: 1.3.16
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
       vitest:
         specifier: ^0.27.2
         version: 0.27.2
@@ -1179,7 +1179,7 @@ importers:
         version: link:../tsconfig
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
@@ -1251,7 +1251,7 @@ importers:
   packages/smart-router:
     dependencies:
       '@pancakeswap/multicall':
-        specifier: ^2.0.0
+        specifier: workspace:*
         version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
@@ -1274,9 +1274,6 @@ importers:
       debug:
         specifier: ^4.3.4
         version: 4.3.4(supports-color@8.1.1)
-      ethers:
-        specifier: ^5.0.0
-        version: 5.7.2
       graphql:
         specifier: ^16.6.0
         version: 16.6.0
@@ -1296,8 +1293,8 @@ importers:
         specifier: ^1.1.0
         version: 1.2.0
       viem:
-        specifier: ^0.2.12
-        version: 0.2.12(typescript@4.9.4)(zod@3.21.4)
+        specifier: ^0.3.29
+        version: 0.3.29(typescript@4.9.4)(zod@3.21.4)
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -1323,9 +1320,12 @@ importers:
       '@types/stats-lite':
         specifier: ^2.2.0
         version: 2.2.0
+      ethers:
+        specifier: ^5.0.0
+        version: 5.7.2
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
@@ -1353,6 +1353,9 @@ importers:
       toformat:
         specifier: ^2.0.0
         version: 2.0.0
+      viem:
+        specifier: ^0.3.29
+        version: 0.3.29(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@swc/core':
         specifier: ^1.2.215
@@ -1365,7 +1368,7 @@ importers:
         version: 4.0.5
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
 
   packages/swap-sdk-core:
     dependencies:
@@ -1436,7 +1439,7 @@ importers:
         version: 18.2.0
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
 
   packages/tokens:
     dependencies:
@@ -1449,7 +1452,7 @@ importers:
     devDependencies:
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
 
   packages/tsconfig: {}
 
@@ -1815,6 +1818,9 @@ importers:
       swr:
         specifier: ^2.1.3
         version: 2.1.5(react@18.2.0)
+      viem:
+        specifier: ^0.3.29
+        version: 0.3.29(typescript@4.9.4)(zod@3.21.4)
       vitest:
         specifier: ^0.30.1
         version: 0.30.1
@@ -1851,13 +1857,16 @@ importers:
       toformat:
         specifier: ^2.0.0
         version: 2.0.0
+      viem:
+        specifier: ^0.3.29
+        version: 0.3.29(typescript@4.9.4)(zod@3.21.4)
     devDependencies:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
@@ -1914,7 +1923,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@4.9.4)
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4)
       wagmi:
         specifier: ^0.12.12
         version: 0.12.12(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.4)(zod@3.21.4)
@@ -2015,7 +2024,6 @@ packages:
 
   /@adraffy/ens-normalize@1.9.0:
     resolution: {integrity: sha512-iowxq3U30sghZotgl4s/oJRci6WPBfNO5YYgk2cIOMCHr3LeGPcsZjCEr+33Q4N+oV3OABDAtA+pyvWjbvBifQ==}
-    dev: false
 
   /@ampproject/remapping@2.2.0:
     resolution: {integrity: sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==}
@@ -7489,17 +7497,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@noble/curves@0.8.3:
-    resolution: {integrity: sha512-OqaOf4RWDaCRuBKJLDURrgVxjLmneGsiCXGuzYB5y95YithZMA6w4uk34DHSm0rKMrrYiaeZj48/81EvaAScLQ==}
+  /@noble/curves@1.0.0:
+    resolution: {integrity: sha512-2upgEu0iLiDVDZkNLeFV2+ht0BAVgQnEmCk6JsOch9Rp8xfkMCbvbAZlA2pBHQc73dbl+vFOXfqkf4uemdn0bw==}
     dependencies:
       '@noble/hashes': 1.3.0
-    dev: false
-
-  /@noble/curves@0.9.0:
-    resolution: {integrity: sha512-OAdtHMXBp7Chl2lcTn/i7vnFX/q+hhTwDnek5NfYfZsY4LyaUuHCcoq2JlLY3BTFTLT+ZhYZalhF6ejlV7KnJQ==}
-    dependencies:
-      '@noble/hashes': 1.3.0
-    dev: false
 
   /@noble/ed25519@1.7.3:
     resolution: {integrity: sha512-iR8GBkDt0Q3GyaVcIu7mSsVIqnFbkbRzGLWlvhwunacoLwt4J3swfKhfaM6rN6WY+TBGoYT1GtT1mIh2/jGbRQ==}
@@ -7989,13 +7990,12 @@ packages:
   /@scure/base@1.1.1:
     resolution: {integrity: sha512-ZxOhsSyxYwLJj3pLZCefNitxsj093tb2vq90mp2txoYeBqbcjDjqFhyM8eUjq/uFm6zJ+mUuqxlS2FkuSY1MTA==}
 
-  /@scure/bip32@1.2.0:
-    resolution: {integrity: sha512-O+vT/hBVk+ag2i6j2CDemwd1E1MtGt+7O1KzrPNsaNvSsiEK55MyPIxJIMI2PS8Ijj464B2VbQlpRoQXxw1uHg==}
+  /@scure/bip32@1.3.0:
+    resolution: {integrity: sha512-bcKpo1oj54hGholplGLpqPHRbIsnbixFtc06nwuNM5/dwSXOq/AAYoIBRsBmnZJSdfeNW5rnff7NTAz3ZCqR9Q==}
     dependencies:
-      '@noble/curves': 0.8.3
+      '@noble/curves': 1.0.0
       '@noble/hashes': 1.3.0
       '@scure/base': 1.1.1
-    dev: false
 
   /@scure/bip39@1.1.0:
     resolution: {integrity: sha512-pwrPOS16VeTKg98dYXQyIjJEcWfz7/1YJIwxUEPFfQPtc86Ym/1sVgQ2RLoD43AazMk2l/unK4ITySSpW2+82w==}
@@ -8008,7 +8008,6 @@ packages:
     dependencies:
       '@noble/hashes': 1.3.0
       '@scure/base': 1.1.1
-    dev: false
 
   /@sentry-internal/tracing@7.47.0:
     resolution: {integrity: sha512-udpHnCzF8DQsWf0gQwd0XFGp6Y8MOiwnl8vGt2ohqZGS3m1+IxoRLXsSkD8qmvN6KKDnwbaAvYnK0z0L+AW95g==}
@@ -11289,7 +11288,6 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.4
-    dev: false
 
   /@wagmi/chains@0.2.19(typescript@4.9.4):
     resolution: {integrity: sha512-pyqGjOscXH/ZFUJni+VpKmVIENz/vsgq2sgqpNAmLQ6h7/DYrzRvptij+b62K5wONZMr+7X2J5mHM9s4tkEd6A==}
@@ -11878,19 +11876,6 @@ packages:
       typescript: 4.9.4
       zod: 3.21.4
 
-  /abitype@0.7.1(typescript@4.9.4)(zod@3.21.4):
-    resolution: {integrity: sha512-VBkRHTDZf9Myaek/dO3yMmOzB/y2s3Zo6nVU7yaw1G+TvCHAjwaJzNGN9yo4K5D8bU/VZXKP1EJpRhFr862PlQ==}
-    peerDependencies:
-      typescript: '>=4.9.4'
-      zod: ^3 >=3.19.1
-    peerDependenciesMeta:
-      zod:
-        optional: true
-    dependencies:
-      typescript: 4.9.4
-      zod: 3.21.4
-    dev: false
-
   /abitype@0.8.0(typescript@4.9.4)(zod@3.21.4):
     resolution: {integrity: sha512-QqBuwc2trtaNd/kp4k0dSjVu3OQIYRAB4ww4LCPwfSECXcCGTD3imYovNYNjx0SyN3OHV0XUOzUVwnXP1kLsVQ==}
     peerDependencies:
@@ -11903,6 +11888,18 @@ packages:
       typescript: 4.9.4
       zod: 3.21.4
     dev: false
+
+  /abitype@0.8.2(typescript@4.9.4)(zod@3.21.4):
+    resolution: {integrity: sha512-B1ViNMGpfx/qjVQi0RTc2HEFHuR9uoCoTEkwELT5Y7pBPtBbctYijz9BK6+Kd0hQ3S70FhYTO2dWWk0QNUEXMA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.19.1
+    peerDependenciesMeta:
+      zod:
+        optional: true
+    dependencies:
+      typescript: 4.9.4
+      zod: 3.21.4
 
   /accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
@@ -18075,7 +18072,6 @@ packages:
       ws: '*'
     dependencies:
       ws: 8.12.0
-    dev: false
 
   /isstream@0.1.2:
     resolution: {integrity: sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==}
@@ -24770,6 +24766,44 @@ packages:
       - ts-node
     dev: true
 
+  /tsup@6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.0.4):
+    resolution: {integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==}
+    engines: {node: '>=14.18'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@swc/core': 1.2.218
+      bundle-require: 4.0.1(esbuild@0.17.12)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4(supports-color@8.1.1)
+      esbuild: 0.17.12
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss: 8.4.21
+      postcss-load-config: 3.1.4(postcss@8.4.21)
+      resolve-from: 5.0.0
+      rollup: 3.21.3
+      source-map: 0.8.0-beta.0
+      sucrase: 3.24.0
+      tree-kill: 1.2.2
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
+
   /tsutils@3.21.0(typescript@4.9.4):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
     engines: {node: '>= 6'}
@@ -25000,6 +25034,12 @@ packages:
     resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+
+  /typescript@5.0.4:
+    resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
+    engines: {node: '>=12.20'}
+    hasBin: true
+    dev: true
 
   /typical@4.0.0:
     resolution: {integrity: sha512-VAH4IvQ7BDFYglMd7BPRDfLgxZZX4O4TFcRDA6EN5X7erNJJq+McIEp8np9aVtxrCJ6qx4GTYVfOWNjcqwZgRw==}
@@ -25423,16 +25463,16 @@ packages:
       vfile-message: 2.0.4
     dev: true
 
-  /viem@0.2.12(typescript@4.9.4)(zod@3.21.4):
-    resolution: {integrity: sha512-BxvWFFp8k5raoeDZJX0c2FGcGJSsGwWs9CeUavof/Bv3EgZLtU9tnqfIllZd3wQClZ3/+zESbTnRksgUDIUW1w==}
+  /viem@0.3.29(typescript@4.9.4)(zod@3.21.4):
+    resolution: {integrity: sha512-uFoEnUn4bEKneG2R2Ot2Jgk5LkMScPCanSZp0z5elqK5jFfgBKl7V5bJNL+EaPYKyxSa2A14rSE1IBVQHPYxlw==}
     dependencies:
       '@adraffy/ens-normalize': 1.9.0
-      '@noble/curves': 0.9.0
+      '@noble/curves': 1.0.0
       '@noble/hashes': 1.3.0
-      '@scure/bip32': 1.2.0
+      '@scure/bip32': 1.3.0
       '@scure/bip39': 1.2.0
       '@wagmi/chains': 0.2.16(typescript@4.9.4)
-      abitype: 0.7.1(typescript@4.9.4)(zod@3.21.4)
+      abitype: 0.8.2(typescript@4.9.4)(zod@3.21.4)
       isomorphic-ws: 5.0.0(ws@8.12.0)
       ws: 8.12.0
     transitivePeerDependencies:
@@ -25440,7 +25480,6 @@ packages:
       - typescript
       - utf-8-validate
       - zod
-    dev: false
 
   /vite-node@0.27.2(@types/node@18.16.2):
     resolution: {integrity: sha512-IDwuVhslF10qCnWOGJui7/2KksAOBHi+UbVo6Pqt4f5lgn+kS2sVvYDsETRG5PSuslisGB5CFGvb9I6FQgymBQ==}
@@ -26331,7 +26370,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: false
 
   /ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10):
     resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}

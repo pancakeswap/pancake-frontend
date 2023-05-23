@@ -1,10 +1,10 @@
-import { Interface } from 'ethers/lib/utils'
+import { encodeFunctionData, Hex } from 'viem'
 import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'
 import { Position } from './entities'
 import { Multicall } from './multicall'
-import IMasterChefABI from './abi/MasterChefV3.json'
+import { masterChefV3Abi } from './abi/MasterChefV3'
 
 import {
   type AddLiquidityOptions,
@@ -28,7 +28,7 @@ interface HarvestOptions {
 }
 
 export abstract class MasterChefV3 {
-  public static INTERFACE: Interface = new Interface(IMasterChefABI)
+  public static ABI = masterChefV3Abi
 
   /**
    * Cannot be constructed.
@@ -41,17 +41,17 @@ export abstract class MasterChefV3 {
   public static addCallParameters(position: Position, options: AddLiquidityOptions): MethodParameters {
     invariant(position.liquidity > ZERO, 'ZERO_LIQUIDITY')
 
-    const calldatas: string[] = []
+    const calldatas: Hex[] = []
 
     // get amounts
     const { amount0: amount0Desired, amount1: amount1Desired } = position.mintAmounts
 
     // adjust for slippage
     const minimumAmounts = position.mintAmountsWithSlippage(options.slippageTolerance)
-    const amount0Min = toHex(minimumAmounts.amount0)
-    const amount1Min = toHex(minimumAmounts.amount1)
+    const amount0Min = BigInt(minimumAmounts.amount0)
+    const amount1Min = BigInt(minimumAmounts.amount1)
 
-    const deadline = toHex(options.deadline)
+    const deadline = BigInt(options.deadline)
 
     invariant(!isMint(options), 'NO_MINT_SUPPORT')
 
@@ -65,19 +65,23 @@ export abstract class MasterChefV3 {
 
     // increase
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('increaseLiquidity', [
-        {
-          tokenId: toHex(options.tokenId),
-          amount0Desired: toHex(amount0Desired),
-          amount1Desired: toHex(amount1Desired),
-          amount0Min,
-          amount1Min,
-          deadline,
-        },
-      ])
+      encodeFunctionData({
+        abi: MasterChefV3.ABI,
+        functionName: 'increaseLiquidity',
+        args: [
+          {
+            tokenId: BigInt(options.tokenId),
+            amount0Desired,
+            amount1Desired,
+            amount0Min,
+            amount1Min,
+            deadline,
+          },
+        ],
+      })
     )
 
-    let value: string = toHex(0)
+    let value: Hex = toHex(0)
 
     if (options.useNative) {
       const { wrapped } = options.useNative
@@ -100,10 +104,10 @@ export abstract class MasterChefV3 {
   }
 
   // Copy from NonfungiblePositionManager
-  private static encodeCollect(options: CollectOptions): string[] {
-    const calldatas: string[] = []
+  private static encodeCollect(options: CollectOptions): Hex[] {
+    const calldatas: Hex[] = []
 
-    const tokenId = toHex(options.tokenId)
+    const tokenId = BigInt(options.tokenId)
 
     const involvesETH =
       options.expectedCurrencyOwed0.currency.isNative || options.expectedCurrencyOwed1.currency.isNative
@@ -112,14 +116,18 @@ export abstract class MasterChefV3 {
 
     // collect
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('collect', [
-        {
-          tokenId,
-          recipient: involvesETH ? ADDRESS_ZERO : recipient,
-          amount0Max: MaxUint128,
-          amount1Max: MaxUint128,
-        },
-      ])
+      encodeFunctionData({
+        abi: MasterChefV3.ABI,
+        functionName: 'collect',
+        args: [
+          {
+            tokenId,
+            recipient: involvesETH ? ADDRESS_ZERO : recipient,
+            amount0Max: MaxUint128,
+            amount1Max: MaxUint128,
+          },
+        ],
+      })
     )
 
     if (involvesETH) {
@@ -141,7 +149,7 @@ export abstract class MasterChefV3 {
   }
 
   public static collectCallParameters(options: CollectOptions): MethodParameters {
-    const calldatas: string[] = MasterChefV3.encodeCollect(options)
+    const calldatas: Hex[] = MasterChefV3.encodeCollect(options)
 
     return {
       calldata: Multicall.encodeMulticall(calldatas),
@@ -150,10 +158,10 @@ export abstract class MasterChefV3 {
   }
 
   public static removeCallParameters(position: Position, options: RemoveLiquidityOptions): MethodParameters {
-    const calldatas: string[] = []
+    const calldatas: Hex[] = []
 
-    const deadline = toHex(options.deadline)
-    const tokenId = toHex(options.tokenId)
+    const deadline = BigInt(options.deadline)
+    const tokenId = BigInt(options.tokenId)
 
     // construct a partial position with a percentage of liquidity
     const partialPosition = new Position({
@@ -170,29 +178,34 @@ export abstract class MasterChefV3 {
     )
 
     if (options.permit) {
-      calldatas.push(
-        MasterChefV3.INTERFACE.encodeFunctionData('permit', [
-          validateAndParseAddress(options.permit.spender),
-          tokenId,
-          toHex(options.permit.deadline),
-          options.permit.v,
-          options.permit.r,
-          options.permit.s,
-        ])
-      )
+      throw new Error('NOT_IMPLEMENTED')
+      // calldatas.push(
+      //   MasterChefV3.INTERFACE.encodeFunctionData('permit', [
+      //     validateAndParseAddress(options.permit.spender),
+      //     tokenId,
+      //     toHex(options.permit.deadline),
+      //     options.permit.v,
+      //     options.permit.r,
+      //     options.permit.s,
+      //   ])
+      // )
     }
 
     // remove liquidity
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('decreaseLiquidity', [
-        {
-          tokenId,
-          liquidity: toHex(partialPosition.liquidity),
-          amount0Min: toHex(amount0Min),
-          amount1Min: toHex(amount1Min),
-          deadline,
-        },
-      ])
+      encodeFunctionData({
+        abi: MasterChefV3.ABI,
+        functionName: 'decreaseLiquidity',
+        args: [
+          {
+            tokenId,
+            liquidity: partialPosition.liquidity,
+            amount0Min,
+            amount1Min,
+            deadline,
+          },
+        ],
+      })
     )
 
     const { expectedCurrencyOwed0, expectedCurrencyOwed1, ...rest } = options.collectOptions
@@ -213,24 +226,26 @@ export abstract class MasterChefV3 {
     if (rest?.recipient) {
       if (options.liquidityPercentage.equalTo(ONE)) {
         calldatas.push(
-          MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [
-            tokenId.toString(),
-            validateAndParseAddress(rest?.recipient),
-          ])
+          encodeFunctionData({
+            abi: MasterChefV3.ABI,
+            functionName: 'withdraw',
+            args: [tokenId, validateAndParseAddress(rest?.recipient)],
+          })
         )
       } else {
         calldatas.push(
-          MasterChefV3.INTERFACE.encodeFunctionData('harvest', [
-            tokenId.toString(),
-            validateAndParseAddress(rest?.recipient),
-          ])
+          encodeFunctionData({
+            abi: MasterChefV3.ABI,
+            functionName: 'harvest',
+            args: [tokenId, validateAndParseAddress(rest?.recipient)],
+          })
         )
       }
     }
 
     if (options.liquidityPercentage.equalTo(ONE)) {
       if (options.burnToken) {
-        calldatas.push(MasterChefV3.INTERFACE.encodeFunctionData('burn', [tokenId]))
+        calldatas.push(encodeFunctionData({ abi: MasterChefV3.ABI, functionName: 'burn', args: [tokenId] }))
       }
     } else {
       invariant(options.burnToken !== true, 'CANNOT_BURN')
@@ -245,7 +260,7 @@ export abstract class MasterChefV3 {
   // public static updateCallParameters() {}
 
   public static harvestCallParameters(options: HarvestOptions) {
-    const calldatas: string[] = this.encodeHarvest(options)
+    const calldatas: Hex[] = this.encodeHarvest(options)
 
     return {
       calldata: Multicall.encodeMulticall(calldatas),
@@ -254,7 +269,7 @@ export abstract class MasterChefV3 {
   }
 
   public static batchHarvestCallParameters(options: HarvestOptions[]) {
-    const calldatas: string[] = options.map((option) => this.encodeHarvest(option)).flat()
+    const calldatas: Hex[] = options.map((option) => this.encodeHarvest(option)).flat()
 
     return {
       calldata: Multicall.encodeMulticall(calldatas),
@@ -265,11 +280,15 @@ export abstract class MasterChefV3 {
   public static encodeHarvest(options: HarvestOptions) {
     const { tokenId, to } = options
 
-    const calldatas: string[] = []
+    const calldatas: Hex[] = []
 
     // harvest pendingCake
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('harvest', [tokenId.toString(), validateAndParseAddress(to)])
+      encodeFunctionData({
+        abi: MasterChefV3.ABI,
+        functionName: 'harvest',
+        args: [BigInt(tokenId), validateAndParseAddress(to)],
+      })
     )
 
     return calldatas
@@ -278,11 +297,15 @@ export abstract class MasterChefV3 {
   public static withdrawCallParameters(options: WidthDrawOptions) {
     const { tokenId, to } = options
 
-    const calldatas: string[] = []
+    const calldatas: Hex[] = []
 
     // withdraw liquidity
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [tokenId.toString(), validateAndParseAddress(to)])
+      encodeFunctionData({
+        abi: MasterChefV3.ABI,
+        functionName: 'withdraw',
+        args: [BigInt(tokenId), validateAndParseAddress(to)],
+      })
     )
 
     return {

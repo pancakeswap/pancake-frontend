@@ -1,6 +1,7 @@
 /* eslint-disable operator-assignment */
 import { BigintIsh, ChainId, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
+import { Address, Hash } from 'viem'
 import { FeeAmount, TICK_SPACINGS, DEPLOYER_ADDRESSES } from '../constants'
 import { NEGATIVE_ONE, ONE, Q192, ZERO } from '../internalConstants'
 import { computePoolAddress } from '../utils/computePoolAddress'
@@ -54,9 +55,9 @@ export class Pool {
     tokenA: Token,
     tokenB: Token,
     fee: FeeAmount,
-    initCodeHashManualOverride?: string,
-    deployerAddressOverride?: string
-  ): string {
+    initCodeHashManualOverride?: Hash,
+    deployerAddressOverride?: Address
+  ): `0x${string}` {
     return computePoolAddress({
       deployerAddress: deployerAddressOverride ?? DEPLOYER_ADDRESSES[tokenA.chainId as ChainId],
       fee,

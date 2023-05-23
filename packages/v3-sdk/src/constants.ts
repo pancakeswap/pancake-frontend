@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { Address } from 'viem'
 
 export const FACTORY_ADDRESS = '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865'
 
@@ -8,7 +9,7 @@ export const DEPLOYER_ADDRESSES = {
   [ChainId.GOERLI]: DEPLOYER_ADDRESS,
   [ChainId.BSC]: DEPLOYER_ADDRESS,
   [ChainId.BSC_TESTNET]: DEPLOYER_ADDRESS,
-} as const satisfies Record<ChainId, string>
+} as const satisfies Record<ChainId, Address>
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 

@@ -4,6 +4,7 @@ import { exec } from 'child_process'
 export default defineConfig((options) => ({
   entry: {
     evm: 'evm/index.ts',
+    'legacy-router': 'legacy-router/index.ts',
   },
   format: ['esm', 'cjs'],
   skipNodeModulesBundle: true,

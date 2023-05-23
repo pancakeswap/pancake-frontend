@@ -1,6 +1,6 @@
 {
   "extends": "@pancakeswap/tsconfig/base",
-  "include": ["./evm"],
+  "include": ["./evm", "legacy-router"],
   "exclude": ["**/*.test.ts", "./dist/**"],
   "compilerOptions": {
     "rootDir": "./",

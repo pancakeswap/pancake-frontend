@@ -4,7 +4,7 @@ import { Currency } from './currency'
 
 export interface SerializedToken {
   chainId: number
-  address: string
+  address: `0x${string}`
   decimals: number
   symbol: string
   name?: string
@@ -22,13 +22,13 @@ export class Token extends BaseCurrency {
   /**
    * The contract address on the chain on which this token lives
    */
-  public readonly address: string
+  public readonly address: `0x${string}`
 
   public readonly projectLink?: string
 
   public constructor(
     chainId: number,
-    address: string,
+    address: `0x${string}`,
     decimals: number,
     symbol: string,
     name?: string,

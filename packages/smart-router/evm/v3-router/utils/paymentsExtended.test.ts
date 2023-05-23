@@ -1,4 +1,5 @@
 import { Percent, Token } from '@pancakeswap/sdk'
+import { describe, it, expect } from 'vitest'
 import { PaymentsExtended } from './paymentsExtended'
 
 const recipient = '0x0000000000000000000000000000000000000003'
@@ -6,7 +7,7 @@ const amount = 123n
 
 const feeOptions = {
   fee: new Percent(1, 1000),
-  recipient: '0x0000000000000000000000000000000000000009',
+  recipient: '0x0000000000000000000000000000000000000009' as const,
 }
 
 const token = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0', 'token0')

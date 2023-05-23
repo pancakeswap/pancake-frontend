@@ -1,4 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
+import { describe, it, expect } from 'vitest'
 import { AllowedPermitArguments, SelfPermit, StandardPermitArguments } from './selfPermit'
 
 const token = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0', 'token0')

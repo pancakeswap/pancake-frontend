@@ -1,20 +1,19 @@
-import { BigintIsh, Token } from '@pancakeswap/sdk'
-import { Interface } from 'ethers/lib/utils'
-import ISelfPermit from './abi/SelfPermit.json'
-import { toHex } from './utils'
+import { BigintIsh, Token } from '@pancakeswap/swap-sdk-core'
+import { encodeFunctionData, Hash } from 'viem'
+import { selfPermitAbi } from './abi/SelfPermit'
 
 export interface StandardPermitArguments {
   v: 0 | 1 | 27 | 28
-  r: string
-  s: string
+  r: Hash
+  s: Hash
   amount: BigintIsh
   deadline: BigintIsh
 }
 
 export interface AllowedPermitArguments {
   v: 0 | 1 | 27 | 28
-  r: string
-  s: string
+  r: Hash
+  s: Hash
   nonce: BigintIsh
   expiry: BigintIsh
 }
@@ -26,7 +25,7 @@ function isAllowedPermit(permitOptions: PermitOptions): permitOptions is Allowed
 }
 
 export abstract class SelfPermit {
-  public static INTERFACE: Interface = new Interface(ISelfPermit)
+  public static ABI = selfPermitAbi
 
   /**
    * Cannot be constructed.
@@ -35,21 +34,15 @@ export abstract class SelfPermit {
 
   public static encodePermit(token: Token, options: PermitOptions) {
     return isAllowedPermit(options)
-      ? SelfPermit.INTERFACE.encodeFunctionData('selfPermitAllowed', [
-          token.address,
-          toHex(options.nonce),
-          toHex(options.expiry),
-          options.v,
-          options.r,
-          options.s,
-        ])
-      : SelfPermit.INTERFACE.encodeFunctionData('selfPermit', [
-          token.address,
-          toHex(options.amount),
-          toHex(options.deadline),
-          options.v,
-          options.r,
-          options.s,
-        ])
+      ? encodeFunctionData({
+          abi: SelfPermit.ABI,
+          functionName: 'selfPermitAllowed',
+          args: [token.address, BigInt(options.nonce), BigInt(options.expiry), options.v, options.r, options.s],
+        })
+      : encodeFunctionData({
+          abi: SelfPermit.ABI,
+          functionName: 'selfPermit',
+          args: [token.address, BigInt(options.amount), BigInt(options.deadline), options.v, options.r, options.s],
+        })
   }
 }

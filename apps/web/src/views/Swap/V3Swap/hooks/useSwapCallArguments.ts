@@ -8,9 +8,9 @@ import { isAddress } from 'utils'
 
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { Address } from 'viem'
 
 interface SwapCall {
   address: string
@@ -36,7 +36,7 @@ export function useSwapCallArguments(
   const { account, chainId } = useAccountActiveChain()
   const provider = useProviderOrSigner()
   const recipientENSAddress = useGetENSAddressByName(recipientAddress)
-  const recipient =
+  const recipient = (
     recipientAddress === null
       ? account
       : isAddress(recipientAddress)
@@ -44,6 +44,7 @@ export function useSwapCallArguments(
       : isAddress(recipientENSAddress)
       ? recipientENSAddress
       : null
+  ) as Address | null
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId) return []

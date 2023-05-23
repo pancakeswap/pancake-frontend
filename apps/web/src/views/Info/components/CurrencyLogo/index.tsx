@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { multiChainId, MultiChainName } from 'state/info/constant'
 import styled from 'styled-components'
 import { isAddress } from 'utils'
+import { Address } from 'viem'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
@@ -24,7 +25,7 @@ export const CurrencyLogo: React.FC<
   }>
 > = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
   const src = useMemo(() => {
-    return getTokenLogoURL(new Token(multiChainId[chainName], address, 18, ''))
+    return getTokenLogoURL(new Token(multiChainId[chainName], address as Address, 18, ''))
   }, [address, chainName])
 
   const imagePath = chainName === 'BSC' ? '' : `${chainName?.toLowerCase()}/`
