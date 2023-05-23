@@ -102,15 +102,14 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     return TOKEN_BALANCE_CONFIG[token.symbol as keyof typeof TOKEN_BALANCE_CONFIG]
   }, [token.symbol])
 
-  const { isVaultApproved, setLastUpdated } = useCakeApprovalStatus(token.symbol === 'CAKE' ? predictionsAddress : null)
+  const { setLastUpdated, allowance } = useCakeApprovalStatus(
+    token.symbol === 'CAKE' ? predictionsAddress : null,
+  )
   const { handleApprove, pendingTx } = useCakeApprove(
     setLastUpdated,
     predictionsAddress,
     t('You can now start prediction'),
   )
-
-  // BNB prediction doesn't need approval
-  const doesCakeApprovePrediction = token.symbol === 'BNB' || isVaultApproved
 
   const { balance: bnbBalance } = useTokenBalance()
 
@@ -121,6 +120,9 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
+
+  // BNB prediction doesn't need approval
+  const doesCakeApprovePrediction = token.symbol === 'BNB' || allowance.gte(valueAsBn.toString())
 
   const handleInputChange = (input: string) => {
     const inputAsBn = getValueAsEthersBn(input)
