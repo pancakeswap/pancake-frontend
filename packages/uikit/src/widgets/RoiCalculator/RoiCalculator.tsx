@@ -348,11 +348,11 @@ export function RoiCalculator({
     </>
   );
 
-  const farmingRewards = (
+  const farmingRewards = props.isFarm ? (
     <Section title={t("Include farming rewards")}>
       <FarmingRewardsToggle on={includeFarmingRewards} onToggle={setIncludeFarmingRewards} />
     </Section>
-  );
+  ) : null;
 
   const priceRangeSettings = (
     <Section title={t("Set price range")}>
