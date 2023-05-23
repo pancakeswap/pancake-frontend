@@ -1,7 +1,9 @@
-import { useEffect, useReducer, useRef, useCallback } from 'react'
+import { ERC20Token } from '@pancakeswap/sdk'
 import noop from 'lodash/noop'
-import { useAccount } from 'wagmi'
+import { useCallback, useEffect, useReducer, useRef } from 'react'
+import { Address, useAccount } from 'wagmi'
 import { SendTransactionResult, WaitForTransactionResult } from 'wagmi/actions'
+import { ApprovalState, useApproveCallbackFromAmount } from './useApproveCallback'
 import useCatchTxError from './useCatchTxError'
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
@@ -66,30 +68,49 @@ interface OnSuccessProps {
   receipt: WaitForTransactionResult
 }
 
-interface ApproveConfirmTransaction {
+type CustomApproveProps = {
+  onRequiresApproval: () => Promise<boolean>
   onApprove: () => Promise<SendTransactionResult>
-  onConfirm: (params?) => Promise<SendTransactionResult>
-  onRequiresApproval?: () => Promise<boolean>
-  onSuccess: ({ state, receipt }: OnSuccessProps) => void
-  onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
 }
 
+type ERC20TokenApproveProps = {
+  token?: ERC20Token
+  amount?: bigint
+  spender?: Address
+}
+
+type ApproveConfirmTransaction = {
+  onConfirm: (params?) => Promise<SendTransactionResult>
+  onSuccess: ({ state, receipt }: OnSuccessProps) => void
+  onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
+} & (CustomApproveProps | ERC20TokenApproveProps)
+
 const useApproveConfirmTransaction = ({
-  onApprove,
   onConfirm,
-  onRequiresApproval,
   onSuccess = noop,
   onApproveSuccess = noop,
+  ...props
 }: ApproveConfirmTransaction) => {
+  const { onApprove, onRequiresApproval } =
+    props && 'onRequiresApproval' in props ? props : { onRequiresApproval: undefined, onApprove: undefined }
+  const { amount, spender, token } =
+    props && !('onRequiresApproval' in props) ? props : { amount: undefined, spender: undefined, token: undefined }
+
   const { address: account } = useAccount()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
+  const [approvalState, approve] = useApproveCallbackFromAmount({
+    token: onRequiresApproval ? undefined : token,
+    amount,
+    spender,
+    addToTransaction: false,
+  })
   const { fetchWithCatchTxError } = useCatchTxError()
 
   const handleApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       dispatch({ type: 'approve_sending' })
-      return onApprove()
+      return onApprove ? onApprove() : approve()
     })
     if (receipt?.status) {
       dispatch({ type: 'approve_receipt' })
@@ -97,7 +118,7 @@ const useApproveConfirmTransaction = ({
     } else {
       dispatch({ type: 'approve_error' })
     }
-  }, [onApprove, onApproveSuccess, state, fetchWithCatchTxError])
+  }, [fetchWithCatchTxError, onApprove, approve, onApproveSuccess, state])
 
   const handleConfirm = useCallback(
     async (params = {}) => {
@@ -128,10 +149,12 @@ const useApproveConfirmTransaction = ({
 
   return {
     isApproving: state.approvalState === 'loading',
-    isApproved: state.approvalState === 'success',
+    isApproved: onRequiresApproval ? state.approvalState === 'success' : approvalState === ApprovalState.APPROVED,
     isConfirming: state.confirmState === 'loading',
     isConfirmed: state.confirmState === 'success',
-    hasApproveFailed: state.approvalState === 'fail',
+    hasApproveFailed: onRequiresApproval
+      ? state.approvalState === 'fail'
+      : approvalState === ApprovalState.NOT_APPROVED,
     hasConfirmFailed: state.confirmState === 'fail',
     handleApprove,
     handleConfirm,

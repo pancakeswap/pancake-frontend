@@ -1,4 +1,3 @@
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { parseEther } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
@@ -17,7 +16,6 @@ import {
   useTooltip,
   IfoHasVestingNotice,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -25,10 +23,8 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { Ifo, PoolIds } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useERC20 } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { requiresApproval } from 'utils/requiresApproval'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -66,24 +62,16 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
-  const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContractReader = useERC20(currency.address)
-  const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(raisingTokenContractReader, account, contract.address)
-      },
-      onApprove: () => {
-        return callWithGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {
-          gasPrice,
-        })
-      },
+      token: currency,
+      spender: contract.address,
+      amount: BigInt(valueWithTokenDecimals.toString()),
       onApproveSuccess: ({ receipt }) => {
         toastSuccess(
           t('Successfully Enabled!'),

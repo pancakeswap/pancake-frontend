@@ -2,21 +2,19 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Modal, Text, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { bscTokens } from '@pancakeswap/tokens'
 import { formatUnits } from 'viem'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useCake, useProfileContract } from 'hooks/useContract'
+import { useProfileContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { requiresApproval } from 'utils/requiresApproval'
-import { Address } from 'wagmi'
 import { REGISTER_COST } from './config'
 import { State } from './contexts/types'
 
 interface Props {
   userName: string
   selectedNft: State['selectedNft']
-  account: Address
   teamId: number
   minimumCakeRequired: bigint
   allowance: bigint
@@ -24,28 +22,22 @@ interface Props {
 }
 
 const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
-  account,
   teamId,
   selectedNft,
   minimumCakeRequired,
-  allowance,
   onDismiss,
 }) => {
   const { t } = useTranslation()
   const profileContract = useProfileContract()
   const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
-  const cakeContract = useCake()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(cakeContract, account, getPancakeProfileAddress(), minimumCakeRequired)
-      },
-      onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [getPancakeProfileAddress(), allowance])
-      },
+      token: bscTokens.cake,
+      spender: getPancakeProfileAddress(),
+      amount: minimumCakeRequired,
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [
           BigInt(teamId),
