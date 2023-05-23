@@ -10,7 +10,8 @@ export const BCakeV3CardView: React.FC<{
   tokenId: string
   pid: number
   onDone: () => void
-}> = ({ tokenId, onDone, pid }) => {
+  isFarmStaking?: boolean
+}> = ({ tokenId, onDone, pid, isFarmStaking }) => {
   const { t } = useTranslation()
   const { activate, deactivate } = useBoosterFarmV3Handlers(tokenId, onDone)
   const boostedStatus = useBoostStatus(pid, tokenId)
@@ -18,9 +19,9 @@ export const BCakeV3CardView: React.FC<{
   const { theme } = useTheme()
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
-      <StatusView status={boostedStatus} boostedMultiplier={boostedMultiplier} />
+      <StatusView status={boostedStatus} boostedMultiplier={boostedMultiplier} isFarmStaking={isFarmStaking} />
       <Box>
-        {boostedStatus === BoostStatus.farmCanBoostButNot && (
+        {boostedStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && (
           <Button
             onClick={() => {
               activate()

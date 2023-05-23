@@ -319,6 +319,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                 onDone={() => {
                   console.warn('done')
                 }}
+                isFarmStaking={positionType === 'staked'}
               />
             </RowBetween>
           </>

@@ -21,9 +21,10 @@ const BoosterTooltip = () => {
   )
 }
 
-export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: number }> = ({
+export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: number; isFarmStaking?: boolean }> = ({
   status,
   boostedMultiplier,
+  isFarmStaking,
 }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -49,10 +50,10 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
         </Flex>
         {tooltipVisible && tooltip}
       </Flex>
-      <Text color="textSubtle" fontSize={12} lineHeight="120%" textTransform="uppercase">
+      <Text color="textSubtle" fontSize={12} lineHeight="120%">
         {!account && t('Connect wallet to activate yield booster')}
-        {/* {account && status === BoostStatus.farmCanBoostButNot && t('Start staking to activate yield booster.')} */}
-        {account && status === BoostStatus.farmCanBoostButNot && t('Yield booster available')}
+        {account && !isFarmStaking && t('Start staking to activate yield booster.')}
+        {account && status === BoostStatus.farmCanBoostButNot && isFarmStaking && t('Yield booster available')}
       </Text>
     </Box>
   )
