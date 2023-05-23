@@ -80,9 +80,8 @@ export function useApproveCallback(
     }
 
     if (!amountToApprove) {
-      toastError(t('Error'), t('Missing amount to approve'))
+      // toastError(t('Error'), t('Missing amount to approve'))
       console.error('missing amount to approve')
-      return undefined
     }
 
     if (!spender) {
