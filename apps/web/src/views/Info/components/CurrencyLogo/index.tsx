@@ -3,7 +3,6 @@ import { TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { multiChainId, MultiChainName } from 'state/info/constant'
 import styled from 'styled-components'
-import { isAddress } from 'utils'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
