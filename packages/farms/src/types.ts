@@ -216,6 +216,7 @@ export interface DeserializedFarmsState {
   poolLength: number
   regularCakePerBlock: number
   totalRegularAllocPoint: string
+  cakePerBlock: string
 }
 
 export interface FarmWithStakedValue extends DeserializedFarm {
