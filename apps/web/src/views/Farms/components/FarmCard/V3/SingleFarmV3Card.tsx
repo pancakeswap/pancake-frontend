@@ -31,6 +31,8 @@ import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { RangeTag } from 'components/RangeTag'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
+import { BCakeV3CardView } from '../../YieldBooster/components/bCakeV3/CardView'
+import { useBakeV3farmCanBoost } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
@@ -111,6 +113,8 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId.toString(),
   })
+
+  const { farmCanBoost } = useBakeV3farmCanBoost(farm.pid)
 
   const unstakedModal = useModalV2()
 
@@ -295,6 +299,26 @@ const SingleFarmV3Card: React.FunctionComponent<
                 disabled={!pendingCakeByTokenIds?.[position.tokenId.toString()] ?? true}
                 userDataReady
                 handleHarvest={handleHarvest}
+              />
+            </RowBetween>
+          </>
+        )}
+        {farmCanBoost && (
+          <>
+            <AtomBox
+              border="1"
+              width={{
+                xs: '100%',
+                md: 'auto',
+              }}
+            />
+            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
+              <BCakeV3CardView
+                tokenId={position.tokenId.toString()}
+                pid={farm.pid}
+                onDone={() => {
+                  console.warn('done')
+                }}
               />
             </RowBetween>
           </>
