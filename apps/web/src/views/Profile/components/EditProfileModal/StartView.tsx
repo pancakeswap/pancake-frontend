@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { Button, Flex, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useCakeEnable } from 'hooks/useCakeEnable'
 import { useTranslation } from '@pancakeswap/localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
@@ -48,7 +48,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
   const { address: account } = useAccount()
   const cakeContract = useCake()
   const { profile } = useProfile()
-  const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
+  const { balance: cakeBalance, fetchStatus } = useBSCCakeBalance()
   const {
     costs: { numberCakeToUpdate, numberCakeToReactivate },
     isLoading: isProfileCostsLoading,

@@ -16,7 +16,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import useTokenBalance, { useGetCakeBalance } from 'hooks/useTokenBalance'
+import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
@@ -48,7 +48,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const wBNBToken = WNATIVE[ChainId.BSC]
   const { balance: wNativeBalance, fetchStatus: wNativeFetchStatus } = useTokenBalance(wNativeToken?.address)
   const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
-  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
+  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useBSCCakeBalance()
   const { logout } = useAuth()
 
   const handleLogout = () => {
