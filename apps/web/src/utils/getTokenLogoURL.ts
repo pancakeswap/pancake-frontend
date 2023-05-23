@@ -25,7 +25,7 @@ const getTokenLogoURL = memoize(
         chainId === ChainId.BSC ? '' : `${chainName[chainId]}/`
       }${tokenAddress}.png`
 
-      return [logoUrl, trustWalletLogoUrl].filter((url) => Boolean(url)) as string[]
+      return [logoUrl, trustWalletLogoUrl].find((url) => Boolean(url))
     }
     return null
   },
