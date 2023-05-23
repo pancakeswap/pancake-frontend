@@ -21,6 +21,7 @@ import {
   Tag,
   Text,
   Toggle,
+  Message,
   useMatchBreakpoints,
   useModal,
 } from '@pancakeswap/uikit'
@@ -424,6 +425,24 @@ export default function PoolPage() {
     return <NotFound />
   }
 
+  const farmingTips = isStakedInMCv3 ? null : (
+    <Message variant="primary" mb="2em">
+      <Box>
+        <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
+        <Text display="inline">
+          {t(
+            'has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.',
+          )}
+        </Text>
+        <NextLinkFromReactRouter to="/farms">
+          <Text display="inline" bold ml="0.25em" style={{ textDecoration: 'underline' }}>
+            {t('Go to Farms >>')}
+          </Text>
+        </NextLinkFromReactRouter>
+      </Box>
+    </Message>
+  )
+
   return (
     <Page>
       {!isLoading && <NextSeo title={`${currencyQuote?.symbol}-${currencyBase?.symbol} V3 LP #${tokenIdFromUrl}`} />}
@@ -515,6 +534,7 @@ export default function PoolPage() {
                   )}
                 </>
               )}
+              {farmingTips}
               <AutoRow>
                 <Flex
                   alignItems="center"
