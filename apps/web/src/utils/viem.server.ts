@@ -10,6 +10,11 @@ const clients = CHAINS.reduce((prev, cur) => {
     [cur.id]: createPublicClient({
       chain: cur,
       transport: http(SERVER_NODES[cur.id]),
+      batch: {
+        multicall: {
+          batchSize: 1024 * 200,
+        },
+      },
     }),
   }
 }, {} as Record<ChainId, ReturnType<typeof createPublicClient>>)
