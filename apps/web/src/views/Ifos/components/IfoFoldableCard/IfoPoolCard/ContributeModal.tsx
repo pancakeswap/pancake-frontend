@@ -1,4 +1,4 @@
-import { parseEther, parseUnits } from 'viem'
+import { parseUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
 import {
@@ -41,7 +41,7 @@ interface Props {
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
 // Default value for transaction setting, tweak based on BSC network congestion.
-const gasPrice = parseEther('10', 'gwei')
+// const gasPrice = parseEther('6', 'gwei')
 
 const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
@@ -81,14 +81,10 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
         )
       },
       onConfirm: () => {
-        return callWithGasPrice(
-          contract as any,
-          'depositPool',
-          [valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1],
-          {
-            gasPrice,
-          },
-        )
+        return callWithGasPrice(contract as any, 'depositPool', [
+          valueWithTokenDecimals.toString(),
+          poolId === PoolIds.poolBasic ? 0 : 1,
+        ])
       },
       onSuccess: async ({ receipt }) => {
         await onSuccess(valueWithTokenDecimals, receipt.transactionHash)
