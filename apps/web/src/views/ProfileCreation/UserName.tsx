@@ -58,7 +58,7 @@ const Indicator = styled(Flex)`
 
 const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { teamId, selectedNft, userName, actions, allowance } = useProfileCreation()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { toastError } = useToast()
@@ -71,13 +71,7 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= REGISTER_COST
   const [onPresentConfirmProfileCreation] = useModal(
-    <ConfirmProfileCreationModal
-      userName={userName}
-      selectedNft={selectedNft}
-      teamId={teamId}
-      minimumCakeRequired={minimumCakeRequired}
-      allowance={allowance}
-    />,
+    <ConfirmProfileCreationModal userName={userName} selectedNft={selectedNft} teamId={teamId} allowance={allowance} />,
     false,
   )
   const isUserCreated = existingUserState === ExistingUserState.CREATED

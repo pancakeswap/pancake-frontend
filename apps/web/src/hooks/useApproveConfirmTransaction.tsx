@@ -1,4 +1,4 @@
-import { ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token, MaxUint256 } from '@pancakeswap/sdk'
 import noop from 'lodash/noop'
 import { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Address, useAccount } from 'wagmi'
@@ -75,7 +75,8 @@ type CustomApproveProps = {
 
 type ERC20TokenApproveProps = {
   token?: ERC20Token
-  amount?: bigint
+  minAmount?: bigint
+  targetAmount?: bigint
   spender?: Address
 }
 
@@ -93,15 +94,18 @@ const useApproveConfirmTransaction = ({
 }: ApproveConfirmTransaction) => {
   const { onApprove, onRequiresApproval } =
     props && 'onRequiresApproval' in props ? props : { onRequiresApproval: undefined, onApprove: undefined }
-  const { amount, spender, token } =
-    props && !('onRequiresApproval' in props) ? props : { amount: undefined, spender: undefined, token: undefined }
+  const { minAmount, spender, token, targetAmount } =
+    props && !('onRequiresApproval' in props)
+      ? props
+      : { minAmount: 0n, spender: undefined, token: undefined, targetAmount: MaxUint256 }
 
   const { address: account } = useAccount()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
   const [approvalState, approve] = useApproveCallbackFromAmount({
     token: onRequiresApproval ? undefined : token,
-    amount,
+    minAmount,
+    targetAmount,
     spender,
     addToTransaction: false,
   })
