@@ -94,7 +94,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   )
 
   const maxRewardCapInfoAmount = useMemo(
-    () => new BigNumber(currentRewardInfo?.rewardFeeRatio).div(1e10).toNumber(),
+    () => new BigNumber(currentRewardInfo?.rewardFeeRatio ?? 0).div(1e10).toNumber(),
     [currentRewardInfo],
   )
 
