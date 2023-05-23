@@ -1,28 +1,31 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
 
-import { erc20ABI, useWalletClient, usePublicClient } from 'wagmi'
-import { Address } from 'viem'
 import { Abi } from 'abitype'
+import { Address } from 'viem'
+import { erc20ABI, usePublicClient, useWalletClient } from 'wagmi'
+
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
-  getContract,
-  getBCakeFarmBoosterV3Contract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
+  getBCakeFarmBoosterV3Contract,
   getBCakeProxyContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
   getChainlinkOracleContract,
+  getContract,
   getCrossFarmingProxyContract,
   getFarmAuctionContract,
   getIfoCreditAddressContract,
   getLotteryV2Contract,
   getMasterChefContract,
+  getMasterChefV3Contract,
   getMasterchefV1Contract,
   getNftMarketContract,
   getNftSaleContract,
@@ -30,40 +33,39 @@ import {
   getPointCenterIfoContract,
   getPotteryDrawContract,
   getPotteryVaultContract,
-  getPredictionsV2Contract,
   getPredictionsV1Contract,
+  getPredictionsV2Contract,
   getProfileContract,
+  getSidContract,
+  getStableSwapNativeHelperContract,
   getTradingCompetitionContractEaster,
   getTradingCompetitionContractFanToken,
-  getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
-  getStableSwapNativeHelperContract,
-  getSidContract,
+  getTradingCompetitionContractMobox,
   getTradingRewardContract,
-  getV3MigratorContract,
-  getMasterChefV3Contract,
-  getV3AirdropContract,
   getUnsContract,
+  getV3AirdropContract,
+  getV3MigratorContract,
 } from 'utils/contractHelpers'
 
-import { WNATIVE, ChainId, pancakePairV2ABI } from '@pancakeswap/sdk'
-import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
+// Imports below migrated from Exchange useContract.ts
+import { ChainId, WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
+import { nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
+import { multicallABI } from 'config/abi/Multicall'
+import { erc20Bytes32ABI } from 'config/abi/erc20_bytes32'
 import { ifoV1ABI } from 'config/abi/ifoV1'
 import { ifoV2ABI } from 'config/abi/ifoV2'
 import { ifoV3ABI } from 'config/abi/ifoV3'
-import { multicallABI } from 'config/abi/Multicall'
+import { wbethBscABI } from 'config/abi/wbethBSC'
+import { wbethEthABI } from 'config/abi/wbethETH'
+import { zapABI } from 'config/abi/zap'
 import { WBETH } from 'config/constants/liquidStaking'
 import { VaultKey } from 'state/types'
-import { wbethEthABI } from 'config/abi/wbethETH'
-import { wbethBscABI } from 'config/abi/wbethBSC'
-import { zapABI } from 'config/abi/zap'
-import { erc20Bytes32ABI } from 'config/abi/erc20_bytes32'
 
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { wethABI } from 'config/abi/weth'
 import { erc721CollectionABI } from 'config/abi/erc721collection'
 import { infoStableSwapABI } from 'config/abi/infoStableSwap'
+import { wethABI } from 'config/abi/weth'
 /**
  * Helper hooks to get specific contracts (by ABI)
  */

@@ -9,7 +9,7 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
   keepPreviousData: true,
 }
 
-export const useBakeV3farmCanBoost = async (farmPid: number) => {
+export const useBakeV3farmCanBoost = (farmPid: number) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
@@ -20,7 +20,7 @@ export const useBakeV3farmCanBoost = async (farmPid: number) => {
   return { farmCanBoost: data }
 }
 
-export const useBakeV3INfo = async (tokenId: string) => {
+export const useBakeV3INfo = (tokenId: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
@@ -31,7 +31,7 @@ export const useBakeV3INfo = async (tokenId: string) => {
   return { isBoosted: data?.[0], pid: data?.[1].toNumber() }
 }
 
-export const useUserPositionInfo = async (tokenId: string) => {
+export const useUserPositionInfo = (tokenId: string) => {
   const { chainId } = useActiveChainId()
   const masterChefV3 = useMasterchefV3()
   const { data } = useSWRImmutable(
@@ -52,7 +52,7 @@ export const useUserPositionInfo = async (tokenId: string) => {
   }
 }
 
-export const useUserBoostedPoolsPid = async () => {
+export const useUserBoostedPoolsPid = () => {
   const { account, chainId } = useActiveWeb3React()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
@@ -65,7 +65,7 @@ export const useUserBoostedPoolsPid = async () => {
   }
 }
 
-export const useUserBoostedMultiplier = async (tokenId: string) => {
+export const useUserBoostedMultiplier = (tokenId: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
@@ -76,7 +76,7 @@ export const useUserBoostedMultiplier = async (tokenId: string) => {
   return data?.toNumber()
 }
 
-export const useUserMaxBoostedPositionLimit = async () => {
+export const useUserMaxBoostedPositionLimit = () => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(

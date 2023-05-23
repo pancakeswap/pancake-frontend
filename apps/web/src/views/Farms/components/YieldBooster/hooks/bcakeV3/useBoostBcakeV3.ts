@@ -1,4 +1,4 @@
-import { BOOSTED_FARM_GAS_LIMIT } from 'config' // TODO: check v3 BCake gas limit with Chef Snoopy later
+import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeFarmBoosterV3Contract } from 'hooks/useContract'

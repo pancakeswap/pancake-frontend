@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
@@ -46,8 +47,6 @@ import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 import { tradingRewardABI } from 'config/abi/tradingReward'
 
 // Types
-import { ChainId } from '@pancakeswap/sdk'
-
 import {
   cakeFlexibleSideVaultV2ABI,
   cakeVaultV2ABI,
