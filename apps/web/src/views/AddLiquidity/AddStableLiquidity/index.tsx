@@ -19,6 +19,7 @@ import { useMintActionHandlers, useMintState } from 'state/mint/hooks'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
+import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
 import { calculateSlippageAmount } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -52,11 +53,11 @@ export interface AddStableChildrenProps {
   stableAPR: number
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<void>
+  approveACallback: () => Promise<SendTransactionResult>
   approvalA: ApprovalState
   showFieldBApproval: boolean
   approvalB: ApprovalState
-  approveBCallback: () => Promise<void>
+  approveBCallback: () => Promise<SendTransactionResult>
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: Handler
   buttonDisabled: boolean
