@@ -631,10 +631,10 @@ const ifos: Ifo[] = [
   },
   {
     id: 'test',
-    address: '0xF2F1E57D5EC65C206315803f83CCDce713E367c2',
+    address: '0x71956A949Ae4Ec484734E96b96E9c430ac070DC2',
     isActive: true,
     name: 'USDT',
-    plannedStartTime: 1683698400, // Wed May 10 2023 14:03:14
+    plannedStartTime: 1684839300, // 23 May 2023 18:55:00
     poolBasic: {
       raiseAmount: '$1',
     },
