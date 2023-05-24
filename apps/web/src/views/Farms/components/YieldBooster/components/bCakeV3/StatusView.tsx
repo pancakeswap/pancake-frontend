@@ -54,6 +54,7 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
         {!account && t('Connect wallet to activate yield booster')}
         {account && !isFarmStaking && t('Start staking to activate yield booster.')}
         {account && status === BoostStatus.farmCanBoostButNot && isFarmStaking && t('Yield booster available')}
+        {account && status === BoostStatus.Boosted && t('Active')}
       </Text>
     </Box>
   )
