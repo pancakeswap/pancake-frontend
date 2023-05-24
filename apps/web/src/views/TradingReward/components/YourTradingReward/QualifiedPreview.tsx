@@ -62,16 +62,16 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
 
   const rewardInUSD = useRewardInUSD({
     timeRemaining,
-    totalEstimateRewardUSD: currentUserCampaignInfo.totalEstimateRewardUSD,
-    canClaim: currentUserCampaignInfo.canClaim,
+    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
+    canClaim: currentUserCampaignInfo?.canClaim ?? '0',
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })
 
   const rewardInCake = useRewardInCake({
     timeRemaining,
-    totalEstimateRewardUSD: currentUserCampaignInfo.totalEstimateRewardUSD,
-    totalReward: currentUserCampaignInfo.canClaim,
+    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
+    totalReward: currentUserCampaignInfo?.canClaim ?? '0',
     cakePriceBusd,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
@@ -94,7 +94,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   )
 
   const maxRewardCapInfoAmount = useMemo(
-    () => new BigNumber(currentRewardInfo.rewardFeeRatio).div(1e10).toNumber(),
+    () => new BigNumber(currentRewardInfo?.rewardFeeRatio ?? 0).div(1e10).toNumber(),
     [currentRewardInfo],
   )
 

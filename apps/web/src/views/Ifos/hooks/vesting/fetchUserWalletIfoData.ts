@@ -157,7 +157,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: Address): Promis
       [PoolIds.poolBasic]: {
         ...userVestingData[PoolIds.poolBasic],
         vestingId: basicId.status === 'success' ? basicId.result.toString() : '0',
-        offeringAmountInToken: new BigNumber(amounts[0].toString()),
+        offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
         isVestingInitialized: basicSchedule ? basicSchedule.isVestingInitialized : false,
         vestingReleased: basicSchedule ? new BigNumber(basicSchedule.released.toString()) : BIG_ZERO,
         vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule.amountTotal.toString()) : BIG_ZERO,
@@ -169,11 +169,11 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: Address): Promis
       },
       [PoolIds.poolUnlimited]: {
         ...userVestingData[PoolIds.poolUnlimited],
-        vestingId: unlimitedId ? unlimitedId.toString() : '0',
-        offeringAmountInToken: new BigNumber(amounts[0][1][0].toString()),
-        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule[0].isVestingInitialized : false,
-        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
-        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        vestingId: unlimitedId.status === 'success' ? unlimitedId.result.toString() : '0',
+        offeringAmountInToken: new BigNumber(amounts[1][0].toString()),
+        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule.isVestingInitialized : false,
+        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule.released.toString()) : BIG_ZERO,
+        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule.amountTotal.toString()) : BIG_ZERO,
         vestingComputeReleasableAmount: unlimitedReleasableAmount
           ? new BigNumber(unlimitedReleasableAmount.toString())
           : BIG_ZERO,

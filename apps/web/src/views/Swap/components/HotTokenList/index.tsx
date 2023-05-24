@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 const MenuWrapper = styled.div`
   padding: 0px 24px 12px;
   ${({ theme }) => theme.mediaQueries.lg} {
+    padding: 0px 0px 12px;
     margin-bottom: 24px;
   }
 `
@@ -91,7 +92,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
       <Flex
         mb="24px"
         alignItems="center"
-        ml={['24px', '24px', '24px', '24px', '0']}
+        ml={['20px', '20px', '20px', '20px', '-4px']}
         onClick={() => setConfirmed(!confirmed)}
         style={{ cursor: 'pointer' }}
       >

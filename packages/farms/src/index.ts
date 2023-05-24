@@ -126,6 +126,8 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
   }
 }
 
+export * from './apr'
+export * from './utils'
 export * from './v2/farmsPriceHelpers'
 export * from './types'
 export type { FarmWithPrices } from './v2/farmPrices'

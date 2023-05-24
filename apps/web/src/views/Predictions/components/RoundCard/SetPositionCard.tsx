@@ -22,7 +22,7 @@ import { useAccount } from 'wagmi'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePredictionsContract } from 'hooks/useContract'
-import { useGetBnbBalance, useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useGetBnbBalance, useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
@@ -77,7 +77,7 @@ const getValueAsEthersBn = (value: string) => {
 
 const TOKEN_BALANCE_CONFIG = {
   BNB: useGetBnbBalance,
-  CAKE: useGetCakeBalance,
+  CAKE: useBSCCakeBalance,
 } as const
 
 const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> = ({
@@ -102,15 +102,14 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     return TOKEN_BALANCE_CONFIG[token.symbol as keyof typeof TOKEN_BALANCE_CONFIG]
   }, [token.symbol])
 
-  const { isVaultApproved, setLastUpdated } = useCakeApprovalStatus(token.symbol === 'CAKE' ? predictionsAddress : null)
+  const { setLastUpdated, allowance } = useCakeApprovalStatus(
+    token.symbol === 'CAKE' ? predictionsAddress : null,
+  )
   const { handleApprove, pendingTx } = useCakeApprove(
     setLastUpdated,
     predictionsAddress,
     t('You can now start prediction'),
   )
-
-  // BNB prediction doesn't need approval
-  const doesCakeApprovePrediction = token.symbol === 'BNB' || isVaultApproved
 
   const { balance: bnbBalance } = useTokenBalance()
 
@@ -121,6 +120,9 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
+
+  // BNB prediction doesn't need approval
+  const doesCakeApprovePrediction = token.symbol === 'BNB' || allowance.gte(valueAsBn.toString())
 
   const handleInputChange = (input: string) => {
     const inputAsBn = getValueAsEthersBn(input)

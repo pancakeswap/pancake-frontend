@@ -4,7 +4,7 @@ import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
-import { configureChains, createConfig } from 'wagmi'
+import { configureChains, createConfig, createStorage } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -96,7 +96,17 @@ export const trustWalletConnector = new TrustWalletConnector({
   },
 })
 
+export const noopStorage = {
+  getItem: (_key) => '',
+  setItem: (_key, _value) => null,
+  removeItem: (_key) => null,
+}
+
 export const wagmiConfig = createConfig({
+  storage: createStorage({
+    storage: typeof window !== 'undefined' ? window.localStorage : noopStorage,
+    key: 'wagmi_v1',
+  }),
   autoConnect: false,
   publicClient,
   connectors: [

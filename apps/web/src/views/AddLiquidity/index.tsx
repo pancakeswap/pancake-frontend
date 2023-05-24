@@ -12,6 +12,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { Hash } from 'viem'
+import { SendTransactionResult } from 'wagmi/actions'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -57,10 +58,10 @@ export interface LP2ChildrenProps {
   }
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<void>
+  approveACallback: () => Promise<SendTransactionResult>
   approvalA: ApprovalState
   showFieldBApproval: boolean
-  approveBCallback: () => Promise<void>
+  approveBCallback: () => Promise<SendTransactionResult>
   approvalB: ApprovalState
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: Handler

@@ -45,6 +45,12 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        if (!selectedNft.tokenId) return true
+        const contract = getErc721Contract(selectedNft.collectionAddress, signer)
+        const approvedAddress = await contract.read.getApproved([selectedNft.tokenId])
+        return approvedAddress !== getPancakeProfileAddress()
+      },
       onApprove: () => {
         const contract = getErc721Contract(selectedNft.collectionAddress, signer)
 

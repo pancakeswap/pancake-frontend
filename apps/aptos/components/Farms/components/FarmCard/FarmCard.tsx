@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { useFarms } from 'state/farms/hook'
-import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import styled from 'styled-components'
 import { Card, Flex, Text, Skeleton, ExpandableSectionButton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -55,9 +54,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const { t } = useTranslation()
   const { totalRegularAllocPoint, cakePerBlock } = useFarms()
 
-  const totalMultipliers = totalRegularAllocPoint
-    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 100).toString()
-    : '0'
+  const totalMultipliers = totalRegularAllocPoint ? (Number(totalRegularAllocPoint) / 100).toString() : '0'
 
   const farmCakePerSecond = getDisplayFarmCakePerSecond(farm.poolWeight?.toNumber(), cakePerBlock)
 

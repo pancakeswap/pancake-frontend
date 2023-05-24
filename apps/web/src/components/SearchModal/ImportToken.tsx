@@ -63,7 +63,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       <Message variant="warning">
         <Text>
           {t(
-            'Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            'Anyone can create a token with any name, including creating fake versions of existing tokens or ones that claim to represent projects without tokens.',
             {
               standard: getStandard(chainId),
               network: chains.find((c) => c.id === chainId)?.name,
@@ -71,7 +71,10 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           )}
           <br />
           <br />
-          {t('If you purchase an arbitrary token, you may be unable to sell it back.')}
+          <b>{t('If you purchase an arbitrary token, you may be unable to sell it back.')}</b>
+          <br />
+          <br />
+          <b>{t('Please be extra careful during this period as altcoin trading volumes are on the surge recently.')}</b>
         </Text>
       </Message>
 

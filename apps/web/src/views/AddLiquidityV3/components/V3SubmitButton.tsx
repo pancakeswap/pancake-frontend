@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { SendTransactionResult } from 'wagmi/actions'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { AutoColumn, Button, Dots, RowBetween } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
@@ -16,12 +17,12 @@ interface V3SubmitButtonProps {
   approvalB: ApprovalState
   isValid: boolean
   showApprovalA: boolean
-  approveACallback: () => Promise<void>
+  approveACallback: () => Promise<SendTransactionResult>
   currencies: {
     CURRENCY_A?: Currency
     CURRENCY_B?: Currency
   }
-  approveBCallback: () => Promise<void>
+  approveBCallback: () => Promise<SendTransactionResult>
   showApprovalB: boolean
   parsedAmounts: {
     CURRENCY_A?: CurrencyAmount<Currency>
