@@ -36,6 +36,13 @@ export const { publicClient, chains } = configureChains(
         },
       })
     }),
+  {
+    batch: {
+      multicall: {
+        batchSize: 1024 * 200,
+      },
+    },
+  },
 )
 
 export const injectedConnector = new InjectedConnector({
