@@ -68,7 +68,7 @@ export const useUserBoostedPoolsPid = () => {
   }
 }
 
-export const useUserBoostedMultiplier = (tokenId: string) => {
+export const useUserBoostedMultiplier = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
@@ -76,7 +76,7 @@ export const useUserBoostedMultiplier = (tokenId: string) => {
     () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data
+  return data ?? 1
 }
 
 export const useUserMaxBoostedPositionLimit = () => {
