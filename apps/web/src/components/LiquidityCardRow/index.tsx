@@ -76,6 +76,11 @@ export const LiquidityCardRow = ({
     </Flex>
   )
 
+  // Avoid scam LP
+  if (currency0.symbol.length > 7 || currency1.symbol.length > 7) {
+    return null
+  }
+
   if (link) {
     return (
       <Card mb="8px">
