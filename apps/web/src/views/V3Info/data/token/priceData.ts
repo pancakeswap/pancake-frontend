@@ -82,7 +82,7 @@ const DAY_PAIR_MIN = (timestamp: number | string) => {
      poolDayDatas(
         first: 1
         skip: 0
-        where: { pool: $address, date_gte: ${timestamp} }
+        where: { pool: $address, date_gte: ${timestamp},low_gt: 0 }
         orderBy: low
         orderDirection: asc
       ) {
@@ -331,6 +331,7 @@ export async function fetchPairPriceChartTokenData(
         address,
       },
     )
+
     const maxQueryPrice = (
       await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MAX(blocks?.[0].timestamp), {
         address,
