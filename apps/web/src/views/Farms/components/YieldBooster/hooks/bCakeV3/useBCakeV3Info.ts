@@ -4,6 +4,8 @@ import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContrac
 import useSWRImmutable from 'swr/immutable'
 import { getUserMultiplier } from './useBoostMultiplierV3'
 
+export const USER_ESTIMATED_MULTIPLIER = 2
+
 const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
   errorRetryInterval: 3000,
