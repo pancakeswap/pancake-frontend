@@ -4,6 +4,7 @@ import { useAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
+import { worker2 } from 'utils/worker'
 import { useMulticallContract } from '../../hooks/useContract'
 import {
   Call,
@@ -13,66 +14,10 @@ import {
   updateMulticallResults,
 } from './actions'
 import chunkArray from './chunkArray'
-import { CancelledError, retry, RetryableError } from './retry'
+import { CancelledError, retry } from './retry'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500
-
-/**
- * Fetches a chunk of calls, enforcing a minimum block number constraint
- * @param multicallContract multicall contract to fetch against
- * @param chunk chunk of calls to make
- * @param minBlockNumber minimum block number of the result set
- */
-async function fetchChunk(
-  multicallContract: ReturnType<typeof useMulticallContract>,
-  chunk: Call[],
-  minBlockNumber: number,
-): Promise<{ results: any[]; blockNumber: number }> {
-  console.debug('Fetching chunk', multicallContract, chunk, minBlockNumber)
-  let resultsBlockNumber: bigint
-  let returnData
-  try {
-    // prettier-ignore
-    [resultsBlockNumber, , returnData] = await multicallContract.read.tryBlockAndAggregate([
-      false,
-      chunk.map((obj) => ({ callData: obj.callData, target: obj.address })),
-    ], {
-      blockNumber: BigInt(minBlockNumber),
-    })
-  } catch (err) {
-    const error = err as any
-    if (
-      error.code === -32000 ||
-      (error?.data?.message && error?.data?.message?.indexOf('header not found') !== -1) ||
-      error.message?.indexOf('header not found') !== -1
-    ) {
-      throw new RetryableError(`header not found for block number ${minBlockNumber}`)
-    } else if (error.code === -32603 || error.message?.indexOf('execution ran out of gas') !== -1) {
-      if (chunk.length > 1) {
-        if (process.env.NODE_ENV === 'development') {
-          console.debug('Splitting a chunk in 2', chunk)
-        }
-        const half = Math.floor(chunk.length / 2)
-        const [c0, c1] = await Promise.all([
-          fetchChunk(multicallContract, chunk.slice(0, half), minBlockNumber),
-          fetchChunk(multicallContract, chunk.slice(half, chunk.length), minBlockNumber),
-        ])
-        return {
-          results: c0.results.concat(c1.results),
-          blockNumber: c1.blockNumber,
-        }
-      }
-    }
-    console.debug('Failed to fetch chunk inside retry', error)
-    throw error
-  }
-  if (Number(resultsBlockNumber) < minBlockNumber) {
-    console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
-  }
-
-  return { results: returnData, blockNumber: Number(resultsBlockNumber) }
-}
 
 /**
  * From the current all listeners state, return each call key mapped to the
@@ -184,11 +129,19 @@ export default function Updater(): null {
     cancellations.current = {
       blockNumber: currentBlock,
       cancellations: chunkedCalls.map((chunk, index) => {
-        const { cancel, promise } = retry(() => fetchChunk(multicallContract, chunk, currentBlock), {
-          n: Infinity,
-          minWait: 2500,
-          maxWait: 3500,
-        })
+        const { cancel, promise } = retry(
+          () =>
+            worker2.fetchChunk({
+              chainId,
+              chunk,
+              minBlockNumber: currentBlock,
+            }),
+          {
+            n: Infinity,
+            minWait: 2500,
+            maxWait: 3500,
+          },
+        )
         promise
           .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
             cancellations.current = { cancellations: [], blockNumber: currentBlock }
