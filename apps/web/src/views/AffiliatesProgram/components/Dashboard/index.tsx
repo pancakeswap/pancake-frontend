@@ -10,7 +10,7 @@ import useUserInfo from 'views/AffiliatesProgram/hooks/useUserInfo'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButton'
 import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
-import ClaimReward from 'views/AffiliatesProgram/components/Dashboard/ClaimReward'
+import Reward from 'views/AffiliatesProgram/components/Dashboard/Reward'
 import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/AffiliateLinks'
 
 const Dashboard = () => {
@@ -38,8 +38,8 @@ const Dashboard = () => {
             width={['100%', '100%', '100%', '100%', '100%', '700px']}
             m={['32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '0 0 0 32px']}
           >
-            {isAffiliateExist && (
-              <Card mb="16px">
+            <Card mb="16px">
+              {isAffiliateExist && (
                 <Box padding={['24px']}>
                   {!isAffiliate ? (
                     <LoginButton />
@@ -50,13 +50,13 @@ const Dashboard = () => {
                     </>
                   )}
                 </Box>
-              </Card>
-            )}
-            <ClaimReward
-              isAffiliate={isAffiliate}
-              userRewardFeeUSD={userInfo.availableFeeUSD}
-              affiliateRewardFeeUSD={affiliate.availableFeeUSD}
-            />
+              )}
+              <Reward
+                isAffiliate={isAffiliate}
+                userRewardFeeUSD={userInfo.availableFeeUSD}
+                affiliateRewardFeeUSD={affiliate.availableFeeUSD}
+              />
+            </Card>
           </Flex>
         </Flex>
       )}
