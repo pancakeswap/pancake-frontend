@@ -157,7 +157,7 @@ export default {
   },
   bCakeFarmBoosterV3: {
     56: '0x',
-    97: '0x9bda99f993b0C8C423C90456F6DDC9bE95397D56',
+    97: '0x56666300A1E25624489b661f3C6c456c159a109a',
   },
   nonBscVault: {
     56: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841', // Only for pass contracts test
