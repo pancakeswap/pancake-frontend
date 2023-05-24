@@ -9,19 +9,19 @@ import { StatusView } from './StatusView'
 export const BCakeV3CardView: React.FC<{
   tokenId: string
   pid: number
-  onDone: () => void
   isFarmStaking?: boolean
-}> = ({ tokenId, onDone, pid, isFarmStaking }) => {
+}> = ({ tokenId, pid, isFarmStaking }) => {
   const { t } = useTranslation()
-  const { activate, deactivate, isConfirming } = useBoosterFarmV3Handlers(tokenId, onDone)
-  const boostedStatus = useBoostStatus(pid, tokenId)
+  const { status: boostStatus, updateStatus } = useBoostStatus(pid, tokenId)
+  const { activate, deactivate, isConfirming } = useBoosterFarmV3Handlers(tokenId, updateStatus)
+
   const boostedMultiplier = useUserBoostedMultiplier(tokenId)
   const { theme } = useTheme()
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
-      <StatusView status={boostedStatus} boostedMultiplier={boostedMultiplier} isFarmStaking={isFarmStaking} />
+      <StatusView status={boostStatus} boostedMultiplier={boostedMultiplier} isFarmStaking={isFarmStaking} />
       <Box>
-        {boostedStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && (
+        {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && (
           <Button
             onClick={() => {
               activate()
@@ -32,7 +32,7 @@ export const BCakeV3CardView: React.FC<{
             {t('Boost')}
           </Button>
         )}
-        {boostedStatus === BoostStatus.Boosted && (
+        {boostStatus === BoostStatus.Boosted && (
           <Button
             onClick={() => {
               deactivate()

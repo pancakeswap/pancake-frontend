@@ -76,7 +76,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const earnLabel = t('CAKE + Fees')
   const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
-  const boostStatus = useBoostStatus(farm.pid)
+  const { status: boostStatus } = useBoostStatus(farm.pid)
 
   const infoUrl = useMemo(() => {
     return `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`

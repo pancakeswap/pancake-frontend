@@ -11,7 +11,7 @@ export enum BoostStatus {
 
 export const useBoostStatus = (pid: number, tokenId?: string) => {
   const { account } = useActiveWeb3React()
-  const { isBoosted } = useIsBoostedPool(tokenId)
+  const { isBoosted, mutate } = useIsBoostedPool(tokenId)
   const { farmCanBoost } = useBakeV3farmCanBoost(pid)
   const status = useMemo(() => {
     if (!account && !farmCanBoost) return BoostStatus.CanNotBoost
@@ -20,5 +20,5 @@ export const useBoostStatus = (pid: number, tokenId?: string) => {
     return BoostStatus.CanNotBoost
   }, [account, farmCanBoost, isBoosted])
 
-  return status
+  return { status, updateStatus: mutate }
 }
