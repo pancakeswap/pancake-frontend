@@ -190,7 +190,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
     })
   }, [positionCakeAprDisplay, lpAprDisplay, userMultiplier])
   const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
-  const isBoosted = useMemo(() => boostedStatus !== BoostStatus.Boosted, [boostedStatus])
+  const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
 
   const aprTooltip = useTooltip(
     <>

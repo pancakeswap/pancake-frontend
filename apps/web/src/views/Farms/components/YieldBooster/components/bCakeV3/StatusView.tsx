@@ -41,7 +41,7 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
       </Text>
       <Flex alignItems="center">
         <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
-          {status === BoostStatus.Boosted
+          {status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)
             ? `${boostedMultiplier}x`
             : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
         </Text>
