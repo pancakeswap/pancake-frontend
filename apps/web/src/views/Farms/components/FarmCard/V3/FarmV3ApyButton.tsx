@@ -179,10 +179,15 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const { isDesktop } = useMatchBreakpoints()
   const userMultiplier = useUserBoostedMultiplier(tokenId)
   const estimatedAPR = useMemo(() => {
-    return parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER + parseFloat(lpAprDisplay)
+    return (parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER + parseFloat(lpAprDisplay)).toLocaleString(
+      undefined,
+      { maximumSignificantDigits: 3 },
+    )
   }, [cakeAprDisplay, lpAprDisplay])
   const boostedAPR = useMemo(() => {
-    return parseFloat(positionCakeAprDisplay) * userMultiplier + parseFloat(lpAprDisplay)
+    return (parseFloat(positionCakeAprDisplay) * userMultiplier + parseFloat(lpAprDisplay)).toLocaleString(undefined, {
+      maximumSignificantDigits: 3,
+    })
   }, [positionCakeAprDisplay, lpAprDisplay, userMultiplier])
   const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
   const isBoosted = useMemo(() => boostedStatus !== BoostStatus.Boosted, [boostedStatus])
