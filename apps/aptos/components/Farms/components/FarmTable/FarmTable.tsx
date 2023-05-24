@@ -2,8 +2,6 @@ import { useRef, useMemo } from 'react'
 import styled from 'styled-components'
 import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
-import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -17,8 +15,8 @@ export interface ITableProps {
   userDataReady: boolean
   cakePrice: BigNumber
   sortColumn?: string
-  totalRegularAllocPoint?: EthersBigNumber
-  cakePerBlock?: EthersBigNumber
+  totalRegularAllocPoint?: string
+  cakePerBlock?: string
 }
 
 const Container = styled.div`
@@ -103,9 +101,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     [],
   )
 
-  const totalMultipliers = totalRegularAllocPoint
-    ? (ethersToBigNumber(totalRegularAllocPoint).toNumber() / 100).toString()
-    : '-'
+  const totalMultipliers = totalRegularAllocPoint ? (Number(totalRegularAllocPoint) / 100).toString() : '-'
 
   const getFarmEarnings = (farm) => {
     const earnings = new BigNumber(farm?.userData?.earnings)
@@ -121,9 +117,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
     const farmCakePerSecond =
-      farm.poolWeight && cakePerBlock
-        ? (Number(farm.poolWeight) * ethersToBigNumber(cakePerBlock).toNumber()) / 1e8
-        : 10
+      farm.poolWeight && cakePerBlock ? (Number(farm.poolWeight) * Number(cakePerBlock)) / 1e8 : 10
 
     const row: RowProps = {
       apr: {
