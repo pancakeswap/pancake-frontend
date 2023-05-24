@@ -3,13 +3,13 @@ import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { Currency } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { multicallv2 } from 'utils/multicall'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 
 import { FAST_INTERVAL } from 'config/constants'
+import { getViemClients } from 'utils/viem'
 
-const farmFetcherV3 = createFarmFetcherV3(multicallv2)
+const farmFetcherV3 = createFarmFetcherV3(getViemClients)
 
 interface FarmParams {
   currencyA?: Currency
