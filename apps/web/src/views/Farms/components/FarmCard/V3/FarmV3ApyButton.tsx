@@ -13,6 +13,8 @@ import {
   Flex,
   useTooltip,
   TooltipText,
+  RocketIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
@@ -32,6 +34,8 @@ import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/for
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../../getDisplayApr'
+import { USER_ESTIMATED_MULTIPLIER } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -85,6 +89,8 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
 
   const isSorted = farm.token.sortsBefore(farm.quoteToken)
+
+  const boostedStatus = useBoostStatus(farm.pid)
 
   const {
     volumeUSD: volume24H,
@@ -169,6 +175,11 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
   const cakeAprDisplay = cakeApr.toFixed(2)
   const positionCakeAprDisplay = positionCakeApr.toFixed(2)
   const lpAprDisplay = lpApr.toFixed(2)
+  const { isDesktop } = useMatchBreakpoints()
+  const boostedAPR = useMemo(() => {
+    return parseFloat(cakeAprDisplay) + parseFloat(lpAprDisplay) * USER_ESTIMATED_MULTIPLIER
+  }, [cakeAprDisplay, lpAprDisplay])
+  const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
 
   const aprTooltip = useTooltip(
     <>
@@ -180,7 +191,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
           {t('Farm APR')}: <b>{cakeAprDisplay}%</b>
         </li>
         <li>
-          {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
+          {t('LP Fee APR')}: <b>{canBoosted ? parseFloat(lpAprDisplay) * USER_ESTIMATED_MULTIPLIER : lpAprDisplay}%</b>
         </li>
       </ul>
       <br />
@@ -247,7 +258,22 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
             }}
           >
             <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
-              {displayApr}%
+              <Flex ml="4px" mr="5px" style={{ gap: 5 }}>
+                {canBoosted && (
+                  <>
+                    {isDesktop && <RocketIcon color="success" />}
+                    <Text bold color="success" fontSize={16}>
+                      <>
+                        <Text bold color="success" fontSize={14} display="inline-block" mr="3px">
+                          {t('Up to')}
+                        </Text>
+                        {`${boostedAPR}%`}
+                      </>
+                    </Text>
+                  </>
+                )}
+                <Text style={{ textDecoration: canBoosted ? 'line-through' : 'none' }}>{displayApr}%</Text>
+              </Flex>
             </TooltipText>
           </FarmUI.FarmApyButton>
           {aprTooltip.tooltipVisible && aprTooltip.tooltip}
