@@ -102,9 +102,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     return TOKEN_BALANCE_CONFIG[token.symbol as keyof typeof TOKEN_BALANCE_CONFIG]
   }, [token.symbol])
 
-  const { setLastUpdated, allowance } = useCakeApprovalStatus(
-    token.symbol === 'CAKE' ? predictionsAddress : null,
-  )
+  const { setLastUpdated, allowance } = useCakeApprovalStatus(token.symbol === 'CAKE' ? predictionsAddress : null)
   const { handleApprove, pendingTx } = useCakeApprove(
     setLastUpdated,
     predictionsAddress,

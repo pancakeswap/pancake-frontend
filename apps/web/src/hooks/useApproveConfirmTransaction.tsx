@@ -156,9 +156,7 @@ const useApproveConfirmTransaction = ({
     isApproved: onApprove ? state.approvalState === 'success' : approvalState === ApprovalState.APPROVED,
     isConfirming: state.confirmState === 'loading',
     isConfirmed: state.confirmState === 'success',
-    hasApproveFailed: onApprove
-      ? state.approvalState === 'fail'
-      : approvalState === ApprovalState.NOT_APPROVED,
+    hasApproveFailed: onApprove ? state.approvalState === 'fail' : approvalState === ApprovalState.NOT_APPROVED,
     hasConfirmFailed: state.confirmState === 'fail',
     handleApprove,
     handleConfirm,
