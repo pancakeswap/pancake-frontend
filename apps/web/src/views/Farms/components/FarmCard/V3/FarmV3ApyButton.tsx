@@ -90,7 +90,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
 
   const isSorted = farm.token.sortsBefore(farm.quoteToken)
 
-  const boostedStatus = useBoostStatus(farm.pid)
+  const { status: boostedStatus } = useBoostStatus(farm.pid)
 
   const {
     volumeUSD: volume24H,

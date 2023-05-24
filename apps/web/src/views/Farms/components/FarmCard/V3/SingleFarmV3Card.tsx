@@ -316,9 +316,6 @@ const SingleFarmV3Card: React.FunctionComponent<
               <BCakeV3CardView
                 tokenId={position.tokenId.toString()}
                 pid={farm.pid}
-                onDone={() => {
-                  console.warn('done')
-                }}
                 isFarmStaking={positionType === 'staked'}
               />
             </RowBetween>

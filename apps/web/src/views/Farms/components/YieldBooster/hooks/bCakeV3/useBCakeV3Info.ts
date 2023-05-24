@@ -26,12 +26,12 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
 export const useIsBoostedPool = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data } = useSWRImmutable(
+  const { data, mutate } = useSWRImmutable(
     chainId && tokenId && tokenId !== 'undefined' && `v3/bcake/isBoostedPool/${chainId}/${tokenId}`,
     () => farmBoosterV3Contract.isBoostedPool(tokenId),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return { isBoosted: data?.[0], pid: data?.[1].toNumber() }
+  return { isBoosted: data?.[0], pid: data?.[1].toNumber(), mutate }
 }
 
 export const useUserPositionInfo = (tokenId: string) => {
