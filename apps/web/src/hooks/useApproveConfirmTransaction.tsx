@@ -93,9 +93,9 @@ const useApproveConfirmTransaction = ({
   ...props
 }: ApproveConfirmTransaction) => {
   const { onApprove, onRequiresApproval } =
-    props && 'onRequiresApproval' in props ? props : { onRequiresApproval: undefined, onApprove: undefined }
+    props && 'onApprove' in props ? props : { onRequiresApproval: undefined, onApprove: undefined }
   const { minAmount, spender, token, targetAmount } =
-    props && !('onRequiresApproval' in props)
+    props && !('onApprove' in props)
       ? props
       : { minAmount: 0n, spender: undefined, token: undefined, targetAmount: MaxUint256 }
 
@@ -153,10 +153,10 @@ const useApproveConfirmTransaction = ({
 
   return {
     isApproving: state.approvalState === 'loading',
-    isApproved: onRequiresApproval ? state.approvalState === 'success' : approvalState === ApprovalState.APPROVED,
+    isApproved: onApprove ? state.approvalState === 'success' : approvalState === ApprovalState.APPROVED,
     isConfirming: state.confirmState === 'loading',
     isConfirmed: state.confirmState === 'success',
-    hasApproveFailed: onRequiresApproval
+    hasApproveFailed: onApprove
       ? state.approvalState === 'fail'
       : approvalState === ApprovalState.NOT_APPROVED,
     hasConfirmFailed: state.confirmState === 'fail',
