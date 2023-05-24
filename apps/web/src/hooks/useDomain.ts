@@ -17,6 +17,7 @@ export const useDomainNameForAddress = (address: `0x${string}` | string, fetchDa
   })
   const { data: ensAvatar, isLoading: isEnsAvatarLoading } = useEnsAvatar({
     address: address as `0x${string}`,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
   })
 
   return useMemo(() => {
