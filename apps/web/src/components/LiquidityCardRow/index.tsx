@@ -77,7 +77,7 @@ export const LiquidityCardRow = ({
   )
 
   // Avoid scam LP
-  if (currency0.symbol.length > 7 || currency1.symbol.length > 7) {
+  if (currency0?.symbol?.length > 7 || currency1?.symbol?.length > 7) {
     return null
   }
 
