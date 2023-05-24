@@ -50,9 +50,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
   useSWRImmutable(
     !isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock, data.ifo.id],
-    async () => {
-      fetchPublicIfoData(currentBlock)
-    },
+    async () => fetchPublicIfoData(currentBlock),
   )
 
   const { cliff } = publicIfoData[poolId]?.vestingInformation || {}
