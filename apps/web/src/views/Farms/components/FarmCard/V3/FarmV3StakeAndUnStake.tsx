@@ -145,7 +145,12 @@ export function FarmV3LPPositionDetail({
       {position && (
         <AutoRow gap="2px" py="8px">
           <Text fontSize="14px">{t('APR')}:</Text>
-          <FarmV3ApyButton farm={farm} existingPosition={position} isPositionStaked={positionType === 'staked'} />
+          <FarmV3ApyButton
+            farm={farm}
+            existingPosition={position}
+            tokenId={position_?.tokenId?.toString()}
+            isPositionStaked={positionType === 'staked'}
+          />
         </AutoRow>
       )}
       <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
