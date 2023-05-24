@@ -214,7 +214,8 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       </Text>
       <ul>
         <li>
-          {t('Farm APR')}: <b>{positionCakeAprDisplay}%</b>
+          {t('Farm APR')}:
+          <b>{isBoosted ? parseFloat(positionCakeAprDisplay) * userMultiplier : positionCakeAprDisplay}%</b>
         </li>
         <li>
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
