@@ -130,34 +130,37 @@ export default function PoolListPage() {
             positionSummaryLink,
             subtitle,
             setInverted,
-          }) => (
-            <LiquidityCardRow
-              feeAmount={feeAmount}
-              link={positionSummaryLink}
-              currency0={currencyQuote}
-              currency1={currencyBase}
-              tokenId={p.tokenId}
-              pairText={
-                !currencyQuote || !currencyBase ? (
-                  <Dots>{t('Loading')}</Dots>
-                ) : (
-                  `${currencyQuote.symbol}-${currencyBase.symbol} LP`
-                )
-              }
-              tags={
-                <>
-                  {p.isStaked && (
-                    <Tag outline variant="warning" mr="8px">
-                      Farming
-                    </Tag>
-                  )}
-                  <RangeTag removed={removed} outOfRange={outOfRange} />
-                </>
-              }
-              subtitle={subtitle}
-              onSwitch={() => setInverted((prev) => !prev)}
-            />
-          )}
+          }) => {
+            const token0Symbol =
+              currencyQuote.symbol.length > 7 ? currencyQuote.symbol.slice(0, 7).concat('...') : currencyQuote.symbol
+            const token1Symbol =
+              currencyBase.symbol.length > 7 ? currencyBase.symbol.slice(0, 7).concat('...') : currencyBase.symbol
+
+            return (
+              <LiquidityCardRow
+                feeAmount={feeAmount}
+                link={positionSummaryLink}
+                currency0={currencyQuote}
+                currency1={currencyBase}
+                tokenId={p.tokenId}
+                pairText={
+                  !currencyQuote || !currencyBase ? <Dots>{t('Loading')}</Dots> : `${token0Symbol}-${token1Symbol} LP`
+                }
+                tags={
+                  <>
+                    {p.isStaked && (
+                      <Tag outline variant="warning" mr="8px">
+                        Farming
+                      </Tag>
+                    )}
+                    <RangeTag removed={removed} outOfRange={outOfRange} />
+                  </>
+                }
+                subtitle={subtitle}
+                onSwitch={() => setInverted((prev) => !prev)}
+              />
+            )
+          }}
         </PositionListItem>
       )
     })
