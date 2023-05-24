@@ -22,7 +22,11 @@ export const SERVER_NODES = {
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
-  [ChainId.LINEA_TESTNET]: ['https://linea-testnet.rpc.thirdweb.com', 'https://rpc.goerli.linea.build'],
+  [ChainId.LINEA_TESTNET]: [
+    'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
+    'https://linea-testnet.rpc.thirdweb.com',
+    'https://rpc.goerli.linea.build',
+  ],
 } satisfies Record<ChainId, string[]>
 
 export const PUBLIC_NODES = {
@@ -47,7 +51,7 @@ export const PUBLIC_NODES = {
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
-    'https://goerli.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
+    'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
     'https://linea-testnet.rpc.thirdweb.com',
     'https://rpc.goerli.linea.build',
   ],
