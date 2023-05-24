@@ -42,6 +42,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { splitSignature } from 'utils/splitSignature'
 import { encodeFunctionData, Hex, toHex } from 'viem'
 import { isUserRejected } from 'utils/sentry'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
@@ -54,17 +55,20 @@ import { useV3FormState } from './formViews/V3FormView/form/reducer'
 
 export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const pairContract = usePairContract(v2PairAddress)
+  const { chainId } = useActiveChainId()
 
   const { data: token0Address } = useContractRead({
     abi: pairContract.abi,
     address: v2PairAddress,
     functionName: 'token0',
+    chainId,
   })
 
   const { data: token1Address } = useContractRead({
     abi: pairContract.abi,
     address: v2PairAddress,
     functionName: 'token1',
+    chainId,
   })
 
   const token0 = useToken(token0Address)

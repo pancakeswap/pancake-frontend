@@ -35,6 +35,7 @@ export function LiquidStakingPageStake() {
     address: wbethContract.address,
     enabled: !!wbethContract,
     functionName: 'exchangeRate',
+    chainId,
   })
 
   useEffect(() => {

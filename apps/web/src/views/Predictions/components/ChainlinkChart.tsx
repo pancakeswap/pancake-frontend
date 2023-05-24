@@ -22,6 +22,7 @@ import useSwiper from '../hooks/useSwiper'
 
 function useChainlinkLatestRound() {
   const { chainlinkOracleAddress } = useConfig()
+  const { chainId } = useActiveChainId()
   const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
   return useContractRead({
     abi: chainlinkOracleContract.abi,
@@ -29,6 +30,7 @@ function useChainlinkLatestRound() {
     functionName: 'latestRound',
     enabled: !!chainlinkOracleContract,
     watch: true,
+    chainId,
   })
 }
 

@@ -71,6 +71,7 @@ const LiquidStakingStakePage = () => {
     address: wbethContract.address,
     functionName: 'exchangeRate',
     watch: true,
+    chainId,
   })
 
   const { isApproved, allowance, setLastUpdated } = useETHApprovalStatus(wbethContract?.address)
@@ -121,16 +122,13 @@ const LiquidStakingStakePage = () => {
       if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
         const methodArgs = [masterChefAddress] as const
         return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-          // gas: calculateGasMargin(estimatedGas),
           value: BigInt(convertedStakeAmount.toString()),
         })
       }
 
       const methodArgs = [BigInt(convertedStakeAmount.toString()), masterChefAddress] as const
 
-      return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-        // gas: calculateGasMargin(estimatedGas),
-      })
+      return callWithGasPrice(wbethContract, 'deposit', methodArgs, {})
     })
 
     if (receipt?.status && quoteAmount) {
