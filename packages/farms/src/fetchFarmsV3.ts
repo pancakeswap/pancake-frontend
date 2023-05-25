@@ -1,12 +1,12 @@
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
-import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
+import { DEFAULT_COMMON_PRICE, PriceHelper, CHAIN_ID_TO_CHAIN_NAME } from '../constants/common'
 import { FIXED_ZERO } from './const'
 import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getFarmApr } from './apr'
@@ -384,11 +384,16 @@ export type CommonPrice = {
   [address: string]: string
 }
 
-// TODO: refactor to fetchTokenUSDValue
 export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promise<CommonPrice> => {
+  return fetchTokenUSDValues(priceHelper?.list || [])
+}
+
+export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<CommonPrice> => {
   const commonTokenUSDValue: CommonPrice = {}
-  if (priceHelper && priceHelper.list.length > 0) {
-    const list = priceHelper.list.map((token) => `${priceHelper.chain}:${token.address}`).join(',')
+  if (currencies.length > 0) {
+    const list = currencies
+      .map((currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId]}:${currency.wrapped.address}`)
+      .join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(
       `https://coins.llama.fi/prices/current/${list}`,
     ).then((res) => res.json())

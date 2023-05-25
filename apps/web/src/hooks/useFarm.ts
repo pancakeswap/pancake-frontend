@@ -1,7 +1,7 @@
-import { createFarmFetcherV3, ComputedFarmConfigV3, fetchCommonTokenUSDValue } from '@pancakeswap/farms'
+import { createFarmFetcherV3, ComputedFarmConfigV3, fetchTokenUSDValues } from '@pancakeswap/farms'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { multicallv2 } from 'utils/multicall'
 import { useMemo } from 'react'
@@ -35,7 +35,17 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
   return useSWR(
     chainId && farmConfig && [chainId, farmConfig.token0.symbol, farmConfig.token1.symbol, farmConfig.feeAmount],
     async () => {
-      const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
+      if (!farmConfig) {
+        throw new Error('Invalid farm config')
+      }
+      const tokensToGetPrice: ERC20Token[] = priceHelperTokens[chainId].list || []
+      for (const token of [farmConfig.token, farmConfig.quoteToken]) {
+        if (tokensToGetPrice.every((t) => t.address !== token.address)) {
+          tokensToGetPrice.push(token)
+        }
+      }
+
+      const commonPrice = await fetchTokenUSDValues(tokensToGetPrice)
 
       try {
         const data = await farmFetcherV3.fetchFarms({

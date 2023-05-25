@@ -1,4 +1,5 @@
-import { SqrtPriceMath, TickMath } from '.'
+import { TickMath } from './tickMath'
+import { SqrtPriceMath } from './sqrtPriceMath'
 import { ZERO } from '../internalConstants'
 
 function getToken0Amount(
