@@ -131,10 +131,14 @@ export default function PoolListPage() {
             subtitle,
             setInverted,
           }) => {
-            const token0Symbol =
-              currencyQuote.symbol.length > 7 ? currencyQuote.symbol.slice(0, 7).concat('...') : currencyQuote.symbol
-            const token1Symbol =
-              currencyBase.symbol.length > 7 ? currencyBase.symbol.slice(0, 7).concat('...') : currencyBase.symbol
+            let token0Symbol = ''
+            let token1Symbol = ''
+            if (currencyQuote && currencyBase) {
+              token0Symbol =
+                currencyQuote.symbol.length > 7 ? currencyQuote.symbol.slice(0, 7).concat('...') : currencyQuote.symbol
+              token1Symbol =
+                currencyBase.symbol.length > 7 ? currencyBase.symbol.slice(0, 7).concat('...') : currencyBase.symbol
+            }
 
             return (
               <LiquidityCardRow
@@ -144,7 +148,7 @@ export default function PoolListPage() {
                 currency1={currencyBase}
                 tokenId={p.tokenId}
                 pairText={
-                  !currencyQuote || !currencyBase ? <Dots>{t('Loading')}</Dots> : `${token0Symbol}-${token1Symbol} LP`
+                  !token0Symbol || !token1Symbol ? <Dots>{t('Loading')}</Dots> : `${token0Symbol}-${token1Symbol} LP`
                 }
                 tags={
                   <>
