@@ -54,7 +54,7 @@ export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
   )
 }
 
-function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositionStaked }: FarmV3ApyButtonProps) {
+function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3ApyButtonProps) {
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount, lpAddress } = farm
   const { t } = useTranslation()
   const roiModal = useModalV2()
@@ -65,9 +65,6 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 
   const formState = useV3FormState()
-
-  // use state to prevent existing position from being updated from props after changes on roi modal
-  const [existingPosition] = useState(existingPosition_)
 
   const { pool, ticks, price, pricesAtTicks, currencyBalances, outOfRange } = useV3DerivedInfo(
     baseCurrency ?? undefined,
@@ -99,9 +96,9 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   })
 
   const balanceA =
-    (isSorted ? existingPosition_?.amount0 : existingPosition_?.amount1) ?? currencyBalances[Field.CURRENCY_A]
+    (isSorted ? existingPosition?.amount0 : existingPosition?.amount1) ?? currencyBalances[Field.CURRENCY_A]
   const balanceB =
-    (isSorted ? existingPosition_?.amount1 : existingPosition_?.amount0) ?? currencyBalances[Field.CURRENCY_B]
+    (isSorted ? existingPosition?.amount1 : existingPosition?.amount0) ?? currencyBalances[Field.CURRENCY_B]
 
   const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
@@ -124,16 +121,16 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
       new BigNumber(farm.poolWeight)
         .times(farmV3.cakePerSecond)
         .times(365 * 60 * 60 * 24)
-        .times(cakePrice.toFixed(3))
+        .times(cakePrice)
         .div(
           new BigNumber(farm.lmPoolLiquidity).plus(
-            isPositionStaked ? BIG_ZERO : existingPosition_?.liquidity?.toString() ?? BIG_ZERO,
+            isPositionStaked ? BIG_ZERO : existingPosition?.liquidity?.toString() ?? BIG_ZERO,
           ),
         )
         .times(100),
     [
       cakePrice,
-      existingPosition_?.liquidity,
+      existingPosition?.liquidity,
       farm.lmPoolLiquidity,
       farm.poolWeight,
       farmV3.cakePerSecond,
@@ -143,12 +140,12 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
 
   const positionCakeApr = useMemo(
     () =>
-      existingPosition_
+      existingPosition
         ? outOfRange
           ? 0
-          : new BigNumber(existingPosition_.liquidity.toString()).times(cakeAprFactor).div(depositUsdAsBN).toNumber()
+          : new BigNumber(existingPosition.liquidity.toString()).times(cakeAprFactor).div(depositUsdAsBN).toNumber()
         : 0,
-    [cakeAprFactor, depositUsdAsBN, existingPosition_, outOfRange],
+    [cakeAprFactor, depositUsdAsBN, existingPosition, outOfRange],
   )
 
   const { apr } = useRoi({
@@ -165,7 +162,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     volume24H,
   })
 
-  const lpApr = existingPosition_ ? +apr.toFixed(2) : globalLpApr
+  const lpApr = existingPosition ? +apr.toFixed(2) : globalLpApr
   const cakeApr = +farm.cakeApr
   const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
   const displayApr = getDisplayApr(cakeApr, lpApr)
@@ -219,7 +216,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
 
   return (
     <>
-      {existingPosition_ ? (
+      {existingPosition ? (
         <AutoRow width="auto" gap="2px">
           <ApyLabelContainer alignItems="center" style={{ textDecoration: 'initial' }} onClick={roiModal.onOpen}>
             {outOfRange ? (
@@ -260,7 +257,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
         <RoiCalculatorModalV2
           {...roiModal}
           isFarm
-          maxLabel={existingPosition_ ? t('My Position') : undefined}
+          maxLabel={existingPosition ? t('My Position') : undefined}
           closeOnOverlayClick={false}
           depositAmountInUsd={depositUsdAsBN?.toString()}
           max={depositUsdAsBN?.toString()}
