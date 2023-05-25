@@ -40,6 +40,7 @@ const SWAP_INFO_BY_CHAIN = {
   // TODO: new chains
   [ChainId.ARBITRUM_ONE]: {},
   [ChainId.POLYGON_ZKEVM]: {},
+  [ChainId.POLYGON_ZKEVM_TESTNET]: {},
   [ChainId.ZKSYNC]: {},
   [ChainId.ZKSYNC_TESTNET]: {},
   [ChainId.LINEA_TESTNET]: {

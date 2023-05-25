@@ -15,7 +15,7 @@ export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.ETHEREUM]: 'ethereum',
   [ChainId.GOERLI]: 'ethereum',
   [ChainId.BSC_TESTNET]: 'bsc',
-} satisfies Record<ChainId, string>
+} satisfies Record<FarmSupportedChainId, string>
 
 export const priceHelperTokens = {
   [ChainId.ETHEREUM]: {

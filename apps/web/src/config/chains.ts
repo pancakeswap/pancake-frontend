@@ -7,6 +7,8 @@ import {
   mainnet,
   zkSync as zkSync_,
   zkSyncTestnet as zkSyncTestnet_,
+  polygonZkEvmTestnet as polygonZkEvmTestnet_,
+  lineaTestnet,
   Chain,
 } from 'wagmi/chains'
 
@@ -17,6 +19,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.BSC_TESTNET]: 'bscTestnet',
   [ChainId.ARBITRUM_ONE]: 'arb',
   [ChainId.POLYGON_ZKEVM]: 'polygonZkEVM',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: 'polygonZkEVMTestnet',
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
@@ -69,40 +72,6 @@ const zkSyncTestnet = {
   },
 } as const satisfies Chain
 
-const lineaTestnet = {
-  id: 59_140,
-  name: 'Linea Goerli Testnet',
-  network: 'linea-testnet',
-  nativeCurrency: { name: 'Linea Ether', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    infura: {
-      http: ['https://consensys-zkevm-goerli-prealpha.infura.io/v3'],
-      webSocket: ['wss://consensys-zkevm-goerli-prealpha.infura.io/ws/v3'],
-    },
-    default: {
-      http: ['https://rpc.goerli.linea.build'],
-      webSocket: ['wss://rpc.goerli.linea.build'],
-    },
-    public: {
-      http: ['https://rpc.goerli.linea.build'],
-      webSocket: ['wss://rpc.goerli.linea.build'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'BlockScout',
-      url: 'https://explorer.goerli.linea.build',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xca11bde05977b3631167028862be2a173976ca11',
-      blockCreated: 498623,
-    },
-  },
-  testnet: true,
-} as const satisfies Chain
-
 // const polygonZkEvm = {
 //   ...polygonZkEvm_,
 //   contracts: {
@@ -112,6 +81,16 @@ const lineaTestnet = {
 //     },
 //   },
 // } as const satisfies Chain
+
+const polygonZkEvmTestnet = {
+  ...polygonZkEvmTestnet_,
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 525686,
+    },
+  },
+} as const satisfies Chain
 
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
@@ -126,5 +105,6 @@ export const CHAINS = [
   goerli,
   // zkSync,
   // zkSyncTestnet,
+  polygonZkEvmTestnet,
   lineaTestnet,
 ]

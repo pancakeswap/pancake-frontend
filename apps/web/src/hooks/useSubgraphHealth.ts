@@ -23,7 +23,7 @@ export type SubgraphHealthState = {
 const NOT_OK_BLOCK_DIFFERENCE = 200 // ~15 minutes delay
 const WARNING_BLOCK_DIFFERENCE = 50 // ~2.5 minute delay
 
-const useSubgraphHealth = (subgraphName: string) => {
+const useSubgraphHealth = (subgraphName?: string) => {
   const [sgHealth, setSgHealth] = useState<SubgraphHealthState>({
     status: SubgraphStatus.UNKNOWN,
     currentBlock: 0,
@@ -90,7 +90,9 @@ const useSubgraphHealth = (subgraphName: string) => {
           })
         }
       }
-      getSubgraphHealth()
+      if (subgraphName) {
+        getSubgraphHealth()
+      }
     },
     [subgraphName],
   )

@@ -29,6 +29,10 @@ const defaultTokenAndPoolList: TokenAndPoolList = {
     tokens: [],
     pools: [],
   },
+  [ChainId.POLYGON_ZKEVM_TESTNET]: {
+    tokens: [],
+    pools: [],
+  },
   [ChainId.ZKSYNC]: {
     tokens: [],
     pools: [],

@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { arbitrum, polygonZkEvm, zkSync, zkSyncTestnet } from 'wagmi/chains'
+import { arbitrum, polygonZkEvm, zkSync, zkSyncTestnet, polygonZkEvmTestnet } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
 
 export const SERVER_NODES = {
@@ -20,6 +20,7 @@ export const SERVER_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: polygonZkEvmTestnet.rpcUrls.public.http,
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
@@ -48,6 +49,7 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: polygonZkEvmTestnet.rpcUrls.public.http,
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [

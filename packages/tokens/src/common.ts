@@ -168,6 +168,13 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM_TESTNET,
+    '0xC65e7B01910D456f594f13fB98eC0DEE2DD6797E',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
   [ChainId.LINEA_TESTNET]: new ERC20Token(
     ChainId.LINEA_TESTNET,
     '0xf56dc6695cF1f5c364eDEbC7Dc7077ac9B586068',
@@ -194,6 +201,13 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM_TESTNET,
+    '0x7379a261bC347BDD445484A91648Abf4A2BDEe5E',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
 }
 
 export const WBTC_ETH = new ERC20Token(
@@ -213,5 +227,6 @@ export const STABLE_COIN = {
   [ChainId.ZKSYNC]: USDC[ChainId.ZKSYNC],
   [ChainId.ZKSYNC_TESTNET]: USDC[ChainId.ZKSYNC_TESTNET],
   [ChainId.POLYGON_ZKEVM]: USDC[ChainId.POLYGON_ZKEVM],
+  [ChainId.POLYGON_ZKEVM_TESTNET]: USDT[ChainId.POLYGON_ZKEVM_TESTNET],
   [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
 } satisfies Record<ChainId, ERC20Token>
