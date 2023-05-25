@@ -13,7 +13,7 @@ export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 
   return !formattedAmount || !currencyAmount || currencyAmount.equalTo(0n)
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
-    ? new Intl.NumberFormat().format(formattedAmount)
+    ? new Intl.NumberFormat().format(Number(formattedAmount))
     : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
 }
 
