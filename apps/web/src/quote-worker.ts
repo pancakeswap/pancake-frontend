@@ -1,5 +1,6 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { viemClients } from 'utils/viem'
+import { log } from 'next-axiom'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -10,6 +11,33 @@ export type WorkerEvent = [
     params: SmartRouter.APISchema.RouterPostParams
   },
 ]
+
+const fetch_ = fetch
+
+const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
+  const start = Date.now()
+  let urlString: string | undefined
+  let size: number | undefined
+  if (init && init.method === 'POST' && init.body) {
+    urlString = url.toString()
+    size = init.body.toString().length / 1024
+  }
+
+  const response = await fetch_(url, init)
+  const end = Date.now()
+  if (urlString && size) {
+    log.info('QuoteRPC', {
+      url: urlString,
+      size,
+      time: end - start,
+      status: response.status,
+    })
+  }
+
+  return response
+}
+
+globalThis.fetch = fetchWithLogging
 
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
 
