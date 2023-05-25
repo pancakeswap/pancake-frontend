@@ -1,6 +1,7 @@
 import invariant from 'tiny-invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
-import { TickMath } from '../utils'
+
+import { TickMath } from '../utils/tickMath'
 
 export interface TickConstructorArgs {
   index: number

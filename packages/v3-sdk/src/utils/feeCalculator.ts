@@ -113,8 +113,9 @@ function tryGetEstimatedLPFeeByAmounts({
     sqrtRatioX96,
   })
 
+  const volumeInFraction = parseNumberToFraction(volume24H) || new Fraction(ZERO)
   return insidePercentage
-    .multiply(parseNumberToFraction(volume24H).multiply(BigInt(fee)).multiply(liquidity))
+    .multiply(volumeInFraction.multiply(BigInt(fee)).multiply(liquidity))
     .divide(MAX_FEE * (liquidity + mostActiveLiquidity)).asFraction
 }
 
