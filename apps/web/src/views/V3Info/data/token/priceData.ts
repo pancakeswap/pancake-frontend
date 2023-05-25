@@ -136,6 +136,31 @@ const HOUR_PRICE_CHART = gql`
     }
   }
 `
+const HOUR_PRICE_MIN = gql`
+  query poolHourDatas($startTime: Int!, $address: String!) {
+    tokenHourDatas(
+      first: 1
+      where: { token: $address, periodStartUnix_gt: $startTime, low_gt: 0 }
+      orderBy: low
+      orderDirection: asc
+    ) {
+      low
+    }
+  }
+`
+
+const HOUR_PRICE_MAX = gql`
+  query poolHourDatas($startTime: Int!, $address: String!) {
+    tokenHourDatas(
+      first: 1
+      where: { token: $address, periodStartUnix_gt: $startTime }
+      orderBy: high
+      orderDirection: desc
+    ) {
+      high
+    }
+  }
+`
 
 interface TokenHourDatas {
   periodStartUnix: number
@@ -332,16 +357,30 @@ export async function fetchPairPriceChartTokenData(
       },
     )
 
-    const maxQueryPrice = (
-      await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MAX(blocks?.[0].timestamp), {
-        address,
-      })
-    )?.poolDayDatas?.[0]?.high
-    const minQueryPrice = (
-      await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MIN(blocks?.[0].timestamp), {
-        address,
-      })
-    )?.poolDayDatas?.[0]?.low
+    const maxQueryPrice = isDay
+      ? (
+          await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MAX(blocks?.[0].timestamp), {
+            address,
+          })
+        )?.poolDayDatas?.[0]?.high
+      : (
+          await dataClient.request<PairPriceMinMAxResults>(HOUR_PRICE_MAX, {
+            address,
+            startTime: blocks?.[0].timestamp,
+          })
+        )?.poolHourDatas?.[0]?.high
+    const minQueryPrice = isDay
+      ? (
+          await dataClient.request<PairPriceMinMAxResults>(DAY_PAIR_MIN(blocks?.[0].timestamp), {
+            address,
+          })
+        )?.poolDayDatas?.[0]?.low
+      : (
+          await dataClient.request<PairPriceMinMAxResults>(HOUR_PRICE_MIN, {
+            address,
+            startTime: blocks?.[0].timestamp,
+          })
+        )?.poolHourDatas?.[0]?.low
 
     if (Object.keys(priceData)?.length > 0) {
       if (priceData) {
