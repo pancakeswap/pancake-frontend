@@ -38,7 +38,7 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
       if (!farmConfig) {
         throw new Error('Invalid farm config')
       }
-      const tokensToGetPrice: ERC20Token[] = priceHelperTokens[chainId] || []
+      const tokensToGetPrice: ERC20Token[] = priceHelperTokens[chainId].list || []
       for (const token of [farmConfig.token, farmConfig.quoteToken]) {
         if (tokensToGetPrice.every((t) => t.address !== token.address)) {
           tokensToGetPrice.push(token)
