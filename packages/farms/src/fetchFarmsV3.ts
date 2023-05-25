@@ -392,7 +392,7 @@ export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<
   const commonTokenUSDValue: CommonPrice = {}
   if (currencies.length > 0) {
     const list = currencies
-      .map((currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId]}:${currency.wrapped.address}`)
+      .map((currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as ChainId]}:${currency.wrapped.address}`)
       .join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(
       `https://coins.llama.fi/prices/current/${list}`,
