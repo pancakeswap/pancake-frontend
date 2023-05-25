@@ -20,7 +20,7 @@ const useUserInfo = () => {
         const response = await fetch(`/api/affiliates-program/user-info?${queryString}`)
         const result: UserInfoResponse = await response.json()
         return {
-          availableFeeUSD: result.user.availableFeeUSD,
+          availableFeeUSD: result?.user?.availableFeeUSD || '0',
         }
       } catch (error) {
         console.error(`Fetch User Info Error: ${error}`)

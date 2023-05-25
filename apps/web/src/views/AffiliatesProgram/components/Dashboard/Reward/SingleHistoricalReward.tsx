@@ -31,21 +31,23 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
       <Card>
         <Table>
           <thead>
-            <Th>
-              <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                {tableFirstTitle}
-              </Text>
-            </Th>
-            <Th>
-              <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                {t('Claim Request time')}
-              </Text>
-            </Th>
-            <Th>
-              <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="right">
-                {t('State')}
-              </Text>
-            </Th>
+            <tr>
+              <Th>
+                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                  {tableFirstTitle}
+                </Text>
+              </Th>
+              <Th>
+                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                  {t('Claim Request time')}
+                </Text>
+              </Th>
+              <Th>
+                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="right">
+                  {t('State')}
+                </Text>
+              </Th>
+            </tr>
           </thead>
           <tbody>
             <tr>
