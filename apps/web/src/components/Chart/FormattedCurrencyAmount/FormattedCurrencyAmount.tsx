@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, Fraction } from '@pancakeswap/sdk'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 const CURRENCY_AMOUNT_MIN = new Fraction(1n, 1000000n)
 
@@ -8,10 +9,11 @@ interface FormatterCurrencyAmountProps {
 }
 
 export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 }: FormatterCurrencyAmountProps) {
-  return !currencyAmount || currencyAmount.equalTo(0n)
+  const formattedAmount = formatAmount(currencyAmount, significantDigits)
+  return !formattedAmount || !currencyAmount || currencyAmount.equalTo(0n)
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
-    ? currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
+    ? new Intl.NumberFormat().format(formattedAmount)
     : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
 }
 
