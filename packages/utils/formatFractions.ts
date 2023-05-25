@@ -29,6 +29,9 @@ export function formatAmount(amount?: CurrencyAmount<Currency>, precision?: numb
 }
 
 export function parseNumberToFraction(num: number, precision = 6) {
+  if (Number.isNaN(num) || !Number.isFinite(num)) {
+    return undefined
+  }
   const scalar = 10 ** precision
   return new Fraction(BigInt(Math.floor(num * scalar)), BigInt(scalar))
 }

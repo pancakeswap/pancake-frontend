@@ -8,6 +8,7 @@ import {
   farmV3FetchFarms,
   fetchMasterChefV3Data,
   fetchCommonTokenUSDValue,
+  fetchTokenUSDValues,
   CommonPrice,
   LPTvl,
   getCakeApr,
@@ -137,4 +138,4 @@ export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 export * from './v2/filterFarmsByQuery'
 
-export { masterChefV3Addresses, fetchCommonTokenUSDValue }
+export { masterChefV3Addresses, fetchCommonTokenUSDValue, fetchTokenUSDValues }

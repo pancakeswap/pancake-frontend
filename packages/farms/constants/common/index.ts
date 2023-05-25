@@ -9,6 +9,13 @@ export type PriceHelper = {
   list: ERC20Token[]
 }
 
+export const CHAIN_ID_TO_CHAIN_NAME = {
+  [ChainId.BSC]: 'bsc',
+  [ChainId.ETHEREUM]: 'ethereum',
+  [ChainId.GOERLI]: 'ethereum',
+  [ChainId.BSC_TESTNET]: 'bsc',
+} satisfies Record<ChainId, string>
+
 export const priceHelperTokens = {
   [ChainId.ETHEREUM]: {
     chain: 'ethereum',
