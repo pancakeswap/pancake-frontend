@@ -366,7 +366,7 @@ export async function fetchPairPriceChartTokenData(
       : (
           await dataClient.request<PairPriceMinMAxResults>(HOUR_PRICE_MAX, {
             address,
-            startTime: blocks?.[0].timestamp,
+            startTime: +blocks?.[0].timestamp,
           })
         )?.poolHourDatas?.[0]?.high
     const minQueryPrice = isDay
@@ -378,7 +378,7 @@ export async function fetchPairPriceChartTokenData(
       : (
           await dataClient.request<PairPriceMinMAxResults>(HOUR_PRICE_MIN, {
             address,
-            startTime: blocks?.[0].timestamp,
+            startTime: +blocks?.[0].timestamp,
           })
         )?.poolHourDatas?.[0]?.low
 
