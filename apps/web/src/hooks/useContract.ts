@@ -365,7 +365,7 @@ export function useV3NFTPositionManagerContract() {
 export function useMasterchefV3() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getMasterChefV3Contract(signer, chainId), [chainId, signer])
+  return getMasterChefV3Contract(signer, chainId)
 }
 
 export function useV3MigratorContract() {
