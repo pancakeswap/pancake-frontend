@@ -119,7 +119,7 @@ export const WETH9 = {
   ),
   [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
     ChainId.POLYGON_ZKEVM_TESTNET,
-    '0x2ad78787CCaf7FA8FAe8953FD78ab9163f81DcC8',
+    '0x30ec47F7DFae72eA79646e6cf64a8A7db538915b',
     18,
     'WETH',
     'Wrapped Ether',

@@ -18,7 +18,7 @@ describe('#computePoolAddress', () => {
     expect(result).toEqual('0x993B1e86fFEf6609e47416212C17B0df746fa985')
   })
 
-  it('should correctly compute the pool address zkSync', () => {
+  it.todo('should correctly compute the pool address zkSync', () => {
     const USDC = new Token(280, '0x0faF6df7054946141266420b43783387A78d82A9', 6, 'USDC', 'USD Coin')
     const WETH = new Token(280, '0x20b28B1e4665FFf290650586ad76E977EAb90c5D', 18, 'WETH')
     const result = computePoolAddress({

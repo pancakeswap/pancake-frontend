@@ -168,13 +168,6 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
-  [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
-    ChainId.POLYGON_ZKEVM_TESTNET,
-    '0xC65e7B01910D456f594f13fB98eC0DEE2DD6797E',
-    6,
-    'USDC',
-    'USD Coin',
-  ),
   [ChainId.LINEA_TESTNET]: new ERC20Token(
     ChainId.LINEA_TESTNET,
     '0xf56dc6695cF1f5c364eDEbC7Dc7077ac9B586068',
