@@ -52,6 +52,14 @@ export const livePools: SerializedPool[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.1',
   },
+  {
+    sousId: 8,
+    stakingToken: bscTestnetTokens.cake2,
+    earningToken: bscTestnetTokens.cake2,
+    contractAddress: '0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.01',
+  },
 ].map((p) => ({
   ...p,
   contractAddress: getAddress(p.contractAddress),
