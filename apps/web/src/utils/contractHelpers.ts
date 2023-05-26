@@ -243,7 +243,7 @@ export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient) => {
   })
 }
 
-export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
+export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provider) => {
   return getContract({
     abi: bCakeFarmBoosterProxyFactoryABI,
     address: getBCakeFarmBoosterProxyFactoryAddress(),
