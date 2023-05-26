@@ -23,30 +23,36 @@ const tokensToTest = omitBy(
 
 const tokenTables: [string, Token][] = map(tokensToTest, (token, key) => [key, token])
 
-describe.concurrent('Config tokens', () => {
-  it.each(slice(tokenTables, tokenTables.length - 50))(
-    'Token %s has the correct key, symbol, and decimal',
-    async (key: string, token: Token) => {
-      const bscClient = publicClient({ chainId: ChainId.BSC })
-      const [symbol, decimals] = await bscClient.multicall({
-        contracts: [
-          {
-            abi: erc20ABI,
-            address: token.address,
-            functionName: 'symbol',
-          },
-          {
-            abi: erc20ABI,
-            address: token.address,
-            functionName: 'decimals',
-          },
-        ],
-        allowFailure: false,
-      })
+describe.concurrent(
+  'Config tokens',
+  () => {
+    it.each(slice(tokenTables, tokenTables.length - 50))(
+      'Token %s has the correct key, symbol, and decimal',
+      async (key: string, token: Token) => {
+        const bscClient = publicClient({ chainId: ChainId.BSC })
+        const [symbol, decimals] = await bscClient.multicall({
+          contracts: [
+            {
+              abi: erc20ABI,
+              address: token.address,
+              functionName: 'symbol',
+            },
+            {
+              abi: erc20ABI,
+              address: token.address,
+              functionName: 'decimals',
+            },
+          ],
+          allowFailure: false,
+        })
 
-      expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
-      expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
-      expect(token.decimals).toBe(decimals)
-    },
-  )
-})
+        expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
+        expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
+        expect(token.decimals).toBe(decimals)
+      },
+    )
+  },
+  {
+    timeout: 50_000,
+  },
+)

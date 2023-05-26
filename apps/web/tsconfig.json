@@ -14,8 +14,6 @@
   "exclude": [
     "**/node_modules",
     "**/.*/",
-    "**/*.test.tsx",
-    "**/*.test.ts",
     // This is the path to the generated types from removed typechain
     "**/config/abi/types/",
     "**/abis/types/*.ts"
