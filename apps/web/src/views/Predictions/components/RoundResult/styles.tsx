@@ -18,7 +18,7 @@ const getPrizePoolAmount = (
   decimals: number,
   displayedDecimals: number,
 ) => {
-  if (!totalAmount) {
+  if (typeof totalAmount !== 'bigint') {
     return '0'
   }
 
