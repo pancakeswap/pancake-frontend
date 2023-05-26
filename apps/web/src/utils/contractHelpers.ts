@@ -29,6 +29,7 @@ import {
   getMasterChefV3Address,
   getV3MigratorAddress,
   getV3AirdropAddress,
+  getAffiliateProgramAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -76,6 +77,7 @@ import { getViemClients, viemClients } from 'utils/viem'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 import { tradingRewardABI } from 'config/abi/tradingReward'
+import { affiliateProgramABI } from 'config/abi/affiliateProgram'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -357,5 +359,14 @@ export const getV3AirdropContract = (walletClient?: WalletClient) => {
     abi: v3AirdropABI,
     address: getV3AirdropAddress(),
     signer: walletClient,
+  })
+}
+
+export const getAffiliateProgramContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: affiliateProgramABI,
+    address: getAffiliateProgramAddress(chainId),
+    signer,
+    chainId,
   })
 }
