@@ -27,6 +27,7 @@ export const STABLE_LP_TO_MIGRATE = [
   '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
   '0x1A77C359D0019cD8F4d36b7CDf5a88043D801072', // USDC-BUSD
   '0xee1bcc9F1692E81A281b3a302a4b67890BA4be76', // USDT-USDC
+  '0x9976f5c8BEfDee650226d5571d5F5551e8722b75', // WBNB-STKBNB
 ]
 
 export function Step2() {
@@ -75,7 +76,7 @@ export function Step2() {
   const allV2PairsWithLiquidity = v2Pairs
     ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
     .filter(([, pair]) =>
-      activeV3Farms.find((farm) => pair.token0.equals(farm.token) && pair.token1.equals(farm.quoteToken)),
+      activeV3Farms.find((farm) => pair.token0.equals(farm.token0) && pair.token1.equals(farm.token1)),
     )
     .map(([, pair]) => pair)
 
