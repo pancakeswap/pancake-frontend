@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
-import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
+import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import {
   Modal,
   ModalV2,
@@ -64,8 +64,8 @@ export const TradeSummary = memo(function TradeSummary({
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount.currency.symbol}` ?? '-'
-              : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount.currency.symbol}` ?? '-'}
+              ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount?.currency?.symbol}` ?? '-'
+              : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount?.currency?.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -148,7 +148,7 @@ export const TradeSummary = memo(function TradeSummary({
               placement="top"
             />
           </RowFixed>
-          <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount.currency.symbol}`}</Text>
+          <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
         </RowBetween>
       )}
     </AutoColumn>
@@ -236,7 +236,7 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
                       inputCurrency={inputAmount.currency}
                       pairs={pairs}
                       path={path}
-                      outputCurrency={outputAmount.currency}
+                      outputCurrency={outputAmount?.currency}
                     />
                     <Flex mt="3em" width="100%" justifyContent="center">
                       <RoutingSettingsButton />
