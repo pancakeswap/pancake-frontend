@@ -75,7 +75,7 @@ export function Step2() {
   const allV2PairsWithLiquidity = v2Pairs
     ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
     .filter(([, pair]) =>
-      activeV3Farms.find((farm) => pair.token0.equals(farm.token) && pair.token1.equals(farm.quoteToken)),
+      activeV3Farms.find((farm) => pair.token0.equals(farm.token0) && pair.token1.equals(farm.token1)),
     )
     .map(([, pair]) => pair)
 
