@@ -37,21 +37,24 @@ export const useIsBoostedPool = (tokenId?: string) => {
 export const useUserPositionInfo = (tokenId: string) => {
   const { chainId } = useActiveChainId()
   const masterChefV3 = useMasterchefV3()
-  const { data } = useSWRImmutable(
+  const { data, mutate } = useSWRImmutable(
     chainId && tokenId && `v3/masterChef/userPositionInfos/${chainId}/${tokenId}`,
     () => masterChefV3.userPositionInfos(tokenId),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return {
-    liquidity: data?.[0],
-    boostLiquidity: data?.[1],
-    tickLower: data?.[2],
-    tickUpper: data?.[3],
-    rewardGrowthInside: data?.[4],
-    reward: data?.[5],
-    user: data?.[6],
-    pid: data?.[7],
-    boostMultiplier: data?.[8]?.toNumber(),
+    data: {
+      liquidity: data?.[0],
+      boostLiquidity: data?.[1],
+      tickLower: data?.[2],
+      tickUpper: data?.[3],
+      rewardGrowthInside: data?.[4],
+      reward: data?.[5],
+      user: data?.[6],
+      pid: data?.[7],
+      boostMultiplier: data?.[8]?.toNumber(),
+    },
+    updateUserPositionInfo: mutate,
   }
 }
 
