@@ -88,9 +88,14 @@ export default function PoolV2Page() {
                 <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
                   <Button width="100%">{t('Add')}</Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
-                  <Button ml="16px" variant="secondary" width="100%">
+                <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`} style={{ margin: '0px 8px' }}>
+                  <Button variant="secondary" width="100%">
                     {t('Remove')}
+                  </Button>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter to={`/v2/migrate/${pair?.liquidityToken?.address}`}>
+                  <Button variant="secondary" width="100%">
+                    {t('Migrate')}
                   </Button>
                 </NextLinkFromReactRouter>
               </>
@@ -108,6 +113,11 @@ export default function PoolV2Page() {
               <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
                 <Button variant="secondary" width="100%" mb="8px">
                   {t('Remove')}
+                </Button>
+              </NextLinkFromReactRouter>
+              <NextLinkFromReactRouter to={`/v2/migrate/${pair.liquidityToken.address}`}>
+                <Button variant="secondary" width="100%" mb="8px">
+                  {t('Migrate')}
                 </Button>
               </NextLinkFromReactRouter>
             </>
