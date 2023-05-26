@@ -11,7 +11,7 @@ import { usePriceCakeUSD } from 'state/farms/hooks'
 import styled from 'styled-components'
 import useSWR from 'swr'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
 import { erc20ABI } from 'wagmi'
 
@@ -89,7 +89,7 @@ const CakeDataRow = () => {
   } = useSWR(
     loadData ? ['cakeDataRow'] : null,
     async () => {
-      const [totalSupply, burned, totalLockedAmount] = await viemClients[ChainId.BSC].multicall({
+      const [totalSupply, burned, totalLockedAmount] = await publicClient({ chainId: ChainId.BSC }).multicall({
         contracts: [
           { abi: erc20ABI, address: bscTokens.cake.address, functionName: 'totalSupply' },
           {

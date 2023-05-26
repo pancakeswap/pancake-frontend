@@ -7,7 +7,7 @@ import { tradingRewardABI } from 'config/abi/tradingReward'
 import { getTradingRewardAddress } from 'utils/addressHelpers'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import { ChainId } from '@pancakeswap/sdk'
-import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
 
 interface UserCampaignInfoResponse {
@@ -87,7 +87,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
                   } as const),
               )
 
-            const bscClient = getViemClients({ chainId: ChainId.BSC })
+            const bscClient = publicClient({ chainId: ChainId.BSC })
 
             const userClaimedIncentives = await bscClient.readContract({
               abi: tradingRewardABI,
@@ -96,7 +96,7 @@ const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo
               args: [campaignId, account],
             })
 
-            const canClaimResult = await getViemClients({ chainId: ChainId.BSC }).multicall({
+            const canClaimResult = await bscClient.multicall({
               contracts: canClaimDataCalls,
             })
 

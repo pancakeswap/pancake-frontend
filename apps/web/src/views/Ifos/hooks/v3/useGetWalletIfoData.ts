@@ -8,7 +8,7 @@ import { useAppDispatch } from 'state'
 import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ifoV3ABI } from 'config/abi/ifoV3'
 
@@ -81,7 +81,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
-    const bscClient = viemClients[ChainId.BSC]
+    const bscClient = publicClient({ chainId: ChainId.BSC })
 
     const [userInfo, amounts] = await bscClient.multicall({
       contracts: [

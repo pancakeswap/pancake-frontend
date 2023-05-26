@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { NUM_ROUNDS_TO_CHECK_FOR_REWARDS } from 'config/constants/lottery'
@@ -32,7 +32,7 @@ const fetchCakeRewardsForTickets = async (
   })
 
   try {
-    const client = viemClients[ChainId.BSC]
+    const client = publicClient({ chainId: ChainId.BSC })
     const cakeRewards = await client.multicall({
       contracts: calls,
       allowFailure: false,

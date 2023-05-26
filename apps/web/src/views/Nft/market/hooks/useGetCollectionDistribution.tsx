@@ -5,7 +5,7 @@ import { getPancakeBunniesAddress } from 'utils/addressHelpers'
 import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import mapValues from 'lodash/mapValues'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { pancakeBunniesABI } from 'config/abi/pancakeBunnies'
 import { pancakeBunniesAddress } from '../constants'
@@ -47,7 +47,7 @@ export const useGetCollectionDistributionPB = () => {
       // Use on chain data to get most updated totalSupply and bunnyCount data. Nft Api Data not updated frequently.
       const tokenIds = Object.keys(apiResponse.attributesDistribution)
       try {
-        const response = await viemClients[ChainId.BSC as keyof typeof viemClients].multicall({
+        const response = await publicClient({ chainId: ChainId.BSC }).multicall({
           contracts: tokenIds.map((tokenId) => ({
             address: getPancakeBunniesAddress(),
             functionName: 'bunnyCount',

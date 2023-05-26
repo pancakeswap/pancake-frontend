@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import useSWR from 'swr'
 import _toNumber from 'lodash/toNumber'
 import { Address, useAccount } from 'wagmi'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { YieldBoosterState } from './useYieldBoosterState'
@@ -12,7 +12,7 @@ import { YieldBoosterState } from './useYieldBoosterState'
 const PRECISION_FACTOR = new BN('1000000000000') // 1e12
 
 async function getPublicMultiplier({ farmBoosterContract }): Promise<number> {
-  const [cAResult, caPercisionResult, boostPercisionResult] = await viemClients[ChainId.BSC].multicall({
+  const [cAResult, caPercisionResult, boostPercisionResult] = await publicClient({ chainId: ChainId.BSC }).multicall({
     contracts: [
       {
         address: farmBoosterContract.address,
@@ -48,7 +48,7 @@ async function getPublicMultiplier({ farmBoosterContract }): Promise<number> {
 }
 
 async function getUserMultiplier({ farmBoosterContract, account, pid }): Promise<number> {
-  const [multiplierResult, boostPrecisionResult] = await viemClients[ChainId.BSC].multicall({
+  const [multiplierResult, boostPrecisionResult] = await publicClient({ chainId: ChainId.BSC }).multicall({
     contracts: [
       {
         address: farmBoosterContract.address,

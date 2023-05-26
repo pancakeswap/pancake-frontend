@@ -5,7 +5,7 @@ import map from 'lodash/map'
 import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
 import { describe, it } from 'vitest'
-import { viemClients } from 'utils/viem'
+import { publicClient } from '../../utils/wagmi'
 
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
@@ -27,7 +27,7 @@ describe.concurrent('Config tokens', () => {
   it.each(slice(tokenTables, tokenTables.length - 50))(
     'Token %s has the correct key, symbol, and decimal',
     async (key: string, token: Token) => {
-      const bscClient = viemClients[ChainId.BSC]
+      const bscClient = publicClient({ chainId: ChainId.BSC })
       const [symbol, decimals] = await bscClient.multicall({
         contracts: [
           {

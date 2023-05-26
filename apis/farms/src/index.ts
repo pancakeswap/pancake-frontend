@@ -13,10 +13,16 @@
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
 import { wrapCorsHeader, handleCors, CORS_ALLOW } from '@pancakeswap/worker-utils'
+import BigNumber from 'bignumber.js'
 import { fetchCakePrice, saveFarms, saveLPsAPR } from './handler'
 import { farmFetcher, requireChainId } from './helper'
 import { handler as v3Handler } from './v3'
 import { FarmKV } from './kv'
+
+BigNumber.config({
+  EXPONENTIAL_AT: 1000,
+  DECIMAL_PLACES: 18,
+})
 
 const router = Router()
 

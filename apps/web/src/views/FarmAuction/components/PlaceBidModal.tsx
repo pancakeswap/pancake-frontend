@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { Modal, Text, Flex, BalanceInput, Box, Button, LogoRoundIcon, useToast } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -17,8 +16,8 @@ import { ConnectedBidder, FetchStatus } from 'config/constants/types'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { bscTokens } from '@pancakeswap/tokens'
-import { requiresApproval } from 'utils/requiresApproval'
+import { bscTokens, CAKE } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/sdk'
 
 const StyledModal = styled(Modal)`
   & > div:nth-child(2) {
@@ -101,14 +100,18 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
     }
   }, [isMultipleOfTen, isMoreThanInitialBidAmount, userNotEnoughCake, initialBidAmount, t, isFirstBid])
 
+  let minAmount = 0n
+  try {
+    minAmount = BigInt(new BigNumber(bid).times(DEFAULT_TOKEN_DECIMAL).toString())
+  } catch {
+    //
+  }
+
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(cakeContract, account, farmAuctionContract.address)
-      },
-      onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
-      },
+      minAmount,
+      spender: farmAuctionContract?.address,
+      token: CAKE[ChainId.BSC],
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(
           t('Contract approved - you can now place your bid!'),

@@ -8,7 +8,7 @@ import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from '@pancakeswap/pools'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 
 const masterChefAddress = getMasterChefV2Address()
@@ -44,7 +44,7 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
   const pricePerFullShareAsEtherBN = useMemo(() => new BN(pricePerFullShare.toString()), [pricePerFullShare])
 
   const { data: totalCakePoolEmissionPerYear } = useSWRImmutable('masterChef-total-cake-pool-emission', async () => {
-    const bscClient = viemClients[ChainId.BSC]
+    const bscClient = publicClient({ chainId: ChainId.BSC })
 
     const [specialFarmsPerBlock, cakePoolInfo, totalSpecialAllocPoint] = await bscClient.multicall({
       contracts: [

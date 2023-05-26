@@ -15,7 +15,7 @@ import {
 import { Address } from 'wagmi'
 import { getPredictionsV2Contract } from 'utils/contractHelpers'
 import { predictionsV2ABI } from 'config/abi/predictionsV2'
-import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import { getRoundBaseFields, getBetBaseFields, getUserBaseFields } from './queries'
@@ -40,7 +40,7 @@ export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
 })
 
 // TODO: refactor it when multi-chain
-const bscClient = getViemClients({ chainId: ChainId.BSC })
+const bscClient = publicClient({ chainId: ChainId.BSC })
 
 export enum Result {
   WIN = 'win',

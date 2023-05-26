@@ -8,7 +8,7 @@ import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
 import { farmFetcher } from 'state/farms'
 import { Address, erc20ABI } from 'wagmi'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ContractFunctionResult } from 'viem'
 
 export const fetchFarmUserAllowances = async (
@@ -20,7 +20,7 @@ export const fetchFarmUserAllowances = async (
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const lpAllowances = await viemClients[chainId as keyof typeof viemClients].multicall({
+  const lpAllowances = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
@@ -45,7 +45,7 @@ export const fetchFarmUserTokenBalances = async (
   farmsToFetch: SerializedFarmConfig[],
   chainId: number,
 ) => {
-  const rawTokenBalances = await viemClients[chainId as keyof typeof viemClients].multicall({
+  const rawTokenBalances = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
@@ -72,7 +72,7 @@ export const fetchFarmUserStakedBalances = async (
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const rawStakedBalances = (await viemClients[chainId].multicall({
+  const rawStakedBalances = (await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: isBscNetwork ? masterChefV2ABI : nonBscVaultABI,
@@ -100,7 +100,7 @@ export const fetchFarmUserEarnings = async (
   const userAddress = isBscNetwork ? account : await fetchCProxyAddress(account, multiCallChainId)
   const masterChefAddress = getMasterChefV2Address(multiCallChainId)
 
-  const rawEarnings = await viemClients[multiCallChainId as keyof typeof viemClients].multicall({
+  const rawEarnings = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: masterChefV2ABI,

@@ -9,7 +9,7 @@ import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
 import { Address } from 'wagmi'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 
 const potteryDrawAddress = getPotteryDrawAddress()
@@ -47,7 +47,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: Address) => {
       getLockTime,
       getMaxTotalDeposit,
       { lastDrawId, totalPrize },
-    ] = await viemClients[ChainId.BSC].multicall({
+    ] = await publicClient({ chainId: ChainId.BSC }).multicall({
       contracts: [
         {
           abi: potteryVaultABI,

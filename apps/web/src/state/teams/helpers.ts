@@ -6,7 +6,7 @@ import { TeamsById } from 'state/types'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import fromPairs from 'lodash/fromPairs'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 
 export const getTeam = async (teamId: number): Promise<Team> => {
@@ -49,7 +49,7 @@ export const getTeams = async (): Promise<TeamsById> => {
           args: [BigInt(i + 1)] as const,
         } as const),
     )
-    const client = viemClients[ChainId.BSC]
+    const client = publicClient({ chainId: ChainId.BSC })
     const teamData = await client.multicall({
       contracts: calls,
       allowFailure: false,

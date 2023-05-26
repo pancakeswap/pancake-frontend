@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { erc20ABI } from 'wagmi'
 import chunk from 'lodash/chunk'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
-import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { SerializedFarm } from '@pancakeswap/farms'
 import { SerializedFarmConfig } from '../../config/constants/types'
 
@@ -53,7 +53,7 @@ const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
 
 export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[], chainId = ChainId.BSC) => {
   const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm, chainId))
-  const client = getViemClients({ chainId })
+  const client = publicClient({ chainId })
   const farmMultiCallResult = await client.multicall({
     contracts: farmCalls,
     allowFailure: false,

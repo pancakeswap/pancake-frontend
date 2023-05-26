@@ -4,7 +4,7 @@ import { FetchStatus } from 'config/constants/types'
 import useSWRImmutable from 'swr/immutable'
 import { getActivePools } from 'utils/calls'
 import { bscTokens } from '@pancakeswap/tokens'
-import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { getVotingPower } from '../helpers'
 
 interface State {
@@ -22,7 +22,7 @@ interface State {
 const useGetVotingPower = (block?: number): State & { isLoading: boolean; isError: boolean } => {
   const { address: account } = useAccount()
   const { data, status, error } = useSWRImmutable(account ? [account, block, 'votingPower'] : null, async () => {
-    const blockNumber = block ? BigInt(block) : await getViemClients({ chainId: ChainId.BSC }).getBlockNumber()
+    const blockNumber = block ? BigInt(block) : await publicClient({ chainId: ChainId.BSC }).getBlockNumber()
     const eligiblePools = await getActivePools(ChainId.BSC, Number(blockNumber))
     const poolAddresses: Address[] = eligiblePools
       .filter((pair) => pair.stakingToken.address.toLowerCase() === bscTokens.cake.address.toLowerCase())

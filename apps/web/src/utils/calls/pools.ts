@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { getPoolsConfig } from '@pancakeswap/pools'
 
 import chunk from 'lodash/chunk'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 
 const ABI = [
   {
@@ -59,12 +59,12 @@ export const getActivePools = async (chainId: ChainId, block?: number) => {
   )
 
   const calls = [...startBlockCalls, ...endBlockCalls]
-  const resultsRaw = await viemClients[chainId].multicall({
+  const resultsRaw = await publicClient({ chainId }).multicall({
     contracts: calls,
     allowFailure: false,
   })
 
-  const blockNumber = block ? BigInt(block) : await viemClients[chainId].getBlockNumber()
+  const blockNumber = block ? BigInt(block) : await publicClient({ chainId }).getBlockNumber()
 
   const blockCallsRaw = chunk(resultsRaw, resultsRaw.length / 2)
 

@@ -5,7 +5,7 @@ import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useState } from 'react'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 
 const useGetProfileCosts = () => {
   const { t } = useTranslation()
@@ -22,9 +22,10 @@ const useGetProfileCosts = () => {
     const fetchCosts = async () => {
       try {
         const pancakeProfileAddress = getPancakeProfileAddress()
-        const [numberCakeToReactivate, numberCakeToRegister, numberCakeToUpdate] = await viemClients[
-          ChainId.BSC
-        ].multicall({
+
+        const [numberCakeToReactivate, numberCakeToRegister, numberCakeToUpdate] = await publicClient({
+          chainId: ChainId.BSC,
+        }).multicall({
           allowFailure: false,
           contracts: [
             {

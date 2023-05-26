@@ -1,5 +1,5 @@
 import useSWRImmutable from 'swr/immutable'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ifoV3ABI } from '../config/abi/ifoV3'
 import { ifosConfig } from '../config/constants'
@@ -11,7 +11,7 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
   const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useSWRImmutable(
     activeIfo ? ['ifo', 'currentIfo'] : null,
     async () => {
-      const bscClient = viemClients[ChainId.BSC]
+      const bscClient = publicClient({ chainId: ChainId.BSC })
       const [startBlockResponse, endBlockResponse] = await bscClient.multicall({
         contracts: [
           {

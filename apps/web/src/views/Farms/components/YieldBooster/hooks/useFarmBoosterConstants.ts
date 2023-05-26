@@ -3,7 +3,7 @@ import { getBCakeFarmBoosterAddress } from 'utils/addressHelpers'
 import { useMemo } from 'react'
 import { FetchStatus } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 
@@ -11,7 +11,7 @@ const useFarmBoosterConstants = () => {
   const bCakeFarmBoosterAddress = getBCakeFarmBoosterAddress()
 
   const { data, status } = useSWRImmutable('farmBoosterConstants', async () => {
-    return viemClients[ChainId.BSC].multicall({
+    return publicClient({ chainId: ChainId.BSC }).multicall({
       contracts: [
         {
           address: bCakeFarmBoosterAddress,

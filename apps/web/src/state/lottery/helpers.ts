@@ -5,7 +5,7 @@ import { LotteryResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
 import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ContractFunctionResult } from 'viem'
 
@@ -94,7 +94,7 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
       } as const),
   )
   try {
-    const client = viemClients[ChainId.BSC]
+    const client = publicClient({ chainId: ChainId.BSC })
     const multicallRes = await client.multicall({
       contracts: calls,
     })
@@ -123,7 +123,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
         } as const),
     )
 
-    const client = viemClients[ChainId.BSC]
+    const client = publicClient({ chainId: ChainId.BSC })
     const [currentLotteryId, maxNumberTicketsPerBuyOrClaim] = await client.multicall({
       contracts: calls,
       allowFailure: false,

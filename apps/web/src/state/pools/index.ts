@@ -42,7 +42,8 @@ import {
 } from 'state/types'
 import { Address, erc20ABI } from 'wagmi'
 import { isAddress } from 'utils'
-import { getViemClients, viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
+import { getViemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 
@@ -112,7 +113,7 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
 export const fetchCakePoolUserDataAsync =
   ({ account, chainId }: { account: string; chainId: ChainId }) =>
   async (dispatch) => {
-    const client = viemClients[ChainId.BSC]
+    const client = publicClient({ chainId: ChainId.BSC })
     const [allowance, stakingTokenBalance] = await client.multicall({
       contracts: [
         {

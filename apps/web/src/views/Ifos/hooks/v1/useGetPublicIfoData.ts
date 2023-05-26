@@ -4,7 +4,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ifoV1ABI } from 'config/abi/ifoV1'
 import { PublicIfoData } from '../../types'
@@ -47,7 +47,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           } as const),
       )
 
-      const client = viemClients[ChainId.BSC]
+      const client = publicClient({ chainId: ChainId.BSC })
 
       const [startBlockResult, endBlockResult, raisingAmountResult, totalAmountResult] = await client.multicall({
         contracts: ifoCalls,

@@ -15,9 +15,9 @@ import { convertSharesToCake } from 'views/Pools/helpers'
 import { getScores } from 'views/Voting/getScores'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { cakePoolBalanceStrategy, createTotalStrategy } from 'views/Voting/strategies'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 
-const bscClient = viemClients[ChainId.BSC]
+const bscClient = publicClient({ chainId: ChainId.BSC })
 
 const useCakeBenefits = () => {
   const { address: account } = useAccount()

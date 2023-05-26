@@ -3,7 +3,7 @@ import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '@pancakeswap/farms'
 import { BSC_BLOCK_TIME } from 'config'
 import { add, sub } from 'date-fns'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ChainId } from '@pancakeswap/sdk'
 import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
@@ -13,7 +13,7 @@ const fetchFarmsWithAuctions = async (
 ): Promise<{ winnerFarms: string[]; auctionHostingEndDate: string }> => {
   const farmAuctionContract = getFarmAuctionContract()
   const currentAuctionId = await farmAuctionContract.read.currentAuctionId()
-  const bscClient = viemClients[ChainId.BSC]
+  const bscClient = publicClient({ chainId: ChainId.BSC })
   const [auctionDateResponse, auctionBiddersResponse] = await bscClient.multicall({
     contracts: [
       {

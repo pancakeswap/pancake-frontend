@@ -5,7 +5,7 @@ import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { Address } from 'wagmi'
 
@@ -45,7 +45,7 @@ export const getUsername = async (address: string): Promise<string> => {
 
 export const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const client = viemClients[ChainId.BSC]
+    const client = publicClient({ chainId: ChainId.BSC })
 
     const profileCallsResult = await client.multicall({
       contracts: [

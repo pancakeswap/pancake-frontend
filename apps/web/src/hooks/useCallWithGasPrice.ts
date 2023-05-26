@@ -1,7 +1,7 @@
 import { Abi } from 'abitype'
 import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
-import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import {
   Account,
   Address,
@@ -73,8 +73,7 @@ export function useCallWithGasPrice() {
       methodArgs?: Args extends never ? undefined : Args,
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
-      const publicClient = getViemClients({ chainId })
-      const gas = await publicClient.estimateContractGas({
+      const gas = await publicClient({ chainId }).estimateContractGas({
         abi: contract.abi,
         address: contract.address,
         account: walletClient.account,

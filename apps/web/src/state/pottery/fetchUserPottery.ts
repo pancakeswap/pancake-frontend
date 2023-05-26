@@ -8,7 +8,7 @@ import { PotteryDepositStatus } from 'state/types'
 import { Address } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 
 const potteryDrawContract = getPotteryDrawContract()
 
@@ -78,7 +78,7 @@ export const fetchWithdrawAbleData = async (account: Address) => {
       { account: account.toLowerCase() },
     )
 
-    const bscClient = viemClients[ChainId.BSC]
+    const bscClient = publicClient({ chainId: ChainId.BSC })
 
     const withdrawalsData = await Promise.all(
       response.withdrawals.map(async ({ id, shares, depositDate, vault }) => {

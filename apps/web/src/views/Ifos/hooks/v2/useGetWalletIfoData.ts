@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ifoV2ABI } from 'config/abi/ifoV2'
 import useIfoAllowance from '../useIfoAllowance'
@@ -63,7 +63,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
-    const bscClient = viemClients[ChainId.BSC]
+    const bscClient = publicClient({ chainId: ChainId.BSC })
 
     const [userInfo, amounts] = await bscClient.multicall({
       contracts: [

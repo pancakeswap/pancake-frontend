@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { getNftSaleAddress } from 'utils/addressHelpers'
 import { getPancakeSquadContract } from 'utils/contractHelpers'
 import { nftSaleABI } from 'config/abi/nftSale'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 
 const useEventInfos = ({ refreshCounter, setCallback }) => {
@@ -31,7 +31,7 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
             } as const),
         )
 
-        const client = viemClients[ChainId.BSC]
+        const client = publicClient({ chainId: ChainId.BSC })
 
         const [
           currentMaxSupply,

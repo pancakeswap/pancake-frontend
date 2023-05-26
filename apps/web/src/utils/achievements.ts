@@ -7,7 +7,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { getPointCenterIfoAddress } from 'utils/addressHelpers'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { Address, ContractFunctionResult } from 'viem'
-import { viemClients } from './viem'
+import { publicClient } from './wagmi'
 
 interface IfoMapResponse {
   thresholdToClaim: string
@@ -43,7 +43,7 @@ export const getAchievementDescription = (campaign: Campaign, t: TranslateFuncti
 export const getClaimableIfoData = async (account: string, t: TranslateFunction): Promise<Achievement[]> => {
   const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
 
-  const bscClient = viemClients[ChainId.BSC]
+  const bscClient = publicClient({ chainId: ChainId.BSC })
 
   // Returns the claim status of every IFO with a campaign ID
   const claimStatusesResults = await bscClient.multicall({

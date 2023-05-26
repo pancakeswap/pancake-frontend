@@ -1,7 +1,7 @@
 import { Ifo, PoolIds } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ifoV3ABI } from 'config/abi/ifoV3'
 import { Address } from 'wagmi'
@@ -53,7 +53,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: Address): Promis
   }
 
   if (account) {
-    const bscClient = viemClients[ChainId.BSC]
+    const bscClient = publicClient({ chainId: ChainId.BSC })
     const [basicId, unlimitedId] = await bscClient.multicall({
       contracts: [
         {

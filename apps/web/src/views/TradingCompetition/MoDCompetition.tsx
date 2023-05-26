@@ -7,7 +7,7 @@ import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/sdk'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import {
   SmartContractPhases,
@@ -85,8 +85,8 @@ const MoDCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const client = viemClients[ChainId.BSC]
-        const [user, userClaimed] = await client.multicall({
+        const bscClient = publicClient({ chainId: ChainId.BSC })
+        const [user, userClaimed] = await bscClient.multicall({
           contracts: [
             {
               address: tradingCompetitionContract.address,

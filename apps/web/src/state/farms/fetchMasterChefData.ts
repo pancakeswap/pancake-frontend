@@ -1,7 +1,7 @@
 import chunk from 'lodash/chunk'
 import { ChainId } from '@pancakeswap/sdk'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
-import { getViemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { farmFetcher } from 'state/farms'
 import { ContractFunctionResult } from 'viem'
 import { SerializedFarm } from '@pancakeswap/farms'
@@ -10,7 +10,7 @@ import { getMasterChefV2Address } from '../../utils/addressHelpers'
 
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   try {
-    const client = getViemClients({ chainId })
+    const client = publicClient({ chainId })
     const poolLength = await client.readContract({
       abi: masterChefV2ABI,
       address: getMasterChefV2Address(chainId),
@@ -61,7 +61,7 @@ export const fetchMasterChefData = async (
     .flat()
 
   const multiCallChainId = farmFetcher.isTestnet(chainId) ? ChainId.BSC_TESTNET : ChainId.BSC
-  const client = getViemClients({ chainId: multiCallChainId })
+  const client = publicClient({ chainId: multiCallChainId })
   const masterChefMultiCallResult = await client.multicall({
     contracts: masterChefAggregatedCalls,
     allowFailure: false,

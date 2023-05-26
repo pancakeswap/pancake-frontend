@@ -9,7 +9,7 @@ import { Ifo, IfoStatus } from 'config/constants/types'
 
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { viemClients } from 'utils/viem'
+import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
@@ -96,7 +96,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
-      const client = viemClients[ChainId.BSC]
+      const client = publicClient({ chainId: ChainId.BSC })
       const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
         await client.multicall({
           contracts: [
