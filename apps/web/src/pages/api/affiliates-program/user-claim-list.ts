@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { string as zString, object as zObject } from 'zod'
 
 const zQuery = zObject({
-  account: zString(),
+  address: zString(),
   skip: zString(),
   take: zString(),
 })

@@ -7,6 +7,9 @@ const userClaimFee = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/user/fee/claim/request`
   const response = await fetch(requestUrl, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
     method: 'POST',
     body: req.body,
   })

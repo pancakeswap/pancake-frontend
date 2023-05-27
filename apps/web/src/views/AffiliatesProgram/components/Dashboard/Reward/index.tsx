@@ -64,7 +64,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                   affiliateRewardFeeUSD={affiliateRewardFeeUSD}
                 />
               ) : (
-                <HistoricalReward />
+                <HistoricalReward isAffiliate={isAffiliate} />
               )}
             </CardContainer>
           </Flex>
