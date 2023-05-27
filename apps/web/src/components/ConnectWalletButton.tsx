@@ -39,6 +39,12 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
       <Button onClick={handleClick} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
       </Button>
+      <style jsx global>{`
+        w3m-modal {
+          position: relative;
+          z-index: 99;
+        }
+      `}</style>
       <WalletModalV2
         docText={t('Learn How to Connect')}
         docLink={docLink}
