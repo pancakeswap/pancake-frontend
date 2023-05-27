@@ -53,6 +53,7 @@ export enum MenuType {
 
 interface TabMenuProps {
   menuType: MenuType
+  inCompletedNumber: number
   onTypeChange: (menuType: MenuType) => void
 }
 
@@ -65,7 +66,7 @@ const getIndexFromType = (menuType: MenuType) => {
   }
 }
 
-const TabMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ menuType, onTypeChange }) => {
+const TabMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ menuType, inCompletedNumber, onTypeChange }) => {
   const { t } = useTranslation()
 
   return (
@@ -74,7 +75,7 @@ const TabMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ menuType, on
       <NavButton onClick={() => onTypeChange(MenuType.HISTORICAL)}>
         <Flex alignItems="center">
           {t('Historical Claim')}
-          <Dot />
+          {inCompletedNumber > 0 && <Dot />}
         </Flex>
       </NavButton>
     </Container>

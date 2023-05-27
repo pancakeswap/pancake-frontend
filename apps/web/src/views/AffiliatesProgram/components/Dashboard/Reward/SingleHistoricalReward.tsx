@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
+import { UserClaimListResponse, MAX_PER_PAGE, ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import { Box, Flex, Text, Card, PaginationButton, Table, Td, Th, FlexProps } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
 const Dot = styled(Box)`
   width: 8px;
@@ -15,13 +17,42 @@ const Dot = styled(Box)`
 interface SingleHistoricalRewardProps extends FlexProps {
   title: string
   tableFirstTitle: string
+  dataList: UserClaimListResponse
+  currentPage: number
+  setCurrentPage: (value: number) => void
 }
 
 const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalRewardProps>> = (props) => {
-  const { t } = useTranslation()
-  const { title, tableFirstTitle } = props
-  const [currentPage, setCurrentPage] = useState(1)
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const { title, tableFirstTitle, dataList, currentPage, setCurrentPage } = props
   const [maxPage, setMaxPages] = useState(1)
+  const [list, setList] = useState<ClaimDetail[]>()
+
+  useEffect(() => {
+    if (dataList?.total > 0) {
+      const max = Math.ceil(dataList?.total / MAX_PER_PAGE)
+      setMaxPages(max)
+    }
+
+    return () => {
+      setMaxPages(1)
+      setCurrentPage(1)
+      setList([])
+    }
+  }, [dataList, setCurrentPage])
+
+  useEffect(() => {
+    const getActivitySlice = () => {
+      const slice = dataList?.claimRequests?.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      setList(slice)
+    }
+    if (dataList?.claimRequests?.length > 0) {
+      getActivitySlice()
+    }
+  }, [currentPage, dataList])
 
   return (
     <Flex flexDirection="column" {...props}>
@@ -50,28 +81,59 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <Td>
-                <Text>$12</Text>
-              </Td>
-              <Td>
-                <Flex>
-                  <Text color="textSubtle">HH:MM, 3rd May, 2023</Text>
-                  <Dot />
-                </Flex>
-              </Td>
-              <Td>
-                <Text color="textSubtle" textAlign="right">
-                  {t('Pending Approval')}
-                </Text>
-                {/* <Text color="textSubtle" textAlign="right">
-                  {t('Claimed')}
-                </Text>
-                <Text style={{ cursor: 'pointer' }} color="primary" bold textAlign="right">
-                  {t('Claim ')}
-                </Text> */}
-              </Td>
-            </tr>
+            {list?.length === 0 ? (
+              <tr>
+                <Td colSpan={3} textAlign="center">
+                  {t('No results')}
+                </Td>
+              </tr>
+            ) : (
+              <>
+                {list?.map((reward) => (
+                  <tr key={reward.nonce}>
+                    <Td>
+                      <Text>{`$${formatNumber(Number(reward.amountUSD), 0, 2)}`}</Text>
+                    </Td>
+                    <Td>
+                      <Flex>
+                        <Text color="textSubtle">
+                          {new Date(reward.createdAt).toLocaleString(locale, {
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </Text>
+                        {reward.approveStatus === 'APPROVED' && !reward.process && <Dot />}
+                      </Flex>
+                    </Td>
+                    <Td>
+                      {reward.approveStatus === 'PENDING' && (
+                        <Text color="textSubtle" textAlign="right">
+                          {t('Pending Approval')}
+                        </Text>
+                      )}
+                      {reward.approveStatus === 'REJECTED' && (
+                        <Text color="failure" textAlign="right">
+                          {t('Rejected')}
+                        </Text>
+                      )}
+                      {reward.approveStatus === 'APPROVED' && reward.process && (
+                        <Text color="textSubtle" textAlign="right">
+                          {t('Claimed')}
+                        </Text>
+                      )}
+                      {reward.approveStatus === 'APPROVED' && !reward.process && (
+                        <Text style={{ cursor: 'pointer' }} color="primary" bold textAlign="right">
+                          {t('Claim ')}
+                        </Text>
+                      )}
+                    </Td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </Table>
         <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
