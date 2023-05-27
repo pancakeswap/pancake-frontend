@@ -279,8 +279,8 @@ importers:
         specifier: ^2.29.3
         version: 2.29.3
       jotai:
-        specifier: ^2.0.3
-        version: 2.0.3(react@18.2.0)
+        specifier: ^2.1.0
+        version: 2.1.0(react@18.2.0)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -661,8 +661,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.6.0)
       jotai:
-        specifier: ^2.0.3
-        version: 2.0.3(react@18.2.0)
+        specifier: ^2.1.0
+        version: 2.1.0(react@18.2.0)
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
@@ -1353,8 +1353,8 @@ importers:
         specifier: ^18.0.17
         version: 18.2.0
       jotai:
-        specifier: ^2.0.3
-        version: 2.0.3(react@18.2.0)
+        specifier: ^2.1.0
+        version: 2.1.0(react@18.2.0)
       localforage:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1429,8 +1429,8 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
       jotai:
-        specifier: ^2.0.0
-        version: 2.0.3(react@18.2.0)
+        specifier: ^2.1.0
+        version: 2.1.0(react@18.2.0)
       qrcode.react:
         specifier: ^3.1.0
         version: 3.1.0(react@18.2.0)
@@ -1734,8 +1734,8 @@ importers:
         specifier: ^9.0.0
         version: 9.1.1
       jotai:
-        specifier: ^2.0.3
-        version: 2.0.3(react@18.2.0)
+        specifier: ^2.1.0
+        version: 2.1.0(react@18.2.0)
       styled-components:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
@@ -18866,8 +18866,8 @@ packages:
       '@sideway/pinpoint': 2.0.0
     dev: true
 
-  /jotai@2.0.3(react@18.2.0):
-    resolution: {integrity: sha512-MMjhSPAL3RoeZD9WbObufRT2quThEAEknHHridf2ma8Ml7ZVQmUiHk0ssdbR3F0h3kcwhYqSGJ59OjhPge7RRg==}
+  /jotai@2.1.0(react@18.2.0):
+    resolution: {integrity: sha512-fR82PtHAmEQrc/daMEYGc4EteW96/b6wodtDSCzLvoJA/6y4YG70er4hh2f8CYwYjqwQ0eZUModGfG4DmwkTyQ==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       react: '>=17.0.0'
