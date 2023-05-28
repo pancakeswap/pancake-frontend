@@ -5,7 +5,6 @@ import { string as zString, object as zObject } from 'zod'
 import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
 
 const zQuery = zObject({
-  account: zString(),
   skip: zString(),
   take: zString(),
 })

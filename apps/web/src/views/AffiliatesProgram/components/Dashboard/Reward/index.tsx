@@ -53,10 +53,10 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
   }
 
   const inCompletedNumber = useMemo(() => {
-    const userHasInCompletedData = userClaimData?.claimRequests.filter(
+    const userHasInCompletedData = userClaimData?.claimRequests?.filter(
       (i) => i.approveStatus === 'APPROVED' && !i.process,
     )
-    const affiliateInCompletedData = affiliateClaimData?.claimRequests.filter(
+    const affiliateInCompletedData = affiliateClaimData?.claimRequests?.filter(
       (i) => i.approveStatus === 'APPROVED' && !i.process,
     )
     return new BigNumber(affiliateInCompletedData?.length).plus(userHasInCompletedData?.length).toNumber() ?? 0
@@ -82,6 +82,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                   userRewardFeeUSD={userRewardFeeUSD}
                   affiliateRewardFeeUSD={affiliateRewardFeeUSD}
                   userClaimData={userClaimData}
+                  affiliateClaimData={affiliateClaimData}
                 />
               ) : (
                 <HistoricalReward isAffiliate={isAffiliate} />

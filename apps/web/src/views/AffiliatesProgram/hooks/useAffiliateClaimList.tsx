@@ -13,8 +13,9 @@ const useAffiliateClaimList = ({ currentPage }) => {
     async () => {
       try {
         const skip = currentPage === 1 ? 0 : (currentPage - 1) * MAX_PER_PAGE
-        const urlParamsObject = { address, skip, take: MAX_PER_PAGE }
+        const urlParamsObject = { skip, take: MAX_PER_PAGE }
         const queryString = qs.stringify(urlParamsObject)
+
         const response = await fetch(`/api/affiliates-program/affiliate-claim-list?${queryString}`)
         const result: UserClaimListResponse = await response.json()
         return {
