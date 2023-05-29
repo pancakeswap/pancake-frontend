@@ -29,14 +29,15 @@ interface IBannerConfig {
  *  },
  * ```
  */
+
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <TradingRewardBanner /> },
       { shouldRender: true, banner: <PancakeProtectorBanner /> },
+      { shouldRender: true, banner: <TradingRewardBanner /> },
       { shouldRender: true, banner: <LiquidStakingBanner /> },
       { shouldRender: true, banner: <V3LaunchBanner /> },
       { shouldRender: true, banner: <FarmV3MigrationBanner /> },
