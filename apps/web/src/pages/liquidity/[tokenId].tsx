@@ -272,7 +272,10 @@ export default function PoolPage() {
     account,
   )
 
-  const isStakedInMCv3 = useMemo(() => tokenId && Boolean(stakedTokenIds.find((id) => id === tokenId)), [tokenId, stakedTokenIds])
+  const isStakedInMCv3 = useMemo(
+    () => tokenId && Boolean(stakedTokenIds.find((id) => id === tokenId)),
+    [tokenId, stakedTokenIds],
+  )
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
