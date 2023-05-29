@@ -69,7 +69,7 @@ export default function useSendSwapTransaction(
 
             const tx =
               !value || isZero(value)
-                ? { account, to: address, data: calldata }
+                ? { account, to: address, data: calldata, value: 0n }
                 : {
                     account,
                     to: address,
@@ -118,7 +118,7 @@ export default function useSendSwapTransaction(
           chainId,
           to: address,
           data: calldata,
-          value: value && !isZero(value) ? hexToBigInt(value) : undefined,
+          value: value && !isZero(value) ? hexToBigInt(value) : 0n,
           ...('gasEstimate' in bestCallOption ? { gas: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
         })
           .then((response) => {
