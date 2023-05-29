@@ -149,7 +149,7 @@ export function UpdatePositionsReminder_() {
 
   // eslint-disable-next-line consistent-return
   const handleUpdateAll = async () => {
-    if (!needRetrigger || !signer) return null
+    if (!needRetrigger || !sendTransactionAsync) return null
     const calldata = []
     needRetrigger.forEach((userInfo) => {
       if (userInfo.needReduce) {
