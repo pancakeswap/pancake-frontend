@@ -3,7 +3,6 @@
 import { useEffect } from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { useAtom } from 'jotai'
-import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { parse } from 'querystring'
 import { Mock, vi } from 'vitest'
 import { swapReducerAtom } from 'state/swap/reducer'
@@ -32,9 +31,9 @@ describe('hooks', () => {
       })
     })
 
-    test('should return BNB CAKE pair by default', () => {
+    test('should return Native by default', () => {
       expect(queryParametersToSwapState(parse(''))).toEqual({
-        [Field.OUTPUT]: { currencyId: DEFAULT_OUTPUT_CURRENCY },
+        [Field.OUTPUT]: { currencyId: undefined },
         [Field.INPUT]: { currencyId: 'BNB' },
         typedValue: '',
         independentField: Field.INPUT,
