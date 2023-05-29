@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@0xsquid/widget": "^1.4.81",
+    "@0xsquid/widget": "^1.4.83",
     "@material-ui/core": "^4.12.4",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
@@ -30,12 +30,12 @@
     "@wagmi/core": "^0.10.11"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.4.2",
+    "@next/eslint-plugin-next": "13.3.4",
+    "@pancakeswap/next-config": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*",
     "@types/node": "18.0.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "eslint": "^8.32.0",
-    "@pancakeswap/tsconfig": "workspace:*",
-    "@pancakeswap/next-config": "workspace:*"
+    "eslint": "^8.32.0"
   }
 }
