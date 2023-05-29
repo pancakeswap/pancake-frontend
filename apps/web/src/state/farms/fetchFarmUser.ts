@@ -100,7 +100,7 @@ export const fetchFarmUserEarnings = async (
   const userAddress = isBscNetwork ? account : await fetchCProxyAddress(account, multiCallChainId)
   const masterChefAddress = getMasterChefV2Address(multiCallChainId)
 
-  const rawEarnings = await publicClient({ chainId }).multicall({
+  const rawEarnings = await publicClient({ chainId: multiCallChainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: masterChefV2ABI,
