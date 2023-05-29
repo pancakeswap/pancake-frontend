@@ -17,7 +17,7 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
     chainId && farmPid && `v3/bcake/farmCanBoost/${chainId}/${farmPid}`,
-    () => farmBoosterV3Contract.whiteList(farmPid),
+    () => farmBoosterV3Contract.read.whiteList([BigInt(farmPid)]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return { farmCanBoost: data }
@@ -28,10 +28,10 @@ export const useIsBoostedPool = (tokenId?: string) => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data, mutate } = useSWRImmutable(
     chainId && tokenId && tokenId !== 'undefined' && `v3/bcake/isBoostedPool/${chainId}/${tokenId}`,
-    () => farmBoosterV3Contract.isBoostedPool(tokenId),
+    () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return { isBoosted: data?.[0], pid: data?.[1].toNumber(), mutate }
+  return { isBoosted: data?.[0], pid: Number(data?.[1]), mutate }
 }
 
 export const useUserPositionInfo = (tokenId: string) => {
@@ -39,7 +39,7 @@ export const useUserPositionInfo = (tokenId: string) => {
   const masterChefV3 = useMasterchefV3()
   const { data, mutate } = useSWRImmutable(
     chainId && tokenId && `v3/masterChef/userPositionInfos/${chainId}/${tokenId}`,
-    () => masterChefV3.userPositionInfos(tokenId),
+    () => masterChefV3.read.userPositionInfos([BigInt(tokenId)]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return {
@@ -52,7 +52,7 @@ export const useUserPositionInfo = (tokenId: string) => {
       reward: data?.[5],
       user: data?.[6],
       pid: data?.[7],
-      boostMultiplier: data?.[8]?.toNumber(),
+      boostMultiplier: Number(data?.[8] ?? 0),
     },
     updateUserPositionInfo: mutate,
   }
@@ -63,11 +63,11 @@ export const useUserBoostedPoolsPid = () => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
     chainId && account && `v3/bcake/userBoostedPools/${chainId}/${account}`,
-    () => farmBoosterV3Contract.activedPositions(account),
+    () => farmBoosterV3Contract.read.activedPositions([account]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return {
-    pids: data?.map((pid: any) => pid.toNumber()),
+    pids: data?.map((pid) => Number(pid)) ?? [],
   }
 }
 
@@ -87,8 +87,8 @@ export const useUserMaxBoostedPositionLimit = () => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
   const { data } = useSWRImmutable(
     chainId && `v3/bcake/userMaxBoostedPositionLimit/${chainId}`,
-    () => farmBoosterV3Contract.MAX_BOOST_POSITION(),
+    () => farmBoosterV3Contract.read.MAX_BOOST_POSITION(),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.toNumber()
+  return Number(data)
 }
