@@ -240,6 +240,7 @@ export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: C
     abi: bCakeFarmBoosterV3ABI,
     address: getBCakeFarmBoosterV3Address(chainId),
     signer,
+    chainId,
   })
 }
 
