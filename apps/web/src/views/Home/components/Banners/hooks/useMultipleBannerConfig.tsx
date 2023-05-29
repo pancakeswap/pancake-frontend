@@ -29,6 +29,7 @@ interface IBannerConfig {
  *  },
  * ```
  */
+
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
