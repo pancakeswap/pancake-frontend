@@ -11,7 +11,7 @@ export const useBoosterFarmV3Handlers = (tokenId: string, onDone: () => void) =>
 
   const activate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterV3Contract, 'activate', [tokenId], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
+      return callWithGasPrice(farmBoosterV3Contract, 'activate', [tokenId], { gas: BOOSTED_FARM_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {
@@ -21,7 +21,7 @@ export const useBoosterFarmV3Handlers = (tokenId: string, onDone: () => void) =>
 
   const deactivate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterV3Contract, 'deactive', [tokenId], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
+      return callWithGasPrice(farmBoosterV3Contract, 'deactive', [tokenId], { gas: BOOSTED_FARM_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {
