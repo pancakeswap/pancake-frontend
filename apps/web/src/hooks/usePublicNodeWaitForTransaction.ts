@@ -1,7 +1,6 @@
 import { ChainId } from '@gelatonetwork/limit-orders-lib'
 import { CHAINS } from 'config/chains'
-import { TransactionReceipt, createPublicClient, http } from 'viem'
-import { PublicClient } from 'wagmi'
+import { TransactionReceipt, createPublicClient, http, PublicClient } from 'viem'
 import { useCallback } from 'react'
 import { WaitForTransactionArgs, waitForTransaction } from 'wagmi/actions'
 import { useActiveChainId } from './useActiveChainId'
