@@ -37,6 +37,7 @@ export const { publicClient, chains } = configureChains(
       })
     }),
   {
+    rank: false,
     batch: {
       multicall: {
         batchSize: 1024 * 200,

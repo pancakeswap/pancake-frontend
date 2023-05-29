@@ -2,6 +2,8 @@ import { ChainId } from '@pancakeswap/sdk'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
 import { FallbackTransportConfig } from 'viem'
 
+const isTest = process.env.NODE_ENV === 'test'
+
 export const SERVER_NODES = {
   [ChainId.BSC]: [
     process.env.NEXT_PUBLIC_NODE_PRODUCTION,
@@ -25,8 +27,8 @@ export const PUBLIC_NODES = {
     urls: [
       process.env.NEXT_PUBLIC_NODE_PRODUCTION,
       // getNodeRealUrlV2(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
-      'https://bsc-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7',
-      'https://multi-necessary-choice.bsc.quiknode.pro/',
+      isTest ? null : 'https://bsc-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7',
+      isTest ? null : 'https://multi-necessary-choice.bsc.quiknode.pro/',
       'https://bsc-dataseed1.defibit.io',
       'https://bsc-dataseed1.binance.org',
     ].filter(Boolean),
@@ -42,8 +44,8 @@ export const PUBLIC_NODES = {
   [ChainId.ETHEREUM]: {
     urls: [
       getNodeRealUrlV2(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
-      'https://little-quick-brook.quiknode.pro/74f7f03cbdc91e54f2ed689df3fc500e6bc5b4e7/',
-      'https://eth-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7',
+      isTest ? null : 'https://little-quick-brook.quiknode.pro/74f7f03cbdc91e54f2ed689df3fc500e6bc5b4e7/',
+      isTest ? null : 'https://eth-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7',
       // 'https://eth.llamarpc.com',
     ].filter(Boolean),
     fallbackConfig: {
