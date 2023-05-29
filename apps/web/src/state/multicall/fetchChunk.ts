@@ -5,6 +5,13 @@ import { getMulticallAddress } from 'utils/addressHelpers'
 import { Call } from './actions'
 import { RetryableError } from './retry'
 
+const l2DifferentBlockNumberChains = [
+  ChainId.ZKSYNC,
+  ChainId.ZKSYNC_TESTNET,
+  ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_GOERLI,
+]
+
 export type FetchChunkResult = ReturnType<typeof fetchChunk>
 
 /**
@@ -59,7 +66,7 @@ export async function fetchChunk(
     throw error
   }
 
-  const l2DifferentBlockNumber = chainId === ChainId.ZKSYNC || chainId === ChainId.ZKSYNC_TESTNET
+  const l2DifferentBlockNumber = l2DifferentBlockNumberChains.includes(chainId)
 
   if (Number(resultsBlockNumber) < minBlockNumber && !l2DifferentBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)

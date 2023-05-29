@@ -12,6 +12,7 @@ import {
   zksyncTokens,
   zkSyncTestnetTokens,
   lineaTestnetTokens,
+  arbitrumGoerliTokens,
 } from '@pancakeswap/tokens'
 import { ChainTokenList } from './types'
 
@@ -27,7 +28,8 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.GOERLI]: 12_000,
   [ChainId.BSC]: 6_000,
   [ChainId.BSC_TESTNET]: 6_000,
-  [ChainId.ARBITRUM_ONE]: 15_000,
+  [ChainId.ARBITRUM_ONE]: 4_000,
+  [ChainId.ARBITRUM_GOERLI]: 4_000,
   [ChainId.POLYGON_ZKEVM]: 7_000,
   [ChainId.POLYGON_ZKEVM_TESTNET]: 7_000,
   [ChainId.ZKSYNC]: 3_000,
@@ -42,6 +44,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.BSC]: [bscTokens.usdt, bscTokens.cake, bscTokens.btcb],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
+  [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.weth, arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.usdt],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
@@ -56,6 +59,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.BSC]: [bscTokens.wbnb, bscTokens.dai, bscTokens.busd, bscTokens.usdt, bscTokens.cake],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
+  [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.weth, arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.usdt],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
@@ -78,6 +82,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [arbitrumTokens.weth, arbitrumTokens.usdt],
     [arbitrumTokens.weth, arbitrumTokens.usdc],
   ],
+  [ChainId.ARBITRUM_GOERLI]: [[arbitrumGoerliTokens.weth, arbitrumGoerliTokens.usdc]],
   [ChainId.POLYGON_ZKEVM]: [[polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt]],
   [ChainId.ZKSYNC]: [[zksyncTokens.usdc, zksyncTokens.weth]],
   [ChainId.ZKSYNC_TESTNET]: [[zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth]],

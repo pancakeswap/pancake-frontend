@@ -9,6 +9,7 @@ import {
   zkSyncTestnet as zkSyncTestnet_,
   polygonZkEvmTestnet as polygonZkEvmTestnet_,
   lineaTestnet,
+  arbitrumGoerli,
   Chain,
 } from 'wagmi/chains'
 
@@ -18,6 +19,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.BSC]: 'bsc',
   [ChainId.BSC_TESTNET]: 'bscTestnet',
   [ChainId.ARBITRUM_ONE]: 'arb',
+  [ChainId.ARBITRUM_GOERLI]: 'arbGoerli',
   [ChainId.POLYGON_ZKEVM]: 'polygonZkEVM',
   [ChainId.POLYGON_ZKEVM_TESTNET]: 'polygonZkEVMTestnet',
   [ChainId.ZKSYNC]: 'zkSync',
@@ -107,4 +109,5 @@ export const CHAINS = [
   // zkSyncTestnet,
   polygonZkEvmTestnet,
   lineaTestnet,
+  arbitrumGoerli,
 ]

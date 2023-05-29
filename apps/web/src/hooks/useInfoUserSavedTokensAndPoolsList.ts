@@ -25,6 +25,10 @@ const defaultTokenAndPoolList: TokenAndPoolList = {
     tokens: [],
     pools: [],
   },
+  [ChainId.ARBITRUM_GOERLI]: {
+    tokens: [],
+    pools: [],
+  },
   [ChainId.POLYGON_ZKEVM]: {
     tokens: [],
     pools: [],

@@ -138,6 +138,7 @@ const SHORT_SYMBOL = {
   [ChainId.BSC_TESTNET]: 'tBNB',
   [ChainId.GOERLI]: 'GOR',
   [ChainId.ARBITRUM_ONE]: 'ARB',
+  [ChainId.ARBITRUM_GOERLI]: 'tARB',
   [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
   [ChainId.POLYGON_ZKEVM_TESTNET]: 'tZkEVM',
   [ChainId.ZKSYNC]: 'zkSync',

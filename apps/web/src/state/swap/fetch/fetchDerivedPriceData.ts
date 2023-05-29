@@ -39,6 +39,7 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.GOERLI]: {},
   // TODO: new chains
   [ChainId.ARBITRUM_ONE]: {},
+  [ChainId.ARBITRUM_GOERLI]: {},
   [ChainId.POLYGON_ZKEVM]: {},
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
   [ChainId.ZKSYNC]: {},

@@ -140,6 +140,14 @@
     },
     {
       "name": "Wrapped Ether",
+      "address": "0xEe01c0CD76354C383B8c7B4e65EA88D00B06f36f",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainId": 421613,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
+    },
+    {
+      "name": "Wrapped Ether",
       "address": "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9",
       "symbol": "WETH",
       "decimals": 18,
@@ -184,6 +192,14 @@
       "symbol": "USDC",
       "decimals": 6,
       "chainId": 59140,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "name": "USD Coin",
+      "address": "0x179522635726710Dd7D2035a81d856de4Aa7836c",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 421613,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {

@@ -161,6 +161,13 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.ARBITRUM_GOERLI]: new ERC20Token(
+    ChainId.ARBITRUM_GOERLI,
+    '0x179522635726710Dd7D2035a81d856de4Aa7836c',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
   [ChainId.POLYGON_ZKEVM]: new ERC20Token(
     ChainId.POLYGON_ZKEVM,
     '0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035',
@@ -217,6 +224,7 @@ export const STABLE_COIN = {
   [ChainId.BSC]: USDT[ChainId.BSC],
   [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
   [ChainId.ARBITRUM_ONE]: USDC[ChainId.ARBITRUM_ONE],
+  [ChainId.ARBITRUM_GOERLI]: USDC[ChainId.ARBITRUM_GOERLI],
   [ChainId.ZKSYNC]: USDC[ChainId.ZKSYNC],
   [ChainId.ZKSYNC_TESTNET]: USDC[ChainId.ZKSYNC_TESTNET],
   [ChainId.POLYGON_ZKEVM]: USDC[ChainId.POLYGON_ZKEVM],

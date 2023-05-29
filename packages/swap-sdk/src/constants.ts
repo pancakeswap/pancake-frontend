@@ -12,6 +12,7 @@ export enum ChainId {
   POLYGON_ZKEVM = 1101,
   POLYGON_ZKEVM_TESTNET = 1442,
   ARBITRUM_ONE = 42161,
+  ARBITRUM_GOERLI = 421613,
   LINEA_TESTNET = 59140,
 }
 
@@ -28,6 +29,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.BSC]: FACTORY_ADDRESS,
   [ChainId.BSC_TESTNET]: '0x6725f303b657a9451d8ba641348b6761a6cc7a17',
   [ChainId.ARBITRUM_ONE]: '0x13eB8884bD7991F8dEe804Dad0436f7C806bF1b9',
+  [ChainId.ARBITRUM_GOERLI]: '0x333EAE459075b1d7dE8eb57997b5d4eee5F1070a',
   [ChainId.POLYGON_ZKEVM]: '0xb3dF6321C8e3f71bf15Bc8810c26Bd4200BfFdA2',
   [ChainId.POLYGON_ZKEVM_TESTNET]: '0xBA40c83026213F9cbc79998752721a0312bdB74a',
   [ChainId.ZKSYNC]: '0x0F70cE1e2c0FB5FC3B67E13ed4F422fE82d832bD',
@@ -44,6 +46,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.BSC]: INIT_CODE_HASH,
   [ChainId.BSC_TESTNET]: '0xd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66',
   [ChainId.ARBITRUM_ONE]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
+  [ChainId.ARBITRUM_GOERLI]: INIT_CODE_HASH_ETH,
   [ChainId.POLYGON_ZKEVM]: '0xe3fc74cbab444b7dd08d5e9ff3fbd94db08033e48b192a280d5892f01a7f1f54',
   [ChainId.POLYGON_ZKEVM_TESTNET]: INIT_CODE_HASH_ETH,
   // TODO: new chains
@@ -88,6 +91,14 @@ export const WETH9 = {
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
+  [ChainId.ARBITRUM_GOERLI]: new ERC20Token(
+    ChainId.ARBITRUM_GOERLI,
+    '0xEe01c0CD76354C383B8c7B4e65EA88D00B06f36f',
     18,
     'WETH',
     'Wrapped Ether',
@@ -168,6 +179,7 @@ export const WNATIVE = {
   [ChainId.BSC]: WBNB[ChainId.BSC],
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
   [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
+  [ChainId.ARBITRUM_GOERLI]: WETH9[ChainId.ARBITRUM_GOERLI],
   [ChainId.POLYGON_ZKEVM]: WETH9[ChainId.POLYGON_ZKEVM],
   [ChainId.POLYGON_ZKEVM_TESTNET]: WETH9[ChainId.POLYGON_ZKEVM_TESTNET],
   [ChainId.ZKSYNC]: WETH9[ChainId.ZKSYNC],
@@ -191,6 +203,11 @@ export const NATIVE = {
     decimals: 18,
   },
   [ChainId.ARBITRUM_ONE]: ETHER,
+  [ChainId.ARBITRUM_GOERLI]: {
+    name: 'Arbitrum Goerli Ether',
+    symbol: 'AGOR',
+    decimals: 18,
+  },
   [ChainId.POLYGON_ZKEVM]: ETHER,
   [ChainId.POLYGON_ZKEVM_TESTNET]: ETHER,
   [ChainId.ZKSYNC]: ETHER,
