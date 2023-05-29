@@ -1,4 +1,5 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import throttle from 'lodash/throttle'
 import { useMemo } from 'react'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { Box } from '@pancakeswap/uikit'
@@ -13,6 +14,13 @@ export function V3SwapForm() {
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
 
   const mm = useDerivedBestTradeWithMM(trade)
+  const throttledHandleRefresh = useMemo(
+    () =>
+      throttle(() => {
+        refresh()
+      }, 3000),
+    [refresh],
+  )
 
   const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
 
@@ -21,7 +29,7 @@ export function V3SwapForm() {
 
   return (
     <>
-      <FormHeader onRefresh={refresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
+      <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
       <FormMain
         tradeLoading={mm.isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={<PricingAndSlippage priceLoading={isLoading} price={price} showSlippage={!mm.isMMBetter} />}
