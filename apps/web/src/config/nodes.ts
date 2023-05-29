@@ -25,10 +25,8 @@ export const PUBLIC_NODES = {
     urls: [
       process.env.NEXT_PUBLIC_NODE_PRODUCTION,
       // getNodeRealUrlV2(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
-      process.env.NODE_ENV === 'production'
-        ? 'https://bsc-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7'
-        : null,
-      process.env.NODE_ENV === 'production' ? 'https://multi-necessary-choice.bsc.quiknode.pro/' : null,
+      'https://bsc-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7',
+      'https://multi-necessary-choice.bsc.quiknode.pro/',
       'https://bsc-dataseed1.defibit.io',
       'https://bsc-dataseed1.binance.org',
     ].filter(Boolean),
