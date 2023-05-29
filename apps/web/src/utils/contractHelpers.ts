@@ -235,15 +235,15 @@ export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
   return getContract({ abi: bCakeFarmBoosterABI, address: getBCakeFarmBoosterAddress(), signer })
 }
 
-export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient) => {
+export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: ChainId) => {
   return getContract({
     abi: bCakeFarmBoosterV3ABI,
-    address: getBCakeFarmBoosterV3Address(),
+    address: getBCakeFarmBoosterV3Address(chainId),
     signer,
   })
 }
 
-export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provider) => {
+export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
   return getContract({
     abi: bCakeFarmBoosterProxyFactoryABI,
     address: getBCakeFarmBoosterProxyFactoryAddress(),
