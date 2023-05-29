@@ -269,7 +269,6 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             )
 
             const [successfulQuoteStates, failedQuoteStates, pendingQuoteStates] = partitionQuotes(quoteStates)
-            console.log(failedQuoteStates, 'failedQuoteStates', getQuoterAddress(chainId))
 
             if (pendingQuoteStates.length > 0) {
               throw new Error('Pending quote after waiting for all promises.')
