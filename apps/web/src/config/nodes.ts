@@ -29,7 +29,7 @@ export const SERVER_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://rpc.goerli.linea.build',
   ],
-} satisfies Record<ChainId, string[]>
+} satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
   [ChainId.BSC]: [
@@ -59,4 +59,4 @@ export const PUBLIC_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://rpc.goerli.linea.build',
   ],
-} satisfies Record<ChainId, string[]>
+} satisfies Record<ChainId, readonly string[]>
