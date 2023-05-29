@@ -60,7 +60,7 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   // TODO: new chains
   [ChainId.ARBITRUM_ONE]: null,
-  [ChainId.ARBITRUM_GOERLI]: null,
+  [ChainId.ARBITRUM_GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli',
   [ChainId.POLYGON_ZKEVM]: null,
   [ChainId.POLYGON_ZKEVM_TESTNET]: null,
   [ChainId.ZKSYNC]: null,
