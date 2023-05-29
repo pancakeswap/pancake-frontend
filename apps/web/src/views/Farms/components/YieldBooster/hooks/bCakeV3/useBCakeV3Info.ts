@@ -1,9 +1,11 @@
+import BN from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
+import _toNumber from 'lodash/toNumber'
 import useSWRImmutable from 'swr/immutable'
 import { useContractRead } from 'wagmi'
-import { getUserMultiplier } from './useBoostMultiplierV3'
+import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 
 export const USER_ESTIMATED_MULTIPLIER = 2
 
@@ -56,7 +58,7 @@ export const useUserPositionInfo = (tokenId: string) => {
       reward: data?.[5],
       user: data?.[6],
       pid: data?.[7],
-      boostMultiplier: Number(data?.[8] ?? 0),
+      boostMultiplier: _toNumber(new BN(data?.[8].toString()).div(PRECISION_FACTOR).toFixed(3).toString()),
     },
     updateUserPositionInfo: mutate,
   }
