@@ -149,7 +149,10 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   const result = listCache?.get(list)
   if (result) return result
 
-  const tokenMap: WrappedTokenInfo[] = uniqBy(list.tokens, (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`)
+  const tokenMap: WrappedTokenInfo[] = uniqBy(
+    list.tokens,
+    (tokenInfo: any) => `${tokenInfo.chainId}#${tokenInfo.address}`,
+  )
     .map((tokenInfo) => {
       const checksummedAddress = isAddress(tokenInfo.address)
       if (checksummedAddress) {
