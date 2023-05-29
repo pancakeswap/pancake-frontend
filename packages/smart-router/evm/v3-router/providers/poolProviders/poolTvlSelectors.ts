@@ -162,52 +162,34 @@ function poolSelectorFactory<P extends WithTvl>({
       .slice(0, POOL_SELECTION_CONFIG.topNTokenInOut)
     addToPoolSet(topByTVLUsingTokenQuote)
 
-    const topByTVLUsingTokenInSecondHops = topByTVLUsingTokenBase
-      .map((subgraphPool) => {
-        return getToken0(subgraphPool).wrapped.equals(currencyA.wrapped)
-          ? getToken1(subgraphPool)
-          : getToken0(subgraphPool)
-      })
-      .map((secondHopToken: Currency) => {
-        return poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(getPoolAddress(subgraphPool))) {
-              return false
-            }
-            return (
-              getToken0(subgraphPool).wrapped.equals(secondHopToken.wrapped) ||
-              getToken1(subgraphPool).wrapped.equals(secondHopToken.wrapped)
-            )
-          })
-          .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
-      })
-      .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
-      .sort(sortByTvl)
-      .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
+    const getTopByTVLUsingTokenSecondHops = (base: P[], tokenToCompare: Currency) =>
+      base
+        .map((subgraphPool) => {
+          return getToken0(subgraphPool).wrapped.equals(tokenToCompare.wrapped)
+            ? getToken1(subgraphPool)
+            : getToken0(subgraphPool)
+        })
+        .map((secondHopToken: Currency) => {
+          return poolsFromSubgraph
+            .filter((subgraphPool) => {
+              if (poolSet.has(getPoolAddress(subgraphPool))) {
+                return false
+              }
+              return (
+                getToken0(subgraphPool).wrapped.equals(secondHopToken.wrapped) ||
+                getToken1(subgraphPool).wrapped.equals(secondHopToken.wrapped)
+              )
+            })
+            .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
+        })
+        .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
+        .sort(sortByTvl)
+        .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
+
+    const topByTVLUsingTokenInSecondHops = getTopByTVLUsingTokenSecondHops(topByTVLUsingTokenBase, currencyA)
     addToPoolSet(topByTVLUsingTokenInSecondHops)
 
-    const topByTVLUsingTokenOutSecondHops = topByTVLUsingTokenQuote
-      .map((subgraphPool) => {
-        return getToken0(subgraphPool).wrapped.equals(currencyB.wrapped)
-          ? getToken1(subgraphPool)
-          : getToken0(subgraphPool)
-      })
-      .map((secondHopToken: Currency) => {
-        return poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(getPoolAddress(subgraphPool))) {
-              return false
-            }
-            return (
-              getToken0(subgraphPool).wrapped.equals(secondHopToken.wrapped) ||
-              getToken1(subgraphPool).wrapped.equals(secondHopToken.wrapped)
-            )
-          })
-          .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
-      })
-      .reduce<P[]>((acc, cur) => [...acc, ...cur], [])
-      .sort(sortByTvl)
-      .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
+    const topByTVLUsingTokenOutSecondHops = getTopByTVLUsingTokenSecondHops(topByTVLUsingTokenQuote, currencyB)
     addToPoolSet(topByTVLUsingTokenOutSecondHops)
 
     const pools = [
