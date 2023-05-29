@@ -8,7 +8,7 @@ const useAffiliateClaimList = ({ currentPage }) => {
   const { address } = useAccount()
   const { isAffiliateExist } = useAuthAffiliateExist()
 
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     address && isAffiliateExist && ['/affiliate-claim-list', isAffiliateExist, address, currentPage],
     async () => {
       try {
@@ -35,6 +35,7 @@ const useAffiliateClaimList = ({ currentPage }) => {
   return {
     data,
     isFetching: isLoading,
+    mutate,
   }
 }
 

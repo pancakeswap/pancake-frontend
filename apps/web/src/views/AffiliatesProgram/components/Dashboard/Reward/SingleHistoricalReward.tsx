@@ -17,9 +17,11 @@ const Dot = styled(Box)`
 interface SingleHistoricalRewardProps extends FlexProps {
   title: string
   tableFirstTitle: string
+  isAffiliateClaim: boolean
   dataList: UserClaimListResponse
   currentPage: number
   setCurrentPage: (value: number) => void
+  handleClickClaim: (isAffiliateClaim: boolean, reward: ClaimDetail) => Promise<void>
 }
 
 const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalRewardProps>> = (props) => {
@@ -27,7 +29,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { title, tableFirstTitle, dataList, currentPage, setCurrentPage } = props
+  const { title, tableFirstTitle, dataList, currentPage, isAffiliateClaim, setCurrentPage, handleClickClaim } = props
   const [maxPage, setMaxPages] = useState(1)
   const [list, setList] = useState<ClaimDetail[]>()
 
@@ -125,7 +127,13 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
                         </Text>
                       )}
                       {reward.approveStatus === 'APPROVED' && !reward.process && (
-                        <Text style={{ cursor: 'pointer' }} color="primary" bold textAlign="right">
+                        <Text
+                          bold
+                          color="primary"
+                          textAlign="right"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => handleClickClaim(isAffiliateClaim, reward)}
+                        >
                           {t('Claim ')}
                         </Text>
                       )}

@@ -28,7 +28,7 @@ const useUserClaimList = ({ currentPage }) => {
   const { address } = useAccount()
   const { isUserExist } = useUserExist()
 
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     address && isUserExist && ['/user-claim-list', isUserExist, address, currentPage],
     async () => {
       try {
@@ -54,6 +54,7 @@ const useUserClaimList = ({ currentPage }) => {
   return {
     data,
     isFetching: isLoading,
+    mutate,
   }
 }
 

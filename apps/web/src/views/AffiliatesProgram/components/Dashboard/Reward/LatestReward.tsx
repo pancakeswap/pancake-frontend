@@ -80,7 +80,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
 
       const result = await response.json()
       if (result.status === 'success') {
-        toastSuccess(t('Success'))
+        toastSuccess(t('Success!'))
       } else {
         toastError(result?.error || '')
       }
