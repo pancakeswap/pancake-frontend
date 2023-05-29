@@ -362,7 +362,6 @@ export default function PoolPage() {
     functionName: 'ownerOf',
     args: [tokenId],
   }).result
-  const ownsNFT = owner === account || positionDetails?.operator === account
 
   const feeValueUpper = inverted ? feeValue0 : feeValue1
   const feeValueLower = inverted ? feeValue1 : feeValue0
