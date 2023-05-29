@@ -2,24 +2,29 @@ import merge from 'lodash/merge'
 import teamsList from 'config/constants/teams'
 import { getProfileContract } from 'utils/contractHelpers'
 import { Team } from 'config/constants/types'
-import { multicallv2 } from 'utils/multicall'
 import { TeamsById } from 'state/types'
-import profileABI from 'config/abi/pancakeProfile.json'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import fromPairs from 'lodash/fromPairs'
-
-const profileContract = getProfileContract()
+import { publicClient } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const getTeam = async (teamId: number): Promise<Team> => {
   try {
-    const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = await profileContract.getTeamProfile(teamId)
+    const profileContract = getProfileContract()
+    const {
+      0: teamName,
+      2: numberUsers,
+      3: numberPoints,
+      4: isJoinable,
+    } = await profileContract.read.getTeamProfile([BigInt(teamId)])
     const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId)
 
     return merge({}, staticTeamInfo, {
       isJoinable,
       name: teamName,
-      users: numberUsers.toNumber(),
-      points: numberPoints.toNumber(),
+      users: Number(numberUsers),
+      points: Number(numberPoints),
     })
   } catch (error) {
     return null
@@ -31,18 +36,24 @@ export const getTeam = async (teamId: number): Promise<Team> => {
  */
 export const getTeams = async (): Promise<TeamsById> => {
   try {
+    const profileContract = getProfileContract()
     const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))
-    const nbTeams = await profileContract.numberTeams()
+    const nbTeams = await profileContract.read.numberTeams()
 
-    const calls = []
-    for (let i = 1; i <= nbTeams.toNumber(); i++) {
-      calls.push({
-        address: getPancakeProfileAddress(),
-        name: 'getTeamProfile',
-        params: [i],
-      })
-    }
-    const teamData = await multicallv2({ abi: profileABI, calls })
+    const calls = Array.from({ length: Number(nbTeams) }).map(
+      (_, i) =>
+        ({
+          abi: pancakeProfileABI,
+          address: getPancakeProfileAddress(),
+          functionName: 'getTeamProfile',
+          args: [BigInt(i + 1)] as const,
+        } as const),
+    )
+    const client = publicClient({ chainId: ChainId.BSC })
+    const teamData = await client.multicall({
+      contracts: calls,
+      allowFailure: false,
+    })
 
     const onChainTeamData = fromPairs(
       teamData.map((team, index) => {
@@ -52,8 +63,8 @@ export const getTeams = async (): Promise<TeamsById> => {
           index + 1,
           {
             name: teamName,
-            users: numberUsers.toNumber(),
-            points: numberPoints.toNumber(),
+            users: Number(numberUsers),
+            points: Number(numberPoints),
             isJoinable,
           },
         ]

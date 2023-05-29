@@ -17,7 +17,6 @@ import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
-import { useSWRContract } from 'hooks/useSWRContract'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
@@ -29,7 +28,7 @@ import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingApr'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-
+import { useContractRead } from 'wagmi'
 // import { calculateGasMargin } from 'utils'
 
 const LiquidStakingStakePage = () => {
@@ -66,7 +65,14 @@ const LiquidStakingStakePage = () => {
 
   const wbethCurrencyBalance = useCurrencyBalance(account, wbethCurrency)
 
-  const { data } = useSWRContract(wbethContract && [wbethContract, 'exchangeRate'])
+  const { data } = useContractRead({
+    // @ts-ignore
+    abi: wbethContract.abi,
+    address: wbethContract.address,
+    functionName: 'exchangeRate',
+    watch: true,
+    chainId,
+  })
 
   const { isApproved, allowance, setLastUpdated } = useETHApprovalStatus(wbethContract?.address)
 
@@ -114,18 +120,15 @@ const LiquidStakingStakePage = () => {
 
     const receipt = await fetchWithCatchTxError(() => {
       if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
-        const methodArgs = [masterChefAddress]
+        const methodArgs = [masterChefAddress] as const
         return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-          // gasLimit: calculateGasMargin(estimatedGas),
-          value: convertedStakeAmount.toString(),
+          value: BigInt(convertedStakeAmount.toString()),
         })
       }
 
-      const methodArgs = [convertedStakeAmount.toString(), masterChefAddress]
+      const methodArgs = [BigInt(convertedStakeAmount.toString()), masterChefAddress] as const
 
-      return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-        // gasLimit: calculateGasMargin(estimatedGas),
-      })
+      return callWithGasPrice(wbethContract, 'deposit', methodArgs, {})
     })
 
     if (receipt?.status && quoteAmount) {
@@ -263,12 +266,7 @@ const LiquidStakingStakePage = () => {
               </Text>
               <Flex>
                 <Box width={24} height={24}>
-                  <Image
-                    src={`/images/tokens/${wbethContract?.address}.png`}
-                    width={24}
-                    height={24}
-                    alt={wbethContract?.symbol}
-                  />
+                  <Image src={`/images/tokens/${wbethContract?.address}.png`} width={24} height={24} alt="WBETH" />
                 </Box>
                 <Text ml="4px">WBETH</Text>
               </Flex>
@@ -283,7 +281,7 @@ const LiquidStakingStakePage = () => {
             )}
           </RowBetween>
           <LiquidStakingApr />
-          {/* 
+          {/*
           <RowBetween mb="24px">
             <Text color="textSubtle">Gas Fee</Text>-
           </RowBetween> */}

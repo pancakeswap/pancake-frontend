@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BigNumber } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'viem'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import pickBy from 'lodash/pickBy'
@@ -10,13 +9,14 @@ import {
   HistoryFilter,
   PredictionsState,
   PredictionStatus,
-  ReduxNodeRound,
   BetPosition,
   PredictionUser,
   LeaderboardFilter,
   PredictionsChartView,
   PredictionConfig,
+  ReduxNodeRound,
 } from 'state/types'
+import { Address } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
 import {
@@ -77,7 +77,7 @@ type PredictionInitialization = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'rounds' | 'ledgers' | 'claimableStatuses'
 >
-export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
+export const fetchPredictionData = createAsyncThunk<PredictionInitialization, Address, { extra: PredictionConfig }>(
   'predictions/fetchPredictionData',
   async (account = null, { extra }) => {
     // Static values
@@ -94,7 +94,7 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, st
 
       return {
         ...accum,
-        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
+        [roundResponse.epoch.toString()]: reduxNodeRound,
       }
     }, {})
 
@@ -126,20 +126,20 @@ export const fetchLedgerData = createAsyncThunk<
   { account: string; epochs: number[] },
   { extra: PredictionConfig }
 >('predictions/fetchLedgerData', async ({ account, epochs }, { extra }) => {
-  const ledgers = await getLedgerData(account, epochs, extra.address)
+  const ledgers = await getLedgerData(account as Address, epochs, extra.address)
   return makeLedgerData(account, ledgers, epochs)
 })
 
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
-  { account: string; page?: number },
+  { account: Address; page?: number },
   { state: PredictionsState; extra: PredictionConfig }
 >('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState, extra }) => {
-  const userRoundsLength = await fetchUsersRoundsLength(account, extra.address)
-  const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
-  const maxPages = userRoundsLength.lte(ROUNDS_PER_PAGE) ? 1 : Math.ceil(userRoundsLength.toNumber() / ROUNDS_PER_PAGE)
+  const userRoundsLength = Number(await fetchUsersRoundsLength(account, extra.address))
+  const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength }
+  const maxPages = userRoundsLength <= ROUNDS_PER_PAGE ? 1 : Math.ceil(userRoundsLength / ROUNDS_PER_PAGE)
 
-  if (userRoundsLength.eq(0)) {
+  if (userRoundsLength === 0) {
     return emptyResult
   }
 
@@ -147,16 +147,14 @@ export const fetchNodeHistory = createAsyncThunk<
     return emptyResult
   }
 
-  const cursor = userRoundsLength.sub(ROUNDS_PER_PAGE * page)
+  const cursor = userRoundsLength - ROUNDS_PER_PAGE * page
 
   // If the page request is the final one we only want to retrieve the amount of rounds up to the next cursor.
   const size =
     maxPages === page
-      ? userRoundsLength
-          .sub(ROUNDS_PER_PAGE * (page - 1)) // Previous page's cursor
-          .toNumber()
+      ? userRoundsLength - ROUNDS_PER_PAGE * (page - 1) // Previous page's cursor
       : ROUNDS_PER_PAGE
-  const userRounds = await fetchUserRounds(account, cursor.lt(0) ? 0 : cursor.toNumber(), size, extra.address)
+  const userRounds = await fetchUserRounds(account, cursor < 0 ? 0 : cursor, size, extra.address)
 
   if (!userRounds) {
     return emptyResult
@@ -173,8 +171,8 @@ export const fetchNodeHistory = createAsyncThunk<
 
   // Turn the data from the node into a Bet object that comes from the graph
   const bets: Bet[] = roundData.reduce((accum, round) => {
-    const ledger = userRounds[round.epoch.toNumber()]
-    const ledgerAmount = BigNumber.from(ledger.amount)
+    const ledger = userRounds[Number(round.epoch)]
+    const ledgerAmount = BigInt(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
     const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
 
@@ -183,11 +181,11 @@ export const fetchNodeHistory = createAsyncThunk<
         return null
       }
 
-      if (round.closePrice.eq(round.lockPrice)) {
+      if (round.closePrice === round.lockPrice) {
         return BetPosition.HOUSE
       }
 
-      return round.closePrice.gt(round.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+      return round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
     }
 
     return [
@@ -195,7 +193,7 @@ export const fetchNodeHistory = createAsyncThunk<
       {
         id: null,
         hash: null,
-        amount: parseFloat(formatUnits(ledgerAmount)),
+        amount: parseFloat(formatUnits(ledgerAmount, 18)),
         position: ledger.position,
         claimed: ledger.claimed,
         claimedAt: null,
@@ -207,16 +205,16 @@ export const fetchNodeHistory = createAsyncThunk<
         block: 0,
         round: {
           id: null,
-          epoch: round.epoch.toNumber(),
+          epoch: Number(round.epoch),
           failed: getHasRoundFailed(
             round.oracleCalled,
-            round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
+            round.closeTimestamp === 0n ? null : Number(round.closeTimestamp),
             bufferSeconds,
           ),
           startBlock: null,
-          startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
+          startAt: round.startTimestamp ? Number(round.startTimestamp) : null,
           startHash: null,
-          lockAt: round.lockTimestamp ? round.lockTimestamp.toNumber() : null,
+          lockAt: round.lockTimestamp ? Number(round.lockTimestamp) : null,
           lockBlock: null,
           lockPrice,
           lockHash: null,
@@ -227,18 +225,18 @@ export const fetchNodeHistory = createAsyncThunk<
           closePrice,
           closeBlock: null,
           totalBets: 0,
-          totalAmount: parseFloat(formatUnits(round.totalAmount)),
+          totalAmount: parseFloat(formatUnits(round.totalAmount, 18)),
           bullBets: 0,
-          bullAmount: parseFloat(formatUnits(round.bullAmount)),
+          bullAmount: parseFloat(formatUnits(round.bullAmount, 18)),
           bearBets: 0,
-          bearAmount: parseFloat(formatUnits(round.bearAmount)),
+          bearAmount: parseFloat(formatUnits(round.bearAmount, 18)),
           position: getRoundPosition(),
         },
       },
     ]
   }, [])
 
-  return { bets, claimableStatuses, page, totalHistory: userRoundsLength.toNumber() }
+  return { bets, claimableStatuses, page, totalHistory: Number(userRoundsLength) }
 })
 
 // Leaderboard
@@ -417,7 +415,9 @@ export const predictionsSlice = createSlice({
       const futureRounds: ReduxNodeRound[] = []
       const currentRound = rounds[currentEpoch]
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRound.startTimestamp + intervalSeconds * i))
+        futureRounds.push(
+          makeFutureRoundResponse(currentEpoch + i, Number(currentRound.startTimestamp) + intervalSeconds * i),
+        )
       }
 
       newRounds = { ...newRounds, ...makeRoundData(futureRounds) }

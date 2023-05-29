@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { BigNumber } from 'ethers'
 import { ManipulateType } from 'dayjs'
 
 export const v3InfoPath = `info/v3`
@@ -53,7 +52,7 @@ export const TimeWindow: {
 
 export const ONE_HOUR_SECONDS = 3600
 export const ONE_DAY_SECONDS = 86400
-export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
+export const MAX_UINT128 = 2n ** 128n - 1n
 
 export const SUBGRAPH_START_BLOCK = {
   [ChainId.BSC]: 26956207,

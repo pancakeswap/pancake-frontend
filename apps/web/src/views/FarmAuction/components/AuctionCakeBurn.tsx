@@ -5,7 +5,7 @@ import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import styled from 'styled-components'
 
 const BurnedText = styled(Text)`
@@ -19,7 +19,7 @@ const BurnedText = styled(Text)`
 const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
-  const farmAuctionContract = useFarmAuctionContract(false)
+  const farmAuctionContract = useFarmAuctionContract()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const cakePriceBusd = usePriceCakeUSD()
 
@@ -28,8 +28,8 @@ const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     const fetchBurnedCakeAmount = async () => {
       try {
-        const amount = await farmAuctionContract.totalCollected()
-        const amountAsBN = ethersToBigNumber(amount)
+        const amount = await farmAuctionContract.read.totalCollected()
+        const amountAsBN = bigIntToBigNumber(amount)
         setBurnedCakeAmount(getBalanceNumber(amountAsBN))
       } catch (error) {
         console.error('Failed to fetch burned auction cake', error)

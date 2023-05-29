@@ -4,34 +4,28 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "pnpm typechain",
-    "test": "vitest --run",
-    "typechain": "typechain --out-dir src/abis/types --target=ethers-v5 \"src/abis/*.json\"",
-    "postinstall": "pnpm typechain"
+    "test": "vitest --run"
   },
   "type": "module",
   "peerDependencies": {
-    "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@ethersproject/bignumber": "^5.0.0",
-    "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0",
-    "ethers": "^5.0.0"
+    "viem": "^0.3.30",
+    "wagmi": "1.0.5"
   },
   "dependencies": {
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@ethersproject/abi": "^5.0.0",
+    "viem": "^0.3.30",
     "@types/lodash": "^4.14.168",
-    "@typechain/ethers-v5": "^8.0.5",
     "@pancakeswap/tsconfig": "workspace:*",
     "typechain": "^6.1.0",
-    "typescript": "^4.9.4",
-    "vitest": "^0.27.2"
+    "typescript": "^5.0.4",
+    "vitest": "^0.27.2",
+    "wagmi": "1.0.5"
   }
 }

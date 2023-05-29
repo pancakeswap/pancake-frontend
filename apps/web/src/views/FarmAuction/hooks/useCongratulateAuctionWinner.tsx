@@ -14,13 +14,20 @@ const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]
 
   const { address: account } = useAccount()
 
-  const farmAuctionContract = useFarmAuctionContract(false)
+  const farmAuctionContract = useFarmAuctionContract()
 
   useEffect(() => {
     const checkIfWonPreviousAuction = async (previousAuctionId: number) => {
-      const auctionData = await farmAuctionContract.auctions(previousAuctionId)
-      const processedAuctionData = await processAuctionData(previousAuctionId, auctionData)
-      const [auctionBidders] = await farmAuctionContract.viewBidsPerAuction(previousAuctionId, 0, 500)
+      const auctionData = await farmAuctionContract.read.auctions([BigInt(previousAuctionId)])
+      const processedAuctionData = await processAuctionData(previousAuctionId, {
+        status: auctionData[0],
+        startBlock: auctionData[1],
+        endBlock: auctionData[2],
+        initialBidAmount: auctionData[3],
+        leaderboard: auctionData[4],
+        leaderboardThreshold: auctionData[5],
+      })
+      const [auctionBidders] = await farmAuctionContract.read.viewBidsPerAuction([BigInt(previousAuctionId), 0n, 500n])
       const sortedBidders = sortAuctionBidders(auctionBidders)
       const { leaderboardThreshold } = processedAuctionData
       const winnerAddresses = sortedBidders

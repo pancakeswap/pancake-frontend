@@ -1,11 +1,11 @@
 import { createContext, useEffect, useMemo, useReducer } from 'react'
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
 import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
 import { Actions, State, ContextType } from './types'
 
-const totalCost = MINT_COST.add(REGISTER_COST)
-const allowance = totalCost.mul(ALLOWANCE_MULTIPLIER)
+const totalCost = MINT_COST + REGISTER_COST
+const allowance = totalCost * ALLOWANCE_MULTIPLIER
 
 const initialState: State = {
   isInitialized: false,
@@ -68,7 +68,7 @@ const ProfileCreationProvider: React.FC<React.PropsWithChildren> = ({ children }
 
     const fetchData = async () => {
       const bunnyFactoryContract = getBunnyFactoryContract()
-      const canMint = await bunnyFactoryContract.canMint(account)
+      const canMint = await bunnyFactoryContract.read.canMint([account])
       dispatch({ type: 'initialize', step: canMint ? 0 : 1 })
 
       // When changing wallets quickly unmounting before the hasClaim finished causes a React error
@@ -90,7 +90,7 @@ const ProfileCreationProvider: React.FC<React.PropsWithChildren> = ({ children }
     () => ({
       nextStep: () => dispatch({ type: 'next_step' }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
-      setSelectedNft: (tokenId: string, collectionAddress: string) =>
+      setSelectedNft: (tokenId: string, collectionAddress: Address) =>
         dispatch({ type: 'set_selected_nft', tokenId, collectionAddress }),
       setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),

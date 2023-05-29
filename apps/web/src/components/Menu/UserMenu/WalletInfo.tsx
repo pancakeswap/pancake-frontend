@@ -16,11 +16,11 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import useTokenBalance, { useGetCakeBalance } from 'hooks/useTokenBalance'
+import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { formatBigNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getFullDisplayBalance, formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useBalance } from 'wagmi'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import CakeBenefitsCard from './CakeBenefitsCard'
@@ -48,7 +48,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const wBNBToken = WNATIVE[ChainId.BSC]
   const { balance: wNativeBalance, fetchStatus: wNativeFetchStatus } = useTokenBalance(wNativeToken?.address)
   const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
-  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
+  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useBSCCakeBalance()
   const { logout } = useAuth()
 
   const handleLogout = () => {
@@ -101,7 +101,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
             {!nativeBalance.isFetched ? (
               <Skeleton height="22px" width="60px" />
             ) : (
-              <Text>{formatBigNumber(nativeBalance.data.value, 6)}</Text>
+              <Text>{formatBigInt(nativeBalance.data.value, 6)}</Text>
             )}
           </Flex>
           {wNativeBalance.gt(0) && (
@@ -135,7 +135,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           {!bnbBalance.isFetched ? (
             <Skeleton height="22px" width="60px" />
           ) : (
-            <Text>{formatBigNumber(bnbBalance.data.value, 6)}</Text>
+            <Text>{formatBigInt(bnbBalance.data.value ?? 0n, 6)}</Text>
           )}
         </Flex>
         {wBNBBalance.gt(0) && (
@@ -153,7 +153,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           {cakeFetchStatus !== FetchStatus.Fetched ? (
             <Skeleton height="22px" width="60px" />
           ) : (
-            <Text>{formatBigNumber(cakeBalance, 3)}</Text>
+            <Text>{formatBigInt(cakeBalance, 3)}</Text>
           )}
         </Flex>
       </Box>

@@ -79,7 +79,7 @@ export default function PositionListItem({ positionDetails, children }: Position
 
   const positionSummaryLink = `/liquidity/${positionDetails.tokenId}`
 
-  const removed = liquidity?.eq(0)
+  const removed = liquidity === 0n
 
   let subtitle = ''
 

@@ -40,10 +40,10 @@ import {
   SerializedVaultUser,
   SerializedLockedCakeVault,
 } from 'state/types'
-import cakeAbi from 'config/abi/cake.json'
-import { multicallv2 } from 'utils/multicall'
+import { Address, erc20ABI } from 'wagmi'
 import { isAddress } from 'utils'
-import { provider } from 'utils/wagmi'
+import { publicClient } from 'utils/wagmi'
+import { getViemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 
@@ -113,18 +113,24 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
 export const fetchCakePoolUserDataAsync =
   ({ account, chainId }: { account: string; chainId: ChainId }) =>
   async (dispatch) => {
-    const allowanceCall = {
-      address: bscTokens.cake.address,
-      name: 'allowance',
-      params: [account, getCakeVaultAddress(chainId)],
-    }
-    const balanceOfCall = {
-      address: bscTokens.cake.address,
-      name: 'balanceOf',
-      params: [account],
-    }
-    const cakeContractCalls = [allowanceCall, balanceOfCall]
-    const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: cakeAbi, calls: cakeContractCalls })
+    const client = publicClient({ chainId: ChainId.BSC })
+    const [allowance, stakingTokenBalance] = await client.multicall({
+      contracts: [
+        {
+          abi: erc20ABI,
+          address: bscTokens.cake.address,
+          functionName: 'allowance',
+          args: [account as Address, getCakeVaultAddress(chainId)],
+        },
+        {
+          abi: erc20ABI,
+          address: bscTokens.cake.address,
+          functionName: 'balanceOf',
+          args: [account as Address],
+        },
+      ],
+      allowFailure: false,
+    })
 
     dispatch(
       setPoolUserData({
@@ -140,8 +146,8 @@ export const fetchCakePoolUserDataAsync =
 export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, getState) => {
   try {
     const [block, timeLimits] = await Promise.all([
-      provider({ chainId })?.getBlock('latest'),
-      fetchPoolsTimeLimits(chainId, provider),
+      getViemClients({ chainId })?.getBlock({ blockTag: 'latest' }),
+      fetchPoolsTimeLimits(chainId, getViemClients),
     ])
     const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
     const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
@@ -153,7 +159,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
           .filter((pool) => {
             const poolTimeLimit = timeLimitsSousIdMap[pool.sousId]
             if (poolTimeLimit) {
-              return poolTimeLimit.endTimestamp > block.timestamp
+              return poolTimeLimit.endTimestamp > Number(block.timestamp)
             }
             return false
           }).length > 0
@@ -166,8 +172,8 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
     })
 
     const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmV3] = await Promise.all([
-      fetchPoolsTotalStaking(chainId, provider),
-      fetchPoolsProfileRequirement(chainId, provider),
+      fetchPoolsTotalStaking(chainId, getViemClients),
+      fetchPoolsProfileRequirement(chainId, getViemClients),
       activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
       fetchFarmV3Promise,
     ])
@@ -250,7 +256,7 @@ export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatc
     .map((pool) => pool.sousId)
 
   try {
-    const stakingLimits = await fetchPoolsStakingLimits({ poolsWithStakingLimit, chainId, provider })
+    const stakingLimits = await fetchPoolsStakingLimits({ poolsWithStakingLimit, chainId, provider: getViemClients })
 
     const poolsConfig = getPoolsConfig(chainId)
     const stakingLimitData = poolsConfig.map((pool) => {
@@ -283,10 +289,10 @@ export const fetchPoolsUserDataAsync = createAsyncThunk<
 >('pool/fetchPoolsUserData', async ({ account, chainId }, { rejectWithValue }) => {
   try {
     const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
-      fetchPoolsAllowance({ account, chainId, provider }),
-      fetchUserBalances({ account, chainId, provider }),
-      fetchUserStakeBalances({ account, chainId, provider }),
-      fetchUserPendingRewards({ account, chainId, provider }),
+      fetchPoolsAllowance({ account, chainId, provider: getViemClients }),
+      fetchUserBalances({ account, chainId, provider: getViemClients }),
+      fetchUserStakeBalances({ account, chainId, provider: getViemClients }),
+      fetchUserPendingRewards({ account, chainId, provider: getViemClients }),
     ])
 
     const poolsConfig = getPoolsConfig(chainId)
@@ -307,7 +313,7 @@ export const updateUserAllowance = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string; chainId: ChainId }
 >('pool/updateUserAllowance', async ({ sousId, account, chainId }) => {
-  const allowances = await fetchPoolsAllowance({ account, chainId, provider })
+  const allowances = await fetchPoolsAllowance({ account, chainId, provider: getViemClients })
   return { sousId, field: 'allowance', value: allowances[sousId] }
 })
 
@@ -315,7 +321,7 @@ export const updateUserBalance = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string; chainId: ChainId }
 >('pool/updateUserBalance', async ({ sousId, account, chainId }) => {
-  const tokenBalances = await fetchUserBalances({ account, chainId, provider })
+  const tokenBalances = await fetchUserBalances({ account, chainId, provider: getViemClients })
   return { sousId, field: 'stakingTokenBalance', value: tokenBalances[sousId] }
 })
 
@@ -323,7 +329,7 @@ export const updateUserStakedBalance = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string; chainId: ChainId }
 >('pool/updateUserStakedBalance', async ({ sousId, account, chainId }) => {
-  const stakedBalances = await fetchUserStakeBalances({ account, chainId, provider })
+  const stakedBalances = await fetchUserStakeBalances({ account, chainId, provider: getViemClients })
   return { sousId, field: 'stakedBalance', value: stakedBalances[sousId] }
 })
 
@@ -331,14 +337,14 @@ export const updateUserPendingReward = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string; chainId: ChainId }
 >('pool/updateUserPendingReward', async ({ sousId, account, chainId }) => {
-  const pendingRewards = await fetchUserPendingRewards({ chainId, account, provider })
+  const pendingRewards = await fetchUserPendingRewards({ chainId, account, provider: getViemClients })
   return { sousId, field: 'pendingReward', value: pendingRewards[sousId] }
 })
 
 export const fetchCakeVaultPublicData = createAsyncThunk<SerializedLockedCakeVault, ChainId>(
   'cakeVault/fetchPublicData',
   async (chainId) => {
-    const publicVaultInfo = await fetchPublicVaultData({ chainId, provider })
+    const publicVaultInfo = await fetchPublicVaultData({ chainId, provider: getViemClients })
     return publicVaultInfo
   },
 )
@@ -346,7 +352,7 @@ export const fetchCakeVaultPublicData = createAsyncThunk<SerializedLockedCakeVau
 export const fetchCakeFlexibleSideVaultPublicData = createAsyncThunk<SerializedCakeVault, ChainId>(
   'cakeFlexibleSideVault/fetchPublicData',
   async (chainId) => {
-    const publicVaultInfo = await fetchPublicFlexibleSideVaultData({ chainId, provider })
+    const publicVaultInfo = await fetchPublicFlexibleSideVaultData({ chainId, provider: getViemClients })
     return publicVaultInfo
   },
 )
@@ -354,7 +360,11 @@ export const fetchCakeFlexibleSideVaultPublicData = createAsyncThunk<SerializedC
 export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees, ChainId>(
   'cakeVault/fetchFees',
   async (chainId) => {
-    const vaultFees = await fetchVaultFees({ chainId, provider, cakeVaultAddress: getCakeVaultAddress(chainId) })
+    const vaultFees = await fetchVaultFees({
+      chainId,
+      provider: getViemClients,
+      cakeVaultAddress: getCakeVaultAddress(chainId),
+    })
     return vaultFees
   },
 )
@@ -364,7 +374,7 @@ export const fetchCakeFlexibleSideVaultFees = createAsyncThunk<SerializedVaultFe
   async (chainId) => {
     const vaultFees = await fetchVaultFees({
       chainId,
-      provider,
+      provider: getViemClients,
       cakeVaultAddress: getCakeFlexibleSideVaultAddress(chainId),
     })
     return vaultFees
@@ -373,25 +383,25 @@ export const fetchCakeFlexibleSideVaultFees = createAsyncThunk<SerializedVaultFe
 
 export const fetchCakeVaultUserData = createAsyncThunk<
   SerializedLockedVaultUser,
-  { account: string; chainId: ChainId }
+  { account: Address; chainId: ChainId }
 >('cakeVault/fetchUser', async ({ account, chainId }) => {
-  const userData = await fetchVaultUser({ account, chainId, provider })
+  const userData = await fetchVaultUser({ account, chainId, provider: getViemClients })
   return userData
 })
 
 export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData, ChainId>(
   'ifoVault/fetchIfoPublicDataAsync',
   async (chainId) => {
-    const publicIfoData = await fetchPublicIfoData(chainId, provider)
+    const publicIfoData = await fetchPublicIfoData(chainId, getViemClients)
     return publicIfoData
   },
 )
 
 export const fetchUserIfoCreditDataAsync =
-  ({ account, chainId }: { account: string; chainId: ChainId }) =>
+  ({ account, chainId }: { account: Address; chainId: ChainId }) =>
   async (dispatch) => {
     try {
-      const credit = await fetchUserIfoCredit({ account, chainId, provider })
+      const credit = await fetchUserIfoCredit({ account, chainId, provider: getViemClients })
       dispatch(setIfoUserCreditData(credit))
     } catch (error) {
       console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
@@ -399,9 +409,9 @@ export const fetchUserIfoCreditDataAsync =
   }
 export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<
   SerializedVaultUser,
-  { account: string; chainId: ChainId }
+  { account: Address; chainId: ChainId }
 >('cakeFlexibleSideVault/fetchUser', async ({ account, chainId }) => {
-  const userData = await fetchFlexibleSideVaultUser({ chainId, account, provider })
+  const userData = await fetchFlexibleSideVaultUser({ chainId, account, provider: getViemClients })
   return userData
 })
 

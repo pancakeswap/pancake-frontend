@@ -1,8 +1,7 @@
-import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
-import { formatUnits } from '@ethersproject/units'
-import { Call, MultiCallV2 } from '@pancakeswap/multicall'
+import { Address, PublicClient, formatUnits } from 'viem'
+import BN from 'bignumber.js'
+import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainId } from '@pancakeswap/sdk'
-import { FIXED_TWO, FIXED_ZERO } from '../const'
 import { getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
@@ -32,24 +31,23 @@ const evmNativeStableLpMap = {
   },
 }
 
-export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
-  const tokenDividerFixed = FixedNumber.from(getFullDecimalMultiplier(decimals))
-  return balance.divUnsafe(tokenDividerFixed)
+export const getTokenAmount = (balance: BN, decimals: number) => {
+  return balance.div(getFullDecimalMultiplier(decimals))
 }
 
 export type FetchFarmsParams = {
   farms: SerializedFarmConfig[]
-  multicallv2: MultiCallV2
+  provider: ({ chainId }: { chainId: number }) => PublicClient
   isTestnet: boolean
   masterChefAddress: string
   chainId: number
-  totalRegularAllocPoint: BigNumber
-  totalSpecialAllocPoint: BigNumber
+  totalRegularAllocPoint: bigint
+  totalSpecialAllocPoint: bigint
 }
 
 export async function farmV2FetchFarms({
   farms,
-  multicallv2,
+  provider,
   isTestnet,
   masterChefAddress,
   chainId,
@@ -59,9 +57,9 @@ export async function farmV2FetchFarms({
   const stableFarms = farms.filter(isStableFarm)
 
   const [stableFarmsResults, poolInfos, lpDataResults] = await Promise.all([
-    fetchStableFarmData(stableFarms, chainId, multicallv2),
-    fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress),
-    fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress),
+    fetchStableFarmData(stableFarms, chainId, provider),
+    fetchMasterChefData(farms, isTestnet, provider, masterChefAddress),
+    fetchPublicFarmsData(farms, chainId, provider, masterChefAddress),
   ])
 
   const stableFarmsData = (stableFarmsResults as StableLpData[]).map(formatStableFarm)
@@ -160,34 +158,39 @@ const masterChefV2Abi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
 
 const masterChefFarmCalls = (farm: SerializedFarmConfig, masterChefAddress: string) => {
   const { pid } = farm
 
   return pid || pid === 0
-    ? {
-        address: masterChefAddress,
-        name: 'poolInfo',
-        params: [pid],
-      }
+    ? ({
+        abi: masterChefV2Abi,
+        address: masterChefAddress as Address,
+        functionName: 'poolInfo',
+        args: [BigInt(pid)],
+      } as const)
     : null
+}
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
 }
 
 export const fetchMasterChefData = async (
   farms: SerializedFarmConfig[],
   isTestnet: boolean,
-  multicallv2: MultiCallV2,
+  provider: ({ chainId }: { chainId: number }) => PublicClient,
   masterChefAddress: string,
-): Promise<any[]> => {
+) => {
   try {
     const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, masterChefAddress))
-    const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null) as Call[]
+    const masterChefAggregatedCalls = masterChefCalls.filter(notEmpty)
 
-    const masterChefMultiCallResult = await multicallv2({
-      abi: masterChefV2Abi,
-      calls: masterChefAggregatedCalls,
-      chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+    const chainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+    const masterChefMultiCallResult = await provider({ chainId }).multicall({
+      contracts: masterChefAggregatedCalls,
+      allowFailure: false,
     })
 
     let masterChefChunkedResultCounter = 0
@@ -197,7 +200,13 @@ export const fetchMasterChefData = async (
       }
       const data = masterChefMultiCallResult[masterChefChunkedResultCounter]
       masterChefChunkedResultCounter++
-      return data
+      return {
+        accCakePerShare: data[0],
+        lastRewardBlock: data[1],
+        allocPoint: data[2],
+        totalBoostedShare: data[3],
+        isRegular: data[4],
+      }
     })
   } catch (error) {
     console.error('MasterChef Pool info data error', error)
@@ -206,39 +215,43 @@ export const fetchMasterChefData = async (
 }
 
 export const fetchMasterChefV2Data = async ({
+  provider,
   isTestnet,
-  multicallv2,
   masterChefAddress,
 }: {
+  provider: ({ chainId }: { chainId: number }) => PublicClient
   isTestnet: boolean
-  multicallv2: MultiCallV2
-  masterChefAddress: string
+  masterChefAddress: Address
 }) => {
   try {
-    const [[poolLength], [totalRegularAllocPoint], [totalSpecialAllocPoint], [cakePerBlock]] = await multicallv2<
-      [[BigNumber], [BigNumber], [BigNumber], [BigNumber]]
-    >({
-      abi: masterChefV2Abi,
-      calls: [
+    const chainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+    const [poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock] = await provider({
+      chainId,
+    }).multicall({
+      contracts: [
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'poolLength',
+          functionName: 'poolLength',
         },
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'totalRegularAllocPoint',
+          functionName: 'totalRegularAllocPoint',
         },
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'totalSpecialAllocPoint',
+          functionName: 'totalSpecialAllocPoint',
         },
         {
+          abi: masterChefV2Abi,
           address: masterChefAddress,
-          name: 'cakePerBlock',
-          params: [true],
+          functionName: 'cakePerBlock',
+          args: [true],
         },
       ],
-      chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+      allowFailure: false,
     })
 
     return {
@@ -256,17 +269,17 @@ export const fetchMasterChefV2Data = async ({
 type StableLpData = [balanceResponse, balanceResponse, balanceResponse, balanceResponse]
 
 type FormatStableFarmResponse = {
-  tokenBalanceLP: FixedNumber
-  quoteTokenBalanceLP: FixedNumber
-  price1: BigNumber
+  tokenBalanceLP: BN
+  quoteTokenBalanceLP: BN
+  price1: bigint
 }
 
 const formatStableFarm = (stableFarmData: StableLpData): FormatStableFarmResponse => {
   const [balance1, balance2, _, _price1] = stableFarmData
   return {
-    tokenBalanceLP: FixedNumber.from(balance1[0]),
-    quoteTokenBalanceLP: FixedNumber.from(balance2[0]),
-    price1: _price1[0],
+    tokenBalanceLP: new BN(balance1.toString()),
+    quoteTokenBalanceLP: new BN(balance2.toString()),
+    price1: _price1,
   }
 }
 
@@ -281,7 +294,7 @@ const getStableFarmDynamicData = ({
 }: FormatClassicFarmResponse & {
   token1Decimals: number
   token0Decimals: number
-  price1: BigNumber
+  price1: bigint
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
@@ -289,19 +302,19 @@ const getStableFarmDynamicData = ({
 
   // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
   const lpTokenRatio =
-    !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.divUnsafe(lpTotalSupply) : FIXED_ZERO
+    !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.div(lpTotalSupply) : BIG_ZERO
 
   const tokenPriceVsQuote = formatUnits(price1, token0Decimals)
 
   // Amount of quoteToken in the LP that are staked in the MC
-  const quoteTokenAmountMcFixed = quoteTokenAmountTotal.mulUnsafe(lpTokenRatio)
+  const quoteTokenAmountMcFixed = quoteTokenAmountTotal.times(lpTokenRatio)
 
   // Amount of token in the LP that are staked in the MC
-  const tokenAmountMcFixed = tokenAmountTotal.mulUnsafe(lpTokenRatio)
+  const tokenAmountMcFixed = tokenAmountTotal.times(lpTokenRatio)
 
-  const quoteTokenAmountMcFixedByTokenAmount = tokenAmountMcFixed.mulUnsafe(FixedNumber.from(tokenPriceVsQuote))
+  const quoteTokenAmountMcFixedByTokenAmount = tokenAmountMcFixed.times(tokenPriceVsQuote)
 
-  const lpTotalInQuoteToken = quoteTokenAmountMcFixed.addUnsafe(quoteTokenAmountMcFixedByTokenAmount)
+  const lpTotalInQuoteToken = quoteTokenAmountMcFixed.plus(quoteTokenAmountMcFixedByTokenAmount)
 
   return {
     tokenAmountTotal: tokenAmountTotal.toString(),
@@ -312,40 +325,32 @@ const getStableFarmDynamicData = ({
   }
 }
 
-type balanceResponse = [BigNumber]
-type decimalsResponse = [number]
+type balanceResponse = bigint
 
-export type ClassicLPData = [
-  balanceResponse,
-  balanceResponse,
-  balanceResponse,
-  balanceResponse,
-  decimalsResponse,
-  decimalsResponse,
-]
+export type ClassicLPData = [balanceResponse, balanceResponse, balanceResponse, balanceResponse]
 
 type FormatClassicFarmResponse = {
-  tokenBalanceLP: FixedNumber
-  quoteTokenBalanceLP: FixedNumber
-  lpTokenBalanceMC: FixedNumber
-  lpTotalSupply: FixedNumber
+  tokenBalanceLP: BN
+  quoteTokenBalanceLP: BN
+  lpTokenBalanceMC: BN
+  lpTotalSupply: BN
 }
 
 const formatClassicFarmResponse = (farmData: ClassicLPData): FormatClassicFarmResponse => {
   const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply] = farmData
   return {
-    tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
-    quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
-    lpTokenBalanceMC: FixedNumber.from(lpTokenBalanceMC[0]),
-    lpTotalSupply: FixedNumber.from(lpTotalSupply[0]),
+    tokenBalanceLP: new BN(tokenBalanceLP.toString()),
+    quoteTokenBalanceLP: new BN(quoteTokenBalanceLP.toString()),
+    lpTokenBalanceMC: new BN(lpTokenBalanceMC.toString()),
+    lpTotalSupply: new BN(lpTotalSupply.toString()),
   }
 }
 
 interface FarmAllocationParams {
-  allocPoint?: BigNumber
+  allocPoint?: bigint
   isRegular?: boolean
-  totalRegularAllocPoint: BigNumber
-  totalSpecialAllocPoint: BigNumber
+  totalRegularAllocPoint: bigint
+  totalSpecialAllocPoint: bigint
 }
 
 const getFarmAllocation = ({
@@ -354,14 +359,13 @@ const getFarmAllocation = ({
   totalRegularAllocPoint,
   totalSpecialAllocPoint,
 }: FarmAllocationParams) => {
-  const _allocPoint = allocPoint ? FixedNumber.from(allocPoint) : FIXED_ZERO
+  const _allocPoint = allocPoint ? new BN(allocPoint.toString()) : BIG_ZERO
   const totalAlloc = isRegular ? totalRegularAllocPoint : totalSpecialAllocPoint
-  const poolWeight =
-    !totalAlloc.isZero() && !_allocPoint.isZero() ? _allocPoint.divUnsafe(FixedNumber.from(totalAlloc)) : FIXED_ZERO
+  const poolWeight = !!totalAlloc && !!_allocPoint ? _allocPoint.div(totalAlloc.toString()) : BIG_ZERO
 
   return {
     poolWeight: poolWeight.toString(),
-    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(10)).toString()}X` : `0X`,
+    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.div(10).toString()}X` : `0X`,
   }
 }
 
@@ -383,13 +387,13 @@ const getClassicFarmsDynamicData = ({
 
   // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
   const lpTokenRatio =
-    !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.divUnsafe(lpTotalSupply) : FIXED_ZERO
+    !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.div(lpTotalSupply) : BIG_ZERO
 
   // // Amount of quoteToken in the LP that are staked in the MC
-  const quoteTokenAmountMcFixed = quoteTokenAmountTotal.mulUnsafe(lpTokenRatio)
+  const quoteTokenAmountMcFixed = quoteTokenAmountTotal.times(lpTokenRatio)
 
   // // Total staked in LP, in quote token value
-  const lpTotalInQuoteToken = quoteTokenAmountMcFixed.mulUnsafe(FIXED_TWO)
+  const lpTotalInQuoteToken = quoteTokenAmountMcFixed.times(BIG_TWO)
 
   return {
     tokenAmountTotal: tokenAmountTotal.toString(),
@@ -398,8 +402,8 @@ const getClassicFarmsDynamicData = ({
     lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
     tokenPriceVsQuote:
       !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
-        ? quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString()
-        : FIXED_ZERO.toString(),
+        ? quoteTokenAmountTotal.div(tokenAmountTotal).toString()
+        : BIG_ZERO.toString(),
     lpTokenStakedAmount: lpTokenBalanceMC.toString(),
   }
 }

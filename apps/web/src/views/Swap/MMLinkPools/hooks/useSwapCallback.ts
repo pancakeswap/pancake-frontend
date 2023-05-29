@@ -1,4 +1,3 @@
-import { BigNumber, Contract } from 'ethers'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
@@ -6,12 +5,14 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
+import { Hash, hexToBigInt } from 'viem'
 import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TradeWithMM } from '../types'
+import { useMMSwapContract } from '../utils/exchange'
 
 export enum SwapCallbackState {
   INVALID,
@@ -20,12 +21,12 @@ export enum SwapCallbackState {
 }
 
 interface SwapCall {
-  contract: Contract
+  contract: ReturnType<typeof useMMSwapContract>
   parameters: SwapParameters
 }
 
 interface SuccessfulCall extends SwapCallEstimate {
-  gasEstimate: BigNumber
+  gasEstimate: bigint
 }
 
 interface FailedCall extends SwapCallEstimate {
@@ -72,9 +73,9 @@ export function useSwapCallback(
               parameters: { methodName, args, value },
               contract,
             } = call
-            const options = !value || isZero(value) ? {} : { value }
-
-            return contract.estimateGas[methodName](...args, options)
+            const options =
+              !value || isZero(value) ? { value: undefined, account } : { value: hexToBigInt(value), account }
+            return contract.estimateGas[methodName](args, options)
               .then((gasEstimate) => {
                 return {
                   call,
@@ -84,7 +85,7 @@ export function useSwapCallback(
               .catch((gasError) => {
                 console.error('Gas estimate failed, trying eth_call to extract error', call)
 
-                return contract.callStatic[methodName](...args, options)
+                return contract.simulate[methodName](args, options)
                   .then((result) => {
                     console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return { call, error: t('Unexpected issue with estimating the gas. Please try again.') }
@@ -118,12 +119,12 @@ export function useSwapCallback(
           gasEstimate,
         } = successfulEstimation
 
-        return contract[methodName](...args, {
-          gasLimit: calculateGasMargin(gasEstimate),
+        return contract.write[methodName](args, {
+          gas: calculateGasMargin(gasEstimate),
           gasPrice,
-          ...(value && !isZero(value) ? { value, from: account } : { from: account }),
+          ...(value && !isZero(value) ? { value, account } : { account }),
         })
-          .then((response: any) => {
+          .then((response: Hash) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             // const pct = basisPointsToPercent(allowedSlippage)
@@ -151,20 +152,23 @@ export function useSwapCallback(
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
 
-            addTransaction(response, {
-              summary: withRecipient,
-              translatableSummary: {
-                text: translatableWithRecipient,
-                data: {
-                  inputAmount,
-                  inputSymbol,
-                  outputAmount,
-                  outputSymbol,
-                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
+            addTransaction(
+              { hash: response },
+              {
+                summary: withRecipient,
+                translatableSummary: {
+                  text: translatableWithRecipient,
+                  data: {
+                    inputAmount,
+                    inputSymbol,
+                    outputAmount,
+                    outputSymbol,
+                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                  },
                 },
+                type: 'swap',
               },
-              type: 'swap',
-            })
+            )
             logSwap({
               chainId,
               inputAmount,
@@ -173,9 +177,9 @@ export function useSwapCallback(
               output: trade.outputAmount.currency,
               type: 'MarketMakerSwap',
             })
-            logTx({ account, chainId, hash: response.hash })
+            logTx({ account, chainId, hash: response })
 
-            return response.hash
+            return response
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along

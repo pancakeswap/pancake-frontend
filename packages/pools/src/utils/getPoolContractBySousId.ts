@@ -1,22 +1,97 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { Contract } from '@ethersproject/contracts'
-import { Provider } from '@ethersproject/providers'
-import type { Signer } from 'ethers'
+import { WalletClient, getContract, PublicClient, Address, GetContractReturnType, Account, Chain } from 'viem'
 
 import { getPoolsConfig } from '../constants'
 import { isLegacyPool } from './isLegacyPool'
-import sousChefABI from '../abis/ISousChefV2.json'
-import sousChefBnbABI from '../abis/ISousChefBNB.json'
-import smartChefABI from '../abis/ISmartChef.json'
+import { smartChefABI } from '../abis/ISmartChef'
 import { PoolCategory } from '../types'
+import { sousChefV2ABI } from '../abis/ISousChefV2'
+import { sousChefBnbABI } from '../abis/ISousChefBNB'
 
 interface Params {
   chainId?: ChainId
   sousId: number
-  provider: Signer | Provider
+  signer?: any
+  publicClient?: any
 }
 
-export function getPoolContractBySousId({ chainId, sousId, provider }: Params) {
+type GetContractReturnType_<TAbi extends readonly unknown[]> = GetContractReturnType<TAbi, any, any> & {
+  abi: TAbi
+  address: Address
+  account?: Account
+  chain?: Chain
+}
+
+export function getSousChefBNBContract({
+  address,
+  signer,
+  publicClient,
+}: {
+  address: Address
+  signer?: WalletClient
+  publicClient?: PublicClient
+}): GetContractReturnType_<typeof sousChefBnbABI> {
+  return {
+    ...getContract({
+      abi: sousChefBnbABI,
+      address,
+      walletClient: signer,
+      publicClient,
+    }),
+    abi: sousChefBnbABI,
+    address,
+    account: signer?.account,
+    chain: signer?.chain,
+  }
+}
+
+export function getSousChefV2Contract({
+  address,
+  signer,
+  publicClient,
+}: {
+  address: Address
+  signer?: WalletClient
+  publicClient?: PublicClient
+}): GetContractReturnType_<typeof sousChefV2ABI> {
+  return {
+    ...getContract({
+      abi: sousChefV2ABI,
+      address,
+      walletClient: signer,
+      publicClient,
+    }),
+    abi: sousChefV2ABI,
+    address,
+    account: signer?.account,
+    chain: signer?.chain,
+  }
+}
+
+export function getSmartChefChefV2Contract({
+  address,
+  signer,
+  publicClient,
+}: {
+  address: Address
+  signer?: WalletClient
+  publicClient?: PublicClient
+}): GetContractReturnType_<typeof smartChefABI> {
+  return {
+    ...getContract({
+      abi: smartChefABI,
+      address,
+      walletClient: signer,
+      publicClient,
+    }),
+    abi: smartChefABI,
+    address,
+    account: signer?.account,
+    chain: signer?.chain,
+  }
+}
+
+export function getPoolContractBySousId({ chainId, sousId, signer, publicClient }: Params): any | null {
   if (!chainId) {
     return null
   }
@@ -27,8 +102,10 @@ export function getPoolContractBySousId({ chainId, sousId, provider }: Params) {
   }
   const { contractAddress } = pool
   if (isLegacyPool(pool)) {
-    const abi = pool.poolCategory === PoolCategory.BINANCE ? sousChefBnbABI : sousChefABI
-    return new Contract(contractAddress, abi, provider)
+    if (pool.poolCategory === PoolCategory.BINANCE) {
+      return getSousChefBNBContract({ address: contractAddress, signer, publicClient })
+    }
+    return getSousChefV2Contract({ address: contractAddress, signer, publicClient })
   }
-  return new Contract(contractAddress, smartChefABI, provider)
+  return getSmartChefChefV2Contract({ address: contractAddress, signer, publicClient })
 }

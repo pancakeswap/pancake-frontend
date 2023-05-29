@@ -12,12 +12,12 @@ import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 import { isDesktop } from 'react-device-detect'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
-import { provider } from 'utils/wagmi'
+import { publicClient } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { viemClients } from 'utils/viem'
-import { WorkerEvent } from 'quote-worker'
+import { getViemClients } from 'utils/viem'
 import { QUOTING_API } from 'config/constants/endpoints'
+import { worker, worker2 } from 'utils/worker'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -25,55 +25,6 @@ import {
   PoolsWithState,
   CommonPoolsParams,
 } from './useCommonPools'
-
-class WorkerProxy {
-  id = 0
-
-  // eslint-disable-next-line no-useless-constructor
-  constructor(protected worker: Worker) {}
-
-  public postMessage = async (message: any) => {
-    if (!this.worker) {
-      throw new Error('Worker not initialized')
-    }
-
-    const id = this.id++
-    const promise = new Promise((resolve, reject) => {
-      const handler = (e) => {
-        const [eventId, data] = e.data
-        if (id === eventId) {
-          this.worker.removeEventListener('message', handler)
-          if (data.success === false) {
-            reject(data.error)
-          } else {
-            resolve(data.result)
-          }
-        }
-      }
-      this.worker.addEventListener('message', handler)
-    })
-
-    this.worker.postMessage([id, message])
-    return promise
-  }
-
-  public getBestTrade = async (params: WorkerEvent[1]['params']) => {
-    return this.postMessage({
-      cmd: 'getBestTrade',
-      params,
-    })
-  }
-}
-
-const worker =
-  typeof window !== 'undefined' && typeof Worker !== 'undefined'
-    ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
-    : undefined
-
-const worker2 =
-  typeof window !== 'undefined' && typeof Worker !== 'undefined'
-    ? new WorkerProxy(new Worker(/* webpackChunkName: "quote-worker" */ new URL('../quote-worker.ts', import.meta.url)))
-    : undefined
 
 // Revalidate interval in milliseconds
 const REVALIDATE_AFTER = {
@@ -273,9 +224,10 @@ function bestTradeHookFactory({
         SmartRouter.log(label)
         SmartRouter.metric(label, candidatePools)
         const res = await getBestTrade(deferAmount, currency, tradeType, {
-          gasPriceWei: gasPrice
-            ? BigInt(gasPrice)
-            : async () => BigInt(await (await provider({ chainId: amount.currency.chainId }).getGasPrice()).toString()),
+          gasPriceWei:
+            typeof gasPrice === 'bigint'
+              ? gasPrice
+              : async () => publicClient({ chainId: amount.currency.chainId }).getGasPrice(),
           maxHops,
           poolProvider,
           maxSplits,
@@ -329,7 +281,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   quoteProvider: SmartRouter.createOffChainQuoteProvider(),
 })
 
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemClients })
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
@@ -414,7 +366,7 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
 })
 
 const onChainQuoteProvider2 = SmartRouter.createQuoteProvider({
-  onChainProvider: viemClients,
+  onChainProvider: getViemClients,
   multicallConfigs: {
     ...BATCH_MULTICALL_CONFIGS,
     [ChainId.BSC]: {

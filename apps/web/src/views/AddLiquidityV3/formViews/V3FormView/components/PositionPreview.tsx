@@ -65,7 +65,7 @@ export const PositionPreview = ({
     setBaseCurrency(quoteCurrency)
   }, [quoteCurrency])
 
-  const removed = position?.liquidity && position?.liquidity === 0n
+  const removed = typeof position?.liquidity === 'bigint' && position?.liquidity === 0n
 
   return (
     <AutoColumn gap="md" style={{ marginTop: '0.5rem' }}>

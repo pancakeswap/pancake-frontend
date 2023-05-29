@@ -4,9 +4,10 @@ import { getBidderInfo } from 'config/constants/farmAuctions'
 import { bscRpcProvider } from 'utils/providers'
 import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
-import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { FarmAuction } from 'config/abi/types'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import orderBy from 'lodash/orderBy'
+import { farmAuctionABI } from 'config/abi/farmAuction'
+import { ContractFunctionResult } from 'viem'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -14,7 +15,7 @@ export const FORM_ADDRESS =
 // Sorts bidders received from smart contract by bid amount in descending order (biggest -> smallest)
 // Also amends bidder information with getBidderInfo
 // auction is required if data will be used for table display, hence in reclaim and congratulations card its omitted
-export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction): Bidder[] => {
+export const sortAuctionBidders = (bidders: readonly BidsPerAuction[], auction?: Auction): Bidder[] => {
   const sortedBidders = orderBy(bidders, (bidder) => Number(bidder.amount), 'desc').map((bidder, index) => {
     const bidderInfo = getBidderInfo(bidder.account)
     return {
@@ -30,8 +31,8 @@ export const sortAuctionBidders = (bidders: BidsPerAuction[], auction?: Auction)
   let adjustedPosition = 0
 
   return sortedBidders.map((bidder, index, unadjustedBidders) => {
-    const amount = ethersToBigNumber(bidder.amount)
-    const samePositionAsAbove = index === 0 ? false : bidder.amount.eq(unadjustedBidders[index - 1].amount)
+    const amount = bigIntToBigNumber(bidder.amount)
+    const samePositionAsAbove = index === 0 ? false : bidder.amount === unadjustedBidders[index - 1].amount
     adjustedPosition = samePositionAsAbove ? adjustedPosition : adjustedPosition + 1
     // Reclaim and congratulations card don't need auction data or isTopPosition
     // in this case it is set to false just to avoid TS errors
@@ -83,8 +84,8 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
   // if block already happened we can get timestamp via .getBlock(block)
   if (currentBlock > block) {
     try {
-      const { timestamp } = await bscRpcProvider.getBlock(block)
-      return toDate(timestamp * 1000)
+      const { timestamp } = await bscRpcProvider.getBlock({ blockNumber: BigInt(block) })
+      return toDate(Number(timestamp) * 1000)
     } finally {
       // Use logic below
     }
@@ -102,15 +103,15 @@ export const processAuctionData = async (
 ): Promise<Auction> => {
   const processedAuctionData = {
     ...auctionResponse,
-    topLeaderboard: auctionResponse.leaderboard.toNumber(),
-    initialBidAmount: ethersToBigNumber(auctionResponse.initialBidAmount).div(DEFAULT_TOKEN_DECIMAL).toNumber(),
-    leaderboardThreshold: ethersToBigNumber(auctionResponse.leaderboardThreshold),
-    startBlock: auctionResponse.startBlock.toNumber(),
-    endBlock: auctionResponse.endBlock.toNumber(),
+    topLeaderboard: Number(auctionResponse.leaderboard),
+    initialBidAmount: bigIntToBigNumber(auctionResponse.initialBidAmount).div(DEFAULT_TOKEN_DECIMAL).toNumber(),
+    leaderboardThreshold: bigIntToBigNumber(auctionResponse.leaderboardThreshold),
+    startBlock: Number(auctionResponse.startBlock),
+    endBlock: Number(auctionResponse.endBlock),
   }
 
   // Get all required data and blocks
-  const currentBlock = currentBlockNumber || (await bscRpcProvider.getBlockNumber())
+  const currentBlock = currentBlockNumber || Number(await bscRpcProvider.getBlockNumber())
   const [startDate, endDate] = await Promise.all([
     getDateForBlock(currentBlock, processedAuctionData.startBlock),
     getDateForBlock(currentBlock, processedAuctionData.endBlock),
@@ -134,13 +135,13 @@ export const processAuctionData = async (
 }
 
 export const processBidderAuctions = (
-  bidderAuctions: Awaited<ReturnType<FarmAuction['viewBidderAuctions']>>,
+  bidderAuctions: ContractFunctionResult<typeof farmAuctionABI, 'viewBidderAuctions'>,
 ): { auctions: BidderAuction[]; nextCursor: number } => {
   const [auctionIds, bids, claimed, nextCursor] = bidderAuctions
   const auctions = auctionIds.map((auctionId, index) => ({
-    id: auctionId.toNumber(),
-    amount: ethersToBigNumber(bids[index]),
+    id: Number(auctionId),
+    amount: bigIntToBigNumber(bids[index]),
     claimed: claimed[index],
   }))
-  return { auctions, nextCursor: nextCursor.toNumber() }
+  return { auctions, nextCursor: Number(nextCursor) }
 }

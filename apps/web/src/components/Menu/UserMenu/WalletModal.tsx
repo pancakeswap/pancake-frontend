@@ -1,4 +1,4 @@
-import { parseUnits } from 'ethers/lib/utils'
+import { parseEther } from 'viem'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -29,7 +29,7 @@ interface WalletModalProps extends InjectedModalProps {
   initialView?: WalletView
 }
 
-export const LOW_NATIVE_BALANCE = parseUnits('0.002', 'ether')
+export const LOW_NATIVE_BALANCE = parseEther('0.002', 'wei')
 
 const ModalHeader = styled(UIKitModalHeader)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
@@ -67,7 +67,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data, isFetched } = useBalance({ address: account })
-  const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
+  const hasLowNativeBalance = isFetched && data && data.value <= LOW_NATIVE_BALANCE
 
   const handleClick = useCallback((newIndex: number) => {
     setView(newIndex)

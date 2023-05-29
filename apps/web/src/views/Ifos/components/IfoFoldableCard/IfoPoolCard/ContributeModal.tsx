@@ -1,5 +1,4 @@
-import { MaxUint256 } from '@ethersproject/constants'
-import { parseUnits } from 'ethers/lib/utils'
+import { parseEther, parseUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
 import {
@@ -17,7 +16,6 @@ import {
   useTooltip,
   IfoHasVestingNotice,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -25,10 +23,8 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { Ifo, PoolIds } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useERC20 } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { requiresApproval } from 'utils/requiresApproval'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -45,7 +41,7 @@ interface Props {
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
 // Default value for transaction setting, tweak based on BSC network congestion.
-const gasPrice = parseUnits('10', 'gwei').toString()
+const gasPrice = parseEther('10', 'gwei')
 
 const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
@@ -66,24 +62,16 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
-  const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContractReader = useERC20(currency.address, false)
-  const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(raisingTokenContractReader, account, contract.address)
-      },
-      onApprove: () => {
-        return callWithGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {
-          gasPrice,
-        })
-      },
+      token: currency,
+      spender: contract.address,
+      minAmount: value ? parseUnits(value as `${number}`, currency.decimals) : undefined,
       onApproveSuccess: ({ receipt }) => {
         toastSuccess(
           t('Successfully Enabled!'),
@@ -94,7 +82,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
       },
       onConfirm: () => {
         return callWithGasPrice(
-          contract,
+          contract as any,
           'depositPool',
           [valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1],
           {
@@ -237,7 +225,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
             </Link>
           </Text>
           <ApproveConfirmButtons
-            isApproveDisabled={isConfirmed || isConfirming || isApproved}
+            isApproveDisabled={isConfirmed || isConfirming || isApproved || !value}
             isApproving={isApproving}
             isConfirmDisabled={
               !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0) || isWarning

@@ -1,17 +1,16 @@
 import React, { memo, useMemo } from 'react'
-import { BigNumber } from 'ethers'
 import CountUp from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
-import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
+import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import { BetPosition } from 'state/types'
 
 interface LiveRoundPriceProps {
   betPosition: BetPosition
-  price: BigNumber
+  price: bigint
 }
 
 const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = ({ betPosition, price }) => {
-  const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
+  const priceAsNumber = useMemo(() => parseFloat(formatBigIntToFixed(price, 4, 8)), [price])
 
   const priceColor = useMemo(() => {
     switch (betPosition) {
@@ -29,7 +28,7 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
     return null
   }
 
-  if (price.lt(0)) {
+  if (price < 0n) {
     return <Skeleton height="36px" width="94px" />
   }
 

@@ -1,7 +1,5 @@
-import { BigNumber } from 'ethers'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
-import erc721Abi from 'config/abi/erc721.json'
-import nftMarketAbi from 'config/abi/nftMarket.json'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { erc721CollectionABI } from 'config/abi/erc721collection'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { COLLECTIONS_WITH_WALLET_OF_OWNER } from 'config/constants/nftsCollections'
@@ -14,9 +12,12 @@ import range from 'lodash/range'
 import lodashSize from 'lodash/size'
 import { stringify } from 'querystring'
 import { isAddress } from 'utils'
+import { Address } from 'wagmi'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
-import { multicallv2 } from 'utils/multicall'
+import { publicClient } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
+import { nftMarketABI } from 'config/abi/nftMarket'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { baseNftFields, baseTransactionFields, collectionBaseFields } from './queries'
 import {
@@ -63,18 +64,22 @@ export const getCollectionsApi = async (): Promise<ApiCollectionsResponse> => {
 const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promise<number[]> => {
   const totalSupplyCalls = collections
     .filter((collection) => collection?.address)
-    .map((collection) => ({
-      address: collection.address.toLowerCase(),
-      name: 'totalSupply',
-    }))
+    .map(
+      (collection) =>
+        ({
+          abi: erc721CollectionABI,
+          address: collection.address as Address,
+          functionName: 'totalSupply',
+        } as const),
+    )
   if (totalSupplyCalls.length > 0) {
-    const totalSupplyRaw = await multicallv2({
-      abi: erc721Abi,
-      calls: totalSupplyCalls,
-      options: { requireSuccess: false },
+    const client = publicClient({ chainId: ChainId.BSC })
+    const totalSupplyRaw = await client.multicall({
+      contracts: totalSupplyCalls,
     })
-    const totalSupply = totalSupplyRaw.flat()
-    return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
+
+    const totalSupply = totalSupplyRaw.map((r) => r.result)
+    return totalSupply.map((totalCount) => (totalCount ? Number(totalCount) : 0))
   }
   return []
 }
@@ -218,7 +223,7 @@ export const getNftApi = async (
 export const getNftsFromDifferentCollectionsApi = async (
   from: { collectionAddress: string; tokenId: string }[],
 ): Promise<NftToken[]> => {
-  const promises = from.map((nft) => getNftApi(nft.collectionAddress, nft.tokenId))
+  const promises = from.map((nft) => getNftApi(nft.collectionAddress as Address, nft.tokenId))
   const responses = await Promise.all(promises)
   // Sometimes API can't find some tokens (e.g. 404 response)
   // at least return the ones that returned successfully
@@ -228,7 +233,7 @@ export const getNftsFromDifferentCollectionsApi = async (
       tokenId: res.tokenId,
       name: res.name,
       collectionName: res.collection.name,
-      collectionAddress: from[index].collectionAddress,
+      collectionAddress: from[index].collectionAddress as Address,
       description: res.description,
       attributes: res.attributes,
       createdAt: res.createdAt,
@@ -402,13 +407,16 @@ export const getMarketDataForTokenIds = async (
 }
 
 export const getNftsOnChainMarketData = async (
-  collectionAddress: string,
+  collectionAddress: Address,
   tokenIds: string[],
 ): Promise<TokenMarketData[]> => {
   try {
     const nftMarketContract = getNftMarketContract()
-    const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(collectionAddress.toLowerCase(), tokenIds)
-    const askInfo = response?.askInfo
+    const response = await nftMarketContract.read.viewAsksByCollectionAndTokenIds([
+      collectionAddress,
+      tokenIds.map((t) => BigInt(t)),
+    ])
+    const askInfo = response[1]
 
     if (!askInfo) return []
 
@@ -417,7 +425,7 @@ export const getNftsOnChainMarketData = async (
         if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
         const currentSeller = tokenAskInfo.seller
         const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
-        const currentAskPrice = tokenAskInfo.price && formatBigNumber(tokenAskInfo.price)
+        const currentAskPrice = tokenAskInfo.price && formatBigInt(tokenAskInfo.price)
 
         return {
           collection: { id: collectionAddress.toLowerCase() },
@@ -435,13 +443,16 @@ export const getNftsOnChainMarketData = async (
 }
 
 export const getNftsUpdatedMarketData = async (
-  collectionAddress: string,
+  collectionAddress: Address,
   tokenIds: string[],
-): Promise<{ tokenId: string; currentSeller: string; currentAskPrice: BigNumber; isTradable: boolean }[]> => {
+): Promise<{ tokenId: string; currentSeller: string; currentAskPrice: bigint; isTradable: boolean }[]> => {
   try {
     const nftMarketContract = getNftMarketContract()
-    const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(collectionAddress.toLowerCase(), tokenIds)
-    const askInfo = response?.askInfo
+    const response = await nftMarketContract.read.viewAsksByCollectionAndTokenIds([
+      collectionAddress,
+      tokenIds.map((t) => BigInt(t)),
+    ])
+    const askInfo = response?.[1]
 
     if (!askInfo) return null
 
@@ -463,38 +474,43 @@ export const getNftsUpdatedMarketData = async (
 
 export const getAccountNftsOnChainMarketData = async (
   collections: ApiCollections,
-  account: string,
+  account: Address,
 ): Promise<TokenMarketData[]> => {
   try {
     const nftMarketAddress = getNftMarketAddress()
     const collectionList = Object.values(collections)
-    const askCalls = collectionList.map((collection) => {
+
+    const call = collectionList.map((collection) => {
       const { address: collectionAddress } = collection
       return {
+        abi: nftMarketABI,
         address: nftMarketAddress,
-        name: 'viewAsksByCollectionAndSeller',
-        params: [collectionAddress, account, 0, 1000],
-      }
+        functionName: 'viewAsksByCollectionAndSeller',
+        args: [collectionAddress, account, 0n, 1000n] as const,
+      } as const
     })
 
-    const askCallsResultsRaw = await multicallv2({
-      abi: nftMarketAbi,
-      calls: askCalls,
-      options: { requireSuccess: false },
+    const askCallsResultsRaw = await publicClient({ chainId: ChainId.BSC }).multicall({
+      contracts: call,
+      allowFailure: false,
     })
+
     const askCallsResults = askCallsResultsRaw
       .map((askCallsResultRaw, askCallIndex) => {
-        if (!askCallsResultRaw?.tokenIds || !askCallsResultRaw?.askInfo || !collectionList[askCallIndex]?.address)
-          return null
-        return askCallsResultRaw.tokenIds
+        const askCallsResult = {
+          tokenIds: askCallsResultRaw?.[0],
+          askInfo: askCallsResultRaw?.[1],
+        }
+        if (!askCallsResult?.tokenIds || !askCallsResult?.askInfo || !collectionList[askCallIndex]?.address) return null
+        return askCallsResult.tokenIds
           .map((tokenId, tokenIdIndex) => {
-            if (!tokenId || !askCallsResultRaw.askInfo[tokenIdIndex] || !askCallsResultRaw.askInfo[tokenIdIndex].price)
+            if (!tokenId || !askCallsResult.askInfo[tokenIdIndex] || !askCallsResult.askInfo[tokenIdIndex].price)
               return null
 
-            const currentAskPrice = formatBigNumber(askCallsResultRaw.askInfo[tokenIdIndex].price)
+            const currentAskPrice = formatBigInt(askCallsResult.askInfo[tokenIdIndex].price)
 
             return {
-              collection: { id: collectionList[askCallIndex].address.toLowerCase() },
+              collection: { id: collectionList[askCallIndex].address.toLowerCase() as Address },
               tokenId: tokenId.toString(),
               account,
               isTradable: true,
@@ -506,6 +522,7 @@ export const getAccountNftsOnChainMarketData = async (
       .flat()
       .filter(Boolean)
 
+    // @ts-ignore FIXME: wagmi
     return askCallsResults
   } catch (error) {
     console.error('Failed to fetch NFTs onchain market data', error)
@@ -943,40 +960,44 @@ export const fetchWalletTokenIdsForCollections = async (
   const balanceOfCalls = tokenOfOwnerByIndexCollections.map((collection) => {
     const { address: collectionAddress } = collection
     return {
+      abi: erc721CollectionABI,
       address: collectionAddress,
-      name: 'balanceOf',
-      params: [account],
-    }
+      functionName: 'balanceOf',
+      args: [account as Address],
+    } as const
   })
 
-  const balanceOfCallsResultRaw = await multicallv2({
-    abi: erc721Abi,
-    calls: balanceOfCalls,
-    options: { requireSuccess: false },
+  const client = publicClient({ chainId: ChainId.BSC })
+
+  const balanceOfCallsResultRaw = await client.multicall({
+    contracts: balanceOfCalls,
+    allowFailure: true,
   })
-  const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
+
+  const balanceOfCallsResult = balanceOfCallsResultRaw.map((r) => r.result)
 
   const tokenIdCalls = tokenOfOwnerByIndexCollections
     .map((collection, index) => {
-      const balanceOf = balanceOfCallsResult[index]?.toNumber() ?? 0
+      const balanceOf = balanceOfCallsResult[index] ? Number(balanceOfCallsResult[index]) : 0
       const { address: collectionAddress } = collection
 
       return range(balanceOf).map((tokenIndex) => {
         return {
+          abi: erc721CollectionABI,
           address: collectionAddress,
-          name: 'tokenOfOwnerByIndex',
-          params: [account, tokenIndex],
-        }
+          functionName: 'tokenOfOwnerByIndex',
+          args: [account as Address, BigInt(tokenIndex)] as const,
+        } as const
       })
     })
     .flat()
 
-  const tokenIdResultRaw = await multicallv2({
-    abi: erc721Abi,
-    calls: tokenIdCalls,
-    options: { requireSuccess: false },
+  const tokenIdResultRaw = await client.multicall({
+    contracts: tokenIdCalls,
+    allowFailure: true,
   })
-  const tokenIdResult = tokenIdResultRaw.flat()
+
+  const tokenIdResult = tokenIdResultRaw.map((r) => r.result)
 
   const nftLocation = NftLocation.WALLET
 
@@ -992,32 +1013,35 @@ export const fetchWalletTokenIdsForCollections = async (
     .filter((c) => COLLECTIONS_WITH_WALLET_OF_OWNER.includes(c.address))
     .map((c) => {
       return {
+        abi: [
+          {
+            inputs: [{ internalType: 'address', name: '_owner', type: 'address' }],
+            name: 'walletOfOwner',
+            outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ] as const,
         address: c.address,
-        name: 'walletOfOwner',
-        params: [account],
-      }
+        functionName: 'walletOfOwner',
+        args: [account as Address],
+      } as const
     })
 
-  const walletOfOwnerCallResult = await multicallv2({
-    abi: [
-      {
-        inputs: [{ internalType: 'address', name: '_owner', type: 'address' }],
-        name: 'walletOfOwner',
-        outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ],
-    calls: walletOfOwnerCalls,
+  const walletOfOwnerCallResult = await client.multicall({
+    contracts: walletOfOwnerCalls,
+    allowFailure: true,
   })
 
-  const walletNftsWithWO = walletOfOwnerCallResult.flat().reduce((acc, wo, index) => {
-    if (wo) {
-      const { address: collectionAddress } = walletOfOwnerCalls[index]
-      acc.push(wo.map((w) => ({ tokenId: w.toString(), collectionAddress, nftLocation })))
-    }
-    return acc
-  }, [])
+  const walletNftsWithWO = walletOfOwnerCallResult
+    .map((r) => r.result)
+    .reduce((acc, wo, index) => {
+      if (wo) {
+        const { address: collectionAddress } = walletOfOwnerCalls[index]
+        acc.push(wo.map((w) => ({ tokenId: w.toString(), collectionAddress, nftLocation })))
+      }
+      return acc
+    }, [] as any[])
 
   return walletNfts.concat(walletNftsWithWO.flat())
 }
@@ -1164,7 +1188,7 @@ const fetchWalletMarketData = async (walletNftsByCollection: {
     async ([collectionAddress, tokenIdsWithCollectionAddress]) => {
       const tokenIdIn = tokenIdsWithCollectionAddress.map((walletNft) => walletNft.tokenId)
       const [nftsOnChainMarketData, nftsMarketData] = await Promise.all([
-        getNftsOnChainMarketData(collectionAddress.toLowerCase(), tokenIdIn),
+        getNftsOnChainMarketData(collectionAddress as Address, tokenIdIn),
         getNftsMarketData({
           tokenId_in: tokenIdIn,
           collection: collectionAddress.toLowerCase(),
@@ -1198,7 +1222,7 @@ const fetchWalletMarketData = async (walletNftsByCollection: {
  * @returns Promise<NftToken[]>
  */
 export const getCompleteAccountNftData = async (
-  account: string,
+  account: Address,
   collections: ApiCollections,
   profileNftWithCollectionAddress?: TokenIdWithCollectionAddress,
 ): Promise<NftToken[]> => {

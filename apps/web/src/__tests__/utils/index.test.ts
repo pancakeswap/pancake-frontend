@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { Token, ChainId, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { getBlockExploreLink, isAddress, calculateGasMargin } from 'utils'
 import { calculateSlippageAmount, basisPointsToPercent } from 'utils/exchange'
@@ -58,8 +57,8 @@ describe('utils', () => {
 
   describe('#calculateGasMargin', () => {
     it('adds 10%', () => {
-      expect(calculateGasMargin(BigNumber.from(1000)).toString()).toEqual('1100')
-      expect(calculateGasMargin(BigNumber.from(50)).toString()).toEqual('55')
+      expect(calculateGasMargin(1000n).toString()).toEqual('1100')
+      expect(calculateGasMargin(50n).toString()).toEqual('55')
     })
   })
 

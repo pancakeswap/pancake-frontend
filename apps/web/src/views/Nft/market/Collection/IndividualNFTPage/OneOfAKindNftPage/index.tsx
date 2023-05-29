@@ -6,6 +6,7 @@ import noop from 'lodash/noop'
 import Page from 'components/Layout/Page'
 import { useGetCollection } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
+import { Address } from 'wagmi'
 import fromPairs from 'lodash/fromPairs'
 import MainNFTCard from './MainNFTCard'
 import { TwoColumnsContainer } from '../shared/styles'
@@ -19,7 +20,7 @@ import { useCompleteNft } from '../../../hooks/useCompleteNft'
 import ManageNFTsCard from '../shared/ManageNFTsCard'
 
 interface IndividualNFTPageProps {
-  collectionAddress: string
+  collectionAddress: Address
   tokenId: string
 }
 

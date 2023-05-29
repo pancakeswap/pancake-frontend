@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import { polygonRpcProvider } from 'utils/providers'
+import { Address } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { useUNSContract } from './useContract'
 
@@ -15,16 +16,16 @@ function getUnsAddress(networkId) {
   return ''
 }
 
-export const useUnsNameForAddress = (address: string, fetchData = true) => {
+export const useUnsNameForAddress = (address: Address, fetchData = true) => {
   const unsEtherContract = useUNSContract(getUnsAddress(1), ChainId.ETHEREUM, undefined)
   const unsPolygonContract = useUNSContract(getUnsAddress(137), undefined, polygonRpcProvider)
 
   const { data: unsName, status } = useSWRImmutable(
     fetchData && address ? ['unsName', address.toLowerCase()] : null,
     async () => {
-      const etherDomainName = await unsEtherContract.reverseNameOf(address)
+      const etherDomainName = await unsEtherContract.read.reverseNameOf([address])
       if (!etherDomainName) {
-        const polyDomainName = await unsPolygonContract.reverseNameOf(address)
+        const polyDomainName = await unsPolygonContract.read.reverseNameOf([address])
         if (!polyDomainName) {
           return {
             name: null,

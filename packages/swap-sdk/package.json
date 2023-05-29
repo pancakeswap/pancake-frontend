@@ -34,9 +34,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "viem": "^0.3.29",
+    "viem": "^0.3.30",
     "@pancakeswap/swap-sdk-core": "workspace:*",
-    "ethers": "^5.0.0",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",

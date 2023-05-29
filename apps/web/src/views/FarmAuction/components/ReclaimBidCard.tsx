@@ -8,7 +8,7 @@ import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid'
@@ -25,17 +25,17 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
 
   const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid()
 
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
+  const cakeContract = useCake()
   const farmAuctionContract = useFarmAuctionContract()
 
   const { toastSuccess } = useToast()
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
-      return requiresApproval(cakeContractReader, account, farmAuctionContract.address)
+      return requiresApproval(cakeContract, account, farmAuctionContract.address)
     },
     onApprove: () => {
-      return callWithGasPrice(cakeContractApprover, 'approve', [farmAuctionContract.address, MaxUint256])
+      return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -44,7 +44,7 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
       )
     },
     onConfirm: () => {
-      return callWithGasPrice(farmAuctionContract, 'claimAuction', [reclaimableAuction.id])
+      return callWithGasPrice(farmAuctionContract, 'claimAuction', [BigInt(reclaimableAuction.id)])
     },
     onSuccess: async ({ receipt }) => {
       checkForNextReclaimableAuction()

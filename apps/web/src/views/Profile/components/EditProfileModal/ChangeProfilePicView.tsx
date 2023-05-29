@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, InjectedModalProps, Skeleton, Text, useToast } from '@pancakeswap/uikit'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -29,7 +29,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
   })
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
   const { isLoading: isProfileLoading, profile, refresh: refreshProfile } = useProfile()
   const { nfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)
   const profileContract = useProfileContract()
@@ -45,6 +45,12 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        if (!selectedNft.tokenId) return true
+        const contract = getErc721Contract(selectedNft.collectionAddress, signer)
+        const approvedAddress = await contract.read.getApproved([selectedNft.tokenId])
+        return approvedAddress !== getPancakeProfileAddress()
+      },
       onApprove: () => {
         const contract = getErc721Contract(selectedNft.collectionAddress, signer)
 

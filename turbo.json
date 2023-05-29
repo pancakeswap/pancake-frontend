@@ -4,8 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"],
-      "cache": false
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "test": {
       "outputs": ["coverage/**"],
@@ -38,10 +37,6 @@
     },
     "clean": {
       "cache": false
-    },
-    "postinstall": {
-      "inputs": ["src/config/abi/**", "**/abis/**"],
-      "outputs": ["src/config/abi/types/**", "**/abis/types/**"]
     }
   }
 }

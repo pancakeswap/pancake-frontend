@@ -1,55 +1,41 @@
-import { Modal, Flex, Text, useToast } from '@pancakeswap/uikit'
-import { BigNumber } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCake, useProfileContract } from 'hooks/useContract'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useProfile } from 'state/profile/hooks'
-import { requiresApproval } from 'utils/requiresApproval'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { ToastDescriptionWithTx } from 'components/Toast'
+import { Flex, Modal, Text, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { bscTokens } from '@pancakeswap/tokens'
+import { formatUnits } from 'viem'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useProfileContract } from 'hooks/useContract'
+import { useProfile } from 'state/profile/hooks'
 import { REGISTER_COST } from './config'
 import { State } from './contexts/types'
 
 interface Props {
   userName: string
   selectedNft: State['selectedNft']
-  account: string
   teamId: number
-  minimumCakeRequired: BigNumber
-  allowance: BigNumber
+  allowance: bigint
   onDismiss?: () => void
 }
 
-const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
-  account,
-  teamId,
-  selectedNft,
-  minimumCakeRequired,
-  allowance,
-  onDismiss,
-}) => {
+const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({ teamId, selectedNft, onDismiss }) => {
   const { t } = useTranslation()
   const profileContract = useProfileContract()
   const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(cakeContractReader, account, profileContract.address, minimumCakeRequired)
-      },
-      onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [profileContract.address, allowance.toJSON()])
-      },
+      token: bscTokens.cake,
+      spender: profileContract.address,
+      minAmount: REGISTER_COST,
       onConfirm: () => {
         return callWithGasPrice(profileContract, 'createProfile', [
-          teamId,
+          BigInt(teamId),
           selectedNft.collectionAddress,
-          selectedNft.tokenId,
+          BigInt(selectedNft.tokenId),
         ])
       },
       onSuccess: async ({ receipt }) => {
@@ -66,7 +52,7 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{t('Cost')}</Text>
-        <Text>{t('%num% CAKE', { num: formatUnits(REGISTER_COST) })}</Text>
+        <Text>{t('%num% CAKE', { num: formatUnits(REGISTER_COST, 18) })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}

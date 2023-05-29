@@ -1,4 +1,3 @@
-import { FixedNumber } from 'ethers'
 import { renderHook } from '@testing-library/react-hooks'
 import BigNumber from 'bignumber.js'
 import { createSWRWrapper } from 'testUtils'
@@ -23,11 +22,11 @@ describe('useVaultApy', () => {
       {
         totalShares: new BigNumber('125327628384770000000000000'),
         pricePerFullShare: new BigNumber('1736860000000000000'),
-        emission: FixedNumber.from('105000000000000000000000000'),
+        emission: new BigNumber('105000000000000000000000000'),
       },
       {
-        flexibleApy: '47.271974190831774174',
-        lockedApy: '1012.9708755178237323',
+        flexibleApy: '47.27197419083177422912342574911778768415518041557562859141344639548082923631460208',
+        lockedApy: '1012.970875517823733481216266052524021803325294619477755530288137046017769349598616',
       },
     ],
   ])('should get correct vault apy', (cases, want) => {

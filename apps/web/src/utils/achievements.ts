@@ -1,17 +1,18 @@
-import { BigNumber } from 'ethers'
 import { Campaign, TranslatableText } from 'config/constants/types'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'
 import { TranslateFunction } from '@pancakeswap/localization'
 import { Achievement } from 'state/types'
-import { multicallv2 } from 'utils/multicall'
+import { ChainId } from '@pancakeswap/sdk'
 import { getPointCenterIfoAddress } from 'utils/addressHelpers'
-import pointCenterIfoABI from 'config/abi/pointCenterIfo.json'
+import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
+import { Address, ContractFunctionResult } from 'viem'
+import { publicClient } from './wagmi'
 
 interface IfoMapResponse {
   thresholdToClaim: string
   campaignId: string
-  numberPoints: BigNumber
+  numberPoints: bigint
 }
 
 export const getAchievementTitle = (campaign: Campaign, t: TranslateFunction): TranslatableText => {
@@ -42,38 +43,54 @@ export const getAchievementDescription = (campaign: Campaign, t: TranslateFuncti
 export const getClaimableIfoData = async (account: string, t: TranslateFunction): Promise<Achievement[]> => {
   const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
 
+  const bscClient = publicClient({ chainId: ChainId.BSC })
+
   // Returns the claim status of every IFO with a campaign ID
-  const claimStatusCalls = ifoCampaigns.map(({ address }) => {
-    return {
-      address: getPointCenterIfoAddress(),
-      name: 'checkClaimStatus',
-      params: [account, address],
-    }
+  const claimStatusesResults = await bscClient.multicall({
+    contracts: ifoCampaigns.map(
+      ({ address }) =>
+        ({
+          abi: pointCenterIfoABI,
+          address: getPointCenterIfoAddress(),
+          functionName: 'checkClaimStatus',
+          args: [account as Address, address] as const,
+        } as const),
+    ),
+    allowFailure: true,
   })
 
-  const claimStatuses = (await multicallv2({
-    abi: pointCenterIfoABI,
-    calls: claimStatusCalls,
-    options: { requireSuccess: false },
-  })) as [boolean][] | null
+  const claimStatuses = claimStatusesResults.map((result) => result.result)
+
+  const calls = claimStatuses.reduce((accum, claimStatusArr, index) => {
+    if (claimStatusArr === true) {
+      return [
+        ...accum,
+        {
+          abi: pointCenterIfoABI,
+          address: getPointCenterIfoAddress(),
+          functionName: 'ifos',
+          args: [ifoCampaigns[index].address],
+        },
+      ]
+    }
+
+    return accum
+  }, [])
 
   // Get IFO data for all IFO's that are eligible to claim
-  const claimableIfoData = (await multicallv2({
-    abi: pointCenterIfoABI,
-    calls: claimStatuses.reduce((accum, claimStatusArr, index) => {
-      if (claimStatusArr === null) {
-        return accum
-      }
+  const claimableIfoDataResult = (await bscClient.multicall({
+    contracts: calls,
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof pointCenterIfoABI, 'ifos'>[]
 
-      const [claimStatus] = claimStatusArr
-
-      if (claimStatus === true) {
-        return [...accum, { address: getPointCenterIfoAddress(), name: 'ifos', params: [ifoCampaigns[index].address] }]
-      }
-
-      return accum
-    }, []),
-  })) as IfoMapResponse[]
+  const claimableIfoData = claimableIfoDataResult.map(
+    (result) =>
+      ({
+        thresholdToClaim: result[0].toString(),
+        campaignId: result[1].toString(),
+        numberPoints: result[2],
+      } as IfoMapResponse),
+  )
 
   // Transform response to an Achievement
   return claimableIfoData.reduce((accum, claimableIfoDataItem) => {
@@ -94,7 +111,7 @@ export const getClaimableIfoData = async (account: string, t: TranslateFunction)
         title: getAchievementTitle(campaignMeta, t),
         description: getAchievementDescription(campaignMeta, t),
         badge: campaignMeta.badge,
-        points: claimableIfoDataItem.numberPoints.toNumber(),
+        points: Number(claimableIfoDataItem.numberPoints),
       },
     ]
   }, [])

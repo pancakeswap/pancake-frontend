@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BigNumber } from 'ethers'
-import { MaxUint256 } from '@ethersproject/constants'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { ContextApi } from '@pancakeswap/localization'
 import { Button, useModal, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useCake, useNftSaleContract } from 'hooks/useContract'
+import { useNftSaleContract } from 'hooks/useContract'
 import { useContext, useEffect, useState } from 'react'
+import { Address } from 'wagmi'
 import { DefaultTheme } from 'styled-components'
-import { requiresApproval } from 'utils/requiresApproval'
 import { PancakeSquadContext } from 'views/PancakeSquad/context'
+import { bscTokens } from '@pancakeswap/tokens'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import ReadyText from '../Header/ReadyText'
 import BuyTicketsModal from '../Modals/BuyTickets'
@@ -20,7 +20,7 @@ import { getBuyButton, getBuyButtonText } from './utils'
 
 type BuyTicketsProps = {
   t: ContextApi['t']
-  account: string
+  account: Address
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
   theme: DefaultTheme
@@ -30,14 +30,13 @@ type BuyTicketsProps = {
   numberTicketsOfUser: number
   numberTicketsForGen0: number
   numberTicketsUsedForGen0: number
-  cakeBalance: BigNumber
-  pricePerTicket: BigNumber
+  cakeBalance: bigint
+  pricePerTicket: bigint
   startTimestamp: number
 }
 
 const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
   t,
-  account,
   saleStatus,
   userStatus,
   theme,
@@ -56,7 +55,6 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const { toastSuccess } = useToast()
-  const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const { isUserEnabled, setIsUserEnabled } = useContext(PancakeSquadContext)
 
   const canBuySaleTicket =
@@ -69,12 +67,9 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm, hasApproveFailed, hasConfirmFailed } =
     useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        return requiresApproval(cakeContractReader, account, nftSaleContract.address)
-      },
-      onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [nftSaleContract.address, MaxUint256])
-      },
+      token: bscTokens.cake,
+      minAmount: MaxUint256,
+      spender: nftSaleContract.address,
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(t('Transaction has succeeded!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         setTxHashEnablingResult(receipt.transactionHash)

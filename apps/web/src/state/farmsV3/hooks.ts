@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import {
   createFarmFetcherV3,
   SerializedFarmsV3Response,
@@ -22,7 +21,8 @@ import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/use
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import useSWR from 'swr'
-import { multicallv2 } from 'utils/multicall'
+import { getViemClients } from 'utils/viem'
+import { decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import { useAccount } from 'wagmi'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 
@@ -51,7 +51,7 @@ const fallback: Awaited<ReturnType<typeof farmFetcherV3.fetchFarms>> = {
 
 const API_FLAG = false
 
-const farmFetcherV3 = createFarmFetcherV3(multicallv2)
+const farmFetcherV3 = createFarmFetcherV3(getViemClients)
 
 export const useFarmsV3Public = () => {
   const { chainId } = useActiveChainId()
@@ -174,42 +174,43 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   }
 }
 
-export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
+export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const { address: account } = useAccount()
-  const masterchefV3 = useMasterchefV3(false)
+  const masterchefV3 = useMasterchefV3()
 
   const harvestCalls = useMemo(() => {
     if (!account) return []
-    const callData = []
+    const callData: Hex[] = []
     for (const stakedTokenId of stakedTokenIds) {
-      callData.push(masterchefV3.interface.encodeFunctionData('harvest', [stakedTokenId.toString(), account]))
+      callData.push(
+        encodeFunctionData({
+          abi: masterchefV3.abi,
+          functionName: 'harvest',
+          args: [stakedTokenId, account],
+        }),
+      )
     }
     return callData
-  }, [account, masterchefV3.interface, stakedTokenIds])
+  }, [account, masterchefV3.abi, stakedTokenIds])
 
   const { data } = useSWR(
     account && ['mcv3-harvest', harvestCalls],
     () => {
-      return masterchefV3.callStatic.multicall(harvestCalls, { from: account }).then((res) => {
-        return res
-          .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
+      return masterchefV3.simulate.multicall([harvestCalls], { account, value: 0n }).then((res) => {
+        return res.result
+          .map((r) =>
+            decodeFunctionResult({
+              abi: masterchefV3.abi,
+              functionName: 'harvest',
+              data: r,
+            }),
+          )
           .map((r) => {
-            if ('reward' in r) {
-              return r.reward as BigNumber
-            }
-            return null
+            return r
           })
       })
     },
     {
-      compare(a, b) {
-        if (!a && !b) return true
-        if (a && !b) return false
-        if (!a && b) return false
-        return a?.every((v, i) => {
-          return BigNumber.isBigNumber(v) && b?.[i] && BigNumber.isBigNumber(b?.[i]) && v?.eq(b?.[i])
-        })
-      },
       keepPreviousData: true,
     },
   )
@@ -227,11 +228,11 @@ const usePositionsByUserFarms = (
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
 
-  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3?.address, account)
 
   const stakedIds = useMemo(() => stakedTokenIds || [], [stakedTokenIds])
 
-  const { tokenIds } = useV3TokenIdsByAccount(positionManager, account)
+  const { tokenIds } = useV3TokenIdsByAccount(positionManager?.address, account)
 
   const uniqueTokenIds = useMemo(() => [...stakedIds, ...tokenIds], [stakedIds, tokenIds])
 
@@ -241,16 +242,16 @@ const usePositionsByUserFarms = (
 
   const [unstakedPositions, stakedPositions] = useMemo(() => {
     if (!positions) return [[], []]
-    const unstakedIds = tokenIds.filter((id) => !stakedIds.find((s) => s.eq(id)))
+    const unstakedIds = tokenIds.filter((id) => !stakedIds.find((s) => s === id))
     return [
-      unstakedIds.map((id) => positions.find((p) => p.tokenId.eq(id))).filter((p) => p?.liquidity.gt(0)),
-      stakedIds.map((id) => positions.find((p) => p.tokenId.eq(id))).filter((p) => p?.liquidity.gt(0)),
+      unstakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => p?.liquidity > 0n),
+      stakedIds.map((id) => positions.find((p) => p.tokenId === id)).filter((p) => p?.liquidity > 0n),
     ]
   }, [positions, stakedIds, tokenIds])
 
   const pendingCakeByTokenIds = useMemo(
     () =>
-      tokenIdResults?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
+      (tokenIdResults as bigint[])?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
         const position = stakedPositions[i]
 
         return pendingCake && position?.tokenId ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
@@ -286,7 +287,7 @@ const usePositionsByUserFarms = (
           stakedPositions: staked,
           pendingCakeByTokenIds: Object.entries(pendingCakeByTokenIds).reduce<IPendingCakeByTokenId>(
             (acc, [tokenId, cake]) => {
-              const foundPosition = staked.find((p) => p.tokenId.eq(tokenId))
+              const foundPosition = staked.find((p) => p.tokenId === BigInt(tokenId))
 
               if (foundPosition) {
                 return { ...acc, [tokenId]: cake }

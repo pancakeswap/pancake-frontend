@@ -1,0 +1,17 @@
+{
+  "extends": "@pancakeswap/tsconfig/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": true,
+    "downlevelIteration": true,
+    "target": "ES2020",
+    "paths": {
+      "*": ["./src/*"]
+    }
+  },
+  "exclude": ["**/node_modules"],
+  "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]
+}

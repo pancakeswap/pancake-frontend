@@ -1,8 +1,4 @@
-import type { Signer } from 'ethers'
-import { getAddress } from 'ethers/lib/utils'
-import { BigNumber, Contract } from 'ethers'
-import { AddressZero } from '@ethersproject/constants'
-import type { Provider } from '@ethersproject/providers'
+import { getAddress } from 'viem'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { bsc } from 'wagmi/chains'
 import memoize from 'lodash/memoize'
@@ -12,7 +8,11 @@ import { chains } from './wagmi'
 // returns the checksummed address if the address is valid, otherwise returns false
 export const isAddress = memoize((value: any): `0x${string}` | false => {
   try {
-    return getAddress(value)
+    let value_ = value
+    if (typeof value === 'string' && !value.startsWith('0x')) {
+      value_ = `0x${value}`
+    }
+    return getAddress(value_)
   } catch {
     return false
   }
@@ -57,17 +57,8 @@ export function getBscScanLinkForNft(collectionAddress: string, tokenId: string)
 }
 
 // add 10%
-export function calculateGasMargin(value: BigNumber, margin = 1000): BigNumber {
-  return value.mul(BigNumber.from(10000).add(BigNumber.from(margin))).div(BigNumber.from(10000))
-}
-
-// account is optional
-export function getContract(address: string, ABI: any, signer?: Signer | Provider): Contract {
-  if (!isAddress(address) || address === AddressZero) {
-    throw Error(`Invalid 'address' parameter '${address}'.`)
-  }
-
-  return new Contract(address, ABI, signer)
+export function calculateGasMargin(value: bigint, margin = 1000n): bigint {
+  return (value * (10000n + margin)) / 10000n
 }
 
 export function escapeRegExp(string: string): string {

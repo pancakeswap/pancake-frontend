@@ -1,51 +1,37 @@
-import { Interface, FunctionFragment } from 'ethers/lib/utils'
-import { BigNumber, Contract } from 'ethers'
-import { useCallback, useEffect, useMemo } from 'react'
-import {
-  useSWRConfig,
-  // eslint-disable-next-line camelcase
-  unstable_serialize,
-} from 'swr'
+import { Abi, AbiStateMutability, Narrow } from 'abitype'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
+import { useEffect, useMemo } from 'react'
 import { multicallReducerAtom } from 'state/multicall/reducer'
+import {
+  // eslint-disable-next-line camelcase
+  unstable_serialize,
+  useSWRConfig,
+} from 'swr'
+import {
+  Address,
+  ContractFunctionResult,
+  DecodeFunctionDataParameters,
+  decodeFunctionResult,
+  encodeFunctionData,
+  EncodeFunctionDataParameters,
+  GetFunctionArgs,
+  Hex,
+  InferFunctionName,
+} from 'viem'
 import {
   addMulticallListeners,
   Call,
-  removeMulticallListeners,
-  parseCallKey,
-  toCallKey,
   ListenerOptions,
   ListenerOptionsWithGas,
+  parseCallKey,
+  removeMulticallListeners,
+  toCallKey,
 } from './actions'
-
-export interface CallStateResult extends ReadonlyArray<any> {
-  readonly [key: string]: any
-}
-
-export interface Result extends ReadonlyArray<any> {
-  readonly [key: string]: any
-}
-
-type MethodArg = string | number | BigNumber
-type MethodArgs = Array<MethodArg | MethodArg[]>
-
-type OptionalMethodInputs = Array<MethodArg | MethodArg[] | undefined> | undefined
-
-function isMethodArg(x: unknown): x is MethodArg {
-  return ['string', 'number'].indexOf(typeof x) !== -1
-}
-
-function isValidMethodArgs(x: unknown): x is MethodArgs | undefined {
-  return (
-    x === undefined ||
-    (Array.isArray(x) && x.every((xi) => isMethodArg(xi) || (Array.isArray(xi) && xi.every(isMethodArg))))
-  )
-}
 
 interface CallResult {
   readonly valid: boolean
-  readonly data: string | undefined
+  readonly data: Hex | undefined
   readonly blockNumber: number | undefined
 }
 
@@ -115,10 +101,10 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   )
 }
 
-export interface CallState {
+export interface CallState<T = any> {
   readonly valid: boolean
   // the result, or undefined if loading or errored/no data
-  readonly result: Result | undefined
+  readonly result: T | undefined
   // true if the result has never been fetched
   readonly loading: boolean
   // true if the result is not for the latest block
@@ -131,52 +117,33 @@ export interface CallState {
 const INVALID_CALL_STATE: CallState = { valid: false, result: undefined, loading: false, syncing: false, error: false }
 const LOADING_CALL_STATE: CallState = { valid: true, result: undefined, loading: true, syncing: true, error: false }
 
-// Converts CallResult[] to CallState[], only updating if call states have changed.
-// Ensures that CallState results remain referentially stable when unchanged, preventing
-// spurious re-renders which would otherwise occur because mapping always creates a new object.
-export function useCallStates(
-  results: CallResult[],
-  contractInterface: Interface | undefined,
-  fragment: ((i: number) => FunctionFragment | undefined) | FunctionFragment | undefined,
-  latestBlockNumber: number | undefined,
-): CallState[] {
-  // Avoid refreshing the results with every changing block number (eg latestBlockNumber).
-  // Instead, only refresh the results if they need to be synced - if there is a result which is stale, for which blockNumber < latestBlockNumber.
-  const syncingBlockNumber = useMemo(() => {
-    const lowestBlockNumber = results.reduce<number | undefined>(
-      (memo, result) => (result.blockNumber ? Math.min(memo ?? result.blockNumber, result.blockNumber) : memo),
-      undefined,
-    )
-    return Math.max(lowestBlockNumber ?? 0, latestBlockNumber ?? 0)
-  }, [results, latestBlockNumber])
-
-  return useMemo(() => {
-    return results.map((result, i) => {
-      const resultFragment = typeof fragment === 'function' ? fragment(i) : fragment
-      return toCallState(result, contractInterface, resultFragment, syncingBlockNumber)
-    })
-  }, [contractInterface, fragment, results, syncingBlockNumber])
-}
-
-function toCallState(
+function toCallState<
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+  TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
+>(
   callResult: CallResult | undefined,
-  contractInterface: Interface | undefined,
-  fragment: FunctionFragment | undefined,
+  abi: Narrow<TAbi>,
+  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>,
   latestBlockNumber: number | undefined,
-): CallState {
+): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
   if (!callResult) return INVALID_CALL_STATE
   const { valid, data, blockNumber } = callResult
   if (!valid) return INVALID_CALL_STATE
   if (valid && !blockNumber) return LOADING_CALL_STATE
-  if (!contractInterface || !fragment || !latestBlockNumber) return LOADING_CALL_STATE
+  if (!functionName || !abi || !latestBlockNumber) return LOADING_CALL_STATE
   const success = data && data.length > 2
   const syncing = (blockNumber ?? 0) < latestBlockNumber
-  let result: Result | undefined
+  let result
   if (success && data) {
     try {
-      result = contractInterface.decodeFunctionResult(fragment, data)
+      result = decodeFunctionResult({
+        abi,
+        data,
+        functionName,
+      } as unknown as DecodeFunctionDataParameters)
     } catch (error) {
-      console.debug('Result data parsing failed', fragment, data)
+      console.debug('Result data parsing failed', abi, data)
       return {
         valid: true,
         loading: false,
@@ -187,6 +154,7 @@ function toCallState(
       }
     }
   }
+
   return {
     valid: true,
     loading: false,
@@ -197,116 +165,90 @@ function toCallState(
   }
 }
 
-export interface MultiContractsMultiMethodsCallInput {
-  contract: Contract | null | undefined
-  methodName: string
-  inputs?: OptionalMethodInputs
+// export interface MultiContractsMultiMethodsCallInput {
+//   contract: Contract | null | undefined
+//   methodName: string
+//   inputs?: OptionalMethodInputs
+// }
+
+// export function useMultiContractsMultiMethods(
+//   callInputs: MultiContractsMultiMethodsCallInput[],
+//   options?: ListenerOptions,
+// ) {
+//   const { chainId } = useActiveChainId()
+
+//   const { calls, fragments, contracts } = useMemo(() => {
+//     if (!callInputs || !callInputs.length) {
+//       return { calls: [], fragments: [], contracts: [] }
+//     }
+//     const validFragments: FunctionFragment[] = []
+//     const validContracts: Contract[] = []
+//     const validCalls: Call[] = []
+//     for (const { methodName, inputs, contract } of callInputs) {
+//       const fragment = contract?.interface.getFunction(methodName)
+//       if (!contract || !fragment) {
+//         // eslint-disable-next-line no-continue
+//         continue
+//       }
+//       validFragments.push(fragment)
+//       validContracts.push(contract)
+//       validCalls.push({
+//         address: contract.address,
+//         callData: contract.interface.encodeFunctionData(fragment, inputs),
+//       })
+//     }
+//     return { calls: validCalls, fragments: validFragments, contracts: validContracts }
+//   }, [callInputs])
+
+//   const results = useCallsData(calls, options)
+
+//   const { cache } = useSWRConfig()
+
+//   return useMemo(() => {
+//     const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+//     return results.map((result, i) => toCallState(result, contracts[i]?.interface, fragments[i], currentBlockNumber))
+//   }, [cache, chainId, results, fragments, contracts])
+// }
+
+export type SingleContractMultipleDataCallParameters<
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+  TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
+> = {
+  contract: {
+    abi?: Narrow<TAbi>
+    address?: Address
+  }
+  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  options?: ListenerOptionsWithGas
+  args: GetFunctionArgs<TAbi, TFunctionName>['args'][]
 }
 
-export function useMultiContractsMultiMethods(
-  callInputs: MultiContractsMultiMethodsCallInput[],
-  options?: ListenerOptions,
-) {
+export function useSingleContractMultipleData<TAbi extends Abi | readonly unknown[], TFunctionName extends string>({
+  contract,
+  args,
+  functionName,
+  options,
+}: SingleContractMultipleDataCallParameters<TAbi, TFunctionName>): CallState<
+  ContractFunctionResult<TAbi, TFunctionName>
+>[] {
   const { chainId } = useActiveChainId()
-
-  const { calls, fragments, contracts } = useMemo(() => {
-    if (!callInputs || !callInputs.length) {
-      return { calls: [], fragments: [], contracts: [] }
-    }
-    const validFragments: FunctionFragment[] = []
-    const validContracts: Contract[] = []
-    const validCalls: Call[] = []
-    for (const { methodName, inputs, contract } of callInputs) {
-      const fragment = contract?.interface.getFunction(methodName)
-      if (!contract || !fragment) {
-        // eslint-disable-next-line no-continue
-        continue
-      }
-      validFragments.push(fragment)
-      validContracts.push(contract)
-      validCalls.push({
-        address: contract.address,
-        callData: contract.interface.encodeFunctionData(fragment, inputs),
-      })
-    }
-    return { calls: validCalls, fragments: validFragments, contracts: validContracts }
-  }, [callInputs])
-
-  const results = useCallsData(calls, options)
-
-  const { cache } = useSWRConfig()
-
-  return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
-    return results.map((result, i) => toCallState(result, contracts[i]?.interface, fragments[i], currentBlockNumber))
-  }, [cache, chainId, results, fragments, contracts])
-}
-
-export function useSingleContractMultiMethods(
-  contract: Contract | null | undefined,
-  callInputs: {
-    methodName: string
-    inputs?: OptionalMethodInputs
-  }[],
-  options?: ListenerOptions,
-) {
-  const multiInputs = useMemo(() => callInputs.map((callInput) => ({ ...callInput, contract })), [callInputs, contract])
-  return useMultiContractsMultiMethods(multiInputs, options)
-}
-
-export function useSingleContractWithCallData(
-  contract: Contract | null | undefined,
-  callDatas: string[],
-  options?: ListenerOptionsWithGas,
-): CallState[] {
-  const { chainId } = useActiveChainId()
-
-  const { gasRequired } = options ?? {}
-
-  // Create call objects
-  const calls = useMemo(() => {
-    if (!contract) return []
-    return callDatas.map<Call>((callData) => ({
-      address: contract.address,
-      callData,
-      gasRequired,
-    }))
-  }, [callDatas, contract, gasRequired])
-
-  const results = useCallsData(calls, options)
-
-  const { cache } = useSWRConfig()
-
-  const fragment = useCallback(
-    (i: number) => contract?.interface?.getFunction(callDatas[i].substring(0, 10)),
-    [callDatas, contract],
-  )
-
-  const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
-
-  return useCallStates(results, contract?.interface, fragment, currentBlockNumber)
-}
-
-export function useSingleContractMultipleData(
-  contract: Contract | null | undefined,
-  methodName: string,
-  callInputs: OptionalMethodInputs[],
-  options?: ListenerOptions,
-): CallState[] {
-  const { chainId } = useActiveChainId()
-  const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
   const calls = useMemo(
     () =>
-      contract && fragment && callInputs && callInputs.length > 0
-        ? callInputs.map<Call>((inputs) => {
+      contract && contract.abi && contract.address && args && args.length > 0
+        ? args.map<Call>((inputs) => {
             return {
               address: contract.address,
-              callData: contract.interface.encodeFunctionData(fragment, inputs),
+              callData: encodeFunctionData({
+                abi: contract.abi,
+                functionName,
+                args: inputs,
+              } as unknown as EncodeFunctionDataParameters),
             }
           })
         : [],
-    [callInputs, contract, fragment],
+    [args, contract, functionName],
   )
 
   const results = useCallsData(calls, options)
@@ -315,29 +257,48 @@ export function useSingleContractMultipleData(
 
   return useMemo(() => {
     const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
-    return results.map((result) => toCallState(result, contract?.interface, fragment, currentBlockNumber))
-  }, [cache, chainId, results, contract?.interface, fragment])
+    return results.map((result) => toCallState(result, contract.abi, functionName, currentBlockNumber))
+  }, [cache, chainId, results, contract.abi, functionName])
 }
 
-export function useMultipleContractSingleData(
-  addresses: (string | undefined)[],
-  contractInterface: Interface,
-  methodName: string,
-  callInputs?: OptionalMethodInputs,
-  options?: ListenerOptions,
-): CallState[] {
-  const fragment = useMemo(() => contractInterface.getFunction(methodName), [contractInterface, methodName])
-  const callData: string | undefined = useMemo(
+const DEFAULT_OPTIONS = {
+  blocksPerFetch: undefined as number | undefined,
+}
+
+export type MultipleSameDataCallParameters<
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+  TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
+> = {
+  addresses: (Address | undefined)[]
+  abi: Narrow<TAbi>
+  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  options?: ListenerOptionsWithGas
+} & GetFunctionArgs<TAbi, TFunctionName>
+
+export function useMultipleContractSingleData<TAbi extends Abi | readonly unknown[], TFunctionName extends string>({
+  abi,
+  addresses,
+  functionName,
+  args,
+  options,
+}: MultipleSameDataCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>>[] {
+  const { enabled, blocksPerFetch } = options ?? { enabled: true }
+  const callData: Hex | undefined = useMemo(
     () =>
-      fragment && isValidMethodArgs(callInputs)
-        ? contractInterface.encodeFunctionData(fragment, callInputs)
+      abi && enabled
+        ? encodeFunctionData({
+            abi,
+            functionName,
+            args,
+          } as unknown as EncodeFunctionDataParameters)
         : undefined,
-    [callInputs, contractInterface, fragment],
+    [abi, args, enabled, functionName],
   )
 
   const calls = useMemo(
     () =>
-      fragment && addresses && addresses.length > 0 && callData
+      addresses && addresses.length > 0 && callData
         ? addresses.map<Call | undefined>((address) => {
             return address && callData
               ? {
@@ -347,38 +308,53 @@ export function useMultipleContractSingleData(
               : undefined
           })
         : [],
-    [addresses, callData, fragment],
+    [addresses, callData],
   )
 
-  const results = useCallsData(calls, options)
+  const results = useCallsData(calls, options?.blocksPerFetch ? { blocksPerFetch } : DEFAULT_OPTIONS)
   const { chainId } = useActiveChainId()
 
   const { cache } = useSWRConfig()
 
   return useMemo(() => {
     const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
-    return results.map((result) => toCallState(result, contractInterface, fragment, currentBlockNumber))
-  }, [cache, chainId, results, contractInterface, fragment])
+    return results.map((result) => toCallState(result, abi, functionName, currentBlockNumber))
+  }, [cache, chainId, results, abi, functionName])
 }
 
-export function useSingleCallResult(
-  contract: Contract | null | undefined,
-  methodName: string,
-  inputs?: OptionalMethodInputs,
-  options?: ListenerOptionsWithGas,
-): CallState {
-  const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
+export type SingleCallParameters<
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+  TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
+> = {
+  contract: {
+    abi?: Narrow<TAbi>
+    address?: Address
+  }
+  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  options?: ListenerOptionsWithGas
+} & GetFunctionArgs<TAbi, TFunctionName>
 
+export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunctionName extends string>({
+  contract,
+  functionName,
+  args,
+  options,
+}: SingleCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
   const calls = useMemo<Call[]>(() => {
-    return contract && fragment && isValidMethodArgs(inputs)
+    return contract && contract.abi && contract.address
       ? [
           {
             address: contract.address,
-            callData: contract.interface.encodeFunctionData(fragment, inputs),
+            callData: encodeFunctionData({
+              abi: contract.abi,
+              args,
+              functionName,
+            } as unknown as EncodeFunctionDataParameters),
           },
         ]
       : []
-  }, [contract, fragment, inputs])
+  }, [contract, args, functionName])
 
   const result = useCallsData(calls, options)[0]
 
@@ -387,6 +363,6 @@ export function useSingleCallResult(
 
   return useMemo(() => {
     const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
-    return toCallState(result, contract?.interface, fragment, currentBlockNumber)
-  }, [cache, chainId, result, contract?.interface, fragment])
+    return toCallState(result, contract?.abi, functionName, currentBlockNumber)
+  }, [cache, chainId, result, contract?.abi, functionName])
 }

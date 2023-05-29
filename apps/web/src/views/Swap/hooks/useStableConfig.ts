@@ -1,14 +1,14 @@
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
-import { Contract } from 'ethers'
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { createContext, useMemo } from 'react'
 
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
-import stableLPABI from 'config/abi/stableLP.json'
-import stableSwapABI from 'config/abi/stableSwap.json'
+import { stableLPABI } from 'config/abi/stableLP'
 import { useContract } from 'hooks/useContract'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
+import { stableSwapABI } from 'config/abi/stableSwapAbi'
+import { infoStableSwapABI } from 'config/abi/infoStableSwap'
+import { Address } from 'wagmi'
 
 interface StableSwapConfigType extends LegacyStableSwapPair {
   liquidityToken: ERC20Token
@@ -63,18 +63,32 @@ export function useLPTokensWithBalanceByAccount(account) {
   }))
 }
 
+function useStableSwapContract(address?: Address) {
+  return useContract(address, stableSwapABI)
+}
+
+export type UseStableSwapInfoContract = ReturnType<typeof useStableSwapInfoContract>
+
+function useStableSwapInfoContract(address?: Address) {
+  return useContract(address, infoStableSwapABI)
+}
+
+function useStableSwapLPContract(address?: Address) {
+  return useContract(address, stableLPABI)
+}
+
 export const StableConfigContext = createContext<{
-  stableSwapInfoContract: Contract
-  stableSwapContract: Contract
-  stableSwapLPContract: Contract
+  stableSwapInfoContract: UseStableSwapInfoContract
+  stableSwapContract: ReturnType<typeof useStableSwapContract>
+  stableSwapLPContract: ReturnType<typeof useStableSwapLPContract>
   stableSwapConfig: StableSwapConfig
 } | null>(null)
 
 export default function useStableConfig({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
   const stablePair = useFindStablePair({ tokenA, tokenB })
-  const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
-  const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
-  const stableSwapLPContract = useContract(stablePair?.liquidityToken.address, stableLPABI)
+  const stableSwapContract = useStableSwapContract(stablePair?.stableSwapAddress)
+  const stableSwapInfoContract = useStableSwapInfoContract(stablePair?.infoStableSwapAddress)
+  const stableSwapLPContract = useStableSwapLPContract(stablePair?.liquidityToken.address)
 
   return useMemo(
     () => ({

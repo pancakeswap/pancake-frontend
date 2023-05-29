@@ -1,16 +1,20 @@
-import { BigNumber as EthersBigNumber } from 'ethers'
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
-import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { getLotteryV2Address } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
 import { LotteryResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
-import { ethersToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
+import { bigIntToSerializedBigNumber } from '@pancakeswap/utils/bigNumber'
 import { NUM_ROUNDS_TO_FETCH_FROM_NODES } from 'config/constants/lottery'
+import { publicClient } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
+import { ContractFunctionResult } from 'viem'
 
 const lotteryContract = getLotteryV2Contract()
 
-const processViewLotterySuccessResponse = (response, lotteryId: string): LotteryResponse => {
+const processViewLotterySuccessResponse = (
+  response: ContractFunctionResult<typeof lotteryV2ABI, 'viewLottery'>,
+  lotteryId: string,
+): LotteryResponse => {
   const {
     status,
     startTime,
@@ -19,7 +23,6 @@ const processViewLotterySuccessResponse = (response, lotteryId: string): Lottery
     discountDivisor,
     treasuryFee,
     firstTicketId,
-    lastTicketId,
     amountCollectedInCake,
     finalNumber,
     cakePerBracket,
@@ -28,11 +31,11 @@ const processViewLotterySuccessResponse = (response, lotteryId: string): Lottery
   } = response
 
   const statusKey = Object.keys(LotteryStatus)[status]
-  const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
+  const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => bigIntToSerializedBigNumber(cakeInBracket))
   const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) =>
-    ethersToSerializedBigNumber(winnersInBracket),
+    bigIntToSerializedBigNumber(winnersInBracket),
   )
-  const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => ethersToSerializedBigNumber(reward))
+  const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => bigIntToSerializedBigNumber(reward))
 
   return {
     isLoading: false,
@@ -40,12 +43,11 @@ const processViewLotterySuccessResponse = (response, lotteryId: string): Lottery
     status: LotteryStatus[statusKey],
     startTime: startTime?.toString(),
     endTime: endTime?.toString(),
-    priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
+    priceTicketInCake: bigIntToSerializedBigNumber(priceTicketInCake),
     discountDivisor: discountDivisor?.toString(),
     treasuryFee: treasuryFee?.toString(),
     firstTicketId: firstTicketId?.toString(),
-    lastTicketId: lastTicketId?.toString(),
-    amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
+    amountCollectedInCake: bigIntToSerializedBigNumber(amountCollectedInCake),
     finalNumber,
     cakePerBracket: serializedCakePerBracket,
     countWinnersPerBracket: serializedCountWinnersPerBracket,
@@ -64,7 +66,6 @@ const processViewLotteryErrorResponse = (lotteryId: string): LotteryResponse => 
     discountDivisor: '',
     treasuryFee: '',
     firstTicketId: '',
-    lastTicketId: '',
     amountCollectedInCake: '',
     finalNumber: null,
     cakePerBracket: [],
@@ -75,7 +76,7 @@ const processViewLotteryErrorResponse = (lotteryId: string): LotteryResponse => 
 
 export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> => {
   try {
-    const lotteryData = await lotteryContract.viewLottery(lotteryId)
+    const lotteryData = await lotteryContract.read.viewLottery([BigInt(lotteryId)])
     return processViewLotterySuccessResponse(lotteryData, lotteryId)
   } catch (error) {
     return processViewLotteryErrorResponse(lotteryId)
@@ -83,15 +84,22 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
 }
 
 export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<LotteryResponse[]> => {
-  const calls = lotteryIds.map((id) => ({
-    name: 'viewLottery',
-    address: getLotteryV2Address(),
-    params: [id],
-  }))
+  const calls = lotteryIds.map(
+    (id) =>
+      ({
+        abi: lotteryV2ABI,
+        functionName: 'viewLottery',
+        address: getLotteryV2Address(),
+        args: [BigInt(id)],
+      } as const),
+  )
   try {
-    const multicallRes = await multicallv2({ abi: lotteryV2Abi, calls, options: { requireSuccess: false } })
+    const client = publicClient({ chainId: ChainId.BSC })
+    const multicallRes = await client.multicall({
+      contracts: calls,
+    })
     const processedResponses = multicallRes.map((res, index) =>
-      processViewLotterySuccessResponse(res[0], lotteryIds[index]),
+      processViewLotterySuccessResponse(res.result, lotteryIds[index]),
     )
     return processedResponses
   } catch (error) {
@@ -100,20 +108,26 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
   }
 }
 
-export const fetchCurrentLotteryId = async (): Promise<EthersBigNumber> => {
-  return lotteryContract.currentLotteryId()
+export const fetchCurrentLotteryId = async (): Promise<bigint> => {
+  return lotteryContract.read.currentLotteryId()
 }
 
 export const fetchCurrentLotteryIdAndMaxBuy = async () => {
   try {
-    const calls = ['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'].map((method) => ({
-      address: getLotteryV2Address(),
-      name: method,
-    }))
-    const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2({
-      abi: lotteryV2Abi,
-      calls,
-    })) as EthersBigNumber[][]
+    const calls = (['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'] as const).map(
+      (method) =>
+        ({
+          abi: lotteryV2ABI,
+          address: getLotteryV2Address(),
+          functionName: method,
+        } as const),
+    )
+
+    const client = publicClient({ chainId: ChainId.BSC })
+    const [currentLotteryId, maxNumberTicketsPerBuyOrClaim] = await client.multicall({
+      contracts: calls,
+      allowFailure: false,
+    })
 
     return {
       currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,

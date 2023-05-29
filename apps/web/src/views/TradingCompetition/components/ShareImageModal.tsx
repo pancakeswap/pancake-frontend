@@ -54,7 +54,8 @@ const ShareImageModal: React.FC<React.PropsWithChildren<ShareImageModalProps>> =
   const [imageFromCanvas, setImageFromCanvas] = useState(null)
   const canvas = useRef(null)
 
-  const getMedal = (rank: string | number) => {
+  const getMedal = (rank_: string | number) => {
+    const rank = Number(rank_)
     if (rank === 1) {
       return MedalGold
     }

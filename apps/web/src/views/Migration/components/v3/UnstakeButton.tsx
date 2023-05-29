@@ -18,6 +18,7 @@ import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/ac
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { ChainId } from '@pancakeswap/sdk'
 import { pickFarmTransactionTx } from 'state/global/actions'
+import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 
 export interface UnstakeButtonProps {
   pid: number
@@ -46,6 +47,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
   const { onUnstake: onUnstakeProxyFarm, onDone } = useProxyStakedActions(pid, lpContract)
 
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
+  const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   // eslint-disable-next-line consistent-return
   const handleUnstake = async (event: React.MouseEvent<HTMLElement>) => {
@@ -101,10 +103,14 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
         }
       }
 
-      const resp = await receipt.wait()
+      const resp = await waitForTransaction({
+        hash: receipt.hash,
+        chainId,
+      })
+
       setIsLoading(false)
 
-      if (resp?.status) {
+      if (resp?.status === 'success') {
         toastSuccess(
           `${t('Unstaked')}!`,
           <ToastDescriptionWithTx txHash={resp.transactionHash}>

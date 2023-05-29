@@ -1,3 +1,4 @@
+import { Address } from 'wagmi'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppState } from 'state'
 import {
@@ -23,7 +24,7 @@ import {
 } from './fetchUserPottery'
 
 const initialState: PotteryState = Object.freeze({
-  lastVaultAddress: '',
+  lastVaultAddress: null,
   publicData: {
     lastDrawId: '',
     totalPrize: null,
@@ -84,10 +85,10 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
       const state = getState()
       const potteryVaultAddress = (state as AppState).pottery.lastVaultAddress
       const [allowance, vaultUserData, drawData, withdrawAbleData] = await Promise.all([
-        fetchPotterysAllowance(account, potteryVaultAddress),
-        fetchVaultUserData(account, potteryVaultAddress),
-        fetchUserDrawData(account),
-        fetchWithdrawAbleData(account),
+        fetchPotterysAllowance(account as Address, potteryVaultAddress),
+        fetchVaultUserData(account as Address, potteryVaultAddress),
+        fetchUserDrawData(account as Address),
+        fetchWithdrawAbleData(account as Address),
       ])
 
       const userData = {
@@ -131,7 +132,7 @@ export const PotterySlice = createSlice({
       state.userData = { ...initialState.userData }
     })
     builder.addCase(fetchLastVaultAddressAsync.fulfilled, (state, action: PayloadAction<string>) => {
-      state.lastVaultAddress = action.payload
+      state.lastVaultAddress = action.payload as Address
     })
     builder.addCase(
       fetchPublicPotteryDataAsync.fulfilled,

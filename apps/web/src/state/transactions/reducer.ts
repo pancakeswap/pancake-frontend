@@ -2,6 +2,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
+import { Hash } from 'viem'
 import {
   addTransaction,
   checkedTransaction,
@@ -18,7 +19,7 @@ import { resetUserState } from '../global/actions'
 const now = () => Date.now()
 
 export interface TransactionDetails {
-  hash: string
+  hash: Hash
   approval?: { tokenAddress: string; spender: string }
   type?: TransactionType
   order?: Order
@@ -53,8 +54,8 @@ export default createReducer(initialState, (builder) =>
           throw Error('Attempted to add existing transaction.')
         }
         const txs = transactions[chainId] ?? {}
-        txs[hash] = {
-          hash,
+        txs[hash as Hash] = {
+          hash: hash as Hash,
           approval,
           summary,
           translatableSummary,

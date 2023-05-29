@@ -1,7 +1,8 @@
-import { Contract, PayableOverrides } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
+import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
-import { ContractMethodName, MaybeContract, ContractMethodParams } from 'utils/types'
+import { Abi } from 'abitype'
+import { Account, Address, CallParameters, GetFunctionArgs, InferFunctionName } from 'viem'
+import { Chain } from 'wagmi'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -9,19 +10,29 @@ import { ContractMethodName, MaybeContract, ContractMethodParams } from 'utils/t
  * @param methodName The name of the method called
  * @param gasMarginPer10000 The gasMargin per 10000 (i.e. 10% -> 1000)
  * @param args An array of arguments to pass to the method
- * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const estimateGas = async <C extends Contract = Contract, N extends ContractMethodName<C> = any>(
-  contract: MaybeContract<C>,
-  methodName: N,
-  methodArgs: ContractMethodParams<C, N>,
-  overrides: PayableOverrides = {},
-  gasMarginPer10000: number,
+export const estimateGas = async <
+  TAbi extends Abi | unknown[],
+  TFunctionName extends string = string,
+  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+  Args = TFunctionName extends string
+    ? GetFunctionArgs<TAbi, TFunctionName>['args']
+    : _FunctionName extends string
+    ? GetFunctionArgs<TAbi, _FunctionName>['args']
+    : never,
+>(
+  contract: { abi: TAbi; account: Account; chain: Chain; address: Address; write: any; estimateGas: any },
+  methodName: _FunctionName,
+  methodArgs: Args,
+  overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
+  gasMarginPer10000: bigint,
 ) => {
-  if (!contract[methodName]) {
+  if (!contract.estimateGas[methodName]) {
     throw new Error(`Method ${methodName} doesn't exist on ${contract.address}`)
   }
-  const rawGasEstimation = await contract.estimateGas[methodName](...methodArgs, overrides)
+  // TODO: wagmi
+  // @ts-ignore
+  const rawGasEstimation = await contract.estimateGas[methodName]([methodArgs], overrides)
   // By convention, BigNumber values are multiplied by 1000 to avoid dealing with real numbers
   const gasEstimation = calculateGasMargin(rawGasEstimation, gasMarginPer10000)
   return gasEstimation
@@ -33,19 +44,30 @@ export const estimateGas = async <C extends Contract = Contract, N extends Contr
  * @param methodName The name of the method called
  * @param methodArgs An array of arguments to pass to the method
  * @param overrides An overrides object to pass to the method
- * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
  */
-export const callWithEstimateGas = async <C extends Contract = Contract, N extends ContractMethodName<C> = any>(
-  contract: MaybeContract<C>,
-  methodName: N,
-  methodArgs: ContractMethodParams<C, N>,
-  overrides: PayableOverrides = {},
-  gasMarginPer10000 = 1000,
-): Promise<TransactionResponse> => {
+export const callWithEstimateGas = async <
+  TAbi extends Abi | unknown[],
+  TFunctionName extends string = string,
+  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+  Args = TFunctionName extends string
+    ? GetFunctionArgs<TAbi, TFunctionName>['args']
+    : _FunctionName extends string
+    ? GetFunctionArgs<TAbi, _FunctionName>['args']
+    : never,
+>(
+  contract: { abi: TAbi; account: Account; chain: Chain; address: Address; write: any; estimateGas: any },
+  methodName: InferFunctionName<TAbi, TFunctionName>,
+  methodArgs: Args,
+  overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
+  gasMarginPer10000 = 1000n,
+): Promise<SendTransactionResult> => {
   const gasEstimation = await estimateGas(contract, methodName, methodArgs, overrides, gasMarginPer10000)
-  const tx = await contract[methodName](...methodArgs, {
-    gasLimit: gasEstimation,
+  // @ts-ignore
+  const tx = await contract.write[methodName](methodArgs, {
+    gas: gasEstimation,
     ...overrides,
   })
-  return tx
+  return {
+    hash: tx,
+  }
 }

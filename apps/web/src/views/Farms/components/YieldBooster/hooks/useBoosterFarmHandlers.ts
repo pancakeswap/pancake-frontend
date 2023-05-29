@@ -12,7 +12,7 @@ const useBoosterFarmHandlers = (farmPid: number, onDone) => {
 
   const activate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterContract, 'activate', [farmPid], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
+      return callWithGasPrice(farmBoosterContract, 'activate', [BigInt(farmPid)], { gas: BOOSTED_FARM_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {
@@ -22,7 +22,7 @@ const useBoosterFarmHandlers = (farmPid: number, onDone) => {
 
   const deactivate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterContract, 'deactive', [farmPid], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
+      return callWithGasPrice(farmBoosterContract, 'deactive', [BigInt(farmPid)], { gas: BOOSTED_FARM_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {

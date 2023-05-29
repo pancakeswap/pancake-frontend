@@ -8,7 +8,7 @@ import { parseMMParameter } from '../utils/exchange'
 export const useMMParam = (
   isMMQuotingPair: boolean,
   independentField: Field,
-  typedValue: string,
+  typedValue: `${number}`,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
   isForRFQ?: boolean,

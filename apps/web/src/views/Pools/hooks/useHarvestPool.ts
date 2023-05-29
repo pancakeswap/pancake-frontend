@@ -5,17 +5,17 @@ import { DEFAULT_GAS_LIMIT } from 'config'
 import { useGasPrice } from 'state/user/hooks'
 
 const options = {
-  gasLimit: DEFAULT_GAS_LIMIT,
+  gas: DEFAULT_GAS_LIMIT,
 }
 
 const harvestPool = async (sousChefContract, gasPrice) => {
-  return sousChefContract.deposit('0', { ...options, gasPrice })
+  return sousChefContract.write.deposit(['0'], { ...options, gasPrice })
 }
 
 const harvestPoolBnb = async (sousChefContract, gasPrice) => {
-  return sousChefContract.deposit({
+  return sousChefContract.write.deposit({
     ...options,
-    value: BIG_ZERO,
+    value: BIG_ZERO.toString(),
     gasPrice,
   })
 }

@@ -2,9 +2,9 @@ import { ChainId, Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancakeswap/v3-sdk'
 import { useEffect, useMemo, useRef } from 'react'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { useQuery } from '@tanstack/react-query'
-import { viemClients } from 'utils/viem'
+import { getViemClients } from 'utils/viem'
 
 import { v3Clients } from 'utils/graphql'
 
@@ -96,7 +96,7 @@ export function useV3CandidatePoolsWithoutTicks(
   const { data: poolsFromOnChain } = useQuery({
     queryKey: ['v3_pools_onchain', key],
     queryFn: async () => {
-      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, viemClients)
+      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, getViemClients)
     },
     enabled: Boolean(error && key && options.enabled),
     keepPreviousData: true,
@@ -131,7 +131,7 @@ export function useV3PoolsWithTicks(
   { key, blockNumber, enabled = true }: V3PoolsHookParams = {},
 ) {
   const fetchingBlock = useRef<string | null>(null)
-  const poolsWithTicks = useSWR(
+  const poolsWithTicks = useSWRImmutable(
     key && pools && enabled ? ['v3_pool_ticks', key] : null,
     async () => {
       fetchingBlock.current = blockNumber.toString()
@@ -186,7 +186,7 @@ export function useV3PoolsWithTicks(
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabled = true }: V3PoolsHookParams = {}) {
   const fetchingBlock = useRef<string | null>(null)
   const queryEnabled = Boolean(enabled && key && pairs?.length)
-  const result = useSWR<{
+  const result = useSWRImmutable<{
     pools: SmartRouter.SubgraphV3Pool[]
     key?: string
     blockNumber?: number

@@ -1,8 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
-import { splitSignature } from 'ethers/lib/utils'
-import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
@@ -27,7 +25,6 @@ import {
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useSignTypedData } from 'wagmi'
-import { BigNumber, Contract } from 'ethers'
 import { callWithEstimateGas } from 'utils/calls'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -40,6 +37,8 @@ import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/useLPApr'
 import { formattedCurrencyAmount } from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import { splitSignature } from 'utils/splitSignature'
+import { Hash } from 'viem'
 
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -153,7 +152,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   }
 
   // pair contract
-  const pairContractRead: Contract | null = usePairContract(pair?.liquidityToken?.address, false)
+  const pairContractRead = usePairContract(pair?.liquidityToken?.address)
 
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
@@ -171,7 +170,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     }
 
     // try to gather a signature for permission
-    const nonce = await pairContractRead.nonces(account)
+    const nonce = await pairContractRead.read.nonces([account])
 
     const EIP712Domain = [
       { name: 'name', type: 'string' },
@@ -196,19 +195,19 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       owner: account,
       spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.quotient.toString(),
-      nonce: nonce.toHexString(),
-      deadline: deadline.toNumber(),
+      nonce,
+      deadline: Number(deadline),
     }
 
     signTypedDataAsync({
-      domain,
       // @ts-ignore
+      domain,
       primaryType: 'Permit',
       types: {
         EIP712Domain,
         Permit,
       },
-      value: message,
+      message,
     })
       .then(splitSignature)
       .then((signature) => {
@@ -216,7 +215,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber(),
+          deadline: Number(deadline),
         })
       })
       .catch((err) => {
@@ -351,7 +350,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     }
 
     let methodNames: string[]
-    let args: Array<string | string[] | number | boolean>
+    let args
     // we have approval, use normal remove liquidity
     if (approval === ApprovalState.APPROVED) {
       // removeLiquidityETH
@@ -363,7 +362,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           amountsMin[currencyBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
           amountsMin[currencyBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
-          deadline.toHexString(),
+          deadline,
         ]
       }
       // removeLiquidity
@@ -376,7 +375,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           amountsMin[Field.CURRENCY_A].toString(),
           amountsMin[Field.CURRENCY_B].toString(),
           account,
-          deadline.toHexString(),
+          deadline,
         ]
       }
     }
@@ -420,17 +419,17 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
-    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: BigNumber }
+    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint }
     for (let i = 0; i < methodNames.length; i++) {
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](...args))
+        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args, { account }))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
 
-      if (BigNumber.isBigNumber(safeGasEstimate)) {
+      if (typeof safeGasEstimate === 'bigint') {
         methodSafeGasEstimate = { methodName: methodNames[i], safeGasEstimate }
         break
       }
@@ -443,22 +442,25 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-      await routerContract[methodName](...args, {
+      await routerContract.write[methodName](args, {
         gasLimit: safeGasEstimate,
         gasPrice,
       })
-        .then((response: TransactionResponse) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        .then((response: Hash) => {
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response })
           const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
           const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
-          addTransaction(response, {
-            summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
-            translatableSummary: {
-              text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+          addTransaction(
+            { hash: response },
+            {
+              summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
+              translatableSummary: {
+                text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+                data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+              },
+              type: 'remove-liquidity',
             },
-            type: 'remove-liquidity',
-          })
+          )
         })
         .catch((err) => {
           if (err && !isUserRejected(err)) {

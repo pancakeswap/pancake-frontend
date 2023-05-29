@@ -1,61 +1,48 @@
-import { useAccount } from 'wagmi'
-import BigNumber from 'bignumber.js'
-import { CAKE } from '@pancakeswap/tokens'
-import { FAST_INTERVAL } from 'config/constants'
-import { BigNumber as EthersBigNumber } from 'ethers'
-import { Zero } from '@ethersproject/constants'
 import { ChainId } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
-import useSWR from 'swr'
+import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { bscRpcProvider } from 'utils/providers'
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { useTokenContract } from './useContract'
-import { useSWRContract } from './useSWRContract'
+import BigNumber from 'bignumber.js'
 
-const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
+import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
+import { useActiveChainId } from './useActiveChainId'
+
+const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
 
-  const contract = useTokenContract(tokenAddress, false)
-
-  const key = useMemo(
-    () =>
-      account
-        ? {
-            contract: forceBSC ? contract.connect(bscRpcProvider) : contract,
-            methodName: 'balanceOf',
-            params: [account],
-          }
-        : null,
-    [account, contract, forceBSC],
-  )
-
-  const { data, status, ...rest } = useSWRContract(key as any, {
-    refreshInterval: FAST_INTERVAL,
+  const { data, status, ...rest } = useContractRead({
+    chainId: forceBSC ? ChainId.BSC : chainId,
+    abi: erc20ABI,
+    address: tokenAddress,
+    functionName: 'balanceOf',
+    args: [account],
+    enabled: !!account,
+    watch: true,
   })
 
   return {
     ...rest,
     fetchStatus: status,
-    balance: data ? new BigNumber(data.toString()) : BIG_ZERO,
+    balance: typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO,
   }
 }
 
 export const useGetBnbBalance = () => {
   const { address: account } = useAccount()
-  const { status, data, mutate } = useSWR([account, 'bnbBalance'], async () => {
-    return bscRpcProvider.getBalance(account)
+  const { status, refetch, data } = useBalance({
+    chainId: ChainId.BSC,
+    address: account,
+    watch: true,
+    enabled: !!account,
   })
 
-  return { balance: data || Zero, fetchStatus: status, refresh: mutate }
+  return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
 
-export const useGetCakeBalance = () => {
-  const { chainId } = useWeb3React()
-  const { balance, fetchStatus } = useTokenBalance(CAKE[chainId]?.address || CAKE[ChainId.BSC]?.address, true)
+export const useBSCCakeBalance = () => {
+  const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 
-  // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
-  return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }
+  return { balance: BigInt(balance.toString()), fetchStatus }
 }
 
 export default useTokenBalance

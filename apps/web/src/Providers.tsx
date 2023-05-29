@@ -7,7 +7,7 @@ import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { WagmiConfig } from 'wagmi'
-import { client } from 'utils/wagmi'
+import { wagmiConfig } from 'utils/wagmi'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
 
 // Create a client
@@ -28,7 +28,7 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
 }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <WagmiConfig client={client}>
+      <WagmiConfig config={wagmiConfig}>
         <Provider store={store}>
           <NextThemeProvider>
             <StyledUIKitProvider>

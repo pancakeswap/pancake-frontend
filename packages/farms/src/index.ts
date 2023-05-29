@@ -1,5 +1,4 @@
-import { formatEther } from '@ethersproject/units'
-import { MultiCallV2 } from '@pancakeswap/multicall'
+import { PublicClient, formatEther } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
@@ -19,7 +18,7 @@ const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, Chai
 const supportedChainIdV3 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 export const bCakeSupportedChainId = [ChainId.BSC]
 
-export function createFarmFetcher(multicallv2: MultiCallV2) {
+export function createFarmFetcher(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async (
     params: {
       isTestnet: boolean
@@ -29,23 +28,23 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
     const masterChefAddress = isTestnet ? masterChefAddresses[ChainId.BSC_TESTNET] : masterChefAddresses[ChainId.BSC]
     const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } = await fetchMasterChefV2Data({
       isTestnet,
-      multicallv2,
+      provider,
       masterChefAddress,
     })
     const regularCakePerBlock = formatEther(cakePerBlock)
     const farmsWithPrice = await farmV2FetchFarms({
-      multicallv2,
+      provider,
       masterChefAddress,
       isTestnet,
       chainId,
-      farms: farms.filter((f) => !f.pid || poolLength.gt(f.pid)),
+      farms: farms.filter((f) => !f.pid || poolLength > f.pid),
       totalRegularAllocPoint,
       totalSpecialAllocPoint,
     })
 
     return {
       farmsWithPrice,
-      poolLength: poolLength.toNumber(),
+      poolLength: Number(poolLength),
       regularCakePerBlock: +regularCakePerBlock,
       totalRegularAllocPoint: totalRegularAllocPoint.toString(),
     }
@@ -59,7 +58,7 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
   }
 }
 
-export function createFarmFetcherV3(multicallv2: MultiCallV2) {
+export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number }) => PublicClient) {
   const fetchFarms = async ({
     farms,
     chainId,
@@ -76,7 +75,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
 
     try {
       const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
-        multicallv2,
+        provider,
         masterChefAddress,
         chainId,
       })
@@ -86,14 +85,14 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       const farmsWithPrice = await farmV3FetchFarms({
         farms,
         chainId,
-        multicallv2,
+        provider,
         masterChefAddress,
         totalAllocPoint,
         commonPrice,
       })
 
       return {
-        poolLength: poolLength.toNumber(),
+        poolLength: Number(poolLength),
         farmsWithPrice,
         cakePerSecond,
         totalAllocPoint: totalAllocPoint.toString(),
@@ -130,9 +129,9 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
 
 export * from './apr'
 export * from './utils'
-export * from './v2/apr'
 export * from './v2/farmsPriceHelpers'
 export * from './types'
+export type { FarmWithPrices } from './v2/farmPrices'
 export * from './v2/deserializeFarmUserData'
 export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'

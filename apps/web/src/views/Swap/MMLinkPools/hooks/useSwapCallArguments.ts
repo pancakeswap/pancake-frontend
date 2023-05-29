@@ -1,5 +1,5 @@
-import { Contract } from 'ethers'
 import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { toHex } from '@pancakeswap/v3-sdk'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
@@ -9,7 +9,7 @@ import { RFQResponse, TradeWithMM } from '../types'
 import { useMMSwapContract } from '../utils/exchange'
 
 export interface SwapCall {
-  contract: Contract
+  contract: ReturnType<typeof useMMSwapContract>
   parameters: SwapParameters
 }
 
@@ -82,6 +82,6 @@ function swapCallParameters(
     methodName,
     // @ts-ignore
     args,
-    value,
+    value: value ? toHex(value) : undefined,
   }
 }

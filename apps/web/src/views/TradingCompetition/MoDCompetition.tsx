@@ -6,9 +6,9 @@ import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
-import { multicallv2 } from 'utils/multicall'
 import { ChainId } from '@pancakeswap/sdk'
-import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
+import { publicClient } from 'utils/wagmi'
+import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -48,7 +48,7 @@ const MoDCompetition = () => {
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { isMobile } = useMatchBreakpoints()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
+  const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.CLAIM)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] =
@@ -79,27 +79,29 @@ const MoDCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.currentStatus()
-      setCurrentPhase(SmartContractPhases[competitionStatus])
+      const competitionStatus = await tradingCompetitionContract.read.currentStatus()
+      setCurrentPhase(SmartContractPhases[competitionStatus as number])
     }
 
     const fetchUserContract = async () => {
       try {
-        const [user, [userClaimed]] = await multicallv2({
-          abi: tradingCompetitionMoDAbi,
-          calls: [
+        const bscClient = publicClient({ chainId: ChainId.BSC })
+        const [user, userClaimed] = await bscClient.multicall({
+          contracts: [
             {
               address: tradingCompetitionContract.address,
-              name: 'claimInformation',
-              params: [account],
+              abi: tradingCompetitionMoDABI,
+              functionName: 'claimInformation',
+              args: [account],
             },
             {
               address: tradingCompetitionContract.address,
-              name: 'userTradingStats',
-              params: [account],
+              abi: tradingCompetitionMoDABI,
+              functionName: 'userTradingStats',
+              args: [account],
             },
           ],
-          options: { requireSuccess: false },
+          allowFailure: false,
         })
         const userObject: UserTradingInformation = {
           isLoading: false,

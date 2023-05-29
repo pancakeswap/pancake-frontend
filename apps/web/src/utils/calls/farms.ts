@@ -1,35 +1,51 @@
-import { Contract } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { getNonBscVaultContractFee, MessageTypes } from 'views/Farms/hooks/getNonBscVaultFee'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
+import { getMasterChefContract, getNonBscVaultContract } from 'utils/contractHelpers'
 
-export const stakeFarm = async (masterChefContract: Contract, pid, amount, gasPrice, gasLimit?: number) => {
+type MasterChefContract = ReturnType<typeof getMasterChefContract>
+
+export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
-  return masterChefContract.deposit(pid, value, {
-    gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
+  return masterChefContract.write.deposit([pid, BigInt(value)], {
+    gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
+    account: masterChefContract.account,
+    chain: masterChefContract.chain,
   })
 }
 
-export const unstakeFarm = async (masterChefContract, pid, amount, gasPrice, gasLimit?: number) => {
+export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
-  return masterChefContract.withdraw(pid, value, {
-    gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
+  return masterChefContract.write.withdraw([pid, BigInt(value)], {
+    gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
+    account: masterChefContract.account,
+    chain: masterChefContract.chain,
   })
 }
 
-export const harvestFarm = async (masterChefContract, pid, gasPrice, gasLimit?: number) => {
-  return masterChefContract.deposit(pid, '0', {
-    gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
+export const harvestFarm = async (masterChefContract: MasterChefContract, pid, gasPrice, gasLimit?: bigint) => {
+  return masterChefContract.write.deposit([pid, 0n], {
+    gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
+    account: masterChefContract.account,
+    chain: masterChefContract.chain,
   })
 }
 
-export const nonBscStakeFarm = async (contract, pid, amount, gasPrice, account, oraclePrice, chainId) => {
+export const nonBscStakeFarm = async (
+  contract: ReturnType<typeof getNonBscVaultContract>,
+  pid,
+  amount,
+  gasPrice,
+  account,
+  oraclePrice,
+  chainId,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   const totalFee = await getNonBscVaultContractFee({
     pid,
@@ -42,10 +58,22 @@ export const nonBscStakeFarm = async (contract, pid, amount, gasPrice, account, 
   })
   console.info(totalFee, 'stake totalFee')
   logGTMClickStakeFarmEvent()
-  return contract.deposit(pid, value, { value: totalFee })
+  return contract.write.deposit([pid, BigInt(value)], {
+    value: BigInt(totalFee),
+    account: contract.account,
+    chain: contract.chain,
+  })
 }
 
-export const nonBscUnstakeFarm = async (contract, pid, amount, gasPrice, account, oraclePrice, chainId) => {
+export const nonBscUnstakeFarm = async (
+  contract: ReturnType<typeof getNonBscVaultContract>,
+  pid,
+  amount,
+  gasPrice,
+  account,
+  oraclePrice,
+  chainId,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   const totalFee = await getNonBscVaultContractFee({
     pid,
@@ -57,5 +85,9 @@ export const nonBscUnstakeFarm = async (contract, pid, amount, gasPrice, account
     messageType: MessageTypes.Withdraw,
   })
   console.info(totalFee, 'unstake totalFee')
-  return contract.withdraw(pid, value, { value: totalFee })
+  return contract.write.withdraw([pid, BigInt(value)], {
+    value: BigInt(totalFee),
+    account: contract.account,
+    chain: contract.chain,
+  })
 }

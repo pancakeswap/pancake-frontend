@@ -1,6 +1,5 @@
-import { BigNumber as EthersBigNumber } from 'ethers'
 import { Farm as FarmUI, Flex, ModalV2 } from '@pancakeswap/uikit'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo, useState } from 'react'
@@ -37,15 +36,15 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   const hasEarningTokenIds = useMemo(
     () =>
       Object.entries(pendingCakeByTokenIds)
-        .filter(([, value]) => value.gt(0))
+        .filter(([, value]) => value > 0)
         .map(([key]) => key),
     [pendingCakeByTokenIds],
   )
 
   const totalEarnings = useMemo(
     () =>
-      +formatBigNumber(
-        Object.values(pendingCakeByTokenIds).reduce((total, vault) => total.add(vault), EthersBigNumber.from('0')),
+      +formatBigInt(
+        Object.values(pendingCakeByTokenIds).reduce((total, vault) => total + vault, 0n),
         4,
       ),
     [pendingCakeByTokenIds],

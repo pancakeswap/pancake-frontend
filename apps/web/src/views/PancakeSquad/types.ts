@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers'
-
 export enum SaleStatusEnum {
   Pending, // Contract is deployed
   Premint, // Tickets are preminted by owner
@@ -20,7 +18,7 @@ export type EventInfos = {
   maxSupply: number
   maxPerAddress: number
   maxPerTransaction: number
-  pricePerTicket: BigNumber
+  pricePerTicket: bigint
   totalTicketsDistributed: number
   saleStatus: SaleStatusEnum
   totalSupplyMinted: number
@@ -32,6 +30,6 @@ export type UserInfos = {
   numberTicketsForGen0: number
   numberTicketsUsedForGen0: number
   numberTicketsOfUser: number
-  ticketsOfUser: BigNumber[]
+  ticketsOfUser: bigint[]
   numberTokensOfUser: number
 }

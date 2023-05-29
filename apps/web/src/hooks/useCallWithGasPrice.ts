@@ -1,70 +1,106 @@
-import { AppState } from 'state'
-import { useSelector } from 'react-redux'
+import { Abi } from 'abitype'
 import { useCallback } from 'react'
-import { TransactionResponse } from '@ethersproject/providers'
-import { Contract, CallOverrides } from 'ethers'
 import { useGasPrice } from 'state/user/hooks'
-import get from 'lodash/get'
-import { addBreadcrumb } from '@sentry/nextjs'
-import { GAS_PRICE_GWEI } from '../state/types'
+import { publicClient } from 'utils/wagmi'
+import {
+  Account,
+  Address,
+  CallParameters,
+  Chain,
+  GetFunctionArgs,
+  InferFunctionName,
+  WriteContractParameters,
+} from 'viem'
+import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/estimateContractGas'
+import { useWalletClient } from 'wagmi'
+import { SendTransactionResult } from 'wagmi/actions'
+import { calculateGasMargin } from 'utils'
+import { useActiveChainId } from './useActiveChainId'
 
 export function useCallWithGasPrice() {
   const gasPrice = useGasPrice()
-  const userGasPrice = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
+  const { chainId } = useActiveChainId()
+  const { data: walletClient } = useWalletClient()
 
-  /**
-   * Perform a contract call with a gas price returned from useGasPrice
-   * @param contract Used to perform the call
-   * @param methodName The name of the method called
-   * @param methodArgs An array of arguments to pass to the method
-   * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
-   * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
-   */
-  const callWithGasPrice = useCallback(
-    async (
-      contract: Contract,
-      methodName: string,
-      methodArgs: any[] | undefined = [],
-      overrides: CallOverrides = null,
-    ): Promise<TransactionResponse> => {
-      addBreadcrumb({
-        type: 'Transaction',
-        message:
-          userGasPrice === GAS_PRICE_GWEI.rpcDefault
-            ? `Call with market gas price`
-            : `Call with gas price: ${gasPrice}`,
-        data: {
-          contractAddress: contract.address,
-          methodName,
-          methodArgs,
-          overrides,
-        },
-      })
+  // const callWithGasPrice = useCallback(
+  //   async <
+  //     TAbi extends Abi | unknown[],
+  //     TFunctionName extends string = string,
+  //     _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+  //     Args = TFunctionName extends string
+  //       ? GetFunctionArgs<TAbi, TFunctionName>['args']
+  //       : _FunctionName extends string
+  //       ? GetFunctionArgs<TAbi, _FunctionName>['args']
+  //       : never,
+  //   >(
+  //     contract: { abi: TAbi; account: Account; chain: Chain; address: Address },
+  //     methodName: InferFunctionName<TAbi, TFunctionName>,
+  //     methodArgs?: Args extends never ? undefined : Args,
+  //     overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
+  //   ): Promise<SendTransactionResult> => {
+  //     const res = await walletClient.writeContract({
+  //       abi: contract.abi,
+  //       address: contract.address,
+  //       functionName: methodName,
+  //       args: methodArgs,
+  //       account: walletClient.account,
+  //       gasPrice,
+  //       ...overrides,
+  //     } as any) // TODO: fix types
 
-      const contractMethod = get(contract, methodName)
-      const hasManualGasPriceOverride = overrides?.gasPrice
-      const tx = await contractMethod(
-        ...methodArgs,
-        hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
-      )
+  //     const hash = res
 
-      if (tx) {
-        addBreadcrumb({
-          type: 'Transaction',
-          message: `Transaction sent: ${tx.hash}`,
-          data: {
-            hash: tx.hash,
-            from: tx.from,
-            gasLimit: tx.gasLimit?.toString(),
-            nonce: tx.nonce,
-          },
-        })
+  //     return {
+  //       hash,
+  //     }
+  //   },
+  //   [gasPrice, walletClient],
+  // )
+
+  const callWithGasPriceWithSimulate = useCallback(
+    async <
+      TAbi extends Abi | unknown[],
+      TFunctionName extends string = string,
+      _FunctionName = InferFunctionName<TAbi, TFunctionName>,
+      Args = TFunctionName extends string
+        ? GetFunctionArgs<TAbi, TFunctionName>['args']
+        : _FunctionName extends string
+        ? GetFunctionArgs<TAbi, _FunctionName>['args']
+        : never,
+    >(
+      contract: { abi: TAbi; account: Account; chain: Chain; address: Address },
+      methodName: InferFunctionName<TAbi, TFunctionName>,
+      methodArgs?: Args extends never ? undefined : Args,
+      overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
+    ): Promise<SendTransactionResult> => {
+      const gas = await publicClient({ chainId }).estimateContractGas({
+        abi: contract.abi,
+        address: contract.address,
+        account: walletClient.account,
+        functionName: methodName,
+        args: methodArgs,
+        gasPrice,
+        ...overrides,
+      } as unknown as EstimateContractGasParameters)
+      const res = await walletClient.writeContract({
+        abi: contract.abi,
+        address: contract.address,
+        account: walletClient.account,
+        functionName: methodName,
+        args: methodArgs,
+        gasPrice,
+        gas: calculateGasMargin(gas),
+        ...overrides,
+      } as unknown as WriteContractParameters)
+
+      const hash = res
+
+      return {
+        hash,
       }
-
-      return tx
     },
-    [gasPrice, userGasPrice],
+    [chainId, gasPrice, walletClient],
   )
 
-  return { callWithGasPrice }
+  return { callWithGasPrice: callWithGasPriceWithSimulate }
 }

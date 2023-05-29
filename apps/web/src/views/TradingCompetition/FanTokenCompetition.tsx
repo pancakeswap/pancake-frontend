@@ -36,7 +36,7 @@ const FanTokenCompetition = () => {
   const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { isDark } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContractFanToken(false)
+  const tradingCompetitionContract = useTradingCompetitionContractFanToken()
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState({
@@ -94,13 +94,13 @@ const FanTokenCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.currentStatus()
+      const competitionStatus = await tradingCompetitionContract.read.currentStatus()
       setCurrentPhase(SmartContractPhases[competitionStatus])
     }
 
     const fetchUserContract = async () => {
       try {
-        const user = await tradingCompetitionContract.claimInformation(account)
+        const user = await tradingCompetitionContract.read.claimInformation([account])
         const userObject = {
           isLoading: false,
           account,

@@ -36,6 +36,8 @@ describe('actions', () => {
       expect(() =>
         toCallKey({
           address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           callData: 'abc',
         }),
       ).toThrow('Invalid hex: abc')

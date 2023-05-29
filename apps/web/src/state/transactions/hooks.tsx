@@ -1,4 +1,3 @@
-import { TransactionResponse } from '@ethersproject/providers'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
@@ -13,6 +12,7 @@ import { useAccount } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { Hash } from 'viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { TransactionDetails } from './reducer'
@@ -26,7 +26,7 @@ import {
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
-  response: TransactionResponse,
+  response: { hash: Hash | string } | { transactionHash: Hash | string },
   customData?: {
     summary?: string
     translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -54,7 +54,7 @@ export function useTransactionAdder(): (
 
   return useCallback(
     (
-      response: TransactionResponse,
+      response,
       {
         summary,
         translatableSummary,
@@ -76,7 +76,15 @@ export function useTransactionAdder(): (
       if (!account) return
       if (!chainId) return
 
-      const { hash } = response
+      let hash: Hash | string
+
+      if ('hash' in response) {
+        // eslint-disable-next-line prefer-destructuring
+        hash = response.hash
+      } else if ('transactionHash' in response) {
+        hash = response.transactionHash
+      }
+
       if (!hash) {
         throw Error('No transaction hash found.')
       }

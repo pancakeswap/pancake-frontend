@@ -47,11 +47,11 @@ export function retry<T>(
         }
         break
       } catch (error) {
-        console.error(error)
         if (completed) {
           break
         }
         if (n <= 0 || !(error instanceof RetryableError)) {
+          console.error(error)
           reject(error)
           completed = true
           break

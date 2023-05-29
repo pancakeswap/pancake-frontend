@@ -11,7 +11,7 @@ export default function PoolControlsContainer(props) {
   const [viewMode, setViewMode] = useUserPoolsViewMode()
   const { address: account } = useAccount()
   const initialBlockTimestamp = useInitialBlockTimestamp()
-  const threshHold = initialBlockTimestamp > 0 ? initialBlockTimestamp + POOL_START_THRESHOLD : 0
+  const threshHold = Number(initialBlockTimestamp) > 0 ? Number(initialBlockTimestamp) + POOL_START_THRESHOLD : 0
 
   return (
     <Pool.PoolControls<Token>

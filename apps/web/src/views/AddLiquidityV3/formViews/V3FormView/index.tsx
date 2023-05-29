@@ -33,14 +33,12 @@ import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { calculateGasMargin } from 'utils'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { useSigner } from 'wagmi'
+import { useSendTransaction, useWalletClient } from 'wagmi'
 import styled from 'styled-components'
-import { TransactionResponse } from '@ethersproject/providers'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
@@ -48,6 +46,9 @@ import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
+import { hexToBigInt } from 'viem'
+import { getViemClients } from 'utils/viem'
+import { calculateGasMargin } from 'utils'
 
 import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 import RangeSelector from './components/RangeSelector'
@@ -109,7 +110,8 @@ export default function V3FormView({
   currencyIdB,
 }: V3FormViewPropsType) {
   const router = useRouter()
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
+  const { sendTransactionAsync } = useSendTransaction()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   const {
@@ -226,50 +228,48 @@ export default function V3FormView({
         createPool: noLiquidity,
       })
 
-      const txn: { to: string; data: string; value: string } = {
-        to: nftPositionManagerAddress,
-        data: calldata,
-        value,
-      }
-
       setAttemptingTxn(true)
-
-      signer
+      const txn = {
+        data: calldata,
+        to: nftPositionManagerAddress,
+        value: hexToBigInt(value),
+        account,
+      }
+      getViemClients({ chainId })
         .estimateGas(txn)
-        .then((estimate) => {
-          const newTxn = {
+        .then((gas) => {
+          sendTransactionAsync({
             ...txn,
-            gasLimit: calculateGasMargin(estimate),
-          }
-
-          return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-            const baseAmount = formatRawAmount(
-              parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-              baseCurrency.decimals,
-              4,
-            )
-            const quoteAmount = formatRawAmount(
-              parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-              quoteCurrency.decimals,
-              4,
-            )
-
-            setAttemptingTxn(false)
-            addTransaction(response, {
-              type: 'add-liquidity-v3',
-              summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
-            })
-            setTxHash(response.hash)
-            onAddLiquidityCallback(response.hash)
+            gas: calculateGasMargin(gas),
           })
-        })
-        .catch((error) => {
-          console.error('Failed to send transaction', error)
-          setAttemptingTxn(false)
-          // we only care if the error is something _other_ than the user rejected the tx
-          if (!isUserRejected(error)) {
-            console.error(error)
-          }
+            .then((response) => {
+              const baseAmount = formatRawAmount(
+                parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+                baseCurrency.decimals,
+                4,
+              )
+              const quoteAmount = formatRawAmount(
+                parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+                quoteCurrency.decimals,
+                4,
+              )
+
+              setAttemptingTxn(false)
+              addTransaction(response, {
+                type: 'add-liquidity-v3',
+                summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
+              })
+              setTxHash(response.hash)
+              onAddLiquidityCallback(response.hash)
+            })
+            .catch((error) => {
+              console.error('Failed to send transaction', error)
+              setAttemptingTxn(false)
+              // we only care if the error is something _other_ than the user rejected the tx
+              if (!isUserRejected(error)) {
+                console.error(error)
+              }
+            })
         })
     }
   }, [
@@ -286,6 +286,7 @@ export default function V3FormView({
     position,
     positionManager,
     quoteCurrency,
+    sendTransactionAsync,
     signer,
   ])
 

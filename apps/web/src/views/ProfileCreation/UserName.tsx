@@ -1,4 +1,4 @@
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,
@@ -21,7 +21,7 @@ import { useSignMessage } from '@pancakeswap/wagmi'
 import { API_PROFILE } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { formatDistance, parseISO } from 'date-fns'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
@@ -58,7 +58,7 @@ const Indicator = styled(Flex)`
 
 const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { teamId, selectedNft, userName, actions, allowance } = useProfileCreation()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { toastError } = useToast()
@@ -68,17 +68,10 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const fetchAbortSignal = useRef<AbortController>(null)
-  const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(REGISTER_COST)
+  const { balance: cakeBalance, fetchStatus } = useBSCCakeBalance()
+  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= REGISTER_COST
   const [onPresentConfirmProfileCreation] = useModal(
-    <ConfirmProfileCreationModal
-      userName={userName}
-      selectedNft={selectedNft}
-      account={account}
-      teamId={teamId}
-      minimumCakeRequired={minimumCakeRequired}
-      allowance={allowance}
-    />,
+    <ConfirmProfileCreationModal userName={userName} selectedNft={selectedNft} teamId={teamId} allowance={allowance} />,
     false,
   )
   const isUserCreated = existingUserState === ExistingUserState.CREATED
@@ -269,7 +262,7 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {t('A minimum of %num% CAKE is required', { num: formatUnits(REGISTER_COST) })}
+          {t('A minimum of %num% CAKE is required', { num: formatUnits(REGISTER_COST, 18) })}
         </Text>
       )}
     </>

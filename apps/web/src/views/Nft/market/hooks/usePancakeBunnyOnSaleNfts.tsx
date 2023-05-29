@@ -9,7 +9,7 @@ import {
 } from 'state/nftMarket/helpers'
 import useSWRInfinite from 'swr/infinite'
 import { FetchStatus } from 'config/constants/types'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../constants'
@@ -71,14 +71,14 @@ export const usePancakeBunnyOnSaleNfts = (
       const { newNfts, isPageLast } = await fetchMarketDataNfts(id, nftMetadata, sortDirection, page, itemsPerPage)
       isLastPage.current = isPageLast
       const nftsMarketTokenIds = newNfts.map((marketData) => marketData.tokenId)
-      const updatedMarketData = await getNftsUpdatedMarketData(pancakeBunniesAddress.toLowerCase(), nftsMarketTokenIds)
+      const updatedMarketData = await getNftsUpdatedMarketData(pancakeBunniesAddress, nftsMarketTokenIds)
       if (!updatedMarketData) return newNfts
 
       return updatedMarketData
         .sort((askInfoA, askInfoB) => {
-          return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
+          return askInfoA.currentAskPrice > askInfoB.currentAskPrice
             ? 1 * (sortDirection === 'desc' ? -1 : 1)
-            : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
+            : askInfoA.currentAskPrice === askInfoB.currentAskPrice
             ? 0
             : -1 * (sortDirection === 'desc' ? -1 : 1)
         })
@@ -91,7 +91,7 @@ export const usePancakeBunnyOnSaleNfts = (
               ...nftData.marketData,
               isTradable,
               currentSeller: isTradable ? currentSeller.toLowerCase() : nftData.marketData.currentSeller,
-              currentAskPrice: isTradable ? formatBigNumber(currentAskPrice) : nftData.marketData.currentAskPrice,
+              currentAskPrice: isTradable ? formatBigInt(currentAskPrice) : nftData.marketData.currentAskPrice,
             },
           }
         })

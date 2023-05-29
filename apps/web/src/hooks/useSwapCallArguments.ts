@@ -1,4 +1,3 @@
-import { Contract } from 'ethers'
 import { Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE } from 'config/constants/exchange'
@@ -8,7 +7,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useTransactionDeadline from './useTransactionDeadline'
 
 export interface SwapCall {
-  contract: Contract
+  contract: ReturnType<typeof useRouterContract>
   parameters: SwapParameters
 }
 
@@ -43,7 +42,7 @@ export function useSwapCallArguments(
         feeOnTransfer: false,
         allowedSlippage: new Percent(BigInt(allowedSlippage), BIPS_BASE),
         recipient,
-        deadline: deadline.toNumber(),
+        deadline: Number(deadline),
       }),
     )
 
@@ -53,7 +52,7 @@ export function useSwapCallArguments(
           feeOnTransfer: true,
           allowedSlippage: new Percent(BigInt(allowedSlippage), BIPS_BASE),
           recipient,
-          deadline: deadline.toNumber(),
+          deadline: Number(deadline),
         }),
       )
     }

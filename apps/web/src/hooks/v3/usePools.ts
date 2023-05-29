@@ -1,15 +1,11 @@
-import { Interface } from 'ethers/lib/utils'
 import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { computePoolAddress, FeeAmount, Pool, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
-import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
+import { v3PoolStateABI } from 'config/abi/v3PoolState'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from './types'
-
-// Philip TODO: Add IUniswapV3PoolStateInterface type
-const POOL_STATE_INTERFACE = new Interface(IUniswapV3PoolStateABI)
 
 // Classes are expensive to instantiate, so this caches the recently instantiated pools.
 // This avoids re-instantiating pools as the other pools in the same request are loaded.
@@ -99,15 +95,23 @@ export function usePools(
     })
   }, [chainId, poolKeys])
 
-  const poolAddresses: (string | undefined)[] = useMemo(() => {
+  const poolAddresses: (Address | undefined)[] = useMemo(() => {
     const v3CoreDeployerAddress = chainId && DEPLOYER_ADDRESSES[chainId]
     if (!v3CoreDeployerAddress) return new Array(poolTokens.length)
 
     return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value))
   }, [chainId, poolTokens])
 
-  const slot0s = useMultipleContractSingleData(poolAddresses, POOL_STATE_INTERFACE, 'slot0')
-  const liquidities = useMultipleContractSingleData(poolAddresses, POOL_STATE_INTERFACE, 'liquidity')
+  const slot0s = useMultipleContractSingleData({
+    addresses: poolAddresses,
+    abi: v3PoolStateABI,
+    functionName: 'slot0',
+  })
+  const liquidities = useMultipleContractSingleData({
+    addresses: poolAddresses,
+    abi: v3PoolStateABI,
+    functionName: 'liquidity',
+  })
 
   return useMemo(() => {
     return poolKeys.map((_key, index) => {
@@ -123,19 +127,12 @@ export function usePools(
 
       if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
       if (slot0Loading || liquidityLoading) return [PoolState.LOADING, null]
-      if (!slot0 || !liquidity) return [PoolState.NOT_EXISTS, null]
-      if (!slot0.sqrtPriceX96 || slot0.sqrtPriceX96.eq(0)) return [PoolState.NOT_EXISTS, null]
+      if (!slot0 || typeof liquidity === 'undefined') return [PoolState.NOT_EXISTS, null]
+      const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
+      if (!sqrtPriceX96 || sqrtPriceX96 === 0n) return [PoolState.NOT_EXISTS, null]
 
       try {
-        const pool = PoolCache.getPool(
-          token0,
-          token1,
-          fee,
-          slot0.sqrtPriceX96,
-          liquidity[0],
-          slot0.tick,
-          slot0.feeProtocol,
-        )
+        const pool = PoolCache.getPool(token0, token1, fee, sqrtPriceX96, liquidity, tick, feeProtocol)
         return [PoolState.EXISTS, pool]
       } catch (error) {
         console.error('Error when constructing the pool', error)

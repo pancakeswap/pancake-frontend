@@ -1,23 +1,23 @@
 import { useCallback } from 'react'
 import { DEFAULT_GAS_LIMIT } from 'config'
-import { parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'viem'
 import { useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
 
 const options = {
-  gasLimit: DEFAULT_GAS_LIMIT,
+  gas: DEFAULT_GAS_LIMIT,
 }
 
-const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: string) => {
-  const units = parseUnits(amount, decimals)
+const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: bigint) => {
+  const units = parseUnits(amount as `${number}`, decimals)
 
-  return sousChefContract.withdraw(units.toString(), {
+  return sousChefContract.write.withdraw([units.toString()], {
     ...options,
     gasPrice,
   })
 }
 
-const sousEmergencyUnstake = (sousChefContract: any, gasPrice: string) => {
+const sousEmergencyUnstake = (sousChefContract: any, gasPrice: bigint) => {
   return sousChefContract.emergencyWithdraw({ ...options, gasPrice })
 }
 

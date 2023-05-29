@@ -81,7 +81,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const { stakingToken, earningTokenPrice, vaultKey } = pool
   const { address: account } = useAccount()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
+  const vaultPoolContract = useVaultPoolContract(pool.vaultKey) as any
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
     pricePerFullShare,
@@ -115,7 +115,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   }, [allowance, stakeAmount, isRemovingStake])
 
   const callOptions = {
-    gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
+    gas: vaultPoolConfig[pool.vaultKey].gasLimit,
   }
 
   const interestBreakdown = getInterestBreakdown({
@@ -174,7 +174,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
 
       if (pool.vaultKey === VaultKey.CakeFlexibleSideVault) {
         const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-        return callWithGasPrice(vaultPoolContract, 'withdraw', [sharesAsBigNumber.toString()], callOptions)
+        return callWithGasPrice(vaultPoolContract, 'withdraw', [parseInt(sharesAsBigNumber.toString())], callOptions)
       }
 
       return callWithGasPrice(vaultPoolContract, 'withdrawByAmount', [convertedStakeAmount.toString()], callOptions)

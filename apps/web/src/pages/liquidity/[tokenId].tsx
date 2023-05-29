@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
@@ -36,7 +35,6 @@ import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
 import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
-import { TransactionResponse } from '@ethersproject/providers'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { LightGreyCard } from 'components/Card'
@@ -70,9 +68,11 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
-import { useProvider, useSigner } from 'wagmi'
+import { useSendTransaction, useWalletClient } from 'wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { hexToBigInt } from 'viem'
+import { getViemClients } from 'utils/viem'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -147,15 +147,15 @@ export default function PoolPage() {
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
   const [receiveWETH, setReceiveWETH] = useState(false)
 
-  const { data: signer } = useSigner()
+  const { data: signer } = useWalletClient()
+  const { sendTransactionAsync } = useSendTransaction()
 
   const { account, chainId } = useAccountActiveChain()
-  const provider = useProvider({ chainId })
 
   const router = useRouter()
   const { tokenId: tokenIdFromUrl } = router.query
 
-  const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
+  const parsedTokenId = tokenIdFromUrl ? BigInt(tokenIdFromUrl as string) : undefined
 
   const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
 
@@ -169,7 +169,7 @@ export default function PoolPage() {
     tokenId,
   } = positionDetails || {}
 
-  const removed = liquidity?.eq(0)
+  const removed = liquidity === 0n
 
   // const metadata = usePositionTokenURI(parsedTokenId)
 
@@ -187,7 +187,7 @@ export default function PoolPage() {
   // construct Position from details returned
   const [poolState, pool] = usePool(token0 ?? undefined, token1 ?? undefined, feeAmount)
   const position = useMemo(() => {
-    if (pool && liquidity && typeof tickLower === 'number' && typeof tickUpper === 'number') {
+    if (pool && typeof liquidity === 'bigint' && typeof tickLower === 'number' && typeof tickUpper === 'number') {
       return new Position({ pool, liquidity: liquidity.toString(), tickLower, tickUpper })
     }
     return undefined
@@ -208,7 +208,7 @@ export default function PoolPage() {
     invert: manuallyInverted,
   })
 
-  const inverted = token1 ? base?.equals(token1) : undefined
+  const inverted = token1 && token1 ? base?.equals(token1) : undefined
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
@@ -261,9 +261,12 @@ export default function PoolPage() {
 
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(
+    masterchefV3?.address,
+    account,
+  )
 
-  const isStakedInMCv3 = tokenId && Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
+  const isStakedInMCv3 = tokenId && Boolean(stakedTokenIds.find((id) => id === tokenId))
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
@@ -277,8 +280,7 @@ export default function PoolPage() {
       !positionManager ||
       !masterchefV3 ||
       !account ||
-      !tokenId ||
-      !provider
+      !tokenId
     )
       return
 
@@ -296,30 +298,35 @@ export default function PoolPage() {
     const txn = {
       to: manager.address,
       data: calldata,
-      value,
+      value: hexToBigInt(value),
+      account,
+      chain: signer.chain,
     }
 
-    signer
-      ?.estimateGas(txn)
-      ?.then((estimate) => {
+    getViemClients({ chainId })
+      .estimateGas(txn)
+      .then((estimate) => {
         const newTxn = {
           ...txn,
-          gasLimit: calculateGasMargin(estimate),
+          gas: calculateGasMargin(estimate),
         }
 
-        return signer?.sendTransaction(newTxn)?.then((response: TransactionResponse) => {
+        return sendTransactionAsync(newTxn).then((response) => {
           setCollectMigrationHash(response.hash)
           setCollecting(false)
 
           const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
           const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
 
-          addTransaction(response, {
-            type: 'collect-fee',
-            summary: `Collect fee ${amount0.toExact()} ${
-              currency0ForFeeCollectionPurposes.symbol
-            } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
-          })
+          addTransaction(
+            { hash: response.hash },
+            {
+              type: 'collect-fee',
+              summary: `Collect fee ${amount0.toExact()} ${
+                currency0ForFeeCollectionPurposes.symbol
+              } and ${amount1.toExact()} ${currency1ForFeeCollectionPurposes.symbol}`,
+            },
+          )
         })
       })
       ?.catch((error) => {
@@ -335,16 +342,20 @@ export default function PoolPage() {
     masterchefV3,
     account,
     tokenId,
-    provider,
     interfaceManager,
     feeValue0,
     feeValue1,
     manager.address,
     signer,
+    sendTransactionAsync,
     addTransaction,
   ])
 
-  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result?.[0]
+  const owner = useSingleCallResult({
+    contract: tokenId ? positionManager : null,
+    functionName: 'ownerOf',
+    args: [tokenId],
+  }).result
   const ownsNFT = owner === account || positionDetails?.operator === account
 
   const feeValueUpper = inverted ? feeValue0 : feeValue1

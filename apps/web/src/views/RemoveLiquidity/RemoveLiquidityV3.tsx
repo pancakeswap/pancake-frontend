@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, WNATIVE } from '@pancakeswap/sdk'
 import {
@@ -34,9 +32,8 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
-import { calculateGasMargin } from 'utils'
 import Page from 'views/Page'
-import { useSigner } from 'wagmi'
+import { useSendTransaction } from 'wagmi'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import styled from 'styled-components'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
@@ -44,11 +41,14 @@ import { LightGreyCard } from 'components/Card'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { hexToBigInt } from 'viem'
 
 import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
+import { getViemClients } from 'utils/viem'
+import { calculateGasMargin } from 'utils'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBurnV3ActionHandlers } from './form/hooks'
@@ -67,7 +67,7 @@ export default function RemoveLiquidityV3() {
 
   const parsedTokenId = useMemo(() => {
     try {
-      return BigNumber.from(tokenId)
+      return BigInt(tokenId as string)
     } catch {
       return null
     }
@@ -76,7 +76,7 @@ export default function RemoveLiquidityV3() {
   return <Remove tokenId={parsedTokenId} />
 }
 
-function Remove({ tokenId }: { tokenId: BigNumber }) {
+function Remove({ tokenId }: { tokenId: bigint }) {
   const {
     t,
     currentLanguage: { locale },
@@ -90,11 +90,14 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const { percent } = useLocalSelector<{ percent: number }>((s) => s) as { percent: number }
 
   const { account, chainId } = useAccountActiveChain()
-  const { data: signer } = useSigner()
+  const { sendTransactionAsync } = useSendTransaction()
   const addTransaction = useTransactionAdder()
 
   const masterchefV3 = useMasterchefV3()
-  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(
+    masterchefV3?.address,
+    account,
+  )
 
   const { position } = useV3PositionFromTokenId(tokenId)
 
@@ -128,7 +131,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const positionManager = useV3NFTPositionManagerContract()
 
-  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id.eq(tokenId)))
+  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id === tokenId))
 
   const onRemove = useCallback(async () => {
     if (
@@ -142,7 +145,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       !chainId ||
       !positionSDK ||
       !liquidityPercentage ||
-      !signer
+      !sendTransactionAsync
     ) {
       return
     }
@@ -169,18 +172,19 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     const txn = {
       to: manager.address,
       data: calldata,
-      value,
+      value: hexToBigInt(value),
+      account,
     }
 
-    signer
-      .estimateGas(txn)
-      .then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gasLimit: calculateGasMargin(estimate),
-        }
+    const publicClient = getViemClients({ chainId })
 
-        return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+    publicClient.estimateGas(txn).then((gas) => {
+      sendTransactionAsync({
+        ...txn,
+        gas: calculateGasMargin(gas),
+        chainId,
+      })
+        .then((response) => {
           const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
           const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
 
@@ -191,11 +195,11 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
           })
         })
-      })
-      .catch((err) => {
-        setAttemptingTxn(false)
-        console.error(err)
-      })
+        .catch((err) => {
+          setAttemptingTxn(false)
+          console.error(err)
+        })
+    })
   }, [
     tokenIdsInMCv3Loading,
     masterchefV3,
@@ -207,7 +211,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     chainId,
     positionSDK,
     liquidityPercentage,
-    signer,
+    sendTransactionAsync,
     isStakedInMCv3,
     tokenId,
     allowedSlippage,
@@ -216,7 +220,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     addTransaction,
   ])
 
-  const removed = position?.liquidity?.eq(0)
+  const removed = position?.liquidity === 0n
 
   const price0 = useStablecoinPrice(liquidityValue0?.currency?.wrapped ?? undefined, { enabled: !!feeValue0 })
   const price1 = useStablecoinPrice(liquidityValue1?.currency?.wrapped ?? undefined, { enabled: !!feeValue1 })

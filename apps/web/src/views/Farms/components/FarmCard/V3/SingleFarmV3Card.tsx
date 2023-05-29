@@ -1,4 +1,3 @@
-import { BigNumber as EthersBigNumber } from 'ethers'
 import { IPendingCakeByTokenId, PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
@@ -15,7 +14,7 @@ import {
   Text,
   useModalV2,
 } from '@pancakeswap/uikit'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { BigNumber } from 'bignumber.js'
@@ -145,7 +144,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const outOfRangeUnstaked = outOfRange && positionType === 'unstaked'
 
   const totalEarnings = useMemo(
-    () => +formatBigNumber(pendingCakeByTokenIds[position.tokenId.toString()] || EthersBigNumber.from('0'), 4),
+    () => +formatBigInt(pendingCakeByTokenIds[position.tokenId.toString()] || 0n, 4),
     [pendingCakeByTokenIds, position.tokenId],
   )
 
@@ -293,7 +292,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                 earnings={totalEarnings}
                 earningsBusd={earningsBusd}
                 pendingTx={attemptingTxn || harvesting}
-                disabled={pendingCakeByTokenIds?.[position.tokenId.toString()]?.isZero() ?? true}
+                disabled={!pendingCakeByTokenIds?.[position.tokenId.toString()] ?? true}
                 userDataReady
                 handleHarvest={handleHarvest}
               />

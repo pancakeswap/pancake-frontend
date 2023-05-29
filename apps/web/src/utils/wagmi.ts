@@ -4,7 +4,7 @@ import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
-import { configureChains, createClient } from 'wagmi'
+import { configureChains, createConfig, createStorage } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -13,23 +13,37 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
-export const { provider, chains } = configureChains(CHAINS, [
-  jsonRpcProvider({
-    rpc: (chain) => {
-      if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
-        return { http: 'https://cloudflare-eth.com' }
-      }
-      return PUBLIC_NODES[chain.id]
-        ? {
-            http:
-              typeof PUBLIC_NODES[chain.id] === 'string'
-                ? (PUBLIC_NODES[chain.id] as string)
-                : PUBLIC_NODES[chain.id][0],
+// get most configs chain nodes length
+const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {
+  return cur.length > prev ? cur.length : prev
+}, 0)
+
+export const { publicClient, chains } = configureChains(
+  CHAINS,
+  Array.from({ length: mostNodesConfig })
+    .map((_, i) => i)
+    .map((i) => {
+      return jsonRpcProvider({
+        rpc: (chain) => {
+          if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
+            return { http: 'https://cloudflare-eth.com' }
           }
-        : { http: chain.rpcUrls.default.http[0] }
+          return PUBLIC_NODES[chain.id]?.[i]
+            ? {
+                http: PUBLIC_NODES[chain.id][i],
+              }
+            : null
+        },
+      })
+    }),
+  {
+    batch: {
+      multicall: {
+        batchSize: 1024 * 200,
+      },
     },
-  }),
-])
+  },
+)
 
 export const injectedConnector = new InjectedConnector({
   chains,
@@ -89,15 +103,26 @@ export const trustWalletConnector = new TrustWalletConnector({
   },
 })
 
-export const client = createClient({
+export const noopStorage = {
+  getItem: (_key) => '',
+  setItem: (_key, _value) => null,
+  removeItem: (_key) => null,
+}
+
+export const wagmiConfig = createConfig({
+  storage: createStorage({
+    storage: typeof window !== 'undefined' ? window.localStorage : noopStorage,
+    key: 'wagmi_v1',
+  }),
   autoConnect: false,
-  provider,
+  publicClient,
   connectors: [
     metaMaskConnector,
     injectedConnector,
     coinbaseConnector,
     walletConnectConnector,
     bscConnector,
+    // @ts-ignore FIXME: wagmi
     bloctoConnector,
     ledgerConnector,
     trustWalletConnector,

@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { BigNumber, Overrides } from 'ethers'
-import { TransactionResponse } from '@ethersproject/providers'
 
 import { useOrderActionHandlers } from 'state/limitOrders/hooks'
 import { Field, Rate } from 'state/limitOrders/types'
@@ -22,8 +20,8 @@ export interface GelatoLimitOrdersHandlers {
     inputAmount: string
     outputAmount: string
     owner: string
-    overrides?: Overrides
-  }) => Promise<TransactionResponse>
+    overrides?: any
+  }) => Promise<any>
   handleLimitOrderCancellation: (
     order: Order,
     orderDetails?: {
@@ -32,8 +30,8 @@ export interface GelatoLimitOrdersHandlers {
       inputAmount: string
       outputAmount: string
     },
-    overrides?: Overrides,
-  ) => Promise<TransactionResponse>
+    overrides?: any,
+  ) => Promise<any>
   handleInput: (field: Field, value: string) => void
   handleCurrencySelection: (field: Field.INPUT | Field.OUTPUT, currency: Currency) => void
   handleSwitchTokens: () => void
@@ -60,7 +58,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         outputAmount: string
         owner: string
       },
-      overrides?: Overrides,
+      overrides?: any,
     ) => {
       if (!gelatoLimitOrders) {
         throw new Error('Could not reach Gelato Limit Orders library')
@@ -86,7 +84,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         ...(overrides ?? {}),
         to: payload.to,
         data: payload.data,
-        value: BigNumber.from(payload.value),
+        value: payload.value.toString(),
       })
 
       const now = Math.round(Date.now() / 1000)
@@ -121,7 +119,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         inputAmount: string
         outputAmount: string
       },
-      overrides?: Overrides,
+      overrides?: any,
     ) => {
       if (!gelatoLimitOrders) {
         throw new Error('Could not reach Gelato Limit Orders library')
