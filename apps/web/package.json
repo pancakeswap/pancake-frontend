@@ -58,7 +58,6 @@
     "ajv": "^6.12.3",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.5.1",
-    "cids": "^1.0.0",
     "clsx": "^1.2.1",
     "cookies-next": "^2.1.1",
     "crypto-js": "^4.1.1",
