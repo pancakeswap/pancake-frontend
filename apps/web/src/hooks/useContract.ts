@@ -299,7 +299,7 @@ export function useBCakeFarmBoosterContract() {
   return useMemo(() => getBCakeFarmBoosterContract(signer), [signer])
 }
 
-export function useBCakeFarmBoosterContractV3() {
+export function useBCakeFarmBoosterV3Contract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getBCakeFarmBoosterV3Contract(signer, chainId), [signer, chainId])
