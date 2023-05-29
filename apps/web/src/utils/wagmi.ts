@@ -15,7 +15,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 // get most configs chain nodes length
 const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {
-  return cur.length > prev ? cur.length : prev
+  return cur.urls.length > prev ? cur.urls.length : prev
 }, 0)
 
 export const { publicClient, chains } = configureChains(
@@ -28,9 +28,9 @@ export const { publicClient, chains } = configureChains(
           if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
             return { http: 'https://cloudflare-eth.com' }
           }
-          return PUBLIC_NODES[chain.id]?.[i]
+          return PUBLIC_NODES[chain.id as keyof typeof PUBLIC_NODES]?.urls?.[i]
             ? {
-                http: PUBLIC_NODES[chain.id][i],
+                http: PUBLIC_NODES[chain.id as keyof typeof PUBLIC_NODES].urls[i],
               }
             : null
         },

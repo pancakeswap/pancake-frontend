@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
-import { createPublicClient, http, fallback, PublicClient } from 'viem'
+import { createPublicClient, http, fallback, PublicClient, FallbackTransportConfig } from 'viem'
 
 export const viemClients = CHAINS.reduce((prev, cur) => {
   return {
@@ -9,14 +9,14 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
     [cur.id]: createPublicClient({
       chain: cur,
       transport: fallback(
-        (PUBLIC_NODES[cur.id] as string[]).map((url) =>
+        PUBLIC_NODES[cur.id].urls.map((url) =>
           http(url, {
             timeout: 15_000,
           }),
         ),
-        {
-          rank: false,
-        },
+        process.env.NODE_ENV !== 'test' && 'fallbackConfig' in PUBLIC_NODES[cur.id]
+          ? (PUBLIC_NODES[cur.id] as { fallbackConfig: FallbackTransportConfig }).fallbackConfig
+          : { rank: false },
       ),
       batch: {
         multicall: {
