@@ -381,4 +381,4 @@ export const bCakeFarmBoosterV3ABI = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
