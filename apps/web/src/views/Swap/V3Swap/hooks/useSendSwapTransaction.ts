@@ -69,7 +69,7 @@ export default function useSendSwapTransaction(
 
             const tx =
               !value || isZero(value)
-                ? { account, to: address, data: calldata }
+                ? { account, to: address, data: calldata, value: 0n }
                 : {
                     account,
                     to: address,

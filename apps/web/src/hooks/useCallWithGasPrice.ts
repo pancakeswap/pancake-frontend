@@ -80,6 +80,7 @@ export function useCallWithGasPrice() {
         functionName: methodName,
         args: methodArgs,
         gasPrice,
+        value: 0n,
         ...overrides,
       } as unknown as EstimateContractGasParameters)
       const res = await walletClient.writeContract({
@@ -90,6 +91,7 @@ export function useCallWithGasPrice() {
         args: methodArgs,
         gasPrice,
         gas: calculateGasMargin(gas),
+        value: 0n,
         ...overrides,
       } as unknown as WriteContractParameters)
 

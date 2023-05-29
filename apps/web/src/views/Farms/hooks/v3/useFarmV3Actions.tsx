@@ -127,6 +127,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     const txn = {
       to: masterChefV3Address,
       data: calldata,
+      value: 0n,
     }
 
     const resp = await fetchWithCatchTxError(() =>
