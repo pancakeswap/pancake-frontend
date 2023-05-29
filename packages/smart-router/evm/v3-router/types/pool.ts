@@ -46,3 +46,13 @@ export interface V3Pool extends BasePool {
 }
 
 export type Pool = V2Pool | V3Pool | StablePool
+
+export interface WithTvl {
+  tvlUSD: bigint
+}
+
+export type V3PoolWithTvl = V3Pool & WithTvl
+
+export type V2PoolWithTvl = V2Pool & WithTvl
+
+export type StablePoolWithTvl = StablePool & WithTvl

@@ -1,19 +1,21 @@
-import { ChainId, Currency, CurrencyAmount, Pair, Percent, BigintIsh } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
+import { FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import { Address, ContractFunctionConfig } from 'viem'
 import { Abi } from 'abitype'
 
-import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../types'
-import { pancakePairABI } from '../../abis/IPancakePair'
-import { stableSwapPairABI } from '../../abis/StableSwapPair'
-import { pancakeV3PoolABI } from '../../abis/IPancakeV3Pool'
-import { getStableSwapPools } from '../../constants/stableSwap'
+import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../../types'
+import { pancakePairABI } from '../../../abis/IPancakePair'
+import { stableSwapPairABI } from '../../../abis/StableSwapPair'
+import { pancakeV3PoolABI } from '../../../abis/IPancakeV3Pool'
+import { getStableSwapPools } from '../../../constants/stableSwap'
+import { computeV2PoolAddress, computeV3PoolAddress } from '../../utils'
+import { PoolMeta, V3PoolMeta } from './internalTypes'
 
 export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool, PoolMeta>({
   abi: pancakePairABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => [
-    { address: Pair.getAddress(currencyA.wrapped, currencyB.wrapped), currencyA, currencyB },
+    { address: computeV2PoolAddress(currencyA.wrapped, currencyB.wrapped), currencyA, currencyB },
   ],
   buildPoolInfoCalls: (address) => [
     {
@@ -38,11 +40,7 @@ export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool, PoolMeta>({
   },
 })
 
-interface StablePoolMeta extends PoolMeta {
-  address: Address
-}
-
-export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, StablePoolMeta>({
+export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, PoolMeta>({
   abi: stableSwapPairABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => {
     const poolConfigs = getStableSwapPools(currencyA.chainId)
@@ -108,16 +106,6 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, Stable
   },
 })
 
-interface PoolMeta {
-  currencyA: Currency
-  currencyB: Currency
-  address: Address
-}
-
-export interface V3PoolMeta extends PoolMeta {
-  fee: FeeAmount
-}
-
 export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3PoolMeta>({
   abi: pancakeV3PoolABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => {
@@ -126,7 +114,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       return []
     }
     return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
-      address: computePoolAddress({
+      address: computeV3PoolAddress({
         deployerAddress,
         tokenA: currencyA.wrapped,
         tokenB: currencyB.wrapped,

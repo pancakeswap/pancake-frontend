@@ -1,5 +1,5 @@
-import { Pool, PoolProvider, PoolType } from '../types'
-import { involvesCurrency } from '../utils'
+import { Pool, PoolProvider, PoolType } from '../../types'
+import { involvesCurrency } from '../../utils'
 
 export function createStaticPoolProvider(pools: Pool[]): PoolProvider {
   const defaultAllowedProtocols = [PoolType.V2, PoolType.STABLE, PoolType.V3]

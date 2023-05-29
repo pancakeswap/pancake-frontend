@@ -9,10 +9,8 @@ export {
   getV3PoolsWithoutTicksOnChain,
   getV3PoolSubgraph,
   getV2PoolSubgraph,
-  v3PoolSubgraphSelection,
-  v2PoolSubgraphSelection,
-  type SubgraphV3Pool,
-  type SubgraphV2Pool,
+  v2PoolTvlSelector as v2PoolSubgraphSelection,
+  v3PoolTvlSelector as v3PoolSubgraphSelection,
 } from './providers'
 export {
   getExecutionPrice,
@@ -29,3 +27,4 @@ export {
 } from './utils'
 export { getPairCombinations, getCheckAgainstBaseTokens } from './functions'
 export * as APISchema from './schema'
+export type { V3PoolWithTvl as SubgraphV3Pool, V2PoolWithTvl as SubgraphV2Pool } from './types'
