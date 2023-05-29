@@ -4,7 +4,7 @@ import { CAKE, USDC } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { SLOW_INTERVAL } from 'config/constants'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
+import { DEFAULT_INPUT_CURRENCY } from 'config/constants/exchange'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
@@ -219,7 +219,7 @@ export function queryParametersToSwapState(
   let outputCurrency =
     typeof parsedQs.outputCurrency === 'string'
       ? isAddress(parsedQs.outputCurrency) || nativeSymbol
-      : defaultOutputCurrency ?? DEFAULT_OUTPUT_CURRENCY
+      : defaultOutputCurrency
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''
