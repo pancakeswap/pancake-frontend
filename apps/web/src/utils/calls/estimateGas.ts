@@ -32,7 +32,12 @@ export const estimateGas = async <
   }
   // TODO: wagmi
   // @ts-ignore
-  const rawGasEstimation = await contract.estimateGas[methodName](methodArgs, { value: 0n, ...overrides })
+  const rawGasEstimation = await contract.estimateGas[methodName](methodArgs, {
+    value: 0n,
+    account: contract.account,
+    chain: contract.chain,
+    ...overrides,
+  })
   // By convention, BigNumber values are multiplied by 1000 to avoid dealing with real numbers
   const gasEstimation = calculateGasMargin(rawGasEstimation, gasMarginPer10000)
   return gasEstimation
@@ -66,6 +71,8 @@ export const callWithEstimateGas = async <
   const tx = await contract.write[methodName](methodArgs, {
     value: 0n,
     gas: gasEstimation,
+    account: contract.account,
+    chain: contract.chain,
     ...overrides,
   })
   return {
