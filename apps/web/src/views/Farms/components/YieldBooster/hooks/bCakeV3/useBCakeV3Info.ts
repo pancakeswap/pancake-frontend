@@ -2,6 +2,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
 import useSWRImmutable from 'swr/immutable'
+import { useContractRead } from 'wagmi'
 import { getUserMultiplier } from './useBoostMultiplierV3'
 
 export const USER_ESTIMATED_MULTIPLIER = 2
@@ -15,11 +16,14 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
 export const useBakeV3farmCanBoost = (farmPid: number) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data } = useSWRImmutable(
-    chainId && farmPid && `v3/bcake/farmCanBoost/${chainId}/${farmPid}`,
-    () => farmBoosterV3Contract.read.whiteList([BigInt(farmPid)]),
-    SWR_SETTINGS_WITHOUT_REFETCH,
-  )
+  const { data } = useContractRead({
+    abi: farmBoosterV3Contract.abi,
+    address: farmBoosterV3Contract.address,
+    chainId,
+    functionName: 'whiteList',
+    enabled: Boolean(chainId && farmPid),
+    args: [BigInt(farmPid ?? 0)],
+  })
   return { farmCanBoost: data }
 }
 
