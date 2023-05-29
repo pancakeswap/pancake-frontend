@@ -1,9 +1,9 @@
 import { BigintIsh, Currency } from '@pancakeswap/sdk'
 
-import { getPairCombinations } from '../functions'
-import { OnChainProvider, Pool, PoolProvider, PoolType, SubgraphProvider } from '../types'
+import { getPairCombinations } from '../../functions'
+import { OnChainProvider, Pool, PoolProvider, PoolType, SubgraphProvider } from '../../types'
 import { createPoolProviderWithCache } from './poolProviderWithCache'
-import { getV2PoolsOnChain, getStablePoolsOnChain, getV3PoolsWithoutTicksOnChain } from './onChainPoolProviderFactory'
+import { getV2PoolsOnChain, getStablePoolsOnChain, getV3PoolsWithoutTicksOnChain } from './onChainPoolProviders'
 
 interface HybridProviderConfig {
   onChainProvider: OnChainProvider

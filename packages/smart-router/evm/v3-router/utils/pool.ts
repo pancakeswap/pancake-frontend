@@ -1,6 +1,8 @@
 import { Currency, Pair, Price } from '@pancakeswap/sdk'
-import { Pool as SDKV3Pool } from '@pancakeswap/v3-sdk'
+import { Pool as SDKV3Pool, computePoolAddress } from '@pancakeswap/v3-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import memoize from 'lodash/memoize'
+import { Address } from 'viem'
 
 import * as StableSwap from '../../stableSwap'
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
@@ -52,16 +54,40 @@ export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   throw new Error('Cannot get output currency by invalid pool')
 }
 
-export function getPoolAddress(pool: Pool): string {
-  if (isStablePool(pool) || isV3Pool(pool)) {
-    return pool.address
-  }
-  if (isV2Pool(pool)) {
-    const { reserve0, reserve1 } = pool
-    return Pair.getAddress(reserve0.currency.wrapped, reserve1.currency.wrapped)
-  }
-  return ''
-}
+export const computeV3PoolAddress = memoize(
+  computePoolAddress,
+  ({ deployerAddress, tokenA, tokenB, fee }) =>
+    `${tokenA.chainId}_${deployerAddress}_${tokenA.address}_${tokenB.address}_${fee}`,
+)
+
+export const computeV2PoolAddress = memoize(
+  Pair.getAddress,
+  (tokenA, tokenB) => `${tokenA.chainId}_${tokenA.address}_${tokenB.address}`,
+)
+
+export const getPoolAddress = memoize(
+  function getAddress(pool: Pool): Address | '' {
+    if (isStablePool(pool) || isV3Pool(pool)) {
+      return pool.address
+    }
+    if (isV2Pool(pool)) {
+      const { reserve0, reserve1 } = pool
+      return computeV2PoolAddress(reserve0.currency.wrapped, reserve1.currency.wrapped)
+    }
+    return ''
+  },
+  (pool) => {
+    if (isStablePool(pool)) {
+      const { balances } = pool
+      const tokenAddresses = balances.map((b) => b.currency.wrapped.address)
+      return `${balances[0]?.currency.chainId}_${tokenAddresses.join('_')}`
+    }
+    const [token0, token1] = isV2Pool(pool)
+      ? [pool.reserve0.currency.wrapped, pool.reserve1.currency.wrapped]
+      : [pool.token0.wrapped, pool.token1.wrapped]
+    return `${token0.chainId}_${token0.address}_${token1.address}`
+  },
+)
 
 export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Price<Currency, Currency> {
   if (isV3Pool(pool)) {
