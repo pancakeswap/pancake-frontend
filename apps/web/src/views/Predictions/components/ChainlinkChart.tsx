@@ -47,7 +47,7 @@ function useChainlinkRoundDataSet() {
           abi: chainlinkOracleABI,
           address: chainlinkOracleAddress,
           functionName: 'getRoundData',
-          args: [(lastRound.data ?? 0n) - BigInt(i)] as const,
+          args: [(lastRound.data ?? 0n) - BigInt(i)],
         } as const),
     ),
     enabled: !!lastRound.data,
