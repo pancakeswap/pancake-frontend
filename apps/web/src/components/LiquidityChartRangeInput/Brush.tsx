@@ -85,6 +85,7 @@ export const Brush = ({
   const [localBrushExtent, setLocalBrushExtent] = useState<[number, number] | null>(brushExtent)
   const [showLabels, setShowLabels] = useState(false)
   const [hovering, setHovering] = useState(false)
+  const isBrushMouseDown = useRef<boolean>(false)
 
   const previousBrushExtent = usePreviousValue(brushExtent)
 
@@ -110,14 +111,14 @@ export const Brush = ({
   )
 
   // keep local and external brush extent in sync
-  // i.e. snap to ticks on bruhs end
+  // i.e. snap to ticks on brush end
   useEffect(() => {
     setLocalBrushExtent(brushExtent)
   }, [brushExtent])
 
   // initialize the brush
   useEffect(() => {
-    if (!brushRef.current) return
+    if (!brushRef.current || isBrushMouseDown.current) return
 
     brushBehavior.current = brushX<SVGGElement>()
       .extent([
@@ -146,7 +147,7 @@ export const Brush = ({
 
   // respond to xScale changes only
   useEffect(() => {
-    if (!brushRef.current || !brushBehavior.current) return
+    if (!brushRef.current || !brushBehavior.current || isBrushMouseDown.current) return
 
     brushBehavior.current.move(select(brushRef.current) as any, brushExtent.map(xScale) as any)
   }, [brushExtent, xScale])
@@ -191,7 +192,13 @@ export const Brush = ({
           ref={brushRef}
           clipPath={`url(#${id}-brush-clip)`}
           onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
+          onMouseLeave={() => {
+            isBrushMouseDown.current = false
+            setHovering(false)
+          }}
+          onMouseDown={() => {
+            isBrushMouseDown.current = true
+          }}
         />
 
         {/* custom brush handles */}
