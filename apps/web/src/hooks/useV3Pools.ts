@@ -1,16 +1,13 @@
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
-import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancakeswap/v3-sdk'
+import { Tick } from '@pancakeswap/v3-sdk'
 import { useEffect, useMemo, useRef } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { useQuery } from '@tanstack/react-query'
-import { getViemClients } from 'utils/viem'
 
 import { v3Clients } from 'utils/graphql'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
-
-type Pair = [Currency, Currency]
 
 export interface V3PoolsHookParams {
   // Used for caching
@@ -80,48 +77,39 @@ export function useV3CandidatePoolsWithoutTicks(
     return [...symbols, currencyA.chainId].join('_')
   }, [currencyA, currencyB])
 
-  const pairs = useMemo(() => {
-    SmartRouter.metric('Getting pairs from', currencyA?.symbol, currencyB?.symbol)
-    return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
-  }, [currencyA, currencyB])
-
   const {
-    data: poolsFromSubgraphState,
+    data,
+    refetch,
     isLoading,
-    isValidating,
-    mutate,
-    error,
-  } = useV3PoolsFromSubgraph(pairs, { ...options, key })
-
-  const { data: poolsFromOnChain } = useQuery({
-    queryKey: ['v3_pools_onchain', key],
+    isFetching,
+    error: errorMsg,
+  } = useQuery({
+    queryKey: ['v3_candidate_pools', key],
     queryFn: async () => {
-      return SmartRouter.getV3PoolsWithoutTicksOnChain(pairs, getViemClients)
+      const pools = await SmartRouter.getV3CandidatePools({
+        currencyA,
+        currencyB,
+        subgraphProvider: ({ chainId }) => v3Clients[chainId],
+        blockNumber: options?.blockNumber,
+      })
+      return {
+        key,
+        pools,
+        blockNumber: options?.blockNumber,
+      }
     },
-    enabled: Boolean(error && key && options.enabled),
-    keepPreviousData: true,
+    enabled: Boolean(currencyA && currencyB && key && options?.enabled),
   })
 
-  const candidatePools = useMemo<V3Pool[] | null>(() => {
-    if (!currencyA || !currencyB) {
-      return null
-    }
-    if (error && poolsFromOnChain) {
-      return poolsFromOnChain
-    }
-    if (!poolsFromSubgraphState?.pools) {
-      return null
-    }
-    return SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, poolsFromSubgraphState.pools)
-  }, [poolsFromSubgraphState, currencyA, currencyB, error, poolsFromOnChain])
+  const error = useMemo(() => errorMsg && new Error(errorMsg as string), [errorMsg])
 
   return {
-    refresh: mutate,
-    pools: candidatePools,
+    refresh: refetch,
+    pools: data?.pools ?? null,
     loading: isLoading,
-    syncing: isValidating,
-    blockNumber: poolsFromSubgraphState?.blockNumber,
-    key: poolsFromSubgraphState?.key,
+    syncing: isFetching,
+    blockNumber: data?.blockNumber,
+    key: data?.key,
     error,
   }
 }
@@ -134,13 +122,17 @@ export function useV3PoolsWithTicks(
   const poolsWithTicks = useSWRImmutable(
     key && pools && enabled ? ['v3_pool_ticks', key] : null,
     async () => {
-      fetchingBlock.current = blockNumber.toString()
+      if (!pools) {
+        throw new Error('Invalid pools to get ticks')
+      }
+      fetchingBlock.current = blockNumber?.toString()
       try {
         const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
         SmartRouter.metric(label)
         const poolTicks = await Promise.all(
-          pools.map(async ({ token0, token1, fee }) => {
-            return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
+          pools.map(async (pool) => {
+            const { token0 } = pool
+            return getPoolTicks(token0.chainId, SmartRouter.getPoolAddress(pool)).then((data) => {
               return data.map(
                 ({ tick, liquidityNet, liquidityGross }) =>
                   new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
@@ -150,7 +142,7 @@ export function useV3PoolsWithTicks(
         )
         SmartRouter.metric(label, poolTicks)
         return {
-          pools: pools.map((pool, i) => ({
+          pools: pools?.map((pool, i) => ({
             ...pool,
             ticks: poolTicks[i],
           })),
@@ -181,77 +173,4 @@ export function useV3PoolsWithTicks(
   }, [blockNumber, mutate, data?.blockNumber, error])
 
   return poolsWithTicks
-}
-
-export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabled = true }: V3PoolsHookParams = {}) {
-  const fetchingBlock = useRef<string | null>(null)
-  const queryEnabled = Boolean(enabled && key && pairs?.length)
-  const result = useSWRImmutable<{
-    pools: SmartRouter.SubgraphV3Pool[]
-    key?: string
-    blockNumber?: number
-  }>(
-    queryEnabled && [key],
-    async () => {
-      fetchingBlock.current = blockNumber.toString()
-      try {
-        const pools = await SmartRouter.getV3PoolSubgraph({
-          provider: ({ chainId }) => v3Clients[chainId],
-          pairs,
-        })
-        return {
-          pools,
-          key,
-          blockNumber,
-        }
-      } finally {
-        fetchingBlock.current = null
-      }
-    },
-    {
-      revalidateOnFocus: false,
-      errorRetryCount: 5,
-    },
-  )
-
-  const { mutate, data, error } = result
-  useEffect(() => {
-    // Revalidate pools if block number increases
-    if (
-      queryEnabled &&
-      blockNumber &&
-      !error &&
-      fetchingBlock.current !== blockNumber.toString() &&
-      (!data?.blockNumber || blockNumber - data.blockNumber > 5)
-    ) {
-      mutate()
-    }
-  }, [blockNumber, mutate, data?.blockNumber, queryEnabled, error])
-  return result
-}
-
-const V3_POOL_ADDRESS_CACHE = new Map<string, string>()
-
-function getV3PoolAddress(currencyA: Currency, currencyB: Currency, fee: FeeAmount) {
-  const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
-    ? [currencyA, currencyB]
-    : [currencyB, currencyA]
-  const poolAddressCacheKey = [token0.chainId, token0.symbol, token1.symbol, fee].join('_')
-  const cached = V3_POOL_ADDRESS_CACHE.get(poolAddressCacheKey)
-  if (cached) {
-    return cached
-  }
-
-  const deployerAddress = DEPLOYER_ADDRESSES[currencyA.chainId as ChainId]
-  if (!deployerAddress) {
-    return ''
-  }
-  const address = computePoolAddress({
-    deployerAddress,
-    tokenA: currencyA.wrapped,
-    tokenB: currencyB.wrapped,
-    fee,
-  })
-  V3_POOL_ADDRESS_CACHE.set(poolAddressCacheKey, address)
-  return address
 }

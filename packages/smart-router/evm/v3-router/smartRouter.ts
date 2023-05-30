@@ -28,6 +28,7 @@ export {
   metric,
   log,
   Transformer,
+  getPoolAddress,
 } from './utils'
 export { getPairCombinations, getCheckAgainstBaseTokens } from './functions'
 export * as APISchema from './schema'
