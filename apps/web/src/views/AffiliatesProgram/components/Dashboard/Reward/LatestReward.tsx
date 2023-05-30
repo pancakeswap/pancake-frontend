@@ -95,25 +95,18 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   }
 
   const isAffiliateClaimEnabled = useMemo(() => {
-    const hasPendingOrUnClaimed = affiliateClaimData?.claimRequests?.find(
-      (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && i.process),
+    const hasPendingOrUnClaimed = affiliateClaimData?.claimRequests?.filter(
+      (i) => i.approveStatus === 'REJECTED' || (i.approveStatus === 'APPROVED' && !i.process),
     )
-    return (
-      new BigNumber(affiliateRewardFeeUSD).gt(0) &&
-      !isAffiliateClaimLoading &&
-      (affiliateClaimData?.total === 0 || hasPendingOrUnClaimed !== undefined)
-    )
+    return new BigNumber(affiliateRewardFeeUSD).gt(0) && !isAffiliateClaimLoading && hasPendingOrUnClaimed.length > 0
   }, [affiliateClaimData, affiliateRewardFeeUSD, isAffiliateClaimLoading])
 
   const isUserClaimEnabled = useMemo(() => {
-    const hasPendingOrUnClaimed = userClaimData?.claimRequests?.find(
-      (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && i.process),
+    const hasPendingOrUnClaimed = userClaimData?.claimRequests?.filter(
+      (i) => i.approveStatus === 'REJECTED' || (i.approveStatus === 'APPROVED' && !i.process),
     )
     return (
-      new BigNumber(userRewardFeeUSD).gt(0) &&
-      !!isUserExist &&
-      !isUserClaimLoading &&
-      (userClaimData?.total === 0 || hasPendingOrUnClaimed !== undefined)
+      new BigNumber(userRewardFeeUSD).gt(0) && !!isUserExist && !isUserClaimLoading && hasPendingOrUnClaimed.length > 0
     )
   }, [isUserClaimLoading, isUserExist, userClaimData, userRewardFeeUSD])
 
