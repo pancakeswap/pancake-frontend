@@ -177,15 +177,16 @@ export const getTradingCompetitionContractMoD = (signer?: WalletClient) => {
   })
 }
 
-export const getCakeVaultV2Contract = (signer?: WalletClient) => {
-  return getContract({ abi: cakeVaultV2ABI, address: getCakeVaultAddress(), signer })
+export const getCakeVaultV2Contract = (signer?: WalletClient, chainId?: ChainId) => {
+  return getContract({ abi: cakeVaultV2ABI, address: getCakeVaultAddress(chainId), signer, chainId })
 }
 
-export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient) => {
+export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient, chainId?: ChainId) => {
   return getContract({
     abi: cakeFlexibleSideVaultV2ABI,
-    address: getCakeFlexibleSideVaultAddress(),
+    address: getCakeFlexibleSideVaultAddress(chainId),
     signer,
+    chainId,
   })
 }
 

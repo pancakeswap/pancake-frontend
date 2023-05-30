@@ -159,21 +159,23 @@ export const useVaultPoolContract = <T extends VaultKey>(
       ? ReturnType<typeof getCakeVaultV2Contract>
       : ReturnType<typeof getCakeFlexibleSideVaultV2Contract>)
   | null => {
+  const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => {
     if (vaultKey === VaultKey.CakeVault) {
-      return getCakeVaultV2Contract(signer)
+      return getCakeVaultV2Contract(signer, chainId)
     }
     if (vaultKey === VaultKey.CakeFlexibleSideVault) {
-      return getCakeFlexibleSideVaultV2Contract(signer)
+      return getCakeFlexibleSideVaultV2Contract(signer, chainId)
     }
     return null
-  }, [signer, vaultKey]) as any
+  }, [signer, vaultKey, chainId]) as any
 }
 
 export const useCakeVaultContract = () => {
   const { data: signer } = useWalletClient()
-  return useMemo(() => getCakeVaultV2Contract(signer), [signer])
+  const { chainId } = useActiveChainId()
+  return useMemo(() => getCakeVaultV2Contract(signer, chainId), [signer, chainId])
 }
 
 export const useIfoCreditAddressContract = () => {
