@@ -3,8 +3,8 @@ import { useSignMessage } from '@pancakeswap/wagmi'
 import { useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
-import { utils } from 'ethers'
 import { useAccount } from 'wagmi'
+import { encodePacked, keccak256, toBytes } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleLatestReward'
@@ -61,9 +61,8 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       const timestamp = Math.floor(new Date().getTime() / 1000)
       const message =
         connector?.id === 'bsc'
-          ? utils.solidityKeccak256(['uint256', 'uint256'], [nonce, timestamp])
-          : utils.arrayify(utils.solidityKeccak256(['uint256', 'uint256'], [nonce, timestamp]))
-
+          ? keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)]))
+          : toBytes(keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)])))
       const signature = await signMessageAsync({ message: message as any })
       const url = isAffiliateClaim ? 'affiliates-claim-fee' : 'user-claim-fee'
       const response = await fetch(`/api/affiliates-program/${url}`, {

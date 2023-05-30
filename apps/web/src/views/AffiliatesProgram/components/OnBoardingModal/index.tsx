@@ -39,11 +39,13 @@ const OnBoardingModal = () => {
   const handleStartNow = async () => {
     try {
       setIsLoading(true)
+
+      const timestamp = Math.floor(new Date().getTime() / 1000)
       // BSC wallet sign message only accept string
       const message =
         connector?.id === 'bsc'
-          ? keccak256(encodePacked(['string'], [router.query.ref as string]))
-          : toBytes(keccak256(encodePacked(['string'], [router.query.ref as string])))
+          ? keccak256(encodePacked(['string', 'uint256'], [router.query.ref as string, BigInt(timestamp)]))
+          : toBytes(keccak256(encodePacked(['string', 'uint256'], [router.query.ref as string, BigInt(timestamp)])))
       const signature = await signMessageAsync({ message: message as any })
       const response = await fetch('/api/affiliates-program/user-register-fee', {
         method: 'POST',
@@ -52,6 +54,7 @@ const OnBoardingModal = () => {
             linkId: router.query.ref,
             address,
             signature,
+            timestamp,
           },
         }),
       })
