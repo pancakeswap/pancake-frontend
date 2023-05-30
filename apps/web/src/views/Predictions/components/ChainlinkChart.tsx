@@ -40,16 +40,18 @@ function useChainlinkRoundDataSet() {
   const { chainlinkOracleAddress } = useConfig()
 
   const { data, error } = useContractReads({
-    contracts: Array.from({ length: 50 }).map(
-      (_, i) =>
-        ({
-          chainId,
-          abi: chainlinkOracleABI,
-          address: chainlinkOracleAddress,
-          functionName: 'getRoundData',
-          args: [(lastRound.data ?? 0n) - BigInt(i)] as const,
-        } as const),
-    ),
+    contracts:
+      lastRound?.data &&
+      Array.from({ length: 50 }).map(
+        (_, i) =>
+          ({
+            chainId,
+            abi: chainlinkOracleABI,
+            address: chainlinkOracleAddress,
+            functionName: 'getRoundData',
+            args: [(lastRound.data ?? 0n) - BigInt(i)] as const,
+          } as const),
+      ),
     enabled: !!lastRound.data,
     keepPreviousData: true,
   })
