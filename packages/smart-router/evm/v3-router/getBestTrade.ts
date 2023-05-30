@@ -73,7 +73,9 @@ async function getBestRoutes(
   const inputCurrency = isExactIn ? amount.currency : currency
   const outputCurrency = isExactIn ? currency : amount.currency
 
-  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency, {
+  const candidatePools = await poolProvider?.getCandidatePools({
+    currencyA: amount.currency,
+    currencyB: currency,
     blockNumber,
     protocols: allowedPoolTypes,
   })

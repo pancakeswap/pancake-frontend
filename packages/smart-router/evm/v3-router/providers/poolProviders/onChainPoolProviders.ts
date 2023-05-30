@@ -173,9 +173,13 @@ function createOnChainPoolFactory<
 >({ abi, getPossiblePoolMetas, buildPoolInfoCalls, buildPool }: OnChainPoolFactoryParams<TPool, TPoolMeta, TAbi>) {
   return async function poolFactory(
     pairs: [Currency, Currency][],
-    provider: OnChainProvider,
+    provider?: OnChainProvider,
     blockNumber?: BigintIsh,
   ): Promise<TPool[]> {
+    if (!provider) {
+      throw new Error('No valid onchain data provider')
+    }
+
     const chainId: ChainId = pairs[0]?.[0]?.chainId
     if (!chainId) {
       return []

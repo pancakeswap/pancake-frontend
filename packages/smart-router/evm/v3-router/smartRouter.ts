@@ -9,6 +9,10 @@ export {
   getV3PoolsWithoutTicksOnChain,
   getV3PoolSubgraph,
   getV2PoolSubgraph,
+  getV2CandidatePools,
+  getV3CandidatePools,
+  getStableCandidatePools,
+  getCandidatePools,
   v2PoolTvlSelector as v2PoolSubgraphSelection,
   v3PoolTvlSelector as v3PoolSubgraphSelection,
 } from './providers'

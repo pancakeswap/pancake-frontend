@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import { gql } from 'graphql-request'
 
 import { infoClientWithChain, v3Clients } from 'utils/graphql'
+import { getViemClients } from 'utils/viem'
 
 import { useV2CandidatePools as useV2PoolsFromOnChain } from './usePoolsOnChain'
 
@@ -23,9 +24,14 @@ export interface V2PoolsResult {
   loading: boolean
   syncing: boolean
   blockNumber?: number
+  refresh: () => void
 }
 
-export function useV2CandidatePools(currencyA?: Currency, currencyB?: Currency, options?: V2PoolsHookParams) {
+export function useV2CandidatePools(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  options?: V2PoolsHookParams,
+): V2PoolsResult {
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -36,25 +42,56 @@ export function useV2CandidatePools(currencyA?: Currency, currencyB?: Currency, 
     return [...symbols, currencyA.chainId].join('_')
   }, [currencyA, currencyB])
 
-  const pairs = useMemo(() => {
-    SmartRouter.metric('Getting pairs from', currencyA?.symbol || '', currencyB?.symbol || '')
-    return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
-  }, [currencyA, currencyB])
-  const { data: poolsFromSubgraphState, isLoading, isValidating } = useV2PoolsFromSubgraph(pairs, { ...options, key })
+  const fetchingBlock = useRef<string | null>(null)
+  const queryEnabled = Boolean(options?.enabled && key)
+  const result = useSWR<{
+    pools: V2Pool[]
+    key?: string
+    blockNumber?: number
+  }>(
+    queryEnabled && key && ['V2_Candidate_Pools', key],
+    async () => {
+      fetchingBlock.current = options?.blockNumber?.toString()
+      try {
+        const pools = await SmartRouter.getV2CandidatePools({
+          currencyA,
+          currencyB,
+          subgraphProvider: ({ chainId }) => infoClientWithChain(chainId),
+          onChainProvider: getViemClients,
+        })
+        return {
+          pools,
+          key,
+          blockNumber: options?.blockNumber,
+        }
+      } finally {
+        fetchingBlock.current = null
+      }
+    },
+    {
+      revalidateOnFocus: false,
+    },
+  )
 
-  const candidatePools = useMemo<V2Pool[] | null>(() => {
-    if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
-      return null
+  const { mutate, data, isLoading, isValidating } = result
+  useEffect(() => {
+    // Revalidate pools if block number increases
+    if (
+      queryEnabled &&
+      options?.blockNumber &&
+      fetchingBlock.current !== options.blockNumber.toString() &&
+      (!data?.blockNumber || options.blockNumber > data.blockNumber)
+    ) {
+      mutate()
     }
-    return SmartRouter.v2PoolSubgraphSelection(currencyA, currencyB, poolsFromSubgraphState.pools)
-  }, [poolsFromSubgraphState, currencyA, currencyB])
+  }, [options?.blockNumber, mutate, data?.blockNumber, queryEnabled])
 
   return {
-    pools: candidatePools,
+    pools: data?.pools ?? null,
     loading: isLoading,
     syncing: isValidating,
-    blockNumber: poolsFromSubgraphState?.blockNumber,
-    key: poolsFromSubgraphState?.key,
+    blockNumber: data?.blockNumber,
+    refresh: mutate,
   }
 }
 

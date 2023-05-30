@@ -5,9 +5,11 @@ export function createStaticPoolProvider(pools: Pool[]): PoolProvider {
   const defaultAllowedProtocols = [PoolType.V2, PoolType.STABLE, PoolType.V3]
 
   return {
-    getCandidatePools: async (_a, _b, { protocols = defaultAllowedProtocols }) =>
-      pools.filter((pool) => protocols.includes(pool.type)),
-    getPools: async (pairs, { protocols = defaultAllowedProtocols }) => {
+    getCandidatePools: async ({ protocols = defaultAllowedProtocols, pairs }) => {
+      if (!pairs) {
+        return pools.filter((pool) => protocols.includes(pool.type))
+      }
+
       const relatedPools: Pool[] = []
       for (const [currencyA, currencyB] of pairs) {
         for (const pool of pools) {
