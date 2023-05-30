@@ -11,7 +11,7 @@
   "packageManager": "pnpm@8.3.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev --filter=web...",
+    "dev": "turbo run dev --filter=web... --concurrency=19",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web...",
     "dev:blog": "pnpm turbo run dev --filter=blog...",
     "dev:bridge": "pnpm turbo run dev --filter=bridge...",
@@ -64,7 +64,7 @@
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/eslint-config-pancake": "workspace:*",
     "typescript": "^5.0.4",
-    "turbo": "1.8.3",
+    "turbo": "1.9.9",
     "vitest": "^0.27.2"
   },
   "volta": {
