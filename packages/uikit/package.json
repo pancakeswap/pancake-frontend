@@ -80,14 +80,14 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
-    "viem": "^0.3.30",
+    "viem": "^0.3.39",
     "next": "*",
     "next-seo": "*",
     "remark-gfm": "*",
     "react-device-detect": "*",
     "react-transition-group": "*",
     "js-cookie": "*",
-    "wagmi": "1.0.5"
+    "wagmi": "1.0.9"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -106,7 +106,7 @@
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
-    "viem": "^0.3.30",
+    "viem": "^0.3.39",
     "next": "*",
     "next-seo": "*",
     "remark-gfm": "*",
