@@ -43,9 +43,8 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
         })
 
         const result = await response.json()
-        console.log('result', result)
         if (result.status === 'success') {
-          // await callContract(isAffiliateClaim, reward)
+          await callContract(isAffiliateClaim, result?.claimRequest as ClaimDetail)
         } else {
           toastError(result?.error || '')
         }
@@ -59,10 +58,11 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
 
   const callContract = async (isAffiliateClaim: boolean, reward: ClaimDetail) => {
     try {
-      const { nonce, totalCakeSmallUnit, expiryTime } = reward
+      const { nonce, totalCakeSmallUnit, signature } = reward
       const claimType = isAffiliateClaim ? 0 : 1
+      const expiryTime = Math.floor(new Date(reward.expiryTime).getTime() / 1000)
       const receipt = await fetchWithCatchTxError(() =>
-        contract.claim(nonce, address, claimType, totalCakeSmallUnit, expiryTime),
+        contract.claim([nonce, address, claimType, totalCakeSmallUnit, expiryTime], signature),
       )
 
       if (receipt?.status) {

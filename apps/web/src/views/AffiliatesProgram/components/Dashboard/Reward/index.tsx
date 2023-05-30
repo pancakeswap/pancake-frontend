@@ -59,7 +59,9 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
     const affiliateInCompletedData = affiliateClaimData?.claimRequests?.filter(
       (i) => i.approveStatus === 'APPROVED' && !i.process,
     )
-    return new BigNumber(affiliateInCompletedData?.length).plus(userHasInCompletedData?.length).toNumber() ?? 0
+    return (
+      new BigNumber(affiliateInCompletedData?.length ?? 0).plus(userHasInCompletedData?.length ?? 0).toNumber() ?? 0
+    )
   }, [userClaimData, affiliateClaimData])
 
   return (

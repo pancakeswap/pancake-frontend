@@ -57,8 +57,8 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
 
       const method = isAffiliateClaim ? contract.getAffiliateInfo(address) : contract.getUserInfo(address)
       const userInfo = await method
-      const nonce = new BigNumber(userInfo.nonce.toString()).toNumber()
-      const timestamp = Math.ceil(new Date().getTime() / 1000)
+      const nonce = new BigNumber(userInfo?.nonce?.toString()).toNumber()
+      const timestamp = Math.floor(new Date().getTime() / 1000)
       const message =
         connector?.id === 'bsc'
           ? utils.solidityKeccak256(['uint256', 'uint256'], [nonce, timestamp])
