@@ -3,12 +3,14 @@ import { Flex, useToast } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useAffiliateProgramContract } from 'hooks/useContract'
 import useAffiliateClaimList from 'views/AffiliatesProgram/hooks/useAffiliateClaimList'
 import useUserClaimList, { ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import SingleHistoricalReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleHistoricalReward'
-import { useAffiliateProgramContract } from 'hooks/useContract'
+import WrongNetworkWarning from 'views/AffiliatesProgram/components/Dashboard/Reward/WrongNetworkWarning'
 
 interface HistoricalRewardProps {
   isAffiliate: boolean
@@ -17,6 +19,7 @@ interface HistoricalRewardProps {
 const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>> = ({ isAffiliate }) => {
   const { t } = useTranslation()
   const { address } = useAccount()
+  const { chainId } = useActiveChainId()
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const contract = useAffiliateProgramContract({ chainId: ChainId.BSC })
@@ -90,27 +93,33 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
 
   return (
     <Flex flexDirection="column" width="100%">
-      {isAffiliate && (
-        <SingleHistoricalReward
-          mb="24px"
-          title={t('Affiliate Reward')}
-          tableFirstTitle={t('Affiliate Reward')}
-          isAffiliateClaim
-          dataList={affiliateClaimData}
-          currentPage={affiliateDataCurrentPage}
-          setCurrentPage={setAffiliateDataCurrentPage}
-          handleClickClaim={handleClickClaim}
-        />
+      {chainId !== ChainId.BSC ? (
+        <WrongNetworkWarning />
+      ) : (
+        <>
+          {isAffiliate && (
+            <SingleHistoricalReward
+              mb="24px"
+              title={t('Affiliate Reward')}
+              tableFirstTitle={t('Affiliate Reward')}
+              isAffiliateClaim
+              dataList={affiliateClaimData}
+              currentPage={affiliateDataCurrentPage}
+              setCurrentPage={setAffiliateDataCurrentPage}
+              handleClickClaim={handleClickClaim}
+            />
+          )}
+          <SingleHistoricalReward
+            title={t('User Reward')}
+            tableFirstTitle={t('User Reward')}
+            isAffiliateClaim={false}
+            dataList={userClaimData}
+            currentPage={userDataCurrentPage}
+            setCurrentPage={setUserDataCurrentPage}
+            handleClickClaim={handleClickClaim}
+          />
+        </>
       )}
-      <SingleHistoricalReward
-        title={t('User Reward')}
-        tableFirstTitle={t('User Reward')}
-        isAffiliateClaim={false}
-        dataList={userClaimData}
-        currentPage={userDataCurrentPage}
-        setCurrentPage={setUserDataCurrentPage}
-        handleClickClaim={handleClickClaim}
-      />
     </Flex>
   )
 }
