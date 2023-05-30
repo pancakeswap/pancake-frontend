@@ -54,7 +54,7 @@ import { getContract as viemGetContract, WalletClient, PublicClient } from 'viem
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
-import { Abi } from 'abitype'
+import { Abi, Narrow } from 'abitype'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
@@ -87,7 +87,7 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   publicClient,
   signer,
 }: {
-  abi: TAbi
+  abi: Narrow<TAbi>
   address: Address
   chainId?: ChainId
   signer?: TWalletClient

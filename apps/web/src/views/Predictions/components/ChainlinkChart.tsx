@@ -25,7 +25,7 @@ function useChainlinkLatestRound() {
   const { chainId } = useActiveChainId()
   const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
   return useContractRead({
-    abi: chainlinkOracleContract.abi,
+    abi: chainlinkOracleABI,
     address: chainlinkOracleContract.address,
     functionName: 'latestRound',
     enabled: !!chainlinkOracleContract,
