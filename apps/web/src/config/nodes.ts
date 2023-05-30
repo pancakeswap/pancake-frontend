@@ -46,6 +46,7 @@ export const PUBLIC_NODES = {
       getNodeRealUrlV2(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
       isTest ? null : 'https://little-quick-brook.quiknode.pro/74f7f03cbdc91e54f2ed689df3fc500e6bc5b4e7/',
       isTest ? null : 'https://eth-mainnet.gateway.pokt.network/v1/lb/0559a4d874bda0ee4ebef6c7',
+      'https://cloudflare-eth.com',
       // 'https://eth.llamarpc.com',
     ].filter(Boolean),
     fallbackConfig: {

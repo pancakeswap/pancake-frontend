@@ -5,7 +5,6 @@ import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
 import { configureChains, createConfig, createStorage } from 'wagmi'
-import { mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
@@ -25,9 +24,6 @@ export const { publicClient, chains } = configureChains(
     .map((i) => {
       return jsonRpcProvider({
         rpc: (chain) => {
-          if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
-            return { http: 'https://cloudflare-eth.com' }
-          }
           return PUBLIC_NODES[chain.id as keyof typeof PUBLIC_NODES]?.urls?.[i]
             ? {
                 http: PUBLIC_NODES[chain.id as keyof typeof PUBLIC_NODES].urls[i],
