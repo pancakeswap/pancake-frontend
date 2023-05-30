@@ -77,7 +77,7 @@ export default {
   },
   cakeFlexibleSideVault: {
     56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
-    97: '0x',
+    97: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
   },
   predictionsBNB: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
