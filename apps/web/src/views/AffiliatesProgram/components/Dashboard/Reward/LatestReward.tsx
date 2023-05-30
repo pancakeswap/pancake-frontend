@@ -9,7 +9,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleLatestReward'
 import { UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
-import { getAffiliateProgramContract } from 'utils/contractHelpers'
+import { useAffiliateProgramContract } from 'hooks/useContract'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 
 interface LatestRewardProps {
@@ -36,7 +36,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
 
   const [isAffiliateClaimLoading, setIsAffiliateClaimLoading] = useState(false)
   const [isUserClaimLoading, setIsUserClaimLoading] = useState(false)
-  const contract = getAffiliateProgramContract(ChainId.BSC_TESTNET)
+  const contract = useAffiliateProgramContract({ chainId: ChainId.BSC })
 
   const affiliateTotalCakeEarned = useMemo(
     () => new BigNumber(affiliateRewardFeeUSD).div(cakePriceBusd).toNumber(),
@@ -55,8 +55,8 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
         setIsUserClaimLoading(true)
       }
 
-      const method = isAffiliateClaim ? contract.getAffiliateInfo(address) : contract.getUserInfo(address)
-      const userInfo = await method
+      const method = isAffiliateClaim ? contract.read.getAffiliateInfo([address]) : contract.read.getUserInfo([address])
+      const userInfo = (await method) as { nonce: number; totalClaimedAmount: number }
       const nonce = new BigNumber(userInfo?.nonce?.toString()).toNumber()
       const timestamp = Math.floor(new Date().getTime() / 1000)
       const message =
@@ -64,7 +64,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
           ? utils.solidityKeccak256(['uint256', 'uint256'], [nonce, timestamp])
           : utils.arrayify(utils.solidityKeccak256(['uint256', 'uint256'], [nonce, timestamp]))
 
-      const signature = await signMessageAsync({ message })
+      const signature = await signMessageAsync({ message: message as any })
       const url = isAffiliateClaim ? 'affiliates-claim-fee' : 'user-claim-fee'
       const response = await fetch(`/api/affiliates-program/${url}`, {
         method: 'POST',

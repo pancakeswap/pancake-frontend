@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useToast } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useAffiliateClaimList from 'views/AffiliatesProgram/hooks/useAffiliateClaimList'
@@ -18,7 +19,7 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
   const { address } = useAccount()
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
-  const contract = useAffiliateProgramContract()
+  const contract = useAffiliateProgramContract({ chainId: ChainId.BSC })
 
   const [affiliateDataCurrentPage, setAffiliateDataCurrentPage] = useState(1)
   const [userDataCurrentPage, setUserDataCurrentPage] = useState(1)
@@ -62,7 +63,10 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
       const claimType = isAffiliateClaim ? 0 : 1
       const expiryTime = Math.floor(new Date(reward.expiryTime).getTime() / 1000)
       const receipt = await fetchWithCatchTxError(() =>
-        contract.claim([nonce, address, claimType, totalCakeSmallUnit, expiryTime], signature),
+        contract.write.claim([[nonce, address, claimType, totalCakeSmallUnit, expiryTime], signature], {
+          account: contract.account,
+          chain: contract.chain,
+        }),
       )
 
       if (receipt?.status) {
