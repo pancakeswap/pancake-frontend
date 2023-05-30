@@ -4,13 +4,18 @@ import { getCandidatePools } from './getCandidatePools'
 
 interface HybridProviderConfig {
   onChainProvider?: OnChainProvider
-  subgraphProvider?: SubgraphProvider
+  v2SubgraphProvider?: SubgraphProvider
+  v3SubgraphProvider?: SubgraphProvider
 }
 
-export function createHybridPoolProvider({ onChainProvider, subgraphProvider }: HybridProviderConfig): PoolProvider {
+export function createHybridPoolProvider({
+  onChainProvider,
+  v2SubgraphProvider,
+  v3SubgraphProvider,
+}: HybridProviderConfig): PoolProvider {
   const hybridPoolProvider: PoolProvider = {
     getCandidatePools: async (params) => {
-      return getCandidatePools({ ...params, onChainProvider, subgraphProvider })
+      return getCandidatePools({ ...params, onChainProvider, v2SubgraphProvider, v3SubgraphProvider })
     },
   }
 

@@ -13,13 +13,16 @@ interface Params {
   pairs?: [Currency, Currency][]
 
   onChainProvider?: OnChainProvider
-  subgraphProvider?: SubgraphProvider
+  v2SubgraphProvider?: SubgraphProvider
+  v3SubgraphProvider?: SubgraphProvider
   blockNumber?: BigintIsh
   protocols?: PoolType[]
 }
 
 export async function getCandidatePools({
   protocols = [PoolType.V3, PoolType.V2, PoolType.STABLE],
+  v2SubgraphProvider,
+  v3SubgraphProvider,
   ...rest
 }: Params): Promise<Pool[]> {
   const { currencyA } = rest
@@ -31,10 +34,10 @@ export async function getCandidatePools({
   const poolSets = await Promise.all(
     protocols.map((protocol) => {
       if (protocol === PoolType.V2) {
-        return getV2CandidatePools(rest)
+        return getV2CandidatePools({ ...rest, v2SubgraphProvider, v3SubgraphProvider })
       }
       if (protocol === PoolType.V3) {
-        return getV3CandidatePools(rest)
+        return getV3CandidatePools({ ...rest, subgraphProvider: v3SubgraphProvider })
       }
       return getStableCandidatePools(rest)
     }),

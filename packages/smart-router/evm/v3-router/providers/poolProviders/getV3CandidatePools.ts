@@ -9,6 +9,8 @@ import { v3PoolTvlSelector } from './poolTvlSelectors'
 interface Params {
   currencyA?: Currency
   currencyB?: Currency
+
+  // V3 subgraph provider
   subgraphProvider?: SubgraphProvider
   blockNumber?: BigintIsh
 

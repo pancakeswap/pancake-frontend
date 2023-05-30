@@ -16,6 +16,8 @@ const tokenPriceQuery = gql`
 interface Params {
   currencyA?: Currency
   currencyB?: Currency
+
+  // V3 subgraph provider
   provider?: SubgraphProvider
 }
 

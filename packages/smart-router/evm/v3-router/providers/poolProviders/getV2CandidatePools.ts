@@ -14,7 +14,8 @@ interface Params {
   currencyA?: Currency
   currencyB?: Currency
   onChainProvider?: OnChainProvider
-  subgraphProvider?: SubgraphProvider
+  v2SubgraphProvider?: SubgraphProvider
+  v3SubgraphProvider?: SubgraphProvider
   blockNumber?: BigintIsh
 
   // Only use this param if we want to specify pairs we want to get
@@ -26,13 +27,13 @@ export async function getV2PoolsWithTvlByCommonTokenPrices({
   currencyB,
   pairs: providedPairs,
   onChainProvider,
-  subgraphProvider,
+  v3SubgraphProvider,
   blockNumber,
-}: Params) {
+}: Omit<Params, 'v2SubgraphProvider'>) {
   const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
   const [poolsFromOnChain, baseTokenUsdPrices] = await Promise.all([
     getV2PoolsOnChain(pairs, onChainProvider, blockNumber),
-    getCommonTokenPrices({ currencyA, currencyB, provider: subgraphProvider }),
+    getCommonTokenPrices({ currencyA, currencyB, provider: v3SubgraphProvider }),
   ])
 
   if (!poolsFromOnChain || !baseTokenUsdPrices) {
@@ -65,16 +66,16 @@ export async function getV2PoolsWithTvlByCommonTokenPrices({
 }
 
 export async function getV2CandidatePools(params: Params) {
-  const { subgraphProvider, currencyA, currencyB, pairs: providedPairs } = params
+  const { v2SubgraphProvider, currencyA, currencyB, pairs: providedPairs } = params
   const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
 
   const getPools = withFallback<V2PoolWithTvl[]>([
     {
-      asyncFn: () => getV2PoolSubgraph({ provider: subgraphProvider, pairs }),
+      asyncFn: () => getV2PoolsWithTvlByCommonTokenPrices(params),
       timeout: 3000,
     },
     {
-      asyncFn: () => getV2PoolsWithTvlByCommonTokenPrices(params),
+      asyncFn: () => getV2PoolSubgraph({ provider: v2SubgraphProvider, pairs }),
     },
   ])
 
