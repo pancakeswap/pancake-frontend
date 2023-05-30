@@ -45,8 +45,8 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
 }) => {
   const { t } = useTranslation()
   const [menuType, setMenuType] = useState(MenuType.Latest)
-  const { data: affiliateClaimData } = useAffiliateClaimList({ currentPage: 1 })
-  const { data: userClaimData } = useUserClaimList({ currentPage: 1 })
+  const { data: affiliateClaimData, mutate: refreshAffiliateClaimData } = useAffiliateClaimList({ currentPage: 1 })
+  const { data: userClaimData, mutate: refreshUserClaimData } = useUserClaimList({ currentPage: 1 })
 
   const handleTypeChange = (newMenuType: MenuType) => {
     setMenuType(newMenuType)
@@ -85,6 +85,8 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                   affiliateRewardFeeUSD={affiliateRewardFeeUSD}
                   userClaimData={userClaimData}
                   affiliateClaimData={affiliateClaimData}
+                  refreshAffiliateClaimData={refreshAffiliateClaimData}
+                  refreshUserClaimData={refreshUserClaimData}
                 />
               ) : (
                 <HistoricalReward isAffiliate={isAffiliate} />

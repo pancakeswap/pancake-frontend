@@ -18,6 +18,8 @@ interface LatestRewardProps {
   affiliateRewardFeeUSD: string
   userClaimData: UserClaimListResponse
   affiliateClaimData: UserClaimListResponse
+  refreshAffiliateClaimData: () => void
+  refreshUserClaimData: () => void
 }
 
 const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
@@ -26,6 +28,8 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   affiliateRewardFeeUSD,
   userClaimData,
   affiliateClaimData,
+  refreshAffiliateClaimData,
+  refreshUserClaimData,
 }) => {
   const { t } = useTranslation()
   const { address, connector } = useAccount()
@@ -64,6 +68,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
           ? keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)]))
           : toBytes(keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)])))
       const signature = await signMessageAsync({ message: message as any })
+
       const url = isAffiliateClaim ? 'affiliates-claim-fee' : 'user-claim-fee'
       const response = await fetch(`/api/affiliates-program/${url}`, {
         method: 'POST',
@@ -80,6 +85,11 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       const result = await response.json()
       if (result.status === 'success') {
         toastSuccess(t('Success!'))
+        if (isAffiliateClaim) {
+          await refreshAffiliateClaimData()
+        } else {
+          await refreshUserClaimData()
+        }
       } else {
         toastError(result?.error || '')
       }
@@ -94,21 +104,21 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
     }
   }
 
-  const isAffiliateClaimEnabled = useMemo(() => {
+  const isAffiliateClaimDisabled = useMemo(() => {
     const hasPendingOrUnClaimed = affiliateClaimData?.claimRequests?.filter(
-      (i) => i.approveStatus === 'REJECTED' || (i.approveStatus === 'APPROVED' && !i.process),
+      (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && !i.process),
     )
-    return new BigNumber(affiliateRewardFeeUSD).gt(0) && !isAffiliateClaimLoading && hasPendingOrUnClaimed.length > 0
+    return new BigNumber(affiliateRewardFeeUSD).lte(0) || hasPendingOrUnClaimed?.length > 0 || isAffiliateClaimLoading
   }, [affiliateClaimData, affiliateRewardFeeUSD, isAffiliateClaimLoading])
 
-  const isUserClaimEnabled = useMemo(() => {
+  const isUserClaimDisabled = useMemo(() => {
     const hasPendingOrUnClaimed = userClaimData?.claimRequests?.filter(
-      (i) => i.approveStatus === 'REJECTED' || (i.approveStatus === 'APPROVED' && !i.process),
+      (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && !i.process),
     )
     return (
-      new BigNumber(userRewardFeeUSD).gt(0) && !!isUserExist && !isUserClaimLoading && hasPendingOrUnClaimed.length > 0
+      new BigNumber(userRewardFeeUSD).lte(0) || hasPendingOrUnClaimed?.length > 0 || isUserClaimLoading || !isUserExist
     )
-  }, [isUserClaimLoading, isUserExist, userClaimData, userRewardFeeUSD])
+  }, [isUserClaimLoading, userClaimData, userRewardFeeUSD, isUserExist])
 
   return (
     <>
@@ -118,7 +128,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
           usdAmount={Number(affiliateRewardFeeUSD)}
           cakeAmountTitle={t('Affiliate CAKE Earned')}
           cakeAmount={affiliateTotalCakeEarned}
-          disabled={!isAffiliateClaimEnabled}
+          disabled={isAffiliateClaimDisabled}
           clickClaim={() => handleClaim(true)}
         />
       )}
@@ -127,7 +137,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
         usdAmount={Number(userRewardFeeUSD)}
         cakeAmountTitle={t('User CAKE Earned')}
         cakeAmount={userTotalCakeEarned}
-        disabled={!isUserClaimEnabled}
+        disabled={isUserClaimDisabled}
         clickClaim={() => handleClaim(false)}
       />
     </>

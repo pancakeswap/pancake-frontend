@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 import { UserClaimListResponse, MAX_PER_PAGE, ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
-import { Box, Flex, Text, Card, PaginationButton, Table, Td, Th, FlexProps } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, PaginationButton, Table, Td, Th, FlexProps, Button } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
 const Dot = styled(Box)`
@@ -127,15 +127,16 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
                         </Text>
                       )}
                       {reward.approveStatus === 'APPROVED' && !reward.process && (
-                        <Text
-                          bold
-                          color="primary"
-                          textAlign="right"
+                        <Button
+                          ml="auto"
+                          padding="0"
+                          variant="text"
+                          display="block"
                           style={{ cursor: 'pointer' }}
                           onClick={() => handleClickClaim(isAffiliateClaim, reward)}
                         >
                           {t('Claim ')}
-                        </Text>
+                        </Button>
                       )}
                     </Td>
                   </tr>
