@@ -55,6 +55,7 @@ const Dashboard = () => {
                 isAffiliate={isAffiliate}
                 userRewardFeeUSD={userInfo.availableFeeUSD}
                 affiliateRewardFeeUSD={affiliate.availableFeeUSD}
+                refreshAuthAffiliate={refresh}
               />
             </Card>
           </Flex>

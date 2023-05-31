@@ -95,7 +95,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
             ) : (
               <>
                 {list?.map((reward) => (
-                  <tr key={reward.nonce}>
+                  <tr key={reward.createdAt}>
                     <Td>
                       <Text>{`$${formatNumber(Number(reward.amountUSD), 0, 2)}`}</Text>
                     </Td>
@@ -130,17 +130,24 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
                         </Text>
                       )}
                       {reward.approveStatus === 'APPROVED' && !reward.process && (
-                        <Button
-                          ml="auto"
-                          padding="0"
-                          variant="text"
-                          display="block"
-                          style={{ cursor: 'pointer' }}
-                          disabled={chainId !== ChainId.BSC}
-                          onClick={() => handleClickClaim(isAffiliateClaim, reward)}
-                        >
-                          {t('Claim')}
-                        </Button>
+                        <>
+                          {chainId !== ChainId.BSC ? (
+                            <Text color="textDisabled" textAlign="right">
+                              {t('Claim')}
+                            </Text>
+                          ) : (
+                            <Button
+                              ml="auto"
+                              padding="0"
+                              variant="text"
+                              display="block"
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => handleClickClaim(isAffiliateClaim, reward)}
+                            >
+                              {t('Claim')}
+                            </Button>
+                          )}
+                        </>
                       )}
                     </Td>
                   </tr>

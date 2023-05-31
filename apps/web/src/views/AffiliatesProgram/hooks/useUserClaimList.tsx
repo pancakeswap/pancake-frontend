@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import qs from 'qs'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { FAST_INTERVAL } from 'config/constants'
 
 export type ClaimStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
 
@@ -48,6 +49,10 @@ const useUserClaimList = ({ currentPage }) => {
           claimRequests: [],
         }
       }
+    },
+    {
+      refreshInterval: FAST_INTERVAL * 3,
+      keepPreviousData: true,
     },
   )
 

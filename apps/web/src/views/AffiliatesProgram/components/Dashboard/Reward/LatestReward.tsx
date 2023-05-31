@@ -22,6 +22,7 @@ interface LatestRewardProps {
   affiliateClaimData: UserClaimListResponse
   refreshAffiliateClaimData: () => void
   refreshUserClaimData: () => void
+  refreshAuthAffiliate: () => void
 }
 
 const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
@@ -32,6 +33,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   affiliateClaimData,
   refreshAffiliateClaimData,
   refreshUserClaimData,
+  refreshAuthAffiliate,
 }) => {
   const { t } = useTranslation()
   const { address, connector } = useAccount()
@@ -89,7 +91,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       if (result.status === 'success') {
         toastSuccess(t('Success!'))
         if (isAffiliateClaim) {
-          await refreshAffiliateClaimData()
+          await Promise.all([refreshAffiliateClaimData(), refreshAuthAffiliate()])
         } else {
           await refreshUserClaimData()
         }

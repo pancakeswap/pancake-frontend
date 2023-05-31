@@ -4,6 +4,7 @@ import qs from 'qs'
 import useAuthAffiliate from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import { UserClaimListResponse, MAX_PER_PAGE } from 'views/AffiliatesProgram/hooks/useUserClaimList'
+import { FAST_INTERVAL } from 'config/constants'
 
 const useAffiliateClaimList = ({ currentPage }) => {
   const { address } = useAccount()
@@ -33,6 +34,10 @@ const useAffiliateClaimList = ({ currentPage }) => {
           claimRequests: [],
         }
       }
+    },
+    {
+      refreshInterval: FAST_INTERVAL * 3,
+      keepPreviousData: true,
     },
   )
 

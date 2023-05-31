@@ -36,12 +36,14 @@ interface ClaimRewardProps {
   isAffiliate: boolean
   userRewardFeeUSD: string
   affiliateRewardFeeUSD: string
+  refreshAuthAffiliate: () => void
 }
 
 const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
   isAffiliate,
   userRewardFeeUSD,
   affiliateRewardFeeUSD,
+  refreshAuthAffiliate,
 }) => {
   const { t } = useTranslation()
   const [menuType, setMenuType] = useState(MenuType.Latest)
@@ -87,6 +89,7 @@ const ClaimReward: React.FC<React.PropsWithChildren<ClaimRewardProps>> = ({
                   affiliateClaimData={affiliateClaimData}
                   refreshAffiliateClaimData={refreshAffiliateClaimData}
                   refreshUserClaimData={refreshUserClaimData}
+                  refreshAuthAffiliate={refreshAuthAffiliate}
                 />
               ) : (
                 <HistoricalReward isAffiliate={isAffiliate} />
