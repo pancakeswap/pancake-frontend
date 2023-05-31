@@ -452,8 +452,8 @@ importers:
   apps/bridge:
     dependencies:
       '@0xsquid/widget':
-        specifier: ^1.4.84
-        version: 1.4.84(@wagmi/core@0.10.11)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
+        specifier: ^1.4.85
+        version: 1.4.85(@wagmi/core@0.10.11)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
       '@material-ui/core':
         specifier: ^4.12.4
         version: 4.12.4(@types/react@18.2.0)(react-dom@18.2.0)(react@18.2.0)
@@ -1878,8 +1878,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsquid/widget@1.4.84(@wagmi/core@0.10.11)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4):
-    resolution: {integrity: sha512-TCJZf8dE+q/IAGKuS+YfyvJxhMPBgyBEmtjK/42emrpGgiqhKtKvh8HGkFJoDR9w9qrod3MeytemJXpx+udtFw==}
+  /@0xsquid/widget@1.4.85(@wagmi/core@0.10.11)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-23/BmFwZg3IpM6Acmj2bPPp4cbxyWoPwPwCjhLZLBXAyEdX7645nb1ADPY7PUiAnxr0A4m9y3W4lEn95d7r9gw==}
     peerDependencies:
       ethers: ^5.7.2 || ^4.0.49
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
