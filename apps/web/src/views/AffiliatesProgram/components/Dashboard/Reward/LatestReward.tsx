@@ -72,7 +72,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
           : toBytes(keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)])))
       const signature = await signMessageAsync({ message: message as any })
 
-      const url = isAffiliateClaim ? 'affiliates-claim-fee' : 'user-claim-fee'
+      const url = isAffiliateClaim ? 'affiliate-claim-fee' : 'user-claim-fee'
       const response = await fetch(`/api/affiliates-program/${url}`, {
         method: 'POST',
         body: JSON.stringify({
