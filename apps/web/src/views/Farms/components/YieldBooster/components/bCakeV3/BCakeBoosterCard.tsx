@@ -142,7 +142,7 @@ export const BCakeBoosterCard = () => {
 
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
-  const { account, chainId } = useAccountActiveChain()
+  const { account } = useAccountActiveChain()
   const { pids } = useUserBoostedPoolsTokenId()
   const maxBoostLimit = useUserMaxBoostedPositionLimit()
   const { locked, lockedEnd } = useUserLockedCakeStatus()

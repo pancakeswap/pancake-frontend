@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
@@ -35,7 +34,6 @@ import {
 } from 'utils/addressHelpers'
 
 // ABI
-import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
 import { cakePredictionsABI } from 'config/abi/cakePredictions'
 import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
 import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
@@ -44,20 +42,20 @@ import { nonBscVaultABI } from 'config/abi/nonBscVault'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { predictionsV1ABI } from 'config/abi/predictionsV1'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
-import { tradingRewardABI } from 'config/abi/tradingReward'
 
-// Types
 import {
   cakeFlexibleSideVaultV2ABI,
   cakeVaultV2ABI,
   getIfoCreditAddressContract as getIfoCreditAddressContract_,
 } from '@pancakeswap/pools'
+import { ChainId } from '@pancakeswap/sdk'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
 import { SIDResolverABI } from 'config/abi/SIDResolver'
 import { affiliateProgramABI } from 'config/abi/affiliateProgram'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
+import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
@@ -76,6 +74,7 @@ import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster
 import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
+import { tradingRewardABI } from 'config/abi/tradingReward'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { getViemClients, viemClients } from 'utils/viem'
@@ -141,7 +140,6 @@ export const getProfileContract = (signer?: WalletClient) => {
 export const getBunnyFactoryContract = (signer?: WalletClient) => {
   return getContract({ abi: bunnyFactoryABI, address: getBunnyFactoryAddress(), signer })
 }
-
 export const getLotteryV2Contract = (signer?: WalletClient) => {
   return getContract({ abi: lotteryV2ABI, address: getLotteryV2Address(), signer })
 }
@@ -177,11 +175,11 @@ export const getTradingCompetitionContractMoD = (signer?: WalletClient) => {
   })
 }
 
-export const getCakeVaultV2Contract = (signer?: WalletClient, chainId?: ChainId) => {
+export const getCakeVaultV2Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({ abi: cakeVaultV2ABI, address: getCakeVaultAddress(chainId), signer, chainId })
 }
 
-export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient, chainId?: ChainId) => {
+export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: cakeFlexibleSideVaultV2ABI,
     address: getCakeFlexibleSideVaultAddress(chainId),
@@ -236,13 +234,8 @@ export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
   return getContract({ abi: bCakeFarmBoosterABI, address: getBCakeFarmBoosterAddress(), signer })
 }
 
-export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: ChainId) => {
-  return getContract({
-    abi: bCakeFarmBoosterV3ABI,
-    address: getBCakeFarmBoosterV3Address(chainId),
-    signer,
-    chainId,
-  })
+export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
 }
 
 export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
