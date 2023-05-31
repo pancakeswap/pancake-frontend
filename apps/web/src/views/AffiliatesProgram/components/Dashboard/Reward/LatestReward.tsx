@@ -125,11 +125,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
 
   return (
     <Box width="100%">
-      {chainId !== ChainId.BSC && (
-        <Box mb="20px">
-          <WrongNetworkWarning />
-        </Box>
-      )}
+      {chainId !== ChainId.BSC && <WrongNetworkWarning />}
       {isAffiliate && (
         <Box mb="20px">
           <SingleLatestReward

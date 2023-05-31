@@ -12,7 +12,7 @@ const WrongNetworkWarning = () => {
   }
 
   return (
-    <Message variant="warning">
+    <Message variant="warning" mb="20px">
       <MessageText>
         <Text as="span" color="warning">
           {t('Claiming of Affiliate Rewards is only available on Binance Smart Chain.')}

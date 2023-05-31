@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { UserClaimListResponse, MAX_PER_PAGE, ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import { Box, Flex, Text, Card, PaginationButton, Table, Td, Th, FlexProps, Button } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -29,6 +31,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
     t,
     currentLanguage: { locale },
   } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { title, tableFirstTitle, dataList, currentPage, isAffiliateClaim, setCurrentPage, handleClickClaim } = props
   const [maxPage, setMaxPages] = useState(1)
   const [list, setList] = useState<ClaimDetail[]>()
@@ -133,6 +136,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
                           variant="text"
                           display="block"
                           style={{ cursor: 'pointer' }}
+                          disabled={chainId !== ChainId.BSC}
                           onClick={() => handleClickClaim(isAffiliateClaim, reward)}
                         >
                           {t('Claim')}

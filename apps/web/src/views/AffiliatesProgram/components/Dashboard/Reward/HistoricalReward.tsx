@@ -93,33 +93,30 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
 
   return (
     <Flex flexDirection="column" width="100%">
-      {chainId !== ChainId.BSC ? (
-        <WrongNetworkWarning />
-      ) : (
-        <>
-          {isAffiliate && (
-            <SingleHistoricalReward
-              mb="24px"
-              title={t('Affiliate Reward')}
-              tableFirstTitle={t('Affiliate Reward')}
-              isAffiliateClaim
-              dataList={affiliateClaimData}
-              currentPage={affiliateDataCurrentPage}
-              setCurrentPage={setAffiliateDataCurrentPage}
-              handleClickClaim={handleClickClaim}
-            />
-          )}
+      {chainId !== ChainId.BSC && <WrongNetworkWarning />}
+      <>
+        {isAffiliate && (
           <SingleHistoricalReward
-            title={t('User Reward')}
-            tableFirstTitle={t('User Reward')}
-            isAffiliateClaim={false}
-            dataList={userClaimData}
-            currentPage={userDataCurrentPage}
-            setCurrentPage={setUserDataCurrentPage}
+            mb="24px"
+            title={t('Affiliate Reward')}
+            tableFirstTitle={t('Affiliate Reward')}
+            isAffiliateClaim
+            dataList={affiliateClaimData}
+            currentPage={affiliateDataCurrentPage}
+            setCurrentPage={setAffiliateDataCurrentPage}
             handleClickClaim={handleClickClaim}
           />
-        </>
-      )}
+        )}
+        <SingleHistoricalReward
+          title={t('User Reward')}
+          tableFirstTitle={t('User Reward')}
+          isAffiliateClaim={false}
+          dataList={userClaimData}
+          currentPage={userDataCurrentPage}
+          setCurrentPage={setUserDataCurrentPage}
+          handleClickClaim={handleClickClaim}
+        />
+      </>
     </Flex>
   )
 }
