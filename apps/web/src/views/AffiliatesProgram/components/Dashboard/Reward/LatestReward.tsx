@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useSignMessage } from '@pancakeswap/wagmi'
-import { useToast } from '@pancakeswap/uikit'
+import { useToast, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { encodePacked, keccak256, toBytes } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import { usePriceCakeUSD } from 'state/farms/hooks'
@@ -11,6 +12,7 @@ import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Rew
 import { UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import { useAffiliateProgramContract } from 'hooks/useContract'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import WrongNetworkWarning from 'views/AffiliatesProgram/components/Dashboard/Reward/WrongNetworkWarning'
 
 interface LatestRewardProps {
   isAffiliate: boolean
@@ -33,6 +35,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address, connector } = useAccount()
+  const { chainId } = useActiveChainId()
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
@@ -118,10 +121,15 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
     return (
       new BigNumber(userRewardFeeUSD).lte(0) || hasPendingOrUnClaimed?.length > 0 || isUserClaimLoading || !isUserExist
     )
-  }, [isUserClaimLoading, userClaimData, userRewardFeeUSD, isUserExist])
+  }, [userClaimData, userRewardFeeUSD, isUserClaimLoading, isUserExist])
 
   return (
-    <>
+    <Box>
+      {chainId !== ChainId.BSC && (
+        <Box mb="20px">
+          <WrongNetworkWarning />
+        </Box>
+      )}
       {isAffiliate && (
         <SingleLatestReward
           usdAmountTitle={t('Affiliate Reward')}
@@ -140,7 +148,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
         disabled={isUserClaimDisabled}
         clickClaim={() => handleClaim(false)}
       />
-    </>
+    </Box>
   )
 }
 

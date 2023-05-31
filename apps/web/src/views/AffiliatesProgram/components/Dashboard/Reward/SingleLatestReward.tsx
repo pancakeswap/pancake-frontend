@@ -2,6 +2,8 @@ import { Flex, Text, Button } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 interface SingleLatestRewardProps {
   usdAmountTitle: string
@@ -21,6 +23,7 @@ const SingleLatestReward: React.FC<React.PropsWithChildren<SingleLatestRewardPro
   clickClaim,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   return (
     <LightGreyCard>
@@ -40,7 +43,7 @@ const SingleLatestReward: React.FC<React.PropsWithChildren<SingleLatestRewardPro
           {`~ ${formatNumber(cakeAmount)} CAKE`}
         </Text>
       </Flex>
-      <Button onClick={clickClaim} disabled={disabled} mt="18px" width="100%">
+      <Button onClick={clickClaim} disabled={chainId !== ChainId.BSC || disabled} mt="18px" width="100%">
         {t('Claim')}
       </Button>
     </LightGreyCard>
