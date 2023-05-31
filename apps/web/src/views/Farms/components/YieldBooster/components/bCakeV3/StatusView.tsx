@@ -1,12 +1,12 @@
 import { Box, Text, useTooltip, useMatchBreakpoints, LinkExternal, HelpIcon, Flex } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
 const BoosterTooltip = () => {
   const { t } = useTranslation()
-
   return (
     <>
       {t(
@@ -35,6 +35,15 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
     ...(isMobile && { hideTimeout: 1500 }),
   })
   const { locked, isLockEnd, isReachedMaxBoostLimit } = useBCakeBoostLimitAndLockInfo()
+  const bCakeMessage = useBCakeMessage(
+    account,
+    Boolean(isFarmStaking),
+    locked,
+    isLockEnd,
+    isReachedMaxBoostLimit,
+    status === BoostStatus.farmCanBoostButNot,
+    status === BoostStatus.Boosted,
+  )
 
   return (
     <Box>
@@ -54,14 +63,31 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
         {tooltipVisible && tooltip}
       </Flex>
       <Text color="textSubtle" fontSize={12} lineHeight="120%">
-        {!account && t('Connect wallet to activate yield booster')}
-        {account && !isFarmStaking && t('Start staking to activate yield booster.')}
-        {account && isFarmStaking && !locked && t('Lock CAKE to activate yield booster')}
-        {account && isFarmStaking && isLockEnd && t('Renew your CAKE staking to activate yield booster')}
-        {account && isFarmStaking && isReachedMaxBoostLimit && t('Unset other boosters to activate')}
-        {account && status === BoostStatus.farmCanBoostButNot && isFarmStaking && t('Yield booster available')}
-        {account && status === BoostStatus.Boosted && t('Active')}
+        {bCakeMessage}
       </Text>
     </Box>
   )
+}
+
+const useBCakeMessage = (
+  account: `0x${string}`,
+  isFarmStaking: boolean,
+  locked: boolean,
+  isLockEnd: boolean,
+  isReachedMaxBoostLimit: boolean,
+  canBoostedButNot: boolean,
+  boosted: boolean,
+) => {
+  const { t } = useTranslation()
+  const bCakeMessage = useMemo(() => {
+    if (!account) return t('Connect wallet to activate yield booster')
+    if (!isFarmStaking) return t('Start staking to activate yield booster.')
+    if (!locked) return t('Lock CAKE to activate yield booster')
+    if (isLockEnd) return t('Renew your CAKE staking to activate yield booster')
+    if (isReachedMaxBoostLimit) return t('Unset other boosters to activate')
+    if (canBoostedButNot) return t('Yield booster available')
+    if (boosted) return t('Active')
+    return ''
+  }, [t, account, isFarmStaking, locked, isLockEnd, isReachedMaxBoostLimit, canBoostedButNot, boosted])
+  return bCakeMessage
 }
