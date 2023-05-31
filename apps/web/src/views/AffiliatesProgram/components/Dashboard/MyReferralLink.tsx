@@ -138,6 +138,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
           stableSwapFee: Number(percentage),
         },
       }
+      console.log('data', data)
 
       const response = await fetch('/api/affiliates-program/affiliate-fee-create', {
         method: 'POST',

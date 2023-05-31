@@ -19,7 +19,7 @@ const useDefaultLinkId = () => {
 
         const regex = /^[a-zA-Z0-9_]+$/
 
-        if (result.exist || !regex.test(queryString)) {
+        if (result.exist || !regex.test(randomNanoId)) {
           randomNanoId = nanoid(20)
           mutate('/affiliate-fee-exist')
         }
