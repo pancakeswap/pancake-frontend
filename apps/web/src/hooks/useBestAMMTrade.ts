@@ -17,6 +17,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { getViemClients } from 'utils/viem'
 import { QUOTING_API } from 'config/constants/endpoints'
+import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { worker, worker2 } from 'utils/worker'
 
 import {
@@ -25,14 +26,6 @@ import {
   PoolsWithState,
   CommonPoolsParams,
 } from './useCommonPools'
-
-// Revalidate interval in milliseconds
-const REVALIDATE_AFTER = {
-  [ChainId.BSC_TESTNET]: 15_000,
-  [ChainId.BSC]: 15_000,
-  [ChainId.ETHEREUM]: 20_000,
-  [ChainId.GOERLI]: 20_000,
-}
 
 interface FactoryOptions {
   // use to identify hook
@@ -157,7 +150,7 @@ function bestTradeHookFactory({
     amount,
     baseCurrency,
     currency,
-    tradeType,
+    tradeType = TradeType.EXACT_INPUT,
     maxHops,
     maxSplits,
     v2Swap = true,
@@ -217,7 +210,7 @@ function bestTradeHookFactory({
         poolTypes,
       ],
       queryFn: async () => {
-        if (!amount || !amount.currency || !currency) {
+        if (!amount || !amount.currency || !currency || !deferQuotient) {
           return null
         }
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
@@ -259,8 +252,8 @@ function bestTradeHookFactory({
       refetchOnWindowFocus: false,
       keepPreviousData: !currenciesUpdated,
       retry: false,
-      staleTime: autoRevalidate ? REVALIDATE_AFTER[amount?.currency?.chainId] : 0,
-      refetchInterval: autoRevalidate && REVALIDATE_AFTER[amount?.currency?.chainId],
+      staleTime: autoRevalidate ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
+      refetchInterval: autoRevalidate && POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId],
     })
 
     const isValidating = fetchStatus === 'fetching'

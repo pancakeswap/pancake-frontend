@@ -1,11 +1,13 @@
 import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { Tick } from '@pancakeswap/v3-sdk'
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { useQuery } from '@tanstack/react-query'
 
 import { v3Clients } from 'utils/graphql'
+import { getViemClients } from 'utils/viem'
+import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
@@ -77,6 +79,12 @@ export function useV3CandidatePoolsWithoutTicks(
     return [...symbols, currencyA.chainId].join('_')
   }, [currencyA, currencyB])
 
+  const refetchInterval = useMemo(() => {
+    if (!currencyA?.chainId) {
+      return 0
+    }
+    return POOLS_FAST_REVALIDATE[currencyA.chainId] || 0
+  }, [currencyA?.chainId])
   const {
     data,
     refetch,
@@ -90,6 +98,7 @@ export function useV3CandidatePoolsWithoutTicks(
         currencyA,
         currencyB,
         subgraphProvider: ({ chainId }) => v3Clients[chainId],
+        onChainProvider: getViemClients,
         blockNumber: options?.blockNumber,
       })
       return {
@@ -98,6 +107,10 @@ export function useV3CandidatePoolsWithoutTicks(
         blockNumber: options?.blockNumber,
       }
     },
+    retry: 2,
+    staleTime: refetchInterval,
+    refetchInterval,
+    refetchOnWindowFocus: false,
     enabled: Boolean(currencyA && currencyB && key && options?.enabled),
   })
 
@@ -118,59 +131,49 @@ export function useV3PoolsWithTicks(
   pools: V3Pool[] | null | undefined,
   { key, blockNumber, enabled = true }: V3PoolsHookParams = {},
 ) {
-  const fetchingBlock = useRef<string | null>(null)
+  const refreshInterval = useMemo(() => {
+    const chainId = pools?.[0]?.token0?.chainId
+    if (!chainId) {
+      return 0
+    }
+    return POOLS_SLOW_REVALIDATE[chainId] || 0
+  }, [pools])
+
   const poolsWithTicks = useSWRImmutable(
     key && pools && enabled ? ['v3_pool_ticks', key] : null,
     async () => {
       if (!pools) {
         throw new Error('Invalid pools to get ticks')
       }
-      fetchingBlock.current = blockNumber?.toString()
-      try {
-        const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
-        SmartRouter.metric(label)
-        const poolTicks = await Promise.all(
-          pools.map(async (pool) => {
-            const { token0 } = pool
-            return getPoolTicks(token0.chainId, SmartRouter.getPoolAddress(pool)).then((data) => {
-              return data.map(
-                ({ tick, liquidityNet, liquidityGross }) =>
-                  new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
-              )
-            })
-          }),
-        )
-        SmartRouter.metric(label, poolTicks)
-        return {
-          pools: pools?.map((pool, i) => ({
-            ...pool,
-            ticks: poolTicks[i],
-          })),
-          key,
-          blockNumber,
-        }
-      } finally {
-        fetchingBlock.current = null
+      const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
+      SmartRouter.metric(label)
+      const poolTicks = await Promise.all(
+        pools.map(async (pool) => {
+          const { token0 } = pool
+          return getPoolTicks(token0.chainId, SmartRouter.getPoolAddress(pool)).then((data) => {
+            return data.map(
+              ({ tick, liquidityNet, liquidityGross }) =>
+                new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
+            )
+          })
+        }),
+      )
+      SmartRouter.metric(label, poolTicks)
+      return {
+        pools: pools?.map((pool, i) => ({
+          ...pool,
+          ticks: poolTicks[i],
+        })),
+        key,
+        blockNumber,
       }
     },
     {
-      errorRetryCount: 5,
+      refreshInterval,
+      errorRetryCount: 3,
       revalidateOnFocus: false,
     },
   )
-
-  const { mutate, data, error } = poolsWithTicks
-  useEffect(() => {
-    // Revalidate pools if block number increases
-    if (
-      blockNumber &&
-      !error &&
-      fetchingBlock.current !== blockNumber.toString() &&
-      (!data?.blockNumber || blockNumber - data.blockNumber > 5)
-    ) {
-      mutate()
-    }
-  }, [blockNumber, mutate, data?.blockNumber, error])
 
   return poolsWithTicks
 }
