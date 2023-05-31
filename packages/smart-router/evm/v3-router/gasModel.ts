@@ -148,7 +148,12 @@ async function getHighestLiquidityNativePool(
     return null
   }
 
-  const pools = await poolProvider.getPools([[nativeWrappedToken, currency]], { blockNumber })
+  const pools = await poolProvider.getCandidatePools({
+    blockNumber,
+    pairs: [[nativeWrappedToken, currency]],
+    currencyA: nativeWrappedToken,
+    currencyB: currency,
+  })
   // TODO get the first pool we have for now
   return pools[0] ?? null
 }
@@ -163,7 +168,12 @@ async function getHighestLiquidityUSDPool(
   if (!usdToken || !nativeWrappedToken) {
     return null
   }
-  const pools = await poolProvider.getPools([[nativeWrappedToken, usdToken]], { blockNumber })
+  const pools = await poolProvider.getCandidatePools({
+    blockNumber,
+    pairs: [[nativeWrappedToken, usdToken]],
+    currencyA: nativeWrappedToken,
+    currencyB: usdToken,
+  })
   // TODO get the first pool we have for now
   return pools[0] ?? null
 }

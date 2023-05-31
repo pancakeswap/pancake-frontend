@@ -17,6 +17,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { getViemClients } from 'utils/viem'
 import { QUOTING_API } from 'config/constants/endpoints'
+import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { worker, worker2 } from 'utils/worker'
 
 import {
@@ -25,14 +26,6 @@ import {
   PoolsWithState,
   CommonPoolsParams,
 } from './useCommonPools'
-
-// Revalidate interval in milliseconds
-const REVALIDATE_AFTER = {
-  [ChainId.BSC_TESTNET]: 15_000,
-  [ChainId.BSC]: 15_000,
-  [ChainId.ETHEREUM]: 20_000,
-  [ChainId.GOERLI]: 20_000,
-}
 
 interface FactoryOptions {
   // use to identify hook
@@ -157,7 +150,7 @@ function bestTradeHookFactory({
     amount,
     baseCurrency,
     currency,
-    tradeType,
+    tradeType = TradeType.EXACT_INPUT,
     maxHops,
     maxSplits,
     v2Swap = true,
@@ -181,7 +174,7 @@ function bestTradeHookFactory({
       enabled,
     })
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
-    const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
+    const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
 
     const poolTypes = useMemo(() => {
@@ -208,7 +201,7 @@ function bestTradeHookFactory({
       queryKey: [
         key,
         currency?.chainId,
-        amount?.currency.symbol,
+        amount?.currency?.symbol,
         currency?.symbol,
         tradeType,
         deferQuotient,
@@ -217,6 +210,9 @@ function bestTradeHookFactory({
         poolTypes,
       ],
       queryFn: async () => {
+        if (!amount || !amount.currency || !currency || !deferQuotient) {
+          return null
+        }
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
           amount.currency.symbol
@@ -256,8 +252,8 @@ function bestTradeHookFactory({
       refetchOnWindowFocus: false,
       keepPreviousData: !currenciesUpdated,
       retry: false,
-      staleTime: autoRevalidate ? REVALIDATE_AFTER[amount?.currency.chainId] : 0,
-      refetchInterval: autoRevalidate && REVALIDATE_AFTER[amount?.currency.chainId],
+      staleTime: autoRevalidate ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
+      refetchInterval: autoRevalidate && POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId],
     })
 
     const isValidating = fetchStatus === 'fetching'
@@ -270,7 +266,7 @@ function bestTradeHookFactory({
       isStale: trade?.blockNumber !== blockNumber,
       error,
       syncing:
-        syncing || isValidating || (amount?.quotient.toString() !== deferQuotient && deferQuotient !== undefined),
+        syncing || isValidating || (amount?.quotient?.toString() !== deferQuotient && deferQuotient !== undefined),
     }
   }
 }
@@ -301,7 +297,9 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
     tradeType,
     { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider },
   ) => {
-    const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
+    const candidatePools = await poolProvider.getCandidatePools({
+      currencyA: amount.currency,
+      currencyB: currency,
       protocols: allowedPoolTypes,
     })
 
@@ -334,7 +332,9 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
 
 const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRouter.getBestTrade => {
   return async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei }) => {
-    const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
+    const candidatePools = await poolProvider.getCandidatePools({
+      currencyA: amount.currency,
+      currencyB: currency,
       protocols: allowedPoolTypes,
     })
 

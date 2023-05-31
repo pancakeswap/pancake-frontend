@@ -21,9 +21,13 @@ function poolSelectorFactory<P extends WithTvl>({
   getToken1,
   getPoolAddress,
 }: FactoryParams<P>) {
-  return function tvlSelector(currencyA: Currency, currencyB: Currency, unorderedPoolsWithTvl: P[]) {
+  return function tvlSelector(
+    currencyA: Currency | undefined,
+    currencyB: Currency | undefined,
+    unorderedPoolsWithTvl: P[],
+  ) {
     const POOL_SELECTION_CONFIG = getPoolSelectorConfig(currencyA, currencyB)
-    if (!unorderedPoolsWithTvl.length) {
+    if (!currencyA || !currencyB || !unorderedPoolsWithTvl.length) {
       return []
     }
     const poolsFromSubgraph = unorderedPoolsWithTvl.sort(sortByTvl)

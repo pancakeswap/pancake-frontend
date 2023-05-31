@@ -1,11 +1,22 @@
 import { ChainId, Currency, Token } from '@pancakeswap/sdk'
-import flatMap from 'lodash/flatMap.js'
+import flatMap from 'lodash/flatMap'
+import memoize from 'lodash/memoize'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
 import { isCurrenciesSameChain } from '../utils'
 
-export const getCheckAgainstBaseTokens = (currencyA?: Currency, currencyB?: Currency): Token[] => {
+const resolver = (currencyA?: Currency, currencyB?: Currency) => {
+  if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
+    return `${currencyA?.chainId}_${currencyA?.wrapped?.address}_${currencyB?.wrapped?.address}`
+  }
+  const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+    ? [currencyA.wrapped, currencyB.wrapped]
+    : [currencyB.wrapped, currencyA.wrapped]
+  return `${token0.chainId}_${token0.address}_${token1.address}`
+}
+
+export const getCheckAgainstBaseTokens = memoize((currencyA?: Currency, currencyB?: Currency): Token[] => {
   // eslint-disable-next-line prefer-destructuring
   const chainId: ChainId | undefined = currencyA?.chainId
   if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
@@ -25,9 +36,9 @@ export const getCheckAgainstBaseTokens = (currencyA?: Currency, currencyB?: Curr
   const additionalB = tokenB ? ADDITIONAL_BASES[chainId]?.[tokenB.address] ?? [] : []
 
   return [...common, ...additionalA, ...additionalB]
-}
+}, resolver)
 
-export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
+export const getPairCombinations = memoize((currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
   // eslint-disable-next-line prefer-destructuring
   const chainId: ChainId | undefined = currencyA?.chainId
   if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
@@ -74,4 +85,4 @@ export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency):
 
       return true
     })
-}
+}, resolver)

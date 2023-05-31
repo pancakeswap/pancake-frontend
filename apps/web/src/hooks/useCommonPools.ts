@@ -5,7 +5,7 @@ import { useMemo, useCallback } from 'react'
 
 import { useV3CandidatePools, useV3CandidatePoolsWithoutTicks, V3PoolsHookParams, V3PoolsResult } from './useV3Pools'
 import { useStableCandidatePools } from './usePoolsOnChain'
-import { useV2CandidatePoolsFromOnChain as useV2CandidatePools } from './useV2Pools'
+import { useV2CandidatePools } from './useV2Pools'
 
 interface FactoryOptions {
   // use to identify hook

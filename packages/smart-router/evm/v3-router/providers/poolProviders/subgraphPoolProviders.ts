@@ -31,9 +31,12 @@ function subgraphPoolProviderFactory<M extends PoolMeta, P extends WithTvl>({
     provider,
     pairs,
   }: {
-    provider: SubgraphProvider
+    provider?: SubgraphProvider
     pairs: [Currency, Currency][]
   }): Promise<P[]> {
+    if (!provider) {
+      throw new Error('No valid subgraph data provider')
+    }
     const chainId: ChainId = pairs[0]?.[0]?.chainId
     if (!chainId) {
       return []
@@ -59,7 +62,7 @@ function subgraphPoolProviderFactory<M extends PoolMeta, P extends WithTvl>({
 
     const pools = await getPoolsFromSubgraph({
       addresses,
-      getPoolMetaByAddress: (address) => metaMap.get(address) ?? null,
+      getPoolMetaByAddress: (address) => metaMap.get(address.toLocaleLowerCase() as Address) ?? null,
       client,
     })
 
@@ -77,6 +80,9 @@ const getV3PoolMeta = memoize(
     fee: feeAmount,
   }),
   ([currencyA, currencyB, feeAmount]) => {
+    if (currencyA.wrapped.equals(currencyB.wrapped)) {
+      return [currencyA.chainId, currencyA.wrapped.address, feeAmount].join('_')
+    }
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA.wrapped, currencyB.wrapped]
       : [currencyB.wrapped, currencyA.wrapped]
@@ -88,6 +94,9 @@ const getV3PoolMetas = memoize(
   (pair: [Currency, Currency]) =>
     [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => getV3PoolMeta([...pair, fee])),
   ([currencyA, currencyB]) => {
+    if (currencyA.wrapped.equals(currencyB.wrapped)) {
+      return [currencyA.chainId, currencyA.wrapped.address].join('_')
+    }
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA.wrapped, currencyB.wrapped]
       : [currencyB.wrapped, currencyA.wrapped]
@@ -184,7 +193,7 @@ export const getV2PoolSubgraph = subgraphPoolProviderFactory<PoolMeta, V2PoolWit
     },
   ],
   getPoolsFromSubgraph: async ({ addresses, getPoolMetaByAddress, client }) => {
-    const { pools: poolsFromSubgraph } = await client.request<{ pools: V2PoolSubgraphResult[] }>(queryV2Pools, {
+    const { pairs: poolsFromSubgraph } = await client.request<{ pairs: V2PoolSubgraphResult[] }>(queryV2Pools, {
       pageSize: 1000,
       poolAddrs: addresses,
     })
