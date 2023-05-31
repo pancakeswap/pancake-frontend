@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Box, Button, Flex } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import NextLink from 'next/link'
 import { useCallback } from 'react'
 import {
-  useUserBoostedMultiplier,
-  useUserPositionInfo,
-  useUserBoostedPoolsTokenId,
   useBCakeBoostLimitAndLockInfo,
+  useUserBoostedMultiplier,
+  useUserBoostedPoolsTokenId,
+  useUserPositionInfo,
 } from '../../hooks/bCakeV3/useBCakeV3Info'
 import { useBoosterFarmV3Handlers } from '../../hooks/bCakeV3/useBoostBcakeV3'
 import { BoostStatus, useBoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
@@ -44,7 +45,11 @@ export const BCakeV3CardView: React.FC<{
         isFarmStaking={isFarmStaking}
       />
       <Box>
-        {(!locked || isLockEnd) && <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Pool')}</Button>}
+        {(!locked || isLockEnd) && (
+          <NextLink href="/pools" passHref>
+            <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Pool')}</Button>
+          </NextLink>
+        )}
         {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && locked && !isLockEnd && (
           <Button
             onClick={() => {
