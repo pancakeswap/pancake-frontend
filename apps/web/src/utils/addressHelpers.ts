@@ -13,9 +13,6 @@ export const getAddressFromMap = (address: Addresses, chainId?: number): `0x${st
 export const getMasterChefV2Address = (chainId?: number) => {
   return getAddressFromMap(addresses.masterChef, chainId)
 }
-export const getMasterChefV1Address = () => {
-  return getAddressFromMap(addresses.masterChefV1)
-}
 export const getMulticallAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.multiCall, chainId)
 }
