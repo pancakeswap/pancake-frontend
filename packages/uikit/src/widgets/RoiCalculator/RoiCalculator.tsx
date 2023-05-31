@@ -73,6 +73,7 @@ export type RoiCalculatorProps = {
   volume24H?: number;
   max?: string;
   maxLabel?: string;
+  bCakeBoostedMultiplier?: number;
 } & (RoiCalculatorFarmProps | RoiCalculatorLPProps);
 
 type RoiCalculatorLPProps = {
@@ -110,6 +111,7 @@ export function RoiCalculator({
   onPriceSpanChange,
   allowApply = false,
   onApply,
+  bCakeBoostedMultiplier,
   ...props
 }: RoiCalculatorProps) {
   const { isMobile } = useMatchBreakpoints();
@@ -494,7 +496,7 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={farmingRewardsEnabled ? editCakeApr || cakeApr : undefined}
+        farmApr={farmingRewardsEnabled ? (editCakeApr || cakeApr).multiply(bCakeBoostedMultiplier ?? 1) : undefined}
         farmApy={farmingRewardsEnabled ? editCakeApy || cakeApy : undefined}
         farmReward={farmReward}
         isFarm={farmingRewardsEnabled}

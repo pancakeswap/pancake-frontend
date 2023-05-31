@@ -184,7 +184,8 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
   const {
     data: { boostMultiplier },
-  } = useUserPositionInfo(tokenId)
+  } = useUserPositionInfo(tokenId ?? '-1')
+
   const estimatedAPR = useMemo(() => {
     return (parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER + parseFloat(lpAprDisplay)).toLocaleString('en-US', {
       maximumFractionDigits: 2,
@@ -344,6 +345,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
           prices={prices}
           priceSpan={priceTimeWindow}
           onPriceSpanChange={setPriceTimeWindow}
+          bCakeBoostedMultiplier={isBoosted ? boostMultiplier : 1}
         />
       )}
     </>
