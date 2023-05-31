@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
+import { usePairTokensPriceInverted } from "@pancakeswap/utils/usePairTokensPriceInverted";
 import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
@@ -57,6 +58,15 @@ export type RoiCalculatorProps = {
     minPrice: number;
     averagePrice: number;
   };
+  prices7D?: {
+    pairPriceData: {
+      time: Date;
+      value: number;
+    }[];
+    maxPrice: number;
+    minPrice: number;
+    averagePrice: number;
+  };
   ticks?: TickData[];
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
@@ -99,6 +109,7 @@ export function RoiCalculator({
   feeAmount,
   protocolFee,
   prices,
+  prices7D,
   ticks: ticksRaw,
   price,
   priceLower,
@@ -317,6 +328,25 @@ export function RoiCalculator({
     </Message>
   );
 
+  const tokenA = (currencyA ?? undefined)?.wrapped;
+  const tokenB = (currencyB ?? undefined)?.wrapped;
+  const isSorted = tokenA && tokenB && tokenA.sortsBefore(tokenB);
+  const leftPrice = Number(formatPrice(isSorted ? priceRange?.priceLower : priceRange?.priceUpper?.invert()));
+  const rightPrice = Number(formatPrice(isSorted ? priceRange?.priceUpper : priceRange?.priceLower?.invert()));
+
+  const priceKeyValues = usePairTokensPriceInverted(prices7D, invertPrice);
+  const isWarnPriceOutOfRange = !!(priceKeyValues.min < leftPrice) || priceKeyValues.max > rightPrice;
+
+  const priceOutOfRangeWarningMessage = (
+    <Message variant="warning" mb="1em">
+      <MessageText>
+        {t(
+          "Based on historical price data, the position has a high chance of going out of range. Consider adjusting to a wider price range."
+        )}
+      </MessageText>
+    </Message>
+  );
+
   const depositSection = (
     <Section title={t("Deposit Amount")}>
       <DepositAmountInput
@@ -385,6 +415,7 @@ export function RoiCalculator({
           currencyB={currencyB}
           feeAmount={feeAmount}
           ticksAtLimit={priceRange?.ticksAtLimit || {}}
+          isWarnPriceOutOfRange={isWarnPriceOutOfRange}
         />
         <Button
           onClick={priceRange?.toggleFullRange}
@@ -395,6 +426,7 @@ export function RoiCalculator({
           {t("Full Range")}
         </Button>
       </DynamicSection>
+      {isWarnPriceOutOfRange && priceOutOfRangeWarningMessage}
     </Section>
   );
 

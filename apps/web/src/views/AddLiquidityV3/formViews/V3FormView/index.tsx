@@ -20,11 +20,13 @@ import {
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { FeeAmount, NonfungiblePositionManager, Pool } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
+import { usePairTokensPriceInverted } from '@pancakeswap/utils/usePairTokensPriceInverted'
 
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { basisPointsToPercent } from 'utils/exchange'
@@ -46,6 +48,7 @@ import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { QUICK_ACTION_CONFIGS } from 'views/AddLiquidityV3/types'
 import { isUserRejected } from 'utils/sentry'
+import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
@@ -411,6 +414,18 @@ export default function V3FormView({
     [price, feeAmount, invertPrice, onBothRangeInput],
   )
 
+  const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
+  const prices7D = usePairTokensPrice(poolAddress, 1, baseCurrency?.chainId)
+
+  const tokenA = (currencies?.CURRENCY_A ?? undefined)?.wrapped
+  const tokenB = (currencies?.CURRENCY_B ?? undefined)?.wrapped
+  const isSorted = tokenA && tokenB && tokenA.sortsBefore(tokenB)
+  const leftPrice = Number(formatPrice(isSorted ? priceLower : priceUpper?.invert()))
+  const rightPrice = Number(formatPrice(isSorted ? priceUpper : priceLower?.invert()))
+
+  const priceKeyValues = usePairTokensPriceInverted(prices7D, invertPrice)
+  const isWarnPriceOutOfRange = !!(priceKeyValues.min < leftPrice) || priceKeyValues.max > rightPrice
+
   return (
     <>
       <DynamicSection
@@ -429,7 +444,7 @@ export default function V3FormView({
               maxAmount={maxAmounts[Field.CURRENCY_A]}
               onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
               onPercentInput={(percent) =>
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
               }
               disableCurrencySelect
               value={formattedAmounts[Field.CURRENCY_A]}
@@ -450,7 +465,7 @@ export default function V3FormView({
             maxAmount={maxAmounts[Field.CURRENCY_B]}
             onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
             onPercentInput={(percent) =>
-              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
             }
             disableCurrencySelect
             value={formattedAmounts[Field.CURRENCY_B]}
@@ -574,6 +589,7 @@ export default function V3FormView({
               currencyB={quoteCurrency}
               feeAmount={feeAmount}
               ticksAtLimit={ticksAtLimit}
+              isWarnPriceOutOfRange={isWarnPriceOutOfRange}
             />
             {showCapitalEfficiencyWarning ? (
               <Message variant="warning">
@@ -642,7 +658,7 @@ export default function V3FormView({
             {outOfRange ? (
               <Message variant="warning">
                 <RowBetween>
-                  <Text ml="12px" fontSize="12px">
+                  <Text color="warning" ml="12px" fontSize="12px">
                     {t(
                       'Your position will not earn fees or be used in trades until the market price moves into your range.',
                     )}
@@ -655,6 +671,17 @@ export default function V3FormView({
                 <MessageText>
                   {t('Invalid range selected. The min price must be lower than the max price.')}
                 </MessageText>
+              </Message>
+            ) : null}
+            {isWarnPriceOutOfRange ? (
+              <Message variant="warning">
+                <RowBetween>
+                  <Text color="warning" ml="12px" fontSize="12px">
+                    {t(
+                      'Based on historical price data, the position has a high chance of going out of range. Consider adjusting to a wider price range.',
+                    )}
+                  </Text>
+                </RowBetween>
               </Message>
             ) : null}
           </DynamicSection>

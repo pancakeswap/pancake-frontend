@@ -17,6 +17,7 @@ interface StepCounterProps {
   title: ReactNode
   tokenA: string | undefined
   tokenB: string | undefined
+  isWarnPriceOutOfRange?: boolean
 }
 
 const StepCounter = ({
@@ -31,6 +32,7 @@ const StepCounter = ({
   title,
   tokenA,
   tokenB,
+  isWarnPriceOutOfRange = false,
 }: StepCounterProps) => {
   //  for focus state, styled components doesnt let you select input parent container
   const [, setActive] = useState(false)
@@ -105,6 +107,7 @@ const StepCounter = ({
             onUserInput={(val) => {
               setLocalValue(val)
             }}
+            style={{ color: isWarnPriceOutOfRange ? '#FFB237' : 'white' }}
           />
 
           {!locked && (

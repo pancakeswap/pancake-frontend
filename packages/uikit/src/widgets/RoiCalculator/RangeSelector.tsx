@@ -25,6 +25,7 @@ export const RangeSelector = memo(function RangeSelector({
   currencyB,
   feeAmount,
   ticksAtLimit,
+  isWarnPriceOutOfRange = false,
 }: {
   priceLower?: Price<Currency, Currency>;
   priceUpper?: Price<Currency, Currency>;
@@ -38,6 +39,7 @@ export const RangeSelector = memo(function RangeSelector({
   currencyB?: Currency | null;
   feeAmount?: number;
   ticksAtLimit: { [bound in Bound]?: boolean | undefined };
+  isWarnPriceOutOfRange?: boolean;
 }) {
   const { t } = useTranslation();
 
@@ -63,6 +65,7 @@ export const RangeSelector = memo(function RangeSelector({
         title={t("Min Price")}
         tokenA={currencyA?.symbol}
         tokenB={currencyB?.symbol}
+        isWarnPriceOutOfRange={isWarnPriceOutOfRange}
       />
       <StepCounter
         value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? "∞" : formatPrice(rightPrice, 6) ?? ""}
@@ -77,6 +80,7 @@ export const RangeSelector = memo(function RangeSelector({
         tokenA={currencyA?.symbol}
         tokenB={currencyB?.symbol}
         title={t("Max Price")}
+        isWarnPriceOutOfRange={isWarnPriceOutOfRange}
       />
     </FlexGap>
   );

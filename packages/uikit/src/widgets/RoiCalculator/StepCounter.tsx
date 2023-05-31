@@ -19,6 +19,7 @@ interface StepCounterProps {
   title: ReactNode;
   tokenA: string | undefined;
   tokenB: string | undefined;
+  isWarnPriceOutOfRange?: boolean;
 }
 
 export const StepCounter = memo(
@@ -34,6 +35,7 @@ export const StepCounter = memo(
     title,
     tokenA,
     tokenB,
+    isWarnPriceOutOfRange,
   }: StepCounterProps) => {
     //  for focus state, styled components doesnt let you select input parent container
     const [, setActive] = useState(false);
@@ -108,6 +110,7 @@ export const StepCounter = memo(
               onUserInput={(val) => {
                 setLocalValue(val);
               }}
+              style={{ color: isWarnPriceOutOfRange ? "#FFB237" : "white" }}
             />
 
             {!locked && (

@@ -10,12 +10,14 @@ import {
   Text,
   IconButton,
   QuestionHelper,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
+import { usePairTokensPriceInverted } from '@pancakeswap/utils/usePairTokensPriceInverted'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { useRouter } from 'next/router'
 import { batch } from 'react-redux'
@@ -93,6 +95,8 @@ export function AprCalculator({
   const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
 
   const prices = usePairTokensPrice(poolAddress, priceSpan, baseCurrency?.chainId)
+  const prices7D = usePairTokensPrice(poolAddress, 1, baseCurrency?.chainId)
+
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const volume24H = usePoolAvgTradingVolume({
     address: poolAddress,
@@ -107,6 +111,7 @@ export function AprCalculator({
   const tokenB = (quoteCurrency ?? undefined)?.wrapped
 
   const inverted = Boolean(tokenA && tokenB && tokenA?.address !== tokenB?.address && tokenB.sortsBefore(tokenA))
+  const priceKeyValues = usePairTokensPriceInverted(prices7D, inverted)
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
@@ -265,6 +270,11 @@ export function AprCalculator({
   ) : null
   const AprText = hasFarmApr ? TooltipText : Text
 
+  const leftPrice = Number(formatPrice(!inverted ? priceLower : priceUpper?.invert()))
+  const rightPrice = Number(formatPrice(!inverted ? priceUpper : priceLower?.invert()))
+
+  const isWarnPriceOutOfRange = !!(priceKeyValues.min < leftPrice) || priceKeyValues.max > rightPrice
+
   return (
     <>
       <Flex flexDirection="column">
@@ -274,7 +284,10 @@ export function AprCalculator({
           </Text>
         )}
         <AprButtonContainer onClick={() => setOpen(true)} alignItems="center">
-          <AprText>{aprDisplay}%</AprText>
+          {isWarnPriceOutOfRange && <WarningIcon color="warning" width="24px" />}
+          <TooltipText>
+            <AprText color={isWarnPriceOutOfRange ? 'warning' : 'textSubtle'}>{aprDisplay}%</AprText>
+          </TooltipText>
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
           </IconButton>
@@ -305,6 +318,7 @@ export function AprCalculator({
         onDismiss={closeModal}
         depositAmountInUsd={defaultDepositUsd || depositUsd}
         prices={prices}
+        prices7D={prices7D}
         price={price}
         currencyA={baseCurrency}
         currencyB={quoteCurrency}

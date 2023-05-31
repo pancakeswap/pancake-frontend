@@ -61,6 +61,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
 
   const [priceTimeWindow, setPriceTimeWindow] = useState(0)
   const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId)
+  const prices7D = usePairTokensPrice(lpAddress, 1, baseCurrency?.chainId)
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 
@@ -278,6 +279,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked }: FarmV3Ap
           cakePrice={cakePrice.toFixed(3)}
           cakeAprFactor={cakeAprFactor}
           prices={prices}
+          prices7D={prices7D}
           priceSpan={priceTimeWindow}
           onPriceSpanChange={setPriceTimeWindow}
         />

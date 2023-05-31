@@ -18,6 +18,7 @@ export default function RangeSelector({
   currencyB,
   feeAmount,
   ticksAtLimit,
+  isWarnPriceOutOfRange = false,
 }: {
   priceLower?: Price<Token, Token>
   priceUpper?: Price<Token, Token>
@@ -31,6 +32,7 @@ export default function RangeSelector({
   currencyB?: Currency | null
   feeAmount?: number
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
+  isWarnPriceOutOfRange?: boolean
 }) {
   const { t } = useTranslation()
   const tokenA = (currencyA ?? undefined)?.wrapped
@@ -55,6 +57,7 @@ export default function RangeSelector({
         title={t('Min Price')}
         tokenA={currencyA?.symbol}
         tokenB={currencyB?.symbol}
+        isWarnPriceOutOfRange={isWarnPriceOutOfRange}
       />
       <StepCounter
         value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? '∞' : rightPrice?.toSignificant(5) ?? ''}
@@ -69,6 +72,7 @@ export default function RangeSelector({
         tokenA={currencyA?.symbol}
         tokenB={currencyB?.symbol}
         title={t('Max Price')}
+        isWarnPriceOutOfRange={isWarnPriceOutOfRange}
       />
     </FlexGap>
   )
