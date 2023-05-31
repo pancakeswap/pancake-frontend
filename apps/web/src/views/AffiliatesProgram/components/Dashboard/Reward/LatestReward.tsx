@@ -124,21 +124,23 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   }, [userClaimData, userRewardFeeUSD, isUserClaimLoading, isUserExist])
 
   return (
-    <Box>
+    <Box width="100%">
       {chainId !== ChainId.BSC && (
         <Box mb="20px">
           <WrongNetworkWarning />
         </Box>
       )}
       {isAffiliate && (
-        <SingleLatestReward
-          usdAmountTitle={t('Affiliate Reward')}
-          usdAmount={Number(affiliateRewardFeeUSD)}
-          cakeAmountTitle={t('Affiliate CAKE Earned')}
-          cakeAmount={affiliateTotalCakeEarned}
-          disabled={isAffiliateClaimDisabled}
-          clickClaim={() => handleClaim(true)}
-        />
+        <Box mb="20px">
+          <SingleLatestReward
+            usdAmountTitle={t('Affiliate Reward')}
+            usdAmount={Number(affiliateRewardFeeUSD)}
+            cakeAmountTitle={t('Affiliate CAKE Earned')}
+            cakeAmount={affiliateTotalCakeEarned}
+            disabled={isAffiliateClaimDisabled}
+            clickClaim={() => handleClaim(true)}
+          />
+        </Box>
       )}
       <SingleLatestReward
         usdAmountTitle={t('User Reward')}
