@@ -25,6 +25,8 @@ interface LatestRewardProps {
   refreshAuthAffiliate: () => void
 }
 
+const MIN_CLAIM_AMOUNT = 1
+
 const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   isAffiliate,
   userRewardFeeUSD,
@@ -113,7 +115,11 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
     const hasPendingOrUnClaimed = affiliateClaimData?.claimRequests?.filter(
       (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && !i.process),
     )
-    return new BigNumber(affiliateRewardFeeUSD).lte(0) || hasPendingOrUnClaimed?.length > 0 || isAffiliateClaimLoading
+    return (
+      new BigNumber(affiliateRewardFeeUSD).lte(MIN_CLAIM_AMOUNT) ||
+      hasPendingOrUnClaimed?.length > 0 ||
+      isAffiliateClaimLoading
+    )
   }, [affiliateClaimData, affiliateRewardFeeUSD, isAffiliateClaimLoading])
 
   const isUserClaimDisabled = useMemo(() => {
@@ -121,7 +127,10 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && !i.process),
     )
     return (
-      new BigNumber(userRewardFeeUSD).lte(0) || hasPendingOrUnClaimed?.length > 0 || isUserClaimLoading || !isUserExist
+      new BigNumber(userRewardFeeUSD).lte(MIN_CLAIM_AMOUNT) ||
+      hasPendingOrUnClaimed?.length > 0 ||
+      isUserClaimLoading ||
+      !isUserExist
     )
   }, [userClaimData, userRewardFeeUSD, isUserClaimLoading, isUserExist])
 
