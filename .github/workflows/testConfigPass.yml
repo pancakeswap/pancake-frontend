@@ -4,6 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - 'apps/web/src/config/**'
+      - 'packages/pools/src/**'
 
 jobs:
   test:
