@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
@@ -7,25 +8,23 @@ import {
   Flex,
   HelpIcon,
   Link,
+  Message,
+  MessageText,
   RocketIcon,
   Text,
-  useTooltip,
   useMatchBreakpoints,
-  MessageText,
-  Message,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from '@pancakeswap/localization'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
+import { useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
-import useBCakeProxyBalance from '../hooks/useBCakeProxyBalance'
-import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
-import { useUserLockedCakeStatus } from '../hooks/useUserLockedCakeStatus'
-import boosterCardImage from '../images/boosterCardImage.png'
-import CreateProxyButton from './YieldBooster/components/CreateProxyButton'
+import useBCakeProxyBalance from '../../../../hooks/useBCakeProxyBalance'
+import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
+import { useUserBoostedPoolsTokenId, useUserMaxBoostedPositionLimit } from '../../hooks/bCakeV3/useBCakeV3Info'
+import boosterCardImage from '../../../../images/boosterCardImage.png'
 
 export const CardWrapper = styled.div`
   position: relative;
@@ -144,10 +143,11 @@ export const BCakeBoosterCard = () => {
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
-  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account, chainId)
-  const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
+  const { pids } = useUserBoostedPoolsTokenId()
+  const maxBoostLimit = useUserMaxBoostedPositionLimit()
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const theme = useTheme()
+  const remainingCounts = useMemo(() => pids?.length ?? 0, [pids])
 
   if (!account)
     return (
@@ -193,19 +193,6 @@ const CardContent: React.FC = () => {
         </NextLink>
       </Box>
     )
-  if (!proxyCreated) {
-    return (
-      <Box>
-        <Text color="textSubtle" fontSize={12} bold>
-          {t('Available Yield Booster')}
-        </Text>
-        <Text color="textSubtle" fontSize={12} mb="16px">
-          {t('A one-time setup is required for enabling farm yield boosters.')}
-        </Text>
-        <CreateProxyButton onDone={refreshProxyAddress} style={{ backgroundColor: theme.colors.textSubtle }} />
-      </Box>
-    )
-  }
   if (remainingCounts > 0)
     return (
       <Box>
@@ -214,7 +201,7 @@ const CardContent: React.FC = () => {
             {t('Available Yield Booster')}
           </Text>
           <Text color="secondary" fontSize={16} bold textTransform="uppercase">
-            {remainingCounts}/{maxBoostCounts}
+            {remainingCounts}/{maxBoostLimit}
           </Text>
         </Flex>
 

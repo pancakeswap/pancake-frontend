@@ -64,16 +64,17 @@ export const useUserPositionInfo = (tokenId: string) => {
   }
 }
 
-export const useUserBoostedPoolsPid = () => {
+export const useUserBoostedPoolsTokenId = () => {
   const { account, chainId } = useActiveWeb3React()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data } = useSWRImmutable(
+  const { data, mutate } = useSWRImmutable(
     chainId && account && `v3/bcake/userBoostedPools/${chainId}/${account}`,
     () => farmBoosterV3Contract.read.activedPositions([account]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return {
-    pids: data?.map((pid) => Number(pid)) ?? [],
+    pids: data?.map((tokenId) => Number(tokenId)) ?? [],
+    mutate,
   }
 }
 
