@@ -165,6 +165,7 @@ const config: (
       label: t('Game'),
       icon: PancakeProtectorIcon,
       supportChainIds: SUPPORT_ONLY_BSC,
+      hideSubNav: true,
       items: [
         {
           label: t('Pancake Protectors'),

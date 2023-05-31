@@ -17,6 +17,7 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
     "test": "vitest --run",
+    "update:snapshot": "vitest -u",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
