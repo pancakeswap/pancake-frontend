@@ -74,7 +74,7 @@ export const useUserBoostedPoolsTokenId = () => {
   )
   return {
     pids: data?.map((tokenId) => Number(tokenId)) ?? [],
-    mutate,
+    updateBoostedPoolsTokenId: mutate,
   }
 }
 
