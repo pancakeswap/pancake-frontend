@@ -32,7 +32,7 @@ import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { RangeTag } from 'components/RangeTag'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 import { BCakeV3CardView } from '../../YieldBooster/components/bCakeV3/CardView'
-import { useBakeV3farmCanBoost } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { useBakeV3farmCanBoost, useUserMultiplierBeforeBoosted } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
@@ -110,8 +110,11 @@ const SingleFarmV3Card: React.FunctionComponent<
   const title = `${lpSymbol} (#${tokenId.toString()})`
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
 
+  const { updatedUserMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted()
+
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId.toString(),
+    onDone: updatedUserMultiplierBeforeBoosted,
   })
 
   const { farmCanBoost } = useBakeV3farmCanBoost(farm.pid)

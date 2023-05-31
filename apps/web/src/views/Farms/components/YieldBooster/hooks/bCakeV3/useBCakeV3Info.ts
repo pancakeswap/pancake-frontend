@@ -80,15 +80,18 @@ export const useUserBoostedPoolsTokenId = () => {
   }
 }
 
-export const useUserBoostedMultiplier = (tokenId?: string) => {
+export const useUserMultiplierBeforeBoosted = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data } = useSWRImmutable(
+  const { data, mutate } = useSWRImmutable(
     chainId && tokenId && `v3/bcake/userBoostedMultiplier/${chainId}/${tokenId}`,
     () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data ?? 1
+  return {
+    userMultiplierBeforeBoosted: data ?? 1,
+    updatedUserMultiplierBeforeBoosted: mutate,
+  }
 }
 
 export const useUserMaxBoostedPositionLimit = () => {

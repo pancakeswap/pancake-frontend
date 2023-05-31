@@ -34,7 +34,11 @@ import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/for
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../../getDisplayApr'
-import { USER_ESTIMATED_MULTIPLIER, useUserBoostedMultiplier } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import {
+  USER_ESTIMATED_MULTIPLIER,
+  useUserMultiplierBeforeBoosted,
+  useUserPositionInfo,
+} from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 
 const ApyLabelContainer = styled(Flex)`
@@ -177,17 +181,23 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const positionCakeAprDisplay = positionCakeApr.toFixed(2)
   const lpAprDisplay = lpApr.toFixed(2)
   const { isDesktop } = useMatchBreakpoints()
-  const userMultiplier = useUserBoostedMultiplier(tokenId)
+  const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
+  const {
+    data: { boostMultiplier },
+  } = useUserPositionInfo(tokenId)
   const estimatedAPR = useMemo(() => {
     return (parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER + parseFloat(lpAprDisplay)).toLocaleString('en-US', {
       maximumFractionDigits: 2,
     })
   }, [cakeAprDisplay, lpAprDisplay])
   const boostedAPR = useMemo(() => {
-    return (parseFloat(positionCakeAprDisplay) * userMultiplier + parseFloat(lpAprDisplay)).toLocaleString('en-US', {
-      maximumFractionDigits: 2,
-    })
-  }, [positionCakeAprDisplay, lpAprDisplay, userMultiplier])
+    return (parseFloat(positionCakeAprDisplay) * userMultiplierBeforeBoosted + parseFloat(lpAprDisplay)).toLocaleString(
+      'en-US',
+      {
+        maximumFractionDigits: 2,
+      },
+    )
+  }, [positionCakeAprDisplay, lpAprDisplay, userMultiplierBeforeBoosted])
   const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
   const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
 
@@ -219,7 +229,12 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       <ul>
         <li>
           {t('Farm APR')}:
-          <b>{isBoosted ? parseFloat(positionCakeAprDisplay) * userMultiplier : positionCakeAprDisplay}%</b>
+          <b>
+            {isBoosted ? parseFloat(positionCakeAprDisplay) * boostMultiplier : positionCakeAprDisplay}%
+            <Text display="inline-block" color="primary" ml="3px">
+              {isBoosted && `(${boostMultiplier} * ${positionCakeAprDisplay})%`}
+            </Text>
+          </b>
         </li>
         <li>
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>

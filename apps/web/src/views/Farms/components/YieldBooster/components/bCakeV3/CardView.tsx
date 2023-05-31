@@ -5,7 +5,7 @@ import NextLink from 'next/link'
 import { useCallback } from 'react'
 import {
   useBCakeBoostLimitAndLockInfo,
-  useUserBoostedMultiplier,
+  useUserMultiplierBeforeBoosted,
   useUserBoostedPoolsTokenId,
   useUserPositionInfo,
 } from '../../hooks/bCakeV3/useBCakeV3Info'
@@ -35,13 +35,15 @@ export const BCakeV3CardView: React.FC<{
 
   const { activate, deactivate, isConfirming } = useBoosterFarmV3Handlers(tokenId, onDone)
 
-  const multiplierBeforeBoosted = useUserBoostedMultiplier(tokenId)
+  const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
   const { theme } = useTheme()
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
       <StatusView
         status={boostStatus}
-        boostedMultiplier={boostStatus === BoostStatus.farmCanBoostButNot ? boostMultiplier : multiplierBeforeBoosted}
+        boostedMultiplier={
+          boostStatus === BoostStatus.farmCanBoostButNot ? boostMultiplier : userMultiplierBeforeBoosted
+        }
         isFarmStaking={isFarmStaking}
       />
       <Box>
