@@ -49,6 +49,7 @@ function Bridge() {
   const config = useMemo(() => {
     const style = (theme as PancakeTheme).isDark ? darkStyle : lightStyle
     return {
+      integratorId: 'squid-swap-pancakeswap',
       slippage: 1.5,
       instantExec: true,
       infiniteApproval: false,
