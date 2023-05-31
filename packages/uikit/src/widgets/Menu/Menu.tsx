@@ -102,8 +102,8 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
       isMobile
         ? links.sort((a, b) => {
             if (
-              a.href === "https://protectors.pancakeswap.finance" ||
-              b.href === "https://protectors.pancakeswap.finance"
+              a?.items?.[0]?.href === "https://protectors.pancakeswap.finance" ||
+              b?.items?.[0]?.href === "https://protectors.pancakeswap.finance"
             )
               return 1;
             return -1;
