@@ -2260,7 +2260,6 @@
   "Share your unique affiliate link with your friends, followers, and anyone who loves a good adventure": "Share your unique affiliate link with your friends, followers, and anyone who loves a good adventure",
   "Join PancakeSwap's Community and Make a Difference": "Join PancakeSwap's Community and Make a Difference",
   "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program": "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
-  "claim your rewards": "claim your rewards",
   "affiliate links": "affiliate links",
   "link": "link",
   "profit sharing %": "profit sharing %",
@@ -2533,5 +2532,16 @@
   "Subdomains .pancake.crypto for just $9.99": "Subdomains .pancake.crypto for just $9.99",
   "PancakeSwap IFOs": "PancakeSwap IFOs",
   "PancakeSwap Affiliate Program": "PancakeSwap Affiliate Program",
-  "To proceed to %title%, please check the checkbox below:": "To proceed to %title%, please check the checkbox below:"
+  "To proceed to %title%, please check the checkbox below:": "To proceed to %title%, please check the checkbox below:",
+  "Funds sent to your wallet": "Funds sent to your wallet",
+  "Claim Request time": "Claim Request time",
+  "State": "State",
+  "Pending Approval": "Pending Approval",
+  "Rejected": "Rejected",
+  "Latest rewards": "Latest rewards",
+  "Historical Claim": "Historical Claim",
+  "Claiming of Affiliate Rewards is only available on Binance Smart Chain.": "Claiming of Affiliate Rewards is only available on Binance Smart Chain.",
+  "Switch network": "Switch network",
+  "to claim rewards": "to claim rewards",
+  "You have %number% incompleted request in Historical Claim.": "You have %number% incompleted request in Historical Claim."
 }

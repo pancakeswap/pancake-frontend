@@ -135,7 +135,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
                           style={{ cursor: 'pointer' }}
                           onClick={() => handleClickClaim(isAffiliateClaim, reward)}
                         >
-                          {t('Claim ')}
+                          {t('Claim')}
                         </Button>
                       )}
                     </Td>
