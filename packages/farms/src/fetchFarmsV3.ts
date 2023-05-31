@@ -317,9 +317,6 @@ type Slot0 = [
 ]
 type LmPool = `0x${string}`
 
-type LmLiquidity = bigint
-type LmRewardGrowthGlobalX128 = bigint
-
 async function fetchLmPools(
   lmPoolAddresses: Address[],
   chainId: number,
@@ -345,10 +342,10 @@ async function fetchLmPools(
 
   const resp = await provider({ chainId }).multicall({
     contracts: lmPoolCalls,
-    allowFailure: false,
+    allowFailure: true,
   })
 
-  const chunked = chunk(resp, chunkSize) as [LmLiquidity, LmRewardGrowthGlobalX128][]
+  const chunked = chunk(resp, chunkSize)
 
   const lmPools: Record<
     string,
@@ -360,8 +357,8 @@ async function fetchLmPools(
 
   for (const [index, res] of chunked.entries()) {
     lmPools[lmPoolAddresses[index]] = {
-      liquidity: res?.[0]?.toString() ?? '0',
-      rewardGrowthGlobalX128: res?.[1]?.toString() ?? '0',
+      liquidity: res?.[0]?.result?.toString() ?? '0',
+      rewardGrowthGlobalX128: res?.[1]?.result?.toString() ?? '0',
     }
   }
 

@@ -25,6 +25,10 @@ describe('Config farms V3', () => {
     expect(Pool.getAddress(farm.token, farm.quoteToken, farm.feeAmount)).toEqual(farm.lpAddress)
   })
 
+  it.each(mainnetFarms.flat())('should be sorted', (farm) => {
+    expect(farm.token0.sortsBefore(farm.token1)).toBeTruthy()
+  })
+
   it.each(mainnetFarms)('should has related common price', (...farms) => {
     const commonPrice: CommonPrice = {}
     for (const commonToken of priceHelperTokens[farms[0].token.chainId as keyof typeof priceHelperTokens].list) {
