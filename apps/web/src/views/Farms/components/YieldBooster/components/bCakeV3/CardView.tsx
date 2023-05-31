@@ -42,7 +42,7 @@ export const BCakeV3CardView: React.FC<{
       <StatusView
         status={boostStatus}
         boostedMultiplier={
-          boostStatus === BoostStatus.farmCanBoostButNot ? boostMultiplier : userMultiplierBeforeBoosted
+          boostStatus === BoostStatus.farmCanBoostButNot ? userMultiplierBeforeBoosted : boostMultiplier
         }
         isFarmStaking={isFarmStaking}
       />

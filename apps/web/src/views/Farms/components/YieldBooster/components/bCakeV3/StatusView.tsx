@@ -54,7 +54,13 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
         <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
           {status === BoostStatus.Boosted ||
           (status === BoostStatus.farmCanBoostButNot && isFarmStaking && locked && !isLockEnd)
-            ? `${boostedMultiplier}x`
+            ? `${
+                boostedMultiplier < 1.001 && boostedMultiplier !== 1
+                  ? '< 1.001'
+                  : boostedMultiplier?.toLocaleString('en-US', {
+                      maximumFractionDigits: 3,
+                    })
+              }x`
             : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
         </Text>
         <Flex ref={targetRef}>

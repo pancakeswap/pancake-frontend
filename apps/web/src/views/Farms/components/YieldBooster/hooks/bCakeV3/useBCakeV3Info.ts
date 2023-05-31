@@ -60,7 +60,7 @@ export const useUserPositionInfo = (tokenId: string) => {
       reward: data?.[5],
       user: data?.[6],
       pid: data?.[7],
-      boostMultiplier: _toNumber(new BN(data?.[8].toString()).div(PRECISION_FACTOR).toFixed(3).toString()),
+      boostMultiplier: _toNumber(new BN(data?.[8].toString()).div(PRECISION_FACTOR).toString()),
     },
     updateUserPositionInfo: mutate,
   }

@@ -65,7 +65,6 @@ export async function getUserMultiplier({ address, tokenId, chainId }): Promise<
     PRECISION_FACTOR.plus(new BN(multiplier.toString()))
       .minus(new BN(BOOST_PRECISION.toString()))
       .div(PRECISION_FACTOR)
-      .toFixed(3)
       .toString(),
   )
 }
