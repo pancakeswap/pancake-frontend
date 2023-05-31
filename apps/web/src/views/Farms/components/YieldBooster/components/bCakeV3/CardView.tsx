@@ -6,6 +6,7 @@ import {
   useUserBoostedMultiplier,
   useUserPositionInfo,
   useUserBoostedPoolsTokenId,
+  useBCakeBoostLimitAndLockInfo,
 } from '../../hooks/bCakeV3/useBCakeV3Info'
 import { useBoosterFarmV3Handlers } from '../../hooks/bCakeV3/useBoostBcakeV3'
 import { BoostStatus, useBoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
@@ -29,6 +30,7 @@ export const BCakeV3CardView: React.FC<{
     updateUserPositionInfo()
     updateBoostedPoolsTokenId()
   }, [updateStatus, updateUserPositionInfo, updateBoostedPoolsTokenId])
+  const { isReachedMaxBoostLimit, locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
 
   const { activate, deactivate, isConfirming } = useBoosterFarmV3Handlers(tokenId, onDone)
 
@@ -42,13 +44,15 @@ export const BCakeV3CardView: React.FC<{
         isFarmStaking={isFarmStaking}
       />
       <Box>
-        {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && (
+        {(!locked || isLockEnd) && <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Pool')}</Button>}
+        {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && locked && !isLockEnd && (
           <Button
             onClick={() => {
               activate()
             }}
             isLoading={isConfirming}
             endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
+            disabled={isReachedMaxBoostLimit}
           >
             {t('Boost')}
           </Button>

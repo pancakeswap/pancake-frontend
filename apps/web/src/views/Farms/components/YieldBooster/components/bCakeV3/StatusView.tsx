@@ -2,6 +2,7 @@ import { Box, Text, useTooltip, useMatchBreakpoints, LinkExternal, HelpIcon, Fle
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
+import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
 const BoosterTooltip = () => {
   const { t } = useTranslation()
@@ -33,7 +34,8 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
     placement: 'top',
     ...(isMobile && { hideTimeout: 1500 }),
   })
-  if (status === BoostStatus.CanNotBoost) return null
+  const { locked, isLockEnd, isReachedMaxBoostLimit } = useBCakeBoostLimitAndLockInfo()
+
   return (
     <Box>
       <Text color="textSubtle" bold fontSize={12} lineHeight="120%" textTransform="uppercase">
@@ -41,7 +43,8 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
       </Text>
       <Flex alignItems="center">
         <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
-          {status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)
+          {status === BoostStatus.Boosted ||
+          (status === BoostStatus.farmCanBoostButNot && isFarmStaking && locked && !isLockEnd)
             ? `${boostedMultiplier}x`
             : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
         </Text>
@@ -53,6 +56,9 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
       <Text color="textSubtle" fontSize={12} lineHeight="120%">
         {!account && t('Connect wallet to activate yield booster')}
         {account && !isFarmStaking && t('Start staking to activate yield booster.')}
+        {account && isFarmStaking && !locked && t('Lock CAKE to activate yield booster')}
+        {account && isFarmStaking && isLockEnd && t('Renew your CAKE staking to activate yield booster')}
+        {account && isFarmStaking && isReachedMaxBoostLimit && t('Unset other boosters to activate')}
         {account && status === BoostStatus.farmCanBoostButNot && isFarmStaking && t('Yield booster available')}
         {account && status === BoostStatus.Boosted && t('Active')}
       </Text>

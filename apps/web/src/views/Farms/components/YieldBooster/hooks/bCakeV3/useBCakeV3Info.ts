@@ -1,11 +1,13 @@
 import BN from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import useSWRImmutable from 'swr/immutable'
 import { useContractRead } from 'wagmi'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
+import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
 
 export const USER_ESTIMATED_MULTIPLIER = 2
 
@@ -98,4 +100,15 @@ export const useUserMaxBoostedPositionLimit = () => {
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return Number(data)
+}
+
+export const useBCakeBoostLimitAndLockInfo = () => {
+  const { locked, lockedEnd } = useUserLockedCakeStatus()
+  const isLockEnd = useMemo(() => lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000), [lockedEnd])
+  const maxBoostLimit = useUserMaxBoostedPositionLimit()
+  const { pids } = useUserBoostedPoolsTokenId()
+  const remainingCounts = useMemo(() => pids?.length ?? 0, [pids])
+  const isReachedMaxBoostLimit = useMemo(() => remainingCounts >= maxBoostLimit, [remainingCounts, maxBoostLimit])
+
+  return { locked, isLockEnd, maxBoostLimit, remainingCounts, isReachedMaxBoostLimit }
 }

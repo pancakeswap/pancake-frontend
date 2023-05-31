@@ -19,12 +19,10 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import { useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
 import useBCakeProxyBalance from '../../../../hooks/useBCakeProxyBalance'
-import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
-import { useUserBoostedPoolsTokenId, useUserMaxBoostedPositionLimit } from '../../hooks/bCakeV3/useBCakeV3Info'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
+import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
 export const CardWrapper = styled.div`
   position: relative;
@@ -143,11 +141,8 @@ export const BCakeBoosterCard = () => {
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useAccountActiveChain()
-  const { pids } = useUserBoostedPoolsTokenId()
-  const maxBoostLimit = useUserMaxBoostedPositionLimit()
-  const { locked, lockedEnd } = useUserLockedCakeStatus()
+  const { locked, isLockEnd, remainingCounts, maxBoostLimit } = useBCakeBoostLimitAndLockInfo()
   const theme = useTheme()
-  const remainingCounts = useMemo(() => pids?.length ?? 0, [pids])
 
   if (!account)
     return (
@@ -177,7 +172,7 @@ const CardContent: React.FC = () => {
         </NextLink>
       </Box>
     )
-  if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
+  if (isLockEnd)
     return (
       <Box>
         <Text color="textSubtle" fontSize={12} bold>
