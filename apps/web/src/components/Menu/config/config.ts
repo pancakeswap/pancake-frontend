@@ -164,13 +164,13 @@ const config: (
     {
       label: t('Game'),
       icon: PancakeProtectorIcon,
-      supportChainIds: SUPPORT_ONLY_BSC,
       hideSubNav: true,
       items: [
         {
           label: t('Pancake Protectors'),
           href: 'https://protectors.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
+          status: { text: t('New'), color: 'success' },
         },
       ],
     },

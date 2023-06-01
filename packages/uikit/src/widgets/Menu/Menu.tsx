@@ -97,20 +97,11 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
 
   const totalTopMenuHeight = isMounted && banner ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT;
 
-  const sortedLinks = useMemo(
-    () =>
-      isMobile
-        ? links.sort((a, b) => {
-            if (
-              a?.items?.[0]?.href === "https://protectors.pancakeswap.finance" ||
-              b?.items?.[0]?.href === "https://protectors.pancakeswap.finance"
-            )
-              return 1;
-            return -1;
-          })
-        : links,
-    [links, isMobile]
-  );
+  const sortedLinks = useMemo(() => {
+    const mobileLinks = links.map((d) => d);
+    mobileLinks.push(mobileLinks.splice(4, 1)[0]);
+    return isMobile ? mobileLinks.concat() : links;
+  }, [links, isMobile]);
 
   useEffect(() => {
     const handleScroll = () => {

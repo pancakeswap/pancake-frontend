@@ -29,7 +29,6 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
           const itemStatus = menuItemsStatus[innerItem.href]
           const modalId = innerItem.confirmModalId
           const isInfo = innerItem.href === '/info/v3'
-          const isPanCakeProtector = innerItem.href === 'https://protectors.pancakeswap.finance'
           if (itemStatus) {
             let itemMenuStatus = null
             if (itemStatus === 'soon') {
@@ -64,10 +63,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             const href = `${innerItem.href}${multiChainPaths[chainId] ?? ''}`
             return { ...innerItem, href }
           }
-          if (isPanCakeProtector) {
-            const itemMenuStatus = <LinkStatus>{ text: t('New'), color: 'success' }
-            return { ...innerItem, status: itemMenuStatus }
-          }
+
           return innerItem
         })
         return { ...item, items: innerItems }
