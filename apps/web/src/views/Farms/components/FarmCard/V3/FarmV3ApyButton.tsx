@@ -4,42 +4,38 @@ import {
   AutoRow,
   CalculateIcon,
   Farm as FarmUI,
+  Flex,
   IconButton,
+  RocketIcon,
   RoiCalculatorModalV2,
   Skeleton,
   Text,
+  TooltipText,
+  useMatchBreakpoints,
   useModalV2,
   useRoi,
-  Flex,
   useTooltip,
-  TooltipText,
-  RocketIcon,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
-import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
+import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import { Bound } from 'config/constants/types'
 import { usePoolAvgInfo } from 'hooks/usePoolAvgInfo'
+import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { V3Farm } from 'views/Farms/FarmsV3'
-import { getDisplayApr } from '../../getDisplayApr'
-import {
-  USER_ESTIMATED_MULTIPLIER,
-  useUserMultiplierBeforeBoosted,
-  useUserPositionInfo,
-} from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { USER_ESTIMATED_MULTIPLIER, useUserPositionInfo } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { getDisplayApr } from '../../getDisplayApr'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -175,13 +171,12 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
 
   const lpApr = existingPosition ? +apr.toFixed(2) : globalLpApr
   const cakeApr = +farm.cakeApr
-  const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
+
   const displayApr = getDisplayApr(cakeApr, lpApr)
   const cakeAprDisplay = cakeApr.toFixed(2)
   const positionCakeAprDisplay = positionCakeApr.toFixed(2)
   const lpAprDisplay = lpApr.toFixed(2)
   const { isDesktop } = useMatchBreakpoints()
-  const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
   const {
     data: { boostMultiplier },
   } = useUserPositionInfo(tokenId ?? '-1')
@@ -192,15 +187,14 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
     })
   }, [cakeAprDisplay, lpAprDisplay])
   const boostedAPR = useMemo(() => {
-    return (parseFloat(positionCakeAprDisplay) * userMultiplierBeforeBoosted + parseFloat(lpAprDisplay)).toLocaleString(
-      'en-US',
-      {
-        maximumFractionDigits: 2,
-      },
-    )
-  }, [positionCakeAprDisplay, lpAprDisplay, userMultiplierBeforeBoosted])
+    return (parseFloat(positionCakeAprDisplay) * boostMultiplier + parseFloat(lpAprDisplay)).toLocaleString('en-US', {
+      maximumFractionDigits: 2,
+    })
+  }, [positionCakeAprDisplay, lpAprDisplay, boostMultiplier])
   const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
   const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
+  const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
+  const positionBoostedDisplayApr = getDisplayApr(boostMultiplier * positionCakeApr, lpApr)
 
   const aprTooltip = useTooltip(
     <>
@@ -225,7 +219,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const existingPositionAprTooltip = useTooltip(
     <>
       <Text>
-        {t('Combined APR')}: <b>{positionDisplayApr}%</b>
+        {t('Combined APR')}: <b>{isBoosted ? positionBoostedDisplayApr : positionDisplayApr}%</b>
       </Text>
       <ul>
         <li>
