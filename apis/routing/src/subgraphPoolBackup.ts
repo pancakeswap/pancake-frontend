@@ -7,7 +7,6 @@ import { getPoolsObjectName } from './pools'
 // eslint-disable-next-line consistent-return
 async function handleScheduled(event: ScheduledEvent) {
   switch (event.cron) {
-    case '*/1 * * * *':
     case '0 0 * * *': {
       for (const chainId of SUPPORTED_CHAINS) {
         try {

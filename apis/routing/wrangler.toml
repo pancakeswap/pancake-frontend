@@ -9,7 +9,7 @@ main = "src/index.ts"
 name = "routing-dev"
 node_compat = true
 [triggers]
-crons = ["*/10 * * * *", "0 0 * * *"]
+crons = ["0 0 * * *"]
 
 [env.production]
 kv_namespaces = [
@@ -20,7 +20,7 @@ r2_buckets = [
 ]
 name = "routing"
 [env.production.triggers]
-crons = ["*/10 * * * *", "0 0 * * *"]
+crons = ["0 0 * * *"]
 
 # - AXIOM_TOKEN
 # The necessary secrets are:
