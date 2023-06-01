@@ -203,17 +203,28 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       </Text>
       <ul>
         <li>
-          {t('Farm APR')}: <b>{cakeAprDisplay}%</b>
+          {t('Farm APR')}:{' '}
+          <b>
+            {canBoosted && parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER}%{' '}
+            <Text display="inline-block" style={{ textDecoration: 'line-through' }}>
+              {cakeAprDisplay}%
+            </Text>
+          </b>
         </li>
         <li>
-          {t('LP Fee APR')}: <b>{canBoosted ? parseFloat(lpAprDisplay) * USER_ESTIMATED_MULTIPLIER : lpAprDisplay}%</b>
+          {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
       </ul>
       <br />
       <Text>
         {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
       </Text>
-      <Text>{t('APRs for individual positions may vary depending on the configs.')}</Text>
+      {canBoosted && (
+        <Text mt="15px">
+          {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
+        </Text>
+      )}
+      <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
     </>,
   )
   const existingPositionAprTooltip = useTooltip(

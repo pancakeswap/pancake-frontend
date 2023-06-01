@@ -2544,5 +2544,6 @@
   "to claim rewards": "to claim rewards",
   "You have %number% incompleted request in Historical Claim.": "You have %number% incompleted request in Historical Claim.",
   "Start staking to activate yield booster.": "Start staking to activate yield booster.",
-  "Renew your CAKE staking to activate yield booster": "Renew your CAKE staking to activate yield booster"
+  "Renew your CAKE staking to activate yield booster": "Renew your CAKE staking to activate yield booster",
+  "bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.": "bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions."
 }
