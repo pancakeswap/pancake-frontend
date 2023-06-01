@@ -10,15 +10,16 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 import { useTradingRewardContract } from 'hooks/useContract'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
-import { Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Qualification, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface UseClaimAllRewardProps {
   campaignIds: Array<string>
   unclaimData: UserCampaignInfoDetail[]
   qualification: Qualification
+  type: RewardType
 }
 
-export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: UseClaimAllRewardProps) => {
+export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, type }: UseClaimAllRewardProps) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { toastSuccess } = useToast()
@@ -41,7 +42,9 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
         const value = parseEther(totalFee as `${number}`)
         const originHash = keccak256(keccak256(encodePacked(['address', 'uint256'], [account, value])))
 
-        const response = await fetch(`${TRADING_REWARD_API}/hash/campaignId/${i.campaignId}/originHash/${originHash}`)
+        const response = await fetch(
+          `${TRADING_REWARD_API}/hash/campaignId/${i.campaignId}/originHash/${originHash}/type/${type}`,
+        )
         const result = await response.json()
         return result.data.merkleProof
       }),
@@ -64,7 +67,18 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification }: U
       mutate(['/all-campaign-id-info', account, campaignIds])
     }
     return null
-  }, [account, campaignIds, contract, fetchWithCatchTxError, mutate, qualification, t, toastSuccess, unclaimData])
+  }, [
+    account,
+    campaignIds,
+    contract,
+    fetchWithCatchTxError,
+    mutate,
+    qualification.minAmountUSD,
+    t,
+    toastSuccess,
+    type,
+    unclaimData,
+  ])
 
   return { isPending, handleClaim }
 }

@@ -8,7 +8,7 @@ import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'
 import HowToEarn from 'views/TradingReward/components/HowToEarn'
 import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
 import Questions from 'views/TradingReward/components/Questions'
-import useAllTradingRewardPair from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import SubMenu from 'views/TradingReward/components/SubMenu'
@@ -16,12 +16,19 @@ import SubMenu from 'views/TradingReward/components/SubMenu'
 const TradingReward = () => {
   const { chainId } = useActiveChainId()
 
-  const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair()
+  const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair({
+    status: RewardStatus.ALL,
+    type: RewardType.CAKE_STAKERS,
+  })
   const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
-  const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
-  const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo(
-    allTradingRewardPairData.campaignIds,
-  )
+  const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo({
+    campaignId,
+    type: RewardType.CAKE_STAKERS,
+  })
+  const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo({
+    campaignIds: allTradingRewardPairData.campaignIds,
+    type: RewardType.CAKE_STAKERS,
+  })
 
   const isFetching = useMemo(
     () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo || isCampaignInfoFetching,

@@ -9,6 +9,7 @@ import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingRewar
 import { ChainId } from '@pancakeswap/sdk'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
+import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface UserCampaignInfoResponse {
   id: string
@@ -36,19 +37,24 @@ export interface AllUserCampaignInfo {
   data: UserCampaignInfoDetail[]
 }
 
-const useAllUserCampaignInfo = (campaignIds: Array<string>): AllUserCampaignInfo => {
+interface UseAllUserCampaignInfoProps {
+  campaignIds: Array<string>
+  type: RewardType
+}
+
+const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoProps): AllUserCampaignInfo => {
   const { address: account } = useAccount()
   const tradingRewardAddress = getTradingRewardAddress(ChainId.BSC)
 
   const { data: allUserCampaignInfoData, isLoading } = useSWR(
-    campaignIds.length > 0 && account && ['/all-campaign-id-info', account, campaignIds],
+    campaignIds.length > 0 && account && type && ['/all-campaign-id-info', account, campaignIds, type],
     async () => {
       try {
         const allUserCampaignInfo = await Promise.all(
           campaignIds.map(async (campaignId: string) => {
             const [userCampaignInfoResponse, userInfoQualificationResponse] = await Promise.all([
-              fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/${account}`),
-              fetch(`${TRADING_REWARD_API}/user/campaignId/${campaignId}/address/${account}`),
+              fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/${account}/type/${type}`),
+              fetch(`${TRADING_REWARD_API}/user/campaignId/${campaignId}/address/${account}/type/${type}`),
             ])
 
             const [userCampaignInfoResult, userInfoQualificationResult] = await Promise.all([

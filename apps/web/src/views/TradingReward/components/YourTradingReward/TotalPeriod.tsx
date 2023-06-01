@@ -10,7 +10,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
-import { RewardInfo, Qualification, Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { RewardInfo, Qualification, Incentives, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
@@ -74,7 +74,12 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
     )
   }, [campaignIdsIncentive, totalAvailableClaimData])
 
-  const { isPending, handleClaim } = useClaimAllReward({ campaignIds, unclaimData, qualification })
+  const { isPending, handleClaim } = useClaimAllReward({
+    campaignIds,
+    unclaimData,
+    qualification,
+    type: RewardType.CAKE_STAKERS,
+  })
 
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
 
