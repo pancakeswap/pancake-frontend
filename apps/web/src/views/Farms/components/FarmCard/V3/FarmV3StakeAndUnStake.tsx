@@ -205,7 +205,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
       )}
       <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
       <FarmV3LPPosition token={token} quoteToken={quoteToken} position={position} />
-      <RowBetween gap="16px" flexWrap="nowrap">
+      <RowBetween gap="16px" flexWrap="wrap">
         <FarmV3LPPositionDetail
           farm={farm}
           token={token}

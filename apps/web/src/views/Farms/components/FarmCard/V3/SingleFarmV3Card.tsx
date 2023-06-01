@@ -165,6 +165,7 @@ const SingleFarmV3Card: React.FunctionComponent<
         <RowBetween
           flexDirection="column"
           alignItems="flex-start"
+          style={{ flexGrow: 1.25 }}
           flex={{
             xs: 'auto',
             md: 1,
