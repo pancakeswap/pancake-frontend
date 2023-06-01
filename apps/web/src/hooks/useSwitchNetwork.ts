@@ -4,7 +4,6 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { ConnectorNames } from 'config/wallet'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useSessionChainId } from './useSessionChainId'
@@ -77,14 +76,13 @@ export function useSwitchNetwork() {
     () =>
       isConnected
         ? !!_switchNetworkAsync &&
-          connector.id !== ConnectorNames.WalletConnect &&
           !(
             typeof window !== 'undefined' &&
             // @ts-ignore // TODO: add type later
             (window.ethereum?.isSafePal || window.ethereum?.isMathWallet)
           )
         : true,
-    [_switchNetworkAsync, isConnected, connector],
+    [_switchNetworkAsync, isConnected],
   )
 
   return {
