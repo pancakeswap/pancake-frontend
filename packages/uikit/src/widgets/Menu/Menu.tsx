@@ -97,12 +97,6 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
 
   const totalTopMenuHeight = isMounted && banner ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT;
 
-  const sortedLinks = useMemo(() => {
-    const mobileLinks = links.map((d) => d);
-    mobileLinks.push(mobileLinks.splice(4, 1)[0]);
-    return isMobile ? mobileLinks : links;
-  }, [links, isMobile]);
-
   useEffect(() => {
     const handleScroll = () => {
       const currentOffset = window.pageYOffset;
@@ -154,7 +148,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
                 <AtomBox display={{ xs: "none", md: "block" }}>
-                  <MenuItems items={sortedLinks} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
+                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
                 </AtomBox>
               </Flex>
               <Flex alignItems="center" height="100%">
