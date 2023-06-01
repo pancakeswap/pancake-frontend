@@ -100,7 +100,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   const sortedLinks = useMemo(() => {
     const mobileLinks = links.map((d) => d);
     mobileLinks.push(mobileLinks.splice(4, 1)[0]);
-    return isMobile ? mobileLinks.concat() : links;
+    return isMobile ? mobileLinks : links;
   }, [links, isMobile]);
 
   useEffect(() => {
