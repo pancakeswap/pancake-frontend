@@ -90,7 +90,7 @@ const useBCakeMessage = (
     if (!isFarmStaking) return t('Start staking to activate yield booster.')
     if (!locked) return t('Lock CAKE to activate yield booster')
     if (isLockEnd) return t('Renew your CAKE staking to activate yield booster')
-    if (isReachedMaxBoostLimit) return t('Unset other boosters to activate')
+    if (isReachedMaxBoostLimit && canBoostedButNot) return t('Unset other boosters to activate')
     if (canBoostedButNot) return t('Yield booster available')
     if (boosted) return t('Active')
     return ''
