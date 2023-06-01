@@ -100,7 +100,7 @@ function poolSelectorFactory<P extends WithTvl>({
 
     addToPoolSet(top2DirectPools)
 
-    const nativeToken = WNATIVE[chainId]
+    const nativeToken = WNATIVE[chainId as ChainId]
     const top2EthBaseTokenPool = nativeToken
       ? poolsFromSubgraph
           .filter((subgraphPool) => {
