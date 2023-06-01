@@ -21,7 +21,10 @@ export const SERVER_NODES = {
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM_TESTNET]: polygonZkEvmTestnet.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: [
+    'https://polygon-zkevm-testnet.rpc.thirdweb.com',
+    ...polygonZkEvmTestnet.rpcUrls.public.http,
+  ],
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
@@ -51,7 +54,10 @@ export const PUBLIC_NODES = {
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM_TESTNET]: polygonZkEvmTestnet.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: [
+    'https://polygon-zkevm-testnet.rpc.thirdweb.com',
+    ...polygonZkEvmTestnet.rpcUrls.public.http,
+  ],
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
