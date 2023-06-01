@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
@@ -173,7 +173,7 @@ const UnsDomainBanner = () => {
           </LogoBox>
           {isDesktop ? (
             <StyledSubheading>
-              {t('Get your custom branded subdomains .pancake.crypto for just $9.99 ')}
+              {t('Get your custom branded subdomains .pancake.crypto for just $9.99')}
             </StyledSubheading>
           ) : (
             <MobileSubheading>{t('Save 20% on Web3 Domains')}</MobileSubheading>
