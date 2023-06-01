@@ -39,7 +39,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           <PreTitle fontSize="12px" color="textSubtle" m="0 0 8px 0">
             {t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: unstakedPositions.length })}
           </PreTitle>
-          <AutoRow width="100%" gap="16px" alignItems="stretch">
+          <AutoRow width="100%" gap="16px" flexDirection="column" alignItems="stretch">
             {partition_(unstakedPositions, (position) => !isPositionOutOfRange(pool?.tickCurrent, position))
               .flat()
               .map((position) => (
