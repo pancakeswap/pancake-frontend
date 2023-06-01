@@ -3,6 +3,7 @@ import { FeeAmount, FeeCalculator, Tick, TickMath, sqrtRatioX96ToPrice } from "@
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
+import _toNumber from "lodash/toNumber";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
 import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
@@ -111,7 +112,7 @@ export function RoiCalculator({
   onPriceSpanChange,
   allowApply = false,
   onApply,
-  bCakeBoostedMultiplier,
+  bCakeBoostedMultiplier = 1,
   ...props
 }: RoiCalculatorProps) {
   const { isMobile } = useMatchBreakpoints();
@@ -496,7 +497,11 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={farmingRewardsEnabled ? (editCakeApr || cakeApr).multiply(bCakeBoostedMultiplier ?? 1) : undefined}
+        farmApr={
+          farmingRewardsEnabled
+            ? (editCakeApr || cakeApr).multiply(new Percent(_toNumber(bCakeBoostedMultiplier.toFixed(3)) * 1000, 1000))
+            : undefined
+        }
         farmApy={farmingRewardsEnabled ? editCakeApy || cakeApy : undefined}
         farmReward={farmReward}
         isFarm={farmingRewardsEnabled}
