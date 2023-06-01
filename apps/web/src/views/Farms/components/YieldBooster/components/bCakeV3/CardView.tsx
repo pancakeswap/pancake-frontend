@@ -47,7 +47,7 @@ export const BCakeV3CardView: React.FC<{
         isFarmStaking={isFarmStaking}
       />
       <Box>
-        {(!locked || isLockEnd) && (
+        {(!locked || isLockEnd) && boostStatus !== BoostStatus.Boosted && (
           <NextLink href="/pools" passHref>
             <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Pool')}</Button>
           </NextLink>
