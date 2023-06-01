@@ -66,6 +66,9 @@ export const ADDITIONAL_BASES: {
     // alETH - ALCX
     [ethereumTokens.alcx.address]: [ethereumTokens.alETH],
     [ethereumTokens.alETH.address]: [ethereumTokens.alcx],
+
+    // rETH - ETH
+    [ethereumTokens.weth.address]: [ethereumTokens.rETH],
   },
 }
 
