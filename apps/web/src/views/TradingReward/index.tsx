@@ -11,6 +11,7 @@ import Questions from 'views/TradingReward/components/Questions'
 import useAllTradingRewardPair from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import SubMenu from 'views/TradingReward/components/SubMenu'
 
 const TradingReward = () => {
   const { chainId } = useActiveChainId()
@@ -64,6 +65,7 @@ const TradingReward = () => {
 
   return (
     <Box>
+      <SubMenu />
       <Banner />
       <YourTradingReward
         isFetching={isFetching}

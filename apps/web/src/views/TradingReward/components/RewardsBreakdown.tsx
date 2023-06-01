@@ -92,7 +92,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
         }`}
       </Text>
       <Card>
-        <Box maxHeight={500} overflowY="auto">
+        <Box maxHeight={1400} overflowY="auto">
           <Table>
             <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: theme.card.background }}>
               <tr>
