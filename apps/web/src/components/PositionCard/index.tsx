@@ -1,21 +1,6 @@
-import { useState, useMemo, useContext } from 'react'
+import { useMemo, useContext } from 'react'
 import { Currency, CurrencyAmount, Pair, Percent } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  ChevronUpIcon,
-  ChevronDownIcon,
-  Card,
-  CardBody,
-  Flex,
-  CardProps,
-  AddIcon,
-  TooltipText,
-  useTooltip,
-  NextLinkFromReactRouter,
-  Link,
-  AutoColumn,
-} from '@pancakeswap/uikit'
+import { Text, Card, CardBody, Flex, CardProps, TooltipText, useTooltip, Link, AutoColumn } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -23,18 +8,15 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
-import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
 import { useLPApr } from 'state/swap/useLPApr'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { currencyId } from '../../utils/currencyId'
+import { useTokenBalance } from 'state/wallet/hooks'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 import { LightCard } from '../Card'
-import CurrencyLogo from '../Logo/CurrencyLogo'
 import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
-import Dots from '../Loader/Dots'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 
 const FixedHeightRow = styled(RowBetween)`
@@ -272,161 +254,4 @@ function MinimalPositionCardView({
   )
 }
 
-function FullPositionCard({
-  pair,
-  currency0,
-  currency1,
-  token0Deposited,
-  token1Deposited,
-  totalUSDValue,
-  userPoolBalance,
-  poolTokenPercentage,
-  ...props
-}: PositionCardProps) {
-  const isStableLP = useContext(StableConfigContext)
-
-  const { t } = useTranslation()
-  const poolData = useLPApr(pair)
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
-    {
-      placement: 'bottom',
-    },
-  )
-  const [showMore, setShowMore] = useState(false)
-
-  return (
-    <Card {...props}>
-      <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
-        <Flex flexDirection="column">
-          <Flex alignItems="center" mb="4px">
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
-            <Text bold ml="8px">
-              {!currency0 || !currency1 ? <Dots>{t('Loading')}</Dots> : `${currency0.symbol}/${currency1.symbol}`}
-            </Text>
-            {isStableLP ? (
-              <Text color="textSubtle" ml="4px">
-                {' '}
-                - Stable
-              </Text>
-            ) : null}
-          </Flex>
-          <Text fontSize="14px" color="textSubtle">
-            {userPoolBalance?.toSignificant(4)}
-          </Text>
-          {Number.isFinite(totalUSDValue) && (
-            <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })} USD)`}</Text>
-          )}
-        </Flex>
-        {showMore ? <ChevronUpIcon /> : <ChevronDownIcon />}
-      </Flex>
-
-      {showMore && (
-        <AutoColumn gap="8px" style={{ padding: '16px' }}>
-          {isStableLP ? null : (
-            <FixedHeightRow>
-              <RowFixed>
-                <CurrencyLogo size="20px" currency={currency0} />
-                <Text color="textSubtle" ml="4px">
-                  {t('Pooled %asset%', { asset: currency0.symbol })}:
-                </Text>
-              </RowFixed>
-              {token0Deposited ? (
-                <RowFixed>
-                  <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
-                </RowFixed>
-              ) : (
-                '-'
-              )}
-            </FixedHeightRow>
-          )}
-
-          {isStableLP ? null : (
-            <FixedHeightRow>
-              <RowFixed>
-                <CurrencyLogo size="20px" currency={currency1} />
-                <Text color="textSubtle" ml="4px">
-                  {t('Pooled %asset%', { asset: currency1.symbol })}:
-                </Text>
-              </RowFixed>
-              {token1Deposited ? (
-                <RowFixed>
-                  <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
-                </RowFixed>
-              ) : (
-                '-'
-              )}
-            </FixedHeightRow>
-          )}
-          {poolData && (
-            <FixedHeightRow>
-              <RowFixed>
-                <TooltipText ref={targetRef} color="textSubtle">
-                  {t('LP reward APR')}:
-                </TooltipText>
-                {tooltipVisible && tooltip}
-              </RowFixed>
-              <Text>{formatAmount(poolData.lpApr7d)}%</Text>
-            </FixedHeightRow>
-          )}
-
-          <FixedHeightRow>
-            <Text color="textSubtle">{t('Share in Trading Pair')}</Text>
-            <Text>
-              {poolTokenPercentage
-                ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
-                : '-'}
-            </Text>
-          </FixedHeightRow>
-
-          {userPoolBalance && userPoolBalance.quotient > BIG_INT_ZERO && (
-            <Flex flexDirection="column">
-              <Button
-                as={NextLinkFromReactRouter}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}${isStableLP ? '?stable=1' : ''}`}
-                variant="primary"
-                width="100%"
-                mb="8px"
-              >
-                {t('Remove')}
-              </Button>
-              <Button
-                as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
-                variant="text"
-                startIcon={<AddIcon color="primary" />}
-                width="100%"
-              >
-                {t('Add liquidity instead')}
-              </Button>
-            </Flex>
-          )}
-        </AutoColumn>
-      )}
-    </Card>
-  )
-}
-
 export const MinimalPositionCard = withLPValues(MinimalPositionCardView)
-
-export const StableFullPositionCardContainer = withStableLPValues(FullPositionCard)
-
-export const StableFullPositionCard = (props) => {
-  const stableConfig = useStableConfig({
-    tokenA: props.pair?.token0,
-    tokenB: props.pair?.token1,
-  })
-
-  if (!stableConfig.stableSwapConfig) return null
-
-  return (
-    <StableConfigContext.Provider value={stableConfig}>
-      <StableFullPositionCardContainer {...props} />
-    </StableConfigContext.Provider>
-  )
-}
-
-export default withLPValues(FullPositionCard)
