@@ -17,21 +17,6 @@ const DEFAULT = {
   },
 }
 
-const TOLERANCE_DEFAULT = {
-  defaultConfig: {
-    multicallChunk: 50,
-    gasLimitOverride: 1_000_000,
-  },
-  gasErrorFailureOverride: {
-    gasLimitOverride: 1_000_000,
-    multicallChunk: 40,
-  },
-  successRateFailureOverrides: {
-    gasLimitOverride: 1_000_000,
-    multicallChunk: 45,
-  },
-}
-
 export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.BSC_TESTNET]: DEFAULT,
   [ChainId.BSC]: {
@@ -53,7 +38,20 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.ARBITRUM_ONE]: DEFAULT,
   [ChainId.ARBITRUM_GOERLI]: DEFAULT,
   [ChainId.POLYGON_ZKEVM]: DEFAULT,
-  [ChainId.POLYGON_ZKEVM_TESTNET]: TOLERANCE_DEFAULT,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: {
+    defaultConfig: {
+      multicallChunk: 10,
+      gasLimitOverride: 1_000_000,
+    },
+    gasErrorFailureOverride: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 5,
+    },
+    successRateFailureOverrides: {
+      gasLimitOverride: 1_000_000,
+      multicallChunk: 8,
+    },
+  },
   [ChainId.ZKSYNC]: DEFAULT,
   [ChainId.ZKSYNC_TESTNET]: DEFAULT,
   [ChainId.LINEA_TESTNET]: DEFAULT,
