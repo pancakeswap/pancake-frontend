@@ -290,8 +290,9 @@ export function RoiCalculator({
       compoundEvery: compoundingIndexToFrequency[compoundIndex],
       stakeFor: spanIndexToSpan[spanIndex],
       compoundOn,
-      cakeApr: farmingRewardsEnabled && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
-      editCakeApr: farmingRewardsEnabled && editedCakeApr ? editedCakeApr.toNumber() : undefined,
+      cakeApr: farmingRewardsEnabled && derivedCakeApr ? derivedCakeApr.toNumber() * bCakeBoostedMultiplier : undefined,
+      editCakeApr:
+        farmingRewardsEnabled && editedCakeApr ? editedCakeApr.toNumber() * bCakeBoostedMultiplier : undefined,
     });
 
   const handleApply = useCallback(
@@ -497,11 +498,7 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={
-          farmingRewardsEnabled
-            ? (editCakeApr || cakeApr).multiply(new Percent(_toNumber(bCakeBoostedMultiplier.toFixed(3)) * 1000, 1000))
-            : undefined
-        }
+        farmApr={farmingRewardsEnabled ? editCakeApr || cakeApr : undefined}
         farmApy={farmingRewardsEnabled ? editCakeApy || cakeApy : undefined}
         farmReward={farmReward}
         isFarm={farmingRewardsEnabled}
