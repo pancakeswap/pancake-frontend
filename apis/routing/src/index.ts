@@ -1,11 +1,13 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
-import { GraphQLClient } from 'graphql-request'
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
+
 import { sendLog } from './log'
-import { viemProviders } from './provider'
+import { v3SubgraphProvider, viemProviders } from './provider'
+import { poolsRoute } from './pools'
+import { setupPoolBackupCrontab } from './subgraphPoolBackup'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
@@ -18,25 +20,7 @@ const CACHE_TIME = {
   [ChainId.BSC_TESTNET]: 2,
 }
 
-const V3_SUBGRAPH_URLS = {
-  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
-  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
-  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc',
-  [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
-}
-
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemProviders })
-
-const v3Clients = {
-  [ChainId.ETHEREUM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ETHEREUM], { fetch }),
-  [ChainId.GOERLI]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.GOERLI], { fetch }),
-  [ChainId.BSC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC], { fetch }),
-  [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET], { fetch }),
-}
-
-const subgraphProvider = ({ chainId }: { chainId?: ChainId }) => {
-  return v3Clients[chainId as ChainId]
-}
 
 const PoolCache = {
   getKey: (currencyA: Currency, currencyB: Currency, chainId: ChainId) => {
@@ -89,7 +73,7 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
     const pairs = SmartRouter.getPairCombinations(currencyA, currencyB)
 
     const [v3Pools, v2Pools, stablePools] = await Promise.all([
-      SmartRouter.getV3PoolSubgraph({ provider: subgraphProvider, pairs }).then((res) =>
+      SmartRouter.getV3PoolSubgraph({ provider: v3SubgraphProvider, pairs }).then((res) =>
         SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, res),
       ),
       SmartRouter.getV2PoolsOnChain(pairs, viemProviders, blockNumber),
@@ -216,6 +200,11 @@ router.post('/v0/quote', async (req, event) => {
 
   return response
 })
+
+// Crontab to fetch and store v3 pools from subgraph
+setupPoolBackupCrontab()
+// V3 pools endpoint
+poolsRoute(router)
 
 router.options('*', handleCors(CORS_ALLOW, `GET, POST, OPTIONS`, `*`))
 

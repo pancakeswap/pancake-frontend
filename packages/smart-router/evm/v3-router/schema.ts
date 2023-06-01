@@ -55,7 +55,7 @@ const zStablePool = z
   })
   .required()
 
-const zPools = z.array(z.union([zV2Pool, zV3Pool, zStablePool]))
+export const zPools = z.array(z.union([zV2Pool, zV3Pool, zStablePool]))
 
 export const zRouterGetParams = z
   .object({
@@ -100,3 +100,4 @@ export const zRouterPostParams = z
 
 export type RouterPostParams = z.infer<typeof zRouterPostParams>
 export type RouterGetParams = z.infer<typeof zRouterGetParams>
+export type SerializedPools = z.infer<typeof zPools>

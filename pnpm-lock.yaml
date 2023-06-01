@@ -187,12 +187,21 @@ importers:
       '@pancakeswap/worker-utils':
         specifier: workspace:*
         version: link:../../packages/worker-utils
+      graphql-request:
+        specifier: ^5.0.0
+        version: 5.0.0(encoding@0.1.13)(graphql@16.6.0)
       itty-router:
         specifier: ^2.6.1
         version: 2.6.1
       itty-router-extras:
         specifier: ^0.4.2
         version: 0.4.2
+      viem:
+        specifier: ^0.3.30
+        version: 0.3.30(typescript@5.0.4)(zod@3.21.4)
+      wagmi:
+        specifier: 1.0.5
+        version: 1.0.5(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(viem@0.3.30)(zod@3.21.4)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^3.10.0
