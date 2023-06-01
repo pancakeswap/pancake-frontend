@@ -36,8 +36,19 @@ export async function getV2PoolsWithTvlByCommonTokenPrices({
     getCommonTokenPrices({ currencyA, currencyB, v3SubgraphProvider }),
   ])
 
-  if (!poolsFromOnChain || !baseTokenUsdPrices) {
-    throw new Error('Failed to get v2 candidate pools by base token prices.')
+  if (!poolsFromOnChain) {
+    throw new Error('Failed to get v2 candidate pools')
+  }
+
+  if (!baseTokenUsdPrices) {
+    console.debug('Failed to get base token prices')
+    return poolsFromOnChain.map((pool) => {
+      return {
+        ...pool,
+        tvlUSD: BigInt(0),
+        address: getPoolAddress(pool),
+      }
+    })
   }
 
   return poolsFromOnChain.map<V2PoolWithTvl>((pool) => {
