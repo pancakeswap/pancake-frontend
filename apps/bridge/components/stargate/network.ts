@@ -1,4 +1,4 @@
-import { mainnet, arbitrum, optimism, polygon, fantom, avalanche, bsc } from 'wagmi/chains'
+import { mainnet, arbitrum, optimism, polygon, fantom, avalanche, bsc } from 'viem/chains'
 
 // Chain Id is defined by Stargate
 const stargateNetowrk = [
