@@ -18,7 +18,6 @@ const useDefaultLinkId = () => {
         const result: AffiliateExistFeeResponse = await response.json()
 
         const regex = /^[a-zA-Z0-9_]+$/
-
         if (result.exist || !regex.test(randomNanoId)) {
           randomNanoId = nanoid(20)
           mutate('/affiliate-fee-exist')
