@@ -110,8 +110,7 @@ export const useBCakeBoostLimitAndLockInfo = () => {
   const isLockEnd = useMemo(() => lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000), [lockedEnd])
   const maxBoostLimit = useUserMaxBoostedPositionLimit()
   const { pids } = useUserBoostedPoolsTokenId()
-  const remainingCounts = useMemo(() => pids?.length ?? 0, [pids])
-  const isReachedMaxBoostLimit = useMemo(() => remainingCounts >= maxBoostLimit, [remainingCounts, maxBoostLimit])
-
+  const remainingCounts = useMemo(() => maxBoostLimit - (pids?.length ?? 0), [pids, maxBoostLimit])
+  const isReachedMaxBoostLimit = useMemo(() => remainingCounts <= 0, [remainingCounts])
   return { locked, isLockEnd, maxBoostLimit, remainingCounts, isReachedMaxBoostLimit }
 }
