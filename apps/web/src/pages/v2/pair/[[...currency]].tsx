@@ -28,6 +28,10 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useLPApr } from 'state/swap/useLPApr'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMasterchef } from 'hooks/useContract'
+import useSWRImmutable from 'swr/immutable'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -37,6 +41,7 @@ export const BodyWrapper = styled(Card)`
 `
 
 export default function PoolV2Page() {
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
 
   const router = useRouter()
@@ -63,6 +68,24 @@ export default function PoolV2Page() {
     token0Deposited,
     token1Deposited,
   })
+
+  const masterchefV2Contract = useMasterchef()
+
+  const { data: isFarmExistActiveForPair } = useSWRImmutable(
+    chainId && pair && masterchefV2Contract && ['isFarmExistActiveForPair', chainId, pair.liquidityToken.address],
+    async () => {
+      const farmsConfig = (await getFarmConfig(chainId)) || []
+      const farmPair = farmsConfig.find(
+        (farm) => farm.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+      )
+      if (farmPair) {
+        const poolInfo = await masterchefV2Contract.read.poolInfo([BigInt(farmPair.pid)])
+        const allocPoint = poolInfo[2] as bigint
+        return allocPoint > 0 ? 'exist' : 'notexist'
+      }
+      return 'exist'
+    },
+  )
 
   const { isMobile } = useMatchBreakpoints()
 
@@ -93,11 +116,13 @@ export default function PoolV2Page() {
                     {t('Remove')}
                   </Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/v2/migrate/${pair?.liquidityToken?.address}`}>
-                  <Button variant="secondary" width="100%">
-                    {t('Migrate')}
-                  </Button>
-                </NextLinkFromReactRouter>
+                {isFarmExistActiveForPair === 'notexist' && (
+                  <NextLinkFromReactRouter to={`/v2/migrate/${pair?.liquidityToken?.address}`}>
+                    <Button variant="secondary" width="100%">
+                      {t('Migrate')}
+                    </Button>
+                  </NextLinkFromReactRouter>
+                )}
               </>
             )
           }
@@ -115,11 +140,13 @@ export default function PoolV2Page() {
                   {t('Remove')}
                 </Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/v2/migrate/${pair.liquidityToken.address}`}>
-                <Button variant="secondary" width="100%" mb="8px">
-                  {t('Migrate')}
-                </Button>
-              </NextLinkFromReactRouter>
+              {isFarmExistActiveForPair === 'notexist' && (
+                <NextLinkFromReactRouter to={`/v2/migrate/${pair.liquidityToken.address}`}>
+                  <Button variant="secondary" width="100%" mb="8px">
+                    {t('Migrate')}
+                  </Button>
+                </NextLinkFromReactRouter>
+              )}
             </>
           )}
           <AutoRow>
