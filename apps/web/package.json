@@ -103,7 +103,7 @@
     "zod": "^3.21.4",
     "polished": "^4.2.2",
     "tiny-invariant": "^1.1.0",
-    "uuid": "^8.0.0",
+    "nanoid": "^4.0.2",
     "viem": "^1.2.9"
   },
   "devDependencies": {

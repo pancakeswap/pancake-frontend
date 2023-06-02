@@ -1,8 +1,8 @@
 import { NextApiHandler } from 'next'
 import { enum as zEnum, string as zString, object as zObject } from 'zod'
-import { v4 as uuid } from 'uuid'
 import HmacSHA256 from 'crypto-js/hmac-sha256'
 import EncodeHex from 'crypto-js/enc-hex'
+import { nanoid } from 'nanoid'
 
 const host = 'https://avengerdao.org'
 const url = '/api/v1/address-security'
@@ -30,7 +30,7 @@ const handler: NextApiHandler = async (req, res) => {
   const { chainId, address: address_ } = parsed.data
   const address = address_.toLowerCase()
   const timeStamp = new Date().valueOf().toString()
-  const nonce = uuid().replaceAll('-', '')
+  const nonce = nanoid().replaceAll('-', '').replaceAll('_', '')
   const body = JSON.stringify({
     chainId,
     address,
