@@ -102,8 +102,8 @@ const fetchCampaignIdsIncentive = async (
   return campaignIdsIncentive
 }
 
-const fetUserQualification = async (tradingRewardContract: ReturnType<typeof getTradingRewardContract>) => {
-  const result = await tradingRewardContract.read.getUserQualification()
+const fetchUserQualification = async (tradingRewardContract: ReturnType<typeof getTradingRewardContract>) => {
+  const result = await tradingRewardContract.read.getUserQualification([])
   return {
     thresholdLockTime: new BigNumber(result[0].toString()).toNumber(),
     minAmountUSD: new BigNumber(result[0].toString()).toJSON(),
@@ -147,7 +147,7 @@ const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTr
         const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
           fetchCampaignPairs(campaignIds),
           fetchCampaignIdsIncentive(tradingRewardContract, campaignIds),
-          fetUserQualification(tradingRewardContract),
+          fetchUserQualification(tradingRewardContract),
           fetchRewardInfo(campaignIds),
         ])
 

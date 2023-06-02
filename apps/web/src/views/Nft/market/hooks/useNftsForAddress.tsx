@@ -10,7 +10,7 @@ import { usePreviousValue } from '@pancakeswap/hooks'
 import { isAddress } from 'utils'
 import { getAddress } from 'viem'
 
-export const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
+export const useNftsForAddress = (account: string | null | undefined, profile: Profile, isProfileFetching: boolean) => {
   const { data: collections } = useGetCollections()
 
   const { nfts, isLoading, refresh } = useCollectionsNftsForAddress(account, profile, isProfileFetching, collections)
@@ -18,7 +18,7 @@ export const useNftsForAddress = (account: string, profile: Profile, isProfileFe
 }
 
 export const useCollectionsNftsForAddress = (
-  account: string,
+  account: string | null | undefined,
   profile: Profile,
   isProfileFetching: boolean,
   collections: ApiCollections,
@@ -47,7 +47,12 @@ export const useCollectionsNftsForAddress = (
   // @ts-ignore
   const { status, data, mutate, resetLaggy } = useSWR(
     !isProfileFetching && !isEmpty(collections) && isAddress(account) ? [account, 'userNfts'] : null,
-    async () => getCompleteAccountNftData(getAddress(account), collections, profileNftWithCollectionAddress),
+    async () => {
+      if (account) {
+        return getCompleteAccountNftData(getAddress(account), collections, profileNftWithCollectionAddress)
+      }
+      return Promise.resolve(null)
+    },
     {
       keepPreviousData: true,
     },

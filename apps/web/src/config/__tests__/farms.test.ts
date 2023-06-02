@@ -8,7 +8,12 @@ import { describe, it } from 'vitest'
 // Test only against the last 10 farms, for performance concern
 const farmsToTest: [number, SerializedFarm, number][] = farms56
   .filter((farm) => farm.pid !== 0 && farm.pid !== null)
-  .filter((farm) => !farm.stableSwapAddress)
+  .filter((farm) => {
+    if ('stableSwapAddress' in farm) {
+      return !farm.stableSwapAddress
+    }
+    return true
+  })
   .slice(0, 10)
   .map((farm) => [farm.pid, farm, 56])
 
@@ -40,8 +45,8 @@ describe.concurrent(
         const quoteTokenAddress = farm.quoteToken.address
         const lpContract = getLpContract(farm.lpAddress, chainId)
 
-        const token0Address = (await lpContract.read.token0()).toLowerCase()
-        const token1Address = (await lpContract.read.token1()).toLowerCase()
+        const token0Address = ((await lpContract.read.token0([])) as string).toLowerCase()
+        const token1Address = ((await lpContract.read.token1([])) as string).toLowerCase()
 
         expect(
           token0Address === tokenAddress.toLowerCase() || token0Address === quoteTokenAddress.toLowerCase(),
@@ -66,7 +71,7 @@ describe.concurrent(
 
     it.each(newFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
       const lpContract = getLpContract(farm.lpAddress)
-      const factory = await lpContract.read.factory()
+      const factory = (await lpContract.read.factory([])) as string
       expect(factory.toLowerCase()).toEqual(FACTORY_ADDRESS)
     })
 
@@ -77,7 +82,7 @@ describe.concurrent(
 
     it.each(ethNewFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
       const lpContract = getLpContract(farm.lpAddress, farm.token.chainId)
-      const factory = await lpContract.read.factory()
+      const factory = (await lpContract.read.factory([])) as string
       expect(factory.toLowerCase()).toEqual(ETH_FACTORY_ADDRESS)
     })
   },

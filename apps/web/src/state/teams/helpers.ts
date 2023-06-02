@@ -38,7 +38,7 @@ export const getTeams = async (): Promise<TeamsById> => {
   try {
     const profileContract = getProfileContract()
     const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))
-    const nbTeams = await profileContract.read.numberTeams()
+    const nbTeams = await profileContract.read.numberTeams([])
 
     const calls = Array.from({ length: Number(nbTeams) }).map(
       (_, i) =>

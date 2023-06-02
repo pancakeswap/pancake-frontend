@@ -7,7 +7,7 @@ import { Address } from 'wagmi'
 export const useUserBoosterStatus = (account: Address) => {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { data: MAX_BOOST_POOL, status: maxBoostStatus } = useSWRImmutable('maxBoostFarm', () =>
-    farmBoosterContract.read.MAX_BOOST_POOL(),
+    farmBoosterContract.read.MAX_BOOST_POOL([]),
   )
   const {
     data: activatedPools,
