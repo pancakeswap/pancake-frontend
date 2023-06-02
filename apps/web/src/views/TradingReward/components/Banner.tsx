@@ -114,7 +114,6 @@ const Decorations = styled(Box)`
 const TradingRewardBanner = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const { isMobile } = useMatchBreakpoints()
 
   return (
     <Container
