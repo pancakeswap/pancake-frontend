@@ -96,7 +96,7 @@
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.3",
     "styled-system": "^5.1.5",
-    "swiper": "^8.4.2",
+    "swiper": "^9.3.2",
     "swr": "^2.1.5",
     "typescript": "^5.0.4",
     "wagmi": "1.0.9",

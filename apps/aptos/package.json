@@ -44,7 +44,7 @@
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.3",
     "typescript": "^5.0.4",
-    "swiper": "^8.4.2",
+    "swiper": "^9.3.2",
     "swr": "^2.1.5",
     "lodash": "^4.17.21"
   },
