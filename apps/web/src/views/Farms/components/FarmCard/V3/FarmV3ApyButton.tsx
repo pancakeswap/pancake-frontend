@@ -199,7 +199,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const aprTooltip = useTooltip(
     <>
       <Text>
-        {t('Combined APR')}: <b>{displayApr}%</b>
+        {t('Combined APR')}: <b>{canBoosted ? estimatedAPR : displayApr}%</b>
       </Text>
       <ul>
         <li>
