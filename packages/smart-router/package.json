@@ -28,7 +28,7 @@
     "mnemonist": "^0.38.3",
     "stats-lite": "^2.2.0",
     "tiny-invariant": "^1.1.0",
-    "viem": "^0.3.44",
+    "viem": "^0.3.47",
     "zod": "^3.21.4"
   },
   "devDependencies": {
