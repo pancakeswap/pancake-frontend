@@ -49,11 +49,10 @@ import {
   cakeVaultV2ABI,
 } from '@pancakeswap/pools'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
-import { getContract as viemGetContract, WalletClient, PublicClient } from 'viem'
+import { getContract as viemGetContract, WalletClient, PublicClient, Abi } from 'viem'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
-import { Abi, Narrow } from 'abitype'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
@@ -85,7 +84,7 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   publicClient,
   signer,
 }: {
-  abi: Narrow<TAbi>
+  abi: TAbi
   address: Address
   chainId?: ChainId
   signer?: TWalletClient

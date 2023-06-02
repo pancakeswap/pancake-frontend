@@ -1,8 +1,7 @@
 import { ChainId, Currency, CurrencyAmount, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
-import { Address, ContractFunctionConfig } from 'viem'
-import { Abi } from 'abitype'
+import { Address, ContractFunctionConfig, Abi } from 'viem'
 
 import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../../types'
 import { pancakePairABI } from '../../../abis/IPancakePair'

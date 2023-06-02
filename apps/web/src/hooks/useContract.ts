@@ -1,8 +1,7 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
 
 import { erc20ABI, useWalletClient, usePublicClient } from 'wagmi'
-import { Address } from 'viem'
-import { Abi } from 'abitype'
+import { Address, Abi } from 'viem'
 
 import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'

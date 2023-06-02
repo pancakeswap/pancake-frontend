@@ -104,7 +104,7 @@
     "polished": "^4.2.2",
     "tiny-invariant": "^1.1.0",
     "uuid": "^8.0.0",
-    "viem": "^0.3.39"
+    "viem": "^0.3.44"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",
@@ -131,7 +131,6 @@
     "@types/uuid": "^8.0.0",
     "@vanilla-extract/vite-plugin": "^3.8.0",
     "@vitejs/plugin-react": "4.0.0",
-    "abitype": "^0.8.2",
     "eslint": "^8.32.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-lodash": "^7.4.0",
