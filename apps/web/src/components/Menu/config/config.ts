@@ -4,6 +4,7 @@ import {
   SwapIcon,
   SwapFillIcon,
   EarnFillIcon,
+  PancakeProtectorIcon,
   EarnIcon,
   TrophyIcon,
   TrophyFillIcon,
@@ -161,6 +162,19 @@ const config: (
       ],
     },
     {
+      label: t('Game'),
+      icon: PancakeProtectorIcon,
+      hideSubNav: true,
+      items: [
+        {
+          label: t('Pancake Protectors'),
+          href: 'https://protectors.pancakeswap.finance',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+          status: { text: t('New'), color: 'success' },
+        },
+      ],
+    },
+    {
       label: '',
       href: '/info',
       icon: MoreIcon,
@@ -197,11 +211,6 @@ const config: (
         },
         {
           type: DropdownMenuItemType.DIVIDER,
-        },
-        {
-          label: t('Pancake Protectors'),
-          href: 'https://protectors.pancakeswap.finance',
-          type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
           label: t('Blog'),

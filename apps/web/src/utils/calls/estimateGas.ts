@@ -1,7 +1,6 @@
 import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
-import { Abi } from 'abitype'
-import { Account, Address, CallParameters, GetFunctionArgs, InferFunctionName } from 'viem'
+import { Abi, Account, Address, CallParameters, GetFunctionArgs, InferFunctionName } from 'viem'
 import { Chain } from 'wagmi'
 
 /**
@@ -30,8 +29,6 @@ export const estimateGas = async <
   if (!contract.estimateGas[methodName]) {
     throw new Error(`Method ${methodName} doesn't exist on ${contract.address}`)
   }
-  // TODO: wagmi
-  // @ts-ignore
   const rawGasEstimation = await contract.estimateGas[methodName](methodArgs, {
     value: 0n,
     account: contract.account,

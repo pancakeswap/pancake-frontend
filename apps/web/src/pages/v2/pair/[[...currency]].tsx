@@ -26,6 +26,8 @@ import { useRouter } from 'next/router'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { useLPApr } from 'state/swap/useLPApr'
+import { formatAmount } from 'utils/formatInfoNumbers'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -63,6 +65,8 @@ export default function PoolV2Page() {
   })
 
   const { isMobile } = useMatchBreakpoints()
+
+  const poolData = useLPApr(pair)
 
   return (
     <Page>
@@ -150,6 +154,11 @@ export default function PoolV2Page() {
               </Box>
             </Flex>
           </AutoRow>
+          {poolData && (
+            <Text>
+              {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+            </Text>
+          )}
           <Text>
             {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
           </Text>

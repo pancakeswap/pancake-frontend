@@ -1,6 +1,6 @@
 /* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Abi, Address } from 'abitype'
+import { Abi, Address } from 'viem'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
 import flatMap from 'lodash/flatMap.js'

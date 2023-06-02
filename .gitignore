@@ -52,3 +52,6 @@ debug.log*
 
 # store for local dev scripts
 scripts/dev/**
+
+# typescript
+*.tsbuildinfo

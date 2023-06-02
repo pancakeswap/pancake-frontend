@@ -4,7 +4,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "env": ["RISK_APP_SECRET", "SERVER_NODE_REAL_API_ETH", "SERVER_NODE_REAL_API_GOERLI"],
+      "outputs": ["dist/**", ".next/**/*", "!.next/cache/**", "!.vercel/**/*"]
     },
     "test": {
       "outputs": ["coverage/**"],

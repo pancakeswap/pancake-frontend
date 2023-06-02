@@ -1,8 +1,7 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
 
 import { erc20ABI, useWalletClient, usePublicClient } from 'wagmi'
-import { Address } from 'viem'
-import { Abi } from 'abitype'
+import { Address, Abi } from 'viem'
 
 import addresses from 'config/constants/contracts'
 import { useMemo } from 'react'
@@ -22,7 +21,6 @@ import {
   getIfoCreditAddressContract,
   getLotteryV2Contract,
   getMasterChefContract,
-  getMasterchefV1Contract,
   getNftMarketContract,
   getNftSaleContract,
   getNonBscVaultContract,
@@ -108,11 +106,6 @@ export const useMasterchef = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getMasterChefContract(signer, chainId), [signer, chainId])
-}
-
-export const useMasterchefV1 = () => {
-  const { data: signer } = useWalletClient()
-  return useMemo(() => getMasterchefV1Contract(signer), [signer])
 }
 
 export const useSousChef = (id) => {

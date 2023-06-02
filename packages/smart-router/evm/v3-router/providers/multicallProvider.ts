@@ -1,5 +1,5 @@
 import { BigintIsh } from '@pancakeswap/sdk'
-import { Abi, Address } from 'abitype'
+import { Abi, Address } from 'viem'
 
 export type ProviderConfig = {
   /**
