@@ -24,7 +24,7 @@
     "react-dom": "^18.0.0",
     "react": "^18.0.0",
     "viem": "^0.3.47",
-    "wagmi": "1.0.9"
+    "wagmi": "1.1.0"
   },
   "devDependencies": {
     "@blocto/sdk": "^0.3.1",
@@ -36,7 +36,7 @@
     "react": "^18.0.0",
     "tsup": "^6.7.0",
     "viem": "^0.3.47",
-    "wagmi": "1.0.9"
+    "wagmi": "1.1.0"
   },
   "exports": {
     "./package.json": "./package.json",

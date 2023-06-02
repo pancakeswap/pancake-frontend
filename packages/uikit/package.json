@@ -88,7 +88,7 @@
     "react-device-detect": "*",
     "react-transition-group": "*",
     "js-cookie": "*",
-    "wagmi": "1.0.9"
+    "wagmi": "1.1.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",

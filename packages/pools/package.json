@@ -13,7 +13,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "viem": "^0.3.47",
-    "wagmi": "1.0.9"
+    "wagmi": "1.1.0"
   },
   "dependencies": {
     "bignumber.js": "^9.0.0",
@@ -26,6 +26,6 @@
     "typechain": "^6.1.0",
     "typescript": "^5.0.4",
     "vitest": "^0.27.2",
-    "wagmi": "1.0.9"
+    "wagmi": "1.1.0"
   }
 }
