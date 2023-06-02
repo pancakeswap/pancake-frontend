@@ -1,40 +1,46 @@
 import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import Banner from 'views/TradingReward/components/Banner'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
-import CurrentRewardPool from 'views/TradingReward/components/CurrentRewardPool'
+import Banner from 'views/TradingReward/components/TopTraders/Banner'
+// import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
+import CurrentRewardPool from 'views/TradingReward/components/TopTraders/CurrentRewardPool'
 import HowToEarn from 'views/TradingReward/components/HowToEarn'
 import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
 import Questions from 'views/TradingReward/components/Questions'
-import useAllTradingRewardPair from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import SubMenu from 'views/TradingReward/components/SubMenu'
 
 const TradingRewardTopTraders = () => {
   const { chainId } = useActiveChainId()
+  const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair({
+    status: RewardStatus.ALL,
+    type: RewardType.TOP_TRADERS,
+  })
+  const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
+  const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo({
+    campaignId,
+    type: RewardType.TOP_TRADERS,
+  })
+  const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo({
+    campaignIds: allTradingRewardPairData.campaignIds,
+    type: RewardType.TOP_TRADERS,
+  })
 
-  // const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair()
-  // const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
-  // const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo(campaignId)
-  // const { data: allUserCampaignInfo, isFetching: isAllUserCampaignInfo } = useAllUserCampaignInfo(
-  //   allTradingRewardPairData.campaignIds,
-  // )
+  const isFetching = useMemo(
+    () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo || isCampaignInfoFetching,
+    [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo, isCampaignInfoFetching],
+  )
 
-  // const isFetching = useMemo(
-  //   () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo || isCampaignInfoFetching,
-  //   [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo, isCampaignInfoFetching],
-  // )
-
-  // const currentUserIncentive = useMemo(
-  //   () =>
-  //     allTradingRewardPairData.campaignIdsIncentive.find(
-  //       (campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase(),
-  //     ),
-  //   [campaignId, allTradingRewardPairData],
-  // )
+  const currentUserIncentive = useMemo(
+    () =>
+      allTradingRewardPairData.campaignIdsIncentive.find(
+        (campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase(),
+      ),
+    [campaignId, allTradingRewardPairData],
+  )
 
   // const currentUserCampaignInfo = useMemo(
   //   () => allUserCampaignInfo.find((campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase()),
@@ -59,15 +65,15 @@ const TradingRewardTopTraders = () => {
   //     .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
   // }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  // if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
-  //   return null
-  // }
+  if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
+    return null
+  }
 
   return (
     <Box>
       <SubMenu />
-      {/* <Banner />
-      <YourTradingReward
+      <Banner />
+      {/* <YourTradingReward
         isFetching={isFetching}
         incentives={currentUserIncentive}
         qualification={allTradingRewardPairData.qualification}
@@ -76,20 +82,15 @@ const TradingRewardTopTraders = () => {
         rewardInfo={allTradingRewardPairData.rewardInfo}
         currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
-      />
-      <CurrentRewardPool
-        campaignId={campaignId}
-        incentives={currentUserIncentive}
-        campaignInfoData={campaignInfoData}
-        rewardInfo={allTradingRewardPairData.rewardInfo}
       /> */}
+      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <HowToEarn />
-      {/* <RewardsBreakdown
+      <RewardsBreakdown
         latestCampaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         campaignPairs={allTradingRewardPairData.campaignPairs}
-      /> */}
+      />
       <Questions />
     </Box>
   )

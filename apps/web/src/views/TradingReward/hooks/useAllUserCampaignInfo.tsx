@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi'
 import { SLOW_INTERVAL } from 'config/constants'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { tradingRewardABI } from 'config/abi/tradingReward'
-import { getTradingRewardAddress } from 'utils/addressHelpers'
+import { getTradingRewardAddress, getTradingRewardTopTradesAddress } from 'utils/addressHelpers'
 import { CampaignIdInfoResponse, CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import { ChainId } from '@pancakeswap/sdk'
 import { publicClient } from 'utils/wagmi'
@@ -44,7 +44,10 @@ interface UseAllUserCampaignInfoProps {
 
 const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoProps): AllUserCampaignInfo => {
   const { address: account } = useAccount()
-  const tradingRewardAddress = getTradingRewardAddress(ChainId.BSC)
+  const tradingRewardAddress =
+    type === RewardType.CAKE_STAKERS
+      ? getTradingRewardAddress(ChainId.BSC)
+      : getTradingRewardTopTradesAddress(ChainId.BSC)
 
   const { data: allUserCampaignInfoData, isLoading } = useSWR(
     campaignIds.length > 0 && account && type && ['/all-campaign-id-info', account, campaignIds, type],

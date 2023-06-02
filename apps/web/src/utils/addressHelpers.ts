@@ -132,3 +132,7 @@ export const getV3AirdropAddress = (chainId?: number) => {
 export const getAffiliateProgramAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.affiliateProgram, chainId)
 }
+
+export const getTradingRewardTopTradesAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.tradingRewardTopTrades, chainId)
+}
