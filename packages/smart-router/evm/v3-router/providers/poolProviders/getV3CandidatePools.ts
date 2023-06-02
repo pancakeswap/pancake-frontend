@@ -91,7 +91,7 @@ export async function getV3CandidatePools(params: Params) {
   const { currencyA, currencyB, pairs: providedPairs, subgraphProvider } = params
   const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
 
-  const getPools = withFallback<V3PoolWithTvl[]>([
+  const getPools = withFallback([
     // Try get pools from on chain and ref tvl by subgraph
     {
       asyncFn: () => getV3PoolsWithTvlFromOnChain(params),
