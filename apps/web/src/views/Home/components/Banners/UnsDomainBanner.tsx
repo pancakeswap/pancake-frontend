@@ -108,7 +108,7 @@ const MobileSubheading = styled.div`
   letter-spacing: 0.01em;
   color: #ffffff;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-  padding-right: 100px;
+  padding-right: 150px;
   margin-top: 5px;
   margin-bottom: 10px;
 `
