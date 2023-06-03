@@ -39,9 +39,16 @@ function useChainlinkRoundDataSet() {
   const lastRound = useChainlinkLatestRound()
   const { chainlinkOracleAddress } = useConfig()
 
+  const lastRoundBigInt = useMemo(() => {
+    if (lastRound?.data && (typeof lastRound?.data === 'number' || typeof lastRound?.data === 'string')) {
+      return BigInt(lastRound.data)
+    }
+    return lastRound?.data
+  }, [lastRound?.data])
+
   const { data, error } = useContractReads({
     contracts:
-      lastRound?.data &&
+      lastRoundBigInt &&
       Array.from({ length: 50 }).map(
         (_, i) =>
           ({
@@ -49,7 +56,7 @@ function useChainlinkRoundDataSet() {
             abi: chainlinkOracleABI,
             address: chainlinkOracleAddress,
             functionName: 'getRoundData',
-            args: [(lastRound.data ?? 0n) - BigInt(i)] as const,
+            args: [(lastRoundBigInt ?? 0n) - BigInt(i)] as const,
           } as const),
       ),
     enabled: !!lastRound.data,
@@ -60,7 +67,7 @@ function useChainlinkRoundDataSet() {
     return (
       data
         ?.filter((d) => !!d && d.status === 'success' && d.result[1] > 0n)
-        .map(({ result }) => {
+        ?.map(({ result }) => {
           const [roundId, answer, startedAt] = result
           return {
             answer: formatBigIntToFixed(answer, 4, 8),
