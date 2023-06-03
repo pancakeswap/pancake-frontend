@@ -318,8 +318,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^8.4.2
-        version: 8.4.2
+        specifier: ^9.3.2
+        version: 9.3.2
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -415,8 +415,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^8.4.2
-        version: 8.4.2
+        specifier: ^9.3.2
+        version: 9.3.2
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -751,8 +751,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       swiper:
-        specifier: ^8.4.2
-        version: 8.4.2
+        specifier: ^9.3.2
+        version: 9.3.2
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -1442,7 +1442,7 @@ importers:
         version: 2.1.2(react-dom@17.0.2)(react@18.2.0)
       swiper:
         specifier: '*'
-        version: 8.4.2
+        version: 9.3.2
 
   packages/uikit:
     dependencies:
@@ -14845,12 +14845,6 @@ packages:
     resolution: {integrity: sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==}
     dev: true
 
-  /dom7@4.0.4:
-    resolution: {integrity: sha512-DSSgBzQ4rJWQp1u6o+3FVwMNnT5bzQbMb+o31TjYYeRi05uAcpF8koxdfzeoe5ElzPmua7W7N28YJhF7iEKqIw==}
-    dependencies:
-      ssr-window: 4.0.2
-    dev: false
-
   /domexception@2.0.1:
     resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
     engines: {node: '>=8'}
@@ -24035,12 +24029,10 @@ packages:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
     dev: true
 
-  /swiper@8.4.2:
-    resolution: {integrity: sha512-nMD/RHVYxJxrLqjWQX2n0B94ANwpnuUv/3PUDT8Aaf+mSteFvZGFng4ypAYq70zW4svryyV+8TRlbRZ+6cgv9A==}
+  /swiper@9.3.2:
+    resolution: {integrity: sha512-Kj9Z4kXRmJR3YT/Wj+XLWj8P6IcRt+WG38uL8M3/Wny7+6sV0TlP9vnE1X+Co9c7VzNooojWGnFa+Wf/9+CUMA==}
     engines: {node: '>= 4.7.0'}
-    requiresBuild: true
     dependencies:
-      dom7: 4.0.4
       ssr-window: 4.0.2
     dev: false
 

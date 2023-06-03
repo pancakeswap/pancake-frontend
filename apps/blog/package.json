@@ -23,7 +23,7 @@
     "react-dom": "^18.2.0",
     "react-wrap-balancer": "^0.4.0",
     "styled-components": "^5.3.3",
-    "swiper": "^8.4.2",
+    "swiper": "^9.3.2",
     "swr": "^2.1.5",
     "typescript": "^5.0.4",
     "qs": "^6.0.0",
