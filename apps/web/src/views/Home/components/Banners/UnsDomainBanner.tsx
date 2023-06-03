@@ -176,7 +176,7 @@ const UnsDomainBanner = () => {
               {t('Get your custom branded subdomains .pancake.crypto for just $9.99')}
             </StyledSubheading>
           ) : (
-            <MobileSubheading>{t('Save 20% on Web3 Domains')}</MobileSubheading>
+            <MobileSubheading>{t('Subdomains .pancake.crypto for just $9.99')}</MobileSubheading>
           )}
 
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 16 }}>
