@@ -146,12 +146,12 @@ const initialAllTradingRewardState = {
 const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps): AllTradingRewardPair => {
   const tradingRewardContract = useTradingRewardContract({ chainId: ChainId.BSC })
   const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
+  const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
 
   const { data: allPairs, isLoading } = useSWR(
     status && type && ['/all-activated-trading-reward-pair', status, type],
     async () => {
       try {
-        const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
         const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
         const campaignsResult = await campaignsResponse.json()
         const campaignIds: Array<string> = campaignsResult.data

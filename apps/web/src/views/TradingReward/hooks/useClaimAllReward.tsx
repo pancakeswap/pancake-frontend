@@ -3,11 +3,12 @@ import BigNumber from 'bignumber.js'
 import { useSWRConfig } from 'swr'
 import { parseEther, encodePacked, keccak256 } from 'viem'
 import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
-import { useTradingRewardContract } from 'hooks/useContract'
+import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hooks/useContract'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { Qualification, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
@@ -23,9 +24,11 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
-  const contract = useTradingRewardContract()
   const { mutate } = useSWRConfig()
+  const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
+  const tradingRewardContract = useTradingRewardContract({ chainId: ChainId.BSC })
+  const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
+  const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
 
   const handleClaim = useCallback(async () => {
     const claimCampaignIds = unclaimData.map((i) => i.campaignId)

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Banner from 'views/TradingReward/components/TopTraders/Banner'
-// import YourTradingReward from 'views/TradingReward/components/YourTradingReward'
+import YourTradingReward from 'views/TradingReward/components/TopTraders/YourTradingReward'
 import CurrentRewardPool from 'views/TradingReward/components/TopTraders/CurrentRewardPool'
 import HowToEarn from 'views/TradingReward/components/HowToEarn'
 import RewardsBreakdown from 'views/TradingReward/components/RewardsBreakdown'
@@ -42,28 +42,23 @@ const TradingRewardTopTraders = () => {
     [campaignId, allTradingRewardPairData],
   )
 
-  // const currentUserCampaignInfo = useMemo(
-  //   () => allUserCampaignInfo.find((campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase()),
-  //   [campaignId, allUserCampaignInfo],
-  // )
+  const totalAvailableClaimData = useMemo(() => {
+    const currentTime = new Date().getTime() / 1000
 
-  // const totalAvailableClaimData = useMemo(() => {
-  //   const currentTime = new Date().getTime() / 1000
+    return allUserCampaignInfo
+      .map((item) => {
+        const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
+          (pair) => pair.campaignId === item.campaignId,
+        )
 
-  //   return allUserCampaignInfo
-  //     .map((item) => {
-  //       const tradingRewardPair = allTradingRewardPairData.campaignIdsIncentive.find(
-  //         (pair) => pair.campaignId === item.campaignId,
-  //       )
-
-  //       return {
-  //         ...item,
-  //         campaignClaimTime: tradingRewardPair?.campaignClaimTime,
-  //         campaignClaimEndTime: tradingRewardPair?.campaignClaimEndTime,
-  //       }
-  //     })
-  //     .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
-  // }, [allTradingRewardPairData, allUserCampaignInfo])
+        return {
+          ...item,
+          campaignClaimTime: tradingRewardPair?.campaignClaimTime,
+          campaignClaimEndTime: tradingRewardPair?.campaignClaimEndTime,
+        }
+      })
+      .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
+  }, [allTradingRewardPairData, allUserCampaignInfo])
 
   if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
     return null
@@ -73,16 +68,15 @@ const TradingRewardTopTraders = () => {
     <Box>
       <SubMenu />
       <Banner />
-      {/* <YourTradingReward
+      <YourTradingReward
         isFetching={isFetching}
         incentives={currentUserIncentive}
         qualification={allTradingRewardPairData.qualification}
         campaignIds={allTradingRewardPairData.campaignIds}
         campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive}
         rewardInfo={allTradingRewardPairData.rewardInfo}
-        currentUserCampaignInfo={currentUserCampaignInfo}
         totalAvailableClaimData={totalAvailableClaimData}
-      /> */}
+      />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <HowToEarn />
       <RewardsBreakdown

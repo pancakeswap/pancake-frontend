@@ -18,6 +18,7 @@ interface TotalPeriodProps {
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
   campaignIdsIncentive: Incentives[]
+  type: RewardType
 }
 
 const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
@@ -26,6 +27,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   totalAvailableClaimData,
   qualification,
   campaignIdsIncentive,
+  type,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -78,7 +80,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
     campaignIds,
     unclaimData,
     qualification,
-    type: RewardType.CAKE_STAKERS,
+    type,
   })
 
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
@@ -224,7 +226,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
             )}
           </GreyCard>
           <GreyCard mt="24px">
-            <Box mb="24px">
+            <Box>
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
                 {t('Your TOTAL trading Reward')}
               </Text>
@@ -232,14 +234,16 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 {`$${formatNumber(totalTradingReward)}`}
               </Text>
             </Box>
-            <Box>
-              <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
-                {t('Your TOTAL VOLUME Traded')}
-              </Text>
-              <Text bold fontSize={['24px']}>
-                {`$${formatNumber(totalVolumeTrade)}`}
-              </Text>
-            </Box>
+            {type === RewardType.CAKE_STAKERS && (
+              <Box mt="24px">
+                <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+                  {t('Your TOTAL VOLUME Traded')}
+                </Text>
+                <Text bold fontSize={['24px']}>
+                  {`$${formatNumber(totalVolumeTrade)}`}
+                </Text>
+              </Box>
+            )}
           </GreyCard>
         </Box>
       </Card>
