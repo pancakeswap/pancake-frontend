@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Button, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Button, Link } from '@pancakeswap/uikit'
 import { useTheme } from '@pancakeswap/hooks'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
