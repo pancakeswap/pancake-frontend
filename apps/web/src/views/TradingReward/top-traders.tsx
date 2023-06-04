@@ -12,6 +12,7 @@ import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/Trading
 import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import SubMenu from 'views/TradingReward/components/SubMenu'
+import Leaderboard from 'views/TradingReward/components/Leaderboard'
 
 const TradingRewardTopTraders = () => {
   const { chainId } = useActiveChainId()
@@ -78,6 +79,7 @@ const TradingRewardTopTraders = () => {
         totalAvailableClaimData={totalAvailableClaimData}
       />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
+      <Leaderboard incentives={currentUserIncentive} />
       <HowToEarn />
       <RewardsBreakdown
         latestCampaignId={campaignId}
