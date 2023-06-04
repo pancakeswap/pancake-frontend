@@ -7,8 +7,11 @@ import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useChainlinkOracleContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import { useCallback, useMemo } from 'react'
-import { Area, AreaChart, Dot, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import orderBy from 'lodash/orderBy'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createChart, IChartApi, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp } from 'lightweight-charts'
+import { format } from 'date-fns'
+import { darken } from 'polished'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import styled from 'styled-components'
@@ -105,8 +108,6 @@ function useChartHoverMutate() {
   return updateHover
 }
 
-const chartColor = { gradient1: '#00E7B0', gradient2: '#0C8B6C', stroke: '#31D0AA' }
-
 const ChainlinkChartWrapper = styled(Flex)<{ isMobile?: boolean }>`
   flex-direction: column;
   width: 100%;
@@ -199,116 +200,143 @@ const Chart = ({
   const {
     currentLanguage: { locale },
   } = useTranslation()
-  const { isDark, theme } = useTheme()
+  const { isDark } = useTheme()
   const mutate = useChartHoverMutate()
-
-  return (
-    <ResponsiveContainer>
-      <AreaChart
-        data={data}
-        margin={{
-          top: 20,
-          right: 0,
-          left: 0,
-          bottom: 5,
-        }}
-        onMouseLeave={() => {
-          mutate(undefined)
-        }}
-      >
-        <defs>
-          <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor={chartColor.gradient1} stopOpacity={0.34} />
-            <stop offset="100%" stopColor={chartColor.gradient2} stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <XAxis
-          dataKey="startedAt"
-          tickFormatter={(time) => {
-            return new Date(time * 1000).toLocaleString(locale, {
-              hour: 'numeric',
-              minute: '2-digit',
-              hourCycle: 'h24',
-            })
-          }}
-          color={theme.colors.text}
-          fontSize="12px"
-          minTickGap={8}
-          reversed
-          tick={{ fill: theme.colors.text }}
-        />
-        <XAxis dataKey="roundId" hide />
-        <YAxis
-          dataKey="answer"
-          tickCount={6}
-          scale="linear"
-          color={theme.colors.textSubtle}
-          fontSize="12px"
-          domain={['auto', 'auto']}
-          orientation="right"
-          tick={{ dx: 10, fill: theme.colors.textSubtle }}
-        />
-        <Tooltip
-          cursor={{ stroke: theme.colors.textSubtle, strokeDasharray: '3 3' }}
-          contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => {
-            mutate(props.payload)
-            return null
-          }}
-        />
-        <Area
-          dataKey="answer"
-          type="linear"
-          stroke={chartColor.stroke}
-          fill="url(#gradient)"
-          strokeWidth={2}
-          activeDot={(props) => {
-            if (rounds[props.payload.roundId]) {
-              return <ActiveDot {...props} />
-            }
-            return null
-          }}
-          dot={(props) => {
-            if (rounds[props.payload.roundId]) {
-              return (
-                <Dot
-                  {...props}
-                  r={4}
-                  fill={isDark ? theme.colors.gold : theme.colors.secondary}
-                  fillOpacity={1}
-                  strokeWidth={0}
-                />
-              )
-            }
-            return null
-          }}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
-  )
-}
-
-const ActiveDot = (props) => {
-  const { swiper } = useSwiper()
+  const transformedData = useMemo(() => {
+    return orderBy(
+      data?.map(({ startedAt, answer }) => {
+        return { time: startedAt as UTCTimestamp, value: parseFloat(answer) }
+      }) || [],
+      'time',
+      'asc',
+    )
+  }, [data])
   const sortedRounds = useGetSortedRounds()
-  const { theme } = useTheme()
+  const { swiper } = useSwiper()
 
-  return (
-    <Dot
-      {...props}
-      r={12}
-      stroke={theme.colors.primary}
-      strokeWidth={10}
-      fill={theme.colors.background}
-      style={{ cursor: 'pointer' }}
-      onClick={() => {
-        const roundIndex = sortedRounds.findIndex((round) => round.closeOracleId === props.payload.roundId)
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [chartCreated, setChart] = useState<IChartApi | undefined>()
+
+  useEffect(() => {
+    if (!chartRef?.current) return
+
+    const chart = createChart(chartRef?.current, {
+      layout: {
+        background: { color: 'transparent' },
+        textColor: isDark ? '#F4EEFF' : '#280D5F',
+      },
+      autoSize: true,
+      handleScale: false,
+      handleScroll: false,
+      rightPriceScale: {
+        scaleMargins: {
+          top: 0.001,
+          bottom: 0.001,
+        },
+        borderVisible: false,
+      },
+      timeScale: {
+        visible: true,
+        borderVisible: false,
+        secondsVisible: false,
+        tickMarkFormatter: (unixTime: number) => {
+          return format(unixTime * 1000, 'h:mm a')
+        },
+      },
+      grid: {
+        horzLines: {
+          visible: false,
+        },
+        vertLines: {
+          visible: false,
+        },
+      },
+      crosshair: {
+        horzLine: {
+          visible: true,
+          labelVisible: true,
+        },
+        mode: 1,
+        vertLine: {
+          visible: true,
+          labelVisible: false,
+          style: 3,
+          width: 1,
+          color: isDark ? '#B8ADD2' : '#7A6EAA',
+        },
+      },
+    })
+
+    const newSeries = chart.addAreaSeries({
+      lineWidth: 2,
+      lineColor: '#1FC7D4',
+      topColor: darken(0.01, '#1FC7D4'),
+      bottomColor: isDark ? '#3c3742' : 'white',
+      priceFormat: {
+        type: 'price',
+        precision: 4,
+        minMove: 0.0001,
+      },
+    })
+    setChart(chart)
+    newSeries.setData(transformedData)
+
+    chart.timeScale().fitContent()
+
+    const markers = orderBy(
+      data
+        .filter((chartData) => chartData.roundId in rounds)
+        .map((chartData) => ({
+          time: chartData.startedAt as UTCTimestamp,
+          roundId: chartData.roundId,
+          position: 'inBar' as SeriesMarkerPosition,
+          color: isDark ? '#FFC700' : '#7645D9',
+          shape: 'circle' as SeriesMarkerShape,
+          size: 0.5,
+        })),
+      'time',
+      'asc',
+    )
+
+    newSeries.setMarkers(markers)
+
+    chart.subscribeCrosshairMove((param) => {
+      if (newSeries && param) {
+        const timestamp = param.time as number
+        if (!timestamp) return
+        const hoveredRound = data.find((round) => round.startedAt === timestamp)
+        mutate(hoveredRound)
+      } else {
+        mutate(undefined)
+      }
+    })
+
+    chart.subscribeClick((param) => {
+      if (param.hoveredSeries) {
+        const marker = param.hoveredSeries.markers().find((hoveredMarker) => hoveredMarker.time === param.time)
+        const roundIndex = sortedRounds.findIndex((round) =>
+          'roundId' in marker ? round.closeOracleId === marker.roundId : false,
+        )
         if (roundIndex >= 0 && swiper) {
           swiper.slideTo(roundIndex)
           swiper.el.dispatchEvent(new Event(CHART_DOT_CLICK_EVENT))
         }
-      }}
-    />
+      }
+    })
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      chart.remove()
+    }
+  }, [transformedData, isDark, locale, mutate, data, rounds, swiper, sortedRounds])
+
+  return (
+    <>
+      {!chartCreated && <LineChartLoader />}
+      <div style={{ display: 'flex', flex: 1, height: '100%' }}>
+        <div style={{ flex: 1, maxWidth: '100%' }} ref={chartRef} id="chartlink-line-chart" />
+      </div>
+    </>
   )
 }
 
