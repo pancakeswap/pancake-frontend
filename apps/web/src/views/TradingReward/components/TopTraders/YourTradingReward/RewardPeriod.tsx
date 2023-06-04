@@ -11,6 +11,7 @@ interface RewardPeriodProps {
   campaignClaimTime: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
   campaignIdsIncentive: Incentives[]
+  currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
@@ -20,6 +21,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignClaimTime,
   totalAvailableClaimData,
   campaignIdsIncentive,
+  currentUserCampaignInfo,
 }) => {
   return (
     <Flex
@@ -29,7 +31,11 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
       justifyContent="space-between"
       flexDirection={['column', 'column', 'column', 'row']}
     >
-      <CurrentPeriod campaignClaimTime={campaignClaimTime} />
+      <CurrentPeriod
+        rewardInfo={rewardInfo}
+        campaignClaimTime={campaignClaimTime}
+        currentUserCampaignInfo={currentUserCampaignInfo}
+      />
       <TotalPeriod
         type={RewardType.TOP_TRADERS}
         campaignIds={campaignIds}

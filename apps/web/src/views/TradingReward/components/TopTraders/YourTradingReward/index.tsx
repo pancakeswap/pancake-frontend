@@ -138,6 +138,7 @@ interface YourTradingRewardProps {
   qualification: Qualification
   rewardInfo: { [key in string]: RewardInfo }
   campaignIdsIncentive: Incentives[]
+  currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
 const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps>> = ({
@@ -148,6 +149,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
   totalAvailableClaimData,
   rewardInfo,
   campaignIdsIncentive,
+  currentUserCampaignInfo,
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
@@ -181,6 +183,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             campaignClaimTime={incentives?.campaignClaimTime}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}
+            currentUserCampaignInfo={currentUserCampaignInfo}
           />
         </Container>
       )}

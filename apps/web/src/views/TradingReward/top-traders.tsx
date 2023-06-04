@@ -43,6 +43,11 @@ const TradingRewardTopTraders = () => {
     [campaignId, allTradingRewardPairData],
   )
 
+  const currentUserCampaignInfo = useMemo(
+    () => allUserCampaignInfo.find((campaign) => campaign.campaignId.toLowerCase() === campaignId.toLowerCase()),
+    [campaignId, allUserCampaignInfo],
+  )
+
   const totalAvailableClaimData = useMemo(() => {
     const currentTime = new Date().getTime() / 1000
 
@@ -77,6 +82,7 @@ const TradingRewardTopTraders = () => {
         campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive}
         rewardInfo={allTradingRewardPairData.rewardInfo}
         totalAvailableClaimData={totalAvailableClaimData}
+        currentUserCampaignInfo={currentUserCampaignInfo}
       />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <Leaderboard incentives={currentUserIncentive} />

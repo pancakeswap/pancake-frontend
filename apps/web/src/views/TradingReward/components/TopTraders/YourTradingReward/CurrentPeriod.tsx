@@ -1,18 +1,64 @@
+import { useMemo } from 'react'
 import { Box, Card, Text, Message, MessageText, LightBulbIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { usePriceCakeUSD } from 'state/farms/hooks'
+import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
+import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
+import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
+import { useUserTradeRank } from 'views/TradingReward/hooks/useUserTradeRank'
 
 interface CurrentPeriodProps {
   campaignClaimTime: number
+  rewardInfo: { [key in string]: RewardInfo }
+  currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
-const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({ campaignClaimTime }) => {
+const TOP_RANK = 500
+
+const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
+  rewardInfo,
+  campaignClaimTime,
+  currentUserCampaignInfo,
+}) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeUSD()
+  const rank = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId })
 
   const currentDate = new Date().getTime() / 1000
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
+
+  const currentRewardInfo = useMemo(
+    () => rewardInfo?.[currentUserCampaignInfo?.campaignId],
+    [rewardInfo, currentUserCampaignInfo],
+  )
+
+  const rewardInUSD = useRewardInUSD({
+    timeRemaining,
+    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
+    canClaim: currentUserCampaignInfo?.canClaim ?? '0',
+    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
+    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  })
+
+  const rewardInCake = useRewardInCake({
+    timeRemaining,
+    totalEstimateRewardUSD: currentUserCampaignInfo?.totalEstimateRewardUSD ?? 0,
+    totalReward: currentUserCampaignInfo?.canClaim ?? '0',
+    cakePriceBusd,
+    rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
+    rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
+  })
+
+  const isValid = useMemo(
+    () => new BigNumber(rank.topTradersIndex).gt(0) && new BigNumber(rank.topTradersIndex).lte(TOP_RANK),
+    [rank],
+  )
 
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
@@ -24,13 +70,13 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({ 
           <Box>
             <GreyCard mb="24px">
               <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
-                {t('Your Current trading rewards')}
+                {t('Your Rank')}
               </Text>
               <Text color="text" fontSize="40px" bold mb="4px" lineHeight="110%">
-                #523
+                {rank.topTradersIndex === 0 ? '???' : `#${rank.topTradersIndex}`}
               </Text>
               <Text fontSize="14px" color="textSubtle">
-                {t('out of 3512 traders')}
+                {t('out of %users% traders', { users: rank.totalUsers })}
               </Text>
             </GreyCard>
 
@@ -38,12 +84,16 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({ 
               <Text textTransform="uppercase" fontSize="12px" color="textSubtle" bold mb="4px">
                 {t('Your Trading Reward')}
               </Text>
-              <Text color="text" fontSize="24px" bold mb="4px" lineHeight="110%">
-                $13.42
-              </Text>
-              <Text color="textDisabled" fontSize="14px">
-                ~34.94 CAKE
-              </Text>
+              <Text
+                color={isValid ? 'text' : 'textDisabled'}
+                fontSize="24px"
+                bold
+                mb="4px"
+                lineHeight="110%"
+              >{`$${formatNumber(rewardInUSD)}`}</Text>
+              <Text color={isValid ? 'text' : 'textDisabled'} fontSize="14px">{`~${formatNumber(
+                rewardInCake,
+              )} CAKE`}</Text>
             </GreyCard>
 
             <Message mt="24px" variant="success" icon={<LightBulbIcon color="#1FC7D4" width="24px" />}>
