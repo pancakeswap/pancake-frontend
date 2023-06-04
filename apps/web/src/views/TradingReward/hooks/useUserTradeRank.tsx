@@ -7,7 +7,7 @@ const initialState = {
   totalUsers: 0,
 }
 
-export const useUserTradeRank = ({ campaignId }) => {
+export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
   const { address: account } = useAccount()
   const { data } = useSWR(
     campaignId && account && ['/user-trade-rank', campaignId, account],

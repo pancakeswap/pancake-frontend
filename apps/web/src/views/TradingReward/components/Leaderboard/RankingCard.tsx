@@ -12,9 +12,18 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { useProfileForAddress } from 'state/profile/hooks'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { usePriceCakeUSD } from 'state/farms/hooks'
+import { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 
 interface RankingCardProps {
   rank: 1 | 2 | 3
+  user: RankListDetail
 }
 
 const RotatedLaurelLeftIcon = styled(LaurelLeftIcon)`
@@ -37,11 +46,17 @@ const getRankingColor = (rank: number) => {
   return 'gold'
 }
 
-const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank }) => {
+const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
-  // const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
-  // const { domainName, avatar } = useDomainNameForAddress(user.id, !profile && !isProfileLoading)
+  const cakePriceBusd = usePriceCakeUSD()
+  const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.origin)
+  const { domainName, avatar } = useDomainNameForAddress(user.origin, !profile && !isProfileLoading)
+
+  const cakeAmount = useMemo(
+    () => new BigNumber(user?.tradingFee).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, user?.tradingFee],
+  )
 
   return (
     <Card ribbon={<CardRibbon variantColor={rankColor} text={`#${rank}`} ribbonPosition="left" />}>
@@ -53,18 +68,12 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
                 <Flex mb="4px">
                   <RotatedLaurelLeftIcon color={rankColor} width="32px" />
                   <Box width={['40px', null, null, '64px']} height={['40px', null, null, '64px']}>
-                    {/* <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} /> */}
-                    <ProfileAvatar
-                      src="https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/twinkle-1000.png"
-                      height={64}
-                      width={64}
-                    />
+                    <ProfileAvatar src={profile?.nft?.image?.thumbnail ?? avatar} height={64} width={64} />
                   </Box>
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>
                 <Text color="primary" fontWeight="bold" textAlign="center">
-                  1233
-                  {/* {profile?.username || domainName || truncateHash(user.id)} */}
+                  {profile?.username || domainName || truncateHash(user.origin)}
                 </Text>
               </Flex>
             }
@@ -77,10 +86,10 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
           </Text>
           <Box>
             <Text textAlign="right" bold color="text" fontSize="20px" lineHeight="110%">
-              $2,534.23
+              {`$${formatNumber(user.tradingFee, 0, 0)}`}
             </Text>
             <Text textAlign="right" color="textSubtle" fontSize="12px">
-              ~1,456.32 CAKE
+              {`~${formatNumber(cakeAmount)} CAKE`}
             </Text>
           </Box>
         </Flex>
@@ -89,7 +98,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             {t('Trading volume')}
           </Text>
           <Text textAlign="right" bold color="text" fontSize="20px">
-            $2,534.23
+            {`$${formatNumber(user.volume, 0, 0)}`}
           </Text>
         </Flex>
       </CardBody>

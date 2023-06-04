@@ -85,7 +85,7 @@ const TradingRewardTopTraders = () => {
         currentUserCampaignInfo={currentUserCampaignInfo}
       />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
-      <Leaderboard incentives={currentUserIncentive} />
+      <Leaderboard campaignId={campaignId} incentives={currentUserIncentive} />
       <HowToEarn />
       <RewardsBreakdown
         latestCampaignId={campaignId}
