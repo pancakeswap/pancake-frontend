@@ -19,20 +19,26 @@ import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { BigNumber } from 'bignumber.js'
 import { LightCard } from 'components/Card'
+import { RangeTag } from 'components/RangeTag'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import styled, { useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
-import { RangeTag } from 'components/RangeTag'
-import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 import { BCakeV3CardView } from '../../YieldBooster/components/bCakeV3/CardView'
-import { useBakeV3farmCanBoost, useUserMultiplierBeforeBoosted } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import {
+  useBakeV3farmCanBoost,
+  useIsBoostedPool,
+  useUserBoostedPoolsTokenId,
+  useUserMultiplierBeforeBoosted,
+  useUserPositionInfo,
+} from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
@@ -111,10 +117,20 @@ const SingleFarmV3Card: React.FunctionComponent<
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
 
   const { updatedUserMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted()
+  const { mutate: updateIsBoostedPool } = useIsBoostedPool(tokenId.toString())
+  const { updateUserPositionInfo } = useUserPositionInfo(tokenId.toString())
+  const { updateBoostedPoolsTokenId } = useUserBoostedPoolsTokenId()
+
+  const onDone = useCallback(() => {
+    updateIsBoostedPool()
+    updateUserPositionInfo()
+    updateBoostedPoolsTokenId()
+    updatedUserMultiplierBeforeBoosted()
+  }, [updateIsBoostedPool, updateUserPositionInfo, updateBoostedPoolsTokenId, updatedUserMultiplierBeforeBoosted])
 
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId.toString(),
-    onDone: updatedUserMultiplierBeforeBoosted,
+    onDone,
   })
 
   const { farmCanBoost } = useBakeV3farmCanBoost(farm.pid)
