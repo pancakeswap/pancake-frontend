@@ -13,6 +13,7 @@ export const BLOCKED_ADDRESSES: string[] = [
 export const INITIAL_ALLOWED_SLIPPAGE = 50
 // 20 minutes, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
+export const L2_DEADLINE_FROM_NOW = 60 * 5
 
 export { default as ifosConfig } from './ifo'
 
