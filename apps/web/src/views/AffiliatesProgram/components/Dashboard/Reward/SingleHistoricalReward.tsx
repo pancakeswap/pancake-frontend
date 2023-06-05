@@ -4,7 +4,19 @@ import { useEffect, useState } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { UserClaimListResponse, MAX_PER_PAGE, ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
-import { Box, Flex, Text, Card, PaginationButton, Table, Td, Th, FlexProps, Button } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  Text,
+  Card,
+  PaginationButton,
+  Table,
+  Td,
+  Th,
+  FlexProps,
+  Button,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 
 const Dot = styled(Box)`
@@ -32,6 +44,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
     currentLanguage: { locale },
   } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { isDesktop } = useMatchBreakpoints()
   const { title, tableFirstTitle, dataList, currentPage, isAffiliateClaim, setCurrentPage, handleClickClaim } = props
   const [maxPage, setMaxPages] = useState(1)
   const [list, setList] = useState<ClaimDetail[]>()
@@ -68,16 +81,29 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
         <Table>
           <thead>
             <tr>
-              <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                  {tableFirstTitle}
-                </Text>
-              </Th>
-              <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                  {t('Claim Request time')}
-                </Text>
-              </Th>
+              {isDesktop ? (
+                <>
+                  <Th>
+                    <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                      {tableFirstTitle}
+                    </Text>
+                  </Th>
+                  <Th>
+                    <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                      {t('Claim Request time')}
+                    </Text>
+                  </Th>
+                </>
+              ) : (
+                <Th>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {`${tableFirstTitle} /`}
+                  </Text>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('Claim Request time')}
+                  </Text>
+                </Th>
+              )}
               <Th>
                 <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="right">
                   {t('State')}
@@ -88,7 +114,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
           <tbody>
             {list?.length === 0 ? (
               <tr>
-                <Td colSpan={3} textAlign="center">
+                <Td colSpan={isDesktop ? 3 : 2} textAlign="center">
                   {t('No results')}
                 </Td>
               </tr>
@@ -96,23 +122,43 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
               <>
                 {list?.map((reward) => (
                   <tr key={reward.createdAt}>
-                    <Td>
-                      <Text>{`$${formatNumber(Number(reward.amountUSD), 0, 2)}`}</Text>
-                    </Td>
-                    <Td>
-                      <Flex>
-                        <Text color="textSubtle">
-                          {new Date(reward.createdAt).toLocaleString(locale, {
-                            year: 'numeric',
-                            month: 'numeric',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </Text>
-                        {reward.approveStatus === 'APPROVED' && !reward.process && <Dot />}
-                      </Flex>
-                    </Td>
+                    {isDesktop ? (
+                      <>
+                        <Td>
+                          <Text>{`$${formatNumber(Number(reward.amountUSD), 0, 2)}`}</Text>
+                        </Td>
+                        <Td>
+                          <Flex>
+                            <Text color="textSubtle">
+                              {new Date(reward.createdAt).toLocaleString(locale, {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </Text>
+                            {reward.approveStatus === 'APPROVED' && !reward.process && <Dot />}
+                          </Flex>
+                        </Td>
+                      </>
+                    ) : (
+                      <Td>
+                        <Text>{`$${formatNumber(Number(reward.amountUSD), 0, 2)}`}</Text>
+                        <Flex>
+                          <Text color="textSubtle">
+                            {new Date(reward.createdAt).toLocaleString(locale, {
+                              year: 'numeric',
+                              month: 'numeric',
+                              day: '2-digit',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </Text>
+                          {reward.approveStatus === 'APPROVED' && !reward.process && <Dot />}
+                        </Flex>
+                      </Td>
+                    )}
                     <Td>
                       {reward.approveStatus === 'PENDING' && (
                         <Text color="textSubtle" textAlign="right">

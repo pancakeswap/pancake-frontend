@@ -12,30 +12,21 @@ interface UserInfoResponse {
 const useUserInfo = () => {
   const { address } = useAccount()
 
-  const { data: userInfo } = useSWR(
-    address && ['/user-ifo', address],
-    async () => {
-      try {
-        const queryString = qs.stringify({ address })
-        const response = await fetch(`/api/affiliates-program/user-info?${queryString}`)
-        const result: UserInfoResponse = await response.json()
-        return {
-          availableFeeUSD: result?.user?.availableFeeUSD || '0',
-        }
-      } catch (error) {
-        console.error(`Fetch User Info Error: ${error}`)
-        return {
-          availableFeeUSD: '0',
-        }
+  const { data: userInfo } = useSWR(address && ['/user-ifo', address], async () => {
+    try {
+      const queryString = qs.stringify({ address })
+      const response = await fetch(`/api/affiliates-program/user-info?${queryString}`)
+      const result: UserInfoResponse = await response.json()
+      return {
+        availableFeeUSD: result?.user?.availableFeeUSD || '0',
       }
-    },
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
-    },
-  )
+    } catch (error) {
+      console.error(`Fetch User Info Error: ${error}`)
+      return {
+        availableFeeUSD: '0',
+      }
+    }
+  })
 
   return {
     userInfo: userInfo ?? {
