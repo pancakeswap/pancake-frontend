@@ -31,7 +31,7 @@ const SingleLatestReward: React.FC<React.PropsWithChildren<SingleLatestRewardPro
         <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
           {usdAmountTitle}
         </Text>
-        <Text bold fontSize="14px">
+        <Text bold fontSize="14px" textAlign="right">
           {`$ ${formatNumber(usdAmount)}`}
         </Text>
       </Flex>
@@ -39,7 +39,7 @@ const SingleLatestReward: React.FC<React.PropsWithChildren<SingleLatestRewardPro
         <Text textTransform="uppercase" color="textSubtle" fontSize="14px">
           {cakeAmountTitle}
         </Text>
-        <Text bold fontSize="14px">
+        <Text bold fontSize="14px" textAlign="right">
           {`~ ${formatNumber(cakeAmount)} CAKE`}
         </Text>
       </Flex>
