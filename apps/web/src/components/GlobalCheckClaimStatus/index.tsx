@@ -69,8 +69,8 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     <V3AirdropModal
       data={account ? (data?.v3WhitelistAddress[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
       onClick={async () => {
-        const { cakeAmountInWei, nft1, nft2 } = data.v3ForSC[account.toLowerCase()]
-        const proof = data?.v3MerkleProofs?.merkleProofs?.[account.toLowerCase()]
+        const { cakeAmountInWei, nft1, nft2 } = data?.v3ForSC[account?.toLowerCase()] || {}
+        const proof = data?.v3MerkleProofs?.merkleProofs?.[account?.toLowerCase()]
         const receipt = await fetchWithCatchTxError(() =>
           v3Airdop.write.claim([cakeAmountInWei, nft1, nft2, proof], {
             account: v3Airdop.account,
@@ -82,13 +82,16 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
         }
       }}
     />,
+    true,
+    false,
+    'v3AirdropModal',
   )
 
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
       const canV3ClaimReward = await v3Airdop.read.isClaimed([account])
-      const isWhitelistAddress = data?.v3WhitelistAddress[account.toLowerCase()]
+      const isWhitelistAddress = data?.v3WhitelistAddress[account?.toLowerCase()]
       // TODO: also need check json acc is whitelisted or not.
       if (!canV3ClaimReward && isWhitelistAddress) {
         setCanClaimReward(true)

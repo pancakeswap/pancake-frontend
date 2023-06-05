@@ -15,6 +15,11 @@ const useModal = (
   const onPresentCallback = useCallback(() => {
     onPresent(currentModal.current, modalId, closeOnOverlayClick);
   }, [modalId, onPresent, closeOnOverlayClick]);
+  const onDismissCallback = useCallback(() => {
+    if (nodeId === modalId) {
+      onDismiss?.();
+    }
+  }, [modalId, onDismiss, nodeId]);
 
   // Updates the "modal" component if props are changed
   // Use carefully since it might result in unnecessary rerenders
@@ -36,7 +41,7 @@ const useModal = (
     }
   }, [updateOnPropsChange, nodeId, modalId, isOpen, modal, modalNode, setModalNode]);
 
-  return [onPresentCallback, onDismiss];
+  return [onPresentCallback, onDismissCallback];
 };
 
 export default useModal;
