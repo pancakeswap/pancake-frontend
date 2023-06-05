@@ -78,6 +78,7 @@ const TxnLink = styled(Link)`
 `
 
 const MenuConfig = [
+  { title: 'CAKE', href: '/' },
   {
     title: 'EVMs',
     href: '/axelar',
@@ -92,7 +93,6 @@ const MenuConfig = [
       },
     ],
   },
-  { title: 'CAKE', href: '/cake' },
   {
     title: 'Aptos',
     href: '/aptos',
