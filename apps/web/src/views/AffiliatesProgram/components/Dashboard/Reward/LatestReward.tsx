@@ -116,7 +116,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && !i.process),
     )
     return (
-      new BigNumber(affiliateRewardFeeUSD).lte(MIN_CLAIM_AMOUNT) ||
+      new BigNumber(affiliateRewardFeeUSD).lt(MIN_CLAIM_AMOUNT) ||
       hasPendingOrUnClaimed?.length > 0 ||
       isAffiliateClaimLoading
     )
@@ -127,7 +127,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       (i) => i.approveStatus === 'PENDING' || (i.approveStatus === 'APPROVED' && !i.process),
     )
     return (
-      new BigNumber(userRewardFeeUSD).lte(MIN_CLAIM_AMOUNT) ||
+      new BigNumber(userRewardFeeUSD).lt(MIN_CLAIM_AMOUNT) ||
       hasPendingOrUnClaimed?.length > 0 ||
       isUserClaimLoading ||
       !isUserExist
