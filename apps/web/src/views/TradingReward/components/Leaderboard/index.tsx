@@ -41,8 +41,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
 
   useEffect(() => {
     const getActivitySlice = () => {
-      const list = topTradersArr.slice(3, total)
-      const slice = list.slice(MAX_PER_PAGE * (currentPage - 1), MAX_PER_PAGE * currentPage)
+      const slice = topTradersArr.slice(MAX_PER_PAGE * (currentPage - 1) + 3, MAX_PER_PAGE * currentPage)
       setRankList(slice)
     }
 

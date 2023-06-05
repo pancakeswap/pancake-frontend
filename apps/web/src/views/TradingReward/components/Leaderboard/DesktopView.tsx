@@ -32,18 +32,18 @@ const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = ({
           </tr>
         </thead>
         <tbody>
-          {data?.length === 0 ? (
+          {isLoading ? (
             <tr>
               <Td colSpan={4} textAlign="center">
-                {t('No results')}
+                {t('Loading...')}
               </Td>
             </tr>
           ) : (
             <>
-              {isLoading ? (
+              {data?.length === 0 ? (
                 <tr>
                   <Td colSpan={4} textAlign="center">
-                    {t('Loading...')}
+                    {t('No results')}
                   </Td>
                 </tr>
               ) : (

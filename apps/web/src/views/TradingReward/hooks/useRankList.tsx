@@ -31,23 +31,31 @@ export const MAX_PER_PAGE = 10
 
 export const useRankList = ({ campaignId, currentPage }: UseRankListProps): RankList => {
   const [total, setTotal] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
   const [topTradersArr, setTopTradersArr] = useState<RankListDetail[]>([])
 
-  const { isLoading } = useSWR(
+  useSWR(
     campaignId && currentPage && ['/trader-rank-list', campaignId, currentPage],
     async () => {
       try {
-        const response = await fetch(`${TRADING_REWARD_API}/rank_list/campaignId/20230601/type/tt`)
-        const result: RankListResponse = await response.json()
-        setTotal(result.data.total)
+        if (currentPage * MAX_PER_PAGE > topTradersArr.length) {
+          setIsLoading(true)
+          const response = await fetch(
+            `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/tt/page/${currentPage}/size/${MAX_PER_PAGE}`,
+          )
+          const result: RankListResponse = await response.json()
+          setTotal(result.data.total)
 
-        const newData = result.data.topTradersArr.map((arr, index) => ({
-          ...arr,
-          id: index + 1,
-        }))
-        setTopTradersArr(newData)
+          const newData = result.data.topTradersArr.map((arr, index) => ({
+            ...arr,
+            id: topTradersArr.length + index + 1,
+          }))
+          setTopTradersArr([...topTradersArr, ...newData])
+        }
       } catch (error) {
         console.info(`Fetch Rank List Error: ${error}`)
+      } finally {
+        setIsLoading(false)
       }
     },
     {

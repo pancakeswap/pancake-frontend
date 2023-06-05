@@ -22,18 +22,18 @@ const MobileView: React.FC<React.PropsWithChildren<MobileViewProps>> = ({
 
   return (
     <Box>
-      {data?.length === 0 ? (
+      {isLoading ? (
         <StyledMobileRow>
           <Text padding="48px 0px" textAlign="center">
-            {t('No results')}
+            {t('Loading...')}
           </Text>
         </StyledMobileRow>
       ) : (
         <>
-          {isLoading ? (
+          {data?.length === 0 ? (
             <StyledMobileRow>
               <Text padding="48px 0px" textAlign="center">
-                {t('Loading...')}
+                {t('No results')}
               </Text>
             </StyledMobileRow>
           ) : (
