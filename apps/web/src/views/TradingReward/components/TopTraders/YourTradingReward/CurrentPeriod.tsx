@@ -33,7 +33,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   const cakePriceBusd = usePriceCakeUSD()
   const rank = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId })
 
-  const currentDate = new Date().getTime() / 1000
+  const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 

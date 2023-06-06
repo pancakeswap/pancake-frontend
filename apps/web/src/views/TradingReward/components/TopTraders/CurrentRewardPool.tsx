@@ -84,7 +84,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   const { isDesktop } = useMatchBreakpoints()
   const { campaignClaimTime } = incentives ?? {}
 
-  const currentDate = new Date().getTime() / 1000
+  const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
