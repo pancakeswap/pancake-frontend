@@ -156,7 +156,7 @@ export default {
     97: '0x',
   },
   bCakeFarmBoosterV3: {
-    56: '0x',
+    56: '0x695170faE243147b3bEB4C43AA8DE5DcD9202752',
     97: '0x56666300A1E25624489b661f3C6c456c159a109a',
   },
   nonBscVault: {
