@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef } from "react";
 import get from "lodash/get";
+import { serialize } from "wagmi";
 import { Context } from "./ModalContext";
 import { Handler } from "./types";
 
@@ -35,7 +36,7 @@ const useModal = (
       // Do not try to replace JSON.stringify with isEqual, high risk of infinite rerenders
       // TODO: Find a good way to handle modal updates, this whole flow is just backwards-compatible workaround,
       // would be great to simplify the logic here
-      if (modalProps && oldModalProps && JSON.stringify(modalProps) !== JSON.stringify(oldModalProps)) {
+      if (modalProps && oldModalProps && serialize(modalProps) !== serialize(oldModalProps)) {
         setModalNode(modal);
       }
     }
