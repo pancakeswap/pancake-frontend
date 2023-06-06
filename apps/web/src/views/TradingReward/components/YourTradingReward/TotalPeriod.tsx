@@ -8,9 +8,10 @@ import { useTooltip } from '@pancakeswap/uikit/src/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
 import { RewardInfo, Qualification, Incentives, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { minAmountDisplay } from 'views/TradingReward/utils/minAmountDisplay'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
@@ -159,8 +160,12 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                   {t('Your unclaimed trading rewards')}
                 </Text>
-                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD)}`}</Text>
-                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
+                <Text bold fontSize={['40px']}>
+                  {minAmountDisplay({ amount: totalUnclaimInUSD, prefix: '$' })}
+                </Text>
+                <Text fontSize={['14px']} color="textSubtle">
+                  {minAmountDisplay({ amount: totalUnclaimInCake, prefix: '~', unit: ' CAKE' })}
+                </Text>
               </Box>
               <Button
                 width={['100%', '100%', '100%', 'fit-content']}
@@ -184,7 +189,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="primary" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(notReadyForClaimUSDPrice)}`}
+                    {minAmountDisplay({ amount: notReadyForClaimUSDPrice, prefix: '$' })}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('from the recent campaign period is under tallying and will be available for claiming soon.')}
@@ -196,7 +201,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="danger" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(expiredUSDPrice)}`}
+                    {minAmountDisplay({ amount: expiredUSDPrice, prefix: '$' })}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('unclaimed reward expiring in')}
@@ -231,7 +236,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 {t('Your TOTAL trading Reward')}
               </Text>
               <Text bold fontSize={['24px']}>
-                {`$${formatNumber(totalTradingReward)}`}
+                {minAmountDisplay({ amount: totalTradingReward, prefix: '$' })}
               </Text>
             </Box>
             {type === RewardType.CAKE_STAKERS && (
@@ -240,7 +245,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                   {t('Your TOTAL VOLUME Traded')}
                 </Text>
                 <Text bold fontSize={['24px']}>
-                  {`$${formatNumber(totalVolumeTrade)}`}
+                  {minAmountDisplay({ amount: totalVolumeTrade, prefix: '$' })}
                 </Text>
               </Box>
             )}
