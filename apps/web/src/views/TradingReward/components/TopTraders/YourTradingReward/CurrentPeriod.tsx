@@ -117,7 +117,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                   <Text fontSize="14px" color="primary" as="span">
                     {t('Campaign ending')}
                     {timeRemaining > 0 ? (
-                      <Text bold fontSize="1px" color="primary" as="span" ml="4px">
+                      <Text bold fontSize="14px" color="primary" as="span" ml="4px">
                         {t('in')}
                         {timeUntil.months ? (
                           <Text bold fontSize="14px" color="primary" as="span" ml="4px">
