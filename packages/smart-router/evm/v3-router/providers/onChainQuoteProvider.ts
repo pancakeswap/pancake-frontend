@@ -346,7 +346,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               }
             }
 
-            let successRateError: Error | void
+            let successRateError: SuccessRateError | void
             if (failedQuoteStates.length === 0) {
               successRateError = validateSuccessRate(
                 quoteStates.reduce<Result<[bigint, bigint[], number[], bigint]>[]>(
@@ -390,6 +390,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
             }
 
+            // @ts-ignore
             if (successRateError) {
               throw successRateError
             }
