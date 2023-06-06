@@ -28,8 +28,8 @@ export const SERVER_NODES = {
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
-    'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
     'https://linea-testnet.rpc.thirdweb.com',
+    'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
     'https://rpc.goerli.linea.build',
   ],
 } satisfies Record<ChainId, readonly string[]>
@@ -61,8 +61,8 @@ export const PUBLIC_NODES = {
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
-    'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
     'https://linea-testnet.rpc.thirdweb.com',
+    'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
     'https://rpc.goerli.linea.build',
   ],
 } satisfies Record<ChainId, readonly string[]>
