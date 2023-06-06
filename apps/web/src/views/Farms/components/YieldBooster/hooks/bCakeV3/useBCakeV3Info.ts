@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
-import useSWRImmutable from 'swr/immutable'
+import useSWR from 'swr'
 import { useContractRead } from 'wagmi'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 import { useUserLockedCakeStatus } from '../../../../hooks/useUserLockedCakeStatus'
@@ -34,7 +34,7 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
 export const useIsBoostedPool = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data, mutate } = useSWRImmutable(
+  const { data, mutate } = useSWR(
     chainId && tokenId && tokenId !== 'undefined' && `v3/bcake/isBoostedPool/${chainId}/${tokenId}`,
     () => farmBoosterV3Contract.read.isBoostedPool([BigInt(tokenId ?? 0)]),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -45,7 +45,7 @@ export const useIsBoostedPool = (tokenId?: string) => {
 export const useUserPositionInfo = (tokenId: string) => {
   const { chainId } = useActiveChainId()
   const masterChefV3 = useMasterchefV3()
-  const { data, mutate } = useSWRImmutable(
+  const { data, mutate } = useSWR(
     chainId && tokenId && `v3/masterChef/userPositionInfos/${chainId}/${tokenId}`,
     () => masterChefV3.read.userPositionInfos([BigInt(tokenId)]),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -69,7 +69,7 @@ export const useUserPositionInfo = (tokenId: string) => {
 export const useUserBoostedPoolsTokenId = () => {
   const { account, chainId } = useActiveWeb3React()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data, mutate } = useSWRImmutable(
+  const { data, mutate } = useSWR(
     chainId && account && `v3/bcake/userBoostedPools/${chainId}/${account}`,
     () => farmBoosterV3Contract.read.activedPositions([account]),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -83,8 +83,8 @@ export const useUserBoostedPoolsTokenId = () => {
 export const useUserMultiplierBeforeBoosted = (tokenId?: string) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data, mutate } = useSWRImmutable(
-    chainId && tokenId && `v3/bcake/userBoostedMultiplier/${chainId}/${tokenId}`,
+  const { data, mutate } = useSWR(
+    chainId && tokenId && `v3/bcake/useUserMultiplierBeforeBoosted/${chainId}/${tokenId}`,
     () => getUserMultiplier({ address: farmBoosterV3Contract.address, tokenId, chainId }),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
@@ -97,7 +97,7 @@ export const useUserMultiplierBeforeBoosted = (tokenId?: string) => {
 export const useUserMaxBoostedPositionLimit = () => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
-  const { data } = useSWRImmutable(
+  const { data } = useSWR(
     chainId && `v3/bcake/userMaxBoostedPositionLimit/${chainId}`,
     () => farmBoosterV3Contract.read.MAX_BOOST_POSITION(),
     SWR_SETTINGS_WITHOUT_REFETCH,
