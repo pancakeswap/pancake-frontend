@@ -1,9 +1,17 @@
 import { useState } from 'react'
 // import { AccordionData } from "../types";
 import { FlexGap } from '@pancakeswap/uikit'
+import { BuyCryptoState } from 'state/buyCrypto/reducer'
+import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
 import AccordionItem from './AccordianItem'
 
-function Accordion() {
+function Accordion({
+  buyCryptoState,
+  combinedQuotes,
+}: {
+  buyCryptoState: BuyCryptoState
+  combinedQuotes: ProviderQoute[]
+}) {
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
 
   return (
@@ -14,6 +22,8 @@ function Accordion() {
             key={item}
             active={currentIdx === idx}
             btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
+            buyCryptoState={buyCryptoState}
+            combinedQuotes={combinedQuotes}
           />
         )
       })}

@@ -13,16 +13,18 @@ interface GetQuotesButtonProps {
   modalView: CryptoFormView
   errorText: string | undefined
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
+  fetchQuotes: () => Promise<void>
 }
 
-export default function GetQuotesButton({ modalView, errorText, setModalView }: GetQuotesButtonProps) {
+export default function GetQuotesButton({ modalView, errorText, setModalView, fetchQuotes }: GetQuotesButtonProps) {
   const [loading, setLoading] = useState<boolean>(false)
   const { address: account } = useAccount()
   const { t } = useTranslation()
 
-  const Next = useCallback(() => {
+  const Next = useCallback(async () => {
     if (modalView === CryptoFormView.Input) {
       setLoading(true)
+      fetchQuotes()
       setTimeout(() => {
         setLoading(false)
         setModalView(CryptoFormView.Quote)
@@ -30,7 +32,7 @@ export default function GetQuotesButton({ modalView, errorText, setModalView }: 
     } else {
       // to-do
     }
-  }, [modalView, setModalView])
+  }, [modalView, setModalView, fetchQuotes])
 
   if (!account) {
     return <ConnectWalletButton width="100%" />

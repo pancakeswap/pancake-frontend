@@ -1,11 +1,21 @@
 import { Dispatch, SetStateAction } from 'react'
+import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { FormHeader } from './FormHeader'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '../index'
 // eslint-disable-next-line import/no-cycle
 import { FormQuote } from './FormQuote'
+import { ProviderQoute } from '../hooks/usePriceQuoter'
 
-export function CryptoQuoteForm({ setModalView }: { setModalView: Dispatch<SetStateAction<CryptoFormView>> }) {
+export function CryptoQuoteForm({
+  setModalView,
+  buyCryptoState,
+  combinedQuotes,
+}: {
+  setModalView: Dispatch<SetStateAction<CryptoFormView>>
+  buyCryptoState: BuyCryptoState
+  combinedQuotes: ProviderQoute[]
+}) {
   return (
     <>
       {/* onRefresh={refresh} refreshDisabled={!tradeLoaded || syncing || !isStale} */}
@@ -16,7 +26,7 @@ export function CryptoQuoteForm({ setModalView }: { setModalView: Dispatch<SetSt
         subTitle="Quotes are updated every 30 seconds."
         backTo={() => setModalView(CryptoFormView.Input)}
       />
-      <FormQuote setModalView={setModalView} />
+      <FormQuote setModalView={setModalView} buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} />
     </>
   )
 }

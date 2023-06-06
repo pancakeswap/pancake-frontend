@@ -1,14 +1,27 @@
 import { Button, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { useEffect, useRef, useState } from 'react'
+import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
+import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
 
-function AccordionItem({ active, btnOnClick }: { active: boolean; btnOnClick: any }) {
+function AccordionItem({
+  active,
+  btnOnClick,
+  buyCryptoState,
+  combinedQuotes,
+}: {
+  active: boolean
+  btnOnClick: any
+  buyCryptoState: BuyCryptoState
+  combinedQuotes: ProviderQoute[]
+}) {
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(105)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
 
+  console.log(combinedQuotes)
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = () => {

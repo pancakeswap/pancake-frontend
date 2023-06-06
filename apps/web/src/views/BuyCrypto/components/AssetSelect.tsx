@@ -1,11 +1,35 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CurrencyLogo, Flex, RowBetween, Text, useModal } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, CurrencyLogo, Flex, RowBetween, Text, useModal } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { CryptoCard } from 'components/Card'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import { useCallback } from 'react'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
+import styled from 'styled-components'
+
+const AssetSelectButton = styled.div`
+  width: 100%;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 16px;
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-radius: 16px;
+  background: ${({ theme }) => theme.colors.dropdown};
+  transition: border-radius 0.15s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.input};
+    cursor: pointer;
+  }
+`
+
+const chainIdToNetwork: { [network: number]: string } = {
+  1: 'Ethereum',
+  56: 'Binance Chain',
+}
 
 const AssetSelect = ({ onCurrencySelect, currency }) => {
   const { t } = useTranslation()
@@ -32,25 +56,24 @@ const AssetSelect = ({ onCurrencySelect, currency }) => {
         <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
           {t('I want to buy')}
         </Text>
-        <Flex>
+        {balance ? (
           <Text color="textSubtle" fontSize="12px" ellipsis>
-            {balance}
+            {`${balance} ${currency?.symbol}`}
           </Text>
-        </Flex>
+        ) : null}
       </Flex>
-      <CryptoCard mb="16px" padding="12px 12px">
+      <AssetSelectButton>
         <RowBetween>
-          <Text>Binance</Text>
+          <Text>{chainIdToNetwork[currency?.chainId]}</Text>
           <Flex>
             <Box width={24} height={24}>
-              {/* <Image src={`/images/tokens/${wbethContract?.address}.png`} width={24} height={24} alt="WBETH" /> */}
               <CurrencyLogo currency={currency} size="24px" />
             </Box>
             <Text mx="4px">{currency?.symbol}</Text>
-            {/* <ArrowDropDownIcon /> */}
+            <ArrowDropDownIcon />
           </Flex>
         </RowBetween>
-      </CryptoCard>
+      </AssetSelectButton>
     </Flex>
   )
 }

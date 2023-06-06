@@ -17,18 +17,23 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useRouter } from 'next/router'
 // eslint-disable-next-line import/no-cycle
+import { BuyCryptoState } from 'state/buyCrypto/reducer'
+// eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '..'
 import { FormContainer } from '../components/FormContainer'
 import AssetSelect from '../components/AssetSelect'
 // eslint-disable-next-line import/no-cycle
 import GetQuotesButton from '../components/GetQuotesButton'
+import usePriceQuotes from '../hooks/usePriceQuoter'
 
 interface Props {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
   modalView: CryptoFormView
+  buyCryptoState: BuyCryptoState
+  fetchQuotes: () => Promise<void>
 }
 
-export function FormMain({ setModalView, modalView }: Props) {
+export function FormMain({ setModalView, modalView, buyCryptoState, fetchQuotes }: Props) {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
@@ -38,7 +43,7 @@ export function FormMain({ setModalView, modalView }: Props) {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     minAmount,
     minBaseAmount,
-  } = useBuyCryptoState()
+  } = buyCryptoState
 
   const allC = useAllOnRampTokens()
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
@@ -102,7 +107,12 @@ export function FormMain({ setModalView, modalView }: Props) {
       <Text color="textSubtle" fontSize="14px" px="4px">
         {t('Proceed to get live aggregated quotes quotes from a variety of different fiat onramp providers.')}
       </Text>
-      <GetQuotesButton errorText={inputError} modalView={modalView} setModalView={setModalView} />
+      <GetQuotesButton
+        errorText={inputError}
+        modalView={modalView}
+        setModalView={setModalView}
+        fetchQuotes={fetchQuotes}
+      />
     </FormContainer>
   )
 }
