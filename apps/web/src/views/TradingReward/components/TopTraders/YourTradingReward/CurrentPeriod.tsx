@@ -11,6 +11,7 @@ import useRewardInUSD from 'views/TradingReward/hooks/useRewardInUSD'
 import { RewardInfo } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import { useUserTradeRank } from 'views/TradingReward/hooks/useUserTradeRank'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 interface CurrentPeriodProps {
   campaignClaimTime: number
@@ -25,7 +26,10 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   campaignClaimTime,
   currentUserCampaignInfo,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
   const rank = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId })
 
@@ -135,6 +139,9 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                         </Text>
                       </Text>
                     ) : null}
+                    <Text fontSize="14px" color="primary" as="span" ml="4px">
+                      {t('(at ~%date%)', { date: timeFormat(locale, campaignClaimTime ?? 0) })}
+                    </Text>
                   </Text>
                 </Box>
               </MessageText>
