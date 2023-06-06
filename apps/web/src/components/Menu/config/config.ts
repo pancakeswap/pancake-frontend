@@ -52,6 +52,10 @@ const config: (
       showItemsOnMobile: false,
       items: [
         {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
+        },
+        {
           label: t('Swap'),
           href: '/swap',
         },
@@ -90,6 +94,10 @@ const config: (
       image: '/images/decorations/pe2.png',
       items: [
         {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
+        },
+        {
           label: t('Farms'),
           href: '/farms',
         },
@@ -112,6 +120,10 @@ const config: (
       fillIcon: TrophyFillIcon,
       supportChainIds: SUPPORT_ONLY_BSC,
       items: [
+        {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
+        },
         {
           label: t('Trading Reward'),
           href: '/trading-reward',
@@ -148,6 +160,10 @@ const config: (
       image: '/images/decorations/nft.png',
       items: [
         {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
+        },
+        {
           label: t('Overview'),
           href: `${nftsBaseUrl}`,
         },
@@ -180,6 +196,10 @@ const config: (
       icon: MoreIcon,
       hideSubNav: true,
       items: [
+        {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
+        },
         {
           label: t('Info'),
           href: '/info/v3',

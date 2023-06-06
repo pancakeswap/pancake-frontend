@@ -106,8 +106,12 @@ export const inputContainerVariants = recipe({
   ]),
   variants: {
     error: {
-      true: atoms({
-        boxShadow: "danger",
+      true: style({
+        selectors: {
+          "&:focus-within": {
+            boxShadow: vars.shadows.danger,
+          },
+        },
       }),
       false: atoms({
         boxShadow: "inset",

@@ -11,7 +11,13 @@ import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { useAudioPlay } from '@pancakeswap/utils/user'
 import { isAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
+import {
+  useAllFiatCurrencies,
+  useAllOnRampTokens,
+  useAllTokens,
+  useIsUserAddedToken,
+  useToken,
+} from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
@@ -31,6 +37,7 @@ interface CurrencySearchProps {
   setImportToken: (token: Token) => void
   height?: number
   tokensToShow?: Token[]
+  mode?: string
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -87,6 +94,7 @@ function CurrencySearch({
   setImportToken,
   height,
   tokensToShow,
+  mode,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -100,7 +108,9 @@ function CurrencySearch({
   const [invertSearchOrder] = useState<boolean>(false)
 
   const allTokens = useAllTokens()
-
+  const ONRampTokens = useAllOnRampTokens()
+  const onRampCurrencies = useAllFiatCurrencies()
+  const tokenList = mode === 'onramp-input' ? onRampCurrencies : mode === 'onramp-output' ? ONRampTokens : allTokens
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
@@ -118,8 +128,8 @@ function CurrencySearch({
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery, (address) => Boolean(isAddress(address)))
-    return Object.values(tokensToShow || allTokens).filter(filterToken)
-  }, [tokensToShow, allTokens, debouncedQuery])
+    return Object.values(tokensToShow || tokenList).filter(filterToken)
+  }, [tokensToShow, tokenList, debouncedQuery])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 

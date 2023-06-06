@@ -28,6 +28,17 @@ export const LightGreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.background};
 `
 
+export const CryptoCard = styled(Card)`
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.dropdown};
+  transition: height 0.4s ease-in-out, background-color 0.1s ease-in-out;
+  overflow: hidden;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.input};
+    cursor: pointer;
+  }
+`
+
 export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.dropdown};
 `

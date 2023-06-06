@@ -12,6 +12,7 @@ import {
   Swap as SwapUI,
   ArrowDropDownIcon,
 } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -76,7 +77,7 @@ interface CurrencyInputPanelProps {
   zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
-  error?: boolean
+  error?: boolean | string
   showUSDPrice?: boolean
   tokensToShow?: Token[]
   currencyLoading?: boolean
@@ -115,6 +116,8 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
+  const { pathname } = useRouter()
+  const mode = id
 
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
@@ -137,6 +140,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       commonBasesType={commonBasesType}
       showSearchInput={showSearchInput}
       tokensToShow={tokensToShow}
+      mode={mode}
     />,
   )
 
@@ -168,12 +172,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
   const balance = !hideBalance && !!currency && formatAmount(selectedCurrencyBalance, 6)
-
   return (
     <SwapUI.CurrencyInputPanel
       id={id}
       disabled={disabled}
-      error={error}
+      error={error as any}
       zapStyle={zapStyle}
       value={value}
       onInputBlur={onInputBlur}
@@ -181,6 +184,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       loading={inputLoading}
       top={
         <>
+          {pathname === '/buy-crypto' ? (
+            <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
+              {t('I want to spend')}
+            </Text>
+          ) : null}
           <Flex alignItems="center">
             {beforeButton}
             <CurrencySelectButton
@@ -235,7 +243,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               </Flex>
             ) : null}
           </Flex>
-          {account && (
+          {account && pathname !== '/buy-crypto' && (
             <Text
               onClick={!disabled && onMax}
               color="textSubtle"

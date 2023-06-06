@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
+import Script from 'next/script'
 import { ServerStyleSheet } from 'styled-components'
 
 class MyDocument extends Document {
@@ -54,6 +55,7 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           <div id="portal-root" />
+          <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" strategy="beforeInteractive" />
         </body>
       </Html>
     )

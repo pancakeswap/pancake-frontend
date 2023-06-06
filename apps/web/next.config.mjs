@@ -196,6 +196,7 @@ const config = {
         __SENTRY_TRACING__: false,
       }),
     )
+    webpackConfig.module.rules.push({ test: /\.svg$/, use: ["@svgr/webpack"] });
     if (!isServer && webpackConfig.optimization.splitChunks) {
       // webpack doesn't understand worker deps on quote worker, so we need to manually add them
       // https://github.com/webpack/webpack/issues/16895

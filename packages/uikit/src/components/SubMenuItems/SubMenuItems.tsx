@@ -13,6 +13,7 @@ import StyledSubMenuItems, {
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
+import { Button } from "../Button";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
@@ -98,6 +99,11 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
                   >
                     {Icon && <Icon color={isActive ? "secondary" : "textSubtle"} mr="4px" />}
                     {label}
+                    {label === "Buy Crypto" ? (
+                      <Button height="25px" px="8px" ml="10px">
+                        New
+                      </Button>
+                    ) : null}
                     {isExternalLink && (
                       <Box display={["none", null, "flex"]} style={{ alignItems: "center" }} ml="4px">
                         <OpenNewIcon color="textSubtle" />

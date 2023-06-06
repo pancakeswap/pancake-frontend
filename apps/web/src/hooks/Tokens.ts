@@ -1,11 +1,15 @@
 /* eslint-disable no-param-reassign */
-import { Currency, ERC20Token, ChainId } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token, OnRampCurrency } from '@pancakeswap/sdk'
+import { Currency, FiatOnRampCurrency } from '@pancakeswap/swap-sdk-core'
+
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useToken as useToken_ } from 'wagmi'
 import {
+  combinedCurrenciesMapFromActiveUrlsAtom,
+  combinedFiatCurrenciesMapFromActiveUrlsAtom,
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
   useUnsupportedTokenList,
@@ -13,11 +17,12 @@ import {
 } from '../state/lists/hooks'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
-import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId } from './useActiveChainId'
+import useNativeCurrency from './useNativeCurrency'
 
-const mapWithoutUrls = (tokenMap: TokenAddressMap<ChainId>, chainId: number) =>
-  Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
+const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) => {
+  if (!tokenMap || !chainId) return {}
+  return Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
     const checksummedAddress = isAddress(address)
 
     if (checksummedAddress && !newMap[checksummedAddress]) {
@@ -26,6 +31,13 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap<ChainId>, chainId: number) =>
 
     return newMap
   }, {})
+}
+
+const mapWithoutUrlsAllChains = (tokenMap: TokenAddressMap<ChainId>) => {
+  const tokens = Object.keys(tokenMap).flatMap((id: string) => Object.entries(tokenMap[id]))
+  const mappedTokens = Object.fromEntries(tokens.map(([symbol, { token }]) => [symbol, token]))
+  return mappedTokens
+}
 
 /**
  * Returns all tokens that are from active urls and user added tokens
@@ -54,6 +66,18 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
         )
     )
   }, [userAddedTokens, tokenMap, chainId])
+}
+
+export function useAllOnRampTokens(): { [address: string]: OnRampCurrency } {
+  const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
+  return useMemo(() => {
+    return mapWithoutUrlsAllChains(tokenMap)
+  }, [tokenMap])
+}
+
+export function useAllFiatCurrencies(): { [address: string]: FiatOnRampCurrency } {
+  const tokenMap = useAtomValue(combinedFiatCurrenciesMapFromActiveUrlsAtom)
+  return tokenMap
 }
 
 /**
@@ -156,10 +180,51 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   }, [token, chainId, address, isLoading, data])
 }
 
+export function useOnRampToken(tokenAddress?: string): OnRampCurrency | undefined {
+  const { chainId } = useActiveChainId()
+  const tokens = useAllOnRampTokens()
+
+  const address = isAddress(tokenAddress)
+
+  const token: OnRampCurrency | undefined = tokens[tokenAddress]
+
+  return useMemo(() => {
+    if (token) return token
+    if (!chainId || !address) return undefined
+    return undefined
+  }, [token, chainId, address])
+}
+
+export function useOnRampFiatCurrency(tokenAddress?: string): FiatOnRampCurrency | undefined {
+  const tokens = useAllFiatCurrencies()
+  const address = isAddress(tokenAddress)
+
+  const token: FiatOnRampCurrency | undefined = tokens[tokenAddress]
+
+  return useMemo(() => {
+    if (token) return token
+    if (!address) return undefined
+    return undefined
+  }, [token, address])
+}
+
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
   const token = useToken(isNative ? undefined : currencyId)
+  return isNative ? native : token
+}
+
+export function useFiatCurrency(currencyId: string | undefined): FiatOnRampCurrency | null | undefined {
+  const token = useOnRampFiatCurrency(currencyId)
+  return token
+}
+
+export function useOnRampCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
+  const native = useNativeCurrency()
+  const isNative =
+    currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+  const token = useOnRampToken(currencyId)
   return isNative ? native : token
 }
