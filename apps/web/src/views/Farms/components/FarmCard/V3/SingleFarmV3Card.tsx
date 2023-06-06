@@ -121,7 +121,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { mutate: updateIsBoostedPool } = useIsBoostedPool(tokenId.toString())
   const { updateUserPositionInfo } = useUserPositionInfo(tokenId.toString())
   const { updateBoostedPoolsTokenId } = useUserBoostedPoolsTokenId()
-  const { updateStatus } = useBoostStatus(farm.pid.toString(), tokenId.toString())
+  const { updateStatus } = useBoostStatus(farm.pid, tokenId.toString())
 
   const onDone = useCallback(() => {
     updateIsBoostedPool()
