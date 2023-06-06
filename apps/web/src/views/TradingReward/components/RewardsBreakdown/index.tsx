@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
-import { useTheme } from '@pancakeswap/hooks'
 import { Card, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
@@ -35,7 +34,6 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { theme } = useTheme()
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
