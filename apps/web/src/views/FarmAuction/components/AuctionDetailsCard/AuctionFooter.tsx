@@ -4,6 +4,7 @@ import { Text, Flex, Box, CardFooter, ExpandableLabel } from '@pancakeswap/uikit
 import { useTranslation } from '@pancakeswap/localization'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import WhitelistedBiddersButton from '../WhitelistedBiddersButton'
+import { HARD_CODED_START_AUCTION_ID, HARD_CODE_TOP_THREE_AUCTION_DATAS } from '../../constants'
 
 const FooterInner = styled(Box)`
   background-color: ${({ theme }) => theme.colors.dropdown};
@@ -13,6 +14,7 @@ const AuctionFooter: React.FC<React.PropsWithChildren<{ auction: Auction }>> = (
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
   const { topLeaderboard, status } = auction
+  const shouldUseV3Format = auction?.id >= HARD_CODED_START_AUCTION_ID
 
   const isLiveOrPendingAuction = status === AuctionStatus.Pending || status === AuctionStatus.Open
 
@@ -31,7 +33,11 @@ const AuctionFooter: React.FC<React.PropsWithChildren<{ auction: Auction }>> = (
             )}
             <Flex justifyContent="space-between" width="100%" pt="8px" px="8px">
               <Text color="textSubtle">{t('Multiplier per farm')}</Text>
-              <Text>1x {t('each')}</Text>
+              <Text>
+                {shouldUseV3Format
+                  ? `${HARD_CODE_TOP_THREE_AUCTION_DATAS.map((d) => d[1]).join('x,')}x`
+                  : `1x ${t('each')}`}
+              </Text>
             </Flex>
             <Flex justifyContent="space-between" width="100%" pt="8px" px="8px">
               <Text color="textSubtle">{t('Total whitelisted bidders')}</Text>

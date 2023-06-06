@@ -5,6 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import useCongratulateAuctionWinner from '../hooks/useCongratulateAuctionWinner'
 import WhitelistedBiddersButton from './WhitelistedBiddersButton'
+import { HARD_CODED_START_AUCTION_ID, HARD_CODE_TOP_THREE_AUCTION_DATAS } from '../constants'
 
 const StyledReclaimBidCard = styled(Card)`
   margin-top: 16px;
@@ -17,6 +18,7 @@ const CongratulationsCard: React.FC<React.PropsWithChildren<{ currentAuction: Au
 }) => {
   const { t } = useTranslation()
   const wonAuction = useCongratulateAuctionWinner(currentAuction, bidders)
+  const shouldUseV3Format = currentAuction?.id >= HARD_CODED_START_AUCTION_ID
 
   if (!wonAuction) {
     return null
@@ -35,7 +37,11 @@ const CongratulationsCard: React.FC<React.PropsWithChildren<{ currentAuction: Au
         <Flex flexDirection="column" mb="24px">
           <Flex justifyContent="space-between" width="100%" pt="8px">
             <Text color="textSubtle">{t('Multiplier per farm')}</Text>
-            <Text>1x {t('each')}</Text>
+            <Text>
+              {shouldUseV3Format
+                ? `${HARD_CODE_TOP_THREE_AUCTION_DATAS.map((d) => d[1]).join('x,')}x`
+                : `1x ${t('each')}`}
+            </Text>
           </Flex>
           <Flex justifyContent="space-between" width="100%" pt="8px">
             <Text color="textSubtle">{t('Total whitelisted bidders')}</Text>
