@@ -38,6 +38,7 @@ import {
   useUserMultiplierBeforeBoosted,
   useUserPositionInfo,
 } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
@@ -120,13 +121,21 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { mutate: updateIsBoostedPool } = useIsBoostedPool(tokenId.toString())
   const { updateUserPositionInfo } = useUserPositionInfo(tokenId.toString())
   const { updateBoostedPoolsTokenId } = useUserBoostedPoolsTokenId()
+  const { updateStatus } = useBoostStatus(farm.pid.toString(), tokenId.toString())
 
   const onDone = useCallback(() => {
     updateIsBoostedPool()
     updateUserPositionInfo()
     updateBoostedPoolsTokenId()
     updatedUserMultiplierBeforeBoosted()
-  }, [updateIsBoostedPool, updateUserPositionInfo, updateBoostedPoolsTokenId, updatedUserMultiplierBeforeBoosted])
+    updateStatus()
+  }, [
+    updateIsBoostedPool,
+    updateUserPositionInfo,
+    updateBoostedPoolsTokenId,
+    updatedUserMultiplierBeforeBoosted,
+    updateStatus,
+  ])
 
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId.toString(),
