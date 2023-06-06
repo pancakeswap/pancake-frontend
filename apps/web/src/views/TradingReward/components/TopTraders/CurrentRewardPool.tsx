@@ -12,15 +12,15 @@ const Container = styled(Flex)`
   position: relative;
   width: calc(100% - 32px);
   padding: 40px 16px;
-  margin: 80px auto auto auto;
+  margin: auto;
   flex-direction: column;
   border-radius: 32px;
-  background: linear-gradient(180deg, rgba(117, 69, 215, 0.5) 0%, rgba(71, 44, 127, 0.5) 100%),
-    linear-gradient(256.64deg, #6cbaef -3.78%, #9770fd 108.87%);
+  background: linear-gradient(33.75deg, #6c56c0 -1.75%, #717be1 89.48%);
   z-index: 1;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1140px;
+    margin: 80px auto auto auto;
   }
 `
 

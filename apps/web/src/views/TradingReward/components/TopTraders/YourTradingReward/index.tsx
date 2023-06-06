@@ -13,7 +13,8 @@ const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0
 const StyledBackground = styled(Flex)<{ showBackgroundColor: boolean }>`
   position: relative;
   flex-direction: column;
-  padding: 48px 0;
+  padding-top: 48px;
+  margin-bottom: 48px;
   background: ${({ showBackgroundColor }) => (showBackgroundColor ? BACKGROUND_COLOR : '')};
   z-index: 0;
 
@@ -62,12 +63,12 @@ const StyledHeading = styled(Text)`
 const Container = styled(Box)<{ showBackgroundColor: boolean }>`
   position: relative;
   z-index: 1;
-  margin: 48px auto;
+  margin: 48px auto auto auto;
   width: 100%;
   padding: 0 16px;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
-    width: ${({ showBackgroundColor }) => (showBackgroundColor ? '760px' : '1140px')};
+    width: ${({ showBackgroundColor }) => (showBackgroundColor ? '100%' : '1140px')};
   }
 `
 
@@ -95,8 +96,8 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
   & :nth-child(3) {
-    right: 0%;
-    bottom: ${({ showBackgroundColor }) => (showBackgroundColor ? '25%' : '18%')};
+    right: 8%;
+    bottom: ${({ showBackgroundColor }) => (showBackgroundColor ? '25%' : '0%')};
     animation: ${floatingStarsLeft} 4.5s ease-in-out infinite;
   }
   & :nth-child(4) {
@@ -112,7 +113,7 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
 
   @media screen and (min-width: 1680px) {
     & :nth-child(3) {
-      right: 13%;
+      right: 20%;
     }
   }
 }`

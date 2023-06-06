@@ -54,7 +54,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
   return (
     <Box position="relative" style={{ zIndex: 1 }} mt="104px">
       <Box>
-        <Text textAlign="center" color="secondary" mb="16px" fontSize={['64px']} bold lineHeight="110%">
+        <Text textAlign="center" color="secondary" mb="16px" fontSize={['40px']} bold lineHeight="110%">
           {t('Leaderboard')}
         </Text>
         <Text textAlign="center" bold color="textSubtle">{`${timeFormat(

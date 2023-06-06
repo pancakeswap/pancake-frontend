@@ -62,7 +62,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
           </TokenWrapper>
         )}
         <Flex flexDirection={['column', 'column', 'row']} mt={['4px', '4px', '4px', '4px', '0']}>
-          <Flex alignSelf={['flex-start', 'flex-start', 'center']}>
+          <Flex alignSelf={['flex-start', 'flex-start', 'center']} width={['115px']}>
             <Text lineHeight="110%" bold>
               {lpSymbol}
             </Text>

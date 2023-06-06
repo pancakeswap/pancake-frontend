@@ -15,7 +15,7 @@ const Container = styled(Flex)`
   position: relative;
   width: calc(100% - 32px);
   padding: 40px 16px;
-  margin: 80px auto auto auto;
+  margin: auto;
   flex-direction: column;
   border-radius: 32px;
   background: linear-gradient(180deg, #7645d9 0%, #5121b1 100%);
@@ -23,6 +23,7 @@ const Container = styled(Flex)`
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1140px;
+    margin: 80px auto auto auto;
   }
 `
 
