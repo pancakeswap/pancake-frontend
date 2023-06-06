@@ -102,7 +102,6 @@ export function FormMain({ setModalView, modalView }: Props) {
         {t('Proceed to get live aggregated quotes quotes from a variety of different fiat onramp providers.')}
       </Text>
       <GetQuotesButton errorText={inputError} modalView={modalView} setModalView={setModalView} />
-      <FiatOnRampModalButtonMercury />
     </FormContainer>
   )
 }
