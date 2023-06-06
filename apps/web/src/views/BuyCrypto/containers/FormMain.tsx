@@ -15,7 +15,6 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { FiatOnRampModalButtonMercury } from 'components/FiatOnRampModal/MercuryoOnrampModal'
 import { useRouter } from 'next/router'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '..'
