@@ -11,6 +11,13 @@ export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(50n, BIPS_BASE)
 export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.BSC]: 'bsc',
   [ChainId.ETHEREUM]: 'ethereum',
-  [ChainId.GOERLI]: 'ethereum',
-  [ChainId.BSC_TESTNET]: 'bsc',
+  [ChainId.GOERLI]: '',
+  [ChainId.BSC_TESTNET]: '',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.ARBITRUM_GOERLI]: '',
+  [ChainId.POLYGON_ZKEVM]: 'polygon_zkevm',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: '',
+  [ChainId.ZKSYNC]: 'era',
+  [ChainId.ZKSYNC_TESTNET]: '',
+  [ChainId.LINEA_TESTNET]: '',
 } satisfies Record<ChainId, string>
