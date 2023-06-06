@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Table, Th, Td, Text, Flex, PaginationButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { RewardBreakdownDetail } from 'views/TradingReward/hooks/useRewardBreakdown'
