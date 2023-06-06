@@ -7,7 +7,7 @@ interface MinAmountDisplayProps {
   unit?: string
 }
 
-export const minAmountDisplay = ({ amount, prefix, unit }: MinAmountDisplayProps) => {
+export const minAmountDisplay = ({ amount, prefix = '', unit = '' }: MinAmountDisplayProps) => {
   return new BigNumber(amount).gt(0) && new BigNumber(amount).lte(0.01)
     ? '<0.01'
     : `${prefix}${formatNumber(amount)}${unit}`
