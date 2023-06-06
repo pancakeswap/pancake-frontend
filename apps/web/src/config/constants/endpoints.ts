@@ -51,7 +51,7 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
 }
 
 // export const ASSET_CDN = 'https://assets.pancakeswap.finance'
-export const ASSET_CDN = 'https://zksync.assets-agx.pages.dev' // TODO: new chains
+export const ASSET_CDN = 'https://new-chains.assets-agx.pages.dev' // TODO: new chains
 
 export const V3_SUBGRAPH_URLS = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
