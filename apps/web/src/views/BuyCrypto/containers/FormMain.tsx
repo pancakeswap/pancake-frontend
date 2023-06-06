@@ -57,12 +57,14 @@ export function FormMain({ setModalView, modalView }: Props) {
   const handleTypeOutput = useCallback((value: string) => onFieldAInput(value), [onFieldAInput])
 
   // need to reloacte this
-  useEffect(() => {
-    ;(async () => {
-      const minAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
-      onMinAmountUdate(minAmounts.base.minBuyAmount.toString(), minAmounts.quote.minBuyAmount.toString())
-    })()
+  const fetchMinBuyAmounts = useCallback(async () => {
+    const minAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
+    onMinAmountUdate(minAmounts.base.minBuyAmount.toString(), minAmounts.quote.minBuyAmount.toString())
   }, [inputCurrencyId, outputCurrencyId, onMinAmountUdate])
+
+  useEffect(() => {
+    fetchMinBuyAmounts()
+  }, [fetchMinBuyAmounts])
 
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
