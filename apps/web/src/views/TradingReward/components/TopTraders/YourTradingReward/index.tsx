@@ -96,8 +96,8 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
   & :nth-child(3) {
-    right: 8%;
-    bottom: ${({ showBackgroundColor }) => (showBackgroundColor ? '25%' : '0%')};
+    right: 2%;
+    bottom: ${({ showBackgroundColor }) => (showBackgroundColor ? '15%' : '0%')};
     animation: ${floatingStarsLeft} 4.5s ease-in-out infinite;
   }
   & :nth-child(4) {
@@ -113,7 +113,7 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
 
   @media screen and (min-width: 1680px) {
     & :nth-child(3) {
-      right: 20%;
+      right: 15%;
     }
   }
 }`
