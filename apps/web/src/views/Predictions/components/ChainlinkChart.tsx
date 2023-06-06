@@ -12,6 +12,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createChart, IChartApi, SeriesMarkerPosition, SeriesMarkerShape, UTCTimestamp } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { darken } from 'polished'
+import { baseColors, darkColors, lightColors, additionalColors } from '@pancakeswap/ui/tokens/colors'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import styled from 'styled-components'
@@ -223,7 +224,7 @@ const Chart = ({
     const chart = createChart(chartRef?.current, {
       layout: {
         background: { color: 'transparent' },
-        textColor: isDark ? '#F4EEFF' : '#280D5F',
+        textColor: isDark ? darkColors.secondary : lightColors.secondary,
       },
       autoSize: true,
       handleScale: false,
@@ -262,16 +263,16 @@ const Chart = ({
           labelVisible: false,
           style: 3,
           width: 1,
-          color: isDark ? '#B8ADD2' : '#7A6EAA',
+          color: isDark ? darkColors.textSubtle : lightColors.textSubtle,
         },
       },
     })
 
     const newSeries = chart.addAreaSeries({
       lineWidth: 2,
-      lineColor: '#1FC7D4',
-      topColor: darken(0.01, '#1FC7D4'),
-      bottomColor: isDark ? '#3c3742' : 'white',
+      lineColor: baseColors.primary,
+      topColor: darken(0.01, baseColors.primary),
+      bottomColor: isDark ? darkColors.backgroundDisabled : lightColors.backgroundDisabled,
       priceFormat: {
         type: 'price',
         precision: 4,
@@ -279,9 +280,6 @@ const Chart = ({
       },
     })
     setChart(chart)
-    newSeries.setData(transformedData)
-
-    chart.timeScale().fitContent()
 
     const markers = orderBy(
       data
@@ -290,7 +288,7 @@ const Chart = ({
           time: chartData.startedAt as UTCTimestamp,
           roundId: chartData.roundId,
           position: 'inBar' as SeriesMarkerPosition,
-          color: isDark ? '#FFC700' : '#7645D9',
+          color: isDark ? additionalColors.gold : additionalColors.overlay,
           shape: 'circle' as SeriesMarkerShape,
           size: 0.5,
         })),
@@ -298,9 +296,11 @@ const Chart = ({
       'asc',
     )
 
+    newSeries.setData(transformedData)
     newSeries.setMarkers(markers)
+    chart.timeScale().fitContent()
 
-    chart.subscribeCrosshairMove((param) => {
+    const crossHairHandler = (param) => {
       if (newSeries && param) {
         const timestamp = param.time as number
         if (!timestamp) return
@@ -309,9 +309,10 @@ const Chart = ({
       } else {
         mutate(undefined)
       }
-    })
+    }
+    chart.subscribeCrosshairMove(crossHairHandler)
 
-    chart.subscribeClick((param) => {
+    const clickHandler = (param) => {
       if (param.hoveredSeries) {
         const marker = param.hoveredSeries.markers().find((hoveredMarker) => hoveredMarker.time === param.time)
         const roundIndex = sortedRounds.findIndex((round) =>
@@ -322,18 +323,25 @@ const Chart = ({
           swiper.el.dispatchEvent(new Event(CHART_DOT_CLICK_EVENT))
         }
       }
-    })
+    }
+    chart.subscribeClick(clickHandler)
 
     // eslint-disable-next-line consistent-return
     return () => {
+      chart.unsubscribeClick(clickHandler)
+      chart.unsubscribeCrosshairMove(crossHairHandler)
       chart.remove()
     }
   }, [transformedData, isDark, locale, mutate, data, rounds, swiper, sortedRounds])
 
+  const handleMouseLeave = useCallback(() => {
+    mutate(undefined)
+  }, [mutate])
+
   return (
     <>
       {!chartCreated && <LineChartLoader />}
-      <div style={{ display: 'flex', flex: 1, height: '100%' }}>
+      <div style={{ display: 'flex', flex: 1, height: '100%' }} onMouseLeave={handleMouseLeave}>
         <div style={{ flex: 1, maxWidth: '100%' }} ref={chartRef} id="chartlink-line-chart" />
       </div>
     </>
