@@ -72,11 +72,18 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             <Text bold={isTopPosition} mr="4px">
               {farmName}
             </Text>
-            {!isMobile && shouldUseV3Format && (
-              <Text mr="3px">({HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[0]}% fee tier)</Text>
-            )}
+
             {!isMobile && (
-              <Text>[{shouldUseV3Format ? HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[1] ?? 1 : 1}x]</Text>
+              <>
+                {shouldUseV3Format ? (
+                  <>
+                    <Text mr="3px">({HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[0]}% fee tier)</Text>
+                    <Text>[{HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[1] ?? 1}x]</Text>
+                  </>
+                ) : (
+                  <Text>(1x)</Text>
+                )}
+              </>
             )}
           </Flex>
           <Text fontSize="12px" color="textSubtle">
