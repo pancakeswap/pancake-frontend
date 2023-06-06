@@ -98,7 +98,15 @@ const polygonZkEvmTestnet = {
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
  * The expectation is that all of these networks have immediate transaction confirmation.
  */
-export const L2_CHAIN_IDS: ChainId[] = []
+export const L2_CHAIN_IDS: ChainId[] = [
+  ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_GOERLI,
+  ChainId.POLYGON_ZKEVM,
+  ChainId.POLYGON_ZKEVM_TESTNET,
+  ChainId.ZKSYNC,
+  ChainId.ZKSYNC_TESTNET,
+  ChainId.LINEA_TESTNET,
+]
 
 export const CHAINS = [
   bsc,
