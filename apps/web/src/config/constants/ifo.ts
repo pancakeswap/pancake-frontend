@@ -629,28 +629,6 @@ const ifos: Ifo[] = [
     tokenOfferingPrice: null,
     version: 1,
   },
-  {
-    id: 'test',
-    address: '0xF2F1E57D5EC65C206315803f83CCDce713E367c2',
-    isActive: true,
-    name: 'USDT',
-    plannedStartTime: 1683698400, // Wed May 10 2023 14:03:14
-    poolBasic: {
-      raiseAmount: '$1',
-    },
-    poolUnlimited: {
-      raiseAmount: '$2',
-    },
-    currency: bscTokens.cake,
-    token: bscTokens.usdt,
-    campaignId: '512200000',
-    articleUrl: 'https://pancakeswap.finance/voting/',
-    tokenOfferingPrice: 1.0,
-    version: 3.3,
-    twitterUrl: 'https://twitter.com/pancakeswap',
-    description: 'Spend CAKE, buy USDT, but on vesting',
-    vestingTitle: 'Use CAKE to buy USDT',
-  },
 ]
 
 export default ifos

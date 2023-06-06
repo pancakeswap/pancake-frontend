@@ -193,8 +193,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)
 
-      const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
-      const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
+      const startBlockNum = startBlock ? Number(startBlock) : 0
+      const endBlockNum = endBlock ? Number(endBlock) : 0
       const taxRateNum = taxRate ? new BigNumber(taxRate.toString()).div(TAX_PRECISION).toNumber() : 0
       const privateSaleTaxRateNum = privateSaleTaxRate
         ? new BigNumber(privateSaleTaxRate.toString()).div(TAX_PRECISION).toNumber()
