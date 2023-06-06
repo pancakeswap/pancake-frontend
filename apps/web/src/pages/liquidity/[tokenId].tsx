@@ -300,7 +300,7 @@ export default function PoolPage() {
       data: calldata,
       value: hexToBigInt(value),
       account,
-      chain: signer.chain,
+      chain: signer?.chain,
     }
 
     getViemClients({ chainId })
@@ -444,7 +444,7 @@ export default function PoolPage() {
   }
 
   const farmingTips =
-    hasActiveFarm && !isStakedInMCv3 ? (
+    ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
       <Message variant="primary" mb="2em">
         <Box>
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
