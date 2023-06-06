@@ -240,6 +240,8 @@ const Chart = ({
         visible: true,
         borderVisible: false,
         secondsVisible: false,
+        fixRightEdge: true,
+        fixLeftEdge: true,
         tickMarkFormatter: (unixTime: number) => {
           return format(unixTime * 1000, 'h:mm a')
         },
@@ -298,7 +300,6 @@ const Chart = ({
 
     newSeries.setData(transformedData)
     newSeries.setMarkers(markers)
-    chart.timeScale().fitContent()
 
     const crossHairHandler = (param) => {
       if (newSeries && param) {
