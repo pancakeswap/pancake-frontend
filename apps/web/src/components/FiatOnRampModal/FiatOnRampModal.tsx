@@ -95,7 +95,7 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
         body: JSON.stringify({
           type: 'MOONPAY',
           defaultCurrencyCode: 'eth',
-          redirectUrl: 'https://app.uniswap.org/#/swap',
+          redirectUrl: 'https://pancakeswap.finance',
           theme: theme.isDark ? 'dark' : 'light',
           walletAddresses: JSON.stringify(
             MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(

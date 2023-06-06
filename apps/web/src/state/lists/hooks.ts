@@ -79,14 +79,14 @@ export const combinedFiatCurrenciesMapFromActiveUrlsAtom = atom(() => {
   return combineFiatCurrencyMapsWithOnRamp()
 })
 
-const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]) => {
+const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]): any => {
   if (!urls) return EMPTY_LIST
   return (
     urls
       .slice()
       // sort by priority so top priority goes last
       .sort(sortByListPriority)
-      .reduce((allTokens, currentUrl) => {
+      .reduce((allTokens: any, currentUrl: any) => {
         const current = lists[currentUrl]?.current
         if (!current) return allTokens
         try {
@@ -182,7 +182,7 @@ export function listToTokenMap(list: TokenList, key?: string): TokenAddressMap {
 
   const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, 'chainId')
 
-  const tokenAddressMap = mapValues(groupedTokenMap, (tokenInfoList) =>
+  const tokenAddressMap: any = mapValues(groupedTokenMap, (tokenInfoList) =>
     mapValues(keyBy(tokenInfoList, key), (tokenInfo) => ({ token: tokenInfo, list })),
   )
 

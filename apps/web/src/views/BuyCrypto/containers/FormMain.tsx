@@ -48,9 +48,9 @@ export function FormMain({ setModalView, modalView }: Props) {
     outputCurrencyId,
     inputCurrencyId,
   )
-  const inputCurrency = useOnRampCurrency(inputCurrencyId)
+  const inputCurrency: any = useOnRampCurrency(inputCurrencyId)
 
-  const outputCurrency = useFiatCurrency(outputCurrencyId)
+  const outputCurrency: any = useFiatCurrency(outputCurrencyId)
   const { onFieldAInput, onCurrencySelection, onMinAmountUdate } = useBuyCryptoActionHandlers()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const maxAmountInput = useMemo(() => maxAmountSpend(inputBalance), [inputBalance])

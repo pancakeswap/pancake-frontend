@@ -16,7 +16,7 @@ export function CryptoQuoteForm({ setModalView }: { setModalView: Dispatch<SetSt
         subTitle="Quotes are updated every 30 seconds."
         backTo={() => setModalView(CryptoFormView.Input)}
       />
-      <FormQuote setModalView={setModalView} swapCommitButton={<></>} />
+      <FormQuote setModalView={setModalView} />
     </>
   )
 }

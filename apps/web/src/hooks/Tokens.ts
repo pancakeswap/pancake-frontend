@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ChainId, ERC20Token, OnRampCurrency } from '@pancakeswap/sdk'
-import { Currency, FiatOnRampCurrency } from '@pancakeswap/swap-sdk-core'
+import { Currency, FiatOnRampCurrency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
@@ -34,7 +34,7 @@ const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) =
 }
 
 const mapWithoutUrlsAllChains = (tokenMap: TokenAddressMap<ChainId>) => {
-  const tokens = Object.keys(tokenMap).flatMap((id: string) => Object.entries(tokenMap[id]))
+  const tokens: any = Object.keys(tokenMap).flatMap((id: string) => Object.entries(tokenMap[id]))
   const mappedTokens = Object.fromEntries(tokens.map(([symbol, { token }]) => [symbol, token]))
   return mappedTokens
 }
@@ -221,7 +221,7 @@ export function useFiatCurrency(currencyId: string | undefined): FiatOnRampCurre
   return token
 }
 
-export function useOnRampCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
+export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | OnRampCurrency | null | undefined {
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
