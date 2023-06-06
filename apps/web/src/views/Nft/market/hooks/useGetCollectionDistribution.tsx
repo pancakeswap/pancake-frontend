@@ -48,12 +48,15 @@ export const useGetCollectionDistributionPB = () => {
       const tokenIds = Object.keys(apiResponse.attributesDistribution)
       try {
         const response = await publicClient({ chainId: ChainId.BSC }).multicall({
-          contracts: tokenIds.map((tokenId) => ({
-            address: getPancakeBunniesAddress(),
-            functionName: 'bunnyCount',
-            abi: pancakeBunniesABI,
-            args: [Number(tokenId)],
-          })),
+          contracts: tokenIds.map(
+            (tokenId) =>
+              ({
+                address: getPancakeBunniesAddress(),
+                functionName: 'bunnyCount',
+                abi: pancakeBunniesABI,
+                args: [Number(tokenId)],
+              } as const),
+          ),
           allowFailure: false,
         })
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
