@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PriceQuotes } from '../types'
+import { MercuryoQuote, PriceQuotes } from '../types'
 
-const MoonPay = `https://api.moonpay.com/v3/currencies/btc/buy_quote/?apiKey=pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54&baseCurrencyAmount=50&&baseCurrencyCode=usd`
-const mercuryo = `https://api.mercuryo.io/v1.6/widget/buy/rate?from=EUR&to=USDT&amount=500&network=TRON&widget_id=67710925-8b40-4767-846e-3b88db69f04d`
+const MoonPay = `https://api.moonpay.com/v3/currencies/eth/buy_quote/?apiKey=pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54&baseCurrencyAmount=33&&baseCurrencyCode=usd`
+const mercuryo = `https://api.mercuryo.io/v1.6/widget/buy/rate?from=USD&to=ETH&amount=33&network=ETHEREUM&widget_id=67710925-8b40-4767-846e-3b88db69f04d`
 const BinanceConnect = `/bapi/fiat/v1/public/open-api/connect/get-quote`
 
 export type ProviderQoute = {
@@ -11,6 +11,9 @@ export type ProviderQoute = {
   providerFee: number
   networkFee: number
   totalFee: number
+  amount: number
+  quote: number
+  provider: string
 }
 
 const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
@@ -20,15 +23,31 @@ const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
     providerFee: quote.feeAmount,
     networkFee: quote.networkFeeAmount,
     totalFee: quote.quoteCurrencyAmount,
+    amount: quote.quoteCurrencyAmount,
+    quote: quote.quoteCurrencyPrice,
+    provider: 'MoonPay',
+  }
+}
+
+const calculateQuotesDataMercury = (quote: MercuryoQuote): ProviderQoute => {
+  return {
+    baseCurrency: quote.data.fiat_currency,
+    quoteCurrency: quote.data.buy_token,
+    providerFee: Number(quote.data.fee.ETH),
+    networkFee: Number(quote.data.fee.ETH),
+    totalFee: Number(quote.data.fee.ETH),
+    amount: Number(quote.data.amount),
+    quote: Number(quote.data.total.ETH),
+    provider: 'BinanceConnect',
   }
 }
 
 const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: string) => {
-  const [quotes, setQuotes] = useState<PriceQuotes[]>([])
+  const [quotes, setQuotes] = useState<PriceQuotes[] | MercuryoQuote[]>([])
 
   const fetchQuotes = useCallback(async () => {
     try {
-      const responsePromises = [fetch(MoonPay), fetch(MoonPay), fetch(mercuryo)]
+      const responsePromises = [fetch(MoonPay), fetch(mercuryo)]
       const responses = await Promise.allSettled(responsePromises)
 
       const data = responses.reduce((accumulator, response) => {
@@ -47,12 +66,12 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
   }, [])
 
   const combinedQuotes = useMemo(() => {
-    const [moonPayQuote1, moonPayQuote2] = quotes
-    if (moonPayQuote1 && moonPayQuote2) {
-      return [calculateQuotesData(moonPayQuote1), calculateQuotesData(moonPayQuote2)]
-    }
-
-    return []
+    return quotes.map((quote) => {
+      if (quote.data) {
+        return calculateQuotesDataMercury(quote)
+      }
+      return calculateQuotesData(quote)
+    })
   }, [quotes])
 
   return { quotes, fetchQuotes, combinedQuotes }

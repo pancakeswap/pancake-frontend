@@ -71,4 +71,32 @@ interface Quote {
   totalAmount: number
 }
 
+export interface MercuryResponseData {
+  amount: string
+  buy_token: string
+  currency: string
+  fee: {
+    ETH: string
+    USD: string
+  }
+  fiat_amount: string
+  fiat_currency: string
+  kyc_limit_exceeded: boolean
+  kyc_limits: boolean
+  rate: string
+  subtotal: {
+    ETH: string
+    USD: string
+  }
+  total: {
+    ETH: string
+    USD: string
+  }
+}
+
+export type MercuryoQuote = {
+  data: MercuryResponseData
+  status: number
+}
+
 export type PriceQuotes = Account & Currency & Quote

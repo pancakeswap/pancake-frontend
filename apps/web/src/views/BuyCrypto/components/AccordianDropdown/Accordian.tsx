@@ -16,14 +16,14 @@ function Accordion({
 
   return (
     <FlexGap flexDirection="column" gap="16px">
-      {[1, 2, 3].map((item, idx) => {
+      {combinedQuotes.map((quote: ProviderQoute, idx) => {
         return (
           <AccordionItem
-            key={item}
+            key={quote.baseCurrency}
             active={currentIdx === idx}
             btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
             buyCryptoState={buyCryptoState}
-            combinedQuotes={combinedQuotes}
+            quote={quote}
           />
         )
       })}

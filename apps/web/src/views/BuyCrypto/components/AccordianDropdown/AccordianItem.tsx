@@ -1,27 +1,56 @@
 import { Button, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
+import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { useEffect, useRef, useState } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
+import styled from 'styled-components'
+import MoonPayLogo from '../../../../../public/images/onRampProviders/moonpaySvg.svg'
+import BinanceConnectLogo from '../../../../../public/images/onRampProviders/binanceConnectSvg.svg'
+
+const ProviderToLogo: { [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>> } = {
+  MoonPay: MoonPayLogo,
+  BinanceConnect: BinanceConnectLogo,
+}
+
+interface Props {
+  provider: string
+}
+
+const UnknownEntry = styled.div`
+  height: 24px;
+  width: 24px;
+  background: #dee0e3;
+  border-radius: 50%;
+`
+
+export const ProviderIcon: React.FC<
+  Props &
+    (React.SVGProps<SVGSVGElement> &
+      React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>)
+> = ({ provider, className, ...props }) => {
+  const Icon = ProviderToLogo[provider]
+  return <>{Icon ? <Icon className={className} {...props} /> : <UnknownEntry />}</>
+}
 
 function AccordionItem({
   active,
   btnOnClick,
   buyCryptoState,
-  combinedQuotes,
+  quote,
 }: {
   active: boolean
   btnOnClick: any
   buyCryptoState: BuyCryptoState
-  combinedQuotes: ProviderQoute[]
+  quote: ProviderQoute
 }) {
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(105)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
 
-  console.log(combinedQuotes)
+  // console.log(combinedQuotes.map(()))
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = () => {
@@ -45,23 +74,20 @@ function AccordionItem({
         style={{ height }}
         onClick={!isActive() ? toogleVisiblity : () => null}
         position="relative"
+        isClicked={active}
       >
         <RowBetween>
-          <Text fontSize="18px">Binance</Text>
+          <ProviderIcon provider={quote.provider} width="130px" />
           <Flex>
-            {/* <Box width={24} height={24}>
-                  <Image src={`/images/tokens/${wbethContract?.address}.png`} width={24} height={24} alt="WBETH" />
-                  <FiatIcon name="EUR"/>
-                </Box> */}
             <Text ml="4px" fontSize="22px" color="secondary">
-              0.93253 ETH
+              {quote.amount.toFixed(4)} ETH
             </Text>
           </Flex>
         </RowBetween>
         <RowBetween pt="8px">
           <Text fontSize="15px">ETH</Text>
           <Text ml="4px" fontSize="16px">
-            = 93.245
+            = {quote.quote.toFixed(4)}
           </Text>
         </RowBetween>
 
@@ -71,7 +97,7 @@ function AccordionItem({
               Total Fees
             </Text>
             <Text ml="4px" fontSize="14px" color="textSubtle">
-              0.0092
+              {quote.totalFee}
             </Text>
           </RowBetween>
           <RowBetween>
@@ -79,7 +105,7 @@ function AccordionItem({
               Networking Fees
             </Text>
             <Text ml="4px" fontSize="14px" color="textSubtle">
-              0.0092
+              {quote.networkFee}
             </Text>
           </RowBetween>
           <RowBetween>
@@ -87,12 +113,10 @@ function AccordionItem({
               Processing Fees
             </Text>
             <Text ml="4px" fontSize="14px" color="textSubtle">
-              0.0092
+              {quote.providerFee}
             </Text>
           </RowBetween>
-          <Button width="100%" mb="8px" mt="16px">
-            Buy With Moonpay
-          </Button>
+          <FiatOnRampModalButton provider={quote.provider} />
         </div>
       </CryptoCard>
     </Flex>

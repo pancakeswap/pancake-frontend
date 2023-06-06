@@ -33,7 +33,7 @@ const MOONPAY_SUPPORTED_CURRENCY_CODES = [
   'usdc_polygon',
 ]
 
-export const FiatOnRampModalButton = () => {
+export const FiatOnRampModalButton = ({ provider }: { provider: string }) => {
   const { t } = useTranslation()
   const [shouldCheck, setShouldCheck] = useState<boolean>(false)
   const [onPresentConfirmModal] = useModal(<FiatOnRampModal />)
@@ -57,8 +57,8 @@ export const FiatOnRampModalButton = () => {
   return (
     <>
       {!disableBuyCryptoButton ? (
-        <Button height="35px" onClick={handleBuyCryptoClick} disabled={false} isLoading={false} variant="secondary">
-          {t('Buy Crypto')}
+        <Button onClick={handleBuyCryptoClick} disabled={false} width="100%" mb="8px" mt="16px">
+          Buy with {provider}
         </Button>
       ) : null}
     </>
@@ -129,7 +129,7 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
         height="650px" // height has to be overidden
-        width="350px" // width has to be overidden
+        width="400px" // width has to be overidden
       >
         {error ? (
           <Flex justifyContent="center" alignItems="center" alignContent="center">

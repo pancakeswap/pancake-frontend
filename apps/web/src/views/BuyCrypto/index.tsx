@@ -11,6 +11,7 @@ import { BuyCryptoForum } from './containers/BuyCryptoForum'
 import { CryptoQuoteForm } from './containers/CryptoQuoteForm'
 import { StyledBuyCryptoContainer, StyledInputCurrencyWrapper } from './styles'
 import usePriceQuotes from './hooks/usePriceQuoter'
+import { OnRamoFaqs } from './components/FAQ'
 
 export enum CryptoFormView {
   Input,
@@ -29,9 +30,16 @@ export default function BuyCrypto() {
 
   const { fetchQuotes, quotes, combinedQuotes } = usePriceQuotes(typedValue, inputCurrencyId, outputCurrencyId)
 
+  console.log(combinedQuotes)
   return (
     <Page>
-      <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
+      <Flex
+        width={['328px', '100%']}
+        marginBottom="30px"
+        justifyContent="center"
+        position="relative"
+        alignItems="flex-start"
+      >
         <Flex flexDirection="column">
           <StyledBuyCryptoContainer>
             <StyledInputCurrencyWrapper>
@@ -55,6 +63,13 @@ export default function BuyCrypto() {
           </StyledBuyCryptoContainer>
         </Flex>
       </Flex>
+      <StyledBuyCryptoContainer>
+        <StyledInputCurrencyWrapper>
+          <AppBody>
+            <OnRamoFaqs />
+          </AppBody>
+        </StyledInputCurrencyWrapper>
+      </StyledBuyCryptoContainer>
     </Page>
   )
 }
