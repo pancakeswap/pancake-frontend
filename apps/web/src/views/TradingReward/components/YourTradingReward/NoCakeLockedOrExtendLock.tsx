@@ -96,7 +96,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   )
 
   const minLockWeekInSeconds = useMemo(() => {
-    const currentTime = new Date().getTime() / 1000
+    const currentTime = Date.now() / 1000
     const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
     const lockDuration = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime).minus(minusTime)
     const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())

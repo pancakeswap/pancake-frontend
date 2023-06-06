@@ -6,7 +6,7 @@ export const useTradingRewardStatus = () => {
   const latestCampaignId = allTradingRewardPairData.campaignIds?.[allTradingRewardPairData.campaignIds.length - 1]
 
   return useMemo(() => {
-    const currentTime = new Date().getTime() / 1000
+    const currentTime = Date.now() / 1000
     if (latestCampaignId) {
       const incentive = allTradingRewardPairData.campaignIdsIncentive.find(
         (i) => i.campaignId.toLowerCase() === latestCampaignId?.toLowerCase(),

@@ -35,7 +35,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   const { t } = useTranslation()
   const pool = useDeserializedPoolByVaultKey(VaultKey.CakeVault)
 
-  const currentDate = new Date().getTime() / 1000
+  const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
 
   return (
