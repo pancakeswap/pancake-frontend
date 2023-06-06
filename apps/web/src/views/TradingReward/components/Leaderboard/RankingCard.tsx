@@ -97,7 +97,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
           </Flex>
           <Flex justifyContent="space-between" mb="4px">
             <Text bold color="textSubtle">
-              {t('Total reward')}
+              {t('Total Reward')}
             </Text>
             <Box>
               <Text textAlign="right" bold color="text" fontSize="20px" lineHeight="110%">
@@ -110,7 +110,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
           </Flex>
           <Flex justifyContent="space-between">
             <Text bold color="textSubtle">
-              {t('Trading volume')}
+              {t('Trading Volume')}
             </Text>
             <Text textAlign="right" bold color="text" fontSize="20px">
               {`$${formatNumber(user.volume, 0, 0)}`}

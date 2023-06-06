@@ -16,7 +16,8 @@ const Decorations = styled(Box)`
   top: 0;
   left: 50%;
   width: calc(100% - 32px);
-  height: 60%;
+  height: 100%;
+  display: none;
   pointer-events: none;
   overflow: hidden;
   transform: translateX(-50%);
@@ -25,89 +26,44 @@ const Decorations = styled(Box)`
   }
 
   & :nth-child(1) {
-    top: 10%;
-    left: 5%;
+    left: 0%;
+    bottom: 25%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
   & :nth-child(2) {
-    top: 50%;
-    right: 0%;
+    left: 3%;
+    bottom: 50%;
     animation: ${floatingStarsLeft} 3s ease-in-out infinite;
   }
 
   & :nth-child(3) {
-    left: 10%;
-    bottom: 15%;
+    top: 25%;
+    right: 0%;
     animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
   }
 
   & :nth-child(4) {
-    left: 15%;
     top: 20%;
-    width: 66px;
-    height: 48px;
+    right: 13%;
     animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
   }
 
   & :nth-child(5) {
-    left: 26%;
-    bottom: 21%;
-    width: 67px;
-    height: 121px;
-    display: none;
+    left: 52%;
+    bottom: 15%;
+    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & :nth-child(4) {
-      left: 28%;
-    }
+  & :nth-child(6) {
+    right: 5%;
+    bottom: 30%;
+    animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 90%;
-    height: 70%;
-
-    & :nth-child(4) {
-      top: 10%;
-      left: 18%;
-      width: 186px;
-      height: 168px;
-    }
-
-    & :nth-child(5) {
-      left: 16%;
-      bottom: 18%;
-      width: 167px;
-      height: 261px;
-      display: block;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: block;
     width: 100%;
-    max-width: 1140px;
-    height: 100%;
-
-    & :nth-child(1) {
-      left: 55%;
-    }
-
-    & :nth-child(3) {
-      left: 48%;
-    }
-
-    & :nth-child(4) {
-      left: 55%;
-      width: 186px;
-      height: 168px;
-    }
-
-    & :nth-child(5) {
-      left: 58%;
-      width: 167px;
-      height: 261px;
-    }
   }
 }`
 
@@ -125,11 +81,12 @@ const TopTradersBanner = () => {
       }
     >
       <Decorations>
-        {/* <img src="/images/trading-reward/star1.png" width="43px" height="43px" alt="star1" />
-        <img src="/images/trading-reward/star2.png" width="71px" height="71px" alt="star2" />
-        <img src="/images/trading-reward/star3.png" width="36px" height="36px" alt="star3" />
-        <img src="/images/trading-reward/butter-1.png" width="186px" height="168px" alt="butter1" />
-        <img src="/images/trading-reward/butter-2.png" width="167px" height="261px" alt="butter2" /> */}
+        <img src="/images/trading-reward/top-traders-1.png" width="101px" height="449px" alt="top-traders-1" />
+        <img src="/images/trading-reward/top-traders-2.png" width="49px" height="49px" alt="top-traders-2" />
+        <img src="/images/trading-reward/top-traders-3.png" width="156px" height="122px" alt="top-traders-3" />
+        <img src="/images/trading-reward/top-traders-4.png" width="23px" height="23px" alt="top-traders-4" />
+        <img src="/images/trading-reward/top-traders-5.png" width="21px" height="21px" alt="top-traders-5" />
+        <img src="/images/trading-reward/top-traders-2.png" width="67px" height="67px" alt="top-traders-6" />
       </Decorations>
       <Flex
         position="relative"
