@@ -12,6 +12,7 @@ export interface RankListDetail {
   origin: string
   tradingFee: number
   volume: number
+  estimateRewardUSD: number
 }
 
 interface RankListResponse {

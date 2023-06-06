@@ -55,8 +55,8 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
   const { domainName, avatar } = useDomainNameForAddress(user.origin, !profile && !isProfileLoading)
 
   const cakeAmount = useMemo(
-    () => new BigNumber(user?.tradingFee).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, user?.tradingFee],
+    () => new BigNumber(user?.estimateRewardUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, user?.estimateRewardUSD],
   )
 
   return (
@@ -101,7 +101,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             </Text>
             <Box>
               <Text textAlign="right" bold color="text" fontSize="20px" lineHeight="110%">
-                {`$${formatNumber(user.tradingFee, 0, 0)}`}
+                {`$${formatNumber(user.estimateRewardUSD, 0, 0)}`}
               </Text>
               <Text textAlign="right" color="textSubtle" fontSize="12px">
                 {`~${formatNumber(cakeAmount)} CAKE`}

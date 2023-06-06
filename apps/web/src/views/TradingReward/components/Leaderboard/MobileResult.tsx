@@ -30,8 +30,8 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ ra
   const { domainName, avatar } = useDomainNameForAddress(rank.origin, !profile && !isProfileLoading)
 
   const cakeAmount = useMemo(
-    () => new BigNumber(rank?.tradingFee).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, rank?.tradingFee],
+    () => new BigNumber(rank?.estimateRewardUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, rank?.estimateRewardUSD],
   )
 
   return (
@@ -53,7 +53,7 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ ra
         </Text>
         <Box>
           <Text bold textAlign="right">
-            {`$${formatNumber(rank.tradingFee, 0, 0)}`}
+            {`$${formatNumber(rank.estimateRewardUSD, 0, 0)}`}
           </Text>
           <Text fontSize="12px" color="textSubtle" textAlign="right" lineHeight="110%">
             {`~${formatNumber(cakeAmount)} CAKE`}

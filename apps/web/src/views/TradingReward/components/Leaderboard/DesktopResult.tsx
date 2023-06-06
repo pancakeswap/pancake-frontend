@@ -18,8 +18,8 @@ const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ 
   const { domainName, avatar } = useDomainNameForAddress(rank.origin, !profile && !isProfileLoading)
 
   const cakeAmount = useMemo(
-    () => new BigNumber(rank?.tradingFee).div(cakePriceBusd).toNumber(),
-    [cakePriceBusd, rank?.tradingFee],
+    () => new BigNumber(rank?.estimateRewardUSD).div(cakePriceBusd).toNumber(),
+    [cakePriceBusd, rank?.estimateRewardUSD],
   )
 
   return (
@@ -41,7 +41,7 @@ const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ 
         <Text bold>{`$${formatNumber(rank.volume, 0, 0)}`}</Text>
       </Td>
       <Td textAlign="right">
-        <Text bold>{`$${formatNumber(rank.tradingFee, 0, 0)}`}</Text>
+        <Text bold>{`$${formatNumber(rank.estimateRewardUSD, 0, 0)}`}</Text>
         <Text fontSize={12} color="textSubtle">
           {`~${formatNumber(cakeAmount)} CAKE`}
         </Text>
