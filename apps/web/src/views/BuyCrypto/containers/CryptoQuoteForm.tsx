@@ -26,7 +26,7 @@ export function CryptoQuoteForm({
         subTitle="Quotes are updated every 30 seconds."
         backTo={() => setModalView(CryptoFormView.Input)}
       />
-      <FormQuote setModalView={setModalView} buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} />
+      <FormQuote buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} />
     </>
   )
 }
