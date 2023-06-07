@@ -61,13 +61,13 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
     )
 
     if (receipt?.status) {
+      await mutate(['/all-campaign-id-info', account, campaignIds])
       toastSuccess(
         t('Success!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
-      mutate(['/all-campaign-id-info', account, campaignIds])
     }
     return null
   }, [

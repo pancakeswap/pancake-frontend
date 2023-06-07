@@ -53,7 +53,7 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ ra
         </Text>
         <Box>
           <Text bold textAlign="right">
-            {`$${formatNumber(rank.estimateRewardUSD, 0, 0)}`}
+            {`$${formatNumber(rank.estimateRewardUSD)}`}
           </Text>
           <Text fontSize="12px" color="textSubtle" textAlign="right" lineHeight="110%">
             {`~${formatNumber(cakeAmount)} CAKE`}
@@ -65,7 +65,7 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ ra
           {t('Trading Volume')}
         </Text>
         <Text fontWeight="bold" textAlign="right">
-          {`$${formatNumber(rank.volume, 0, 0)}`}
+          {`$${formatNumber(rank.volume)}`}
         </Text>
       </Flex>
     </StyledMobileRow>
