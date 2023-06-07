@@ -22,11 +22,11 @@ const BoosterTooltip = () => {
   )
 }
 
-export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: number; isFarmStaking?: boolean }> = ({
-  status,
-  boostedMultiplier,
-  isFarmStaking,
-}) => {
+export const StatusView: React.FC<{
+  status: BoostStatus
+  boostedMultiplier?: number
+  isFarmStaking?: boolean
+}> = ({ status, boostedMultiplier, isFarmStaking }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { account } = useActiveWeb3React()
@@ -52,8 +52,9 @@ export const StatusView: React.FC<{ status: BoostStatus; boostedMultiplier?: num
       </Text>
       <Flex alignItems="center">
         <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
-          {status === BoostStatus.Boosted ||
-          (status === BoostStatus.farmCanBoostButNot && isFarmStaking && locked && !isLockEnd)
+          {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
+          locked &&
+          !isLockEnd
             ? `${
                 boostedMultiplier < 1.001 && boostedMultiplier !== 1
                   ? '< 1.001'

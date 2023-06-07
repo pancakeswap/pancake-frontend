@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Box, Button, Flex } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
   useBCakeBoostLimitAndLockInfo,
   useUserMultiplierBeforeBoosted,
@@ -34,9 +34,12 @@ export const BCakeV3CardView: React.FC<{
   const { isReachedMaxBoostLimit, locked, isLockEnd } = useBCakeBoostLimitAndLockInfo()
 
   const { activate, deactivate, isConfirming } = useBoosterFarmV3Handlers(tokenId, onDone)
-
   const { userMultiplierBeforeBoosted } = useUserMultiplierBeforeBoosted(tokenId)
   const { theme } = useTheme()
+  const lockValidated = useMemo(() => {
+    return locked && !isLockEnd
+  }, [locked, isLockEnd])
+
   return (
     <Flex width="100%" alignItems="center" justifyContent="space-between">
       <StatusView
@@ -47,12 +50,12 @@ export const BCakeV3CardView: React.FC<{
         isFarmStaking={isFarmStaking}
       />
       <Box>
-        {(!locked || isLockEnd) && boostStatus !== BoostStatus.Boosted && (
+        {!lockValidated && (
           <NextLink href="/pools" passHref>
             <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Pool')}</Button>
           </NextLink>
         )}
-        {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && locked && !isLockEnd && (
+        {boostStatus === BoostStatus.farmCanBoostButNot && isFarmStaking && lockValidated && (
           <Button
             onClick={() => {
               activate()
@@ -65,7 +68,7 @@ export const BCakeV3CardView: React.FC<{
             {t('Boost')}
           </Button>
         )}
-        {boostStatus === BoostStatus.Boosted && (
+        {boostStatus === BoostStatus.Boosted && lockValidated && (
           <Button
             onClick={() => {
               deactivate()
