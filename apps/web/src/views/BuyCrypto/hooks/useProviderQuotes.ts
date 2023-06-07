@@ -53,3 +53,14 @@ export async function fetchBinanceConnectQuote(payload: any): Promise<Response> 
   })
   return response
 }
+export async function fetchTest(payload: any): Promise<Response> {
+  const response = await fetch('/api/onramp-url-sign/test-fetch', {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+  return response
+}

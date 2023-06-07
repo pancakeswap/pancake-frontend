@@ -2,7 +2,6 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:3000",
   "scripts": {
     "analyze": "ANALYZE=true pnpm build",
     "dev": "next dev",

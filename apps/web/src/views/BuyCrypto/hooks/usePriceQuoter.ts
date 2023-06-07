@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
-import { fetchBinanceConnectQuote, fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
+import { fetchBinanceConnectQuote, fetchMercuryoQuote, fetchMoonpayQuote, fetchTest } from './useProviderQuotes'
 
 export type ProviderQoute = {
   providerFee: number
@@ -47,7 +47,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
     try {
       const responsePromises = [
         fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
-        fetchBinanceConnectQuote({
+        fetchTest({
           fiatCurrency: outputCurrency.toUpperCase(),
           cryptoCurrency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
