@@ -16,10 +16,7 @@ export const IfoPageLayout = ({ children }) => {
 
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
   const [onUSCitizenModalPresent] = useModal(
-    <USCitizenConfirmModal
-      title={t('PancakeSwap IFOs')}
-      headerText={t('To proceed to Pancakeswap IFOs, please check the checkbox below:')}
-    />,
+    <USCitizenConfirmModal title={t('PancakeSwap IFOs')} />,
     true,
     false,
     'usCitizenConfirmModal',

@@ -9,15 +9,10 @@ import { useTranslation } from '@pancakeswap/localization'
 
 interface USCitizenConfirmModalProps {
   title: string
-  headerText: string
   onDismiss?: () => void
 }
 
-const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({
-  title,
-  headerText,
-  onDismiss,
-}) => {
+const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({ title, onDismiss }) => {
   const {
     t,
     currentLanguage: { code },
@@ -37,7 +32,7 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
     <DisclaimerModal
       modalHeader={title}
       id="disclaimer-us-citizen"
-      header={headerText}
+      header={t('To proceed to %title%, please check the checkbox below:', { title })}
       checks={[
         {
           key: 'checkbox',

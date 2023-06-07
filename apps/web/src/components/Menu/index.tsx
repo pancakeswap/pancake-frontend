@@ -26,10 +26,7 @@ const Menu = (props) => {
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
   const [onUSCitizenModalPresent] = useModal(
-    <USCitizenConfirmModal
-      title={t('PancakeSwap Perpetuals')}
-      headerText={t('To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:')}
-    />,
+    <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} />,
     true,
     false,
     'usCitizenConfirmModal',

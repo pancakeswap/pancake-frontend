@@ -2349,7 +2349,6 @@
   "I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform": "I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform",
   "By proceeding, you agree to comply with our": "By proceeding, you agree to comply with our",
   "and all relevant laws and regulations": "and all relevant laws and regulations",
-  "To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:": "To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:",
   "Terms Of Service": "Terms Of Service",
   "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.": "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.",
   "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.": "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.",
@@ -2532,7 +2531,6 @@
   "Get your domain": "Get your domain",
   "Subdomains .pancake.crypto for just $9.99": "Subdomains .pancake.crypto for just $9.99",
   "PancakeSwap IFOs": "PancakeSwap IFOs",
-  "To proceed to Pancakeswap IFOs, please check the checkbox below:": "To proceed to Pancakeswap IFOs, please check the checkbox below:",
   "PancakeSwap Affiliate Program": "PancakeSwap Affiliate Program",
-  "To proceed to Pancakeswap Affiliate Program, please check the checkbox below:": "To proceed to Pancakeswap Affiliate Program, please check the checkbox below:"
+  "To proceed to %title%, please check the checkbox below:": "To proceed to %title%, please check the checkbox below:"
 }
