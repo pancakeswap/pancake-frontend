@@ -57,6 +57,7 @@ export const BCakeV3CardView: React.FC<{
             onClick={() => {
               activate()
             }}
+            style={{ padding: isConfirming && '0 10px' }}
             isLoading={isConfirming}
             endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
             disabled={isReachedMaxBoostLimit}
@@ -73,6 +74,7 @@ export const BCakeV3CardView: React.FC<{
               backgroundColor: 'transparent',
               border: `2px solid ${theme.colors.primary}`,
               color: theme.colors.primary,
+              padding: isConfirming && '0 10px',
             }}
             isLoading={isConfirming}
             endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
