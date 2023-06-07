@@ -21,7 +21,10 @@ const Congratulations = () => {
   return (
     <>
       <ModalV2 style={{ zIndex: 100 }} isOpen={isOpen} closeOnOverlayClick onDismiss={() => setIsOpen(false)}>
-        <USCitizenConfirmModal />
+        <USCitizenConfirmModal
+          title={t('PancakeSwap Affiliate Program')}
+          headerText={t('To proceed to Pancakeswap Affiliate Program, please check the checkbox below:')}
+        />
       </ModalV2>
       <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '80px 24px']}>
         <Text lineHeight="110%" maxWidth="190px" fontSize={['24px']} bold m="12px 0">
