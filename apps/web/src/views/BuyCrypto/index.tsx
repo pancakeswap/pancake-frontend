@@ -1,7 +1,7 @@
 import { Flex } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useState } from 'react'
-import { useBuyCryptoState, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
+import { useBuyCryptoActionHandlers, useBuyCryptoState, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 
 import Page from '../Page'
@@ -18,17 +18,25 @@ export enum CryptoFormView {
   Quote,
 }
 
-export default function BuyCrypto() {
+export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   const [modalView, setModalView] = useState<CryptoFormView>(CryptoFormView.Input)
+  const { onUsersIp } = useBuyCryptoActionHandlers()
   useDefaultsFromURLSearch()
   const buyCryptoState = useBuyCryptoState()
   const {
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    userIpAddress,
   } = { ...buyCryptoState }
 
-  const { fetchQuotes, quotes: combinedQuotes } = usePriceQuotes(typedValue, inputCurrencyId, outputCurrencyId)
+  onUsersIp(userIp)
+  const { fetchQuotes, quotes: combinedQuotes } = usePriceQuotes(
+    typedValue,
+    inputCurrencyId,
+    outputCurrencyId,
+    userIpAddress,
+  )
 
   return (
     <Page>

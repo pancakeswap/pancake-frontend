@@ -4,12 +4,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import {
-  fetchMinimumBuyAmount,
-  useBuyCryptoActionHandlers,
-  useBuyCryptoErrorInfo,
-  useBuyCryptoState,
-} from 'state/buyCrypto/hooks'
+import { fetchMinimumBuyAmount, useBuyCryptoActionHandlers, useBuyCryptoErrorInfo } from 'state/buyCrypto/hooks'
 import { useAllOnRampTokens, useFiatCurrency, useOnRampCurrency } from 'hooks/Tokens'
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
@@ -24,7 +19,6 @@ import { FormContainer } from '../components/FormContainer'
 import AssetSelect from '../components/AssetSelect'
 // eslint-disable-next-line import/no-cycle
 import GetQuotesButton from '../components/GetQuotesButton'
-import usePriceQuotes from '../hooks/usePriceQuoter'
 
 interface Props {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>

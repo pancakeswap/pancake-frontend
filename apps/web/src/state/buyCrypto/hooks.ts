@@ -7,7 +7,7 @@ import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import { isAddress } from 'views/V3Info/utils'
 import { useAccount } from 'wagmi'
-import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, typeInput } from './actions'
+import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
   code: string
@@ -103,6 +103,7 @@ export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
   onMinAmountUdate: (minAmount: string, minBaseAmount: string) => void
+  onUsersIp: (ip: string | null) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -133,10 +134,20 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const onUsersIp = useCallback((ip: string | null) => {
+    dispatch(
+      setUsersIpAddress({
+        ip,
+      }),
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return {
     onFieldAInput,
     onCurrencySelection,
     onMinAmountUdate,
+    onUsersIp,
   }
 }
 
@@ -165,6 +176,7 @@ export async function queryParametersToBuyCryptoState(
     minAmount: minAmounts.base.minBuyAmount.toString(),
     minBaseAmount: minAmounts.quote.minBuyAmount.toString(),
     recipient,
+    userIpAddress: null,
   }
 }
 

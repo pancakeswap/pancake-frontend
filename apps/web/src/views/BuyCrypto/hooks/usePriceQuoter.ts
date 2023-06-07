@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
 import { fetchBinanceConnectQuote, fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
+import {
+  fetchBinanceConnectAvailability,
+  fetchMercuryoAvailability,
+  fetchMoonpayAvailability,
+} from './useProviderAvailability'
 
 export type ProviderQoute = {
   providerFee: number
@@ -8,6 +13,12 @@ export type ProviderQoute = {
   amount: number
   quote: number
   provider: string
+}
+
+export interface ProviderAvailabilityData {
+  MoonPay: boolean
+  BinanceConnect: boolean
+  Mercuryo: boolean
 }
 
 const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
@@ -40,10 +51,44 @@ const calculateQuotesDataBsc = (quote: BscQuote): ProviderQoute => {
   }
 }
 
-const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: string) => {
+const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: string, userIp: string | null) => {
   const [quotes, setQuotes] = useState<ProviderQoute[]>([])
 
+  const fetchProviderAvailability = async (ip: string, combinedData: ProviderQoute[]) => {
+    // first check user availability
+    const responsePromises = [
+      fetchMoonpayAvailability(ip),
+      fetchMercuryoAvailability(ip),
+      fetchBinanceConnectAvailability(ip),
+    ]
+    const responses = await Promise.allSettled(responsePromises)
+
+    const dataPromises = responses.reduce((accumulator, response) => {
+      if (response.status === 'fulfilled') {
+        return [...accumulator, response.value.json()]
+      }
+      console.error('Error fetching price quotes:', response.reason)
+      return accumulator
+    }, [])
+
+    const [moonPayAvailability, BinanceConnectAvailability, mercuryoAvailability] = await Promise.all(dataPromises)
+
+    const ProviderAvailability: ProviderAvailabilityData = {
+      MoonPay: moonPayAvailability?.isAllowed ?? false,
+      Mercuryo: mercuryoAvailability?.data?.status === 'pass' ?? false,
+      BinanceConnect: BinanceConnectAvailability?.data?.country?.enabled ?? false,
+    }
+    const sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
+      return ProviderAvailability[quote.provider]
+    })
+    if (combinedData.length > 1)
+      combinedData.sort((a: ProviderQoute, b: ProviderQoute) => (a.amount < b.amount ? 1 : -1))
+
+    return sortedFilteredQuotes
+  }
+
   const fetchQuotes = useCallback(async () => {
+    if (!userIp) return
     try {
       const responsePromises = [
         fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
@@ -73,23 +118,21 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
       ]
 
       const combinedData: ProviderQoute[] = []
-
       if (moonPayQuotes?.accountId) combinedData.push(calculateQuotesData(moonPayQuotes))
       if (BinanceConnectQuotes?.code === '000000000')
         combinedData.push(calculateQuotesDataBsc(BinanceConnectQuotes.data))
       if (mercuryoQuotes?.status === 200) combinedData.push(calculateQuotesDataMercury(mercuryoQuotes, inputCurrency))
 
-      if (combinedData.length > 1)
-        combinedData.sort((a: ProviderQoute, b: ProviderQoute) => (a.amount < b.amount ? 1 : -1))
+      const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
 
-      setQuotes(combinedData)
+      setQuotes(sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
     }
-  }, [amount, inputCurrency, outputCurrency])
+  }, [amount, inputCurrency, outputCurrency, userIp])
 
-  return { quotes, fetchQuotes }
+  return { quotes, fetchQuotes, fetchProviderAvailability }
 }
 
 export default usePriceQuotes

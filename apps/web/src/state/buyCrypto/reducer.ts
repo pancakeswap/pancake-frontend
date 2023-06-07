@@ -7,6 +7,7 @@ import {
   selectCurrency,
   setMinAmount,
   setRecipient,
+  setUsersIpAddress,
   typeInput,
 } from './actions'
 
@@ -21,6 +22,7 @@ export interface BuyCryptoState {
   }
   readonly minAmount: string
   readonly minBaseAmount: string
+  readonly userIpAddress: string | null
 }
 
 const initialState: BuyCryptoState = {
@@ -34,6 +36,7 @@ const initialState: BuyCryptoState = {
   },
   minAmount: '',
   minBaseAmount: '',
+  userIpAddress: null,
 }
 
 export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
@@ -58,6 +61,9 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
     })
+    .addCase(setUsersIpAddress, (state, { payload: { ip } }) => {
+      state.userIpAddress = ip
+    })
     .addCase(
       replaceBuyCryptoState,
       (state, { payload: { typedValue, recipient, inputCurrencyId, outputCurrencyId, minAmount, minBaseAmount } }) => {
@@ -72,6 +78,7 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
           recipient,
           minAmount,
           minBaseAmount,
+          userIpAddress: state.userIpAddress,
         }
       },
     ),

@@ -10,6 +10,7 @@ export const typeInput = createAction<{ typedValue: string }>('buyCrypto/typeInp
 export const resetBuyCryptoState = createAction<void>('buyCrypto/resetbuyCryptoState')
 export const setRecipient = createAction<{ recipient: string | null }>('buyCrypto/setRecipient')
 export const setMinAmount = createAction<{ minAmount: string; minBaseAmount: string }>('buyCrypto/setMinAmount')
+export const setUsersIpAddress = createAction<{ ip: string | null }>('buyCrypto/setUsersIpAddress')
 export const replaceBuyCryptoState = createAction<{
   typedValue: string
   inputCurrencyId?: string
@@ -17,4 +18,5 @@ export const replaceBuyCryptoState = createAction<{
   recipient: string | null
   minAmount?: string | null
   minBaseAmount?: string | null
+  userIpAddress?: string | null
 }>('swap/replaceBuyCryptoState')
