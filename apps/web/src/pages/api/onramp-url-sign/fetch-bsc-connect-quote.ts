@@ -39,19 +39,16 @@ function sign(srcData: string, privateKey: string): string {
 export default function handler(req: NextApiRequest, res: NextApiResponse): void {
   try {
     const payload = req.body
-
-    console.log(payload)
-
     if (!payload) {
       throw new Error('Payload is required.')
     }
 
-    // const validPayload = payloadSchema.parse(payload);
+    const validPayload = payloadSchema.parse(payload)
 
     const merchantCode = 'pancake_swap_test'
     const timestamp = Date.now().toString()
 
-    const payloadString = JSON.stringify(payload)
+    const payloadString = JSON.stringify(validPayload)
     const contentToSign = `${payloadString}&merchantCode=${merchantCode}&timestamp=${timestamp}`
     const signature = sign(contentToSign, PRIVATE_KEY)
     const endpoint = 'https://sandbox.bifinitypay.com/bapi/fiat/v1/public/open-api/connect/get-quote'
@@ -60,8 +57,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
       .post(endpoint, payload, {
         headers: {
           'Content-Type': 'application/json',
-          merchantCode: merchantCode,
-          timestamp: timestamp,
+          merchantCode,
+          timestamp,
           'x-api-signature': signature,
         },
       })

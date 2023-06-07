@@ -1,4 +1,4 @@
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { Trans } from '@pancakeswap/localization'
 import { Button, Flex, InjectedModalProps, Modal, Spinner, useModal } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
@@ -34,7 +34,7 @@ const MOONPAY_SUPPORTED_CURRENCY_CODES = [
 ]
 
 export const FiatOnRampModalButton = ({ provider }: { provider: string }) => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const [shouldCheck, setShouldCheck] = useState<boolean>(false)
   const [onPresentConfirmModal] = useModal(<FiatOnRampModal />)
 
@@ -72,7 +72,7 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
 
   const theme = useTheme()
   const account = useAccount()
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
   const handleDismiss = useCallback(() => {
     onDismiss?.()
@@ -80,7 +80,7 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
-      setError(t('Please connect an account before making a purchase.'))
+      setError('Please connect an account before making a purchase.')
       return
     }
     setLoading(true)
@@ -115,7 +115,7 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
     } finally {
       setLoading(false)
     }
-  }, [account.address, theme.isDark, t])
+  }, [account.address, theme.isDark])
 
   useEffect(() => {
     fetchSignedIframeUrl()

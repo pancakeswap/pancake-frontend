@@ -1,10 +1,10 @@
-import { useTranslation } from '@pancakeswap/localization'
+// import { useTranslation } from '@pancakeswap/localization'
 import { Button, InjectedModalProps, Modal, useModal } from '@pancakeswap/uikit'
-import { memo, useCallback, useEffect } from 'react'
+import { memo, useCallback } from 'react'
 import { StyledIframe } from './FiatOnRampModal'
 
 export const FiatOnRampModalButtonMercury = ({ provider }: { provider: string }) => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const [onPresentConfirmModal] = useModal(<FiatOnRampModalMecuryo />)
 
   return (

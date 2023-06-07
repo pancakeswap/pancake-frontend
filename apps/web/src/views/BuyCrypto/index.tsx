@@ -30,7 +30,6 @@ export default function BuyCrypto() {
 
   const { fetchQuotes, quotes: combinedQuotes } = usePriceQuotes(typedValue, inputCurrencyId, outputCurrencyId)
 
-  console.log(combinedQuotes)
   return (
     <Page>
       <Flex
