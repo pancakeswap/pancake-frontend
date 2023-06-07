@@ -225,7 +225,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         blocksRemaining,
         startBlockNum,
         endBlockNum,
-        thresholdPoints: thresholdPoints && thresholdPoints,
+        thresholdPoints,
         numberPoints: numberPoints ? Number(numberPoints) : 0,
         plannedStartTime: plannedStartTime ?? 0,
         vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
