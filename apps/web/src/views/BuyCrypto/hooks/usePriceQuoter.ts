@@ -20,9 +20,9 @@ const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
   }
 }
 
-const calculateQuotesDataMercury = (quote: MercuryoQuote): ProviderQoute => {
+const calculateQuotesDataMercury = (quote: MercuryoQuote, inputCurrency: string): ProviderQoute => {
   return {
-    providerFee: Number(quote.data.fee.ETH),
+    providerFee: Number(quote.data.fee[inputCurrency.toUpperCase()]),
     networkFee: 0,
     amount: Number(quote.data.amount),
     quote: Number(quote.data.rate),
@@ -32,8 +32,8 @@ const calculateQuotesDataMercury = (quote: MercuryoQuote): ProviderQoute => {
 
 const calculateQuotesDataBsc = (quote: BscQuote): ProviderQoute => {
   return {
-    providerFee: quote.networkFee,
-    networkFee: quote.userFee,
+    providerFee: quote.userFee,
+    networkFee: quote.networkFee,
     amount: quote.cryptoAmount,
     quote: quote.quotePrice,
     provider: 'BinanceConnect',
@@ -73,13 +73,15 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
       ]
 
       const combinedData: ProviderQoute[] = []
+
       if (moonPayQuotes?.accountId) combinedData.push(calculateQuotesData(moonPayQuotes))
       if (BinanceConnectQuotes?.code === '000000000')
         combinedData.push(calculateQuotesDataBsc(BinanceConnectQuotes.data))
-      if (mercuryoQuotes?.status === 200) combinedData.push(calculateQuotesDataMercury(mercuryoQuotes))
+      if (mercuryoQuotes?.status === 200) combinedData.push(calculateQuotesDataMercury(mercuryoQuotes, inputCurrency))
 
       if (combinedData.length > 1)
         combinedData.sort((a: ProviderQoute, b: ProviderQoute) => (a.amount < b.amount ? 1 : -1))
+
       setQuotes(combinedData)
     } catch (error) {
       console.error('Error fetching price quotes:', error)

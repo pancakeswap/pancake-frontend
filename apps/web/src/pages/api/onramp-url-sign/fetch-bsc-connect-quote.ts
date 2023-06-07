@@ -42,13 +42,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
     if (!payload) {
       throw new Error('Payload is required.')
     }
-
-    const validPayload = payloadSchema.parse(payload)
+    const validPayload = payloadSchema.safeParse(payload)
+    if (!validPayload.success) {
+      throw new Error('payload has the incorrect shape. please check you types')
+    }
 
     const merchantCode = 'pancake_swap_test'
     const timestamp = Date.now().toString()
 
-    const payloadString = JSON.stringify(validPayload)
+    const payloadString = JSON.stringify(validPayload.data)
     const contentToSign = `${payloadString}&merchantCode=${merchantCode}&timestamp=${timestamp}`
     const signature = sign(contentToSign, PRIVATE_KEY)
     const endpoint = 'https://sandbox.bifinitypay.com/bapi/fiat/v1/public/open-api/connect/get-quote'

@@ -27,9 +27,7 @@ export async function fetchMercuryoQuote(
 ): Promise<Response> {
   // Fetch data from endpoint 2
   const response = await fetch(
-    `${MERCURYO_ENDPOINT}?from=${fiatCurrency.toUpperCase()}&to=${cryptoCurrency.toUpperCase()}&amount=${
-      amount + 3
-    }&widget_id=64d1f9f9-85ee-4558-8168-1dc0e7057ce6`,
+    `${MERCURYO_ENDPOINT}?from=${fiatCurrency.toUpperCase()}&to=${cryptoCurrency.toUpperCase()}&amount=${amount}&widget_id=625376b4-cf28-43b8-b836-550cd558c431`,
     {
       headers: {
         Accept: 'application/json',

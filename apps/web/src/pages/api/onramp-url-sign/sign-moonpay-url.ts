@@ -11,6 +11,8 @@ const zQuery = zObject({
   redirectUrl: zString(),
   theme: zString(),
   walletAddresses: zString(),
+  baseCurrencyCode: zString(),
+  baseCurrencyAmount: zString(),
 })
 
 const chars: Chars<'{' | ':' | '}' | ',' | '"' | '#'> = {
@@ -32,10 +34,10 @@ const signMoonPayUrl = (req: NextApiRequest, res: NextApiResponse): void => {
       throw new Error('Invalid query')
     }
 
-    const { walletAddresses, defaultCurrencyCode, theme } = parsed.data
+    const { walletAddresses, defaultCurrencyCode, baseCurrencyCode, baseCurrencyAmount, theme } = parsed.data
 
     const encodedWalletAddresses = walletAddresses.replace(/[{:},"]/g, (m: string) => chars[m])
-    const originalUrl = `${process.env.MOONPAY_URL}&theme=${theme}&colorCode=%2382DBE3&defaultCurrencyCode=${defaultCurrencyCode}&walletAddresses=${encodedWalletAddresses}`
+    const originalUrl = `${process.env.MOONPAY_URL}&theme=${theme}&colorCode=%2382DBE3&defaultCurrencyCode=${defaultCurrencyCode}&baseCurrencyCode=${baseCurrencyCode}&baseCurrencyAmount=${baseCurrencyAmount}&walletAddresses=${encodedWalletAddresses}`
 
     const signature = crypto
       .createHmac('sha256', process.env.MOONPAY_TEST_SECRET_KEY || '')

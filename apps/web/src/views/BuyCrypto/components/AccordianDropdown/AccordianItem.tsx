@@ -1,12 +1,12 @@
 import { Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
 import styled from 'styled-components'
-import { FiatOnRampModalButtonMercury } from 'components/FiatOnRampModal/MercuryoOnrampModal'
+import BigNumber from 'bignumber.js'
 import MoonPayLogo from '../../../../../public/images/onRampProviders/moonpaySvg.svg'
 import BinanceConnectLogo from '../../../../../public/images/onRampProviders/binanceConnectSvg.svg'
 import MercuryoLogo from '../../../../../public/images/onRampProviders/mercuryoLogo.svg'
@@ -37,15 +37,26 @@ export const ProviderIcon: React.FC<
   return <>{Icon ? <Icon className={className} {...props} /> : <UnknownEntry />}</>
 }
 
-const returnMoonPay = (provider: string) => <FiatOnRampModalButton provider={provider} />
-const returnBinanceConnect = (provider: string) => <FiatOnRampModalButtonMercury provider={provider} />
-const returnMercuryo = (provider: string) => <FiatOnRampModalButtonMercury provider={provider} />
-
-const ProviderButtonMap: { [provider: string]: JSX.Element } = {
-  MoonPay: returnMoonPay('MoonPay'),
-  Mercuryo: returnBinanceConnect('Mercuryo'),
-  BinanceConnect: returnMercuryo('BinanceConnect'),
+const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
+  const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
+  const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
+  const AssetRate = new BigNumber(quote.quote)
+  const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
+  return moonPayQuote.toNumber()
 }
+
+const calculateBinanceConnectQuoteFromFees = (quote: ProviderQoute) => {
+  const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee).shiftedBy(2))
+  return binanceConnectQuote.toNumber()
+}
+
+// const calculateMercuryoQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
+//   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
+//   const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
+//   const AssetRate = new BigNumber(quote.quote)
+//   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
+//   return moonPayQuote.toString()
+// }
 
 function AccordionItem({
   active,
@@ -63,22 +74,23 @@ function AccordionItem({
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
 
-  // console.log(combinedQuotes.map(()))
   const isActive = () => (multiple ? visiblity : active)
 
-  const toogleVisiblity = () => {
+  const toogleVisiblity = useCallback(() => {
     setVisiblity((v) => !v)
     btnOnClick()
-  }
+  }, [setVisiblity, btnOnClick])
 
   useEffect(() => {
     if (active) {
       const contentEl = getRefValue(contentRef)
       setHeight(contentEl.scrollHeight + 105)
-    } else {
-      setHeight(105)
-    }
+    } else setHeight(105)
   }, [active])
+
+  let finalQuote = quote.amount
+  if (quote.provider === 'MoonPay') finalQuote = calculateMoonPayQuoteFromFees(quote, buyCryptoState.typedValue)
+  else if (quote.provider === 'BinanceConnect') finalQuote = calculateBinanceConnectQuoteFromFees(quote)
 
   return (
     <Flex flexDirection="column">
@@ -93,7 +105,7 @@ function AccordionItem({
           <ProviderIcon provider={quote.provider} width="130px" />
           <Flex>
             <Text ml="4px" fontSize="22px" color="secondary">
-              {quote.amount?.toFixed(4)} {buyCryptoState.INPUT.currencyId}
+              {finalQuote.toFixed(4)} {buyCryptoState.INPUT.currencyId}
             </Text>
           </Flex>
         </RowBetween>
@@ -118,7 +130,7 @@ function AccordionItem({
               Networking Fees
             </Text>
             <Text ml="4px" fontSize="14px" color="textSubtle">
-              {quote.networkFee}
+              {quote.networkFee.toFixed(3)}
             </Text>
           </RowBetween>
           <RowBetween>
@@ -126,10 +138,15 @@ function AccordionItem({
               Processing Fees
             </Text>
             <Text ml="4px" fontSize="14px" color="textSubtle">
-              {quote.providerFee}
+              {quote.providerFee.toFixed(3)}
             </Text>
           </RowBetween>
-          {ProviderButtonMap[quote.provider]}
+          <FiatOnRampModalButton
+            provider={quote.provider}
+            inputCurrency={buyCryptoState.INPUT.currencyId}
+            outputCurrency={buyCryptoState.OUTPUT.currencyId}
+            amount={buyCryptoState.typedValue}
+          />
         </div>
       </CryptoCard>
     </Flex>

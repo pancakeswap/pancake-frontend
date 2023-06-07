@@ -32,11 +32,92 @@ const MOONPAY_SUPPORTED_CURRENCY_CODES = [
   'usdc_optimism',
   'usdc_polygon',
 ]
+interface FiatOnRampProps {
+  provider: string
+  inputCurrency: string
+  outputCurrency: string
+  amount: string
+}
 
-export const FiatOnRampModalButton = ({ provider }: { provider: string }) => {
+interface FetchResponse {
+  urlWithSignature: string
+}
+
+const fetchMoonPaySignedUrl = async (
+  inputCurrency: string,
+  outputCurrency: string,
+  amount: string,
+  isDark: any,
+  account: string,
+) => {
+  try {
+    const res = await fetch(`/api/onramp-url-sign/sign-moonpay-url`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        type: 'MOONPAY',
+        defaultCurrencyCode: inputCurrency.toLowerCase(),
+        baseCurrencyCode: outputCurrency.toLowerCase(),
+        baseCurrencyAmount: amount,
+        redirectUrl: 'https://pancakeswap.finance',
+        theme: isDark ? 'dark' : 'light',
+        walletAddresses: JSON.stringify(
+          MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
+            (acc, currencyCode) => ({
+              ...acc,
+              [currencyCode]: account,
+            }),
+            {},
+          ),
+        ),
+      }),
+    })
+    const result: FetchResponse = await res.json()
+    return result.urlWithSignature
+  } catch (error) {
+    console.error('Error fetching signature:', error)
+    return '' // Return an empty string in case of an error
+  }
+}
+
+const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
+  try {
+    const res = await fetch(`/api/onramp-url-sign/generate-binance-connect-sig`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        cryptoCurrency: inputCurrency.toUpperCase(),
+        fiatCurrency: outputCurrency.toUpperCase(),
+        amount,
+        walletAddress: account,
+      }),
+    })
+
+    const result: FetchResponse = await res.json()
+    return result.urlWithSignature
+  } catch (error) {
+    console.error('Error fetching signature:', error)
+    return '' // Return an empty string in case of an error
+  }
+}
+
+export const FiatOnRampModalButton = ({ provider, inputCurrency, outputCurrency, amount }: FiatOnRampProps) => {
   // const { t } = useTranslation()
   const [shouldCheck, setShouldCheck] = useState<boolean>(false)
-  const [onPresentConfirmModal] = useModal(<FiatOnRampModal />)
+  const [onPresentConfirmModal] = useModal(
+    <FiatOnRampModal
+      provider={provider}
+      inputCurrency={inputCurrency}
+      outputCurrency={outputCurrency}
+      amount={amount}
+    />,
+  )
 
   const { fiatOnarampAvailability, availabilityChecked, loading, error } = useFiatOnrampAvailability(
     shouldCheck,
@@ -65,9 +146,16 @@ export const FiatOnRampModalButton = ({ provider }: { provider: string }) => {
   )
 }
 
-export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModalComp({ onDismiss }) {
+export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(function ConfirmSwapModalComp({
+  onDismiss,
+  inputCurrency,
+  outputCurrency,
+  amount,
+  provider,
+}) {
   const [error, setError] = useState<boolean | string | null>(false)
   const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
+  const [sig, setSig] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
   const theme = useTheme()
@@ -86,40 +174,64 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`/api/onramp-url-sign/sign-moonpay-url`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          type: 'MOONPAY',
-          defaultCurrencyCode: 'eth',
-          redirectUrl: 'https://pancakeswap.finance',
-          theme: theme.isDark ? 'dark' : 'light',
-          walletAddresses: JSON.stringify(
-            MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
-              (acc, currencyCode) => ({
-                ...acc,
-                [currencyCode]: account.address,
-              }),
-              {},
-            ),
-          ),
-        }),
-      })
-      const result = await res.json()
-      setSignedIframeUrl(result.urlWithSignature)
+      let result = ''
+      if (provider === 'MoonPay')
+        result = await fetchMoonPaySignedUrl(inputCurrency, outputCurrency, amount, theme.isDark, account.address)
+      else result = await fetchBinanceConnectSignedUrl(inputCurrency, outputCurrency, amount, account.address)
+
+      setSignedIframeUrl(result)
     } catch (e) {
       setError(e.toString())
     } finally {
       setLoading(false)
     }
-  }, [account.address, theme.isDark])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider])
 
   useEffect(() => {
-    fetchSignedIframeUrl()
-  }, [fetchSignedIframeUrl])
+    const fetchSig = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(`/api/onramp-url-sign/generate-mercuryo-sig`, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            walletAddress: account.address,
+          }),
+        })
+        const { signature } = await res.json()
+        setSig(signature)
+      } catch (e) {
+        setError(e.toString())
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchSig()
+  }, [account.address])
+
+  useEffect(() => {
+    if (provider === 'Mercuryo') {
+      if (sig) {
+        // @ts-ignore
+        const MC_WIDGET = mercuryoWidget
+        MC_WIDGET.run({
+          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
+          fiatCurrency: outputCurrency.toUpperCase(),
+          currency: inputCurrency.toUpperCase(),
+          fiatAmount: '40',
+          address: account.address,
+          signature: sig,
+          height: '650px',
+          width: '400px',
+          host: document.getElementById('mercuryo-widget'),
+        })
+      }
+    } else fetchSignedIframeUrl()
+  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency])
 
   return (
     <>
@@ -142,6 +254,8 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
             <Spinner />
             <LoadingDot />
           </Flex>
+        ) : provider === 'Mercuryo' ? (
+          <div id="mercuryo-widget" />
         ) : (
           <StyledIframe
             id="moonpayIframe"
@@ -151,6 +265,7 @@ export const FiatOnRampModal = memo<InjectedModalProps>(function ConfirmSwapModa
             isDark={theme.isDark}
           />
         )}
+        <div id="mercuryo-widget" />
       </Modal>
     </>
   )
