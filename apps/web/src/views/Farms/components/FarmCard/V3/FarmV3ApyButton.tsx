@@ -234,10 +234,14 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       </Text>
       <ul>
         <li>
-          {t('Farm APR')}:
+          {t('Farm APR')}:{' '}
           <b>
             {isBoosted && <>{(parseFloat(positionCakeAprDisplay) * boostMultiplier).toFixed(2)}% </>}
-            <Text display="inline-block" style={{ textDecoration: isBoosted ? 'line-through' : 'none' }}>
+            <Text
+              display="inline-block"
+              bold={!isBoosted}
+              style={{ textDecoration: isBoosted ? 'line-through' : 'none' }}
+            >
               {positionCakeAprDisplay}%
             </Text>
           </b>
