@@ -46,7 +46,7 @@ const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string
 }
 
 const calculateBinanceConnectQuoteFromFees = (quote: ProviderQoute) => {
-  const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee).shiftedBy(2))
+  const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee))
   return binanceConnectQuote.toNumber()
 }
 
@@ -63,11 +63,13 @@ function AccordionItem({
   btnOnClick,
   buyCryptoState,
   quote,
+  fetching,
 }: {
   active: boolean
   btnOnClick: any
   buyCryptoState: BuyCryptoState
   quote: ProviderQoute
+  fetching: boolean
 }) {
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(105)
@@ -105,7 +107,7 @@ function AccordionItem({
           <ProviderIcon provider={quote.provider} width="130px" />
           <Flex>
             <Text ml="4px" fontSize="22px" color="secondary">
-              {finalQuote.toFixed(4)} {buyCryptoState.INPUT.currencyId}
+              {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
             </Text>
           </Flex>
         </RowBetween>
@@ -116,7 +118,7 @@ function AccordionItem({
           </Text>
         </RowBetween>
 
-        <div ref={contentRef} className="accordion-item-content" style={{ height }}>
+        <div ref={contentRef} className="accordion-item-content">
           <RowBetween>
             <Text fontSize="14px" color="textSubtle">
               Total Fees
@@ -146,6 +148,7 @@ function AccordionItem({
             inputCurrency={buyCryptoState.INPUT.currencyId}
             outputCurrency={buyCryptoState.OUTPUT.currencyId}
             amount={buyCryptoState.typedValue}
+            disabled={fetching}
           />
         </div>
       </CryptoCard>

@@ -63,6 +63,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
                     setModalView={setModalView}
                     buyCryptoState={buyCryptoState}
                     combinedQuotes={combinedQuotes}
+                    fetchQuotes={fetchQuotes}
                   />
                 )}
               </AppBody>

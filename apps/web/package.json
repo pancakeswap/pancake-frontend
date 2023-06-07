@@ -71,7 +71,6 @@
     "geoip-lite": "^1.4.7",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",
-    "ip": "^1.1.8",
     "jotai": "^2.1.0",
     "js-cookie": "^3.0.1",
     "lightweight-charts": "^4.0.1",

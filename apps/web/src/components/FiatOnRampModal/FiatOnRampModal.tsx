@@ -1,8 +1,19 @@
-import { Trans } from '@pancakeswap/localization'
-import { Button, Flex, InjectedModalProps, Modal, Spinner, useModal } from '@pancakeswap/uikit'
+import { Trans, useTranslation } from '@pancakeswap/localization'
+import {
+  AutoColumn,
+  Button,
+  CircleLoader,
+  Flex,
+  InjectedModalProps,
+  Modal,
+  Spinner,
+  Text,
+  useModal,
+} from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
+import { CommitButton } from 'components/CommitButton'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
-import { memo, useCallback, useEffect, useState } from 'react'
+import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
@@ -107,8 +118,14 @@ const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amoun
   }
 }
 
-export const FiatOnRampModalButton = ({ provider, inputCurrency, outputCurrency, amount }: FiatOnRampProps) => {
-  // const { t } = useTranslation()
+export const FiatOnRampModalButton = ({
+  provider,
+  inputCurrency,
+  outputCurrency,
+  amount,
+  disabled,
+}: FiatOnRampProps & { disabled: boolean }) => {
+  const { t } = useTranslation()
   const [shouldCheck, setShouldCheck] = useState<boolean>(false)
   const [onPresentConfirmModal] = useModal(
     <FiatOnRampModal
@@ -135,12 +152,27 @@ export const FiatOnRampModalButton = ({ provider, inputCurrency, outputCurrency,
 
   const disableBuyCryptoButton = Boolean(error || (!fiatOnarampAvailability && availabilityChecked) || loading)
 
+  let buttonText: ReactNode | string = t(`Buy with ${provider}`)
+  if (disabled) {
+    buttonText = (
+      <>
+        <Flex alignItems="center">
+          <Text px="4px" fontWeight="bold" color="white">
+            {t('Fetching Quotes')}
+          </Text>
+          <CircleLoader stroke="white" />
+        </Flex>
+      </>
+    )
+  }
   return (
     <>
       {!disableBuyCryptoButton ? (
-        <Button onClick={handleBuyCryptoClick} disabled={false} width="100%" mb="8px" mt="16px">
-          Buy with {provider}
-        </Button>
+        <AutoColumn gap="md">
+          <CommitButton onClick={handleBuyCryptoClick} disabled={disabled} isLoading={disabled} mb="8px" mt="16px">
+            {buttonText}
+          </CommitButton>
+        </AutoColumn>
       ) : null}
     </>
   )

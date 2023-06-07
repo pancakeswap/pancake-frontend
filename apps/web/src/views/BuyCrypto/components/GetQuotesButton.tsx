@@ -24,11 +24,12 @@ export default function GetQuotesButton({ modalView, errorText, setModalView, fe
   const Next = useCallback(async () => {
     if (modalView === CryptoFormView.Input) {
       setLoading(true)
-      fetchQuotes()
-      setTimeout(() => {
-        setLoading(false)
-        setModalView(CryptoFormView.Quote)
-      }, 2000)
+      fetchQuotes().then(() => {
+        setTimeout(() => {
+          setLoading(false)
+          setModalView(CryptoFormView.Quote)
+        }, 1000)
+      })
     } else {
       // to-do
     }

@@ -7,13 +7,15 @@ import { ProviderQoute } from '../hooks/usePriceQuoter'
 export function FormQuote({
   buyCryptoState,
   combinedQuotes,
+  fetching,
 }: {
   buyCryptoState: BuyCryptoState
   combinedQuotes: ProviderQoute[]
+  fetching: boolean
 }) {
   return (
     <FormContainer>
-      <Accordion buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} />
+      <Accordion buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} fetching={fetching} />
     </FormContainer>
   )
 }

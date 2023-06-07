@@ -8,9 +8,11 @@ import AccordionItem from './AccordianItem'
 function Accordion({
   buyCryptoState,
   combinedQuotes,
+  fetching,
 }: {
   buyCryptoState: BuyCryptoState
   combinedQuotes: ProviderQoute[]
+  fetching: boolean
 }) {
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
 
@@ -37,6 +39,7 @@ function Accordion({
             btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
             buyCryptoState={buyCryptoState}
             quote={quote}
+            fetching={fetching}
           />
         )
       })}

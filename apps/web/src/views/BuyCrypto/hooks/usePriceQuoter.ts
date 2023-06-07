@@ -15,6 +15,8 @@ export type ProviderQoute = {
   provider: string
 }
 
+type ProviderResponse = MercuryoQuote | PriceQuotes | BinanceConnectQuote | undefined
+
 export interface ProviderAvailabilityData {
   MoonPay: boolean
   BinanceConnect: boolean
@@ -94,7 +96,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
         fetchBinanceConnectQuote({
           fiatCurrency: outputCurrency.toUpperCase(),
-          cryptoCurrency: inputCurrency.toUpperCase(),
+          cryptoCurrency: inputCurrency.toUpperCase() === 'WBTC' ? 'BTC' : inputCurrency.toUpperCase(),
           fiatAmount: amount,
           cryptoNetwork: 'BSC',
           paymentMethod: 'CARD',
@@ -111,17 +113,18 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         return accumulator
       }, [])
 
-      const [moonPayQuotes, BinanceConnectQuotes, mercuryoQuotes] = (await Promise.all(dataPromises)) as [
-        PriceQuotes,
-        BinanceConnectQuote,
-        MercuryoQuote,
-      ]
+      const providerQuotes: ProviderResponse[] = (await Promise.all(dataPromises)).filter(
+        (item) => typeof item !== 'undefined',
+      )
 
-      const combinedData: ProviderQoute[] = []
-      if (moonPayQuotes?.accountId) combinedData.push(calculateQuotesData(moonPayQuotes))
-      if (BinanceConnectQuotes?.code === '000000000')
-        combinedData.push(calculateQuotesDataBsc(BinanceConnectQuotes.data))
-      if (mercuryoQuotes?.status === 200) combinedData.push(calculateQuotesDataMercury(mercuryoQuotes, inputCurrency))
+      const combinedData: ProviderQoute[] = providerQuotes
+        .map((quote: ProviderResponse) => {
+          if ('accountId' in quote) return calculateQuotesData(quote)
+          if ('code' in quote && quote.code === '000000000') return calculateQuotesDataBsc(quote.data)
+          if ('status' in quote && quote.status === 200) return calculateQuotesDataMercury(quote, inputCurrency)
+          return undefined
+        })
+        .filter((item) => typeof item !== 'undefined')
 
       const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
 
