@@ -1,11 +1,9 @@
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useUserState } from 'state/user/reducer'
 
 import { L2_CHAIN_IDS } from 'config/chains'
 import { L2_DEADLINE_FROM_NOW } from 'config/constants'
 
-import { AppState } from '../state'
-import { useUserState } from 'state/user/reducer'
 import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { useActiveChainId } from './useActiveChainId'
 
