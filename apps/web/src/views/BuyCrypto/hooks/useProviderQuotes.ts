@@ -29,7 +29,7 @@ export async function fetchMercuryoQuote(
   const response = await fetch(
     `${MERCURYO_ENDPOINT}?from=${fiatCurrency.toUpperCase()}&to=${cryptoCurrency.toUpperCase()}&amount=${
       amount + 3
-    }&network=ETHEREUM&widget_id=67710925-8b40-4767-846e-3b88db69f04d`,
+    }&widget_id=64d1f9f9-85ee-4558-8168-1dc0e7057ce6`,
     {
       headers: {
         Accept: 'application/json',
@@ -44,17 +44,6 @@ export async function fetchMercuryoQuote(
 // sig validation
 export async function fetchBinanceConnectQuote(payload: any): Promise<Response> {
   const response = await fetch('/api/onramp-url-sign/fetch-bsc-connect-quote', {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify(payload),
-  })
-  return response
-}
-export async function fetchTest(payload: any): Promise<Response> {
-  const response = await fetch('/api/onramp-url-sign/test-fetch', {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
