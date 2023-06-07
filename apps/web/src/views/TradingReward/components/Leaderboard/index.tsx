@@ -51,6 +51,12 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
     }
   }, [topTradersArr, currentPage, total])
 
+  const handleClickPagination = (value: number) => {
+    if (!isLoading) {
+      setCurrentPage(value)
+    }
+  }
+
   return (
     <Box position="relative" style={{ zIndex: 1 }} mt="104px">
       <Box>
@@ -82,7 +88,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
             maxPage={maxPage}
             isLoading={isLoading}
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            setCurrentPage={handleClickPagination}
           />
         ) : (
           <MobileView
@@ -90,7 +96,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
             maxPage={maxPage}
             isLoading={isLoading}
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            setCurrentPage={handleClickPagination}
           />
         )}
       </Box>
