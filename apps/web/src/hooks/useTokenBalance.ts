@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
 
 import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
@@ -23,7 +24,7 @@ const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
   return {
     ...rest,
     fetchStatus: status,
-    balance: typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO,
+    balance: useMemo(() => (typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO), [data]),
   }
 }
 
