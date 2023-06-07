@@ -590,7 +590,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     projectSite: 'https://heroesempires.com/',
   },
   {
-    account: '0xCbEd1a5c8847de8B284f7cf5cf752b3b2E3b5112',
+    account: '0xe525a22252B3eB697358ec94198ee9FA4bFB42F1',
     farmName: 'AOG-BUSD',
     tokenAddress: '0x40C8225329Bd3e28A043B029E0D07a5344d2C27C',
     quoteToken: bscTokens.busd,
