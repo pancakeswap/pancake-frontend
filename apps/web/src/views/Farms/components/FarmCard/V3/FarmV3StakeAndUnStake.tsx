@@ -161,6 +161,7 @@ export function FarmV3LPPositionDetail({
           decimals={2}
           value={position ? +amountA.toSignificant(6) : 0}
           unit={` ${token.symbol}`}
+          startFromValue
         />
         <Balance
           fontSize="12px"
@@ -168,6 +169,7 @@ export function FarmV3LPPositionDetail({
           decimals={2}
           value={position ? +amountB.toSignificant(6) : 0}
           unit={` ${quoteToken.symbol}`}
+          startFromValue
         />
       </AutoRow>
     </Box>
