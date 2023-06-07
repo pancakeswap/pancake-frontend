@@ -5,10 +5,19 @@ import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTheme } from 'styled-components'
 import { Text, Link } from '@pancakeswap/uikit'
-
 import { useTranslation } from '@pancakeswap/localization'
 
-const USCitizenConfirmModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss }) => {
+interface USCitizenConfirmModalProps {
+  title: string
+  headerText: string
+  onDismiss?: () => void
+}
+
+const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({
+  title,
+  headerText,
+  onDismiss,
+}) => {
   const {
     t,
     currentLanguage: { code },
@@ -26,9 +35,9 @@ const USCitizenConfirmModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss
 
   return (
     <DisclaimerModal
-      modalHeader={t('PancakeSwap Perpetuals')}
-      id="disclaimer-perpetual-us-citizen"
-      header={t('To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:')}
+      modalHeader={title}
+      id="disclaimer-us-citizen"
+      header={headerText}
       checks={[
         {
           key: 'checkbox',

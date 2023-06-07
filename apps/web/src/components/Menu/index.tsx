@@ -25,7 +25,15 @@ const Menu = (props) => {
   const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const [onUSCitizenModalPresent] = useModal(<USCitizenConfirmModal />, true, false, 'usCitizenConfirmModal')
+  const [onUSCitizenModalPresent] = useModal(
+    <USCitizenConfirmModal
+      title={t('PancakeSwap Perpetuals')}
+      headerText={t('To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:')}
+    />,
+    true,
+    false,
+    'usCitizenConfirmModal',
+  )
   const [showPhishingWarningBanner] = usePhishingBanner()
 
   const menuItems = useMenuItems(onUSCitizenModalPresent)
