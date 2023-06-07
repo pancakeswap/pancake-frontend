@@ -7,7 +7,7 @@ import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 
-const StyledIframe = styled.iframe<{ isDark: boolean }>`
+export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   // #1c1c1e is the background color for the darkmode moonpay iframe as of 2/16/2023
   // background-color: #1c1c1e;
   border-bottom-left-radius: 24px;

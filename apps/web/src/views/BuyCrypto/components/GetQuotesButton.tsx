@@ -61,6 +61,7 @@ export default function GetQuotesButton({ modalView, errorText, setModalView, fe
         onClick={Next}
         disabled={Boolean(errorText)}
         isLoading={loading}
+        height="55px"
       >
         {buttonText}
       </CommitButton>

@@ -19,7 +19,7 @@ function Accordion({
       {combinedQuotes.map((quote: ProviderQoute, idx) => {
         return (
           <AccordionItem
-            key={quote.baseCurrency}
+            key={quote.provider}
             active={currentIdx === idx}
             btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
             buyCryptoState={buyCryptoState}

@@ -28,7 +28,7 @@ export default function BuyCrypto() {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = { ...buyCryptoState }
 
-  const { fetchQuotes, quotes, combinedQuotes } = usePriceQuotes(typedValue, inputCurrencyId, outputCurrencyId)
+  const { fetchQuotes, quotes: combinedQuotes } = usePriceQuotes(typedValue, inputCurrencyId, outputCurrencyId)
 
   console.log(combinedQuotes)
   return (

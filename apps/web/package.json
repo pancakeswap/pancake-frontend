@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://127.0.0.1:3000",
   "scripts": {
     "analyze": "ANALYZE=true pnpm build",
     "dev": "next dev",
@@ -56,6 +57,7 @@
     "@tanstack/react-query": "^4.28.0",
     "@vanilla-extract/next-plugin": "^2.1.1",
     "ajv": "^6.12.3",
+    "axios": "^1.4.0",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.5.1",
     "clsx": "^1.2.1",

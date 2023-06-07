@@ -94,6 +94,21 @@ export interface MercuryResponseData {
   }
 }
 
+export type BscQuote = {
+  cryptoAmount: number
+  networkFee: number
+  quotePrice: number
+  userFee: number
+}
+
+export type BinanceConnectQuote = {
+  code: string
+  data: BscQuote
+  message: null
+  messageDetail: null
+  success: true
+}
+
 export type MercuryoQuote = {
   data: MercuryResponseData
   status: number
