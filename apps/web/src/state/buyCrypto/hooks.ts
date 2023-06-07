@@ -162,14 +162,14 @@ export async function queryParametersToBuyCryptoState(
   //     : defaultOutputCurrency
 
   const recipient = validatedRecipient(parsedQs.recipient)
-  const minAmounts = await fetchMinimumBuyAmount('USD', 'BUSD')
+  const minAmounts = await fetchMinimumBuyAmount('USD', 'WBTC')
 
   return {
     [Field.INPUT]: {
       currencyId: 'USD',
     },
     [Field.OUTPUT]: {
-      currencyId: 'BUSD',
+      currencyId: 'WBTC',
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE

@@ -15,7 +15,7 @@ export type ProviderQoute = {
   provider: string
 }
 
-type ProviderResponse = MercuryoQuote | PriceQuotes | BinanceConnectQuote | undefined
+type ProviderResponse = (Partial<MercuryoQuote> & Partial<PriceQuotes> & Partial<BinanceConnectQuote>) | undefined
 
 export interface ProviderAvailabilityData {
   MoonPay: boolean
@@ -105,23 +105,21 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
       ]
       const responses = await Promise.allSettled(responsePromises)
 
-      const dataPromises = responses.reduce((accumulator, response) => {
-        if (response.status === 'fulfilled') {
-          return [...accumulator, response.value.json()]
-        }
-        console.error('Error fetching price quotes:', response.reason)
-        return accumulator
-      }, [])
+      const dataPromises: ProviderResponse[] = responses
+        .reduce((accumulator, response) => {
+          if (response.status === 'fulfilled') {
+            return [...accumulator, response.value]
+          }
+          console.error('Error fetching price quotes:', response.reason)
+          return accumulator
+        }, [])
+        .filter((item) => typeof item !== 'undefined')
 
-      const providerQuotes: ProviderResponse[] = (await Promise.all(dataPromises)).filter(
-        (item) => typeof item !== 'undefined',
-      )
-
-      const combinedData: ProviderQoute[] = providerQuotes
+      const combinedData: ProviderQoute[] = dataPromises
         .map((quote: ProviderResponse) => {
-          if ('accountId' in quote) return calculateQuotesData(quote)
-          if ('code' in quote && quote.code === '000000000') return calculateQuotesDataBsc(quote.data)
-          if ('status' in quote && quote.status === 200) return calculateQuotesDataMercury(quote, inputCurrency)
+          if (quote?.accountId) return calculateQuotesData(quote as PriceQuotes)
+          if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
+          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, inputCurrency)
           return undefined
         })
         .filter((item) => typeof item !== 'undefined')
