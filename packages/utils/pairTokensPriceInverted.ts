@@ -1,4 +1,4 @@
-export const usePairTokensPriceInverted = (
+export const pairTokensPriceInverted = (
   prices?: {
     pairPriceData: {
       time: Date
@@ -18,9 +18,17 @@ export const usePairTokensPriceInverted = (
     }
   }
 
+  if (invertPrice) {
+    return {
+      min: prices.minPrice,
+      max: prices.maxPrice,
+      average: prices.averagePrice,
+    }
+  }
+
   const _prices = prices.pairPriceData.map((p) => ({
     ...p,
-    value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0,
+    value: p.value > 0 ? 1 / p.value : 0,
   }))
 
   let _sum = 0

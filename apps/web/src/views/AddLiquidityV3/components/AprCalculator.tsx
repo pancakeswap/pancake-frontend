@@ -17,7 +17,7 @@ import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
-import { usePairTokensPriceInverted } from '@pancakeswap/utils/usePairTokensPriceInverted'
+import { pairTokensPriceInverted } from '@pancakeswap/utils/pairTokensPriceInverted'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { useRouter } from 'next/router'
 import { batch } from 'react-redux'
@@ -111,7 +111,7 @@ export function AprCalculator({
   const tokenB = (quoteCurrency ?? undefined)?.wrapped
 
   const inverted = Boolean(tokenA && tokenB && tokenA?.address !== tokenB?.address && tokenB.sortsBefore(tokenA))
-  const priceKeyValues = usePairTokensPriceInverted(prices7D, inverted)
+  const priceKeyValues = pairTokensPriceInverted(prices7D, inverted)
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)

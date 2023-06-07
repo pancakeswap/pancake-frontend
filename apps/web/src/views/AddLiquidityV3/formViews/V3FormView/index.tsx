@@ -27,7 +27,7 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
-import { usePairTokensPriceInverted } from '@pancakeswap/utils/usePairTokensPriceInverted'
+import { pairTokensPriceInverted } from '@pancakeswap/utils/pairTokensPriceInverted'
 
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { basisPointsToPercent } from 'utils/exchange'
@@ -433,7 +433,7 @@ export default function V3FormView({
   const leftPrice = Number(formatPrice(isSorted ? priceLower : priceUpper?.invert()))
   const rightPrice = Number(formatPrice(isSorted ? priceUpper : priceLower?.invert()))
 
-  const priceKeyValues = usePairTokensPriceInverted(prices7D, invertPrice)
+  const priceKeyValues = pairTokensPriceInverted(prices7D, invertPrice)
   const isWarnPriceOutOfRange = !!(priceKeyValues.min < leftPrice) || priceKeyValues.max > rightPrice
 
   return (

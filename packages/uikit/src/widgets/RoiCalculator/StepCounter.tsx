@@ -1,4 +1,5 @@
 import { FeeAmount } from "@pancakeswap/v3-sdk";
+import { vars } from "@pancakeswap/ui/css/vars.css";
 import { ReactNode, useCallback, useEffect, useState, memo } from "react";
 
 import { LightGreyCard } from "./Card";
@@ -110,7 +111,7 @@ export const StepCounter = memo(
               onUserInput={(val) => {
                 setLocalValue(val);
               }}
-              style={{ color: isWarnPriceOutOfRange ? "#FFB237" : "white" }}
+              style={{ color: isWarnPriceOutOfRange ? vars.colors.warning : vars.colors.white }}
             />
 
             {!locked && (

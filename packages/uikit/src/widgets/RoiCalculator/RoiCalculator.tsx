@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
-import { usePairTokensPriceInverted } from "@pancakeswap/utils/usePairTokensPriceInverted";
+import { pairTokensPriceInverted } from "@pancakeswap/utils/pairTokensPriceInverted";
 import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
@@ -334,7 +334,7 @@ export function RoiCalculator({
   const leftPrice = Number(formatPrice(isSorted ? priceRange?.priceLower : priceRange?.priceUpper?.invert()));
   const rightPrice = Number(formatPrice(isSorted ? priceRange?.priceUpper : priceRange?.priceLower?.invert()));
 
-  const priceKeyValues = usePairTokensPriceInverted(prices7D, invertPrice);
+  const priceKeyValues = pairTokensPriceInverted(prices7D, invertPrice);
   const isWarnPriceOutOfRange = !!(priceKeyValues.min < leftPrice) || priceKeyValues.max > rightPrice;
 
   const priceOutOfRangeWarningMessage = (
