@@ -134,6 +134,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
   const walletCharacteristic = walletIfoData[poolId]
+  const { hasTax } = poolCharacteristic
 
   let version3MaxTokens = walletIfoData.ifoCredit?.creditLeft
     ? // if creditLeft > limit show limit else show creditLeft
@@ -215,8 +216,8 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
               value={`$${ifo.tokenOfferingPrice}`}
             />
           )}
-          {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
-          {poolId === PoolIds.poolUnlimited && (
+          {hasTax && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          {hasTax && (
             <FooterEntry
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
               value={pricePerTokenWithFee}
@@ -257,7 +258,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
       return (
         <StyledIfoCardDetails flexDirection="column">
           {(poolId === PoolIds.poolBasic || ifo.isActive) && tokenEntry}
-          {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          {hasTax && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {raisingTokenToBurn && <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} />}
@@ -267,7 +268,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
               value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
             />
           )}
-          {ifo.version > 1 && poolId === PoolIds.poolUnlimited && (
+          {ifo.version > 1 && hasTax && (
             <FooterEntry
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
               value={pricePerTokenWithFee}
