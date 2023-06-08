@@ -46,10 +46,6 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
-    outputFileTracingRoot: path.join(__dirname, '../../'),
-    outputFileTracingExcludes: {
-      '*': ['**@swc+core*', '**/@esbuild**'],
-    },
   },
   transpilePackages: [
     '@pancakeswap/ui',
@@ -185,7 +181,7 @@ const config = {
         source: '/images/tokens/:address',
         destination: 'https://tokens.pancakeswap.finance/images/:address',
         permanent: false,
-      }
+      },
     ]
   },
   webpack: (webpackConfig, { webpack, isServer }) => {

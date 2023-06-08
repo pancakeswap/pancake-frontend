@@ -9,8 +9,7 @@ import {
   custom,
   getAddress,
 } from 'viem'
-import { Connector, Chain, WalletClient } from '@wagmi/core'
-import { ChainNotConfiguredForConnectorError, ConnectorNotFoundError } from '@wagmi/connectors'
+import { ConnectorNotFoundError, Connector, Chain, WalletClient, ChainNotConfiguredError } from 'wagmi'
 import type { EthereumProviderInterface } from '@blocto/sdk'
 import { normalizeChainId } from '../utils'
 
@@ -89,8 +88,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
         if (fallbackChainId && !this.isChainUnsupported(fallbackChainId)) targetChainId = fallbackChainId
       }
 
-      if (!targetChainId)
-        throw new ChainNotConfiguredForConnectorError({ chainId: targetChainId || 0, connectorId: this.id })
+      if (!targetChainId) throw new ChainNotConfiguredError({ chainId: targetChainId || 0, connectorId: this.id })
 
       const BloctoSDK = (await import('@blocto/sdk')).default
       this.#provider = new BloctoSDK({
