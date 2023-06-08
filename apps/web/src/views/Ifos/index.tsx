@@ -14,7 +14,7 @@ export const IfoPageLayout = ({ children }) => {
   const isExact = router.route === '/ifo'
   useFetchIfo()
 
-  const { hideModal: userNotUsCitizenAcknowledgement } = useUserNotUsCitizenAcknowledgement(IdType.IFO)
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.IFO)
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap IFOs')} id={IdType.IFO} />,
     true,
@@ -23,9 +23,13 @@ export const IfoPageLayout = ({ children }) => {
   )
 
   useEffect(() => {
-    if (!userNotUsCitizenAcknowledgement) {
-      onUSCitizenModalPresent()
-    }
+    const timer = setTimeout(() => {
+      if (!userNotUsCitizenAcknowledgement) {
+        onUSCitizenModalPresent()
+      }
+    }, 1000)
+
+    return () => clearTimeout(timer)
   }, [userNotUsCitizenAcknowledgement, onUSCitizenModalPresent])
 
   return (

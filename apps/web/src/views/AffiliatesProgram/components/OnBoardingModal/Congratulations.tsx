@@ -15,7 +15,7 @@ const Congratulations = () => {
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
-  const { hideModal: userNotUsCitizenAcknowledgement } = useUserNotUsCitizenAcknowledgement(IdType.AFFILIATE_PROGRAM)
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.AFFILIATE_PROGRAM)
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
 
   return (

@@ -158,7 +158,7 @@ const PerpetualBanner = () => {
     false,
     'usCitizenConfirmModal',
   )
-  const { hideModal: userNotUsCitizenAcknowledgement } = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)
 
   return (
     <S.Wrapper

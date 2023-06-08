@@ -24,7 +24,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
     mobileConfig.push(mobileConfig.splice(4, 1)[0])
     return isMobile ? mobileConfig : config(t, isDark, languageCode, chainId)
   }, [t, isDark, languageCode, chainId, isMobile])
-  const { hideModal: userNotUsCitizenAcknowledgement } = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {

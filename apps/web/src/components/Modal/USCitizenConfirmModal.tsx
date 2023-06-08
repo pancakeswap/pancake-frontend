@@ -22,18 +22,18 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const { handleClose } = useUserNotUsCitizenAcknowledgement(id)
+  const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement(id)
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
 
   const handleSuccess = useCallback(() => {
-    handleClose()
+    setHasAcceptedRisk(true)
     if (id === IdType.PERPETUALS) {
       const url = getPerpetualUrl({ chainId, languageCode: code, isDark })
       window.open(url, '_blank', 'noopener noreferrer')
     }
     onDismiss?.()
-  }, [id, handleClose, onDismiss, chainId, code, isDark])
+  }, [id, setHasAcceptedRisk, onDismiss, chainId, code, isDark])
 
   return (
     <DisclaimerModal
