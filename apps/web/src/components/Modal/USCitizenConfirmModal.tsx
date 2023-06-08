@@ -1,5 +1,5 @@
 import DisclaimerModal from 'components/DisclaimerModal'
-import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { memo, useCallback } from 'react'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -8,25 +8,32 @@ import { Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 interface USCitizenConfirmModalProps {
+  id: IdType
   title: string
   onDismiss?: () => void
 }
 
-const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({ title, onDismiss }) => {
+const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({
+  id,
+  title,
+  onDismiss,
+}) => {
   const {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement()
+  const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement(id)
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
 
   const handleSuccess = useCallback(() => {
     setHasAcceptedRisk(true)
-    const url = getPerpetualUrl({ chainId, languageCode: code, isDark })
-    window.open(url, '_blank', 'noopener noreferrer')
+    if (id === IdType.PERPETUALS) {
+      const url = getPerpetualUrl({ chainId, languageCode: code, isDark })
+      window.open(url, '_blank', 'noopener noreferrer')
+    }
     onDismiss?.()
-  }, [setHasAcceptedRisk, chainId, code, isDark, onDismiss])
+  }, [id, setHasAcceptedRisk, onDismiss, chainId, code, isDark])
 
   return (
     <DisclaimerModal

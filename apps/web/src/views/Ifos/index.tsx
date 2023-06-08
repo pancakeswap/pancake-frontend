@@ -3,7 +3,7 @@ import { SubMenuItems, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useFetchIfo } from 'state/pools/hooks'
-import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import Hero from './components/Hero'
 import IfoProvider from './contexts/IfoContext'
@@ -14,18 +14,22 @@ export const IfoPageLayout = ({ children }) => {
   const isExact = router.route === '/ifo'
   useFetchIfo()
 
-  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.IFO)
   const [onUSCitizenModalPresent] = useModal(
-    <USCitizenConfirmModal title={t('PancakeSwap IFOs')} />,
+    <USCitizenConfirmModal title={t('PancakeSwap IFOs')} id={IdType.IFO} />,
     true,
     false,
     'usCitizenConfirmModal',
   )
 
   useEffect(() => {
-    if (!userNotUsCitizenAcknowledgement) {
-      onUSCitizenModalPresent()
-    }
+    const timer = setTimeout(() => {
+      if (!userNotUsCitizenAcknowledgement) {
+        onUSCitizenModalPresent()
+      }
+    }, 1000)
+
+    return () => clearTimeout(timer)
   }, [userNotUsCitizenAcknowledgement, onUSCitizenModalPresent])
 
   return (
