@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { encodePacked, keccak256, toBytes } from 'viem'
+import { encodePacked, keccak256 } from 'viem'
 import { ChainId } from '@pancakeswap/sdk'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleLatestReward'
@@ -38,7 +38,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
   refreshAuthAffiliate,
 }) => {
   const { t } = useTranslation()
-  const { address, connector } = useAccount()
+  const { address } = useAccount()
   const { chainId } = useActiveChainId()
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
@@ -70,11 +70,8 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       const userInfo = (await method) as { nonce: number; totalClaimedAmount: number }
       const nonce = new BigNumber(userInfo?.nonce?.toString()).toNumber()
       const timestamp = Math.floor(new Date().getTime() / 1000)
-      const message =
-        connector?.id === 'bsc'
-          ? keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)]))
-          : toBytes(keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)])))
-      const signature = await signMessageAsync({ message: message as any })
+      const message = keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)]))
+      const signature = await signMessageAsync({ message })
 
       const url = isAffiliateClaim ? 'affiliate-claim-fee' : 'user-claim-fee'
       const response = await fetch(`/api/affiliates-program/${url}`, {
