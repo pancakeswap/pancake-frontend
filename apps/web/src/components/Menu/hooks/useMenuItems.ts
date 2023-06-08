@@ -3,7 +3,7 @@ import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LinkStatus } from '@pancakeswap/uikit/src/widgets/Menu/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import config, { ConfigMenuItemsType } from '../config/config'
@@ -24,7 +24,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
     mobileConfig.push(mobileConfig.splice(4, 1)[0])
     return isMobile ? mobileConfig : config(t, isDark, languageCode, chainId)
   }, [t, isDark, languageCode, chainId, isMobile])
-  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
+  const { hideModal: userNotUsCitizenAcknowledgement } = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
