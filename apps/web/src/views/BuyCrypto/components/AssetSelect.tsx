@@ -9,7 +9,7 @@ import styled from 'styled-components'
 
 const AssetSelectButton = styled.div`
   width: 100%;
-  height: 45px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;

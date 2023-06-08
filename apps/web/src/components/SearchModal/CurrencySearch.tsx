@@ -26,6 +26,7 @@ import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
 
+const whiteListedFiatCurrencies = ['USD', 'EUR', 'USD', 'JPY', 'AUD']
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
@@ -121,17 +122,22 @@ function CurrencySearch({
   const native = useNativeCurrency()
 
   const showNative: boolean = useMemo(() => {
-    if (tokensToShow) return false
+    if (tokensToShow || (mode && mode.slice(0, 6) === 'onramp')) return false
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
-  }, [debouncedQuery, native, tokensToShow])
+  }, [debouncedQuery, native, tokensToShow, mode])
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery, (address) => Boolean(isAddress(address)))
     return Object.values(tokensToShow || tokenList).filter(filterToken)
   }, [tokensToShow, tokenList, debouncedQuery])
 
-  const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
+  const queryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
+  const filteredQueryTokens = useMemo(() => {
+    return mode === 'onramp-input'
+      ? queryTokens.filter((curr) => whiteListedFiatCurrencies.includes(curr.symbol))
+      : queryTokens
+  }, [mode, queryTokens])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 

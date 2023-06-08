@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { Text } from '@pancakeswap/uikit'
+import { ArrowDownIcon, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { fetchMinimumBuyAmount, useBuyCryptoActionHandlers, useBuyCryptoErrorInfo } from 'state/buyCrypto/hooks'
@@ -14,12 +14,19 @@ import { useRouter } from 'next/router'
 // eslint-disable-next-line import/no-cycle
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 // eslint-disable-next-line import/no-cycle
+import styled from 'styled-components'
+// eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '..'
 import { FormContainer } from '../components/FormContainer'
 import AssetSelect from '../components/AssetSelect'
 // eslint-disable-next-line import/no-cycle
 import GetQuotesButton from '../components/GetQuotesButton'
 
+const CenterWrapper = styled.div`
+  position: absolute;
+  left: 48.5%;
+  top: 33%;
+`
 interface Props {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
   modalView: CryptoFormView
@@ -97,6 +104,10 @@ export function FormMain({ setModalView, modalView, buyCryptoState, fetchQuotes 
         error={error}
         showCommonBases={false}
       />
+      <CenterWrapper>
+        <ArrowDownIcon className="icon-down" color="primary" width="22px" />
+      </CenterWrapper>
+
       <AssetSelect onCurrencySelect={handleInputSelect} currency={inputCurrency} />
       <Text color="textSubtle" fontSize="14px" px="4px">
         {t('Proceed to get live aggregated quotes quotes from a variety of different fiat onramp providers.')}
