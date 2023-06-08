@@ -98,8 +98,6 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   })
   return {
     ...c,
-    abi,
-    address,
     account: signer?.account,
     chain: signer?.chain,
   }

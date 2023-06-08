@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { OnChainProvider, SubgraphProvider } from '@pancakeswap/smart-router/evm'
 import { createPublicClient, http } from 'viem'
-import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
+import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
 import { GraphQLClient } from 'graphql-request'
 
 import { V3_SUBGRAPH_URLS } from './constants'

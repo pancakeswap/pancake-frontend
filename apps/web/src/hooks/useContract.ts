@@ -230,17 +230,12 @@ export function useContract<TAbi extends Abi>(
     else address = addressOrAddressMap[chainId]
     if (!address) return null
     try {
-      const c = getContract({
+      return getContract({
         abi,
         address,
         chainId,
         signer: walletClient,
       })
-      return {
-        ...c,
-        abi,
-        address,
-      }
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
