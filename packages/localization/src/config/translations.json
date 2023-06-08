@@ -1862,7 +1862,7 @@
   "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.": "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.",
   "CAKE locked:": "CAKE locked:",
   "Go to Pools": "Go to Pools",
-  "CAKE Emission Project": "CAKE Emission Project",
+  "CAKE Emission Projector": "CAKE Emission Projector",
   "Boosted by vCAKE": "Boosted by vCAKE",
   "Boosting Expired": "Boosting Expired",
   "Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.": "Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.",
