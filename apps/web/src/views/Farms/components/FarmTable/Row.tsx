@@ -156,8 +156,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '140px', gap: '4px' }}>
-                      {props[key] === 'community' && <FarmAuctionTag scale="sm" />}
+                    <CellInner style={{ minWidth: '140px', gap: '4px' }}>
+                      {(props[key] === 'community' || props?.farm?.isCommunity) && <FarmAuctionTag scale="sm" />}
                       {props.type === 'v2' ? (
                         props?.details?.isStable ? (
                           <StableFarmTag scale="sm" />
@@ -251,7 +251,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               <Flex justifyContent="space-between" alignItems="center">
                 <FarmCell {...props.farm} />
 
-                {props.type === 'community' ? (
+                {props.type === 'community' || props?.farm?.isCommunity ? (
                   <FarmAuctionTag marginRight="16px" scale="sm" />
                 ) : (
                   <Flex

@@ -217,6 +217,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           quoteToken: farm.quoteToken,
           isReady: farm.multiplier !== undefined,
           isStaking: farm.stakedPositions?.length > 0,
+          isCommunity: farm.isCommunity,
         },
         type: 'v3',
         details: farm,
