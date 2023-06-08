@@ -108,6 +108,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           feeAmount={farm.feeAmount}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
+          isCommunityFarm={farm.isCommunity}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -145,7 +146,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               totalValueLabel={t('Staked Liquidity')}
               lpLabel={lpLabel}
               onAddLiquidity={addLiquidityModal.onOpen}
-              isCommunity={false}
+              isCommunity={farm.isCommunity}
               multiplier={farm.multiplier}
               farmCakePerSecond={farmCakePerSecond}
               totalMultipliers={totalMultipliers}
