@@ -55,14 +55,19 @@ const PerpetualBanner = () => {
 
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
   const headerRef = useRef<HTMLDivElement>(null)
-  const [onUSCitizenModalPresent] = useModal(<USCitizenConfirmModal />, true, false, 'usCitizenConfirmModal')
+  const [onUSCitizenModalPresent] = useModal(
+    <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} />,
+    true,
+    false,
+    'usCitizenConfirmModal',
+  )
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
 
   useIsomorphicEffect(() => {
     const target = headerRef.current
+    if (!target || !isMobile) return
     target.style.fontSize = '' // reset
     target.style.lineHeight = ''
-    if (!target || !isMobile) return
     if (target.offsetHeight > HEADING_ONE_LINE_HEIGHT) {
       target.style.fontSize = '18px'
       target.style.lineHeight = `${HEADING_ONE_LINE_HEIGHT}px`

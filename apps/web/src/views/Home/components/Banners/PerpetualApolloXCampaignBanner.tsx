@@ -152,7 +152,12 @@ const PerpetualBanner = () => {
   const { chainId } = useActiveChainId()
 
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
-  const [onUSCitizenModalPresent] = useModal(<USCitizenConfirmModal />, true, false, 'usCitizenConfirmModal')
+  const [onUSCitizenModalPresent] = useModal(
+    <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} />,
+    true,
+    false,
+    'usCitizenConfirmModal',
+  )
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
 
   return (
