@@ -26,10 +26,18 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
 
   const [affiliateDataCurrentPage, setAffiliateDataCurrentPage] = useState(1)
   const [userDataCurrentPage, setUserDataCurrentPage] = useState(1)
-  const { data: affiliateClaimData, mutate: affiliateClaimDataRefresh } = useAffiliateClaimList({
+  const {
+    data: affiliateClaimData,
+    isFetching: affiliateIsFetching,
+    mutate: affiliateClaimDataRefresh,
+  } = useAffiliateClaimList({
     currentPage: affiliateDataCurrentPage,
   })
-  const { data: userClaimData, mutate: userClaimDataRefresh } = useUserClaimList({ currentPage: userDataCurrentPage })
+  const {
+    data: userClaimData,
+    isFetching: userIsFetching,
+    mutate: userClaimDataRefresh,
+  } = useUserClaimList({ currentPage: userDataCurrentPage })
 
   const handleClickClaim = async (isAffiliateClaim: boolean, reward: ClaimDetail) => {
     try {
@@ -103,6 +111,7 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
             isAffiliateClaim
             dataList={affiliateClaimData}
             currentPage={affiliateDataCurrentPage}
+            isFetching={affiliateIsFetching}
             setCurrentPage={setAffiliateDataCurrentPage}
             handleClickClaim={handleClickClaim}
           />
@@ -113,6 +122,7 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
           isAffiliateClaim={false}
           dataList={userClaimData}
           currentPage={userDataCurrentPage}
+          isFetching={userIsFetching}
           setCurrentPage={setUserDataCurrentPage}
           handleClickClaim={handleClickClaim}
         />
