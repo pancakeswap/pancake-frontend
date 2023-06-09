@@ -4,7 +4,6 @@
     "browser": true,
     "jest": true
   },
-  "plugins": ["lodash"],
   "extends": ["plugin:@next/next/recommended"],
   "rules": {
     "no-restricted-syntax": 0,
