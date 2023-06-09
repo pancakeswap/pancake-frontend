@@ -19,10 +19,9 @@
   },
   "peerDependencies": {
     "@blocto/sdk": "^0.3.1",
-    "@wagmi/connectors": "^1.0.3",
     "@wagmi/core": "^1.1.0",
-    "react-dom": "^18.0.0",
     "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "viem": "^1.0.0",
     "wagmi": "^1.1.0"
   },
@@ -30,13 +29,12 @@
     "@blocto/sdk": "^0.3.1",
     "@pancakeswap/tsconfig": "workspace:*",
     "@types/react": "^18.0.17",
-    "@wagmi/connectors": "^1.0.3",
-    "@wagmi/core": "^1.1.0",
-    "react-dom": "^18.0.0",
+    "@wagmi/core": "^1.1.1",
     "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "tsup": "^6.7.0",
     "viem": "^1.0.0",
-    "wagmi": "^1.1.0"
+    "wagmi": "^1.1.1"
   },
   "exports": {
     "./package.json": "./package.json",

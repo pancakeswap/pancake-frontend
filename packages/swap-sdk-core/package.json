@@ -40,14 +40,13 @@
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0"
   },
-  "peerDependencies": {},
   "devDependencies": {
-    "vitest": "^0.27.2",
     "@swc/core": "^1.2.215",
     "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",
     "@types/jest": "^24.0.25",
-    "tsup": "^6.7.0"
+    "tsup": "^6.7.0",
+    "vitest": "^0.32.0"
   },
   "engines": {
     "node": ">=10"

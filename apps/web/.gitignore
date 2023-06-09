@@ -10,6 +10,9 @@ node_modules
 out/
 .idea/
 
+# testing
+/coverage
+
 # production
 build
 dist
