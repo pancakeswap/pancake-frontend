@@ -61,7 +61,7 @@ export const V3_SUBGRAPH_URLS = {
   // TODO: new chains
   [ChainId.ARBITRUM_ONE]: null,
   [ChainId.ARBITRUM_GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/exhange-v3-arb-goerli',
-  [ChainId.POLYGON_ZKEVM]: null,
+  [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/v0.0.0',
   [ChainId.POLYGON_ZKEVM_TESTNET]: null,
   [ChainId.ZKSYNC]: null,
   [ChainId.ZKSYNC_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/v0.0.1',
