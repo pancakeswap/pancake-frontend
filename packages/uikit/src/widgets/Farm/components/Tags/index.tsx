@@ -46,7 +46,11 @@ const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   return (
     <>
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef} style={{ textDecoration: "none" }}>
+      <TooltipText
+        ref={targetRef}
+        display="flex"
+        style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
+      >
         <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
           {t("Farm Auction")}
         </Tag>
