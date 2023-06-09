@@ -21,7 +21,7 @@ import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
@@ -126,7 +126,7 @@ export default function V3FormView({
 
   // mint state
   const formState = useV3FormState()
-  const { independentField, typedValue, startPriceTypedValue } = formState
+  const { independentField, typedValue, startPriceTypedValue, leftRangeTypedValue, rightRangeTypedValue } = formState
 
   const {
     pool,
@@ -327,6 +327,7 @@ export default function V3FormView({
   )
 
   const [activeQuickAction, setActiveQuickAction] = useState<number>()
+  const isQuickButtonUsed = useRef(false)
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
@@ -393,6 +394,14 @@ export default function V3FormView({
     />
   )
 
+  useEffect(() => {
+    if (!isQuickButtonUsed.current && activeQuickAction) {
+      setActiveQuickAction(undefined)
+    } else if (isQuickButtonUsed.current) {
+      isQuickButtonUsed.current = false
+    }
+  }, [isQuickButtonUsed, activeQuickAction, leftRangeTypedValue, rightRangeTypedValue])
+
   const handleRefresh = useCallback(
     (zoomLevel?: ZoomLevels) => {
       setActiveQuickAction(undefined)
@@ -429,7 +438,7 @@ export default function V3FormView({
               maxAmount={maxAmounts[Field.CURRENCY_A]}
               onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
               onPercentInput={(percent) =>
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
               }
               disableCurrencySelect
               value={formattedAmounts[Field.CURRENCY_A]}
@@ -450,7 +459,7 @@ export default function V3FormView({
             maxAmount={maxAmounts[Field.CURRENCY_B]}
             onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
             onPercentInput={(percent) =>
-              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
             }
             disableCurrencySelect
             value={formattedAmounts[Field.CURRENCY_B]}
@@ -543,7 +552,6 @@ export default function V3FormView({
                 )}
                 <LiquidityChartRangeInput
                   zoomLevel={QUICK_ACTION_CONFIGS?.[feeAmount]?.[activeQuickAction]}
-                  onBothRangeInput={onBothRangeInput}
                   key={baseCurrency?.wrapped?.address}
                   currencyA={baseCurrency ?? undefined}
                   currencyB={quoteCurrency ?? undefined}
@@ -552,6 +560,7 @@ export default function V3FormView({
                   price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
                   priceLower={priceLower}
                   priceUpper={priceUpper}
+                  onBothRangeInput={onBothRangeInput}
                   onLeftRangeInput={onLeftRangeInput}
                   onRightRangeInput={onRightRangeInput}
                   interactive
@@ -613,6 +622,7 @@ export default function V3FormView({
                             handleRefresh(zoomLevel)
 
                             setActiveQuickAction(+quickAction)
+                            isQuickButtonUsed.current = true
                           }}
                           variant={+quickAction === activeQuickAction ? 'primary' : 'secondary'}
                           scale="sm"
@@ -630,6 +640,7 @@ export default function V3FormView({
                     }
                     setShowCapitalEfficiencyWarning(true)
                     setActiveQuickAction(100)
+                    isQuickButtonUsed.current = true
                   }}
                   variant={activeQuickAction === 100 ? 'primary' : 'secondary'}
                   scale="sm"

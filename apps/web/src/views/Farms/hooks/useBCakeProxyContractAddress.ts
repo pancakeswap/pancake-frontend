@@ -7,7 +7,7 @@ import { Address } from 'wagmi'
 
 export const useBCakeProxyContractAddress = (account?: Address, chainId?: number) => {
   const bCakeFarmBoosterContract = useBCakeFarmBoosterContract()
-  const isSupportedChain = bCakeSupportedChainId.includes(chainId)
+  const isSupportedChain = chainId ? bCakeSupportedChainId.includes(chainId) : false
   const { data, status, mutate } = useSWRImmutable(
     account && isSupportedChain && ['bProxyAddress', account, chainId],
     async () => bCakeFarmBoosterContract.read.proxyContract([account]),
@@ -15,7 +15,7 @@ export const useBCakeProxyContractAddress = (account?: Address, chainId?: number
   const isLoading = isSupportedChain ? status !== FetchStatus.Fetched : false
 
   return {
-    proxyAddress: data,
+    proxyAddress: data as Address,
     isLoading,
     proxyCreated: data && data !== NO_PROXY_CONTRACT,
     refreshProxyAddress: mutate,

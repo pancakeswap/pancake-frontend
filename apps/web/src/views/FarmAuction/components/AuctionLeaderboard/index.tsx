@@ -8,6 +8,7 @@ import AuctionHistory from '../AuctionHistory'
 import AuctionProgress from './AuctionProgress'
 import AuctionRibbon from './AuctionRibbon'
 import AuctionLeaderboardTable from './AuctionLeaderboardTable'
+import { HARD_CODED_START_AUCTION_ID } from '../../constants'
 
 const AuctionLeaderboardCard = styled(Card)`
   width: 100%;
@@ -74,7 +75,11 @@ const CurrentAuctionCard: React.FC<React.PropsWithChildren<AuctionLeaderboardPro
           </Text>
           <AuctionRibbon auction={auction} noAuctionHistory={getMostRecentClosedAuctionId(id, status) === null} />
           <AuctionProgress auction={auction} />
-          <AuctionLeaderboardTable bidders={bidders} noBidsText={t('No bids yet')} />
+          <AuctionLeaderboardTable
+            bidders={bidders}
+            noBidsText={t('No bids yet')}
+            shouldUseV3Format={id >= HARD_CODED_START_AUCTION_ID}
+          />
         </Box>
       ) : (
         <AuctionHistory mostRecentClosedAuctionId={getMostRecentClosedAuctionId(id, status)} />

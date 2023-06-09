@@ -78,13 +78,14 @@ const TxnLink = styled(Link)`
 `
 
 const MenuConfig = [
+  { title: 'CAKE', href: '/' },
   {
     title: 'EVMs',
-    href: '/',
+    href: '/axelar',
     items: [
       {
         label: 'Axelar',
-        href: '/',
+        href: '/axelar',
       },
       {
         label: 'Stargate',
@@ -92,7 +93,6 @@ const MenuConfig = [
       },
     ],
   },
-  { title: 'CAKE', href: '/cake' },
   {
     title: 'Aptos',
     href: '/aptos',

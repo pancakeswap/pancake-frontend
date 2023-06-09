@@ -41,7 +41,7 @@ const TradingReward = () => {
   )
 
   const totalAvailableClaimData = useMemo(() => {
-    const currentTime = new Date().getTime() / 1000
+    const currentTime = Date.now() / 1000
 
     return allUserCampaignInfo
       .map((item) => {

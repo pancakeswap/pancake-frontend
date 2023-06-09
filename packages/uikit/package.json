@@ -17,6 +17,7 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
     "test": "vitest --run",
+    "update:snapshot": "vitest -u",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
@@ -80,14 +81,14 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
-    "viem": "^0.3.30",
+    "viem": "^1.0.0",
     "next": "*",
     "next-seo": "*",
     "remark-gfm": "*",
     "react-device-detect": "*",
     "react-transition-group": "*",
     "js-cookie": "*",
-    "wagmi": "*"
+    "wagmi": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -106,7 +107,7 @@
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
-    "viem": "^0.3.30",
+    "viem": "^1.0.0",
     "next": "*",
     "next-seo": "*",
     "remark-gfm": "*",

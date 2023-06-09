@@ -8,7 +8,7 @@
     "apis/*",
     "scripts"
   ],
-  "packageManager": "pnpm@8.3.1",
+  "packageManager": "pnpm@8.6.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web... --concurrency=19",
@@ -63,8 +63,8 @@
     "tsx": "^3.12.6",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/eslint-config-pancake": "workspace:*",
-    "typescript": "^5.0.4",
-    "turbo": "1.9.9",
+    "typescript": "^5.1.3",
+    "turbo": "1.10.2",
     "vitest": "^0.27.2"
   },
   "volta": {

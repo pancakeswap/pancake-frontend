@@ -1,34 +1,45 @@
 import DisclaimerModal from 'components/DisclaimerModal'
-import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { memo, useCallback } from 'react'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTheme } from 'styled-components'
 import { Text, Link } from '@pancakeswap/uikit'
-
 import { useTranslation } from '@pancakeswap/localization'
 
-const USCitizenConfirmModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss }) => {
+interface USCitizenConfirmModalProps {
+  id: IdType
+  title: string
+  onDismiss?: () => void
+}
+
+const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({
+  id,
+  title,
+  onDismiss,
+}) => {
   const {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement()
+  const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement(id)
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
 
   const handleSuccess = useCallback(() => {
     setHasAcceptedRisk(true)
-    const url = getPerpetualUrl({ chainId, languageCode: code, isDark })
-    window.open(url, '_blank', 'noopener noreferrer')
+    if (id === IdType.PERPETUALS) {
+      const url = getPerpetualUrl({ chainId, languageCode: code, isDark })
+      window.open(url, '_blank', 'noopener noreferrer')
+    }
     onDismiss?.()
-  }, [setHasAcceptedRisk, chainId, code, isDark, onDismiss])
+  }, [id, setHasAcceptedRisk, onDismiss, chainId, code, isDark])
 
   return (
     <DisclaimerModal
-      modalHeader={t('PancakeSwap Perpetuals')}
-      id="disclaimer-perpetual-us-citizen"
-      header={t('To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:')}
+      modalHeader={title}
+      id="disclaimer-us-citizen"
+      header={t('To proceed to %title%, please check the checkbox below:', { title })}
       checks={[
         {
           key: 'checkbox',

@@ -45,6 +45,7 @@ import { isUserRejected } from 'utils/sentry'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
 import RateToggle from './formViews/V3FormView/components/RateToggle'
@@ -140,6 +141,8 @@ function V2PairMigrate({
     [token1, pairBalance, reserve1.quotient, v2LPTotalSupply.quotient],
   )
 
+  const { isLoading, isError, largestUsageFeeTier } = useFeeTierDistribution(token0, token1)
+
   const [feeAmount, setFeeAmount] = useState(FeeAmount.MEDIUM)
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(({ feeAmount: newFeeAmount }) => {
@@ -172,13 +175,18 @@ function V2PairMigrate({
   )
   const v3SpotPrice = pool?.token0Price ?? undefined
 
-  let priceDifferenceFraction: Fraction | undefined =
-    v2SpotPrice && v3SpotPrice ? v3SpotPrice.divide(v2SpotPrice).subtract(1).multiply(100) : undefined
-  if (priceDifferenceFraction?.lessThan(ZERO)) {
-    priceDifferenceFraction = priceDifferenceFraction.multiply(-1)
-  }
+  const priceDifferenceFraction: Fraction | undefined = useMemo(() => {
+    const result = v2SpotPrice && v3SpotPrice ? v3SpotPrice.divide(v2SpotPrice).subtract(1).multiply(100) : undefined
+    if (result?.lessThan(ZERO)) {
+      return result.multiply(-1)
+    }
+    return result
+  }, [v2SpotPrice, v3SpotPrice])
 
-  const largePriceDifference = priceDifferenceFraction && !priceDifferenceFraction?.lessThan(2n)
+  const largePriceDifference = useMemo(
+    () => priceDifferenceFraction && !priceDifferenceFraction?.lessThan(2n),
+    [priceDifferenceFraction],
+  )
 
   // modal and loading
   // capital efficiency warning
@@ -190,8 +198,7 @@ function V2PairMigrate({
 
   useEffect(() => {
     if (feeAmount) {
-      onLeftRangeInput('')
-      onRightRangeInput('')
+      onBothRangeInput({ leftTypedValue: '', rightTypedValue: '' })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -210,6 +217,13 @@ function V2PairMigrate({
       onRightRangeInput(maxPrice)
     }
   }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
+
+  useEffect(() => {
+    if (!isError && !isLoading && largestUsageFeeTier) {
+      setFeeAmount(largestUsageFeeTier)
+    }
+  }, [isError, isLoading, largestUsageFeeTier])
+
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
 
@@ -219,20 +233,35 @@ function V2PairMigrate({
   const [allowedSlippage] = useUserSlippagePercent()
 
   // the v3 tick is either the pool's tickCurrent, or the tick closest to the v2 spot price
-  const tick = pool?.tickCurrent ?? priceToClosestTick(v2SpotPrice)
+  const tick = useMemo(() => pool?.tickCurrent ?? priceToClosestTick(v2SpotPrice), [pool?.tickCurrent, v2SpotPrice])
   // the price is either the current v3 price, or the price at the tick
-  const sqrtPrice = pool?.sqrtRatioX96 ?? TickMath.getSqrtRatioAtTick(tick)
-  const position =
-    typeof tickLower === 'number' && typeof tickUpper === 'number' && !invalidRange
-      ? Position.fromAmounts({
-          pool: pool ?? new Pool(token0, token1, feeAmount, sqrtPrice, 0, tick, []),
-          tickLower,
-          tickUpper,
-          amount0: token0Value.quotient,
-          amount1: token1Value.quotient,
-          useFullPrecision: true, // we want full precision for the theoretical position
-        })
-      : undefined
+  const sqrtPrice = useMemo(() => pool?.sqrtRatioX96 ?? TickMath.getSqrtRatioAtTick(tick), [pool?.sqrtRatioX96, tick])
+  const position = useMemo(
+    () =>
+      typeof tickLower === 'number' && typeof tickUpper === 'number' && !invalidRange
+        ? Position.fromAmounts({
+            pool: pool ?? new Pool(token0, token1, feeAmount, sqrtPrice, 0, tick, []),
+            tickLower,
+            tickUpper,
+            amount0: token0Value.quotient,
+            amount1: token1Value.quotient,
+            useFullPrecision: true, // we want full precision for the theoretical position
+          })
+        : undefined,
+    [
+      feeAmount,
+      invalidRange,
+      pool,
+      sqrtPrice,
+      tick,
+      tickLower,
+      tickUpper,
+      token0,
+      token0Value.quotient,
+      token1,
+      token1Value.quotient,
+    ],
+  )
 
   const { amount0: v3Amount0Min, amount1: v3Amount1Min } = useMemo(
     () => (position ? position.mintAmountsWithSlippage(allowedSlippage) : { amount0: undefined, amount1: undefined }),
@@ -353,8 +382,6 @@ function V2PairMigrate({
       !deadline ||
       typeof tickLower !== 'number' ||
       typeof tickUpper !== 'number' ||
-      !v3Amount0Min ||
-      !v3Amount1Min ||
       !chainId
     )
       return
@@ -420,7 +447,7 @@ function V2PairMigrate({
     setConfirmingMigration(true)
 
     migrator.estimateGas
-      .multicall([data])
+      .multicall([data], { account: migrator.account, value: 0n })
       .then((gasEstimate) => {
         return migrator.write
           .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
@@ -466,7 +493,10 @@ function V2PairMigrate({
     currency1,
   ])
 
-  const isSuccessfullyMigrated = !!pendingMigrationHash && BigInt(pairBalance.toString()) === ZERO
+  const isSuccessfullyMigrated = useMemo(
+    () => !!pendingMigrationHash && BigInt(pairBalance.toString()) === ZERO,
+    [pendingMigrationHash, pairBalance],
+  )
 
   return (
     <CardBody>
@@ -482,7 +512,7 @@ function V2PairMigrate({
                     {token0?.symbol}
                   </Text>
                 </AutoRow>
-                <Text bold>{token0Value.toSignificant(6)}</Text>
+                <Text bold>{token0Value.toFixed(token0.decimals)}</Text>
               </AutoRow>
               <AutoRow>
                 <AutoRow gap="4px" flex={1}>
@@ -491,7 +521,7 @@ function V2PairMigrate({
                     {token1?.symbol}
                   </Text>
                 </AutoRow>
-                <Text bold>{token1Value.toSignificant(6)}</Text>
+                <Text bold>{token1Value.toFixed(token1.decimals)}</Text>
               </AutoRow>
             </AutoColumn>
           </GreyCard>
@@ -512,7 +542,7 @@ function V2PairMigrate({
                       {token0?.symbol}
                     </Text>
                   </AutoRow>
-                  {position && <Text bold>{position.amount0.toSignificant(6)}</Text>}
+                  {position && <Text bold>{position.amount0.toFixed(token0.decimals)}</Text>}
                 </AutoRow>
                 <AutoRow>
                   <AutoRow gap="4px" flex={1}>
@@ -521,7 +551,7 @@ function V2PairMigrate({
                       {token1?.symbol}
                     </Text>
                   </AutoRow>
-                  {position && <Text bold>{position.amount1.toSignificant(6)}</Text>}
+                  {position && <Text bold>{position.amount1.toFixed(token1.decimals)}</Text>}
                 </AutoRow>
                 {position && chainId && refund0 && refund1 ? (
                   <Text color="textSubtle">
@@ -542,9 +572,13 @@ function V2PairMigrate({
             <RateToggle
               currencyA={invertPrice ? currency1 : currency0}
               handleRateToggle={() => {
-                onLeftRangeInput('')
-                onRightRangeInput('')
                 setBaseToken((base) => (base.equals(token0) ? token1 : token0))
+                if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                  onBothRangeInput({
+                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '',
+                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '',
+                  })
+                }
               }}
             />
           </RowBetween>
@@ -681,7 +715,7 @@ function V2PairMigrate({
               {t('Full Range')}
             </Button>
           )}
-          {outOfRange ? (
+          {outOfRange || !v3Amount0Min || !v3Amount1Min ? (
             <Message variant="warning">
               <RowBetween>
                 <Text ml="12px" fontSize="12px">
@@ -705,8 +739,6 @@ function V2PairMigrate({
                   disabled={
                     approval !== ApprovalState.NOT_APPROVED ||
                     signatureData !== null ||
-                    !v3Amount0Min ||
-                    !v3Amount1Min ||
                     invalidRange ||
                     confirmingMigration
                   }
@@ -728,8 +760,6 @@ function V2PairMigrate({
               <CommitButton
                 variant={isSuccessfullyMigrated ? 'success' : 'primary'}
                 disabled={
-                  !v3Amount0Min ||
-                  !v3Amount1Min ||
                   invalidRange ||
                   (approval !== ApprovalState.APPROVED && signatureData === null) ||
                   confirmingMigration ||

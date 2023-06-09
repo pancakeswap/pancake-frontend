@@ -2602,4 +2602,20 @@ export const bscTokens = {
     'Pepe',
     'https://www.pepe.vip/',
   ),
+  cgpt: new ERC20Token(
+    ChainId.BSC,
+    '0x9840652DC04fb9db2C43853633f0F62BE6f00f98',
+    18,
+    'CGPT',
+    'ChainGPT',
+    'https://www.chaingpt.org/',
+  ),
+  play: new ERC20Token(
+    ChainId.BSC,
+    '0xD069599E718f963bD84502b49ba8F8657fAF5B3a',
+    18,
+    'PLAY',
+    'PLAY',
+    'https://xcadnetwork.com/play',
+  ),
 }

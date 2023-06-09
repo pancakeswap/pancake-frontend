@@ -156,8 +156,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '140px', gap: '4px' }}>
-                      {props[key] === 'community' && <FarmAuctionTag scale="sm" />}
+                    <CellInner style={{ minWidth: '140px', gap: '4px' }}>
+                      {(props[key] === 'community' || props?.farm?.isCommunity) && <FarmAuctionTag scale="sm" />}
                       {props.type === 'v2' ? (
                         props?.details?.isStable ? (
                           <StableFarmTag scale="sm" />
@@ -250,29 +250,25 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             <FarmMobileCell colSpan={3}>
               <Flex justifyContent="space-between" alignItems="center">
                 <FarmCell {...props.farm} />
-
-                {props.type === 'community' ? (
-                  <FarmAuctionTag marginRight="16px" scale="sm" />
-                ) : (
-                  <Flex
-                    mr="16px"
-                    alignItems={isMobile ? 'end' : 'center'}
-                    flexDirection={isMobile ? 'column' : 'row'}
-                    style={{ gap: '4px' }}
-                  >
-                    {props.type === 'v2' ? (
-                      props?.details?.isStable ? (
-                        <StableFarmTag scale="sm" />
-                      ) : (
-                        <V2Tag scale="sm" />
-                      )
-                    ) : null}
-                    {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
-                    {props?.details?.boosted ? (
-                      <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
-                    ) : null}
-                  </Flex>
-                )}
+                <Flex
+                  mr="16px"
+                  alignItems={isMobile ? 'end' : 'center'}
+                  flexDirection={isMobile ? 'column' : 'row'}
+                  style={{ gap: '4px' }}
+                >
+                  {props.type === 'v2' ? (
+                    props?.details?.isStable ? (
+                      <StableFarmTag scale="sm" />
+                    ) : (
+                      <V2Tag scale="sm" />
+                    )
+                  ) : null}
+                  {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
+                  {props.type === 'community' || props?.farm?.isCommunity ? <FarmAuctionTag scale="sm" /> : null}
+                  {props?.details?.boosted ? (
+                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
+                  ) : null}
+                </Flex>
               </Flex>
             </FarmMobileCell>
           </tr>

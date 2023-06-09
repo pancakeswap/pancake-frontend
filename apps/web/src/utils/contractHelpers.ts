@@ -6,7 +6,6 @@ import {
   getBunnyFactoryAddress,
   getLotteryV2Address,
   getMasterChefV2Address,
-  getMasterChefV1Address,
   getPointCenterIfoAddress,
   getTradingCompetitionAddressEaster,
   getCakeVaultAddress,
@@ -50,11 +49,10 @@ import {
   cakeVaultV2ABI,
 } from '@pancakeswap/pools'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
-import { getContract as viemGetContract, WalletClient, PublicClient } from 'viem'
+import { getContract as viemGetContract, WalletClient, PublicClient, Abi } from 'viem'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
-import { Abi } from 'abitype'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
@@ -73,7 +71,6 @@ import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
 import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
 import { sidABI } from 'config/abi/SID'
-import { masterChefV1ABI } from 'config/abi/masterchefV1'
 import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { getViemClients, viemClients } from 'utils/viem'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
@@ -101,8 +98,6 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   })
   return {
     ...c,
-    abi,
-    address,
     account: signer?.account,
     chain: signer?.chain,
   }
@@ -143,9 +138,6 @@ export const getBunnyFactoryContract = (signer?: WalletClient) => {
 }
 export const getLotteryV2Contract = (signer?: WalletClient) => {
   return getContract({ abi: lotteryV2ABI, address: getLotteryV2Address(), signer })
-}
-export const getMasterchefV1Contract = (signer?: WalletClient) => {
-  return getContract({ abi: masterChefV1ABI, address: getMasterChefV1Address(), signer })
 }
 
 export const getTradingCompetitionContractEaster = (signer?: WalletClient) => {

@@ -65,12 +65,16 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         <Skeleton mr="8px" width={63} height={63} variant="circle" />
       )}
       <Flex flexDirection="column" alignItems="flex-end" width="100%">
-        {isReady ? <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
+        {isReady ? (
+          <Heading mb="4px">{lpLabel?.split(' ')?.[0] ?? ''}</Heading>
+        ) : (
+          <Skeleton mb="4px" width={60} height={18} />
+        )}
         <AutoRow gap="4px" justifyContent="flex-end">
           {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
           {isReady && boosted && <BoostedTag />}
-          {isReady && isCommunityFarm && <FarmAuctionTag />}
+          {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}
           {isReady ? (
             <Flex ref={targetRef}>
               <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>

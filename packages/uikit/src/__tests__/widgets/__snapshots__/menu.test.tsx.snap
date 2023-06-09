@@ -469,6 +469,7 @@ exports[`renders correctly 1`] = `
 
 .c9 {
   position: relative;
+  cursor: pointer;
 }
 
 .c10 {

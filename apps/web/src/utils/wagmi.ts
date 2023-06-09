@@ -112,7 +112,7 @@ export const noopStorage = {
 export const wagmiConfig = createConfig({
   storage: createStorage({
     storage: typeof window !== 'undefined' ? window.localStorage : noopStorage,
-    key: 'wagmi_v1',
+    key: 'wagmi_v1.1',
   }),
   autoConnect: false,
   publicClient,

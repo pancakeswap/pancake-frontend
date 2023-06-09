@@ -1,4 +1,3 @@
-import { Abi, AbiStateMutability, Narrow } from 'abitype'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -9,6 +8,7 @@ import {
   useSWRConfig,
 } from 'swr'
 import {
+  Abi,
   Address,
   ContractFunctionResult,
   DecodeFunctionDataParameters,
@@ -28,6 +28,8 @@ import {
   removeMulticallListeners,
   toCallKey,
 } from './actions'
+
+type AbiStateMutability = 'pure' | 'view' | 'nonpayable' | 'payable'
 
 interface CallResult {
   readonly valid: boolean
@@ -123,7 +125,7 @@ function toCallState<
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 >(
   callResult: CallResult | undefined,
-  abi: Narrow<TAbi>,
+  abi: TAbi,
   functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>,
   latestBlockNumber: number | undefined,
 ): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
@@ -216,7 +218,7 @@ export type SingleContractMultipleDataCallParameters<
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 > = {
   contract: {
-    abi?: Narrow<TAbi>
+    abi?: TAbi
     address?: Address
   }
   functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
@@ -271,7 +273,7 @@ export type MultipleSameDataCallParameters<
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 > = {
   addresses: (Address | undefined)[]
-  abi: Narrow<TAbi>
+  abi: TAbi
   functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
   options?: ListenerOptionsWithGas
 } & GetFunctionArgs<TAbi, TFunctionName>
@@ -328,7 +330,7 @@ export type SingleCallParameters<
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 > = {
   contract: {
-    abi?: Narrow<TAbi>
+    abi?: TAbi
     address?: Address
   }
   functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>

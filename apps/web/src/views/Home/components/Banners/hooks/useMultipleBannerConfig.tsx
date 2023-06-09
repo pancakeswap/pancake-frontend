@@ -11,6 +11,7 @@ import FarmV3MigrationBanner from '../FarmV3MigrationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import TradingRewardBanner from '../TradingRewardBanner'
+import UnsDomainBanner from '../UnsDomainBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -36,6 +37,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <UnsDomainBanner /> },
       { shouldRender: true, banner: <PancakeProtectorBanner /> },
       { shouldRender: true, banner: <TradingRewardBanner /> },
       { shouldRender: true, banner: <LiquidStakingBanner /> },

@@ -16,6 +16,7 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
 import { useFarmAuction } from '../hooks/useFarmAuction'
+import { HARD_CODED_START_AUCTION_ID } from '../constants'
 
 interface AuctionHistoryProps {
   mostRecentClosedAuctionId: number
@@ -58,7 +59,11 @@ const AuctionHistory: React.FC<React.PropsWithChildren<AuctionHistoryProps>> = (
 
   let auctionTable =
     auction && bidders ? (
-      <AuctionLeaderboardTable bidders={bidders} noBidsText="No bids were placed in this auction" />
+      <AuctionLeaderboardTable
+        bidders={bidders}
+        shouldUseV3Format={auction?.id >= HARD_CODED_START_AUCTION_ID}
+        noBidsText="No bids were placed in this auction"
+      />
     ) : (
       <Flex justifyContent="center" alignItems="center" p="24px" height="250px">
         <Spinner />

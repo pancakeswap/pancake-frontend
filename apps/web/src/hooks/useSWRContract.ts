@@ -27,14 +27,15 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
     return Object.defineProperty(swr, 'status', {
       get() {
         let status: TFetchStatus = FetchStatus.Idle
+        const isDataUndefined = typeof swr.data === 'undefined'
 
-        if (!swr.isValidating && !swr.error && !swr.data) {
+        if (!swr.isValidating && !swr.error && isDataUndefined) {
           status = FetchStatus.Idle
-        } else if (swr.isValidating && !swr.error && !swr.data) {
+        } else if (swr.isValidating && !swr.error && isDataUndefined) {
           status = FetchStatus.Fetching
-        } else if (swr.data) {
+        } else if (!isDataUndefined) {
           status = FetchStatus.Fetched
-        } else if (swr.error && !swr.data) {
+        } else if (swr.error && isDataUndefined) {
           status = FetchStatus.Failed
         }
         return status
@@ -66,14 +67,14 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
     }
   }, [data, serializedKey])
 
-  let localStorageDataParsed
-
   if (!data && typeof window !== 'undefined') {
     const localStorageData = localStorage?.getItem(serializedKey)
 
     if (localStorageData) {
       try {
-        localStorageDataParsed = JSON.parse(localStorageData)
+        return Object.defineProperty(swr, 'data', {
+          value: JSON.parse(localStorageData),
+        })
       } catch (error) {
         localStorage?.removeItem(serializedKey)
       }
@@ -81,7 +82,7 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
   }
 
   return Object.defineProperty(swr, 'data', {
-    value: data || localStorageDataParsed,
+    value: data,
   })
 }
 
@@ -91,7 +92,7 @@ export const loggerMiddleware: Middleware = (useSWRNext) => {
     // Add logger to the original fetcher.
     const extendedFetcher = fetcher
       ? (...args: unknown[]) => {
-          console.debug('SWR Request:', key)
+          console.debug('SWR Request:', key || {})
           return fetcher(...args)
         }
       : null

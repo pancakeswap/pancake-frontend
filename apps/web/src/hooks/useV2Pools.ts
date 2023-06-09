@@ -1,10 +1,11 @@
 import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V2Pool } from '@pancakeswap/smart-router/evm'
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import useSWR from 'swr'
 
 import { infoClientWithChain, v3Clients } from 'utils/graphql'
 import { getViemClients } from 'utils/viem'
+import { POOLS_FAST_REVALIDATE } from 'config/pools'
 
 export interface V2PoolsHookParams {
   // Used for caching
@@ -26,6 +27,14 @@ export function useV2CandidatePools(
   currencyB?: Currency,
   options?: V2PoolsHookParams,
 ): V2PoolsResult {
+  const refreshInterval = useMemo(() => {
+    const chainId = currencyA?.chainId
+    if (!chainId) {
+      return 0
+    }
+    return POOLS_FAST_REVALIDATE[chainId] || 0
+  }, [currencyA])
+
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -64,22 +73,13 @@ export function useV2CandidatePools(
       }
     },
     {
+      refreshInterval,
+      errorRetryCount: 3,
       revalidateOnFocus: false,
     },
   )
 
   const { mutate, data, isLoading, isValidating } = result
-  useEffect(() => {
-    // Revalidate pools if block number increases
-    if (
-      queryEnabled &&
-      options?.blockNumber &&
-      fetchingBlock.current !== options.blockNumber.toString() &&
-      (!data?.blockNumber || options.blockNumber > data.blockNumber)
-    ) {
-      mutate()
-    }
-  }, [options?.blockNumber, mutate, data?.blockNumber, queryEnabled])
 
   return {
     pools: data?.pools ?? null,

@@ -7,7 +7,7 @@ on:
       - 'packages/pools/src/**'
   push:
     branches:
-      - master
+      - develop
 
 jobs:
   test:
