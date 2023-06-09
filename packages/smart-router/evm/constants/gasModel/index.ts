@@ -4,6 +4,7 @@ import {
   bscTokens,
   bscTestnetTokens,
   goerliTestnetTokens,
+  polygonZkEvmTokens,
   polygonZkEvmTestnetTokens,
   zkSyncTestnetTokens,
   zksyncTokens,
@@ -19,7 +20,7 @@ export const usdGasTokensByChain = {
   // TODO: new chains
   [ChainId.ARBITRUM_ONE]: [],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.usdc],
-  [ChainId.POLYGON_ZKEVM]: [],
+  [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.usdc],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.usdt],
   [ChainId.ZKSYNC]: [zksyncTokens.usdc],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc],
