@@ -87,16 +87,14 @@ export function formatExecutionPrice(trade?: TradeWithMM<Currency, Currency, Tra
 }
 
 export const tryParseUnit = (typedValue?: `${number}`, decimals?: number) => {
-  let parseAmountString
+  let parseAmountString: string | undefined
   if (!typedValue || !decimals) return parseAmountString
   try {
     parseAmountString = parseUnits(typedValue, decimals).toString()
   } catch {
     parseAmountString = parseUnits(`${toNumber(typedValue).toFixed(decimals)}` as `${number}`, decimals).toString()
-  } finally {
-    // eslint-disable-next-line no-unsafe-finally
-    return parseAmountString
   }
+  return parseAmountString
 }
 
 export const parseMMParameter = (
