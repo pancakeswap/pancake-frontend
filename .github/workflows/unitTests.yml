@@ -49,7 +49,4 @@ jobs:
         run: pnpm i --ignore-scripts
 
       - name: Run tests
-        run: pnpm test:ci -- --coverage
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        run: pnpm test:ci
