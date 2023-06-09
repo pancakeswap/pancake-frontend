@@ -158,7 +158,7 @@ const TradingRewardBanner = () => {
           <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
             {t('Earn CAKE while trading your favorite tokens on PancakeSwap.')}
           </Text>
-          <Flex>
+          <Flex alignSelf={['center', 'center', 'center', 'auto']}>
             <NextLinkFromReactRouter to="/swap?showTradingReward=true">
               <Button>{t('Start Trading')}</Button>
             </NextLinkFromReactRouter>
