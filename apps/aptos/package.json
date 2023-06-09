@@ -12,7 +12,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next"
   },
   "dependencies": {
-    "@vanilla-extract/next-plugin": "^2.1.1",
+    "@vanilla-extract/next-plugin": "2.1.2",
     "@ethersproject/keccak256": "^5.7.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
