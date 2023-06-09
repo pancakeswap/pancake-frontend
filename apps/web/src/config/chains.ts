@@ -8,6 +8,7 @@ import {
   zkSync as zkSync_,
   zkSyncTestnet as zkSyncTestnet_,
   polygonZkEvmTestnet as polygonZkEvmTestnet_,
+  polygonZkEvm as polygonZkEvm_,
   lineaTestnet,
   arbitrumGoerli,
   Chain,
@@ -54,35 +55,35 @@ const bsc = {
   },
 } satisfies Chain
 
-const zkSync = {
-  ...zkSync_,
-  contracts: {
-    multicall3: {
-      address: '0x47898B2C52C957663aE9AB46922dCec150a2272c',
-      blockCreated: 1536804,
-    },
-  },
-} as const satisfies Chain
-
-const zkSyncTestnet = {
-  ...zkSyncTestnet_,
-  contracts: {
-    multicall3: {
-      address: '0x5640049C9e2d33127B34F1bef5C070509f14B5D0',
-      blockCreated: 5137723,
-    },
-  },
-} as const satisfies Chain
-
-// const polygonZkEvm = {
-//   ...polygonZkEvm_,
+// const zkSync = {
+//   ...zkSync_,
 //   contracts: {
 //     multicall3: {
-//       address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-//       blockCreated: 57746,
+//       address: '0x47898B2C52C957663aE9AB46922dCec150a2272c',
+//       blockCreated: 1536804,
 //     },
 //   },
 // } as const satisfies Chain
+
+// const zkSyncTestnet = {
+//   ...zkSyncTestnet_,
+//   contracts: {
+//     multicall3: {
+//       address: '0x5640049C9e2d33127B34F1bef5C070509f14B5D0',
+//       blockCreated: 5137723,
+//     },
+//   },
+// } as const satisfies Chain
+
+const polygonZkEvm = {
+  ...polygonZkEvm_,
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 57746,
+    },
+  },
+} as const satisfies Chain
 
 const polygonZkEvmTestnet = {
   ...polygonZkEvmTestnet_,
@@ -115,6 +116,7 @@ export const CHAINS = [
   goerli,
   // zkSync,
   // zkSyncTestnet,
+  polygonZkEvm,
   polygonZkEvmTestnet,
   lineaTestnet,
   arbitrumGoerli,

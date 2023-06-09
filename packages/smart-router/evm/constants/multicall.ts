@@ -37,7 +37,20 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.GOERLI]: DEFAULT,
   [ChainId.ARBITRUM_ONE]: DEFAULT,
   [ChainId.ARBITRUM_GOERLI]: DEFAULT,
-  [ChainId.POLYGON_ZKEVM]: DEFAULT,
+  [ChainId.POLYGON_ZKEVM]: {
+    defaultConfig: {
+      multicallChunk: 3,
+      gasLimitOverride: 300_000,
+    },
+    gasErrorFailureOverride: {
+      gasLimitOverride: 30_000,
+      multicallChunk: 1,
+    },
+    successRateFailureOverrides: {
+      gasLimitOverride: 30_000,
+      multicallChunk: 1,
+    },
+  },
   [ChainId.POLYGON_ZKEVM_TESTNET]: {
     defaultConfig: {
       multicallChunk: 3,

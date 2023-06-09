@@ -394,6 +394,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             }
 
             if (failedQuoteStates.length > 0) {
+              console.log(failedQuoteStates, 'failedQuoteStates')
               throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
             }
 
