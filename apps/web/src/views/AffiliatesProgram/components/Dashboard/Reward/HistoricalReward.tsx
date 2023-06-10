@@ -70,14 +70,26 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
 
   const callContract = async (isAffiliateClaim: boolean, reward: ClaimDetail) => {
     try {
-      const { nonce, totalCakeSmallUnit, signature } = reward
+      const { nonce, totalCakeSmallUnit, signature } = reward as any
       const claimType = isAffiliateClaim ? 0 : 1
       const expiryTime = Math.floor(new Date(reward.expiryTime).getTime() / 1000)
       const receipt = await fetchWithCatchTxError(() =>
-        contract.write.claim([[nonce, address, claimType, totalCakeSmallUnit, expiryTime], signature], {
-          account: contract.account,
-          chain: contract.chain,
-        }),
+        contract.write.claim(
+          [
+            {
+              nonce,
+              claimer: address,
+              claimType,
+              totalAmount: totalCakeSmallUnit,
+              expiryTimestamp: BigInt(expiryTime),
+            },
+            signature,
+          ],
+          {
+            account: contract.account,
+            chain: contract.chain,
+          },
+        ),
       )
 
       if (receipt?.status) {
