@@ -537,4 +537,4 @@ export const affiliateProgramABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-]
+] as const
