@@ -41,6 +41,7 @@ import {
   getMasterChefV3Contract,
   getV3AirdropContract,
   getUnsContract,
+  getAffiliateProgramContract,
 } from 'utils/contractHelpers'
 
 import { WNATIVE, ChainId, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -367,4 +368,10 @@ export const useV3AirdropContract = () => {
 
 export const useInfoStableSwapContract = (infoAddress?: Address) => {
   return useContract(infoAddress, infoStableSwapABI)
+}
+
+export const useAffiliateProgramContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getAffiliateProgramContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
 }

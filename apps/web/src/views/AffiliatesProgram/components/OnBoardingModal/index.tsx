@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { encodePacked, keccak256, toBytes } from 'viem'
+import { encodePacked, keccak256 } from 'viem'
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 
@@ -21,7 +21,7 @@ interface UserRegisterFeeResponse {
 const OnBoardingModal = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { address, connector } = useAccount()
+  const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const { toastSuccess, toastError } = useToast()
   const { isDesktop } = useMatchBreakpoints()
@@ -39,12 +39,10 @@ const OnBoardingModal = () => {
   const handleStartNow = async () => {
     try {
       setIsLoading(true)
-      // BSC wallet sign message only accept string
-      const message =
-        connector?.id === 'bsc'
-          ? keccak256(encodePacked(['string'], [router.query.ref as string]))
-          : toBytes(keccak256(encodePacked(['string'], [router.query.ref as string])))
-      const signature = await signMessageAsync({ message: message as any })
+
+      const timestamp = Math.floor(new Date().getTime() / 1000)
+      const message = keccak256(encodePacked(['string', 'uint256'], [router.query.ref as string, BigInt(timestamp)]))
+      const signature = await signMessageAsync({ message })
       const response = await fetch('/api/affiliates-program/user-register-fee', {
         method: 'POST',
         body: JSON.stringify({
@@ -52,6 +50,7 @@ const OnBoardingModal = () => {
             linkId: router.query.ref,
             address,
             signature,
+            timestamp,
           },
         }),
       })

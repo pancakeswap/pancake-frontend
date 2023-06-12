@@ -102,21 +102,24 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
                   <Flex flexDirection="column">
                     <Table>
                       <thead>
-                        <Th width="60%">
-                          <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                            {t('link')}
-                          </Text>
-                        </Th>
-                        <Th width="30%">
-                          <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="right">
-                            {t('profit sharing %')}
-                          </Text>
-                        </Th>
-                        <Th />
+                        <tr>
+                          <Th width="60%">
+                            <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                              {t('link')}
+                            </Text>
+                          </Th>
+                          <Th width="30%">
+                            <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="right">
+                              {t('profit sharing %')}
+                            </Text>
+                          </Th>
+                          <Th />
+                        </tr>
                       </thead>
                       <tbody>
-                        {feeList.map((fee) => (
-                          <tr key={fee.id}>
+                        {feeList.map((fee, index) => (
+                          // eslint-disable-next-line react/no-array-index-key
+                          <tr key={`${fee.id}-${index}`}>
                             <Td>
                               <Text style={{ wordBreak: 'break-word' }} fontSize="14px">
                                 {generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee })}
@@ -150,8 +153,9 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
                 </Card>
               ) : (
                 <Flex flexDirection="column">
-                  {feeList.map((fee) => (
-                    <MobileLinks key={fee.id}>
+                  {feeList.map((fee, index) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <MobileLinks key={`${fee.id}-${index}`}>
                       <Flex justifyContent="space-between" mb="10px">
                         <Text style={{ wordBreak: 'break-word' }} mr="4px" fontSize="14px">
                           {generateLink({ linkId: fee.linkId, percentage: fee.v2SwapFee })}

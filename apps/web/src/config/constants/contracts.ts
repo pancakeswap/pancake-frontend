@@ -198,4 +198,9 @@ export default {
     56: '0xe934d2C5bE5db0295A4de3177762A9E8c74Ae4f4',
     97: '0x',
   },
+  affiliateProgram: {
+    1: '0x',
+    56: '0x92C73D90F709DFf7e5E7307e8F2EE20e39396b12',
+    97: '0x1B8a475B5E5De05fB3Ac2D9ec3C2809fBF24e51c',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
