@@ -15,20 +15,20 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
   const { theme } = useTheme()
 
   return (
-    <Box maxHeight={1400} overflowY="auto">
-      <Table>
-        <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: theme.card.background }}>
-          <tr>
+    <Box>
+      <Table width="100%">
+        <thead style={{ background: theme.card.background }}>
+          <tr style={{ display: 'table', width: '100%' }}>
             <Th textAlign={['left']}>{t('Trading Pair')}</Th>
             <Th textAlign={['left']}>{t('Your Volume')}</Th>
             <Th textAlign={['left']}>{t('Your Trading Fee')}</Th>
             <Th textAlign={['right']}>{t('Reward Earned')}</Th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ display: 'block', overflowY: 'auto', maxHeight: '1250px' }}>
           <>
             {isFetching ? (
-              <tr>
+              <tr style={{ display: 'table', width: '100%' }}>
                 <Td colSpan={4} textAlign="center">
                   {t('Loading...')}
                 </Td>
@@ -36,7 +36,7 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
             ) : (
               <>
                 {list.pairs.length === 0 ? (
-                  <tr>
+                  <tr style={{ display: 'table', width: '100%' }}>
                     <Td colSpan={4} textAlign="center">
                       {t('No results')}
                     </Td>
@@ -44,7 +44,7 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
                 ) : (
                   <>
                     {list.pairs.map((pair) => (
-                      <tr key={pair.address}>
+                      <tr key={pair.address} style={{ display: 'table', width: '100%' }}>
                         <Td>
                           <PairInfo
                             chainId={pair.chainId}

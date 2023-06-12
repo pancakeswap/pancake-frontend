@@ -60,7 +60,7 @@ const Decorations = styled(Box)`
 
   & :nth-child(7) {
     top: 2%;
-    left: 20%;
+    left: 16%;
     width: 122px;
     height: 90px;
     transformY: (-50%);
@@ -73,6 +73,7 @@ const Decorations = styled(Box)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     & :nth-child(7) {
+      left: 25%;
       width: 136px;
       height: 104px;
     }
@@ -88,7 +89,8 @@ const Decorations = styled(Box)`
 
   ${({ theme }) => theme.mediaQueries.xl} {
     & :nth-child(7) {
-      left: 57%;
+      top: 6%;
+      left: 56%;
     }
   }
 
