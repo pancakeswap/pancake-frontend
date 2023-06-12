@@ -17,7 +17,6 @@ const Decorations = styled(Box)`
   left: 50%;
   width: calc(100% - 32px);
   height: 100%;
-  display: none;
   pointer-events: none;
   overflow: hidden;
   transform: translateX(-50%);
@@ -60,15 +59,45 @@ const Decorations = styled(Box)`
   }
 
   & :nth-child(7) {
-    top: 3%;
-    left: 57%;
+    top: 2%;
+    left: 20%;
+    width: 122px;
+    height: 90px;
     transformY: (-50%);
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
+  & :nth-child(1), & :nth-child(2), & :nth-child(3), & :nth-child(4), & :nth-child(5), & :nth-child(6) {
+    display: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & :nth-child(7) {
+      width: 136px;
+      height: 104px;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    & :nth-child(7) {
+      top: 3%;
+      width: 156px;
+      height: 124px;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    & :nth-child(7) {
+      left: 57%;
+    }
+  }
+
   ${({ theme }) => theme.mediaQueries.xxl} {
-    display: block;
     width: 100%;
+
+    & :nth-child(1), & :nth-child(2), & :nth-child(3), & :nth-child(4), & :nth-child(5), & :nth-child(6) {
+      display: block;
+    }
   }
 }`
 
