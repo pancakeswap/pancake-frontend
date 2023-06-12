@@ -73,6 +73,7 @@ import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
+import isPoolTickInRange from 'utils/isPoolTickInRange'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -367,9 +368,7 @@ export default function PoolPage() {
   const priceValueLower = inverted ? price1 : price0
 
   // check if price is within range
-  const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
-  const above = pool && typeof tickUpper === 'number' ? pool.tickCurrent >= tickUpper : undefined
-  const inRange: boolean = typeof below === 'boolean' && typeof above === 'boolean' ? !below && !above : false
+  const inRange = isPoolTickInRange(pool, tickLower, tickUpper)
 
   const nativeCurrency = useNativeCurrency()
   const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
@@ -444,7 +443,7 @@ export default function PoolPage() {
   }
 
   const farmingTips =
-    ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
+    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
       <Message variant="primary" mb="2em">
         <Box>
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
