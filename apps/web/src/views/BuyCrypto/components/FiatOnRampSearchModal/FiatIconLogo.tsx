@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import Image from 'next/image'
@@ -19,6 +18,6 @@ const UnknownEntry = styled.div`
 `
 
 export const FiatIcon = ({ name }: { name: string }) => {
-  const Icon = Icons[name]
-  return <>{Icon ? <Icon /> : <UnknownEntry />}</>
+  const Icon = Icons[name] as JSX.Element
+  return <>{Icon !== undefined ? Icon : <UnknownEntry />}</>
 }
