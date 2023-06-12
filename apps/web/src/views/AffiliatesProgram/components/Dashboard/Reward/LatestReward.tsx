@@ -67,7 +67,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       }
 
       const method = isAffiliateClaim ? contract.read.getAffiliateInfo([address]) : contract.read.getUserInfo([address])
-      const userInfo = (await method) as { nonce: number; totalClaimedAmount: number }
+      const userInfo = await method
       const nonce = new BigNumber(userInfo?.nonce?.toString()).toNumber()
       const timestamp = Math.floor(new Date().getTime() / 1000)
       const message = keccak256(encodePacked(['uint256', 'uint256'], [BigInt(nonce), BigInt(timestamp)]))
