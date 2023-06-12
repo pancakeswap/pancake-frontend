@@ -1,5 +1,4 @@
 export * from './constants'
-export * from './fiatCurrency'
 export * from './baseCurrency'
 export * from './currency'
 export * from './fractions'

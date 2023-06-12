@@ -1,15 +1,5 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import {
-  AutoColumn,
-  Button,
-  CircleLoader,
-  Flex,
-  InjectedModalProps,
-  Modal,
-  Spinner,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
+import { AutoColumn, CircleLoader, Flex, InjectedModalProps, Modal, Spinner, Text, useModal } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
@@ -62,7 +52,7 @@ const fetchMoonPaySignedUrl = async (
   account: string,
 ) => {
   try {
-    const res = await fetch(`/api/onramp-url-sign/sign-moonpay-url`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -96,7 +86,7 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`/api/onramp-url-sign/generate-binance-connect-sig`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -224,7 +214,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`/api/onramp-url-sign/generate-mercuryo-sig`, {
+        const res = await fetch(`https://pcs-onramp-api.com/generate-mercuryo-sig`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -234,7 +224,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             walletAddress: account.address,
           }),
         })
-        const { signature } = await res.json()
+        const signature = await res.json()
         setSig(signature)
       } catch (e) {
         setError(e.toString())

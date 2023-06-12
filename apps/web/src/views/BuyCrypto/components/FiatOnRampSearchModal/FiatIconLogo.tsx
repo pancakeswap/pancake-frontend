@@ -1,27 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import Image from 'next/image'
 import USDIcon from '../../../../../public/fiatCurrencies/usd.svg'
 import EuroIcon from '../../../../../public/fiatCurrencies/euro.svg'
 import GBPIcon from '../../../../../public/fiatCurrencies/gbp.svg'
 
-export const Icons: {
-  [key: string]: React.FunctionComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined
-    }
-  >
-} = {
-  EUR: EuroIcon,
-  USD: USDIcon,
-  GBP: GBPIcon,
+export const Icons: { [img: string]: JSX.Element } = {
+  EUR: <Image src={EuroIcon} alt="#" />,
+  USD: <Image src={USDIcon} alt="#" />,
+  GBP: <Image src={GBPIcon} alt="#" />,
 }
-
-interface Props {
-  name: string
-  white?: boolean
-}
-
 const UnknownEntry = styled.div`
   height: 24px;
   width: 24px;
@@ -29,11 +18,7 @@ const UnknownEntry = styled.div`
   border-radius: 50%;
 `
 
-export const FiatIcon: React.FC<
-  Props &
-    (React.SVGProps<SVGSVGElement> &
-      React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>)
-> = ({ name, className, ...props }) => {
+export const FiatIcon = ({ name }: { name: string }) => {
   const Icon = Icons[name]
-  return <>{Icon ? <Icon className={className} {...props} /> : <UnknownEntry />}</>
+  return <>{Icon ? <Icon /> : <UnknownEntry />}</>
 }

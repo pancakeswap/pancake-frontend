@@ -4,8 +4,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 722.9 159.1" style="enable-background:new 0 0 722.9 159.1;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#7D00FF;}
-	.st1{fill:none;}
+	{`
+  .st0{fill:#7D00FF;}
+  .st1{fill:none;}
+`}
 </style>
 <g id="MP_LOGO">
 	<path d="M662.1,120.3L636,60.4h17.5l17.8,42.9l20.6-42.9h17.2l-40.6,82.5h-17.4L662.1,120.3z M598.7,107.9c1.5-0.4,3-0.9,4.4-1.7

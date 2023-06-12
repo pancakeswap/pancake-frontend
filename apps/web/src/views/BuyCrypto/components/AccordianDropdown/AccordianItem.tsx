@@ -7,35 +7,12 @@ import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import MoonPayLogo from '../../../../../public/images/onRampProviders/moonpaySvg.svg'
-import BinanceConnectLogo from '../../../../../public/images/onRampProviders/binanceConnectSvg.svg'
-import MercuryoLogo from '../../../../../public/images/onRampProviders/mercuryoLogo.svg'
+import { ProviderIcon } from 'views/BuyCrypto/Icons'
 
-const ProviderToLogo: { [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>> } = {
-  MoonPay: MoonPayLogo,
-  Mercuryo: MercuryoLogo,
-  BinanceConnect: BinanceConnectLogo,
-}
-
-interface Props {
-  provider: string
-}
-
-const UnknownEntry = styled.div`
-  height: 24px;
-  width: 24px;
-  background: #dee0e3;
-  border-radius: 50%;
+const DropdownWrapper = styled.div`
+  width: 100%;
 `
-
-export const ProviderIcon: React.FC<
-  Props &
-    (React.SVGProps<SVGSVGElement> &
-      React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>)
-> = ({ provider, className, ...props }) => {
-  const Icon = ProviderToLogo[provider]
-  return <>{Icon ? <Icon className={className} {...props} /> : <UnknownEntry />}</>
-}
+const FEE_TYPES = ['Total Fees', 'Provider Fees', 'Networking Fees']
 
 const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
@@ -57,6 +34,19 @@ const calculateBinanceConnectQuoteFromFees = (quote: ProviderQoute) => {
 //   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
 //   return moonPayQuote.toString()
 // }
+
+const FeeItem = ({ feeTitle, feeAmount }: { feeTitle: string; feeAmount: string }) => {
+  return (
+    <RowBetween>
+      <Text fontSize="14px" color="textSubtle">
+        {feeTitle}
+      </Text>
+      <Text ml="4px" fontSize="14px" color="textSubtle">
+        {feeAmount}
+      </Text>
+    </RowBetween>
+  )
+}
 
 function AccordionItem({
   active,
@@ -105,11 +95,9 @@ function AccordionItem({
       >
         <RowBetween paddingBottom="20px">
           <ProviderIcon provider={quote.provider} width="130px" />
-          <Flex>
-            <Text ml="4px" fontSize="22px" color="secondary">
-              {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
-            </Text>
-          </Flex>
+          <Text ml="4px" fontSize="22px" color="secondary">
+            {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
+          </Text>
         </RowBetween>
         <RowBetween pt="8px">
           <Text fontSize="15px">{buyCryptoState.INPUT.currencyId} rate</Text>
@@ -118,31 +106,14 @@ function AccordionItem({
           </Text>
         </RowBetween>
 
-        <div ref={contentRef} className="accordion-item-content">
-          <RowBetween>
-            <Text fontSize="14px" color="textSubtle">
-              Total Fees
-            </Text>
-            <Text ml="4px" fontSize="14px" color="textSubtle">
-              {(quote.networkFee + quote.providerFee).toFixed(2)}
-            </Text>
-          </RowBetween>
-          <RowBetween>
-            <Text fontSize="14px" pl="8px" color="textSubtle">
-              Networking Fees
-            </Text>
-            <Text ml="4px" fontSize="14px" color="textSubtle">
-              {quote.networkFee.toFixed(3)}
-            </Text>
-          </RowBetween>
-          <RowBetween>
-            <Text fontSize="14px" pl="8px" color="textSubtle">
-              Processing Fees
-            </Text>
-            <Text ml="4px" fontSize="14px" color="textSubtle">
-              {quote.providerFee.toFixed(3)}
-            </Text>
-          </RowBetween>
+        <DropdownWrapper ref={contentRef}>
+          {FEE_TYPES.map((feeType: string, index: number) => {
+            let fee = '0'
+            if (index === 0) fee = (quote.networkFee + quote.providerFee).toFixed(3)
+            else if (index === 1) fee = quote.networkFee.toFixed(3)
+            else fee = quote.providerFee.toFixed(3)
+            return <FeeItem feeTitle={feeType} feeAmount={fee} />
+          })}
           <FiatOnRampModalButton
             provider={quote.provider}
             inputCurrency={buyCryptoState.INPUT.currencyId}
@@ -150,7 +121,7 @@ function AccordionItem({
             amount={buyCryptoState.typedValue}
             disabled={fetching}
           />
-        </div>
+        </DropdownWrapper>
       </CryptoCard>
     </Flex>
   )

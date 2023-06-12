@@ -153,47 +153,35 @@ export function useBuyCryptoActionHandlers(): {
 
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
-  // defaultOutputCurrency?: string,
+  account: string | undefined,
 ): Promise<BuyCryptoState> {
-  // const inputCurrency = parsedQs.inputCurrency as string
-  // const outputCurrency =
-  //   typeof parsedQs.outputCurrency === 'string'
-  //     ? isAddress(parsedQs.outputCurrency)
-  //     : defaultOutputCurrency
-
-  const recipient = validatedRecipient(parsedQs.recipient)
-  const minAmounts = await fetchMinimumBuyAmount('USD', 'WBTC')
+  const inputCurrency = parsedQs.inputCurrency || 'BUSD'
+  const minAmounts = await fetchMinimumBuyAmount('USD', 'BUSD')
 
   return {
     [Field.INPUT]: {
       currencyId: 'USD',
     },
     [Field.OUTPUT]: {
-      currencyId: 'WBTC',
+      currencyId: inputCurrency as string,
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
     minAmount: minAmounts.base.minBuyAmount.toString(),
     minBaseAmount: minAmounts.quote.minBuyAmount.toString(),
-    recipient,
+    recipient: account,
     userIpAddress: null,
   }
 }
 
-export function useDefaultsFromURLSearch() {
-  // | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
-  // | undefined {
+export function useDefaultsFromURLSearch(account: string | undefined) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { query, isReady } = useRouter()
-  // const [result, setResult] = useState<
-  //   { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  // >()
 
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady) return
-      const parsed = await queryParametersToBuyCryptoState(query)
-
+      const parsed = await queryParametersToBuyCryptoState(query, account)
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount,
@@ -204,11 +192,9 @@ export function useDefaultsFromURLSearch() {
           recipient: null,
         }),
       )
-      // setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
     }
-
     fetchData()
-  }, [dispatch, query, isReady])
+  }, [dispatch, query, isReady, account])
 
   // return result
 }

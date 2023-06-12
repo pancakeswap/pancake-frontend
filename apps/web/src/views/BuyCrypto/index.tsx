@@ -3,7 +3,7 @@ import { AppBody } from 'components/App'
 import { useState } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
-
+import { useAccount } from 'wagmi'
 import Page from '../Page'
 // eslint-disable-next-line import/no-cycle
 import { BuyCryptoForum } from './containers/BuyCryptoForum'
@@ -21,7 +21,8 @@ export enum CryptoFormView {
 export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   const [modalView, setModalView] = useState<CryptoFormView>(CryptoFormView.Input)
   const { onUsersIp } = useBuyCryptoActionHandlers()
-  useDefaultsFromURLSearch()
+  const { address } = useAccount()
+  useDefaultsFromURLSearch(address)
   const buyCryptoState = useBuyCryptoState()
   const {
     typedValue,

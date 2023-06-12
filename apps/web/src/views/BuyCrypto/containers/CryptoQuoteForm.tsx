@@ -4,8 +4,9 @@ import { FormHeader } from './FormHeader'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '../index'
 // eslint-disable-next-line import/no-cycle
-import { FormQuote } from './FormQuote'
 import { ProviderQoute } from '../hooks/usePriceQuoter'
+import { FormContainer } from '../components/FormContainer'
+import Accordion from '../components/AccordianDropdown/Accordian'
 
 export function CryptoQuoteForm({
   setModalView,
@@ -45,7 +46,6 @@ export function CryptoQuoteForm({
 
   return (
     <>
-      {/* onRefresh={refresh} refreshDisabled={!tradeLoaded || syncing || !isStale} */}
       <FormHeader
         refreshDisabled={false}
         onRefresh={() => null}
@@ -53,7 +53,9 @@ export function CryptoQuoteForm({
         subTitle={`Quotes are updated every ${timer} seconds.`}
         backTo={() => setModalView(CryptoFormView.Input)}
       />
-      <FormQuote buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} fetching={fetching} />
+      <FormContainer>
+        <Accordion buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} fetching={fetching} />
+      </FormContainer>
     </>
   )
 }

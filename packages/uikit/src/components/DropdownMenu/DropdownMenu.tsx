@@ -13,7 +13,6 @@ import {
   StyledDropdownMenuItemContainer,
 } from "./styles";
 import { DropdownMenuItemType, DropdownMenuProps } from "./types";
-import { Button } from "../Button";
 
 const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   children,
@@ -130,11 +129,6 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                         {...itemProps}
                       >
                         {MenuItemContent}
-                        {label === "Buy Crypto" ? (
-                          <Button height="25px" variant="secondary" px="8px">
-                            New
-                          </Button>
-                        ) : null}
                       </DropdownMenuItem>
                     )}
                     {type === DropdownMenuItemType.EXTERNAL_LINK && (

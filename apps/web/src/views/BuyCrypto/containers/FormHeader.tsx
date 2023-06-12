@@ -9,14 +9,5 @@ export const FormHeader: FC<{
   subTitle: string
   backTo?: any
 }> = ({ title, subTitle, backTo }) => {
-  // const { t } = useTranslation()
-
-  // const handleRefresh = useCallback(() => {
-  //   if (refreshDisabled) {
-  //     return
-  //   }
-  //   onRefresh()
-  // }, [onRefresh, refreshDisabled])
-
   return <AppHeader backTo={backTo} shouldCenter title={title} subtitle={subTitle} noConfig />
 }

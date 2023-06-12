@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ChainId, ERC20Token, OnRampCurrency } from '@pancakeswap/sdk'
-import { Currency, FiatOnRampCurrency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
+import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
@@ -9,7 +9,6 @@ import { useMemo } from 'react'
 import { useToken as useToken_ } from 'wagmi'
 import {
   combinedCurrenciesMapFromActiveUrlsAtom,
-  combinedFiatCurrenciesMapFromActiveUrlsAtom,
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
   useUnsupportedTokenList,
@@ -73,11 +72,6 @@ export function useAllOnRampTokens(): { [address: string]: OnRampCurrency } {
   return useMemo(() => {
     return mapWithoutUrlsAllChains(tokenMap)
   }, [tokenMap])
-}
-
-export function useAllFiatCurrencies(): { [address: string]: FiatOnRampCurrency } {
-  const tokenMap = useAtomValue(combinedFiatCurrenciesMapFromActiveUrlsAtom)
-  return tokenMap
 }
 
 /**
@@ -195,30 +189,12 @@ export function useOnRampToken(tokenAddress?: string): OnRampCurrency | undefine
   }, [token, chainId, address])
 }
 
-export function useOnRampFiatCurrency(tokenAddress?: string): FiatOnRampCurrency | undefined {
-  const tokens = useAllFiatCurrencies()
-  const address = isAddress(tokenAddress)
-
-  const token: FiatOnRampCurrency | undefined = tokens[tokenAddress]
-
-  return useMemo(() => {
-    if (token) return token
-    if (!address) return undefined
-    return undefined
-  }, [token, address])
-}
-
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
   const token = useToken(isNative ? undefined : currencyId)
   return isNative ? native : token
-}
-
-export function useFiatCurrency(currencyId: string | undefined): FiatOnRampCurrency | null | undefined {
-  const token = useOnRampFiatCurrency(currencyId)
-  return token
 }
 
 export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | OnRampCurrency | null | undefined {

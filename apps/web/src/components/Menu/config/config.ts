@@ -54,6 +54,7 @@ const config: (
         {
           label: t('Buy Crypto'),
           href: '/buy-crypto',
+          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Swap'),
@@ -96,6 +97,7 @@ const config: (
         {
           label: t('Buy Crypto'),
           href: '/buy-crypto',
+          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Farms'),
@@ -123,6 +125,7 @@ const config: (
         {
           label: t('Buy Crypto'),
           href: '/buy-crypto',
+          status: { text: t('New'), color: 'success' },
         },
         {
           label: t('Trading Reward'),

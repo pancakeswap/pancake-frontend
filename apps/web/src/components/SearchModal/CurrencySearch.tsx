@@ -11,13 +11,8 @@ import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { useAudioPlay } from '@pancakeswap/utils/user'
 import { isAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import {
-  useAllFiatCurrencies,
-  useAllOnRampTokens,
-  useAllTokens,
-  useIsUserAddedToken,
-  useToken,
-} from '../../hooks/Tokens'
+import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { useAllOnRampTokens, useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
@@ -110,7 +105,7 @@ function CurrencySearch({
 
   const allTokens = useAllTokens()
   const ONRampTokens = useAllOnRampTokens()
-  const onRampCurrencies = useAllFiatCurrencies()
+  const onRampCurrencies = fiatCurrencyMap
   const tokenList = mode === 'onramp-input' ? onRampCurrencies : mode === 'onramp-output' ? ONRampTokens : allTokens
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)

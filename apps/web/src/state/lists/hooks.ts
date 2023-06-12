@@ -18,12 +18,10 @@ import { EMPTY_LIST } from '@pancakeswap/tokens'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { FiatOnRampCurrency } from '@pancakeswap/swap-sdk-core'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import ONRAMP_TOKEN_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-currency-list.json'
-import ONRAMP_FIAT_CURRENCIES_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-fiat-currency-list.json'
 import { listsAtom } from './lists'
 import { isAddress } from '../../utils'
 
@@ -66,17 +64,8 @@ const combineTokenMapsWithOnRamp = () => {
   return onRampTokens
 }
 
-const combineFiatCurrencyMapsWithOnRamp = () => {
-  const onRampCurrencies = listToFiatCurrencyMap(ONRAMP_FIAT_CURRENCIES_LIST as any)
-  return onRampCurrencies
-}
-
 export const combinedCurrenciesMapFromActiveUrlsAtom = atom(() => {
   return combineTokenMapsWithOnRamp()
-})
-
-export const combinedFiatCurrenciesMapFromActiveUrlsAtom = atom(() => {
-  return combineFiatCurrencyMapsWithOnRamp()
 })
 
 const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]): any => {
@@ -197,27 +186,6 @@ export function listToTokenMap(list: TokenList, key?: string): TokenAddressMap {
 
   listCache?.set(list, tokenAddressMap)
   return tokenAddressMap
-}
-
-export function listToFiatCurrencyMap(list: any): { [chainId: string]: FiatOnRampCurrency } {
-  // const result = listCache?.get(list)
-  // if (result) return result
-
-  const tokenMap: FiatOnRampCurrency[] = uniqBy(
-    list.tokens,
-    (tokenInfo: any) => `${tokenInfo.symbol}#${tokenInfo.name}`,
-  )
-    .map((tokenInfo: any) => {
-      const { code } = tokenInfo as any
-      return code ? new FiatOnRampCurrency({ ...tokenInfo, code }) : null
-    })
-    .filter(Boolean)
-
-  return tokenMap.reduce((acc, item) => {
-    // eslint-disable-next-line no-param-reassign
-    acc[item.symbol] = item
-    return acc
-  }, {})
 }
 
 // -------------------------------------
