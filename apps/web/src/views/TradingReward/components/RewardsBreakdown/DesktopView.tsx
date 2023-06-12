@@ -18,17 +18,25 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
     <Box>
       <Table width="100%">
         <thead style={{ background: theme.card.background }}>
-          <tr style={{ display: 'table', width: '100%' }}>
-            <Th textAlign={['left']}>{t('Trading Pair')}</Th>
-            <Th textAlign={['left']}>{t('Your Volume')}</Th>
-            <Th textAlign={['left']}>{t('Your Trading Fee')}</Th>
-            <Th textAlign={['right']}>{t('Reward Earned')}</Th>
+          <tr style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}>
+            <Th width="40%" textAlign={['left']}>
+              {t('Trading Pair')}
+            </Th>
+            <Th width="20%" textAlign={['left']}>
+              {t('Your Volume')}
+            </Th>
+            <Th width="20%" textAlign={['left']}>
+              {t('Your Trading Fee')}
+            </Th>
+            <Th width="20%" textAlign={['right']}>
+              {t('Reward Earned')}
+            </Th>
           </tr>
         </thead>
         <tbody style={{ display: 'block', overflowY: 'auto', maxHeight: '1250px' }}>
           <>
             {isFetching ? (
-              <tr style={{ display: 'table', width: '100%' }}>
+              <tr style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}>
                 <Td colSpan={4} textAlign="center">
                   {t('Loading...')}
                 </Td>
@@ -36,7 +44,7 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
             ) : (
               <>
                 {list.pairs.length === 0 ? (
-                  <tr style={{ display: 'table', width: '100%' }}>
+                  <tr style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}>
                     <Td colSpan={4} textAlign="center">
                       {t('No results')}
                     </Td>
@@ -44,8 +52,8 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
                 ) : (
                   <>
                     {list.pairs.map((pair) => (
-                      <tr key={pair.address} style={{ display: 'table', width: '100%' }}>
-                        <Td>
+                      <tr key={pair.address} style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}>
+                        <Td width="40%">
                           <PairInfo
                             chainId={pair.chainId}
                             isReady={!isFetching}
@@ -55,17 +63,17 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
                             feeAmount={pair.feeAmount}
                           />
                         </Td>
-                        <Td>
+                        <Td width="20%">
                           <Text color={pair.yourVolume > 0 ? 'text' : 'textSubtle'}>
                             {`$${formatNumber(pair.yourVolume, 0, 2)}`}
                           </Text>
                         </Td>
-                        <Td>
+                        <Td width="20%">
                           <Text color={Number(pair.yourTradingFee) > 0 ? 'text' : 'textSubtle'}>
                             {`$${formatNumber(Number(pair.yourTradingFee))}`}
                           </Text>
                         </Td>
-                        <Td textAlign="right">
+                        <Td textAlign="right" width="20%">
                           <Text color={pair.rewardEarned > 0 ? 'text' : 'textSubtle'}>
                             {`$${formatNumber(pair.rewardEarned)}`}
                           </Text>
