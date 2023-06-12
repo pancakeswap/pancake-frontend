@@ -9,6 +9,7 @@
   "type": "module",
   "peerDependencies": {
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",

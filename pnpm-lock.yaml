@@ -1363,6 +1363,9 @@ importers:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
+      '@pancakeswap/v3-sdk':
+        specifier: workspace:*
+        version: link:../v3-sdk
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
