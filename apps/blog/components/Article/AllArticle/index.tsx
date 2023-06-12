@@ -12,7 +12,7 @@ import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
 import SkeletonArticle from 'components/SkeletonArticle'
 import { storageLangMap } from 'utils/getLocalStorageLanguageCode'
-import { getLanguageCodeFromLS } from 'utils/getLanguageCodeFromLS'
+import { getLanguageCodeFromLS, BLOG_LS_KEY } from 'utils/getLanguageCodeFromLS'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -118,6 +118,15 @@ const AllArticle = () => {
     setCurrentPage(value)
   }
 
+  const handleSwitchLanguage = (language: string) => {
+    const blogCodeFromStorage = localStorage.getItem(BLOG_LS_KEY)
+    if (blogCodeFromStorage !== language) {
+      localStorage.setItem(BLOG_LS_KEY, language)
+    }
+
+    setLanguageOption(language)
+  }
+
   return (
     <StyledArticleContainer id="all">
       <Text
@@ -152,7 +161,7 @@ const AllArticle = () => {
                     title={t('Languages')}
                     value={languageOption}
                     options={languageItems}
-                    setOption={setLanguageOption}
+                    setOption={handleSwitchLanguage}
                   />
                 </Box>
               )}
