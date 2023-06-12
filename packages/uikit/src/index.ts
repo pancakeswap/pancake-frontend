@@ -25,5 +25,7 @@ export * from "./theme";
 // AnimationToolkit
 export * from "./util/animationToolkit";
 
+export * from "./util/getChartCrosshairHandler";
+
 // Providers
 export * from "./Providers";

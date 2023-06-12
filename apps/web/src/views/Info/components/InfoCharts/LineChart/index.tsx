@@ -7,6 +7,7 @@ import { darken } from 'polished'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
+import { getChartCrosshairHandler } from '@pancakeswap/uikit'
 
 export type LineChartProps = {
   data: any[]
@@ -109,31 +110,15 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
 
     chart.timeScale().fitContent()
 
-    chart.subscribeCrosshairMove((param) => {
-      if (newSeries && param) {
-        const timestamp = param.time as number
-        if (!timestamp) return
-        const now = new Date(timestamp)
-        const time = `${now.toLocaleString(locale, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          timeZone: 'UTC',
-        })} (UTC)`
-        // @ts-ignore
-        const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined
-        if (setHoverValue) setHoverValue(parsed)
-        if (setHoverDate) setHoverDate(time)
-      } else {
-        if (setHoverValue) setHoverValue(undefined)
-        if (setHoverDate) setHoverDate(undefined)
-      }
-    })
+    const handleCrosshair = getChartCrosshairHandler(newSeries, locale, setHoverDate, setHoverValue)
+
+    chart.subscribeCrosshairMove(handleCrosshair)
+    chart.subscribeClick(handleCrosshair)
 
     // eslint-disable-next-line consistent-return
     return () => {
+      chart.unsubscribeClick(handleCrosshair)
+      chart.unsubscribeCrosshairMove(handleCrosshair)
       chart.remove()
     }
   }, [isDark, locale, transformedData, setHoverValue, setHoverDate])

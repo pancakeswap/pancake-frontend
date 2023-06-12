@@ -4,6 +4,7 @@ import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-cha
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
+import { getChartCrosshairHandler } from "../../util/getChartCrosshairHandler";
 
 export enum PairDataTimeWindowEnum {
   DAY,
@@ -148,31 +149,15 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
 
     chart.timeScale().fitContent();
 
-    chart.subscribeCrosshairMove((param) => {
-      if (newSeries && param) {
-        const timestamp = param.time as number;
-        if (!timestamp) return;
-        const now = new Date(timestamp * 1000);
-        const time = `${now.toLocaleString(locale, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: "UTC",
-        })} (UTC)`;
-        // @ts-ignore
-        const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined;
-        if (setHoverValue) setHoverValue(parsed);
-        if (setHoverDate) setHoverDate(time);
-      } else {
-        if (setHoverValue) setHoverValue(undefined);
-        if (setHoverDate) setHoverDate(undefined);
-      }
-    });
+    const handleCrosshair = getChartCrosshairHandler(newSeries, locale, setHoverDate, setHoverValue);
+
+    chart.subscribeCrosshairMove(handleCrosshair);
+    chart.subscribeClick(handleCrosshair);
 
     // eslint-disable-next-line consistent-return
     return () => {
+      chart.unsubscribeClick(handleCrosshair);
+      chart.unsubscribeCrosshairMove(handleCrosshair);
       chart.remove();
     };
   }, [
