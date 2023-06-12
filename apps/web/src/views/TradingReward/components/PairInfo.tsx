@@ -64,7 +64,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
               {lpSymbol}
             </Text>
           </Flex>
-          <Flex ml={['auto', 'auto', 'auto', 'auto', '0px']}>
+          <Flex ml={['auto', 'auto', 'auto', 'auto', '4px']}>
             <Flex>
               <V3FeeTag feeAmount={feeAmount} scale="sm" />
               <V3Tag ml="4px" scale="sm" />

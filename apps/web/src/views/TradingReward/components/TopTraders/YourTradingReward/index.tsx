@@ -88,7 +88,6 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
   & :nth-child(1) {
     top: 8%;
     left: 0%;
-    animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
   }
   & :nth-child(2) {
     bottom: 20%;

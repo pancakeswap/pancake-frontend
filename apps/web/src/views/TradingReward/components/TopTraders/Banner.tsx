@@ -28,13 +28,11 @@ const Decorations = styled(Box)`
   & :nth-child(1) {
     left: 0%;
     bottom: 25%;
-    animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
   & :nth-child(2) {
     left: 3%;
     bottom: 50%;
-    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
   }
 
   & :nth-child(3) {
@@ -58,6 +56,13 @@ const Decorations = styled(Box)`
   & :nth-child(6) {
     right: 5%;
     bottom: 30%;
+    animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
+  }
+
+  & :nth-child(7) {
+    top: 3%;
+    left: 57%;
+    transformY: (-50%);
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
@@ -87,6 +92,7 @@ const TopTradersBanner = () => {
         <img src="/images/trading-reward/top-traders-4.png" width="23px" height="23px" alt="top-traders-4" />
         <img src="/images/trading-reward/top-traders-5.png" width="21px" height="21px" alt="top-traders-5" />
         <img src="/images/trading-reward/top-traders-2.png" width="67px" height="67px" alt="top-traders-6" />
+        <img src="/images/trading-reward/top-traders-6.png" width="156px" height="124px" alt="top-traders-7" />
       </Decorations>
       <Flex
         position="relative"
