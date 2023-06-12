@@ -164,7 +164,10 @@ export function getLiquidityByAmountsAndPrice({
   tickLower,
   sqrtRatioX96,
 }: GetLiquidityOptions) {
-  const isToken0 = amountA.currency.wrapped.sortsBefore(amountB.currency.wrapped)
+  const isToken0 =
+    amountA.currency.wrapped.address !== amountB.currency.wrapped.address
+      ? amountA.currency.wrapped.sortsBefore(amountB.currency.wrapped)
+      : true
   const [inputAmount0, inputAmount1] = isToken0
     ? [amountA.quotient, amountB.quotient]
     : [amountB.quotient, amountA.quotient]
