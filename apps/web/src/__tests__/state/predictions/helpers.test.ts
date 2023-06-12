@@ -55,15 +55,15 @@ describe('transformUserResponse', () => {
 
   it('transforms user response correctly', () => {
     expect(transformUserResponse('BNB')(userResponse)).toEqual({
-      averageBNB: 0.0101753905736882928,
+      averageBNB: 0.010175390573688292,
       block: 9316304,
       createdAt: 1626767110,
       id: '0x54f292760e248cfe64191c7d85260f9ddaa01f2b',
-      netBNB: 0.057914277602874121,
-      totalBNB: 0.050876952868441464,
-      totalBNBBear: 0.050876952868441464,
+      netBNB: 0.05791427760287412,
+      totalBNB: 0.05087695286844146,
+      totalBNBBear: 0.05087695286844146,
       totalBNBBull: 0,
-      totalBNBClaimed: 0.119668183339757049,
+      totalBNBClaimed: 0.11966818333975705,
       totalBets: 5,
       totalBetsBear: 3,
       totalBetsBull: 2,
