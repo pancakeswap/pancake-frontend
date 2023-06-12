@@ -671,6 +671,9 @@ importers:
       '@pancakeswap/pools':
         specifier: workspace:*
         version: link:../../packages/pools
+      '@pancakeswap/position-managers':
+        specifier: workspace:*
+        version: link:../../packages/position-managers
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../../packages/swap-sdk
@@ -1345,6 +1348,49 @@ importers:
       vitest:
         specifier: ^0.27.2
         version: 0.27.2
+
+  packages/position-managers:
+    dependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
+      '@pancakeswap/token-lists':
+        specifier: workspace:*
+        version: link:../token-lists
+      '@pancakeswap/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
+      bignumber.js:
+        specifier: ^9.0.0
+        version: 9.1.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/lodash':
+        specifier: ^4.14.168
+        version: 4.14.186
+      typechain:
+        specifier: ^6.1.0
+        version: 6.1.0(typescript@5.1.3)
+      typescript:
+        specifier: ^5.1.3
+        version: 5.1.3
+      viem:
+        specifier: ^1.0.7
+        version: 1.0.7(typescript@5.1.3)(zod@3.21.4)
+      vitest:
+        specifier: ^0.27.2
+        version: 0.27.2
+      wagmi:
+        specifier: ^1.2.0
+        version: 1.2.0(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.0.7)
 
   packages/smart-router:
     dependencies:
