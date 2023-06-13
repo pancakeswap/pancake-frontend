@@ -2,7 +2,7 @@ import { Text, Link } from '@pancakeswap/uikit'
 import { Container } from 'pages/terms-of-service'
 import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 
-const Agreement = () => {
+const UsAgreement = () => {
   return (
     <AffiliatesProgramLayout>
       <Container>
@@ -64,27 +64,16 @@ const Agreement = () => {
           trade is effectively executed) of less than 10%
         </Text>
 
-        <Text as="h3">3. Commissions for perpetual trades</Text>
+        <Text as="h3">3. Determination and Calculation of Commissions</Text>
         <Text as="p">
-          3.1 Subject to this Agreement (and especially Clause 6.2 ), you are eligible for commissions at a{' '}
-          <strong>20</strong>% rate on trading fees paid by your Referrals on perpetual trades, limited to perpetual
-          trades on the BNB Smart Chain and Ethereum chain only.
-        </Text>
-        <Text as="p">
-          3.2 For avoidance of doubt, the trading fees on perpetual trades (or any Referral’s position which may incur
-          liquidation fees) do not include any liquidation fees for liquidating your Referrals’ position.
-        </Text>
-
-        <Text as="h3">4. Determination and Calculation of Commissions</Text>
-        <Text as="p">
-          4.1 We will provide you with a unique referral link which will allow our system to track your Referrals and
+          3.1 We will provide you with a unique referral link which will allow our system to track your Referrals and
           their trading activities. We will only pay commissions for Referrals who have signed up through your unique
           referral link. We will not pay commissions if someone says they signed up through you but such a sign up was
           not done through the referral link.
         </Text>
-        <Text as="p">4.2 All commissions will be paid out in CAKE tokens.</Text>
+        <Text as="p">3.2 All commissions will be paid out in CAKE tokens.</Text>
         <Text as="p">
-          4.3 All commissions are calculated upon the completion of every on-chain transaction and denominated in U.S.
+          3.3 All commissions are calculated upon the completion of every on-chain transaction and denominated in U.S.
           dollars as follows. This means that:
         </Text>
         <Text as="p">
@@ -95,51 +84,51 @@ const Agreement = () => {
         </Text>
         <Text as="p">
           (b) At or around the time that the commissions are paid out to you, using the USD value calculated at Clause
-          4.3(a) , we will calculate your commissions in CAKE tokens using the prevailing USD price of CAKE tokens at
+          3.3(a) , we will calculate your commissions in CAKE tokens using the prevailing USD price of CAKE tokens at
           that time.
         </Text>
-        <Text as="p">4.4 In calculating your commissions, we reserve the right to determine the:</Text>
+        <Text as="p">3.4 In calculating your commissions, we reserve the right to determine the:</Text>
         <Text as="p">
           (a) prevailing USD price of the Trading Fees Denomination and the CAKE tokens by reference to the spot price
           on a centralised exchange, the exchange rate in a liquidity pool, or a data oracle in our sole discretion; and
         </Text>
         <Text as="p">(b) exact timing which the prevailing price is taken at.</Text>
         <Text as="p">
-          4.5 Our system will generate a report of the commissions that you have earn on a dashboard which we will
+          3.5 Our system will generate a report of the commissions that you have earnt on a dashboard which we will
           provide you access with. In the absence of manifest error, the report shall serve as conclusive evidence of
-          the commissions that you have earn (subject to this Agreement).
+          the commissions that you have earnt (subject to this Agreement).
         </Text>
         <Text as="p">
-          4.6 You may request to redeem your commissions once a month, subject to changes made in our sole discretion,
+          3.6 You may request to redeem your commissions once a month, subject to changes made in our sole discretion,
           with notice to you. (e.g., We may decide to allow you to redeem commissions earlier than once a month, or in
           cases of technical difficulties, we may delay your redemption request and release commissions beyond a one
           month period.)
         </Text>
         <Text as="p">
-          4.7 Redemptions are done on a monthly basis, subject to changes made in our sole discretion, with notice to
+          3.7 Redemptions are done on a monthly basis, subject to changes made in our sole discretion, with notice to
           you – i.e., you may only request to redeem commissions earnt in the previous calendar month (or for an earlier
           time period).
         </Text>
         <Text as="p">
-          4.8 You shall be responsible for paying all taxes, charges, levies, assessments and other fees of any kind
+          3.8 You shall be responsible for paying all taxes, charges, levies, assessments and other fees of any kind
           imposed on your involvement in this Agreement.
         </Text>
         <Text as="p">
-          4.9 If we are required by applicable laws to withhold taxes on any payments due to you, or to account for any
+          3.9 If we are required by applicable laws to withhold taxes on any payments due to you, or to account for any
           sales tax / VAT / GST on payments due to you, we reserve the right to do so.
         </Text>
         <Text as="p">
-          4.10 For the avoidance of doubt, commissions are accrued only when the following conditions are met:
+          3.10 For the avoidance of doubt, commissions are accrued only when the following conditions are met:
         </Text>
         <Text as="p">(a) The Referral signs up using your unique referral link;</Text>
         <Text as="p">(b) The Referral pays the trading fees; and</Text>
         <Text as="p">(c) We receive the trading fees.</Text>
         <Text as="p">
-          4.11 For avoidance of doubt, in the event of termination of this Agreement, you will not be eligible for any
+          3.11 For avoidance of doubt, in the event of termination of this Agreement, you will not be eligible for any
           further commissions (i.e., commissions will cease to accrue), from the date of termination of this Agreement.
         </Text>
 
-        <Text as="h3">5. Forfeiture of Commissions and suspension</Text>
+        <Text as="h3">4. Forfeiture of Commissions and suspension</Text>
         <Text as="p">
           If in our reasonable view, you breach any term of this Agreement (especially Clause 16 (Prohibited
           Activities)), with respect to commissions that accrued after the time of the breach, we reserve the right to
@@ -154,15 +143,15 @@ const Agreement = () => {
           measures to cease your involvement with the Program.
         </Text>
 
-        <Text as="h3">6. Unilateral variation and changes</Text>
+        <Text as="h3">5. Unilateral variation and changes</Text>
         <Text as="p">
-          6.1 Provided that we do not prejudice any commissions already accrued by you, we reserve the right to
+          5.1 Provided that we do not prejudice any commissions already accrued by you, we reserve the right to
           unilaterally vary upon notice to you at any time, the following:
         </Text>
         <Text as="p">(a) commission rates, terms and eligibility of the commissions; and/or</Text>
         <Text as="p">(b) rules of the Affiliate Program.</Text>
         <Text as="p">
-          6.2 Without limiting the scope of our discretion in Clause 6.1 , we may elect to revise the commission rates,
+          5.2 Without limiting the scope of our discretion in Clause 5.1 , we may elect to revise the commission rates,
           terms and eligibility of the commissions on a monthly basis considering circumstances including but not
           limited to:
         </Text>
@@ -170,45 +159,39 @@ const Agreement = () => {
         <Text as="p">(b) unexpected trading volumes or activity by the Referrals; and/or</Text>
         <Text as="p">(c) unsuitable trading profile of the Referrals.</Text>
         <Text as="p">
-          6.3 An electronic message by us to any of the means of communication (i.e., email address, telegram) provided
+          5.3 An electronic message by us to any of the means of communication (i.e., email address, telegram) provided
           by you shall constitute valid notice.
         </Text>
         <Text as="p">
-          6.4 We reserve the right to make changes to, vary, or even discontinue, the services to the Referrals (and/or
-          to you) at our discretion, at any time (e.g., the swap or perpetual services). For the avoidance of doubt, the
-          trading fees charged on the services, or any platforms or providers used in the course of providing the
-          services may be changed or varied.
+          5.4 We reserve the right to make changes to, vary, or even discontinue, the services to the Referrals (and/or
+          to you) at our discretion, at any time (e.g., the swap services). For the avoidance of doubt, the trading fees
+          charged on the services, or any platforms or providers used in the course of providing the services may be
+          changed or varied.
         </Text>
 
-        <Text as="h3">7. Sharing your Commissions with your Referrals</Text>
+        <Text as="h3">6. Sharing your Commissions with your Referrals</Text>
         <Text as="p">
-          7.1 With respect to commissions received under Clause 2 (Commissions for swap trades), you may choose to offer
+          6.1 With respect to commissions received under Clause 2 (Commissions for swap trades), you may choose to offer
           a share of your commissions to your Referrals, using the system provided by us. The Referral may receive up to
-          a maximum of 100% of the commissions that you have earn from them.
-        </Text>
-        <Text as="p">7.2 With respect to commissions received under Clause 3 (Commissions for perpetual trades):</Text>
-        <Text as="p">(a) you may not offer a share of your commissions to your Referrals; and</Text>
-        <Text as="p">
-          (b) Subject to this Agreement, the Referral is eligible to receive an equal amount of commissions that are
-          received by you. This is done automatically by our system and no action is required on your part.
+          a maximum of <strong>100</strong>% of the commissions that you have earn from them.
         </Text>
         <Text as="p">
-          7.3 You may not privately share (or make any arrangements to share) your commissions with your Referrals. Any
+          6.2 You may not privately share (or make any arrangements to share) your commissions with your Referrals. Any
           sharing of commissions must be done through the system provided by us.
         </Text>
         <Text as="p">
-          7.4 For avoidance of doubt, in the event of termination of this Agreement, the Referral will not be eligible
+          6.3 For avoidance of doubt, in the event of termination of this Agreement, the Referral will not be eligible
           for any further commissions (i.e., commissions will cease to accrue), from the date of termination of this
           Agreement.
         </Text>
 
-        <Text as="h3">8. Performance</Text>
+        <Text as="h3">7. Performance</Text>
         <Text as="p">
-          8.1 Once you have signed up for the Program, you will be provided with a URL affiliate link that must be used
+          7.1 Once you have signed up for the Program, you will be provided with a URL affiliate link that must be used
           to identify you when placing a link from your social media channels. It is your responsibility to ensure each
           such link is correctly formatted.
         </Text>
-        <Text as="p">8.2 You will be solely responsible for, and incur costs at your own expense for:</Text>
+        <Text as="p">7.2 You will be solely responsible for, and incur costs at your own expense for:</Text>
         <Text as="p">
           (a) the development, operation, and maintenance of your social media channels and for all materials that
           appear on your social media channel; and
@@ -218,17 +201,18 @@ const Agreement = () => {
           all applicable copyright, trademark, and other laws.
         </Text>
         <Text as="p">
-          8.3 Any statements you make about PancakeSwap must reflect your honest opinions, beliefs, or experiences and
+          7.3 Any statements you make about PancakeSwap must reflect your honest opinions, beliefs, or experiences and
           must not be false, misleading, or unsupported.
         </Text>
+        <Text as="p">7.4 There is no limit on the number of Referrals that you may invite.</Text>
 
-        <Text as="h3">9. Registration</Text>
+        <Text as="h3">8. Registration</Text>
         <Text as="p">
           You agree to provide and maintain accurate, complete, and up-to-date information when registering for the
           Program.
         </Text>
 
-        <Text as="h3">10. Affiliate’s Warranties</Text>
+        <Text as="h3">9. Affiliate’s Warranties</Text>
         <Text as="p">You warrant, represent, and undertake to PancakeSwap that:</Text>
         <Text as="p">(a) If you are contracting in your personal capacity, you are at least 18 years of age;</Text>
         <Text as="p">
@@ -247,8 +231,8 @@ const Agreement = () => {
           (e) Any blockchain address or payment account provided by you to receive payments are owned solely by you.
         </Text>
 
-        <Text as="h3">11. Prohibited Jurisdictions</Text>
-        <Text as="p">11.1 You may not participate in the Program if:</Text>
+        <Text as="h3">10. Prohibited Jurisdictions</Text>
+        <Text as="p">10.1 You may not participate in the Program if:</Text>
         <Text as="p">
           (a) there are regulatory and/or legal prohibitions imposed on cryptocurrencies (or the marketing of
           cryptocurrencies) in your country of residence;
@@ -262,7 +246,7 @@ const Agreement = () => {
           citizens in any of the Prohibited Jurisdictions.
         </Text>
 
-        <Text as="h3">12. Relationship of the Parties</Text>
+        <Text as="h3">11. Relationship of the Parties</Text>
         <Text as="p">
           You agree that this Agreement creates the relationship of service recipient and independent contractor, and
           not that of employer and employee. You will not be treated as an employee of PancakeSwap for any purpose.
@@ -272,35 +256,35 @@ const Agreement = () => {
           undertake not to hold yourself out as an employee, agent or authorised representative of PancakeSwap.
         </Text>
 
-        <Text as="h3">13. No Joint Publicity</Text>
+        <Text as="h3">12. No Joint Publicity</Text>
         <Text as="p">
           You may not claim that any materials are created jointly between you and PancakeSwap, or attribute any
           materials created or issued by you (including press releases) to PancakeSwap.
         </Text>
 
-        <Text as="h3">14. Term and Termination</Text>
+        <Text as="h3">13. Term and Termination</Text>
         <Text as="p">
-          14.1 PancakeSwap reserves the right to terminate this Agreement in its entirety with or without cause,
+          13.1 PancakeSwap reserves the right to terminate this Agreement in its entirety with or without cause,
           effective immediately with written notice of termination to you (for the avoidance of doubt, an email to the
           email address provided by you shall constitute written notice). Upon the termination of this Agreement for any
           reason, you shall immediately cease use of (and remove from your site) all links to the PancakeSwap website
           and all images of PancakeSwap and other materials provided under the Program.
         </Text>
         <Text as="p">
-          14.2 PancakeSwap, in its sole discretion, reserves the right to suspend or terminate your account and refuse
+          13.2 PancakeSwap, in its sole discretion, reserves the right to suspend or terminate your account and refuse
           any and all current or future use of the Program, or any other PancakeSwap service, for any reason and at any
           time. Such termination will result in the deactivation or deletion of your Affiliate Account.
         </Text>
-        <Text as="p">14.3 PancakeSwap reserves the right to refuse service to anyone for any reason at any time.</Text>
+        <Text as="p">13.3 PancakeSwap reserves the right to refuse service to anyone for any reason at any time.</Text>
 
-        <Text as="h3">15. Indemnification</Text>
+        <Text as="h3">14. Indemnification</Text>
         <Text as="p">
           You shall indemnify PancakeSwap from and against all claims, losses, liabilities, damages, administrative
           fines, costs and expenses (including reasonable attorney’s fees) with respect to any third-party claim arising
           out of your breach of this Agreement.
         </Text>
 
-        <Text as="h3">16. Limits of Liability</Text>
+        <Text as="h3">15. Limits of Liability</Text>
         <Text as="p">
           PancakeSwap and any of PancakeSwap&apos;s officers, directors, employees, shareholders or agents of any of
           them, exclude all liability and responsibility for any amount or kind of loss or damage that may result to you
@@ -310,7 +294,7 @@ const Agreement = () => {
           negligence), contract or otherwise) in connection with this Agreement.
         </Text>
 
-        <Text as="h3">17. Prohibited Activities</Text>
+        <Text as="h3">16. Prohibited Activities</Text>
         <Text as="p">You shall not engage in the following activities:</Text>
         <Text as="p">(a) creating and/or publishing content that is:</Text>
         <Text as="p">
@@ -340,15 +324,28 @@ const Agreement = () => {
           (e) directing or causing existing users or previous users of PancakeSwap Services to create new addresses to
           sign up with your referral link
         </Text>
+        <Text as="p">
+          (f) Conduct marketing or make any representations of any PancakeSwap products and services to users in the
+          Prohibited Jurisdictions listed in the Annex;
+        </Text>
+        <Text as="p">
+          (g) Conduct marketing or make any representations to any user in the United States, in relation to any of the
+          following products or services:
+        </Text>
+        <Text as="p">(i) Any perpetual product or service;</Text>
+        <Text as="p">
+          (ii) Initial Farm Offering (“<strong>IFO</strong>”) of any project;
+        </Text>
+        <Text as="p">(iii) Any Farms, Pools, Lottery, Pottery, NFT product or service.</Text>
 
-        <Text as="h3">18. Marks</Text>
+        <Text as="h3">17. Marks</Text>
         <Text as="p">
           PancakeSwap may provide you with trademarks and/or graphical images that can be used to promote PancakeSwap.
           You may not modify these trademarks and/or images in any way. PancakeSwap reserves the right to change the
           trademarks and/or images at any time without notice.
         </Text>
 
-        <Text as="h3">19. Disclosure of Affiliate relationship</Text>
+        <Text as="h3">18. Disclosure of Affiliate relationship</Text>
         <Text as="p">
           You must include a clear and concise statement to any third parties that you market to that discloses your
           relationship as an Affiliate which is promoting PancakeSwap. For example:
@@ -363,30 +360,30 @@ const Agreement = () => {
           does not require any scrolling to see it, and not be in the form of a pop-up.
         </Text>
 
-        <Text as="h3">20. Rights of third parties</Text>
+        <Text as="h3">19. Rights of third parties</Text>
         <Text as="p">
           A person who is not a party to this Agreement shall not have any rights whatsoever under this Agreement or to
           enforce this Agreement. For the avoidance of doubt, a Referral, even one that receives a share of commissions
           under Clause 7 (Sharing your Commissions with your Referrals) is not a party to this Agreement.
         </Text>
 
-        <Text as="h3">21. Governing law and dispute resolution</Text>
+        <Text as="h3">20. Governing law and dispute resolution</Text>
         <Text as="p">
-          21.1 This Agreement and any dispute or claim (including non-contractual disputes or claims) arising out of or
+          20.1 This Agreement and any dispute or claim (including non-contractual disputes or claims) arising out of or
           in connection with it or its subject matter or formation shall be governed by and construed in accordance with
           the laws of the Republic of Singapore.
         </Text>
         <Text as="p">
-          21.2 Any dispute arising out of or in connection with this contract, including any question regarding its
+          20.2 Any dispute arising out of or in connection with this contract, including any question regarding its
           existence, validity or termination, shall be referred to and finally resolved by arbitration administered by
-          the Singapore International Arbitration Centre (“<strong>SIAC”</strong>) in accordance with the Arbitration
+          the Singapore International Arbitration Centre (“<strong>SIAC</strong>”) in accordance with the Arbitration
           Rules of the Singapore International Arbitration Centre (“<strong>SIAC Rules</strong>”) for the time being in
           force, which rules are deemed to be incorporated by reference in this clause. The seat of the arbitration
           shall be Singapore. The Tribunal shall consist of a sole arbitrator. The language of the arbitration shall be
           English.
         </Text>
         <Text as="p">
-          21.3 In respect of any court proceedings in Singapore commenced under the International Arbitration Act 1994
+          20.3 In respect of any court proceedings in Singapore commenced under the International Arbitration Act 1994
           in relation to the arbitration, the parties agree (a) to commence such proceedings before the Singapore
           International Commercial Court (“<strong>the SICC</strong>”); and (b) in any event, that such proceedings
           shall be heard and adjudicated by the SICC.
@@ -414,6 +411,6 @@ const Agreement = () => {
   )
 }
 
-Agreement.chains = []
+UsAgreement.chains = []
 
-export default Agreement
+export default UsAgreement
