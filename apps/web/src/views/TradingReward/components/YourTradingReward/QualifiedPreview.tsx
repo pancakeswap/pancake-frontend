@@ -86,7 +86,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
 
   // MAX REWARD CAP
   const maxRewardCap = useMemo(() => {
-    return tradingFeeArr.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    return tradingFeeArr?.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0) ?? 0
   }, [tradingFeeArr])
 
   const maxRewardCapCakePrice = useMemo(
