@@ -14,9 +14,9 @@ import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
-  onStake: () => void
-  onUnstake: () => void
-  onHarvest: () => void
+  onStake: () => Promise<void>
+  onUnstake: () => Promise<void>
+  onHarvest: () => Promise<void>
 }
 
 const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContainerChildrenProps => {
@@ -41,7 +41,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       to: masterChefV3Address,
       data: calldata,
       value: hexToBigInt(value),
-      chain: signer.chain,
+      chain: signer?.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
@@ -86,7 +86,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       data: calldata,
       value: hexToBigInt(value),
       account,
-      chain: signer.chain,
+      chain: signer?.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
@@ -140,7 +140,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
           const newTxn = {
             ...txn,
             account,
-            chain: signer.chain,
+            chain: signer?.chain,
             gas: calculateGasMargin(estimate),
           }
 
@@ -198,7 +198,7 @@ export function useFarmsV3BatchHarvest() {
         value: hexToBigInt(value),
         account,
       }
-      const publicClient = getViemClients({ chainId: signer.chain.id })
+      const publicClient = getViemClients({ chainId: signer?.chain?.id })
 
       const resp = await fetchWithCatchTxError(() =>
         publicClient.estimateGas(txn).then((estimate) => {
