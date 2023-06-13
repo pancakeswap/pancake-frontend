@@ -640,7 +640,7 @@ export default function PoolPage() {
                   </Box>
                   <Box width="100%">
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                      {t('Unclaim Fees')}
+                      {t('Unclaimed Fees')}
                     </Text>
                     <AutoRow justifyContent="space-between" mb="8px">
                       <Text fontSize="24px" fontWeight={600}>
