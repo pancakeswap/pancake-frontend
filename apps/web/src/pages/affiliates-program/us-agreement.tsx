@@ -94,9 +94,9 @@ const UsAgreement = () => {
         </Text>
         <Text as="p">(b) exact timing which the prevailing price is taken at.</Text>
         <Text as="p">
-          3.5 Our system will generate a report of the commissions that you have earnt on a dashboard which we will
+          3.5 Our system will generate a report of the commissions that you have earn on a dashboard which we will
           provide you access with. In the absence of manifest error, the report shall serve as conclusive evidence of
-          the commissions that you have earnt (subject to this Agreement).
+          the commissions that you have earn (subject to this Agreement).
         </Text>
         <Text as="p">
           3.6 You may request to redeem your commissions once a month, subject to changes made in our sole discretion,
@@ -106,7 +106,7 @@ const UsAgreement = () => {
         </Text>
         <Text as="p">
           3.7 Redemptions are done on a monthly basis, subject to changes made in our sole discretion, with notice to
-          you – i.e., you may only request to redeem commissions earnt in the previous calendar month (or for an earlier
+          you – i.e., you may only request to redeem commissions earn in the previous calendar month (or for an earlier
           time period).
         </Text>
         <Text as="p">

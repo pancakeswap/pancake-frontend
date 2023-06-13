@@ -117,7 +117,7 @@ const Agreement = () => {
         </Text>
         <Text as="p">
           4.7 Redemptions are done on a monthly basis, subject to changes made in our sole discretion, with notice to
-          you – i.e., you may only request to redeem commissions earnt in the previous calendar month (or for an earlier
+          you – i.e., you may only request to redeem commissions earn in the previous calendar month (or for an earlier
           time period).
         </Text>
         <Text as="p">
