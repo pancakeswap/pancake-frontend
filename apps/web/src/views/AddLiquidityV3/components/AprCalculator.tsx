@@ -31,6 +31,7 @@ import { useAmountsByUsdValue } from '@pancakeswap/uikit/src/widgets/RoiCalculat
 import { batch } from 'react-redux'
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import currencyId from 'utils/currencyId'
+import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { useFarm } from 'hooks/useFarm'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
@@ -162,6 +163,7 @@ export function AprCalculator({
   const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || aprAmountA
   const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || aprAmountB
   const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
+  const inRange = isPoolTickInRange(pool, tickLower, tickUpper)
   const { apr } = useRoi({
     tickLower,
     tickUpper,
@@ -195,7 +197,7 @@ export function AprCalculator({
     [existingPosition, validAmountA, validAmountB, tickUpper, tickLower, sqrtRatioX96],
   )
   const { positionFarmApr, positionFarmAprFactor } = useMemo(() => {
-    if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1) {
+    if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1 || !inRange) {
       return {
         positionFarmApr: '0',
         positionFarmAprFactor: new BigNumber(0),
@@ -224,7 +226,7 @@ export function AprCalculator({
         totalStakedLiquidity: lmPoolLiquidity,
       }),
     }
-  }, [farm, cakePrice, positionLiquidity, amount0, amount1])
+  }, [farm, cakePrice, positionLiquidity, amount0, amount1, inRange])
 
   // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)
