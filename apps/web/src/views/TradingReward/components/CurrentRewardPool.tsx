@@ -104,7 +104,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
 
   const rewardInCake = useRewardInCake({
     timeRemaining,
-    totalEstimateRewardUSD: campaignInfoData.totalEstimateRewardUSD,
+    totalEstimateRewardUSD: campaignInfoData?.totalEstimateRewardUSD ?? 0,
     totalReward,
     cakePriceBusd,
     rewardPrice: currentRewardInfo?.rewardPrice ?? '0',
