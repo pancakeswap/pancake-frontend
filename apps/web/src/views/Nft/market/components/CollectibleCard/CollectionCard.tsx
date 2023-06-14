@@ -42,6 +42,7 @@ const StyledCollectionCard = styled(Card)<{ disabled?: boolean }>`
 `
 
 const StyledImage = styled(Image)`
+  max-height: 125px;
   border-radius: 4px;
 `
 
