@@ -1,18 +1,14 @@
 import Page from 'components/Layout/Page'
 
-import { Header, ControlsContainer, LiveSwitch, ViewSwitch, StakeOnlyToggle, BoosterToggle } from './components'
+import { Header } from './components'
+import { Controls } from './containers'
 
 export function PositionManagers() {
   return (
     <>
       <Header />
       <Page>
-        <ControlsContainer>
-          <ViewSwitch />
-          <StakeOnlyToggle />
-          <BoosterToggle />
-          <LiveSwitch />
-        </ControlsContainer>
+        <Controls />
       </Page>
     </>
   )

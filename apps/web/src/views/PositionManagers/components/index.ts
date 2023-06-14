@@ -1,5 +1,6 @@
 export * from './Header'
-export * from './Controls'
+export * from './ControlsContainer'
 export * from './LiveSwitch'
 export * from './ViewSwitch'
 export * from './Toggles'
+export * from './Filters'
