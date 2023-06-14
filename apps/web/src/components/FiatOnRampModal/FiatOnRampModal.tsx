@@ -102,7 +102,6 @@ const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amoun
     })
 
     const result: FetchResponse = await res.json()
-    console.log(result)
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
@@ -227,7 +226,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           }),
         })
         const signature = await res.json()
-        console.log(signature.urlWithSignature)
         setSig(signature.urlWithSignature)
       } catch (e) {
         setError(e.toString())
@@ -247,7 +245,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           widgetId: 'a5b771fa-87f1-4642-b274-2ea8d09f48cd',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
-          fiatAmount: '40',
+          fiatAmount: amount,
           address: account.address,
           signature: sig,
           height: '650px',

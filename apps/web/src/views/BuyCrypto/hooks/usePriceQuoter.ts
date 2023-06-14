@@ -53,6 +53,19 @@ const calculateQuotesDataBsc = (quote: BscQuote): ProviderQoute => {
   }
 }
 
+const calculateNoQuoteOption = (quote: ProviderResponse): ProviderQoute => {
+  let provider = 'MoonPay'
+  if (quote?.code === 'OPE100000031') provider = 'BinanceConnect'
+  else if (quote?.code === 'ERR_BAD_REQUEST') provider = 'Mercuryo'
+  return {
+    providerFee: 0,
+    networkFee: 0,
+    amount: 0,
+    quote: 0,
+    provider,
+  }
+}
+
 const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: string, userIp: string | null) => {
   const [quotes, setQuotes] = useState<ProviderQoute[]>([])
 
@@ -90,7 +103,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
   }
 
   const fetchQuotes = useCallback(async () => {
-    // if (!userIp) return
+    if (!userIp) return
     try {
       const responsePromises = [
         fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
@@ -104,7 +117,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         fetchMercuryoQuote({
           fiatCurrency: outputCurrency.toUpperCase(),
           cryptoCurrency: inputCurrency.toUpperCase(),
-          fiatAmount: (Number(amount) + 7).toString(),
+          fiatAmount: Number(amount).toString(),
         }),
       ]
       const responses = await Promise.allSettled(responsePromises)
@@ -124,11 +137,13 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
           if (quote?.accountId) return calculateQuotesData(quote as PriceQuotes)
           if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
           if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, inputCurrency)
-          return undefined
+          return calculateNoQuoteOption(quote)
         })
         .filter((item) => typeof item !== 'undefined')
 
       // const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
+      if (combinedData.length > 1)
+        combinedData.sort((a: ProviderQoute, b: ProviderQoute) => (a.amount < b.amount ? 1 : -1))
 
       setQuotes(combinedData)
     } catch (error) {

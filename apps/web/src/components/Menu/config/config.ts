@@ -95,11 +95,6 @@ const config: (
       image: '/images/decorations/pe2.png',
       items: [
         {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-          status: { text: t('New'), color: 'success' },
-        },
-        {
           label: t('Farms'),
           href: '/farms',
         },

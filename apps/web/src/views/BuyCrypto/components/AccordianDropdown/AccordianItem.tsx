@@ -20,7 +20,7 @@ const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string
   const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
   const AssetRate = new BigNumber(quote.quote)
   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
-  return moonPayQuote.toNumber()
+  return moonPayQuote
 }
 
 const calculateBinanceConnectQuoteFromFees = (quote: ProviderQoute) => {
@@ -83,9 +83,28 @@ function AccordionItem({
   }, [active])
 
   let finalQuote = quote.amount
-  if (quote.provider === 'MoonPay') finalQuote = calculateMoonPayQuoteFromFees(quote, buyCryptoState.typedValue)
-  else if (quote.provider === 'BinanceConnect') finalQuote = calculateBinanceConnectQuoteFromFees(quote)
+  // if (quote.provider === 'MoonPay') finalQuote = calculateMoonPayQuoteFromFees(quote, buyCryptoState.typedValue)
+  if (quote.provider === 'BinanceConnect') finalQuote = calculateBinanceConnectQuoteFromFees(quote)
 
+  if (quote.amount === 0) {
+    return (
+      <Flex flexDirection="column">
+        <CryptoCard padding="12px 12px" position="relative" isClicked={false} isDisabled>
+          <RowBetween paddingBottom="20px">
+            <ProviderIcon provider={quote.provider} isDisabled />
+            <Text ml="4px" fontSize="22px" color="textSubtle">
+              No quote
+            </Text>
+          </RowBetween>
+          <RowBetween pt="8px">
+            <Text fontSize="15px" color="textSubtle">
+              this provider does not support the requeste currndy
+            </Text>
+          </RowBetween>
+        </CryptoCard>
+      </Flex>
+    )
+  }
   return (
     <Flex flexDirection="column">
       <CryptoCard
@@ -94,9 +113,10 @@ function AccordionItem({
         onClick={!isActive() ? toogleVisiblity : () => null}
         position="relative"
         isClicked={active}
+        isDisabled={false}
       >
         <RowBetween paddingBottom="20px">
-          <ProviderIcon provider={quote.provider} width="130px" />
+          <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
           <Text ml="4px" fontSize="22px" color="secondary">
             {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
           </Text>

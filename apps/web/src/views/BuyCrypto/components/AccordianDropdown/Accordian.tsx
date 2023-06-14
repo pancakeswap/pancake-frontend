@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 // import { AccordionData } from "../types";
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
@@ -18,7 +18,15 @@ function Accordion({
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
 
-  if (combinedQuotes.length === 0) {
+  const areValidQuotes = useMemo(() => {
+    let res = true
+    combinedQuotes.forEach((quote) => {
+      if (Number(quote.amount) > 0) res = false
+    })
+    return res
+  }, [combinedQuotes])
+
+  if (areValidQuotes) {
     return (
       <FlexGap flexDirection="column" gap="16px">
         <Row paddingBottom="20px">
@@ -45,6 +53,11 @@ function Accordion({
           />
         )
       })}
+      {
+        // !Providers.includes((provider: string) => {
+        //   return <div>{provider} no quotw</div>
+        // })
+      }
     </FlexGap>
   )
 }

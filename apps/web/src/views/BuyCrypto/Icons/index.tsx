@@ -1,12 +1,4 @@
-import styled from 'styled-components'
 import { BinanceConnectIcon, MercuryoSvg, MoonPaySvg } from './Icons'
-
-const UnknownEntry = styled.div`
-  height: 24px;
-  width: 24px;
-  background: #dee0e3;
-  border-radius: 50%;
-`
 
 export const ProviderToLogo: { [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>> } = {
   MoonPay: MoonPaySvg,
@@ -14,9 +6,9 @@ export const ProviderToLogo: { [key: string]: React.FunctionComponent<React.SVGP
   BinanceConnect: BinanceConnectIcon,
 }
 export const ProviderIcon: React.FC<
-  { provider: string } & (React.SVGProps<SVGSVGElement> &
+  { provider: string; isDisabled: boolean } & (React.SVGProps<SVGSVGElement> &
     React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>)
-> = ({ provider }) => {
+> = ({ provider, isDisabled }: any) => {
   const Logo = ProviderToLogo[provider]
-  return Logo ? <Logo /> : <UnknownEntry />
+  return <Logo opacity={isDisabled ? '0.3' : '1'} />
 }
