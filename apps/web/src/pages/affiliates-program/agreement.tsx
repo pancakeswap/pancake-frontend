@@ -105,9 +105,9 @@ const Agreement = () => {
         </Text>
         <Text as="p">(b) exact timing which the prevailing price is taken at.</Text>
         <Text as="p">
-          4.5 Our system will generate a report of the commissions that you have earn on a dashboard which we will
+          4.5 Our system will generate a report of the commissions that you have earnt on a dashboard which we will
           provide you access with. In the absence of manifest error, the report shall serve as conclusive evidence of
-          the commissions that you have earn (subject to this Agreement).
+          the commissions that you have earnt (subject to this Agreement).
         </Text>
         <Text as="p">
           4.6 You may request to redeem your commissions once a month, subject to changes made in our sole discretion,
@@ -117,7 +117,7 @@ const Agreement = () => {
         </Text>
         <Text as="p">
           4.7 Redemptions are done on a monthly basis, subject to changes made in our sole discretion, with notice to
-          you – i.e., you may only request to redeem commissions earn in the previous calendar month (or for an earlier
+          you – i.e., you may only request to redeem commissions earnt in the previous calendar month (or for an earlier
           time period).
         </Text>
         <Text as="p">
@@ -184,7 +184,7 @@ const Agreement = () => {
         <Text as="p">
           7.1 With respect to commissions received under Clause 2 (Commissions for swap trades), you may choose to offer
           a share of your commissions to your Referrals, using the system provided by us. The Referral may receive up to
-          a maximum of 100% of the commissions that you have earn from them.
+          a maximum of 100% of the commissions that you have earnt from them.
         </Text>
         <Text as="p">7.2 With respect to commissions received under Clause 3 (Commissions for perpetual trades):</Text>
         <Text as="p">(a) you may not offer a share of your commissions to your Referrals; and</Text>
