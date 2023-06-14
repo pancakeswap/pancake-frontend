@@ -28,6 +28,7 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import InternalLink from 'components/Links'
+import Image from 'next/image'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg'
@@ -116,7 +117,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               style={{ justifyContent: 'center' }}
             >
               <InternalLink href="/buy-crypto">
-                <BuyCryptoIcon style={{ justifyContent: 'center' }} />
+                <Image src={BuyCryptoIcon} alt="#" style={{ justifyContent: 'center' }} />
               </InternalLink>
             </TooltipText>
             {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}

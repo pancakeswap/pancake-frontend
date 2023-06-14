@@ -59,7 +59,7 @@ export function CurrencyInputPanel({
             pt="12px"
           >
             <NumericalInput
-              error={typeof error === "string" ? Boolean(error) : error}
+              error={Boolean(error)}
               disabled={disabled}
               loading={loading}
               className="token-amount-input"

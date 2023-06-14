@@ -8,6 +8,7 @@ import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ProviderIcon } from 'views/BuyCrypto/Icons'
+import { useTranslation } from '@pancakeswap/localization'
 
 const DropdownWrapper = styled.div`
   width: 100%;
@@ -61,6 +62,7 @@ function AccordionItem({
   quote: ProviderQoute
   fetching: boolean
 }) {
+  const { t } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(105)
   const multiple = false
@@ -100,7 +102,9 @@ function AccordionItem({
           </Text>
         </RowBetween>
         <RowBetween pt="8px">
-          <Text fontSize="15px">{buyCryptoState.INPUT.currencyId} rate</Text>
+          <Text fontSize="15px">
+            {buyCryptoState.INPUT.currencyId} {t('rate')}
+          </Text>
           <Text ml="4px" fontSize="16px">
             = {quote.quote?.toFixed(4)} {buyCryptoState.OUTPUT.currencyId}
           </Text>

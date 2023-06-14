@@ -151,7 +151,7 @@ export default function CurrencyList({
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: any = data[index]
-      const isFiat = Boolean(Object.keys(fiatCurrencyMap).includes(currency.symbol))
+      const isFiat = Boolean(Object.keys(fiatCurrencyMap).includes(currency?.symbol))
 
       // the alternative to making a fiat currency token list
       // with class methods

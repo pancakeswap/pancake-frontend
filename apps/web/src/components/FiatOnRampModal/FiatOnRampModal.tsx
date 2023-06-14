@@ -6,6 +6,7 @@ import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
+import { s } from 'vitest/dist/types-e3c9754d'
 import { useAccount } from 'wagmi'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
@@ -101,6 +102,7 @@ const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amoun
     })
 
     const result: FetchResponse = await res.json()
+    console.log(result)
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
