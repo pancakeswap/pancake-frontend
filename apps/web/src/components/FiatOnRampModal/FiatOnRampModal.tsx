@@ -244,10 +244,10 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: 'e9b08db0-7929-445a-9f23-50223fa260f',
+          widgetId: 'a5b771fa-87f1-4642-b274-2ea8d09f48cd',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
-          fiatAmount: amount,
+          fiatAmount: '40',
           address: account.address,
           signature: sig,
           height: '650px',
