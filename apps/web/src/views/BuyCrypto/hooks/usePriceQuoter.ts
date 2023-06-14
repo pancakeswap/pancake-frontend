@@ -90,7 +90,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
   }
 
   const fetchQuotes = useCallback(async () => {
-    if (!userIp) return
+    // if (!userIp) return
     try {
       const responsePromises = [
         fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
@@ -101,7 +101,11 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
           cryptoNetwork: 'BSC',
           paymentMethod: 'CARD',
         }),
-        fetchMercuryoQuote(outputCurrency, inputCurrency, Number(amount) + 7),
+        fetchMercuryoQuote({
+          fiatCurrency: outputCurrency.toUpperCase(),
+          cryptoCurrency: inputCurrency.toUpperCase(),
+          fiatAmount: (Number(amount) + 7).toString(),
+        }),
       ]
       const responses = await Promise.allSettled(responsePromises)
 
@@ -131,7 +135,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
       console.error('Error fetching price quotes:', error)
       setQuotes([])
     }
-  }, [amount, inputCurrency, outputCurrency, userIp])
+  }, [amount, inputCurrency, outputCurrency])
 
   return { quotes, fetchQuotes, fetchProviderAvailability }
 }
