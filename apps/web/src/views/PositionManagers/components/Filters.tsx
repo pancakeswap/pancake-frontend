@@ -1,9 +1,9 @@
-import { Flex, Text, Select, OptionProps } from '@pancakeswap/uikit'
+import { Flex, Text, Select, OptionProps, SearchInput } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, ChangeEvent } from 'react'
 
-import { useSortBy } from '../hooks'
+import { useSearch, useSortBy } from '../hooks'
 
 export const FilterContainer = styled(Flex).attrs({
   alignItems: 'center',
@@ -73,6 +73,25 @@ export function SortFilter() {
       <ControlStretch>
         <Select defaultOptionIndex={selected} options={options} onOptionChange={handleSortOptionChange} />
       </ControlStretch>
+    </LabelWrapper>
+  )
+}
+
+export function SearchFilter() {
+  const { t } = useTranslation()
+  const [search, setSearch] = useSearch()
+
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value || undefined),
+    [setSearch],
+  )
+
+  return (
+    <LabelWrapper style={{ marginLeft: '1em' }}>
+      <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
+        {t('Search')}
+      </Text>
+      <SearchInput initialValue={search} onChange={onChange} placeholder="Search Managers" />
     </LabelWrapper>
   )
 }

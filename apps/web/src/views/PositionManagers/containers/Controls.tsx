@@ -6,6 +6,7 @@ import {
   BoosterToggle,
   FilterContainer,
   SortFilter,
+  SearchFilter,
 } from '../components'
 
 export function Controls() {
@@ -17,6 +18,7 @@ export function Controls() {
       <LiveSwitch />
       <FilterContainer>
         <SortFilter />
+        <SearchFilter />
       </FilterContainer>
     </ControlsContainer>
   )
