@@ -18,6 +18,8 @@ export function useViewMode() {
         updateQuery(router.asPath, {
           view: viewMode.toLocaleLowerCase(),
         }),
+        '',
+        { scroll: false },
       )
     },
     [router, mode],
