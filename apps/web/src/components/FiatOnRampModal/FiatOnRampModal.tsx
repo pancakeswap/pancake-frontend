@@ -87,7 +87,7 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
+    const res = await fetch(`/api/onramp-url-sign/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -244,10 +244,10 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
+          widgetId: 'e9b08db0-7929-445a-9f23-50223fa260f',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
-          fiatAmount: '40',
+          fiatAmount: amount,
           address: account.address,
           signature: sig,
           height: '650px',
