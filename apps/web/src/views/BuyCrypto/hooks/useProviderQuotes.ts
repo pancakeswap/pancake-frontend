@@ -21,7 +21,7 @@ export async function fetchMercuryoQuote(fiatCurrency: string, cryptoCurrency: s
   // Fetch data from endpoint 2
   const response = await fetch(
     `${MERCURYO_ENDPOINT}?from=${fiatCurrency.toUpperCase()}&to=${cryptoCurrency.toUpperCase()}&amount=${
-      amount + 3
+      amount + 7
     }&widget_id=64d1f9f9-85ee-4558-8168-1dc0e7057ce6`,
     {
       headers: {
@@ -37,7 +37,7 @@ export async function fetchMercuryoQuote(fiatCurrency: string, cryptoCurrency: s
 // for bsc connect we need to fetch our own custom api endpoint as even get requests require
 // sig validation
 export async function fetchBinanceConnectQuote(payload: any) {
-  const response = await fetch('/api/onramp-url-sign/fetch-bsc-connect-quote', {
+  const response = await fetch('https://pcs-onramp-api.com/fetch-bsc-quote', {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

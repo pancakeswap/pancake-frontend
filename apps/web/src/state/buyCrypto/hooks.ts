@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
-import { isAddress } from 'views/V3Info/utils'
 import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
@@ -19,17 +18,6 @@ export function useBuyCryptoState() {
   return useAtomValue(buyCryptoReducerAtom)
 }
 
-const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
-
-const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
-function validatedRecipient(recipient: any): string | null {
-  if (typeof recipient !== 'string') return null
-  const address = isAddress(recipient)
-  if (address) return address
-  if (ENS_NAME_REGEX.test(recipient)) return recipient
-  if (ADDRESS_REGEX.test(recipient)) return recipient
-  return null
-}
 function parseTokenAmountURLParameter(urlParam: any): string {
   return typeof urlParam === 'string' && !Number.isNaN(parseFloat(urlParam)) ? urlParam : ''
 }
@@ -155,7 +143,7 @@ export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
 ): Promise<BuyCryptoState> {
-  const inputCurrency = parsedQs.inputCurrency || 'BUSD'
+  const inputCurrency = parsedQs.inputCurrency || 'ETH'
   const minAmounts = await fetchMinimumBuyAmount('USD', 'BUSD')
 
   return {

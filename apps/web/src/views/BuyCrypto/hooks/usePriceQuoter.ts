@@ -101,7 +101,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
           cryptoNetwork: 'BSC',
           paymentMethod: 'CARD',
         }),
-        fetchMercuryoQuote(outputCurrency, inputCurrency, Number(amount)),
+        fetchMercuryoQuote(outputCurrency, inputCurrency, Number(amount) + 7),
       ]
       const responses = await Promise.allSettled(responsePromises)
 
@@ -124,9 +124,9 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         })
         .filter((item) => typeof item !== 'undefined')
 
-      const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
+      // const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
 
-      setQuotes(sortedFilteredQuotes)
+      setQuotes(combinedData)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
