@@ -61,7 +61,7 @@ export function useSingleTokenSwapInfo(
 
   const amount = useMemo(() => tryParseAmount('1', inputCurrency ?? undefined), [inputCurrency])
 
-  const { trade: bestTradeExactIn } = useBestAMMTrade({
+  const { trade: bestTradeExactIn, isLoading } = useBestAMMTrade({
     amount,
     currency: outputCurrency,
     baseCurrency: inputCurrency,
@@ -73,7 +73,7 @@ export function useSingleTokenSwapInfo(
     type: 'api',
     autoRevalidate: false,
   })
-  if (!inputCurrency || !outputCurrency || !bestTradeExactIn) {
+  if (!inputCurrency || !outputCurrency || !bestTradeExactIn || isLoading) {
     return null
   }
 
