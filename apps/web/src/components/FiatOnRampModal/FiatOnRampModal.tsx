@@ -216,7 +216,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`https://pcs-onramp-api.com/generate-mercuryo-sig`, {
+        const res = await fetch(`/api/onramp-url-sign/generate-mercuryo-sig`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -227,7 +227,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           }),
         })
         const signature = await res.json()
-        setSig(signature)
+        console.log(signature.urlWithSignature)
+        setSig(signature.urlWithSignature)
       } catch (e) {
         setError(e.toString())
       } finally {
