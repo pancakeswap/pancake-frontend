@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
+import { useTranslation } from '@pancakeswap/localization'
 import { FormHeader } from './FormHeader'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '../index'
@@ -19,6 +20,7 @@ export function CryptoQuoteForm({
   combinedQuotes: ProviderQoute[]
   fetchQuotes: () => Promise<void>
 }) {
+  const { t } = useTranslation()
   const [timer, setTimer] = useState(0)
   const [fetching, setFetching] = useState<boolean>(false)
 
@@ -49,7 +51,7 @@ export function CryptoQuoteForm({
       <FormHeader
         refreshDisabled={false}
         onRefresh={() => null}
-        title="Select a quote"
+        title={t('Select a Quote')}
         subTitle={`Quotes are updated every ${timer} seconds.`}
         backTo={() => setModalView(CryptoFormView.Input)}
       />

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
@@ -84,8 +84,8 @@ export function BuyCryptoForum({
       <FormHeader
         refreshDisabled={false}
         onRefresh={() => null}
-        title="Buy Crypto"
-        subTitle="Buy crypto in one click"
+        title={t('Buy Crypto')}
+        subTitle={t('Buy crypto in just a few clicks')}
       />
       <FormContainer>
         <CurrencyInputPanel

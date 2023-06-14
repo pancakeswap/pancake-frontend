@@ -123,11 +123,6 @@ const config: (
       supportChainIds: SUPPORT_ONLY_BSC,
       items: [
         {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-          status: { text: t('New'), color: 'success' },
-        },
-        {
           label: t('Trading Reward'),
           href: '/trading-reward',
         },
@@ -163,10 +158,6 @@ const config: (
       image: '/images/decorations/nft.png',
       items: [
         {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-        },
-        {
           label: t('Overview'),
           href: `${nftsBaseUrl}`,
         },
@@ -199,10 +190,6 @@ const config: (
       icon: MoreIcon,
       hideSubNav: true,
       items: [
-        {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-        },
         {
           label: t('Info'),
           href: '/info/v3',

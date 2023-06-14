@@ -4,54 +4,6 @@ export enum CurrencyModalView {
   importToken,
   importList,
 }
-export type CurrencyMapping = {
-  [shortName: string]: {
-    symbol: string
-    name: string
-  }
-}
-
-export type currencyProps = {
-  symbol: string
-  name: string
-}
-
-export const CRYPTO_ASSETS = {
-  USDT: {
-    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    chainId: 1,
-    decimals: 6,
-    isNative: false,
-    isToken: true,
-    logoURI: 'https://tokens.pancakeswap.finance/images/symbol/usdt.png',
-    name: 'Tether USD',
-    projectLink: undefined,
-    symbol: 'USDT',
-  },
-  BUSD: {
-    address: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
-    chainId: 56,
-    decimals: 18,
-    isNative: false,
-    isToken: true,
-    logoURI: 'https://tokens.pancakeswap.finance/images/symbol/busd.png',
-    name: 'Binance USD',
-    projectLink: undefined,
-    symbol: 'BUSD',
-  },
-  CAKE: {
-    address: '0xFa60D973F7642B748046464e165A65B7323b0DEE',
-    chainId: 97,
-    decimals: 18,
-    isNative: false,
-    isToken: true,
-    logoURI: 'https://tokens.pancakeswap.finance/images/symbol/cake.png',
-    name: 'Cake',
-    projectLink: undefined,
-    symbol: 'CAKE',
-  },
-}
-
 export enum FIAT_CURRENCIES {
   USD = 'USD',
   EUR = 'EUR',

@@ -50,7 +50,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
     const timestamp = Date.now().toString()
 
     const contentToSign = `cryptoAddress=${walletAddress}&cryptoNetwork=ERC20&merchantCode=${merchantCode}&timestamp=${timestamp}`
-    const signature = sign(contentToSign, PRIVATE_KEY)
+    const signature = sign(contentToSign, PRIVATE_KEY || '')
     const returnData = `https://sandbox.bifinity.org/en/pre-connect?cryptoCurrency=${cryptoCurrency}&fiatCurrency=${fiatCurrency}&orderAmount=${amount}&cryptoAddress=${walletAddress}&cryptoNetwork=BNB&merchantCode=pancake_swap_test&timestamp=${timestamp}&signature=${signature}`
 
     res.json({ urlWithSignature: returnData })
