@@ -7,7 +7,7 @@ const Agreement = () => {
     <AffiliatesProgramLayout>
       <Container>
         <Text as="h1">PancakeSwap Affiliate Program Agreement</Text>
-        <Text as="h3">Last modified: Jun 13, 2023</Text>
+        <Text as="h3">Last modified: May 3, 2023</Text>
         <Text as="p">
           This PancakeSwap Affiliate Program Agreement (“<strong>Agreement”</strong>) is a legal contract between you (“
           <strong>Affiliate”</strong>) and PancakeSwap that applies to your participation in the PancakeSwap Affiliate
