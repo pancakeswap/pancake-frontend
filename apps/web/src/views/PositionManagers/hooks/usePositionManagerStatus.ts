@@ -13,8 +13,11 @@ export function usePositionManagerStatus() {
   const router = useRouter()
 
   const pmStatus = useMemo(
-    () => (router.pathname.endsWith('/history') ? PositionManagerStatus.FINISHED : PositionManagerStatus.LIVE),
-    [router.pathname],
+    () =>
+      router.query.slug?.length === 1 && router.query.slug[0] === 'history'
+        ? PositionManagerStatus.FINISHED
+        : PositionManagerStatus.LIVE,
+    [router.query],
   )
   const setStatus = useCallback(
     (nextStatus: PositionManagerStatus) => {
