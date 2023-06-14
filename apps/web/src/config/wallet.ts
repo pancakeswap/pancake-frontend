@@ -10,6 +10,7 @@ export enum ConnectorNames {
   MetaMask = 'metaMask',
   Injected = 'injected',
   WalletConnect = 'walletConnect',
+  WalletConnectV1 = 'walletConnectLegacy',
   BSC = 'bsc',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
@@ -110,6 +111,12 @@ const walletsConfig = ({
       title: 'WalletConnect',
       icon: `${ASSET_CDN}/web/wallets/walletconnect.png`,
       connectorId: ConnectorNames.WalletConnect,
+    },
+    {
+      id: 'walletconnectV1',
+      title: 'WalletConnect V1',
+      icon: `${ASSET_CDN}/web/wallets/walletconnect.png`,
+      connectorId: ConnectorNames.WalletConnectV1,
     },
     {
       id: 'opera',

@@ -30,7 +30,7 @@ export function useSwitchNetwork() {
   } = useSwitchNetworkWallet()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const { isConnected, connector } = useAccount()
+  const { isConnected } = useAccount()
 
   const switchNetworkLocal = useSwitchNetworkLocal()
   const isLoading = _isLoading || loading
