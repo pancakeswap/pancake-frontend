@@ -21,7 +21,7 @@ export async function fetchMoonpayQuote(baseAmount: number, currencyCode: string
 export async function fetchMercuryoQuote(payload: any) {
   // Fetch data from endpoint 2
 
-  const res = await axios.post('http://157.245.60.136/fetch-mercuryo-quote', payload)
+  const res = await axios.post('https://pcs-onramp-api.com/fetch-mercuryo-quote', payload)
   const result = res.data
   return result.result.result
 }
