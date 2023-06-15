@@ -80,12 +80,12 @@ export const getPoolAddress = memoize(
     if (isStablePool(pool)) {
       const { balances } = pool
       const tokenAddresses = balances.map((b) => b.currency.wrapped.address)
-      return `${balances[0]?.currency.chainId}_${tokenAddresses.join('_')}`
+      return `${pool.type}_${balances[0]?.currency.chainId}_${tokenAddresses.join('_')}`
     }
     const [token0, token1] = isV2Pool(pool)
       ? [pool.reserve0.currency.wrapped, pool.reserve1.currency.wrapped]
       : [pool.token0.wrapped, pool.token1.wrapped]
-    return `${token0.chainId}_${token0.address}_${token1.address}`
+    return `${pool.type}_${token0.chainId}_${token0.address}_${token1.address}`
   },
 )
 
