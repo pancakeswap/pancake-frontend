@@ -5,8 +5,8 @@ import Container from 'components/Layout/Container'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { useRankList, MAX_PER_PAGE, RankListDetail } from 'views/TradingReward/hooks/useRankList'
-import DesktopView from './DesktopView'
-import MobileView from './MobileView'
+import LeaderBoardDesktopView from './DesktopView'
+import LeaderBoardMobileView from './MobileView'
 import RankingCard from './RankingCard'
 
 interface LeaderboardProps {
@@ -83,7 +83,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
       </Container>
       <Box maxWidth={1200} m="auto">
         {isDesktop ? (
-          <DesktopView
+          <LeaderBoardDesktopView
             data={rankList}
             maxPage={maxPage}
             isLoading={isLoading}
@@ -91,7 +91,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
             setCurrentPage={handleClickPagination}
           />
         ) : (
-          <MobileView
+          <LeaderBoardMobileView
             data={rankList}
             maxPage={maxPage}
             isLoading={isLoading}

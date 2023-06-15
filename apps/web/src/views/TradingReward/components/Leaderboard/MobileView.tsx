@@ -3,7 +3,7 @@ import { PaginationButton, Box, Text } from '@pancakeswap/uikit'
 import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
 import MobileResult, { StyledMobileRow } from 'views/TradingReward/components/Leaderboard/MobileResult'
 
-interface MobileViewProps {
+interface LeaderBoardMobileViewProps {
   data: RankListDetail[]
   maxPage: number
   isLoading: boolean
@@ -11,7 +11,7 @@ interface MobileViewProps {
   setCurrentPage: (value: number) => void
 }
 
-const MobileView: React.FC<React.PropsWithChildren<MobileViewProps>> = ({
+const LeaderBoardMobileView: React.FC<React.PropsWithChildren<LeaderBoardMobileViewProps>> = ({
   data,
   isLoading,
   currentPage,
@@ -50,4 +50,4 @@ const MobileView: React.FC<React.PropsWithChildren<MobileViewProps>> = ({
   )
 }
 
-export default MobileView
+export default LeaderBoardMobileView

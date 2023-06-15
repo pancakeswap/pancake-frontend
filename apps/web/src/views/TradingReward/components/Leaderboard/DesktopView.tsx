@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
 import DesktopResult from 'views/TradingReward/components/Leaderboard/DesktopResult'
 
-interface DesktopViewProps {
+interface LeaderBoardDesktopViewProps {
   data: RankListDetail[]
   currentPage: number
   maxPage: number
@@ -11,7 +11,7 @@ interface DesktopViewProps {
   setCurrentPage: (value: number) => void
 }
 
-const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = ({
+const LeaderBoardDesktopView: React.FC<React.PropsWithChildren<LeaderBoardDesktopViewProps>> = ({
   data,
   maxPage,
   isLoading,
@@ -62,4 +62,4 @@ const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = ({
   )
 }
 
-export default DesktopView
+export default LeaderBoardDesktopView

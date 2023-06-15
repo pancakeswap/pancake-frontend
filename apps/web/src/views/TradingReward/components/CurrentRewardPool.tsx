@@ -82,6 +82,22 @@ interface CurrentRewardPoolProps {
   rewardInfo: { [key in string]: RewardInfo }
 }
 
+const TextComponent = ({ text }: { text: string }) => {
+  return (
+    <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
+      {text}
+    </Text>
+  )
+}
+
+const TimeText = ({ text }: { text: string }) => {
+  return (
+    <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
+      {text}
+    </Text>
+  )
+}
+
 const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps>> = ({
   campaignId,
   incentives,
@@ -116,38 +132,20 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
       <StyledHeading data-text={t('Current Reward Pool')}>{t('Current Reward Pool')}</StyledHeading>
       <Flex flexDirection="column" margin={['40px auto auto auto']} width={['100%', '100%', '100%', '530px']}>
         <Flex justifyContent="space-between" mb="10px">
-          <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
-            {t('Starts')}
-          </Text>
+          <TextComponent text={t('Starts')} />
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
             {t('On %date%', { date: timeFormat(locale, incentives?.campaignStart) })}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
-          <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
-            {t('Ends')}
-          </Text>
+          <TextComponent text={t('Ends')} />
           {timeRemaining > 0 ? (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {t('in')}
-              {timeUntil.months ? (
-                <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-                  {`${timeUntil.months}${t('m')}`}
-                </Text>
-              ) : null}
-              {timeUntil.days ? (
-                <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-                  {`${timeUntil.days}${t('d')}`}
-                </Text>
-              ) : null}
-              {timeUntil.days || timeUntil.hours ? (
-                <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-                  {`${timeUntil.hours}${t('h')}`}
-                </Text>
-              ) : null}
-              <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-                {`${timeUntil.minutes}${t('m')}`}
-              </Text>
+              {timeUntil.months ? <TimeText text={`${timeUntil.months}${t('m')}`} /> : null}
+              {timeUntil.days ? <TimeText text={`${timeUntil.days}${t('d')}`} /> : null}
+              {timeUntil.days || timeUntil.hours ? <TimeText text={`${timeUntil.hours}${t('h')}`} /> : null}
+              <TimeText text={`${timeUntil.minutes}${t('m')}`} />
             </Text>
           ) : (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
@@ -156,17 +154,13 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           )}
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
-          <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
-            {t('Total volume generated')}
-          </Text>
+          <TextComponent text={t('Total volume generated')} />
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
             {`$${formatNumber(campaignInfoData?.totalVolume, 3, 3)}`}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
-          <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
-            {t('Total reward to distribute')}
-          </Text>
+          <TextComponent text={t('Total reward to distribute')} />
           <Flex>
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {formatNumber(rewardInCake, 0, 0)}
@@ -177,9 +171,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
           </Flex>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
-          <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
-            {t('Number of eligible pairs')}
-          </Text>
+          <TextComponent text={t('Number of eligible pairs')} />
           <Flex>
             <Text bold mr="8px" color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {campaignInfoData?.total}

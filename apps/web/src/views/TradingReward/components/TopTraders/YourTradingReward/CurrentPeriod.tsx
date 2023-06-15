@@ -22,6 +22,14 @@ interface CurrentPeriodProps {
 
 const TOP_RANK = 500
 
+const TimeText = ({ text }: { text: string }) => {
+  return (
+    <Text bold fontSize="14px" color="primary" as="span" ml="4px">
+      {text}
+    </Text>
+  )
+}
+
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   rewardInfo,
   campaignClaimTime,
@@ -123,24 +131,10 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                       {timeRemaining > 0 ? (
                         <Text bold fontSize="14px" color="primary" as="span" ml="4px">
                           {t('in')}
-                          {timeUntil.months ? (
-                            <Text bold fontSize="14px" color="primary" as="span" ml="4px">
-                              {`${timeUntil.months}${t('m')}`}
-                            </Text>
-                          ) : null}
-                          {timeUntil.days ? (
-                            <Text bold fontSize="14px" color="primary" as="span" ml="4px">
-                              {`${timeUntil.days}${t('d')}`}
-                            </Text>
-                          ) : null}
-                          {timeUntil.days || timeUntil.hours ? (
-                            <Text bold fontSize="14px" color="primary" as="span" ml="4px">
-                              {`${timeUntil.hours}${t('h')}`}
-                            </Text>
-                          ) : null}
-                          <Text bold fontSize="14px" color="primary" as="span" ml="4px">
-                            {`${timeUntil.minutes}${t('m')}`}
-                          </Text>
+                          {timeUntil.months ? <TimeText text={`${timeUntil.months}${t('m')}`} /> : null}
+                          {timeUntil.days ? <TimeText text={`${timeUntil.days}${t('d')}`} /> : null}
+                          {timeUntil.days || timeUntil.hours ? <TimeText text={`${timeUntil.hours}${t('h')}`} /> : null}
+                          <TimeText text={`${timeUntil.minutes}${t('m')}`} />
                         </Text>
                       ) : null}
                       <Text fontSize="14px" color="primary" as="span" ml="4px">
