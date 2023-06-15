@@ -7,7 +7,6 @@ import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
-import { s } from 'vitest/dist/types-e3c9754d'
 import { useAccount } from 'wagmi'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
@@ -243,7 +242,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '308e14df-01d7-4f35-948c-e17fa64bbc0d',
+          widgetId: '95a003f2-354a-4396-828a-1126d56e4e13',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
@@ -283,7 +282,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         ) : (
           <StyledIframe
             id="moonpayIframe"
-            src={signedIframeUrl ?? ''}
+            src="https://exchange.mercuryo.io/?widget_id=95a003f2-354a-4396-828a-1126d56e4e13"
             frameBorder="0"
             title="fiat-onramp-iframe"
             isDark={theme.isDark}
