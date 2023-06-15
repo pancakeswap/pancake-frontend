@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useMemo } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 import {
   SmartRouter,
   PoolType,
@@ -164,6 +164,12 @@ function bestTradeHookFactory({
     const { gasPrice } = useFeeDataWithGasPrice()
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
 
+    const keepPreviousDataRef = useRef<boolean>(true)
+
+    if (currenciesUpdated) {
+      keepPreviousDataRef.current = false
+    }
+
     const blockNumber = useCurrentBlock()
     const {
       refresh,
@@ -252,11 +258,17 @@ function bestTradeHookFactory({
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
-      keepPreviousData: !currenciesUpdated,
+      keepPreviousData: keepPreviousDataRef.current,
       retry: false,
       staleTime: autoRevalidate ? POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId] : 0,
       refetchInterval: autoRevalidate && POOLS_NORMAL_REVALIDATE[amount?.currency?.chainId],
     })
+
+    useEffect(() => {
+      if (!keepPreviousDataRef.current && trade) {
+        keepPreviousDataRef.current = true
+      }
+    }, [trade, keepPreviousDataRef])
 
     const isValidating = fetchStatus === 'fetching'
     const isLoading = status === 'loading' || isPreviousData
