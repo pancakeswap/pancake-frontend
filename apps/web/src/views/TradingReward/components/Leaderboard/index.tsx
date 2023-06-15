@@ -30,10 +30,6 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
       const max = Math.ceil(total / MAX_PER_PAGE)
       setMaxPages(max)
     }
-
-    return () => {
-      setMaxPages(1)
-    }
   }, [total])
 
   const handleClickPagination = (value: number) => {
