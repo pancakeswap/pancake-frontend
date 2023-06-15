@@ -10,6 +10,8 @@ import { CampaignIdInfoDetail } from 'views/TradingReward/hooks/useCampaignIdInf
 import Link from 'next/link'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import useRewardInCake from 'views/TradingReward/hooks/useRewardInCake'
+import TextComponent from 'views/TradingReward/components/TopTraders/YourTradingReward/TextComponent'
+import TimeText from 'views/TradingReward/components/TopTraders/YourTradingReward/TimeText'
 
 const Container = styled(Flex)`
   position: relative;
@@ -80,22 +82,6 @@ interface CurrentRewardPoolProps {
   incentives: Incentives
   campaignInfoData: CampaignIdInfoDetail
   rewardInfo: { [key in string]: RewardInfo }
-}
-
-const TextComponent = ({ text }: { text: string }) => {
-  return (
-    <Text color="white" fontWeight={['400', '400', '400', '600']} fontSize={['14px', '14px', '14px', '20px']}>
-      {text}
-    </Text>
-  )
-}
-
-const TimeText = ({ text }: { text: string }) => {
-  return (
-    <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']} as="span" ml="4px">
-      {text}
-    </Text>
-  )
 }
 
 const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps>> = ({
