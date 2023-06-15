@@ -30,6 +30,7 @@ interface Props {
   maxPrice?: number;
   minPrice?: number;
   averagePrice?: number;
+  isLoading?: boolean;
   onSpanChange?: (spanIndex: number) => void;
 }
 
@@ -43,6 +44,7 @@ export const PriceChart = memo(function PriceChart({
   maxPrice,
   minPrice,
   averagePrice,
+  isLoading,
 }: Props) {
   const { t } = useTranslation();
   const priceLimits = useMemo(
@@ -70,6 +72,7 @@ export const PriceChart = memo(function PriceChart({
           isChartExpanded={false}
           timeWindow={span}
           priceLineData={priceLimits}
+          isLoading={isLoading}
         />
       </Box>
     ) : (

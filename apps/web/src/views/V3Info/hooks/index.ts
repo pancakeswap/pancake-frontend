@@ -112,7 +112,13 @@ export const usePairPriceChartTokenData = (
   address: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
-): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
+): {
+  data: PriceChartEntry[] | undefined
+  maxPrice?: number
+  minPrice?: number
+  averagePrice?: number
+  isLoading?: boolean
+} => {
   const chainName = useChainNameByQuery()
   const chainId = targetChianId || multiChainId[chainName]
   const utcCurrentTime = dayjs()
@@ -121,7 +127,7 @@ export const usePairPriceChartTokenData = (
     .startOf('hour')
     .unix()
 
-  const { data } = useSWRImmutable(
+  const { data, status } = useSWRImmutable(
     chainId &&
       address &&
       address !== 'undefined' && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChianId ?? chainId],
@@ -141,6 +147,7 @@ export const usePairPriceChartTokenData = (
     maxPrice: data?.maxPrice,
     minPrice: data?.minPrice,
     averagePrice: data?.averagePrice,
+    isLoading: status !== FetchStatus.Fetched,
   }
 }
 

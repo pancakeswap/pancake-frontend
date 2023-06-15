@@ -33,5 +33,6 @@ export const usePairTokensPrice = (pairAddress?: string, duration?: PairDataTime
     maxPrice: pairPrice?.maxPrice,
     minPrice: pairPrice?.minPrice,
     averagePrice: pairPrice?.averagePrice,
+    isLoading: pairPrice?.isLoading,
   }
 }

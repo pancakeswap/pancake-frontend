@@ -56,6 +56,7 @@ export type RoiCalculatorProps = {
     maxPrice: number;
     minPrice: number;
     averagePrice: number;
+    isLoading: boolean;
   };
   ticks?: TickData[];
   price?: Price<Token, Token>;
@@ -434,6 +435,7 @@ export function RoiCalculator({
         maxPrice={invertPrice && prices?.maxPrice ? prices?.maxPrice : 1 / (prices?.minPrice ?? 1)}
         minPrice={invertPrice && prices?.minPrice ? prices?.minPrice : 1 / (prices?.maxPrice ?? 1)}
         averagePrice={invertPrice && prices?.averagePrice ? prices?.averagePrice : 1 / (prices?.averagePrice ?? 1)}
+        isLoading={prices?.isLoading}
       />
     </Section>
   );

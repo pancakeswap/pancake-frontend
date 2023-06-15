@@ -19,6 +19,7 @@ export type SwapLineChartNewProps = {
   isChangePositive: boolean;
   isChartExpanded: boolean;
   timeWindow: PairDataTimeWindowEnum;
+  isLoading?: boolean;
   priceLineData?: { title: string; color: string; price: number }[];
 } & React.HTMLAttributes<HTMLDivElement>;
 
@@ -43,6 +44,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   isChartExpanded,
   timeWindow,
   priceLineData,
+  isLoading,
   ...rest
 }) => {
   const { isDark } = useTheme();
@@ -194,7 +196,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
 
   return (
     <>
-      {!chartCreated && <LineChartLoader />}
+      {(!chartCreated || isLoading) && <LineChartLoader />}
       <div style={{ display: "flex", flex: 1, height: "100%" }} onMouseLeave={handleMouseLeave}>
         <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="swap-line-chart" {...rest} />
       </div>
