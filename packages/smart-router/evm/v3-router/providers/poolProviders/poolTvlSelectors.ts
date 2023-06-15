@@ -190,10 +190,16 @@ function poolSelectorFactory<P extends WithTvl>({
         .sort(sortByTvl)
         .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
 
-    const topByTVLUsingTokenInSecondHops = getTopByTVLUsingTokenSecondHops(topByTVLUsingTokenBase, currencyA)
+    const topByTVLUsingTokenInSecondHops = getTopByTVLUsingTokenSecondHops(
+      [...topByTVLUsingTokenBase, ...topByBaseWithTokenIn],
+      currencyA,
+    )
     addToPoolSet(topByTVLUsingTokenInSecondHops)
 
-    const topByTVLUsingTokenOutSecondHops = getTopByTVLUsingTokenSecondHops(topByTVLUsingTokenQuote, currencyB)
+    const topByTVLUsingTokenOutSecondHops = getTopByTVLUsingTokenSecondHops(
+      [...topByTVLUsingTokenQuote, ...topByBaseWithTokenOut],
+      currencyB,
+    )
     addToPoolSet(topByTVLUsingTokenOutSecondHops)
 
     const pools = [
