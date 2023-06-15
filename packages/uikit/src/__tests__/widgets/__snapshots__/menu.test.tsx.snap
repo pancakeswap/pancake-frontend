@@ -3169,7 +3169,7 @@ exports[`renders correctly 1`] = `
               class="c26 c13"
               color="textSubtle"
               font-size="16px"
-              href="https://t.me/PancakeSwapIndonesia"
+              href="https://t.me/pancakeswapIndonesia"
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -3180,7 +3180,7 @@ exports[`renders correctly 1`] = `
               class="c26 c13"
               color="textSubtle"
               font-size="16px"
-              href="https://t.me/PancakeSwap_CN"
+              href="https://t.me/pancakeswap_CN"
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -3202,7 +3202,7 @@ exports[`renders correctly 1`] = `
               class="c26 c13"
               color="textSubtle"
               font-size="16px"
-              href="https://t.me/pancakeswap_ita"
+              href="https://t.me/pancakeswap_Ita"
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -3235,7 +3235,7 @@ exports[`renders correctly 1`] = `
               class="c26 c13"
               color="textSubtle"
               font-size="16px"
-              href="https://t.me/PancakeSwapPortuguese"
+              href="https://t.me/pancakeswapPortuguese"
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -3246,7 +3246,7 @@ exports[`renders correctly 1`] = `
               class="c26 c13"
               color="textSubtle"
               font-size="16px"
-              href="https://t.me/PancakeswapEs"
+              href="https://t.me/pancakeswapES"
               rel="noreferrer noopener"
               target="_blank"
             >
