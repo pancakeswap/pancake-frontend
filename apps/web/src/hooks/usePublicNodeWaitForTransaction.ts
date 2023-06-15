@@ -27,15 +27,11 @@ export function usePublicNodeWaitForTransaction() {
 
   const waitForTransaction_ = useCallback(
     async (opts: WaitForTransactionArgs): Promise<TransactionReceipt> => {
-      let receipt
       // our custom node might be late to sync up
       if (viemClientsPublicNodes[chainId]) {
-        receipt = await viemClientsPublicNodes[chainId].waitForTransactionReceipt(opts)
-      } else {
-        receipt = await waitForTransaction(opts)
+        return viemClientsPublicNodes[chainId].waitForTransactionReceipt(opts)
       }
-
-      return receipt
+      return waitForTransaction({ ...opts, chainId })
     },
     [chainId],
   )
