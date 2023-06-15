@@ -132,7 +132,7 @@ export const socials = [
       },
       {
         label: "Deutsch",
-        href: "https://t.me/pancakeswapDE",
+        href: "https://t.me/pancakeswap_DE",
       },
       {
         label: "Filipino",
