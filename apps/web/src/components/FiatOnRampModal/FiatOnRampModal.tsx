@@ -282,7 +282,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         ) : (
           <StyledIframe
             id="moonpayIframe"
-            src="https://exchange.mercuryo.io/?widget_id=95a003f2-354a-4396-828a-1126d56e4e13"
+            src={signedIframeUrl ?? ''}
             frameBorder="0"
             title="fiat-onramp-iframe"
             isDark={theme.isDark}
