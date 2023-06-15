@@ -98,7 +98,7 @@ function AccordionItem({
           </RowBetween>
           <RowBetween pt="8px">
             <Text fontSize="15px" color="textSubtle">
-              this provider does not support the requeste currndy
+              this provider does not support the request currently
             </Text>
           </RowBetween>
         </CryptoCard>

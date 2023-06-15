@@ -55,7 +55,6 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           <div id="portal-root" />
-          <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" strategy="beforeInteractive" />
         </body>
       </Html>
     )

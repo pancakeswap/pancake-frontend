@@ -289,7 +289,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             isDark={theme.isDark}
           />
         )}
-        <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" />
+        <Script src="https://widget.mercuryo.io/embed.2.0.js" />
         <div id="mercuryo-widget" />
       </Modal>
     </>
