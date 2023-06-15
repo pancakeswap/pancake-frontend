@@ -3,6 +3,7 @@ import { AutoColumn, CircleLoader, Flex, InjectedModalProps, Modal, Spinner, Tex
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
+import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
@@ -87,14 +88,14 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`/api/onramp-url-sign/generate-binance-connect-sig`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify({
-        cryptoCurrency: inputCurrency.toUpperCase(),
+        cryptoCurrency: inputCurrency.toUpperCase() === 'WBTC' ? 'BTC' : inputCurrency.toUpperCase(),
         fiatCurrency: outputCurrency.toUpperCase(),
         amount,
         walletAddress: account,
@@ -242,7 +243,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: 'a5b771fa-87f1-4642-b274-2ea8d09f48cd',
+          widgetId: '308e14df-01d7-4f35-948c-e17fa64bbc0d',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
@@ -288,6 +289,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             isDark={theme.isDark}
           />
         )}
+        <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" />
         <div id="mercuryo-widget" />
       </Modal>
     </>
