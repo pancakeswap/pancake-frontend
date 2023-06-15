@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { useState, useCallback } from 'react'
+import { useInterval } from '@pancakeswap/hooks'
 import { Box, Flex, Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
@@ -85,10 +87,16 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const { campaignClaimTime } = incentives ?? {}
+  const [remainingSeconds, setRemainingSeconds] = useState(0)
 
-  const currentDate = Date.now() / 1000
-  const timeRemaining = campaignClaimTime - currentDate
-  const timeUntil = getTimePeriods(timeRemaining)
+  const updateRemainingSeconds = useCallback(() => {
+    setRemainingSeconds(campaignClaimTime - Date.now() / 1000)
+  }, [campaignClaimTime])
+
+  // Update every minute
+  useInterval(updateRemainingSeconds, 1000 * 60)
+
+  const timeUntil = getTimePeriods(remainingSeconds)
 
   return (
     <Container>
@@ -102,7 +110,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
           <TextComponent text={t('Ends')} />
-          {timeRemaining > 0 ? (
+          {remainingSeconds > 0 ? (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
               {t('in')}
               {timeUntil.months ? <TimeText text={`${timeUntil.months}${t('m')}`} /> : null}
