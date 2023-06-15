@@ -49,7 +49,7 @@ const LeaderBoardDesktopView: React.FC<React.PropsWithChildren<LeaderBoardDeskto
               ) : (
                 <>
                   {data.map((rank) => (
-                    <DesktopResult key={rank.id} rank={rank} />
+                    <DesktopResult key={rank.rank} rank={rank} />
                   ))}
                 </>
               )}

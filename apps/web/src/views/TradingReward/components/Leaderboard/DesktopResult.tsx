@@ -26,7 +26,7 @@ const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ 
     <tr>
       <Td>
         <Text bold color="secondary">
-          {`#${rank.id}`}
+          {`#${rank.rank}`}
         </Text>
       </Td>
       <Td textAlign="left">

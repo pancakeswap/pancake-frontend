@@ -38,7 +38,7 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ ra
     <StyledMobileRow p="16px">
       <Flex justifyContent="space-between" mb="16px">
         <Text fontWeight="bold" color="secondary" mr="auto">
-          {`#${rank.id}`}
+          {`#${rank.rank}`}
         </Text>
         <Flex width="100%" justifyContent="flex-end">
           <Text color="primary" fontWeight="bold" style={{ alignSelf: 'center' }} mr="8px">

@@ -39,7 +39,7 @@ const LeaderBoardMobileView: React.FC<React.PropsWithChildren<LeaderBoardMobileV
           ) : (
             <>
               {data.map((rank) => (
-                <MobileResult key={rank.id} rank={rank} />
+                <MobileResult key={rank.rank} rank={rank} />
               ))}
             </>
           )}

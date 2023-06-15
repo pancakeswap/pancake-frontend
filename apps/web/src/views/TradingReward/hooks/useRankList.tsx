@@ -8,10 +8,10 @@ interface UseRankListProps {
 }
 
 export interface RankListDetail {
-  id?: number
   origin: string
   tradingFee: number
   volume: number
+  rank: number
   estimateRewardUSD: number
 }
 
@@ -25,36 +25,48 @@ interface RankListResponse {
 interface RankList {
   isLoading: boolean
   total: number
+  topThreeTraders: RankListDetail[]
   topTradersArr: RankListDetail[]
 }
 
 export const MAX_PER_PAGE = 10
 
-export const useRankList = ({ campaignId, currentPage }: UseRankListProps): RankList => {
-  const [total, setTotal] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [topTradersArr, setTopTradersArr] = useState<RankListDetail[]>([])
+const TOP_RANK_NUMBER = 3
 
-  useSWR(
+export const useRankList = ({ campaignId, currentPage }: UseRankListProps): RankList => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [topThreeTraders, setTopThreeTraders] = useState<RankListDetail[]>([])
+
+  const { data } = useSWR(
     campaignId && currentPage && ['/trader-rank-list', campaignId, currentPage],
     async () => {
       try {
-        if (currentPage * MAX_PER_PAGE > topTradersArr.length) {
-          setIsLoading(true)
-          const response = await fetch(
-            `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/tt/page/${currentPage}/size/${MAX_PER_PAGE}`,
-          )
-          const result: RankListResponse = await response.json()
-          setTotal(result.data.total)
+        setIsLoading(true)
+        const response = await fetch(
+          `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/tt/page/${currentPage}/size/${MAX_PER_PAGE}`,
+        )
+        const result: RankListResponse = await response.json()
 
-          const newData = result.data.topTradersArr.map((arr, index) => ({
-            ...arr,
-            id: topTradersArr.length + index + 1,
-          }))
-          setTopTradersArr([...topTradersArr, ...newData])
+        const topThree = result.data.topTradersArr.filter((arr) => arr.rank > 0 && arr.rank <= 3)
+        if (topThree.length === TOP_RANK_NUMBER) {
+          setTopThreeTraders(topThree)
+
+          return {
+            total: result.data.total,
+            topTradersArr: result.data.topTradersArr.slice(TOP_RANK_NUMBER, result.data.topTradersArr.length),
+          }
+        }
+
+        return {
+          total: result.data.total,
+          topTradersArr: result.data.topTradersArr,
         }
       } catch (error) {
         console.info(`Fetch Rank List Error: ${error}`)
+        return {
+          total: 0,
+          topTradersArr: [],
+        }
       } finally {
         setIsLoading(false)
       }
@@ -68,9 +80,10 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
   )
 
   return {
-    total,
-    topTradersArr,
     isLoading,
+    topThreeTraders,
+    total: data?.total ?? 0,
+    topTradersArr: data?.topTradersArr ?? [],
   }
 }
 

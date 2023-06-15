@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { useRankList, MAX_PER_PAGE, RankListDetail } from 'views/TradingReward/hooks/useRankList'
+import { useRankList, MAX_PER_PAGE } from 'views/TradingReward/hooks/useRankList'
 import LeaderBoardDesktopView from './DesktopView'
 import LeaderBoardMobileView from './MobileView'
 import RankingCard from './RankingCard'
@@ -22,9 +22,8 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
   const { isDesktop } = useMatchBreakpoints()
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const { total, topTradersArr, isLoading } = useRankList({ campaignId, currentPage })
-  const [first, second, third] = topTradersArr
-  const [rankList, setRankList] = useState<RankListDetail[]>([])
+  const { total, topTradersArr, topThreeTraders, isLoading } = useRankList({ campaignId, currentPage })
+  const [first, second, third] = topThreeTraders
 
   useEffect(() => {
     if (total > 0) {
@@ -34,22 +33,8 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
 
     return () => {
       setMaxPages(1)
-      setCurrentPage(1)
-      setRankList([])
     }
   }, [total])
-
-  useEffect(() => {
-    const plusNumber = currentPage === 1 ? 3 : 0
-    const getActivitySlice = () => {
-      const slice = topTradersArr.slice(MAX_PER_PAGE * (currentPage - 1) + plusNumber, MAX_PER_PAGE * currentPage)
-      setRankList(slice)
-    }
-
-    if (topTradersArr.length > 0) {
-      getActivitySlice()
-    }
-  }, [topTradersArr, currentPage, total])
 
   const handleClickPagination = (value: number) => {
     if (!isLoading) {
@@ -84,7 +69,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
       <Box maxWidth={1200} m="auto">
         {isDesktop ? (
           <LeaderBoardDesktopView
-            data={rankList}
+            data={topTradersArr}
             maxPage={maxPage}
             isLoading={isLoading}
             currentPage={currentPage}
@@ -92,7 +77,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
           />
         ) : (
           <LeaderBoardMobileView
-            data={rankList}
+            data={topTradersArr}
             maxPage={maxPage}
             isLoading={isLoading}
             currentPage={currentPage}
