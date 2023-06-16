@@ -282,6 +282,8 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     new BigNumber(ticketsToBuy).lte(0) ||
     getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
 
+  const isApproveDisabled = isApproved || disableBuying
+
   if (buyingStage === BuyingStage.EDIT) {
     return (
       <EditNumbersModal
@@ -408,9 +410,9 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
         {account ? (
           <>
             <ApproveConfirmButtons
-              isApproveDisabled={isApproved || !ticketsToBuy}
+              isApproveDisabled={isApproveDisabled}
               isApproving={isApproving}
-              isConfirmDisabled={disableBuying || !ticketsToBuy}
+              isConfirmDisabled={disableBuying}
               isConfirming={isConfirming}
               onApprove={handleApprove}
               onConfirm={handleConfirm}
