@@ -50,7 +50,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { t } = useTranslation()
   const { mutate } = useSWRConfig()
   const { toastSuccess } = useToast()
-  const [duration, setDuration] = useState(() => defaultDuration)
+  const [duration, setDuration] = useState(defaultDuration)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount.toNumber())
 
   const handleDeposit = useCallback(

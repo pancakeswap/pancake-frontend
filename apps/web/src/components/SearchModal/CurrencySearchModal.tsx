@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useEffect } from 'react'
+import { useCallback, useState, useRef, useEffect, useMemo } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -120,16 +120,19 @@ export default function CurrencySearchModal({
       })
   }, [adding, dispatch, fetchList, listURL])
 
-  const config = {
-    [CurrencyModalView.search]: { title: t('Select a Token'), onBack: undefined },
-    [CurrencyModalView.manage]: { title: t('Manage'), onBack: () => setModalView(CurrencyModalView.search) },
-    [CurrencyModalView.importToken]: {
-      title: t('Import Tokens'),
-      onBack: () =>
-        setModalView(prevView && prevView !== CurrencyModalView.importToken ? prevView : CurrencyModalView.search),
-    },
-    [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
-  }
+  const config = useMemo(
+    () => ({
+      [CurrencyModalView.search]: { title: t('Select a Token'), onBack: undefined },
+      [CurrencyModalView.manage]: { title: t('Manage'), onBack: () => setModalView(CurrencyModalView.search) },
+      [CurrencyModalView.importToken]: {
+        title: t('Import Tokens'),
+        onBack: () =>
+          setModalView(prevView && prevView !== CurrencyModalView.importToken ? prevView : CurrencyModalView.search),
+      },
+      [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
+    }),
+    [t, prevView],
+  )
   const { isMobile } = useMatchBreakpoints()
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(undefined)
