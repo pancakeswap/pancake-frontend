@@ -115,7 +115,7 @@ const walletsConfig = ({
     {
       id: 'walletconnectV1',
       title: 'WalletConnect V1',
-      icon: `${ASSET_CDN}/web/wallets/walletconnect.png`,
+      icon: `${ASSET_CDN}/web/wallets/walletconnect_mono.png`,
       connectorId: ConnectorNames.WalletConnectV1,
     },
     {
