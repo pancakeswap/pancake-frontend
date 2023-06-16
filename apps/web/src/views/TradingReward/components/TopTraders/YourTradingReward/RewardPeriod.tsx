@@ -8,6 +8,7 @@ interface RewardPeriodProps {
   campaignIds: Array<string>
   rewardInfo: { [key in string]: RewardInfo }
   qualification: Qualification
+  campaignStart: number
   campaignClaimTime: number
   totalAvailableClaimData: UserCampaignInfoDetail[]
   campaignIdsIncentive: Incentives[]
@@ -18,6 +19,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignIds,
   rewardInfo,
   qualification,
+  campaignStart,
   campaignClaimTime,
   totalAvailableClaimData,
   campaignIdsIncentive,
@@ -33,6 +35,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
     >
       <CurrentPeriod
         rewardInfo={rewardInfo}
+        campaignStart={campaignStart}
         campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
       />

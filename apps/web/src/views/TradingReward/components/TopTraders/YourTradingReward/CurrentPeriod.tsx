@@ -15,6 +15,7 @@ import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingSoon'
 
 interface CurrentPeriodProps {
+  campaignStart: number
   campaignClaimTime: number
   rewardInfo: { [key in string]: RewardInfo }
   currentUserCampaignInfo: UserCampaignInfoDetail
@@ -32,6 +33,7 @@ const TimeText = ({ text }: { text: string }) => {
 
 const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   rewardInfo,
+  campaignStart,
   campaignClaimTime,
   currentUserCampaignInfo,
 }) => {
@@ -73,6 +75,11 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     [rank],
   )
 
+  const isCampaignLive = useMemo(
+    () => currentDate >= campaignStart && campaignClaimTime <= currentDate,
+    [campaignClaimTime, campaignStart, currentDate],
+  )
+
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
       <Card style={{ width: '100%' }}>
@@ -80,7 +87,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>
-          {timeRemaining <= 0 ? (
+          {!isCampaignLive ? (
             <ComingSoon />
           ) : (
             <Box>

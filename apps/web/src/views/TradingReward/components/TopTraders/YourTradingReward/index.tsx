@@ -180,6 +180,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             campaignIds={campaignIds}
             rewardInfo={rewardInfo}
             totalAvailableClaimData={totalAvailableClaimData}
+            campaignStart={incentives?.campaignStart}
             campaignClaimTime={incentives?.campaignClaimTime}
             qualification={qualification}
             campaignIdsIncentive={campaignIdsIncentive}

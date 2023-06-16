@@ -7,6 +7,7 @@ import { Incentives, RewardInfo, Qualification, RewardType } from 'views/Trading
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
+  campaignStart: number
   campaignClaimTime: number
   incentives: Incentives
   userData: DeserializedLockedVaultUser
@@ -23,6 +24,7 @@ interface RewardPeriodProps {
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignIds,
+  campaignStart,
   campaignClaimTime,
   userData,
   incentives,
@@ -48,6 +50,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
         userData={userData}
         incentives={incentives}
         rewardInfo={rewardInfo}
+        campaignStart={campaignStart}
         campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
         isQualified={isQualified}
