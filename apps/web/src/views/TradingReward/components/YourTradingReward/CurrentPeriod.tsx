@@ -42,7 +42,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   const timeRemaining = campaignClaimTime - currentDate
 
   const isCampaignLive = useMemo(
-    () => currentDate >= campaignStart && campaignClaimTime <= currentDate,
+    () => currentDate >= campaignStart && currentDate <= campaignClaimTime,
     [campaignClaimTime, campaignStart, currentDate],
   )
 
