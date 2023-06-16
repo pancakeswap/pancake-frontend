@@ -256,7 +256,7 @@ export function getBestSwapRouteBy(
                       if (isV3Pool(p)) {
                         return `V3 fee ${p.fee} ${p.token0.symbol}-${p.token1.symbol}`
                       }
-                      return `Stable ${p}`
+                      return `Stable ${p.balances.map((b) => b.currency).join('-')}`
                     })
                     .join(', ')} ${r.quote.toExact()}`,
               )

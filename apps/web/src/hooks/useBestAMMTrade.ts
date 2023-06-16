@@ -9,7 +9,6 @@ import {
 } from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
-import { isDesktop } from 'react-device-detect'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { publicClient } from 'utils/wagmi'
@@ -56,8 +55,6 @@ interface useBestAMMTradeOptions extends Options {
   type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
-const isLowEndDevice = typeof window !== 'undefined' && !(isDesktop && typeof window.requestIdleCallback === 'function')
-
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
@@ -69,19 +66,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
 
-  const isOffChainEnabled = useMemo(
-    () => Boolean(!isWrapping && !isLowEndDevice && (type === 'offchain' || type === 'auto')),
-    [isWrapping, type],
-  )
-
-  const offChainAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isOffChainEnabled
-  const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
-    ...params,
-    enabled: Boolean(enabled && isOffChainEnabled),
-    autoRevalidate: offChainAutoRevalidate,
-  })
-  const apiAutoRevalidate =
-    typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled && !isOffChainEnabled
+  const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled
 
   // switch to api when it's stable
   // const _bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
@@ -95,8 +80,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     autoRevalidate: apiAutoRevalidate,
   })
 
-  const quoterAutoRevalidate =
-    typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled && !isOffChainEnabled
+  const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
   const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
     ...params,
@@ -104,41 +88,10 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     autoRevalidate: quoterAutoRevalidate,
   })
 
-  return useMemo(() => {
-    const { trade: tradeFromOffchain } = bestTradeFromOffchain
-    const { trade: tradeFromQuoterWorker } = bestTradeFromQuoterWorker
-    const { trade: tradeFromApi } = bestTradeFromQuoterApi
-
-    const quoterTrade = tradeFromApi || tradeFromQuoterWorker
-    const bestTradeFromQuoter_ = isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker
-
-    if (!tradeFromOffchain && !quoterTrade) {
-      return bestTradeFromOffchain
-    }
-    if (!tradeFromOffchain || !quoterTrade) {
-      // console.log(
-      //   `[BEST Trade] Existing ${tradeFromOffchain ? 'Offchain' : 'Quoter'} trade is used`,
-      //   tradeFromOffchain || tradeFromQuoter,
-      // )
-      return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter_
-    }
-
-    if (
-      quoterTrade.blockNumber &&
-      tradeFromOffchain.blockNumber &&
-      BigInt(quoterTrade.blockNumber) > BigInt(tradeFromOffchain.blockNumber)
-    ) {
-      // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
-      return bestTradeFromQuoter_
-    }
-
-    // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
-    const quoterBetter =
-      quoterTrade.tradeType === TradeType.EXACT_INPUT
-        ? quoterTrade.outputAmount.greaterThan(tradeFromOffchain.outputAmount)
-        : quoterTrade.inputAmount.lessThan(tradeFromOffchain.inputAmount)
-    return quoterBetter ? bestTradeFromQuoter_ : bestTradeFromOffchain
-  }, [bestTradeFromOffchain, bestTradeFromQuoterApi, bestTradeFromQuoterWorker, isQuoterAPIEnabled])
+  return useMemo(
+    () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
+    [bestTradeFromQuoterApi, bestTradeFromQuoterWorker, isQuoterAPIEnabled],
+  )
 }
 
 function bestTradeHookFactory({
