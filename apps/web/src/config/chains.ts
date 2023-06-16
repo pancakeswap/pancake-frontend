@@ -11,6 +11,7 @@ import {
   polygonZkEvm as polygonZkEvm_,
   lineaTestnet,
   arbitrumGoerli,
+  arbitrum,
   Chain,
 } from 'wagmi/chains'
 
@@ -120,4 +121,5 @@ export const CHAINS = [
   polygonZkEvmTestnet,
   lineaTestnet,
   arbitrumGoerli,
+  arbitrum,
 ]

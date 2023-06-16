@@ -10,6 +10,7 @@ import {
   zksyncTokens,
   lineaTestnetTokens,
   arbitrumGoerliTokens,
+  arbitrumTokens,
 } from '@pancakeswap/tokens'
 
 export const usdGasTokensByChain = {
@@ -18,7 +19,7 @@ export const usdGasTokensByChain = {
   [ChainId.BSC]: [bscTokens.busd],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.busd],
   // TODO: new chains
-  [ChainId.ARBITRUM_ONE]: [],
+  [ChainId.ARBITRUM_ONE]: [arbitrumTokens.usdc],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.usdc],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.usdt],
