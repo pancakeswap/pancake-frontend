@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTranslation, Trans } from '@pancakeswap/localization'
+import { useTranslation, ContextApi } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
@@ -39,7 +39,7 @@ interface CommissionInfoProps {
 
 export interface ChartInfo {
   id: string
-  name: JSX.Element
+  name: string
   chartColor: string
   usdValue: string
   cakeValue: string
@@ -47,44 +47,38 @@ export interface ChartInfo {
   percentage: string
 }
 
-const chartConfig: ChartInfo[] = [
-  {
-    id: 'totalPerpSwapEarnFeeUSD',
-    name: <Trans>Perp Swap Earn Fee</Trans>,
-    chartColor: '#ED4B9E',
+const translatedChartConfig = (t: ContextApi['t']): ChartInfo[] => {
+  const configArray = [
+    {
+      id: 'totalPerpSwapEarnFeeUSD',
+      name: t('Perp Swap Earn Fee'),
+      chartColor: '#ED4B9E',
+    },
+    {
+      id: 'totalStableSwapEarnFeeUSD',
+      name: t('Stable Swap Earn Fee'),
+      chartColor: '#FFB237',
+    },
+    {
+      id: 'totalV2SwapEarnFeeUSD',
+      name: t('V2 Swap Earn Fee'),
+      chartColor: '#7645D9',
+    },
+    {
+      id: 'totalV3SwapEarnFeeUSD',
+      name: t('V3 Swap Earn Fee'),
+      chartColor: '#2ECFDC',
+    },
+  ]
+
+  return configArray.map((config) => ({
+    ...config,
     usdValue: '0',
     cakeValue: '0',
     cakeValueAsNumber: 0,
     percentage: '0',
-  },
-  {
-    id: 'totalStableSwapEarnFeeUSD',
-    name: <Trans>Stable Swap Earn Fee</Trans>,
-    chartColor: '#FFB237',
-    usdValue: '0',
-    cakeValue: '0',
-    cakeValueAsNumber: 0,
-    percentage: '0',
-  },
-  {
-    id: 'totalV2SwapEarnFeeUSD',
-    name: <Trans>V2 Swap Earn Fee</Trans>,
-    chartColor: '#7645D9',
-    usdValue: '0',
-    cakeValue: '0',
-    cakeValueAsNumber: 0,
-    percentage: '0',
-  },
-  {
-    id: 'totalV3SwapEarnFeeUSD',
-    name: <Trans>V3 Swap Earn Fee</Trans>,
-    chartColor: '#2ECFDC',
-    usdValue: '0',
-    cakeValue: '0',
-    cakeValueAsNumber: 0,
-    percentage: '0',
-  },
-]
+  }))
+}
 
 const CommissionInfo: React.FC<React.PropsWithChildren<CommissionInfoProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
@@ -95,6 +89,8 @@ const CommissionInfo: React.FC<React.PropsWithChildren<CommissionInfoProps>> = (
     const cakeBalance = new BigNumber(totalEarnFeeUSD).div(cakePriceBusd).toNumber()
     return formatNumber(cakeBalance)
   }, [cakePriceBusd, totalEarnFeeUSD])
+
+  const chartConfig = useMemo(() => translatedChartConfig(t), [t])
 
   const chartData = useMemo(() => {
     return chartConfig
@@ -112,7 +108,7 @@ const CommissionInfo: React.FC<React.PropsWithChildren<CommissionInfoProps>> = (
         }
       })
       .sort((a, b) => b.cakeValueAsNumber - a.cakeValueAsNumber)
-  }, [affiliate?.metric, cakePriceBusd, totalEarnFeeUSD])
+  }, [affiliate?.metric, cakePriceBusd, totalEarnFeeUSD, chartConfig])
 
   return (
     <Box width={['100%', '100%', '100%', '100%', '100%', '387px']}>

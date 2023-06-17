@@ -89,6 +89,7 @@
     "react-transition-group": "^4.4.5",
     "react-window": "^1.8.7",
     "recharts": "2.1.15",
+    "react-minimal-pie-chart": "8.4.0",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "remark-gfm": "^1.0.0",
