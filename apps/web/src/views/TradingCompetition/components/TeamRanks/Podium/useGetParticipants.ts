@@ -26,12 +26,7 @@ const useGetParticipants = (subgraphAddress: string): string[] => {
         const flippers = parseInt(response.flippers.userCount, 10)
         const cakers = parseInt(response.cakers.userCount, 10)
         const totalParticipants = storm + flippers + cakers
-        setParticipants([
-          storm.toLocaleString(),
-          flippers.toLocaleString(),
-          cakers.toLocaleString(),
-          totalParticipants.toString(),
-        ])
+        setParticipants([storm.toString(), flippers.toString(), cakers.toString(), totalParticipants.toString()])
       } catch (error) {
         console.error('Failed to get participants data', error)
       }

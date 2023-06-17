@@ -51,7 +51,7 @@ const CongratulationsCard: React.FC<React.PropsWithChildren<{ currentAuction: Au
 
         <Flex justifyContent="space-between" mb="8px">
           <Text color="textSubtle">{t('Your total bid')}</Text>
-          <Text>{getBalanceNumber(amount).toLocaleString()} CAKE</Text>
+          <Text>{getBalanceNumber(amount)} CAKE</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Your position')}</Text>

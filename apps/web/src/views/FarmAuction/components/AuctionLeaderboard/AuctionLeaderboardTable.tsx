@@ -94,7 +94,7 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
       <GridCell isTopPosition={isTopPosition}>
         <Flex flexDirection="column" width="100%" justifyContent="flex-end" pr={[null, null, '24px']}>
           <Text bold textTransform="uppercase" width="100%" textAlign="right">
-            {getBalanceNumber(amount).toLocaleString()}
+            {getBalanceNumber(amount)}
           </Text>
           {cakePriceBusd.gt(0) ? (
             <Text fontSize="12px" color="textSubtle" textAlign="right">

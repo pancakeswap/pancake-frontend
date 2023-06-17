@@ -44,7 +44,9 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
       )
     },
     onConfirm: () => {
-      return callWithGasPrice(farmAuctionContract, 'claimAuction', [BigInt(reclaimableAuction.id)])
+      return callWithGasPrice(farmAuctionContract, 'claimAuction', [
+        reclaimableAuction ? BigInt(reclaimableAuction.id) : null,
+      ])
     },
     onSuccess: async ({ receipt }) => {
       checkForNextReclaimableAuction()
@@ -72,7 +74,7 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
         </Text>
         <Flex justifyContent="space-between" mb="8px">
           <Text color="textSubtle">{t('Your total bid')}</Text>
-          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount).toLocaleString() })}</Text>
+          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount) })}</Text>
         </Flex>
         <Flex justifyContent="space-between" mb="24px">
           <Text color="textSubtle">{t('Your position')}</Text>

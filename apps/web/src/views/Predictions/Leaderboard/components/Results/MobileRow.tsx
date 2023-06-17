@@ -41,7 +41,7 @@ const MobileRow: React.FC<React.PropsWithChildren<MobileRowProps>> = ({ rank, us
         <Text fontSize="12px" color="textSubtle">
           {t('Rounds Won')}
         </Text>
-        <Text fontWeight="bold">{`${user.totalBetsClaimed.toLocaleString()}/${user.totalBets.toLocaleString()}`}</Text>
+        <Text fontWeight="bold">{`${user.totalBetsClaimed}/${user.totalBets}`}</Text>
       </Row>
     </StyledMobileRow>
   )

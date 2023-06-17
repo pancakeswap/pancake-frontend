@@ -50,7 +50,7 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
       <CardHeader>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading as="h3" scale="md">
-            {t('Votes (%count%)', { count: totalVotes ? totalVotes.toLocaleString() : '-' })}
+            {t('Votes (%count%)', { count: totalVotes || '-' })}
           </Heading>
           {!isFetched && <AutoRenewIcon spin width="22px" />}
         </Flex>
