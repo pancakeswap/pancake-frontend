@@ -28,7 +28,7 @@ export const fetchMinimumBuyAmount = async (
 ): Promise<{ [curr: string]: CurrencyLimits }> => {
   try {
     const response = await fetch(
-      `https://api.moonpay.com/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
+      `https://api.moonpay.com/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
     // console.log(await response.json())
@@ -155,8 +155,8 @@ export async function queryParametersToBuyCryptoState(
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: minAmounts.base.minBuyAmount.toString(),
-    minBaseAmount: minAmounts.quote.minBuyAmount.toString(),
+    minAmount: (minAmounts.base.minBuyAmount * 2).toString(),
+    minBaseAmount: (minAmounts.quote.minBuyAmount * 2).toString(),
     recipient: account,
     userIpAddress: null,
   }

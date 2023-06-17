@@ -21,7 +21,7 @@ import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
 
-const whiteListedFiatCurrencies = ['USD', 'EUR', 'USD', 'JPY', 'AUD']
+const whiteListedFiatCurrencies = ['USD', 'EUR', 'USD', 'JPY', 'AUD', 'GBP', 'BRL', 'IDR', 'CAD']
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
@@ -248,7 +248,7 @@ function CurrencySearch({
   return (
     <>
       <AutoColumn gap="16px">
-        {showSearchInput && (
+        {showSearchInput && mode?.slice(0, 6) !== 'onramp' && (
           <Row>
             <Input
               id="token-search-input"

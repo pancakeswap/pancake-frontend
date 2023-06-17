@@ -13,32 +13,12 @@
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "Wrapped BNB",
-      "symbol": "WBNB",
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "BUSD Token",
-      "symbol": "BUSD",
-      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "Ethereum Token",
-      "symbol": "ETH",
-      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+      "name": "Wrapped BTC",
+      "symbol": "WBTC",
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "chainId": 1,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
     },
 
     {
@@ -54,12 +34,92 @@
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "Wrapped BTC",
-      "symbol": "WBTC",
-      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "name": "Coinbase USD",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "USDC",
+      "decimals": 6,
       "chainId": 1,
-      "decimals": 8,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "DAI StableCoin",
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "symbol": "DAI",
+      "decimals": 6,
+      "chainId": 1,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Binance USD",
+      "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
+      "symbol": "BUSD",
+      "decimals": 6,
+      "chainId": 1,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/BUSD.png"
+    },
+    {
+      "isNative": "true",
+      "isToken": "false",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "",
+      "chainId": 1,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/eth.png"
+    },
+    {
+      "isNative": "true",
+      "isToken": "false",
+      "name": "Binance Coin",
+      "symbol": "BNB",
+      "address": "0x242a1ff6ee06f2131b7924cacb74c7f9e3a5edc9",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Ethereum Token",
+      "symbol": "ETH",
+      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "USDT Tether",
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 56,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Coinbase USD",
+      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 56,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Binance WBTC",
+      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "symbol": "BTCB",
+      "decimals": 6,
+      "chainId": 56,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/btcb.png"
     }
   ]
 }

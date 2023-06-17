@@ -103,7 +103,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
   }
 
   const fetchQuotes = useCallback(async () => {
-    if (!userIp) return
+    // if (!userIp) return
     try {
       const responsePromises = [
         fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
@@ -136,7 +136,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         .map((quote: ProviderResponse) => {
           if (quote?.accountId) return calculateQuotesData(quote as PriceQuotes)
           if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
-          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, inputCurrency)
+          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, outputCurrency)
           return calculateNoQuoteOption(quote)
         })
         .filter((item) => typeof item !== 'undefined')

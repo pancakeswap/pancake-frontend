@@ -8,7 +8,7 @@ interface MoonpayIPAddressesResponse {
   isSellAllowed?: boolean
 }
 const REACT_APP_MOONPAY_API = 'https://api.moonpay.com'
-const REACT_APP_MOONPAY_PUBLISHABLE_KEY = 'pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54'
+const REACT_APP_MOONPAY_PUBLISHABLE_KEY = 'pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz'
 
 async function getMoonpayAvailability(): Promise<boolean> {
   const moonpayPublishableKey = REACT_APP_MOONPAY_PUBLISHABLE_KEY

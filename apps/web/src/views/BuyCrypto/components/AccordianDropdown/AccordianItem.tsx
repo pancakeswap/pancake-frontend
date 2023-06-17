@@ -15,13 +15,13 @@ const DropdownWrapper = styled.div`
 `
 const FEE_TYPES = ['Total Fees', 'Provider Fees', 'Networking Fees']
 
-const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
-  const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
-  const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
-  const AssetRate = new BigNumber(quote.quote)
-  const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
-  return moonPayQuote
-}
+// const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
+//   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
+//   const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
+//   const AssetRate = new BigNumber(quote.quote)
+//   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
+//   return moonPayQuote
+// }
 
 const calculateBinanceConnectQuoteFromFees = (quote: ProviderQoute) => {
   const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee))
@@ -64,7 +64,7 @@ function AccordionItem({
 }) {
   const { t } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(105)
+  const [height, setHeight] = useState(104)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
 
@@ -79,7 +79,7 @@ function AccordionItem({
     if (active) {
       const contentEl = getRefValue(contentRef)
       setHeight(contentEl.scrollHeight + 105)
-    } else setHeight(105)
+    } else setHeight(104)
   }, [active])
 
   let finalQuote = quote.amount
@@ -89,18 +89,16 @@ function AccordionItem({
   if (quote.amount === 0) {
     return (
       <Flex flexDirection="column">
-        <CryptoCard padding="12px 12px" position="relative" isClicked={false} isDisabled>
+        <CryptoCard padding="12px 12px" style={{ height }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
             <ProviderIcon provider={quote.provider} isDisabled />
             <Text ml="4px" fontSize="22px" color="textSubtle">
               No quote
             </Text>
           </RowBetween>
-          <RowBetween pt="8px">
-            <Text fontSize="15px" color="textSubtle">
-              this provider does not support the request currently
-            </Text>
-          </RowBetween>
+          <Text fontSize="15px" color="textSubtle" textAlign="center">
+            no quote available from this provider currently.
+          </Text>
         </CryptoCard>
       </Flex>
     )

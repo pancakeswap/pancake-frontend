@@ -32,10 +32,13 @@ const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) =
   }, {})
 }
 
-const mapWithoutUrlsAllChains = (tokenMap: TokenAddressMap<ChainId>) => {
-  const tokens: any = Object.keys(tokenMap).flatMap((id: string) => Object.entries(tokenMap[id]))
-  const mappedTokens = Object.fromEntries(tokens.map(([symbol, { token }]) => [symbol, token]))
-  return mappedTokens
+const mapWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) => {
+  if (!tokenMap || !chainId) return {}
+  return Object.keys(tokenMap[chainId] || {}).reduce<{ [symbol: string]: ERC20Token }>((newMap, symbol) => {
+    newMap[symbol] = tokenMap[chainId][symbol].token
+
+    return newMap
+  }, {})
 }
 
 /**
@@ -68,10 +71,11 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
 }
 
 export function useAllOnRampTokens(): { [address: string]: OnRampCurrency } {
+  const { chainId } = useActiveChainId()
   const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
   return useMemo(() => {
-    return mapWithoutUrlsAllChains(tokenMap)
-  }, [tokenMap])
+    return mapWithoutUrlsBySymbol(tokenMap, chainId)
+  }, [tokenMap, chainId])
 }
 
 /**
