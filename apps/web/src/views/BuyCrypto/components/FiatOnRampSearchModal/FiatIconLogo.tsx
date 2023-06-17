@@ -15,7 +15,7 @@ import SGDIcon from '../../../../../public/fiatCurrencies/SGD.svg'
 import TWDIcon from '../../../../../public/fiatCurrencies/TWD.svg'
 
 export const Icons: { [img: string]: JSX.Element } = {
-  GBP: <Image src={GBPIcon} alt="#" width={20} />,
+  GBP: <Image src={GBPIcon} alt="##" width={20} />,
   USD: <Image src={USDIcon} alt="#" width={20} />,
   EUR: <Image src={EuroIcon} alt="#" width={20} />,
   AUD: <Image src={AUDIcon} alt="#" width={20} />,
