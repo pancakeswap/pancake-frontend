@@ -49,6 +49,13 @@ export const farmsV3 = defineFarmV3Configs([
   },
   // Keep those farms on top
   {
+    pid: 32,
+    lpAddress: Pool.getAddress(ethereumTokens.tusd, ethereumTokens.usdt, FeeAmount.LOWEST),
+    token0: ethereumTokens.tusd,
+    token1: ethereumTokens.usdt,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 22,
     lpAddress: Pool.getAddress(ethereumTokens.axl, ethereumTokens.usdc, FeeAmount.MEDIUM),
     token0: ethereumTokens.axl,
