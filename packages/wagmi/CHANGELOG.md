@@ -1,5 +1,11 @@
 # @pancakeswap/wagmi
 
+## 2.0.0
+
+### Major Changes
+
+- 938aa75f5: Migrate ethers to viem
+
 ## 1.0.0
 
 ### Major Changes
