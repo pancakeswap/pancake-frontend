@@ -30,13 +30,17 @@ const MenuWrapper = styled.div`
 `
 
 const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
-
+enum DataSourceType {
+  V3,
+  v2,
+}
 const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
 }) => {
   const { query } = useRouter()
   const { chainId } = useActiveChainId()
-  const allTokens = useTokenHighLightList()
+  const { v2Tokens, v3Tokens } = useTokenHighLightList()
+  const [dataSource, setDataSource] = useState(DataSourceType.V3)
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const [confirmed, setConfirmed] = useState(false)
@@ -50,13 +54,10 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
 
   const formattedTokens = useMemo(
     () =>
-      allTokens
+      v2Tokens
         .filter(
           (t) =>
-            t.priceUSD !== 0 &&
-            t.priceUSDChange !== 0 &&
-            t.volumeUSD !== 0 &&
-            t.liquidityUSD >= LIQUIDITY_FILTER[chainId],
+            t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId],
         )
         .map((i) => {
           const tokenAddress = i?.address?.toLowerCase()
@@ -70,7 +71,29 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
             pairs,
           }
         }),
-    [allTokens, chainId, tokenPairs],
+    [v2Tokens, chainId, tokenPairs],
+  )
+
+  const formattedV3Tokens = useMemo(
+    () =>
+      v3Tokens
+        .filter(
+          (t) =>
+            t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId],
+        )
+        .map((i) => {
+          const tokenAddress = i?.address?.toLowerCase()
+          const pairs = tokenPairs?.filter(
+            (pair) =>
+              pair?.token?.address?.toLowerCase() === tokenAddress ||
+              pair?.quoteToken?.address?.toLowerCase() === tokenAddress,
+          )
+          return {
+            ...i,
+            pairs,
+          }
+        }),
+    [v3Tokens, chainId, tokenPairs],
   )
 
   const filterFormattedTokens = useMemo(() => {
@@ -83,6 +106,12 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
   const { t } = useTranslation()
   return (
     <Wrapper>
+      <MenuWrapper>
+        <ButtonMenu activeIndex={dataSource} onItemClick={setDataSource} fullWidth scale="sm" variant="subtle">
+          <ButtonMenuItem>{t('V3')}</ButtonMenuItem>
+          <ButtonMenuItem>{t('V2')}</ButtonMenuItem>
+        </ButtonMenu>
+      </MenuWrapper>
       <MenuWrapper>
         <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
           <ButtonMenuItem>{chainId === ChainId.BSC ? t('Price Change') : t('Liquidity')}</ButtonMenuItem>
@@ -111,7 +140,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
       )}
       {index === 0 ? (
         <TokenTable
-          tokenDatas={filterFormattedTokens}
+          tokenDatas={dataSource === DataSourceType.V3 ? formattedV3Tokens : filterFormattedTokens}
           type={chainId === ChainId.BSC ? 'priceChange' : 'liquidity'}
           defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSD'}
           maxItems={isMobile ? 100 : 6}
@@ -119,7 +148,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
         />
       ) : (
         <TokenTable
-          tokenDatas={filterFormattedTokens}
+          tokenDatas={dataSource === DataSourceType.V3 ? formattedV3Tokens : filterFormattedTokens}
           type="volume"
           defaultSortField="volumeUSD"
           maxItems={isMobile ? 100 : 6}

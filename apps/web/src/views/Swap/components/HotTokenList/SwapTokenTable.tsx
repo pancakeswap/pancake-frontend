@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -12,23 +13,22 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { isAddress } from 'utils'
-import { Currency, Token } from '@pancakeswap/sdk'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useStableSwapPath, useGetChainName } from 'state/info/hooks'
-import { TokenData } from 'state/info/types'
 import { multiChainPaths } from 'state/info/constant'
+import { useGetChainName, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
+import { isAddress } from 'utils'
+import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
-import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
+import { TokenHighlightData } from './types'
 
 /**
  *  Columns on different layouts
@@ -40,6 +40,7 @@ import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardI
  */
 
 type TableType = 'priceChange' | 'volume' | 'liquidity'
+
 const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
@@ -144,7 +145,7 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 
 const DataRow: React.FC<
   React.PropsWithChildren<{
-    tokenData: TokenData
+    tokenData: TokenHighlightData
     index: number
     type: TableType
     handleOutputSelect: (newCurrencyOutput: Currency) => void
@@ -185,7 +186,7 @@ const DataRow: React.FC<
           </Text>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
-        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
+        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.tvlUSD)}</Text>}
         <Flex alignItems="center" justifyContent="flex-end">
           {tokenData?.pairs?.length > 0 && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
@@ -226,7 +227,7 @@ const MAX_ITEMS = 10
 
 const TokenTable: React.FC<
   React.PropsWithChildren<{
-    tokenDatas: TokenData[] | undefined
+    tokenDatas: TokenHighlightData[] | undefined
     maxItems?: number
     defaultSortField?: string
     type: TableType
@@ -261,7 +262,7 @@ const TokenTable: React.FC<
     return tokenDatas
       ? orderBy(
           tokenDatas,
-          (tokenData) => tokenData[sortField as keyof TokenData],
+          (tokenData) => tokenData[sortField as keyof TokenHighlightData],
           sortDirection ? 'desc' : 'asc',
         ).slice(maxItems * (page - 1), page * maxItems)
       : []
