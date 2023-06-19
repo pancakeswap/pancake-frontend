@@ -479,14 +479,18 @@ describe('Trade', () => {
         tradeType: TradeType.EXACT_INPUT,
       })
       it('is cached', () => {
-        expect(exactIn.priceImpact === exactIn.priceImpact).toStrictEqual(true)
+        const priceImpactToBeCached = exactIn.priceImpact
+        const { priceImpact } = exactIn
+        expect(priceImpactToBeCached === priceImpact).toStrictEqual(true)
       })
       it('is correct', () => {
         expect(exactIn.priceImpact.toSignificant(3)).toEqual('17.2')
       })
 
       it('is cached with multiple routes', () => {
-        expect(exactInMultipleRoutes.priceImpact === exactInMultipleRoutes.priceImpact).toStrictEqual(true)
+        const priceImpactToBeCached = exactInMultipleRoutes.priceImpact
+        const { priceImpact } = exactInMultipleRoutes
+        expect(priceImpactToBeCached === priceImpact).toStrictEqual(true)
       })
       it('is correct with multiple routes', async () => {
         expect(exactInMultipleRoutes.priceImpact.toSignificant(3)).toEqual('19.8')
@@ -520,14 +524,18 @@ describe('Trade', () => {
       })
 
       it('is cached', () => {
-        expect(exactOut.priceImpact === exactOut.priceImpact).toStrictEqual(true)
+        const priceImpactToBeCached = exactOut.priceImpact
+        const { priceImpact } = exactOut
+        expect(priceImpactToBeCached === priceImpact).toStrictEqual(true)
       })
       it('is correct', () => {
         expect(exactOut.priceImpact.toSignificant(3)).toEqual('23.1')
       })
 
       it('is cached with multiple routes', () => {
-        expect(exactOutMultipleRoutes.priceImpact === exactOutMultipleRoutes.priceImpact).toStrictEqual(true)
+        const priceImpactToBeCached = exactOutMultipleRoutes.priceImpact
+        const { priceImpact } = exactOutMultipleRoutes
+        expect(priceImpactToBeCached === priceImpact).toStrictEqual(true)
       })
       it('is correct with multiple routes', () => {
         expect(exactOutMultipleRoutes.priceImpact.toSignificant(3)).toEqual('25.5')

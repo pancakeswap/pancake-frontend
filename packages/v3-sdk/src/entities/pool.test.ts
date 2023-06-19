@@ -15,51 +15,51 @@ describe('Pool', () => {
   describe('constructor', () => {
     it('cannot be used for tokens on different chains', () => {
       expect(() => {
-        new Pool(USDC, WETH9[5], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
+        return new Pool(USDC, WETH9[5], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
       }).toThrow('CHAIN_IDS')
     })
 
     it('fee must be integer', () => {
       expect(() => {
-        new Pool(USDC, WETH9[1], FeeAmount.MEDIUM + 0.5, encodeSqrtRatioX96(1, 1), 0, 0, [])
+        return new Pool(USDC, WETH9[1], FeeAmount.MEDIUM + 0.5, encodeSqrtRatioX96(1, 1), 0, 0, [])
       }).toThrow('FEE')
     })
 
     it('fee cannot be more than 1e6', () => {
       expect(() => {
-        new Pool(USDC, WETH9[1], 1e6, encodeSqrtRatioX96(1, 1), 0, 0, [])
+        return new Pool(USDC, WETH9[1], 1e6, encodeSqrtRatioX96(1, 1), 0, 0, [])
       }).toThrow('FEE')
     })
 
     it('cannot be given two of the same token', () => {
       expect(() => {
-        new Pool(USDC, USDC, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
+        return new Pool(USDC, USDC, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
       }).toThrow('ADDRESSES')
     })
 
     it.skip('price must be within tick price bounds', () => {
       expect(() => {
-        new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 1, [])
+        return new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 1, [])
       }).toThrow('PRICE_BOUNDS')
       expect(() => {
-        new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1) + 1n, 0, -1, [])
+        return new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1) + 1n, 0, -1, [])
       }).toThrow('PRICE_BOUNDS')
     })
 
     it('works with valid arguments for empty pool medium fee', () => {
-      new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
+      return new Pool(USDC, WETH9[1], FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
     })
 
     it('works with valid arguments for empty pool low fee', () => {
-      new Pool(USDC, WETH9[1], FeeAmount.LOW, encodeSqrtRatioX96(1, 1), 0, 0, [])
+      return new Pool(USDC, WETH9[1], FeeAmount.LOW, encodeSqrtRatioX96(1, 1), 0, 0, [])
     })
 
     it('works with valid arguments for empty pool lowest fee', () => {
-      new Pool(USDC, WETH9[1], FeeAmount.LOWEST, encodeSqrtRatioX96(1, 1), 0, 0, [])
+      return new Pool(USDC, WETH9[1], FeeAmount.LOWEST, encodeSqrtRatioX96(1, 1), 0, 0, [])
     })
 
     it('works with valid arguments for empty pool high fee', () => {
-      new Pool(USDC, WETH9[1], FeeAmount.HIGH, encodeSqrtRatioX96(1, 1), 0, 0, [])
+      return new Pool(USDC, WETH9[1], FeeAmount.HIGH, encodeSqrtRatioX96(1, 1), 0, 0, [])
     })
   })
 
