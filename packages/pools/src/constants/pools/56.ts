@@ -13,7 +13,6 @@ export const livePools: SerializedPool[] = [
     tokenPerBlock: '10',
     isFinished: false,
   },
-  ,
   {
     sousId: 347,
     stakingToken: bscTokens.cake,
