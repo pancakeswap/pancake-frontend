@@ -45,20 +45,20 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     )
   }
 
-  if ((chain?.unsupported ?? false) || isPageNotSupported) {
-    return (
-      <ModalV2 isOpen closeOnOverlayClick={false}>
-        <UnsupportedNetworkModal pageSupportedChains={pageSupportedChains?.length ? pageSupportedChains : CHAIN_IDS} />
-      </ModalV2>
-    )
-  }
-
-  if (isWrongNetwork && !dismissWrongNetwork) {
+  if (isWrongNetwork && !dismissWrongNetwork && !isPageNotSupported) {
     const currentChain = chains.find((c) => c.id === chainId)
     if (!currentChain) return null
     return (
       <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick onDismiss={() => setDismissWrongNetwork(true)}>
         <WrongNetworkModal currentChain={currentChain} onDismiss={() => setDismissWrongNetwork(true)} />
+      </ModalV2>
+    )
+  }
+
+  if ((chain?.unsupported ?? false) || isPageNotSupported) {
+    return (
+      <ModalV2 isOpen closeOnOverlayClick={false}>
+        <UnsupportedNetworkModal pageSupportedChains={pageSupportedChains?.length ? pageSupportedChains : CHAIN_IDS} />
       </ModalV2>
     )
   }
