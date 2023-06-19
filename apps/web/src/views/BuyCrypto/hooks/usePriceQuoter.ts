@@ -38,7 +38,8 @@ const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
 }
 
 const calculateQuotesDataMercury = (quote: MercuryoQuote, inputCurrency: string, chainId): ProviderQoute => {
-  return MERCURY_UNSUPPORTED_CURRENCY_CODES.includes(quote.data.currency) || (chainId === 56 && inputCurrency === 'ETH')
+  return MERCURY_UNSUPPORTED_CURRENCY_CODES.includes(quote.data.currency) ||
+    (chainId === 56 && quote.data.currency === 'ETH')
     ? {
         providerFee: 0,
         networkFee: 0,
