@@ -22,6 +22,8 @@ import { getSwapSound } from './swapSound'
 import ImportRow from './ImportRow'
 
 const whiteListedFiatCurrencies = ['USD', 'EUR', 'USD', 'JPY', 'AUD', 'GBP', 'BRL', 'IDR', 'CAD']
+const mercuryoWhitelist = ['ETH', 'BNB', 'BUSD']
+
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
@@ -137,8 +139,12 @@ function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    return mode?.slice(0, 6) === 'onramp' ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
-  }, [filteredQueryTokens, tokenComparator, mode])
+    return mode?.slice(0, 6) === 'onramp'
+      ? chainId === 56
+        ? [...filteredQueryTokens].filter((token) => mercuryoWhitelist.includes(token.symbol))
+        : [...filteredQueryTokens]
+      : [...filteredQueryTokens].sort(tokenComparator)
+  }, [filteredQueryTokens, tokenComparator, mode, chainId])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
