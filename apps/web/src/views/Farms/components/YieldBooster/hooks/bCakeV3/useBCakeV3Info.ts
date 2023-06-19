@@ -15,6 +15,7 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
   errorRetryInterval: 3000,
   keepPreviousData: true,
+  refreshInterval: 0,
 }
 
 export const useBakeV3farmCanBoost = (farmPid: number) => {

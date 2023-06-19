@@ -34,7 +34,7 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms/hooks'
-import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
+import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
@@ -195,7 +195,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     poolLength: v3PoolLength,
     isLoading,
     userDataLoaded: v3UserDataLoaded,
-  } = useFarmsV3WithPositions({ mockApr })
+  } = useFarmsV3WithPositionsAndBooster({ mockApr })
 
   const farmsLP: V2AndV3Farms = useMemo(() => {
     return [
