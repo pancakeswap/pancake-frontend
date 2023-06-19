@@ -117,7 +117,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
               </tr>
             ) : (
               <>
-                {!dataList && dataList?.total === 0 ? (
+                {!dataList || dataList?.total === 0 ? (
                   <tr>
                     <Td colSpan={isDesktop ? 3 : 2} textAlign="center">
                       {t('No results')}
