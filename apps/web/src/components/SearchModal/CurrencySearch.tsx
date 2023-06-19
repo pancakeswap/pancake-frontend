@@ -137,8 +137,8 @@ function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    return [...filteredQueryTokens].sort(tokenComparator)
-  }, [filteredQueryTokens, tokenComparator])
+    return mode?.slice(0, 6) === 'onramp' ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
+  }, [filteredQueryTokens, tokenComparator, mode])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

@@ -29,10 +29,10 @@ function Accordion({
   if (areValidQuotes) {
     return (
       <FlexGap flexDirection="column" gap="16px">
-        <Row paddingBottom="20px">
+        <Row paddingBottom="20px" justifyContent="center">
           <Flex>
             <Text ml="4px" fontSize="16px" textAlign="center">
-              {t('No quotes are availble for the given input parameters.')}
+              {t('No quote for this token pair at the moment.')}
             </Text>
           </Flex>
         </Row>

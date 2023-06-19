@@ -1,15 +1,23 @@
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
-  GBP: {
-    name: 'Great British Pound',
-    symbol: 'GBP',
-  },
   USD: {
     name: 'United States Dollar',
     symbol: 'USD',
   },
+  GBP: {
+    name: 'Great British Pound',
+    symbol: 'GBP',
+  },
   EUR: {
     name: 'Euro',
     symbol: 'EUR',
+  },
+  HKD: {
+    name: 'Hong Kong Dollar',
+    symbol: 'HKD',
+  },
+  CAD: {
+    name: 'Canadian Dollar',
+    symbol: 'CAD',
   },
   AUD: {
     name: 'Australian Dollar',
@@ -19,18 +27,6 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
     name: 'Brazilian Real',
     symbol: 'BRL',
   },
-  CAD: {
-    name: 'Canadian Dollar',
-    symbol: 'CAD',
-  },
-  HKD: {
-    name: 'Hong Kong Dollar',
-    symbol: 'HKD',
-  },
-  IDR: {
-    name: 'Indonesian Rupiah',
-    symbol: 'IDR',
-  },
   JPY: {
     name: 'Japanese Yen',
     symbol: 'JPY',
@@ -39,13 +35,17 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
     name: 'South Korean Won',
     symbol: 'KRW',
   },
-  SGD: {
-    name: 'Singapore Dollar',
-    symbol: 'SGD',
-  },
   TWD: {
     name: 'New Taiwan Dollar',
     symbol: 'TWD',
+  },
+  IDR: {
+    name: 'Indonesian Rupiah',
+    symbol: 'IDR',
+  },
+  SGD: {
+    name: 'Singapore Dollar',
+    symbol: 'SGD',
   },
   VND: {
     name: 'Vietnamese Dong',

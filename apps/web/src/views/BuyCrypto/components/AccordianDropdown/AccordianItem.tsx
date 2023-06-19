@@ -1,7 +1,7 @@
-import { Flex, RowBetween, Text } from '@pancakeswap/uikit'
+import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
@@ -9,24 +9,12 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ProviderIcon } from 'views/BuyCrypto/Icons'
 import { useTranslation } from '@pancakeswap/localization'
+import { isMobile } from 'react-device-detect'
 
 const DropdownWrapper = styled.div`
   width: 100%;
 `
 const FEE_TYPES = ['Total Fees', 'Provider Fees', 'Networking Fees']
-
-// const calculateMoonPayQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
-//   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
-//   const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
-//   const AssetRate = new BigNumber(quote.quote)
-//   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
-//   return moonPayQuote
-// }
-
-const calculateBinanceConnectQuoteFromFees = (quote: ProviderQoute) => {
-  const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee))
-  return binanceConnectQuote.toNumber()
-}
 
 // const calculateMercuryoQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
 //   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
@@ -67,6 +55,7 @@ function AccordionItem({
   const [height, setHeight] = useState(104)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
+  const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
   const isActive = () => (multiple ? visiblity : active)
 
@@ -82,23 +71,61 @@ function AccordionItem({
     } else setHeight(104)
   }, [active])
 
+  const MoonapyAmt = useMemo(() => {
+    const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
+    const fiatAmountAfterFees = new BigNumber(buyCryptoState.typedValue).minus(totalFees)
+    const AssetRate = new BigNumber(quote.quote)
+    const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate).toNumber()
+    return moonPayQuote
+  }, [quote, buyCryptoState])
+
+  const MercuryAmt = useMemo(() => {
+    const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee))
+    return binanceConnectQuote.toNumber()
+  }, [quote])
+
   let finalQuote = quote.amount
-  // if (quote.provider === 'MoonPay') finalQuote = calculateMoonPayQuoteFromFees(quote, buyCryptoState.typedValue)
-  if (quote.provider === 'BinanceConnect') finalQuote = calculateBinanceConnectQuoteFromFees(quote)
+  if (quote.provider === 'MoonPay') finalQuote = MoonapyAmt
+  if (quote.provider === 'BinanceConnect') finalQuote = MercuryAmt
+
+  const {
+    tooltip: buyCryptoTooltip,
+    tooltipVisible: buyCryptoTooltipVisible,
+    targetRef: buyCryptoTargetRef,
+  } = useTooltip(
+    <Box maxWidth="150px">
+      <Text as="p">
+        {t('Price quote from provider is currently unavailable. Please try again or try a different amount')}
+      </Text>
+    </Box>,
+    {
+      placement: isMobile ? 'top' : 'bottom',
+      trigger: isMobile ? 'focus' : 'hover',
+      ...(isMobile && { manualVisible: mobileTooltipShow }),
+    },
+  )
 
   if (quote.amount === 0) {
     return (
       <Flex flexDirection="column">
-        <CryptoCard padding="12px 12px" style={{ height }} position="relative" isClicked={false} isDisabled>
+        <CryptoCard padding="12px 12px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
             <ProviderIcon provider={quote.provider} isDisabled />
-            <Text ml="4px" fontSize="22px" color="textSubtle">
-              No quote
-            </Text>
+            <TooltipText
+              ref={buyCryptoTargetRef}
+              onClick={() => setMobileTooltipShow(false)}
+              display="flex"
+              style={{ justifyContent: 'center' }}
+            >
+              <Flex alignItems="center">
+                <Text ml="4px" fontSize="16px" color="textSubtle">
+                  Quote not available
+                </Text>
+                <InfoIcon color="textSubtle" pl="4px" />
+              </Flex>
+            </TooltipText>
+            {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
           </RowBetween>
-          <Text fontSize="15px" color="textSubtle" textAlign="center">
-            no quote available from this provider currently.
-          </Text>
         </CryptoCard>
       </Flex>
     )

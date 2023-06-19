@@ -44,7 +44,7 @@ export const MoonPaySvg = ({ ...props }: SvgProps) => {
   return (
     <Svg
       version="1.1"
-      width="150px"
+      width="125px"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
