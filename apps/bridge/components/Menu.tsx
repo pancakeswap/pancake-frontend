@@ -136,7 +136,11 @@ export function Menu() {
               {menu.items ? (
                 <DropdownMenu items={menu.items}>
                   <NextLink href={menu.href} passHref>
-                    <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
+                    <StyledMenuItem
+                      $isActive={menu.items.findIndex((item) => item.href === nextRouter.pathname) !== -1}
+                    >
+                      {menu.title}
+                    </StyledMenuItem>
                   </NextLink>
                 </DropdownMenu>
               ) : (
