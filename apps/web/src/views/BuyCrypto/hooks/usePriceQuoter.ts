@@ -9,7 +9,7 @@ import {
 } from './useProviderAvailability'
 
 const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['BNB', 'USDT', 'BUSD']
-const MERCURY_UNSUPPORTED_CURRENCY_CODES = ['ETH', 'USDT', 'USDC']
+const MERCURY_UNSUPPORTED_CURRENCY_CODES = ['USDT', 'USDC']
 
 export type ProviderQoute = {
   providerFee: number
@@ -37,8 +37,8 @@ const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
   }
 }
 
-const calculateQuotesDataMercury = (quote: MercuryoQuote, inputCurrency: string): ProviderQoute => {
-  return MERCURY_UNSUPPORTED_CURRENCY_CODES.includes(quote.data.currency)
+const calculateQuotesDataMercury = (quote: MercuryoQuote, inputCurrency: string, chainId): ProviderQoute => {
+  return MERCURY_UNSUPPORTED_CURRENCY_CODES.includes(quote.data.currency) || (chainId === 56 && inputCurrency === 'ETH')
     ? {
         providerFee: 0,
         networkFee: 0,
@@ -151,7 +151,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
 
           if (quote?.accountId && !isMoonapySupported) return calculateQuotesData(quote as PriceQuotes)
           if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
-          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, outputCurrency)
+          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, outputCurrency, chainId)
           return calculateNoQuoteOption(quote)
         })
         .filter((item) => typeof item !== 'undefined')
