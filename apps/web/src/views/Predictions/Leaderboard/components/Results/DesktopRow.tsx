@@ -34,9 +34,9 @@ const DesktopRow: React.FC<React.PropsWithChildren<DesktopRowProps>> = ({ rank, 
       })}%`}
     </Td>
     <Td textAlign="center">
-      <strong>{user.totalBetsClaimed.toLocaleString()}</strong>
+      <strong>{user.totalBetsClaimed}</strong>
     </Td>
-    <Td textAlign="center">{user.totalBets.toLocaleString()}</Td>
+    <Td textAlign="center">{user.totalBets}</Td>
   </tr>
 )
 
