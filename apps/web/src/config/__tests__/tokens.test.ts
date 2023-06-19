@@ -7,6 +7,8 @@ import omitBy from 'lodash/omitBy'
 import { describe, it } from 'vitest'
 import { publicClient } from '../../utils/wagmi'
 
+const whitelist = ['deprecated_tusd']
+
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
 // remove HERO because there are two tokens with the symbol HERO (StepHero and Hero)
@@ -45,8 +47,8 @@ describe.concurrent(
           ],
           allowFailure: false,
         })
-
-        expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
+        const isWhitelisted = whitelist.includes(key.toLowerCase())
+        if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
         expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
         expect(token.decimals).toBe(decimals)
       },
