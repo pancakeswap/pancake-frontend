@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.0.0
+
+### Major Changes
+
+- 938aa75f5: Migrate ethers to viem
+
 ## 4.0.0
 
 ### Major Changes
