@@ -50,6 +50,13 @@ export const farmsV3 = defineFarmV3Configs([
     feeAmount: FeeAmount.LOWEST,
   },
   {
+    pid: 43,
+    token0: bscTokens.csix,
+    token1: bscTokens.cake,
+    lpAddress: Pool.getAddress(bscTokens.csix, bscTokens.cake, FeeAmount.MEDIUM),
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 23,
     token0: bscTokens.usdt,
     token1: bscTokens.axl,
@@ -87,14 +94,6 @@ export const farmsV3 = defineFarmV3Configs([
     lpAddress: Pool.getAddress(bscTokens.ageur, bscTokens.usdt, FeeAmount.LOW),
     feeAmount: FeeAmount.LOW,
   },
-  {
-    pid: 43,
-    token0: bscTokens.csix,
-    token1: bscTokens.cake,
-    lpAddress: Pool.getAddress(bscTokens.csix, bscTokens.cake, FeeAmount.MEDIUM),
-    feeAmount: FeeAmount.MEDIUM,
-  },
-
   {
     pid: 42,
     token0: bscTokens.pepe,
