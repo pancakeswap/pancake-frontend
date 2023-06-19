@@ -85,10 +85,10 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
   const routerAddress = SMART_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId]
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [inputCurrency ?? undefined, outputCurrency ?? undefined], [inputCurrency, outputCurrency]),
+  )
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],

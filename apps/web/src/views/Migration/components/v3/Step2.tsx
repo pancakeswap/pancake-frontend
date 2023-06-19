@@ -68,7 +68,8 @@ export function Step2() {
 
   const activeV3Farms = farmsWithPrice.filter((farm) => farm.multiplier !== '0X')
 
-  const v2Pairs = useV2Pairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+  const pairs = useMemo(() => liquidityTokensWithBalances.map(({ tokens }) => tokens), [liquidityTokensWithBalances])
+  const v2Pairs = useV2Pairs(pairs)
   const v2IsLoading =
     fetchingV2PairBalances ||
     v2Pairs?.length < liquidityTokensWithBalances.length ||

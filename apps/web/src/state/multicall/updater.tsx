@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { multicallReducerAtom, MulticallState } from 'state/multicall/reducer'
 import { worker2 } from 'utils/worker'
-import { useMulticallContract } from '../../hooks/useContract'
+import { useMulticallContract } from 'hooks/useContract'
 import {
   Call,
   errorFetchingMulticallResults,

@@ -257,10 +257,12 @@ export function useSingleContractMultipleData<TAbi extends Abi | readonly unknow
 
   const { cache } = useSWRConfig()
 
+  const cacheKey = useMemo(() => unstable_serialize(['blockNumber', chainId]), [chainId])
+
   return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    const currentBlockNumber = cache.get(cacheKey)?.data
     return results.map((result) => toCallState(result, contract.abi, functionName, currentBlockNumber))
-  }, [cache, chainId, results, contract.abi, functionName])
+  }, [cache, results, contract.abi, functionName, cacheKey])
 }
 
 const DEFAULT_OPTIONS = {
@@ -317,11 +319,12 @@ export function useMultipleContractSingleData<TAbi extends Abi | readonly unknow
   const { chainId } = useActiveChainId()
 
   const { cache } = useSWRConfig()
+  const cacheKey = useMemo(() => unstable_serialize(['blockNumber', chainId]), [chainId])
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    const currentBlockNumber = cache.get(cacheKey)?.data
     return results.map((result) => toCallState(result, abi, functionName, currentBlockNumber))
-  }, [cache, chainId, results, abi, functionName])
+  }, [cache, cacheKey, results, abi, functionName])
 }
 
 export type SingleCallParameters<
@@ -362,9 +365,10 @@ export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunc
 
   const { cache } = useSWRConfig()
   const { chainId } = useActiveChainId()
+  const cacheKey = useMemo(() => unstable_serialize(['blockNumber', chainId]), [chainId])
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    const currentBlockNumber = cache.get(cacheKey)?.data
     return toCallState(result, contract?.abi, functionName, currentBlockNumber)
-  }, [cache, chainId, result, contract?.abi, functionName])
+  }, [cache, cacheKey, result, contract?.abi, functionName])
 }

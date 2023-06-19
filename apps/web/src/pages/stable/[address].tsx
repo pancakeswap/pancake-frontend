@@ -23,7 +23,7 @@ import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
-import { useAccount } from 'wagmi'
+import { Address, useAccount } from 'wagmi'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -59,7 +59,7 @@ export default function StablePoolPage() {
   const { result } = useSingleCallResult({
     contract: stableSwapInfoContract,
     functionName: 'balances',
-    args: [selectedLp?.stableSwapAddress],
+    args: useMemo(() => [selectedLp?.stableSwapAddress] as [Address], [selectedLp?.stableSwapAddress]),
   })
 
   const reserves = useMemo(() => result || [0n, 0n], [result])

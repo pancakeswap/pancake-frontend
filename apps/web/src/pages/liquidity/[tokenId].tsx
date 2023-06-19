@@ -352,7 +352,7 @@ export default function PoolPage() {
   const owner = useSingleCallResult({
     contract: tokenId ? positionManager : null,
     functionName: 'ownerOf',
-    args: [tokenId],
+    args: useMemo(() => [tokenId] as [bigint], [tokenId]),
   }).result
   const ownsNFT = owner === account || positionDetails?.operator === account
 

@@ -46,7 +46,7 @@ export function useLPTokensWithBalanceByAccount(account) {
 
   const [stableBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
-    lpTokens.map(({ liquidityToken }) => liquidityToken),
+    useMemo(() => lpTokens.map(({ liquidityToken }) => liquidityToken), [lpTokens]),
   )
 
   const lpTokensWithBalance = useMemo(
