@@ -1,12 +1,14 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-await-in-loop */
-import { TokenList, TokenInfo } from '@pancakeswap/token-lists'
+import { TokenInfo, TokenList } from '@pancakeswap/token-lists'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
-import remove from 'lodash/remove'
 import Ajv from 'ajv'
+import remove from 'lodash/remove'
 import schema from '../schema/pancakeswap.json'
 
 export const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
+const validateWhiteList = ['0x14016E85a25aeb13065688cAFB43044C2ef86784']
+// TUSD(Old)
 
 /**
  * Contains the logic for resolving a list URL to a validated token list
@@ -34,11 +36,15 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
 
     const json = await response.json()
     if (json.tokens) {
-      remove<TokenInfo>(json.tokens, (token) => {
+      remove<TokenInfo>(json.tokens, (token: any) => {
         return token.symbol ? token.symbol.length === 0 : true
       })
     }
-    if (!tokenListValidator(json)) {
+    const filteredTokenListJson = {
+      ...json,
+      tokens: json.tokens.filter((d: any) => validateWhiteList.indexOf(d.address) === -1),
+    }
+    if (!tokenListValidator(filteredTokenListJson)) {
       const validationErrors: string =
         tokenListValidator.errors?.reduce<string>((memo, error) => {
           const add = `${(error as any).dataPath} ${error.message ?? ''}`
