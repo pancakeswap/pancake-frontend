@@ -44,9 +44,9 @@ export const farmsV3 = defineFarmV3Configs([
   // keep those farms on top
   {
     pid: 48,
-    token0: bscTokens.tusd_new,
+    token0: bscTokens.tusd,
     token1: bscTokens.usdt,
-    lpAddress: Pool.getAddress(bscTokens.tusd_new, bscTokens.usdt, FeeAmount.LOWEST),
+    lpAddress: Pool.getAddress(bscTokens.tusd, bscTokens.usdt, FeeAmount.LOWEST),
     feeAmount: FeeAmount.LOWEST,
   },
   {
@@ -1256,7 +1256,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 397,
     lpSymbol: 'TUSD-BUSD LP',
     lpAddress: '0x2E28b9B74D6d99D4697e913b82B41ef1CAC51c6C',
-    token: bscTokens.tusd,
+    token: bscTokens.deprecated_tusd,
     quoteToken: bscTokens.busd,
   },
   {

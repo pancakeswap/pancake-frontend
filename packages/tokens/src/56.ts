@@ -1520,7 +1520,7 @@ export const bscTokens = {
     'Venus Reward Token',
     'https://venus.io/',
   ),
-  tusd: new ERC20Token(
+  deprecated_tusd: new ERC20Token(
     ChainId.BSC,
     '0x14016E85a25aeb13065688cAFB43044C2ef86784',
     18,
@@ -2618,7 +2618,7 @@ export const bscTokens = {
     'PLAY',
     'https://xcadnetwork.com/play',
   ),
-  tusd_new: new ERC20Token(
+  tusd: new ERC20Token(
     ChainId.BSC,
     '0x40af3827F39D0EAcBF4A168f8D4ee67c121D11c9',
     18,
