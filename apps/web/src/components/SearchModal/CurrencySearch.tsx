@@ -22,7 +22,7 @@ import { getSwapSound } from './swapSound'
 import ImportRow from './ImportRow'
 
 const whiteListedFiatCurrencies = ['USD', 'EUR', 'USD', 'JPY', 'AUD', 'GBP', 'BRL', 'IDR', 'CAD']
-const mercuryoWhitelist = ['ETH', 'BNB', 'BUSD']
+const mercuryoWhitelist = ['BNB', 'BUSD']
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
