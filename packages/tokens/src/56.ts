@@ -2618,4 +2618,12 @@ export const bscTokens = {
     'PLAY',
     'https://xcadnetwork.com/play',
   ),
+  tusd_new: new ERC20Token(
+    ChainId.BSC,
+    '0x40af3827F39D0EAcBF4A168f8D4ee67c121D11c9',
+    18,
+    'TUSD',
+    'TrueUSD',
+    'https://tusd.io/',
+  ),
 }
