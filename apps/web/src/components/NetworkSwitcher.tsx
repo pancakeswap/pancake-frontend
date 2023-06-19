@@ -162,7 +162,7 @@ export const NetworkSwitcher = () => {
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
     [isLoading, pendingChainId, chainId],
   )
-  const symbol = SHORT_SYMBOL[foundChain.id] ?? NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
+  const symbol = SHORT_SYMBOL[foundChain?.id] ?? NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Unable to switch network. Please try it on your wallet'),
     { placement: 'bottom' },
