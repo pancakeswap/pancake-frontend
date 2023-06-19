@@ -112,7 +112,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { t } = useTranslation()
   const cakePrice = usePriceCakeUSD()
   const { tokenId } = position
-  const { isDark } = useTheme()
+  const { isDark, colors } = useTheme()
 
   const title = `${lpSymbol} (#${tokenId.toString()})`
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
@@ -171,6 +171,8 @@ const SingleFarmV3Card: React.FunctionComponent<
       onDismiss?.()
     }
   }
+
+  const dividerBorderStyle = useMemo(() => `1px solid ${colors.input}`, [colors.input])
 
   const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
   const outOfRangeUnstaked = outOfRange && positionType === 'unstaked'
@@ -314,11 +316,11 @@ const SingleFarmV3Card: React.FunctionComponent<
         {positionType !== 'unstaked' && (
           <>
             <AtomBox
-              border="1"
               width={{
                 xs: '100%',
                 md: 'auto',
               }}
+              style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
             />
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
               <FarmV3HarvestAction
@@ -335,11 +337,11 @@ const SingleFarmV3Card: React.FunctionComponent<
         {farmCanBoost && (
           <>
             <AtomBox
-              border="1"
               width={{
                 xs: '100%',
                 md: 'auto',
               }}
+              style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
             />
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
               <BCakeV3CardView
