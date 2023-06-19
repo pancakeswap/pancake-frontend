@@ -39,3 +39,5 @@ export const CHAINS = [bsc, mainnet, bscTestnet, goerli]
  * The expectation is that all of these networks have immediate transaction confirmation.
  */
 export const L2_CHAIN_IDS: ChainId[] = []
+
+export const MAINNET_CHAINS = [bsc, mainnet]
