@@ -87,7 +87,7 @@ const AssetSelect = ({ onCurrencySelect, currency }) => {
           {t('I want to buy')}
         </Text>
         <RowFixed style={{ justifySelf: 'flex-end' }}>
-          {balance ? <Balance balance={balance} currency={currency} /> : <CircleLoader />}
+          {balance ? <Balance balance={balance} currency={currency} /> : account.address ? <CircleLoader /> : null}
         </RowFixed>
       </Flex>
       <AssetSelectButton>

@@ -5,8 +5,6 @@ import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import styled from 'styled-components'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useHttpLocations } from '@pancakeswap/hooks'
-import { FIAT_CURRENCIES } from 'views/BuyCrypto/components/FiatOnRampSearchModal/types'
-import { FiatIcon } from 'views/BuyCrypto/components/FiatOnRampSearchModal/FiatIconLogo'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
@@ -42,13 +40,6 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency && currency.symbol && Object.keys(FIAT_CURRENCIES).includes(currency.symbol)) {
-    return (
-      <Box mx="4px">
-        <FiatIcon name={currency.symbol} />
-      </Box>
-    )
-  }
   if (currency?.isNative) {
     if (currency.chainId === ChainId.BSC) {
       return <BinanceIcon width={size} style={style} />

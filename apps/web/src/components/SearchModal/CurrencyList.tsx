@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
 import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { FiatIcon } from 'views/BuyCrypto/components/FiatOnRampSearchModal/FiatIconLogo'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -65,6 +66,7 @@ function CurrencyRow({
   otherSelected,
   style,
   onRampFlow,
+  mode,
 }: {
   currency: Currency
   onSelect: () => void
@@ -72,6 +74,7 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
   onRampFlow: boolean
+  mode: string
 }) {
   const { address: account } = useAccount()
   const { t } = useTranslation()
@@ -91,7 +94,7 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size="24px" />
+      {mode === 'onramp-input' ? <FiatIcon name={currency.symbol} /> : <CurrencyLogo currency={currency} size="24px" />}
       <Column>
         <Text bold>{currency?.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
@@ -211,6 +214,7 @@ export default function CurrencyList({
           onSelect={handleSelect}
           otherSelected={otherSelected}
           onRampFlow={onRampFlow}
+          mode={mode}
         />
       )
     },

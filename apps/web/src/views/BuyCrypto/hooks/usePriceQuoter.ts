@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
-import { fetchBinanceConnectQuote, fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
+import { fetchMercuryoQuote } from './useProviderQuotes'
 import { fetchMercuryoAvailability, fetchMoonpayAvailability } from './useProviderAvailability'
 
 const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['BNB', 'USDT', 'BUSD']
@@ -112,14 +112,14 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
     if (!chainId || !userIp) return
     try {
       const responsePromises = [
-        fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
-        fetchBinanceConnectQuote({
-          fiatCurrency: outputCurrency.toUpperCase(),
-          cryptoCurrency: inputCurrency.toUpperCase() === 'WBTC' ? 'BTC' : inputCurrency.toUpperCase(),
-          fiatAmount: amount,
-          cryptoNetwork: 'BSC',
-          paymentMethod: 'CARD',
-        }),
+        // fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
+        // fetchBinanceConnectQuote({
+        //   fiatCurrency: outputCurrency.toUpperCase(),
+        //   cryptoCurrency: inputCurrency.toUpperCase() === 'WBTC' ? 'BTC' : inputCurrency.toUpperCase(),
+        //   fiatAmount: amount,
+        //   cryptoNetwork: 'BSC',
+        //   paymentMethod: 'CARD',
+        // }),
         fetchMercuryoQuote({
           fiatCurrency: outputCurrency.toUpperCase(),
           cryptoCurrency: inputCurrency.toUpperCase(),

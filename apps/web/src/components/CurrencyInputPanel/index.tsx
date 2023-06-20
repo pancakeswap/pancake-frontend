@@ -23,6 +23,7 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
 import { useAccount } from 'wagmi'
+import { FiatIcon } from 'views/BuyCrypto/components/FiatOnRampSearchModal/FiatIconLogo'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
@@ -201,7 +202,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 {pair ? (
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
-                  <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  mode === 'onramp-input' ? (
+                    <FiatIcon name={currency.symbol} />
+                  ) : (
+                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  )
                 ) : currencyLoading ? (
                   <Skeleton width="24px" height="24px" variant="circle" />
                 ) : null}
