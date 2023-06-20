@@ -342,11 +342,6 @@ const useV3BoostedFarm = (pids: number[]) => {
       errorRetryInterval: 3000,
       keepPreviousData: true,
       refreshInterval: 0,
-      revalidateOnFocus: false,
-      revalidateOnMount: false,
-      revalidateOnReconnect: false,
-      refreshWhenOffline: false,
-      refreshWhenHidden: false,
     },
   )
 
