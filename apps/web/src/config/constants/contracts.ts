@@ -260,4 +260,10 @@ export default {
     [ChainId.BSC]: '0x0a073aa17275ef839ee77BC6c589D9E661270480',
     [ChainId.BSC_TESTNET]: '0x',
   },
+  fixedStaking: {
+    // TODO: update 1 and 56
+    1: '0xD06055869094bb28601535B84506aEE5766dcdDA',
+    56: '0xD06055869094bb28601535B84506aEE5766dcdDA',
+    97: '0xeF4a2563F1cDc451bBb9B0d60175dd4D48025C1a',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
