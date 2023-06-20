@@ -6,6 +6,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import { useAccount } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -142,8 +143,9 @@ export function useBuyCryptoActionHandlers(): {
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
+  chainId: number,
 ): Promise<BuyCryptoState> {
-  const inputCurrency = parsedQs.inputCurrency || 'ETH'
+  const inputCurrency = parsedQs.inputCurrency || chainId === 1 ? 'ETH' : 'BNB'
   const minAmounts = await fetchMinimumBuyAmount('USD', 'BUSD')
 
   return {
@@ -164,12 +166,13 @@ export async function queryParametersToBuyCryptoState(
 
 export function useDefaultsFromURLSearch(account: string | undefined) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
+  const { chainId } = useActiveChainId()
   const { query, isReady } = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!isReady) return
-      const parsed = await queryParametersToBuyCryptoState(query, account)
+      if (!isReady || !chainId) return
+      const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount,
@@ -182,7 +185,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
       )
     }
     fetchData()
-  }, [dispatch, query, isReady, account])
+  }, [dispatch, query, isReady, account, chainId])
 
   // return result
 }

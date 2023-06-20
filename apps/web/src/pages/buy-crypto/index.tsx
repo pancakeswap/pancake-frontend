@@ -11,9 +11,9 @@ const BuyCryptoPage = ({ userIp }) => {
 
 export async function getServerSideProps() {
   try {
-    const response = await fetch('https://ipgeolocation.abstractapi.com/v1/?api_key=a0d1165abb5d413685ba22de777116f5')
+    const response = await fetch('https://pcs-onramp-api.com/user-ip')
     const data = await response.json()
-    const userIp = data.ip_address
+    const userIp = data.ipAddress
 
     return {
       props: { userIp },

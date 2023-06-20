@@ -12,5 +12,5 @@ export const StyledBuyCryptoContainer = styled(Flex)`
 `
 
 export const StyledInputCurrencyWrapper = styled(Box)`
-  width: 430px;
+  width: 385px;
 `

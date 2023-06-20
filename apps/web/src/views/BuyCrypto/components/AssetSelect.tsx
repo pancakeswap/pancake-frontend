@@ -1,11 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowDropDownIcon, Box, CurrencyLogo, Flex, RowBetween, Text, useModal } from '@pancakeswap/uikit'
+import {
+  ArrowDropDownIcon,
+  Box,
+  CircleLoader,
+  CurrencyLogo,
+  Flex,
+  RowBetween,
+  RowFixed,
+  Text,
+  useModal,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import { useCallback } from 'react'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import styled from 'styled-components'
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 
 const AssetSelectButton = styled.div`
   width: 100%;
@@ -26,16 +37,34 @@ const AssetSelectButton = styled.div`
   }
 `
 
+const StyledBalanceText = styled(Text)`
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 5rem;
+  text-overflow: ellipsis;
+  padding-left: 4px;
+  padding-right: 4px;
+`
+
 const chainIdToNetwork: { [network: number]: string } = {
   1: 'Ethereum',
   56: 'Binance Chain',
 }
 
+function Balance({ balance, currency }: { balance: CurrencyAmount<Currency>; currency: Currency }) {
+  return (
+    <Flex alignItems="center" justifyContent="center">
+      <StyledBalanceText title={balance.toExact()}>{formatAmount(balance, 4)}</StyledBalanceText>
+      <Text color="textSubtle" fontSize="12px" ellipsis fontWeight="bold" textAlign="center" paddingTop="2px">
+        {`${currency?.symbol}`}
+      </Text>
+    </Flex>
+  )
+}
 const AssetSelect = ({ onCurrencySelect, currency }) => {
   const { t } = useTranslation()
   const account = useAccount()
-  const selectedCurrencyBalance = useCurrencyBalance(account.address ?? undefined, currency ?? undefined)
-  const balance = !!currency && formatAmount(selectedCurrencyBalance, 6)
+  const balance = useCurrencyBalance(account.address, currency)
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
@@ -43,6 +72,7 @@ const AssetSelect = ({ onCurrencySelect, currency }) => {
       onCurrencySelect={onCurrencySelect}
       selectedCurrency={currency}
       showCommonBases={false}
+      showSearchInput={false}
     />,
   )
 
@@ -56,11 +86,9 @@ const AssetSelect = ({ onCurrencySelect, currency }) => {
         <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
           {t('I want to buy')}
         </Text>
-        {balance ? (
-          <Text color="textSubtle" fontSize="12px" ellipsis>
-            {`${balance} ${currency?.symbol}`}
-          </Text>
-        ) : null}
+        <RowFixed style={{ justifySelf: 'flex-end' }}>
+          {balance ? <Balance balance={balance} currency={currency} /> : <CircleLoader />}
+        </RowFixed>
       </Flex>
       <AssetSelectButton>
         <RowBetween>

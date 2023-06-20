@@ -1,33 +1,32 @@
 // will cleanup urls later
 export async function fetchMoonpayAvailability(userIp: string): Promise<Response> {
   // Fetch data from endpoint 1
-  const response = await fetch(
-    `https://api.moonpay.com/v4/ip_address?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&ipAddress=${userIp}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    },
-  )
-  return response
-}
-
-export async function fetchMercuryoAvailability(userIp: string): Promise<Response> {
-  // Fetch data from endpoint 2
-  const response = await fetch(`https://api.mercuryo.io/v1.6/public/data-by-ip?ip=${userIp}`, {
+  const response = await fetch(`https://pcs-onramp-api.com/fetch-moonpay-availability?userIp=${userIp}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   })
-  return response
+  const result = response.json()
+  return result
+}
+
+export async function fetchMercuryoAvailability(userIp: string): Promise<Response> {
+  // Fetch data from endpoint 2
+  const response = await fetch(`https://pcs-onramp-api.com/fetch-mercuryo-availability?userIp=${userIp}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+  const result = response.json()
+  return result
 }
 
 // for bsc connect we need to fetch our own custom api endpoint as even get requests require
 // sig validation
 export async function fetchBinanceConnectAvailability(userIp: string): Promise<Response> {
-  const response = await fetch('/api/onramp-url-sign/fetch-bsc-connect-availability', {
+  const response = await fetch(`https://pcs-onramp-api.com/fetch-bsc-availability?userIp=${userIp}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -35,5 +34,6 @@ export async function fetchBinanceConnectAvailability(userIp: string): Promise<R
     method: 'POST',
     body: JSON.stringify({ clientUserIp: userIp }),
   })
-  return response
+  const result = response.json()
+  return result
 }

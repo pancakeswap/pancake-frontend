@@ -83,16 +83,6 @@
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "Wrapped BTC",
-      "symbol": "WBTC",
-      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-      "chainId": 1,
-      "decimals": 8,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
       "name": "Coinbase USD",
       "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       "symbol": "USDC",

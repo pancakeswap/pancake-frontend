@@ -140,7 +140,7 @@ function CurrencySearch({
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     return mode?.slice(0, 6) === 'onramp'
-      ? chainId === 56
+      ? chainId === 56 && mode === 'onramp-output'
         ? [...filteredQueryTokens].filter((token) => mercuryoWhitelist.includes(token.symbol))
         : [...filteredQueryTokens]
       : [...filteredQueryTokens].sort(tokenComparator)
@@ -214,7 +214,7 @@ function CurrencySearch({
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showNative={showNative}
           currencies={filteredSortedTokens}
-          inactiveCurrencies={filteredInactiveTokens}
+          inactiveCurrencies={mode === 'onramp-input' ? [] : filteredInactiveTokens}
           breakIndex={
             Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
           }
@@ -224,6 +224,7 @@ function CurrencySearch({
           fixedListRef={fixedList}
           showImportView={showImportView}
           setImportToken={setImportToken}
+          mode={mode}
         />
       </Box>
     ) : (
@@ -249,12 +250,13 @@ function CurrencySearch({
     showCommonBases,
     isMobile,
     height,
+    mode,
   ])
 
   return (
     <>
       <AutoColumn gap="16px">
-        {showSearchInput && mode?.slice(0, 6) !== 'onramp' && (
+        {showSearchInput && (
           <Row>
             <Input
               id="token-search-input"

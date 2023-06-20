@@ -116,6 +116,7 @@ export default function CurrencyList({
   showImportView,
   setImportToken,
   breakIndex,
+  mode,
 }: {
   height: number | string
   currencies: Currency[]
@@ -128,6 +129,7 @@ export default function CurrencyList({
   showImportView: () => void
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
+  mode: string
 }) {
   const native = useNativeCurrency()
   const { pathname } = useRouter()
@@ -157,7 +159,7 @@ export default function CurrencyList({
       // with class methods
       let isSelected = false
       let otherSelected = false
-      if (!isFiat) {
+      if (!isFiat && mode !== 'onramp-input') {
         isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
         otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
       } else {
@@ -222,6 +224,7 @@ export default function CurrencyList({
       showImportView,
       setImportToken,
       onRampFlow,
+      mode,
     ],
   )
 

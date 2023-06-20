@@ -52,6 +52,7 @@ const fetchMoonPaySignedUrl = async (
   isDark: any,
   account: string,
 ) => {
+  console.log('heyyyyy')
   try {
     const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
       headers: {
@@ -160,7 +161,7 @@ export const FiatOnRampModalButton = ({
     <>
       {!disableBuyCryptoButton ? (
         <AutoColumn gap="md">
-          <CommitButton onClick={handleBuyCryptoClick} disabled={disabled} isLoading={disabled} mb="8px" mt="16px">
+          <CommitButton onClick={handleBuyCryptoClick} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
             {buttonText}
           </CommitButton>
         </AutoColumn>
@@ -196,6 +197,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     }
     setLoading(true)
     setError(null)
+    console.log(provider)
     try {
       let result = ''
       if (provider === 'MoonPay')
@@ -215,18 +217,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`/api/onramp-url-sign/generate-mercuryo-sig`, {
+        const res = await fetch(`https://pcs-onramp-api.com/generate-mercuryo-sig?walletAddress=${account.address}`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          method: 'POST',
-          body: JSON.stringify({
-            walletAddress: account.address,
-          }),
         })
         const signature = await res.json()
-        setSig(signature.urlWithSignature)
+        setSig(signature.signature)
       } catch (e) {
         setError(e.toString())
       } finally {

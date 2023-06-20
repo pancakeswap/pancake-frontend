@@ -14,7 +14,7 @@ import { isMobile } from 'react-device-detect'
 const DropdownWrapper = styled.div`
   width: 100%;
 `
-const FEE_TYPES = ['Total Fees', 'Provider Fees', 'Networking Fees']
+const FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
 
 // const calculateMercuryoQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
 //   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
@@ -24,14 +24,27 @@ const FEE_TYPES = ['Total Fees', 'Provider Fees', 'Networking Fees']
 //   return moonPayQuote.toString()
 // }
 
-const FeeItem = ({ feeTitle, feeAmount }: { feeTitle: string; feeAmount: string }) => {
+const FeeItem = ({
+  feeTitle,
+  feeAmount,
+  currency,
+  provider,
+  index,
+}: {
+  feeTitle: string
+  feeAmount: string
+  currency: string
+  provider: string
+  index: number
+}) => {
+  if (provider === 'Mercuryo' && index === 1) return <></>
   return (
     <RowBetween>
       <Text fontSize="14px" color="textSubtle">
         {feeTitle}
       </Text>
       <Text ml="4px" fontSize="14px" color="textSubtle">
-        {feeAmount}
+        {feeAmount} {currency}
       </Text>
     </RowBetween>
   )
@@ -52,7 +65,7 @@ function AccordionItem({
 }) {
   const { t } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(104)
+  const [height, setHeight] = useState(109)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -68,7 +81,7 @@ function AccordionItem({
     if (active) {
       const contentEl = getRefValue(contentRef)
       setHeight(contentEl.scrollHeight + 105)
-    } else setHeight(104)
+    } else setHeight(109)
   }, [active])
 
   const MoonapyAmt = useMemo(() => {
@@ -115,13 +128,13 @@ function AccordionItem({
               ref={buyCryptoTargetRef}
               onClick={() => setMobileTooltipShow(false)}
               display="flex"
-              style={{ justifyContent: 'center' }}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
             >
-              <Flex alignItems="center">
-                <Text ml="4px" fontSize="16px" color="textSubtle">
+              <Flex alignItems="center" justifyContent="center">
+                <Text ml="4px" fontSize="14px" color="textSubtle">
                   Quote not available
                 </Text>
-                <InfoIcon color="textSubtle" pl="4px" />
+                <InfoIcon color="textSubtle" pl="4px" pt="2px" />
               </Flex>
             </TooltipText>
             {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
@@ -146,7 +159,7 @@ function AccordionItem({
             {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
           </Text>
         </RowBetween>
-        <RowBetween pt="8px">
+        <RowBetween pt="12px">
           <Text fontSize="15px">
             {buyCryptoState.INPUT.currencyId} {t('rate')}
           </Text>
@@ -161,7 +174,16 @@ function AccordionItem({
             if (index === 0) fee = (quote.networkFee + quote.providerFee).toFixed(3)
             else if (index === 1) fee = quote.networkFee.toFixed(3)
             else fee = quote.providerFee.toFixed(3)
-            return <FeeItem feeTitle={feeType} feeAmount={fee} />
+            return (
+              <FeeItem
+                key={feeType}
+                feeTitle={feeType}
+                feeAmount={fee}
+                currency={buyCryptoState.OUTPUT.currencyId}
+                provider={quote.provider}
+                index={index}
+              />
+            )
           })}
           <FiatOnRampModalButton
             provider={quote.provider}

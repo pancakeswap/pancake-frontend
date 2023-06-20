@@ -182,6 +182,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
       loading={inputLoading}
+      pattern="^\d*(\.\d{0,2})?$"
       top={
         <>
           {pathname === '/buy-crypto' ? (
