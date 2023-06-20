@@ -66,9 +66,10 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
             (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
           )
           if (
-            new BigNumber(campaign.canClaim).gt(0) &&
+            campaignIncentive.isActivated &&
             !campaign.userClaimedIncentives &&
-            campaignIncentive.isActivated
+            new BigNumber(campaign.canClaim).gt(0) &&
+            new BigNumber(campaign.totalEstimateRewardUSD).gt(0)
           ) {
             return campaign
           }
