@@ -5,11 +5,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ProviderIcon } from 'views/BuyCrypto/Icons'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
+import Image from 'next/image'
+import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
+import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
 
 const DropdownWrapper = styled.div`
   width: 100%;
@@ -64,6 +67,7 @@ function AccordionItem({
   fetching: boolean
 }) {
   const { t } = useTranslation()
+  const theme = useTheme()
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(109)
   const multiple = false
@@ -123,7 +127,11 @@ function AccordionItem({
       <Flex flexDirection="column">
         <CryptoCard padding="12px 12px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
-            <ProviderIcon provider={quote.provider} isDisabled />
+            {quote.provider === 'Mercuryo' ? (
+              <Image src={!theme.isDark ? MercuryoAltSvg : MercuryoAltSvgLight} alt="#" width={15} />
+            ) : (
+              <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
+            )}
             <TooltipText
               ref={buyCryptoTargetRef}
               onClick={() => setMobileTooltipShow(false)}
@@ -154,7 +162,14 @@ function AccordionItem({
         isDisabled={false}
       >
         <RowBetween paddingBottom="20px">
-          <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
+          {quote.provider === 'Mercuryo' ? (
+            <Flex mt="5px">
+              <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvgLight} alt="#" width={120} />
+            </Flex>
+          ) : (
+            <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
+          )}
+
           <Text ml="4px" fontSize="22px" color="secondary">
             {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
           </Text>
