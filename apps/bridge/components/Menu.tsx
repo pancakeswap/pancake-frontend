@@ -95,12 +95,8 @@ const MenuConfig = [
   },
   {
     title: 'Aptos',
-    href: '/aptos',
+    href: '/',
     items: [
-      {
-        label: 'Pancake Bridge',
-        href: '/aptos',
-      },
       {
         label: 'LayerZero',
         href: 'https://theaptosbridge.com/bridge',
