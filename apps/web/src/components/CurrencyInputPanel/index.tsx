@@ -204,7 +204,9 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
                   mode === 'onramp-input' ? (
-                    <FiatIcon name={currency.symbol} />
+                    <Flex marginRight="6px">
+                      <FiatIcon name={currency.symbol} />
+                    </Flex>
                   ) : (
                     <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
                   )
