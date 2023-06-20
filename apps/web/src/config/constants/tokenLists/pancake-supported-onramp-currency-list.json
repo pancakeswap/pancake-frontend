@@ -80,16 +80,6 @@
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png"
     },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "Coinbase USD",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
-    },
 
     {
       "isNative": "false",
