@@ -119,7 +119,7 @@ function CurrencySearch({
   const native = useNativeCurrency()
 
   const showNative: boolean = useMemo(() => {
-    if (tokensToShow || (mode && mode.slice(0, 6) === 'onramp')) return false
+    if (tokensToShow || mode === 'onramp-input') return false
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
   }, [debouncedQuery, native, tokensToShow, mode])
@@ -209,7 +209,7 @@ function CurrencySearch({
     }
 
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
-      <Box margin="24px -24px">
+      <Box mx="-24px" my={mode === 'onramp-output' ? '0px' : '24px'}>
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showNative={showNative}

@@ -79,6 +79,7 @@ function CurrencyRow({
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
+
   const balance = useCurrencyBalance(account ?? undefined, currency)
 
   // only show add or remove buttons if not on selected list
@@ -143,7 +144,7 @@ export default function CurrencyList({
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
-    return formatted
+    return formatted.filter(Boolean)
   }, [breakIndex, currencies, inactiveCurrencies, showNative, native, onRampFlow])
 
   const { chainId } = useActiveChainId()
