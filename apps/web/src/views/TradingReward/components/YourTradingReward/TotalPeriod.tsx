@@ -33,7 +33,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { claimedRebate, claimedTopTraders } = useTradingFeeClaimedRecord()
+  const { claimedRebate, claimedTopTraders } = useTradingFeeClaimedRecord({ type, campaignId: campaignIds[0] })
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Claim your rewards before expiring.'), {
     placement: 'bottom',
