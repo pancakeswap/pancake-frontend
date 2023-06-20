@@ -12,7 +12,6 @@ import {
   Swap as SwapUI,
   ArrowDropDownIcon,
 } from '@pancakeswap/uikit'
-import { useRouter } from 'next/router'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -82,6 +81,8 @@ interface CurrencyInputPanelProps {
   tokensToShow?: Token[]
   currencyLoading?: boolean
   inputLoading?: boolean
+  title?: React.ReactNode
+  hideBalanceComp?: boolean
 }
 const CurrencyInputPanel = memo(function CurrencyInputPanel({
   value,
@@ -112,12 +113,14 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   tokensToShow,
   currencyLoading,
   inputLoading,
+  title,
+  hideBalanceComp,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
 
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
-  const { pathname } = useRouter()
+
   const mode = id
 
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
@@ -183,14 +186,9 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
       loading={inputLoading}
-      pattern="^\d*(\.\d{0,2})?$"
       top={
         <>
-          {pathname === '/buy-crypto' ? (
-            <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-              {t('I want to spend')}
-            </Text>
-          ) : null}
+          {title}
           <Flex alignItems="center">
             {beforeButton}
             <CurrencySelectButton
@@ -245,7 +243,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               </Flex>
             ) : null}
           </Flex>
-          {account && pathname !== '/buy-crypto' && (
+          {account && !hideBalanceComp && (
             <Text
               onClick={!disabled && onMax}
               color="textSubtle"

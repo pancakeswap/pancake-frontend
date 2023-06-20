@@ -22,6 +22,11 @@ const CenterWrapper = styled.div`
   left: 48.5%;
   top: 33%;
 `
+
+// Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
+// the quote provider won't return a quote. Therefore, we restrict the fiat currency input to a maximum of 2 decimals.
+const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
+
 export function BuyCryptoForum({
   setModalView,
   modalView,
@@ -53,7 +58,14 @@ export function BuyCryptoForum({
 
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
   const { onFieldAInput, onCurrencySelection, onMinAmountUdate } = useBuyCryptoActionHandlers()
-  const handleTypeOutput = useCallback((value: string) => onFieldAInput(value), [onFieldAInput])
+  const handleTypeOutput = useCallback(
+    (value: string) => {
+      if (value === '' || allowTwoDecimalRegex.test(value)) {
+        onFieldAInput(value)
+      }
+    },
+    [onFieldAInput],
+  )
 
   // need to reloacte this
   const fetchMinBuyAmounts = useCallback(async () => {
@@ -89,6 +101,7 @@ export function BuyCryptoForum({
       />
       <FormContainer>
         <CurrencyInputPanel
+          hideBalanceComp
           id="onramp-input"
           showMaxButton={false}
           value={typedValue}
@@ -97,6 +110,11 @@ export function BuyCryptoForum({
           onCurrencySelect={handleOutputSelect}
           error={error}
           showCommonBases={false}
+          title={
+            <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
+              {t('I want to spend')}
+            </Text>
+          }
         />
         <CenterWrapper>
           <ArrowDownIcon className="icon-down" color="primary" width="22px" />
