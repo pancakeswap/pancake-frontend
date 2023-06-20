@@ -12,6 +12,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
 import { RewardInfo, Qualification, Incentives, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { minAmountDisplay } from 'views/TradingReward/utils/minAmountDisplay'
+import useTradingFeeClaimedRecord from 'views/TradingReward/hooks/useTradingFeeClaimedRecord'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
@@ -32,6 +33,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { claimedRebate, claimedTopTraders } = useTradingFeeClaimedRecord()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Claim your rewards before expiring.'), {
     placement: 'bottom',
@@ -65,18 +67,27 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
           const campaignIncentive = campaignIdsIncentive.find(
             (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
           )
-          if (
+          const isValid =
             campaignIncentive.isActivated &&
             !campaign.userClaimedIncentives &&
             new BigNumber(campaign.canClaim).gt(0) &&
             new BigNumber(campaign.totalEstimateRewardUSD).gt(0)
-          ) {
+
+          if (type === RewardType.CAKE_STAKERS && claimedRebate && isValid) {
+            return campaign
+          }
+
+          if (type === RewardType.TOP_TRADERS && claimedTopTraders && isValid) {
+            return campaign
+          }
+
+          if (isValid) {
             return campaign
           }
         })
         .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
     )
-  }, [campaignIdsIncentive, totalAvailableClaimData])
+  }, [campaignIdsIncentive, claimedRebate, claimedTopTraders, totalAvailableClaimData, type])
 
   const { isPending, handleClaim } = useClaimAllReward({
     campaignIds,
