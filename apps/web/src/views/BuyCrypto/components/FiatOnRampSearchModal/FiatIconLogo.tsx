@@ -13,6 +13,7 @@ import JPYIcon from '../../../../../public/JPY.svg'
 import KRWIcon from '../../../../../public/KRW.svg'
 import SGDIcon from '../../../../../public/SGD.svg'
 import TWDIcon from '../../../../../public/TWD.svg'
+import VNDIcon from '../../../../../public/VND.svg'
 
 export const Icons: { [img: string]: JSX.Element } = {
   GBP: <Image src={GBPIcon} alt="##" width={20} />,
@@ -28,7 +29,7 @@ export const Icons: { [img: string]: JSX.Element } = {
   KRW: <Image src={KRWIcon} alt="#" width={20} />,
   SGD: <Image src={SGDIcon} alt="#" width={20} />,
   TWD: <Image src={TWDIcon} alt="#" width={20} />,
-  VND: <Image src={GBPIcon} alt="#" width={20} />,
+  VND: <Image src={VNDIcon} alt="#" width={20} />,
 }
 const UnknownEntry = styled.div`
   height: 24px;
