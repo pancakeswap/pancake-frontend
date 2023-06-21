@@ -181,9 +181,7 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
 export function useOnRampToken(tokenAddress?: string): OnRampCurrency | undefined {
   const { chainId } = useActiveChainId()
   const tokens = useAllOnRampTokens()
-
   const address = isAddress(tokenAddress)
-
   const token: OnRampCurrency | undefined = tokens[tokenAddress]
 
   return useMemo(() => {

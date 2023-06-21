@@ -56,7 +56,7 @@ export function CryptoQuoteForm({
         refreshDisabled={false}
         onRefresh={() => null}
         title={t('Select a Quote')}
-        subTitle={`Quotes are updated every ${timer} seconds.`}
+        subTitle={t(`Quotes are updated every ${timer} seconds.`)}
         backTo={() => setModalView(CryptoFormView.Input)}
       />
       <FormContainer>

@@ -45,7 +45,7 @@ export function CurrencyInputPanel({
           className={inputContainerVariants({
             hasZapStyle: !!zapStyle,
             showBridgeWarning: !!showBridgeWarning,
-            error: typeof error === "string" ? Boolean(error) : error,
+            error: Boolean(error),
           })}
         >
           <AtomBox

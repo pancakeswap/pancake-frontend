@@ -2,11 +2,7 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import BuyCrypto from 'views/BuyCrypto'
 
 const BuyCryptoPage = ({ userIp }) => {
-  return (
-    <>
-      <BuyCrypto userIp={userIp} />
-    </>
-  )
+  return <BuyCrypto userIp={userIp} />
 }
 
 export async function getServerSideProps() {

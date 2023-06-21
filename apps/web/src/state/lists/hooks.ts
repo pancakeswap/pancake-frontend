@@ -75,7 +75,7 @@ const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]): any => {
       .slice()
       // sort by priority so top priority goes last
       .sort(sortByListPriority)
-      .reduce((allTokens: any, currentUrl: any) => {
+      .reduce((allTokens, currentUrl) => {
         const current = lists[currentUrl]?.current
         if (!current) return allTokens
         try {
@@ -114,7 +114,7 @@ export const tokenListFromOfficialsUrlsAtom = atom((get) => {
 
   const mergedTokenLists: TokenInfo[] = OFFICIAL_LISTS.reduce((acc, url) => {
     if (lists?.[url]?.current?.tokens) {
-      acc?.push(...(lists?.[url]?.current?.tokens || []))
+      acc.push(...(lists?.[url]?.current?.tokens || []))
     }
     return acc
   }, [])
@@ -158,7 +158,7 @@ export function listToTokenMap(list: TokenList, key?: string): TokenAddressMap {
 
   const tokenMap: WrappedTokenInfo[] = uniqBy(
     list.tokens,
-    (tokenInfo: any) => `${tokenInfo.chainId}#${tokenInfo.address}`,
+    (tokenInfo: TokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
   )
     .map((tokenInfo) => {
       const checksummedAddress = isAddress(tokenInfo.address)
@@ -171,9 +171,9 @@ export function listToTokenMap(list: TokenList, key?: string): TokenAddressMap {
 
   const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, 'chainId')
 
-  const tokenAddressMap: any = mapValues(groupedTokenMap, (tokenInfoList) =>
+  const tokenAddressMap = mapValues(groupedTokenMap, (tokenInfoList) =>
     mapValues(keyBy(tokenInfoList, key), (tokenInfo) => ({ token: tokenInfo, list })),
-  )
+  ) as TokenAddressMap
 
   // add chain id item if not exist
   enumKeys(ChainId).forEach((chainId) => {

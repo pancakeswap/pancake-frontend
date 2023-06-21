@@ -80,15 +80,31 @@ export function useBuyCryptoErrorInfo(
   let amountError: undefined | string
 
   if (isMinError) {
-    amountError = `The minimum purchasable amount is ${formatLocaleNumber({
-      number: minAmount,
-      locale,
-    })} ${inputCurrencyId} / ${formatLocaleNumber({ locale, number: minBaseAmount })} ${outputCurrencyId}`
+    amountError = t(
+      'The minimum purchasable amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%',
+      {
+        maxmount: formatLocaleNumber({
+          number: minAmount,
+          locale,
+        }),
+        currencfiatCurrencyy: inputCurrencyId,
+        maxCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        cryptoCurrency: outputCurrencyId,
+      },
+    )
   } else if (isMaxError) {
-    amountError = `The maximum purchasable amount is ${formatLocaleNumber({
-      number: maxAmount,
-      locale,
-    })} ${inputCurrencyId} / ${formatLocaleNumber({ locale, number: maxBaseAmount })} ${outputCurrencyId}`
+    amountError = t(
+      'The maximum purchasable amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%',
+      {
+        maxmount: formatLocaleNumber({
+          number: maxAmount,
+          locale,
+        }),
+        currencfiatCurrencyy: inputCurrencyId,
+        maxCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        cryptoCurrency: outputCurrencyId,
+      },
+    )
   }
 
   if (!account) {

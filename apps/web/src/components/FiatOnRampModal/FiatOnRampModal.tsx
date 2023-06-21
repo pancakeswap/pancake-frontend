@@ -8,32 +8,17 @@ import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
+import { SUPPORTED_MERCURYO_FIAT_CURRENCIES } from 'views/BuyCrypto/constants'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
-  // #1c1c1e is the background color for the darkmode moonpay iframe as of 2/16/2023
-  // background-color: #1c1c1e;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
 
   height: calc(100% - 75px);
   position: absolute;
-  // right: 0;
   width: 100%;
 `
 
-const MOONPAY_SUPPORTED_CURRENCY_CODES = [
-  'eth',
-  'eth_arbitrum',
-  'eth_optimism',
-  'eth_polygon',
-  'weth',
-  'wbtc',
-  'matic_polygon',
-  'polygon',
-  'usdc_arbitrum',
-  'usdc_optimism',
-  'usdc_polygon',
-]
 interface FiatOnRampProps {
   provider: string
   inputCurrency: string
@@ -66,15 +51,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        walletAddresses: JSON.stringify(
-          MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
-            (acc, currencyCode) => ({
-              ...acc,
-              [currencyCode]: account,
-            }),
-            {},
-          ),
-        ),
+        walletAddress: account,
       }),
     })
     const result: FetchResponse = await res.json()
@@ -143,7 +120,7 @@ export const FiatOnRampModalButton = ({
 
   const disableBuyCryptoButton = Boolean(error || (!fiatOnarampAvailability && availabilityChecked) || loading)
 
-  let buttonText: ReactNode | string = t(`Buy with ${provider}`)
+  let buttonText: ReactNode | string = t(`Buy with %provider%`, { provider })
   if (disabled) {
     buttonText = (
       <>
@@ -180,6 +157,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
   const [sig, setSig] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const { t } = useTranslation()
 
   const theme = useTheme()
   const account = useAccount()
@@ -191,7 +169,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
-      setError('Please connect an account before making a purchase.')
+      setError(t('Please connect an account before making a purchase.'))
       return
     }
     setLoading(true)
@@ -209,7 +187,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     } finally {
       setLoading(false)
     }
-  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t])
 
   useEffect(() => {
     const fetchSig = async () => {
@@ -227,7 +205,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       } catch (e) {
         setError(e.toString())
       } finally {
-        setLoading(false)
+        setTimeout(() => setLoading(false), 2000)
       }
     }
     fetchSig()
@@ -239,15 +217,17 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '95a003f2-354a-4396-828a-1126d56e4e13',
+          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
+          fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '650px',
+          height: '700px',
           width: '400px',
           host: document.getElementById('mercuryo-widget'),
+          theme: 'xzen',
         })
       }
     } else fetchSignedIframeUrl()
@@ -260,7 +240,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="650px" // height has to be overidden
+        height="700px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (
@@ -270,9 +250,22 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             </ErrorText>
           </Flex>
         ) : loading ? (
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" alignContent="center">
-            <Spinner />
-            <LoadingDot />
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            style={{
+              height: '630px',
+              width: '100%',
+              background: '#27262C',
+              position: 'absolute',
+              borderBottomLeftRadius: '24px',
+              borderBottomRightRadius: '24px',
+            }}
+          >
+            <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
+              <LoadingDot />
+              <CircleLoader />
+            </div>
           </Flex>
         ) : provider === 'Mercuryo' ? (
           <div id="mercuryo-widget" />
@@ -280,12 +273,11 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           <StyledIframe
             id="moonpayIframe"
             src={signedIframeUrl ?? ''}
-            frameBorder="0"
             title="fiat-onramp-iframe"
             isDark={theme.isDark}
           />
         )}
-        <Script src="https://widget.mercuryo.io/embed.2.0.js" />
+        <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" />
         <div id="mercuryo-widget" />
       </Modal>
     </>

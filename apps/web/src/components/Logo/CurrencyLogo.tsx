@@ -1,5 +1,5 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { BinanceIcon, Box, TokenLogo } from '@pancakeswap/uikit'
+import { BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import styled from 'styled-components'
@@ -17,10 +17,12 @@ export default function CurrencyLogo({
   currency,
   size = '24px',
   style,
+  isFiat,
 }: {
   currency?: Currency
   size?: string
   style?: React.CSSProperties
+  isFiat?: boolean
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
@@ -40,6 +42,9 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
+  if (isFiat) {
+    return <StyledLogo size={size} srcs={[`/${currency?.symbol}.svg`]} width={size} style={style} />
+  }
   if (currency?.isNative) {
     if (currency.chainId === ChainId.BSC) {
       return <BinanceIcon width={size} style={style} />

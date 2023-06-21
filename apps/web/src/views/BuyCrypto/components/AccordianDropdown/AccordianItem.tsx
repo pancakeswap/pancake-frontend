@@ -19,14 +19,6 @@ const DropdownWrapper = styled.div`
 `
 const FEE_TYPES = ['Total Fees', 'Networking Fees']
 
-// const calculateMercuryoQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
-//   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
-//   const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
-//   const AssetRate = new BigNumber(quote.quote)
-//   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
-//   return moonPayQuote.toString()
-// }
-
 const FeeItem = ({
   feeTitle,
   feeAmount,

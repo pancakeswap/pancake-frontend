@@ -65,6 +65,7 @@ export function BuyCryptoForum({
     inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
+  const fiatCurrencies = fiatCurrencyMap
 
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
@@ -128,6 +129,7 @@ export function BuyCryptoForum({
           onCurrencySelect={handleOutputSelect}
           error={error}
           showCommonBases={false}
+          tokensToShow={fiatCurrencyMap as any}
           title={
             <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
               {t('I want to spend')}

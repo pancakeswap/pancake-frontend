@@ -17,6 +17,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { useAllOnRampTokens } from 'hooks/Tokens'
 
 const AssetSelectButton = styled.div`
   width: 100%;
@@ -61,10 +62,13 @@ function Balance({ balance, currency }: { balance: CurrencyAmount<Currency>; cur
     </Flex>
   )
 }
+
 const AssetSelect = ({ onCurrencySelect, currency }) => {
   const { t } = useTranslation()
   const account = useAccount()
   const balance = useCurrencyBalance(account.address, currency)
+  const onRampTokens = useAllOnRampTokens()
+  console.log(onRampTokens)
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
@@ -73,6 +77,7 @@ const AssetSelect = ({ onCurrencySelect, currency }) => {
       selectedCurrency={currency}
       showCommonBases={false}
       showSearchInput={false}
+      tokensToShow={onRampTokens as any}
     />,
   )
 
