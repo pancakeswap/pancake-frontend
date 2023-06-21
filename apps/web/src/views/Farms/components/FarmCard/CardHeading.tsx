@@ -4,8 +4,6 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import styled from 'styled-components'
 
-import BoostedTag from '../YieldBooster/components/BoostedTag'
-
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
 
 type ExpandableSectionProps = {
@@ -39,7 +37,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   isCommunityFarm,
   token,
   quoteToken,
-  boosted,
   isStable,
   version,
   feeAmount,
