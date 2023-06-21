@@ -12,6 +12,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useAllOnRampTokens, useCurrency } from 'hooks/Tokens'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 import { useSwapBestTrade } from './hooks'
 
@@ -30,10 +31,13 @@ export function V3SwapForm() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+  const native = useNativeCurrency()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const onRampCurrencies = useAllOnRampTokens()
 
-  const doesSelectedTokenSupportOnRamp = Boolean(onRampCurrencies[inputCurrency?.symbol])
+  const doesSelectedTokenSupportOnRamp = Boolean(
+    onRampCurrencies[inputCurrency?.symbol] || native.symbol === inputCurrencyId,
+  )
 
   const mm = useDerivedBestTradeWithMM(trade)
   const throttledHandleRefresh = useMemo(
