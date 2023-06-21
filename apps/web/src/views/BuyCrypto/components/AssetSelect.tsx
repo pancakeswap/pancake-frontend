@@ -68,8 +68,6 @@ const AssetSelect = ({ onCurrencySelect, currency }) => {
   const account = useAccount()
   const balance = useCurrencyBalance(account.address, currency)
   const onRampTokens = useAllOnRampTokens()
-  console.log(onRampTokens)
-
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
       mode="onramp-output"
