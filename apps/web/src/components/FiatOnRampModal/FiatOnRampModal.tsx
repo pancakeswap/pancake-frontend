@@ -1,5 +1,5 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, CircleLoader, Flex, InjectedModalProps, Modal, Spinner, Text, useModal } from '@pancakeswap/uikit'
+import { AutoColumn, CircleLoader, Flex, InjectedModalProps, Modal, Text, useModal } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
