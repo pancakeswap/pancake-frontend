@@ -6,7 +6,9 @@ import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import { useAccount } from 'wagmi'
+import toString from 'lodash/toString'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -54,8 +56,8 @@ export const fetchMinimumBuyAmount = async (
 // from the current swap inputs, compute the best trade and return it.
 export function useBuyCryptoErrorInfo(
   typedValue: string,
-  minAmount: string,
-  minBaseAmount: string,
+  minAmount: number,
+  minBaseAmount: number,
   inputCurrencyId: string,
   outputCurrencyId: string,
 ): {
@@ -63,11 +65,18 @@ export function useBuyCryptoErrorInfo(
   inputError: string
 } {
   const { address: account } = useAccount()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   let inputError: string | undefined
-  const isamountError = Boolean(Number(typedValue) < Number(minAmount))
+  const isamountError = minAmount && minBaseAmount && Boolean(Number(typedValue) < Number(minAmount))
+
   const amountError = isamountError
-    ? `The minimum purchasable amount is ${minAmount}${inputCurrencyId} / ${minBaseAmount}${outputCurrencyId}`
+    ? `The minimum purchasable amount is ${formatLocaleNumber({
+        number: minAmount,
+        locale,
+      })} ${inputCurrencyId} / ${formatLocaleNumber({ locale, number: minBaseAmount })} ${outputCurrencyId}`
     : undefined
 
   if (!account) {
@@ -91,7 +100,7 @@ export function useBuyCryptoErrorInfo(
 export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
-  onMinAmountUdate: (minAmount: string, minBaseAmount: string) => void
+  onMinAmountUdate: (minAmount: number, minBaseAmount: number) => void
   onUsersIp: (ip: string | null) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
@@ -113,7 +122,7 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onMinAmountUdate = useCallback((minAmount: string, minBaseAmount: string) => {
+  const onMinAmountUdate = useCallback((minAmount: number, minBaseAmount: number) => {
     dispatch(
       setMinAmount({
         minAmount,
@@ -157,8 +166,8 @@ export async function queryParametersToBuyCryptoState(
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: (minAmounts.base.minBuyAmount * 2).toString(),
-    minBaseAmount: (minAmounts.quote.minBuyAmount * 2).toString(),
+    minAmount: minAmounts.base.minBuyAmount,
+    minBaseAmount: minAmounts.quote.minBuyAmount,
     recipient: account,
     userIpAddress: null,
   }
@@ -175,7 +184,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
       dispatch(
         replaceBuyCryptoState({
-          typedValue: parsed.minAmount,
+          typedValue: toString(parsed.minAmount),
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,

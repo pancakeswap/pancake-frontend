@@ -70,7 +70,8 @@ export function BuyCryptoForum({
   // need to reloacte this
   const fetchMinBuyAmounts = useCallback(async () => {
     const minAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
-    onMinAmountUdate((minAmounts.base?.minBuyAmount * 2).toString(), (minAmounts.quote?.minBuyAmount * 2).toString())
+
+    onMinAmountUdate(minAmounts.base?.minBuyAmount, minAmounts.quote?.minBuyAmount)
   }, [inputCurrencyId, outputCurrencyId, onMinAmountUdate])
 
   useEffect(() => {

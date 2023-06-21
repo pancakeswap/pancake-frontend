@@ -20,8 +20,8 @@ export interface BuyCryptoState {
   readonly [Field.OUTPUT]: {
     readonly currencyId: string | undefined
   }
-  readonly minAmount: string
-  readonly minBaseAmount: string
+  readonly minAmount: number
+  readonly minBaseAmount: number
   readonly userIpAddress: string | null
 }
 
@@ -34,8 +34,8 @@ const initialState: BuyCryptoState = {
   [Field.OUTPUT]: {
     currencyId: '',
   },
-  minAmount: '',
-  minBaseAmount: '',
+  minAmount: null,
+  minBaseAmount: null,
   userIpAddress: null,
 }
 
