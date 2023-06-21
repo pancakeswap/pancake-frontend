@@ -120,7 +120,7 @@ function AccordionItem({
         <CryptoCard padding="12px 12px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
             {quote.provider === 'Mercuryo' ? (
-              <Image src={!theme.isDark ? MercuryoAltSvg : MercuryoAltSvg} alt="#" width={15} />
+              <Image src={!theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={15} />
             ) : (
               <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
             )}
