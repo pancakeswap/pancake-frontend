@@ -1,12 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 import { useAccount } from 'wagmi'
+import toString from 'lodash/toString'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import formatLocaleNumber from 'utils/formatLocaleNumber'
+import ceil from 'lodash/ceil'
+
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -54,8 +58,10 @@ export const fetchMinimumBuyAmount = async (
 // from the current swap inputs, compute the best trade and return it.
 export function useBuyCryptoErrorInfo(
   typedValue: string,
-  minAmount: string,
-  minBaseAmount: string,
+  minAmount: number,
+  minBaseAmount: number,
+  maxAmount: number,
+  maxBaseAmount: number,
   inputCurrencyId: string,
   outputCurrencyId: string,
 ): {
@@ -63,19 +69,52 @@ export function useBuyCryptoErrorInfo(
   inputError: string
 } {
   const { address: account } = useAccount()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   let inputError: string | undefined
-  const isamountError = Boolean(Number(typedValue) < Number(minAmount))
-  const amountError = isamountError
-    ? `The minimum purchasable amount is ${minAmount}${inputCurrencyId} / ${minBaseAmount}${outputCurrencyId}`
-    : undefined
+  const isMinError = Number(typedValue) < minAmount
+  const isMaxError = Number(typedValue) > maxAmount
+
+  let amountError: undefined | string
+
+  if (isMinError) {
+    amountError = t(
+      'The minimum purchasable amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%',
+      {
+        maxmount: formatLocaleNumber({
+          number: minAmount,
+          locale,
+        }),
+        currencfiatCurrencyy: inputCurrencyId,
+        maxCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        cryptoCurrency: outputCurrencyId,
+      },
+    )
+  } else if (isMaxError) {
+    amountError = t(
+      'The maximum purchasable amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%',
+      {
+        maxmount: formatLocaleNumber({
+          number: maxAmount,
+          locale,
+        }),
+        currencfiatCurrencyy: inputCurrencyId,
+        maxCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        cryptoCurrency: outputCurrencyId,
+      },
+    )
+  }
 
   if (!account) {
     inputError = t('Connect Wallet')
   }
 
-  if (isamountError) {
+  if (isMinError) {
     inputError = inputError ?? t('Amount too low')
+  } else if (isMaxError) {
+    inputError = inputError ?? t('Amount too high')
   }
 
   if (typedValue === '') {
@@ -91,7 +130,7 @@ export function useBuyCryptoErrorInfo(
 export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
-  onMinAmountUdate: (minAmount: string, minBaseAmount: string) => void
+  onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
   onUsersIp: (ip: string | null) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
@@ -113,15 +152,20 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onMinAmountUdate = useCallback((minAmount: string, minBaseAmount: string) => {
-    dispatch(
-      setMinAmount({
-        minAmount,
-        minBaseAmount,
-      }),
-    )
+  const onLimitAmountUpdate = useCallback(
+    (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => {
+      dispatch(
+        setMinAmount({
+          minAmount,
+          minBaseAmount,
+          maxAmount,
+          maxBaseAmount,
+        }),
+      )
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    [],
+  )
 
   const onUsersIp = useCallback((ip: string | null) => {
     dispatch(
@@ -135,33 +179,41 @@ export function useBuyCryptoActionHandlers(): {
   return {
     onFieldAInput,
     onCurrencySelection,
-    onMinAmountUdate,
+    onLimitAmountUpdate,
     onUsersIp,
   }
 }
+
+const DEFAULT_FIAT_CURRENCY = 'USD'
 
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
   chainId: number,
 ): Promise<BuyCryptoState> {
-  const inputCurrency = parsedQs.inputCurrency || chainId === 1 ? 'ETH' : 'BNB'
-  const minAmounts = await fetchMinimumBuyAmount('USD', 'BUSD')
+  const inputCurrency = parsedQs.inputCurrency || chainId === ChainId.ETHEREUM ? 'ETH' : 'BNB'
+  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, inputCurrency)
 
   return {
     [Field.INPUT]: {
-      currencyId: 'USD',
+      currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
       currencyId: inputCurrency as string,
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: (minAmounts.base.minBuyAmount * 2).toString(),
-    minBaseAmount: (minAmounts.quote.minBuyAmount * 2).toString(),
+    minAmount: limitAmounts.base.minBuyAmount,
+    minBaseAmount: limitAmounts.quote.minBuyAmount,
+    maxAmount: limitAmounts.base.maxBuyAmount,
+    maxBaseAmount: limitAmounts.quote.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
   }
+}
+
+export function calculateDefaultAmount(minAmount: number): number {
+  return ceil(minAmount * 4)
 }
 
 export function useDefaultsFromURLSearch(account: string | undefined) {
@@ -173,11 +225,14 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
     const fetchData = async () => {
       if (!isReady || !chainId) return
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
+
       dispatch(
         replaceBuyCryptoState({
-          typedValue: parsed.minAmount,
+          typedValue: toString(calculateDefaultAmount(parsed.minAmount)),
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
+          maxAmount: parsed.maxAmount,
+          maxBaseAmount: parsed.maxBaseAmount,
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: null,

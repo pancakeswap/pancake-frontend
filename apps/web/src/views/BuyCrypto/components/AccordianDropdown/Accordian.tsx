@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-// import { AccordionData } from "../types";
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
@@ -53,11 +52,6 @@ function Accordion({
           />
         )
       })}
-      {
-        // !Providers.includes((provider: string) => {
-        //   return <div>{provider} no quotw</div>
-        // })
-      }
     </FlexGap>
   )
 }

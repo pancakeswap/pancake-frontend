@@ -12,7 +12,6 @@ import styled from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
 import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
-import { FiatIcon } from 'views/BuyCrypto/components/FiatOnRampSearchModal/FiatIconLogo'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -94,7 +93,8 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      {mode === 'onramp-input' ? <FiatIcon name={currency.symbol} /> : <CurrencyLogo currency={currency} size="24px" />}
+      <CurrencyLogo currency={currency} size="24px" isFiat={Boolean(mode === 'onramp-input')} />
+
       <Column>
         <Text bold>{currency?.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
@@ -138,17 +138,17 @@ export default function CurrencyList({
   const native = useNativeCurrency()
   const { pathname } = useRouter()
   const onRampFlow = pathname === '/buy-crypto'
+
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = !onRampFlow
-      ? [...currencies]
-      : showNative
+    if (onRampFlow) return mode === 'onramp-output' ? [native, ...currencies] : [...currencies]
+    let formatted: (Currency | undefined)[] = showNative
       ? [native, ...currencies, ...inactiveCurrencies]
       : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
-    return formatted.filter(Boolean)
-  }, [breakIndex, currencies, inactiveCurrencies, showNative, native, onRampFlow])
+    return formatted
+  }, [breakIndex, currencies, inactiveCurrencies, showNative, native, onRampFlow, mode])
 
   const { chainId } = useActiveChainId()
 
@@ -176,7 +176,7 @@ export default function CurrencyList({
 
       const showImport = index > currencies.length
 
-      if ((index === breakIndex || !data) && !onRampFlow) {
+      if (index === breakIndex || !data) {
         return (
           <FixedContentRow style={style}>
             <LightGreyCard padding="8px 12px" borderRadius="8px">
@@ -194,7 +194,7 @@ export default function CurrencyList({
         )
       }
 
-      if (showImport && token && !onRampFlow) {
+      if (showImport && token) {
         return (
           <ImportRow
             onCurrencySelect={handleSelect}

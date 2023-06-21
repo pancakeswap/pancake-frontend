@@ -157,7 +157,7 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
           {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex].label}
         </Text>
       </DropDownHeader>
-      {/* <ArrowDropDownIcon color="text" onClick={toggling} />
+      <ArrowDropDownIcon color="text" onClick={toggling} />
       <DropDownListContainer>
         <DropDownList>
           {options.map((option, index) =>
@@ -168,7 +168,7 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
             ) : null
           )}
         </DropDownList>
-      </DropDownListContainer> */}
+      </DropDownListContainer>
     </DropDownContainer>
   );
 };

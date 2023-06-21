@@ -174,6 +174,7 @@ export default function CurrencySearchModal({
             height={height}
             tokensToShow={tokensToShow}
             mode={mode}
+            onRampFlow={onRampFlow}
           />
         ) : modalView === CurrencyModalView.importToken && importToken ? (
           <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />

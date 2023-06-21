@@ -1,6 +1,7 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import throttle from 'lodash/throttle'
 import { useMemo } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { Box, Row, Text } from '@pancakeswap/uikit'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
@@ -11,13 +12,16 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useAllOnRampTokens, useCurrency } from 'hooks/Tokens'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 import { useSwapBestTrade } from './hooks'
+
 import { MMCommitButton } from './containers/MMCommitButton'
 import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
 
 export function V3SwapForm() {
   const { account } = useWeb3React()
+  const { t } = useTranslation()
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
   const {
     independentField,
@@ -27,10 +31,13 @@ export function V3SwapForm() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+  const native = useNativeCurrency()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const onRampCurrencies = useAllOnRampTokens()
 
-  const doesSelectedTokenSupportOnRamp = Boolean(onRampCurrencies[inputCurrency?.symbol])
+  const doesSelectedTokenSupportOnRamp = Boolean(
+    onRampCurrencies[inputCurrency?.symbol] || native.symbol === inputCurrencyId,
+  )
 
   const mm = useDerivedBestTradeWithMM(trade)
   const throttledHandleRefresh = useMemo(
@@ -73,7 +80,9 @@ export function V3SwapForm() {
         <Row alignItems="center" justifyContent="center" mb="4px">
           <Text fontSize="14px">
             Insufficent Funds?{' '}
-            <InternalLink href={`/buy-crypto?inputCurrency=${inputCurrency.symbol}`}>Buy Crypto here.</InternalLink>
+            <InternalLink href={`/buy-crypto?inputCurrency=${inputCurrency.symbol}`}>
+              {t('Buy Crypto here.')}
+            </InternalLink>
           </Text>
         </Row>
       ) : null}

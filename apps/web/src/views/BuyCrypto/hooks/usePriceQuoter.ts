@@ -3,8 +3,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
 import { fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
 import { fetchMercuryoAvailability, fetchMoonpayAvailability } from './useProviderAvailability'
-
-const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['BNB', 'USDT', 'BUSD']
+import { MOONPAY_UNSUPPORTED_CURRENCY_CODES } from '../constants'
 
 export type ProviderQoute = {
   providerFee: number
@@ -111,7 +110,14 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
   const fetchQuotes = useCallback(async () => {
     if (!chainId || !userIp) return
     try {
-      const responsePromises = [fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency)]
+      const responsePromises = [
+        fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
+        fetchMercuryoQuote({
+          fiatCurrency: outputCurrency.toUpperCase(),
+          cryptoCurrency: inputCurrency.toUpperCase(),
+          fiatAmount: Number(amount).toString(),
+        }),
+      ]
       const responses = await Promise.allSettled(responsePromises)
 
       const dataPromises: ProviderResponse[] = responses

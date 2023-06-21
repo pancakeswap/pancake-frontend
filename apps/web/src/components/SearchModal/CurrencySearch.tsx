@@ -11,8 +11,8 @@ import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { useAudioPlay } from '@pancakeswap/utils/user'
 import { isAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
-import { useAllOnRampTokens, useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
+import { whiteListedFiatCurrencies } from 'views/BuyCrypto/constants'
+import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
@@ -20,9 +20,6 @@ import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
-
-const whiteListedFiatCurrencies = ['USD', 'EUR', 'USD', 'JPY', 'AUD', 'GBP', 'BRL', 'IDR', 'CAD']
-const mercuryoWhitelist = ['BNB', 'BUSD']
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -36,6 +33,7 @@ interface CurrencySearchProps {
   height?: number
   tokensToShow?: Token[]
   mode?: string
+  onRampFlow?: boolean
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -93,6 +91,7 @@ function CurrencySearch({
   height,
   tokensToShow,
   mode,
+  onRampFlow,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -106,9 +105,6 @@ function CurrencySearch({
   const [invertSearchOrder] = useState<boolean>(false)
 
   const allTokens = useAllTokens()
-  const ONRampTokens = useAllOnRampTokens()
-  const onRampCurrencies = fiatCurrencyMap
-  const tokenList = mode === 'onramp-input' ? onRampCurrencies : mode === 'onramp-output' ? ONRampTokens : allTokens
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
@@ -126,8 +122,8 @@ function CurrencySearch({
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery, (address) => Boolean(isAddress(address)))
-    return Object.values(tokensToShow || tokenList).filter(filterToken)
-  }, [tokensToShow, tokenList, debouncedQuery])
+    return Object.values(tokensToShow || allTokens).filter(filterToken)
+  }, [tokensToShow, allTokens, debouncedQuery])
 
   const queryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
   const filteredQueryTokens = useMemo(() => {
@@ -139,12 +135,8 @@ function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    return mode?.slice(0, 6) === 'onramp'
-      ? chainId === 56 && mode === 'onramp-output'
-        ? [...filteredQueryTokens].filter((token) => mercuryoWhitelist.includes(token.symbol))
-        : [...filteredQueryTokens]
-      : [...filteredQueryTokens].sort(tokenComparator)
-  }, [filteredQueryTokens, tokenComparator, mode, chainId])
+    return onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
+  }, [filteredQueryTokens, tokenComparator, onRampFlow])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -209,7 +201,7 @@ function CurrencySearch({
     }
 
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
-      <Box mx="-24px" my={mode === 'onramp-output' ? '0px' : '24px'}>
+      <Box mx="-24px" my={mode === 'onramp-input' && '24px'}>
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showNative={showNative}

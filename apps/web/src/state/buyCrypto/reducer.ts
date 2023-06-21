@@ -20,8 +20,10 @@ export interface BuyCryptoState {
   readonly [Field.OUTPUT]: {
     readonly currencyId: string | undefined
   }
-  readonly minAmount: string
-  readonly minBaseAmount: string
+  readonly minAmount: number
+  readonly minBaseAmount: number
+  readonly maxAmount: number
+  readonly maxBaseAmount: number
   readonly userIpAddress: string | null
 }
 
@@ -34,8 +36,10 @@ const initialState: BuyCryptoState = {
   [Field.OUTPUT]: {
     currencyId: '',
   },
-  minAmount: '',
-  minBaseAmount: '',
+  minAmount: null,
+  minBaseAmount: null,
+  maxAmount: null,
+  maxBaseAmount: null,
   userIpAddress: null,
 }
 
@@ -54,9 +58,11 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
         [field]: { currencyId },
       }
     })
-    .addCase(setMinAmount, (state, { payload: { minAmount, minBaseAmount } }) => {
+    .addCase(setMinAmount, (state, { payload: { minAmount, minBaseAmount, maxAmount, maxBaseAmount } }) => {
       state.minAmount = minAmount
       state.minBaseAmount = minBaseAmount
+      state.maxAmount = maxAmount
+      state.maxBaseAmount = maxBaseAmount
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
@@ -66,7 +72,21 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
     })
     .addCase(
       replaceBuyCryptoState,
-      (state, { payload: { typedValue, recipient, inputCurrencyId, outputCurrencyId, minAmount, minBaseAmount } }) => {
+      (
+        state,
+        {
+          payload: {
+            typedValue,
+            recipient,
+            inputCurrencyId,
+            outputCurrencyId,
+            minAmount,
+            minBaseAmount,
+            maxAmount,
+            maxBaseAmount,
+          },
+        },
+      ) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
@@ -78,6 +98,8 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
           recipient,
           minAmount,
           minBaseAmount,
+          maxAmount,
+          maxBaseAmount,
           userIpAddress: state.userIpAddress,
         }
       },

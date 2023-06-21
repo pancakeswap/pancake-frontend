@@ -23,7 +23,6 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
 import { useAccount } from 'wagmi'
-import { FiatIcon } from 'views/BuyCrypto/components/FiatOnRampSearchModal/FiatIconLogo'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
@@ -123,7 +122,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const { t } = useTranslation()
 
   const mode = id
-
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
 
@@ -181,7 +179,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
     <SwapUI.CurrencyInputPanel
       id={id}
       disabled={disabled}
-      error={error as any}
+      error={error as boolean}
       zapStyle={zapStyle}
       value={value}
       onInputBlur={onInputBlur}
@@ -202,13 +200,12 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 {pair ? (
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
-                  mode === 'onramp-input' ? (
-                    <Flex marginRight="6px">
-                      <FiatIcon name={currency.symbol} />
-                    </Flex>
-                  ) : (
-                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-                  )
+                  <CurrencyLogo
+                    currency={currency}
+                    size="24px"
+                    style={{ marginRight: '8px' }}
+                    isFiat={Boolean(id === 'onramp-input')}
+                  />
                 ) : currencyLoading ? (
                   <Skeleton width="24px" height="24px" variant="circle" />
                 ) : null}

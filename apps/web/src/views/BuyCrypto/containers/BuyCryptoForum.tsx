@@ -4,10 +4,16 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { ArrowDownIcon, Text } from '@pancakeswap/uikit'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { fetchMinimumBuyAmount, useBuyCryptoActionHandlers, useBuyCryptoErrorInfo } from 'state/buyCrypto/hooks'
+import {
+  calculateDefaultAmount,
+  fetchMinimumBuyAmount,
+  useBuyCryptoActionHandlers,
+  useBuyCryptoErrorInfo,
+} from 'state/buyCrypto/hooks'
 import { useOnRampCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
+import toString from 'lodash/toString'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '../index'
 import { FormHeader } from './FormHeader'
@@ -45,19 +51,24 @@ export function BuyCryptoForum({
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     minAmount,
     minBaseAmount,
+    maxAmount,
+    maxBaseAmount,
   } = buyCryptoState
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
     typedValue,
     minAmount,
     minBaseAmount,
+    maxAmount,
+    maxBaseAmount,
     outputCurrencyId,
     inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
+  const fiatCurrencies = fiatCurrencyMap
 
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
-  const { onFieldAInput, onCurrencySelection, onMinAmountUdate } = useBuyCryptoActionHandlers()
+  const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
       if (value === '' || allowTwoDecimalRegex.test(value)) {
@@ -69,9 +80,17 @@ export function BuyCryptoForum({
 
   // need to reloacte this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const minAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
-    onMinAmountUdate((minAmounts.base?.minBuyAmount * 2).toString(), (minAmounts.quote?.minBuyAmount * 2).toString())
-  }, [inputCurrencyId, outputCurrencyId, onMinAmountUdate])
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
+
+    onFieldAInput(toString(calculateDefaultAmount(limitAmounts.base?.minBuyAmount)))
+
+    onLimitAmountUpdate(
+      limitAmounts.base?.minBuyAmount,
+      limitAmounts.quote?.minBuyAmount,
+      limitAmounts.base?.maxBuyAmount,
+      limitAmounts.quote?.maxBuyAmount,
+    )
+  }, [outputCurrencyId, inputCurrencyId, onFieldAInput, onLimitAmountUpdate])
 
   useEffect(() => {
     fetchMinBuyAmounts()
@@ -110,6 +129,7 @@ export function BuyCryptoForum({
           onCurrencySelect={handleOutputSelect}
           error={error}
           showCommonBases={false}
+          tokensToShow={fiatCurrencyMap as any}
           title={
             <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
               {t('I want to spend')}

@@ -17,15 +17,7 @@ import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/me
 const DropdownWrapper = styled.div`
   width: 100%;
 `
-const FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
-
-// const calculateMercuryoQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
-//   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
-//   const fiatAmountAfterFees = new BigNumber(spendAmount).minus(totalFees)
-//   const AssetRate = new BigNumber(quote.quote)
-//   const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate)
-//   return moonPayQuote.toString()
-// }
+const FEE_TYPES = ['Total Fees', 'Networking Fees']
 
 const FeeItem = ({
   feeTitle,
@@ -128,7 +120,7 @@ function AccordionItem({
         <CryptoCard padding="12px 12px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
             {quote.provider === 'Mercuryo' ? (
-              <Image src={!theme.isDark ? MercuryoAltSvg : MercuryoAltSvg} alt="#" width={15} />
+              <Image src={!theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={15} />
             ) : (
               <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
             )}

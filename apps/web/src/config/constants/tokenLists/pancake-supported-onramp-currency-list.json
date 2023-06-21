@@ -30,49 +30,6 @@
       "chainId": 56,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/BUSD.png"
     },
-
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "Bitcoin Binance",
-      "symbol": "BBTC",
-      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/wbtc.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "USDT Tether",
-      "address": "0x55d398326f99059fF775485246999027B3197955",
-      "symbol": "USDT",
-      "decimals": 6,
-      "chainId": 56,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "Coinbase USD",
-      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": 56,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
-    },
-
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "Coinbase USD",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
-    },
-
     {
       "isNative": "false",
       "isToken": "true",
@@ -82,6 +39,16 @@
       "decimals": 6,
       "chainId": 1,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Coinbase USD",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 1,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
       "isNative": "false",

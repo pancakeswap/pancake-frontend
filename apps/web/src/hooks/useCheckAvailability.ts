@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 
 /** @ref https://dashboard.moonpay.com/api_reference/client_side_api#ip_addresses */
@@ -7,15 +8,15 @@ interface MoonpayIPAddressesResponse {
   isBuyAllowed?: boolean
   isSellAllowed?: boolean
 }
-const REACT_APP_MOONPAY_API = 'https://api.moonpay.com'
-const REACT_APP_MOONPAY_PUBLISHABLE_KEY = 'pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz'
+const MOONPAY_API = 'https://api.moonpay.com'
+const MOONPAY_PUBLISHABLE_KEY = 'pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz'
 
 async function getMoonpayAvailability(): Promise<boolean> {
-  const moonpayPublishableKey = REACT_APP_MOONPAY_PUBLISHABLE_KEY
+  const moonpayPublishableKey = MOONPAY_PUBLISHABLE_KEY
   if (!moonpayPublishableKey) {
     throw new Error('Must provide a publishable key for moonpay.')
   }
-  const moonpayApiURI = REACT_APP_MOONPAY_API
+  const moonpayApiURI = MOONPAY_API
   if (!moonpayApiURI) {
     throw new Error('Must provide an api endpoint for moonpay.')
   }
@@ -29,6 +30,7 @@ export function useFiatOnrampAvailability(shouldCheck: boolean, callback?: () =>
   const [availabilityChecked, setAvailabilityChecked] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     async function checkAvailability() {
@@ -44,7 +46,7 @@ export function useFiatOnrampAvailability(shouldCheck: boolean, callback?: () =>
       } catch (e) {
         console.error('Error checking onramp availability', e.toString())
         if (stale) return
-        setError('Error, try again later.')
+        setError(t('Error, try again later.'))
         setFiatOnrampAvailability(false)
       } finally {
         if (!stale) setLoading(false)
@@ -60,7 +62,7 @@ export function useFiatOnrampAvailability(shouldCheck: boolean, callback?: () =>
     return () => {
       stale = true
     }
-  }, [callback, shouldCheck, availabilityChecked])
+  }, [callback, shouldCheck, availabilityChecked, t])
 
   return { fiatOnarampAvailability, availabilityChecked, loading, error }
 }
