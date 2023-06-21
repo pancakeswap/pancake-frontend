@@ -8,6 +8,8 @@ import { fetchMinimumBuyAmount, useBuyCryptoActionHandlers, useBuyCryptoErrorInf
 import { useOnRampCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
+import toString from 'lodash/toString'
+import ceil from 'lodash/ceil'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '../index'
 import { FormHeader } from './FormHeader'
@@ -75,13 +77,15 @@ export function BuyCryptoForum({
   const fetchMinBuyAmounts = useCallback(async () => {
     const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
 
+    onFieldAInput(toString(ceil(limitAmounts.base?.minBuyAmount * 4)))
+
     onLimitAmountUpdate(
       limitAmounts.base?.minBuyAmount,
       limitAmounts.quote?.minBuyAmount,
       limitAmounts.base?.maxBuyAmount,
       limitAmounts.quote?.maxBuyAmount,
     )
-  }, [inputCurrencyId, outputCurrencyId, onLimitAmountUpdate])
+  }, [outputCurrencyId, inputCurrencyId, onFieldAInput, onLimitAmountUpdate])
 
   useEffect(() => {
     fetchMinBuyAmounts()

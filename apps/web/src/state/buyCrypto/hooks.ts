@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
@@ -9,6 +9,8 @@ import { useAccount } from 'wagmi'
 import toString from 'lodash/toString'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
+import ceil from 'lodash/ceil'
+
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -166,25 +168,29 @@ export function useBuyCryptoActionHandlers(): {
   }
 }
 
+const DEFAULT_FIAT_CURRENCY = 'USD'
+
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   account: string | undefined,
   chainId: number,
 ): Promise<BuyCryptoState> {
-  const inputCurrency = parsedQs.inputCurrency || chainId === 1 ? 'ETH' : 'BNB'
-  const minAmounts = await fetchMinimumBuyAmount('USD', 'BUSD')
+  const inputCurrency = parsedQs.inputCurrency || chainId === ChainId.ETHEREUM ? 'ETH' : 'BNB'
+  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, inputCurrency)
 
   return {
     [Field.INPUT]: {
-      currencyId: 'USD',
+      currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
       currencyId: inputCurrency as string,
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: minAmounts.base.minBuyAmount,
-    minBaseAmount: minAmounts.quote.minBuyAmount,
+    minAmount: limitAmounts.base.minBuyAmount,
+    minBaseAmount: limitAmounts.quote.minBuyAmount,
+    maxAmount: limitAmounts.base.maxBuyAmount,
+    maxBaseAmount: limitAmounts.quote.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
   }
@@ -199,11 +205,14 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
     const fetchData = async () => {
       if (!isReady || !chainId) return
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
+
       dispatch(
         replaceBuyCryptoState({
-          typedValue: toString(parsed.minAmount),
+          typedValue: toString(ceil(parsed.minAmount * 4)),
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
+          maxAmount: parsed.maxAmount,
+          maxBaseAmount: parsed.maxBaseAmount,
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: null,

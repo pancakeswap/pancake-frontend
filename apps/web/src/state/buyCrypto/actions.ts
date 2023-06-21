@@ -23,5 +23,7 @@ export const replaceBuyCryptoState = createAction<{
   recipient: string | null
   minAmount?: number | null
   minBaseAmount?: number | null
+  maxAmount?: number | null
+  maxBaseAmount?: number | null
   userIpAddress?: string | null
 }>('swap/replaceBuyCryptoState')
