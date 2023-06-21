@@ -17,7 +17,7 @@ import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/me
 const DropdownWrapper = styled.div`
   width: 100%;
 `
-const FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
+const FEE_TYPES = ['Total Fees', 'Networking Fees']
 
 // const calculateMercuryoQuoteFromFees = (quote: ProviderQoute, spendAmount: string) => {
 //   const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
