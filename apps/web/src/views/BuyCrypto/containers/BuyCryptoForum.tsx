@@ -4,12 +4,16 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { ArrowDownIcon, Text } from '@pancakeswap/uikit'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { fetchMinimumBuyAmount, useBuyCryptoActionHandlers, useBuyCryptoErrorInfo } from 'state/buyCrypto/hooks'
+import {
+  calculateDefaultAmount,
+  fetchMinimumBuyAmount,
+  useBuyCryptoActionHandlers,
+  useBuyCryptoErrorInfo,
+} from 'state/buyCrypto/hooks'
 import { useOnRampCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
 import toString from 'lodash/toString'
-import ceil from 'lodash/ceil'
 // eslint-disable-next-line import/no-cycle
 import { CryptoFormView } from '../index'
 import { FormHeader } from './FormHeader'
@@ -77,7 +81,7 @@ export function BuyCryptoForum({
   const fetchMinBuyAmounts = useCallback(async () => {
     const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
 
-    onFieldAInput(toString(ceil(limitAmounts.base?.minBuyAmount * 4)))
+    onFieldAInput(toString(calculateDefaultAmount(limitAmounts.base?.minBuyAmount)))
 
     onLimitAmountUpdate(
       limitAmounts.base?.minBuyAmount,

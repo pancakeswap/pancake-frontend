@@ -196,6 +196,10 @@ export async function queryParametersToBuyCryptoState(
   }
 }
 
+export function calculateDefaultAmount(minAmount: number): number {
+  return ceil(minAmount * 4)
+}
+
 export function useDefaultsFromURLSearch(account: string | undefined) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { chainId } = useActiveChainId()
@@ -208,7 +212,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
 
       dispatch(
         replaceBuyCryptoState({
-          typedValue: toString(ceil(parsed.minAmount * 4)),
+          typedValue: toString(calculateDefaultAmount(parsed.minAmount)),
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
           maxAmount: parsed.maxAmount,
