@@ -8,15 +8,13 @@ interface MoonpayIPAddressesResponse {
   isBuyAllowed?: boolean
   isSellAllowed?: boolean
 }
-const MOONPAY_API = 'https://api.moonpay.com'
-const MOONPAY_PUBLISHABLE_KEY = 'pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz'
 
 async function getMoonpayAvailability(): Promise<boolean> {
-  const moonpayPublishableKey = MOONPAY_PUBLISHABLE_KEY
+  const moonpayPublishableKey = process.env.MOONPAY_API
   if (!moonpayPublishableKey) {
     throw new Error('Must provide a publishable key for moonpay.')
   }
-  const moonpayApiURI = MOONPAY_API
+  const moonpayApiURI = process.env.MOONPAY_API
   if (!moonpayApiURI) {
     throw new Error('Must provide an api endpoint for moonpay.')
   }
