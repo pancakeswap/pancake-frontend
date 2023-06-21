@@ -38,7 +38,7 @@ const fetchMoonPaySignedUrl = async (
   account: string,
 ) => {
   try {
-    const res = await fetch(`http://localhost:8081/generate-moonpay-sig`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
