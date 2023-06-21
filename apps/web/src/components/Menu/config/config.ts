@@ -52,13 +52,13 @@ const config: (
       showItemsOnMobile: false,
       items: [
         {
+          label: t('Swap'),
+          href: '/swap',
+        },
+        {
           label: t('Buy Crypto'),
           href: '/buy-crypto',
           status: { text: t('New'), color: 'success' },
-        },
-        {
-          label: t('Swap'),
-          href: '/swap',
         },
         {
           label: t('Liquidity'),
