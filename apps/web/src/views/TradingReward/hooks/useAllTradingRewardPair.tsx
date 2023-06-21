@@ -12,7 +12,7 @@ export enum RewardStatus {
 }
 
 export enum RewardType {
-  CAKE_STAKERS = 'rb',
+  CAKE_STAKERS = 'rbTest',
   TOP_TRADERS = 'tt',
 }
 
