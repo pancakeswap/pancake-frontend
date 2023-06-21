@@ -156,7 +156,6 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       onChange={() => {
                         const totalFarmsEnableCount = farmTypesEnableCount + (!boostedOnly ? 1 : -1)
                         handleSetFarmTypesEnableCount(totalFarmsEnableCount)
-
                         handleSetBoostedOnly(!boostedOnly)
                       }}
                       scale="sm"

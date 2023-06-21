@@ -19,7 +19,13 @@ interface FarmV3ActionContainerChildrenProps {
   onHarvest: () => Promise<void>
 }
 
-const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContainerChildrenProps => {
+const useFarmV3Actions = ({
+  tokenId,
+  onDone,
+}: {
+  tokenId: string
+  onDone?: () => void
+}): FarmV3ActionContainerChildrenProps => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
@@ -55,6 +61,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       }),
     )
     if (resp?.status) {
+      onDone?.()
       toastSuccess(
         `${t('Unstaked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -72,6 +79,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     t,
     toastSuccess,
     tokenId,
+    onDone,
   ])
 
   const onStake = useCallback(async () => {
@@ -101,6 +109,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     )
 
     if (resp?.status) {
+      onDone?.()
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -119,6 +128,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     t,
     toastSuccess,
     tokenId,
+    onDone,
   ])
 
   const onHarvest = useCallback(async () => {

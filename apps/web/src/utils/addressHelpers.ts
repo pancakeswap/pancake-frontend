@@ -56,12 +56,12 @@ export const getVaultPoolAddress = (vaultKey: VaultKey) => {
   return getAddressFromMap(addresses[vaultKey])
 }
 
-export const getCakeVaultAddress = () => {
-  return getAddressFromMap(addresses.cakeVault)
+export const getCakeVaultAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.cakeVault, chainId)
 }
 
-export const getCakeFlexibleSideVaultAddress = () => {
-  return getAddressFromMap(addresses.cakeFlexibleSideVault)
+export const getCakeFlexibleSideVaultAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.cakeFlexibleSideVault, chainId)
 }
 
 export const getFarmAuctionAddress = () => {
@@ -87,6 +87,10 @@ export const getZapAddress = (chainId?: number) => {
 
 export const getBCakeFarmBoosterAddress = () => {
   return getAddressFromMap(addresses.bCakeFarmBooster)
+}
+
+export const getBCakeFarmBoosterV3Address = (chainId?: number) => {
+  return getAddressFromMap(addresses.bCakeFarmBoosterV3, chainId)
 }
 
 export const getBCakeFarmBoosterProxyFactoryAddress = () => {

@@ -15,7 +15,7 @@ export const ICAKE = {
 
 export const CAKE_VAULT = {
   [ChainId.BSC]: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
-  [ChainId.BSC_TESTNET]: '0x683433ba14e8F26774D43D3E90DA6Dd7a22044Fe',
+  [ChainId.BSC_TESTNET]: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
   [ChainId.ETHEREUM]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>
 
