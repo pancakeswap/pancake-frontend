@@ -72,7 +72,21 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
     })
     .addCase(
       replaceBuyCryptoState,
-      (state, { payload: { typedValue, recipient, inputCurrencyId, outputCurrencyId, minAmount, minBaseAmount } }) => {
+      (
+        state,
+        {
+          payload: {
+            typedValue,
+            recipient,
+            inputCurrencyId,
+            outputCurrencyId,
+            minAmount,
+            minBaseAmount,
+            maxAmount,
+            maxBaseAmount,
+          },
+        },
+      ) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
@@ -84,6 +98,8 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
           recipient,
           minAmount,
           minBaseAmount,
+          maxAmount,
+          maxBaseAmount,
           userIpAddress: state.userIpAddress,
         }
       },
