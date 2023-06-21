@@ -22,6 +22,8 @@ export interface BuyCryptoState {
   }
   readonly minAmount: number
   readonly minBaseAmount: number
+  readonly maxAmount: number
+  readonly maxBaseAmount: number
   readonly userIpAddress: string | null
 }
 
@@ -36,6 +38,8 @@ const initialState: BuyCryptoState = {
   },
   minAmount: null,
   minBaseAmount: null,
+  maxAmount: null,
+  maxBaseAmount: null,
   userIpAddress: null,
 }
 
@@ -54,9 +58,11 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
         [field]: { currencyId },
       }
     })
-    .addCase(setMinAmount, (state, { payload: { minAmount, minBaseAmount } }) => {
+    .addCase(setMinAmount, (state, { payload: { minAmount, minBaseAmount, maxAmount, maxBaseAmount } }) => {
       state.minAmount = minAmount
       state.minBaseAmount = minBaseAmount
+      state.maxAmount = maxAmount
+      state.maxBaseAmount = maxBaseAmount
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient

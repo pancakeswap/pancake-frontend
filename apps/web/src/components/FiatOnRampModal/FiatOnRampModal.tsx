@@ -49,10 +49,9 @@ const fetchMoonPaySignedUrl = async (
   inputCurrency: string,
   outputCurrency: string,
   amount: string,
-  isDark: any,
+  isDark: boolean,
   account: string,
 ) => {
-  console.log('heyyyyy')
   try {
     const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
       headers: {
@@ -197,7 +196,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     }
     setLoading(true)
     setError(null)
-    console.log(provider)
+
     try {
       let result = ''
       if (provider === 'MoonPay')

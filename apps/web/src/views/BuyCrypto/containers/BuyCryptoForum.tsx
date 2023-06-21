@@ -45,19 +45,23 @@ export function BuyCryptoForum({
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     minAmount,
     minBaseAmount,
+    maxAmount,
+    maxBaseAmount,
   } = buyCryptoState
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
     typedValue,
     minAmount,
     minBaseAmount,
+    maxAmount,
+    maxBaseAmount,
     outputCurrencyId,
     inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
 
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
-  const { onFieldAInput, onCurrencySelection, onMinAmountUdate } = useBuyCryptoActionHandlers()
+  const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
     (value: string) => {
       if (value === '' || allowTwoDecimalRegex.test(value)) {
@@ -69,10 +73,15 @@ export function BuyCryptoForum({
 
   // need to reloacte this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const minAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
 
-    onMinAmountUdate(minAmounts.base?.minBuyAmount, minAmounts.quote?.minBuyAmount)
-  }, [inputCurrencyId, outputCurrencyId, onMinAmountUdate])
+    onLimitAmountUpdate(
+      limitAmounts.base?.minBuyAmount,
+      limitAmounts.quote?.minBuyAmount,
+      limitAmounts.base?.maxBuyAmount,
+      limitAmounts.quote?.maxBuyAmount,
+    )
+  }, [inputCurrencyId, outputCurrencyId, onLimitAmountUpdate])
 
   useEffect(() => {
     fetchMinBuyAmounts()

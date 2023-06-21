@@ -58,6 +58,8 @@ export function useBuyCryptoErrorInfo(
   typedValue: string,
   minAmount: number,
   minBaseAmount: number,
+  maxAmount: number,
+  maxBaseAmount: number,
   inputCurrencyId: string,
   outputCurrencyId: string,
 ): {
@@ -70,21 +72,31 @@ export function useBuyCryptoErrorInfo(
     currentLanguage: { locale },
   } = useTranslation()
   let inputError: string | undefined
-  const isamountError = minAmount && minBaseAmount && Boolean(Number(typedValue) < Number(minAmount))
+  const isMinError = Number(typedValue) < minAmount
+  const isMaxError = Number(typedValue) > maxAmount
 
-  const amountError = isamountError
-    ? `The minimum purchasable amount is ${formatLocaleNumber({
-        number: minAmount,
-        locale,
-      })} ${inputCurrencyId} / ${formatLocaleNumber({ locale, number: minBaseAmount })} ${outputCurrencyId}`
-    : undefined
+  let amountError: undefined | string
+
+  if (isMinError) {
+    amountError = `The minimum purchasable amount is ${formatLocaleNumber({
+      number: minAmount,
+      locale,
+    })} ${inputCurrencyId} / ${formatLocaleNumber({ locale, number: minBaseAmount })} ${outputCurrencyId}`
+  } else if (isMaxError) {
+    amountError = `The maximum purchasable amount is ${formatLocaleNumber({
+      number: maxAmount,
+      locale,
+    })} ${inputCurrencyId} / ${formatLocaleNumber({ locale, number: maxBaseAmount })} ${outputCurrencyId}`
+  }
 
   if (!account) {
     inputError = t('Connect Wallet')
   }
 
-  if (isamountError) {
+  if (isMinError) {
     inputError = inputError ?? t('Amount too low')
+  } else if (isMaxError) {
+    inputError = inputError ?? t('Amount too high')
   }
 
   if (typedValue === '') {
@@ -100,7 +112,7 @@ export function useBuyCryptoErrorInfo(
 export function useBuyCryptoActionHandlers(): {
   onFieldAInput: (typedValue: string) => void
   onCurrencySelection: (field: Field, currency: Currency) => void
-  onMinAmountUdate: (minAmount: number, minBaseAmount: number) => void
+  onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
   onUsersIp: (ip: string | null) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
@@ -122,15 +134,20 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onMinAmountUdate = useCallback((minAmount: number, minBaseAmount: number) => {
-    dispatch(
-      setMinAmount({
-        minAmount,
-        minBaseAmount,
-      }),
-    )
+  const onLimitAmountUpdate = useCallback(
+    (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => {
+      dispatch(
+        setMinAmount({
+          minAmount,
+          minBaseAmount,
+          maxAmount,
+          maxBaseAmount,
+        }),
+      )
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    [],
+  )
 
   const onUsersIp = useCallback((ip: string | null) => {
     dispatch(
@@ -144,7 +161,7 @@ export function useBuyCryptoActionHandlers(): {
   return {
     onFieldAInput,
     onCurrencySelection,
-    onMinAmountUdate,
+    onLimitAmountUpdate,
     onUsersIp,
   }
 }
