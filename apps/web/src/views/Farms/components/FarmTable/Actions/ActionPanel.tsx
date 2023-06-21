@@ -368,7 +368,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
             {(props) => <HarvestAction {...props} />}
           </HarvestActionContainer>
         )}
-        {farm?.boosted && (
+        {/* {farm?.boosted && (
           <ActionContainerSection style={{ minHeight: isMobile ? 'auto' : isMobile ? 'auto' : 124.5 }}>
             <BoostedAction
               title={(status) => (
@@ -391,7 +391,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               }
             />
           </ActionContainerSection>
-        )}
+        )} */}
         {shouldUseProxyFarm ? (
           <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
             {(props) => <StakedAction {...props} />}
