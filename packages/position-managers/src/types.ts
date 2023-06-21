@@ -2,6 +2,8 @@ import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Address, Hash } from 'viem'
 
+import { MANAGER, BaseManager } from './constants/managers'
+
 export enum OnChainActionType {
   ADD_LIQUIDITY,
   REMOVE_LIQUIDITY,
@@ -23,12 +25,6 @@ export enum ManagerFeeType {
 export interface ManagerFee {
   type: ManagerFeeType
   rate: Percent
-}
-
-export interface BaseManager {
-  id: string
-  name: string
-  introLink?: string
 }
 
 export interface Position {
@@ -75,7 +71,7 @@ export interface BasePositionManager<A extends BaseAssets> extends BaseManager {
 
   // Get the total assets currently being managed.
   // Position will change from time to time
-  getTotalAssets: () => Promise<A & { rebalancedAt: number }>
+  getTotalAssets: () => Promise<A & { rebalancedAt?: number }>
 
   // Get the assets share of the current user account in this vault
   getAccountShare: () => Promise<A | null>
@@ -121,6 +117,8 @@ export interface PCSDuoTokenVault extends DuoTokenVault {
 
 export type Vault = PCSDuoTokenVault
 
-export interface VaultConfig extends Omit<Vault, 'manager'> {
-  manager: BaseManager
+export interface PCSDuoTokenVaultConfig extends Omit<PCSDuoTokenVault, 'manager'> {
+  manager: MANAGER
 }
+
+export type VaultConfig = PCSDuoTokenVaultConfig

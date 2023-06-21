@@ -1,7 +1,7 @@
 import Page from 'components/Layout/Page'
 
 import { Header } from './components'
-import { Controls } from './containers'
+import { Controls, VaultCards } from './containers'
 
 export function PositionManagers() {
   return (
@@ -9,6 +9,7 @@ export function PositionManagers() {
       <Header />
       <Page>
         <Controls />
+        <VaultCards />
       </Page>
     </>
   )
