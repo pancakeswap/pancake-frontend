@@ -19,8 +19,6 @@ import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
 
-import BoostedApr from '../YieldBooster/components/BoostedApr'
-
 const { DetailsSection } = FarmUI.FarmCard
 
 const StyledCard = styled(Card)`
@@ -89,7 +87,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/v2/${liquidityUrlPathParts}`
   const { lpAddress, stableSwapAddress, stableLpFee } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
-  const { stakedBalance, proxy, tokenBalance } = farm?.userData || {}
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {
@@ -113,7 +110,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
-          boosted={farm.boosted}
+          boosted={false}
           isStable={farm.isStable}
           version={2}
           pid={farm.pid}
@@ -126,7 +123,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             <Text style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
                 <>
-                  {farm.boosted ? (
+                  {/* {farm.boosted ? (
                     <BoostedApr
                       mr="4px"
                       lpRewardsApr={farm.lpRewardsApr}
@@ -139,7 +136,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                           : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
                       }
                     />
-                  ) : null}
+                  ) : null} */}
                   <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}
@@ -152,9 +149,9 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     apr={farm.apr}
                     displayApr={displayApr}
                     lpRewardsApr={farm.lpRewardsApr}
-                    strikethrough={farm.boosted}
+                    strikethrough={false}
                     useTooltipText
-                    boosted={farm.boosted}
+                    boosted={false}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
                     farmCakePerSecond={farmCakePerSecond}
