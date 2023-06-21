@@ -14,10 +14,9 @@ const useTradingRewardTokenList = () => {
     // eslint-disable-next-line array-callback-return, consistent-return
     const activeRewardCampaignId = data.campaignIds.filter((campaignId) => {
       const incentive = data.campaignIdsIncentive.find((i) => i.campaignId === campaignId)
-      if (incentive.campaignClaimTime > currentTime) {
+      if (currentTime <= incentive.campaignClaimTime) {
         return campaignId
       }
-      return []
     })
 
     const activeCampaignPairs: { [key in string]: Array<string> } = {}
