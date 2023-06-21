@@ -3,7 +3,6 @@ import { FeeAmount, FeeCalculator, Tick, TickMath, sqrtRatioX96ToPrice } from "@
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
-import _toNumber from "lodash/toNumber";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
 import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
