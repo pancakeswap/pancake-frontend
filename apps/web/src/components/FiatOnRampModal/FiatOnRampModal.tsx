@@ -256,7 +256,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             style={{
               height: '630px',
               width: '100%',
-              background: '#27262C',
+              background: `${theme.isDark ? '#27262C' : 'white'}`,
               position: 'absolute',
               borderBottomLeftRadius: '24px',
               borderBottomRightRadius: '24px',
