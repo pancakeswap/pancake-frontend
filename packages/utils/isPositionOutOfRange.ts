@@ -2,10 +2,10 @@ export function isPositionOutOfRange(
   tickCurrent?: number,
   position?: { tickLower?: number; tickUpper?: number },
 ): boolean {
-  return (tickCurrent || tickCurrent === 0) &&
+  return typeof tickCurrent === 'number' &&
     position &&
-    (position.tickLower || position.tickLower === 0) &&
-    (position.tickUpper || position.tickUpper === 0)
+    typeof position?.tickLower === 'number' &&
+    typeof position?.tickUpper === 'number'
     ? tickCurrent < position.tickLower || tickCurrent >= position.tickUpper
     : false
 }

@@ -350,11 +350,10 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
           priceUpper={priceUpper}
           priceLower={priceLower}
           cakePrice={cakePrice.toFixed(3)}
-          cakeAprFactor={cakeAprFactor}
+          cakeAprFactor={cakeAprFactor.times(isBoosted ? boostMultiplier : 1)}
           prices={prices}
           priceSpan={priceTimeWindow}
           onPriceSpanChange={setPriceTimeWindow}
-          bCakeBoostedMultiplier={isBoosted ? boostMultiplier : 1}
         />
       )}
     </>
