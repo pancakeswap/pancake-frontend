@@ -51,7 +51,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
+        // showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
         walletAddresses: JSON.stringify(
           MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
             (acc, currencyCode) => ({
