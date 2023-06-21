@@ -334,7 +334,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2) ||
-          (boostedOnly && farm.boosted) ||
+          (boostedOnly && farm.boosted && farm.version === 3) ||
           (stableSwapOnly && farm.isStable),
       )
 

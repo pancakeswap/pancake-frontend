@@ -1,26 +1,17 @@
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useContext } from 'react'
 import styled from 'styled-components'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { HarvestActionContainer, ProxyHarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { ProxyStakedContainer, StakedContainer } from '../FarmTable/Actions/StakedAction'
-import BoostedAction from '../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 
 const Action = styled.div`
   padding-top: 16px;
-`
-
-const ActionContainer = styled.div`
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `
 
 interface FarmCardActionsProps {
@@ -43,7 +34,6 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { earnings } = farm.userData || {}
   const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
   const isReady = farm.multiplier !== undefined
-  const { stakedBalance, tokenBalance, proxy } = farm.userData
 
   return (
     <Action>
@@ -79,28 +69,6 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {(props) => <HarvestAction {...props} />}
         </HarvestActionContainer>
       )}
-      {/* {farm.boosted && (
-        <BoostedAction
-          title={(status) => (
-            <Flex>
-              <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
-                {t('Yield Booster')}
-              </Text>
-              <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
-                {status}
-              </Text>
-            </Flex>
-          )}
-          desc={(actionBtn) => <ActionContainer>{actionBtn}</ActionContainer>}
-          farmPid={farm.pid}
-          lpTokenStakedAmount={farm.lpTokenStakedAmount}
-          userBalanceInFarm={
-            (stakedBalance.plus(tokenBalance).gt(0)
-              ? stakedBalance.plus(tokenBalance)
-              : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
-          }
-        />
-      )} */}
       {isReady ? (
         <Flex>
           <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
