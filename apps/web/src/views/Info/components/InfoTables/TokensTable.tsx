@@ -11,7 +11,7 @@ import {
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import { useMultiChainPath, useStableSwapPath, useChainNameByQuery } from 'state/info/hooks'
-import { v2SubgraphTokenName, v2SubgraphTokenSymbol } from 'state/info/constant'
+import { subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
 import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import Percent from 'views/Info/components/Percent'
@@ -114,8 +114,8 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
-              <Text>{v2SubgraphTokenName[tokenData.address] ?? tokenData.name}</Text>
-              <Text ml="8px">({v2SubgraphTokenSymbol[tokenData.address] ?? tokenData.symbol})</Text>
+              <Text>{subgraphTokenName[tokenData.address] ?? tokenData.name}</Text>
+              <Text ml="8px">({subgraphTokenSymbol[tokenData.address] ?? tokenData.symbol})</Text>
             </Flex>
           )}
         </Flex>

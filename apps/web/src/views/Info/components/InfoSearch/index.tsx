@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { checkIsStableSwap, v2SubgraphTokenName, v2SubgraphTokenSymbol } from 'state/info/constant'
+import { checkIsStableSwap, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
@@ -323,8 +323,8 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${v2SubgraphTokenName[token.address] ?? token.name} (${
-                          v2SubgraphTokenSymbol[token.address] ?? token.symbol
+                        <Text>{`${subgraphTokenName[token.address] ?? token.name} (${
+                          subgraphTokenSymbol[token.address] ?? token.symbol
                         })`}</Text>
                       </Text>
                       <SaveIcon

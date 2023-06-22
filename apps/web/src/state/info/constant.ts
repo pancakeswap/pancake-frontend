@@ -79,12 +79,12 @@ export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNa
   return multiChainQueryClient[chainName]
 }
 
-export const v2SubgraphTokenName = {
+export const subgraphTokenName = {
   '0x738d96caf7096659db4c1afbf1e1bdfd281f388c': 'Ankr Staked MATIC',
   '0x14016e85a25aeb13065688cafb43044c2ef86784': 'True USD Old',
 }
 
-export const v2SubgraphTokenSymbol = {
+export const subgraphTokenSymbol = {
   '0x14016e85a25aeb13065688cafb43044c2ef86784': 'TUSDOLD',
 }
 

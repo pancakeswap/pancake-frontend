@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
+import { subgraphTokenSymbol } from 'state/info/constant'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { POOL_HIDE, v3InfoPath } from '../../constants'
@@ -74,7 +75,8 @@ const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: nu
               chainName={chainName}
             />
             <Text ml="8px">
-              {poolData.token0.symbol}/{poolData.token1.symbol}
+              {subgraphTokenSymbol[poolData.token0.address] ?? poolData.token0.symbol}/
+              {subgraphTokenSymbol[poolData.token1.address] ?? poolData.token1.symbol}
             </Text>
             <GreyBadge ml="10px" style={{ fontSize: 14 }}>
               {feeTierPercent(poolData.feeTier)}
