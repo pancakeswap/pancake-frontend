@@ -17,6 +17,7 @@ import { MERCURYO_WIDGET_ID } from 'components/FiatOnRampModal/FiatOnRampModal'
 import toUpper from 'lodash/toUpper'
 
 import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -270,15 +271,19 @@ export async function queryParametersToBuyCryptoState(
   account: string | undefined,
   chainId: number,
 ): Promise<BuyCryptoState> {
-  const inputCurrency = parsedQs.inputCurrency || chainId === ChainId.ETHEREUM ? 'ETH' : 'BNB'
-  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, inputCurrency)
-
+  const inputCurrency = parsedQs.inputCurrency as any
+  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency)
+    ? inputCurrency
+    : chainId === ChainId.ETHEREUM
+    ? 'ETH'
+    : 'BNB'
+  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
   return {
     [Field.INPUT]: {
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: inputCurrency as string,
+      currencyId: defaultCurr as string,
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE

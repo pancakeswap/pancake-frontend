@@ -33,9 +33,7 @@ const config = (t) => [
     description: (
       <>
         {t('Please refer to our documentation')}{' '}
-        <LinkExternal style={{ display: 'inline-flex' }} href="https://docs.pancakeswap.finance/products/buy-crypto">
-          {t('here.')}
-        </LinkExternal>
+        <InternalLink href="https://docs.pancakeswap.finance/products/buy-crypto">{t('here.')}</InternalLink>
       </>
     ),
   },

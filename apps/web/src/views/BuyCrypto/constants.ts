@@ -1,4 +1,5 @@
 export const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['BNB', 'USDT', 'BUSD']
+export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const mercuryoWhitelist = ['BNB', 'BUSD']
 
