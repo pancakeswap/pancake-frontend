@@ -136,7 +136,7 @@ export function useIsTokenActive(token: ERC20Token | undefined | null): boolean 
 export function useIsUserAddedToken(currency: Currency | undefined | null): boolean {
   const userAddedTokens = useUserAddedTokens()
 
-  if (!currency) {
+  if (!currency?.equals) {
     return false
   }
 
