@@ -54,6 +54,8 @@ const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
   )
 }
 
+export const MERCURYO_WIDGET_ID = '95a003f2-354a-4396-828a-1126d56e4e13'
+
 const fetchMoonPaySignedUrl = async (
   inputCurrency: string,
   outputCurrency: string,
@@ -177,6 +179,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   amount,
   provider,
 }) {
+  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
+
   const [error, setError] = useState<boolean | string | null>(false)
   const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
   const [sig, setSig] = useState<string | null>(null)
@@ -241,7 +245,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
+          widgetId: MERCURYO_WIDGET_ID,
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
@@ -255,7 +259,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         })
       }
     } else fetchSignedIframeUrl()
-  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme])
+  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme, scriptLoaded])
 
   return (
     <>
@@ -289,8 +293,13 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             />
           </>
         )}
-        <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" />
       </Modal>
+      <Script
+        src="https://widget.mercuryo.io/embed.2.0.js"
+        onLoad={() => {
+          setScriptOnLoad(true)
+        }}
+      />
     </>
   )
 })

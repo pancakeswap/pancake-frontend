@@ -10,6 +10,11 @@ import toString from 'lodash/toString'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import ceil from 'lodash/ceil'
+import min from 'lodash/min'
+import max from 'lodash/max'
+import toNumber from 'lodash/toNumber'
+import { MERCURYO_WIDGET_ID } from 'components/FiatOnRampModal/FiatOnRampModal'
+import toUpper from 'lodash/toUpper'
 
 import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
@@ -28,10 +33,67 @@ function parseTokenAmountURLParameter(urlParam: any): string {
   return typeof urlParam === 'string' && !Number.isNaN(parseFloat(urlParam)) ? urlParam : ''
 }
 
-export const fetchMinimumBuyAmount = async (
-  inputCurrencyId: string,
-  outputCurrencyId: string,
-): Promise<{ [curr: string]: CurrencyLimits }> => {
+interface LimitQuote {
+  baseCurrency: CurrencyLimits
+  quoteCurrency: CurrencyLimits
+}
+
+function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
+  return quotes.reduce((bestQuote, quote) => {
+    if (!bestQuote) return quote
+
+    return {
+      baseCurrency: {
+        code: bestQuote.baseCurrency.code,
+        maxBuyAmount: min([bestQuote.baseCurrency.maxBuyAmount, quote.baseCurrency.maxBuyAmount]),
+        minBuyAmount: max([bestQuote.baseCurrency.minBuyAmount, quote.baseCurrency.minBuyAmount]),
+      },
+      quoteCurrency: {
+        code: bestQuote.quoteCurrency.code,
+        maxBuyAmount: min([bestQuote.quoteCurrency.maxBuyAmount, quote.quoteCurrency.maxBuyAmount]),
+        minBuyAmount: max([bestQuote.quoteCurrency.minBuyAmount, quote.quoteCurrency.minBuyAmount]),
+      },
+    }
+  })
+}
+
+const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string) => {
+  try {
+    const response = await fetch(
+      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=${MERCURYO_WIDGET_ID}&type=buy&from=${toUpper(
+        inputCurrencyId,
+      )}&to=${toUpper(outputCurrencyId)}&amount=1`,
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch minimum buy amount')
+    }
+
+    const limitQuote = await response.json()
+
+    if (limitQuote[toUpper(inputCurrencyId)] || limitQuote[toUpper(outputCurrencyId)]) {
+      return undefined
+    }
+
+    return {
+      baseCurrency: {
+        code: inputCurrencyId.toLowerCase(),
+        maxBuyAmount: toNumber(limitQuote[toUpper(inputCurrencyId)]?.max),
+        minBuyAmount: toNumber(limitQuote[toUpper(inputCurrencyId)]?.min),
+      },
+      quoteCurrency: {
+        code: outputCurrencyId.toUpperCase(),
+        maxBuyAmount: toNumber(limitQuote[toUpper(outputCurrencyId)]?.max),
+        minBuyAmount: toNumber(limitQuote[toUpper(outputCurrencyId)]?.min),
+      },
+    }
+  } catch (error) {
+    console.error('fetchLimitOfMer: ', error)
+    return undefined
+  }
+}
+
+const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string) => {
   try {
     const response = await fetch(
       `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
@@ -39,20 +101,36 @@ export const fetchMinimumBuyAmount = async (
 
     // console.log(await response.json())
     if (!response.ok) {
-      throw new Error('Failed to fetch minimum buy amount')
+      return undefined
     }
 
-    const data = await response.json()
+    const moonpayLimitQuote = await response.json()
 
-    if (!data.baseCurrency || !data.quoteCurrency) {
-      throw new Error('Invalid response data')
+    if (!moonpayLimitQuote.baseCurrency || !moonpayLimitQuote.quoteCurrency) {
+      return undefined
     }
 
-    const minAmounts: { [curr: string]: CurrencyLimits } = { base: data.baseCurrency, quote: data.quoteCurrency }
-    return minAmounts
+    return moonpayLimitQuote
+  } catch (error) {
+    console.error('fetchLimitOfMoonpay: ', error)
+    return undefined
+  }
+}
+
+export const fetchMinimumBuyAmount = async (
+  inputCurrencyId: string,
+  outputCurrencyId: string,
+): Promise<LimitQuote | undefined> => {
+  try {
+    const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId)
+    const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId)
+
+    const quotes = [moonpayLimitQuote, mercuryLimitQuote].filter(Boolean)
+
+    return quotes?.length > 0 ? getMinMaxAmountCap(quotes) : undefined
   } catch (error) {
     console.error('An error occurred while fetching the minimum buy amount:', error)
-    return {}
+    return undefined
   }
 }
 
@@ -89,7 +167,7 @@ export function useBuyCryptoErrorInfo(
           locale,
         }),
         fiatCurrency: inputCurrencyId,
-        minCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        minCryptoAmount: formatLocaleNumber({ locale, number: minBaseAmount }),
         cryptoCurrency: outputCurrencyId,
       },
     )
@@ -204,10 +282,10 @@ export async function queryParametersToBuyCryptoState(
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: limitAmounts.base.minBuyAmount,
-    minBaseAmount: limitAmounts.quote.minBuyAmount,
-    maxAmount: limitAmounts.base.maxBuyAmount,
-    maxBaseAmount: limitAmounts.quote.maxBuyAmount,
+    minAmount: limitAmounts?.baseCurrency?.minBuyAmount,
+    minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
+    maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
+    maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
   }
@@ -229,7 +307,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
 
       dispatch(
         replaceBuyCryptoState({
-          typedValue: toString(calculateDefaultAmount(parsed.minAmount)),
+          typedValue: parsed.minAmount ? toString(calculateDefaultAmount(parsed.minAmount)) : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
           maxAmount: parsed.maxAmount,
