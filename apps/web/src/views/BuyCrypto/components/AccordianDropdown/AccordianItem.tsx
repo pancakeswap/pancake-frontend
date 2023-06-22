@@ -11,6 +11,9 @@ import { ProviderIcon } from 'views/BuyCrypto/Icons'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import Image from 'next/image'
+import formatLocaleNumber from 'utils/formatLocaleNumber'
+import toNumber from 'lodash/toNumber'
+
 import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
 import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
 
@@ -32,6 +35,10 @@ const FeeItem = ({
   provider: string
   index: number
 }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
   if (provider === 'Mercuryo' && index === 1) return <></>
   return (
     <RowBetween>
@@ -39,7 +46,7 @@ const FeeItem = ({
         {feeTitle}
       </Text>
       <Text ml="4px" fontSize="14px" color="textSubtle">
-        {feeAmount} {currency}
+        {formatLocaleNumber({ number: toNumber(feeAmount), locale })} {currency}
       </Text>
     </RowBetween>
   )
