@@ -7,6 +7,7 @@ import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidit
 import InternalLink from 'components/Links'
 import { useTranslation } from '@pancakeswap/localization'
 
+import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
@@ -49,7 +50,7 @@ export function V3SwapForm() {
         }
       />
 
-      {insufficientFundCurrency ? (
+      {insufficientFundCurrency && SUPPORTED_ONRAMP_TOKENS.includes(insufficientFundCurrency.symbol) ? (
         <Row alignItems="center" justifyContent="center" mb="4px">
           <Text fontSize="14px">
             Insufficent Funds?{' '}
