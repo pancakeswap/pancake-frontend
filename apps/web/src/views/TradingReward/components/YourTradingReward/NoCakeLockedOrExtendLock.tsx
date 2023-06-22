@@ -97,14 +97,6 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     [cakePriceBusd, cakeAsNumberBalance],
   )
 
-  const minLockWeekInSeconds = useMemo(() => {
-    const currentTime = Date.now() / 1000
-    const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
-    const lockDuration = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime).minus(minusTime)
-    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
-    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
-  }, [incentives, thresholdLockTime, userData])
-
   const position = useMemo(
     () =>
       getVaultPosition({
@@ -114,6 +106,17 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
       }),
     [userData],
   )
+
+  const minLockWeekInSeconds = useMemo(() => {
+    const currentTime = Date.now() / 1000
+    const minusTime =
+      new BigNumber(userData.lockEndTime).gt(0) && position <= VaultPosition.LockedEnd
+        ? userData.lockEndTime
+        : currentTime
+    const lockDuration = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime).minus(minusTime)
+    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
+    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
+  }, [incentives?.campaignClaimTime, position, thresholdLockTime, userData.lockEndTime])
 
   return (
     <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="center">
