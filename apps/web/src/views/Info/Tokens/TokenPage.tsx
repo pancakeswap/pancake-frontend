@@ -25,7 +25,7 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { Duration } from 'date-fns'
 import { useMemo } from 'react'
-import { multiChainId, multiChainScan, v2SubgraphTokenName } from 'state/info/constant'
+import { multiChainId, multiChainScan, v2SubgraphTokenName, v2SubgraphTokenSymbol } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
@@ -173,7 +173,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     {v2SubgraphTokenName[tokenData.address] ?? tokenData.name}
                   </Text>
                   <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
-                    ({tokenData.symbol})
+                    ({v2SubgraphTokenSymbol[tokenData.address] ?? tokenData.symbol})
                   </Text>
                 </Flex>
                 <Flex mt="8px" ml="46px" alignItems="center">

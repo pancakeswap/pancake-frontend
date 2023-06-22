@@ -11,6 +11,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { v2SubgraphTokenSymbol } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
@@ -112,10 +113,23 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       >
         <Text>
           {transaction.type === TransactionType.MINT
-            ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
+            ? t('Add %token0% and %token1%', {
+                token0:
+                  v2SubgraphTokenSymbol[transaction?.token0Address?.toLocaleLowerCase()] ?? transaction.token0Symbol,
+                token1:
+                  v2SubgraphTokenSymbol[transaction?.token1Address?.toLocaleLowerCase()] ?? transaction.token1Symbol,
+              })
             : transaction.type === TransactionType.SWAP
-            ? t('Swap %token0% for %token1%', { token0: inputTokenSymbol, token1: outputTokenSymbol })
-            : t('Remove %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })}
+            ? t('Swap %token0% for %token1%', {
+                token0: v2SubgraphTokenSymbol[transaction?.token1Address?.toLocaleLowerCase()] ?? inputTokenSymbol,
+                token1: v2SubgraphTokenSymbol[transaction?.token0Address?.toLocaleLowerCase()] ?? outputTokenSymbol,
+              })
+            : t('Remove %token0% and %token1%', {
+                token0:
+                  v2SubgraphTokenSymbol[transaction?.token0Address?.toLocaleLowerCase()] ?? transaction.token0Symbol,
+                token1:
+                  v2SubgraphTokenSymbol[transaction?.token1Address?.toLocaleLowerCase()] ?? transaction.token1Symbol,
+              })}
         </Text>
       </LinkExternal>
       <Text>${formatAmount(transaction.amountUSD)}</Text>
