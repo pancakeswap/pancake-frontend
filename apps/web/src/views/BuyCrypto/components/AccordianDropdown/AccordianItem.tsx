@@ -12,7 +12,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import Image from 'next/image'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import toNumber from 'lodash/toNumber'
 
 import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
 import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
@@ -30,7 +29,7 @@ const FeeItem = ({
   index,
 }: {
   feeTitle: string
-  feeAmount: string
+  feeAmount: number
   currency: string
   provider: string
   index: number
@@ -46,7 +45,7 @@ const FeeItem = ({
         {feeTitle}
       </Text>
       <Text ml="4px" fontSize="14px" color="textSubtle">
-        {formatLocaleNumber({ number: toNumber(feeAmount), locale })} {currency}
+        {formatLocaleNumber({ number: feeAmount, locale })} {currency}
       </Text>
     </RowBetween>
   )
@@ -65,7 +64,10 @@ function AccordionItem({
   quote: ProviderQoute
   fetching: boolean
 }) {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const theme = useTheme()
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(109)
@@ -170,7 +172,7 @@ function AccordionItem({
           )}
 
           <Text ml="4px" fontSize="22px" color="secondary">
-            {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
+            {formatLocaleNumber({ number: finalQuote, locale })} {buyCryptoState.INPUT.currencyId}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
@@ -178,16 +180,16 @@ function AccordionItem({
             {buyCryptoState.INPUT.currencyId} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {quote.quote?.toFixed(4)} {buyCryptoState.OUTPUT.currencyId}
+            = {formatLocaleNumber({ number: quote.quote, locale })} {buyCryptoState.OUTPUT.currencyId}
           </Text>
         </RowBetween>
 
         <DropdownWrapper ref={contentRef}>
           {FEE_TYPES.map((feeType: string, index: number) => {
-            let fee = '0'
-            if (index === 0) fee = (quote.networkFee + quote.providerFee).toFixed(3)
-            else if (index === 1) fee = quote.networkFee.toFixed(3)
-            else fee = quote.providerFee.toFixed(3)
+            let fee = 0
+            if (index === 0) fee = quote.networkFee + quote.providerFee
+            else if (index === 1) fee = quote.networkFee
+            else fee = quote.providerFee
             return (
               <FeeItem
                 key={feeType}
