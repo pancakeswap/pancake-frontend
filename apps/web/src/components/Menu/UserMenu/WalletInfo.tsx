@@ -100,7 +100,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
                 currency: native.symbol,
               })}
             </Text>
-            <InternalLink href="/buy-crypto">
+            <InternalLink href="/buy-crypto" onClick={() => onDismiss?.()}>
               <Text color="primary">
                 {t('You need %currency% for transaction fees.', {
                   currency: native.symbol,
