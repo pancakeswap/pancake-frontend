@@ -131,7 +131,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                 {formatSecondsToWeeks(minLockWeekInSeconds)}
               </Text>
               <Text textAlign={['left', 'left', 'left', 'center']} as="span">
-                {t('weeks or more to claim rewards from trades!')}
+                {t('or more to claim rewards from trades!')}
               </Text>
             </Text>
           </>
@@ -226,6 +226,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                   lockEndTime="0"
                   lockStartTime="0"
                   hideConvertToFlexibleButton
+                  customLockWeekInSeconds={minLockWeekInSeconds}
                 />
               </Box>
             ) : (

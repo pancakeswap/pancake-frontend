@@ -32,6 +32,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
   position,
   isInline,
   hideConvertToFlexibleButton,
+  customLockWeekInSeconds,
 }) => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
@@ -55,6 +56,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
             mr={isDesktopView && '14px'}
             mb={!isDesktopView && '8px'}
             isRenew
+            customLockWeekInSeconds={customLockWeekInSeconds}
           >
             {t('Renew')}
           </ExtendButton>
