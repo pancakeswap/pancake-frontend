@@ -8,8 +8,10 @@ import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
-import { SUPPORTED_MERCURYO_FIAT_CURRENCIES } from 'views/BuyCrypto/constants'
+import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -186,6 +188,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [sig, setSig] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const theme = useTheme()
   const account = useAccount()
@@ -249,6 +252,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
+          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
