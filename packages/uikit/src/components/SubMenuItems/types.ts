@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ElementType, ReactElement } from "react";
+import { ElementType } from "react";
 import { FlexProps } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 
@@ -12,7 +12,7 @@ export type SubMenuItemsType = {
   isMobileOnly?: boolean;
   type?: DropdownMenuItemType;
   onClick?: React.MouseEvent<HTMLElement>;
-  LabelIcon?: ReactElement;
+  LabelIcon?: ElementType<any>;
 };
 
 export interface SubMenuItemsProps extends FlexProps {
