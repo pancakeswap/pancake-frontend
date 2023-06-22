@@ -2383,7 +2383,7 @@
   "Recommend leaving this on to ensure backward compatibility.": "Recommend leaving this on to ensure backward compatibility.",
   "StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.": "StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.",
   "If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.": "If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.",
-  "Multihops enables token swaps through multiple hops between serval pools to achieve the best deal.": "Multihops enables token swaps through multiple hops between serval pools to achieve the best deal.",
+  "Multihops enables token swaps through multiple hops between several pools to achieve the best deal.": "Multihops enables token swaps through multiple hops between several pools to achieve the best deal.",
   "Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.": "Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.",
   "Split routing enables token swaps to be broken into multiple routes to achieve the best deal.": "Split routing enables token swaps to be broken into multiple routes to achieve the best deal.",
   "Turning this off will only allow a single route, which may result in low efficiency or higher slippage.": "Turning this off will only allow a single route, which may result in low efficiency or higher slippage.",
