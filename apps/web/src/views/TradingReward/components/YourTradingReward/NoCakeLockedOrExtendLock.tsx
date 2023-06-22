@@ -14,6 +14,7 @@ import formatSecondsToWeeks from 'views/Pools/components/utils/formatSecondsToWe
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import AfterLockedActions from 'views/Pools/components/LockedPool/Common/AfterLockedActions'
 
 const Container = styled(Flex)`
   justify-content: space-between;
@@ -115,7 +116,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   )
 
   return (
-    <Flex flexDirection={['column', 'column', 'column', 'row']}>
+    <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="center">
       <Flex flexDirection="column" width={['100%', '100%', '100%', '354px']}>
         {!isOnlyNeedExtendLock ? (
           <>
@@ -195,15 +196,27 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                 </Flex>
               </Flex>
             </Flex>
-            <Actions
-              lockEndTime={lockEndTime}
-              lockStartTime={lockStartTime}
-              lockedAmount={cakeAsBigNumber}
-              stakingToken={stakingToken}
-              currentBalance={currentBalance}
-              isOnlyNeedExtendLock={isOnlyNeedExtendLock}
-              customLockWeekInSeconds={minLockWeekInSeconds}
-            />
+            {position >= VaultPosition.LockedEnd ? (
+              <Box width="100%" mt="16px">
+                <AfterLockedActions
+                  position={position}
+                  currentLockedAmount={cakeAsNumberBalance}
+                  stakingToken={stakingToken}
+                  lockEndTime="0"
+                  lockStartTime="0"
+                />
+              </Box>
+            ) : (
+              <Actions
+                lockEndTime={lockEndTime}
+                lockStartTime={lockStartTime}
+                lockedAmount={cakeAsBigNumber}
+                stakingToken={stakingToken}
+                currentBalance={currentBalance}
+                isOnlyNeedExtendLock={isOnlyNeedExtendLock}
+                customLockWeekInSeconds={minLockWeekInSeconds}
+              />
+            )}
           </Flex>
         </Container>
       </Flex>
