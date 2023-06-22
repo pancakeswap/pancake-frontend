@@ -5,7 +5,7 @@ import { CommitButton } from 'components/CommitButton'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
 import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
-import styled, { useTheme } from 'styled-components'
+import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { SUPPORTED_MERCURYO_FIAT_CURRENCIES } from 'views/BuyCrypto/constants'
@@ -30,6 +30,29 @@ interface FetchResponse {
   urlWithSignature: string
 }
 
+const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
+  return (
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      style={{
+        height: '675px',
+        width: '100%',
+        background: `${theme.isDark ? '#27262C' : 'white'}`,
+        position: 'absolute',
+        borderBottomLeftRadius: '24px',
+        borderBottomRightRadius: '24px',
+        zIndex: '100',
+      }}
+    >
+      <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
+        <LoadingDot />
+        <CircleLoader />
+      </div>
+    </Flex>
+  )
+}
+
 const fetchMoonPaySignedUrl = async (
   inputCurrency: string,
   outputCurrency: string,
@@ -51,7 +74,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        walletAddress: account,
+        walletAddresses: account,
       }),
     })
     const result: FetchResponse = await res.json()
@@ -185,7 +208,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     } catch (e) {
       setError(e.toString())
     } finally {
-      setLoading(false)
+      setTimeout(() => setLoading(false), 2000)
     }
   }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t])
 
@@ -224,7 +247,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '700px',
+          height: '750px',
           width: '400px',
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
@@ -240,7 +263,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="700px" // height has to be overidden
+        height="750px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (
@@ -249,36 +272,23 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
               <Trans>something went wrong!</Trans>
             </ErrorText>
           </Flex>
-        ) : loading ? (
-          <Flex
-            justifyContent="center"
-            alignItems="center"
-            style={{
-              height: '630px',
-              width: '100%',
-              background: `${theme.isDark ? '#27262C' : 'white'}`,
-              position: 'absolute',
-              borderBottomLeftRadius: '24px',
-              borderBottomRightRadius: '24px',
-            }}
-          >
-            <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
-              <LoadingDot />
-              <CircleLoader />
-            </div>
-          </Flex>
         ) : provider === 'Mercuryo' ? (
-          <div id="mercuryo-widget" />
+          <>
+            {loading && <LoadingBuffer theme={theme} />}
+            <div id="mercuryo-widget" />
+          </>
         ) : (
-          <StyledIframe
-            id="moonpayIframe"
-            src={signedIframeUrl ?? ''}
-            title="fiat-onramp-iframe"
-            isDark={theme.isDark}
-          />
+          <>
+            {loading && <LoadingBuffer theme={theme} />}
+            <StyledIframe
+              id="moonpayIframe"
+              src={signedIframeUrl ?? ''}
+              title="fiat-onramp-iframe"
+              isDark={theme.isDark}
+            />
+          </>
         )}
         <Script src="https://widget.mercuryo.io/embed.2.0.js" />
-        <div id="mercuryo-widget" />
       </Modal>
     </>
   )
