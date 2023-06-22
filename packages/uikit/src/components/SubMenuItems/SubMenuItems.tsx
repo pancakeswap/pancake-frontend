@@ -3,7 +3,7 @@ import { useIsomorphicLayoutEffect } from "framer-motion";
 import debounce from "lodash/debounce";
 import React, { useCallback, useRef } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Box, Flex } from "../Box";
+import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
 import { ChevronLeftIcon, ChevronRightIcon, OpenNewIcon } from "../Svg";
