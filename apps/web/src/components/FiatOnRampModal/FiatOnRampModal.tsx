@@ -9,7 +9,7 @@ import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
-import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -55,8 +55,6 @@ const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
     </Flex>
   )
 }
-
-export const MERCURYO_WIDGET_ID = '95a003f2-354a-4396-828a-1126d56e4e13'
 
 const fetchMoonPaySignedUrl = async (
   inputCurrency: string,

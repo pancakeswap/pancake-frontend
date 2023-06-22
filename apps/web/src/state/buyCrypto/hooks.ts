@@ -13,10 +13,9 @@ import ceil from 'lodash/ceil'
 import min from 'lodash/min'
 import max from 'lodash/max'
 import toNumber from 'lodash/toNumber'
-import { MERCURYO_WIDGET_ID } from 'components/FiatOnRampModal/FiatOnRampModal'
 import toUpper from 'lodash/toUpper'
 
-import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
