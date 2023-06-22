@@ -88,7 +88,7 @@ export function useBuyCryptoErrorInfo(
           locale,
         }),
         fiatCurrency: inputCurrencyId,
-        minCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        minCryptoAmount: formatLocaleNumber({ locale, number: minBaseAmount }),
         cryptoCurrency: outputCurrencyId,
       },
     )

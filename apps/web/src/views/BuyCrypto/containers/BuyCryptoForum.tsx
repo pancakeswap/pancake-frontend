@@ -65,7 +65,6 @@ export function BuyCryptoForum({
     inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
-  const fiatCurrencies = fiatCurrencyMap
 
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
