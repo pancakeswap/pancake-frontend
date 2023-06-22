@@ -118,35 +118,56 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   return (
     <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="center">
       <Flex flexDirection="column" width={['100%', '100%', '100%', '354px']}>
-        {!isOnlyNeedExtendLock ? (
+        {position >= VaultPosition.LockedEnd ? (
           <>
             <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
-              {t('You have no CAKE locked.')}
+              {t('Your locked staking is expired')}
             </Text>
             <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
               <Text textAlign={['left', 'left', 'left', 'center']} as="span">
-                {t('Lock any amount of CAKE for')}
+                {t('Renew your stakings for')}
               </Text>
               <Text textAlign={['left', 'left', 'left', 'center']} as="span" m="0 4px" bold>
                 {formatSecondsToWeeks(minLockWeekInSeconds)}
               </Text>
               <Text textAlign={['left', 'left', 'left', 'center']} as="span">
-                {t('or more to claim rewards from trades!')}
+                {t('weeks or more to claim rewards from trades!')}
               </Text>
             </Text>
           </>
         ) : (
           <>
-            <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
-              {t('Not enough remaining lock duration')}
-            </Text>
-            <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
-              <Text as="span">{t('Extend your position to for')}</Text>
-              <Text as="span" m="0 4px" bold>
-                {formatSecondsToWeeks(minLockWeekInSeconds)}
-              </Text>
-              <Text as="span">{t('or more to claim rewards from trades!')}</Text>
-            </Text>
+            {!isOnlyNeedExtendLock ? (
+              <>
+                <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
+                  {t('You have no CAKE locked.')}
+                </Text>
+                <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
+                  <Text textAlign={['left', 'left', 'left', 'center']} as="span">
+                    {t('Lock any amount of CAKE for')}
+                  </Text>
+                  <Text textAlign={['left', 'left', 'left', 'center']} as="span" m="0 4px" bold>
+                    {formatSecondsToWeeks(minLockWeekInSeconds)}
+                  </Text>
+                  <Text textAlign={['left', 'left', 'left', 'center']} as="span">
+                    {t('or more to claim rewards from trades!')}
+                  </Text>
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
+                  {t('Not enough remaining lock duration')}
+                </Text>
+                <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
+                  <Text as="span">{t('Extend your position to for')}</Text>
+                  <Text as="span" m="0 4px" bold>
+                    {formatSecondsToWeeks(minLockWeekInSeconds)}
+                  </Text>
+                  <Text as="span">{t('or more to claim rewards from trades!')}</Text>
+                </Text>
+              </>
+            )}
           </>
         )}
         <Container>
@@ -204,6 +225,7 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                   stakingToken={stakingToken}
                   lockEndTime="0"
                   lockStartTime="0"
+                  hideConvertToFlexibleButton
                 />
               </Box>
             ) : (

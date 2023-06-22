@@ -31,6 +31,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
   stakingToken,
   position,
   isInline,
+  hideConvertToFlexibleButton,
 }) => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
@@ -57,7 +58,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
           >
             {t('Renew')}
           </ExtendButton>
-          <ConvertToFlexibleButton minWidth={isDesktopView && '200px'} />
+          {!hideConvertToFlexibleButton && <ConvertToFlexibleButton minWidth={isDesktopView && '200px'} />}
         </Container>
       }
       actionInline={isDesktopView}
