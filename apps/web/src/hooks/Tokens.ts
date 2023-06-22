@@ -140,7 +140,7 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
     return false
   }
 
-  return !!userAddedTokens.find((token) => currency?.equals(token))
+  return !!userAddedTokens.find((token) => token?.equals && currency?.equals(token))
 }
 
 // undefined if invalid or does not exist
