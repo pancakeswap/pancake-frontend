@@ -263,7 +263,18 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         })
       }
     } else fetchSignedIframeUrl()
-  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme, scriptLoaded])
+  }, [
+    fetchSignedIframeUrl,
+    provider,
+    sig,
+    account.address,
+    amount,
+    inputCurrency,
+    outputCurrency,
+    theme,
+    scriptLoaded,
+    chainId,
+  ])
 
   return (
     <>
