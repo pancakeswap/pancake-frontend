@@ -252,7 +252,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '200px',
+          height: '820px',
           width: '400px',
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
