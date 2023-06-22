@@ -176,6 +176,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   amount,
   provider,
 }) {
+  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(false)
+
   const [error, setError] = useState<boolean | string | null>(false)
   const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
   const [sig, setSig] = useState<string | null>(null)
@@ -236,7 +238,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   useEffect(() => {
     if (provider === 'Mercuryo') {
-      if (sig && window?.mercuryoWidget) {
+      if (sig && window?.mercuryoWidget && scriptLoaded) {
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
           widgetId: '95a003f2-354a-4396-828a-1126d56e4e13',
@@ -253,7 +255,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         })
       }
     } else fetchSignedIframeUrl()
-  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme])
+  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme, scriptLoaded])
 
   return (
     <>
@@ -288,7 +290,12 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           </>
         )}
       </Modal>
-      <Script src="https://widget.mercuryo.io/embed.2.0.js" />
+      <Script
+        src="https://widget.mercuryo.io/embed.2.0.js"
+        onLoad={() => {
+          setScriptOnLoad(true)
+        }}
+      />
     </>
   )
 })
