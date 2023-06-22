@@ -2,17 +2,20 @@ import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import throttle from 'lodash/throttle'
 import { useMemo } from 'react'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
-import { Box } from '@pancakeswap/uikit'
+import { Box, Row, Text } from '@pancakeswap/uikit'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
-import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
+import InternalLink from 'components/Links'
+import { useTranslation } from '@pancakeswap/localization'
 
+import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
+import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
 import { useSwapBestTrade } from './hooks'
 
 export function V3SwapForm() {
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
-
+  const { t } = useTranslation()
   const mm = useDerivedBestTradeWithMM(trade)
   const throttledHandleRefresh = useMemo(
     () =>
@@ -26,6 +29,8 @@ export function V3SwapForm() {
 
   const tradeLoaded = !isLoading
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
+
+  const insufficientFundCurrency = useCheckInsufficientError(trade)
 
   return (
     <>
@@ -43,6 +48,17 @@ export function V3SwapForm() {
           )
         }
       />
+
+      {insufficientFundCurrency ? (
+        <Row alignItems="center" justifyContent="center" mb="4px">
+          <Text fontSize="14px">
+            Insufficent Funds?{' '}
+            <InternalLink href={`/buy-crypto?inputCurrency=${insufficientFundCurrency.symbol}`}>
+              {t('Buy Crypto here.')}
+            </InternalLink>
+          </Text>
+        </Row>
+      ) : null}
 
       {mm.isMMBetter ? (
         <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />

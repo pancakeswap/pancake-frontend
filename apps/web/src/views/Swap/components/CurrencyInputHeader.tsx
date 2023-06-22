@@ -27,8 +27,11 @@ import { ReactElement, useCallback, useContext, useEffect, useState, memo } from
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
+import InternalLink from 'components/Links'
+import Image from 'next/image'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
+import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg'
 
 interface Props {
   title: string | ReactElement
@@ -56,6 +59,15 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
     const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
     const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
+      placement: isMobile ? 'top' : 'bottom',
+      trigger: isMobile ? 'focus' : 'hover',
+      ...(isMobile && { manualVisible: mobileTooltipShow }),
+    })
+    const {
+      tooltip: buyCryptoTooltip,
+      tooltipVisible: buyCryptoTooltipVisible,
+      targetRef: buyCryptoTargetRef,
+    } = useTooltip(<Text>{t('Buy crypto with fiat.')}</Text>, {
       placement: isMobile ? 'top' : 'bottom',
       trigger: isMobile ? 'focus' : 'hover',
       ...(isMobile && { manualVisible: mobileTooltipShow }),
@@ -97,6 +109,19 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
         <Flex width="100%" justifyContent="end">
+          <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
+            <TooltipText
+              ref={buyCryptoTargetRef}
+              onClick={() => setMobileTooltipShow(false)}
+              display="flex"
+              style={{ justifyContent: 'center' }}
+            >
+              <InternalLink href="/buy-crypto">
+                <Image src={BuyCryptoIcon} alt="#" style={{ justifyContent: 'center' }} />
+              </InternalLink>
+            </TooltipText>
+            {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
+          </Flex>
           {isChartSupported && setIsChartDisplayed && (
             <ColoredIconButton
               onClick={() => {
