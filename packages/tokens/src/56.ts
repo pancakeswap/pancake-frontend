@@ -1524,7 +1524,7 @@ export const bscTokens = {
     ChainId.BSC,
     '0x14016E85a25aeb13065688cAFB43044C2ef86784',
     18,
-    'TUSD',
+    'TUSDOLD',
     'Binance-Peg TrueUSD Token',
     'https://www.trueusd.com/',
   ),

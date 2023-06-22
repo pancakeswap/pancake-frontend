@@ -1442,15 +1442,6 @@ const tokens = {
     decimals: 18,
     projectLink: "https://venus.io/",
   },
-  tusd: {
-    symbol: "TUSD",
-    address: {
-      56: "0x14016E85a25aeb13065688cAFB43044C2ef86784",
-      97: "",
-    },
-    decimals: 18,
-    projectLink: "https://www.trueusd.com/",
-  },
   mtrg: {
     symbol: "MTRG",
     address: {

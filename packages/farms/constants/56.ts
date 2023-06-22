@@ -1253,7 +1253,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 41,
     v1pid: 397,
-    lpSymbol: 'TUSD-BUSD LP',
+    lpSymbol: 'TUSDOLD-BUSD LP',
     lpAddress: '0x2E28b9B74D6d99D4697e913b82B41ef1CAC51c6C',
     token: bscTokens.deprecated_tusd,
     quoteToken: bscTokens.busd,
