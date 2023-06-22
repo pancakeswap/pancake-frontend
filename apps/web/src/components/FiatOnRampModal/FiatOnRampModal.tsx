@@ -287,8 +287,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             />
           </>
         )}
-        <Script src="https://widget.mercuryo.io/embed.2.0.js" />
       </Modal>
+      <Script src="https://widget.mercuryo.io/embed.2.0.js" />
     </>
   )
 })
