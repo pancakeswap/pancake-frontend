@@ -252,7 +252,7 @@ function CurrencySearch({
           <Row>
             <Input
               id="token-search-input"
-              placeholder={t('Search name or paste address')}
+              placeholder={t(onRampFlow ? 'Search name' : 'Search name or paste address')}
               scale="lg"
               autoComplete="off"
               value={searchQuery}
