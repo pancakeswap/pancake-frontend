@@ -258,8 +258,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
               <Trans>something went wrong!</Trans>
             </ErrorText>
           </Flex>
-        ) : provider === 'Mercuryo' ? (
-          <div id="mercuryo-widget" />
         ) : (
           <>
             {loading && (
