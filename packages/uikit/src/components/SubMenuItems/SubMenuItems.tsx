@@ -2,7 +2,6 @@ import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import { useIsomorphicLayoutEffect } from "framer-motion";
 import debounce from "lodash/debounce";
 import React, { useCallback, useRef } from "react";
-import { useTranslation } from "@pancakeswap/localization";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
@@ -14,7 +13,6 @@ import StyledSubMenuItems, {
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
-import { Button } from "../Button";
 import { FlexGap } from "../Layouts";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
@@ -26,7 +24,6 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   isMobileOnly = false,
   ...props
 }) => {
-  const { t } = useTranslation();
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
@@ -75,7 +72,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
           onScroll={debounce(layerController, 100)}
           ref={scrollLayerRef}
         >
-          {items.map(({ label, href, icon, itemProps, type, disabled, onClick }) => {
+          {items.map(({ label, LabelIcon, href, icon, itemProps, type, disabled, onClick }) => {
             const Icon = icon;
             const isExternalLink = type === DropdownMenuItemType.EXTERNAL_LINK;
             const linkProps = isExternalLink
@@ -103,11 +100,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
                     <FlexGap gap="10px" alignItems="center">
                       {Icon && <Icon color={isActive ? "secondary" : "textSubtle"} mr="4px" />}
                       {label}
-                      {label === "Buy Crypto" ? (
-                        <Button height="25px" width="20px" variant="secondary">
-                          {t("New")}
-                        </Button>
-                      ) : null}
+                      {LabelIcon ? <LabelIcon /> : null}
                     </FlexGap>
                     {isExternalLink && (
                       <Box display={["none", null, "flex"]} style={{ alignItems: "center" }} ml="4px">
