@@ -227,11 +227,11 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           height: '700px',
           width: '400px',
           host: document.getElementById('mercuryo-widget'),
-          theme: 'xzen',
+          theme: theme.isDark ? 'xzen' : 'phemex',
         })
       }
     } else fetchSignedIframeUrl()
-  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency])
+  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme])
 
   return (
     <>
