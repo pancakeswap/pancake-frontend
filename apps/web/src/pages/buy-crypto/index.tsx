@@ -1,3 +1,4 @@
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { CHAIN_IDS } from 'utils/wagmi'
 import BuyCrypto from 'views/BuyCrypto'
 
@@ -7,7 +8,7 @@ const BuyCryptoPage = ({ userIp }) => {
 
 export async function getServerSideProps() {
   try {
-    const response = await fetch('https://pcs-onramp-api.com/user-ip')
+    const response = await fetch(`${ONRAMP_API_BASE_URL}/user-ip`)
     const data = await response.json()
     const userIp = data.ipAddress
 

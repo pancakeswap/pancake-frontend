@@ -56,11 +56,6 @@ const config: (
           href: '/swap',
         },
         {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-          status: { text: t('New'), color: 'success' },
-        },
-        {
           label: t('Liquidity'),
           href: '/liquidity',
         },
@@ -84,6 +79,11 @@ const config: (
           href: '/limit-orders',
           supportChainIds: SUPPORT_ONLY_BSC,
           image: '/images/decorations/3d-coin.png',
+        },
+        {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
+          status: { text: t('New'), color: 'success' },
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

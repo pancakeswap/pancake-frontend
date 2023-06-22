@@ -9,6 +9,7 @@ import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { SUPPORTED_MERCURYO_FIAT_CURRENCIES } from 'views/BuyCrypto/constants'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -36,7 +37,7 @@ const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
       justifyContent="center"
       alignItems="center"
       style={{
-        height: '675px',
+        height: '750px',
         width: '100%',
         background: `${theme.isDark ? '#27262C' : 'white'}`,
         position: 'absolute',
@@ -61,7 +62,7 @@ const fetchMoonPaySignedUrl = async (
   account: string,
 ) => {
   try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -217,7 +218,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`https://pcs-onramp-api.com/generate-mercuryo-sig?walletAddress=${account.address}`, {
+        const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-mercuryo-sig?walletAddress=${account.address}`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -236,17 +237,18 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   useEffect(() => {
     if (provider === 'Mercuryo') {
-      if (sig && window?.mercuryoWidget) {
-        const MC_WIDGET = window?.mercuryoWidget
+      if (sig) {
+        // @ts-ignore
+        const MC_WIDGET = mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '95a003f2-354a-4396-828a-1126d56e4e13',
+          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '750px',
+          height: '200px',
           width: '400px',
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
@@ -262,7 +264,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="750px" // height has to be overidden
+        height="820px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (
@@ -287,7 +289,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             />
           </>
         )}
-        <Script src="https://widget.mercuryo.io/embed.2.0.js" />
+        <Script src="https://sandbox-widget.mrcr.io/embed.2.0.js" />
       </Modal>
     </>
   )

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, CardHeader, Heading, CardBody, Text } from '@pancakeswap/uikit'
+import { Card, CardHeader, Heading, CardBody, Text, LinkExternal } from '@pancakeswap/uikit'
 
 import FoldableText from 'components/FoldableSection/FoldableText'
 
@@ -10,13 +10,35 @@ const config = (t) => [
   },
   {
     title: t('What fiat currencies are supported?'),
-    description: t(
-      'Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partner documentations for more information.',
+    description: (
+      <>
+        {t(
+          'Different providers will support different currencies and payment methods in your region. Please refer to our',
+        )}{' '}
+        <LinkExternal style={{ display: 'inline-flex' }} href="https://docs.pancakeswap.finance/products/buy-crypto">
+          {t('documentation.')}
+        </LinkExternal>{' '}
+        {t('or')}{' '}
+        <LinkExternal
+          style={{ display: 'inline-flex' }}
+          href="https://help.mercuryo.io/en/articles/6122838-on-and-off-ramps"
+        >
+          {t('partners documentation')}
+        </LinkExternal>{' '}
+        {t('for more info.')}
+      </>
     ),
   },
   {
     title: t('Where can find more information on the Buy Crypto feature?'),
-    description: t('Please refer to our documentation here'),
+    description: (
+      <>
+        {t('Please refer to our documentation')}{' '}
+        <LinkExternal style={{ display: 'inline-flex' }} href="https://docs.pancakeswap.finance/products/buy-crypto">
+          {t('here.')}
+        </LinkExternal>
+      </>
+    ),
   },
 ]
 

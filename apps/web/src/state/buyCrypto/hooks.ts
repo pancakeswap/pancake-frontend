@@ -11,6 +11,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import ceil from 'lodash/ceil'
 
+import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
@@ -33,7 +34,7 @@ export const fetchMinimumBuyAmount = async (
 ): Promise<{ [curr: string]: CurrencyLimits }> => {
   try {
     const response = await fetch(
-      `https://api.moonpay.com/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
+      `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
     // console.log(await response.json())
