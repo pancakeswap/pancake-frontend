@@ -229,7 +229,7 @@ exports[`renders correctly 1`] = `
   margin-right: 20px;
 }
 
-.c51 {
+.c52 {
   margin-top: 0;
 }
 
@@ -288,7 +288,7 @@ exports[`renders correctly 1`] = `
   justify-content: start;
 }
 
-.c50 {
+.c51 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -469,7 +469,6 @@ exports[`renders correctly 1`] = `
 
 .c9 {
   position: relative;
-  cursor: pointer;
 }
 
 .c10 {
@@ -577,7 +576,8 @@ exports[`renders correctly 1`] = `
   font-weight: 400;
   opacity: 1;
   pointer-events: inherit;
-  padding: 4px 4px 0px 4px;
+  padding-left: 4px;
+  padding-right: 4px;
   height: 42px;
 }
 
@@ -591,7 +591,7 @@ exports[`renders correctly 1`] = `
   position: relative;
 }
 
-.c49 {
+.c50 {
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -694,6 +694,10 @@ exports[`renders correctly 1`] = `
   scroll-snap-align: start;
 }
 
+.c49 {
+  gap: 10px;
+}
+
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -769,7 +773,7 @@ exports[`renders correctly 1`] = `
   z-index: 20;
 }
 
-.c52 {
+.c53 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -778,7 +782,7 @@ exports[`renders correctly 1`] = `
   max-width: 100vw;
 }
 
-.c53 {
+.c54 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -943,7 +947,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c50 {
+  .c51 {
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -996,7 +1000,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c49 {
+  .c50 {
     display: none;
   }
 }
@@ -1692,7 +1696,11 @@ exports[`renders correctly 1`] = `
                 class="c48"
                 href="/swap"
               >
-                Exchange
+                <div
+                  class="c4 c49"
+                >
+                  Exchange
+                </div>
               </a>
             </div>
           </div>
@@ -1706,14 +1714,18 @@ exports[`renders correctly 1`] = `
                 class="c48"
                 href="/liquidity"
               >
-                Liquidity
+                <div
+                  class="c4 c49"
+                >
+                  Liquidity
+                </div>
               </a>
             </div>
           </div>
         </div>
       </div>
       <div
-        class="c39 c3 c49 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c50 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
       >
         <div
           class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
@@ -1746,7 +1758,7 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c43 c50 c45"
+          class="c43 c51 c45"
         >
           <div
             class="c46 c47"
@@ -1758,7 +1770,11 @@ exports[`renders correctly 1`] = `
                 class="c48"
                 href="/charts"
               >
-                Charts
+                <div
+                  class="c4 c49"
+                >
+                  Charts
+                </div>
               </a>
             </div>
           </div>
@@ -1766,10 +1782,10 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
     <div
-      class="c51 c52"
+      class="c52 c53"
     >
       <div
-        class="c53"
+        class="c54"
       >
         body
       </div>
