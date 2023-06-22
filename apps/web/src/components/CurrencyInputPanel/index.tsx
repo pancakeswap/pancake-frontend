@@ -22,6 +22,7 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
+import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useAccount } from 'wagmi'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
@@ -76,7 +77,7 @@ interface CurrencyInputPanelProps {
   zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
-  error?: boolean | string
+  error?: boolean
   showUSDPrice?: boolean
   tokensToShow?: Token[]
   currencyLoading?: boolean
@@ -179,7 +180,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
     <SwapUI.CurrencyInputPanel
       id={id}
       disabled={disabled}
-      error={error as boolean}
+      error={error}
       zapStyle={zapStyle}
       value={value}
       onInputBlur={onInputBlur}
@@ -200,12 +201,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 {pair ? (
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
-                  <CurrencyLogo
-                    currency={currency}
-                    size="24px"
-                    style={{ marginRight: '8px' }}
-                    isFiat={Boolean(id === 'onramp-input')}
-                  />
+                  id === 'onramp-input' ? (
+                    <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  ) : (
+                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  )
                 ) : currencyLoading ? (
                   <Skeleton width="24px" height="24px" variant="circle" />
                 ) : null}

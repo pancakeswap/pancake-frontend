@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ArrowDownIcon, Text } from '@pancakeswap/uikit'
+import { ArrowDownIcon, Box, Text } from '@pancakeswap/uikit'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import {
   calculateDefaultAmount,
@@ -121,23 +121,30 @@ export function BuyCryptoForum({
         subTitle={t('Buy crypto in just a few clicks')}
       />
       <FormContainer>
-        <CurrencyInputPanel
-          hideBalanceComp
-          id="onramp-input"
-          showMaxButton={false}
-          value={typedValue}
-          currency={outputCurrency}
-          onUserInput={handleTypeOutput}
-          onCurrencySelect={handleOutputSelect}
-          error={error}
-          showCommonBases={false}
-          tokensToShow={fiatCurrencyMap as any}
-          title={
-            <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-              {t('I want to spend')}
+        <Box>
+          <CurrencyInputPanel
+            hideBalanceComp
+            id="onramp-input"
+            showMaxButton={false}
+            value={typedValue}
+            currency={outputCurrency}
+            onUserInput={handleTypeOutput}
+            onCurrencySelect={handleOutputSelect}
+            error={Boolean(error)}
+            showCommonBases={false}
+            tokensToShow={fiatCurrencyMap as any}
+            title={
+              <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
+                {t('I want to spend')}
+              </Text>
+            }
+          />
+          {error ? (
+            <Text py="8px" fontSize="12px" color="red">
+              {error}
             </Text>
-          }
-        />
+          ) : null}
+        </Box>
         <CenterWrapper>
           <ArrowDownIcon className="icon-down" color="primary" width="22px" />
         </CenterWrapper>

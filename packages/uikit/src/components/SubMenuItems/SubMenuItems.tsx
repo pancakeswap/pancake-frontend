@@ -13,7 +13,6 @@ import StyledSubMenuItems, {
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
-import { Button } from "../Button";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
