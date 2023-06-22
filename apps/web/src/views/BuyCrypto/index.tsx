@@ -4,19 +4,13 @@ import { useState } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 import { useAccount } from 'wagmi'
+import { CryptoFormView } from 'views/BuyCrypto/types'
 import Page from '../Page'
-// eslint-disable-next-line import/no-cycle
-import { BuyCryptoForum } from './containers/BuyCryptoForum'
-// eslint-disable-next-line import/no-cycle
+import { BuyCryptoForm } from './containers/BuyCryptoForm'
 import { CryptoQuoteForm } from './containers/CryptoQuoteForm'
-import { StyledBuyCryptoContainer, StyledInputCurrencyWrapper } from './styles'
+import { StyledBuyCryptoContainer } from './styles'
 import usePriceQuotes from './hooks/usePriceQuoter'
 import { OnRamoFaqs } from './components/FAQ'
-
-export enum CryptoFormView {
-  Input,
-  Quote,
-}
 
 export default function BuyCrypto({ userIp }: { userIp: string | null }) {
   const [modalView, setModalView] = useState<CryptoFormView>(CryptoFormView.Input)
@@ -41,43 +35,33 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
 
   return (
     <Page>
-      <Flex
-        width={['328px', '100%']}
-        marginBottom="30px"
-        justifyContent="center"
-        position="relative"
-        alignItems="flex-start"
-      >
+      <Flex marginBottom="30px" justifyContent="center" position="relative" alignItems="flex-start">
         <Flex flexDirection="column">
           <StyledBuyCryptoContainer>
-            <StyledInputCurrencyWrapper>
-              <AppBody>
-                {modalView === CryptoFormView.Input ? (
-                  <BuyCryptoForum
-                    setModalView={setModalView}
-                    modalView={modalView}
-                    buyCryptoState={buyCryptoState}
-                    fetchQuotes={fetchQuotes}
-                  />
-                ) : (
-                  <CryptoQuoteForm
-                    setModalView={setModalView}
-                    buyCryptoState={buyCryptoState}
-                    combinedQuotes={combinedQuotes}
-                    fetchQuotes={fetchQuotes}
-                  />
-                )}
-              </AppBody>
-            </StyledInputCurrencyWrapper>
+            <AppBody>
+              {modalView === CryptoFormView.Input ? (
+                <BuyCryptoForm
+                  setModalView={setModalView}
+                  modalView={modalView}
+                  buyCryptoState={buyCryptoState}
+                  fetchQuotes={fetchQuotes}
+                />
+              ) : (
+                <CryptoQuoteForm
+                  setModalView={setModalView}
+                  buyCryptoState={buyCryptoState}
+                  combinedQuotes={combinedQuotes}
+                  fetchQuotes={fetchQuotes}
+                />
+              )}
+            </AppBody>
           </StyledBuyCryptoContainer>
         </Flex>
       </Flex>
       <StyledBuyCryptoContainer>
-        <StyledInputCurrencyWrapper>
-          <AppBody>
-            <OnRamoFaqs />
-          </AppBody>
-        </StyledInputCurrencyWrapper>
+        <AppBody>
+          <OnRamoFaqs />
+        </AppBody>
       </StyledBuyCryptoContainer>
     </Page>
   )

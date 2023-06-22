@@ -14,12 +14,10 @@ import { useOnRampCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
 import toString from 'lodash/toString'
-// eslint-disable-next-line import/no-cycle
-import { CryptoFormView } from '../index'
+import { CryptoFormView } from 'views/BuyCrypto/types'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from '../components/FormContainer'
 import AssetSelect from '../components/AssetSelect'
-// eslint-disable-next-line import/no-cycle
 import GetQuotesButton from '../components/GetQuotesButton'
 import { fiatCurrencyMap } from '../constants'
 
@@ -33,7 +31,7 @@ const CenterWrapper = styled.div`
 // the quote provider won't return a quote. Therefore, we restrict the fiat currency input to a maximum of 2 decimals.
 const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
 
-export function BuyCryptoForum({
+export function BuyCryptoForm({
   setModalView,
   modalView,
   buyCryptoState,
@@ -114,12 +112,7 @@ export function BuyCryptoForum({
 
   return (
     <>
-      <FormHeader
-        refreshDisabled={false}
-        onRefresh={() => null}
-        title={t('Buy Crypto')}
-        subTitle={t('Buy crypto in just a few clicks')}
-      />
+      <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
       <FormContainer>
         <Box>
           <CurrencyInputPanel
