@@ -3,7 +3,6 @@ import { StyledMenuItemProps } from "./types";
 
 export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
   position: relative;
-  cursor: pointer;
 
   ${({ $isActive, $variant, theme }) =>
     $isActive &&
@@ -52,7 +51,9 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
     height: 48px;
   `
       : `
-    padding: 4px 4px 0px 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+
     height: 42px;
   `}
 

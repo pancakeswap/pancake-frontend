@@ -94,19 +94,14 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                 { type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, disabled, ...itemProps },
                 itemItem
               ) => {
-                const statusView = (
+                const MenuItemContent = (
                   <>
+                    {label}
                     {status && (
                       <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
                         {status.text}
                       </LinkStatus>
                     )}
-                  </>
-                );
-                const MenuItemContent = (
-                  <>
-                    {label}
-                    {statusView}
                   </>
                 );
                 const isActive = href === activeItem;
@@ -150,7 +145,6 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">
                           {label}
-                          {statusView}
                           <LogoutIcon color={disabled ? "textDisabled" : "textSubtle"} />
                         </Flex>
                       </DropdownMenuItem>

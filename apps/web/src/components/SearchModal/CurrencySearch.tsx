@@ -11,6 +11,7 @@ import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { useAudioPlay } from '@pancakeswap/utils/user'
 import { isAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { whiteListedFiatCurrencies } from 'views/BuyCrypto/constants'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
@@ -31,6 +32,8 @@ interface CurrencySearchProps {
   setImportToken: (token: Token) => void
   height?: number
   tokensToShow?: Token[]
+  mode?: string
+  onRampFlow?: boolean
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -87,6 +90,8 @@ function CurrencySearch({
   setImportToken,
   height,
   tokensToShow,
+  mode,
+  onRampFlow,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -100,7 +105,6 @@ function CurrencySearch({
   const [invertSearchOrder] = useState<boolean>(false)
 
   const allTokens = useAllTokens()
-
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
@@ -111,23 +115,28 @@ function CurrencySearch({
   const native = useNativeCurrency()
 
   const showNative: boolean = useMemo(() => {
-    if (tokensToShow) return false
+    if (tokensToShow || mode === 'onramp-input') return false
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
-  }, [debouncedQuery, native, tokensToShow])
+  }, [debouncedQuery, native, tokensToShow, mode])
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery, (address) => Boolean(isAddress(address)))
     return Object.values(tokensToShow || allTokens).filter(filterToken)
   }, [tokensToShow, allTokens, debouncedQuery])
 
-  const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
+  const queryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
+  const filteredQueryTokens = useMemo(() => {
+    return mode === 'onramp-input'
+      ? queryTokens.filter((curr) => whiteListedFiatCurrencies.includes(curr.symbol))
+      : queryTokens
+  }, [mode, queryTokens])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    return [...filteredQueryTokens].sort(tokenComparator)
-  }, [filteredQueryTokens, tokenComparator])
+    return onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
+  }, [filteredQueryTokens, tokenComparator, onRampFlow])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -192,12 +201,12 @@ function CurrencySearch({
     }
 
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
-      <Box margin="24px -24px">
+      <Box mx="-24px" my={mode === 'onramp-input' && '24px'}>
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showNative={showNative}
           currencies={filteredSortedTokens}
-          inactiveCurrencies={filteredInactiveTokens}
+          inactiveCurrencies={mode === 'onramp-input' ? [] : filteredInactiveTokens}
           breakIndex={
             Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
           }
@@ -207,6 +216,7 @@ function CurrencySearch({
           fixedListRef={fixedList}
           showImportView={showImportView}
           setImportToken={setImportToken}
+          mode={mode}
         />
       </Box>
     ) : (
@@ -232,6 +242,7 @@ function CurrencySearch({
     showCommonBases,
     isMobile,
     height,
+    mode,
   ])
 
   return (
@@ -241,7 +252,7 @@ function CurrencySearch({
           <Row>
             <Input
               id="token-search-input"
-              placeholder={t('Search name or paste address')}
+              placeholder={t(onRampFlow ? 'Search name' : 'Search name or paste address')}
               scale="lg"
               autoComplete="off"
               value={searchQuery}

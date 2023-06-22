@@ -22,6 +22,7 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
+import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useAccount } from 'wagmi'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
@@ -81,6 +82,8 @@ interface CurrencyInputPanelProps {
   tokensToShow?: Token[]
   currencyLoading?: boolean
   inputLoading?: boolean
+  title?: React.ReactNode
+  hideBalanceComp?: boolean
 }
 const CurrencyInputPanel = memo(function CurrencyInputPanel({
   value,
@@ -111,11 +114,15 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   tokensToShow,
   currencyLoading,
   inputLoading,
+  title,
+  hideBalanceComp,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
+
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
 
+  const mode = id
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
 
@@ -137,6 +144,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       commonBasesType={commonBasesType}
       showSearchInput={showSearchInput}
       tokensToShow={tokensToShow}
+      mode={mode}
     />,
   )
 
@@ -168,7 +176,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
   const balance = !hideBalance && !!currency && formatAmount(selectedCurrencyBalance, 6)
-
   return (
     <SwapUI.CurrencyInputPanel
       id={id}
@@ -181,6 +188,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       loading={inputLoading}
       top={
         <>
+          {title}
           <Flex alignItems="center">
             {beforeButton}
             <CurrencySelectButton
@@ -193,7 +201,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 {pair ? (
                   <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
                 ) : currency ? (
-                  <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  id === 'onramp-input' ? (
+                    <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  ) : (
+                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  )
                 ) : currencyLoading ? (
                   <Skeleton width="24px" height="24px" variant="circle" />
                 ) : null}
@@ -235,7 +247,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               </Flex>
             ) : null}
           </Flex>
-          {account && (
+          {account && !hideBalanceComp && (
             <Text
               onClick={!disabled && onMax}
               color="textSubtle"

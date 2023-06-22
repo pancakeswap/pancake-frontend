@@ -1,0 +1,44 @@
+{
+  "name": "PancakeSwap OnRamp List",
+  "timestamp": "2022-01-26T11:45:09Z",
+  "version": {
+    "major": 4,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://pancakeswap.finance/logo.png",
+  "keywords": ["pancake", "default"],
+  "tokens": [
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Binance USD",
+      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "chainId": 56,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/BUSD.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Tether USD",
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 1,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "DAI StableCoin",
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 1,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
+    }
+  ]
+}
