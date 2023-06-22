@@ -236,9 +236,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   useEffect(() => {
     if (provider === 'Mercuryo') {
-      if (sig) {
-        // @ts-ignore
-        const MC_WIDGET = mercuryoWidget
+      if (sig && window?.mercuryoWidget) {
+        const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
           widgetId: '95a003f2-354a-4396-828a-1126d56e4e13',
           fiatCurrency: outputCurrency.toUpperCase(),
