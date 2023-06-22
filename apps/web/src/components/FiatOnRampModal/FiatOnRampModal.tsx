@@ -176,7 +176,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   amount,
   provider,
 }) {
-  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(false)
+  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
 
   const [error, setError] = useState<boolean | string | null>(false)
   const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
@@ -238,7 +238,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   useEffect(() => {
     if (provider === 'Mercuryo') {
-      if (sig && window?.mercuryoWidget && scriptLoaded) {
+      if (sig && window?.mercuryoWidget) {
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
           widgetId: '95a003f2-354a-4396-828a-1126d56e4e13',
