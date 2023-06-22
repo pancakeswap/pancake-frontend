@@ -81,13 +81,15 @@ export function BuyCryptoForum({
   const fetchMinBuyAmounts = useCallback(async () => {
     const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
 
-    onFieldAInput(toString(calculateDefaultAmount(limitAmounts.base?.minBuyAmount)))
+    if (!limitAmounts) return
+
+    onFieldAInput(toString(calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount)))
 
     onLimitAmountUpdate(
-      limitAmounts.base?.minBuyAmount,
-      limitAmounts.quote?.minBuyAmount,
-      limitAmounts.base?.maxBuyAmount,
-      limitAmounts.quote?.maxBuyAmount,
+      limitAmounts.baseCurrency?.minBuyAmount,
+      limitAmounts.quoteCurrency?.minBuyAmount,
+      limitAmounts.baseCurrency?.maxBuyAmount,
+      limitAmounts.quoteCurrency?.maxBuyAmount,
     )
   }, [outputCurrencyId, inputCurrencyId, onFieldAInput, onLimitAmountUpdate])
 
@@ -109,6 +111,7 @@ export function BuyCryptoForum({
     (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.OUTPUT),
     [handleCurrencySelect],
   )
+
   return (
     <>
       <FormHeader
