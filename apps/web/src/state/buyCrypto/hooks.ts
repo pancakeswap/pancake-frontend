@@ -83,12 +83,12 @@ export function useBuyCryptoErrorInfo(
     amountError = t(
       'The minimum purchasable amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%',
       {
-        maxmount: formatLocaleNumber({
+        minAmount: formatLocaleNumber({
           number: minAmount,
           locale,
         }),
-        currencfiatCurrencyy: inputCurrencyId,
-        maxCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
+        fiatCurrency: inputCurrencyId,
+        minCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
         cryptoCurrency: outputCurrencyId,
       },
     )
@@ -96,11 +96,11 @@ export function useBuyCryptoErrorInfo(
     amountError = t(
       'The maximum purchasable amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%',
       {
-        maxmount: formatLocaleNumber({
+        maxAmount: formatLocaleNumber({
           number: maxAmount,
           locale,
         }),
-        currencfiatCurrencyy: inputCurrencyId,
+        fiatCurrency: inputCurrencyId,
         maxCryptoAmount: formatLocaleNumber({ locale, number: maxBaseAmount }),
         cryptoCurrency: outputCurrencyId,
       },
