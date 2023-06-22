@@ -5,7 +5,7 @@ import { CommitButton } from 'components/CommitButton'
 import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
 import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
-import styled, { useTheme } from 'styled-components'
+import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { MOONPAY_SUPPORTED_CURRENCY_CODES, SUPPORTED_MERCURYO_FIAT_CURRENCIES } from 'views/BuyCrypto/constants'
@@ -28,6 +28,29 @@ interface FiatOnRampProps {
 
 interface FetchResponse {
   urlWithSignature: string
+}
+
+const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
+  return (
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      style={{
+        height: '630px',
+        width: '100%',
+        background: `${theme.isDark ? '#27262C' : 'white'}`,
+        position: 'absolute',
+        borderBottomLeftRadius: '24px',
+        borderBottomRightRadius: '24px',
+        zIndex: '100',
+      }}
+    >
+      <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
+        <LoadingDot />
+        <CircleLoader />
+      </div>
+    </Flex>
+  )
 }
 
 const fetchMoonPaySignedUrl = async (
@@ -258,29 +281,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
               <Trans>something went wrong!</Trans>
             </ErrorText>
           </Flex>
+        ) : provider === 'Mercuryo' ? (
+          <>
+            {loading && <LoadingBuffer theme={theme} />}
+            <div id="mercuryo-widget" />
+          </>
         ) : (
           <>
-            {loading && (
-              <Flex
-                justifyContent="center"
-                alignItems="center"
-                style={{
-                  height: '630px',
-                  width: '100%',
-                  background: `${theme.isDark ? '#27262C' : 'white'}`,
-                  position: 'absolute',
-                  borderBottomLeftRadius: '24px',
-                  borderBottomRightRadius: '24px',
-                  zIndex: '100',
-                }}
-              >
-                <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
-                  <LoadingDot />
-                  <CircleLoader />
-                </div>
-              </Flex>
-            )}
-
+            {loading && <LoadingBuffer theme={theme} />}
             <StyledIframe
               id="moonpayIframe"
               src={signedIframeUrl ?? ''}
@@ -290,7 +298,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           </>
         )}
         <Script src="https://widget.mercuryo.io/embed.2.0.js" />
-        <div id="mercuryo-widget" />
       </Modal>
     </>
   )
