@@ -121,7 +121,7 @@ const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ rank, team
                 {/* alignSelf for Safari fix */}
                 <CommunityIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
                 <Text fontSize="24px" bold>
-                  {team.users.toLocaleString()}
+                  {team.users}
                 </Text>
               </Flex>
             </Flex>

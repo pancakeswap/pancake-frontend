@@ -2,81 +2,84 @@ import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
 import {
-  getPancakeProfileAddress,
-  getBunnyFactoryAddress,
-  getLotteryV2Address,
-  getMasterChefV2Address,
-  getPointCenterIfoAddress,
-  getTradingCompetitionAddressEaster,
-  getCakeVaultAddress,
-  getFarmAuctionAddress,
-  getNftMarketAddress,
-  getNftSaleAddress,
-  getPancakeSquadAddress,
-  getTradingCompetitionAddressFanToken,
-  getTradingCompetitionAddressMobox,
-  getTradingCompetitionAddressMoD,
-  getPotteryDrawAddress,
-  getCakeFlexibleSideVaultAddress,
-  getPredictionsV1Address,
+  getAffiliateProgramAddress,
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
-  getNonBscVaultAddress,
-  getCrossFarmingSenderAddress,
+  getBCakeFarmBoosterV3Address,
+  getBunnyFactoryAddress,
+  getCakeFlexibleSideVaultAddress,
+  getCakeVaultAddress,
   getCrossFarmingReceiverAddress,
-  getStableSwapNativeHelperAddress,
-  getTradingRewardAddress,
+  getCrossFarmingSenderAddress,
+  getFarmAuctionAddress,
+  getLotteryV2Address,
+  getMasterChefV2Address,
   getMasterChefV3Address,
-  getV3MigratorAddress,
+  getNftMarketAddress,
+  getNftSaleAddress,
+  getNonBscVaultAddress,
+  getPancakeProfileAddress,
+  getPancakeSquadAddress,
+  getPointCenterIfoAddress,
+  getPotteryDrawAddress,
+  getPredictionsV1Address,
+  getStableSwapNativeHelperAddress,
+  getTradingCompetitionAddressEaster,
+  getTradingCompetitionAddressFanToken,
+  getTradingCompetitionAddressMoD,
+  getTradingCompetitionAddressMobox,
+  getTradingRewardAddress,
   getV3AirdropAddress,
+  getV3MigratorAddress,
 } from 'utils/addressHelpers'
 
 // ABI
+import { cakePredictionsABI } from 'config/abi/cakePredictions'
+import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
+import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
+import { nftSaleABI } from 'config/abi/nftSale'
+import { nonBscVaultABI } from 'config/abi/nonBscVault'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { predictionsV1ABI } from 'config/abi/predictionsV1'
-import { nftSaleABI } from 'config/abi/nftSale'
-import { cakePredictionsABI } from 'config/abi/cakePredictions'
-import { nonBscVaultABI } from 'config/abi/nonBscVault'
-import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
-import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
-import { ChainId } from '@pancakeswap/sdk'
-import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import {
-  getIfoCreditAddressContract as getIfoCreditAddressContract_,
   cakeFlexibleSideVaultV2ABI,
   cakeVaultV2ABI,
+  getIfoCreditAddressContract as getIfoCreditAddressContract_,
 } from '@pancakeswap/pools'
-import { Address, erc20ABI, erc721ABI } from 'wagmi'
-import { getContract as viemGetContract, WalletClient, PublicClient } from 'viem'
-import { pancakeProfileABI } from 'config/abi/pancakeProfile'
-import { v3AirdropABI } from 'config/abi/v3Airdrop'
-import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
-import { Abi, Narrow } from 'abitype'
-import { lpTokenABI } from 'config/abi/lpTokenAbi'
-import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
-import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
-import { masterChefV2ABI } from 'config/abi/masterchefV2'
-import { pancakeSquadABI } from 'config/abi/pancakeSquad'
-import { nftMarketABI } from 'config/abi/nftMarket'
-import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
-import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
-import { lotteryV2ABI } from 'config/abi/lotteryV2'
-import { predictionsV2ABI } from 'config/abi/predictionsV2'
-import { farmAuctionABI } from 'config/abi/farmAuction'
-import { v3MigratorABI } from 'config/abi/v3Migrator'
-import { SIDResolverABI } from 'config/abi/SIDResolver'
-import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
-import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
-import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
-import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
+import { ChainId } from '@pancakeswap/sdk'
+import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
-import { bCakeProxyABI } from 'config/abi/bCakeProxy'
-import { getViemClients, viemClients } from 'utils/viem'
+import { SIDResolverABI } from 'config/abi/SIDResolver'
+import { affiliateProgramABI } from 'config/abi/affiliateProgram'
+import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
 import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
+import { bCakeFarmBoosterV3ABI } from 'config/abi/bCakeFarmBoosterV3'
+import { bCakeProxyABI } from 'config/abi/bCakeProxy'
+import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
+import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
+import { farmAuctionABI } from 'config/abi/farmAuction'
+import { lotteryV2ABI } from 'config/abi/lotteryV2'
+import { lpTokenABI } from 'config/abi/lpTokenAbi'
+import { masterChefV2ABI } from 'config/abi/masterchefV2'
+import { nftMarketABI } from 'config/abi/nftMarket'
+import { pancakeProfileABI } from 'config/abi/pancakeProfile'
+import { pancakeSquadABI } from 'config/abi/pancakeSquad'
+import { potteryDrawABI } from 'config/abi/potteryDrawAbi'
+import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
+import { predictionsV2ABI } from 'config/abi/predictionsV2'
+import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
+import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
+import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
+import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
 import { tradingRewardABI } from 'config/abi/tradingReward'
+import { v3AirdropABI } from 'config/abi/v3Airdrop'
+import { v3MigratorABI } from 'config/abi/v3Migrator'
+import { getViemClients, viemClients } from 'utils/viem'
+import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
+import { Address, erc20ABI, erc721ABI } from 'wagmi'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
@@ -85,7 +88,7 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   publicClient,
   signer,
 }: {
-  abi: Narrow<TAbi>
+  abi: TAbi
   address: Address
   chainId?: ChainId
   signer?: TWalletClient
@@ -99,8 +102,6 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
   })
   return {
     ...c,
-    abi,
-    address,
     account: signer?.account,
     chain: signer?.chain,
   }
@@ -174,15 +175,16 @@ export const getTradingCompetitionContractMoD = (signer?: WalletClient) => {
   })
 }
 
-export const getCakeVaultV2Contract = (signer?: WalletClient) => {
-  return getContract({ abi: cakeVaultV2ABI, address: getCakeVaultAddress(), signer })
+export const getCakeVaultV2Contract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: cakeVaultV2ABI, address: getCakeVaultAddress(chainId), signer, chainId })
 }
 
-export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient) => {
+export const getCakeFlexibleSideVaultV2Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: cakeFlexibleSideVaultV2ABI,
-    address: getCakeFlexibleSideVaultAddress(),
+    address: getCakeFlexibleSideVaultAddress(chainId),
     signer,
+    chainId,
   })
 }
 
@@ -230,6 +232,10 @@ export const getIfoCreditAddressContract = (signer?: WalletClient) => {
 
 export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
   return getContract({ abi: bCakeFarmBoosterABI, address: getBCakeFarmBoosterAddress(), signer })
+}
+
+export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
 }
 
 export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
@@ -360,5 +366,14 @@ export const getV3AirdropContract = (walletClient?: WalletClient) => {
     abi: v3AirdropABI,
     address: getV3AirdropAddress(),
     signer: walletClient,
+  })
+}
+
+export const getAffiliateProgramContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: affiliateProgramABI,
+    address: getAffiliateProgramAddress(chainId),
+    signer,
+    chainId,
   })
 }

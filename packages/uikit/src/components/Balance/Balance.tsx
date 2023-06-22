@@ -10,6 +10,7 @@ interface BalanceProps extends TextProps {
   prefix?: string;
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   strikeThrough?: boolean;
+  startFromValue?: boolean;
 }
 
 const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
@@ -21,6 +22,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
   prefix,
   onClick,
   strikeThrough,
+  startFromValue = false,
   ...props
 }) => {
   const prefixProp = useMemo(() => (prefix ? { prefix } : {}), [prefix]);
@@ -28,7 +30,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
 
   return (
     <CountUp
-      start={0}
+      start={startFromValue ? value : 0}
       preserveValue
       delay={0}
       end={value}

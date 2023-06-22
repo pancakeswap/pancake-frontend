@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { format } from "date-fns";
 import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-charts";
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
 
@@ -187,10 +187,15 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     priceLineData,
   ]);
 
+  const handleMouseLeave = useCallback(() => {
+    if (setHoverValue) setHoverValue(undefined);
+    if (setHoverDate) setHoverDate(undefined);
+  }, [setHoverValue, setHoverDate]);
+
   return (
     <>
       {!chartCreated && <LineChartLoader />}
-      <div style={{ display: "flex", flex: 1, height: "100%" }}>
+      <div style={{ display: "flex", flex: 1, height: "100%" }} onMouseLeave={handleMouseLeave}>
         <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="swap-line-chart" {...rest} />
       </div>
     </>

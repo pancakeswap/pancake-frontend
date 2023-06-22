@@ -145,7 +145,12 @@ export function FarmV3LPPositionDetail({
       {position && (
         <AutoRow gap="2px" py="8px">
           <Text fontSize="14px">{t('APR')}:</Text>
-          <FarmV3ApyButton farm={farm} existingPosition={position} isPositionStaked={positionType === 'staked'} />
+          <FarmV3ApyButton
+            farm={farm}
+            existingPosition={position}
+            tokenId={position_?.tokenId?.toString()}
+            isPositionStaked={positionType === 'staked'}
+          />
         </AutoRow>
       )}
       <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
@@ -156,6 +161,7 @@ export function FarmV3LPPositionDetail({
           decimals={2}
           value={position ? +amountA.toSignificant(6) : 0}
           unit={` ${token.symbol}`}
+          startFromValue
         />
         <Balance
           fontSize="12px"
@@ -163,6 +169,7 @@ export function FarmV3LPPositionDetail({
           decimals={2}
           value={position ? +amountB.toSignificant(6) : 0}
           unit={` ${quoteToken.symbol}`}
+          startFromValue
         />
       </AutoRow>
     </Box>
@@ -200,7 +207,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
       )}
       <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
       <FarmV3LPPosition token={token} quoteToken={quoteToken} position={position} />
-      <RowBetween gap="16px" flexWrap="nowrap">
+      <RowBetween gap="16px" flexWrap="wrap">
         <FarmV3LPPositionDetail
           farm={farm}
           token={token}

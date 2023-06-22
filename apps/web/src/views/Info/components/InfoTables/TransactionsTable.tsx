@@ -11,6 +11,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { subgraphTokenSymbol } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
@@ -100,10 +101,13 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const { t } = useTranslation()
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
-  const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-  const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const chainName = useChainNameByQuery()
   const { domainName } = useDomainNameForAddress(transaction.sender)
+  const token0Symbol = subgraphTokenSymbol[transaction.token0Address.toLowerCase()] ?? transaction.token0Symbol
+  const token1Symbol = subgraphTokenSymbol[transaction.token1Address.toLowerCase()] ?? transaction.token1Symbol
+  const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
+  const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
+
   return (
     <ResponsiveGrid>
       <LinkExternal
@@ -112,10 +116,19 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       >
         <Text>
           {transaction.type === TransactionType.MINT
-            ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
+            ? t('Add %token0% and %token1%', {
+                token0: token0Symbol,
+                token1: token1Symbol,
+              })
             : transaction.type === TransactionType.SWAP
-            ? t('Swap %token0% for %token1%', { token0: inputTokenSymbol, token1: outputTokenSymbol })
-            : t('Remove %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })}
+            ? t('Swap %token0% for %token1%', {
+                token0: inputTokenSymbol,
+                token1: outputTokenSymbol,
+              })
+            : t('Remove %token0% and %token1%', {
+                token0: token0Symbol,
+                token1: token1Symbol,
+              })}
         </Text>
       </LinkExternal>
       <Text>${formatAmount(transaction.amountUSD)}</Text>

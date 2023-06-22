@@ -30,7 +30,7 @@ const Earned: React.FC<React.PropsWithChildren<EarnedProps>> = ({ earnings }) =>
         </Text>
         <Flex mt="4px">
           <Text fontSize={isMobile ? '14px' : '16px'} color={earnings > 0 ? 'text' : 'textDisabled'}>
-            {earnings.toLocaleString()}
+            {earnings}
           </Text>
         </Flex>
       </Pool.CellContent>

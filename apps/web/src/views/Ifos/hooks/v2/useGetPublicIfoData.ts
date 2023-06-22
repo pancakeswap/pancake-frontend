@@ -140,7 +140,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         blocksRemaining,
         startBlockNum,
         endBlockNum,
-        thresholdPoints: thresholdPoints && thresholdPoints,
+        thresholdPoints,
         numberPoints: numberPoints ? Number(numberPoints) : 0,
       }))
     },

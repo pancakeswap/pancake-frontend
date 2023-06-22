@@ -75,7 +75,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
             {profileRequirement.required && t('Pancake Profile')}{' '}
             {profileRequirement.thresholdPoints.gt(0) && (
               <Text small>
-                {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t('Profile Points')}
+                {profileRequirement.thresholdPoints.toNumber()} {t('Profile Points')}
               </Text>
             )}
           </Text>

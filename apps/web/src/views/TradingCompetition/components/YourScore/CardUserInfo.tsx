@@ -182,7 +182,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
                 <UserRankBox
                   flex="1"
                   title={t('Rank in team').toUpperCase()}
-                  footer={userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString() }) : ''}
+                  footer={userLeaderboardInformation ? t('#%global% Overall', { global }) : ''}
                   mr={[0, null, null, '8px']}
                   mb={['8px', null, null, 0]}
                 >
@@ -193,7 +193,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
                       <Heading textAlign="center" scale="lg" mr="8px">
                         #{team}
                       </Heading>
-                      {medal.current}
+                      {medal?.current}
                     </TeamRankTextWrapper>
                   )}
                 </UserRankBox>
@@ -203,7 +203,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
                 title={t('Your volume').toUpperCase()}
                 footer={t('Since start')}
                 // Add responsive mr if competition is LIVE
-                mr={currentPhase.state !== REGISTRATION ? [0, null, null, '8px'] : 0}
+                mr={currentPhase?.state !== REGISTRATION ? [0, null, null, '8px'] : 0}
                 mb={['8px', null, null, 0]}
               >
                 {!userLeaderboardInformation ? (
@@ -217,14 +217,14 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
               {extraUserRankBox || null}
             </Flex>
             {/* Show next ranks if competition is LIVE */}
-            {currentPhase.state === LIVE &&
+            {currentPhase?.state === LIVE &&
               (team === 1 ? (
                 // If user is first
                 <NextRankBox
                   flex="2"
                   title={t('Your tier: gold').toUpperCase()}
                   footer={t('Love, The Chefs x')}
-                  currentMedal={medal.current}
+                  currentMedal={medal?.current}
                   hideArrow
                 >
                   <Heading scale="lg">{t('HECK YEAH!')}</Heading>
@@ -232,10 +232,10 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
               ) : (
                 <NextRankBox
                   flex="2"
-                  title={`${t('Next tier').toUpperCase()}: ${nextTier.color}`}
-                  footer={t('to become #%rank% in team', { rank: nextTier.rank })}
-                  currentMedal={medal.current}
-                  nextMedal={medal.next}
+                  title={`${t('Next tier').toUpperCase()}: ${nextTier?.color}`}
+                  footer={t('to become #%rank% in team', { rank: nextTier?.rank })}
+                  currentMedal={medal?.current}
+                  nextMedal={medal?.next}
                 >
                   <Heading scale="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
                 </NextRankBox>

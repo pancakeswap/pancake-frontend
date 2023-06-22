@@ -48,13 +48,6 @@ const tierStyleMap = {
     },
     color: COLOR_BRONZE,
   },
-  [Tiers.SILVER]: {
-    icon: MedalSilverIcon,
-    label: {
-      text: 'Silver',
-    },
-    color: COLOR_SILVER,
-  },
   [Tiers.PURPLE]: {
     icon: MedalPurpleIcon,
     label: {

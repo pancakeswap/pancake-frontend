@@ -51,7 +51,7 @@ const Team: React.FC<React.PropsWithChildren> = () => {
                   <Text bold>{team.name}</Text>
                   <Flex>
                     <CommunityIcon mr="8px" />
-                    <Text>{team.users.toLocaleString()}</Text>
+                    <Text>{team.users}</Text>
                   </Flex>
                 </SelectionCard>
               )

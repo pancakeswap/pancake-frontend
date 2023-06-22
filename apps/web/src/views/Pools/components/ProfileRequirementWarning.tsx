@@ -17,13 +17,13 @@ export function ProfileRequirementWarning({
           {notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires active Pancake Profile and %amount% profile points.', {
-              amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
+              amount: profileRequirement?.thresholdPoints?.toNumber(),
             })}
           {notMeetRequired && !notMeetThreshold && t('This pool requires active Pancake Profile')}
           {!notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires %amount% profile points.', {
-              amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
+              amount: profileRequirement?.thresholdPoints?.toNumber(),
             })}
         </MessageText>
         {(notMeetRequired || notMeetThreshold) && (

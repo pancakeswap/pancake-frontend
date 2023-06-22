@@ -21,6 +21,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { Bidder } from 'config/constants/types'
 import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
+import { HARD_CODE_TOP_THREE_AUCTION_DATAS } from '../../constants'
 
 const LeaderboardContainer = styled.div`
   display: grid;
@@ -42,12 +43,16 @@ interface LeaderboardRowProps {
   bidder: Bidder
   cakePriceBusd: BigNumber
   isMobile: boolean
+  index: number
+  shouldUseV3Format: boolean
 }
 
 const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = ({
   bidder,
   cakePriceBusd,
   isMobile,
+  index,
+  shouldUseV3Format,
 }) => {
   const { t } = useTranslation()
   const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount, projectSite, lpAddress, account } =
@@ -67,7 +72,19 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             <Text bold={isTopPosition} mr="4px">
               {farmName}
             </Text>
-            {!isMobile && <Text>(1x)</Text>}
+
+            {!isMobile && (
+              <>
+                {shouldUseV3Format ? (
+                  <>
+                    <Text mr="3px">({HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[0]}% fee tier)</Text>
+                    <Text>[{HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[1] ?? 1}x]</Text>
+                  </>
+                ) : (
+                  <Text>(1x)</Text>
+                )}
+              </>
+            )}
           </Flex>
           <Text fontSize="12px" color="textSubtle">
             {tokenName}
@@ -77,7 +94,7 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
       <GridCell isTopPosition={isTopPosition}>
         <Flex flexDirection="column" width="100%" justifyContent="flex-end" pr={[null, null, '24px']}>
           <Text bold textTransform="uppercase" width="100%" textAlign="right">
-            {getBalanceNumber(amount).toLocaleString()}
+            {getBalanceNumber(amount)}
           </Text>
           {cakePriceBusd.gt(0) ? (
             <Text fontSize="12px" color="textSubtle" textAlign="right">
@@ -119,10 +136,9 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
   )
 }
 
-const AuctionLeaderboardTable: React.FC<React.PropsWithChildren<{ bidders: Bidder[]; noBidsText: string }>> = ({
-  bidders,
-  noBidsText,
-}) => {
+const AuctionLeaderboardTable: React.FC<
+  React.PropsWithChildren<{ bidders: Bidder[]; noBidsText: string; shouldUseV3Format?: boolean }>
+> = ({ bidders, noBidsText, shouldUseV3Format = false }) => {
   const [visibleBidders, setVisibleBidders] = useState(10)
   const cakePriceBusd = usePriceCakeUSD()
   const { t } = useTranslation()
@@ -163,8 +179,15 @@ const AuctionLeaderboardTable: React.FC<React.PropsWithChildren<{ bidders: Bidde
         </Text>
         <Box />
         {/* Rows */}
-        {bidders.slice(0, visibleBidders).map((bidder) => (
-          <LeaderboardRow key={bidder.account} bidder={bidder} cakePriceBusd={cakePriceBusd} isMobile={isMobile} />
+        {bidders.slice(0, visibleBidders).map((bidder, index) => (
+          <LeaderboardRow
+            key={bidder.account}
+            bidder={bidder}
+            cakePriceBusd={cakePriceBusd}
+            isMobile={isMobile}
+            index={index}
+            shouldUseV3Format={shouldUseV3Format}
+          />
         ))}
       </LeaderboardContainer>
       <Flex mt="16px" px="24px" flexDirection="column" justifyContent="center" alignItems="center">

@@ -1,24 +1,20 @@
 import BigNumber from 'bignumber.js'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import useSWRImmutable from 'swr/immutable'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterChefContract } from 'utils/contractHelpers'
-import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
-import { State } from '../types'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import {
-  farmFromLpSymbolSelector,
   farmSelector,
-  makeBusdPriceFromPidSelector,
   makeFarmFromPidSelector,
   makeLpTokenPriceFromLpSymbolSelector,
   makeUserFarmFromPidSelector,
@@ -81,42 +77,9 @@ export const usePollFarmsWithUserData = () => {
   )
 }
 
-/**
- * Fetches the "core" farm data used globally
- * 2 = CAKE-BNB LP
- * 3 = BUSD-BNB LP
- */
-const coreFarmPIDs = {
-  56: [2, 3],
-  97: [4, 10],
-  5: [13, 11],
-  1: [124, 125],
-}
-
-export const usePollCoreFarmData = () => {
-  const dispatch = useAppDispatch()
-  const { chainId } = useActiveChainId()
-
-  useEffect(() => {
-    if (chainId) {
-      dispatch(fetchInitialFarmsData({ chainId }))
-    }
-  }, [chainId, dispatch])
-
-  useFastRefreshEffect(() => {
-    if (chainId) {
-      dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
-    }
-  }, [dispatch, chainId])
-}
-
 export const useFarms = (): DeserializedFarmsState => {
   const { chainId } = useActiveChainId()
   return useSelector(useMemo(() => farmSelector(chainId), [chainId]))
-}
-
-export const useFarmsPoolLength = (): number => {
-  return useSelector((state: State) => state.farms.poolLength)
 }
 
 export const useFarmFromPid = (pid: number): DeserializedFarm => {
@@ -124,20 +87,9 @@ export const useFarmFromPid = (pid: number): DeserializedFarm => {
   return useSelector(farmFromPid)
 }
 
-export const useFarmFromLpSymbol = (lpSymbol: string): DeserializedFarm => {
-  const farmFromLpSymbol = useMemo(() => farmFromLpSymbolSelector(lpSymbol), [lpSymbol])
-  return useSelector(farmFromLpSymbol)
-}
-
 export const useFarmUser = (pid): DeserializedFarmUserData => {
   const farmFromPidUser = useMemo(() => makeUserFarmFromPidSelector(pid), [pid])
   return useSelector(farmFromPidUser)
-}
-
-// Return the base token price for a farm, from a given pid
-export const useBusdPriceFromPid = (pid: number): BigNumber => {
-  const busdPriceFromPid = useMemo(() => makeBusdPriceFromPidSelector(pid), [pid])
-  return useSelector(busdPriceFromPid)
 }
 
 export const useLpTokenPrice = (symbol: string) => {

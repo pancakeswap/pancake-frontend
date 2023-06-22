@@ -73,6 +73,7 @@ import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
+import isPoolTickInRange from 'utils/isPoolTickInRange'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -208,7 +209,7 @@ export default function PoolPage() {
     invert: manuallyInverted,
   })
 
-  const inverted = token1 && token1 ? base?.equals(token1) : undefined
+  const inverted = token1 && base ? base.equals(token1) : undefined
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
@@ -300,7 +301,7 @@ export default function PoolPage() {
       data: calldata,
       value: hexToBigInt(value),
       account,
-      chain: signer.chain,
+      chain: signer?.chain,
     }
 
     getViemClients({ chainId })
@@ -367,9 +368,7 @@ export default function PoolPage() {
   const priceValueLower = inverted ? price1 : price0
 
   // check if price is within range
-  const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
-  const above = pool && typeof tickUpper === 'number' ? pool.tickCurrent >= tickUpper : undefined
-  const inRange: boolean = typeof below === 'boolean' && typeof above === 'boolean' ? !below && !above : false
+  const inRange = isPoolTickInRange(pool, tickLower, tickUpper)
 
   const nativeCurrency = useNativeCurrency()
   const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
@@ -444,7 +443,7 @@ export default function PoolPage() {
   }
 
   const farmingTips =
-    hasActiveFarm && !isStakedInMCv3 ? (
+    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
       <Message variant="primary" mb="2em">
         <Box>
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
@@ -641,7 +640,7 @@ export default function PoolPage() {
                   </Box>
                   <Box width="100%">
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                      {t('Unclaim Fees')}
+                      {t('Unclaimed Fees')}
                     </Text>
                     <AutoRow justifyContent="space-between" mb="8px">
                       <Text fontSize="24px" fontWeight={600}>

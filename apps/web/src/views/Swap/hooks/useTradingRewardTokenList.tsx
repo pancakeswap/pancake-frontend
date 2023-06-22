@@ -9,15 +9,14 @@ const useTradingRewardTokenList = () => {
   const { data } = useAllTradingRewardPair(RewardStatus.ALL)
 
   const uniqueAddressList = useMemo(() => {
-    const currentTime = new Date().getTime() / 1000
+    const currentTime = Date.now() / 1000
 
     // eslint-disable-next-line array-callback-return, consistent-return
     const activeRewardCampaignId = data.campaignIds.filter((campaignId) => {
       const incentive = data.campaignIdsIncentive.find((i) => i.campaignId === campaignId)
-      if (incentive.campaignClaimTime > currentTime) {
+      if (currentTime <= incentive.campaignClaimTime) {
         return campaignId
       }
-      return campaignId
     })
 
     const activeCampaignPairs: { [key in string]: Array<string> } = {}

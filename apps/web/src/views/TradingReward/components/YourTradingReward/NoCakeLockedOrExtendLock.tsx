@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Text, Flex, Pool } from '@pancakeswap/uikit'
+import { Box, Text, Flex, Pool, SkeletonV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
@@ -13,6 +13,7 @@ import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks
 import formatSecondsToWeeks from 'views/Pools/components/utils/formatSecondsToWeeks'
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
 const Container = styled(Flex)`
   justify-content: space-between;
@@ -96,12 +97,22 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
   )
 
   const minLockWeekInSeconds = useMemo(() => {
-    const currentTime = new Date().getTime() / 1000
+    const currentTime = Date.now() / 1000
     const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
     const lockDuration = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime).minus(minusTime)
     const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
     return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
   }, [incentives, thresholdLockTime, userData])
+
+  const position = useMemo(
+    () =>
+      getVaultPosition({
+        userShares: userData?.userShares,
+        locked: userData?.locked,
+        lockEndTime: userData?.lockEndTime,
+      }),
+    [userData],
+  )
 
   return (
     <Flex flexDirection={['column', 'column', 'column', 'row']}>
@@ -154,12 +165,14 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                   <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold>
                     {`CAKE ${t('Locked')}`}
                   </Text>
-                  <Text bold fontSize="20px" lineHeight="110%" color={cakeAsNumberBalance > 0 ? 'text' : 'failure'}>
-                    {cakeAsDisplayBalance}
-                  </Text>
-                  <Text fontSize="12px" lineHeight="110%" color={cakeAsNumberBalance > 0 ? 'text' : 'failure'}>
-                    {`~$${formatNumber(cakePrice)} USD`}
-                  </Text>
+                  <SkeletonV2 isDataReady={!!cakeAsDisplayBalance} wrapperProps={{ height: 'fit-content' }}>
+                    <Text bold fontSize="20px" lineHeight="110%" color={cakeAsNumberBalance > 0 ? 'text' : 'failure'}>
+                      {cakeAsDisplayBalance}
+                    </Text>
+                    <Text fontSize="12px" lineHeight="110%" color={cakeAsNumberBalance > 0 ? 'text' : 'failure'}>
+                      {`~$${formatNumber(cakePrice)} USD`}
+                    </Text>
+                  </SkeletonV2>
                 </Flex>
               </Flex>
               <Flex>
@@ -173,7 +186,11 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                     lineHeight="110%"
                     color={isValidLockDuration && secondDuration > 0 ? 'text' : 'failure'}
                   >
-                    {secondDuration === 0 ? t('0 Weeks') : remainingTime}
+                    {position >= VaultPosition.LockedEnd
+                      ? t('Unlocked')
+                      : secondDuration === 0
+                      ? t('0 Weeks')
+                      : remainingTime}
                   </Text>
                 </Flex>
               </Flex>

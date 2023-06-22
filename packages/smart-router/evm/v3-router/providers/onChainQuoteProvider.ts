@@ -1,6 +1,6 @@
 /* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Abi, Address } from 'abitype'
+import { Abi, Address } from 'viem'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
 import flatMap from 'lodash/flatMap.js'
@@ -346,7 +346,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               }
             }
 
-            let successRateError: Error | void
+            let successRateError: SuccessRateError | void
             if (failedQuoteStates.length === 0) {
               successRateError = validateSuccessRate(
                 quoteStates.reduce<Result<[bigint, bigint[], number[], bigint]>[]>(
@@ -390,6 +390,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
             }
 
+            // @ts-ignore
             if (successRateError) {
               throw successRateError
             }

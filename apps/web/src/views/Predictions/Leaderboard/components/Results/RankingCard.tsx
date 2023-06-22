@@ -113,7 +113,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
           <Text fontSize="12px" color="textSubtle">
             {t('Rounds Won')}
           </Text>
-          <Text fontWeight="bold">{`${user.totalBetsClaimed.toLocaleString()}/${user.totalBets.toLocaleString()}`}</Text>
+          <Text fontWeight="bold">{`${user.totalBetsClaimed}/${user.totalBets.toLocaleString()}`}</Text>
         </Row>
       </CardBody>
     </Card>

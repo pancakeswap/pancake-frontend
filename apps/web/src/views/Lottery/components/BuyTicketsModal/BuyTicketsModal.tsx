@@ -161,7 +161,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = memoisedUserCake.div(priceTicketInCake)
       const limitedMaxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
-      let maxPurchase
+      let maxPurchase = limitedMaxPurchase
 
       // If the users' max CAKE balance purchase is less than the contract limit - factor the discount logic into the max number of tickets they can purchase
       if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
@@ -174,8 +174,6 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
 
         // Add the additional tickets that can be bought with the discount, to the original max purchase
         maxPurchase = limitedMaxPurchase.plus(secondTicketDiscountBuy)
-      } else {
-        maxPurchase = limitedMaxPurchase
       }
 
       if (hasFetchedBalance && maxPurchase.lt(1)) {
@@ -283,6 +281,8 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     !ticketsToBuy ||
     new BigNumber(ticketsToBuy).lte(0) ||
     getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
+
+  const isApproveDisabled = isApproved || disableBuying
 
   if (buyingStage === BuyingStage.EDIT) {
     return (
@@ -410,7 +410,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
         {account ? (
           <>
             <ApproveConfirmButtons
-              isApproveDisabled={isApproved}
+              isApproveDisabled={isApproveDisabled}
               isApproving={isApproving}
               isConfirmDisabled={disableBuying}
               isConfirming={isConfirming}

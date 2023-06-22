@@ -13,6 +13,7 @@ export {
   getV3CandidatePools,
   getStableCandidatePools,
   getCandidatePools,
+  getAllV3PoolsFromSubgraph,
   v2PoolTvlSelector as v2PoolSubgraphSelection,
   v3PoolTvlSelector as v3PoolSubgraphSelection,
 } from './providers'

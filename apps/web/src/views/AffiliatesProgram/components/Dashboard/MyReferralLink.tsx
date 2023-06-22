@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Flex, Text, Input, Box, Button, ArrowForwardIcon, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { keccak256, encodePacked, toBytes } from 'viem'
+import { keccak256, encodePacked } from 'viem'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -88,7 +88,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
   refreshAffiliateInfo,
 }) => {
   const { t } = useTranslation()
-  const { address, connector } = useAccount()
+  const { address } = useAccount()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
   const { defaultLinkId, refresh } = useDefaultLinkId()
@@ -109,25 +109,15 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
   const handleGenerateLink = async () => {
     try {
       setIsLoading(true)
-      // BSC wallet sign message only accept string
-      const message =
-        connector?.id === 'bsc'
-          ? keccak256(
-              encodePacked(
-                ['string', 'uint256', 'uint256', 'uint256'],
-                [linkId, BigInt(percentage), BigInt(percentage), BigInt(percentage)],
-              ),
-            )
-          : toBytes(
-              keccak256(
-                encodePacked(
-                  ['string', 'uint256', 'uint256', 'uint256'],
-                  [linkId, BigInt(percentage), BigInt(percentage), BigInt(percentage)],
-                ),
-              ),
-            )
 
-      const signature = await signMessageAsync({ message: message as any })
+      const message = keccak256(
+        encodePacked(
+          ['string', 'uint256', 'uint256', 'uint256'],
+          [linkId, BigInt(percentage), BigInt(percentage), BigInt(percentage)],
+        ),
+      )
+      const signature = await signMessageAsync({ message })
+
       const data = {
         fee: {
           linkId,

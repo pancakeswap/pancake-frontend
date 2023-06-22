@@ -37,7 +37,7 @@ import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 
-import { BCakeBoosterCard } from './components/BCakeBoosterCard'
+import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsContext } from './context'

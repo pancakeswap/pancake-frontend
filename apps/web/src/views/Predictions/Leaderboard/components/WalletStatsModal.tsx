@@ -139,13 +139,13 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Won')}
               </Text>
-              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBetsClaimed?.toLocaleString()}</Text>}
+              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBetsClaimed}</Text>}
             </Box>
             <Box>
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Played')}
               </Text>
-              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBets?.toLocaleString()}</Text>}
+              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBets}</Text>}
             </Box>
           </Grid>
           {isDesktop ? (

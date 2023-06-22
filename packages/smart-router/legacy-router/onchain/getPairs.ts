@@ -31,11 +31,14 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
   const client = provider({ chainId })
 
   const results = await client.multicall({
-    contracts: pairAddresses.map((address) => ({
-      abi: pancakePairABI,
-      address,
-      functionName: 'getReserves',
-    })),
+    contracts: pairAddresses.map(
+      (address) =>
+        ({
+          abi: pancakePairABI,
+          address,
+          functionName: 'getReserves',
+        } as const),
+    ),
     allowFailure: true,
   })
 

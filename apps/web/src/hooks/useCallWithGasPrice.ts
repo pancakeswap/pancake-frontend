@@ -1,8 +1,8 @@
-import { Abi } from 'abitype'
 import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
 import { publicClient } from 'utils/wagmi'
 import {
+  Abi,
   Account,
   Address,
   CallParameters,

@@ -17,7 +17,8 @@ const useDefaultLinkId = () => {
         const response = await fetch(`/api/affiliates-program/affiliate-fee-exist?${queryString}`)
         const result: AffiliateExistFeeResponse = await response.json()
 
-        if (result.exist) {
+        const regex = /^[a-zA-Z0-9_]+$/
+        if (result.exist || !regex.test(randomNanoId)) {
           randomNanoId = nanoid(20)
           mutate('/affiliate-fee-exist')
         }

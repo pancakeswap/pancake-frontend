@@ -108,7 +108,7 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
   )
 }
 
-const MOBILE_DEFAULT_DISPLAY_COUNT = 6
+const MOBILE_DEFAULT_DISPLAY_COUNT = 8
 
 function MobileModal<T>({
   wallets,
@@ -183,7 +183,7 @@ function MobileModal<T>({
 function WalletSelect<T>({
   wallets,
   onClick,
-  displayCount = 6,
+  displayCount = 9,
 }: {
   wallets: WalletConfigV2<T>[]
   onClick: (wallet: WalletConfigV2<T>) => void

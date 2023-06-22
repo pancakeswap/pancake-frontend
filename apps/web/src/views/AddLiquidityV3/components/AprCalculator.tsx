@@ -18,8 +18,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { useRouter } from 'next/router'
-import { batch } from 'react-redux'
-import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -29,7 +27,11 @@ import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
+import { useAmountsByUsdValue } from '@pancakeswap/uikit/src/widgets/RoiCalculator/hooks'
+import { batch } from 'react-redux'
+import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import currencyId from 'utils/currencyId'
+import isPoolTickInRange from 'utils/isPoolTickInRange'
 import { useFarm } from 'hooks/useFarm'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
@@ -98,7 +100,7 @@ export function AprCalculator({
     address: poolAddress,
     chainId: pool?.token0.chainId,
   })
-  const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
+  const sqrtRatioX96 = useMemo(() => price && encodeSqrtRatioX96(price.numerator, price.denominator), [price])
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
@@ -106,17 +108,27 @@ export function AprCalculator({
   const tokenA = (baseCurrency ?? undefined)?.wrapped
   const tokenB = (quoteCurrency ?? undefined)?.wrapped
 
-  const inverted = Boolean(tokenA && tokenB && tokenA?.address !== tokenB?.address && tokenB.sortsBefore(tokenA))
+  const inverted = useMemo(
+    () => Boolean(tokenA && tokenB && tokenA?.address !== tokenB?.address && tokenB.sortsBefore(tokenA)),
+    [tokenA, tokenB],
+  )
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
-  const currencyAUsdPrice = baseUSDPrice
-    ? parseFloat(formatPrice(baseUSDPrice, 6) || '0')
-    : deriveUSDPrice(quoteUSDPrice, price?.baseCurrency.equals(quoteCurrency?.wrapped) ? price : price?.invert())
-  const currencyBUsdPrice =
-    baseUSDPrice &&
-    (deriveUSDPrice(baseUSDPrice, price?.baseCurrency.equals(baseCurrency?.wrapped) ? price : price?.invert()) ||
-      parseFloat(formatPrice(quoteUSDPrice, 6) || '0'))
+  const currencyAUsdPrice = useMemo(
+    () =>
+      baseUSDPrice
+        ? parseFloat(formatPrice(baseUSDPrice, 6) || '0')
+        : deriveUSDPrice(quoteUSDPrice, price?.baseCurrency.equals(quoteCurrency?.wrapped) ? price : price?.invert()),
+    [baseUSDPrice, quoteUSDPrice, price, quoteCurrency?.wrapped],
+  )
+  const currencyBUsdPrice = useMemo(
+    () =>
+      baseUSDPrice &&
+      (deriveUSDPrice(baseUSDPrice, price?.baseCurrency.equals(baseCurrency?.wrapped) ? price : price?.invert()) ||
+        parseFloat(formatPrice(quoteUSDPrice, 6) || '0')),
+    [baseUSDPrice, quoteUSDPrice, price, baseCurrency?.wrapped],
+  )
 
   const depositUsd = useMemo(
     () =>
@@ -136,9 +148,22 @@ export function AprCalculator({
 
   const applyProtocolFee = defaultDepositUsd ? undefined : protocolFee
 
-  const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0)
-  const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1)
+  const { amountA: aprAmountA, amountB: aprAmountB } = useAmountsByUsdValue({
+    usdValue: '1',
+    currencyA: inverted ? tokenB : tokenA,
+    currencyB: inverted ? tokenA : tokenB,
+    price,
+    priceLower,
+    priceUpper,
+    sqrtRatioX96,
+    currencyAUsdPrice: inverted ? currencyBUsdPrice : currencyAUsdPrice,
+    currencyBUsdPrice: inverted ? currencyAUsdPrice : currencyBUsdPrice,
+  })
+
+  const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || aprAmountA
+  const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || aprAmountB
   const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
+  const inRange = isPoolTickInRange(pool, tickLower, tickUpper)
   const { apr } = useRoi({
     tickLower,
     tickUpper,
@@ -172,7 +197,7 @@ export function AprCalculator({
     [existingPosition, validAmountA, validAmountB, tickUpper, tickLower, sqrtRatioX96],
   )
   const { positionFarmApr, positionFarmAprFactor } = useMemo(() => {
-    if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1) {
+    if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1 || !inRange) {
       return {
         positionFarmApr: '0',
         positionFarmAprFactor: new BigNumber(0),
@@ -201,7 +226,7 @@ export function AprCalculator({
         totalStakedLiquidity: lmPoolLiquidity,
       }),
     }
-  }, [farm, cakePrice, positionLiquidity, amount0, amount1])
+  }, [farm, cakePrice, positionLiquidity, amount0, amount1, inRange])
 
   // NOTE: Assume no liquidity when opening modal
   const { onFieldAInput, onBothRangeInput, onSetFullRange } = useV3MintActionHandlers(false)

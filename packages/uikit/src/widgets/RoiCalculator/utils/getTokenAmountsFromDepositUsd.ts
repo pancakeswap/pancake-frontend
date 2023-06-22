@@ -43,18 +43,20 @@ export function getTokenAmountsFromDepositUsd({
   const token0 = isToken0 ? currencyA : currencyB;
   const token1 = isToken0 ? currencyB : currencyA;
   const p = parseFloat(String(price));
+  const sqrtP = Math.sqrt(p);
   const pl = parseFloat(String(priceLower));
+  const sqrtPl = Math.sqrt(pl);
   const pu = parseFloat(String(priceUpper));
+  const sqrtPu = Math.sqrt(pu);
   const priceUSDX = isToken0 ? currencyAUsdPrice : currencyBUsdPrice;
   const priceUSDY = isToken0 ? currencyBUsdPrice : currencyAUsdPrice;
-  const deltaL =
-    usdAmount / ((Math.sqrt(p) - Math.sqrt(pl)) * priceUSDY + (1 / Math.sqrt(p) - 1 / Math.sqrt(pu)) * priceUSDX);
+  const deltaL = usdAmount / ((sqrtP - sqrtPl) * priceUSDY + (1 / sqrtP - 1 / sqrtPu) * priceUSDX);
 
-  let deltaY = deltaL * (Math.sqrt(p) - Math.sqrt(pl));
+  let deltaY = deltaL * (sqrtP - sqrtPl);
   if (deltaY * priceUSDY < 0) deltaY = 0;
   if (deltaY * priceUSDY > usdAmount) deltaY = usdAmount / priceUSDY;
 
-  let deltaX = deltaL * (1 / Math.sqrt(p) - 1 / Math.sqrt(pu));
+  let deltaX = deltaL * (1 / sqrtP - 1 / sqrtPu);
   if (deltaX * priceUSDX < 0) deltaX = 0;
   if (deltaX * priceUSDX > usdAmount) deltaX = usdAmount / priceUSDX;
 

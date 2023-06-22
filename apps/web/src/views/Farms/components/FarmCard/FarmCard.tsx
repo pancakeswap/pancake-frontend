@@ -1,7 +1,6 @@
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text, useModalV2 } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -10,16 +9,14 @@ import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
-import { unwrappedToken } from 'utils/wrappedCurrency'
-import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
-import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { unwrappedToken } from 'utils/wrappedCurrency'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
+import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
-
-import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 const { DetailsSection } = FarmUI.FarmCard
 
@@ -89,7 +86,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/v2/${liquidityUrlPathParts}`
   const { lpAddress, stableSwapAddress, stableLpFee } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
-  const { stakedBalance, proxy, tokenBalance } = farm?.userData || {}
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {
@@ -113,7 +109,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
-          boosted={farm.boosted}
+          boosted={false}
           isStable={farm.isStable}
           version={2}
           pid={farm.pid}
@@ -126,7 +122,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             <Text style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
                 <>
-                  {farm.boosted ? (
+                  {/* {farm.boosted ? (
                     <BoostedApr
                       mr="4px"
                       lpRewardsApr={farm.lpRewardsApr}
@@ -139,7 +135,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                           : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
                       }
                     />
-                  ) : null}
+                  ) : null} */}
                   <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}
@@ -152,9 +148,9 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     apr={farm.apr}
                     displayApr={displayApr}
                     lpRewardsApr={farm.lpRewardsApr}
-                    strikethrough={farm.boosted}
+                    strikethrough={false}
                     useTooltipText
-                    boosted={farm.boosted}
+                    boosted={false}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
                     farmCakePerSecond={farmCakePerSecond}

@@ -85,6 +85,7 @@ export type ComputedFarmConfigV3 = {
 
   token0: Token
   token1: Token
+  isCommunity?: boolean
 }
 
 export type SerializedComputedFarmConfigV3 = ComputedFarmConfigV3 & {
@@ -106,6 +107,7 @@ export type FarmConfigV3 = {
   token0: Token
   token1: Token
   feeAmount: FeeAmount
+  isCommunity?: boolean
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig

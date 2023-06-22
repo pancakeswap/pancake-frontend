@@ -89,24 +89,26 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
           <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
         </ButtonMenu>
       </MenuWrapper>
-      <Flex
-        mb="24px"
-        alignItems="center"
-        ml={['20px', '20px', '20px', '20px', '-4px']}
-        onClick={() => setConfirmed(!confirmed)}
-        style={{ cursor: 'pointer' }}
-      >
-        <Checkbox
-          scale="sm"
-          name="confirmed"
-          type="checkbox"
-          checked={confirmed}
-          onChange={() => setConfirmed(!confirmed)}
-        />
-        <Text ml="8px" style={{ userSelect: 'none' }}>
-          {t('Show pairs with trading rewards')}
-        </Text>
-      </Flex>
+      {tokenPairs.length > 0 && (
+        <Flex
+          mb="24px"
+          alignItems="center"
+          ml={['20px', '20px', '20px', '20px', '-4px']}
+          onClick={() => setConfirmed(!confirmed)}
+          style={{ cursor: 'pointer' }}
+        >
+          <Checkbox
+            scale="sm"
+            name="confirmed"
+            type="checkbox"
+            checked={confirmed}
+            onChange={() => setConfirmed(!confirmed)}
+          />
+          <Text ml="8px" style={{ userSelect: 'none' }}>
+            {t('Show pairs with trading rewards')}
+          </Text>
+        </Flex>
+      )}
       {index === 0 ? (
         <TokenTable
           tokenDatas={filterFormattedTokens}

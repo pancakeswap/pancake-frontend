@@ -1520,11 +1520,11 @@ export const bscTokens = {
     'Venus Reward Token',
     'https://venus.io/',
   ),
-  tusd: new ERC20Token(
+  deprecated_tusd: new ERC20Token(
     ChainId.BSC,
     '0x14016E85a25aeb13065688cAFB43044C2ef86784',
     18,
-    'TUSD',
+    'TUSDOLD',
     'Binance-Peg TrueUSD Token',
     'https://www.trueusd.com/',
   ),
@@ -2601,5 +2601,29 @@ export const bscTokens = {
     'PEPE',
     'Pepe',
     'https://www.pepe.vip/',
+  ),
+  cgpt: new ERC20Token(
+    ChainId.BSC,
+    '0x9840652DC04fb9db2C43853633f0F62BE6f00f98',
+    18,
+    'CGPT',
+    'ChainGPT',
+    'https://www.chaingpt.org/',
+  ),
+  play: new ERC20Token(
+    ChainId.BSC,
+    '0xD069599E718f963bD84502b49ba8F8657fAF5B3a',
+    18,
+    'PLAY',
+    'PLAY',
+    'https://xcadnetwork.com/play',
+  ),
+  tusd: new ERC20Token(
+    ChainId.BSC,
+    '0x40af3827F39D0EAcBF4A168f8D4ee67c121D11c9',
+    18,
+    'TUSD',
+    'TrueUSD',
+    'https://tusd.io/',
   ),
 }

@@ -22,6 +22,7 @@ const affiliateInfo = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const result = await response.json()
+
   return res.status(200).json(result)
 }
 

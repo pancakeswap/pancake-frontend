@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
+import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import { useMenuItems } from './hooks/useMenuItems'
@@ -25,7 +26,12 @@ const Menu = (props) => {
   const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const [onUSCitizenModalPresent] = useModal(<USCitizenConfirmModal />, true, false, 'usCitizenConfirmModal')
+  const [onUSCitizenModalPresent] = useModal(
+    <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
+    true,
+    false,
+    'usCitizenConfirmModal',
+  )
   const [showPhishingWarningBanner] = usePhishingBanner()
 
   const menuItems = useMenuItems(onUSCitizenModalPresent)

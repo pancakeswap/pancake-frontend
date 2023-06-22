@@ -95,6 +95,9 @@ export const V3_TOKEN_POOL_SELECTOR_CONFIG: TokenPoolSelectorConfigChainMap = {
     [bscTokens.ankrETH.address]: {
       topNTokenInOut: 4,
     },
+    [bscTokens.wbeth.address]: {
+      topNSecondHop: 3,
+    },
   },
 }
 

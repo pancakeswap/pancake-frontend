@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
-import { multiChainId } from 'state/info/constant'
+import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -94,9 +94,11 @@ const SORT_FIELD = {
 const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) => {
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
-  const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-  const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const chainName = useChainNameByQuery()
+  const token0Symbol = subgraphTokenSymbol[transaction.token0Address.toLowerCase()] ?? transaction.token0Symbol
+  const token1Symbol = subgraphTokenSymbol[transaction.token1Address.toLowerCase()] ?? transaction.token1Symbol
+  const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
+  const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 
   return (
     <ResponsiveGrid>
@@ -106,18 +108,18 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
       >
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
-            ? `Add ${transaction.token0Symbol} and ${transaction.token1Symbol}`
+            ? `Add ${token0Symbol} and ${token1Symbol}`
             : transaction.type === TransactionType.SWAP
             ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
-            : `Remove ${transaction.token0Symbol} and ${transaction.token1Symbol}`}
+            : `Remove ${token0Symbol} and ${token1Symbol}`}
         </Text>
       </LinkExternal>
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs0)}  ${transaction.token0Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs1)}  ${transaction.token1Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
         <LinkExternal

@@ -14,12 +14,18 @@ import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
-  onStake: () => void
-  onUnstake: () => void
-  onHarvest: () => void
+  onStake: () => Promise<void>
+  onUnstake: () => Promise<void>
+  onHarvest: () => Promise<void>
 }
 
-const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContainerChildrenProps => {
+const useFarmV3Actions = ({
+  tokenId,
+  onDone,
+}: {
+  tokenId: string
+  onDone?: () => void
+}): FarmV3ActionContainerChildrenProps => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
@@ -41,7 +47,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       to: masterChefV3Address,
       data: calldata,
       value: hexToBigInt(value),
-      chain: signer.chain,
+      chain: signer?.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
@@ -55,6 +61,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       }),
     )
     if (resp?.status) {
+      onDone?.()
       toastSuccess(
         `${t('Unstaked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -72,6 +79,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     t,
     toastSuccess,
     tokenId,
+    onDone,
   ])
 
   const onStake = useCallback(async () => {
@@ -86,7 +94,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
       data: calldata,
       value: hexToBigInt(value),
       account,
-      chain: signer.chain,
+      chain: signer?.chain,
     }
 
     const resp = await fetchWithCatchTxError(() =>
@@ -101,6 +109,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     )
 
     if (resp?.status) {
+      onDone?.()
       toastSuccess(
         `${t('Staked')}!`,
         <ToastDescriptionWithTx txHash={resp.transactionHash}>
@@ -119,6 +128,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
     t,
     toastSuccess,
     tokenId,
+    onDone,
   ])
 
   const onHarvest = useCallback(async () => {
@@ -140,7 +150,7 @@ const useFarmV3Actions = ({ tokenId }: { tokenId: string }): FarmV3ActionContain
           const newTxn = {
             ...txn,
             account,
-            chain: signer.chain,
+            chain: signer?.chain,
             gas: calculateGasMargin(estimate),
           }
 
@@ -198,7 +208,7 @@ export function useFarmsV3BatchHarvest() {
         value: hexToBigInt(value),
         account,
       }
-      const publicClient = getViemClients({ chainId: signer.chain.id })
+      const publicClient = getViemClients({ chainId: signer?.chain?.id })
 
       const resp = await fetchWithCatchTxError(() =>
         publicClient.estimateGas(txn).then((estimate) => {
