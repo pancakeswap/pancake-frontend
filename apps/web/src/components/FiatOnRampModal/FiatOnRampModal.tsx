@@ -32,14 +32,14 @@ interface FiatOnRampProps {
 interface FetchResponse {
   urlWithSignature: string
 }
-const MOONPAY_SUPPORTED_CURRENCY_CODES = ['eth']
+const MOONPAY_SUPPORTED_CURRENCY_CODES = ['usdc', 'usdt', 'dai']
 const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
   return (
     <Flex
       justifyContent="center"
       alignItems="center"
       style={{
-        height: '630px',
+        height: '677px',
         width: '100%',
         background: `${theme.isDark ? '#27262C' : 'white'}`,
         position: 'absolute',
@@ -77,7 +77,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        // showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
+        showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
         walletAddresses: JSON.stringify(
           MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
             (acc, currencyCode) => ({
@@ -263,7 +263,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '820px',
+          height: '750px',
           width: '400px',
           network: chainId === ChainId.ETHEREUM ? ChainId.ETHEREUM : ChainId.BSC,
           host: document.getElementById('mercuryo-widget'),
@@ -291,7 +291,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="700px" // height has to be overidden
+        height="750px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (

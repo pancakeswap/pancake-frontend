@@ -5,4 +5,5 @@ export interface LinkProps extends TextProps, AnchorHTMLAttributes<HTMLAnchorEle
   external?: boolean;
   isBscScan?: boolean;
   isAptosScan?: boolean;
+  showExternalIcon?: boolean;
 }
