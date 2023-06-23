@@ -144,7 +144,7 @@ export function BuyCryptoForm({
 
         <AssetSelect onCurrencySelect={handleInputSelect} currency={inputCurrency} />
         <Text color="textSubtle" fontSize="14px" px="4px">
-          {t('Proceed to get live aggregated quotes quotes from a variety of different fiat onramp providers.')}
+          {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
         </Text>
         <GetQuotesButton
           errorText={inputError}
