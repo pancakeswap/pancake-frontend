@@ -1,4 +1,4 @@
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 export const StyledBuyCryptoContainer = styled(Flex)`
@@ -6,11 +6,5 @@ export const StyledBuyCryptoContainer = styled(Flex)`
   height: fit-content;
   padding: 0 16px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 0 40px;
-  }
-`
-
-export const StyledInputCurrencyWrapper = styled(Box)`
-  width: 385px;
+  width: 420px;
 `

@@ -16,13 +16,7 @@ const config = (t) => [
         {t(
           'Different providers will support different currencies and payment methods in your region. Please refer to our',
         )}{' '}
-        <LinkExternal
-          style={{ display: 'inline-flex' }}
-          href="https://docs.pancakeswap.finance/products/buy-crypto"
-          showExternalIcon={false}
-        >
-          {t('documentation')}
-        </LinkExternal>{' '}
+        <InternalLink href="https://docs.pancakeswap.finance/products/buy-crypto">{t('documentation.')}</InternalLink>{' '}
         {t('or')}{' '}
         <LinkExternal
           style={{ display: 'inline-flex' }}
@@ -39,9 +33,7 @@ const config = (t) => [
     description: (
       <>
         {t('Please refer to our documentation')}{' '}
-        <LinkExternal href="https://docs.pancakeswap.finance/products/buy-crypto" showExternalIcon={false}>
-          {t('here.')}
-        </LinkExternal>
+        <InternalLink href="https://docs.pancakeswap.finance/products/buy-crypto">{t('here.')}</InternalLink>
       </>
     ),
   },
