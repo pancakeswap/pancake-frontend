@@ -32,7 +32,7 @@ interface FiatOnRampProps {
 interface FetchResponse {
   urlWithSignature: string
 }
-const MOONPAY_SUPPORTED_CURRENCY_CODES = ['usdc', 'usdt', 'dai']
+const MOONPAY_SUPPORTED_CURRENCY_CODES = ['eth', 'usdc', 'usdt', 'dai']
 const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
   return (
     <Flex
