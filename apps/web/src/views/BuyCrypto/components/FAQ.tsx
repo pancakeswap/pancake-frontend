@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, CardHeader, Heading, CardBody, Text, LinkExternal } from '@pancakeswap/uikit'
 
 import FoldableText from 'components/FoldableSection/FoldableText'
-import InternalLink from 'components/Links'
 
 const config = (t) => [
   {
@@ -16,7 +15,13 @@ const config = (t) => [
         {t(
           'Different providers will support different currencies and payment methods in your region. Please refer to our',
         )}{' '}
-        <InternalLink href="https://docs.pancakeswap.finance/products/buy-crypto">{t('documentation.')}</InternalLink>{' '}
+        <LinkExternal
+          style={{ display: 'inline-flex' }}
+          href="https://docs.pancakeswap.finance/products/buy-crypto"
+          showExternalIcon={false}
+        >
+          {t('documentation')}
+        </LinkExternal>{' '}
         {t('or')}{' '}
         <LinkExternal
           style={{ display: 'inline-flex' }}
@@ -33,7 +38,13 @@ const config = (t) => [
     description: (
       <>
         {t('Please refer to our documentation')}{' '}
-        <InternalLink href="https://docs.pancakeswap.finance/products/buy-crypto">{t('here.')}</InternalLink>
+        <LinkExternal
+          style={{ display: 'inline-flex' }}
+          href="https://docs.pancakeswap.finance/products/buy-crypto"
+          showExternalIcon={false}
+        >
+          {t('here.')}
+        </LinkExternal>
       </>
     ),
   },
