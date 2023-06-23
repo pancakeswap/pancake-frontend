@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
-import { fetchMercuryoQuote } from './useProviderQuotes'
+import { fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
 import { fetchMercuryoAvailability, fetchMoonpayAvailability } from './useProviderAvailability'
 import { MOONPAY_UNSUPPORTED_CURRENCY_CODES } from '../constants'
 
@@ -111,6 +111,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
     if (!chainId || !userIp) return
     try {
       const responsePromises = [
+        fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
         fetchMercuryoQuote({
           fiatCurrency: outputCurrency.toUpperCase(),
           cryptoCurrency: inputCurrency.toUpperCase(),

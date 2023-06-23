@@ -57,11 +57,6 @@ const config: (
           href: '/swap',
         },
         {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-          status: { text: t('New'), color: 'success' },
-        },
-        {
           label: t('Liquidity'),
           href: '/liquidity',
         },

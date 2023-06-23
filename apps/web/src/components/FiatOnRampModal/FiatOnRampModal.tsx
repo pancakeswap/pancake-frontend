@@ -10,8 +10,8 @@ import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
 import { MERCURYO_WIDGET_ID, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -32,14 +32,14 @@ interface FiatOnRampProps {
 interface FetchResponse {
   urlWithSignature: string
 }
-
+const MOONPAY_SUPPORTED_CURRENCY_CODES = ['eth']
 const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
   return (
     <Flex
       justifyContent="center"
       alignItems="center"
       style={{
-        height: '750px',
+        height: '630px',
         width: '100%',
         background: `${theme.isDark ? '#27262C' : 'white'}`,
         position: 'absolute',
@@ -77,7 +77,16 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        walletAddresses: account,
+        // showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
+        walletAddresses: JSON.stringify(
+          MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
+            (acc, currencyCode) => ({
+              ...acc,
+              [currencyCode]: account,
+            }),
+            {},
+          ),
+        ),
       }),
     })
     const result: FetchResponse = await res.json()
@@ -90,7 +99,7 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-binance-connect-sig`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -256,6 +265,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           signature: sig,
           height: '820px',
           width: '400px',
+          network: chainId === ChainId.ETHEREUM ? ChainId.ETHEREUM : ChainId.BSC,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
         })
@@ -281,7 +291,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="820px" // height has to be overidden
+        height="700px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (

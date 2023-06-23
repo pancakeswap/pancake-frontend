@@ -11,8 +11,6 @@ import { ProviderIcon } from 'views/BuyCrypto/Icons'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import Image from 'next/image'
-import formatLocaleNumber from 'utils/formatLocaleNumber'
-
 import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
 import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
 
@@ -29,15 +27,11 @@ const FeeItem = ({
   index,
 }: {
   feeTitle: string
-  feeAmount: number
+  feeAmount: string
   currency: string
   provider: string
   index: number
 }) => {
-  const {
-    currentLanguage: { locale },
-  } = useTranslation()
-
   if (provider === 'Mercuryo' && index === 1) return <></>
   return (
     <RowBetween>
@@ -45,7 +39,7 @@ const FeeItem = ({
         {feeTitle}
       </Text>
       <Text ml="4px" fontSize="14px" color="textSubtle">
-        {formatLocaleNumber({ number: feeAmount, locale })} {currency}
+        {feeAmount} {currency}
       </Text>
     </RowBetween>
   )
@@ -64,10 +58,7 @@ function AccordionItem({
   quote: ProviderQoute
   fetching: boolean
 }) {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const theme = useTheme()
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(109)
@@ -129,7 +120,7 @@ function AccordionItem({
         <CryptoCard padding="12px 12px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
             {quote.provider === 'Mercuryo' ? (
-              <Image src={!theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={15} />
+              <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={15} />
             ) : (
               <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
             )}
@@ -172,7 +163,7 @@ function AccordionItem({
           )}
 
           <Text ml="4px" fontSize="22px" color="secondary">
-            {formatLocaleNumber({ number: finalQuote, locale })} {buyCryptoState.INPUT.currencyId}
+            {finalQuote.toFixed(5)} {buyCryptoState.INPUT.currencyId}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
@@ -180,16 +171,16 @@ function AccordionItem({
             {buyCryptoState.INPUT.currencyId} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: quote.quote, locale })} {buyCryptoState.OUTPUT.currencyId}
+            = {quote.quote?.toFixed(4)} {buyCryptoState.OUTPUT.currencyId}
           </Text>
         </RowBetween>
 
         <DropdownWrapper ref={contentRef}>
           {FEE_TYPES.map((feeType: string, index: number) => {
-            let fee = 0
-            if (index === 0) fee = quote.networkFee + quote.providerFee
-            else if (index === 1) fee = quote.networkFee
-            else fee = quote.providerFee
+            let fee = '0'
+            if (index === 0) fee = (quote.networkFee + quote.providerFee).toFixed(3)
+            else if (index === 1) fee = quote.networkFee.toFixed(3)
+            else fee = quote.providerFee.toFixed(3)
             return (
               <FeeItem
                 key={feeType}
