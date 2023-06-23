@@ -2,10 +2,8 @@ import { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react'
 import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { CryptoFormView } from 'views/BuyCrypto/types'
 import { FormHeader } from './FormHeader'
-// eslint-disable-next-line import/no-cycle
-import { CryptoFormView } from '../index'
-// eslint-disable-next-line import/no-cycle
 import { ProviderQoute } from '../hooks/usePriceQuoter'
 import { FormContainer } from '../components/FormContainer'
 import Accordion from '../components/AccordianDropdown/Accordian'
@@ -53,8 +51,6 @@ export function CryptoQuoteForm({
   return (
     <>
       <FormHeader
-        refreshDisabled={false}
-        onRefresh={() => null}
         title={t('Select a Quote')}
         subTitle={t(`Quotes are updated every ${timer} seconds.`)}
         backTo={() => setModalView(CryptoFormView.Input)}
