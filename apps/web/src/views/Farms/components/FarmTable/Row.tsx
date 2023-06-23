@@ -3,25 +3,24 @@ import { useDelayedUnmount } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   DesktopColumnSchema,
-  Farm as FarmUI,
   FarmTableEarnedProps,
   FarmTableFarmTokenInfoProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
+  Farm as FarmUI,
   Flex,
   MobileColumnSchema,
-  useMatchBreakpoints,
   V3DesktopColumnSchema,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
-import BoostedApr from '../YieldBooster/components/BoostedApr'
+import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 import { ActionPanelV2, ActionPanelV3 } from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
-import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 
 const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount, StakedLiquidity } = FarmUI.FarmTable
@@ -156,8 +155,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '140px', gap: '4px' }}>
-                      {props[key] === 'community' && <FarmAuctionTag scale="sm" />}
+                    <CellInner style={{ minWidth: '140px', gap: '4px' }}>
+                      {(props[key] === 'community' || props?.farm?.isCommunity) && <FarmAuctionTag scale="sm" />}
                       {props.type === 'v2' ? (
                         props?.details?.isStable ? (
                           <StableFarmTag scale="sm" />
@@ -166,7 +165,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         )
                       ) : null}
                       {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
-                      {props?.details?.boosted ? <BoostedTag scale="sm" /> : null}
+                      {props?.details?.boosted && props.type === 'v3' ? <BoostedTag scale="sm" /> : null}
                     </CellInner>
                   </td>
                 )
@@ -197,8 +196,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   )
                 }
 
-                const { stakedBalance, proxy, tokenBalance } = props.details.userData
-
                 return (
                   <td key={key}>
                     <CellInner>
@@ -206,12 +203,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         <Apr
                           {...props.apr}
                           hideButton={isSmallerScreen}
-                          strikethrough={props?.details?.boosted}
-                          boosted={props?.details?.boosted}
+                          strikethrough={false}
+                          boosted={false}
                           farmCakePerSecond={multiplier.farmCakePerSecond}
                           totalMultipliers={multiplier.totalMultipliers}
                         />
-                        {props?.details?.boosted && userDataReady ? (
+                        {/* {props?.details?.boosted && userDataReady ? (
                           <BoostedApr
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
@@ -223,7 +220,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                                 : proxy.stakedBalance.plus(proxy.tokenBalance)
                             }
                           />
-                        ) : null}
+                        ) : null} */}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -250,29 +247,25 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             <FarmMobileCell colSpan={3}>
               <Flex justifyContent="space-between" alignItems="center">
                 <FarmCell {...props.farm} />
-
-                {props.type === 'community' ? (
-                  <FarmAuctionTag marginRight="16px" scale="sm" />
-                ) : (
-                  <Flex
-                    mr="16px"
-                    alignItems={isMobile ? 'end' : 'center'}
-                    flexDirection={isMobile ? 'column' : 'row'}
-                    style={{ gap: '4px' }}
-                  >
-                    {props.type === 'v2' ? (
-                      props?.details?.isStable ? (
-                        <StableFarmTag scale="sm" />
-                      ) : (
-                        <V2Tag scale="sm" />
-                      )
-                    ) : null}
-                    {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
-                    {props?.details?.boosted ? (
-                      <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
-                    ) : null}
-                  </Flex>
-                )}
+                <Flex
+                  mr="16px"
+                  alignItems={isMobile ? 'end' : 'center'}
+                  flexDirection={isMobile ? 'column' : 'row'}
+                  style={{ gap: '4px' }}
+                >
+                  {props.type === 'v2' ? (
+                    props?.details?.isStable ? (
+                      <StableFarmTag scale="sm" />
+                    ) : (
+                      <V2Tag scale="sm" />
+                    )
+                  ) : null}
+                  {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
+                  {props.type === 'community' || props?.farm?.isCommunity ? <FarmAuctionTag scale="sm" /> : null}
+                  {props?.details?.boosted && props.type === 'v3' ? (
+                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
+                  ) : null}
+                </Flex>
               </Flex>
             </FarmMobileCell>
           </tr>
@@ -299,7 +292,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         farmCakePerSecond={multiplier.farmCakePerSecond}
                         totalMultipliers={multiplier.totalMultipliers}
                       />
-                      {props?.details?.boosted && userDataReady ? (
+                      {/* {props?.details?.boosted && userDataReady ? (
                         <BoostedApr
                           lpRewardsApr={props?.apr?.lpRewardsApr}
                           apr={props?.apr?.originalValue}
@@ -313,7 +306,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                                 )
                           }
                         />
-                      ) : null}
+                      ) : null} */}
                     </>
                   )}
                 </CellLayout>

@@ -108,7 +108,7 @@ const MobileSubheading = styled.div`
   letter-spacing: 0.01em;
   color: #ffffff;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-  padding-right: 100px;
+  padding-right: 150px;
   margin-top: 5px;
   margin-bottom: 10px;
 `
@@ -176,7 +176,7 @@ const UnsDomainBanner = () => {
               {t('Get your custom branded subdomains .pancake.crypto for just $9.99')}
             </StyledSubheading>
           ) : (
-            <MobileSubheading>{t('Save 20% on Web3 Domains')}</MobileSubheading>
+            <MobileSubheading>{t('Subdomains .pancake.crypto for just $9.99')}</MobileSubheading>
           )}
 
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 16 }}>

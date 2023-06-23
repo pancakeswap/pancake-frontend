@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef } from "react";
 import get from "lodash/get";
+import { serialize } from "wagmi";
 import { Context } from "./ModalContext";
 import { Handler } from "./types";
 
@@ -15,6 +16,11 @@ const useModal = (
   const onPresentCallback = useCallback(() => {
     onPresent(currentModal.current, modalId, closeOnOverlayClick);
   }, [modalId, onPresent, closeOnOverlayClick]);
+  const onDismissCallback = useCallback(() => {
+    if (nodeId === modalId) {
+      onDismiss?.();
+    }
+  }, [modalId, onDismiss, nodeId]);
 
   // Updates the "modal" component if props are changed
   // Use carefully since it might result in unnecessary rerenders
@@ -30,13 +36,13 @@ const useModal = (
       // Do not try to replace JSON.stringify with isEqual, high risk of infinite rerenders
       // TODO: Find a good way to handle modal updates, this whole flow is just backwards-compatible workaround,
       // would be great to simplify the logic here
-      if (modalProps && oldModalProps && JSON.stringify(modalProps) !== JSON.stringify(oldModalProps)) {
+      if (modalProps && oldModalProps && serialize(modalProps) !== serialize(oldModalProps)) {
         setModalNode(modal);
       }
     }
   }, [updateOnPropsChange, nodeId, modalId, isOpen, modal, modalNode, setModalNode]);
 
-  return [onPresentCallback, onDismiss];
+  return [onPresentCallback, onDismissCallback];
 };
 
 export default useModal;

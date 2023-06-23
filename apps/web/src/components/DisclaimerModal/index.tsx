@@ -80,7 +80,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   }, [onSuccess, onDismiss])
 
   return (
-    <ModalContainer title={modalHeader || t('Welcome!')} minWidth="320px" id={id}>
+    <ModalContainer title={modalHeader || t('Welcome!')} style={{ minWidth: '320px' }} id={id}>
       <GradientModalHeader>
         <ModalTitle>
           <Heading scale="lg">{modalHeader || t('Welcome!')}</Heading>

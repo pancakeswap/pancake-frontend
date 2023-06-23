@@ -18,6 +18,8 @@ const assignError = (maybeError: any) => {
   return maybeError
 }
 
+const possibleRejectMessage = ['Cancelled by User', 'cancel', 'Transaction was rejected']
+
 // provider user rejected error code
 export const isUserRejected = (err) => {
   if (err instanceof UserRejectedRequestError) {
@@ -25,7 +27,7 @@ export const isUserRejected = (err) => {
   }
   if (err instanceof UnknownRpcError) {
     // fallback for some wallets that don't follow EIP 1193, trust, safe
-    if (err.details?.includes('cancel') || err.details?.includes('Transaction was rejected')) {
+    if (possibleRejectMessage.some((msg) => err.details?.includes(msg))) {
       return true
     }
   }

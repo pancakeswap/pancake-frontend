@@ -13,7 +13,7 @@ const Earned: React.FunctionComponent<React.PropsWithChildren<EarnedPropsWithLoa
   const amount = earnings > 0 ? earnings : 0;
 
   if (userDataReady) {
-    return <Amount amount={amount}>{amount.toLocaleString()}</Amount>;
+    return <Amount amount={amount}>{amount?.toLocaleString("en-US", { maximumFractionDigits: 4 })}</Amount>;
   }
   return (
     <Amount amount={0}>

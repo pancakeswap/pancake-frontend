@@ -46,11 +46,11 @@ const PreviousRoundCardFooter: React.FC<
 
   const getTotalUsers = (): string => {
     if (!lotteryGraphDataFromState && fetchedLotteryGraphData) {
-      return fetchedLotteryGraphData?.totalUsers?.toLocaleString()
+      return fetchedLotteryGraphData?.totalUsers
     }
 
     if (lotteryGraphDataFromState) {
-      return lotteryGraphDataFromState?.totalUsers?.toLocaleString()
+      return lotteryGraphDataFromState?.totalUsers
     }
 
     return null

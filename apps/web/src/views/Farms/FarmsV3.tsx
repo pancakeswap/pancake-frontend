@@ -4,6 +4,7 @@ import {
   FarmWithStakedValue,
   filterFarmsByQuery,
 } from '@pancakeswap/farms'
+import { ChainId } from '@pancakeswap/sdk'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
@@ -33,18 +34,20 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms/hooks'
-import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
+import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import styled from 'styled-components'
 import { getFarmApr } from 'utils/apr'
+
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsV3Context } from './context'
+import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 
 const BIG_INT_ZERO = new BigNumber(0)
 const BIG_INT_ONE = new BigNumber(1)
@@ -192,7 +195,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     poolLength: v3PoolLength,
     isLoading,
     userDataLoaded: v3UserDataLoaded,
-  } = useFarmsV3WithPositions({ mockApr })
+  } = useFarmsV3WithPositionsAndBooster({ mockApr })
 
   const farmsLP: V2AndV3Farms = useMemo(() => {
     return [
@@ -331,7 +334,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2) ||
-          (boostedOnly && farm.boosted) ||
+          (boostedOnly && farm.boosted && farm.version === 3) ||
           (stableSwapOnly && farm.isStable),
       )
 
@@ -453,12 +456,12 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Button>
               </NextLinkFromReactRouter>
             </Box>
-            {/* After boosted enable */}
-            {/* {chainId === ChainId.BSC && (
+
+            {(chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && (
               <Box>
                 <BCakeBoosterCard />
               </Box>
-            )} */}
+            )}
           </FarmFlexWrapper>
         </Flex>
       </PageHeader>

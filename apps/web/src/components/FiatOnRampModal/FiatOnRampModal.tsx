@@ -8,7 +8,10 @@ import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
-import { MOONPAY_SUPPORTED_CURRENCY_CODES, SUPPORTED_MERCURYO_FIAT_CURRENCIES } from 'views/BuyCrypto/constants'
+import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
+import { MERCURYO_WIDGET_ID, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -36,7 +39,7 @@ const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
       justifyContent="center"
       alignItems="center"
       style={{
-        height: '630px',
+        height: '750px',
         width: '100%',
         background: `${theme.isDark ? '#27262C' : 'white'}`,
         position: 'absolute',
@@ -61,7 +64,7 @@ const fetchMoonPaySignedUrl = async (
   account: string,
 ) => {
   try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -74,16 +77,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        // showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
-        walletAddresses: JSON.stringify(
-          MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
-            (acc, currencyCode) => ({
-              ...acc,
-              [currencyCode]: account,
-            }),
-            {},
-          ),
-        ),
+        walletAddresses: account,
       }),
     })
     const result: FetchResponse = await res.json()
@@ -96,7 +90,7 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -185,11 +179,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   amount,
   provider,
 }) {
+  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
+
   const [error, setError] = useState<boolean | string | null>(false)
   const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
   const [sig, setSig] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const theme = useTheme()
   const account = useAccount()
@@ -226,7 +223,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`https://pcs-onramp-api.com/generate-mercuryo-sig?walletAddress=${account.address}`, {
+        const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-mercuryo-sig?walletAddress=${account.address}`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -245,25 +242,37 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   useEffect(() => {
     if (provider === 'Mercuryo') {
-      if (sig) {
+      if (sig && window?.mercuryoWidget) {
         // @ts-ignore
-        const MC_WIDGET = mercuryoWidget
+        const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '293d4864-20ca-4b46-965b-2544b97cbbf5',
+          widgetId: MERCURYO_WIDGET_ID,
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
+          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '700px',
+          height: '820px',
           width: '400px',
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
         })
       }
     } else fetchSignedIframeUrl()
-  }, [fetchSignedIframeUrl, provider, sig, account.address, amount, inputCurrency, outputCurrency, theme])
+  }, [
+    fetchSignedIframeUrl,
+    provider,
+    sig,
+    account.address,
+    amount,
+    inputCurrency,
+    outputCurrency,
+    theme,
+    scriptLoaded,
+    chainId,
+  ])
 
   return (
     <>
@@ -272,7 +281,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="700px" // height has to be overidden
+        height="820px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (
@@ -297,8 +306,13 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             />
           </>
         )}
-        <Script src="https://widget.mercuryo.io/embed.2.0.js" />
       </Modal>
+      <Script
+        src="https://widget.mercuryo.io/embed.2.0.js"
+        onLoad={() => {
+          setScriptOnLoad(true)
+        }}
+      />
     </>
   )
 })

@@ -1,44 +1,22 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import throttle from 'lodash/throttle'
 import { useMemo } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { Box, Row, Text } from '@pancakeswap/uikit'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import InternalLink from 'components/Links'
+import { useTranslation } from '@pancakeswap/localization'
 
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { useCurrencyBalances } from 'state/wallet/hooks'
-import { Field } from 'state/swap/actions'
-import { useSwapState } from 'state/swap/hooks'
-import { useAllOnRampTokens, useCurrency } from 'hooks/Tokens'
-import useNativeCurrency from 'hooks/useNativeCurrency'
+import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
+import { useCheckInsufficientError } from './hooks/useCheckSufficient'
+import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
+import { MMCommitButton } from './containers/MMCommitButton'
 import { useSwapBestTrade } from './hooks'
 
-import { MMCommitButton } from './containers/MMCommitButton'
-import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
-
 export function V3SwapForm() {
-  const { account } = useWeb3React()
-  const { t } = useTranslation()
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
-  const {
-    independentField,
-    typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
-  } = useSwapState()
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
-  const native = useNativeCurrency()
-  const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
-  const onRampCurrencies = useAllOnRampTokens()
-
-  const doesSelectedTokenSupportOnRamp = Boolean(
-    onRampCurrencies[inputCurrency?.symbol] || native.symbol === inputCurrencyId,
-  )
-
+  const { t } = useTranslation()
   const mm = useDerivedBestTradeWithMM(trade)
   const throttledHandleRefresh = useMemo(
     () =>
@@ -52,6 +30,8 @@ export function V3SwapForm() {
 
   const tradeLoaded = !isLoading
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
+
+  const insufficientFundCurrency = useCheckInsufficientError(trade)
 
   return (
     <>
@@ -68,19 +48,13 @@ export function V3SwapForm() {
             <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
           )
         }
-        inputBalance={inputBalance}
-        inputCurrencyId={inputCurrencyId}
-        outputCurrencyId={outputCurrencyId}
-        inputCurrency={inputCurrency}
-        outputCurrency={outputCurrency}
-        typedValue={typedValue}
-        independentField={independentField}
       />
-      {doesSelectedTokenSupportOnRamp && typedValue !== '' && Number(inputBalance.toFixed(7)) < Number(typedValue) ? (
+
+      {insufficientFundCurrency && SUPPORTED_ONRAMP_TOKENS.includes(insufficientFundCurrency.symbol) ? (
         <Row alignItems="center" justifyContent="center" mb="4px">
           <Text fontSize="14px">
             Insufficent Funds?{' '}
-            <InternalLink href={`/buy-crypto?inputCurrency=${inputCurrency.symbol}`}>
+            <InternalLink href={`/buy-crypto?inputCurrency=${insufficientFundCurrency.symbol}`}>
               {t('Buy Crypto here.')}
             </InternalLink>
           </Text>

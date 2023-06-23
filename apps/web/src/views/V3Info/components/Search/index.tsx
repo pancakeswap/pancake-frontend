@@ -5,7 +5,7 @@ import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { checkIsStableSwap } from 'state/info/constant'
+import { checkIsStableSwap, subgraphTokenName, subgraphTokenSymbol } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -213,7 +213,7 @@ const Search = () => {
   const [showWatchlist, setShowWatchlist] = useState(false)
   const tokensForList = useMemo(() => {
     if (showWatchlist) {
-      return watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, value))
+      return watchListTokenData?.filter((token) => tokenIncludesSearchTerm(token, value))
     }
     return orderBy(tokens, (token) => token.volumeUSD, 'desc')
   }, [showWatchlist, tokens, watchListTokenData, value])
@@ -323,7 +323,9 @@ const Search = () => {
                     <Flex>
                       <CurrencyLogo address={token.address} chainName={chainName} />
                       <Text ml="10px">
-                        <Text>{`${token.name} (${token.symbol})`}</Text>
+                        <Text>{`${subgraphTokenName[token.address] ?? token.name} (${
+                          subgraphTokenSymbol[token.address] ?? token.symbol
+                        })`}</Text>
                       </Text>
                       {/* <SaveIcon
                         id="watchlist-icon"
@@ -390,7 +392,9 @@ const Search = () => {
                         chainName={chainName}
                       />
                       <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
-                        <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
+                        <Text>{`${subgraphTokenSymbol[p.token0.address] ?? p.token0.symbol} / ${
+                          subgraphTokenSymbol[p.token1.address] ?? p.token1.symbol
+                        }`}</Text>
                       </Text>
                       <GreyBadge ml="10px" style={{ fontSize: 14 }}>
                         {feeTierPercent(p.feeTier)}

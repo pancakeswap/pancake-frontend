@@ -1,5 +1,18 @@
 # @pancakeswap/v3-sdk
 
+## 3.0.0
+
+### Major Changes
+
+- 938aa75f5: Migrate ethers to viem
+
+### Patch Changes
+
+- e8a1a97a3: fix: Crash when single asset deposit
+- Updated dependencies [938aa75f5]
+  - @pancakeswap/sdk@5.0.0
+  - @pancakeswap/tokens@0.1.3
+
 ## 2.0.0
 
 ### Major Changes

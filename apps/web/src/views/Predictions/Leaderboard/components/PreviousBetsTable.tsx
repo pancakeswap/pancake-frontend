@@ -83,7 +83,7 @@ const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps
               return (
                 <tr key={bet.id}>
                   <Td textAlign="center" fontWeight="bold">
-                    {bet.round.epoch.toLocaleString()}
+                    {bet.round.epoch}
                   </Td>
                   <Td textAlign="center">
                     <PositionLabel position={bet.position} />

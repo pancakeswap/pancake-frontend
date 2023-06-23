@@ -12,7 +12,7 @@ const LpAmount: React.FunctionComponent<React.PropsWithChildren<EarnedPropsWithL
 }) => {
   const amountDisplay = amount > 0 ? amount : 0;
   if (userDataReady) {
-    return <Amount amount={amountDisplay}>{`${amountDisplay.toLocaleString()} LP`}</Amount>;
+    return <Amount amount={amountDisplay}>{`${amountDisplay} LP`}</Amount>;
   }
   return (
     <Amount amount={0}>

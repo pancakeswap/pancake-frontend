@@ -114,7 +114,8 @@ export function RoiCalculator({
 }: RoiCalculatorProps) {
   const { isMobile } = useMatchBreakpoints();
   const { t } = useTranslation();
-  const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
+  const stringDepositAmount = useMemo(() => String(depositAmountInUsd), [depositAmountInUsd]);
+  const [usdValue, setUsdValue] = useState(stringDepositAmount === "0" ? "100" : stringDepositAmount);
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(3);
@@ -262,10 +263,13 @@ export function RoiCalculator({
     }
   }, [amountA, amountB, priceRange, sqrtRatioX96, farmingRewardsEnabled, cakeAprFactor, tickCurrent, usdValue]);
 
-  const editedCakeApr =
-    derivedCakeApr && typeof cakePriceDiffPercent === "number"
-      ? derivedCakeApr.times(cakePriceDiffPercent)
-      : derivedCakeApr;
+  const editedCakeApr = useMemo(
+    () =>
+      derivedCakeApr && typeof cakePriceDiffPercent === "number"
+        ? derivedCakeApr.times(cakePriceDiffPercent)
+        : derivedCakeApr,
+    [cakePriceDiffPercent, derivedCakeApr]
+  );
 
   const { fee, rate, apr, apy, cakeApr, cakeApy, editCakeApr, editCakeApy, cakeRate, cakeReward, originalCakeReward } =
     useRoi({
@@ -302,8 +306,11 @@ export function RoiCalculator({
     [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
   );
 
-  const totalRate = parseFloat(formatPercent(rate?.add(cakeRate || ZERO_PERCENT), 12) ?? "0");
-  const lpReward = parseFloat(formatFraction(fee, 12) ?? "0");
+  const totalRate = useMemo(
+    () => parseFloat(formatPercent(rate?.add(cakeRate || ZERO_PERCENT), 12) ?? "0"),
+    [cakeRate, rate]
+  );
+  const lpReward = useMemo(() => parseFloat(formatFraction(fee, 12) ?? "0"), [fee]);
   const farmReward = cakeReward;
   const totalReward = lpReward + farmReward;
 

@@ -115,3 +115,8 @@ export type MercuryoQuote = {
 }
 
 export type PriceQuotes = Account & Currency & Quote
+
+export enum CryptoFormView {
+  Input,
+  Quote,
+}

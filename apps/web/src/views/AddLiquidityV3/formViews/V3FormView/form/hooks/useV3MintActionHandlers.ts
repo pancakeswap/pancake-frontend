@@ -16,7 +16,7 @@ export function useV3MintActionHandlers(
   routerReplace = true, // TODO: remove this when we have a better way to handle the router
 ): {
   onSetFullRange: () => void
-  onFieldAInput: (typedValue: string) => void
+  onFieldAInput: (typedValue: string | undefined) => void
   onFieldBInput: (typedValue: string) => void
   onLeftRangeInput: (typedValue: string) => void
   onRightRangeInput: (typedValue: string) => void

@@ -17,12 +17,6 @@ import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
 import { WrongNetworkModal } from 'components/WrongNetworkModal'
 
-// @ts-ignore
-// eslint-disable-next-line func-names
-BigInt.prototype.toJSON = function () {
-  return this.toString()
-}
-
 // This config is required for number formatting
 BigNumber.config({
   EXPONENTIAL_AT: 1000,

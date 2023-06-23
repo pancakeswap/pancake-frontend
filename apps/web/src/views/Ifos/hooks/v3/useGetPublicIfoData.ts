@@ -97,50 +97,64 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
       const client = publicClient({ chainId: ChainId.BSC })
-      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
-        await client.multicall({
-          contracts: [
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'startBlock',
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'endBlock',
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'viewPoolInformation',
-              args: [0n],
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'viewPoolInformation',
-              args: [1n],
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'viewPoolTaxRateOverflow',
-              args: [1n],
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'numberPoints',
-            },
-            {
-              abi: ifoV2ABI,
-              address,
-              functionName: 'thresholdPoints',
-            },
-          ],
-          allowFailure: false,
-        })
+      const [
+        startBlock,
+        endBlock,
+        poolBasic,
+        poolUnlimited,
+        taxRate,
+        numberPoints,
+        thresholdPoints,
+        privateSaleTaxRate,
+      ] = await client.multicall({
+        contracts: [
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'startBlock',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'endBlock',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolInformation',
+            args: [0n],
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolInformation',
+            args: [1n],
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolTaxRateOverflow',
+            args: [1n],
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'numberPoints',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'thresholdPoints',
+          },
+          {
+            abi: ifoV2ABI,
+            address,
+            functionName: 'viewPoolTaxRateOverflow',
+            args: [0n],
+          },
+        ],
+        allowFailure: false,
+      })
 
       const [admissionProfile, pointThreshold, vestingStartTime, basicVestingInformation, unlimitedVestingInformation] =
         await client.multicall({
@@ -182,6 +196,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       const startBlockNum = startBlock ? Number(startBlock) : 0
       const endBlockNum = endBlock ? Number(endBlock) : 0
       const taxRateNum = taxRate ? new BigNumber(taxRate.toString()).div(TAX_PRECISION).toNumber() : 0
+      const privateSaleTaxRateNum = privateSaleTaxRate
+        ? new BigNumber(privateSaleTaxRate.toString()).div(TAX_PRECISION).toNumber()
+        : 0
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
@@ -199,7 +216,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         poolBasic: {
           ...poolBasicFormatted,
-          taxRate: 0,
+          taxRate: privateSaleTaxRateNum,
           distributionRatio: round(
             poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
             ROUND_DIGIT,
@@ -225,7 +242,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         blocksRemaining,
         startBlockNum,
         endBlockNum,
-        thresholdPoints: thresholdPoints && thresholdPoints,
+        thresholdPoints,
         numberPoints: numberPoints ? Number(numberPoints) : 0,
         plannedStartTime: plannedStartTime ?? 0,
         vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,

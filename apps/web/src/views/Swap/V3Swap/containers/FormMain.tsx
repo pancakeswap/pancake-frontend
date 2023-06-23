@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useMemo, ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, ERC20Token, Percent } from '@pancakeswap/sdk'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { useDefaultsFromURLSearch } from 'state/swap/hooks'
+import { useDefaultsFromURLSearch, useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
+import { useCurrency } from 'hooks/Tokens'
 import { CommonBasesType } from 'components/SearchModal/types'
+import { useCurrencyBalances } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { currencyId } from 'utils/currencyId'
 
@@ -26,33 +29,23 @@ interface Props {
   tradeLoading?: boolean
   pricingAndSlippage?: ReactNode
   swapCommitButton?: ReactNode
-  inputBalance?: CurrencyAmount<Currency>
-  typedValue: string
-  independentField: Field
-  inputCurrencyId: string
-  outputCurrencyId: string
-  inputCurrency: Currency | ERC20Token
-  outputCurrency: Currency | ERC20Token
 }
 
-export function FormMain({
-  pricingAndSlippage,
-  inputAmount,
-  outputAmount,
-  tradeLoading,
-  swapCommitButton,
-  inputBalance,
-  typedValue,
-  independentField,
-  inputCurrencyId,
-  outputCurrencyId,
-  inputCurrency,
-  outputCurrency,
-}: Props) {
+export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeLoading, swapCommitButton }: Props) {
+  const { account } = useWeb3React()
   const { t } = useTranslation()
   const warningSwapHandler = useWarningImport()
+  const {
+    independentField,
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useSwapState()
   const isWrapping = useIsWrapping()
+  const inputCurrency = useCurrency(inputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId)
   const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
+  const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const maxAmountInput = useMemo(() => maxAmountSpend(inputBalance), [inputBalance])
   const loadedUrlParams = useDefaultsFromURLSearch()
 

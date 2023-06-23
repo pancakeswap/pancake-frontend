@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
 import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -93,7 +94,11 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size="24px" isFiat={Boolean(mode === 'onramp-input')} />
+      {mode === 'onramp-input' ? (
+        <FiatLogo currency={currency} size="24px" />
+      ) : (
+        <CurrencyLogo currency={currency} size="24px" />
+      )}
 
       <Column>
         <Text bold>{currency?.symbol}</Text>

@@ -143,6 +143,12 @@ function createGetV3Quote(isExactIn = true) {
       const [quote, poolAfter] = isExactIn
         ? await v3Pool.getOutputAmount(amount.wrapped)
         : await v3Pool.getInputAmount(amount.wrapped)
+
+      // Not enough liquidity to perform the swap
+      if (quote.quotient <= 0n) {
+        return null
+      }
+
       const { tickCurrent: tickAfter } = poolAfter
       const numOfTicksCrossed = TickList.countInitializedTicksCrossed(ticks, tick, tickAfter)
       return {

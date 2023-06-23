@@ -77,10 +77,13 @@ const RightWrapper = styled.div`
 const Header = styled.div`
   ${textStyle}
   font-size: 29px;
-  padding-right: 200px;
   margin-bottom: 8px;
   ${({ theme }) => theme.mediaQueries.md} {
     margin-bottom: 10px;
+  }
+  word-spacing: 9999px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    word-spacing: normal;
   }
 `
 

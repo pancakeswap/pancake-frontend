@@ -224,4 +224,12 @@ export const ethereumTokens = {
     'Ethereum Name Service',
     'https://ens.domains/',
   ),
+  tusd: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x0000000000085d4780B73119b644AE5ecd22b376',
+    18,
+    'TUSD',
+    'TrueUSD',
+    'https://tusd.io/',
+  ),
 }

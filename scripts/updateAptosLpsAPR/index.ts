@@ -43,7 +43,7 @@ const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse
     const result = await (await fetch(`${FETCH_URL}${params}`)).json()
 
     if (result.data.pageList.length > 0) {
-      allPairs.push(...result?.data?.pageList)
+      allPairs.push(...(result?.data?.pageList || []))
     }
 
     if (!result.data.hasNextPage) {
@@ -79,7 +79,7 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
     if (response[farm.id]) {
       if (response[farm.id].updateDate !== currentDate) {
         const isMoreThanAWeek = response[farm.id].usdList.length >= 7
-        const usdList = [...response[farm.id]?.usdList]
+        const usdList = [...(response[farm.id]?.usdList || [])]
 
         if (isMoreThanAWeek) {
           usdList.shift()

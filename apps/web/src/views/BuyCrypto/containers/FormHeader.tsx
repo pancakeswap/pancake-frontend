@@ -3,8 +3,6 @@ import { FC } from 'react'
 import { AppHeader } from 'components/App'
 
 export const FormHeader: FC<{
-  refreshDisabled?: boolean
-  onRefresh?: () => void
   title: string
   subTitle: string
   backTo?: any

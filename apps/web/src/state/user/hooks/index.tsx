@@ -11,7 +11,7 @@ import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
 import { useFeeData, useWalletClient } from 'wagmi'
-import { hexToBigInt } from 'viem'
+import { Hex, hexToBigInt } from 'viem'
 import { AppState, useAppDispatch } from 'state'
 import {
   addSerializedPair,
@@ -304,10 +304,11 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
   const { data: bscProviderGasPrice = DEFAULT_BSC_GAS_BIGINT } = useSWR(
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
-      const gasPrice = await signer.request({
+      // @ts-ignore
+      const gasPrice = await signer?.request({
         method: 'eth_gasPrice',
       })
-      return hexToBigInt(gasPrice)
+      return hexToBigInt(gasPrice as Hex)
     },
     {
       revalidateOnFocus: false,

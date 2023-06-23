@@ -8,7 +8,7 @@
     "apis/*",
     "scripts"
   ],
-  "packageManager": "pnpm@8.3.1",
+  "packageManager": "pnpm@8.6.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web... --concurrency=19",
@@ -23,7 +23,7 @@
     "build:bridge": "turbo run build --filter=bridge...",
     "build:packages": "turbo run build --filter=./packages/*",
     "start": "turbo run start --filter=web",
-    "test:config": "pnpm turbo run test:config --filter=[HEAD^1]",
+    "test:config": "pnpm turbo run test:config --filter=web...[HEAD^1]",
     "test:ci": "pnpm turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
     "lint:report": "eslint --no-error-on-unmatched-pattern --max-warnings=0",
@@ -63,8 +63,8 @@
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
     "tsx": "^3.12.6",
-    "turbo": "1.9.9",
-    "typescript": "^5.0.4",
+    "typescript": "^5.1.3",
+    "turbo": "1.10.2",
     "vitest": "^0.27.2"
   },
   "volta": {

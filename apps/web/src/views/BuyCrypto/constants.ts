@@ -1,23 +1,11 @@
 export const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['BNB', 'USDT', 'BUSD']
-export const whiteListedFiatCurrencies = [
-  'USD',
-  'EUR',
-  'GBP',
-  'HKD',
-  'CAD',
-  'AUD',
-  'BRL',
-  'JPY',
-  'KRW',
-  'TWD',
-  'IDR',
-  'VND',
-  'SGD',
-]
+export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'BUSD', 'BNB']
+export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const mercuryoWhitelist = ['BNB', 'BUSD']
+export const ETHEREUM_TOKENS = ['ETH', 'USDT', 'DAI']
 
 export const SUPPORTED_MERCURYO_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
-export const MOONPAY_SUPPORTED_CURRENCY_CODES = ['eth', 'usdc', 'dai']
+
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
   USD: {
     name: 'United States Dollar',

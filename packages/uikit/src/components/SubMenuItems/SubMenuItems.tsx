@@ -13,7 +13,7 @@ import StyledSubMenuItems, {
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
-import { Button } from "../Button";
+import { FlexGap } from "../Layouts";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
@@ -72,7 +72,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
           onScroll={debounce(layerController, 100)}
           ref={scrollLayerRef}
         >
-          {items.map(({ label, href, icon, itemProps, type, disabled, onClick }) => {
+          {items.map(({ label, LabelIcon, href, icon, itemProps, type, disabled, onClick }) => {
             const Icon = icon;
             const isExternalLink = type === DropdownMenuItemType.EXTERNAL_LINK;
             const linkProps = isExternalLink
@@ -97,8 +97,11 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
                     {...linkProps}
                     onClick={onClick}
                   >
-                    {Icon && <Icon color={isActive ? "secondary" : "textSubtle"} mr="4px" />}
-                    {label}
+                    <FlexGap gap="10px" alignItems="center">
+                      {Icon && <Icon color={isActive ? "secondary" : "textSubtle"} mr="4px" />}
+                      {label}
+                      {LabelIcon ? <LabelIcon /> : null}
+                    </FlexGap>
                     {isExternalLink && (
                       <Box display={["none", null, "flex"]} style={{ alignItems: "center" }} ml="4px">
                         <OpenNewIcon color="textSubtle" />

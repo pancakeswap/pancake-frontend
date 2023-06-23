@@ -4,6 +4,7 @@ import { Block, PoolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { subgraphTokenSymbol } from 'state/info/constant'
 
 import {
   MultiChainName,
@@ -200,12 +201,12 @@ export const fetchAllPoolDataWithAddress = async (
           token0: {
             address: current?.token0?.id ?? '',
             name: current?.token0?.name ?? '',
-            symbol: current?.token0?.symbol ?? '',
+            symbol: subgraphTokenSymbol[current?.token0?.id?.toLocaleLowerCase()] ?? current?.token0?.symbol ?? '',
           },
           token1: {
             address: current?.token1?.id ?? '',
             name: current?.token1?.name ?? '',
-            symbol: current?.token1?.symbol ?? '',
+            symbol: subgraphTokenSymbol[current?.token1?.id?.toLocaleLowerCase()] ?? current?.token1?.symbol ?? '',
           },
           token0Price: current.token0Price,
           token1Price: current.token1Price,

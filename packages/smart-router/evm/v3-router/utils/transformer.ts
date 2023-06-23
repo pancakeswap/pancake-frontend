@@ -161,7 +161,7 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
       ...pool,
       balances: pool.balances.map((b) => parseCurrencyAmount(chainId, b)),
       amplifier: BigInt(pool.amplifier),
-      fee: new Percent(parseFloat(pool.fee) * 1000000, ONE_HUNDRED * 100000n),
+      fee: new Percent(parseFloat(pool.fee) * 1000000, ONE_HUNDRED * 1000000n),
     }
   }
 

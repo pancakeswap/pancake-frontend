@@ -142,7 +142,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
       <ExistingInfo>
         <Flex justifyContent="space-between">
           <Text>{t('Your existing bid')}</Text>
-          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount).toLocaleString() })}</Text>
+          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount) })}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text>{t('Your position')}</Text>
@@ -168,8 +168,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
           value={bid}
           onUserInput={handleInputChange}
           currencyValue={
-            cakePriceBusd.gt(0) &&
-            `~${bid ? cakePriceBusd.times(new BigNumber(bid)).toNumber().toLocaleString() : '0.00'} USD`
+            cakePriceBusd.gt(0) && `~${bid ? cakePriceBusd.times(new BigNumber(bid)).toNumber() : '0.00'} USD`
           }
         />
         <Flex justifyContent="flex-end" mt="8px">

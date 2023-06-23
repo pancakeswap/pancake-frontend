@@ -73,11 +73,11 @@ export default {
   },
   cakeVault: {
     56: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
-    97: '0x683433ba14e8F26774D43D3E90DA6Dd7a22044Fe',
+    97: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
   },
   cakeFlexibleSideVault: {
     56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
-    97: '0x',
+    97: '0x1088Fb24053F03802F673b84d16AE1A7023E400b',
   },
   predictionsBNB: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
@@ -155,6 +155,10 @@ export default {
     56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     97: '0x',
   },
+  bCakeFarmBoosterV3: {
+    56: '0x695170faE243147b3bEB4C43AA8DE5DcD9202752',
+    97: '0x56666300A1E25624489b661f3C6c456c159a109a',
+  },
   nonBscVault: {
     56: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841', // Only for pass contracts test
     1: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
@@ -197,5 +201,10 @@ export default {
     1: '0x',
     56: '0xe934d2C5bE5db0295A4de3177762A9E8c74Ae4f4',
     97: '0x',
+  },
+  affiliateProgram: {
+    1: '0x',
+    56: '0x92C73D90F709DFf7e5E7307e8F2EE20e39396b12',
+    97: '0x1B8a475B5E5De05fB3Ac2D9ec3C2809fBF24e51c',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

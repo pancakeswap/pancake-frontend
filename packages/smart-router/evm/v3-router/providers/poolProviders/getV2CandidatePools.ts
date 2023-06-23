@@ -33,7 +33,7 @@ export async function getV2PoolsWithTvlByCommonTokenPrices({
   const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
   const [poolsFromOnChain, baseTokenUsdPrices] = await Promise.all([
     getV2PoolsOnChain(pairs, onChainProvider, blockNumber),
-    getCommonTokenPrices({ currencyA, currencyB, provider: v3SubgraphProvider }),
+    getCommonTokenPrices({ currencyA, currencyB, v3SubgraphProvider }),
   ])
 
   if (!poolsFromOnChain || !baseTokenUsdPrices) {
@@ -69,7 +69,7 @@ export async function getV2CandidatePools(params: Params) {
   const { v2SubgraphProvider, currencyA, currencyB, pairs: providedPairs } = params
   const pairs = providedPairs || getPairCombinations(currencyA, currencyB)
 
-  const getPools = withFallback<V2PoolWithTvl[]>([
+  const getPools = withFallback([
     {
       asyncFn: () => getV2PoolsWithTvlByCommonTokenPrices(params),
       timeout: 3000,

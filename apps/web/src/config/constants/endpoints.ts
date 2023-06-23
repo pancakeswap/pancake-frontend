@@ -11,7 +11,8 @@ export const API_NFT = 'https://nft.pancakeswap.com/api/v1'
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/pottery'
-
+export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
+export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */
@@ -62,3 +63,5 @@ export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancak
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
 export const FARMS_API = 'https://farms-api.pancakeswap.com'
+
+export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '95a003f2-354a-4396-828a-1126d56e4e13'

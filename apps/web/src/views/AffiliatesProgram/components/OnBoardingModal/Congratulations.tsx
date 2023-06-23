@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
-import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 
 const Congratulations = () => {
   const {
@@ -15,13 +15,13 @@ const Congratulations = () => {
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
-  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.AFFILIATE_PROGRAM)
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
 
   return (
     <>
       <ModalV2 style={{ zIndex: 100 }} isOpen={isOpen} closeOnOverlayClick onDismiss={() => setIsOpen(false)}>
-        <USCitizenConfirmModal />
+        <USCitizenConfirmModal title={t('PancakeSwap Affiliate Program')} id={IdType.AFFILIATE_PROGRAM} />
       </ModalV2>
       <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '80px 24px']}>
         <Text lineHeight="110%" maxWidth="190px" fontSize={['24px']} bold m="12px 0">

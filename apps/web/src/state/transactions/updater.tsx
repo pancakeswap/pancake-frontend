@@ -4,7 +4,6 @@ import pickBy from 'lodash/pickBy'
 import forEach from 'lodash/forEach'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePublicClient } from 'wagmi'
-import { waitForTransaction } from 'wagmi/actions'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
 import { FAST_INTERVAL } from 'config/constants'
@@ -50,10 +49,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       (transaction) => {
         const getTransaction = async () => {
           try {
-            const receipt = await waitForTransaction({
-              hash: transaction.hash,
-              chainId,
-            })
+            const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash })
 
             dispatch(
               finalizeTransaction({
@@ -110,7 +106,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
     chainId && Boolean(nonBscFarmPendingTxns?.length) && ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
     () => {
       nonBscFarmPendingTxns.forEach((hash) => {
-        const steps = transactions[hash]?.nonBscFarm?.steps
+        const steps = transactions[hash]?.nonBscFarm?.steps || []
         if (steps.length) {
           const pendingStep = steps.findIndex(
             (step: NonBscFarmTransactionStep) => step.status === FarmTransactionStatus.PENDING,
@@ -133,7 +129,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                     : FarmTransactionStatus.PENDING
                 const isFinalStepComplete = status === FarmTransactionStatus.SUCCESS && steps.length === pendingStep + 1
 
-                const newSteps = transaction.nonBscFarm.steps.map((step, index) => {
+                const newSteps = transaction?.nonBscFarm?.steps?.map((step, index) => {
                   let newObj = {}
                   if (index === pendingStep) {
                     newObj = { ...step, status, tx: destinationTxHash }
@@ -149,12 +145,12 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                     nonBscFarm: {
                       ...transaction.nonBscFarm,
                       steps: newSteps,
-                      status: isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction.nonBscFarm.status,
+                      status: isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction?.nonBscFarm?.status,
                     },
                   }),
                 )
 
-                const isStakeType = transactions[hash].nonBscFarm.type === NonBscFarmStepType.STAKE
+                const isStakeType = transactions[hash]?.nonBscFarm?.type === NonBscFarmStepType.STAKE
                 if (isFinalStepComplete) {
                   const toastTitle = isStakeType ? t('Staked!') : t('Unstaked!')
                   toastSuccess(
@@ -175,7 +171,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                         <Text
                           as="span"
                           bold
-                        >{`${transaction.nonBscFarm.amount} ${transaction.nonBscFarm.lpSymbol}`}</Text>
+                        >{`${transaction?.nonBscFarm?.amount} ${transaction?.nonBscFarm?.lpSymbol}`}</Text>
                         <Text as="span" ml="4px">
                           {errorText}
                         </Text>

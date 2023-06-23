@@ -14,6 +14,32 @@ export const livePools: SerializedPool[] = [
     isFinished: false,
   },
   {
+    sousId: 347,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.tusd,
+    contractAddress: '0x72cd910eE115E494485Dd32Ce7bC5dE563eceA51',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.02314',
+    version: 3,
+  },
+  {
+    sousId: 346,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.csix,
+    contractAddress: '0x5250320d765F366E2B96Cd5c7d08F1902422195e',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '2.017',
+  },
+  {
+    sousId: 345,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.axl,
+    contractAddress: '0x0592c701fE5DE53d534AFBaf3A11A8F1bbEE9E91',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.05173',
+    version: 3,
+  },
+  {
     sousId: 343,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.edu,
@@ -41,15 +67,6 @@ export const livePools: SerializedPool[] = [
     version: 3,
   },
   {
-    sousId: 329,
-    stakingToken: bscTokens.hay,
-    earningToken: bscTokens.cake,
-    contractAddress: '0x1c7D573D9614187096276a01Ec15263FCa820BDD',
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.0121',
-    version: 3,
-  },
-  {
     sousId: 327,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.id,
@@ -58,6 +75,24 @@ export const livePools: SerializedPool[] = [
     tokenPerBlock: '0.07716',
     version: 3,
   },
+  {
+    sousId: 325,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.lvl,
+    contractAddress: '0x1394a09F868bE27B1c8D39D79F0b0D6f112bddAf',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.009765',
+    version: 3,
+  },
+].map((p) => ({
+  ...p,
+  contractAddress: getAddress(p.contractAddress),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
+
+// known finished pools
+const finishedPools = [
   {
     sousId: 326,
     stakingToken: bscTokens.cake,
@@ -68,12 +103,12 @@ export const livePools: SerializedPool[] = [
     version: 3,
   },
   {
-    sousId: 325,
-    stakingToken: bscTokens.cake,
-    earningToken: bscTokens.lvl,
-    contractAddress: '0x1394a09F868bE27B1c8D39D79F0b0D6f112bddAf',
+    sousId: 329,
+    stakingToken: bscTokens.hay,
+    earningToken: bscTokens.cake,
+    contractAddress: '0x1c7D573D9614187096276a01Ec15263FCa820BDD',
     poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.009765',
+    tokenPerBlock: '0.0121',
     version: 3,
   },
   {
@@ -86,15 +121,6 @@ export const livePools: SerializedPool[] = [
     version: 3,
   },
   {
-    sousId: 323,
-    stakingToken: bscTokens.cake,
-    earningToken: bscTokens.sd,
-    contractAddress: '0xaEC63F134a7853C6DaC9BA428d7962cD7C6c5e30',
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.01022',
-    version: 3,
-  },
-  {
     sousId: 321,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.csix,
@@ -103,15 +129,15 @@ export const livePools: SerializedPool[] = [
     tokenPerBlock: '8.68',
     version: 3,
   },
-].map((p) => ({
-  ...p,
-  contractAddress: getAddress(p.contractAddress),
-  stakingToken: p.stakingToken.serialize,
-  earningToken: p.earningToken.serialize,
-}))
-
-// known finished pools
-const finishedPools = [
+  {
+    sousId: 323,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.sd,
+    contractAddress: '0xaEC63F134a7853C6DaC9BA428d7962cD7C6c5e30',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.01022',
+    version: 3,
+  },
   {
     sousId: 328,
     stakingToken: bscTokens.cake,
@@ -1088,7 +1114,7 @@ const finishedPools = [
   {
     sousId: 209,
     stakingToken: bscTokens.cake,
-    earningToken: bscTokens.tusd,
+    earningToken: bscTokens.deprecated_tusd,
     contractAddress: '0xb6e510ae2da1ab4e350f837c70823ab75091780e',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.5787',
@@ -1448,7 +1474,7 @@ const finishedPools = [
   {
     sousId: 164,
     stakingToken: bscTokens.cake,
-    earningToken: bscTokens.tusd,
+    earningToken: bscTokens.deprecated_tusd,
     contractAddress: '0x9dceb1d92f7e0361d0766f3d98482424df857654',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.5787',

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
-import { fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
+import { fetchMercuryoQuote } from './useProviderQuotes'
 import { fetchMercuryoAvailability, fetchMoonpayAvailability } from './useProviderAvailability'
 import { MOONPAY_UNSUPPORTED_CURRENCY_CODES } from '../constants'
 
@@ -31,7 +31,7 @@ const calculateQuotesData = (quote: PriceQuotes): ProviderQoute => {
   }
 }
 
-const calculateQuotesDataMercury = (quote: MercuryoQuote, inputCurrency: string, chainId): ProviderQoute => {
+const calculateQuotesDataMercury = (quote: MercuryoQuote, inputCurrency: string): ProviderQoute => {
   return {
     providerFee: Number(quote.data.fee[inputCurrency.toUpperCase()]),
     networkFee: 0,
@@ -111,7 +111,6 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
     if (!chainId || !userIp) return
     try {
       const responsePromises = [
-        fetchMoonpayQuote(Number(amount), outputCurrency, inputCurrency),
         fetchMercuryoQuote({
           fiatCurrency: outputCurrency.toUpperCase(),
           cryptoCurrency: inputCurrency.toUpperCase(),
@@ -136,7 +135,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
 
           if (quote?.accountId && !isMoonapySupported) return calculateQuotesData(quote as PriceQuotes)
           if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
-          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, outputCurrency, chainId)
+          if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, outputCurrency)
           return calculateNoQuoteOption(quote)
         })
         .filter((item) => typeof item !== 'undefined')

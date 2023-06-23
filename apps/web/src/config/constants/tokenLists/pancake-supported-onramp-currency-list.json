@@ -11,22 +11,12 @@
   "keywords": ["pancake", "default"],
   "tokens": [
     {
-      "isNative": "true",
-      "isToken": "false",
-      "name": "Binance Coin",
-      "symbol": "BNB",
-      "address": "0x242a1ff6ee06f2131b7924cacb74c7f9e3a5edc9",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
-    },
-    {
       "isNative": "false",
       "isToken": "true",
       "name": "Binance USD",
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
       "symbol": "BUSD",
-      "decimals": 6,
+      "decimals": 18,
       "chainId": 56,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/BUSD.png"
     },
@@ -43,20 +33,10 @@
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "Coinbase USD",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
       "name": "DAI StableCoin",
       "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
       "symbol": "DAI",
-      "decimals": 6,
+      "decimals": 18,
       "chainId": 1,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
     }

@@ -2,16 +2,25 @@ compatibility_date = "2022-05-20"
 kv_namespaces = [
   {binding = "POOLS", id = "29d3e7e6c3c44fa7bf7174ee2b7b1295", preview_id = "c808d98df0444ae1a680bc84a029baaa"},
 ]
+r2_buckets = [
+  { binding = "SUBGRAPH_POOLS", bucket_name = "subgraph-pools", preview_bucket_name = "subgraph-pools-dev" }
+]
 main = "src/index.ts"
 name = "routing-dev"
 node_compat = true
+[triggers]
+crons = ["0 0 * * *"]
 
 [env.production]
 kv_namespaces = [
   {binding = "POOLS", id = "5261431ca6b74625b08ffe288b86a2a5"},
 ]
+r2_buckets = [
+  { binding = "SUBGRAPH_POOLS", bucket_name = "subgraph-pools", preview_bucket_name = "subgraph-pools-dev" }
+]
 name = "routing"
-
+[env.production.triggers]
+crons = ["0 0 * * *"]
 
 # - AXIOM_TOKEN
 # The necessary secrets are:

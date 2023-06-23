@@ -78,7 +78,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
 
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
 
-  const currentDate = new Date().getTime() / 1000
+  const currentDate = Date.now() / 1000
   const timeRemaining = rewardExpiredSoonData?.campaignClaimEndTime - currentDate
   const expiredTime = getTimePeriods(timeRemaining)
 

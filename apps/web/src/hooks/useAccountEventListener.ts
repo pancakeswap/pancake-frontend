@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from 'react'
 import { ExtendEthereum } from 'global'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { ConnectorData } from 'wagmi'
+import { ConnectorData, useAccount } from 'wagmi'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'
-import useActiveWeb3React from './useActiveWeb3React'
 import { useSessionChainId } from './useSessionChainId'
+import { useActiveChainId } from './useActiveChainId'
 
 export const useAccountEventListener = () => {
-  const { account, chainId, connector } = useActiveWeb3React()
+  // const { account, chainId, connector } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
+  const { connector, address } = useAccount()
   const [, setSessionChainId] = useSessionChainId()
   const dispatch = useAppDispatch()
 
@@ -18,7 +20,7 @@ export const useAccountEventListener = () => {
   }, [])
 
   useEffect(() => {
-    if (account && connector) {
+    if (address && connector) {
       const handleUpdateEvent = (e: ConnectorData) => {
         if (e?.chain?.id && !(e?.chain?.unsupported ?? false)) {
           replaceBrowserHistory('chain', CHAIN_QUERY_NAME[e.chain.id])
@@ -44,5 +46,5 @@ export const useAccountEventListener = () => {
       }
     }
     return undefined
-  }, [account, chainId, dispatch, connector, setSessionChainId, isBloctoMobileApp])
+  }, [chainId, dispatch, address, connector, setSessionChainId, isBloctoMobileApp])
 }

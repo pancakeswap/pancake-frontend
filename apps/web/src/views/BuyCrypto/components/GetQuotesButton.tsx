@@ -6,8 +6,7 @@ import { Dispatch, ReactNode, useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { SetStateAction } from 'jotai'
-// eslint-disable-next-line import/no-cycle
-import { CryptoFormView } from '..'
+import { CryptoFormView } from 'views/BuyCrypto/types'
 
 interface GetQuotesButtonProps {
   modalView: CryptoFormView
