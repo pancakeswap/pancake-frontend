@@ -1,5 +1,5 @@
 import { Box, Text, Skeleton } from '@pancakeswap/uikit'
-import { fromUnixTime } from 'date-fns'
+import dayjs from 'dayjs'
 import { useState, useMemo, memo, useEffect } from 'react'
 import { ChartEntry, ProtocolData } from 'state/info/types'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -41,7 +41,7 @@ const HoverableChart = ({
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: fromUnixTime(day.date),
+          time: dayjs.unix(day.date).toDate(),
           value: day[valueProperty],
         }
       })

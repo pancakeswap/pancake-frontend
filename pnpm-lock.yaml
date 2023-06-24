@@ -123,9 +123,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       graphql-request:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
@@ -303,9 +303,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       jotai:
         specifier: ^2.2.2
         version: 2.2.2(react@18.2.0)
@@ -1111,9 +1111,9 @@ importers:
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1546,9 +1546,9 @@ importers:
       csstype:
         specifier: ^3.1.2
         version: 3.1.2
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       deepmerge:
         specifier: ^4.0.0
         version: 4.2.2
@@ -1757,9 +1757,9 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
-      date-fns:
-        specifier: ^2.29.3
-        version: 2.29.3
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1966,6 +1966,9 @@ importers:
       bignumber.js:
         specifier: ^9.1.1
         version: 9.1.1
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.7
       ethers:
         specifier: ^5.0.0
         version: 5.7.2

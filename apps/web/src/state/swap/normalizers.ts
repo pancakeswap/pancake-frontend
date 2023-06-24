@@ -1,4 +1,4 @@
-import { fromUnixTime } from 'date-fns'
+import dayjs from 'dayjs'
 import fromPairs from 'lodash/fromPairs'
 import { DerivedPairDataNormalized, PairPricesNormalized } from './types'
 
@@ -36,7 +36,7 @@ export const normalizeDerivedPairDataByActiveToken = ({
   activeToken,
 }: normalizeDerivedPairDataByActiveTokenParams): PairPricesNormalized =>
   pairData?.map((pairPrice) => ({
-    time: fromUnixTime(pairPrice.time),
+    time: dayjs.unix(pairPrice.time).toDate(),
     value:
       activeToken === pairPrice?.token0Id
         ? pairPrice.token0DerivedUSD / pairPrice.token1DerivedUSD

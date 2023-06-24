@@ -2,11 +2,11 @@ import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '@pancakeswap/farms'
 import { BSC_BLOCK_TIME } from 'config'
-import { add, sub } from 'date-fns'
 import { publicClient } from 'utils/wagmi'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { ChainId } from '@pancakeswap/chains'
-import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
+import { sortAuctionBidders } from 'views/FarmAuction/helpers'
+import dayjs from 'dayjs'
 
 const fetchFarmsWithAuctions = async (
   currentBlock: number,
@@ -56,12 +56,10 @@ const fetchFarmsWithAuctions = async (
     const winnerFarms = sortedBidders
       .filter((bidder) => bidder.amount.gt(leaderboardThreshold))
       .map((bidder) => bidder.lpAddress)
-    const currentAuctionEndDate = sub(new Date(), { seconds: secondsSinceEnd })
+    const currentAuctionEndDate = dayjs().subtract(secondsSinceEnd, 'seconds')
     return {
       winnerFarms,
-      auctionHostingEndDate: add(currentAuctionEndDate, {
-        seconds: FARM_AUCTION_HOSTING_IN_SECONDS,
-      }).toJSON(),
+      auctionHostingEndDate: dayjs(currentAuctionEndDate).add(FARM_AUCTION_HOSTING_IN_SECONDS, 'days').toJSON(),
     }
   }
 

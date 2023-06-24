@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useGetPublicIfoData } from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import Claim from './Claim'
 
@@ -108,7 +108,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {cliff === 0 ? t('Vesting Start') : t('Cliff')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+          {dayjs(timeCliff).format('MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
@@ -116,7 +116,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {t('Vesting end')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}
+          {dayjs(timeVestingEnd).format('MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <WhiteCard>

@@ -6,8 +6,8 @@ import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
-import { fromUnixTime } from 'date-fns'
 import dynamic from 'next/dynamic'
+import dayjs from 'dayjs'
 
 const CandleChart = dynamic(() => import('../CandleChart'), {
   ssr: false,
@@ -46,7 +46,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: fromUnixTime(day.date),
+          time: dayjs.unix(day.date).toDate(),
           value: day.liquidityUSD,
         }
       })
@@ -57,7 +57,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: fromUnixTime(day.date),
+          time: dayjs.unix(day.date).toDate(),
           value: day.volumeUSD,
         }
       })

@@ -9,7 +9,7 @@ import { useCurrentBlock } from 'state/block/hooks'
 import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import BigNumber from 'bignumber.js'
 import useSWRImmutable from 'swr/immutable'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`
@@ -115,7 +115,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {cliff === 0 ? t('Vesting Start') : t('Cliff')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+          {dayjs.unix(timeCliff).format('MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
@@ -123,7 +123,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {t('Vesting end')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}
+          {dayjs.unix(timeVestingEnd).format('MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <WhiteCard>
