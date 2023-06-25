@@ -11,6 +11,8 @@ export const logSwap = ({
   inputAmount,
   outputAmount,
   chainId,
+  account,
+  hash,
   type,
 }: {
   input: Currency
@@ -18,6 +20,8 @@ export const logSwap = ({
   inputAmount: string
   outputAmount: string
   chainId: number
+  account: `0x${string}`
+  hash: `0x${string}`
   type: 'V2Swap' | 'SmartSwap' | 'StableSwap' | 'MarketMakerSwap' | 'V3SmartSwap'
 }) => {
   try {
@@ -26,6 +30,8 @@ export const logSwap = ({
       outputAddress: output.isToken ? output.address.toLowerCase() : output.symbol,
       inputAmount,
       outputAmount,
+      account,
+      hash,
       chainId,
     })
   } catch (error) {
