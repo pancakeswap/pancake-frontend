@@ -10,7 +10,7 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/worker-utils": "workspace:*",
     "bignumber.js": "^9.0.0",
-    "dayjs": "^1.11.7",
+    "dayjs": "^1.11.8",
     "graphql-request": "^5.0.0",
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",
