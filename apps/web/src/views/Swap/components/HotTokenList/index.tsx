@@ -1,14 +1,29 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { Flex, Checkbox, Text, ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { memo, useState, useMemo, useEffect } from 'react'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId, Currency } from '@pancakeswap/sdk'
+import { ButtonMenu, ButtonMenuItem, Checkbox, Flex, Text, useMatchBreakpoints, Box } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useRouter } from 'next/router'
+import { memo, useEffect, useMemo, useState } from 'react'
 
-import styled from 'styled-components'
+import { TabToggle, TabToggleGroup } from 'components/TabToggle'
+import styled, { css } from 'styled-components'
+import useTradingRewardTokenList from '../../hooks/useTradingRewardTokenList'
 import TokenTable from './SwapTokenTable'
 import { useTokenHighLightList } from './useList'
-import useTradingRewardTokenList from '../../hooks/useTradingRewardTokenList'
+
+const StyledFlex = styled(Flex)`
+  > div:first-child > div {
+    background: rgba(238, 234, 244, 0.5);
+    border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+    overflow: hidden;
+    border-bottom: none;
+  }
+`
+
+const StyledTabToggle = styled(TabToggle)`
+  cursor: pointer;
+  background-color: ${({ theme, isActive }) => (isActive ? '#f4fdff' : 'transparent')};
+`
 
 const Wrapper = styled.div`
   padding-top: 10px;
@@ -18,7 +33,8 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     background: ${({ theme }) => (theme.isDark ? 'rgba(39, 38, 44, 0.5)' : 'rgba(255, 255, 255, 0.5)')};
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-    border-radius: 32px;
+    border-top: none;
+    border-radius: 0px 0px 32px 32px;
   }
 `
 const MenuWrapper = styled.div`
@@ -32,7 +48,7 @@ const MenuWrapper = styled.div`
 const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
 enum DataSourceType {
   V3,
-  v2,
+  V2,
 }
 const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
@@ -105,57 +121,61 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
 
   const { t } = useTranslation()
   return (
-    <Wrapper>
-      <MenuWrapper>
-        <ButtonMenu activeIndex={dataSource} onItemClick={setDataSource} fullWidth scale="sm" variant="subtle">
-          <ButtonMenuItem>{t('V3')}</ButtonMenuItem>
-          <ButtonMenuItem>{t('V2')}</ButtonMenuItem>
-        </ButtonMenu>
-      </MenuWrapper>
-      <MenuWrapper>
-        <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
-          <ButtonMenuItem>{chainId === ChainId.BSC ? t('Price Change') : t('Liquidity')}</ButtonMenuItem>
-          <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
-        </ButtonMenu>
-      </MenuWrapper>
-      {tokenPairs.length > 0 && dataSource === DataSourceType.V3 && (
-        <Flex
-          mb="24px"
-          alignItems="center"
-          ml={['20px', '20px', '20px', '20px', '-4px']}
-          onClick={() => setConfirmed(!confirmed)}
-          style={{ cursor: 'pointer' }}
-        >
-          <Checkbox
-            scale="sm"
-            name="confirmed"
-            type="checkbox"
-            checked={confirmed}
-            onChange={() => setConfirmed(!confirmed)}
+    <StyledFlex flexDirection="column">
+      <TabToggleGroup>
+        <StyledTabToggle isActive={dataSource === DataSourceType.V3} onClick={() => setDataSource(DataSourceType.V3)}>
+          {t('V3')}
+        </StyledTabToggle>
+        <StyledTabToggle isActive={dataSource === DataSourceType.V2} onClick={() => setDataSource(DataSourceType.V2)}>
+          {t('V2')}
+        </StyledTabToggle>
+      </TabToggleGroup>
+      <Wrapper>
+        <MenuWrapper>
+          <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
+            <ButtonMenuItem>{chainId === ChainId.BSC ? t('Price Change') : t('Liquidity')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
+          </ButtonMenu>
+        </MenuWrapper>
+        {dataSource === DataSourceType.V3 && tokenPairs.length > 0 && (
+          <Flex
+            mb="24px"
+            alignItems="center"
+            ml={['20px', '20px', '20px', '20px', '-4px']}
+            onClick={() => setConfirmed(!confirmed)}
+            style={{ cursor: 'pointer' }}
+          >
+            <Checkbox
+              scale="sm"
+              name="confirmed"
+              type="checkbox"
+              checked={confirmed}
+              onChange={() => setConfirmed(!confirmed)}
+            />
+            <Text ml="8px" style={{ userSelect: 'none' }}>
+              {t('Show pairs with trading rewards')}
+            </Text>
+          </Flex>
+        )}
+        {index === 0 ? (
+          <TokenTable
+            tokenDatas={dataSource === DataSourceType.V3 ? filterFormattedV3Tokens : formattedTokens}
+            type={chainId === ChainId.BSC ? 'priceChange' : 'liquidity'}
+            defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSD'}
+            maxItems={isMobile ? 100 : 6}
+            handleOutputSelect={handleOutputSelect}
           />
-          <Text ml="8px" style={{ userSelect: 'none' }}>
-            {t('Show pairs with trading rewards')}
-          </Text>
-        </Flex>
-      )}
-      {index === 0 ? (
-        <TokenTable
-          tokenDatas={dataSource === DataSourceType.V3 ? filterFormattedV3Tokens : formattedTokens}
-          type={chainId === ChainId.BSC ? 'priceChange' : 'liquidity'}
-          defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSD'}
-          maxItems={isMobile ? 100 : 6}
-          handleOutputSelect={handleOutputSelect}
-        />
-      ) : (
-        <TokenTable
-          tokenDatas={dataSource === DataSourceType.V3 ? filterFormattedV3Tokens : formattedTokens}
-          type="volume"
-          defaultSortField="volumeUSD"
-          maxItems={isMobile ? 100 : 6}
-          handleOutputSelect={handleOutputSelect}
-        />
-      )}
-    </Wrapper>
+        ) : (
+          <TokenTable
+            tokenDatas={dataSource === DataSourceType.V3 ? filterFormattedV3Tokens : formattedTokens}
+            type="volume"
+            defaultSortField="volumeUSD"
+            maxItems={isMobile ? 100 : 6}
+            handleOutputSelect={handleOutputSelect}
+          />
+        )}
+      </Wrapper>
+    </StyledFlex>
   )
 }
 
