@@ -46,10 +46,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
 
   return (
     <Flex alignItems="center">
-      <Flex
-        flexDirection={['column', 'column', 'column', 'column', 'row']}
-        alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-start', 'center']}
-      >
+      <Flex width="100%">
         {token && quoteToken && (
           <TokenWrapper>
             <TokenPairImage
@@ -61,18 +58,18 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
             />
           </TokenWrapper>
         )}
-        <Flex flexDirection={['column', 'column', 'row']} mt={['4px', '4px', '4px', '4px', '0']}>
-          <Flex alignSelf={['flex-start', 'flex-start', 'center']}>
+        <Flex width="100%">
+          <Flex alignSelf="center" width={['115px']}>
             <Text lineHeight="110%" bold>
               {lpSymbol}
             </Text>
           </Flex>
-          <Flex flexDirection={['column', 'column', 'row']} m={['4px 0 0 0', '4px 0 0 0', '0 0 0 4px']}>
+          <Flex ml={['auto', 'auto', 'auto', 'auto', '4px']}>
             <Flex>
               <V3FeeTag feeAmount={feeAmount} scale="sm" />
               <V3Tag ml="4px" scale="sm" />
             </Flex>
-            <Flex ml={['0', '0', '4px']} mt={['4px', '4px', '0']}>
+            <Flex ml="4px">
               {chainId === ChainId.ETHEREUM && <EthTag />}
               {chainId === ChainId.BSC && <BscTag />}
             </Flex>

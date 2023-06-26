@@ -45,6 +45,7 @@ import {
   getAffiliateProgramContract,
   getV3AirdropContract,
   getV3MigratorContract,
+  getTradingRewardTopTradesContract,
 } from 'utils/contractHelpers'
 
 import { ChainId, WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -384,4 +385,10 @@ export const useAffiliateProgramContract = ({ chainId: chainId_ }: { chainId?: C
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getAffiliateProgramContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
+}
+
+export const useTradingRewardTopTraderContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getTradingRewardTopTradesContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
 }
