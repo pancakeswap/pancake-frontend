@@ -59,14 +59,10 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
             <Text bold m="0 8px">
               {lpSymbol.split(" ")[0]}
             </Text>
-            <AutoRow gap="4px" justifyContent="flex-start" flex={1}>
-              {isReady && multiplier && (
-                <Tag mr="4px" variant="secondary">
-                  {multiplier}
-                </Tag>
-              )}
-              {isReady && feeAmount && <V3FeeTag mr="4px" feeAmount={feeAmount} />}
-              {isReady && boosted && <BoostedTag mr="4px" />}
+            <AutoRow gap="4px" justifyContent="flex-start" flexWrap="nowrap" flex={1}>
+              {isReady && multiplier && <Tag variant="secondary">{multiplier}</Tag>}
+              {isReady && feeAmount && <V3FeeTag feeAmount={feeAmount} />}
+              {isReady && boosted && <BoostedTag />}
               {isReady && isCommunityFarm && <FarmAuctionTag />}
             </AutoRow>
           </Flex>
