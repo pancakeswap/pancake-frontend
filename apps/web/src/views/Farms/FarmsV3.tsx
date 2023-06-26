@@ -41,13 +41,14 @@ import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
+import { BIG_ZERO, BIG_ONE } from '@pancakeswap/utils/bigNumber'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { getFarmApr } from 'utils/apr'
 
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
-import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
@@ -186,8 +187,8 @@ type V2AndV3Farms = Array<V3FarmWithoutStakedValue | V2FarmWithoutStakedValue>
 export type V2StakeValueAndV3Farm = V3Farm | V2Farm
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { pathname, query: urlQuery } = useRouter()
-  const mockApr = Boolean(urlQuery.mockApr)
+  const router = useRouter()
+  const mockApr = Boolean(router.query.mockApr)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { data: farmsV2, userDataLoaded: v2UserDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
@@ -225,17 +226,23 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const cakePrice = usePriceCakeUSD()
 
   const [_query, setQuery] = useState('')
-  const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
+  const normalizedUrlSearch = useMemo(
+    () => (typeof router.query?.search === 'string' ? router.query.search : ''),
+    [router.query],
+  )
   const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
 
-  const [viewMode, setViewMode] = useUserFarmsViewMode()
+  const [_viewMode, setViewMode] = useUserFarmsViewMode()
+
+  const viewMode =
+    typeof router.query?.viewMode === 'string' ? ViewMode[router.query.viewMode as keyof typeof ViewMode] : _viewMode
   const { address: account } = useAccount()
   const [sortOption, setSortOption] = useState('hot')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
 
-  const isArchived = pathname.includes('archived')
-  const isInactive = pathname.includes('history')
+  const isArchived = router.pathname.includes('archived')
+  const isInactive = router.pathname.includes('history')
   const isActive = !isInactive && !isArchived
 
   useCakeVaultUserData()
@@ -250,56 +257,92 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       (supportedChainIdV2.includes(chainId) ? v2UserDataLoaded : true) &&
       (supportedChainIdV3.includes(chainId) ? v3UserDataLoaded : true))
 
-  const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const [_stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const stakedOnly = typeof router.query?.stakedOnly === 'string' ? !!router.query.stakedOnly : _stakedOnly
   const [v3FarmOnly, setV3FarmOnly] = useState(false)
   const [v2FarmOnly, setV2FarmOnly] = useState(false)
   const [boostedOnly, setBoostedOnly] = useState(false)
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
-  const activeFarms = farmsLP.filter(
-    (farm) =>
-      farm.pid !== 0 &&
-      farm.multiplier !== '0X' &&
-      (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
-  )
+  useEffect(() => {
+    if (!router.isReady) return
+    if (typeof router.query?.sortBy === 'string') {
+      setSortOption(router.query.sortBy)
+    }
+    if (typeof router.query?.filterV3Farms === 'string') {
+      setV3FarmOnly(!!router.query.filterV3Farms)
+    }
+    if (typeof router.query?.filterV2Farms === 'string') {
+      setV2FarmOnly(!!router.query.filterV2Farms)
+    }
+    if (typeof router.query?.filterBoosted === 'string') {
+      setBoostedOnly(!!router.query.filterBoosted)
+    }
+    if (typeof router.query?.filterStableswap === 'string') {
+      setStableSwapOnly(!!router.query.filterStableswap)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady])
 
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = useMemo(
+    () =>
+      farmsLP.filter(
+        (farm) =>
+          farm.pid !== 0 &&
+          farm.multiplier !== '0X' &&
+          (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
+      ),
+    [farmsLP, v3PoolLength, v2PoolLength],
+  )
+  const inactiveFarms = useMemo(() => farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X'), [farmsLP])
 
   const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = activeFarms.filter((farm) => {
-    if (farm.version === 3) {
-      return farm.stakedPositions.length > 0
-    }
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
-    )
-  })
+  const stakedOnlyFarms = useMemo(
+    () =>
+      activeFarms.filter((farm) => {
+        if (farm.version === 3) {
+          return farm.stakedPositions.length > 0
+        }
+        return (
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+        )
+      }),
+    [activeFarms],
+  )
 
-  const stakedInactiveFarms = inactiveFarms.filter((farm) => {
-    if (farm.version === 3) {
-      return farm.stakedPositions.length > 0
-    }
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
-    )
-  })
+  const stakedInactiveFarms = useMemo(
+    () =>
+      inactiveFarms.filter((farm) => {
+        if (farm.version === 3) {
+          return farm.stakedPositions.length > 0
+        }
+        return (
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+        )
+      }),
+    [inactiveFarms],
+  )
 
-  const stakedArchivedFarms = archivedFarms.filter((farm) => {
-    if (farm.version === 3) {
-      return farm.stakedPositions.length > 0
-    }
-    return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
-    )
-  })
+  const stakedArchivedFarms = useMemo(
+    () =>
+      archivedFarms.filter((farm) => {
+        if (farm.version === 3) {
+          return farm.stakedPositions.length > 0
+        }
+        return (
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+        )
+      }),
+    [archivedFarms],
+  )
 
   const farmsList = useCallback(
     (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
@@ -333,9 +376,39 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     [query, isActive, chainId, cakePrice, regularCakePerBlock, mockApr],
   )
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-  }
+  const updateQueryFromRouter = useCallback(
+    (objectKey: string, objectValue: any) => {
+      let newQuery
+      if (typeof router.query?.[objectKey] === 'string' && !objectValue) {
+        newQuery = Object.fromEntries(Object.entries(router.query).filter(([key]) => !key.includes(objectKey)))
+      } else if (!isUndefinedOrNull(objectValue)) {
+        newQuery = {
+          ...router.query,
+          [objectKey]: objectValue,
+        }
+      }
+      if (newQuery) {
+        router.replace(
+          {
+            query: newQuery,
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+      }
+    },
+    [router],
+  )
+
+  const handleChangeQuery = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      updateQueryFromRouter('search', event.target.value)
+      setQuery(event.target.value)
+    },
+    [updateQueryFromRouter],
+  )
 
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
@@ -448,9 +521,58 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [isIntersecting])
 
-  const handleSortOptionChange = (option: OptionProps): void => {
-    setSortOption(option.value)
-  }
+  const sortByItems = useMemo(
+    () => [
+      {
+        label: t('Hot'),
+        value: 'hot',
+      },
+      {
+        label: t('APR'),
+        value: 'apr',
+      },
+      {
+        label: t('Multiplier'),
+        value: 'multiplier',
+      },
+      {
+        label: t('Earned'),
+        value: 'earned',
+      },
+      {
+        label: t('Liquidity'),
+        value: 'liquidity',
+      },
+      {
+        label: t('Latest'),
+        value: 'latest',
+      },
+    ],
+    [t],
+  )
+
+  const defaultOptionIndex = useMemo(() => {
+    if (!router.isReady) {
+      return 0
+    }
+    if (typeof router.query?.sortBy === 'string') {
+      const queryIndex = sortByItems.findIndex((option) => option.value === router.query?.sortBy)
+      if (queryIndex === -1) {
+        return 0
+      }
+      return queryIndex + 1
+    }
+    return 0
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady])
+
+  const handleSortOptionChange = useCallback(
+    (option: OptionProps): void => {
+      updateQueryFromRouter('sortBy', option.value)
+      setSortOption(option.value)
+    },
+    [updateQueryFromRouter],
+  )
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
@@ -495,19 +617,39 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         <ControlContainer>
           <ViewControls>
             <Flex mt="20px">
-              <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+              <ToggleView
+                idPrefix="clickFarm"
+                viewMode={viewMode}
+                onToggle={(newViewMode) => {
+                  console.info(newViewMode)
+                  updateQueryFromRouter('viewMode', newViewMode)
+                  setViewMode(newViewMode)
+                }}
+              />
             </Flex>
             <FarmWidget.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
             <Flex mt="20px" ml="16px">
               <FarmTypesFilter
                 v3FarmOnly={v3FarmOnly}
-                handleSetV3FarmOnly={setV3FarmOnly}
+                handleSetV3FarmOnly={(value) => {
+                  updateQueryFromRouter('filterV3Farms', value)
+                  setV3FarmOnly(value)
+                }}
                 v2FarmOnly={v2FarmOnly}
-                handleSetV2FarmOnly={setV2FarmOnly}
+                handleSetV2FarmOnly={(value) => {
+                  updateQueryFromRouter('filterV2Farms', value)
+                  setV2FarmOnly(value)
+                }}
                 boostedOnly={boostedOnly}
-                handleSetBoostedOnly={setBoostedOnly}
+                handleSetBoostedOnly={(value) => {
+                  updateQueryFromRouter('filterBoosted', value)
+                  setBoostedOnly(value)
+                }}
                 stableSwapOnly={stableSwapOnly}
-                handleSetStableSwapOnly={setStableSwapOnly}
+                handleSetStableSwapOnly={(value) => {
+                  updateQueryFromRouter('filterStableSwap', value)
+                  setStableSwapOnly(value)
+                }}
                 farmTypesEnableCount={farmTypesEnableCount}
                 handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
               />
@@ -515,7 +657,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <Toggle
                   id="staked-only-farms"
                   checked={stakedOnly}
-                  onChange={() => setStakedOnly(!stakedOnly)}
+                  onChange={() => {
+                    updateQueryFromRouter('stakedOnly', !stakedOnly)
+                    setStakedOnly(!stakedOnly)
+                  }}
                   scale="sm"
                 />
                 <Text> {t('Staked only')}</Text>
@@ -528,32 +673,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 {t('Sort by')}
               </Text>
               <Select
-                options={[
-                  {
-                    label: t('Hot'),
-                    value: 'hot',
-                  },
-                  {
-                    label: t('APR'),
-                    value: 'apr',
-                  },
-                  {
-                    label: t('Multiplier'),
-                    value: 'multiplier',
-                  },
-                  {
-                    label: t('Earned'),
-                    value: 'earned',
-                  },
-                  {
-                    label: t('Liquidity'),
-                    value: 'liquidity',
-                  },
-                  {
-                    label: t('Latest'),
-                    value: 'latest',
-                  },
-                ]}
+                options={sortByItems}
+                defaultOptionIndex={defaultOptionIndex}
                 onOptionChange={handleSortOptionChange}
               />
             </LabelWrapper>
