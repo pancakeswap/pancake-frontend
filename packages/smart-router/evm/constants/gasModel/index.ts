@@ -1,19 +1,32 @@
 import { ChainId, Token } from '@pancakeswap/sdk'
-import { ethereumTokens, bscTokens, bscTestnetTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
+import {
+  ethereumTokens,
+  bscTokens,
+  bscTestnetTokens,
+  goerliTestnetTokens,
+  polygonZkEvmTokens,
+  polygonZkEvmTestnetTokens,
+  zkSyncTestnetTokens,
+  zksyncTokens,
+  lineaTestnetTokens,
+  arbitrumGoerliTokens,
+  arbitrumTokens,
+} from '@pancakeswap/tokens'
 
-export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
+export const usdGasTokensByChain = {
   [ChainId.ETHEREUM]: [ethereumTokens.usdt],
   [ChainId.GOERLI]: [goerliTestnetTokens.usdc],
   [ChainId.BSC]: [bscTokens.busd],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.busd],
-}
-
-export const nativeWrappedTokenByChain: { [chainId in ChainId]?: Token } = {
-  [ChainId.ETHEREUM]: ethereumTokens.weth,
-  [ChainId.GOERLI]: goerliTestnetTokens.weth,
-  [ChainId.BSC]: bscTokens.wbnb,
-  [ChainId.BSC_TESTNET]: bscTestnetTokens.wbnb,
-}
+  // TODO: new chains
+  [ChainId.ARBITRUM_ONE]: [arbitrumTokens.usdc],
+  [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.usdc],
+  [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.usdc],
+  [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.usdt],
+  [ChainId.ZKSYNC]: [zksyncTokens.usdc],
+  [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc],
+  [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc],
+} satisfies Record<ChainId, Token[]>
 
 export * from './v2'
 export * from './v3'

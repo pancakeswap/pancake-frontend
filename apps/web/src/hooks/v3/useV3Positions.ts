@@ -103,7 +103,7 @@ export function useV3TokenIdsByAccount(
     address: contractAddress as `0x${string}`,
     args: [account ?? undefined],
     functionName: 'balanceOf',
-    enabled: !!account,
+    enabled: !!account && !!contractAddress,
     watch: true,
     chainId,
   })

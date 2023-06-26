@@ -133,11 +133,14 @@ function Remove({ tokenId }: { tokenId: bigint }) {
 
   const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id === tokenId))
 
+  const manager = isStakedInMCv3 ? masterchefV3 : positionManager
+  const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
+
   const onRemove = useCallback(async () => {
     if (
       tokenIdsInMCv3Loading ||
-      !masterchefV3 ||
-      !positionManager ||
+      !interfaceManager ||
+      !manager ||
       !liquidityValue0 ||
       !liquidityValue1 ||
       !deadline ||
@@ -149,9 +152,6 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     ) {
       return
     }
-
-    const manager = isStakedInMCv3 ? masterchefV3 : positionManager
-    const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
 
     setAttemptingTxn(true)
 
@@ -202,8 +202,8 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     })
   }, [
     tokenIdsInMCv3Loading,
-    masterchefV3,
-    positionManager,
+    interfaceManager,
+    manager,
     liquidityValue0,
     liquidityValue1,
     deadline,
@@ -212,7 +212,6 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     positionSDK,
     liquidityPercentage,
     sendTransactionAsync,
-    isStakedInMCv3,
     tokenId,
     allowedSlippage,
     feeValue0,

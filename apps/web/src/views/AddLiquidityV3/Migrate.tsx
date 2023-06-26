@@ -31,7 +31,7 @@ import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancak
 import { Address, useContractRead, useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
-import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -302,7 +302,7 @@ function V2PairMigrate({
   } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
-    ROUTER_ADDRESS[chainId],
+    V2_ROUTER_ADDRESS[chainId],
   )
 
   const pairContractRead = usePairContract(pair?.liquidityToken?.address)

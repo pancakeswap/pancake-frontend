@@ -21,6 +21,34 @@ const defaultTokenAndPoolList: TokenAndPoolList = {
     tokens: [],
     pools: [],
   },
+  [ChainId.ARBITRUM_ONE]: {
+    tokens: [],
+    pools: [],
+  },
+  [ChainId.ARBITRUM_GOERLI]: {
+    tokens: [],
+    pools: [],
+  },
+  [ChainId.POLYGON_ZKEVM]: {
+    tokens: [],
+    pools: [],
+  },
+  [ChainId.POLYGON_ZKEVM_TESTNET]: {
+    tokens: [],
+    pools: [],
+  },
+  [ChainId.ZKSYNC]: {
+    tokens: [],
+    pools: [],
+  },
+  [ChainId.ZKSYNC_TESTNET]: {
+    tokens: [],
+    pools: [],
+  },
+  [ChainId.LINEA_TESTNET]: {
+    tokens: [],
+    pools: [],
+  },
 }
 
 const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList)

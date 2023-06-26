@@ -47,7 +47,7 @@ export default function CurrencyLogo({ currency, size = '24px', style }: LogoPro
       return <BinanceIcon width={size} style={style} />
     }
     return (
-      <StyledLogo size={size} srcs={[`${ASSET_CDN}/web/chains/${currency.chainId}.png`]} width={size} style={style} />
+      <StyledLogo size={size} srcs={[`${ASSET_CDN}/web/native/${currency.chainId}.png`]} width={size} style={style} />
     )
   }
 

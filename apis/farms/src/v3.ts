@@ -1,4 +1,6 @@
-import { masterChefV3Addresses } from '@pancakeswap/farms'
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-param-reassign */
+import { masterChefV3Addresses, FarmSupportedChainId } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
@@ -21,7 +23,7 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.BSC_TESTNET]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel', {
     fetch,
   }),
-} satisfies Record<ChainId, GraphQLClient>
+} satisfies Record<FarmSupportedChainId, GraphQLClient>
 
 const zChainId = z.enum(['56', '1', '5', '97'])
 

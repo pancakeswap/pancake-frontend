@@ -1,5 +1,5 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { ERC20Token, Token } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token, Token } from '@pancakeswap/sdk'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import {
   Button,
@@ -73,9 +73,12 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
 }
 
 export function useTokenRisk(token?: Token) {
-  return useSWRImmutable(token && token.address && ['risk', token.chainId, token.address], () => {
-    return fetchRiskToken(token.address, token.chainId)
-  })
+  return useSWRImmutable(
+    token && token.address && token.chainId === ChainId.BSC && ['risk', token.chainId, token.address],
+    () => {
+      return fetchRiskToken(token.address, token.chainId)
+    },
+  )
 }
 
 const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {

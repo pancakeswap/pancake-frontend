@@ -180,11 +180,11 @@ function createOnChainPoolFactory<
     }
 
     const chainId: ChainId = pairs[0]?.[0]?.chainId
-    if (!chainId) {
+    const client = provider({ chainId })
+    if (!chainId || !client) {
       return []
     }
 
-    const client = provider({ chainId })
     const poolAddressSet = new Set<string>()
 
     const poolMetas: TPoolMeta[] = []

@@ -7,7 +7,13 @@ import useSWRImmutable from 'swr/immutable'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterChefContract } from 'utils/contractHelpers'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
+import {
+  DeserializedFarm,
+  DeserializedFarmsState,
+  DeserializedFarmUserData,
+  supportedChainIdV2,
+  bCakeSupportedChainId,
+} from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 
@@ -22,19 +28,25 @@ import {
 
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
-  return useSWRImmutable(chainId ? ['farmsLength', chainId] : null, async () => {
-    const mc = getMasterChefContract(undefined, chainId)
-    return Number(await mc.read.poolLength())
-  })
+  return useSWRImmutable(
+    chainId && supportedChainIdV2.includes(chainId) ? ['farmsLength', chainId] : null,
+    async () => {
+      const mc = getMasterChefContract(undefined, chainId)
+      return Number(await mc.read.poolLength())
+    },
+  )
 }
 
 export function useFarmV2PublicAPI() {
   const { chainId } = useActiveChainId()
-  return useSWRImmutable(chainId ? ['farm-v2-pubic-api', chainId] : null, async () => {
-    return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
-      .then((res) => res.json())
-      .then((res) => res.data)
-  })
+  return useSWRImmutable(
+    chainId && supportedChainIdV2.includes(chainId) ? ['farm-v2-pubic-api', chainId] : null,
+    async () => {
+      return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
+        .then((res) => res.json())
+        .then((res) => res.data)
+    },
+  )
 }
 
 export const usePollFarmsWithUserData = () => {
@@ -47,9 +59,10 @@ export const usePollFarmsWithUserData = () => {
   } = useBCakeProxyContractAddress(account, chainId)
 
   useSWRImmutable(
-    chainId ? ['publicFarmData', chainId] : null,
+    chainId && supportedChainIdV2.includes(chainId) ? ['publicFarmData', chainId] : null,
     async () => {
-      const farmsConfig = (await getFarmConfig(chainId)) || []
+      const farmsConfig = await getFarmConfig(chainId)
+      if (!farmsConfig) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
@@ -64,9 +77,10 @@ export const usePollFarmsWithUserData = () => {
     : ['farmsWithUserData', account, chainId]
 
   useSWRImmutable(
-    account && chainId && !isProxyContractLoading ? name : null,
+    account && chainId && bCakeSupportedChainId.includes(chainId) && !isProxyContractLoading ? name : null,
     async () => {
-      const farmsConfig = (await getFarmConfig(chainId)) || []
+      const farmsConfig = await getFarmConfig(chainId)
+      if (!farmsConfig) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
       dispatch(fetchFarmUserDataAsync(params))

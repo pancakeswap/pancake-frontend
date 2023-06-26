@@ -43,8 +43,6 @@
     "toformat": "^2.0.0"
   },
   "devDependencies": {
-    "@swc/core": "^1.2.215",
-    "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",
     "tsup": "^6.7.0"
   },

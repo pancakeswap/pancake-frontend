@@ -59,7 +59,7 @@ export const useFarmsV3Public = () => {
   const { chainId } = useActiveChainId()
 
   return useSWR(
-    [chainId, 'farmV3ApiFetch'],
+    farmFetcherV3.isChainSupported(chainId) && [chainId, 'farmV3ApiFetch'],
     async () => {
       if (API_FLAG) {
         return farmV3ApiFetch(chainId).catch((err) => {

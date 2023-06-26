@@ -47,9 +47,9 @@ export function useStablecoinPrice(
 
   const cakePrice = useCakePriceAsBN()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
-  const isCake = currency?.wrapped.equals(CAKE[chainId])
+  const isCake = currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
 
-  const isStableCoin = currency?.wrapped.equals(stableCoin)
+  const isStableCoin = currency && stableCoin && currency.wrapped.equals(stableCoin)
 
   const shouldEnabled = currency && stableCoin && enabled && currentChainId === chainId && !isCake && !isStableCoin
 
@@ -57,9 +57,9 @@ export function useStablecoinPrice(
 
   // we don't have too many AMM pools on ethereum yet, try to get it from api
   const { data: priceFromLlama, isLoading } = useSWRImmutable<string>(
-    enableLlama && ['fiat-price-ethereum', currency],
+    currency && enableLlama && ['fiat-price-ethereum', currency],
     async () => {
-      const address = currency.isToken ? currency.address : WETH9[ChainId.ETHEREUM].address
+      const address = currency?.isToken ? currency.address : WETH9[ChainId.ETHEREUM]?.address
       return fetch(`https://coins.llama.fi/prices/current/ethereum:${address}`) // <3 llama
         .then((res) => res.json())
         .then(
@@ -257,6 +257,9 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
     async () => {
       const reserves = await pairContract.read.getReserves()
       if (!reserves) {
+        return null
+      }
+      if (!tokenA || !tokenB) {
         return null
       }
       const [reserve0, reserve1] = reserves

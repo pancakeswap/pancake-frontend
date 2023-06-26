@@ -1,7 +1,5 @@
-import { ChainId, Token } from '@pancakeswap/sdk'
-
-import { nativeWrappedTokenByChain } from '../../constants'
+import { ChainId, Token, WNATIVE } from '@pancakeswap/sdk'
 
 export function getNativeWrappedToken(chainId: ChainId): Token | null {
-  return nativeWrappedTokenByChain[chainId] ?? null
+  return WNATIVE[chainId] ?? null
 }
