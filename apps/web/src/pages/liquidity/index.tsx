@@ -43,6 +43,7 @@ import { useAtom } from 'jotai'
 import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -195,12 +196,15 @@ export default function PoolListPage() {
   }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, v3PairsSection])
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
+  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
 
   return (
     <Page>
-      <Flex m="24px 0" maxWidth="854px">
-        <FarmV3MigrationBanner />
-      </Flex>
+      {isMigrationSupported && (
+        <Flex m="24px 0" maxWidth="854px">
+          <FarmV3MigrationBanner />
+        </Flex>
+      )}
       <AppBody
         style={{
           maxWidth: '854px',

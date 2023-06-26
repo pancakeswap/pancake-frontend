@@ -44,8 +44,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
       {chains
         .filter(
           (chain) =>
-            // chain.id === ChainId.LINEA_TESTNET ||
-            !('testnet' in chain && chain.testnet) || chain.id === chainId,
+            chain.id === ChainId.LINEA_TESTNET || !('testnet' in chain && chain.testnet) || chain.id === chainId,
         )
         .map((chain) => (
           <UserMenuItem
