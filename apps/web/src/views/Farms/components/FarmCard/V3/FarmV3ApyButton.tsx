@@ -206,7 +206,10 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
           {t('Farm APR')}:{' '}
           <b>
             {canBoosted && <>{parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER}% </>}
-            <Text display="inline-block" style={{ textDecoration: canBoosted ? 'line-through' : 'none' }}>
+            <Text
+              display="inline-block"
+              style={{ textDecoration: canBoosted ? 'line-through' : 'none', fontWeight: 800 }}
+            >
               {cakeAprDisplay}%
             </Text>
           </b>
