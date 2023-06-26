@@ -57,7 +57,7 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
 } satisfies Record<ChainId, string>
 
-export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api-git-feat-dev.pancake.run/api/v1'
+export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 

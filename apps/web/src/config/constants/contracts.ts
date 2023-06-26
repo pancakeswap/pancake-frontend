@@ -180,7 +180,7 @@ export default {
   },
   tradingReward: {
     1: '0x',
-    56: '0xe9f80dfC6ddfc4637b8B3BdFc6838209Dc82eF95',
+    56: '0xa842a4AD40FEbbd034fbeF25C7a880464a90e695',
     97: '0x',
   },
   nftPositionManager: {
@@ -209,7 +209,7 @@ export default {
   },
   tradingRewardTopTrades: {
     1: '0x',
-    56: '0x443DA1BA57d2e77394deD2D09EE560fdFeE703E7',
+    56: '0xa842a4AD40FEbbd034fbeF25C7a880464a90e695',
     97: '0x',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
