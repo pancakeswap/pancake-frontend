@@ -19,7 +19,7 @@ import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/me
 const DropdownWrapper = styled.div`
   width: 100%;
 `
-const FEE_TYPES = ['Total Fees', 'Networking Fees']
+const FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
 
 const FeeItem = ({
   feeTitle,
