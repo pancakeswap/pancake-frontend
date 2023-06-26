@@ -23,7 +23,7 @@ const StyledFlex = styled(Flex)`
 const StyledTabToggle = styled(TabToggle)`
   cursor: pointer;
   background-color: ${({ theme, isActive }) =>
-    isActive ? (theme.isDark ? 'rgb(40,45,60)' : '#f4fdff') : theme.isDark ? theme.colors.input : 'transparent'};
+    isActive ? (theme.isDark ? 'rgb(45,48,72)' : '#f4fdff') : theme.isDark ? theme.colors.input : 'transparent'};
 `
 
 const Wrapper = styled.div`
