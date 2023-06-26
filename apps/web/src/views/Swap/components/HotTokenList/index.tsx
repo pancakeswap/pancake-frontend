@@ -12,17 +12,18 @@ import TokenTable from './SwapTokenTable'
 import { useTokenHighLightList } from './useList'
 
 const StyledFlex = styled(Flex)`
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 32px;
   > div:first-child > div {
-    background: rgba(238, 234, 244, 0.5);
-    border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+    background: ${({ theme }) => (theme.isDark ? theme.colors.input : `rgba(238, 234, 244, 0.5)`)};
     overflow: hidden;
-    border-bottom: none;
   }
 `
 
 const StyledTabToggle = styled(TabToggle)`
   cursor: pointer;
-  background-color: ${({ theme, isActive }) => (isActive ? '#f4fdff' : 'transparent')};
+  background-color: ${({ theme, isActive }) =>
+    isActive ? (theme.isDark ? theme.card.background : '#f4fdff') : theme.isDark ? theme.colors.input : 'transparent'};
 `
 
 const Wrapper = styled.div`
@@ -32,7 +33,6 @@ const Wrapper = styled.div`
     padding: 24px;
     box-sizing: border-box;
     background: ${({ theme }) => (theme.isDark ? 'rgba(39, 38, 44, 0.5)' : 'rgba(255, 255, 255, 0.5)')};
-    border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     border-top: none;
     border-radius: 0px 0px 32px 32px;
   }
