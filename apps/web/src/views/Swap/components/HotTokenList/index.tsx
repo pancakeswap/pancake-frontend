@@ -13,6 +13,7 @@ import { useTokenHighLightList } from './useList'
 
 const StyledFlex = styled(Flex)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  overflow: hidden;
   border-radius: 32px;
   > div:first-child > div {
     background: ${({ theme }) => (theme.isDark ? theme.colors.input : `rgba(238, 234, 244, 0.5)`)};
