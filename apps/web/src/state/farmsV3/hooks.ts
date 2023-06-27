@@ -6,6 +6,7 @@ import {
   IPendingCakeByTokenId,
   SerializedFarmsV3Response,
   createFarmFetcherV3,
+  supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
@@ -178,22 +179,23 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
 
 export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const masterchefV3 = useMasterchefV3()
 
   const harvestCalls = useMemo(() => {
-    if (!account) return []
+    if (!account || !supportedChainIdV3.includes(chainId)) return []
     const callData: Hex[] = []
     for (const stakedTokenId of stakedTokenIds) {
       callData.push(
         encodeFunctionData({
-          abi: masterchefV3.abi,
+          abi: masterchefV3?.abi,
           functionName: 'harvest',
           args: [stakedTokenId, account],
         }),
       )
     }
     return callData
-  }, [account, masterchefV3.abi, stakedTokenIds])
+  }, [account, masterchefV3?.abi, stakedTokenIds, chainId])
 
   const { data } = useSWR(
     account && ['mcv3-harvest', harvestCalls],
