@@ -133,7 +133,7 @@ export function BuyCryptoForm({
             }
           />
           {error ? (
-            <Text py="8px" fontSize="12px" color="red">
+            <Text pb="16px" fontSize="12px" color="red">
               {error}
             </Text>
           ) : null}

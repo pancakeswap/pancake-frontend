@@ -74,7 +74,7 @@ export function CurrencyInputPanel({
         </AtomBox>
 
         {error ? (
-          <Text py="8px" fontSize="12px" color="red">
+          <Text pb="8px" fontSize="12px" color="red">
             {error}
           </Text>
         ) : null}
