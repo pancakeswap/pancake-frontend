@@ -43,6 +43,8 @@ interface Props {
   onRefreshPrice: () => void
 }
 
+const SUPPORTED_BUY_CRYPTO_CHAINS = [1, 56]
+
 const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
   overflow: hidden;
@@ -109,19 +111,21 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
         <Flex width="100%" justifyContent="end">
-          <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
-            <TooltipText
-              ref={buyCryptoTargetRef}
-              onClick={() => setMobileTooltipShow(false)}
-              display="flex"
-              style={{ justifyContent: 'center' }}
-            >
-              <InternalLink href="/buy-crypto">
-                <Image src={BuyCryptoIcon} alt="#" style={{ justifyContent: 'center' }} />
-              </InternalLink>
-            </TooltipText>
-            {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
-          </Flex>
+          {SUPPORTED_BUY_CRYPTO_CHAINS.includes(chainId) ? (
+            <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
+              <TooltipText
+                ref={buyCryptoTargetRef}
+                onClick={() => setMobileTooltipShow(false)}
+                display="flex"
+                style={{ justifyContent: 'center' }}
+              >
+                <InternalLink href="/buy-crypto">
+                  <Image src={BuyCryptoIcon} alt="#" style={{ justifyContent: 'center' }} />
+                </InternalLink>
+              </TooltipText>
+              {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
+            </Flex>
+          ) : null}
           {isChartSupported && setIsChartDisplayed && (
             <ColoredIconButton
               onClick={() => {

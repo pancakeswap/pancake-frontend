@@ -22,6 +22,6 @@ export async function getServerSideProps() {
   }
 }
 
-BuyCryptoPage.chains = CHAIN_IDS
+BuyCryptoPage.chains = [1, 56]
 
 export default BuyCryptoPage

@@ -9,7 +9,7 @@ import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
-import { MERCURYO_WIDGET_ID, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -32,7 +32,7 @@ interface FiatOnRampProps {
 interface FetchResponse {
   urlWithSignature: string
 }
-const MOONPAY_SUPPORTED_CURRENCY_CODES = ['eth', 'usdc', 'usdt', 'dai']
+
 const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
   return (
     <Flex
@@ -65,7 +65,7 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const res = await fetch(`https://pcs-on-ramp-api.com/generate-moonpay-sig`, {
+    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -83,7 +83,6 @@ const fetchMoonPaySignedUrl = async (
       }),
     })
     const result: FetchResponse = await res.json()
-    console.log(result.urlWithSignature)
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
