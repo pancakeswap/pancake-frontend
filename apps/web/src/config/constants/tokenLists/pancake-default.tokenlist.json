@@ -211,6 +211,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
+      "name": "Tether USD",
+      "address": "0x1E4a5963aBFD975d8c9021ce480b42188849D41d",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 1101,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+    },
+    {
       "name": "Test USD Coin",
       "address": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
       "symbol": "tUSDC",
