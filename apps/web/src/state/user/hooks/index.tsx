@@ -305,7 +305,7 @@ export function useGasPrice(chainIdOverride?: number): bigint | undefined {
     signer && chainId === ChainId.BSC && userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', signer],
     async () => {
       // @ts-ignore
-      const gasPrice = await signer.request({
+      const gasPrice = await signer?.request({
         method: 'eth_gasPrice',
       })
       return hexToBigInt(gasPrice as Hex)

@@ -2,6 +2,7 @@ import { AtomBox } from "@pancakeswap/ui";
 import { inputContainerVariants } from "./SwapWidget.css";
 
 import { NumericalInput, NumericalInputProps } from "./NumericalInput";
+import { Text } from "../../components";
 
 type ZapStyle = "noZap" | "zap";
 
@@ -44,7 +45,7 @@ export function CurrencyInputPanel({
           className={inputContainerVariants({
             hasZapStyle: !!zapStyle,
             showBridgeWarning: !!showBridgeWarning,
-            error,
+            error: Boolean(error),
           })}
         >
           <AtomBox
@@ -58,7 +59,7 @@ export function CurrencyInputPanel({
             pt="12px"
           >
             <NumericalInput
-              error={error}
+              error={Boolean(error)}
               disabled={disabled}
               loading={loading}
               className="token-amount-input"
@@ -71,6 +72,13 @@ export function CurrencyInputPanel({
           </AtomBox>
           {bottom}
         </AtomBox>
+
+        {error ? (
+          <Text pb="8px" fontSize="12px" color="red">
+            {error}
+          </Text>
+        ) : null}
+
         {disabled && (
           <AtomBox role="presentation" position="absolute" inset="0px" backgroundColor="backgroundAlt" opacity="0.6" />
         )}

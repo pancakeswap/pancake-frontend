@@ -77,7 +77,7 @@ interface CurrencyInputPanelProps {
   zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
-  error?: boolean
+  error?: boolean | string
   showUSDPrice?: boolean
   tokensToShow?: Token[]
   currencyLoading?: boolean
@@ -180,7 +180,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
     <SwapUI.CurrencyInputPanel
       id={id}
       disabled={disabled}
-      error={error}
+      error={error as boolean}
       zapStyle={zapStyle}
       value={value}
       onInputBlur={onInputBlur}

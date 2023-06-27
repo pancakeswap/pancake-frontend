@@ -38,15 +38,6 @@ const AssetSelectButton = styled.div`
   }
 `
 
-const StyledBalanceText = styled(Text)`
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 5rem;
-  text-overflow: ellipsis;
-  padding-left: 4px;
-  padding-right: 4px;
-`
-
 const chainIdToNetwork: { [network: number]: string } = {
   1: 'Ethereum',
   56: 'Binance Chain',
@@ -55,7 +46,7 @@ const chainIdToNetwork: { [network: number]: string } = {
 function Balance({ balance, currency }: { balance: CurrencyAmount<Currency>; currency: Currency }) {
   return (
     <Flex alignItems="center" justifyContent="center">
-      <StyledBalanceText title={balance.toExact()}>{formatAmount(balance, 4)}</StyledBalanceText>
+      <Text paddingRight="4px">{formatAmount(balance, 4)}</Text>
       <Text color="textSubtle" fontSize="12px" ellipsis fontWeight="bold" textAlign="center" paddingTop="2px">
         {`${currency?.symbol}`}
       </Text>

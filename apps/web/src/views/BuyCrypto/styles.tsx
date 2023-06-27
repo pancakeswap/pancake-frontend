@@ -6,9 +6,7 @@ export const StyledBuyCryptoContainer = styled(Flex)`
   height: fit-content;
   padding: 0 16px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 0 40px;
-  }
+  width: 420px;
 `
 
 export const AppWrapper = styled.div`

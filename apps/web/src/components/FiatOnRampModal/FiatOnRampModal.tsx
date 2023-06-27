@@ -8,10 +8,16 @@ import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
-import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
-import { MERCURYO_WIDGET_ID, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/sdk'
+import {
+  ETHEREUM_TOKENS,
+  SUPPORTED_MERCURYO_FIAT_CURRENCIES,
+  SUPPORTED_MONPAY_ETH_TOKENS,
+  SUPPORTED_MOONPAY_BSC_TOKENS,
+  mercuryoWhitelist,
+} from 'views/BuyCrypto/constants'
+import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -39,7 +45,7 @@ const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
       justifyContent="center"
       alignItems="center"
       style={{
-        height: '750px',
+        height: '677px',
         width: '100%',
         background: `${theme.isDark ? '#27262C' : 'white'}`,
         position: 'absolute',
@@ -62,9 +68,12 @@ const fetchMoonPaySignedUrl = async (
   amount: string,
   isDark: boolean,
   account: string,
+  chainId: number,
 ) => {
   try {
-    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
+    const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
+
+    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -72,15 +81,17 @@ const fetchMoonPaySignedUrl = async (
       method: 'POST',
       body: JSON.stringify({
         type: 'MOONPAY',
-        defaultCurrencyCode: inputCurrency.toLowerCase(),
+        defaultCurrencyCode: baseCurrency,
         baseCurrencyCode: outputCurrency.toLowerCase(),
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        walletAddresses: account,
+        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? SUPPORTED_MONPAY_ETH_TOKENS : SUPPORTED_MOONPAY_BSC_TOKENS,
+        walletAddress: account,
       }),
     })
     const result: FetchResponse = await res.json()
+
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
@@ -90,7 +101,7 @@ const fetchMoonPaySignedUrl = async (
 
 const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
   try {
-    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-binance-connect-sig`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -207,7 +218,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     try {
       let result = ''
       if (provider === 'MoonPay')
-        result = await fetchMoonPaySignedUrl(inputCurrency, outputCurrency, amount, theme.isDark, account.address)
+        result = await fetchMoonPaySignedUrl(
+          inputCurrency,
+          outputCurrency,
+          amount,
+          theme.isDark,
+          account.address,
+          chainId,
+        )
       else result = await fetchBinanceConnectSignedUrl(inputCurrency, outputCurrency, amount, account.address)
 
       setSignedIframeUrl(result)
@@ -216,7 +234,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     } finally {
       setTimeout(() => setLoading(false), 2000)
     }
-  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t, chainId])
 
   useEffect(() => {
     const fetchSig = async () => {
@@ -254,8 +272,9 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '820px',
+          height: '750px',
           width: '400px',
+          network: chainId === ChainId.ETHEREUM ? ChainId.ETHEREUM : ChainId.BSC,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
         })
@@ -281,7 +300,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         onDismiss={handleDismiss}
         bodyPadding="0px"
         headerBackground="gradientCardHeader"
-        height="820px" // height has to be overidden
+        height="750px" // height has to be overidden
         width="400px" // width has to be overidden
       >
         {error ? (
