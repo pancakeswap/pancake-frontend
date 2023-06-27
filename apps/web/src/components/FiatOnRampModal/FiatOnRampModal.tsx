@@ -62,9 +62,10 @@ const fetchMoonPaySignedUrl = async (
   amount: string,
   isDark: boolean,
   account: string,
+  chainId: number,
 ) => {
   try {
-    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
+    const res = await fetch(`https://pcs-on-ramp-api.com/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -77,19 +78,12 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: MOONPAY_SUPPORTED_CURRENCY_CODES,
-        walletAddresses: JSON.stringify(
-          MOONPAY_SUPPORTED_CURRENCY_CODES.reduce(
-            (acc, currencyCode) => ({
-              ...acc,
-              [currencyCode]: account,
-            }),
-            {},
-          ),
-        ),
+        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? ['eth', 'usdc', 'dai'] : ['bnb', 'busd'],
+        walletAddress: account,
       }),
     })
     const result: FetchResponse = await res.json()
+    console.log(result.urlWithSignature)
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
@@ -216,7 +210,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     try {
       let result = ''
       if (provider === 'MoonPay')
-        result = await fetchMoonPaySignedUrl(inputCurrency, outputCurrency, amount, theme.isDark, account.address)
+        result = await fetchMoonPaySignedUrl(
+          inputCurrency,
+          outputCurrency,
+          amount,
+          theme.isDark,
+          account.address,
+          chainId,
+        )
       else result = await fetchBinanceConnectSignedUrl(inputCurrency, outputCurrency, amount, account.address)
 
       setSignedIframeUrl(result)

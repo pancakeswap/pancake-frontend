@@ -55,7 +55,7 @@ const chainIdToNetwork: { [network: number]: string } = {
 function Balance({ balance, currency }: { balance: CurrencyAmount<Currency>; currency: Currency }) {
   return (
     <Flex alignItems="center" justifyContent="center">
-      <StyledBalanceText title={balance.toExact()}>{formatAmount(balance, 4)}</StyledBalanceText>
+      <Text paddingRight="4px">{formatAmount(balance, 4)}</Text>
       <Text color="textSubtle" fontSize="12px" ellipsis fontWeight="bold" textAlign="center" paddingTop="2px">
         {`${currency?.symbol}`}
       </Text>

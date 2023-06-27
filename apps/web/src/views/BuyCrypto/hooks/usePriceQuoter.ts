@@ -93,7 +93,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
     })
 
     if (sortedFilteredQuotes.length > 1)
-      sortedFilteredQuotes.sort((a: ProviderQoute, b: ProviderQoute) => {
+      sortedFilteredQuotes.sort((a, b) => {
         const totalAmountA = a.amount + a.providerFee + a.networkFee
         const totalAmountB = b.amount + b.providerFee + b.networkFee
 
@@ -101,7 +101,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         if (a.amount === 0) return 1
         if (b.amount === 0) return -1
 
-        return totalAmountA - totalAmountB
+        return totalAmountB - totalAmountA // Note the difference here for descending order
       })
 
     return sortedFilteredQuotes
@@ -130,9 +130,11 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         }, [])
         .filter((item) => typeof item !== 'undefined')
 
+      console.log(dataPromises)
+
       const combinedData: ProviderQoute[] = dataPromises
         .map((quote: ProviderResponse) => {
-          const isMoonapySupported = MOONPAY_UNSUPPORTED_CURRENCY_CODES.includes(inputCurrency) || chainId === 56
+          const isMoonapySupported = MOONPAY_UNSUPPORTED_CURRENCY_CODES.includes(inputCurrency)
 
           if (quote?.accountId && !isMoonapySupported) return calculateQuotesData(quote as PriceQuotes)
           if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
@@ -142,6 +144,8 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         .filter((item) => typeof item !== 'undefined')
 
       const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
+
+      console.log(sortedFilteredQuotes)
       setQuotes(sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
