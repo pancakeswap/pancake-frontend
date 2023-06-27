@@ -137,8 +137,6 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         }, [])
         .filter((item) => typeof item !== 'undefined')
 
-      console.log(dataPromises)
-
       const combinedData: ProviderQoute[] = dataPromises
         .map((quote: ProviderResponse) => {
           const isMoonapySupported = MOONPAY_UNSUPPORTED_CURRENCY_CODES.includes(inputCurrency)
@@ -152,13 +150,12 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
 
       const sortedFilteredQuotes = await fetchProviderAvailability(userIp, combinedData)
 
-      console.log(sortedFilteredQuotes)
       setQuotes(sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
     }
-  }, [amount, inputCurrency, outputCurrency, chainId, userIp])
+  }, [amount, inputCurrency, outputCurrency, chainId, userIp, fetchProviderAvailability])
 
   return { quotes, fetchQuotes, fetchProviderAvailability }
 }

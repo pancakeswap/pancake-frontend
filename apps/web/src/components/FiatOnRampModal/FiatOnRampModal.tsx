@@ -65,6 +65,8 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
+    const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
+
     const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
@@ -73,16 +75,17 @@ const fetchMoonPaySignedUrl = async (
       method: 'POST',
       body: JSON.stringify({
         type: 'MOONPAY',
-        defaultCurrencyCode: inputCurrency.toLowerCase(),
+        defaultCurrencyCode: baseCurrency,
         baseCurrencyCode: outputCurrency.toLowerCase(),
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? ['eth', 'usdc', 'dai'] : ['bnb', 'busd'],
+        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? ['eth', 'usdc', 'dai', 'usdt'] : ['bnb_bsc', 'busd_bsc'],
         walletAddress: account,
       }),
     })
     const result: FetchResponse = await res.json()
+    console.log(result.urlWithSignature)
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
