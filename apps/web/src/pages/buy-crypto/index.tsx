@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { CHAIN_IDS } from 'utils/wagmi'
 import BuyCrypto from 'views/BuyCrypto'
@@ -22,6 +23,6 @@ export async function getServerSideProps() {
   }
 }
 
-BuyCryptoPage.chains = [1, 56]
+BuyCryptoPage.chains = [ChainId.ETHEREUM, ChainId.BSC]
 
 export default BuyCryptoPage
