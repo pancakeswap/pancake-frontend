@@ -101,7 +101,15 @@ export function PoolControls<T>({
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
 
-  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (typeof router.query?.sortBy === "string") {
+      setSortOption(router.query.sortBy);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools]);
   const openPoolsWithStartBlockFilter = useMemo(
     () =>
       openPools.filter((pool) =>
@@ -144,11 +152,20 @@ export function PoolControls<T>({
   const showFinishedPools = router.pathname.includes('history')
 
   const handleChangeSearchQuery = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value),
-    [],
-  )
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      updateQueryFromRouter(router, "search", event.target.value);
+      setSearchQuery(event.target.value);
+    },
+    [router]
+  );
 
-  const handleSortOptionChange = useCallback((option: OptionProps) => setSortOption(option.value), [])
+  const handleSortOptionChange = useCallback(
+    (option: OptionProps): void => {
+      updateQueryFromRouter(router, "sortBy", option.value);
+      setSortOption(option.value);
+    },
+    [router]
+  );
 
   let chosenPools: DeserializedPool<T>[]
   if (showFinishedPools) {
@@ -176,6 +193,47 @@ export function PoolControls<T>({
     [chosenPools, normalizedUrlSearch, showFinishedPools, stakedOnly, viewMode],
   )
 
+  const sortByItems = useMemo(
+    () => [
+      {
+        label: t("Hot"),
+        value: "hot",
+      },
+      {
+        label: t("APR"),
+        value: "apr",
+      },
+      {
+        label: t("Earned"),
+        value: "earned",
+      },
+      {
+        label: t("Total staked"),
+        value: "totalStaked",
+      },
+      {
+        label: t("Latest"),
+        value: "latest",
+      },
+    ],
+    [t]
+  );
+
+  const defaultOptionIndex = useMemo(() => {
+    if (!router.isReady) {
+      return 0;
+    }
+    if (typeof router.query?.sortBy === "string") {
+      const queryIndex = sortByItems.findIndex((option) => option.value === router.query?.sortBy);
+      if (queryIndex === -1) {
+        return 0;
+      }
+      return queryIndex + 1;
+    }
+    return 0;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
   return (
     <>
       <PoolControlsView>
@@ -194,28 +252,8 @@ export function PoolControls<T>({
             </Text>
             <ControlStretch>
               <Select
-                options={[
-                  {
-                    label: t('Hot'),
-                    value: 'hot',
-                  },
-                  {
-                    label: t('APR'),
-                    value: 'apr',
-                  },
-                  {
-                    label: t('Earned'),
-                    value: 'earned',
-                  },
-                  {
-                    label: t('Total staked'),
-                    value: 'totalStaked',
-                  },
-                  {
-                    label: t('Latest'),
-                    value: 'latest',
-                  },
-                ]}
+                options={sortByItems}
+                defaultOptionIndex={defaultOptionIndex}
                 onOptionChange={handleSortOptionChange}
               />
             </ControlStretch>

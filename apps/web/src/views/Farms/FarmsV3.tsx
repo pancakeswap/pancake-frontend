@@ -27,6 +27,7 @@ import {
   Text,
   Toggle,
   ToggleView,
+  updateQueryFromRouter,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
@@ -42,7 +43,6 @@ import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { BIG_ZERO, BIG_ONE } from '@pancakeswap/utils/bigNumber'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { getFarmApr } from 'utils/apr'
 
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
@@ -376,38 +376,12 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     [query, isActive, chainId, cakePrice, regularCakePerBlock, mockApr],
   )
 
-  const updateQueryFromRouter = useCallback(
-    (objectKey: string, objectValue: any) => {
-      let newQuery
-      if (typeof router.query?.[objectKey] === 'string' && !objectValue) {
-        newQuery = Object.fromEntries(Object.entries(router.query).filter(([key]) => !key.includes(objectKey)))
-      } else if (!isUndefinedOrNull(objectValue)) {
-        newQuery = {
-          ...router.query,
-          [objectKey]: objectValue,
-        }
-      }
-      if (newQuery) {
-        router.replace(
-          {
-            query: newQuery,
-          },
-          undefined,
-          {
-            shallow: true,
-          },
-        )
-      }
-    },
-    [router],
-  )
-
   const handleChangeQuery = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      updateQueryFromRouter('search', event.target.value)
+      updateQueryFromRouter(router, 'search', event.target.value)
       setQuery(event.target.value)
     },
-    [updateQueryFromRouter],
+    [router],
   )
 
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
@@ -568,10 +542,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const handleSortOptionChange = useCallback(
     (option: OptionProps): void => {
-      updateQueryFromRouter('sortBy', option.value)
+      updateQueryFromRouter(router, 'sortBy', option.value)
       setSortOption(option.value)
     },
-    [updateQueryFromRouter],
+    [router],
   )
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
@@ -621,8 +595,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 idPrefix="clickFarm"
                 viewMode={viewMode}
                 onToggle={(newViewMode) => {
-                  console.info(newViewMode)
-                  updateQueryFromRouter('viewMode', newViewMode)
+                  updateQueryFromRouter(router, 'viewMode', newViewMode)
                   setViewMode(newViewMode)
                 }}
               />
@@ -632,22 +605,22 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <FarmTypesFilter
                 v3FarmOnly={v3FarmOnly}
                 handleSetV3FarmOnly={(value) => {
-                  updateQueryFromRouter('filterV3Farms', value)
+                  updateQueryFromRouter(router, 'filterV3Farms', value)
                   setV3FarmOnly(value)
                 }}
                 v2FarmOnly={v2FarmOnly}
                 handleSetV2FarmOnly={(value) => {
-                  updateQueryFromRouter('filterV2Farms', value)
+                  updateQueryFromRouter(router, 'filterV2Farms', value)
                   setV2FarmOnly(value)
                 }}
                 boostedOnly={boostedOnly}
                 handleSetBoostedOnly={(value) => {
-                  updateQueryFromRouter('filterBoosted', value)
+                  updateQueryFromRouter(router, 'filterBoosted', value)
                   setBoostedOnly(value)
                 }}
                 stableSwapOnly={stableSwapOnly}
                 handleSetStableSwapOnly={(value) => {
-                  updateQueryFromRouter('filterStableSwap', value)
+                  updateQueryFromRouter(router, 'filterStableSwap', value)
                   setStableSwapOnly(value)
                 }}
                 farmTypesEnableCount={farmTypesEnableCount}
@@ -658,7 +631,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                   id="staked-only-farms"
                   checked={stakedOnly}
                   onChange={() => {
-                    updateQueryFromRouter('stakedOnly', !stakedOnly)
+                    updateQueryFromRouter(router, 'stakedOnly', !stakedOnly)
                     setStakedOnly(!stakedOnly)
                   }}
                   scale="sm"

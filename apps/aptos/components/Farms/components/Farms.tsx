@@ -18,6 +18,7 @@ import {
   Loading,
   SearchInput,
   ToggleView,
+  updateQueryFromRouter,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
@@ -132,10 +133,14 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
+  const router = useRouter()
   const cakePrice = usePriceCakeUsdc()
   const { pathname, query: urlQuery } = useRouter()
-  const [viewMode, setViewMode] = useFarmViewMode()
-  const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
+  const [_viewMode, setViewMode] = useFarmViewMode()
+  const viewMode =
+    typeof router.query?.viewMode === 'string' ? ViewMode[router.query.viewMode as keyof typeof ViewMode] : _viewMode
+  const [_stakedOnly, setStakedOnly] = useFarmsStakedOnly()
+  const stakedOnly = typeof router.query?.stakedOnly === 'string' ? !!router.query.stakedOnly : _stakedOnly
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const {
     data: farmsLP,
@@ -164,22 +169,35 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const activeFarms = farmsLP?.filter(
-    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
+  useEffect(() => {
+    if (!router.isReady) return
+    if (typeof router.query?.sortBy === 'string') {
+      setSortOption(router.query.sortBy)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady])
+
+  const activeFarms = useMemo(
+    () =>
+      farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid)),
+    [farmsLP, poolLength],
   )
-  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const inactiveFarms = useMemo(() => farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X'), [farmsLP])
   const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = activeFarms?.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  const stakedOnlyFarms = useMemo(
+    () => activeFarms?.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)),
+    [activeFarms],
   )
 
-  const stakedInactiveFarms = inactiveFarms?.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  const stakedInactiveFarms = useMemo(
+    () => inactiveFarms?.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)),
+    [inactiveFarms],
   )
 
-  const stakedArchivedFarms = archivedFarms?.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  const stakedArchivedFarms = useMemo(
+    () => archivedFarms?.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)),
+    [archivedFarms],
   )
 
   const farmsList = useCallback(
@@ -203,9 +221,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     [query, isActive, cakePrice, regularCakePerBlock, lpRewardsAprs],
   )
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-  }
+  const handleChangeQuery = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      updateQueryFromRouter(router, 'search', event.target.value)
+      setQuery(event.target.value)
+    },
+    [router],
+  )
 
   const chosenFarms: FarmWithStakedValue[] = useMemo(() => {
     let chosenFs: FarmWithStakedValue[] = []
@@ -277,9 +299,59 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [isIntersecting])
 
-  const handleSortOptionChange = (option: OptionProps): void => {
-    setSortOption(option.value)
-  }
+  const handleSortOptionChange = useCallback(
+    (option: OptionProps): void => {
+      updateQueryFromRouter(router, 'sortBy', option.value)
+      setSortOption(option.value)
+    },
+    [router],
+  )
+
+  const sortByItems = useMemo(
+    () => [
+      {
+        label: t('Hot'),
+        value: 'hot',
+      },
+      {
+        label: t('APR'),
+        value: 'apr',
+      },
+      {
+        label: t('Multiplier'),
+        value: 'multiplier',
+      },
+      {
+        label: t('Earned'),
+        value: 'earned',
+      },
+      {
+        label: t('Liquidity'),
+        value: 'liquidity',
+      },
+      {
+        label: t('Latest'),
+        value: 'latest',
+      },
+    ],
+    [t],
+  )
+
+  const defaultOptionIndex = useMemo(() => {
+    if (!router.isReady) {
+      return 0
+    }
+    if (typeof router.query?.sortBy === 'string') {
+      const queryIndex = sortByItems.findIndex((option) => option.value === router.query?.sortBy)
+      if (queryIndex === -1) {
+        return 0
+      }
+      return queryIndex + 1
+    }
+    return 0
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady])
+
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
   return (
     <FarmsContext.Provider value={providerValue}>
@@ -310,7 +382,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                   id="staked-only-farms"
                   scale="sm"
                   checked={stakedOnly}
-                  onChange={() => setStakedOnly(!stakedOnly)}
+                  onChange={() => {
+                    updateQueryFromRouter(router, 'stakedOnly', !stakedOnly)
+                    setStakedOnly(!stakedOnly)
+                  }}
                 />
                 <Text>{t('Staked only')}</Text>
               </ToggleWrapper>
@@ -320,32 +395,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <LabelWrapper>
               <Text textTransform="uppercase">{t('Sort by')}</Text>
               <Select
-                options={[
-                  {
-                    label: t('Hot'),
-                    value: 'hot',
-                  },
-                  {
-                    label: t('APR'),
-                    value: 'apr',
-                  },
-                  {
-                    label: t('Multiplier'),
-                    value: 'multiplier',
-                  },
-                  {
-                    label: t('Earned'),
-                    value: 'earned',
-                  },
-                  {
-                    label: t('Liquidity'),
-                    value: 'liquidity',
-                  },
-                  {
-                    label: t('Latest'),
-                    value: 'latest',
-                  },
-                ]}
+                options={sortByItems}
+                defaultOptionIndex={defaultOptionIndex}
                 onOptionChange={handleSortOptionChange}
               />
             </LabelWrapper>

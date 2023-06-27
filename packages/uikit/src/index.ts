@@ -29,5 +29,7 @@ export * from "./theme";
 // AnimationToolkit
 export * from "./util/animationToolkit";
 
+export * from "./util/updateQueryFromRouter";
+
 // Providers
 export * from "./Providers";
