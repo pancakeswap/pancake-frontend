@@ -177,10 +177,10 @@ function AccordionItem({
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
-          <Text fontSize="15px" color="#280D5F">
+          <Text fontSize="15px">
             {buyCryptoState.INPUT.currencyId} {t('rate')}
           </Text>
-          <Text ml="4px" fontSize="16px" color="#280D5F">
+          <Text ml="4px" fontSize="16px">
             = {formatLocaleNumber({ number: quote.quote, locale })} {buyCryptoState.OUTPUT.currencyId}
           </Text>
         </RowBetween>
