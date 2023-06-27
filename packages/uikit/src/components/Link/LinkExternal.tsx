@@ -9,6 +9,7 @@ const LinkExternal: React.FC<React.PropsWithChildren<LinkProps>> = ({
   children,
   isBscScan = false,
   isAptosScan = false,
+  showExternalIcon = true,
   ...props
 }) => {
   return (
@@ -16,7 +17,9 @@ const LinkExternal: React.FC<React.PropsWithChildren<LinkProps>> = ({
       {children}
       {isBscScan && <BscScanIcon color={props.color ? props.color : "primary"} ml="4px" />}
       {isAptosScan && <AptosIcon width="18" height="18" color={props.color ? props.color : "primary"} ml="4px" />}
-      {!isBscScan && !isAptosScan && <OpenNewIcon color={props.color ? props.color : "primary"} ml="4px" />}
+      {!isBscScan && !isAptosScan && showExternalIcon && (
+        <OpenNewIcon color={props.color ? props.color : "primary"} ml="4px" />
+      )}
     </Link>
   );
 };

@@ -8,7 +8,7 @@ import { CryptoFormView } from 'views/BuyCrypto/types'
 import Page from '../Page'
 import { BuyCryptoForm } from './containers/BuyCryptoForm'
 import { CryptoQuoteForm } from './containers/CryptoQuoteForm'
-import { StyledBuyCryptoContainer } from './styles'
+import { StyledBuyCryptoContainer, AppWrapper } from './styles'
 import usePriceQuotes from './hooks/usePriceQuoter'
 import { OnRamoFaqs } from './components/FAQ'
 
@@ -38,29 +38,33 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
       <Flex marginBottom="30px" justifyContent="center" position="relative" alignItems="flex-start">
         <Flex flexDirection="column">
           <StyledBuyCryptoContainer>
-            <AppBody>
-              {modalView === CryptoFormView.Input ? (
-                <BuyCryptoForm
-                  setModalView={setModalView}
-                  modalView={modalView}
-                  buyCryptoState={buyCryptoState}
-                  fetchQuotes={fetchQuotes}
-                />
-              ) : (
-                <CryptoQuoteForm
-                  setModalView={setModalView}
-                  buyCryptoState={buyCryptoState}
-                  combinedQuotes={combinedQuotes}
-                  fetchQuotes={fetchQuotes}
-                />
-              )}
-            </AppBody>
+            <AppWrapper>
+              <AppBody>
+                {modalView === CryptoFormView.Input ? (
+                  <BuyCryptoForm
+                    setModalView={setModalView}
+                    modalView={modalView}
+                    buyCryptoState={buyCryptoState}
+                    fetchQuotes={fetchQuotes}
+                  />
+                ) : (
+                  <CryptoQuoteForm
+                    setModalView={setModalView}
+                    buyCryptoState={buyCryptoState}
+                    combinedQuotes={combinedQuotes}
+                    fetchQuotes={fetchQuotes}
+                  />
+                )}
+              </AppBody>
+            </AppWrapper>
           </StyledBuyCryptoContainer>
         </Flex>
       </Flex>
       <StyledBuyCryptoContainer>
         <AppBody>
-          <OnRamoFaqs />
+          <AppWrapper>
+            <OnRamoFaqs />
+          </AppWrapper>
         </AppBody>
       </StyledBuyCryptoContainer>
     </Page>
