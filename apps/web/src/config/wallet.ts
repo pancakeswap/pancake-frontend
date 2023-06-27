@@ -113,12 +113,6 @@ const walletsConfig = ({
       connectorId: ConnectorNames.WalletConnect,
     },
     {
-      id: 'walletconnectV1',
-      title: 'WalletConnect V1',
-      icon: `${ASSET_CDN}/web/wallets/walletconnect_mono.png`,
-      connectorId: ConnectorNames.WalletConnectV1,
-    },
-    {
       id: 'opera',
       title: 'Opera Wallet',
       icon: `${ASSET_CDN}/web/wallets/opera.png`,
