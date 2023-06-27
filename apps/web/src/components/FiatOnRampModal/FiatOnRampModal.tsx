@@ -91,7 +91,7 @@ const fetchMoonPaySignedUrl = async (
       }),
     })
     const result: FetchResponse = await res.json()
-    console.log(result.urlWithSignature)
+
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
