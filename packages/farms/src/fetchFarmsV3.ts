@@ -1,4 +1,4 @@
-import { ChainId, ERC20Token, Currency } from '@pancakeswap/sdk'
+import { ERC20Token, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { Address, PublicClient } from 'viem'
