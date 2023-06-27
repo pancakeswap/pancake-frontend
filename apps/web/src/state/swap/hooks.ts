@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
-import { CAKE, USDC, USDT } from '@pancakeswap/tokens'
+import { CAKE, USDC, USDT, STABLE_COIN } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -262,7 +262,7 @@ export function useDefaultsFromURLSearch():
     const parsed = queryParametersToSwapState(
       query,
       native.symbol,
-      CAKE[chainId]?.address ?? USDC[chainId]?.address ?? USDT[chainId]?.address,
+      CAKE[chainId]?.address ?? STABLE_COIN[chainId]?.address ?? USDC[chainId]?.address ?? USDT[chainId]?.address,
     )
 
     dispatch(
