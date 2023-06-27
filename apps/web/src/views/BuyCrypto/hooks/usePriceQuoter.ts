@@ -94,14 +94,21 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
 
     if (sortedFilteredQuotes.length > 1)
       sortedFilteredQuotes.sort((a, b) => {
-        const totalAmountA = a.amount + a.providerFee + a.networkFee
-        const totalAmountB = b.amount + b.providerFee + b.networkFee
+        let totalAmountA = 0
+        let totalAmountB = 0
+        if (inputCurrency.toUpperCase() === 'ETH' || inputCurrency.toUpperCase() === 'BNB') {
+          totalAmountA = a.amount
+          totalAmountB = b.amount
+        } else {
+          totalAmountA = a.amount + a.providerFee + a.networkFee
+          totalAmountB = b.amount + b.providerFee + b.networkFee
+        }
 
         if (a.amount === 0 && b.amount === 0) return 0
         if (a.amount === 0) return 1
         if (b.amount === 0) return -1
 
-        return totalAmountB - totalAmountA // Note the difference here for descending order
+        return totalAmountA - totalAmountB // Note the difference here for descending order
       })
 
     return sortedFilteredQuotes

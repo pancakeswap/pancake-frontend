@@ -16,7 +16,8 @@ import formatLocaleNumber from 'utils/formatLocaleNumber'
 import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
 import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
 
-const DropdownWrapper = styled.div`
+const DropdownWrapper = styled.div<{ isClicked: boolean }>`
+  padding-top: ${({ isClicked }) => (isClicked ? '20px' : '0px')};
   width: 100%;
 `
 const FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
@@ -38,7 +39,7 @@ const FeeItem = ({
     currentLanguage: { locale },
   } = useTranslation()
 
-  if (provider === 'Mercuryo' && index === 1) return <></>
+  if (provider === 'Mercuryo' && (index === 1 || index === 2)) return <></>
   return (
     <RowBetween>
       <Text fontSize="14px" color="textSubtle">
@@ -70,7 +71,7 @@ function AccordionItem({
   } = useTranslation()
   const theme = useTheme()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(109)
+  const [height, setHeight] = useState(105)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -85,8 +86,8 @@ function AccordionItem({
   useEffect(() => {
     if (active) {
       const contentEl = getRefValue(contentRef)
-      setHeight(contentEl.scrollHeight + 105)
-    } else setHeight(109)
+      setHeight(contentEl.scrollHeight + 100)
+    } else setHeight(105)
   }, [active])
 
   const MoonapyAmt = useMemo(() => {
@@ -104,7 +105,7 @@ function AccordionItem({
 
   let finalQuote = quote.amount
   if (quote.provider === 'MoonPay') finalQuote = MoonapyAmt
-  if (quote.provider === 'BinanceConnect') finalQuote = MercuryAmt
+  if (quote.provider === 'Mercuryo') finalQuote = MercuryAmt
 
   const {
     tooltip: buyCryptoTooltip,
@@ -126,7 +127,7 @@ function AccordionItem({
   if (quote.amount === 0) {
     return (
       <Flex flexDirection="column">
-        <CryptoCard padding="12px 12px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
+        <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
             {quote.provider === 'Mercuryo' ? (
               <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={15} />
@@ -155,14 +156,14 @@ function AccordionItem({
   return (
     <Flex flexDirection="column">
       <CryptoCard
-        padding="12px 12px"
+        padding="16px 16px"
         style={{ height }}
         onClick={!isActive() ? toogleVisiblity : () => null}
         position="relative"
         isClicked={active}
         isDisabled={false}
       >
-        <RowBetween paddingBottom="20px">
+        <RowBetween paddingBottom="8px">
           {quote.provider === 'Mercuryo' ? (
             <Flex mt="5px">
               <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
@@ -171,20 +172,20 @@ function AccordionItem({
             <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
           )}
 
-          <Text ml="4px" fontSize="22px" color="secondary">
+          <Text ml="4px" fontSize="22px" color="#7A6EAA" fontWeight="bold">
             {formatLocaleNumber({ number: finalQuote, locale })} {buyCryptoState.INPUT.currencyId}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
-          <Text fontSize="15px">
+          <Text fontSize="15px" color="#280D5F">
             {buyCryptoState.INPUT.currencyId} {t('rate')}
           </Text>
-          <Text ml="4px" fontSize="16px">
+          <Text ml="4px" fontSize="16px" color="#280D5F">
             = {formatLocaleNumber({ number: quote.quote, locale })} {buyCryptoState.OUTPUT.currencyId}
           </Text>
         </RowBetween>
 
-        <DropdownWrapper ref={contentRef}>
+        <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {FEE_TYPES.map((feeType: string, index: number) => {
             let fee = 0
             if (index === 0) fee = quote.networkFee + quote.providerFee

@@ -225,7 +225,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     } finally {
       setTimeout(() => setLoading(false), 2000)
     }
-  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t, chainId])
 
   useEffect(() => {
     const fetchSig = async () => {
