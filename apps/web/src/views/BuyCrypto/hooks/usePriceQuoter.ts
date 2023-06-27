@@ -68,51 +68,54 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
   const [quotes, setQuotes] = useState<ProviderQoute[]>([])
   const { chainId } = useActiveChainId()
 
-  const fetchProviderAvailability = async (ip: string, combinedData: ProviderQoute[]) => {
-    // first check user availability
-    const responsePromises = [fetchMoonpayAvailability(ip), fetchMercuryoAvailability(ip)]
-    const responses = await Promise.allSettled(responsePromises)
+  const fetchProviderAvailability = useCallback(
+    async (ip: string, combinedData: ProviderQoute[]) => {
+      // first check user availability
+      const responsePromises = [fetchMoonpayAvailability(ip), fetchMercuryoAvailability(ip)]
+      const responses = await Promise.allSettled(responsePromises)
 
-    const dataPromises = responses.reduce((accumulator, response) => {
-      if (response.status === 'fulfilled') {
-        return [...accumulator, response.value]
-      }
-      console.error('Error fetching price quotes:', response.reason)
-      return accumulator
-    }, [])
-
-    const [moonPayAvailability, mercuryoAvailability] = await Promise.all(dataPromises)
-
-    const ProviderAvailability: ProviderAvailabilityData = {
-      MoonPay: moonPayAvailability?.result.result.isAllowed ?? false,
-      Mercuryo: mercuryoAvailability?.result.result.data?.country.enabled ?? false,
-      BinanceConnect: true,
-    }
-    const sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
-      return ProviderAvailability[quote.provider]
-    })
-
-    if (sortedFilteredQuotes.length > 1)
-      sortedFilteredQuotes.sort((a, b) => {
-        let totalAmountA = 0
-        let totalAmountB = 0
-        if (inputCurrency.toUpperCase() === 'ETH' || inputCurrency.toUpperCase() === 'BNB') {
-          totalAmountA = a.amount
-          totalAmountB = b.amount
-        } else {
-          totalAmountA = a.amount + a.providerFee + a.networkFee
-          totalAmountB = b.amount + b.providerFee + b.networkFee
+      const dataPromises = responses.reduce((accumulator, response) => {
+        if (response.status === 'fulfilled') {
+          return [...accumulator, response.value]
         }
+        console.error('Error fetching price quotes:', response.reason)
+        return accumulator
+      }, [])
 
-        if (a.amount === 0 && b.amount === 0) return 0
-        if (a.amount === 0) return 1
-        if (b.amount === 0) return -1
+      const [moonPayAvailability, mercuryoAvailability] = await Promise.all(dataPromises)
 
-        return totalAmountA - totalAmountB // Note the difference here for descending order
+      const ProviderAvailability: ProviderAvailabilityData = {
+        MoonPay: moonPayAvailability?.result.result.isAllowed ?? false,
+        Mercuryo: mercuryoAvailability?.result.result.data?.country.enabled ?? false,
+        BinanceConnect: true,
+      }
+      const sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
+        return ProviderAvailability[quote.provider]
       })
 
-    return sortedFilteredQuotes
-  }
+      if (sortedFilteredQuotes.length > 1)
+        sortedFilteredQuotes.sort((a, b) => {
+          let totalAmountA = 0
+          let totalAmountB = 0
+          if (inputCurrency.toUpperCase() === 'ETH' || inputCurrency.toUpperCase() === 'BNB') {
+            totalAmountA = a.amount
+            totalAmountB = b.amount
+          } else {
+            totalAmountA = a.amount + a.providerFee + a.networkFee
+            totalAmountB = b.amount + b.providerFee + b.networkFee
+          }
+
+          if (a.amount === 0 && b.amount === 0) return 0
+          if (a.amount === 0) return 1
+          if (b.amount === 0) return -1
+
+          return totalAmountA - totalAmountB // Note the difference here for descending order
+        })
+
+      return sortedFilteredQuotes
+    },
+    [inputCurrency],
+  )
 
   const fetchQuotes = useCallback(async () => {
     if (!chainId || !userIp) return
@@ -139,9 +142,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
 
       const combinedData: ProviderQoute[] = dataPromises
         .map((quote: ProviderResponse) => {
-          const isMoonapySupported = MOONPAY_UNSUPPORTED_CURRENCY_CODES.includes(inputCurrency)
-
-          if (quote?.accountId && !isMoonapySupported) return calculateQuotesData(quote as PriceQuotes)
+          if (quote?.accountId) return calculateQuotesData(quote as PriceQuotes)
           if (quote?.code === '000000000') return calculateQuotesDataBsc(quote.data as BscQuote)
           if (quote?.status === 200) return calculateQuotesDataMercury(quote as MercuryoQuote, outputCurrency)
           return calculateNoQuoteOption(quote)

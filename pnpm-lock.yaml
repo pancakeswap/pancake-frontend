@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -26800,7 +26804,4 @@ packages:
       release-it: 15.10.3(encoding@0.1.13)(typescript@5.1.3)
       semver: 7.3.8
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
+    

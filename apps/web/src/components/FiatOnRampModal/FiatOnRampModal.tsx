@@ -8,7 +8,13 @@ import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme, DefaultTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
-import { ETHEREUM_TOKENS, SUPPORTED_MERCURYO_FIAT_CURRENCIES, mercuryoWhitelist } from 'views/BuyCrypto/constants'
+import {
+  ETHEREUM_TOKENS,
+  SUPPORTED_MERCURYO_FIAT_CURRENCIES,
+  SUPPORTED_MONPAY_ETH_TOKENS,
+  SUPPORTED_MOONPAY_BSC_TOKENS,
+  mercuryoWhitelist,
+} from 'views/BuyCrypto/constants'
 import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
@@ -80,7 +86,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? ['eth', 'usdc', 'dai', 'usdt'] : ['bnb_bsc', 'busd_bsc'],
+        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? SUPPORTED_MONPAY_ETH_TOKENS : SUPPORTED_MOONPAY_BSC_TOKENS,
         walletAddress: account,
       }),
     })

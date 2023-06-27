@@ -3,7 +3,8 @@ export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'BUSD', 'BNB']
 export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const mercuryoWhitelist = ['BNB', 'BUSD']
 export const ETHEREUM_TOKENS = ['ETH', 'USDT', 'DAI']
-
+export const SUPPORTED_MONPAY_ETH_TOKENS = ['eth', 'usdc', 'dai', 'usdt']
+export const SUPPORTED_MOONPAY_BSC_TOKENS = ['bnb_bsc', 'busd_bsc']
 export const SUPPORTED_MERCURYO_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
