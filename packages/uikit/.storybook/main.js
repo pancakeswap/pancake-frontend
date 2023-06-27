@@ -19,6 +19,12 @@ module.exports = {
   ],
   async viteFinal(config) {
     const finalConfig = mergeConfig(config, {
+      resolve: {
+        alias: {
+          // @see https://github.com/nuxt/vite/issues/160#issuecomment-983080874
+          crypto: require.resolve("rollup-plugin-node-builtins"),
+        },
+      },
       plugins: [require("@vanilla-extract/vite-plugin").vanillaExtractPlugin()],
     });
 
