@@ -16,7 +16,7 @@ const Wrapper = styled(Flex)`
   max-width: calc(100%) - 38px;
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    max-width: 1140px;
+    max-width: 1028px;
   }
 `
 
