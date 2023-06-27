@@ -6,6 +6,7 @@ import {
   IPendingCakeByTokenId,
   SerializedFarmsV3Response,
   createFarmFetcherV3,
+  supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
@@ -27,7 +28,6 @@ import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Hex, decodeFunctionResult, encodeFunctionData } from 'viem'
 import { useAccount } from 'wagmi'
-import { SUPPORT_FARMS } from 'config/constants/supportChains'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -183,7 +183,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const masterchefV3 = useMasterchefV3()
 
   const harvestCalls = useMemo(() => {
-    if (!account || !SUPPORT_FARMS.includes(chainId)) return []
+    if (!account || !supportedChainIdV3.includes(chainId)) return []
     const callData: Hex[] = []
     for (const stakedTokenId of stakedTokenIds) {
       callData.push(
