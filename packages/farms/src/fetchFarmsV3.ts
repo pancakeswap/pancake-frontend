@@ -1,13 +1,15 @@
-import { ChainId, ERC20Token, Currency } from '@pancakeswap/sdk'
+import { ERC20Token, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { Address, PublicClient } from 'viem'
 import BN from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
+
 import { DEFAULT_COMMON_PRICE, PriceHelper, CHAIN_ID_TO_CHAIN_NAME } from '../constants/common'
 import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getFarmApr } from './apr'
+import { FarmSupportedChainId, supportedChainIdV3 } from './const'
 
 export async function farmV3FetchFarms({
   farms,
@@ -63,8 +65,11 @@ export async function farmV3FetchFarms({
     })
     .filter(Boolean) as FarmV3Data[]
 
+  const defaultCommonPrice: CommonPrice = supportedChainIdV3.includes(chainId)
+    ? DEFAULT_COMMON_PRICE[chainId as FarmSupportedChainId]
+    : {}
   const combinedCommonPrice: CommonPrice = {
-    ...DEFAULT_COMMON_PRICE[chainId as ChainId],
+    ...defaultCommonPrice,
     ...commonPrice,
   }
 
@@ -415,9 +420,15 @@ export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promi
 
 export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<CommonPrice> => {
   const commonTokenUSDValue: CommonPrice = {}
+  if (!supportedChainIdV3.includes(currencies[0]?.chainId)) {
+    return commonTokenUSDValue
+  }
+
   if (currencies.length > 0) {
     const list = currencies
-      .map((currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as ChainId]}:${currency.wrapped.address}`)
+      .map(
+        (currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as FarmSupportedChainId]}:${currency.wrapped.address}`,
+      )
       .join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(
       `https://coins.llama.fi/prices/current/${list}`,
