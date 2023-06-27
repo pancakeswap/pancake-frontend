@@ -7,8 +7,16 @@ import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
 import { isStableFarm, SerializedFarmConfig } from '../types'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
+import { FarmSupportedChainId, supportedChainIdV2 } from '../const'
 
-const evmNativeStableLpMap = {
+const evmNativeStableLpMap: Record<
+  FarmSupportedChainId,
+  {
+    address: Address
+    wNative: string
+    stable: string
+  }
+> = {
   [ChainId.ETHEREUM]: {
     address: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
     wNative: 'WETH',
@@ -54,6 +62,10 @@ export async function farmV2FetchFarms({
   totalRegularAllocPoint,
   totalSpecialAllocPoint,
 }: FetchFarmsParams) {
+  if (!supportedChainIdV2.includes(chainId)) {
+    return []
+  }
+
   const stableFarms = farms.filter(isStableFarm)
 
   const [stableFarmsResults, poolInfos, lpDataResults] = await Promise.all([
@@ -111,7 +123,7 @@ export async function farmV2FetchFarms({
     }
   })
 
-  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId as ChainId], 18)
+  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId as FarmSupportedChainId], 18)
 
   return farmsDataWithPrices
 }
