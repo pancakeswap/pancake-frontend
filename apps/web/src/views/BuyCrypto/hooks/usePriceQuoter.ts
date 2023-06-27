@@ -110,7 +110,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
           if (a.amount === 0) return 1
           if (b.amount === 0) return -1
 
-          return totalAmountB - totalAmountA // Note the difference here for descending order
+          return totalAmountA - totalAmountB // Note the difference here for descending order
         })
 
       return sortedFilteredQuotes

@@ -62,9 +62,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
       </Flex>
       <StyledBuyCryptoContainer>
         <AppBody>
-          <AppWrapper>
-            <OnRamoFaqs />
-          </AppWrapper>
+          <OnRamoFaqs />
         </AppBody>
       </StyledBuyCryptoContainer>
     </Page>
