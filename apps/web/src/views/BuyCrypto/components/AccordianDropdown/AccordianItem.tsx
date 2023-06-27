@@ -129,9 +129,13 @@ function AccordionItem({
       <Flex flexDirection="column">
         <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
-            <Flex mt="5px">
-              <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
-            </Flex>
+            {quote.provider === 'Mercuryo' ? (
+              <Flex mt="5px">
+                <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
+              </Flex>
+            ) : (
+              <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
+            )}
             <TooltipText
               ref={buyCryptoTargetRef}
               onClick={() => setMobileTooltipShow(false)}
