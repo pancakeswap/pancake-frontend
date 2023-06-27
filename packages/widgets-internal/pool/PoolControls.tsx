@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
 import partition from 'lodash/partition'
 import { useTranslation } from '@pancakeswap/localization'
-import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { useIntersectionObserver, useQueryState } from '@pancakeswap/hooks'
 import latinise from '@pancakeswap/utils/latinise'
 import { useRouter } from 'next/router'
 import { Flex, Text, SearchInput, Select, OptionProps, ViewMode } from '@pancakeswap/uikit'
@@ -93,13 +93,13 @@ export function PoolControls<T>({
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const normalizedUrlSearch = useMemo(
-    () => (typeof router?.query?.search === 'string' ? router.query.search : ''),
-    [router.query],
-  )
-  const [_searchQuery, setSearchQuery] = useState('')
-  const searchQuery = normalizedUrlSearch && !_searchQuery ? normalizedUrlSearch : _searchQuery
-  const [sortOption, setSortOption] = useState('hot')
-  const chosenPoolsLength = useRef(0)
+    () => (typeof router?.query?.search === "string" ? router.query.search : ""),
+    [router.query]
+  );
+  const [_searchQuery, setSearchQuery] = useQueryState("", "search");
+  const searchQuery = normalizedUrlSearch && !_searchQuery ? normalizedUrlSearch : _searchQuery;
+  const [sortOption, setSortOption] = useQueryState("hot", "sortBy");
+  const chosenPoolsLength = useRef(0);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -153,18 +153,16 @@ export function PoolControls<T>({
 
   const handleChangeSearchQuery = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      updateQueryFromRouter(router, "search", event.target.value);
       setSearchQuery(event.target.value);
     },
-    [router]
+    [setSearchQuery]
   );
 
   const handleSortOptionChange = useCallback(
     (option: OptionProps): void => {
-      updateQueryFromRouter(router, "sortBy", option.value);
       setSortOption(option.value);
     },
-    [router]
+    [setSortOption]
   );
 
   let chosenPools: DeserializedPool<T>[]

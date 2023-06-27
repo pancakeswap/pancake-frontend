@@ -6,7 +6,7 @@ import {
   supportedChainIdV2,
   supportedChainIdV3,
 } from '@pancakeswap/farms'
-import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { useIntersectionObserver, useQueryState } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
 import {
@@ -27,9 +27,9 @@ import {
   Text,
   Toggle,
   ToggleView,
-  updateQueryFromRouter,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
+import updateQueryFromRouter from '@pancakeswap/utils/updateQueryFromRouter'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -237,7 +237,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const viewMode =
     typeof router.query?.viewMode === 'string' ? ViewMode[router.query.viewMode as keyof typeof ViewMode] : _viewMode
   const { address: account } = useAccount()
-  const [sortOption, setSortOption] = useState('hot')
+  const [sortOption, setSortOption] = useQueryState('hot', 'sortBy')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
 
@@ -259,10 +259,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [_stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const stakedOnly = typeof router.query?.stakedOnly === 'string' ? !!router.query.stakedOnly : _stakedOnly
-  const [v3FarmOnly, setV3FarmOnly] = useState(false)
-  const [v2FarmOnly, setV2FarmOnly] = useState(false)
-  const [boostedOnly, setBoostedOnly] = useState(false)
-  const [stableSwapOnly, setStableSwapOnly] = useState(false)
+  const [v3FarmOnly, setV3FarmOnly] = useQueryState(false, 'filterV3Farms')
+  const [v2FarmOnly, setV2FarmOnly] = useQueryState(false, 'filterV2Farms')
+  const [boostedOnly, setBoostedOnly] = useQueryState(false, 'filterBoosted')
+  const [stableSwapOnly, setStableSwapOnly] = useQueryState(false, 'filterStableswap')
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
   useEffect(() => {
@@ -542,10 +542,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const handleSortOptionChange = useCallback(
     (option: OptionProps): void => {
-      updateQueryFromRouter(router, 'sortBy', option.value)
       setSortOption(option.value)
     },
-    [router],
+    [setSortOption],
   )
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
@@ -604,25 +603,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <Flex mt="20px" ml="16px">
               <FarmTypesFilter
                 v3FarmOnly={v3FarmOnly}
-                handleSetV3FarmOnly={(value) => {
-                  updateQueryFromRouter(router, 'filterV3Farms', value)
-                  setV3FarmOnly(value)
-                }}
+                handleSetV3FarmOnly={setV3FarmOnly}
                 v2FarmOnly={v2FarmOnly}
-                handleSetV2FarmOnly={(value) => {
-                  updateQueryFromRouter(router, 'filterV2Farms', value)
-                  setV2FarmOnly(value)
-                }}
+                handleSetV2FarmOnly={setV2FarmOnly}
                 boostedOnly={boostedOnly}
-                handleSetBoostedOnly={(value) => {
-                  updateQueryFromRouter(router, 'filterBoosted', value)
-                  setBoostedOnly(value)
-                }}
+                handleSetBoostedOnly={setBoostedOnly}
                 stableSwapOnly={stableSwapOnly}
-                handleSetStableSwapOnly={(value) => {
-                  updateQueryFromRouter(router, 'filterStableSwap', value)
-                  setStableSwapOnly(value)
-                }}
+                handleSetStableSwapOnly={setStableSwapOnly}
                 farmTypesEnableCount={farmTypesEnableCount}
                 handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
               />

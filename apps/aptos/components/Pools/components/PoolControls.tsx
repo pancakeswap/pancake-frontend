@@ -4,6 +4,7 @@ import { ViewMode } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { usePoolsStakedOnly, usePoolsViewMode } from 'state/user'
 import { useRouter } from 'next/router'
+import updateQueryFromRouter from '@pancakeswap/utils/updateQueryFromRouter'
 
 export default function PoolControls(props) {
   const router = useRouter()
@@ -20,9 +21,15 @@ export default function PoolControls(props) {
     <Pool.PoolControls<Coin>
       {...props}
       stakedOnly={stakedOnly}
-      setStakedOnly={setStakedOnly}
+      setStakedOnly={() => {
+        updateQueryFromRouter(router, 'stakedOnly', !stakedOnly)
+        setStakedOnly(!stakedOnly)
+      }}
       viewMode={viewMode}
-      setViewMode={setViewMode}
+      setViewMode={(newViewMode) => {
+        updateQueryFromRouter(router, 'viewMode', newViewMode)
+        setViewMode(newViewMode)
+      }}
       account={account}
       threshHold={threshHold}
     />

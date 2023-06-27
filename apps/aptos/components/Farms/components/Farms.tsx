@@ -18,17 +18,17 @@ import {
   Loading,
   SearchInput,
   ToggleView,
-  updateQueryFromRouter,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
+import updateQueryFromRouter from '@pancakeswap/utils/updateQueryFromRouter'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
 import useLpRewardsAprs from 'components/Farms/hooks/useLpRewardsAprs'
 import { useFarms } from 'state/farms/hook'
-import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { useIntersectionObserver, useQueryState } from '@pancakeswap/hooks'
 import { getFarmApr } from 'utils/farmApr'
 import type { DeserializedFarm } from '@pancakeswap/farms'
 import { FarmWithStakedValue, filterFarmsByQuery } from '@pancakeswap/farms'
@@ -157,7 +157,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
 
   const { account } = useAccount()
-  const [sortOption, setSortOption] = useState('hot')
+  const [sortOption, setSortOption] = useQueryState('hot', 'sortBy')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
 
@@ -301,10 +301,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const handleSortOptionChange = useCallback(
     (option: OptionProps): void => {
-      updateQueryFromRouter(router, 'sortBy', option.value)
       setSortOption(option.value)
     },
-    [router],
+    [setSortOption],
   )
 
   const sortByItems = useMemo(
