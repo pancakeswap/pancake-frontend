@@ -3,7 +3,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BinanceConnectQuote, BscQuote, MercuryoQuote, PriceQuotes } from '../types'
 import { fetchMercuryoQuote, fetchMoonpayQuote } from './useProviderQuotes'
 import { fetchMercuryoAvailability, fetchMoonpayAvailability } from './useProviderAvailability'
-import { MOONPAY_UNSUPPORTED_CURRENCY_CODES } from '../constants'
 
 export type ProviderQoute = {
   providerFee: number

@@ -38,15 +38,6 @@ const AssetSelectButton = styled.div`
   }
 `
 
-const StyledBalanceText = styled(Text)`
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 5rem;
-  text-overflow: ellipsis;
-  padding-left: 4px;
-  padding-right: 4px;
-`
-
 const chainIdToNetwork: { [network: number]: string } = {
   1: 'Ethereum',
   56: 'Binance Chain',
