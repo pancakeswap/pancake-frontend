@@ -97,6 +97,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
         sortedFilteredQuotes.sort((a, b) => {
           let totalAmountA = 0
           let totalAmountB = 0
+
           if (inputCurrency.toUpperCase() === 'ETH' || inputCurrency.toUpperCase() === 'BNB') {
             totalAmountA = a.amount
             totalAmountB = b.amount
@@ -109,7 +110,7 @@ const usePriceQuotes = (amount: string, inputCurrency: string, outputCurrency: s
           if (a.amount === 0) return 1
           if (b.amount === 0) return -1
 
-          return totalAmountA - totalAmountB // Note the difference here for descending order
+          return totalAmountB - totalAmountA // Note the difference here for descending order
         })
 
       return sortedFilteredQuotes
