@@ -14,7 +14,6 @@ import formatSecondsToWeeks from 'views/Pools/components/utils/formatSecondsToWe
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import AfterLockedActions from 'views/Pools/components/LockedPool/Common/AfterLockedActions'
 
 const Container = styled(Flex)`
   justify-content: space-between;
@@ -97,6 +96,14 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     [cakePriceBusd, cakeAsNumberBalance],
   )
 
+  const minLockWeekInSeconds = useMemo(() => {
+    const currentTime = Date.now() / 1000
+    const minusTime = new BigNumber(userData.lockEndTime).gt(0) ? userData.lockEndTime : currentTime
+    const lockDuration = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime).minus(minusTime)
+    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
+    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
+  }, [incentives, thresholdLockTime, userData])
+
   const position = useMemo(
     () =>
       getVaultPosition({
@@ -107,28 +114,17 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
     [userData],
   )
 
-  const minLockWeekInSeconds = useMemo(() => {
-    const currentTime = Date.now() / 1000
-    const minusTime =
-      new BigNumber(userData.lockEndTime).gt(0) && position <= VaultPosition.LockedEnd
-        ? userData.lockEndTime
-        : currentTime
-    const lockDuration = new BigNumber(incentives?.campaignClaimTime ?? 0).plus(thresholdLockTime).minus(minusTime)
-    const week = Math.ceil(new BigNumber(lockDuration).div(ONE_WEEK_DEFAULT).toNumber())
-    return new BigNumber(week).times(ONE_WEEK_DEFAULT).toNumber()
-  }, [incentives?.campaignClaimTime, position, thresholdLockTime, userData.lockEndTime])
-
   return (
-    <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="center">
+    <Flex flexDirection={['column', 'column', 'column', 'row']}>
       <Flex flexDirection="column" width={['100%', '100%', '100%', '354px']}>
-        {position >= VaultPosition.LockedEnd ? (
+        {!isOnlyNeedExtendLock ? (
           <>
             <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
-              {t('Your locked staking is expired')}
+              {t('You have no CAKE locked.')}
             </Text>
             <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
               <Text textAlign={['left', 'left', 'left', 'center']} as="span">
-                {t('Renew your stakings for')}
+                {t('Lock any amount of CAKE for')}
               </Text>
               <Text textAlign={['left', 'left', 'left', 'center']} as="span" m="0 4px" bold>
                 {formatSecondsToWeeks(minLockWeekInSeconds)}
@@ -140,37 +136,16 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
           </>
         ) : (
           <>
-            {!isOnlyNeedExtendLock ? (
-              <>
-                <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
-                  {t('You have no CAKE locked.')}
-                </Text>
-                <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
-                  <Text textAlign={['left', 'left', 'left', 'center']} as="span">
-                    {t('Lock any amount of CAKE for')}
-                  </Text>
-                  <Text textAlign={['left', 'left', 'left', 'center']} as="span" m="0 4px" bold>
-                    {formatSecondsToWeeks(minLockWeekInSeconds)}
-                  </Text>
-                  <Text textAlign={['left', 'left', 'left', 'center']} as="span">
-                    {t('or more to claim rewards from trades!')}
-                  </Text>
-                </Text>
-              </>
-            ) : (
-              <>
-                <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
-                  {t('Not enough remaining lock duration')}
-                </Text>
-                <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
-                  <Text as="span">{t('Extend your position to for')}</Text>
-                  <Text as="span" m="0 4px" bold>
-                    {formatSecondsToWeeks(minLockWeekInSeconds)}
-                  </Text>
-                  <Text as="span">{t('or more to claim rewards from trades!')}</Text>
-                </Text>
-              </>
-            )}
+            <Text textAlign={['left', 'left', 'left', 'center']} color="secondary" bold mb="8px">
+              {t('Not enough remaining lock duration')}
+            </Text>
+            <Text textAlign={['left', 'left', 'left', 'center']} mb="20px">
+              <Text as="span">{t('Extend your position to for')}</Text>
+              <Text as="span" m="0 4px" bold>
+                {formatSecondsToWeeks(minLockWeekInSeconds)}
+              </Text>
+              <Text as="span">{t('or more to claim rewards from trades!')}</Text>
+            </Text>
           </>
         )}
         <Container>
@@ -220,29 +195,15 @@ const NoCakeLockedOrExtendLock: React.FC<React.PropsWithChildren<NoCakeLockedOrE
                 </Flex>
               </Flex>
             </Flex>
-            {position >= VaultPosition.LockedEnd ? (
-              <Box width="100%" mt="16px">
-                <AfterLockedActions
-                  position={position}
-                  currentLockedAmount={cakeAsNumberBalance}
-                  stakingToken={stakingToken}
-                  lockEndTime="0"
-                  lockStartTime="0"
-                  hideConvertToFlexibleButton
-                  customLockWeekInSeconds={minLockWeekInSeconds}
-                />
-              </Box>
-            ) : (
-              <Actions
-                lockEndTime={lockEndTime}
-                lockStartTime={lockStartTime}
-                lockedAmount={cakeAsBigNumber}
-                stakingToken={stakingToken}
-                currentBalance={currentBalance}
-                isOnlyNeedExtendLock={isOnlyNeedExtendLock}
-                customLockWeekInSeconds={minLockWeekInSeconds}
-              />
-            )}
+            <Actions
+              lockEndTime={lockEndTime}
+              lockStartTime={lockStartTime}
+              lockedAmount={cakeAsBigNumber}
+              stakingToken={stakingToken}
+              currentBalance={currentBalance}
+              isOnlyNeedExtendLock={isOnlyNeedExtendLock}
+              customLockWeekInSeconds={minLockWeekInSeconds}
+            />
           </Flex>
         </Container>
       </Flex>

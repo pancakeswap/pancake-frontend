@@ -1,12 +1,8 @@
 import { useMemo } from 'react'
-import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import useAllTradingRewardPair from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 export const useTradingRewardStatus = () => {
-  const { data: allTradingRewardPairData } = useAllTradingRewardPair({
-    status: RewardStatus.ALL,
-    type: RewardType.CAKE_STAKERS,
-  })
-
+  const { data: allTradingRewardPairData } = useAllTradingRewardPair()
   const latestCampaignId = allTradingRewardPairData.campaignIds?.[allTradingRewardPairData.campaignIds.length - 1]
 
   return useMemo(() => {

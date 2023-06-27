@@ -2,6 +2,7 @@ import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
 import {
+  getAffiliateProgramAddress,
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
   getBCakeFarmBoosterV3Address,
@@ -30,8 +31,6 @@ import {
   getTradingRewardAddress,
   getV3AirdropAddress,
   getV3MigratorAddress,
-  getAffiliateProgramAddress,
-  getTradingRewardTopTradesAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -377,13 +376,6 @@ export const getAffiliateProgramContract = (signer?: WalletClient, chainId?: num
   return getContract({
     abi: affiliateProgramABI,
     address: getAffiliateProgramAddress(chainId),
-  })
-}
-
-export const getTradingRewardTopTradesContract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({
-    abi: tradingRewardABI,
-    address: getTradingRewardTopTradesAddress(chainId),
     signer,
     chainId,
   })

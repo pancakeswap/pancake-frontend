@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
@@ -11,7 +10,6 @@ import ComingSoon from 'views/TradingReward/components/YourTradingReward/ComingS
 
 interface CurrentPeriodProps {
   incentives: Incentives
-  campaignStart: number
   campaignClaimTime: number
   userData: DeserializedLockedVaultUser
   rewardInfo: { [key in string]: RewardInfo }
@@ -27,7 +25,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   userData,
   incentives,
   rewardInfo,
-  campaignStart,
   campaignClaimTime,
   currentUserCampaignInfo,
   isQualified,
@@ -41,11 +38,6 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
 
-  const isCampaignLive = useMemo(
-    () => currentDate >= campaignStart && currentDate <= campaignClaimTime,
-    [campaignClaimTime, campaignStart, currentDate],
-  )
-
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
       <Card style={{ width: '100%' }}>
@@ -53,7 +45,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>
-          {!isCampaignLive ? (
+          {timeRemaining <= 0 ? (
             <ComingSoon />
           ) : (
             <>

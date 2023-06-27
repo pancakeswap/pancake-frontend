@@ -3,17 +3,12 @@ import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
-import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hooks/useContract'
+import { useTradingRewardContract } from 'hooks/useContract'
 
 export enum RewardStatus {
   ALL = '0',
   ACTIVATED = '1',
   INACTIVATED = '2',
-}
-
-export enum RewardType {
-  CAKE_STAKERS = 'rbTest',
-  TOP_TRADERS = 'tt',
 }
 
 export interface Incentives {
@@ -56,16 +51,11 @@ interface AllTradingRewardPair {
   data: AllTradingRewardPairDetail
 }
 
-interface UseAllTradingRewardPairProps {
-  status: RewardStatus
-  type: RewardType
-}
-
-const fetchCampaignPairs = async (campaignIds: Array<string>, type: RewardType) => {
+const fetchCampaignPairs = async (campaignIds: Array<string>) => {
   const newData: { [campaignId in string]: { [chainId in string]: Array<string> } } = {}
   await Promise.all(
     campaignIds.map(async (campaignId: string) => {
-      const pair = await fetch(`${TRADING_REWARD_API}/campaign/pair/campaignId/${campaignId}/type/${type}`)
+      const pair = await fetch(`${TRADING_REWARD_API}/campaign/pair/campaignId/${campaignId}`)
       const pairResult = await pair.json()
       newData[campaignId] = pairResult.data
     }),
@@ -120,11 +110,11 @@ const fetUserQualification = async (tradingRewardContract: ReturnType<typeof get
   } as Qualification
 }
 
-const fetchRewardInfo = async (campaignIds: Array<string>, type: RewardType) => {
+const fetchRewardInfo = async (campaignIds: Array<string>) => {
   const newData: { [key in string]: RewardInfo } = {}
   await Promise.all(
     campaignIds.map(async (campaignId: string) => {
-      const reward = await fetch(`${TRADING_REWARD_API}/reward/campaignId/${campaignId}/type/${type}`)
+      const reward = await fetch(`${TRADING_REWARD_API}/reward/campaignId/${campaignId}`)
       const rewardResult = await reward.json()
       newData[campaignId] = rewardResult.data as RewardInfo
     }),
@@ -143,24 +133,22 @@ const initialAllTradingRewardState = {
   rewardInfo: {},
 }
 
-const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps): AllTradingRewardPair => {
+const useAllTradingRewardPair = (status: RewardStatus = RewardStatus.ALL): AllTradingRewardPair => {
   const tradingRewardContract = useTradingRewardContract({ chainId: ChainId.BSC })
-  const tradingRewardTopTradersContract = useTradingRewardTopTraderContract({ chainId: ChainId.BSC })
-  const contract = type === RewardType.CAKE_STAKERS ? tradingRewardContract : tradingRewardTopTradersContract
 
   const { data: allPairs, isLoading } = useSWR(
-    status && type && ['/all-activated-trading-reward-pair', status, type],
+    status && ['/all-activated-trading-reward-pair', status],
     async () => {
       try {
-        const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
+        const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}`)
         const campaignsResult = await campaignsResponse.json()
         const campaignIds: Array<string> = campaignsResult.data
 
         const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
-          fetchCampaignPairs(campaignIds, type),
-          fetchCampaignIdsIncentive(contract, campaignIds),
-          fetUserQualification(contract),
-          fetchRewardInfo(campaignIds, type),
+          fetchCampaignPairs(campaignIds),
+          fetchCampaignIdsIncentive(tradingRewardContract, campaignIds),
+          fetUserQualification(tradingRewardContract),
+          fetchRewardInfo(campaignIds),
         ])
 
         return {

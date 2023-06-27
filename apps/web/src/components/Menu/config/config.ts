@@ -124,7 +124,6 @@ const config: (
         {
           label: t('Trading Reward'),
           href: '/trading-reward',
-          hideSubNav: true,
         },
         {
           label: t('Trading Competition'),

@@ -122,8 +122,6 @@ export interface AfterLockedActionsPropsType {
   stakingToken: Token
   position: VaultPosition
   isInline?: boolean
-  hideConvertToFlexibleButton?: boolean
-  customLockWeekInSeconds?: number
 }
 
 export interface LockedActionsPropsType extends VaultPositionParams {

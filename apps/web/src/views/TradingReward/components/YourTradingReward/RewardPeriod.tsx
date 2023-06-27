@@ -3,11 +3,10 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
 import { DeserializedLockedVaultUser } from 'state/types'
-import { Incentives, RewardInfo, Qualification, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives, RewardInfo, Qualification } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
-  campaignStart: number
   campaignClaimTime: number
   incentives: Incentives
   userData: DeserializedLockedVaultUser
@@ -24,7 +23,6 @@ interface RewardPeriodProps {
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignIds,
-  campaignStart,
   campaignClaimTime,
   userData,
   incentives,
@@ -50,7 +48,6 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
         userData={userData}
         incentives={incentives}
         rewardInfo={rewardInfo}
-        campaignStart={campaignStart}
         campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
         isQualified={isQualified}
@@ -60,7 +57,6 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
         totalAvailableClaimData={totalAvailableClaimData}
       />
       <TotalPeriod
-        type={RewardType.CAKE_STAKERS}
         campaignIds={campaignIds}
         rewardInfo={rewardInfo}
         qualification={qualification}
