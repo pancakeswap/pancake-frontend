@@ -5,6 +5,8 @@ import { ChainId, Token, Currency } from "@pancakeswap/sdk";
 const mapping: { [key: number]: string } = {
   [ChainId.BSC]: "smartchain",
   [ChainId.ETHEREUM]: "ethereum",
+  [ChainId.POLYGON_ZKEVM]: "polygonzkevm",
+  [ChainId.ARBITRUM_ONE]: "arbitrum",
 };
 
 export const getTokenLogoURL = memoize(
@@ -34,6 +36,8 @@ export const getTokenLogoURLByAddress = memoize(
 const chainName: { [key: number]: string } = {
   [ChainId.BSC]: "",
   [ChainId.ETHEREUM]: "eth",
+  [ChainId.POLYGON_ZKEVM]: "polygonzkevm",
+  [ChainId.ARBITRUM_ONE]: "arb",
 };
 
 export const getCurrencyLogoUrls = memoize(
