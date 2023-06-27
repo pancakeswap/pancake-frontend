@@ -21,11 +21,12 @@ const StyledBackground = styled(Flex)<{ showBackgroundColor: boolean }>`
   position: relative;
   flex-direction: column;
   padding-top: 48px;
+  margin-bottom: 48px;
   background: ${({ showBackgroundColor }) => (showBackgroundColor ? BACKGROUND_COLOR : '')};
   z-index: 0;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 88px;
+    padding: 88px 0;
   }
 `
 
@@ -74,7 +75,7 @@ const Container = styled(Box)<{ showBackgroundColor: boolean }>`
   padding: 0 16px;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
-    width: ${({ showBackgroundColor }) => (showBackgroundColor ? '760px' : '1140px')};
+    width: ${({ showBackgroundColor }) => (showBackgroundColor ? '100%' : '1140px')};
   }
 `
 
@@ -102,7 +103,7 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
   & :nth-child(3) {
-    bottom: -5%;
+    bottom: 0%;
     right: 5%;
     animation: ${floatingStarsLeft} 4.5s ease-in-out infinite;
   }
@@ -213,7 +214,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
       )}
 
       {!isFetching && account && !profile?.isActive && (
-        <Container showBackgroundColor>
+        <Container showBackgroundColor maxWidth={716}>
           <BaseContainer showBackgroundColor>
             <NoProfile />
           </BaseContainer>
@@ -229,6 +230,7 @@ const YourTradingReward: React.FC<React.PropsWithChildren<YourTradingRewardProps
             rewardInfo={rewardInfo}
             currentUserCampaignInfo={currentUserCampaignInfo}
             totalAvailableClaimData={totalAvailableClaimData}
+            campaignStart={incentives?.campaignStart}
             campaignClaimTime={incentives?.campaignClaimTime}
             isQualified={isQualified}
             isLockPosition={isLockPosition}

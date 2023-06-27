@@ -84,7 +84,7 @@ const useRewardBreakdown = ({
             campaignClaimTime: incentive?.campaignClaimTime ?? 0,
             pairs: pairs
               .reduce((a, b) => a.concat(b), [])
-              .sort((a, b) => Number(b.rewardEarned) - Number(a.rewardEarned)),
+              .sort((a, b) => Number(b.yourTradingFee) - Number(a.yourTradingFee)),
           }
         })
 

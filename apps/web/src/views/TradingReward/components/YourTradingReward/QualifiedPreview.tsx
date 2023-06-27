@@ -79,13 +79,14 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
 
   // Additional Amount
   const additionalAmount = useMemo(() => {
-    const totalMapCap = tradingFeeArr.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    const totalMapCap =
+      tradingFeeArr?.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0) ?? 0
     return new BigNumber(totalMapCap).minus(currentUserCampaignInfo.totalEstimateRewardUSD).toNumber()
   }, [currentUserCampaignInfo, tradingFeeArr])
 
   // MAX REWARD CAP
   const maxRewardCap = useMemo(() => {
-    return tradingFeeArr.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+    return tradingFeeArr?.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0) ?? 0
   }, [tradingFeeArr])
 
   const maxRewardCapCakePrice = useMemo(

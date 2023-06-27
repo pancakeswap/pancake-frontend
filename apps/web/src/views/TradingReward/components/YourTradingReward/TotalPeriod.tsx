@@ -8,9 +8,11 @@ import { useTooltip } from '@pancakeswap/uikit/src/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
-import { RewardInfo, Qualification, Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { RewardInfo, Qualification, Incentives, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { minAmountDisplay } from 'views/TradingReward/utils/minAmountDisplay'
+import useTradingFeeClaimedRecord from 'views/TradingReward/hooks/useTradingFeeClaimedRecord'
 
 interface TotalPeriodProps {
   campaignIds: Array<string>
@@ -18,6 +20,7 @@ interface TotalPeriodProps {
   totalAvailableClaimData: UserCampaignInfoDetail[]
   qualification: Qualification
   campaignIdsIncentive: Incentives[]
+  type: RewardType
 }
 
 const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
@@ -26,9 +29,11 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   totalAvailableClaimData,
   qualification,
   campaignIdsIncentive,
+  type,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { claimedRebate, claimedTopTraders } = useTradingFeeClaimedRecord({ type, campaignId: campaignIds[0] })
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Claim your rewards before expiring.'), {
     placement: 'bottom',
@@ -62,19 +67,34 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
           const campaignIncentive = campaignIdsIncentive.find(
             (incentive) => incentive.campaignId.toLowerCase() === campaign.campaignId.toLowerCase(),
           )
-          if (
-            new BigNumber(campaign.canClaim).gt(0) &&
+          const isValid =
+            campaignIncentive.isActivated &&
             !campaign.userClaimedIncentives &&
-            campaignIncentive.isActivated
-          ) {
+            new BigNumber(campaign.canClaim).gt(0) &&
+            new BigNumber(campaign.totalEstimateRewardUSD).gt(0)
+
+          if (type === RewardType.CAKE_STAKERS && claimedRebate && isValid) {
+            return campaign
+          }
+
+          if (type === RewardType.TOP_TRADERS && claimedTopTraders && isValid) {
+            return campaign
+          }
+
+          if (isValid) {
             return campaign
           }
         })
         .sort((a, b) => a.campaignClaimEndTime - b.campaignClaimEndTime)
     )
-  }, [campaignIdsIncentive, totalAvailableClaimData])
+  }, [campaignIdsIncentive, claimedRebate, claimedTopTraders, totalAvailableClaimData, type])
 
-  const { isPending, handleClaim } = useClaimAllReward({ campaignIds, unclaimData, qualification })
+  const { isPending, handleClaim } = useClaimAllReward({
+    campaignIds,
+    unclaimData,
+    qualification,
+    type,
+  })
 
   const rewardExpiredSoonData = useMemo(() => unclaimData[0], [unclaimData])
 
@@ -152,8 +172,12 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                 <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                   {t('Your unclaimed trading rewards')}
                 </Text>
-                <Text bold fontSize={['40px']}>{`$${formatNumber(totalUnclaimInUSD)}`}</Text>
-                <Text fontSize={['14px']} color="textSubtle">{`~${formatNumber(totalUnclaimInCake)} CAKE`}</Text>
+                <Text bold fontSize={['40px']}>
+                  {minAmountDisplay({ amount: totalUnclaimInUSD, prefix: '$' })}
+                </Text>
+                <Text fontSize={['14px']} color="textSubtle">
+                  {minAmountDisplay({ amount: totalUnclaimInCake, prefix: '~', unit: ' CAKE' })}
+                </Text>
               </Box>
               <Button
                 width={['100%', '100%', '100%', 'fit-content']}
@@ -177,7 +201,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="primary" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(notReadyForClaimUSDPrice)}`}
+                    {minAmountDisplay({ amount: notReadyForClaimUSDPrice, prefix: '$' })}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('from the recent campaign period is under tallying and will be available for claiming soon.')}
@@ -189,7 +213,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
               <Message variant="danger" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
-                    {`$${formatNumber(expiredUSDPrice)}`}
+                    {minAmountDisplay({ amount: expiredUSDPrice, prefix: '$' })}
                   </TooltipText>
                   <Text m="0 4px" as="span">
                     {t('unclaimed reward expiring in')}
@@ -219,22 +243,24 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
             )}
           </GreyCard>
           <GreyCard mt="24px">
-            <Box mb="24px">
+            <Box>
               <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
                 {t('Your TOTAL trading Reward')}
               </Text>
               <Text bold fontSize={['24px']}>
-                {`$${formatNumber(totalTradingReward)}`}
+                {minAmountDisplay({ amount: totalTradingReward, prefix: '$' })}
               </Text>
             </Box>
-            <Box>
-              <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
-                {t('Your TOTAL VOLUME Traded')}
-              </Text>
-              <Text bold fontSize={['24px']}>
-                {`$${formatNumber(totalVolumeTrade)}`}
-              </Text>
-            </Box>
+            {type === RewardType.CAKE_STAKERS && (
+              <Box mt="24px">
+                <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+                  {t('Your TOTAL VOLUME Traded')}
+                </Text>
+                <Text bold fontSize={['24px']}>
+                  {minAmountDisplay({ amount: totalVolumeTrade, prefix: '$' })}
+                </Text>
+              </Box>
+            )}
           </GreyCard>
         </Box>
       </Card>
