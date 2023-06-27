@@ -10,3 +10,7 @@ export const StyledBuyCryptoContainer = styled(Flex)`
     padding: 0 40px;
   }
 `
+
+export const AppWrapper = styled.div`
+  width: 370px;
+`
