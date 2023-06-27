@@ -24,7 +24,14 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.BSC]: 0.1,
   [ChainId.ETHEREUM]: 0.1,
   [ChainId.GOERLI]: 0.1,
-}
+  [ChainId.ARBITRUM_ONE]: 0.1,
+  [ChainId.ARBITRUM_GOERLI]: 0.1,
+  [ChainId.POLYGON_ZKEVM]: 0.1,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: 0.1,
+  [ChainId.ZKSYNC]: 0.1,
+  [ChainId.ZKSYNC_TESTNET]: 0.1,
+  [ChainId.LINEA_TESTNET]: 0.1,
+} as const satisfies Record<ChainId, number>
 
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
@@ -387,6 +394,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             }
 
             if (failedQuoteStates.length > 0) {
+              console.log(failedQuoteStates, 'failedQuoteStates')
               throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
             }
 

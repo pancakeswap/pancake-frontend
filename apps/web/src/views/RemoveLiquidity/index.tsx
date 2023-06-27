@@ -33,7 +33,7 @@ import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
 import { CommitButton } from 'components/CommitButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserSlippage } from '@pancakeswap/utils/user'
-import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/useLPApr'
 import { formattedCurrencyAmount } from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
@@ -158,7 +158,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    isZap ? getZapAddress(chainId) : ROUTER_ADDRESS[chainId],
+    isZap ? getZapAddress(chainId) : V2_ROUTER_ADDRESS[chainId],
   )
 
   async function onAttemptToApprove() {
@@ -193,7 +193,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     ]
     const message = {
       owner: account,
-      spender: ROUTER_ADDRESS[chainId],
+      spender: V2_ROUTER_ADDRESS[chainId],
       value: liquidityAmount.quotient.toString(),
       nonce,
       deadline: Number(deadline),

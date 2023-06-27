@@ -15,10 +15,9 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import { PositionDetails } from '@pancakeswap/farms'
-
+import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
 import styled from 'styled-components'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { AppBody, AppHeader } from 'components/App'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -43,6 +42,8 @@ import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
 import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -77,7 +78,7 @@ function useHideClosePosition() {
 }
 
 export default function PoolListPage() {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
@@ -195,12 +196,15 @@ export default function PoolListPage() {
   }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, v3PairsSection])
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
+  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
 
   return (
     <Page>
-      <Flex m="24px 0" maxWidth="854px">
-        <FarmV3MigrationBanner />
-      </Flex>
+      {isMigrationSupported && (
+        <Flex m="24px 0" maxWidth="854px">
+          <FarmV3MigrationBanner />
+        </Flex>
+      )}
       <AppBody
         style={{
           maxWidth: '854px',
@@ -238,7 +242,9 @@ export default function PoolListPage() {
               >
                 <ButtonMenuItem>{t('All')}</ButtonMenuItem>
                 <ButtonMenuItem>V3</ButtonMenuItem>
-                <ButtonMenuItem>{t('StableSwap')}</ButtonMenuItem>
+                <ButtonMenuItem display={isStableSwapSupported(chainId) ? 'inline-flex' : 'none'}>
+                  {t('StableSwap')}
+                </ButtonMenuItem>
                 <ButtonMenuItem>V2</ButtonMenuItem>
               </ButtonMenu>
             </>

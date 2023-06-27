@@ -335,12 +335,15 @@ export const getMasterChefContract = (signer?: WalletClient, chainId?: number) =
   })
 }
 export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({
-    abi: masterChefV3ABI,
-    address: getMasterChefV3Address(chainId),
-    chainId,
-    signer,
-  })
+  const mcv3Address = getMasterChefV3Address(chainId)
+  return mcv3Address
+    ? getContract({
+        abi: masterChefV3ABI,
+        address: getMasterChefV3Address(chainId),
+        chainId,
+        signer,
+      })
+    : null
 }
 
 export const getV3MigratorContract = (signer?: WalletClient, chainId?: number) => {

@@ -23,8 +23,14 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 export default function Swap() {
   const { query } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
-  const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
-    useContext(SwapFeaturesContext)
+  const {
+    isChartExpanded,
+    isChartDisplayed,
+    setIsChartDisplayed,
+    setIsChartExpanded,
+    isChartSupported,
+    isHotTokenSupported,
+  } = useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
   const [firstTime, setFirstTime] = useState(true)
@@ -113,8 +119,13 @@ export default function Swap() {
             setIsOpen={setIsChartDisplayed}
           />
         )}
-        {isDesktop && isSwapHotTokenDisplay && <HotTokenList handleOutputSelect={handleOutputSelect} />}
-        <ModalV2 isOpen={!isDesktop && isSwapHotTokenDisplay} onDismiss={() => setIsSwapHotTokenDisplay(false)}>
+        {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
+          <HotTokenList handleOutputSelect={handleOutputSelect} />
+        )}
+        <ModalV2
+          isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
+          onDismiss={() => setIsSwapHotTokenDisplay(false)}
+        >
           <Modal
             style={{ padding: 0 }}
             title={t('Top Token')}

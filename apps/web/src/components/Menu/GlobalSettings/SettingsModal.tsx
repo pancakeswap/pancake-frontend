@@ -418,67 +418,65 @@ function RoutingSettings() {
         </AtomBox>
         <AtomBox>
           <PreTitle mb="24px">{t('Routing preference')}</PreTitle>
-          <AutoRow alignItems="center" as="label" mb="24px" gap="16px">
-            <Checkbox
-              id="toggle-disable-multihop-button"
-              checked={!singleHopOnly}
-              scale="sm"
-              onChange={() => {
-                setSingleHopOnly((s) => !s)
-              }}
-            />
-            <RowFixed>
+          <AutoRow alignItems="center" mb="24px">
+            <RowFixed as="label" gap="16px">
+              <Checkbox
+                id="toggle-disable-multihop-button"
+                checked={!singleHopOnly}
+                scale="sm"
+                onChange={() => {
+                  setSingleHopOnly((s) => !s)
+                }}
+              />
               <Text>{t('Allow Multihops')}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">
-                      {t(
-                        'Multihops enables token swaps through multiple hops between serval pools to achieve the best deal.',
-                      )}
-                    </Text>
-                    <Text mr="5px" mt="1em">
-                      {t(
-                        'Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
-              />
             </RowFixed>
-          </AutoRow>
-          <AutoRow alignItems="center" mb="24px" as="label" gap="16px">
-            <Checkbox
-              id="toggle-disable-multihop-button"
-              checked={split}
-              scale="sm"
-              onChange={() => {
-                setSplit((s) => !s)
-              }}
+            <QuestionHelper
+              text={
+                <Flex flexDirection="column">
+                  <Text mr="5px">
+                    {t(
+                      'Multihops enables token swaps through multiple hops between several pools to achieve the best deal.',
+                    )}
+                  </Text>
+                  <Text mr="5px" mt="1em">
+                    {t(
+                      'Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.',
+                    )}
+                  </Text>
+                </Flex>
+              }
+              placement="top"
+              ml="4px"
             />
-            <RowFixed alignItems="center">
-              <Text>{t('Allow Split Routing')}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">
-                      {t(
-                        'Split routing enables token swaps to be broken into multiple routes to achieve the best deal.',
-                      )}
-                    </Text>
-                    <Text mr="5px" mt="1em">
-                      {t(
-                        'Turning this off will only allow a single route, which may result in low efficiency or higher slippage.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
+          </AutoRow>
+          <AutoRow alignItems="center" mb="24px">
+            <RowFixed alignItems="center" as="label" gap="16px">
+              <Checkbox
+                id="toggle-disable-multihop-button"
+                checked={split}
+                scale="sm"
+                onChange={() => {
+                  setSplit((s) => !s)
+                }}
               />
+              <Text>{t('Allow Split Routing')}</Text>
             </RowFixed>
+            <QuestionHelper
+              text={
+                <Flex flexDirection="column">
+                  <Text mr="5px">
+                    {t('Split routing enables token swaps to be broken into multiple routes to achieve the best deal.')}
+                  </Text>
+                  <Text mr="5px" mt="1em">
+                    {t(
+                      'Turning this off will only allow a single route, which may result in low efficiency or higher slippage.',
+                    )}
+                  </Text>
+                </Flex>
+              }
+              placement="top"
+              ml="4px"
+            />
           </AutoRow>
         </AtomBox>
       </AutoColumn>

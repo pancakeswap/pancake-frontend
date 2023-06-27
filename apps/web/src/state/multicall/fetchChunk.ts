@@ -1,8 +1,16 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { getViemClients } from 'utils/viem'
 import { multicallABI } from 'config/abi/Multicall'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { Call } from './actions'
 import { RetryableError } from './retry'
+
+const l2DifferentBlockNumberChains = [
+  ChainId.ZKSYNC,
+  ChainId.ZKSYNC_TESTNET,
+  ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_GOERLI,
+]
 
 export type FetchChunkResult = ReturnType<typeof fetchChunk>
 
@@ -57,9 +65,15 @@ export async function fetchChunk(
     console.debug('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (Number(resultsBlockNumber) < minBlockNumber) {
+
+  const l2DifferentBlockNumber = l2DifferentBlockNumberChains.includes(chainId)
+
+  if (Number(resultsBlockNumber) < minBlockNumber && !l2DifferentBlockNumber) {
     console.debug(`Fetched results for old block number: ${resultsBlockNumber.toString()} vs. ${minBlockNumber}`)
   }
 
-  return { results: returnData, blockNumber: Number(resultsBlockNumber) }
+  return {
+    results: returnData,
+    blockNumber: l2DifferentBlockNumber ? minBlockNumber : Number(resultsBlockNumber),
+  }
 }

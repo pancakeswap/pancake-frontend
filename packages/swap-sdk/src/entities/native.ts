@@ -22,7 +22,7 @@ export class Native extends NativeCurrency {
   }
 
   public get wrapped(): Token {
-    const wnative = WNATIVE[this.chainId]
+    const wnative = WNATIVE[this.chainId as keyof typeof WNATIVE]
     invariant(!!wnative, 'WRAPPED')
     return wnative
   }
@@ -33,8 +33,8 @@ export class Native extends NativeCurrency {
     if (chainId in this.cache) {
       return this.cache[chainId]
     }
-    invariant(!!NATIVE[chainId], 'NATIVE_CURRENCY')
-    const { decimals, name, symbol } = NATIVE[chainId]
+    invariant(!!NATIVE[chainId as keyof typeof NATIVE], 'NATIVE_CURRENCY')
+    const { decimals, name, symbol } = NATIVE[chainId as keyof typeof WNATIVE]
     // eslint-disable-next-line no-return-assign
     return (this.cache[chainId] = new Native({ chainId, decimals, symbol, name }))
   }

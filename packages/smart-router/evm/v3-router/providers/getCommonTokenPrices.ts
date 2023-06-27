@@ -86,7 +86,7 @@ const createGetTokenPriceFromLlmaWithCache = (): GetTokenPrices<BySubgraphEssent
   const cache = new Map<string, TokenPrice>()
 
   return async ({ addresses, chainId }) => {
-    if (!chainId) {
+    if (!chainId || !CHAIN_ID_TO_CHAIN_NAME[chainId as keyof typeof CHAIN_ID_TO_CHAIN_NAME]) {
       throw new Error(`Invalid chain id ${chainId}`)
     }
     const [cachedResults, addressesToFetch] = addresses.reduce<[TokenPrice[], string[]]>(
@@ -106,7 +106,9 @@ const createGetTokenPriceFromLlmaWithCache = (): GetTokenPrices<BySubgraphEssent
       return cachedResults
     }
 
-    const list = addressesToFetch.map((address) => `${CHAIN_ID_TO_CHAIN_NAME[chainId]}:${address}`).join(',')
+    const list = addressesToFetch
+      .map((address) => `${CHAIN_ID_TO_CHAIN_NAME[chainId as keyof typeof CHAIN_ID_TO_CHAIN_NAME]}:${address}`)
+      .join(',')
     const result: { coins?: { [key: string]: { price: string } } } = await fetch(
       `https://coins.llama.fi/prices/current/${list}`,
     ).then((res) => res.json())

@@ -8,3 +8,7 @@ export const StyledBuyCryptoContainer = styled(Flex)`
 
   width: 420px;
 `
+
+export const AppWrapper = styled.div`
+  width: 370px;
+`

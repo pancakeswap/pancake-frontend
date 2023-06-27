@@ -168,7 +168,9 @@ export default function useSendSwapTransaction(
               type: 'swap',
             })
             logSwap({
+              account,
               chainId,
+              hash: response.hash,
               inputAmount,
               outputAmount,
               input: trade.inputAmount.currency,

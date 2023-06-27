@@ -8,7 +8,7 @@ import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   INPUT_FRACTION_AFTER_FEE,
   ONE_HUNDRED_PERCENT,
-  ROUTER_ADDRESS,
+  V2_ROUTER_ADDRESS,
 } from 'config/constants/exchange'
 import { StableTrade } from 'config/constants/types'
 
@@ -33,7 +33,7 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
 
 export function useRouterContract() {
   const { chainId } = useActiveChainId()
-  return useContract(ROUTER_ADDRESS[chainId], pancakeRouter02ABI)
+  return useContract(V2_ROUTER_ADDRESS[chainId], pancakeRouter02ABI)
 }
 
 // computes price breakdown for the trade

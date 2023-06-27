@@ -42,7 +42,10 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
       </Box>
       <UserMenuDivider />
       {chains
-        .filter((chain) => !('testnet' in chain && chain.testnet) || chain.id === chainId)
+        .filter(
+          (chain) =>
+            chain.id === ChainId.LINEA_TESTNET || !('testnet' in chain && chain.testnet) || chain.id === chainId,
+        )
         .map((chain) => (
           <UserMenuItem
             key={chain.id}
@@ -132,6 +135,20 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
   )
 }
 
+const SHORT_SYMBOL = {
+  [ChainId.ETHEREUM]: 'ETH',
+  [ChainId.BSC]: 'BNB',
+  [ChainId.BSC_TESTNET]: 'tBNB',
+  [ChainId.GOERLI]: 'GOR',
+  [ChainId.ARBITRUM_ONE]: 'ARB',
+  [ChainId.ARBITRUM_GOERLI]: 'tARB',
+  [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: 'tZkEVM',
+  [ChainId.ZKSYNC]: 'zkSync',
+  [ChainId.ZKSYNC_TESTNET]: 'tZkSync',
+  [ChainId.LINEA_TESTNET]: 'tLinea',
+} as const satisfies Record<ChainId, string>
+
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
@@ -144,7 +161,7 @@ export const NetworkSwitcher = () => {
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
     [isLoading, pendingChainId, chainId],
   )
-  const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
+  const symbol = SHORT_SYMBOL[foundChain?.id] ?? NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Unable to switch network. Please try it on your wallet'),
     { placement: 'bottom' },

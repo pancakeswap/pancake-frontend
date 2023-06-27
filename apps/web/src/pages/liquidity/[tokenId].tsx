@@ -278,8 +278,7 @@ export default function PoolPage() {
       !currency0ForFeeCollectionPurposes ||
       !currency1ForFeeCollectionPurposes ||
       !chainId ||
-      !positionManager ||
-      !masterchefV3 ||
+      !manager ||
       !account ||
       !tokenId
     )
@@ -339,14 +338,12 @@ export default function PoolPage() {
     currency0ForFeeCollectionPurposes,
     currency1ForFeeCollectionPurposes,
     chainId,
-    positionManager,
-    masterchefV3,
+    manager,
     account,
     tokenId,
     interfaceManager,
     feeValue0,
     feeValue1,
-    manager.address,
     signer,
     sendTransactionAsync,
     addTransaction,

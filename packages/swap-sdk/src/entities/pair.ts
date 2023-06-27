@@ -28,7 +28,7 @@ import {
 } from 'viem'
 import invariant from 'tiny-invariant'
 
-import { FACTORY_ADDRESS_MAP, INIT_CODE_HASH_MAP } from '../constants'
+import { ChainId, FACTORY_ADDRESS_MAP, INIT_CODE_HASH_MAP } from '../constants'
 import { ERC20Token } from './token'
 
 let PAIR_ADDRESS_CACHE: { [key: string]: Address } = {}
@@ -48,6 +48,15 @@ function getCreate2Address(
   return getAddress(slice(keccak256(concat([toBytes('0xff'), from, salt, toBytes(initCodeHash)])), 12))
 }
 
+const EMPTY_INPU_HASH = '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
+const ZKSYNC_PREFIX = '0x2020dba91b30cc0006188af794c2fb30dd8520db7e2c088b7fc7c103c00ca494' // keccak256('zksyncCreate2')
+
+function getCreate2AddressZkSync(from: Address, salt: `0x${string}`, initCodeHash: `0x${string}`): `0x${string}` {
+  return getAddress(
+    keccak256(concat([ZKSYNC_PREFIX, pad(from, { size: 32 }), salt, initCodeHash, EMPTY_INPU_HASH])).slice(26)
+  )
+}
+
 export const computePairAddress = ({
   factoryAddress,
   tokenA,
@@ -61,12 +70,16 @@ export const computePairAddress = ({
   const key = composeKey(token0, token1)
 
   if (PAIR_ADDRESS_CACHE?.[key] === undefined) {
+    const getCreate2Address_ =
+      token0.chainId === ChainId.ZKSYNC_TESTNET || token1.chainId === ChainId.ZKSYNC
+        ? getCreate2AddressZkSync
+        : getCreate2Address
     PAIR_ADDRESS_CACHE = {
       ...PAIR_ADDRESS_CACHE,
-      [key]: getCreate2Address(
+      [key]: getCreate2Address_(
         factoryAddress,
         keccak256(encodePacked(['address', 'address'], [token0.address, token1.address])),
-        INIT_CODE_HASH_MAP[token0.chainId]
+        INIT_CODE_HASH_MAP[token0.chainId as keyof typeof INIT_CODE_HASH_MAP]
       ),
     }
   }
@@ -80,7 +93,11 @@ export class Pair {
   private readonly tokenAmounts: [CurrencyAmount<ERC20Token>, CurrencyAmount<ERC20Token>]
 
   public static getAddress(tokenA: ERC20Token, tokenB: ERC20Token): Address {
-    return computePairAddress({ factoryAddress: FACTORY_ADDRESS_MAP[tokenA.chainId], tokenA, tokenB })
+    return computePairAddress({
+      factoryAddress: FACTORY_ADDRESS_MAP[tokenA.chainId as keyof typeof FACTORY_ADDRESS_MAP],
+      tokenA,
+      tokenB,
+    })
   }
 
   public constructor(currencyAmountA: CurrencyAmount<ERC20Token>, tokenAmountB: CurrencyAmount<ERC20Token>) {

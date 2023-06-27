@@ -101,6 +101,7 @@ const bloctoConnector = new BloctoConnector({
 
 const ledgerConnector = new LedgerConnector({
   chains,
+  options: {},
 })
 
 export const bscConnector = new BinanceWalletConnector({ chains })

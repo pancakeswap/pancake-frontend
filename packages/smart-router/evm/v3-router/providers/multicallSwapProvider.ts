@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable no-console, camelcase, @typescript-eslint/no-non-null-assertion */
 import { ChainId } from '@pancakeswap/sdk'
-import { encodeFunctionData, PublicClient, decodeFunctionResult } from 'viem'
+import { encodeFunctionData, PublicClient, decodeFunctionResult, Address } from 'viem'
 import stats from 'stats-lite'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
@@ -17,7 +17,15 @@ const PANCAKE_MULTICALL_ADDRESSES = {
   [ChainId.GOERLI]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
   [ChainId.BSC]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
   [ChainId.BSC_TESTNET]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
-} as const
+  // TODO: new chains
+  [ChainId.ARBITRUM_ONE]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
+  [ChainId.ARBITRUM_GOERLI]: '0x7a7e95c0b4d0Be710648C6f773ad0499923560bA',
+  [ChainId.POLYGON_ZKEVM]: '0xac1cE734566f390A94b00eb9bf561c2625BF44ea',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: '0x5DCC00121b4a481D8EDF9782Df6c6CF398AF20B8',
+  [ChainId.ZKSYNC]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0xD43165407500fac1Adb10Fc7359D71b86f66a6f7',
+  [ChainId.LINEA_TESTNET]: '0x32226588378236Fd0c7c4053999F88aC0e5cAc77',
+} as const satisfies Record<ChainId, Address>
 
 export type PancakeMulticallConfig = {
   gasLimitPerCallOverride?: number

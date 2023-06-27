@@ -10,3 +10,5 @@ export function getStableSwapPools(chainId: ChainId): StableSwapPool[] {
   }
   return STABLE_POOL_MAP[chainId] || []
 }
+
+export { isStableSwapSupported }

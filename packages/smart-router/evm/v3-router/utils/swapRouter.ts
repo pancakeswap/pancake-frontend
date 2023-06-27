@@ -1,5 +1,13 @@
 import { encodeFunctionData, Hex, Address } from 'viem'
-import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress, WNATIVE } from '@pancakeswap/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  Percent,
+  TradeType,
+  validateAndParseAddress,
+  WNATIVE,
+  ChainId,
+} from '@pancakeswap/sdk'
 import { FeeOptions, MethodParameters, Payments, PermitOptions, Position, SelfPermit, toHex } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 
@@ -695,8 +703,8 @@ export abstract class SwapRouter {
     const { positionAmountIn, positionAmountOut } = SwapRouter.getPositionAmounts(position, zeroForOne)
 
     // if tokens are native they will be converted to WETH9
-    const tokenIn = inputIsNative ? WNATIVE[chainId] : positionAmountIn.currency.wrapped
-    const tokenOut = outputIsNative ? WNATIVE[chainId] : positionAmountOut.currency.wrapped
+    const tokenIn = inputIsNative ? WNATIVE[chainId as ChainId] : positionAmountIn.currency.wrapped
+    const tokenOut = outputIsNative ? WNATIVE[chainId as ChainId] : positionAmountOut.currency.wrapped
 
     // if swap output does not make up whole outputTokenBalanceDesired, pull in remaining tokens for adding liquidity
     const amountOutRemaining = positionAmountOut.subtract(quoteAmountOut.wrapped)

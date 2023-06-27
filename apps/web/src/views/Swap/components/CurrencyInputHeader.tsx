@@ -75,7 +75,8 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
       ...(isMobile && { manualVisible: mobileTooltipShow }),
     })
 
-    const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
+    const { isChartSupported, isChartDisplayed, setIsChartDisplayed, isHotTokenSupported } =
+      useContext(SwapFeaturesContext)
     const [expertMode] = useExpertMode()
     const [isRoutingSettingChange] = useRoutingSettingChanged()
     const toggleChartDisplayed = () => {
@@ -144,32 +145,34 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               )}
             </ColoredIconButton>
           )}
-          <ColoredIconButton
-            variant="text"
-            scale="sm"
-            onClick={() => {
-              if (!isSwapHotTokenDisplay && isChartDisplayed) {
-                toggleChartDisplayed()
-              }
-              setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
-            }}
-          >
-            {isSwapHotTokenDisplay ? (
-              <HotDisableIcon color="textSubtle" width="24px" />
-            ) : (
-              <>
-                <TooltipText
-                  ref={targetRef}
-                  onClick={() => setMobileTooltipShow(false)}
-                  display="flex"
-                  style={{ justifyContent: 'center' }}
-                >
-                  <HotIcon color="textSubtle" width="24px" />
-                </TooltipText>
-                {tooltipVisible && (!isMobile || mobileTooltipShow) && tooltip}
-              </>
-            )}
-          </ColoredIconButton>
+          {isHotTokenSupported && (
+            <ColoredIconButton
+              variant="text"
+              scale="sm"
+              onClick={() => {
+                if (!isSwapHotTokenDisplay && isChartDisplayed) {
+                  toggleChartDisplayed()
+                }
+                setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
+              }}
+            >
+              {isSwapHotTokenDisplay ? (
+                <HotDisableIcon color="textSubtle" width="24px" />
+              ) : (
+                <>
+                  <TooltipText
+                    ref={targetRef}
+                    onClick={() => setMobileTooltipShow(false)}
+                    display="flex"
+                    style={{ justifyContent: 'center' }}
+                  >
+                    <HotIcon color="textSubtle" width="24px" />
+                  </TooltipText>
+                  {tooltipVisible && (!isMobile || mobileTooltipShow) && tooltip}
+                </>
+              )}
+            </ColoredIconButton>
+          )}
           <NotificationDot show={expertMode || isRoutingSettingChange}>
             <GlobalSettings color="textSubtle" mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
           </NotificationDot>

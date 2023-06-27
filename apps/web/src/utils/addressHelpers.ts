@@ -10,6 +10,10 @@ export const getAddressFromMap = (address: Addresses, chainId?: number): `0x${st
   return address[chainId] ? address[chainId] : address[ChainId.BSC]
 }
 
+export const getAddressFromMapNoFallback = (address: Addresses, chainId?: number): `0x${string}` | null => {
+  return address[chainId]
+}
+
 export const getMasterChefV2Address = (chainId?: number) => {
   return getAddressFromMap(addresses.masterChef, chainId)
 }
@@ -114,7 +118,7 @@ export const getStableSwapNativeHelperAddress = (chainId?: number) => {
 }
 
 export const getMasterChefV3Address = (chainId?: number) => {
-  return getAddressFromMap(addresses.masterChefV3, chainId)
+  return getAddressFromMapNoFallback(addresses.masterChefV3, chainId)
 }
 
 export const getV3MigratorAddress = (chainId?: number) => {

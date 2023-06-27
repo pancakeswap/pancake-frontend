@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, ERC20Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { useAccount, Address } from 'wagmi'
-import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useCallback, useMemo } from 'react'
 import { isUserRejected, logError } from 'utils/sentry'
 import { SendTransactionResult } from 'wagmi/actions'
@@ -168,7 +168,7 @@ export function useApproveCallbackFromTrade(
     [trade, allowedSlippage],
   )
 
-  return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId])
+  return useApproveCallback(amountToApprove, V2_ROUTER_ADDRESS[chainId])
 }
 
 export function useApproveCallbackFromAmount({
