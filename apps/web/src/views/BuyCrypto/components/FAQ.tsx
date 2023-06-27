@@ -59,13 +59,13 @@ const config = (t) => [
           style={{ display: 'inline-flex' }}
           href="https://help.mercuryo.io/en/articles/6122838-on-and-off-ramps"
         >
-          {t('Mercuryo')}
+          Mercuryo
         </LinkExternal>
         <LinkExternal
           style={{ display: 'inline-flex' }}
           href="https://support.moonpay.com/hc/en-gb/articles/360011931177-How-can-I-buy-cryptocurrency-using-MoonPay"
         >
-          {t('MoonPay')}
+          MoonPay
         </LinkExternal>
         {t(') for more info.')}
       </>
