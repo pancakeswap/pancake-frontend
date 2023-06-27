@@ -12,7 +12,6 @@ import {
   DeserializedFarmsState,
   DeserializedFarmUserData,
   supportedChainIdV2,
-  bCakeSupportedChainId,
 } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
@@ -77,7 +76,7 @@ export const usePollFarmsWithUserData = () => {
     : ['farmsWithUserData', account, chainId]
 
   useSWRImmutable(
-    account && chainId && bCakeSupportedChainId.includes(chainId) && !isProxyContractLoading ? name : null,
+    account && chainId && !isProxyContractLoading ? name : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       if (!farmsConfig) return
