@@ -49,7 +49,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
           incentives?.campaignStart,
         )} - ${timeFormat(locale, incentives?.campaignClaimTime)}`}</Text>
         <Text textAlign="center" bold color="textSubtle">
-          {t('Top #500 Winners')}
+          {t('Top #50 Winners')}
         </Text>
       </Box>
       <Container mb="16px">

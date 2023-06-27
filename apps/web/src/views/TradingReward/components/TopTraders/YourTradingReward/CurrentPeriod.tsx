@@ -21,7 +21,7 @@ interface CurrentPeriodProps {
   currentUserCampaignInfo: UserCampaignInfoDetail
 }
 
-const TOP_RANK = 500
+const TOP_RANK = 50
 
 const TimeText = ({ text }: { text: string }) => {
   return (
@@ -126,7 +126,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
                       {t('Keep trading to rank')}
                     </Text>
                     <Text fontSize="14px" color="primary" as="span" bold m="0 4px">
-                      {t('#500 or less')}
+                      {t('#50 or less')}
                     </Text>
                     <Text fontSize="14px" color="primary" as="span">
                       {t('and maintain till the end of the campaign to win and claim your rewards.')}

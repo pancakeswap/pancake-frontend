@@ -127,7 +127,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
         <Flex justifyContent="space-between" mb="10px">
           <TextComponent text={t('To win')} />
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            {t('Rank #500 or higher')}
+            {t('Rank #50 or higher')}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
