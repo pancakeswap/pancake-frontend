@@ -19,7 +19,7 @@ const StyledFlex = styled(Flex)`
     min-height: 56px;
   }
   > div:first-child > div {
-    background: ${({ theme }) => (theme.isDark ? theme.colors.input : `rgba(238, 234, 244, 0.5)`)};
+    background: ${({ theme }) => (theme.isDark ? `rgba(55, 47, 71,0.5)` : `rgba(238, 234, 244, 0.5)`)};
     overflow: hidden;
   }
 `
@@ -27,10 +27,10 @@ const StyledFlex = styled(Flex)`
 const StyledTabToggle = styled(TabToggle)`
   cursor: pointer;
   background-color: ${({ theme, isActive }) =>
-    isActive ? (theme.isDark ? 'rgb(45,48,72)' : '#ffffff') : theme.isDark ? theme.colors.input : 'transparent'};
+    isActive ? (theme.isDark ? 'rgb(45,48,72)' : '#ffffff') : 'transparent'};
   ${({ theme }) => theme.mediaQueries.sm} {
     background-color: ${({ theme, isActive }) =>
-      isActive ? (theme.isDark ? 'rgb(45,48,72)' : '#f4fdff') : theme.isDark ? theme.colors.input : 'transparent'};
+      isActive ? (theme.isDark ? 'rgb(45,48,72)' : '#f4fdff') : 'transparent'};
   }
 `
 
