@@ -125,7 +125,12 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             </SubMenuItem>
           )}
           {lpAddress && (
-            <SubMenuItem as={LinkExternal} href={`/info/pairs/${lpAddress}`} bold={false} color="text">
+            <SubMenuItem
+              as={LinkExternal}
+              href={`/info/${shouldUseV3Format && 'v3'}/pairs/${lpAddress}`}
+              bold={false}
+              color="text"
+            >
               {t('LP Info')}
             </SubMenuItem>
           )}
