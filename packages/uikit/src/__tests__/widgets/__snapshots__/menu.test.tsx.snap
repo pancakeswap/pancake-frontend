@@ -4134,7 +4134,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   padding-top: 4px;
   pointer-events: auto;
   margin-bottom: 0;
-  width: 100%;
+  width: calc(100% - 32px);
   visibility: visible;
   z-index: 1001;
   pointer-events: none;
