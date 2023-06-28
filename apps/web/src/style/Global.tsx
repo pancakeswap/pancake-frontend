@@ -18,6 +18,16 @@ const GlobalStyle = createGlobalStyle`
       max-width: 100%;
     }
   }
+
+  #__next {
+    position: relative;
+    z-index: 1;
+  }
+
+  #portal-root {
+    position: relative;
+    z-index: 2;
+  }
 `
 
 export default GlobalStyle
