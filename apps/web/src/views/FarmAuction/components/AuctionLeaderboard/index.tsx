@@ -1,14 +1,13 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Card, Flex, Spinner, Text } from '@pancakeswap/uikit'
+import { TabToggle, TabToggleGroup } from 'components/TabToggle'
+import { Auction, AuctionStatus, Bidder } from 'config/constants/types'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Text, Card, Flex, Box, Spinner } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { Auction, AuctionStatus, Bidder } from 'config/constants/types'
-import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import AuctionHistory from '../AuctionHistory'
+import AuctionLeaderboardTable from './AuctionLeaderboardTable'
 import AuctionProgress from './AuctionProgress'
 import AuctionRibbon from './AuctionRibbon'
-import AuctionLeaderboardTable from './AuctionLeaderboardTable'
-import { HARD_CODED_START_AUCTION_ID } from '../../constants'
 
 const AuctionLeaderboardCard = styled(Card)`
   width: 100%;
@@ -75,11 +74,7 @@ const CurrentAuctionCard: React.FC<React.PropsWithChildren<AuctionLeaderboardPro
           </Text>
           <AuctionRibbon auction={auction} noAuctionHistory={getMostRecentClosedAuctionId(id, status) === null} />
           <AuctionProgress auction={auction} />
-          <AuctionLeaderboardTable
-            bidders={bidders}
-            noBidsText={t('No bids yet')}
-            shouldUseV3Format={id >= HARD_CODED_START_AUCTION_ID}
-          />
+          <AuctionLeaderboardTable bidders={bidders} noBidsText={t('No bids yet')} auctionId={id} />
         </Box>
       ) : (
         <AuctionHistory mostRecentClosedAuctionId={getMostRecentClosedAuctionId(id, status)} />
