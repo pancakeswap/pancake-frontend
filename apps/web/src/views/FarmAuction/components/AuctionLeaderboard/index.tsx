@@ -75,11 +75,7 @@ const CurrentAuctionCard: React.FC<React.PropsWithChildren<AuctionLeaderboardPro
           </Text>
           <AuctionRibbon auction={auction} noAuctionHistory={getMostRecentClosedAuctionId(id, status) === null} />
           <AuctionProgress auction={auction} />
-          <AuctionLeaderboardTable
-            bidders={bidders}
-            noBidsText={t('No bids yet')}
-            shouldUseV3Format={id >= HARD_CODED_START_AUCTION_ID}
-          />
+          <AuctionLeaderboardTable bidders={bidders} noBidsText={t('No bids yet')} auctionId={id} />
         </Box>
       ) : (
         <AuctionHistory mostRecentClosedAuctionId={getMostRecentClosedAuctionId(id, status)} />
