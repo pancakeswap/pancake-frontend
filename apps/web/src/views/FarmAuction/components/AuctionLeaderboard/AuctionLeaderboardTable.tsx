@@ -127,7 +127,7 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
           {lpAddress && (
             <SubMenuItem
               as={LinkExternal}
-              href={`/info/${shouldUseV3Format && 'v3'}/pairs/${lpAddress}`}
+              href={`/info${shouldUseV3Format && '/v3'}/pairs/${lpAddress}`}
               bold={false}
               color="text"
             >
