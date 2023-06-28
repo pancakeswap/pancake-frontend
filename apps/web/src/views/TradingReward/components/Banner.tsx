@@ -152,7 +152,7 @@ const TradingRewardBanner = () => {
           </Text>
           <Flex mb="16px" flexWrap="wrap">
             <Text bold fontSize="40px" color="secondary" as="span" ml="4px" lineHeight="110%">
-              {t('5% trading rebate to be earned!')}
+              {t('10% trading rebate to be earned!')}
             </Text>
           </Flex>
           <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
