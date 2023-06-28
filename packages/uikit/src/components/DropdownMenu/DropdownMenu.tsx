@@ -1,6 +1,8 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback, useRef } from "react";
 import { usePopper } from "react-popper";
+// eslint-disable-next-line lodash/import-scope
+import { debounce } from "lodash";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
@@ -29,6 +31,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
+  const isMouseInDropdownRef = useRef(false); // Create a mutable ref
   const hasItems = items.length > 0;
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
     strategy: isBottomNav ? "absolute" : "fixed",
@@ -39,47 +42,33 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   const isMenuShow = isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
-    let isMouseInDropdown = false;
-
     const showDropdownMenu = () => {
       setIsOpen(true);
+      debouncedHideDropdownMenu.cancel();
     };
 
-    const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
-      const target = evt.target as Node;
-      if (target && !tooltipRef?.contains(target) && isBottomNav && !isMouseInDropdown) {
-        timeoutId = setTimeout(() => {
-          if (!isMouseInDropdown) {
-            setIsOpen(false);
-          }
-        }, 500);
-      } else setIsOpen(false);
-    };
+    const hideDropdownMenu = () => debouncedHideDropdownMenu();
 
-    const handleMouseEnterDropdown = () => {
-      isMouseInDropdown = true;
-    };
+    const debouncedHideDropdownMenu = debounce(
+      () => {
+        if (!isMouseInDropdownRef.current) setIsOpen(false);
+      },
+      isBottomNav ? 100 : 10
+    );
 
-    const handleMouseLeaveDropdown = () => {
-      isMouseInDropdown = false;
-    };
-
-    targetRef?.addEventListener("mouseenter", showDropdownMenu);
-    targetRef?.addEventListener("mouseleave", hideDropdownMenu);
-    tooltipRef?.addEventListener("mouseenter", handleMouseEnterDropdown);
-    tooltipRef?.addEventListener("mouseleave", handleMouseLeaveDropdown);
+    // added this to remove the ugle 4 lines
+    [targetRef, tooltipRef].forEach((ref) => {
+      ref?.addEventListener("mouseenter", showDropdownMenu);
+      ref?.addEventListener("mouseleave", hideDropdownMenu);
+    });
 
     return () => {
-      targetRef?.removeEventListener("mouseenter", showDropdownMenu);
-      targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
-      tooltipRef?.removeEventListener("mouseenter", handleMouseEnterDropdown);
-      tooltipRef?.removeEventListener("mouseleave", handleMouseLeaveDropdown);
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      [targetRef, tooltipRef].forEach((ref) => {
+        ref?.removeEventListener("mouseenter", showDropdownMenu);
+        ref?.removeEventListener("mouseleave", hideDropdownMenu);
+      });
     };
-  }, [targetRef, tooltipRef, setIsOpen, isBottomNav]);
+  }, [setIsOpen, tooltipRef, targetRef, isBottomNav]);
 
   useEffect(() => {
     if (setMenuOpenByIndex && index !== undefined) {
