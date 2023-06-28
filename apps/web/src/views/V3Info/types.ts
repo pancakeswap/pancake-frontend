@@ -63,6 +63,7 @@ export type TokenData = {
   name: string
   symbol: string
   address: string
+  decimals: number
 
   // volume
   volumeUSD: number
