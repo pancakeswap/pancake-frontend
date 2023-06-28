@@ -237,27 +237,26 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     userCurrentTickets,
   )
 
-  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
-    useApproveConfirmTransaction({
-      token: bscTokens.cake,
-      spender: lotteryContract.address,
-      minAmount: parseEther(totalCost as `${number}`),
-      onApproveSuccess: async ({ receipt }) => {
-        toastSuccess(
-          t('Contract enabled - you can now purchase tickets'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
-        )
-      },
-      onConfirm: () => {
-        const ticketsForPurchase = getTicketsForPurchase()
-        return callWithGasPrice(lotteryContract, 'buyTickets', [BigInt(currentLotteryId), ticketsForPurchase])
-      },
-      onSuccess: async ({ receipt }) => {
-        onDismiss?.()
-        dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
-        toastSuccess(t('Lottery tickets purchased!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      },
-    })
+  const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
+    token: bscTokens.cake,
+    spender: lotteryContract.address,
+    minAmount: parseEther(totalCost as `${number}`),
+    onApproveSuccess: async ({ receipt }) => {
+      toastSuccess(
+        t('Contract enabled - you can now purchase tickets'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash} />,
+      )
+    },
+    onConfirm: () => {
+      const ticketsForPurchase = getTicketsForPurchase()
+      return callWithGasPrice(lotteryContract, 'buyTickets', [BigInt(currentLotteryId), ticketsForPurchase])
+    },
+    onSuccess: async ({ receipt }) => {
+      onDismiss?.()
+      dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
+      toastSuccess(t('Lottery tickets purchased!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+    },
+  })
 
   const getErrorMessage = () => {
     if (userNotEnoughCake) return t('Insufficient CAKE balance')
@@ -274,13 +273,15 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     return percentageAsBn.toNumber().toFixed(2)
   }
 
-  const disableBuying =
-    !isApproved ||
-    isConfirmed ||
-    userNotEnoughCake ||
-    !ticketsToBuy ||
-    new BigNumber(ticketsToBuy).lte(0) ||
-    getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
+  const disableBuying = useMemo(
+    () =>
+      isConfirming ||
+      userNotEnoughCake ||
+      !ticketsToBuy ||
+      new BigNumber(ticketsToBuy).lte(0) ||
+      getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10),
+    [isConfirming, userNotEnoughCake, ticketsToBuy, getTicketsForPurchase],
+  )
 
   const isApproveDisabled = isApproved || disableBuying
 
@@ -427,12 +428,12 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
                 endIcon={
                   <ArrowForwardIcon
                     ml="2px"
-                    color={disableBuying || isConfirming ? 'disabled' : 'primary'}
+                    color={disableBuying ? 'disabled' : 'primary'}
                     height="24px"
                     width="24px"
                   />
                 }
-                disabled={disableBuying || isConfirming}
+                disabled={disableBuying}
                 onClick={() => {
                   setBuyingStage(BuyingStage.EDIT)
                 }}
