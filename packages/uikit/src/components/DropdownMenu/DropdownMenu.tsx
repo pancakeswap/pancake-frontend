@@ -33,27 +33,51 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
     strategy: isBottomNav ? "absolute" : "fixed",
     placement: isBottomNav ? "top" : "bottom-start",
-    modifiers: [{ name: "offset", options: { offset: [0, isBottomNav ? -3 : 0] } }],
+    modifiers: [{ name: "offset", options: { offset: [0, isBottomNav ? 6 : 0] } }],
   });
 
   const isMenuShow = isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+    let isMouseInDropdown = false;
+
     const showDropdownMenu = () => {
       setIsOpen(true);
     };
 
     const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
       const target = evt.target as Node;
-      return target && !tooltipRef?.contains(target) && setIsOpen(false);
+      if (target && !tooltipRef?.contains(target) && isBottomNav && !isMouseInDropdown) {
+        timeoutId = setTimeout(() => {
+          if (!isMouseInDropdown) {
+            setIsOpen(false);
+          }
+        }, 500);
+      } else setIsOpen(false);
+    };
+
+    const handleMouseEnterDropdown = () => {
+      isMouseInDropdown = true;
+    };
+
+    const handleMouseLeaveDropdown = () => {
+      isMouseInDropdown = false;
     };
 
     targetRef?.addEventListener("mouseenter", showDropdownMenu);
     targetRef?.addEventListener("mouseleave", hideDropdownMenu);
+    tooltipRef?.addEventListener("mouseenter", handleMouseEnterDropdown);
+    tooltipRef?.addEventListener("mouseleave", handleMouseLeaveDropdown);
 
     return () => {
       targetRef?.removeEventListener("mouseenter", showDropdownMenu);
       targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
+      tooltipRef?.removeEventListener("mouseenter", handleMouseEnterDropdown);
+      tooltipRef?.removeEventListener("mouseleave", handleMouseLeaveDropdown);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     };
   }, [targetRef, tooltipRef, setIsOpen, isBottomNav]);
 
