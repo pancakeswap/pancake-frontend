@@ -863,7 +863,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0x71a2a9a06F9d16d5f7d148A4fb780Ed40FB522F1',
-    farmName: 'CGV-BNB',
+    farmName: 'CGV-USDT',
     tokenAddress: '0x1bDaF9ddD7658d8049391971d1fd48c0484F66EC',
     quoteToken: bscTokens.bnb,
     tokenName: 'CGV',
