@@ -28,7 +28,7 @@ const LeaderboardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 5fr 3fr 1fr;
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 3fr 5fr 5fr 1fr;
+    grid-template-columns: 3fr 15fr 5fr 1fr;
   }
 `
 
@@ -81,7 +81,14 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
                 {shouldUseV3Format ? (
                   <>
                     <Text mr="3px">({v3FarmAuctionConfig?.[index]?.[0]}% fee tier)</Text>
-                    <Text>[{v3FarmAuctionConfig?.[index]?.[1] ?? 1}x]</Text>
+                    <Text>
+                      [{v3FarmAuctionConfig?.[index]?.[1] ?? 1}x{' '}
+                      {v3FarmAuctionConfig?.[index]?.[2] &&
+                        getBalanceNumber(amount) >= v3FarmAuctionConfig?.[index]?.[2] && (
+                          <Text display="inline-block">+ AMA</Text>
+                        )}
+                      ]
+                    </Text>
                   </>
                 ) : (
                   <Text>(1x)</Text>
