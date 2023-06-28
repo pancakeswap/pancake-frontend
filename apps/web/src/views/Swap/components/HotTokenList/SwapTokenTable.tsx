@@ -5,6 +5,7 @@ import {
   ArrowForwardIcon,
   Box,
   Button,
+  CurrencyLogo,
   Flex,
   MoreIcon,
   NextLinkFromReactRouter,
@@ -19,12 +20,11 @@ import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
-import { useGetChainName, useStableSwapPath } from 'state/info/hooks'
+import { useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { isAddress } from 'utils'
 import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
 import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
@@ -156,8 +156,11 @@ const DataRow: React.FC<
   const { isXs, isSm } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
-  const chainName = useGetChainName()
   const address = isAddress(tokenData.address)
+  const currencyFromAddress = useMemo(
+    () => (address ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : null),
+    [tokenData, chainId, address],
+  )
   if (!address) return null
 
   return (
@@ -168,7 +171,7 @@ const DataRow: React.FC<
     >
       <ResponsiveGrid>
         <Flex alignItems="center">
-          <ResponsiveLogo size="24px" address={address} chainName={chainName} />
+          <ResponsiveLogo size="24px" currency={currencyFromAddress} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
@@ -196,8 +199,7 @@ const DataRow: React.FC<
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              const currency = new Token(chainId, address, tokenData.decimals, tokenData.symbol)
-              handleOutputSelect(currency)
+              if (currencyFromAddress) handleOutputSelect(currencyFromAddress)
               logGTMClickTokenHighLightTradeEvent(tokenData.symbol)
             }}
             style={{ color: theme.colors.textSubtle }}
