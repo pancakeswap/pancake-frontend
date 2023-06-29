@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import BuyCrypto from 'views/BuyCrypto'
+import { SUPPORTED_CHAINS } from 'views/BuyCrypto/constants'
 
 const BuyCryptoPage = ({ userIp }) => {
   return <BuyCrypto userIp={userIp} />
@@ -22,6 +23,6 @@ export async function getServerSideProps() {
   }
 }
 
-BuyCryptoPage.chains = [ChainId.ETHEREUM, ChainId.BSC]
+BuyCryptoPage.chains = SUPPORTED_CHAINS
 
 export default BuyCryptoPage
