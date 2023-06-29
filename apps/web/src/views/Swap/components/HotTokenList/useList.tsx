@@ -18,12 +18,17 @@ export const useBSCWhiteList = () => {
   return whiteList
 }
 
+// TODO: refactor -> remove chain specific logic
 export const useTokenHighLightList = () => {
   const { chainId } = useActiveChainId()
   const bscWhiteList = useBSCWhiteList()
   const allTokensFromBSC = useTokenDatasSWR(chainId === ChainId.BSC ? bscWhiteList : [], false)
   const allTokensFromETH = useAllTokenHighLight(multiChainName[chainId])
-  const allV3TokensFromV3 = useTokensData(chainId === ChainId.BSC ? bscWhiteList : [], chainId)
+  const tokenAddresses: string[] = useMemo(
+    () => allTokensFromETH?.map(({ address }) => address) || [],
+    [allTokensFromETH],
+  )
+  const allV3TokensFromV3 = useTokensData(chainId === ChainId.BSC ? bscWhiteList : tokenAddresses, chainId)
 
   const tokens = useMemo(() => {
     return {
