@@ -5,22 +5,11 @@ import styled, { css } from 'styled-components'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 
-import { polygonZkBunny, polygonZkBgMobile, polygonZkBg, galxeLogo } from './images'
+import { polygonZkBunny, polygonZkBgMobile, polygonZkBg } from './images'
 import * as S from './Styled'
 import { flyingAnim } from './animations'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
-
-const Devider = styled.div`
-  background: #ffffff;
-  height: 10px;
-  width: 1px;
-  border-radius: 1px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 16px;
-  }
-`
 
 const RightWrapper = styled.div`
   position: absolute;
