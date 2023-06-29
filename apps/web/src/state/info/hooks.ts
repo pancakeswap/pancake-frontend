@@ -186,14 +186,14 @@ const fetcher = (addresses: string[], chainName: MultiChainName, blocks: Block[]
 }
 
 export const useTokenDatasSWR = (addresses?: string[], withSettings = true): TokenData[] | undefined => {
-  const name = addresses.join('')
+  const name = addresses?.join('')
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
-    () => fetcher(addresses, chainName, blocks),
+    () => fetcher(addresses || [], chainName, blocks),
     withSettings ? SWR_SETTINGS : SWR_SETTINGS_WITHOUT_REFETCH,
   )
   const allData = useMemo(() => {
@@ -208,11 +208,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
     if (!addresses && allData) {
       return undefined
     }
-    return addresses
-      .map((a) => {
-        return allData?.[a]?.data
-      })
-      .filter((d) => d && d.exists)
+    return addresses?.map((a) => allData?.[a]?.data)?.filter((d) => d && d.exists)
   }, [addresses, allData])
 
   return useMemo(() => {
@@ -222,7 +218,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
 
 export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
   const allTokenData = useTokenDatasSWR([address])
-  return allTokenData.find((d) => d.address === address) ?? undefined
+  return allTokenData?.find((d) => d.address === address) ?? undefined
 }
 
 export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
@@ -297,7 +293,7 @@ export const useGetChainName = () => {
 export const useChainNameByQuery = () => {
   const { query } = useRouter()
   const chainName = useMemo(() => {
-    if (query?.chainName === 'eth') return 'ETH'
+    if (query?.chain === 'eth') return 'ETH'
     return 'BSC'
   }, [query])
   return chainName
