@@ -56,6 +56,9 @@ import galxeTraverseBgMobile from './galxe-traverse-bg-mobile.png'
 import galxeTraverseCloud from './galxe-traverse-cloud.png'
 import galxeTraverseBunny from './galxe-traverse-bunny.png'
 import galxeLogo from './galxe-logo.png'
+import polygonZkBg from './polygon-zk-bg.png'
+import polygonZkBgMobile from './polygon-zk-bg-mobile.png'
+import polygonZkBunny from './polygon-zk-bunny.png'
 
 export {
   lotteryImage,
@@ -115,4 +118,7 @@ export {
   galxeTraverseCloud,
   galxeTraverseBunny,
   galxeLogo,
+  polygonZkBg,
+  polygonZkBgMobile,
+  polygonZkBunny,
 }

@@ -1,11 +1,11 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 
-import { galxeTraverseBg, galxeTraverseBgMobile, galxeTraverseBunny, galxeTraverseCloud, galxeLogo } from './images'
+import { polygonZkBunny, polygonZkBgMobile, polygonZkBg, galxeLogo } from './images'
 import * as S from './Styled'
 import { flyingAnim } from './animations'
 
@@ -31,32 +31,16 @@ const RightWrapper = styled.div`
   overflow: visible;
 
   > span:nth-child(2) {
-    // TradingRewardButter
-    position: absolute !important;
-    top: -15%;
-    right: 3%;
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      top: 5%;
-      right: -7%;
-    }
-
-    ${({ theme }) => theme.mediaQueries.lg} {
-      top: -15%;
-      right: 3%;
-    }
-  }
-
-  > span:nth-child(3) {
     // TradingRewardButter2
     position: absolute !important;
-    right: 0;
-    top: -24%;
+    right: 6%;
+    top: -30%;
     animation: ${flyingAnim} 2.5s ease-in-out infinite;
     z-index: 2;
 
-    ${({ theme }) => theme.mediaQueries.lg} {
-      right: 12%;
+    ${({ theme }) => theme.mediaQueries.md} {
+      right: 17%;
+      top: -50%;
     }
   }
 `
@@ -72,9 +56,10 @@ const Title = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 4px;
   font-size: 24px;
   font-weight: 800;
+  margin-bottom: 16px;
+  width: 196px;
 
   &::after {
     letter-spacing: 0.01em;
@@ -92,8 +77,10 @@ const Title = styled.div`
     z-index: -1;
   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 32px;
+    margin-bottom: 4px;
+    width: 100%;
   }
 `
 
@@ -140,15 +127,16 @@ const BGWrapper = styled.div`
   }
 `
 
-export const GalxeTraverseBanner = () => {
+export const PolygonZkEvmBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+
+  const title = isMobile ? t('Polygon zkEVM is LIVE!') : t('PancakeSwap Now Live on Polygon zkEVM!')
 
   return (
     <S.Wrapper
       style={{
-        background:
-          'linear-gradient(130.14deg, rgba(0, 90, 225, 0.2) 15.11%, rgba(87, 221, 218, 0.2) 82.57%), linear-gradient(249.98deg, #53DEE9 32.16%, #31D0AA 91.27%), linear-gradient(117.08deg, rgba(99, 255, 254, 0.2) 11.95%, rgba(54, 210, 179, 0.2) 96.2%), linear-gradient(182.28deg, rgba(104, 220, 233, 0.8) -44.21%, rgba(104, 220, 233, 0) 87.24%)',
+        background: 'linear-gradient(180deg, #9132D2 0%, #803DE1 100%)',
       }}
     >
       <S.Inner>
@@ -164,18 +152,16 @@ export const GalxeTraverseBanner = () => {
             <Devider />
             <Image src={galxeLogo} alt="valxeLogo" width={95} height={28} unoptimized />
           </Flex>
-          <Title data-text={t(`Traverse the Treasure Islands on Galxe now!`)}>
-            {t('Traverse the Treasure Islands on Galxe now!')}
-          </Title>
+          <Title data-text={title}>{title}</Title>
           {!isMobile && (
-            <Text color="#280D5F" fontSize={24} fontWeight={700} mb="8px">
-              {t('Exclusive NFTs and treasures await!')}
+            <Text color="#FFE437" fontSize={24} fontWeight={700} mb="8px">
+              {t('Swap your favorite tokens and LP on Polygon zkEVM now')}
             </Text>
           )}
           <Flex>
             <NextLinkFromReactRouter
               target="_blank"
-              to="https://blog.pancakeswap.finance/articles/join-pancake-swap-s-multichain-adventure-traverse-the-treasure-islands"
+              to="https://blog.pancakeswap.finance/articles/pancake-swap-expands-to-polygon-zk-evm-a-new-era-of-multichain-de-fi-begins"
             >
               <StyledButtonLeft scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
@@ -189,20 +175,15 @@ export const GalxeTraverseBanner = () => {
         <RightWrapper>
           <BGWrapper>
             {isMobile ? (
-              <Image src={galxeTraverseBgMobile} alt="Background" width={338} height={176} unoptimized />
+              <Image src={polygonZkBgMobile} alt="Background" width={338} height={176} unoptimized />
             ) : (
-              <Image src={galxeTraverseBg} alt="Background" width={1126} height={192} unoptimized />
+              <Image src={polygonZkBg} alt="Background" width={1126} height={192} unoptimized />
             )}
           </BGWrapper>
           {isMobile ? (
-            <Image src={galxeTraverseCloud} alt="Cloud" width={126} height={34} placeholder="blur" />
+            <Image src={polygonZkBunny} alt="GalxeTraverseBunny" width={173} height={138} placeholder="blur" />
           ) : (
-            <Image src={galxeTraverseCloud} alt="Cloud" width={208} height={57} placeholder="blur" />
-          )}
-          {isMobile ? (
-            <Image src={galxeTraverseBunny} alt="GalxeTraverseBunny" width={157} height={102} placeholder="blur" />
-          ) : (
-            <Image src={galxeTraverseBunny} alt="GalxeTraverseBunny" width={262} height={170} placeholder="blur" />
+            <Image src={polygonZkBunny} alt="GalxeTraverseBunny" width={335} height={268} placeholder="blur" />
           )}
         </RightWrapper>
       </S.Inner>
