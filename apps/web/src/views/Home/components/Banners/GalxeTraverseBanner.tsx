@@ -72,7 +72,7 @@ const Title = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
   font-size: 24px;
   font-weight: 800;
 
@@ -94,6 +94,7 @@ const Title = styled.div`
 
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 32px;
+    margin-bottom: 4px;
   }
 `
 
@@ -142,7 +143,9 @@ const BGWrapper = styled.div`
 
 export const GalxeTraverseBanner = () => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
+
+  const title = isDesktop ? t('Traverse the Treasure Islands on Galxe now!') : t('Traverse the Treasure Islands!')
 
   return (
     <S.Wrapper
@@ -153,7 +156,7 @@ export const GalxeTraverseBanner = () => {
     >
       <S.Inner>
         <S.LeftWrapper>
-          <Flex alignItems="center" style={{ gap: isMobile ? 4 : 16 }} mb="8px">
+          <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
             <Image
               src={pancakeSwapLogo}
               alt="pancakeSwapLogo"
@@ -162,11 +165,9 @@ export const GalxeTraverseBanner = () => {
               unoptimized
             />
             <Devider />
-            <Image src={galxeLogo} alt="valxeLogo" width={95} height={28} unoptimized />
+            <Image src={galxeLogo} alt="galxeLogo" width={isMobile ? 52 : 77} height={isMobile ? 9 : 14} unoptimized />
           </Flex>
-          <Title data-text={t(`Traverse the Treasure Islands on Galxe now!`)}>
-            {t('Traverse the Treasure Islands on Galxe now!')}
-          </Title>
+          <Title data-text={title}>{title}</Title>
           {!isMobile && (
             <Text color="#280D5F" fontSize={24} fontWeight={700} mb="8px">
               {t('Exclusive NFTs and treasures await!')}

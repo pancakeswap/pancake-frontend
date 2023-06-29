@@ -77,7 +77,7 @@ const Title = styled.div`
     z-index: -1;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 32px;
     margin-bottom: 4px;
     width: 100%;
@@ -129,9 +129,9 @@ const BGWrapper = styled.div`
 
 export const PolygonZkEvmBanner = () => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
 
-  const title = isMobile ? t('Polygon zkEVM is LIVE!') : t('PancakeSwap Now Live on Polygon zkEVM!')
+  const title = isDesktop ? t('PancakeSwap Now Live on Polygon zkEVM!') : t('Polygon zkEVM is LIVE!')
 
   return (
     <S.Wrapper
@@ -141,7 +141,7 @@ export const PolygonZkEvmBanner = () => {
     >
       <S.Inner>
         <S.LeftWrapper>
-          <Flex alignItems="center" style={{ gap: isMobile ? 4 : 16 }} mb="8px">
+          <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
             <Image
               src={pancakeSwapLogo}
               alt="pancakeSwapLogo"
@@ -150,10 +150,10 @@ export const PolygonZkEvmBanner = () => {
               unoptimized
             />
             <Devider />
-            <Image src={galxeLogo} alt="valxeLogo" width={95} height={28} unoptimized />
+            <Image src={galxeLogo} alt="galxeLogo" width={isMobile ? 52 : 77} height={isMobile ? 9 : 14} unoptimized />
           </Flex>
           <Title data-text={title}>{title}</Title>
-          {!isMobile && (
+          {isDesktop && (
             <Text color="#FFE437" fontSize={24} fontWeight={700} mb="8px">
               {t('Swap your favorite tokens and LP on Polygon zkEVM now')}
             </Text>
