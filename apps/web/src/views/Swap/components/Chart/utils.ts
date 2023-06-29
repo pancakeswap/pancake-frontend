@@ -12,12 +12,14 @@ export const getTimeWindowChange = (lineChartData) => {
       changeValue:
         changeValue > 0 ? Math.max(changeValue, MIN_VALUE_DISPLAYED) : Math.min(changeValue, MIN_VALUE_DISPLAYED * -1),
       changePercentage: ((changeValue / firstValue) * 100).toFixed(2),
+      isChangePositive: changeValue >= 0,
     }
   }
 
   return {
     changeValue: 0,
     changePercentage: 0,
+    isChangePositive: true,
   }
 }
 
