@@ -11,6 +11,7 @@ import FarmV3MigrationBanner from '../FarmV3MigrationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import TradingRewardBanner from '../TradingRewardBanner'
+import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -36,27 +37,28 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <PancakeProtectorBanner /> },
-      { shouldRender: true, banner: <TradingRewardBanner /> },
-      { shouldRender: true, banner: <LiquidStakingBanner /> },
-      { shouldRender: true, banner: <V3LaunchBanner /> },
-      { shouldRender: true, banner: <FarmV3MigrationBanner /> },
-      { shouldRender: true, banner: <EthBanner /> },
-      {
-        shouldRender: isRenderIFOBanner,
-        banner: <IFOBanner />,
-      },
+      { shouldRender: true, banner: <GalxeTraverseBanner /> },
+      // { shouldRender: true, banner: <PancakeProtectorBanner /> },
+      // { shouldRender: true, banner: <TradingRewardBanner /> },
+      // { shouldRender: true, banner: <LiquidStakingBanner /> },
+      // { shouldRender: true, banner: <V3LaunchBanner /> },
+      // { shouldRender: true, banner: <FarmV3MigrationBanner /> },
+      // { shouldRender: true, banner: <EthBanner /> },
+      // {
+      //   shouldRender: isRenderIFOBanner,
+      //   banner: <IFOBanner />,
+      // },
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      {
-        shouldRender: isRenderCompetitionBanner,
-        banner: <CompetitionBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PerpetualBanner />,
-      },
+      // {
+      //   shouldRender: isRenderCompetitionBanner,
+      //   banner: <CompetitionBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <PerpetualBanner />,
+      // },
     ]
     return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)

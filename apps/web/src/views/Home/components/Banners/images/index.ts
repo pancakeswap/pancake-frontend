@@ -51,6 +51,12 @@ import liquidStakingBunnyBg2Mobile from './liquidStakingBunnyBg2Mobile.png'
 import liquidStakingBunnyBg3 from './liquidStakingBunnyBg3.png'
 import liquidStakingBunnyBg4 from './liquidStakingBunnyBg4.png'
 
+import galxeTraverseBg from './galxe-traverse-bg.png'
+import galxeTraverseBgMobile from './galxe-traverse-bg-mobile.png'
+import galxeTraverseCloud from './galxe-traverse-cloud.png'
+import galxeTraverseBunny from './galxe-traverse-bunny.png'
+import galxeLogo from './galxe-logo.png'
+
 export {
   lotteryImage,
   IFOImage,
@@ -104,4 +110,9 @@ export {
   liquidStakingBunnyBg2Mobile,
   liquidStakingBunnyBg3,
   liquidStakingBunnyBg4,
+  galxeTraverseBg,
+  galxeTraverseBgMobile,
+  galxeTraverseCloud,
+  galxeTraverseBunny,
+  galxeLogo,
 }
