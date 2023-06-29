@@ -163,6 +163,11 @@ function useTokenAmounts({ amount, currencyA, currencyB, sqrtRatioX96, tickLower
           sqrtRatioX96,
         })
       : CurrencyAmount.fromRawAmount(dependentCurrency, "0");
+
+    if (!dependentAmount) {
+      return [];
+    }
+
     const amountA = isAIndependent ? amount : dependentAmount;
     const amountB = !isAIndependent ? amount : dependentAmount;
     return [amountA, amountB];

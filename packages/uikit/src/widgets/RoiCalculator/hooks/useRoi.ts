@@ -115,6 +115,8 @@ export interface FeeParams {
   protocolFee?: Percent;
 }
 
+const ZERO_FEE = new Fraction(ZERO, ONE);
+
 export function useFee24h({
   amountA,
   amountB,
@@ -137,9 +139,9 @@ export function useFee24h({
       !mostActiveLiquidity ||
       !fee
     ) {
-      return new Fraction(ZERO, ONE);
+      return ZERO_FEE;
     }
-    return FeeCalculator.getEstimatedLPFeeByAmounts({
+    const fee24h = FeeCalculator.getEstimatedLPFeeByAmounts({
       amountA,
       amountB,
       tickLower,
@@ -150,5 +152,6 @@ export function useFee24h({
       fee,
       protocolFee,
     });
+    return fee24h || ZERO_FEE;
   }, [amountA, amountB, tickLower, tickUpper, volume24H, sqrtRatioX96, mostActiveLiquidity, fee, protocolFee]);
 }
