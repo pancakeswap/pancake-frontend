@@ -141,7 +141,7 @@ export const PolygonZkEvmBanner = () => {
     >
       <S.Inner>
         <S.LeftWrapper>
-          <Flex alignItems="center" style={{ gap: isMobile ? 4 : 12 }} mb="8px">
+          <Flex alignItems="center" mb="8px">
             <Image
               src={pancakeSwapLogo}
               alt="pancakeSwapLogo"
@@ -149,13 +149,11 @@ export const PolygonZkEvmBanner = () => {
               height={isMobile ? 13 : 20}
               unoptimized
             />
-            <Devider />
-            <Image src={galxeLogo} alt="galxeLogo" width={isMobile ? 52 : 77} height={isMobile ? 9 : 14} unoptimized />
           </Flex>
           <Title data-text={title}>{title}</Title>
           {isDesktop && (
             <Text color="#FFE437" fontSize={24} fontWeight={700} mb="8px">
-              {t('Swap your favorite tokens and LP on Polygon zkEVM now')}
+              {t('Swap and provide liquidity on Polygon zkEVM now')}
             </Text>
           )}
           <Flex>
