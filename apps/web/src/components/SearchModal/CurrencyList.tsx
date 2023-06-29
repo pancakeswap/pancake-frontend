@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
-import { ArrowForwardIcon, Column, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Column, QuestionHelper, Text, CurrencyLogo } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { LightGreyCard } from 'components/Card'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -19,7 +19,6 @@ import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { isTokenOnList } from '../../utils'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import CircleLoader from '../Loader/CircleLoader'
-import { CurrencyLogo } from '../Logo'
 import ImportRow from './ImportRow'
 
 function currencyKey(currency: Currency): string {

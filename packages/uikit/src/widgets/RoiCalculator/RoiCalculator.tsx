@@ -251,6 +251,10 @@ export function RoiCalculator({
         sqrtRatioX96,
       });
 
+      if (!positionLiquidity) {
+        return BIG_ZERO;
+      }
+
       const cakeApr =
         positionLiquidity > ZERO
           ? new BigNumber(positionLiquidity.toString()).times(cakeAprFactor).div(usdValue)
