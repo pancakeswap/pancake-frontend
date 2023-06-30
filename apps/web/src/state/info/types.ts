@@ -159,3 +159,8 @@ export interface InfoState {
   pools: PoolsState
   tokens: TokensState
 }
+
+export enum InfoDataSource {
+  V3,
+  V2,
+}
