@@ -10,6 +10,8 @@ import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients, v3Clients } from 'utils/graphql'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { getChainName } from 'state/info/utils'
+
 import { SUBGRAPH_START_BLOCK, DURATION_INTERVAL } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -184,7 +186,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d], undefined, undefined, getChainName(chainId))
 
   const { data } = useSWRImmutable(
     chainId &&
