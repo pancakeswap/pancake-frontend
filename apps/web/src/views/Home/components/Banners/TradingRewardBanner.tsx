@@ -164,7 +164,7 @@ const TradingRewardBanner = () => {
         <S.LeftWrapper>
           <StyledBox>{t('Trade to Earn Rewards')}</StyledBox>
           <Flex flexDirection={['column', 'row']} mb={['8px', '8px', '12px']}>
-            <Title>{t('5% trading rebate to be earned!')}</Title>
+            <Title>{t('10% trading rebate to be earned!')}</Title>
           </Flex>
           <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'} flexDirection={['column', 'row']}>
             <NextLinkFromReactRouter to="/swap?showTradingReward=true">

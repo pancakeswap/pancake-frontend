@@ -21,6 +21,7 @@ export const TOKENS_BULK = (block: number | undefined, tokens: string[]) => {
         id
         symbol
         name
+        decimals
         derivedETH
         volumeUSD
         volume
@@ -47,6 +48,7 @@ interface TokenFields {
   txCount: string
   totalValueLocked: string
   totalValueLockedUSD: string
+  decimals: string
 }
 
 interface TokenDataResponse {
@@ -144,6 +146,7 @@ export async function fetchedTokenDatas(
         parseFloat(current?.totalValueLockedUSD),
         parseFloat(oneDay?.totalValueLockedUSD),
       )
+      const decimals = current ? parseFloat(current.decimals) : 0
       const tvlToken = current ? parseFloat(current.totalValueLocked) : 0
       const priceUSD = current ? parseFloat(current.derivedETH) * ethPrices.current : 0
       const priceUSDOneDay = oneDay ? parseFloat(oneDay.derivedETH) * ethPrices.oneDay : 0
@@ -170,6 +173,7 @@ export async function fetchedTokenDatas(
         address,
         name: current?.name ?? '',
         symbol: current?.symbol ?? '',
+        decimals,
         volumeUSD,
         volumeUSDChange,
         volumeUSDWeek,

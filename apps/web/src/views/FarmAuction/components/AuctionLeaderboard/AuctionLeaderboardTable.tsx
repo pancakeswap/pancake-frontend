@@ -21,13 +21,14 @@ import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { Bidder } from 'config/constants/types'
 import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
-import { HARD_CODE_TOP_THREE_AUCTION_DATAS } from '../../constants'
+import { HARD_CODED_START_AUCTION_ID } from '../../constants'
+import { useV3FarmAuctionConfig } from '../../hooks/useV3FarmAuctionConfig'
 
 const LeaderboardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 5fr 3fr 1fr;
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 3fr 5fr 5fr 1fr;
+    grid-template-columns: 3fr 15fr 5fr 1fr;
   }
 `
 
@@ -44,7 +45,7 @@ interface LeaderboardRowProps {
   cakePriceBusd: BigNumber
   isMobile: boolean
   index: number
-  shouldUseV3Format: boolean
+  auctionId: number
 }
 
 const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = ({
@@ -52,9 +53,11 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
   cakePriceBusd,
   isMobile,
   index,
-  shouldUseV3Format,
+  auctionId,
 }) => {
   const { t } = useTranslation()
+  const shouldUseV3Format = auctionId >= HARD_CODED_START_AUCTION_ID
+  const v3FarmAuctionConfig = useV3FarmAuctionConfig(auctionId)
   const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount, projectSite, lpAddress, account } =
     bidder
   return (
@@ -77,8 +80,15 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
               <>
                 {shouldUseV3Format ? (
                   <>
-                    <Text mr="3px">({HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[0]}% fee tier)</Text>
-                    <Text>[{HARD_CODE_TOP_THREE_AUCTION_DATAS?.[index]?.[1] ?? 1}x]</Text>
+                    <Text mr="3px">({v3FarmAuctionConfig?.[index]?.[0]}% fee tier)</Text>
+                    <Text>
+                      [{v3FarmAuctionConfig?.[index]?.[1] ?? 1}x{' '}
+                      {v3FarmAuctionConfig?.[index]?.[2] &&
+                        getBalanceNumber(amount) >= v3FarmAuctionConfig?.[index]?.[2] && (
+                          <Text display="inline-block">+ AMA</Text>
+                        )}
+                      ]
+                    </Text>
                   </>
                 ) : (
                   <Text>(1x)</Text>
@@ -115,7 +125,12 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             </SubMenuItem>
           )}
           {lpAddress && (
-            <SubMenuItem as={LinkExternal} href={`/info/pairs/${lpAddress}`} bold={false} color="text">
+            <SubMenuItem
+              as={LinkExternal}
+              href={`/info${shouldUseV3Format && '/v3'}/pairs/${lpAddress}`}
+              bold={false}
+              color="text"
+            >
               {t('LP Info')}
             </SubMenuItem>
           )}
@@ -137,8 +152,8 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
 }
 
 const AuctionLeaderboardTable: React.FC<
-  React.PropsWithChildren<{ bidders: Bidder[]; noBidsText: string; shouldUseV3Format?: boolean }>
-> = ({ bidders, noBidsText, shouldUseV3Format = false }) => {
+  React.PropsWithChildren<{ bidders: Bidder[]; noBidsText: string; auctionId: number }>
+> = ({ bidders, noBidsText, auctionId }) => {
   const [visibleBidders, setVisibleBidders] = useState(10)
   const cakePriceBusd = usePriceCakeUSD()
   const { t } = useTranslation()
@@ -186,7 +201,7 @@ const AuctionLeaderboardTable: React.FC<
             cakePriceBusd={cakePriceBusd}
             isMobile={isMobile}
             index={index}
-            shouldUseV3Format={shouldUseV3Format}
+            auctionId={auctionId}
           />
         ))}
       </LeaderboardContainer>

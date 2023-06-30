@@ -10,6 +10,8 @@ import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients, v3Clients } from 'utils/graphql'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { getChainName } from 'state/info/utils'
+
 import { SUBGRAPH_START_BLOCK, DURATION_INTERVAL } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -111,10 +113,10 @@ export const useTokenPriceChartData = (
 export const usePairPriceChartTokenData = (
   address: string,
   duration?: 'day' | 'week' | 'month' | 'year',
-  targetChianId?: ChainId,
+  targetChainId?: ChainId,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
   const chainName = useChainNameByQuery()
-  const chainId = targetChianId || multiChainId[chainName]
+  const chainId = targetChainId || multiChainId[chainName]
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime
     .subtract(1, duration ?? 'day')
@@ -124,14 +126,14 @@ export const usePairPriceChartTokenData = (
   const { data } = useSWRImmutable(
     chainId &&
       address &&
-      address !== 'undefined' && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChianId ?? chainId],
+      address !== 'undefined' && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChainId ?? chainId],
     () =>
       fetchPairPriceChartTokenData(
         address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
-        v3Clients[targetChianId ?? chainId],
-        multiChainName[targetChianId ?? chainId],
+        v3Clients[targetChainId ?? chainId],
+        multiChainName[targetChainId ?? chainId],
         SUBGRAPH_START_BLOCK[chainId],
       ),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -180,21 +182,21 @@ export const useTopTokensData = ():
   return data?.data
 }
 
-export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
+export const useTokensData = (addresses: string[], targetChainId?: ChainId): TokenData[] | undefined => {
   const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
+  const chainId = targetChainId ?? multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d], undefined, undefined, getChainName(chainId))
 
   const { data } = useSWRImmutable(
     chainId &&
       blocks &&
       addresses &&
       addresses?.length > 0 &&
-      blocks?.length > 0 && [`v3/info/token/tokensData/${chainId}/${addresses.join()}`, chainId],
+      blocks?.length > 0 && [`v3/info/token/tokensData/${targetChainId}/${addresses.join()}`, chainId],
     () =>
       fetchedTokenDatas(
-        v3InfoClients[chainId],
+        v3Clients[chainId], // TODO:  v3InfoClients[chainId],
         addresses,
         blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
       ),

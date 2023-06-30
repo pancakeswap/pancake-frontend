@@ -43,7 +43,9 @@ const SWAP_INFO_BY_CHAIN = {
     v3: V3_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
   },
   [ChainId.ARBITRUM_GOERLI]: {},
-  [ChainId.POLYGON_ZKEVM]: {},
+  [ChainId.POLYGON_ZKEVM]: {
+    v3: V3_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM],
+  },
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
   [ChainId.ZKSYNC]: {},
   [ChainId.ZKSYNC_TESTNET]: {},

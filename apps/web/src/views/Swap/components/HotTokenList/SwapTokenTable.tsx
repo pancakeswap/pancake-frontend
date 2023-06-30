@@ -1,9 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
   Box,
   Button,
+  CurrencyLogo,
   Flex,
   MoreIcon,
   NextLinkFromReactRouter,
@@ -12,23 +14,22 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { isAddress } from 'utils'
-import { Currency, Token } from '@pancakeswap/sdk'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useStableSwapPath, useGetChainName } from 'state/info/hooks'
-import { TokenData } from 'state/info/types'
-import { multiChainPaths } from 'state/info/constant'
+import { useStableSwapPath } from 'state/info/hooks'
+import { InfoDataSource } from 'state/info/types'
 import styled from 'styled-components'
+import { isAddress } from 'utils'
+import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
-import { logGTMClickTokenHighLightTradeEvent } from 'utils/customGTMEventTracking'
 import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardIcon'
+import { getTokenInfoPath } from 'state/info/utils'
+
+import { TokenHighlightData } from './types'
 
 /**
  *  Columns on different layouts
@@ -40,6 +41,7 @@ import TradingRewardIcon from 'views/Swap/components/HotTokenList/TradingRewardI
  */
 
 type TableType = 'priceChange' | 'volume' | 'liquidity'
+
 const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
@@ -144,30 +146,34 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 
 const DataRow: React.FC<
   React.PropsWithChildren<{
-    tokenData: TokenData
+    dataSource: InfoDataSource
+    tokenData: TokenHighlightData
     index: number
     type: TableType
     handleOutputSelect: (newCurrencyOutput: Currency) => void
   }>
-> = ({ tokenData, type, handleOutputSelect }) => {
+> = ({ tokenData, type, handleOutputSelect, dataSource }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isXs, isSm } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
-  const chainName = useGetChainName()
   const address = isAddress(tokenData.address)
+  const currencyFromAddress = useMemo(
+    () => (address ? new Token(chainId, address, tokenData.decimals, tokenData.symbol) : null),
+    [tokenData, chainId, address],
+  )
+  const tokenInfoLink = useMemo(
+    () => getTokenInfoPath(chainId, tokenData.address, dataSource, stableSwapPath),
+    [dataSource, tokenData.address, stableSwapPath, chainId],
+  )
   if (!address) return null
 
   return (
-    <LinkWrapper
-      to={`/info${multiChainPaths[chainId]}/tokens/${address}?chain=${
-        CHAIN_QUERY_NAME[chainId]
-      }${stableSwapPath.replace('?', '&')}`}
-    >
+    <LinkWrapper to={tokenInfoLink}>
       <ResponsiveGrid>
         <Flex alignItems="center">
-          <ResponsiveLogo size="24px" address={address} chainName={chainName} />
+          <ResponsiveLogo size="24px" currency={currencyFromAddress} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
@@ -185,9 +191,11 @@ const DataRow: React.FC<
           </Text>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
-        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
+        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.tvlUSD)}</Text>}
         <Flex alignItems="center" justifyContent="flex-end">
-          {tokenData?.pairs?.length > 0 && <TradingRewardIcon pairs={tokenData.pairs} />}
+          {dataSource === InfoDataSource.V3 && tokenData?.pairs?.length > 0 && (
+            <TradingRewardIcon pairs={tokenData.pairs} />
+          )}
           <Button
             variant="text"
             scale="sm"
@@ -195,8 +203,7 @@ const DataRow: React.FC<
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              const currency = new Token(chainId, address, tokenData.decimals, tokenData.symbol)
-              handleOutputSelect(currency)
+              if (currencyFromAddress) handleOutputSelect(currencyFromAddress)
               logGTMClickTokenHighLightTradeEvent(tokenData.symbol)
             }}
             style={{ color: theme.colors.textSubtle }}
@@ -226,13 +233,21 @@ const MAX_ITEMS = 10
 
 const TokenTable: React.FC<
   React.PropsWithChildren<{
-    tokenDatas: TokenData[] | undefined
+    dataSource: InfoDataSource
+    tokenDatas: TokenHighlightData[] | undefined
     maxItems?: number
     defaultSortField?: string
     type: TableType
     handleOutputSelect: (newCurrencyOutput: Currency) => void
   }>
-> = ({ tokenDatas, maxItems = MAX_ITEMS, defaultSortField = SORT_FIELD.volumeUSD, type, handleOutputSelect }) => {
+> = ({
+  tokenDatas,
+  maxItems = MAX_ITEMS,
+  defaultSortField = SORT_FIELD.volumeUSD,
+  type,
+  handleOutputSelect,
+  dataSource,
+}) => {
   const [sortField, setSortField] = useState(SORT_FIELD[defaultSortField])
   const { isMobile } = useMatchBreakpoints()
   useEffect(() => {
@@ -261,7 +276,7 @@ const TokenTable: React.FC<
     return tokenDatas
       ? orderBy(
           tokenDatas,
-          (tokenData) => tokenData[sortField as keyof TokenData],
+          (tokenData) => tokenData[sortField as keyof TokenHighlightData],
           sortDirection ? 'desc' : 'asc',
         ).slice(maxItems * (page - 1), page * maxItems)
       : []
@@ -365,6 +380,7 @@ const TokenTable: React.FC<
               return (
                 <Fragment key={data.address}>
                   <DataRow
+                    dataSource={dataSource}
                     index={(page - 1) * MAX_ITEMS + i}
                     tokenData={data}
                     type={type}

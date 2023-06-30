@@ -187,6 +187,7 @@ export function AprCalculator({
         sqrtRatioX96 &&
         typeof tickLower === 'number' &&
         typeof tickUpper === 'number' &&
+        tickLower < tickUpper &&
         FeeCalculator.getLiquidityByAmountsAndPrice({
           amountA: validAmountA,
           amountB: validAmountB,
