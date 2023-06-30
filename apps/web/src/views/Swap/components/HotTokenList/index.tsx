@@ -4,9 +4,11 @@ import { ButtonMenu, ButtonMenuItem, Checkbox, Flex, Text, useMatchBreakpoints }
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
-import styled from 'styled-components'
+import { InfoDataSource as DataSourceType } from 'state/info/types'
+
 import useTradingRewardTokenList from '../../hooks/useTradingRewardTokenList'
 import TokenTable from './SwapTokenTable'
 import { useTokenHighLightList } from './useList'
@@ -54,10 +56,6 @@ const MenuWrapper = styled.div`
 `
 
 const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
-enum DataSourceType {
-  V3,
-  V2,
-}
 const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
 }) => {
@@ -167,6 +165,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
         )}
         {index === 0 ? (
           <TokenTable
+            dataSource={dataSource}
             tokenDatas={dataSource === DataSourceType.V3 ? filterFormattedV3Tokens : formattedTokens}
             type={chainId === ChainId.BSC ? 'priceChange' : 'liquidity'}
             defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSD'}
@@ -175,6 +174,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
           />
         ) : (
           <TokenTable
+            dataSource={dataSource}
             tokenDatas={dataSource === DataSourceType.V3 ? filterFormattedV3Tokens : formattedTokens}
             type="volume"
             defaultSortField="volumeUSD"

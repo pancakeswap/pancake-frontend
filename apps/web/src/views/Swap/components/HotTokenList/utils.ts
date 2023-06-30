@@ -1,5 +1,6 @@
 import { TokenData as TokenDataV2 } from 'state/info/types'
 import { TokenData as TokenDataV3 } from 'views/V3Info/types'
+
 import { TokenHighlightData } from './types'
 
 export const parseV2TokenData = (tokenData: TokenDataV2): TokenHighlightData => {
