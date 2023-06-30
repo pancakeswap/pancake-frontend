@@ -31,7 +31,6 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const isMouseInDropdownRef = useRef(false); // Create a mutable ref
   const hasItems = items.length > 0;
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
     strategy: isBottomNav ? "absolute" : "fixed",
@@ -51,12 +50,12 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
 
     const debouncedHideDropdownMenu = debounce(
       () => {
-        if (!isMouseInDropdownRef.current) setIsOpen(false);
+        setIsOpen(false);
       },
       isBottomNav ? 100 : 10
     );
 
-    // added this to remove the ugle 4 lines
+    // added this to remove the ugly 4 lines
     [targetRef, tooltipRef].forEach((ref) => {
       ref?.addEventListener("mouseenter", showDropdownMenu);
       ref?.addEventListener("mouseleave", hideDropdownMenu);
