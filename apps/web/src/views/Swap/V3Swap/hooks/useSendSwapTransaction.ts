@@ -26,17 +26,21 @@ interface SwapCall {
   value: Hex
 }
 
+interface WallchainSwapCall {
+  getCall: () => Promise<SwapCall>
+}
+
 interface SwapCallEstimate {
-  call: SwapCall
+  call: SwapCall | WallchainSwapCall
 }
 
 interface SuccessfulCall extends SwapCallEstimate {
-  call: SwapCall
+  call: SwapCall | WallchainSwapCall
   gasEstimate: bigint
 }
 
 interface FailedCall extends SwapCallEstimate {
-  call: SwapCall
+  call: SwapCall | WallchainSwapCall
   error: Error
 }
 
@@ -47,7 +51,7 @@ export default function useSendSwapTransaction(
   account?: Address,
   chainId?: number,
   trade?: SmartRouterTrade<TradeType>, // trade to execute, required
-  swapCalls: SwapCall[] = [],
+  swapCalls: SwapCall[] | WallchainSwapCall[] = [],
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
@@ -66,7 +70,12 @@ export default function useSendSwapTransaction(
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
           swapCalls.map((call) => {
             const { address, calldata, value } = call
-
+            if ('getCall' in call) {
+              return {
+                call,
+                gasEstimate: 2000000n,
+              }
+            }
             const tx =
               !value || isZero(value)
                 ? { account, to: address, data: calldata, value: 0n }
@@ -109,9 +118,8 @@ export default function useSendSwapTransaction(
           bestCallOption = firstNoErrorCall
         }
 
-        const {
-          call: { address, calldata, value },
-        } = bestCallOption
+        const { address, calldata, value } =
+          'getCall' in bestCallOption.call ? await bestCallOption.call.getCall() : bestCallOption.call
 
         return sendTransactionAsync({
           account,
