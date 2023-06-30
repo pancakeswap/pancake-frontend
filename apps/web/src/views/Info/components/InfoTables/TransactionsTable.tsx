@@ -14,6 +14,7 @@ import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useTokenAmountString } from 'views/Info/hooks/useTokenAmountString'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 const Wrapper = styled.div`
@@ -163,6 +164,8 @@ const TransactionTable: React.FC<
 
   const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
 
+  const [token0AmountString, token1AmountString] = useTokenAmountString(transactions)
+
   const sortedTransactions = useMemo(() => {
     const toBeAbsList = [SORT_FIELD.amountToken0, SORT_FIELD.amountToken1]
     return transactions
@@ -273,7 +276,7 @@ const TransactionTable: React.FC<
             onClick={() => handleSort(SORT_FIELD.amountToken0)}
             textTransform="uppercase"
           >
-            {t('Token Amount')} {arrow(SORT_FIELD.amountToken0)}
+            {token0AmountString} {arrow(SORT_FIELD.amountToken0)}
           </ClickableColumnHeader>
           <ClickableColumnHeader
             color="secondary"
@@ -282,7 +285,7 @@ const TransactionTable: React.FC<
             onClick={() => handleSort(SORT_FIELD.amountToken1)}
             textTransform="uppercase"
           >
-            {t('Token Amount')} {arrow(SORT_FIELD.amountToken1)}
+            {token1AmountString} {arrow(SORT_FIELD.amountToken1)}
           </ClickableColumnHeader>
           <ClickableColumnHeader
             color="secondary"

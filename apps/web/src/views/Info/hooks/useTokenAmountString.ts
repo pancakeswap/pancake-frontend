@@ -1,0 +1,18 @@
+import { useMemo } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+
+export const useTokenAmountString = (transactions) => {
+  const { t } = useTranslation()
+
+  const tokenAmountStrings = useMemo(() => {
+    if (!transactions || transactions.length === 0) {
+      return [t('Token Amount'), t('Token Amount')]
+    }
+    return [
+      t('%symbol% Amount', { symbol: transactions[0].token0Symbol }),
+      t('%symbol% Amount', { symbol: transactions[0].token1Symbol }),
+    ]
+  }, [transactions, t])
+
+  return tokenAmountStrings
+}

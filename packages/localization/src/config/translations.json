@@ -2440,7 +2440,6 @@
   "No Data": "No Data",
   "Fees 24H": "Fees 24H",
   "Tick stats": "Tick stats",
-  "Token%index% Amount": "Token%index% Amount",
   "V3": "V3",
   "V2": "V2",
   "TVL is currently too low to represent the data correctly": "TVL is currently too low to represent the data correctly",
@@ -2609,5 +2608,6 @@
   "My Rank": "My Rank",
   "Current Round": "Current Round",
   "Previous Rounds": "Previous Rounds",
-  "Round #%round%  |  %startTime% - %endTime%": "Round #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "Round #%round%  |  %startTime% - %endTime%",
+  "%symbol% Amount": "%symbol% Amount"
 }

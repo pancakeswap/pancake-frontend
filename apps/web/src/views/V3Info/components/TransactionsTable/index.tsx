@@ -16,6 +16,7 @@ import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getBlockExploreLink } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import { useTokenAmountString } from 'views/Info/hooks/useTokenAmountString'
 import { Transaction, TransactionType } from '../../types'
 import { shortenAddress } from '../../utils'
 import { formatTime } from '../../utils/date'
@@ -155,6 +156,8 @@ export default function TransactionTable({
   const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
   const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
+  const [token0AmountString, token1AmountString] = useTokenAmountString(transactions)
+
   useEffect(() => {
     let extraPages = 1
     if (
@@ -257,7 +260,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color="secondary">
-            {t('Token%index% Amount', { index: '0' })}
+            {token0AmountString}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -268,7 +271,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color="secondary">
-            {t('Token%index% Amount', { index: '1' })}
+            {token1AmountString}
             <SortButton
               scale="sm"
               variant="subtle"
