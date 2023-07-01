@@ -1,8 +1,7 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useContext, useEffect, useState, useCallback, useRef } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { usePopper } from "react-popper";
-// eslint-disable-next-line lodash/import-scope
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
