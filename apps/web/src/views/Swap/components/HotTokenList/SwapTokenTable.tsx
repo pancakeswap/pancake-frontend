@@ -169,12 +169,14 @@ const DataRow: React.FC<
   )
   if (!address) return null
 
+  const isTradeRewardToken = dataSource === InfoDataSource.V3 && tokenData?.pairs?.length > 0
+
   return (
     <LinkWrapper to={tokenInfoLink}>
-      <ResponsiveGrid>
-        <Flex alignItems="center">
+      <ResponsiveGrid style={{ gap: '8px' }}>
+        <Flex flexWrap="wrap" width="100%" justifyContent="flex-start" alignItems="center">
           <ResponsiveLogo size="24px" currency={currencyFromAddress} />
-          {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
+          {(isXs || isSm) && <Text ml="4px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
               <Text>{tokenData.name}</Text>
@@ -183,19 +185,21 @@ const DataRow: React.FC<
           )}
         </Flex>
         {(type === 'priceChange' || type === 'liquidity') && (
-          <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
+          <Flex flexWrap="wrap" width="100%" justifyContent="center" alignItems="center">
+            <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
+          </Flex>
         )}
         {type !== 'liquidity' && (
-          <Text fontWeight={400}>
-            <Percent value={tokenData.priceUSDChange} fontWeight={400} />
-          </Text>
+          <Flex flexWrap="wrap" width="100%" justifyContent="center" alignItems="center">
+            <Text fontWeight={400}>
+              <Percent value={tokenData.priceUSDChange} fontWeight={400} />
+            </Text>
+          </Flex>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.tvlUSD)}</Text>}
         <Flex alignItems="center" justifyContent="flex-end">
-          {dataSource === InfoDataSource.V3 && tokenData?.pairs?.length > 0 && (
-            <TradingRewardIcon pairs={tokenData.pairs} />
-          )}
+          {isTradeRewardToken && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
             variant="text"
             scale="sm"
@@ -302,7 +306,7 @@ const TokenTable: React.FC<
     return <Skeleton />
   }
   return (
-    <TableWrapper>
+    <TableWrapper style={{ maxHeight: 450, overflow: 'auto' }}>
       <ResponsiveGrid>
         <StyledClickableColumnHeader
           color="secondary"
