@@ -5,6 +5,7 @@ on:
     paths:
       - 'apps/web/src/config/**'
       - 'packages/pools/src/**'
+      - 'packages/farms/constants/**'
   push:
     branches:
       - develop
