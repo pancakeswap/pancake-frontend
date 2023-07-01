@@ -1,27 +1,23 @@
 import { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react'
-import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { CryptoFormView } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
 import { FormHeader } from './FormHeader'
-import { ProviderQoute } from '../hooks/usePriceQuoter'
-import { FormContainer } from '../components/FormContainer'
+import { FormContainer } from './FormContainer'
 import Accordion from '../components/AccordianDropdown/Accordian'
 
 export function CryptoQuoteForm({
   setModalView,
-  buyCryptoState,
-  combinedQuotes,
   fetchQuotes,
+  combinedQuotes,
 }: {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
-  buyCryptoState: BuyCryptoState
-  combinedQuotes: ProviderQoute[]
   fetchQuotes: () => Promise<void>
+  combinedQuotes: ProviderQoute[]
 }) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const [timer, setTimer] = useState(0)
+  const [timer, setTimer] = useState(30)
   const [fetching, setFetching] = useState<boolean>(false)
   const currentChain = useRef(chainId ?? undefined)
 
@@ -53,10 +49,11 @@ export function CryptoQuoteForm({
       <FormHeader
         title={t('Select a Quote')}
         subTitle={t(`Quotes update every ${timer} seconds.`)}
+        shouldCenter
         backTo={() => setModalView(CryptoFormView.Input)}
       />
       <FormContainer>
-        <Accordion buyCryptoState={buyCryptoState} combinedQuotes={combinedQuotes} fetching={fetching} />
+        <Accordion fetching={fetching} combinedQuotes={combinedQuotes} />
       </FormContainer>
     </>
   )

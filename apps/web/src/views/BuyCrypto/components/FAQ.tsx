@@ -48,29 +48,6 @@ const config = (t) => [
       </>
     ),
   },
-  {
-    title: t('What fiat currencies are supported?'),
-    description: (
-      <>
-        {t(
-          'Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (',
-        )}{' '}
-        <LinkExternal
-          style={{ display: 'inline-flex' }}
-          href="https://help.mercuryo.io/en/articles/6122838-on-and-off-ramps"
-        >
-          Mercuryo
-        </LinkExternal>
-        <LinkExternal
-          style={{ display: 'inline-flex' }}
-          href="https://support.moonpay.com/hc/en-gb/articles/360011931177-How-can-I-buy-cryptocurrency-using-MoonPay"
-        >
-          MoonPay
-        </LinkExternal>
-        {t(') for more info.')}
-      </>
-    ),
-  },
 ]
 
 export const OnRamoFaqs = () => {

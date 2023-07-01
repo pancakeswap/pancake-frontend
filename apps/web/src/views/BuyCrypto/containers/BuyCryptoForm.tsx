@@ -1,31 +1,38 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
-import { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
-import { ArrowDownIcon, Box, Text } from '@pancakeswap/uikit'
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { CircleLoader, Flex, RowFixed, Text, Box } from '@pancakeswap/uikit'
 import {
   calculateDefaultAmount,
   fetchMinimumBuyAmount,
   useBuyCryptoActionHandlers,
   useBuyCryptoErrorInfo,
+  useBuyCryptoState,
 } from 'state/buyCrypto/hooks'
 import { useOnRampCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
-import styled from 'styled-components'
+import { useTheme } from 'styled-components'
 import toString from 'lodash/toString'
 import { CryptoFormView } from 'views/BuyCrypto/types'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { useCurrencyBalance } from 'state/wallet/hooks'
+import { useAccount } from 'wagmi'
 import { FormHeader } from './FormHeader'
-import { FormContainer } from '../components/FormContainer'
-import AssetSelect from '../components/AssetSelect'
+import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
 import { fiatCurrencyMap } from '../constants'
+import { CurrencySelect } from '../components/OnRampCurrencySelect'
 
-const CenterWrapper = styled.div`
-  position: absolute;
-  left: 48.5%;
-  top: 33%;
-`
+function Balance({ balance, currency }: { balance: CurrencyAmount<Currency>; currency: Currency }) {
+  return (
+    <Flex alignItems="center" justifyContent="center">
+      <Text paddingRight="4px">{formatAmount(balance, 4)}</Text>
+      <Text color="textSubtle" fontSize="12px" ellipsis fontWeight="bold" textAlign="center" paddingTop="2px">
+        {`${currency?.symbol}`}
+      </Text>
+    </Flex>
+  )
+}
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
 // the quote provider won't return a quote. Therefore, we restrict the fiat currency input to a maximum of 2 decimals.
@@ -33,16 +40,13 @@ const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
 
 export function BuyCryptoForm({
   setModalView,
-  modalView,
-  buyCryptoState,
   fetchQuotes,
 }: {
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
-  modalView: CryptoFormView
-  buyCryptoState: BuyCryptoState
   fetchQuotes: () => Promise<void>
 }) {
   const { t } = useTranslation()
+  const theme = useTheme()
   const {
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
@@ -51,7 +55,7 @@ export function BuyCryptoForm({
     minBaseAmount,
     maxAmount,
     maxBaseAmount,
-  } = buyCryptoState
+  } = useBuyCryptoState()
 
   const { amountError: error, inputError } = useBuyCryptoErrorInfo(
     typedValue,
@@ -63,6 +67,8 @@ export function BuyCryptoForm({
     inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
+  const account = useAccount()
+  const balance = useCurrencyBalance(account.address, inputCurrency as Currency)
 
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
@@ -74,7 +80,6 @@ export function BuyCryptoForm({
     },
     [onFieldAInput],
   )
-
   // need to reloacte this
   const fetchMinBuyAmounts = useCallback(async () => {
     const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
@@ -112,47 +117,53 @@ export function BuyCryptoForm({
 
   return (
     <>
-      <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
-      <FormContainer>
-        <Box>
-          <CurrencyInputPanel
-            hideBalanceComp
-            id="onramp-input"
-            showMaxButton={false}
-            value={typedValue}
-            currency={outputCurrency}
-            onUserInput={handleTypeOutput}
-            onCurrencySelect={handleOutputSelect}
-            error={Boolean(error)}
-            showCommonBases={false}
-            tokensToShow={fiatCurrencyMap as any}
-            title={
-              <Text px="4px" bold fontSize="12px" textTransform="uppercase" color="secondary">
-                {t('I want to spend')}
-              </Text>
-            }
-          />
-          {error ? (
-            <Text pb="16px" fontSize="12px" color="red">
-              {error}
-            </Text>
-          ) : null}
-        </Box>
-        <CenterWrapper>
-          <ArrowDownIcon className="icon-down" color="primary" width="22px" />
-        </CenterWrapper>
-
-        <AssetSelect onCurrencySelect={handleInputSelect} currency={inputCurrency} />
-        <Text color="textSubtle" fontSize="14px" px="4px">
-          {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
-        </Text>
-        <GetQuotesButton
-          errorText={inputError}
-          modalView={modalView}
-          setModalView={setModalView}
-          fetchQuotes={fetchQuotes}
-        />
-      </FormContainer>
+      <div style={{ padding: '4px' }}>
+        <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
+        <FormContainer>
+          <Box>
+            <CurrencySelect
+              id="onramp-input"
+              onCurrencySelect={handleOutputSelect}
+              selectedCurrency={outputCurrency as Currency}
+              showCommonBases={false}
+              topElement={<Text color="textSubtle">{t('I want to spend')}</Text>}
+              error={Boolean(error)}
+              value={typedValue}
+              onUserInput={handleTypeOutput}
+              bottomElement={
+                <Text pt="6px" pb="12px" fontSize="12px" color={theme.colors.failure}>
+                  {error}
+                </Text>
+              }
+              currencyLoading={!outputCurrency}
+            />
+            <CurrencySelect
+              id="onramp-output"
+              onCurrencySelect={handleInputSelect}
+              selectedCurrency={inputCurrency as Currency}
+              showCommonBases={false}
+              topElement={
+                <>
+                  <Text color="textSubtle">{t('I want to buy')}</Text>
+                  <RowFixed style={{ justifySelf: 'flex-end' }}>
+                    {balance ? (
+                      <Balance balance={balance} currency={inputCurrency as Currency} />
+                    ) : account.address ? (
+                      <CircleLoader />
+                    ) : null}
+                  </RowFixed>
+                </>
+              }
+              currencyLoading={!inputCurrency}
+              bottomElement={<></>}
+            />
+          </Box>
+          <Text color="textSubtle" fontSize="14px" px="4px">
+            {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
+          </Text>
+          <GetQuotesButton errorText={inputError} setModalView={setModalView} fetchQuotes={fetchQuotes} />
+        </FormContainer>
+      </div>
     </>
   )
 }
