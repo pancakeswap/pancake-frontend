@@ -5,7 +5,11 @@ export const useTokenAmountString = (transactions) => {
   const { t } = useTranslation()
 
   const tokenAmountStrings = useMemo(() => {
-    if (!transactions || transactions.length === 0) {
+    if (
+      !transactions ||
+      transactions.length === 0 ||
+      transactions.some((transaction) => transaction.token0Symbol !== transactions[0].token0Symbol)
+    ) {
       return [t('Token Amount'), t('Token Amount')]
     }
     return [
