@@ -12,6 +12,7 @@ import {
   useTooltip,
   TooltipText,
   InfoIcon,
+  InfoFilledIcon,
 } from '@pancakeswap/uikit'
 import { ChainId, WNATIVE } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
@@ -68,15 +69,21 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
     targetRef: buyCryptoTargetRef,
   } = useTooltip(
     <>
-      <Box maxWidth="150px">
-        <Text as="p">
-          {t('%currency% Balance Low. You need %currency% for transaction fees.', {
-            currency: native?.symbol,
-          })}
-        </Text>
+      <Box maxWidth="140px">
+        <FlexGap gap="8px" flexDirection="column" justifyContent="space-between">
+          <Text as="p">
+            {t('%currency% Balance Low. You need %currency% for transaction fees.', {
+              currency: native?.symbol,
+            })}
+          </Text>
+          <InternalLink href="/buy-crypto" onClick={() => onDismiss?.()}>
+            <Button height="30px">{t('Buy Crypto')}</Button>
+          </InternalLink>
+        </FlexGap>
       </Box>
     </>,
     {
+      isInPortal: false,
       placement: isMobile ? 'top' : 'bottom',
       trigger: isMobile ? 'focus' : 'hover',
       ...(isMobile && { manualVisible: mobileTooltipShow }),
@@ -172,7 +179,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
                   fontWeight={Number(bnbBalance?.data?.value) === 0 ? 'bold' : 'normal'}
                   color={Number(bnbBalance?.data?.value) === 0 ? 'warning' : 'normal'}
                 >
-                  {bnbBalance?.data?.value && formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
+                  {formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
                 </Text>
                 <TooltipText
                   ref={buyCryptoTargetRef}
@@ -180,7 +187,9 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
                   display="flex"
                   style={{ justifyContent: 'center' }}
                 >
-                  {Number(bnbBalance?.data?.value) === 0 ? <InfoIcon pl="4px" fill="#000" color="#D67E0A" /> : null}
+                  {Number(bnbBalance?.data?.value) === 0 ? (
+                    <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
+                  ) : null}
                 </TooltipText>
                 {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
               </Flex>
