@@ -77,7 +77,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
             })}
           </Text>
           <InternalLink href="/buy-crypto" onClick={() => onDismiss?.()}>
-            <Button height="30px">{t('Buy Crypto')}</Button>
+            <Button height="30px">{t('Buy %currency%', { currency: native?.symbol })}</Button>
           </InternalLink>
         </FlexGap>
       </Box>
