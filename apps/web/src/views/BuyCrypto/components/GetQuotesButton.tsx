@@ -22,7 +22,7 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
   const Next = useCallback(async () => {
     setLoading(true)
     await fetchQuotes()
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    // await new Promise((resolve) => setTimeout(resolve, 1500))
     setLoading(false)
     setModalView(CryptoFormView.Quote)
   }, [setModalView, fetchQuotes])

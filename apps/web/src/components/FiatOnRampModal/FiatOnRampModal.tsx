@@ -1,10 +1,22 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, CircleLoader, Flex, InjectedModalProps, Modal, Text, useModal } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  CircleLoader,
+  Flex,
+  Heading,
+  InjectedModalProps,
+  ModalHeader,
+  ModalTitle,
+  ModalWrapper,
+  Text,
+  useModal,
+  ModalCloseButton,
+} from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
 import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
-import styled, { useTheme, DefaultTheme } from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import {
@@ -21,12 +33,24 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
+  height: 550px;
+  width: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const LoaderWrapper = styled(Flex)`
+  height: 90%;
+  width: 100%;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  background: ${({ theme }) => (theme.isDark ? '#27262C' : 'white')};
+  position: absolute;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
-
-  height: calc(100% - 75px);
-  position: absolute;
-  width: 100%;
+  z-index: 100;
 `
 
 interface FiatOnRampProps {
@@ -40,26 +64,14 @@ interface FetchResponse {
   urlWithSignature: string
 }
 
-const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
+const LoadingBuffer = () => {
   return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      style={{
-        height: '677px',
-        width: '100%',
-        background: `${theme.isDark ? '#27262C' : 'white'}`,
-        position: 'absolute',
-        borderBottomLeftRadius: '24px',
-        borderBottomRightRadius: '24px',
-        zIndex: '100',
-      }}
-    >
-      <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
+    <LoaderWrapper justifyContent="center" alignItems="center">
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <LoadingDot />
         <CircleLoader />
       </div>
-    </Flex>
+    </LoaderWrapper>
   )
 }
 
@@ -255,8 +267,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '750px',
-          width: '400px',
+          height: '600px',
+          width: '360px',
           network: chainIdToNetwork[chainId],
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
@@ -278,14 +290,13 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   return (
     <>
-      <Modal
-        title="Buy Crypto In One Click"
-        onDismiss={handleDismiss}
-        bodyPadding="0px"
-        headerBackground="gradientCardHeader"
-        height="750px" // height has to be overidden
-        width="400px" // width has to be overidden
-      >
+      <ModalWrapper minHeight="550px">
+        <ModalHeader background={theme.colors.gradientCardHeader}>
+          <ModalTitle>
+            <Heading>{t('Buy crypto in one click')}</Heading>
+          </ModalTitle>
+          <ModalCloseButton onDismiss={handleDismiss} />
+        </ModalHeader>
         {error ? (
           <Flex justifyContent="center" alignItems="center" alignContent="center">
             <ErrorText>
@@ -294,12 +305,12 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           </Flex>
         ) : provider === ONRAMP_PROVIDERS.Mercuryo ? (
           <>
-            {loading && <LoadingBuffer theme={theme} />}
-            <div id="mercuryo-widget" />
+            {loading && <LoadingBuffer />}
+            <div id="mercuryo-widget" style={{ paddingTop: '24px' }} />;
           </>
         ) : (
           <>
-            {loading && <LoadingBuffer theme={theme} />}
+            {loading && <LoadingBuffer />}
             <StyledIframe
               id="moonpayIframe"
               src={signedIframeUrl ?? ''}
@@ -308,7 +319,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             />
           </>
         )}
-      </Modal>
+      </ModalWrapper>
       <Script
         src="https://widget.mercuryo.io/embed.2.0.js"
         onLoad={() => {

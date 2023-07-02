@@ -17,7 +17,12 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { ReactNode, useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAllOnRampTokens } from 'hooks/Tokens'
-import { chainIdToNetwork, fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+
+const networkDisplay: { [id: number]: string } = {
+  1: 'Ethereum',
+  56: 'Binance Chain',
+}
 
 const DropDownContainer = styled.div<{ error: boolean }>`
   width: 100%;
@@ -153,7 +158,7 @@ export const CurrencySelect = ({
             align="left"
           />
         ) : (
-          <Text>{chainIdToNetwork[selectedCurrency?.chainId]}</Text>
+          <Text>{networkDisplay[selectedCurrency?.chainId]}</Text>
         )}
         <CurrencySelectButton
           className="open-currency-select-button"
