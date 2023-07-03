@@ -66,6 +66,18 @@ const ResponsiveGrid = styled.div`
     grid-template-columns: 2fr 1fr 1fr 2fr;
   }
 `
+const TableRowWrapper = styled(Flex)`
+  width: 100%;
+  flex-direction: column;
+  gap: 16px;
+  background-color: ${({ theme }) => theme.card.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+
+  @media screen and (max-width: 575px) {
+    max-height: 450px;
+    overflow-y: auto;
+  }
+`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
@@ -306,7 +318,7 @@ const TokenTable: React.FC<
     return <Skeleton />
   }
   return (
-    <TableWrapper style={{ maxHeight: 450, overflow: 'auto' }}>
+    <TableWrapper>
       <ResponsiveGrid>
         <StyledClickableColumnHeader
           color="secondary"
@@ -375,53 +387,54 @@ const TokenTable: React.FC<
           </StyledClickableColumnHeader>
         )}
       </ResponsiveGrid>
-
-      <Break />
-      {sortedTokens.length > 0 ? (
-        <>
-          {sortedTokens.map((data, i) => {
-            if (data) {
-              return (
-                <Fragment key={data.address}>
-                  <DataRow
-                    dataSource={dataSource}
-                    index={(page - 1) * MAX_ITEMS + i}
-                    tokenData={data}
-                    type={type}
-                    handleOutputSelect={handleOutputSelect}
-                  />
-                  <Break />
-                </Fragment>
-              )
-            }
-            return null
-          })}
-          {!isMobile && (
-            <PageButtons>
-              <Arrow
-                onClick={() => {
-                  setPage(page === 1 ? page : page - 1)
-                }}
-              >
-                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
-              </Arrow>
-              <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
-              <Arrow
-                onClick={() => {
-                  setPage(page === maxPage ? page : page + 1)
-                }}
-              >
-                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </PageButtons>
-          )}
-        </>
-      ) : (
-        <>
-          <TableLoader />
-          <Box />
-        </>
-      )}
+      <TableRowWrapper>
+        <Break />
+        {sortedTokens.length > 0 ? (
+          <>
+            {sortedTokens.map((data, i) => {
+              if (data) {
+                return (
+                  <Fragment key={data.address}>
+                    <DataRow
+                      dataSource={dataSource}
+                      index={(page - 1) * MAX_ITEMS + i}
+                      tokenData={data}
+                      type={type}
+                      handleOutputSelect={handleOutputSelect}
+                    />
+                    <Break />
+                  </Fragment>
+                )
+              }
+              return null
+            })}
+            {!isMobile && (
+              <PageButtons>
+                <Arrow
+                  onClick={() => {
+                    setPage(page === 1 ? page : page - 1)
+                  }}
+                >
+                  <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+                </Arrow>
+                <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
+                <Arrow
+                  onClick={() => {
+                    setPage(page === maxPage ? page : page + 1)
+                  }}
+                >
+                  <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+                </Arrow>
+              </PageButtons>
+            )}
+          </>
+        ) : (
+          <>
+            <TableLoader />
+            <Box />
+          </>
+        )}
+      </TableRowWrapper>
     </TableWrapper>
   )
 }
