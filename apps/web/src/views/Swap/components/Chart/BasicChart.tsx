@@ -40,9 +40,10 @@ const BasicChart = ({
   } = useMemo(() => getTimeWindowChange(pairPrices), [pairPrices])
   const { changePercentage, changeValue, isChangePositive } = useMemo(() => {
     if (hoverValue) {
-      if (pairPrices[pairPrices.length - 1]) {
+      const lastItem = pairPrices[pairPrices.length - 1]
+      if (lastItem) {
         const copyPairPrices = [...pairPrices]
-        copyPairPrices[pairPrices.length - 1].value = hoverValue
+        copyPairPrices[pairPrices.length - 1] = { ...lastItem, value: hoverValue }
         return getTimeWindowChange(copyPairPrices)
       }
     }
