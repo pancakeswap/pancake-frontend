@@ -11,7 +11,6 @@ import {
   FlexGap,
   useTooltip,
   TooltipText,
-  InfoIcon,
   InfoFilledIcon,
 } from '@pancakeswap/uikit'
 import { ChainId, WNATIVE } from '@pancakeswap/sdk'

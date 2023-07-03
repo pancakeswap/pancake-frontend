@@ -228,7 +228,6 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
 
   const portal = getPortalRoot();
   const tooltipInPortal = portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null;
-  // console.log(tooltipInPortal, 'tooltipinportal')
 
   return {
     targetRef: setTargetElement,
