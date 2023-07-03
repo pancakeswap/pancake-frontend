@@ -103,17 +103,17 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setCloseOnOverlayClick(true);
   }, []);
 
-  const handleOverlayDismiss = () => {
+  const handleOverlayDismiss = useCallback(() => {
     if (closeOnOverlayClick) {
       handleDismiss();
     }
-  };
+  }, [closeOnOverlayClick, handleDismiss]);
 
   const providerValue = useMemo(() => {
     return { isOpen, nodeId, modalNode, setModalNode, onPresent: handlePresent, onDismiss: handleDismiss };
   }, [isOpen, nodeId, modalNode, setModalNode, handlePresent, handleDismiss]);
 
-  const portal = getPortalRoot();
+  const portal = useMemo(() => getPortalRoot(), []);
 
   return (
     <Context.Provider value={providerValue}>
