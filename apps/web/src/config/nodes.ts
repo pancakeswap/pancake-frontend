@@ -20,7 +20,10 @@ export const SERVER_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM]: [
+    'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    ...polygonZkEvm.rpcUrls.public.http,
+  ],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
@@ -53,7 +56,10 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM]: [
+    'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+    ...polygonZkEvm.rpcUrls.public.http,
+  ],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
