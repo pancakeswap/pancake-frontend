@@ -25,7 +25,7 @@ const bscTokensToTest = omitBy(
 const tokenListsToTest = [bscTokensToTest, ethereumTokens]
 
 const tokenTables: [string, Token][] = tokenListsToTest.reduce(
-  (acc, cur) => [...acc, map(cur, (token, key) => [key, token])],
+  (acc, cur) => [...acc, ...map(cur, (token, key) => [key, token])],
   [],
 )
 
@@ -53,7 +53,7 @@ describe.concurrent(
         })
         const isWhitelisted = whitelist.includes(key.toLowerCase())
         if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
-        expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
+        expect(token.symbol).toBe(symbol)
         expect(token.decimals).toBe(decimals)
       },
     )
