@@ -22,19 +22,19 @@ const AptosBridge = () => {
   const theme = useTheme()
   const [show, setShow] = useState(false)
 
-  useEffect(() => {
-    customElements.whenDefined('aptos-bridge').then(() => {
-      window.aptosBridge.bridge.setDstNativeAmount('0.05')
-      window.aptosBridge.config.setTokens(['CAKE'])
-      window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
-      setShow(true)
-    })
-  }, [])
+  // useEffect(() => {
+  //   customElements.whenDefined('aptos-bridge').then(() => {
+  //     window.aptosBridge.bridge.setDstNativeAmount('0.05')
+  //     window.aptosBridge.config.setTokens(['CAKE'])
+  //     window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
+  //     setShow(true)
+  //   })
+  // }, [])
 
   return (
     <Page>
       <Script crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
-      <link rel="stylesheet" href="https://unpkg.com/@layerzerolabs/aptos-bridge-widget@latest/element.css" />
+      <link rel="stylesheet" href="https://unpkg.com/@layerzerolabs/x-pancakeswap-widget@latest/element.css" />
       {show && (
         <Box width={['100%', null, '420px']} m="auto">
           <Flex flexDirection="column" bg="backgroundAlt" borderRadius={[0, null, 24]} alignItems="center">
