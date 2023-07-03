@@ -167,8 +167,7 @@ const TransactionTable: React.FC<
   const sortedTransactions = useMemo(() => {
     const toBeAbsList = [SORT_FIELD.amountToken0, SORT_FIELD.amountToken1]
     return transactions
-      ? transactions
-          .slice()
+      ? [...transactions]
           .sort((a, b) => {
             if (a && b) {
               const firstField = a[sortField as keyof Transaction]

@@ -71,8 +71,7 @@ export const combinedCurrenciesMapFromActiveUrlsAtom = atom(() => {
 const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]): any => {
   if (!urls) return EMPTY_LIST
   return (
-    urls
-      .slice()
+    [...urls]
       // sort by priority so top priority goes last
       .sort(sortByListPriority)
       .reduce((allTokens, currentUrl) => {
