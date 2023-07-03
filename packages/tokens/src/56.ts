@@ -2626,4 +2626,12 @@ export const bscTokens = {
     'TrueUSD',
     'https://tusd.io/',
   ),
+  xalgo: new ERC20Token(
+    ChainId.BSC,
+    '0x0034719300501B06E10Ebb1D07ea5967301F0941',
+    6,
+    'xAlgo',
+    'Governance xAlgo',
+    'https://folks.finance/',
+  ),
 }
