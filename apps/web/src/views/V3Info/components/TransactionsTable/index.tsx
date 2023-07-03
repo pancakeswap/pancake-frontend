@@ -178,8 +178,7 @@ export default function TransactionTable({
 
   const sortedTransactions = useMemo(() => {
     return transactions
-      ? transactions
-          .slice()
+      ? [...transactions]
           .sort((a, b) => {
             if (a && b) {
               return a[sortField as keyof Transaction] > b[sortField as keyof Transaction]
