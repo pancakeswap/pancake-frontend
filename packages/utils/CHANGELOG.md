@@ -1,5 +1,16 @@
 # @pancakeswap/utils
 
+## 2.0.1
+
+### Patch Changes
+
+- e31475e6b: chore: Bump up jotai
+- Updated dependencies [e31475e6b]
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.1.4
+  - @pancakeswap/awgmi@0.1.3
+  - @pancakeswap/localization@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
