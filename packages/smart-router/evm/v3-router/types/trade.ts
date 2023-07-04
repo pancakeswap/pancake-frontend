@@ -1,6 +1,8 @@
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 
 import { Route } from './route'
+import { PoolProvider, QuoteProvider } from './providers'
+import { PoolType } from './pool'
 
 export interface SmartRouterTrade<TTradeType extends TradeType> {
   tradeType: TTradeType
@@ -12,5 +14,21 @@ export interface SmartRouterTrade<TTradeType extends TradeType> {
 
   gasEstimate: bigint
   gasEstimateInUSD: CurrencyAmount<Currency>
+  blockNumber?: number
+}
+
+export interface TradeConfig {
+  gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
+  blockNumber?: number | (() => Promise<number>)
+  poolProvider: PoolProvider
+  quoteProvider: QuoteProvider
+  maxHops?: number
+  maxSplits?: number
+  distributionPercent?: number
+  allowedPoolTypes?: PoolType[]
+  quoterOptimization?: boolean
+}
+
+export interface RouteConfig extends TradeConfig {
   blockNumber?: number
 }
