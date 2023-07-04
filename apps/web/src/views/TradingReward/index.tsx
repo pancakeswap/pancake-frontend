@@ -92,7 +92,6 @@ const TradingReward = () => {
       />
       <HowToEarn />
       <RewardsBreakdown
-        latestCampaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         campaignPairs={allTradingRewardPairData.campaignPairs}
