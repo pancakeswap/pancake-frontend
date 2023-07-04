@@ -2609,5 +2609,6 @@
   "Current Round": "Current Round",
   "Previous Rounds": "Previous Rounds",
   "Round #%round%  |  %startTime% - %endTime%": "Round #%round%  |  %startTime% - %endTime%",
-  "%symbol% Amount": "%symbol% Amount"
+  "Input Amount": "Input Amount",
+  "Output Amount": "Output Amount"
 }
