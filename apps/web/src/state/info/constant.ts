@@ -79,7 +79,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = {
   POLYGON_ZKEVM: [],
 }
 
-export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName): GraphQLClient => {
+export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNameExtend): GraphQLClient => {
   const isStableSwap = checkIsStableSwap()
   if (isStableSwap) return infoStableSwapClient
   return multiChainQueryClient[chainName]

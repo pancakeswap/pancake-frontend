@@ -48,7 +48,7 @@ interface DoubleCurrencyLogoProps {
   address0?: string
   address1?: string
   size?: number
-  chainName?: 'ETH' | 'BSC'
+  chainName?: MultiChainName
 }
 
 export const DoubleCurrencyLogo: React.FC<React.PropsWithChildren<DoubleCurrencyLogoProps>> = ({
