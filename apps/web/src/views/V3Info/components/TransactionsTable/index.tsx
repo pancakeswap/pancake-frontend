@@ -16,7 +16,6 @@ import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getBlockExploreLink } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
-import { useTokenAmountString } from 'views/Info/hooks/useTokenAmountString'
 import { Transaction, TransactionType } from '../../types'
 import { shortenAddress } from '../../utils'
 import { formatTime } from '../../utils/date'
@@ -94,13 +93,9 @@ const SORT_FIELD = {
 }
 
 const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) => {
-  const abs0 = Math.abs(transaction.amountToken0)
-  const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
   const token0Symbol = subgraphTokenSymbol[transaction.token0Address.toLowerCase()] ?? transaction.token0Symbol
   const token1Symbol = subgraphTokenSymbol[transaction.token1Address.toLowerCase()] ?? transaction.token1Symbol
-  const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
-  const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 
   return (
     <ResponsiveGrid>
@@ -112,16 +107,16 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
           {transaction.type === TransactionType.MINT
             ? `Add ${token0Symbol} and ${token1Symbol}`
             : transaction.type === TransactionType.SWAP
-            ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
+            ? `Swap ${transaction.token0Symbol} for ${transaction.token1Symbol}`
             : `Remove ${token0Symbol} and ${token1Symbol}`}
         </Text>
       </ScanLink>
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatAmount(transaction.amountToken0)}  ${token0Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <HoverInlineText text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />
+        <HoverInlineText text={`${formatAmount(transaction.amountToken1)}  ${token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
         <ScanLink
@@ -156,8 +151,6 @@ export default function TransactionTable({
   const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
   const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
-  const [token0AmountString, token1AmountString] = useTokenAmountString(transactions)
-
   useEffect(() => {
     let extraPages = 1
     if (
@@ -183,6 +176,24 @@ export default function TransactionTable({
   const sortedTransactions = useMemo(() => {
     return transactions
       ? [...transactions]
+          .map((transaction) => {
+            if (transaction.amountToken0 > 0 && transaction.amountToken1 > 0) return transaction
+            const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
+            const outputTokenAmount =
+              transaction.amountToken0 < 0 ? Math.abs(transaction.amountToken0) : Math.abs(transaction.amountToken1)
+            const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
+            const inputTokenAmount =
+              transaction.amountToken1 < 0 ? Math.abs(transaction.amountToken0) : Math.abs(transaction.amountToken1)
+            return {
+              ...transaction,
+              token0Symbol: inputTokenSymbol,
+              token1Symbol: outputTokenSymbol,
+              token0Address: transaction.amountToken0 < 0 ? transaction.token1Address : transaction.token0Address,
+              token1Address: transaction.amountToken0 < 0 ? transaction.token0Address : transaction.token1Address,
+              amountToken0: inputTokenAmount,
+              amountToken1: outputTokenAmount,
+            }
+          })
           .sort((a, b) => {
             if (a && b) {
               return a[sortField as keyof Transaction] > b[sortField as keyof Transaction]
@@ -260,7 +271,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color="secondary">
-            {token0AmountString}
+            {t('Input Amount')}
             <SortButton
               scale="sm"
               variant="subtle"
@@ -271,7 +282,7 @@ export default function TransactionTable({
             </SortButton>
           </ClickableColumnHeader>
           <ClickableColumnHeader color="secondary">
-            {token1AmountString}
+            {t('Output Amount')}
             <SortButton
               scale="sm"
               variant="subtle"

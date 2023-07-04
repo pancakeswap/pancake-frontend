@@ -14,7 +14,6 @@ import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
-import { useTokenAmountString } from 'views/Info/hooks/useTokenAmountString'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 const Wrapper = styled.div`
@@ -99,14 +98,10 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 
 const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> = ({ transaction }) => {
   const { t } = useTranslation()
-  const abs0 = Math.abs(transaction.amountToken0)
-  const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
   const { domainName } = useDomainNameForAddress(transaction.sender)
   const token0Symbol = subgraphTokenSymbol[transaction.token0Address.toLowerCase()] ?? transaction.token0Symbol
   const token1Symbol = subgraphTokenSymbol[transaction.token1Address.toLowerCase()] ?? transaction.token1Symbol
-  const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
-  const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
 
   return (
     <ResponsiveGrid>
@@ -122,8 +117,8 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
               })
             : transaction.type === TransactionType.SWAP
             ? t('Swap %token0% for %token1%', {
-                token0: inputTokenSymbol,
-                token1: outputTokenSymbol,
+                token0: transaction.token0Symbol,
+                token1: transaction.token1Symbol,
               })
             : t('Remove %token0% and %token1%', {
                 token0: token0Symbol,
@@ -133,10 +128,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       </ScanLink>
       <Text>${formatAmount(transaction.amountUSD)}</Text>
       <Text>
-        <Text>{`${formatAmount(abs0)} ${transaction.token0Symbol}`}</Text>
+        <Text>{`${formatAmount(transaction.amountToken0)} ${token0Symbol}`}</Text>
       </Text>
       <Text>
-        <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
+        <Text>{`${formatAmount(transaction.amountToken1)} ${token1Symbol}`}</Text>
       </Text>
       <ScanLink
         chainId={multiChainId[chainName]}
@@ -164,12 +159,28 @@ const TransactionTable: React.FC<
 
   const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
 
-  const [token0AmountString, token1AmountString] = useTokenAmountString(transactions)
-
   const sortedTransactions = useMemo(() => {
     const toBeAbsList = [SORT_FIELD.amountToken0, SORT_FIELD.amountToken1]
     return transactions
       ? [...transactions]
+          .map((transaction) => {
+            if (transaction.amountToken0 > 0 && transaction.amountToken1 > 0) return transaction
+            const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
+            const outputTokenAmount =
+              transaction.amountToken0 < 0 ? Math.abs(transaction.amountToken0) : Math.abs(transaction.amountToken1)
+            const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
+            const inputTokenAmount =
+              transaction.amountToken1 < 0 ? Math.abs(transaction.amountToken0) : Math.abs(transaction.amountToken1)
+            return {
+              ...transaction,
+              token0Symbol: inputTokenSymbol,
+              token1Symbol: outputTokenSymbol,
+              token0Address: transaction.amountToken0 < 0 ? transaction.token1Address : transaction.token0Address,
+              token1Address: transaction.amountToken0 < 0 ? transaction.token0Address : transaction.token1Address,
+              amountToken0: inputTokenAmount,
+              amountToken1: outputTokenAmount,
+            }
+          })
           .sort((a, b) => {
             if (a && b) {
               const firstField = a[sortField as keyof Transaction]
@@ -276,7 +287,7 @@ const TransactionTable: React.FC<
             onClick={() => handleSort(SORT_FIELD.amountToken0)}
             textTransform="uppercase"
           >
-            {token0AmountString} {arrow(SORT_FIELD.amountToken0)}
+            {t('Input Amount')} {arrow(SORT_FIELD.amountToken0)}
           </ClickableColumnHeader>
           <ClickableColumnHeader
             color="secondary"
@@ -285,7 +296,7 @@ const TransactionTable: React.FC<
             onClick={() => handleSort(SORT_FIELD.amountToken1)}
             textTransform="uppercase"
           >
-            {token1AmountString} {arrow(SORT_FIELD.amountToken1)}
+            {t('Output Amount')} {arrow(SORT_FIELD.amountToken1)}
           </ClickableColumnHeader>
           <ClickableColumnHeader
             color="secondary"
