@@ -2634,4 +2634,12 @@ export const bscTokens = {
     'Governance xAlgo',
     'https://folks.finance/',
   ),
+  pendle: new ERC20Token(
+    ChainId.BSC,
+    '0xb3Ed0A426155B79B898849803E3B36552f7ED507',
+    18,
+    'PENDLE',
+    'Pendle',
+    'https://www.pendle.finance/',
+  ),
 }
