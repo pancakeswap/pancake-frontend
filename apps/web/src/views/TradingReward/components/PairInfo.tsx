@@ -69,7 +69,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
               <V3FeeTag feeAmount={feeAmount} scale="sm" />
               <V3Tag ml="4px" scale="sm" />
             </Flex>
-            <Flex ml="4px">
+            <Flex ml="4px" mt="-2px">
               {chainId === ChainId.ETHEREUM && <EthTag />}
               {chainId === ChainId.BSC && <BscTag />}
             </Flex>
