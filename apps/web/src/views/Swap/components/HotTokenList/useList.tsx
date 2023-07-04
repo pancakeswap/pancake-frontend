@@ -11,7 +11,8 @@ import { parseV3TokenData, parseV2TokenData } from './utils'
 
 export const useBSCWhiteList = () => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
-  const { current: list } = listsByUrl[PANCAKE_EXTENDED]
+  const lists = listsByUrl[PANCAKE_EXTENDED]
+  const list = lists?.current
   const whiteList = useMemo(() => {
     return list ? list.tokens.map((t) => t.address.toLowerCase()) : []
   }, [list])
