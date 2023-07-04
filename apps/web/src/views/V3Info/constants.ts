@@ -57,6 +57,7 @@ export const MAX_UINT128 = 2n ** 128n - 1n
 export const SUBGRAPH_START_BLOCK = {
   [ChainId.BSC]: 26956207,
   [ChainId.ETHEREUM]: 16950686,
+  [ChainId.POLYGON_ZKEVM]: 750149,
 }
 
 export const NODE_REAL_ADDRESS_LIMIT = 50

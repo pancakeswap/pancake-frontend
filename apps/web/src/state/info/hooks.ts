@@ -290,10 +290,11 @@ export const useGetChainName = () => {
   return result
 }
 
-export const useChainNameByQuery = () => {
+export const useChainNameByQuery = (): MultiChainName => {
   const { query } = useRouter()
   const chainName = useMemo(() => {
     if (query?.chainName === 'eth') return 'ETH'
+    if (query?.chainName === 'polygon-zkevm') return 'POLYGON_ZKEVM'
     return 'BSC'
   }, [query])
   return chainName
