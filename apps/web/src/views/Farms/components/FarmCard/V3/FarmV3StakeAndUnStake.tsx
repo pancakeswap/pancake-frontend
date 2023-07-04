@@ -1,7 +1,8 @@
+import { useMemo, useState } from 'react'
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
+import { AutoRow, QuestionHelper, RowBetween, SyncAltIcon } from '@pancakeswap/uikit'
 import { Balance } from '@pancakeswap/uikit/src/components/Balance'
 import { Box } from '@pancakeswap/uikit/src/components/Box'
 import { Button } from '@pancakeswap/uikit/src/components/Button'
@@ -72,15 +73,30 @@ export const FarmV3LPPosition = ({
   const { position } = useDerivedPositionInfo(position_)
   const { tickLower, tickUpper, fee: feeAmount } = position_
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
+  const [inverted, setInverted] = useState(false)
+
+  const priceLower = useMemo(() => {
+    if (!position) return null
+    return token.equals(position.amount0.currency)
+      ? inverted
+        ? position.token0PriceLower
+        : position.token0PriceUpper.invert()
+      : inverted
+      ? position.token0PriceUpper.invert()
+      : position.token0PriceLower
+  }, [position, inverted, token])
+  const priceUpper = useMemo(() => {
+    if (!position) return null
+    return token.equals(position.amount1.currency)
+      ? inverted
+        ? position.token0PriceLower.invert()
+        : position.token0PriceUpper
+      : inverted
+      ? position.token0PriceUpper
+      : position.token0PriceLower.invert()
+  }, [position, inverted, token])
 
   if (!position) return null
-
-  const priceLower = token.equals(position.amount0.currency)
-    ? position.token0PriceUpper.invert()
-    : position.token0PriceLower
-  const priceUpper = token.equals(position.amount1.currency)
-    ? position.token0PriceUpper
-    : position.token0PriceLower.invert()
 
   return (
     <Box>
@@ -90,9 +106,9 @@ export const FarmV3LPPosition = ({
             {t('Min %minAmount%', {
               minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
             })}
-            /&nbsp;
           </Text>
         </Box>
+        /
         <Box maxWidth="250px">
           <Text bold fontSize="12px" ellipsis>
             {t('Max %maxAmount%', {
@@ -103,10 +119,22 @@ export const FarmV3LPPosition = ({
         <Box>
           <Text bold fontSize="12px">
             {t('%assetA% per %assetB%', {
-              assetA: unwrappedToken(token).symbol,
-              assetB: unwrappedToken(quoteToken).symbol,
+              assetA: inverted ? unwrappedToken(quoteToken).symbol : unwrappedToken(token).symbol,
+              assetB: inverted ? unwrappedToken(token).symbol : unwrappedToken(quoteToken).symbol,
             })}
           </Text>
+        </Box>
+        <Box>
+          <SyncAltIcon
+            style={{ cursor: 'pointer' }}
+            onClick={(e) => {
+              e.preventDefault()
+              setInverted((s) => !s)
+            }}
+            width="12px"
+            ml="4px"
+            color="primary"
+          />
         </Box>
       </AutoRow>
     </Box>
