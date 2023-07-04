@@ -1,6 +1,7 @@
 // TODO PCS refactor ternaries
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkExternal, Radio, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
@@ -109,7 +110,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
 
   return (
     <ResponsiveGrid>
-      <LinkExternal isBscScan href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}>
+      <LinkExternal
+        isBscScan={multiChainId[chainName] === ChainId.BSC}
+        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
+      >
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', {
@@ -134,7 +138,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkExternal isBscScan href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}>
+      <LinkExternal
+        isBscScan={multiChainId[chainName] === ChainId.BSC}
+        href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
+      >
         {domainName || truncateHash(transaction.sender)}
       </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>

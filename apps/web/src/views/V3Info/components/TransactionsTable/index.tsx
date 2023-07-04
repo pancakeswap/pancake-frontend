@@ -9,6 +9,7 @@ import {
   Text,
   Flex,
 } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
@@ -105,7 +106,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
     <ResponsiveGrid>
       <LinkExternal
         href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
-        isBscScan={chainName === 'BSC'}
+        isBscScan={multiChainId[chainName] === ChainId.BSC}
       >
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
@@ -125,7 +126,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
       <Text fontWeight={400}>
         <LinkExternal
           href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
-          isBscScan={chainName === 'BSC'}
+          isBscScan={multiChainId[chainName] === ChainId.BSC}
         >
           {shortenAddress(transaction.sender)}
         </LinkExternal>
