@@ -1,11 +1,7 @@
 {
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::cakeoft, 0x1::aptos_coin::aptoscoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "29075.288272876445",
-        "reserveUSD": "516616.4130769428"
-      },
       {
         "volumeUSD": "76821.6332998577",
         "reserveUSD": "469853.689006615"
@@ -29,16 +25,16 @@
       {
         "volumeUSD": "42170.30573104756",
         "reserveUSD": "522384.2557185532"
+      },
+      {
+        "volumeUSD": "76289.48535807339",
+        "reserveUSD": "526373.9364052992"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::cakeoft, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdc>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "12028.977210329995",
-        "reserveUSD": "225950.5288321899"
-      },
       {
         "volumeUSD": "24005.221292143553",
         "reserveUSD": "219812.5172134075"
@@ -62,16 +58,16 @@
       {
         "volumeUSD": "11707.584957082434",
         "reserveUSD": "188924.10569844596"
+      },
+      {
+        "volumeUSD": "13134.94487218654",
+        "reserveUSD": "186438.06001842534"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::cakeoft, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdccoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "2276.875573961188",
-        "reserveUSD": "140213.72070690896"
-      },
       {
         "volumeUSD": "9383.808274239578",
         "reserveUSD": "136517.62246919848"
@@ -95,16 +91,16 @@
       {
         "volumeUSD": "4219.457739037422",
         "reserveUSD": "141760.08966679982"
+      },
+      {
+        "volumeUSD": "1984.4036388031848",
+        "reserveUSD": "140994.42546524218"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0x7fd500c11216f0fe3095d0c4b8aa4d64a4e2e04f83758462f2b127255643615::thl_coin::thl>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "1182.2877721891562",
-        "reserveUSD": "21128.151867923763"
-      },
       {
         "volumeUSD": "1322.1797014081305",
         "reserveUSD": "19732.052404035196"
@@ -128,16 +124,16 @@
       {
         "volumeUSD": "1266.8941211051474",
         "reserveUSD": "19628.66792159048"
+      },
+      {
+        "volumeUSD": "5289.667926596069",
+        "reserveUSD": "22257.279408535935"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0xfbab9fb68bd2103925317b6a540baa20087b1e7a7a4eb90badee04abb6b5a16f::blt::blt>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "1856.3580656724782",
-        "reserveUSD": "77457.14333187771"
-      },
       {
         "volumeUSD": "2765.552314530483",
         "reserveUSD": "72476.04218248387"
@@ -161,16 +157,16 @@
       {
         "volumeUSD": "3699.5566871588094",
         "reserveUSD": "82146.85557316741"
+      },
+      {
+        "volumeUSD": "3729.322532634938",
+        "reserveUSD": "84482.31602986602"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x25a64579760a4c64be0d692327786a6375ec80740152851490cfd0b53604cf95::coin::etern, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdccoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "0.08634072553627675",
-        "reserveUSD": "6642.540652322168"
-      },
       {
         "volumeUSD": "0.07187430267265457",
         "reserveUSD": "6706.925600043864"
@@ -194,16 +190,16 @@
       {
         "volumeUSD": "39.429715988869546",
         "reserveUSD": "6450.450006397421"
+      },
+      {
+        "volumeUSD": "13.128949136429174",
+        "reserveUSD": "6441.288463860419"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::t, 0x84d7aeef42d38a5ffc3ccef853e1b82e4958659d16a7de736a29c55fbbeb0114::staked_aptos_coin::stakedaptoscoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "320.3161172424405",
-        "reserveUSD": "3593.4151235966065"
-      },
       {
         "volumeUSD": "311.31420099067265",
         "reserveUSD": "3468.423270376218"
@@ -227,16 +223,16 @@
       {
         "volumeUSD": "425.41501427101804",
         "reserveUSD": "3776.160142652073"
+      },
+      {
+        "volumeUSD": "962.7639156248911",
+        "reserveUSD": "3842.958506204049"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0x27fafcc4e39daac97556af8a803dbb52bcb03f0821898dc845ac54225b9793eb::move_coin::movecoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "3155.171505106402",
-        "reserveUSD": "102113.37281558174"
-      },
       {
         "volumeUSD": "10947.63757041788",
         "reserveUSD": "91611.86370146023"
@@ -260,16 +256,16 @@
       {
         "volumeUSD": "8448.819388308755",
         "reserveUSD": "93914.2644507073"
+      },
+      {
+        "volumeUSD": "3995.5438204952625",
+        "reserveUSD": "90893.39949114938"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdc>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "135356.79141897065",
-        "reserveUSD": "1195023.7283707815"
-      },
       {
         "volumeUSD": "170593.06092533862",
         "reserveUSD": "1168603.566426115"
@@ -293,16 +289,16 @@
       {
         "volumeUSD": "234466.8357271424",
         "reserveUSD": "1190397.484449916"
+      },
+      {
+        "volumeUSD": "312851.4155918634",
+        "reserveUSD": "1207268.7031491292"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdc, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::weth>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "78241.83800331497",
-        "reserveUSD": "3929125.4305194225"
-      },
       {
         "volumeUSD": "74696.56403309434",
         "reserveUSD": "3884192.0236824406"
@@ -326,16 +322,16 @@
       {
         "volumeUSD": "134968.68257703935",
         "reserveUSD": "4005045.944896793"
+      },
+      {
+        "volumeUSD": "55863.89536953509",
+        "reserveUSD": "3987225.923091287"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdc, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdt>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "33584.504054621444",
-        "reserveUSD": "5057699.608869398"
-      },
       {
         "volumeUSD": "59177.06631036255",
         "reserveUSD": "5046271.261277149"
@@ -359,16 +355,16 @@
       {
         "volumeUSD": "106227.29136087587",
         "reserveUSD": "5075135.28712691"
+      },
+      {
+        "volumeUSD": "67947.33208163206",
+        "reserveUSD": "5074928.226074906"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdccoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "9695.334838948651",
-        "reserveUSD": "82275.02989035952"
-      },
       {
         "volumeUSD": "15521.32709980725",
         "reserveUSD": "79491.68732656736"
@@ -392,16 +388,16 @@
       {
         "volumeUSD": "14760.033120244465",
         "reserveUSD": "82564.48869909953"
+      },
+      {
+        "volumeUSD": "16177.127595188222",
+        "reserveUSD": "84314.98998525299"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::bnbcoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdccoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "12254.68028516879",
-        "reserveUSD": "1067386.609309176"
-      },
       {
         "volumeUSD": "22700.163282575137",
         "reserveUSD": "1058891.9281739085"
@@ -425,16 +421,16 @@
       {
         "volumeUSD": "29693.05536341657",
         "reserveUSD": "1087137.3968896847"
+      },
+      {
+        "volumeUSD": "8756.012805885526",
+        "reserveUSD": "1091479.7361035536"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdccoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::wethcoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "15460.69698816118",
-        "reserveUSD": "1200249.286677807"
-      },
       {
         "volumeUSD": "8004.685764776035",
         "reserveUSD": "1183848.7837688462"
@@ -458,16 +454,16 @@
       {
         "volumeUSD": "10427.796352689733",
         "reserveUSD": "1221714.6229219073"
+      },
+      {
+        "volumeUSD": "4161.374170448744",
+        "reserveUSD": "1218336.7678460125"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdccoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::usdtcoin>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "1913.5885301855467",
-        "reserveUSD": "1028196.0373860062"
-      },
       {
         "volumeUSD": "1407.5257355983624",
         "reserveUSD": "1020531.5336568274"
@@ -491,16 +487,16 @@
       {
         "volumeUSD": "1246.4311114391585",
         "reserveUSD": "1020176.1665909854"
+      },
+      {
+        "volumeUSD": "1892.1340196940064",
+        "reserveUSD": "1020019.1927162614"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::t>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "18071.388823621815",
-        "reserveUSD": "256918.56180882058"
-      },
       {
         "volumeUSD": "23368.309834747",
         "reserveUSD": "250055.64265654303"
@@ -524,16 +520,16 @@
       {
         "volumeUSD": "21799.49180853896",
         "reserveUSD": "225008.81640649235"
+      },
+      {
+        "volumeUSD": "39912.13252443397",
+        "reserveUSD": "229218.78431727464"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::t, 0xcc8a89c8dce9693d354449f1f73e60e14e347417854f029db5bc8e7454008abb::coin::t>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "12749.699106352758",
-        "reserveUSD": "636166.9376959009"
-      },
       {
         "volumeUSD": "9497.769986113928",
         "reserveUSD": "629076.0065229642"
@@ -557,16 +553,16 @@
       {
         "volumeUSD": "10293.8090930161",
         "reserveUSD": "648598.8985958355"
+      },
+      {
+        "volumeUSD": "8594.181977844588",
+        "reserveUSD": "646716.651808717"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::t, 0xccc9620d38c4f3991fa68a03ad98ef3735f18d04717cb75d7a1300dd8a7eed75::coin::t>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "3677.5832948940824",
-        "reserveUSD": "679070.8554708159"
-      },
       {
         "volumeUSD": "907.7990152828926",
         "reserveUSD": "682118.2547527987"
@@ -590,16 +586,16 @@
       {
         "volumeUSD": "420.2028675243425",
         "reserveUSD": "636296.4324859257"
+      },
+      {
+        "volumeUSD": "655.7343614101633",
+        "reserveUSD": "640262.3793717031"
       }
     ]
   },
   "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0xd11107bdf0d6d7040c6c0bfbdecb6545191fdf13e8d8d259952f53e1713f61b5::staked_coin::stakedaptos, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdc>": {
-    "updateDate": "2023-07-03",
+    "updateDate": "2023-07-04",
     "usdList": [
-      {
-        "volumeUSD": "2072.729942514704",
-        "reserveUSD": "99614.10979715496"
-      },
       {
         "volumeUSD": "3549.1017158952345",
         "reserveUSD": "96675.13102378181"
@@ -623,6 +619,10 @@
       {
         "volumeUSD": "2821.301238624104",
         "reserveUSD": "93290.5666442597"
+      },
+      {
+        "volumeUSD": "5949.248636287088",
+        "reserveUSD": "93808.05828763024"
       }
     ]
   }
