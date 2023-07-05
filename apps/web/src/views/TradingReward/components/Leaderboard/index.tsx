@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Box, Grid, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { Box, Grid, Text, useMatchBreakpoints, PaginationButton, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
@@ -8,22 +8,90 @@ import { useRankList, MAX_PER_PAGE } from 'views/TradingReward/hooks/useRankList
 import LeaderBoardDesktopView from './DesktopView'
 import LeaderBoardMobileView from './MobileView'
 import RankingCard from './RankingCard'
+import MyRank from './MyRank'
 
 interface LeaderboardProps {
-  campaignId: string
-  incentives: Incentives
+  campaignIdsIncentive: Incentives[]
 }
 
-const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ campaignId, incentives }) => {
+const MAX_CAMPAIGN_PER_PAGE = 1
+
+const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ campaignIdsIncentive }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const [index, setIndex] = useState(0)
+  const [campaignPage, setCampaignPage] = useState(1)
+  const [campaignMaxPage, setCampaignMaxPages] = useState(1)
+  const [campaignLeaderBoardList, setCampaignLeaderBoardList] = useState({
+    campaignId: '0',
+    campaignStart: 0,
+    campaignClaimTime: 0,
+  })
+
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const { total, topTradersArr, topThreeTraders, isLoading } = useRankList({ campaignId, currentPage })
+  const { total, topTradersArr, topThreeTraders, isLoading } = useRankList({
+    campaignId: campaignLeaderBoardList.campaignId,
+    currentPage,
+  })
   const [first, second, third] = topThreeTraders
+
+  const allLeaderBoard = useMemo(
+    () =>
+      campaignIdsIncentive.map((i) => ({
+        campaignId: i.campaignId,
+        campaignStart: i.campaignStart,
+        campaignClaimTime: i.campaignClaimTime,
+      })),
+    [campaignIdsIncentive],
+  )
+  const currentLeaderBoard = useMemo(
+    () => allLeaderBoard.find((i) => i.campaignClaimTime >= Date.now() / 1000),
+    [allLeaderBoard],
+  )
+
+  const sliceAllLeaderBoard = useCallback(() => {
+    const slice = allLeaderBoard.slice(MAX_CAMPAIGN_PER_PAGE * (campaignPage - 1), MAX_CAMPAIGN_PER_PAGE * campaignPage)
+    setCampaignLeaderBoardList({ ...slice[0] })
+  }, [allLeaderBoard, campaignPage])
+
+  useEffect(() => {
+    if (allLeaderBoard.length > 0) {
+      const max = Math.ceil(allLeaderBoard?.length / MAX_CAMPAIGN_PER_PAGE)
+      setCampaignMaxPages(max)
+    }
+
+    return () => {
+      setCampaignPage(1)
+      setCampaignMaxPages(1)
+    }
+  }, [allLeaderBoard.length])
+
+  useEffect(() => {
+    const getActivitySlice = () => {
+      setCurrentPage(1)
+
+      if (currentLeaderBoard?.campaignId) {
+        if (index === 0) {
+          setCampaignPage(1)
+          setCampaignLeaderBoardList(currentLeaderBoard)
+        } else {
+          setCampaignPage(2)
+          sliceAllLeaderBoard()
+        }
+      } else {
+        setIndex(1)
+        sliceAllLeaderBoard()
+      }
+    }
+
+    if (allLeaderBoard.length > 0) {
+      getActivitySlice()
+    }
+  }, [index, allLeaderBoard, currentLeaderBoard, sliceAllLeaderBoard, campaignMaxPage])
 
   useEffect(() => {
     if (total > 0) {
@@ -44,42 +112,63 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
         <Text textAlign="center" color="secondary" mb="16px" fontSize={['40px']} bold lineHeight="110%">
           {t('Leaderboard')}
         </Text>
-        <Text textAlign="center" bold color="textSubtle">{`${timeFormat(
-          locale,
-          incentives?.campaignStart,
-        )} - ${timeFormat(locale, incentives?.campaignClaimTime)}`}</Text>
-        <Text textAlign="center" bold color="textSubtle">
-          {t('Top #50 Winners')}
-        </Text>
-      </Box>
-      <Container mb="16px">
-        <Grid
-          gridGap={['16px', null, null, null, null, '24px']}
-          gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
-        >
-          {first && <RankingCard rank={1} user={first} />}
-          {second && <RankingCard rank={2} user={second} />}
-          {third && <RankingCard rank={3} user={third} />}
-        </Grid>
-      </Container>
-      <Box maxWidth={1200} m="auto">
-        {isDesktop ? (
-          <LeaderBoardDesktopView
-            data={topTradersArr}
-            maxPage={maxPage}
-            isLoading={isLoading}
-            currentPage={currentPage}
-            setCurrentPage={handleClickPagination}
-          />
-        ) : (
-          <LeaderBoardMobileView
-            data={topTradersArr}
-            maxPage={maxPage}
-            isLoading={isLoading}
-            currentPage={currentPage}
-            setCurrentPage={handleClickPagination}
-          />
+        {currentLeaderBoard && (
+          <Box width="350px" margin="auto auto 16px auto">
+            <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
+              <ButtonMenuItem>{t('Current Round')}</ButtonMenuItem>
+              <ButtonMenuItem>{t('Previous Rounds')}</ButtonMenuItem>
+            </ButtonMenu>
+          </Box>
         )}
+        {campaignLeaderBoardList.campaignStart > 0 && (
+          <>
+            <Text textAlign="center" color="textSubtle" bold>
+              {t('Round #%round%  |  %startTime% - %endTime%', {
+                round: campaignMaxPage - (campaignPage - 1),
+                startTime: timeFormat(locale, campaignLeaderBoardList?.campaignStart),
+                endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
+              })}
+            </Text>
+            {index === 1 && (
+              <PaginationButton
+                showMaxPageText
+                currentPage={campaignPage}
+                maxPage={campaignMaxPage}
+                setCurrentPage={setCampaignPage}
+              />
+            )}
+            <Container mb="16px">
+              <Grid
+                gridGap={['16px', null, null, null, null, '24px']}
+                gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
+              >
+                {first && <RankingCard rank={1} user={first} />}
+                {second && <RankingCard rank={2} user={second} />}
+                {third && <RankingCard rank={3} user={third} />}
+              </Grid>
+            </Container>
+          </>
+        )}
+        <Box maxWidth={1200} m="auto">
+          <MyRank campaignId={campaignLeaderBoardList.campaignId} />
+          {isDesktop ? (
+            <LeaderBoardDesktopView
+              data={topTradersArr}
+              maxPage={maxPage}
+              isLoading={isLoading}
+              currentPage={currentPage}
+              setCurrentPage={handleClickPagination}
+            />
+          ) : (
+            <LeaderBoardMobileView
+              data={topTradersArr}
+              maxPage={maxPage}
+              isLoading={isLoading}
+              currentPage={currentPage}
+              setCurrentPage={handleClickPagination}
+            />
+          )}
+        </Box>
       </Box>
     </Box>
   )

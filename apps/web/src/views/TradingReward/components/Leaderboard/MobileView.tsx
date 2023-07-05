@@ -30,7 +30,7 @@ const LeaderBoardMobileView: React.FC<React.PropsWithChildren<LeaderBoardMobileV
         </StyledMobileRow>
       ) : (
         <>
-          {data?.length === 0 ? (
+          {!data || data?.length === 0 ? (
             <StyledMobileRow>
               <Text padding="48px 0px" textAlign="center">
                 {t('No results')}
@@ -38,14 +38,16 @@ const LeaderBoardMobileView: React.FC<React.PropsWithChildren<LeaderBoardMobileV
             </StyledMobileRow>
           ) : (
             <>
-              {data.map((rank) => (
+              {data?.map((rank) => (
                 <MobileResult key={rank.rank} rank={rank} />
               ))}
             </>
           )}
         </>
       )}
-      <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
+      {data?.length > 0 && (
+        <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
+      )}
     </Box>
   )
 }

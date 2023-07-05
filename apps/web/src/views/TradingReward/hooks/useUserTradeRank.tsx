@@ -5,11 +5,14 @@ import { TRADING_REWARD_API } from 'config/constants/endpoints'
 const initialState = {
   topTradersIndex: 0,
   totalUsers: 0,
+  tradingFee: 0,
+  volume: 0,
+  estimateRewardUSD: 0,
 }
 
 export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
   const { address: account } = useAccount()
-  const { data } = useSWR(
+  const { data, isLoading } = useSWR(
     campaignId && account && ['/user-trade-rank', campaignId, account],
     async () => {
       try {
@@ -20,6 +23,9 @@ export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
         return {
           topTradersIndex: result?.data?.topTradersIndex ?? 0,
           totalUsers: result?.data?.totalUsers ?? 0,
+          tradingFee: result?.data?.tradingFee ?? 0,
+          volume: result?.data?.volume ?? 0,
+          estimateRewardUSD: result?.data?.estimateRewardUSD ?? 0,
         }
       } catch (error) {
         console.info(`Fetch User Rank Error: ${error}`)
@@ -35,5 +41,8 @@ export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
     },
   )
 
-  return data
+  return {
+    data,
+    isFetching: isLoading,
+  }
 }
