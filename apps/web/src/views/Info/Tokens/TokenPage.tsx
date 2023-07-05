@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import {
   Box,
   Breadcrumbs,
@@ -9,12 +8,12 @@ import {
   Flex,
   Heading,
   Image,
-  LinkExternal,
   NextLinkFromReactRouter,
   Spinner,
   Text,
   Link as UIKitLink,
   useMatchBreakpoints,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { NextSeo } from 'next-seo'
@@ -143,14 +142,13 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Flex>
               </Breadcrumbs>
               <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-                <LinkExternal
-                  isBscScan={multiChainId[chainName] === ChainId.BSC}
+                <ScanLink
                   mr="8px"
                   color="primary"
                   href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                 >
                   {t('View on %site%', { site: multiChainScan[chainName] })}
-                </LinkExternal>
+                </ScanLink>
                 {cmcLink && (
                   <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">
                     <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />

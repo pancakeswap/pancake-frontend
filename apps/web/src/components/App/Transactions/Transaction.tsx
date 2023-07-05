@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { CheckmarkIcon, CloseIcon, LinkExternal } from '@pancakeswap/uikit'
+import { CheckmarkIcon, CloseIcon, ScanLink } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import { TransactionDetails } from 'state/transactions/reducer'
 import CircleLoader from '../../Loader/CircleLoader'
@@ -30,9 +30,7 @@ export default function Transaction({ tx, chainId }: { tx: TransactionDetails; c
 
   return (
     <TransactionState pending={pending} success={success}>
-      <LinkExternal isBscScan href={getBlockExploreLink(tx.hash, 'transaction', chainId)}>
-        {summary ?? tx.hash}
-      </LinkExternal>
+      <ScanLink href={getBlockExploreLink(tx.hash, 'transaction', chainId)}>{summary ?? tx.hash}</ScanLink>
       <IconWrapper pending={pending} success={success}>
         {pending ? <CircleLoader /> : success ? <CheckmarkIcon color="success" /> : <CloseIcon color="failure" />}
       </IconWrapper>

@@ -9,11 +9,11 @@ import {
   Flex,
   Heading,
   Input,
-  LinkExternal,
   Text,
   useModal,
   useToast,
   ReactMarkdown,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import isEmpty from 'lodash/isEmpty'
@@ -270,18 +270,14 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <LinkExternal isBscScan href={getBlockExploreLink(account, 'address')}>
-                      {truncateHash(account)}
-                    </LinkExternal>
+                    <ScanLink href={getBlockExploreLink(account, 'address')}>{truncateHash(account)}</ScanLink>
                   </Flex>
                 )}
                 <Flex alignItems="center" mb="16px">
                   <Text color="textSubtle" mr="16px">
                     {t('Snapshot')}
                   </Text>
-                  <LinkExternal isBscScan href={getBlockExploreLink(snapshot, 'block')}>
-                    {snapshot}
-                  </LinkExternal>
+                  <ScanLink href={getBlockExploreLink(snapshot, 'block')}>{snapshot}</ScanLink>
                 </Flex>
                 {account ? (
                   <>

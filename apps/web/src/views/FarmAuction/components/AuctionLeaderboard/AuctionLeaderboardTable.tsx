@@ -14,6 +14,7 @@ import {
   EllipsisIcon,
   LinkExternal,
   useMatchBreakpoints,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -135,13 +136,7 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             </SubMenuItem>
           )}
           {account && (
-            <SubMenuItem
-              as={LinkExternal}
-              isBscScan
-              href={getBlockExploreLink(account, 'address')}
-              bold={false}
-              color="text"
-            >
+            <SubMenuItem as={ScanLink} href={getBlockExploreLink(account, 'address')} bold={false} color="text">
               {t('Bidder Address')}
             </SubMenuItem>
           )}

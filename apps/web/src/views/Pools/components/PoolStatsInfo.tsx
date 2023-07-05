@@ -1,4 +1,4 @@
-import { Flex, LinkExternal, Skeleton, Text, Pool } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Skeleton, Text, Pool, ScanLink } from '@pancakeswap/uikit'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
@@ -135,14 +135,13 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       )}
       {poolContractAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <LinkExternal
-            isBscScan
+          <ScanLink
             href={getBlockExploreLink(vaultKey ? cakeVaultContractAddress : poolContractAddress, 'address', chainId)}
             bold={false}
             small
           >
             {t('View Contract')}
-          </LinkExternal>
+          </ScanLink>
         </Flex>
       )}
       {account && tokenAddress && (

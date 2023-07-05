@@ -8,9 +8,9 @@ import {
   ColumnCenter,
   ConfirmationPendingContent,
   InjectedModalProps,
-  LinkExternal,
   Modal,
   ModalProps,
+  ScanLink,
   Text,
 } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
@@ -49,11 +49,11 @@ export function TransactionSubmittedContent({
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="20px">{t('Transaction Submitted')}</Text>
           {chainId && hash && (
-            <LinkExternal isAptosScan small href={getBlockExploreLink(hash, 'transaction', chainId)}>
+            <ScanLink small href={getBlockExploreLink(hash, 'transaction', chainId)}>
               {t('View on %site%', {
                 site: t('Explorer'),
               })}
-            </LinkExternal>
+            </ScanLink>
           )}
           <Button onClick={onDismiss} mt="20px">
             {t('Close')}

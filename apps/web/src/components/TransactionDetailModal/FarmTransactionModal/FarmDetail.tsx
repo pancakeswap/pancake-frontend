@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { Flex, Box, Text, LinkExternal, RefreshIcon, WarningIcon } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
+import { Flex, Box, Text, RefreshIcon, WarningIcon, ScanLink } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
@@ -40,12 +39,9 @@ const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ ste
             <Flex>
               {isFail && <WarningIcon mr="4px" color="failure" />}
               {step.tx && (
-                <LinkExternal
-                  isBscScan={step.chainId === ChainId.BSC}
-                  href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}
-                >
+                <ScanLink href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}>
                   {getBlockExploreName(step.chainId)}
-                </LinkExternal>
+                </ScanLink>
               )}
             </Flex>
           )}

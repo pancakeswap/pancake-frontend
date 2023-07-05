@@ -4,11 +4,11 @@ import {
   FarmTableMultiplierProps,
   Farm as FarmUI,
   Flex,
-  LinkExternal,
   Skeleton,
   Text,
   useMatchBreakpoints,
   useModalV2,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -98,7 +98,7 @@ const Container = styled.div<{ expanded }>`
   }
 `
 
-const StyledLinkExternal = styled(LinkExternal)`
+const StyledScanLink = styled(ScanLink)`
   font-weight: 400;
 `
 
@@ -223,12 +223,10 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               </Flex>
             )}
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
+              <StyledScanLink href={infoUrl}>{t('See Pair Info')}</StyledScanLink>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal isBscScan href={bsc}>
-                {t('View Contract')}
-              </StyledLinkExternal>
+              <StyledScanLink href={bsc}>{t('View Contract')}</StyledScanLink>
             </Flex>
           </>
         }
@@ -346,12 +344,10 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               </Flex>
             )}
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
+              <StyledScanLink href={infoUrl}>{t('See Pair Info')}</StyledScanLink>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal isBscScan href={bsc}>
-                {t('View Contract')}
-              </StyledLinkExternal>
+              <StyledScanLink href={bsc}>{t('View Contract')}</StyledScanLink>
             </Flex>
           </>
         }

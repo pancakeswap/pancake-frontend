@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import {
   Box,
   Breadcrumbs,
@@ -11,8 +10,8 @@ import {
   Flex,
   Heading,
   HelpIcon,
-  LinkExternal,
   NextLinkFromReactRouter,
+  ScanLink,
   Spinner,
   Text,
   useMatchBreakpoints,
@@ -144,13 +143,9 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <LinkExternal
-                isBscScan={multiChainId[chainName] === ChainId.BSC}
-                mr="8px"
-                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
-              >
+              <ScanLink mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
                 {t('View on %site%', { site: multiChainScan[chainName] })}
-              </LinkExternal>
+              </ScanLink>
               <SaveIcon fill={savedPools.includes(address)} onClick={() => addPool(address)} />
             </Flex>
           </Flex>

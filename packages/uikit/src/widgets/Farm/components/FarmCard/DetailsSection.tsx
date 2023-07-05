@@ -2,6 +2,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
 import { LinkExternal } from "../../../../components/Link";
+import ScanLink from "../../../../components/Link/ScanLink";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Text } from "../../../../components/Text";
 import { HelpIcon } from "../../../../components/Svg";
@@ -29,6 +30,10 @@ const Wrapper = styled.div`
 `;
 
 const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
+`;
+
+const StyledScanLink = styled(ScanLink)`
   font-weight: 400;
 `;
 
@@ -120,9 +125,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       )}
       {scanAddressLink && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
-          <StyledLinkExternal isBscScan href={scanAddressLink}>
-            {t("View Contract")}
-          </StyledLinkExternal>
+          <StyledScanLink href={scanAddressLink}>{t("View Contract")}</StyledScanLink>
         </Flex>
       )}
     </Wrapper>

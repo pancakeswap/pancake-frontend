@@ -4,12 +4,11 @@ import {
   ArrowForwardIcon,
   AutoColumn,
   Box,
-  LinkExternal,
   SortArrowIcon,
   Text,
   Flex,
+  ScanLink,
 } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
@@ -104,10 +103,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
 
   return (
     <ResponsiveGrid>
-      <LinkExternal
-        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
-        isBscScan={multiChainId[chainName] === ChainId.BSC}
-      >
+      <ScanLink href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}>
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
             ? `Add ${token0Symbol} and ${token1Symbol}`
@@ -115,7 +111,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
             ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
             : `Remove ${token0Symbol} and ${token1Symbol}`}
         </Text>
-      </LinkExternal>
+      </ScanLink>
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text fontWeight={400}>
         <HoverInlineText text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
@@ -124,12 +120,9 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
         <HoverInlineText text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <LinkExternal
-          href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
-          isBscScan={multiChainId[chainName] === ChainId.BSC}
-        >
+        <ScanLink href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}>
           {shortenAddress(transaction.sender)}
-        </LinkExternal>
+        </ScanLink>
       </Text>
       <Text fontWeight={400}>{formatTime(transaction.timestamp, 0)}</Text>
     </ResponsiveGrid>

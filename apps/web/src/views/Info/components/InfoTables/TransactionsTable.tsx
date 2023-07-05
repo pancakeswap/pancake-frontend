@@ -1,9 +1,8 @@
 // TODO PCS refactor ternaries
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkExternal, Radio, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Radio, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
@@ -110,10 +109,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
 
   return (
     <ResponsiveGrid>
-      <LinkExternal
-        isBscScan={multiChainId[chainName] === ChainId.BSC}
-        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
-      >
+      <ScanLink href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}>
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', {
@@ -130,7 +126,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
                 token1: token1Symbol,
               })}
         </Text>
-      </LinkExternal>
+      </ScanLink>
       <Text>${formatAmount(transaction.amountUSD)}</Text>
       <Text>
         <Text>{`${formatAmount(abs0)} ${transaction.token0Symbol}`}</Text>
@@ -138,12 +134,9 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkExternal
-        isBscScan={multiChainId[chainName] === ChainId.BSC}
-        href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
-      >
+      <ScanLink href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}>
         {domainName || truncateHash(transaction.sender)}
-      </LinkExternal>
+      </ScanLink>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
     </ResponsiveGrid>
   )
