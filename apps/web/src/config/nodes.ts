@@ -2,6 +2,11 @@ import { ChainId } from '@pancakeswap/sdk'
 import { arbitrum, polygonZkEvm, zkSync, zkSyncTestnet, polygonZkEvmTestnet, arbitrumGoerli } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
 
+const POLYGON_ZKEVM_NODES = [
+  'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
+  ...polygonZkEvm.rpcUrls.public.http,
+]
+
 export const SERVER_NODES = {
   [ChainId.BSC]: [
     process.env.NEXT_PUBLIC_NODE_PRODUCTION,
@@ -20,7 +25,7 @@ export const SERVER_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
@@ -53,7 +58,7 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: polygonZkEvm.rpcUrls.public.http,
+  [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
     'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,

@@ -6,7 +6,12 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../../constant'
+import {
+  getMultiChainQueryEndPointWithStableSwap,
+  MultiChainName,
+  MultiChainNameExtend,
+  multiChainQueryMainToken,
+} from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
 
 interface TokenFields {
@@ -47,7 +52,7 @@ interface TokenQueryResponse {
 /**
  * Main token data to display on Token page
  */
-const TOKEN_AT_BLOCK = (chainName: MultiChainName, block: number | undefined, tokens: string[]) => {
+const TOKEN_AT_BLOCK = (chainName: MultiChainNameExtend, block: number | undefined, tokens: string[]) => {
   const addressesString = `["${tokens.join('","')}"]`
   const blockString = block ? `block: {number: ${block}}` : ``
   return `tokens(
@@ -70,7 +75,7 @@ const TOKEN_AT_BLOCK = (chainName: MultiChainName, block: number | undefined, to
 }
 
 const fetchTokenData = async (
-  chainName: MultiChainName,
+  chainName: MultiChainNameExtend,
   block24h: number,
   block48h: number,
   block7d: number,
@@ -216,7 +221,7 @@ const useFetchedTokenDatas = (chainName: MultiChainName, tokenAddresses: string[
 }
 
 export const fetchAllTokenDataByAddresses = async (
-  chainName: MultiChainName,
+  chainName: MultiChainNameExtend,
   blocks: Block[],
   tokenAddresses: string[],
 ) => {
@@ -289,7 +294,7 @@ export const fetchAllTokenDataByAddresses = async (
   return formatted
 }
 
-export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block[]) => {
+export const fetchAllTokenData = async (chainName: MultiChainNameExtend, blocks: Block[]) => {
   const tokenAddresses = await fetchTokenAddresses(chainName)
   const data = await fetchAllTokenDataByAddresses(chainName, blocks, tokenAddresses)
   return data

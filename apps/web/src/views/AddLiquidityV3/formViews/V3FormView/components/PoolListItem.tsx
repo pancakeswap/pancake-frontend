@@ -86,7 +86,7 @@ export default function PositionListItem({ positionDetails, children }: Position
   if (priceUpper && priceLower && currencyBase && currencyQuote) {
     subtitle = `${t('Min %minAmount%', {
       minAmount: formatTickPrice(inverted ? priceUpper.invert() : priceLower, tickAtLimit, Bound.LOWER, locale),
-    })}/ ${t('Max %maxAmount%', {
+    })} / ${t('Max %maxAmount%', {
       maxAmount: formatTickPrice(inverted ? priceLower.invert() : priceUpper, tickAtLimit, Bound.UPPER, locale),
     })} ${t('%assetA% per %assetB%', {
       assetA: inverted ? currencyBase?.symbol : currencyQuote?.symbol,

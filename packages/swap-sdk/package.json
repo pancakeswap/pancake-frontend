@@ -34,13 +34,13 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "viem": "^1.1.7",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
-    "toformat": "^2.0.0"
+    "toformat": "^2.0.0",
+    "viem": "^1.2.9"
   },
   "devDependencies": {
     "@types/big.js": "^4.0.5",

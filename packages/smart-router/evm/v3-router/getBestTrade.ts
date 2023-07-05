@@ -1,22 +1,10 @@
-/* eslint-disable no-console */
-import { BigintIsh, Currency, CurrencyAmount, TradeType, ZERO } from '@pancakeswap/sdk'
+import { BigintIsh, ChainId, Currency, CurrencyAmount, TradeType, ZERO } from '@pancakeswap/sdk'
 
 import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { createGasModel } from './gasModel'
 import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
-import { BestRoutes, PoolProvider, PoolType, QuoteProvider, SmartRouterTrade, RouteType } from './types'
-
-interface TradeConfig {
-  gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
-  blockNumber?: number | (() => Promise<number>)
-  poolProvider: PoolProvider
-  quoteProvider: QuoteProvider
-  maxHops?: number
-  maxSplits?: number
-  distributionPercent?: number
-  allowedPoolTypes?: PoolType[]
-  quoterOptimization?: boolean
-}
+import { BestRoutes, TradeConfig, RouteConfig, SmartRouterTrade, RouteType } from './types'
+import { ROUTE_CONFIG_BY_CHAIN } from './constants'
 
 export async function getBestTrade(
   amount: CurrencyAmount<Currency>,
@@ -49,15 +37,14 @@ export async function getBestTrade(
   }
 }
 
-interface RouteConfig extends TradeConfig {
-  blockNumber?: number
-}
-
 async function getBestRoutes(
   amount: CurrencyAmount<Currency>,
   currency: Currency,
   tradeType: TradeType,
-  {
+  routeConfig: RouteConfig,
+): Promise<BestRoutes | null> {
+  const { chainId } = currency
+  const {
     maxHops = 3,
     maxSplits = 4,
     distributionPercent = 5,
@@ -67,8 +54,10 @@ async function getBestRoutes(
     gasPriceWei,
     allowedPoolTypes,
     quoterOptimization,
-  }: RouteConfig,
-): Promise<BestRoutes | null> {
+  } = {
+    ...routeConfig,
+    ...(ROUTE_CONFIG_BY_CHAIN[chainId as ChainId] || {}),
+  }
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const inputCurrency = isExactIn ? amount.currency : currency
   const outputCurrency = isExactIn ? currency : amount.currency

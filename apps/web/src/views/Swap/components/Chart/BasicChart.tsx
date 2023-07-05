@@ -1,6 +1,6 @@
 import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useState, memo } from 'react'
+import { useState, memo, useMemo } from 'react'
 import { useFetchPairPricesV3 } from 'state/swap/hooks'
 import dynamic from 'next/dynamic'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
@@ -33,29 +33,55 @@ const BasicChart = ({
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const valueToDisplay = hoverValue || pairPrices[pairPrices.length - 1]?.value
-  const { changePercentage, changeValue } = getTimeWindowChange(pairPrices)
-  const isChangePositive = changeValue >= 0
-  const chartHeight = isChartExpanded ? 'calc(100vh - 220px)' : '320px'
+  const {
+    changePercentage: changePercentageToCurrent,
+    changeValue: changeValueToCurrent,
+    isChangePositive: isChangePositiveToCurrent,
+  } = useMemo(() => getTimeWindowChange(pairPrices), [pairPrices])
+  const { changePercentage, changeValue, isChangePositive } = useMemo(() => {
+    if (hoverValue) {
+      const lastItem = pairPrices[pairPrices.length - 1]
+      if (lastItem) {
+        const copyPairPrices = [...pairPrices]
+        copyPairPrices[pairPrices.length - 1] = { ...lastItem, value: hoverValue }
+        return getTimeWindowChange(copyPairPrices)
+      }
+    }
+    return {
+      changePercentage: changePercentageToCurrent,
+      changeValue: changeValueToCurrent,
+      isChangePositive: isChangePositiveToCurrent,
+    }
+  }, [pairPrices, hoverValue, changePercentageToCurrent, changeValueToCurrent, isChangePositiveToCurrent])
+  const chartHeight = useMemo(() => (isChartExpanded ? 'calc(100vh - 220px)' : '320px'), [isChartExpanded])
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const currentDate = new Date().toLocaleString(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const currentDate = useMemo(() => {
+    if (!hoverDate) {
+      return new Date().toLocaleString(locale, {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    }
+    return null
+  }, [hoverDate, locale])
 
   // Sometimes we might receive array full of zeros for obscure tokens while trying to derive data
   // In that case chart is not useful to users
-  const isBadData =
-    pairPrices &&
-    pairPrices.length > 0 &&
-    pairPrices.every(
-      (price) => !price.value || price.value === 0 || price.value === Infinity || Number.isNaN(price.value),
-    )
+  const isBadData = useMemo(
+    () =>
+      pairPrices &&
+      pairPrices.length > 0 &&
+      pairPrices.every(
+        (price) => !price.value || price.value === 0 || price.value === Infinity || Number.isNaN(price.value),
+      ),
+    [pairPrices],
+  )
 
   if (isBadData) {
     return <NoChartAvailable token0Address={token0Address} token1Address={token1Address} isMobile={isMobile} />
@@ -98,7 +124,7 @@ const BasicChart = ({
           data={pairPrices}
           setHoverValue={setHoverValue}
           setHoverDate={setHoverDate}
-          isChangePositive={isChangePositive}
+          isChangePositive={isChangePositiveToCurrent}
           isChartExpanded={isChartExpanded}
           timeWindow={timeWindow}
         />

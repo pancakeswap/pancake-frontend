@@ -32,7 +32,6 @@ function ClaimWarning() {
       onSuccess={handleSuccess}
     />,
     false,
-    false,
   )
 
   useEffect(() => {
@@ -40,11 +39,8 @@ function ClaimWarning() {
       onPresentRiskDisclaimer()
     }
 
-    return () => {
-      onDismiss()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasAcceptedRisk])
+    return onDismiss
+  }, [hasAcceptedRisk, onDismiss, onPresentRiskDisclaimer])
 
   return null
 }

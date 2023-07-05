@@ -1,7 +1,6 @@
 // TODO PCS refactor ternaries
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkExternal, Radio, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
@@ -11,7 +10,7 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import { subgraphTokenSymbol } from 'state/info/constant'
+import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useDomainNameForAddress } from 'hooks/useDomain'
@@ -110,10 +109,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
 
   return (
     <ResponsiveGrid>
-      <LinkExternal
-        isBscScan
-        href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}
-      >
+      <LinkExternal isBscScan href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}>
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', {
@@ -138,10 +134,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkExternal
-        isBscScan
-        href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && ChainId.ETHEREUM)}
-      >
+      <LinkExternal isBscScan href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}>
         {domainName || truncateHash(transaction.sender)}
       </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
@@ -167,8 +160,7 @@ const TransactionTable: React.FC<
   const sortedTransactions = useMemo(() => {
     const toBeAbsList = [SORT_FIELD.amountToken0, SORT_FIELD.amountToken1]
     return transactions
-      ? transactions
-          .slice()
+      ? [...transactions]
           .sort((a, b) => {
             if (a && b) {
               const firstField = a[sortField as keyof Transaction]
