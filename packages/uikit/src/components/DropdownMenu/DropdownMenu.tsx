@@ -42,12 +42,10 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   useEffect(() => {
     const showDropdownMenu = () => {
       setIsOpen(true);
-      debouncedHideDropdownMenu.cancel();
+      hideDropdownMenu.cancel();
     };
 
-    const hideDropdownMenu = () => debouncedHideDropdownMenu();
-
-    const debouncedHideDropdownMenu = debounce(
+    const hideDropdownMenu = debounce(
       () => {
         setIsOpen(false);
       },
@@ -65,6 +63,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
         ref?.removeEventListener("mouseenter", showDropdownMenu);
         ref?.removeEventListener("mouseleave", hideDropdownMenu);
       });
+      hideDropdownMenu.cancel();
     };
   }, [setIsOpen, tooltipRef, targetRef, isBottomNav]);
 
