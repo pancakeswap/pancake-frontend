@@ -70,7 +70,7 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
   }, [userAddedTokens, tokenMap, chainId])
 }
 
-export function useAllOnRampTokens(): { [address: string]: OnRampCurrency } {
+export function useAllOnRampTokens(): { [address: string]: Currency } {
   const { chainId } = useActiveChainId()
   const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
   return useMemo(() => {
@@ -178,11 +178,11 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   }, [token, chainId, address, isLoading, data])
 }
 
-export function useOnRampToken(tokenAddress?: string): OnRampCurrency | undefined {
+export function useOnRampToken(tokenAddress?: string): Currency | undefined {
   const { chainId } = useActiveChainId()
   const tokens = useAllOnRampTokens()
   const address = isAddress(tokenAddress)
-  const token: OnRampCurrency | undefined = tokens[tokenAddress]
+  const token = tokens[tokenAddress]
 
   return useMemo(() => {
     if (token) return token

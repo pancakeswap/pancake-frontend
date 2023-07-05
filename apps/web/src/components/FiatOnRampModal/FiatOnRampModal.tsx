@@ -290,7 +290,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       <ModalWrapper minHeight="550px">
         <ModalHeader background={theme.colors.gradientCardHeader}>
           <ModalTitle>
-            <Heading>{t('Buy crypto in one click')}</Heading>
+            <Heading>{t('Buy Crypto In One Click')}</Heading>
           </ModalTitle>
           <ModalCloseButton onDismiss={handleDismiss} />
         </ModalHeader>
