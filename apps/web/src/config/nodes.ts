@@ -3,7 +3,6 @@ import { arbitrum, polygonZkEvm, zkSync, zkSyncTestnet, polygonZkEvmTestnet, arb
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
 
 const POLYGON_ZKEVM_NODES = [
-  'https://magical-dark-flower.zkevm-mainnet.quiknode.pro/db439a06298d58c68c72d8cb74b1629d638705f1',
   'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
   ...polygonZkEvm.rpcUrls.public.http,
 ]
