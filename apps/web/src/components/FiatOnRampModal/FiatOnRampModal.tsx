@@ -152,9 +152,6 @@ export const FiatOnRampModalButton = ({
       amount={amount}
     />,
   )
-  const handleBuyCryptoClick = useCallback(() => {
-    onPresentConfirmModal()
-  }, [onPresentConfirmModal])
 
   let buttonText: ReactNode | string = t(`Buy with %provider%`, { provider })
   if (disabled) {
@@ -171,7 +168,7 @@ export const FiatOnRampModalButton = ({
   }
   return (
     <AutoColumn gap="md">
-      <CommitButton onClick={handleBuyCryptoClick} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
+      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
         {buttonText}
       </CommitButton>
     </AutoColumn>

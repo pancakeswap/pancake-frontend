@@ -12,16 +12,16 @@ import {
   CurrencyLogo,
 } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
-import { Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
-import { ReactNode, useCallback } from 'react'
+import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAllOnRampTokens } from 'hooks/Tokens'
 import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
 
 const networkDisplay: { [id: number]: string } = {
-  1: 'Ethereum',
-  56: 'Binance Chain',
+  [ChainId.ETHEREUM]: 'Ethereum',
+  [ChainId.BSC]: 'Binance Chain',
 }
 
 const DropDownContainer = styled.div<{ error: boolean }>`
@@ -134,12 +134,6 @@ export const CurrencySelect = ({
     />,
   )
 
-  const handleUserInput = useCallback(
-    (val: string) => {
-      onUserInput(val)
-    },
-    [onUserInput],
-  )
   return (
     <Box width="100%" {...props}>
       <Flex justifyContent="space-between" py="4px" width="100%" alignItems="center">
@@ -154,7 +148,7 @@ export const CurrencySelect = ({
             className="token-amount-input"
             value={value}
             onBlur={onInputBlur}
-            onUserInput={handleUserInput}
+            onUserInput={onUserInput}
             align="left"
           />
         ) : (

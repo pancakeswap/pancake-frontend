@@ -199,7 +199,7 @@ export function useCurrency(currencyId: string | undefined): Currency | ERC20Tok
   return isNative ? native : token
 }
 
-export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | OnRampCurrency | null | undefined {
+export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | Currency | null | undefined {
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE

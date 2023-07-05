@@ -2,11 +2,12 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 
 import { AutoColumn, CircleLoader, Flex, Text } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
-import { Dispatch, ReactNode, useCallback, useState } from 'react'
+import { Dispatch, ReactNode, useCallback } from 'react'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { SetStateAction } from 'jotai'
 import { CryptoFormView } from 'views/BuyCrypto/types'
+import { useMutation } from '@tanstack/react-query'
 
 interface GetQuotesButtonProps {
   errorText: string | undefined
@@ -15,17 +16,15 @@ interface GetQuotesButtonProps {
 }
 
 export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }: GetQuotesButtonProps) {
-  const [loading, setLoading] = useState<boolean>(false)
   const { address: account } = useAccount()
   const { t } = useTranslation()
 
-  const Next = useCallback(async () => {
-    setLoading(true)
-    await fetchQuotes()
-    // await new Promise((resolve) => setTimeout(resolve, 1500))
-    setLoading(false)
-    setModalView(CryptoFormView.Quote)
-  }, [setModalView, fetchQuotes])
+  const { mutate, isLoading } = useMutation(fetchQuotes, {
+    onSuccess: () => {
+      setModalView(CryptoFormView.Quote)
+    },
+  })
+  const next = useCallback(() => mutate(), [mutate])
 
   if (!account) {
     return <ConnectWalletButton width="100%" />
@@ -35,7 +34,7 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
   if (errorText) {
     buttonText = errorText
   }
-  if (loading) {
+  if (isLoading) {
     buttonText = (
       <>
         <Flex alignItems="center">
@@ -51,9 +50,9 @@ export default function GetQuotesButton({ errorText, setModalView, fetchQuotes }
     <AutoColumn gap="md">
       <CommitButton
         variant={errorText ? 'danger' : 'primary'}
-        onClick={Next}
+        onClick={next}
         disabled={Boolean(errorText)}
-        isLoading={loading}
+        isLoading={isLoading}
         height="55px"
       >
         {buttonText}
