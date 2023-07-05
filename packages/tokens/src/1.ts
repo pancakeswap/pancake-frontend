@@ -232,4 +232,12 @@ export const ethereumTokens = {
     'TrueUSD',
     'https://tusd.io/',
   ),
+  canto: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x56C03B8C4FA80Ba37F5A7b60CAAAEF749bB5b220',
+    18,
+    'CANTO',
+    'Canto',
+    'https://tusd.io/',
+  ),
 }

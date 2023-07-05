@@ -1,6 +1,6 @@
 {
   "name": "routing-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/worker-utils": "workspace:*",
@@ -10,7 +10,7 @@
     "graphql-request": "^5.0.0",
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",
-    "viem": "^1.1.7"
+    "viem": "^1.2.9"
   },
   "devDependencies": {
     "@types/itty-router-extras": "^0.4.0",

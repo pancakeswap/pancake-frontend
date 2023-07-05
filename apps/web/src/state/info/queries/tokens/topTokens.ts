@@ -4,11 +4,11 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import union from 'lodash/union'
 import { useGetChainName } from '../../hooks'
 import {
-  MultiChainName,
   getMultiChainQueryEndPointWithStableSwap,
   checkIsStableSwap,
   multiChainTokenBlackList,
   multiChainTokenWhiteList,
+  MultiChainNameExtend,
 } from '../../constant'
 
 interface TopTokensResponse {
@@ -28,7 +28,7 @@ interface StableSwapTopTokensResponse {
  * The actual data is later requested in tokenData.ts
  * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
  */
-const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopTokens = async (chainName: MultiChainNameExtend, timestamp24hAgo: number): Promise<string[]> => {
   const whereCondition =
     chainName === 'ETH'
       ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyVolumeUSD_gt:2000 }`
@@ -107,7 +107,7 @@ const useTopTokenAddresses = (): string[] => {
   return topTokenAddresses
 }
 
-export const fetchTokenAddresses = async (chainName: MultiChainName) => {
+export const fetchTokenAddresses = async (chainName: MultiChainNameExtend) => {
   const [timestamp24hAgo] = getDeltaTimestamps()
 
   const addresses = await fetchTopTokens(chainName, timestamp24hAgo)

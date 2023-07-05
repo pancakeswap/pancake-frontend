@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "⚒️ An SDK for building applications on top of Pancakeswap V3",
   "files": [
     "dist"
@@ -25,7 +25,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "viem": "^1.1.7",
+    "viem": "^1.2.9",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",

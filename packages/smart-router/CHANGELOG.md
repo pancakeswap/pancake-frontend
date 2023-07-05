@@ -1,5 +1,12 @@
 # @pancakeswap/smart-router
 
+## 4.0.1
+
+### Patch Changes
+
+- @pancakeswap/tokens@0.1.4
+- @pancakeswap/v3-sdk@3.0.1
+
 ## 4.0.0
 
 ### Major Changes

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/token-lists",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -18,14 +18,14 @@
   "peerDependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "localforage": "^1.10.0",
-    "jotai": "^2.1.0",
+    "jotai": "^2.2.1",
     "react": "^18.2.0"
   },
   "devDependencies": {
     "@pancakeswap/utils": "workspace:*",
     "@types/react": "^18.0.17",
     "localforage": "^1.10.0",
-    "jotai": "^2.1.0",
+    "jotai": "^2.2.1",
     "@reduxjs/toolkit": "^1.9.1",
     "react": "^18.2.0",
     "tsup": "^6.7.0"

@@ -14,9 +14,10 @@ import { useChainNameByQuery } from 'state/info/hooks'
 import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getBlockExploreLink } from 'utils'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
-import { getEtherscanLink, shortenAddress } from '../../utils'
+import { shortenAddress } from '../../utils'
 import { formatTime } from '../../utils/date'
 import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
@@ -103,7 +104,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   return (
     <ResponsiveGrid>
       <LinkExternal
-        href={getEtherscanLink(multiChainId[chainName], transaction.hash, 'transaction')}
+        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
         isBscScan={chainName === 'BSC'}
       >
         <Text fontWeight={400}>
@@ -123,7 +124,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
       </Text>
       <Text fontWeight={400}>
         <LinkExternal
-          href={getEtherscanLink(multiChainId[chainName], transaction.sender, 'address')}
+          href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
           isBscScan={chainName === 'BSC'}
         >
           {shortenAddress(transaction.sender)}
@@ -178,8 +179,7 @@ export default function TransactionTable({
 
   const sortedTransactions = useMemo(() => {
     return transactions
-      ? transactions
-          .slice()
+      ? [...transactions]
           .sort((a, b) => {
             if (a && b) {
               return a[sortField as keyof Transaction] > b[sortField as keyof Transaction]
