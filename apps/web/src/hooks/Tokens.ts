@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { ChainId, ERC20Token, OnRampCurrency } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
