@@ -43,6 +43,7 @@ export const CELER_API = 'https://api.celerscan.com/scan'
 export const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.BSC]: INFO_CLIENT,
   [ChainId.ETHEREUM]: INFO_CLIENT_ETH,
+  [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest',
   [ChainId.LINEA_TESTNET]: 'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exhange-eth/',
   [ChainId.ARBITRUM_ONE]: 'https://thegraph.com/hosted-service/subgraph/chef-jojo/exchange-v2-arb',
 }

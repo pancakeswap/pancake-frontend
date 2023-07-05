@@ -62,8 +62,8 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
       }
       return got
     },
-    (get, set, action) => {
-      set(listsStorageAtom, reducer(get(defaultStateAtom), action))
+    async (get, set, action) => {
+      set(listsStorageAtom, reducer(await get(defaultStateAtom), action))
     },
   )
 

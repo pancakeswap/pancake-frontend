@@ -20,7 +20,7 @@ import useSWRImmutable from 'swr/immutable'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { MultiChainName, checkIsStableSwap, multiChainId } from './constant'
+import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
 // Protocol hooks
@@ -133,7 +133,7 @@ export const usePoolTransactionsSWR = (address: string): Transaction[] | undefin
 
 // Tokens hooks
 
-export const useAllTokenHighLight = (targetChainName?: MultiChainName): TokenData[] => {
+export const useAllTokenHighLight = (targetChainName?: MultiChainNameExtend): TokenData[] => {
   const chainNameByQuery = useChainNameByQuery()
   const chainName = targetChainName ?? chainNameByQuery
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
@@ -290,10 +290,11 @@ export const useGetChainName = () => {
   return result
 }
 
-export const useChainNameByQuery = () => {
+export const useChainNameByQuery = (): MultiChainName => {
   const { query } = useRouter()
   const chainName = useMemo(() => {
     if (query?.chainName === 'eth') return 'ETH'
+    if (query?.chainName === 'polygon-zkevm') return 'POLYGON_ZKEVM'
     return 'BSC'
   }, [query])
   return chainName

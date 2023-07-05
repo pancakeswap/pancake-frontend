@@ -66,6 +66,18 @@ const ResponsiveGrid = styled.div`
     grid-template-columns: 2fr 1fr 1fr 2fr;
   }
 `
+const TableRowWrapper = styled(Flex)`
+  width: 100%;
+  flex-direction: column;
+  gap: 16px;
+  background-color: ${({ theme }) => theme.card.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+
+  @media screen and (max-width: 575px) {
+    max-height: 450px;
+    overflow-y: auto;
+  }
+`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
@@ -169,12 +181,14 @@ const DataRow: React.FC<
   )
   if (!address) return null
 
+  const isTradeRewardToken = dataSource === InfoDataSource.V3 && tokenData?.pairs?.length > 0
+
   return (
     <LinkWrapper to={tokenInfoLink}>
-      <ResponsiveGrid>
-        <Flex alignItems="center">
+      <ResponsiveGrid style={{ gap: '8px' }}>
+        <Flex flexWrap="wrap" width="100%" justifyContent="flex-start" alignItems="center">
           <ResponsiveLogo size="24px" currency={currencyFromAddress} />
-          {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
+          {(isXs || isSm) && <Text ml="4px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
               <Text>{tokenData.name}</Text>
@@ -183,19 +197,21 @@ const DataRow: React.FC<
           )}
         </Flex>
         {(type === 'priceChange' || type === 'liquidity') && (
-          <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
+          <Flex flexWrap="wrap" width="100%" justifyContent="center" alignItems="center">
+            <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
+          </Flex>
         )}
         {type !== 'liquidity' && (
-          <Text fontWeight={400}>
-            <Percent value={tokenData.priceUSDChange} fontWeight={400} />
-          </Text>
+          <Flex flexWrap="wrap" width="100%" justifyContent="center" alignItems="center">
+            <Text fontWeight={400}>
+              <Percent value={tokenData.priceUSDChange} fontWeight={400} />
+            </Text>
+          </Flex>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.tvlUSD)}</Text>}
         <Flex alignItems="center" justifyContent="flex-end">
-          {dataSource === InfoDataSource.V3 && tokenData?.pairs?.length > 0 && (
-            <TradingRewardIcon pairs={tokenData.pairs} />
-          )}
+          {isTradeRewardToken && <TradingRewardIcon pairs={tokenData.pairs} />}
           <Button
             variant="text"
             scale="sm"
@@ -371,53 +387,54 @@ const TokenTable: React.FC<
           </StyledClickableColumnHeader>
         )}
       </ResponsiveGrid>
-
-      <Break />
-      {sortedTokens.length > 0 ? (
-        <>
-          {sortedTokens.map((data, i) => {
-            if (data) {
-              return (
-                <Fragment key={data.address}>
-                  <DataRow
-                    dataSource={dataSource}
-                    index={(page - 1) * MAX_ITEMS + i}
-                    tokenData={data}
-                    type={type}
-                    handleOutputSelect={handleOutputSelect}
-                  />
-                  <Break />
-                </Fragment>
-              )
-            }
-            return null
-          })}
-          {!isMobile && (
-            <PageButtons>
-              <Arrow
-                onClick={() => {
-                  setPage(page === 1 ? page : page - 1)
-                }}
-              >
-                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
-              </Arrow>
-              <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
-              <Arrow
-                onClick={() => {
-                  setPage(page === maxPage ? page : page + 1)
-                }}
-              >
-                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </PageButtons>
-          )}
-        </>
-      ) : (
-        <>
-          <TableLoader />
-          <Box />
-        </>
-      )}
+      <TableRowWrapper>
+        <Break />
+        {sortedTokens.length > 0 ? (
+          <>
+            {sortedTokens.map((data, i) => {
+              if (data) {
+                return (
+                  <Fragment key={data.address}>
+                    <DataRow
+                      dataSource={dataSource}
+                      index={(page - 1) * MAX_ITEMS + i}
+                      tokenData={data}
+                      type={type}
+                      handleOutputSelect={handleOutputSelect}
+                    />
+                    <Break />
+                  </Fragment>
+                )
+              }
+              return null
+            })}
+            {!isMobile && (
+              <PageButtons>
+                <Arrow
+                  onClick={() => {
+                    setPage(page === 1 ? page : page - 1)
+                  }}
+                >
+                  <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+                </Arrow>
+                <Text>{t('Page %page% of %maxPage%', { page, maxPage })}</Text>
+                <Arrow
+                  onClick={() => {
+                    setPage(page === maxPage ? page : page + 1)
+                  }}
+                >
+                  <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+                </Arrow>
+              </PageButtons>
+            )}
+          </>
+        ) : (
+          <>
+            <TableLoader />
+            <Box />
+          </>
+        )}
+      </TableRowWrapper>
     </TableWrapper>
   )
 }

@@ -50,6 +50,12 @@ export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 
+export const v2Clients = {
+  [ChainId.ETHEREUM]: infoClientETH,
+  [ChainId.BSC]: infoClient,
+  [ChainId.POLYGON_ZKEVM]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.POLYGON_ZKEVM]),
+}
+
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
 
 export const infoServerClient = new GraphQLClient(INFO_CLIENT, {

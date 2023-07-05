@@ -58,8 +58,7 @@ const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[])
 const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]) => {
   if (!urls) return EMPTY_LIST
   return (
-    urls
-      .slice()
+    [...urls]
       // sort by priority so top priority goes last
       .sort(sortByListPriority)
       .reduce((allTokens, currentUrl) => {
