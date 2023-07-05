@@ -120,35 +120,31 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
             </ButtonMenu>
           </Box>
         )}
-        {campaignLeaderBoardList.campaignStart > 0 && (
-          <>
-            <Text textAlign="center" color="textSubtle" bold>
-              {t('Round #%round%  |  %startTime% - %endTime%', {
-                round: campaignMaxPage - (campaignPage - 1),
-                startTime: timeFormat(locale, campaignLeaderBoardList?.campaignStart),
-                endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
-              })}
-            </Text>
-            {index === 1 && (
-              <PaginationButton
-                showMaxPageText
-                currentPage={campaignPage}
-                maxPage={campaignMaxPage}
-                setCurrentPage={setCampaignPage}
-              />
-            )}
-            <Container mb="16px">
-              <Grid
-                gridGap={['16px', null, null, null, null, '24px']}
-                gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
-              >
-                {first && <RankingCard rank={1} user={first} />}
-                {second && <RankingCard rank={2} user={second} />}
-                {third && <RankingCard rank={3} user={third} />}
-              </Grid>
-            </Container>
-          </>
+        <Text textAlign="center" color="textSubtle" bold>
+          {t('Round #%round%  |  %startTime% - %endTime%', {
+            round: campaignMaxPage - (campaignPage - 1),
+            startTime: timeFormat(locale, campaignLeaderBoardList?.campaignStart),
+            endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
+          })}
+        </Text>
+        {index === 1 && (
+          <PaginationButton
+            showMaxPageText
+            currentPage={campaignPage}
+            maxPage={campaignMaxPage}
+            setCurrentPage={setCampaignPage}
+          />
         )}
+        <Container mb="16px">
+          <Grid
+            gridGap={['16px', null, null, null, null, '24px']}
+            gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
+          >
+            {first && <RankingCard rank={1} user={first} />}
+            {second && <RankingCard rank={2} user={second} />}
+            {third && <RankingCard rank={3} user={third} />}
+          </Grid>
+        </Container>
         <Box maxWidth={1200} m="auto">
           <MyRank campaignId={campaignLeaderBoardList.campaignId} />
           {isDesktop ? (
