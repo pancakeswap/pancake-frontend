@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
+import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 const initialState = {
   topTradersIndex: 0,
@@ -13,11 +14,11 @@ const initialState = {
 export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
   const { address: account } = useAccount()
   const { data, isLoading } = useSWR(
-    campaignId && account && ['/user-trade-rank', campaignId, account],
+    Number(campaignId) > 0 && account && ['/user-trade-rank', campaignId, account],
     async () => {
       try {
         const response = await fetch(
-          `${TRADING_REWARD_API}/rank_index/campaignId/${campaignId}/address/${account}/type/tt`,
+          `${TRADING_REWARD_API}/rank_index/campaignId/${campaignId}/address/${account}/type/${RewardType.TOP_TRADERS}`,
         )
         const result = await response.json()
         return {
