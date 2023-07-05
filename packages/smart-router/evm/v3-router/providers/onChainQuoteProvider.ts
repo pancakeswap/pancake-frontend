@@ -1,9 +1,7 @@
-/* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Abi, Address } from 'viem'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
-import flatMap from 'lodash/flatMap.js'
 import uniq from 'lodash/uniq.js'
 import chunk from 'lodash/chunk.js'
 
@@ -49,37 +47,6 @@ interface ProviderConfig {
   multicallConfigs?: ChainMap<BatchMulticallConfigs>
 }
 
-type QuoteBatchSuccess = {
-  status: 'success'
-  order: number
-  inputs: [string, string][]
-  results: {
-    blockNumber: bigint
-    results: Result<[bigint, bigint[], number[], bigint]>[]
-    approxGasUsedPerSuccessCall: number
-  }
-}
-
-type QuoteBatchFailed = {
-  status: 'failed'
-  order: number
-  inputs: [string, string][]
-  reason: Error
-  results?: {
-    blockNumber: bigint
-    results: Result<[bigint, bigint[], number[], bigint]>[]
-    approxGasUsedPerSuccessCall: number
-  }
-}
-
-type QuoteBatchPending = {
-  status: 'pending'
-  order: number
-  inputs: CallInputs[]
-}
-
-type QuoteBatchState = QuoteBatchSuccess | QuoteBatchFailed | QuoteBatchPending
-
 export class BlockConflictError extends Error {
   public name = 'BlockConflictError'
 }
@@ -112,6 +79,22 @@ export class ProviderGasError extends Error {
 
 export type QuoteRetryOptions = RetryOptions
 
+interface GetQuotesConfig {
+  multicallGasLimit: number
+  multicallChunkSize: number
+}
+
+const retryControllerFactory = () => {
+  const errors: Error[] = []
+  return {
+    shouldRetry: (error: Error) => errors.every((err) => err.name !== error.name),
+    onRetry: (error: Error) => {
+      errors.push(error)
+    },
+    getErrorsOnPreviousRetries: () => errors,
+  }
+}
+
 function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, abi, getCallInputs }: FactoryConfig) {
   return function createOnChainQuoteProvider({
     onChainProvider,
@@ -130,296 +113,139 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
           return []
         }
 
-        const chainId: ChainId = routes[0].amount.currency.chainId
+        const {
+          amount: {
+            currency: { chainId },
+          },
+        } = routes[0]
+        const quoterAddress = getQuoterAddress(chainId)
+        const minSuccessRate = SUCCESS_RATE_CONFIG[chainId as ChainId]
         const multicallConfigs =
-          multicallConfigsOverride?.[chainId] ||
-          BATCH_MULTICALL_CONFIGS[chainId] ||
+          multicallConfigsOverride?.[chainId as ChainId] ||
+          BATCH_MULTICALL_CONFIGS[chainId as ChainId] ||
           BATCH_MULTICALL_CONFIGS[ChainId.ETHEREUM]
+        const {
+          defaultConfig: { multicallChunk, gasLimitOverride },
+        } = multicallConfigs
         const chainProvider = onChainProvider({ chainId })
-        let { multicallChunk, gasLimitOverride } = multicallConfigs.defaultConfig
-        const { gasErrorFailureOverride, successRateFailureOverrides } = multicallConfigs
-        const retryOptions = {
-          retries: DEFAULT_BATCH_RETRIES,
-          minTimeout: 25,
-          maxTimeout: 250,
-        }
         const providerConfig = { blockNumber: blockNumberFromConfig }
-        // const baseBlockOffset = 0
-        const rollback = { enabled: false, rollbackBlockOffset: 0, attemptsBeforeRollback: 2 }
         const multicall2Provider = new PancakeMulticallProvider(chainId, chainProvider, gasLimitOverride)
-
         const inputs = routes.map<CallInputs>((route) => getCallInputs(route, isExactIn))
 
-        const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
-        const inputsChunked = chunk(inputs, normalizedChunk)
-        let quoteStates: QuoteBatchState[] = inputsChunked.map((inputChunk, index) => {
-          return {
-            order: index,
-            status: 'pending',
-            inputs: inputChunk,
-          }
-        })
+        const { shouldRetry, onRetry } = retryControllerFactory()
 
-        let haveRetriedForSuccessRate = false
-        let haveRetriedForBlockHeader = false
-        let blockHeaderRetryAttemptNumber = 0
-        let haveIncrementedBlockHeaderFailureCounter = false
-        let blockHeaderRolledBack = false
-        let haveRetriedForBlockConflictError = false
-        let haveRetriedForOutOfGas = false
-        let haveRetriedForTimeout = false
-        let haveRetriedForUnknownReason = false
-        let finalAttemptNumber = 1
-        const expectedCallsMade = quoteStates.length
-        let totalCallsMade = 0
-
-        const {
-          results: quoteResults,
-          blockNumber,
-          approxGasUsedPerSuccessCall,
-        } = await retry(
-          async (_bail, attemptNumber) => {
-            haveIncrementedBlockHeaderFailureCounter = false
-            finalAttemptNumber = attemptNumber
-
-            const [success, failed, pending] = partitionQuotes(quoteStates)
-
-            // console.log(
-            //   `Starting attempt: ${attemptNumber}.
-            // rrently ${success.length} success, ${failed.length} failed, ${pending.length} pending.
-            // s limit override: ${gasLimitOverride} Block number override: ${providerConfig.blockNumber}.`,
-            // )
-
-            quoteStates = await Promise.all(
-              quoteStates.map(async (quoteState: QuoteBatchState, idx: number) => {
-                if (quoteState.status === 'success') {
-                  return quoteState
-                }
-
-                // QuoteChunk is pending or failed, so we try again
-                // eslint-disable-next-line @typescript-eslint/no-shadow
-                const { inputs, order } = quoteState
-
-                try {
-                  totalCallsMade += 1
-
-                  const results = await multicall2Provider.callSameFunctionOnContractWithMultipleParams<
-                    CallInputs,
-                    [bigint, bigint[], number[], bigint] // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
-                  >({
-                    address: getQuoterAddress(chainId),
-                    abi,
-                    functionName,
-                    functionParams: inputs,
-                    providerConfig,
-                    additionalConfig: {
-                      gasLimitPerCallOverride: gasLimitOverride,
-                    },
-                  })
-
-                  return {
-                    order,
-                    status: 'success',
-                    inputs,
-                    results,
-                  } as QuoteBatchSuccess
-                } catch (err: any) {
-                  // Error from providers have huge messages that include all the calldata and fill the logs.
-                  // Catch them and rethrow with shorter message.
-                  if (err.message.includes('header not found')) {
-                    return {
-                      order,
-                      status: 'failed',
-                      inputs,
-                      reason: new ProviderBlockHeaderError(err.message.slice(0, 500)),
-                    } as QuoteBatchFailed
-                  }
-
-                  if (err.message.includes('timeout')) {
-                    return {
-                      order,
-                      status: 'failed',
-                      inputs,
-                      reason: new ProviderTimeoutError(
-                        `Req ${idx}/${quoteStates.length}. Request had ${inputs.length} inputs. ${err.message.slice(
-                          0,
-                          500,
-                        )}`,
-                      ),
-                    } as QuoteBatchFailed
-                  }
-
-                  if (err.message.includes('out of gas')) {
-                    return {
-                      order,
-                      status: 'failed',
-                      inputs,
-                      reason: new ProviderGasError(err.message.slice(0, 500)),
-                    } as QuoteBatchFailed
-                  }
-
-                  return {
-                    order,
-                    status: 'failed',
-                    inputs,
-                    reason: new Error(`Unknown error from provider: ${err.message.slice(0, 500)}`),
-                  } as QuoteBatchFailed
-                }
-              }),
+        async function getQuotes({ multicallGasLimit, multicallChunkSize }: GetQuotesConfig) {
+          const chunkSize = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunkSize))
+          const chunkedInputs = chunk(inputs, chunkSize)
+          try {
+            const chunkedResults = await Promise.all(
+              chunkedInputs.map((inputsChunk) =>
+                multicall2Provider.callSameFunctionOnContractWithMultipleParams<
+                  CallInputs,
+                  // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
+                  [bigint, bigint[], number[], bigint]
+                >({
+                  address: quoterAddress,
+                  abi,
+                  functionName,
+                  functionParams: inputsChunk,
+                  providerConfig,
+                  additionalConfig: {
+                    gasLimitPerCallOverride: multicallGasLimit,
+                  },
+                }),
+              ),
             )
 
-            const [successfulQuoteStates, failedQuoteStates, pendingQuoteStates] = partitionQuotes(quoteStates)
-
-            if (pendingQuoteStates.length > 0) {
-              throw new Error('Pending quote after waiting for all promises.')
-            }
-
-            let retryAll = false
-
-            const blockNumberError = validateBlockNumbers(successfulQuoteStates, inputsChunked.length, gasLimitOverride)
-
-            // If there is a block number conflict we retry all the quotes.
-            if (blockNumberError) {
-              retryAll = true
-            }
-
-            const reasonForFailureStr = failedQuoteStates
-              .map((failedQuoteState) => failedQuoteState.reason.name)
-              .join(', ')
-
-            if (failedQuoteStates.length > 0) {
-              // console.log(
-              //   `On attempt ${attemptNumber}: ${failedQuoteStates.length}/${quoteStates.length} quotes failed. Reasons: ${reasonForFailureStr}`,
-              // )
-
-              for (const failedQuoteState of failedQuoteStates) {
-                const { reason: error } = failedQuoteState
-
-                // console.log({ error }, `[QuoteFetchError] Attempt ${attemptNumber}. ${error.message}`)
-
-                if (error instanceof BlockConflictError) {
-                  if (!haveRetriedForBlockConflictError) {
-                    haveRetriedForBlockConflictError = true
-                  }
-
-                  retryAll = true
-                } else if (error instanceof ProviderBlockHeaderError) {
-                  if (!haveRetriedForBlockHeader) {
-                    haveRetriedForBlockHeader = true
-                  }
-
-                  // Ensure that if multiple calls fail due to block header in the current pending batch,
-                  // we only count once.
-                  if (!haveIncrementedBlockHeaderFailureCounter) {
-                    blockHeaderRetryAttemptNumber += 1
-                    haveIncrementedBlockHeaderFailureCounter = true
-                  }
-
-                  if (rollback.enabled) {
-                    const { rollbackBlockOffset, attemptsBeforeRollback } = rollback
-
-                    if (blockHeaderRetryAttemptNumber >= attemptsBeforeRollback && !blockHeaderRolledBack) {
-                      // console.log(
-                      //   `Attempt ${attemptNumber}. Have failed due to block header ${blockHeaderRetryAttemptNumber - 1
-                      //   } times. Rolling back block number by ${rollbackBlockOffset} for next retry`,
-                      // )
-                      providerConfig.blockNumber = providerConfig.blockNumber
-                        ? // eslint-disable-next-line no-await-in-loop
-                          BigInt(providerConfig.blockNumber) + BigInt(rollbackBlockOffset)
-                        : // eslint-disable-next-line no-await-in-loop
-                          (await chainProvider.getBlockNumber()) + BigInt(rollbackBlockOffset)
-
-                      retryAll = true
-                      blockHeaderRolledBack = true
-                    }
-                  }
-                } else if (error instanceof ProviderTimeoutError) {
-                  if (!haveRetriedForTimeout) {
-                    haveRetriedForTimeout = true
-                  }
-                } else if (error instanceof ProviderGasError) {
-                  if (!haveRetriedForOutOfGas) {
-                    haveRetriedForOutOfGas = true
-                  }
-                  gasLimitOverride = gasErrorFailureOverride.gasLimitOverride
-                  multicallChunk = gasErrorFailureOverride.multicallChunk
-                  retryAll = true
-                } else {
-                  // eslint-disable-next-line no-lonely-if
-                  if (!haveRetriedForUnknownReason) {
-                    haveRetriedForUnknownReason = true
-                  }
-                }
-              }
-            }
-
-            let successRateError: SuccessRateError | void
-            if (failedQuoteStates.length === 0) {
-              successRateError = validateSuccessRate(
-                quoteStates.reduce<Result<[bigint, bigint[], number[], bigint]>[]>(
-                  (acc, cur) => (cur.status === 'success' ? [...acc, ...(cur.results?.results || [])] : acc),
-                  [],
-                ),
-                haveRetriedForSuccessRate,
-                SUCCESS_RATE_CONFIG[chainId],
-              )
-
-              if (successRateError) {
-                if (!haveRetriedForSuccessRate) {
-                  haveRetriedForSuccessRate = true
-
-                  // Low success rate can indicate too little gas given to each call.
-                  gasLimitOverride = successRateFailureOverrides.gasLimitOverride
-                  multicallChunk = successRateFailureOverrides.multicallChunk
-                  retryAll = true
-                }
-              }
-            }
-
-            if (retryAll) {
-              // console.log(`Attempt ${attemptNumber}. Resetting all requests to pending for next attempt.`)
-
-              // eslint-disable-next-line @typescript-eslint/no-shadow
-              const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
-
-              // eslint-disable-next-line @typescript-eslint/no-shadow
-              const inputsChunked = chunk(inputs, normalizedChunk)
-              quoteStates = inputsChunked.map((inputChunk, index) => {
-                return {
-                  order: index,
-                  status: 'pending',
-                  inputs: inputChunk,
-                }
-              })
-            }
-
-            if (failedQuoteStates.length > 0) {
-              console.log(failedQuoteStates, 'failedQuoteStates')
-              throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
-            }
-
-            // @ts-ignore
+            const results = chunkedResults.reduce<Result<[bigint, bigint[], number[], bigint]>[]>(
+              (acc, cur) => [...acc, ...cur.results],
+              [],
+            )
+            const successRateError = validateSuccessRate(results, minSuccessRate)
             if (successRateError) {
               throw successRateError
             }
 
-            const orderedSuccessfulQuoteStates = successfulQuoteStates.sort((a, b) => (a.order < b.order ? -1 : 1))
-            const callResults = orderedSuccessfulQuoteStates.map((quoteState) => quoteState.results)
+            const resultsWithSuccessfulCalls = chunkedResults.filter(({ results: chunkResults }) =>
+              chunkResults.some(({ success }) => success),
+            )
+            const blockConflictError = validateBlockNumbers(resultsWithSuccessfulCalls)
+            if (blockConflictError) {
+              throw blockConflictError
+            }
 
             return {
-              results: flatMap(callResults, (result) => result.results),
-              blockNumber: BigInt(successfulQuoteStates[0]!.results.blockNumber),
+              results,
+              blockNumber: BigInt(resultsWithSuccessfulCalls[0]?.blockNumber),
               approxGasUsedPerSuccessCall: stats.percentile(
-                callResults.map((result) => result.approxGasUsedPerSuccessCall),
+                resultsWithSuccessfulCalls.map((result) => result.approxGasUsedPerSuccessCall),
                 100,
               ),
             }
+          } catch (err: any) {
+            if (err instanceof SuccessRateError || err instanceof BlockConflictError) {
+              throw err
+            }
+
+            const slicedErrMsg = err.message.slice(0, 500)
+            if (err.message.includes('header not found')) {
+              throw new ProviderBlockHeaderError(slicedErrMsg)
+            }
+
+            if (err.message.includes('timeout')) {
+              throw new ProviderTimeoutError(`Request had ${inputs.length} inputs. ${slicedErrMsg}`)
+            }
+
+            if (err.message.includes('out of gas')) {
+              throw new ProviderGasError(slicedErrMsg)
+            }
+
+            throw new Error(`Unknown error from provider: ${slicedErrMsg}`)
+          }
+        }
+
+        const quoteResult = await retry(
+          async (bail) => {
+            try {
+              return getQuotes({ multicallChunkSize: multicallChunk, multicallGasLimit: gasLimitOverride })
+            } catch (e: unknown) {
+              const error = e instanceof Error ? e : new Error(`Unexpected error type ${e}`)
+              onRetry(error)
+              console.error(`Retry`, error)
+              if (!shouldRetry(error)) {
+                // bail is actually rejecting the promise on retry function
+                return bail(error)
+              }
+              if (error instanceof SuccessRateError) {
+                const { successRateFailureOverrides } = multicallConfigs
+                return getQuotes({
+                  multicallChunkSize: successRateFailureOverrides.multicallChunk,
+                  multicallGasLimit: successRateFailureOverrides.gasLimitOverride,
+                })
+              }
+              if (error instanceof ProviderGasError) {
+                const { gasErrorFailureOverride } = multicallConfigs
+                return getQuotes({
+                  multicallChunkSize: gasErrorFailureOverride.multicallChunk,
+                  multicallGasLimit: gasErrorFailureOverride.gasLimitOverride,
+                })
+              }
+              throw error
+            }
           },
           {
-            ...retryOptions,
+            retries: DEFAULT_BATCH_RETRIES,
+            minTimeout: 25,
+            maxTimeout: 250,
+            onRetry,
           },
         )
 
+        if (!quoteResult) {
+          throw new Error(`Unexpected empty quote result ${quoteResult}`)
+        }
+
+        const { results: quoteResults } = quoteResult
         const routesWithQuote = processQuoteResults(quoteResults, routes, gasModel, adjustQuoteForGas)
 
         // metric.putMetric('QuoteApproxGasUsedPerSuccessfulCall', approxGasUsedPerSuccessCall, MetricLoggerUnit.Count)
@@ -455,57 +281,25 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
   }
 }
 
-function partitionQuotes(
-  quoteStates: QuoteBatchState[],
-): [QuoteBatchSuccess[], QuoteBatchFailed[], QuoteBatchPending[]] {
-  const successfulQuoteStates: QuoteBatchSuccess[] = quoteStates.filter<QuoteBatchSuccess>(
-    (quoteState): quoteState is QuoteBatchSuccess => quoteState.status === 'success',
-  )
-
-  const failedQuoteStates: QuoteBatchFailed[] = quoteStates.filter<QuoteBatchFailed>(
-    (quoteState): quoteState is QuoteBatchFailed => quoteState.status === 'failed',
-  )
-
-  const pendingQuoteStates: QuoteBatchPending[] = quoteStates.filter<QuoteBatchPending>(
-    (quoteState): quoteState is QuoteBatchPending => quoteState.status === 'pending',
-  )
-
-  return [successfulQuoteStates, failedQuoteStates, pendingQuoteStates]
-}
-
 function validateSuccessRate(
   allResults: Result<[bigint, bigint[], number[], bigint]>[],
-  haveRetriedForSuccessRate: boolean,
   quoteMinSuccessRate: number,
-): void | SuccessRateError {
+): undefined | SuccessRateError {
   const numResults = allResults.length
   const numSuccessResults = allResults.filter((result) => result.success).length
 
   const successRate = (1.0 * numSuccessResults) / numResults
 
   if (successRate < quoteMinSuccessRate) {
-    if (haveRetriedForSuccessRate) {
-      // console.log(
-      //   `Quote success rate still below threshold despite retry. Continuing. ${quoteMinSuccessRate}: ${successRate}`,
-      // )
-      return
-    }
-
-    // eslint-disable-next-line consistent-return
     return new SuccessRateError(`Quote success rate below threshold of ${quoteMinSuccessRate}: ${successRate}`)
   }
+  return undefined
 }
 
-function validateBlockNumbers(
-  successfulQuoteStates: QuoteBatchSuccess[],
-  totalCalls: number,
-  gasLimitOverride?: number,
-): BlockConflictError | null {
-  if (successfulQuoteStates.length <= 1) {
+function validateBlockNumbers(results: { blockNumber: bigint }[]): BlockConflictError | null {
+  if (results.length <= 1) {
     return null
   }
-
-  const results = successfulQuoteStates.map((quoteState) => quoteState.results)
 
   const blockNumbers = results.map((result) => result.blockNumber)
 
@@ -516,16 +310,7 @@ function validateBlockNumbers(
     return null
   }
 
-  /* if (
-      uniqBlocks.length == 2 &&
-      Math.abs(uniqBlocks[0]! - uniqBlocks[1]!) <= 1
-    ) {
-      return null;
-    } */
-
-  return new BlockConflictError(
-    `Quotes returned from different blocks. ${uniqBlocks}. ${totalCalls} calls were made with gas limit ${gasLimitOverride}`,
-  )
+  return new BlockConflictError(`Quotes returned from different blocks. ${uniqBlocks}`)
 }
 
 function processQuoteResults(
