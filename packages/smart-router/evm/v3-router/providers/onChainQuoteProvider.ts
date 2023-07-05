@@ -24,7 +24,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.GOERLI]: 0.1,
   [ChainId.ARBITRUM_ONE]: 0.1,
   [ChainId.ARBITRUM_GOERLI]: 0.1,
-  [ChainId.POLYGON_ZKEVM]: 0.1,
+  [ChainId.POLYGON_ZKEVM]: 0.01,
   [ChainId.POLYGON_ZKEVM_TESTNET]: 0.1,
   [ChainId.ZKSYNC]: 0.1,
   [ChainId.ZKSYNC_TESTNET]: 0.1,
@@ -207,16 +207,19 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
         const quoteResult = await retry(
           async (bail) => {
             try {
-              return getQuotes({ multicallChunkSize: multicallChunk, multicallGasLimit: gasLimitOverride })
+              const quotes = await getQuotes({
+                multicallChunkSize: multicallChunk,
+                multicallGasLimit: gasLimitOverride,
+              })
+              return quotes
             } catch (e: unknown) {
               const error = e instanceof Error ? e : new Error(`Unexpected error type ${e}`)
-              onRetry(error)
-              console.error(`Retry`, error)
               if (!shouldRetry(error)) {
                 // bail is actually rejecting the promise on retry function
                 return bail(error)
               }
               if (error instanceof SuccessRateError) {
+                onRetry(error)
                 const { successRateFailureOverrides } = multicallConfigs
                 return getQuotes({
                   multicallChunkSize: successRateFailureOverrides.multicallChunk,
@@ -224,6 +227,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                 })
               }
               if (error instanceof ProviderGasError) {
+                onRetry(error)
                 const { gasErrorFailureOverride } = multicallConfigs
                 return getQuotes({
                   multicallChunkSize: gasErrorFailureOverride.multicallChunk,
@@ -237,7 +241,6 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             retries: DEFAULT_BATCH_RETRIES,
             minTimeout: 25,
             maxTimeout: 250,
-            onRetry,
           },
         )
 
