@@ -177,13 +177,13 @@ export default function TransactionTable({
     return transactions
       ? [...transactions]
           .map((transaction) => {
-            if (transaction.amountToken0 > 0 && transaction.amountToken1 > 0) return transaction
+            if (transaction.amountToken0 >= 0 && transaction.amountToken1 >= 0) return transaction
+            const absO = Math.abs(transaction.amountToken0)
+            const abs1 = Math.abs(transaction.amountToken1)
             const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-            const outputTokenAmount =
-              transaction.amountToken0 < 0 ? Math.abs(transaction.amountToken0) : Math.abs(transaction.amountToken1)
+            const outputTokenAmount = transaction.amountToken0 < 0 ? absO : abs1
             const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-            const inputTokenAmount =
-              transaction.amountToken1 < 0 ? Math.abs(transaction.amountToken0) : Math.abs(transaction.amountToken1)
+            const inputTokenAmount = transaction.amountToken1 < 0 ? absO : abs1
             return {
               ...transaction,
               token0Symbol: inputTokenSymbol,
