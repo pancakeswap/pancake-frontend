@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { usePopper } from "react-popper";
+import debounce from "lodash/debounce";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
@@ -41,21 +42,30 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   useEffect(() => {
     const showDropdownMenu = () => {
       setIsOpen(true);
+      hideDropdownMenu.cancel();
     };
 
-    const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
-      const target = evt.target as Node;
-      return target && !tooltipRef?.contains(target) && setIsOpen(false);
-    };
+    const hideDropdownMenu = debounce(
+      () => {
+        setIsOpen(false);
+      },
+      isBottomNav ? 100 : 10
+    );
 
-    targetRef?.addEventListener("mouseenter", showDropdownMenu);
-    targetRef?.addEventListener("mouseleave", hideDropdownMenu);
+    // added this to remove the ugly 4 lines
+    [targetRef, tooltipRef].forEach((ref) => {
+      ref?.addEventListener("mouseenter", showDropdownMenu);
+      ref?.addEventListener("mouseleave", hideDropdownMenu);
+    });
 
     return () => {
-      targetRef?.removeEventListener("mouseenter", showDropdownMenu);
-      targetRef?.removeEventListener("mouseleave", hideDropdownMenu);
+      [targetRef, tooltipRef].forEach((ref) => {
+        ref?.removeEventListener("mouseenter", showDropdownMenu);
+        ref?.removeEventListener("mouseleave", hideDropdownMenu);
+      });
+      hideDropdownMenu.cancel();
     };
-  }, [targetRef, tooltipRef, setIsOpen, isBottomNav]);
+  }, [setIsOpen, tooltipRef, targetRef, isBottomNav]);
 
   useEffect(() => {
     if (setMenuOpenByIndex && index !== undefined) {
