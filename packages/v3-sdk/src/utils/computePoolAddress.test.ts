@@ -1,6 +1,6 @@
-import { Token } from '@pancakeswap/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { describe, it, expect } from 'vitest'
-import { FeeAmount } from '../constants'
+import { DEPLOYER_ADDRESSES, FeeAmount } from '../constants'
 import { computePoolAddress } from './computePoolAddress'
 
 describe('#computePoolAddress', () => {
@@ -18,17 +18,17 @@ describe('#computePoolAddress', () => {
     expect(result).toEqual('0x993B1e86fFEf6609e47416212C17B0df746fa985')
   })
 
-  it.todo('should correctly compute the pool address zkSync', () => {
+  it('should correctly compute the pool address zkSync', () => {
     const USDC = new Token(280, '0x0faF6df7054946141266420b43783387A78d82A9', 6, 'USDC', 'USD Coin')
     const WETH = new Token(280, '0x02968DB286f24cB18bB5b24903eC8eBFAcf591C0', 18, 'WETH')
     const result = computePoolAddress({
-      deployerAddress: '0x71df5b7ea5355180EAb2A54de8aA534016040008',
-      fee: FeeAmount.MEDIUM,
+      deployerAddress: DEPLOYER_ADDRESSES[ChainId.ZKSYNC_TESTNET],
+      fee: FeeAmount.LOW,
       tokenA: USDC,
       tokenB: WETH,
     })
 
-    expect(result).toEqual('0x25f728a155C883aa9bFfa8474b3e5Cd82B89e055')
+    expect(result).toEqual('0xfC02e31553A979a5827EE95e17bAE43ae79D6761')
   })
 
   it('should correctly compute the pool address2', () => {
