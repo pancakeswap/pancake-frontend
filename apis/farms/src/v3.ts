@@ -29,7 +29,7 @@ export const V3_SUBGRAPH_CLIENTS = {
       fetch,
     },
   ),
-} satisfies Record<FarmSupportedChainId, GraphQLClient>
+} satisfies Record<Exclude<FarmSupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
 const zChainId = z.enum(['56', '1', '5', '97', '280'])
 

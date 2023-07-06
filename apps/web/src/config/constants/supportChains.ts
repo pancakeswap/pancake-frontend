@@ -7,4 +7,5 @@ export const SUPPORT_FARMS = [
   ChainId.ETHEREUM,
   ChainId.GOERLI,
   ChainId.ZKSYNC_TESTNET,
+  ChainId.POLYGON_ZKEVM_TESTNET,
 ]

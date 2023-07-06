@@ -9,7 +9,7 @@ import chunk from 'lodash/chunk'
 import { DEFAULT_COMMON_PRICE, PriceHelper, CHAIN_ID_TO_CHAIN_NAME } from '../constants/common'
 import { ComputedFarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getFarmApr } from './apr'
-import { FarmSupportedChainId, supportedChainIdV3 } from './const'
+import { FarmV3SupportedChainId, supportedChainIdV3 } from './const'
 
 const chainlinkAbi = [
   {
@@ -82,7 +82,7 @@ export async function farmV3FetchFarms({
     .filter(Boolean) as FarmV3Data[]
 
   const defaultCommonPrice: CommonPrice = supportedChainIdV3.includes(chainId)
-    ? DEFAULT_COMMON_PRICE[chainId as FarmSupportedChainId]
+    ? DEFAULT_COMMON_PRICE[chainId as FarmV3SupportedChainId]
     : {}
   const combinedCommonPrice: CommonPrice = {
     ...defaultCommonPrice,
@@ -443,7 +443,7 @@ export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<
   if (currencies.length > 0) {
     const list = currencies
       .map(
-        (currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as FarmSupportedChainId]}:${currency.wrapped.address}`,
+        (currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as FarmV3SupportedChainId]}:${currency.wrapped.address}`,
       )
       .join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(
