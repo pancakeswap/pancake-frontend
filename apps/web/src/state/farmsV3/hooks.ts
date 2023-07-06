@@ -5,6 +5,7 @@ import {
   FarmsV3Response,
   IPendingCakeByTokenId,
   SerializedFarmsV3Response,
+  bCakeSupportedChainId,
   createFarmFetcherV3,
   supportedChainIdV3,
 } from '@pancakeswap/farms'
@@ -337,7 +338,9 @@ const useV3BoostedFarm = (pids: number[]) => {
   const farmBoosterV3Contract = useBCakeFarmBoosterV3Contract()
 
   const { data } = useSWR(
-    chainId && pids.length > 0 && ['v3/boostedFarm', chainId, pids.join('-')],
+    chainId &&
+      pids.length > 0 &&
+      bCakeSupportedChainId.includes(chainId) && ['v3/boostedFarm', chainId, pids.join('-')],
     () => getV3FarmBoosterWhiteList({ farmBoosterContract: farmBoosterV3Contract, chainId, pids }),
     {
       errorRetryCount: 3,

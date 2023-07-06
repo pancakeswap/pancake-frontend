@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { isStableFarm, SerializedFarmConfig, supportedChainIdV3 } from '..'
+import { isStableFarm, SerializedFarmConfig, supportedChainIdV2 } from '..'
 
 let logged = false
 
 export const getFarmConfig = async (chainId: ChainId) => {
-  if (supportedChainIdV3.includes(chainId as number)) {
+  if (supportedChainIdV2.includes(chainId as number)) {
     try {
       return (await import(`/${chainId}.ts`)).default.filter(
         (f: SerializedFarmConfig) => f.pid !== null,
@@ -21,7 +21,7 @@ export const getFarmConfig = async (chainId: ChainId) => {
 }
 
 export const getStableConfig = async (chainId: ChainId) => {
-  if (supportedChainIdV3.includes(chainId as number)) {
+  if (supportedChainIdV2.includes(chainId as number)) {
     try {
       const farms = (await import(`/${chainId}.ts`)).default as SerializedFarmConfig[]
 

@@ -40,14 +40,21 @@ const chainName: { [key: number]: string } = {
   [ChainId.ARBITRUM_ONE]: "arb",
 };
 
+// TODO: move to utils or token-list
+export const getTokenListBaseURL = (chainId: number) =>
+  `https://tokens.pancakeswap.finance/images/${chainName[chainId]}`;
+
+export const getTokenListTokenUrl = (token: Token) =>
+  chainName[token.chainId]
+    ? `https://tokens.pancakeswap.finance/images/${
+        token.chainId === ChainId.BSC ? "" : `${chainName[token.chainId]}/`
+      }${token.address}.png`
+    : null;
+
 export const getCurrencyLogoUrls = memoize(
   (currency?: Currency): string[] => {
-    const chainId = currency?.chainId || ChainId.BSC;
-    const tokenAddress = getAddress(currency?.wrapped?.address || "");
     const trustWalletLogo = getTokenLogoURL(currency?.wrapped);
-    const logoUrl = `https://tokens.pancakeswap.finance/images/${
-      chainId === ChainId.BSC ? "" : `${chainName[chainId]}/`
-    }${tokenAddress}.png`;
+    const logoUrl = currency ? getTokenListTokenUrl(currency.wrapped) : null;
     return [trustWalletLogo, logoUrl].filter((url) => Boolean(url)) as string[];
   },
   (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}`

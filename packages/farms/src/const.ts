@@ -1,7 +1,13 @@
 import { ChainId } from '@pancakeswap/sdk'
 
 export const supportedChainIdV2 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM] as const
-export const supportedChainIdV3 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM] as const
+export const supportedChainIdV3 = [
+  ChainId.GOERLI,
+  ChainId.BSC,
+  ChainId.BSC_TESTNET,
+  ChainId.ETHEREUM,
+  ChainId.ZKSYNC_TESTNET,
+] as const
 export const bCakeSupportedChainId = [ChainId.BSC] as const
 
 export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200
@@ -18,6 +24,7 @@ export const masterChefV3Addresses = {
   [ChainId.GOERLI]: '0x864ED564875BdDD6F421e226494a0E7c071C06f8',
   [ChainId.BSC]: '0x556B9306565093C855AEA9AE92A594704c2Cd59e',
   [ChainId.BSC_TESTNET]: '0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B',
+  [ChainId.ZKSYNC_TESTNET]: '0x3c6Aa61f72932aD5D7C917737367be32D5509e6f',
 } as const satisfies Record<FarmSupportedChainId, string>
 
 export const nonBSCVaultAddresses = {

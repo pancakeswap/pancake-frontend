@@ -2,6 +2,7 @@ import BN from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import { bCakeSupportedChainId } from '@pancakeswap/farms'
 import { useBCakeFarmBoosterV3Contract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import useSWR from 'swr'
@@ -25,7 +26,7 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
     address: farmBoosterV3Contract.address,
     chainId,
     functionName: 'whiteList',
-    enabled: Boolean(chainId && farmPid),
+    enabled: Boolean(chainId && farmPid && bCakeSupportedChainId.includes(chainId)),
     args: [BigInt(farmPid ?? 0)],
   })
   return { farmCanBoost: data }

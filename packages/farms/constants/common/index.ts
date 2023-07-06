@@ -1,5 +1,11 @@
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
-import { bscTestnetTokens, bscTokens, ethereumTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
+import {
+  bscTestnetTokens,
+  bscTokens,
+  ethereumTokens,
+  goerliTestnetTokens,
+  zkSyncTestnetTokens,
+} from '@pancakeswap/tokens'
 import type { CommonPrice } from '../../src/fetchFarmsV3'
 import type { FarmSupportedChainId } from '../../src'
 
@@ -40,5 +46,8 @@ export const DEFAULT_COMMON_PRICE: Record<FarmSupportedChainId, CommonPrice> = {
     [bscTestnetTokens.usdt.address]: '1',
     [bscTestnetTokens.busd.address]: '1',
     [bscTestnetTokens.usdc.address]: '1',
+  },
+  [ChainId.ZKSYNC_TESTNET]: {
+    [zkSyncTestnetTokens.mock.address]: '10',
   },
 }

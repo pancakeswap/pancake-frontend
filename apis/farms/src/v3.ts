@@ -23,9 +23,15 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.BSC_TESTNET]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel', {
     fetch,
   }),
+  [ChainId.ZKSYNC_TESTNET]: new GraphQLClient(
+    'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest',
+    {
+      fetch,
+    },
+  ),
 } satisfies Record<FarmSupportedChainId, GraphQLClient>
 
-const zChainId = z.enum(['56', '1', '5', '97'])
+const zChainId = z.enum(['56', '1', '5', '97', '280'])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 
