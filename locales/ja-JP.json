@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "NFTはあなたのウォレットに戻されました",
   "Removing this NFT from the marketplace will return it to your wallet.": "マーケットプレイスからこのNFTを削除すると、あなたのウォレットに戻されます。",
   "Continue?": "続行しますか？",
-  ") for more info.": "）をご覧ください。",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "あなたの地域では、様々なプロバイダーが多様な通貨と支払い方法をサポートします。詳細は、当社のドキュメントまたはパートナー企業のドキュメント（",
   "Paste BSC address": "BSCアドレスを貼り付ける",
   "That’s not a BNB Smart Chain wallet address.": "これはBNB Smart Chainウォレットアドレスではありません。",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "このアクションによって、あなたのNFTは上記に指定したアドレスに送信されます。正しいことを確認してください",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "限定NFTとお宝が待ってるよ！",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwapがPolygon zkEVMで公開！",
   "Polygon zkEVM is LIVE!": "Polygon zkEVMが公開！",
-  "Swap and provide liquidity on Polygon zkEVM now": "今すぐPolygon zkEVMでスワップして流動性を提供する"
+  "Swap and provide liquidity on Polygon zkEVM now": "今すぐPolygon zkEVMでスワップして流動性を提供する",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }

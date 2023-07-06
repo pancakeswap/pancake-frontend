@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "আপনার NFT আপনার ওয়ালেটে ফেরত পাঠানো হয়েছে",
   "Removing this NFT from the marketplace will return it to your wallet.": "মার্কেটপ্লেস থেকে এই NFT সরিয়ে দিলে তা আপনার ওয়ালেটে ফেরত আসবে।",
   "Continue?": "চালিয়ে যাবেন?",
-  ") for more info.": ") আরো তথ্যের জন্য।",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "বিভিন্ন সেবা প্রদানকারী আপনার অঞ্চলে বিভিন্ন মুদ্রা এবং পেমেন্ট পদ্ধতি ব্যবহার করবে। অনুগ্রহ করে আমাদের ডকুমেন্টেশন বা অংশীদারদের ডকুমেন্টেশন পড়ুন (",
   "Paste BSC address": "BSC ঠিকানা পেস্ট করুন",
   "That’s not a BNB Smart Chain wallet address.": "এটি কোনো Binance স্মার্ট চেইন ওয়ালেট ঠিকানা নয়।",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "এই ক্রিয়া আপনার NFT আপনার উপরে উল্লিখিত ঠিকানায় পাঠাবে৷ নিশ্চিত করুন যে এটি সঠিক",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "অনন্য NFT এবং সম্পদ অপেক্ষা করছে!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap এখন Polygon zkEVM-এ লাইভ!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM লাইভ!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Polygon zkEVM-এ এখন সোয়াপ করুন এবং তারল্য প্রদান করুন"
+  "Swap and provide liquidity on Polygon zkEVM now": "Polygon zkEVM-এ এখন সোয়াপ করুন এবং তারল্য প্রদান করুন",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }

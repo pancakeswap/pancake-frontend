@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "Ang iyong NFT ay naibalik sa iyong wallet",
   "Removing this NFT from the marketplace will return it to your wallet.": "Kapag inalis ang NFT na ito sa marketplace, ibabalik ito sa iyong wallet.",
   "Continue?": "Magpatuloy?",
-  ") for more info.": ") para sa higit pang impormasyon.",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "Susuportahan ng iba't ibang provider ang iba't ibang currency at paraan ng pagbabayad sa iyong rehiyon. Sumangguni sa aming dokumentasyon o dokumentasyon ng mga partner (",
   "Paste BSC address": "I-paste ang BSC address",
   "That’s not a BNB Smart Chain wallet address.": "Hindi iyon ang address ng wallet ng BNB Smart Chain.",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "Ipapadala ng pagkilos na ito ang iyong NFT sa address na iyong ipinahiwatig sa itaas. Tiyaking tama ito",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "Naghihintay ang mga eksklusibong NFT at treasure!",
   "PancakeSwap Now Live on Polygon zkEVM!": "Live na Ngayon ang PancakeSwap sa Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Live ang Polygon zkEVM!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Mag-swap at magbigay ng liquidity sa Polygon zkEVM ngayon"
+  "Swap and provide liquidity on Polygon zkEVM now": "Mag-swap at magbigay ng liquidity sa Polygon zkEVM ngayon",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }

@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "您的 NFT 已退回到您的钱包",
   "Removing this NFT from the marketplace will return it to your wallet.": "从市场中移除此 NFT 会将其退回到您的钱包。",
   "Continue?": "是否继续？",
-  ") for more info.": "）了解详情。",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "将由不同的提供商支持您所在地区的不同货币和付款方式。请参阅我们的文档或合作伙伴文档（",
   "Paste BSC address": "粘贴 BSC 地址",
   "That’s not a BNB Smart Chain wallet address.": "该地址不是 BNB 智能链钱包地址。",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "此操作会将您的 NFT 发送到您在上方指定的地址。请确保该地址正确无误",
@@ -2514,7 +2512,7 @@
   "Previously Ended": "之前已结束",
   "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range.": "平仓价格超出持仓价格范围。预计奖励数字不会考虑持仓超出范围造成的损失。",
   "The markets for some of the newer and low-cap tokens displayed on the v2 info page are highly volatile, and as a result, token information may not be accurate.": "v2 信息页面上显示的一些较新和低市值代币的市场波动性很大，因此代币信息可能不准确。",
-  "Before trading any token, please DYOR, and pay attention to the risk scanner.": "在交易任何代币之前，请始终自己做好调研，并注意风险扫描器。",
+  "Before trading any token, please DYOR, and pay attention to the risk scanner.": "在交易任何代币之前，请始终自行研究，并注意风险扫描器。",
   "Subgraph is currently experiencing issues. Performance may suffer until subgraph is restored.": "Subgraph 目前遇到了一些问题。在 Subgraph 恢复之前，性能可能会受到影响。",
   "Affiliate program registration is paused at the moment. Please check back after subgraph status is restored": "目前已暂停联盟计划注册。请在 Subgraph 状态恢复后再回来查看",
   "Pancake Protectors": "Pancake Protectors",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "独家 NFT 和宝藏等您获取！",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap 现已上线 Polygon zkEVM！",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM 已上线！",
-  "Swap and provide liquidity on Polygon zkEVM now": "立即在 Polygon zkEVM 上进行兑换并提供流动性"
+  "Swap and provide liquidity on Polygon zkEVM now": "立即在 Polygon zkEVM 上进行兑换并提供流动性",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }
