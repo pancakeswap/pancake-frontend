@@ -71,8 +71,7 @@ export const V3_SUBGRAPH_URLS = {
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
 } satisfies Record<ChainId, string | null>
 
-// export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancakeswap.com/api/v1'
-export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api-git-feat-dev.pancake.run/api/v1'
+export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancakeswap.com/api/v1'
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
