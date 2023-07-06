@@ -31,6 +31,22 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.LINEA_TESTNET]: 0.1,
 } as const satisfies Record<ChainId, number>
 
+// Normally we expect to get quotes from within the same block
+// But for some chains like BSC the block time is quite short so need some extra tolerance
+const BLOCK_CONFLICT_TOLERANCE = {
+  [ChainId.BSC_TESTNET]: 3,
+  [ChainId.BSC]: 3,
+  [ChainId.ETHEREUM]: 1,
+  [ChainId.GOERLI]: 1,
+  [ChainId.ARBITRUM_ONE]: 5,
+  [ChainId.ARBITRUM_GOERLI]: 5,
+  [ChainId.POLYGON_ZKEVM]: 1,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: 1,
+  [ChainId.ZKSYNC]: 3,
+  [ChainId.ZKSYNC_TESTNET]: 3,
+  [ChainId.LINEA_TESTNET]: 3,
+} as const satisfies Record<ChainId, number>
+
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
 type CallInputs = V3Inputs | MixedInputs
@@ -120,6 +136,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
         } = routes[0]
         const quoterAddress = getQuoterAddress(chainId)
         const minSuccessRate = SUCCESS_RATE_CONFIG[chainId as ChainId]
+        const blockConflictTolerance = BLOCK_CONFLICT_TOLERANCE[chainId as ChainId]
         const multicallConfigs =
           multicallConfigsOverride?.[chainId as ChainId] ||
           BATCH_MULTICALL_CONFIGS[chainId as ChainId] ||
@@ -169,7 +186,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             const resultsWithSuccessfulCalls = chunkedResults.filter(({ results: chunkResults }) =>
               chunkResults.some(({ success }) => success),
             )
-            const blockConflictError = validateBlockNumbers(resultsWithSuccessfulCalls)
+            const blockConflictError = validateBlockNumbers(resultsWithSuccessfulCalls, blockConflictTolerance)
             if (blockConflictError) {
               throw blockConflictError
             }
@@ -299,7 +316,7 @@ function validateSuccessRate(
   return undefined
 }
 
-function validateBlockNumbers(results: { blockNumber: bigint }[], tolerance = 3): BlockConflictError | null {
+function validateBlockNumbers(results: { blockNumber: bigint }[], tolerance = 1): BlockConflictError | null {
   if (results.length <= 1) {
     return null
   }
