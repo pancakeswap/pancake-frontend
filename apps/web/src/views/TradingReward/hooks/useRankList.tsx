@@ -43,6 +43,7 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
     async () => {
       try {
         setIsLoading(true)
+        setTopThreeTraders([])
         const response = await fetch(
           `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/${RewardType.TOP_TRADERS}/page/${currentPage}/size/${MAX_PER_PAGE}`,
         )
@@ -71,12 +72,6 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
       } finally {
         setIsLoading(false)
       }
-    },
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnMount: true,
     },
   )
 

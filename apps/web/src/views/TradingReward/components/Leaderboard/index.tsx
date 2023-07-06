@@ -41,11 +41,13 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
 
   const allLeaderBoard = useMemo(
     () =>
-      campaignIdsIncentive.map((i) => ({
-        campaignId: i.campaignId,
-        campaignStart: i.campaignStart,
-        campaignClaimTime: i.campaignClaimTime,
-      })),
+      campaignIdsIncentive
+        .map((i) => ({
+          campaignId: i.campaignId,
+          campaignStart: i.campaignStart,
+          campaignClaimTime: i.campaignClaimTime,
+        }))
+        .sort((a, b) => Number(b.campaignId) - Number(a.campaignId)),
     [campaignIdsIncentive],
   )
   const currentLeaderBoard = useMemo(
