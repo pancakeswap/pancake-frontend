@@ -6,7 +6,7 @@ const METISWarning = () => {
 
   return (
     <Box maxWidth="380px">
-      <Text>{t('“Caution - METIS Token')}</Text>
+      <Text>{t('Caution - METIS Token')}</Text>
       <Text>
         {t(
           'Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the',
