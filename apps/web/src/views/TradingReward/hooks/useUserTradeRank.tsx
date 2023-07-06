@@ -34,6 +34,9 @@ export const useUserTradeRank = ({ campaignId }: { campaignId: string }) => {
       }
     },
     {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateOnMount: true,
       fallbackData: initialState,
     },
   )

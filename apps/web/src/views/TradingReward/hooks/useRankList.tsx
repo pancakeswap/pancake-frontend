@@ -47,6 +47,7 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
         const response = await fetch(
           `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/${RewardType.TOP_TRADERS}/page/${currentPage}/size/${MAX_PER_PAGE}`,
         )
+        console.log('response', response.url)
         const result: RankListResponse = await response.json()
 
         const topThree = result.data.topTradersArr.filter((arr) => arr.rank > 0 && arr.rank <= 3)
@@ -72,6 +73,11 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
       } finally {
         setIsLoading(false)
       }
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateOnMount: true,
     },
   )
 
