@@ -299,7 +299,7 @@ function validateSuccessRate(
   return undefined
 }
 
-function validateBlockNumbers(results: { blockNumber: bigint }[]): BlockConflictError | null {
+function validateBlockNumbers(results: { blockNumber: bigint }[], tolerance = 3): BlockConflictError | null {
   if (results.length <= 1) {
     return null
   }
@@ -309,7 +309,7 @@ function validateBlockNumbers(results: { blockNumber: bigint }[]): BlockConflict
   const blockStrs = blockNumbers.map((blockNumber) => blockNumber.toString())
   const uniqBlocks = uniq(blockStrs)
 
-  if (uniqBlocks.length === 1) {
+  if (uniqBlocks.length > 0 && uniqBlocks.length <= tolerance) {
     return null
   }
 
