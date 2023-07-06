@@ -55,6 +55,8 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
     [allLeaderBoard],
   )
 
+  const round = useMemo(() => campaignMaxPage - (campaignPage - 1), [campaignMaxPage, campaignPage])
+
   const sliceAllLeaderBoard = useCallback(() => {
     const slice = allLeaderBoard.slice(MAX_CAMPAIGN_PER_PAGE * (campaignPage - 1), MAX_CAMPAIGN_PER_PAGE * campaignPage)
     setCampaignLeaderBoardList({ ...slice[0] })
@@ -122,31 +124,39 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
             </ButtonMenu>
           </Box>
         )}
-        <Text textAlign="center" color="textSubtle" bold>
-          {t('Round #%round%  |  %startTime% - %endTime%', {
-            round: campaignMaxPage - (campaignPage - 1),
-            startTime: timeFormat(locale, campaignLeaderBoardList?.campaignStart),
-            endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
-          })}
-        </Text>
-        {index === 1 && (
-          <PaginationButton
-            showMaxPageText
-            currentPage={campaignPage}
-            maxPage={campaignMaxPage}
-            setCurrentPage={setCampaignPage}
-          />
+        {round > 0 && (
+          <>
+            <Text textAlign="center" color="textSubtle" bold>
+              {t('Round #%round%  |  %startTime% - %endTime%', {
+                round,
+                startTime: timeFormat(locale, campaignLeaderBoardList?.campaignStart),
+                endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
+              })}
+            </Text>
+            {index === 1 && (
+              <PaginationButton
+                showMaxPageText
+                currentPage={campaignPage}
+                maxPage={campaignMaxPage}
+                setCurrentPage={setCampaignPage}
+              />
+            )}
+          </>
         )}
-        <Container mb="16px">
-          <Grid
-            gridGap={['16px', null, null, null, null, '24px']}
-            gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
-          >
-            {first && <RankingCard rank={1} user={first} />}
-            {second && <RankingCard rank={2} user={second} />}
-            {third && <RankingCard rank={3} user={third} />}
-          </Grid>
-        </Container>
+        {campaignLeaderBoardList.campaignStart > 0 && (
+          <>
+            <Container mb="16px">
+              <Grid
+                gridGap={['16px', null, null, null, null, '24px']}
+                gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
+              >
+                {first && <RankingCard rank={1} user={first} />}
+                {second && <RankingCard rank={2} user={second} />}
+                {third && <RankingCard rank={3} user={third} />}
+              </Grid>
+            </Container>
+          </>
+        )}
         <Box maxWidth={1200} m="auto">
           <MyRank campaignId={campaignLeaderBoardList.campaignId} />
           {isDesktop ? (
