@@ -63,7 +63,7 @@ function AccordionItem({
 
   useEffect(() => {
     const contentEl = getRefValue(contentRef)
-    setHeight(contentEl.scrollHeight + 90)
+    setHeight(contentEl?.scrollHeight + 90)
   }, [active])
 
   const {
