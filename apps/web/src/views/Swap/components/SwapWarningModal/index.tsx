@@ -15,6 +15,7 @@ import FREEWarning from './FREEWarning'
 import GalaWarning from './GalaWarning'
 import ABNBWarning from './ABNBWarning'
 import XCADWarning from './XCADWarning'
+import METISWarning from './METISWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -74,6 +75,10 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
     [SwapWarningTokensConfig.xcad.address]: {
       symbol: SwapWarningTokensConfig.xcad.symbol,
       component: <XCADWarning />,
+    },
+    [SwapWarningTokensConfig.metis.address]: {
+      symbol: SwapWarningTokensConfig.metis.symbol,
+      component: <METISWarning />,
     },
   }
 
