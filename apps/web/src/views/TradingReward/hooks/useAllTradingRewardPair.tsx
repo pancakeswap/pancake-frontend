@@ -12,8 +12,8 @@ export enum RewardStatus {
 }
 
 export enum RewardType {
-  CAKE_STAKERS = 'rb',
-  TOP_TRADERS = 'tt',
+  CAKE_STAKERS = 'rbTest',
+  TOP_TRADERS = 'ttTest',
 }
 
 export interface Incentives {
