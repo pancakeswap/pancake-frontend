@@ -4,7 +4,7 @@ import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModa
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/types'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
@@ -12,8 +12,9 @@ import { providerFeeTypes } from 'views/BuyCrypto/constants'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
 const DropdownWrapper = styled.div<{ isClicked: boolean }>`
-  padding-top: ${({ isClicked }) => (isClicked ? '20px' : '0px')};
+  display: ${({ isClicked }) => (isClicked ? 'none' : 'block')};
   width: 100%;
+  transition: display 0.6s ease-in-out;
 `
 
 const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
@@ -48,7 +49,7 @@ function AccordionItem({
     currentLanguage: { locale },
   } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(105)
+  const [height, setHeight] = useState(active ? 227 : 90)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -61,10 +62,8 @@ function AccordionItem({
   }, [setVisiblity, btnOnClick])
 
   useEffect(() => {
-    if (active) {
-      const contentEl = getRefValue(contentRef)
-      setHeight(contentEl.scrollHeight + 100)
-    } else setHeight(105)
+    const contentEl = getRefValue(contentRef)
+    setHeight(contentEl.scrollHeight + 90)
   }, [active])
 
   const {
@@ -119,7 +118,7 @@ function AccordionItem({
         isClicked={active}
         isDisabled={false}
       >
-        <RowBetween paddingBottom="8px">
+        <RowBetween>
           <OnRampProviderLogo provider={quote.provider} />
 
           <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
