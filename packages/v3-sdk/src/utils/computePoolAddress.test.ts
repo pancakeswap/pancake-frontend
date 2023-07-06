@@ -20,7 +20,7 @@ describe('#computePoolAddress', () => {
 
   it.todo('should correctly compute the pool address zkSync', () => {
     const USDC = new Token(280, '0x0faF6df7054946141266420b43783387A78d82A9', 6, 'USDC', 'USD Coin')
-    const WETH = new Token(280, '0x20b28B1e4665FFf290650586ad76E977EAb90c5D', 18, 'WETH')
+    const WETH = new Token(280, '0x02968DB286f24cB18bB5b24903eC8eBFAcf591C0', 18, 'WETH')
     const result = computePoolAddress({
       deployerAddress: '0x71df5b7ea5355180EAb2A54de8aA534016040008',
       fee: FeeAmount.MEDIUM,

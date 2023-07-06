@@ -124,7 +124,7 @@
     },
     {
       "name": "Wrapped Ether",
-      "address": "0x20b28B1e4665FFf290650586ad76E977EAb90c5D",
+      "address": "0x02968DB286f24cB18bB5b24903eC8eBFAcf591C0",
       "symbol": "WETH",
       "decimals": 18,
       "chainId": 280,
