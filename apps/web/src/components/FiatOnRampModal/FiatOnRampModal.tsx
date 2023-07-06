@@ -5,12 +5,11 @@ import {
   Flex,
   Heading,
   InjectedModalProps,
-  ModalHeader,
   ModalTitle,
   ModalWrapper,
   Text,
   useModal,
-  ModalCloseButton,
+  Box,
 } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
@@ -31,16 +30,20 @@ import {
 import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
+import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
-  height: 550px;
-  width: 360px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 90%;
+  width: 100%;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 `
 
-const LoaderWrapper = styled(Flex)`
+const IFrameWrapper = styled(Flex)`
   height: 90%;
   width: 100%;
   left: 50%;
@@ -50,7 +53,27 @@ const LoaderWrapper = styled(Flex)`
   position: absolute;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
-  z-index: 100;
+  padding-bottom: 18px;
+`
+const StyledBackArrowContainer = styled(Box)`
+  position: absolute;
+  right: 10%;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const ModalHeader = styled.div<{ background?: string }>`
+  align-items: center;
+  background: transparent;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  display: flex;
+  padding: 12px 24px;
+  position: relative;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    background: ${({ background }) => background || 'transparent'};
+  }
 `
 
 interface FiatOnRampProps {
@@ -66,12 +89,12 @@ interface FetchResponse {
 
 const LoadingBuffer = () => {
   return (
-    <LoaderWrapper justifyContent="center" alignItems="center">
+    <IFrameWrapper justifyContent="center" alignItems="center" style={{ zIndex: 100 }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <LoadingDot />
         <CircleLoader />
       </div>
-    </LoaderWrapper>
+    </IFrameWrapper>
   )
 }
 
@@ -264,8 +287,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '600px',
-          width: '360px',
           network: chainIdToNetwork[chainId],
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
@@ -287,12 +308,16 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   return (
     <>
-      <ModalWrapper minHeight="550px">
+      <ModalWrapper minHeight="575px" minWidth="360px">
         <ModalHeader background={theme.colors.gradientCardHeader}>
-          <ModalTitle>
-            <Heading>{t('Buy Crypto In One Click')}</Heading>
+          <ModalTitle pt="6px" justifyContent="center">
+            <StyledBackArrowContainer onClick={handleDismiss}>
+              <Text color="primary">{t('close')}</Text>
+            </StyledBackArrowContainer>
+            <Heading width="100%" textAlign="center" pr="20px">
+              <OnRampProviderLogo provider={provider} />
+            </Heading>
           </ModalTitle>
-          <ModalCloseButton onDismiss={handleDismiss} />
         </ModalHeader>
         {error ? (
           <Flex justifyContent="center" alignItems="center" alignContent="center">
@@ -303,7 +328,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         ) : provider === ONRAMP_PROVIDERS.Mercuryo ? (
           <>
             {loading && <LoadingBuffer />}
-            <div id="mercuryo-widget" style={{ paddingTop: '24px' }} />;
+            <IFrameWrapper id="mercuryo-widget" />;
           </>
         ) : (
           <>

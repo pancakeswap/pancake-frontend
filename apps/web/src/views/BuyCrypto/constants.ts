@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 
 export const SUPPORTED_CHAINS = [ChainId.ETHEREUM, ChainId.BSC]
 export const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['USDT']
-export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'BUSD', 'BNB']
+export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 export const mercuryoWhitelist = ['BNB', 'BUSD']
 export const ETHEREUM_TOKENS = ['ETH', 'USDT', 'DAI']

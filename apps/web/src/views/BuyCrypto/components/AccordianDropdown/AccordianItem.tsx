@@ -5,15 +5,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { ProviderQoute } from 'views/BuyCrypto/types'
 import styled, { useTheme } from 'styled-components'
-import { ProviderIcon } from 'views/BuyCrypto/Icons'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
-import Image from 'next/image'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-
-import { ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
-import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
-import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
+import { providerFeeTypes } from 'views/BuyCrypto/constants'
+import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
 const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   padding-top: ${({ isClicked }) => (isClicked ? '20px' : '0px')};
@@ -51,7 +47,6 @@ function AccordionItem({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const theme = useTheme()
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(105)
   const multiple = false
@@ -94,13 +89,7 @@ function AccordionItem({
       <Flex flexDirection="column">
         <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
-            {quote.provider === ONRAMP_PROVIDERS.Mercuryo ? (
-              <Flex mt="5px">
-                <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
-              </Flex>
-            ) : (
-              <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
-            )}
+            <OnRampProviderLogo provider={quote.provider} />
             <TooltipText
               ref={buyCryptoTargetRef}
               onClick={() => setMobileTooltipShow(false)}
@@ -131,15 +120,9 @@ function AccordionItem({
         isDisabled={false}
       >
         <RowBetween paddingBottom="8px">
-          {quote.provider === ONRAMP_PROVIDERS.Mercuryo ? (
-            <Flex mt="5px">
-              <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
-            </Flex>
-          ) : (
-            <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
-          )}
+          <OnRampProviderLogo provider={quote.provider} />
 
-          <Text ml="4px" fontSize="22px" color="#7A6EAA" fontWeight="bold">
+          <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
             {formatLocaleNumber({ number: quote.quote, locale })} {quote.cryptoCurrency}
           </Text>
         </RowBetween>
