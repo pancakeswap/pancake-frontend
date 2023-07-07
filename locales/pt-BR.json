@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "Seu NFT foi devolvido para sua carteira",
   "Removing this NFT from the marketplace will return it to your wallet.": "Remover este NFT do mercado o devolverá para sua carteira.",
   "Continue?": "Continuar?",
-  ") for more info.": ") para obter mais informações.",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "Diferentes provedores oferecem suporte a diferentes moedas e métodos de pagamento em sua região. Consulte a nossa documentação ou a parceiros (",
   "Paste BSC address": "Colar endereço BSC",
   "That’s not a BNB Smart Chain wallet address.": "Este não é um endereço de carteira BNB Smart Chain.",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "Esta ação enviará sua NFT para o endereço que você indicou acima. Certifique-se de que ele esteja correto",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "NFTs e tesouros exclusivos esperam por você!",
   "PancakeSwap Now Live on Polygon zkEVM!": "A plataforma PancakeSwap agora está ativa no Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM está no ar!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Faça o swap e forneça liquidez no Polygon zkEVM agora mesmo"
+  "Swap and provide liquidity on Polygon zkEVM now": "Faça o swap e forneça liquidez no Polygon zkEVM agora mesmo",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }

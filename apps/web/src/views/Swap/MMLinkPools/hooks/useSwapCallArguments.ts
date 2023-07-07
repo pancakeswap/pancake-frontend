@@ -29,7 +29,7 @@ export function useSwapCallArguments(
   const recipient = recipientAddress ?? account
   const deadline = useTransactionDeadline()
   const contract = useMMSwapContract()
-  const mmSigner = MM_SIGNER[chainId]
+  const mmSigner = MM_SIGNER?.[chainId]?.[rfq?.mmId] ?? ''
 
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId || !deadline || !mmSigner || !rfq) return []

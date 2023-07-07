@@ -24,7 +24,7 @@ const Front = styled.div`
 `
 
 const Back = styled(Front)`
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
 `
 
 const Inner = styled.div<{ isFlipped: CardFlipProps['isFlipped'] }>`

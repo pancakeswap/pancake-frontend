@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "Το NFT σας έχει επιστραφεί στο πορτοφόλι σας",
   "Removing this NFT from the marketplace will return it to your wallet.": "Η αφαίρεση αυτού του NFT από την αγορά θα το επιστρέψει στο πορτοφόλι σας.",
   "Continue?": "Συνέχεια;",
-  ") for more info.": ") για περισσότερες πληροφορίες.",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "Διαφορετικοί πάροχοι υποστηρίζουν διαφορετικά νομίσματα και τρόπους πληρωμής στην περιοχή σας. Ανατρέξτε στην τεκμηρίωσή μας ή στην τεκμηρίωση των συνεργατών μας (",
   "Paste BSC address": "Επικολλήστε την διεύθυνση BSC",
   "That’s not a BNB Smart Chain wallet address.": "Αυτή δεν είναι διεύθυνση πορτοφολιού BNB Smart Chain.",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "Αυτή η ενέργεια θα στείλει το NFT σας στη διεύθυνση που υποδείξατε παραπάνω. Βεβαιωθείτε ότι είναι σωστή",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "Σας περιμένουν αποκλειστικά NFTs και θησαυροί!",
   "PancakeSwap Now Live on Polygon zkEVM!": "Το PancakeSwap είναι τώρα Live στο Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Το Polygon zkEVM είναι LIVE!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Κάντε ανταλλαγή και παρέχετε ρευστότητα στο Polygon zkEVM τώρα"
+  "Swap and provide liquidity on Polygon zkEVM now": "Κάντε ανταλλαγή και παρέχετε ρευστότητα στο Polygon zkEVM τώρα",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }
