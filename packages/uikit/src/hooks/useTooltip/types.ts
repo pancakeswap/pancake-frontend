@@ -21,3 +21,13 @@ export interface TooltipOptions {
 }
 
 export type TriggerType = "click" | "hover" | "focus";
+
+export interface DeviceAction {
+  start: string;
+  end: string;
+}
+
+export enum Devices {
+  touchDevice = "touchDevice",
+  nonTouchDevice = "nonTouchDevice",
+}
