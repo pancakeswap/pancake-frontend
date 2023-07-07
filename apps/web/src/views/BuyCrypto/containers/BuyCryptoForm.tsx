@@ -55,9 +55,6 @@ export function BuyCryptoForm({
     inputCurrencyId,
   )
   const inputCurrency = useOnRampCurrency(inputCurrencyId)
-  const account = useAccount()
-  const balance = useCurrencyBalance(account.address, inputCurrency)
-
   const outputCurrency: any = fiatCurrencyMap[outputCurrencyId]
   const { onFieldAInput, onCurrencySelection, onLimitAmountUpdate } = useBuyCryptoActionHandlers()
   const handleTypeOutput = useCallback(
