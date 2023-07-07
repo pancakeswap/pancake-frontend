@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "NFT'niz cüzdanınıza geri gönderildi",
   "Removing this NFT from the marketplace will return it to your wallet.": "Bu NFT'yi piyasadan kaldırmak, onu cüzdanınıza geri gönderir.",
   "Continue?": "Devam edilsin mi?",
-  ") for more info.": "daha fazla bilgi için.",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "Farklı sağlayıcılar, bölgenizdeki farklı para birimlerini ve ödeme yöntemlerini destekler. Daha fazla bilgi için belgelerimize veya iş ortaklarımızın belgelerine göz atın.",
   "Paste BSC address": "BSC adresini yapıştır",
   "That’s not a BNB Smart Chain wallet address.": "Bu bir BNB Smart Chain cüzdan adresi değil.",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "Bu eylem, NFT'nizi yukarıda belirttiğiniz adrese gönderir. Adresin doğru olduğundan emin olun",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "Özel NFT'ler ve hazineler sizi bekliyor!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap, Şimdi Polygon zkEVM Üzerinde Kullanılabilir!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM YAYINLANDI!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Polygon zkEVM üzerinde hemen alım satım yapıp likidite sağlayın"
+  "Swap and provide liquidity on Polygon zkEVM now": "Polygon zkEVM üzerinde hemen alım satım yapıp likidite sağlayın",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }

@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "您的 NFT 已退回到您的錢包",
   "Removing this NFT from the marketplace will return it to your wallet.": "從市場中移除此 NFT 會將其退回到您的錢包。",
   "Continue?": "是否要繼續？",
-  ") for more info.": ") 瞭解詳情。",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "不同的供應商在您的所在地區將支援不同的貨幣和支付方式。請參閱我們的文件或合作夥伴的文件 (",
   "Paste BSC address": "貼上 BSC 位址",
   "That’s not a BNB Smart Chain wallet address.": "該位址不是幣安智能鏈錢包位址。",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "此動作會將您的 NFT 傳送到您在上方指定的位址。請確保該位址正確無誤",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "獨家 NFT 和寶藏等您取得！",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap 現已上線 Polygon zkEVM！",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM 已上線！",
-  "Swap and provide liquidity on Polygon zkEVM now": "立即在 Polygon zkEVM 上進行交換並提供流動性"
+  "Swap and provide liquidity on Polygon zkEVM now": "立即在 Polygon zkEVM 上進行交換並提供流動性",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }

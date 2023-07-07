@@ -1191,8 +1191,6 @@
   "Your NFT has been returned to your wallet": "NFT-je visszakerült a tárcájába",
   "Removing this NFT from the marketplace will return it to your wallet.": "Ha eltávolítja ezt az NFT-t a piactérről, az visszakerül a pénztárcájába.",
   "Continue?": "Tovább?",
-  ") for more info.": ") további információért.",
-  "Different providers will support different currencies and payment methods in your region. Please refer to our documentation or partners documentation (": "A különböző szolgáltatók különböző pénznemeket és fizetési módokat alkalmaznak az Ön régiójában. Kérjük, olvassa el a dokumentációnkat vagy a partnerek dokumentációját (",
   "Paste BSC address": "BSC cím beillesztése",
   "That’s not a BNB Smart Chain wallet address.": "Ez nem egy BNB Smart Chain tárcacím.",
   "This action will send your NFT to the address you have indicated above. Make sure it’s the correct": "Ez a művelet elküldi az Ön NFT-jét a fent megadott címre. Győződjön meg róla, hogy ez a helyes",
@@ -2603,5 +2601,10 @@
   "Exclusive NFTs and treasures await!": "Exkluzív NFT-k és kincsek várják!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap most élőben a Polygon zkEVM gépen!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM élőben!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Most már csereügylet és likviditás biztosítása a Polygon zkEVM virtuális gépen"
+  "Swap and provide liquidity on Polygon zkEVM now": "Most már csereügylet és likviditás biztosítása a Polygon zkEVM virtuális gépen",
+  "Caution - METIS Token": "Caution - METIS Token",
+  "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the",
+  "PolyNetwork Exploit.": "PolyNetwork Exploit.",
+  "For more information, please refer to MetisDAO’s": "For more information, please refer to MetisDAO’s",
+  "Twitter": "Twitter"
 }
