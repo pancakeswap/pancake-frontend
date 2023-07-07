@@ -19,7 +19,7 @@ export const MOONPAY_SIGN_URL = 'https://pcs-on-ramp-api.com'
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
-export const INFO_CLIENT = 'https://proxy-worker.pancake-swap.workers.dev/bsc-exchange'
+export const INFO_CLIENT = 'https://proxy-worker-api.pancakeswap.com/bsc-exchange'
 export const V3_BSC_INFO_CLIENT = `https://open-platform.nodereal.io/${
   process.env.NEXT_PUBLIC_NODE_REAL_API_INFO || process.env.NEXT_PUBLIC_NODE_REAL_API_ETH
 }/pancakeswap-v3/graphql`
