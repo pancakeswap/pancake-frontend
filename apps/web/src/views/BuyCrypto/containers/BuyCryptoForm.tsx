@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { CircleLoader, Flex, RowFixed, Text, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box } from '@pancakeswap/uikit'
 import {
   calculateDefaultAmount,
   fetchMinimumBuyAmount,
@@ -141,18 +141,7 @@ export function BuyCryptoForm({
             onCurrencySelect={handleInputSelect}
             selectedCurrency={inputCurrency as Currency}
             showCommonBases={false}
-            topElement={
-              <>
-                <Text color="textSubtle">{t('I want to buy')}</Text>
-                <RowFixed style={{ justifySelf: 'flex-end' }}>
-                  {balance ? (
-                    <Balance balance={balance} currency={inputCurrency as Currency} />
-                  ) : account.address ? (
-                    <CircleLoader />
-                  ) : null}
-                </RowFixed>
-              </>
-            }
+            topElement={<Text color="textSubtle">{t('I want to buy')}</Text>}
             currencyLoading={!inputCurrency}
             bottomElement={<></>}
           />

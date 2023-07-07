@@ -312,7 +312,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         <ModalHeader background={theme.colors.gradientCardHeader}>
           <ModalTitle pt="6px" justifyContent="center">
             <StyledBackArrowContainer onClick={handleDismiss}>
-              <Text color="primary">{t('close')}</Text>
+              <Text color="primary">{t('Close')}</Text>
             </StyledBackArrowContainer>
             <Heading width="100%" textAlign="center" pr="20px">
               <OnRampProviderLogo provider={provider} />
