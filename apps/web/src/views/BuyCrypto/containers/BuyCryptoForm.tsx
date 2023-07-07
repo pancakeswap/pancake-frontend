@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Currency } from '@pancakeswap/sdk'
+import { Text, Box } from '@pancakeswap/uikit'
 import {
   calculateDefaultAmount,
   fetchMinimumBuyAmount,
@@ -14,7 +14,6 @@ import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import toString from 'lodash/toString'
 import { CryptoFormView } from 'views/BuyCrypto/types'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { FormHeader } from './FormHeader'
@@ -22,17 +21,6 @@ import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
 import { fiatCurrencyMap } from '../constants'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
-
-function Balance({ balance, currency }: { balance: CurrencyAmount<Currency>; currency: Currency }) {
-  return (
-    <Flex alignItems="center" justifyContent="center">
-      <Text paddingRight="4px">{formatAmount(balance, 4)}</Text>
-      <Text color="textSubtle" fontSize="12px" ellipsis fontWeight="bold" textAlign="center" paddingTop="2px">
-        {`${currency?.symbol}`}
-      </Text>
-    </Flex>
-  )
-}
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
 // the quote provider won't return a quote. Therefore, we restrict the fiat currency input to a maximum of 2 decimals.
