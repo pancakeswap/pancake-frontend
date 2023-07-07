@@ -210,7 +210,7 @@ export default function PoolPage() {
     invert: manuallyInverted,
   })
 
-  const inverted = useMemo(() => (token1 && token1 ? base?.equals(token1) : undefined), [token1, base])
+  const inverted = useMemo(() => (token1 ? base?.equals(token1) : undefined), [token1, base])
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
@@ -362,6 +362,7 @@ export default function PoolPage() {
     functionName: 'ownerOf',
     args: [tokenId],
   }).result
+  const ownsNFT = owner === account || positionDetails?.operator === account
 
   const feeValueUpper = inverted ? feeValue0 : feeValue1
   const feeValueLower = inverted ? feeValue1 : feeValue0
