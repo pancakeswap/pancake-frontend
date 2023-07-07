@@ -325,8 +325,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.3
+        version: 10.0.3
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -422,8 +422,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.3
+        version: 10.0.3
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -758,8 +758,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.3
+        version: 10.0.3
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -21447,7 +21447,7 @@ packages:
     dependencies:
       execa: 6.1.0
       parse-package-name: 1.0.0
-      semver: 7.5.0
+      semver: 7.5.1
       validate-npm-package-name: 4.0.0
     dev: true
 
@@ -24684,6 +24684,11 @@ packages:
       css-tree: 2.3.1
       csso: 5.0.5
       picocolors: 1.0.0
+    dev: false
+
+  /swiper@10.0.3:
+    resolution: {integrity: sha512-jpsUDo+EmNq7N59vRCo5aDZXLF8EfWJWlTdm1jkqEH+ph8DuMTJuLjcNunN8Q88bqVxo6vceYBGIrpRIwrEGcA==}
+    engines: {node: '>= 4.7.0'}
     dev: false
 
   /swiper@9.3.2:
