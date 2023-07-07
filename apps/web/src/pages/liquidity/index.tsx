@@ -252,7 +252,6 @@ export default function PoolListPage() {
         />
         <Body>
           {mainSection}
-
           {selectedTypeIndex === FILTER.V2 ? <FindOtherLP /> : null}
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>

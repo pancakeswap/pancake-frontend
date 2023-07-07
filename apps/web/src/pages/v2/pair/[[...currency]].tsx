@@ -63,8 +63,8 @@ export default function PoolV2Page() {
   const [token0Deposited, token1Deposited] = useTokensDeposited({ pair, userPoolBalance, totalPoolTokens })
 
   const totalUSDValue = useTotalUSDValue({
-    currency0: baseCurrency,
-    currency1: currencyB,
+    currency0: pair?.token0,
+    currency1: pair?.token1,
     token0Deposited,
     token1Deposited,
   })
@@ -97,9 +97,9 @@ export default function PoolV2Page() {
         <AppHeader
           title={
             <Flex justifyContent="center" alignItems="center">
-              <DoubleCurrencyLogo size={24} currency0={baseCurrency} currency1={currencyB} />
+              <DoubleCurrencyLogo size={24} currency0={pair?.token0} currency1={pair?.token1} />
               <Heading as="h2" ml="8px">
-                {baseCurrency?.symbol}-{currencyB?.symbol} LP
+                {pair?.token0?.symbol}-{pair?.token1?.symbol} LP
               </Heading>
             </Flex>
           }
@@ -108,17 +108,22 @@ export default function PoolV2Page() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
-                  <Button width="100%">{t('Add')}</Button>
+                <NextLinkFromReactRouter to={`/v2/add/${pair?.token0.address}/${pair?.token1.address}`}>
+                  <Button width="100%" disabled={!pair}>
+                    {t('Add')}
+                  </Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`} style={{ margin: '0px 8px' }}>
-                  <Button variant="secondary" width="100%">
+                <NextLinkFromReactRouter
+                  to={`/v2/remove/${pair?.token0.address}/${pair?.token1.address}`}
+                  style={{ margin: '0px 8px' }}
+                >
+                  <Button variant="secondary" width="100%" disabled={!pair}>
                     {t('Remove')}
                   </Button>
                 </NextLinkFromReactRouter>
                 {isFarmExistActiveForPair === 'notexist' && (
                   <NextLinkFromReactRouter to={`/v2/migrate/${pair?.liquidityToken?.address}`}>
-                    <Button variant="secondary" width="100%">
+                    <Button variant="secondary" width="100%" disabled={!pair}>
                       {t('Migrate')}
                     </Button>
                   </NextLinkFromReactRouter>
@@ -130,19 +135,19 @@ export default function PoolV2Page() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
-                <Button width="100%" mb="8px">
+              <NextLinkFromReactRouter to={`/v2/add/${pair?.token0.address}/${pair?.token1.address}`}>
+                <Button width="100%" mb="8px" disabled={!pair}>
                   {t('Add')}
                 </Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
-                <Button variant="secondary" width="100%" mb="8px">
+              <NextLinkFromReactRouter to={`/v2/remove/${pair?.token0.address}/${pair?.token1.address}`}>
+                <Button variant="secondary" width="100%" mb="8px" disabled={!pair}>
                   {t('Remove')}
                 </Button>
               </NextLinkFromReactRouter>
               {isFarmExistActiveForPair === 'notexist' && (
                 <NextLinkFromReactRouter to={`/v2/migrate/${pair.liquidityToken.address}`}>
-                  <Button variant="secondary" width="100%" mb="8px">
+                  <Button variant="secondary" width="100%" mb="8px" disabled={!pair}>
                     {t('Migrate')}
                   </Button>
                 </NextLinkFromReactRouter>
@@ -167,9 +172,9 @@ export default function PoolV2Page() {
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
                     <Flex>
-                      <CurrencyLogo currency={baseCurrency} />
+                      <CurrencyLogo currency={pair?.token0} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {baseCurrency?.symbol}
+                        {pair?.token0?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
@@ -178,9 +183,9 @@ export default function PoolV2Page() {
                   </AutoRow>
                   <AutoRow justifyContent="space-between" mb="8px">
                     <Flex>
-                      <CurrencyLogo currency={currencyB} />
+                      <CurrencyLogo currency={pair?.token1} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {currencyB?.symbol}
+                        {pair?.token1?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">

@@ -15,19 +15,19 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { AppBody, AppHeader } from '../../components/App'
-import { LightCard } from '../../components/Card'
-import Row from '../../components/Layout/Row'
-import Dots from '../../components/Loader/Dots'
-import { CurrencyLogo } from '../../components/Logo'
-import { MinimalPositionCard } from '../../components/PositionCard'
-import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
-import { PairState, useV2Pair } from '../../hooks/usePairs'
-import { usePairAdder } from '../../state/user/hooks'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { currencyId } from '../../utils/currencyId'
+import { LightCard } from 'components/Card'
+import { MinimalPositionCard } from 'components/PositionCard'
+import { PairState, useV2Pair } from 'hooks/usePairs'
+import { usePairAdder } from 'state/user/hooks'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { currencyId } from 'utils/currencyId'
+import { CommonBasesType } from 'components/SearchModal/types'
 import Page from '../Page'
-import { CommonBasesType } from '../../components/SearchModal/types'
+import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
+import { CurrencyLogo } from '../../components/Logo'
+import Dots from '../../components/Loader/Dots'
+import Row from '../../components/Layout/Row'
+import { AppBody, AppHeader } from '../../components/App'
 
 enum Fields {
   TOKEN0 = 0,
@@ -151,7 +151,7 @@ export default function PoolFinder() {
                   <MinimalPositionCard pair={pair} />
                   <Button
                     as={NextLinkFromReactRouter}
-                    to={`/v2/pair/${currencyId(currency0)}/${currencyId(currency1)}`}
+                    to={`/v2/pair/${pair.token0.address}/${pair.token1.address}`}
                     variant="secondary"
                     width="100%"
                   >
