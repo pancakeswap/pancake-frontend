@@ -134,9 +134,10 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
       [targetElement, tooltipElement].forEach((element) => {
         element?.removeEventListener(eventHandlers.start, showTooltip);
         element?.removeEventListener(eventHandlers.end, hideTooltip);
+        debouncedHide.cancel();
       });
     };
-  }, [trigger, targetElement, hideTooltip, showTooltip, manualVisible, tooltipElement]);
+  }, [trigger, targetElement, hideTooltip, showTooltip, manualVisible, tooltipElement, debouncedHide]);
 
   // no longer need the extra useeffect
 
