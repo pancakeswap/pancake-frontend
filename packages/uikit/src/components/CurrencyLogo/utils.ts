@@ -48,7 +48,7 @@ export const getCurrencyLogoUrls = memoize(
     const logoUrl = `https://tokens.pancakeswap.finance/images/${
       chainId === ChainId.BSC ? "" : `${chainName[chainId]}/`
     }${tokenAddress}.png`;
-    return [trustWalletLogo, logoUrl].filter((url) => Boolean(url)) as string[];
+    return [logoUrl, trustWalletLogo].filter((url) => Boolean(url)) as string[];
   },
   (currency?: Currency) => `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}`
 );
