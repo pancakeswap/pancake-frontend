@@ -56,6 +56,9 @@ const UserMenuItems = () => {
       <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
         <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>
       </NextLink>
+      <NextLink href="/notifications" passHref>
+        <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Notifications')}</UserMenuItem>
+      </NextLink>
       <ProfileUserMenuItem
         isLoading={isLoading}
         hasProfile={hasProfile}

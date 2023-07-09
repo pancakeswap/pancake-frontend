@@ -10,7 +10,7 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { WalletConnectConnector } from './WalletConnectConnector'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 // get most configs chain nodes length
@@ -61,18 +61,23 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 })
 
 export const walletConnectConnector = new WalletConnectConnector({
+  
   chains,
   options: {
+    
+    
     showQrModal: true,
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+    projectId: 'b5dba79e421fd90af68d0a1006caf864',
   },
 })
 
 export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
+  
   chains,
   options: {
+    
     showQrModal: false,
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+    projectId: 'b5dba79e421fd90af68d0a1006caf864',
   },
 })
 
@@ -117,7 +122,7 @@ export const noopStorage = {
 export const wagmiConfig = createConfig({
   storage: createStorage({
     storage: typeof window !== 'undefined' ? window.localStorage : noopStorage,
-    key: 'wagmi_v1.1',
+    key: 'wagmi_v2.0',
   }),
   autoConnect: false,
   publicClient,
