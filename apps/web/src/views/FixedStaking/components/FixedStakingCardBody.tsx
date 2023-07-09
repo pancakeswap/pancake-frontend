@@ -3,8 +3,10 @@ import { useTranslation } from '@pancakeswap/localization'
 
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { ReactNode } from 'react'
 
 import { LockedFixedTag } from './LockedFixedTag'
+import { FixedStakingPool } from '../type'
 
 function OverviewDataRow({ title, detail }) {
   return (
@@ -17,7 +19,7 @@ function OverviewDataRow({ title, detail }) {
   )
 }
 
-export function FixedStakingCardBody({ children, pool }) {
+export function FixedStakingCardBody({ children, pool }: { pool: FixedStakingPool; children: ReactNode }) {
   const { t } = useTranslation()
   const totalStakedAmount = getBalanceAmount(pool.totalDeposited, pool.token.decimals)
 
@@ -27,7 +29,7 @@ export function FixedStakingCardBody({ children, pool }) {
     <>
       <OverviewDataRow
         title={t('APR:')}
-        detail={<Balance fontSize={['14px', '14px', '16px']} value={1} decimals={2} unit="%" fontWeight={[600, 400]} />}
+        detail={<Balance fontSize={['14px', '14px', '16px']} value={0} decimals={2} unit="%" fontWeight={[600, 400]} />}
       />
 
       <OverviewDataRow title={t('Lock Periods:')} detail={<LockedFixedTag>{pool.lockPeriod}D</LockedFixedTag>} />

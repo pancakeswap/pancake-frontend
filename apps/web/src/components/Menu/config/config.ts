@@ -117,6 +117,11 @@ const config: (
           href: '/liquid-staking',
           supportChainIds: LIQUID_STAKING_SUPPORTED_CHAINS,
         },
+        {
+          label: t('Fixed Staking'),
+          href: '/fixed-staking',
+          supportChainIds: POOL_SUPPORTED_CHAINS,
+        },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {

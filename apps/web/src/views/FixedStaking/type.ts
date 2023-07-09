@@ -19,7 +19,7 @@ export interface FixedStakingPool {
   depositEnabled: boolean
   maxDeposit: number
   minDeposit: number
-  totalDeposited: number
+  totalDeposited: BigNumber
   maxPoolAmount: number
   minBoostAmount: number
 }

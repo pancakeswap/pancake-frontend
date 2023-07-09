@@ -36,7 +36,7 @@ import { StakePositionUserInfo } from '../type'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { FixedStakingModal } from './FixedStakingModal'
 
-export function FixedStakingPosition({
+export function FixedStakingActions({
   token,
   stakePositionUserInfo,
   unlockTime,
@@ -168,7 +168,7 @@ export function FixedStakingPosition({
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 APR
               </Text>
-              <Text bold>36%</Text>
+              <Text bold>0%</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between">
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
@@ -180,7 +180,7 @@ export function FixedStakingPosition({
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 Projected Return
               </Text>
-              <Text bold>2.055 {token.symbol}</Text>
+              <Text bold>0 {token.symbol}</Text>
             </Flex>
           </LightCard>
           <PreTitle fontSize="12px" color="textSubtle">
@@ -196,13 +196,13 @@ export function FixedStakingPosition({
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 Withdrawal Commission
               </Text>
-              <Text bold>1.2507 {token.symbol}</Text>
+              <Text bold>0 {token.symbol}</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between">
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 You Will Get
               </Text>
-              <Text bold>1,1410 {token.symbol}</Text>
+              <Text bold>0 {token.symbol}</Text>
             </Flex>
           </LightCard>
           <Button
@@ -212,7 +212,7 @@ export function FixedStakingPosition({
             }}
             onClick={handleSubmission}
           >
-            {pendingTx ? t('Unstaking...') : t('Unstake')}
+            {pendingTx ? t('Unstaking') : t('Unstake')}
           </Button>
         </Modal>
       </ModalV2>

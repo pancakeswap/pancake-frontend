@@ -32,6 +32,7 @@ import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { format, add } from 'date-fns'
 
 export function FixedStakingModal({
   stakingToken,
@@ -188,19 +189,19 @@ export function FixedStakingModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('APR')}
                 </Text>
-                <Text bold>36%</Text>
+                <Text bold>0%</Text>
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   Unlock On
                 </Text>
-                <Text bold>Sep 16 2023 21:45</Text>
+                <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   Projected Return
                 </Text>
-                <Text bold>0.23 BNB</Text>
+                <Text bold>0 {stakingToken.symbol}</Text>
               </Flex>
             </LightGreyCard>
           </Box>
@@ -212,7 +213,7 @@ export function FixedStakingModal({
               }}
               onClick={handleSubmission}
             >
-              {pendingTx ? t('Confirming') : t('Confirm')}
+              {pendingTx ? t('Staking') : t('Stake')}
             </Button>
           ) : (
             <Button

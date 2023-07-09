@@ -6,7 +6,25 @@ import { useContractRead } from 'wagmi'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
+import BigNumber from 'bignumber.js'
 import { FixedStakingPool, StakedPosition } from '../type'
+
+export function useCurrenDay(): number {
+  const fixedStakingContract = useFixedStakingContract()
+
+  const { chainId } = useActiveWeb3React()
+
+  const { data } = useContractRead({
+    abi: fixedStakingContract.abi,
+    address: fixedStakingContract.address as `0x${string}`,
+    functionName: 'getCurrentDay',
+    enabled: true,
+    watch: true,
+    chainId,
+  })
+
+  return (data || 0) as number
+}
 
 export function useStakedPositionsByUser(): StakedPosition[] {
   const fixedStakingContract = useFixedStakingContract()
@@ -80,7 +98,7 @@ export function useStakedPools(): FixedStakingPool[] {
         depositEnabled: fixedStakePool[7],
         maxDeposit: fixedStakePool[8],
         minDeposit: fixedStakePool[9],
-        totalDeposited: fixedStakePool[10],
+        totalDeposited: new BigNumber(fixedStakePool[10]),
         maxPoolAmount: fixedStakePool[11],
         minBoostAmount: fixedStakePool[12],
       }
