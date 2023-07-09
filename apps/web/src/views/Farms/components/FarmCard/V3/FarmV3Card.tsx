@@ -123,7 +123,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             </Text>
           </Flex>
         )}
-        {!account && (
+        {!account && farm.boosted && (
           <Box mt="24px" mb="16px">
             <StatusView status={boostStatus} />
           </Box>
