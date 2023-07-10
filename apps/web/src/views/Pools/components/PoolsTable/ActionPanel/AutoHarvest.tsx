@@ -21,7 +21,7 @@ import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { Token } from '@pancakeswap/sdk'
-import RevenueSharingModal from 'views/Pools/components/RevenueSharing/RevenueSharingModal'
+import BenefitsModal from 'views/Pools/components/RevenueSharing/BenefitsModal'
 
 import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
@@ -79,7 +79,7 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
     placement: 'bottom',
   })
 
-  const [onPresentViewBenefitsModal] = useModal(<RevenueSharingModal />, true, true, 'revenueModal')
+  const [onPresentViewBenefitsModal] = useModal(<BenefitsModal />, true, true, 'revenueModal')
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">

@@ -12,8 +12,9 @@ import {
   Button,
   AutoColumn,
 } from '@pancakeswap/uikit'
-import SharingPoolNameCell from './SharingPoolNameCell'
-import RevenueSharing from './RevenueSharing'
+import LockedBenefits from 'views/Pools/components/RevenueSharing/BenefitsModal/LockedBenefits'
+import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
+import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
 
 const Container = styled(ModalContainer)`
   width: 100%;
@@ -31,13 +32,11 @@ const ScrollableContainer = styled(Flex)`
   max-height: 60vh;
 `
 
-interface RevenueSharingModalProps {
+interface BenefitsModalProps {
   onDismiss?: () => void
 }
 
-const RevenueSharingModal: React.FunctionComponent<React.PropsWithChildren<RevenueSharingModalProps>> = ({
-  onDismiss,
-}) => {
+const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
   return (
@@ -52,6 +51,7 @@ const RevenueSharingModal: React.FunctionComponent<React.PropsWithChildren<Reven
         <ModalBody mt="16px">
           <ScrollableContainer px="24px">
             <SharingPoolNameCell />
+            <LockedBenefits />
             <RevenueSharing />
           </ScrollableContainer>
         </ModalBody>
@@ -67,4 +67,4 @@ const RevenueSharingModal: React.FunctionComponent<React.PropsWithChildren<Reven
   )
 }
 
-export default RevenueSharingModal
+export default BenefitsModal
