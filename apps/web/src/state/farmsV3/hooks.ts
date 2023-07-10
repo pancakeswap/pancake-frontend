@@ -180,6 +180,8 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   }
 }
 
+const zkSyncChains = [ChainId.ZKSYNC_TESTNET, ChainId.ZKSYNC]
+
 export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
@@ -189,13 +191,23 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
     if (!account || !supportedChainIdV3.includes(chainId)) return []
     const callData: Hex[] = []
     for (const stakedTokenId of stakedTokenIds) {
-      callData.push(
-        encodeFunctionData({
-          abi: masterchefV3?.abi,
-          functionName: 'harvest',
-          args: [stakedTokenId, account],
-        }),
-      )
+      if (zkSyncChains.includes(chainId)) {
+        callData.push(
+          encodeFunctionData({
+            abi: masterchefV3?.abi,
+            functionName: 'pendingCake',
+            args: [stakedTokenId],
+          }),
+        )
+      } else {
+        callData.push(
+          encodeFunctionData({
+            abi: masterchefV3?.abi,
+            functionName: 'harvest',
+            args: [stakedTokenId, account],
+          }),
+        )
+      }
     }
     return callData
   }, [account, masterchefV3?.abi, stakedTokenIds, chainId])
@@ -208,7 +220,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
           .map((r) =>
             decodeFunctionResult({
               abi: masterchefV3.abi,
-              functionName: 'harvest',
+              functionName: zkSyncChains.includes(chainId) ? 'pendingCake' : 'harvest',
               data: r,
             }),
           )
