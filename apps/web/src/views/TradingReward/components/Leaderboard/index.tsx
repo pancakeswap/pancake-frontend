@@ -144,18 +144,20 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
           </>
         )}
         {campaignLeaderBoardList.campaignStart > 0 && (
-          <>
-            <Container mb="16px">
-              <Grid
-                gridGap={['16px', null, null, null, null, '24px']}
-                gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
-              >
-                {first && <RankingCard rank={1} user={first} />}
-                {second && <RankingCard rank={2} user={second} />}
-                {third && <RankingCard rank={3} user={third} />}
-              </Grid>
-            </Container>
-          </>
+          <Container mb="16px">
+            <Grid
+              gridGap={['16px', null, null, null, null, '24px']}
+              gridTemplateColumns={['1fr', null, null, null, null, 'repeat(3, 1fr)']}
+            >
+              {(topTradersArr?.length > 0 || isLoading) && (
+                <>
+                  <RankingCard rank={1} user={first} />
+                  <RankingCard rank={2} user={second} />
+                  <RankingCard rank={3} user={third} />
+                </>
+              )}
+            </Grid>
+          </Container>
         )}
         <Box maxWidth={1200} m="auto">
           <MyRank campaignId={campaignLeaderBoardList.campaignId} />

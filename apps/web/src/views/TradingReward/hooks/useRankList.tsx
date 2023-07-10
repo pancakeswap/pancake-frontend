@@ -36,6 +36,7 @@ const TOP_RANK_NUMBER = 3
 
 export const useRankList = ({ campaignId, currentPage }: UseRankListProps): RankList => {
   const [isLoading, setIsLoading] = useState(false)
+  const [lastCampaignId, setLastCampaignId] = useState('')
   const [topThreeTraders, setTopThreeTraders] = useState<RankListDetail[]>([])
 
   const { data } = useSWR(
@@ -43,7 +44,11 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
     async () => {
       try {
         setIsLoading(true)
-        setTopThreeTraders([])
+        setLastCampaignId(campaignId)
+        if (campaignId !== lastCampaignId) {
+          setTopThreeTraders([])
+        }
+
         const response = await fetch(
           `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/${RewardType.TOP_TRADERS}/page/${currentPage}/size/${MAX_PER_PAGE}`,
         )
