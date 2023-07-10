@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
 import { CalculateIcon } from "../../../../components/Svg";
@@ -24,10 +25,13 @@ export const FarmApyButton: React.FC<React.PropsWithChildren<FarmApyButtonProps>
   handleClickButton,
   children,
 }) => {
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (hideButton) return;
-    handleClickButton(event);
-  };
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (hideButton) return;
+      handleClickButton(event);
+    },
+    [hideButton, handleClickButton]
+  );
 
   return (
     <Flex flexDirection="column" alignItems="flex-start">
