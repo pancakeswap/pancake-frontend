@@ -20,15 +20,19 @@ const ScanLink: React.FC<React.PropsWithChildren<ScanLinkProps>> = ({ children, 
     if (chainId && icons[chainId]) return icons[chainId];
     return <OpenNewIcon />;
   }, [icon, chainId]);
-  return (
-    <Link external {...props}>
-      {children}
-      {React.isValidElement(iconToShow) &&
-        React.cloneElement(iconToShow, {
+  const iconElement = useMemo(() => {
+    return React.isValidElement(iconToShow)
+      ? React.cloneElement(iconToShow, {
           // @ts-ignore
           color: props.color ? props.color : "primary",
           ml: "4px",
-        })}
+        })
+      : null;
+  }, [iconToShow, props.color]);
+  return (
+    <Link external {...props}>
+      {children}
+      {iconElement}
     </Link>
   );
 };
