@@ -5,18 +5,6 @@ import { useMemo, useCallback, ChangeEvent } from 'react'
 
 import { useSearch, useSortBy } from '../hooks'
 
-export const FilterContainer = styled(Flex).attrs({
-  alignItems: 'center',
-})`
-  width: 100%;
-  padding: 0.5em 0;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
-    padding: 0;
-  }
-`
-
 const LabelWrapper = styled.div`
   > ${Text} {
     font-size: 12px;

@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { updateQuery } from '@pancakeswap/utils/clientRouter'
 
 function toggleHookFactory(queryName: string) {
   return function useToggle(): [boolean, () => void] {
     const router = useRouter()
-    const on = useMemo(() => router.query[queryName] === '1', [router.query])
+    const searchParams = useSearchParams()
+    const on = useMemo(() => searchParams.get(queryName) === '1', [searchParams])
     const toggle = useCallback(() => {
       router.push(
         updateQuery(router.asPath, {

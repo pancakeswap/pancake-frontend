@@ -1,25 +1,48 @@
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
+
 import {
   ControlsContainer,
+  ControlGroup,
   LiveSwitch,
   ViewSwitch,
   StakeOnlyToggle,
   BoosterToggle,
-  FilterContainer,
   SortFilter,
   SearchFilter,
 } from '../components'
 
 export function Controls() {
-  return (
+  const { isDesktop } = useMatchBreakpoints()
+
+  const controls = isDesktop ? (
     <ControlsContainer>
-      <ViewSwitch />
-      <StakeOnlyToggle />
-      <BoosterToggle />
-      <LiveSwitch />
-      <FilterContainer>
+      <ControlGroup>
+        <ViewSwitch />
+        <StakeOnlyToggle />
+        <BoosterToggle />
+        <LiveSwitch />
+      </ControlGroup>
+      <ControlGroup justifyContent="flex-end">
         <SortFilter />
         <SearchFilter />
-      </FilterContainer>
+      </ControlGroup>
+    </ControlsContainer>
+  ) : (
+    <ControlsContainer justifyContent="flex-start" flexDirection="column">
+      <ControlGroup>
+        <ViewSwitch />
+        <StakeOnlyToggle />
+        <BoosterToggle />
+      </ControlGroup>
+      <ControlGroup justifyContent="flex-start">
+        <LiveSwitch />
+      </ControlGroup>
+      <ControlGroup>
+        <SortFilter />
+        <SearchFilter />
+      </ControlGroup>
     </ControlsContainer>
   )
+
+  return controls
 }
