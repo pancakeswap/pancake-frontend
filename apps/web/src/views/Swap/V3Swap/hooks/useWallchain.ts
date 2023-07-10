@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import WallchainSDK from '@wallchain/sdk'
+import WallchainSDK, { TOptions } from '@wallchain/sdk'
 import { Token, TradeType, Currency } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useWalletClient } from 'wagmi'
@@ -8,6 +8,8 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { basisPointsToPercent } from 'utils/exchange'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
+import { captureException } from '@sentry/nextjs'
+
 import Bottleneck from 'bottleneck'
 import { Address, Hex } from 'viem'
 import { WallchainKeys } from 'config/wallchain'
@@ -30,25 +32,25 @@ const limiter = new Bottleneck({
   highWater: 1, // only queue 1 request at a time, newer request will drop older
 })
 
-const loadData = async (account: string, sdk: WallchainSDK, swapCalls: SwapCall[]) => {
-  try {
-    if (await sdk.supportsChain()) {
-      const resp = await sdk.checkForMEV({
-        from: account,
-        to: swapCalls[0].address,
-        value: swapCalls[0].value,
-        data: swapCalls[0].calldata,
-      })
+const overrideAddresses = {
+  56: '0x6346e0a39e2fBbc133e4ce8390ab567108e62aEe',
+}
 
-      if (resp.MEVFound) {
-        const approvalFor = await sdk.getSpenderForAllowance()
-        return ['found', approvalFor, resp.masterInput]
-      }
+const loadData = async (account: string, sdk: WallchainSDK, swapCalls: SwapCall[]) => {
+  if (await sdk.supportsChain()) {
+    const resp = await sdk.checkForMEV({
+      from: account,
+      to: swapCalls[0].address,
+      value: swapCalls[0].value,
+      data: swapCalls[0].calldata,
+    })
+
+    if (resp.MEVFound) {
+      const approvalFor = await sdk.getSpenderForAllowance()
+      return ['found', approvalFor, resp.masterInput]
     }
-    return ['not-found', undefined, undefined]
-  } catch (e) {
-    return ['not-found', undefined, undefined]
   }
+  return ['not-found', undefined, undefined]
 }
 const wrappedLoadData = limiter.wrap(loadData)
 
@@ -81,8 +83,20 @@ export function useWallchainApi(
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
 
   useEffect(() => {
-    const sdk = new WallchainSDK({ keys: WallchainKeys, provider: walletClient })
-    if (swapCalls[0]) {
+    if (!walletClient) {
+      return
+    }
+    const sdk = new WallchainSDK({
+      keys: WallchainKeys,
+      provider: walletClient.transport as TOptions['provider'],
+      overrideAddresses,
+    })
+
+    if (
+      swapCalls[0] &&
+      swapCalls[0].calldata.toLowerCase().includes('190b589cf9Fb8DDEabBFeae36a813FFb2A702454'.toLowerCase()) &&
+      swapCalls[0].calldata.toLowerCase().includes('bb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'.toLowerCase())
+    ) {
       setStatus('pending')
       wrappedLoadData(account, sdk, swapCalls)
         .then(([reqStatus, address, recievedMasterInput]) => {
@@ -90,10 +104,11 @@ export function useWallchainApi(
           setApprovalAddress(address)
           setMasterInput(recievedMasterInput)
         })
-        .catch(() => {
+        .catch((e) => {
           setStatus('not-found')
           setApprovalAddress(undefined)
           setMasterInput(undefined)
+          captureException(e)
         })
     } else {
       setStatus('not-found')
@@ -141,12 +156,16 @@ export function useWallchainSwapCallArguments(
 
       const callback = async () => {
         try {
-          const sdk = new WallchainSDK({ keys: WallchainKeys, provider: walletClient })
+          const sdk = new WallchainSDK({
+            keys: WallchainKeys,
+            provider: walletClient.transport as TOptions['provider'],
+            overrideAddresses,
+          })
           const spender = (await sdk.getSpender()) as `0x${string}`
 
           let witness: false | Awaited<ReturnType<typeof sdk.signPermit>> = false
           if (needPermit) {
-            witness = await sdk.signPermit(srcToken, account, spender, amountIn)
+            witness = await sdk.signPermit(srcToken as `0x${string}`, account, spender, amountIn)
           }
 
           const data = await sdk.createNewTransaction(
@@ -155,8 +174,8 @@ export function useWallchainSwapCallArguments(
               to: previousSwapCalls[0].address,
               data: previousSwapCalls[0].calldata,
               from: account,
-              srcToken,
-              dstToken,
+              srcToken: srcToken as `0x${string}`,
+              dstToken: dstToken as `0x${string}`,
               amountIn,
               isPermit: false,
             },
