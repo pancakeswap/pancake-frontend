@@ -73,16 +73,16 @@ export function useCallWithGasPrice() {
       methodArgs?: Args extends never ? undefined : Args,
       overrides?: Omit<CallParameters, 'chain' | 'to' | 'data'>,
     ): Promise<SendTransactionResult> => {
-      const gas = await publicClient({ chainId }).estimateContractGas({
-        abi: contract.abi,
-        address: contract.address,
-        // account: walletClient.account,
-        functionName: methodName,
-        args: methodArgs,
-        gasPrice,
-        value: 0n,
-        ...overrides,
-      } as unknown as EstimateContractGasParameters)
+      // const gas = await publicClient({ chainId }).estimateContractGas({
+      //   abi: contract.abi,
+      //   address: contract.address,
+      //   // account: walletClient.account,
+      //   functionName: methodName,
+      //   args: methodArgs,
+      //   gasPrice,
+      //   value: 0n,
+      //   ...overrides,
+      // } as unknown as EstimateContractGasParameters)
       const res = await walletClient.writeContract({
         abi: contract.abi,
         address: contract.address,
@@ -90,7 +90,7 @@ export function useCallWithGasPrice() {
         functionName: methodName,
         args: methodArgs,
         gasPrice,
-        gas: calculateGasMargin(gas),
+        // gas: calculateGasMargin(gas),
         value: 0n,
         ...overrides,
       } as unknown as WriteContractParameters)
