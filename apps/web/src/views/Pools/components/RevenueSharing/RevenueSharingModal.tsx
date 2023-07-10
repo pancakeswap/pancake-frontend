@@ -12,6 +12,18 @@ import {
   Button,
   AutoColumn,
 } from '@pancakeswap/uikit'
+import SharingPoolNameCell from './SharingPoolNameCell'
+import RevenueSharing from './RevenueSharing'
+
+const Container = styled(ModalContainer)`
+  width: 100%;
+  max-height: '90vh';
+  overflow: 'hidden';
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 375px;
+  }
+`
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -29,8 +41,8 @@ const RevenueSharingModal: React.FunctionComponent<React.PropsWithChildren<Reven
   const { t } = useTranslation()
 
   return (
-    <ModalContainer style={{ width: '300px', maxHeight: '90vh', overflow: 'hidden' }}>
-      <AtomBox bg="gradientBubblegum" py="24px" maxWidth="420px">
+    <Container>
+      <AtomBox bg="gradientBubblegum" py="24px">
         <RowBetween flexWrap="nowrap" px="24px">
           <Text fontSize={20} bold>
             {t('Locked CAKE Benefits')}
@@ -38,7 +50,10 @@ const RevenueSharingModal: React.FunctionComponent<React.PropsWithChildren<Reven
           <ModalCloseButton onDismiss={onDismiss} />
         </RowBetween>
         <ModalBody mt="16px">
-          <ScrollableContainer px="24px">123</ScrollableContainer>
+          <ScrollableContainer px="24px">
+            <SharingPoolNameCell />
+            <RevenueSharing />
+          </ScrollableContainer>
         </ModalBody>
         <AutoColumn px="24px" gap="16px">
           <ModalActions>
@@ -48,7 +63,7 @@ const RevenueSharingModal: React.FunctionComponent<React.PropsWithChildren<Reven
           </ModalActions>
         </AutoColumn>
       </AtomBox>
-    </ModalContainer>
+    </Container>
   )
 }
 
