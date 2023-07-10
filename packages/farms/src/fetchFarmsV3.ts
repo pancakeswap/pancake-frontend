@@ -1,4 +1,4 @@
-import { ERC20Token, Currency } from '@pancakeswap/sdk'
+import { ERC20Token, Currency, ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { Address, PublicClient, formatUnits } from 'viem'
@@ -38,7 +38,7 @@ export async function farmV3FetchFarms({
 }) {
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, provider, masterChefAddress),
-    provider({ chainId })
+    provider({ chainId: ChainId.BSC })
       .readContract({
         abi: chainlinkAbi,
         address: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
