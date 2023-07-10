@@ -20,7 +20,7 @@ const Congratulations = () => {
 
   return (
     <>
-      <ModalV2 style={{ zIndex: 100 }} isOpen={isOpen} closeOnOverlayClick onDismiss={() => setIsOpen(false)}>
+      <ModalV2 style={{ zIndex: 100 }} isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
         <USCitizenConfirmModal title={t('PancakeSwap Affiliate Program')} id={IdType.AFFILIATE_PROGRAM} />
       </ModalV2>
       <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '80px 24px']}>
