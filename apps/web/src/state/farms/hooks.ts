@@ -14,7 +14,7 @@ import {
   supportedChainIdV2,
 } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'

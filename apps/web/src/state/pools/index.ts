@@ -46,6 +46,7 @@ import { publicClient } from 'utils/wagmi'
 import { getViemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
+import { getCakePriceFromOracle } from 'hooks/useCakePriceAsBN'
 
 import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
@@ -94,10 +95,10 @@ const initialState: PoolsState = {
 }
 
 export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
-  const cakePrice = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
-  const stakingTokenPrice = cakePrice.price
+  const cakePrice = await getCakePriceFromOracle()
+  const stakingTokenPrice = cakePrice
 
-  const earningTokenPrice = cakePrice.price
+  const earningTokenPrice = cakePrice
 
   dispatch(
     setPoolPublicData({

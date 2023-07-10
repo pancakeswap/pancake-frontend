@@ -16,7 +16,7 @@ import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
-import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
 import { useRouter } from 'next/router'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
