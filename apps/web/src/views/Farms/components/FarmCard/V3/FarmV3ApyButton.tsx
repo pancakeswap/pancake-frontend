@@ -17,7 +17,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
 import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { useMemo, useState } from 'react'
