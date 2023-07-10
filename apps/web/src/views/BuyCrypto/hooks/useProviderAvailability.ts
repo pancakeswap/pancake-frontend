@@ -1,4 +1,4 @@
-import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 
 // will cleanup urls later
 export async function fetchMoonpayAvailability(userIp: string): Promise<Response> {
@@ -38,4 +38,18 @@ export async function fetchBinanceConnectAvailability(userIp: string): Promise<R
   })
   const result = response.json()
   return result
+}
+
+export async function fetchProviderAvailabilities(payload): Promise<{ [provider: string]: boolean }> {
+  // Fetch data from endpoint 1
+  const response = await fetch(`${MOONPAY_SIGN_URL}/fetch-provider-availability`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+  const result = await response.json()
+  return result.result
 }

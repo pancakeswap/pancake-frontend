@@ -1,45 +1,26 @@
 import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { BuyCryptoState } from 'state/buyCrypto/reducer'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { ProviderQoute } from 'views/BuyCrypto/hooks/usePriceQuoter'
-import styled, { useTheme } from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { ProviderIcon } from 'views/BuyCrypto/Icons'
+import { ProviderQoute } from 'views/BuyCrypto/types'
+import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
-import Image from 'next/image'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-
-import MercuryoAltSvg from '../../../../../public/images/onRampProviders/mercuryo_new_logo_black.png'
-import MercuryoAltSvgLight from '../../../../../public/images/onRampProviders/mercuryo_new_logo_white.png'
+import { providerFeeTypes } from 'views/BuyCrypto/constants'
+import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
 const DropdownWrapper = styled.div<{ isClicked: boolean }>`
-  padding-top: ${({ isClicked }) => (isClicked ? '20px' : '0px')};
+  display: ${({ isClicked }) => (isClicked ? 'none' : 'block')};
   width: 100%;
+  transition: display 0.6s ease-in-out;
 `
-const FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
 
-const FeeItem = ({
-  feeTitle,
-  feeAmount,
-  currency,
-  provider,
-  index,
-}: {
-  feeTitle: string
-  feeAmount: number
-  currency: string
-  provider: string
-  index: number
-}) => {
+const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
   const {
     currentLanguage: { locale },
   } = useTranslation()
-
-  if (provider === 'Mercuryo' && (index === 1 || index === 2)) return <></>
   return (
     <RowBetween>
       <Text fontSize="14px" color="textSubtle">
@@ -55,13 +36,11 @@ const FeeItem = ({
 function AccordionItem({
   active,
   btnOnClick,
-  buyCryptoState,
   quote,
   fetching,
 }: {
   active: boolean
   btnOnClick: any
-  buyCryptoState: BuyCryptoState
   quote: ProviderQoute
   fetching: boolean
 }) {
@@ -69,9 +48,8 @@ function AccordionItem({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const theme = useTheme()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(105)
+  const [height, setHeight] = useState(active ? 227 : 90)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -84,28 +62,9 @@ function AccordionItem({
   }, [setVisiblity, btnOnClick])
 
   useEffect(() => {
-    if (active) {
-      const contentEl = getRefValue(contentRef)
-      setHeight(contentEl.scrollHeight + 100)
-    } else setHeight(105)
+    const contentEl = getRefValue(contentRef)
+    setHeight(contentEl?.scrollHeight + 90)
   }, [active])
-
-  const MoonapyAmt = useMemo(() => {
-    const totalFees = new BigNumber(quote.networkFee).plus(new BigNumber(quote.providerFee))
-    const fiatAmountAfterFees = new BigNumber(buyCryptoState.typedValue).minus(totalFees)
-    const AssetRate = new BigNumber(quote.quote)
-    const moonPayQuote = fiatAmountAfterFees.dividedBy(AssetRate).toNumber()
-    return moonPayQuote
-  }, [quote, buyCryptoState])
-
-  const MercuryAmt = useMemo(() => {
-    const binanceConnectQuote = new BigNumber(quote.amount).minus(new BigNumber(quote.networkFee))
-    return binanceConnectQuote.toNumber()
-  }, [quote])
-
-  let finalQuote = quote.amount
-  if (quote.provider === 'MoonPay') finalQuote = MoonapyAmt
-  if (quote.provider === 'Mercuryo') finalQuote = MercuryAmt
 
   const {
     tooltip: buyCryptoTooltip,
@@ -129,13 +88,7 @@ function AccordionItem({
       <Flex flexDirection="column">
         <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="20px">
-            {quote.provider === 'Mercuryo' ? (
-              <Flex mt="5px">
-                <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
-              </Flex>
-            ) : (
-              <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
-            )}
+            <OnRampProviderLogo provider={quote.provider} />
             <TooltipText
               ref={buyCryptoTargetRef}
               onClick={() => setMobileTooltipShow(false)}
@@ -165,50 +118,35 @@ function AccordionItem({
         isClicked={active}
         isDisabled={false}
       >
-        <RowBetween paddingBottom="8px">
-          {quote.provider === 'Mercuryo' ? (
-            <Flex mt="5px">
-              <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={120} />
-            </Flex>
-          ) : (
-            <ProviderIcon provider={quote.provider} width="130px" isDisabled={false} />
-          )}
+        <RowBetween>
+          <OnRampProviderLogo provider={quote.provider} />
 
-          <Text ml="4px" fontSize="22px" color="#7A6EAA" fontWeight="bold">
-            {formatLocaleNumber({ number: finalQuote, locale })} {buyCryptoState.INPUT.currencyId}
+          <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
+            {formatLocaleNumber({ number: quote.quote, locale })} {quote.cryptoCurrency}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
           <Text fontSize="15px">
-            {buyCryptoState.INPUT.currencyId} {t('rate')}
+            {quote.cryptoCurrency} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: quote.quote, locale })} {buyCryptoState.OUTPUT.currencyId}
+            = {formatLocaleNumber({ number: quote.amount, locale })} {quote.fiatCurrency}
           </Text>
         </RowBetween>
 
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
-          {FEE_TYPES.map((feeType: string, index: number) => {
+          {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
             if (index === 0) fee = quote.networkFee + quote.providerFee
             else if (index === 1) fee = quote.networkFee
             else fee = quote.providerFee
-            return (
-              <FeeItem
-                key={feeType}
-                feeTitle={feeType}
-                feeAmount={fee}
-                currency={buyCryptoState.OUTPUT.currencyId}
-                provider={quote.provider}
-                index={index}
-              />
-            )
+            return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
           <FiatOnRampModalButton
             provider={quote.provider}
-            inputCurrency={buyCryptoState.INPUT.currencyId}
-            outputCurrency={buyCryptoState.OUTPUT.currencyId}
-            amount={buyCryptoState.typedValue}
+            inputCurrency={quote.cryptoCurrency}
+            outputCurrency={quote.fiatCurrency}
+            amount={quote.amount.toString()}
             disabled={fetching}
           />
         </DropdownWrapper>

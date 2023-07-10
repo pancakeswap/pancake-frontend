@@ -1,15 +1,27 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, CircleLoader, Flex, InjectedModalProps, Modal, Text, useModal } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  CircleLoader,
+  Flex,
+  Heading,
+  InjectedModalProps,
+  ModalTitle,
+  ModalWrapper,
+  Text,
+  useModal,
+  Box,
+} from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
-import { useFiatOnrampAvailability } from 'hooks/useCheckAvailability'
 import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
-import styled, { useTheme, DefaultTheme } from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import {
+  chainIdToNetwork,
   ETHEREUM_TOKENS,
+  ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   SUPPORTED_MONPAY_ETH_TOKENS,
   SUPPORTED_MOONPAY_BSC_TOKENS,
@@ -18,14 +30,50 @@ import {
 import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
+import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
+  height: 90%;
+  width: 100%;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  position: absolute;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
+`
 
-  height: calc(100% - 75px);
-  position: absolute;
+const IFrameWrapper = styled(Flex)`
+  height: 90%;
   width: 100%;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  background: ${({ theme }) => (theme.isDark ? '#27262C' : 'white')};
+  position: absolute;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  padding-bottom: 18px;
+`
+const StyledBackArrowContainer = styled(Box)`
+  position: absolute;
+  right: 10%;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const ModalHeader = styled.div<{ background?: string }>`
+  align-items: center;
+  background: transparent;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  display: flex;
+  padding: 12px 24px;
+  position: relative;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    background: ${({ background }) => background || 'transparent'};
+  }
 `
 
 interface FiatOnRampProps {
@@ -39,26 +87,14 @@ interface FetchResponse {
   urlWithSignature: string
 }
 
-const LoadingBuffer = ({ theme }: { theme: DefaultTheme }) => {
+const LoadingBuffer = () => {
   return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      style={{
-        height: '677px',
-        width: '100%',
-        background: `${theme.isDark ? '#27262C' : 'white'}`,
-        position: 'absolute',
-        borderBottomLeftRadius: '24px',
-        borderBottomRightRadius: '24px',
-        zIndex: '100',
-      }}
-    >
-      <div style={{ marginBottom: '70px', display: 'flex', alignItems: 'center' }}>
+    <IFrameWrapper justifyContent="center" alignItems="center" style={{ zIndex: 100 }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <LoadingDot />
         <CircleLoader />
       </div>
-    </Flex>
+    </IFrameWrapper>
   )
 }
 
@@ -131,7 +167,6 @@ export const FiatOnRampModalButton = ({
   disabled,
 }: FiatOnRampProps & { disabled: boolean }) => {
   const { t } = useTranslation()
-  const [shouldCheck, setShouldCheck] = useState<boolean>(false)
   const [onPresentConfirmModal] = useModal(
     <FiatOnRampModal
       provider={provider}
@@ -140,22 +175,6 @@ export const FiatOnRampModalButton = ({
       amount={amount}
     />,
   )
-
-  const { fiatOnarampAvailability, availabilityChecked, loading, error } = useFiatOnrampAvailability(
-    shouldCheck,
-    onPresentConfirmModal,
-  )
-
-  const handleBuyCryptoClick = useCallback(() => {
-    if (!availabilityChecked) {
-      setShouldCheck(true)
-    } else if (fiatOnarampAvailability) {
-      onPresentConfirmModal()
-      setShouldCheck(false)
-    }
-  }, [fiatOnarampAvailability, availabilityChecked, onPresentConfirmModal])
-
-  const disableBuyCryptoButton = Boolean(error || (!fiatOnarampAvailability && availabilityChecked) || loading)
 
   let buttonText: ReactNode | string = t(`Buy with %provider%`, { provider })
   if (disabled) {
@@ -171,15 +190,11 @@ export const FiatOnRampModalButton = ({
     )
   }
   return (
-    <>
-      {!disableBuyCryptoButton ? (
-        <AutoColumn gap="md">
-          <CommitButton onClick={handleBuyCryptoClick} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
-            {buttonText}
-          </CommitButton>
-        </AutoColumn>
-      ) : null}
-    </>
+    <AutoColumn gap="md">
+      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
+        {buttonText}
+      </CommitButton>
+    </AutoColumn>
   )
 }
 
@@ -217,7 +232,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
     try {
       let result = ''
-      if (provider === 'MoonPay')
+      if (provider === ONRAMP_PROVIDERS.MoonPay)
         result = await fetchMoonPaySignedUrl(
           inputCurrency,
           outputCurrency,
@@ -259,7 +274,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   }, [account.address])
 
   useEffect(() => {
-    if (provider === 'Mercuryo') {
+    if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
@@ -268,15 +283,13 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
-          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : mercuryoWhitelist,
+          currencies: chainId === ChainId.ETHEREUM ? [ETHEREUM_TOKENS] : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          height: '750px',
-          width: '400px',
-          network: chainId === ChainId.ETHEREUM ? ChainId.ETHEREUM : ChainId.BSC,
+          network: chainIdToNetwork[chainId],
           host: document.getElementById('mercuryo-widget'),
-          theme: theme.isDark ? 'xzen' : 'phemex',
+          theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
         })
       }
     } else fetchSignedIframeUrl()
@@ -295,28 +308,31 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   return (
     <>
-      <Modal
-        title="Buy Crypto In One Click"
-        onDismiss={handleDismiss}
-        bodyPadding="0px"
-        headerBackground="gradientCardHeader"
-        height="750px" // height has to be overidden
-        width="400px" // width has to be overidden
-      >
+      <ModalWrapper minHeight="575px" minWidth="360px">
+        <ModalHeader background={theme.colors.gradientCardHeader}>
+          <ModalTitle pt="6px" justifyContent="center">
+            <StyledBackArrowContainer onClick={handleDismiss}>
+              <Text color="primary">{t('Close')}</Text>
+            </StyledBackArrowContainer>
+            <Heading width="100%" textAlign="center" pr="20px">
+              <OnRampProviderLogo provider={provider} />
+            </Heading>
+          </ModalTitle>
+        </ModalHeader>
         {error ? (
           <Flex justifyContent="center" alignItems="center" alignContent="center">
             <ErrorText>
               <Trans>something went wrong!</Trans>
             </ErrorText>
           </Flex>
-        ) : provider === 'Mercuryo' ? (
+        ) : provider === ONRAMP_PROVIDERS.Mercuryo ? (
           <>
-            {loading && <LoadingBuffer theme={theme} />}
-            <div id="mercuryo-widget" />
+            {loading && <LoadingBuffer />}
+            <IFrameWrapper id="mercuryo-widget" />;
           </>
         ) : (
           <>
-            {loading && <LoadingBuffer theme={theme} />}
+            {loading && <LoadingBuffer />}
             <StyledIframe
               id="moonpayIframe"
               src={signedIframeUrl ?? ''}
@@ -325,7 +341,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             />
           </>
         )}
-      </Modal>
+      </ModalWrapper>
       <Script
         src="https://widget.mercuryo.io/embed.2.0.js"
         onLoad={() => {

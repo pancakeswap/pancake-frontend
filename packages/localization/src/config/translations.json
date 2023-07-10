@@ -2540,7 +2540,6 @@
   "Amount too high": "Amount too high",
   "Buy Crypto here.": "Buy Crypto here.",
   "Buy with %provider%": "Buy with %provider%",
-  "Error, try again later.": "Error, try again later.",
   "No quote for this token pair at the moment.": "No quote for this token pair at the moment.",
   "Price quote from provider is currently unavailable. Please try again or try a different amount": "Price quote from provider is currently unavailable. Please try again or try a different amount",
   "Proceed to get live aggregated quotes from a variety of different fiat onramp providers.": "Proceed to get live aggregated quotes from a variety of different fiat onramp providers.",

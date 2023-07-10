@@ -20,7 +20,14 @@ interface LogoProps {
 }
 
 export function FiatLogo({ currency, size = '24px', style }: LogoProps) {
-  return <StyledLogo size={size} srcs={[`/${currency?.symbol}.svg`]} width={size} style={style} />
+  return (
+    <StyledLogo
+      size={size}
+      srcs={[`/images/currencies/${currency?.symbol?.toLowerCase()}.png`]}
+      width={size}
+      style={style}
+    />
+  )
 }
 
 export default function CurrencyLogo({ currency, size = '24px', style }: LogoProps) {
