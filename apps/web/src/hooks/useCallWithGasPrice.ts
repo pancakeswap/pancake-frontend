@@ -76,7 +76,7 @@ export function useCallWithGasPrice() {
       const gas = await publicClient({ chainId }).estimateContractGas({
         abi: contract.abi,
         address: contract.address,
-        account: walletClient.account,
+        // account: walletClient.account,
         functionName: methodName,
         args: methodArgs,
         gasPrice,
