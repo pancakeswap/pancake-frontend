@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
@@ -10,7 +11,7 @@ import { useTooltip } from "../../../../hooks/useTooltip";
 import { FarmMultiplierInfo } from "../FarmMultiplierInfo";
 
 export interface ExpandableSectionProps {
-  scanAddressLink?: string;
+  scanAddress?: { link: string; chainId?: number; icon?: ReactElement };
   infoAddress?: string;
   removed?: boolean;
   totalValueFormatted?: string;
@@ -45,7 +46,7 @@ const StyledText = styled(Text)`
 `;
 
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
-  scanAddressLink,
+  scanAddress,
   infoAddress,
   removed,
   totalValueLabel,
@@ -123,9 +124,11 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
           <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>
         </Flex>
       )}
-      {scanAddressLink && (
+      {scanAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
-          <StyledScanLink href={scanAddressLink}>{t("View Contract")}</StyledScanLink>
+          <StyledScanLink icon={scanAddress.icon} chainId={scanAddress.chainId} href={scanAddress.link}>
+            {t("View Contract")}
+          </StyledScanLink>
         </Flex>
       )}
     </Wrapper>

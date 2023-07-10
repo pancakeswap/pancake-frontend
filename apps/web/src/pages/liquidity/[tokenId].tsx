@@ -991,7 +991,7 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow gap="8px">
-          <ScanLink href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
             <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
           </ScanLink>
         </AutoRow>
@@ -1046,7 +1046,7 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center" gap="8px">
-        <ScanLink href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+        <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
           <Text ellipsis>{date.toLocaleString()}</Text>
         </ScanLink>
       </AutoRow>

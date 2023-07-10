@@ -12,6 +12,7 @@ import {
   Grid,
   AutoColumn,
   ListLogo,
+  AptosIcon,
 } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -77,7 +78,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
             {chainId && (
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
-                <ScanLink href={getBlockExploreLink(token.address, 'token', chainId)}>
+                <ScanLink icon={<AptosIcon />} href={getBlockExploreLink(token.address, 'token', chainId)}>
                   {t('View on %site%', {
                     site: t('Explorer'),
                   })}

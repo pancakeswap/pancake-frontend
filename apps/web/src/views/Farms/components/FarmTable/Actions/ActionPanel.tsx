@@ -9,6 +9,7 @@ import {
   useMatchBreakpoints,
   useModalV2,
   ScanLink,
+  LinkExternal,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -98,6 +99,10 @@ const Container = styled.div<{ expanded }>`
   }
 `
 
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
+`
+
 const StyledScanLink = styled(ScanLink)`
   font-weight: 400;
 `
@@ -161,6 +166,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
   const farm = details
   const isActive = farm.multiplier !== '0X'
@@ -223,10 +229,12 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               </Flex>
             )}
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink href={infoUrl}>{t('See Pair Info')}</StyledScanLink>
+              <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink href={bsc}>{t('View Contract')}</StyledScanLink>
+              <StyledScanLink chainId={chainId} href={bsc}>
+                {t('View Contract')}
+              </StyledScanLink>
             </Flex>
           </>
         }
@@ -344,10 +352,12 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               </Flex>
             )}
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink href={infoUrl}>{t('See Pair Info')}</StyledScanLink>
+              <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink href={bsc}>{t('View Contract')}</StyledScanLink>
+              <StyledScanLink chainId={chainId} href={bsc}>
+                {t('View Contract')}
+              </StyledScanLink>
             </Flex>
           </>
         }

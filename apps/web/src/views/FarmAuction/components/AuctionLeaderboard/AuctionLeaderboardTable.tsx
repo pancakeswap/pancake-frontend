@@ -21,6 +21,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { Bidder } from 'config/constants/types'
+import { ChainId } from '@pancakeswap/sdk'
 import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
 import { HARD_CODED_START_AUCTION_ID } from '../../constants'
 import { useV3FarmAuctionConfig } from '../../hooks/useV3FarmAuctionConfig'
@@ -136,7 +137,13 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             </SubMenuItem>
           )}
           {account && (
-            <SubMenuItem as={ScanLink} href={getBlockExploreLink(account, 'address')} bold={false} color="text">
+            <SubMenuItem
+              as={ScanLink}
+              chainId={ChainId.BSC}
+              href={getBlockExploreLink(account, 'address')}
+              bold={false}
+              color="text"
+            >
               {t('Bidder Address')}
             </SubMenuItem>
           )}

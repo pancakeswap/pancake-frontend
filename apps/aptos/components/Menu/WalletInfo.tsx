@@ -11,6 +11,7 @@ import {
   Message,
   Skeleton,
   Text,
+  AptosIcon,
 } from '@pancakeswap/uikit'
 import { useAuth } from 'hooks/useAuth'
 
@@ -69,7 +70,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       </Flex>
       {account && (
         <Flex alignItems="center" justifyContent="end" mb="24px">
-          <ScanLink href={getBlockExploreLink(account.address, 'address', chainId)}>
+          <ScanLink icon={<AptosIcon />} href={getBlockExploreLink(account.address, 'address', chainId)}>
             {t('View on %site%', {
               site: t('Explorer'),
             })}

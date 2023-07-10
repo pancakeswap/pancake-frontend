@@ -143,7 +143,11 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <ScanLink mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
+              <ScanLink
+                chainId={multiChainId[chainName]}
+                mr="8px"
+                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+              >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </ScanLink>
               <SaveIcon fill={savedPools.includes(address)} onClick={() => addPool(address)} />

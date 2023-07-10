@@ -39,7 +39,7 @@ const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ ste
             <Flex>
               {isFail && <WarningIcon mr="4px" color="failure" />}
               {step.tx && (
-                <ScanLink href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}>
+                <ScanLink chainId={step.chainId} href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}>
                   {getBlockExploreName(step.chainId)}
                 </ScanLink>
               )}

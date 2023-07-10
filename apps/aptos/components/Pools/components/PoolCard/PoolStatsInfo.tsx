@@ -1,4 +1,4 @@
-import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip, ScanLink } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip, ScanLink, AptosIcon } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -156,7 +156,12 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       </Flex>
       {poolContractAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <ScanLink href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)} bold={false} small>
+          <ScanLink
+            icon={<AptosIcon />}
+            href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)}
+            bold={false}
+            small
+          >
             {t('View Contract')}
           </ScanLink>
         </Flex>

@@ -159,7 +159,11 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
             </Breadcrumbs>
 
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <ScanLink mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
+              <ScanLink
+                chainId={multiChainId[chainName]}
+                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+                mr="8px"
+              >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </ScanLink>
               {/* <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} /> */}

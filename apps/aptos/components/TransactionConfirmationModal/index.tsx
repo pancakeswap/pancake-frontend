@@ -2,6 +2,7 @@
 import { ChainId, Currency } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  AptosIcon,
   ArrowUpIcon,
   AutoColumn,
   Button,
@@ -49,7 +50,7 @@ export function TransactionSubmittedContent({
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="20px">{t('Transaction Submitted')}</Text>
           {chainId && hash && (
-            <ScanLink small href={getBlockExploreLink(hash, 'transaction', chainId)}>
+            <ScanLink small icon={<AptosIcon />} href={getBlockExploreLink(hash, 'transaction', chainId)}>
               {t('View on %site%', {
                 site: t('Explorer'),
               })}

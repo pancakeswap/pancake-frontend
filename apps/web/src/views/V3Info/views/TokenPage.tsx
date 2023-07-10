@@ -186,6 +186,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   <ScanLink
                     mr="8px"
                     color="primary"
+                    chainId={multiChainId[chainName]}
                     href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                   >
                     {t('View on %site%', { site: multiChainScan[chainName] })}

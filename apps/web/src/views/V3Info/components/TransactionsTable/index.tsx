@@ -103,7 +103,10 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
 
   return (
     <ResponsiveGrid>
-      <ScanLink href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}>
+      <ScanLink
+        chainId={multiChainId[chainName]}
+        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
+      >
         <Text fontWeight={400}>
           {transaction.type === TransactionType.MINT
             ? `Add ${token0Symbol} and ${token1Symbol}`
@@ -120,7 +123,10 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
         <HoverInlineText text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
-        <ScanLink href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}>
+        <ScanLink
+          chainId={multiChainId[chainName]}
+          href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
+        >
           {shortenAddress(transaction.sender)}
         </ScanLink>
       </Text>

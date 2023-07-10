@@ -109,7 +109,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
 
   return (
     <ResponsiveGrid>
-      <ScanLink href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}>
+      <ScanLink
+        chainId={multiChainId[chainName]}
+        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
+      >
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', {
@@ -134,7 +137,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <ScanLink href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}>
+      <ScanLink
+        chainId={multiChainId[chainName]}
+        href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
+      >
         {domainName || truncateHash(transaction.sender)}
       </ScanLink>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
