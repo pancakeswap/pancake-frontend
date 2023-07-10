@@ -43,7 +43,7 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
               </tr>
             ) : (
               <>
-                {list.pairs.length === 0 ? (
+                {!list?.pairs || list?.pairs?.length === 0 ? (
                   <tr style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}>
                     <Td colSpan={4} textAlign="center">
                       {t('No results')}
@@ -51,7 +51,7 @@ const DesktopView: React.FC<React.PropsWithChildren<RewardsBreakdownDesktopViewP
                   </tr>
                 ) : (
                   <>
-                    {list.pairs.map((pair) => (
+                    {list?.pairs?.map((pair) => (
                       <tr key={pair.address} style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}>
                         <Td width="40%">
                           <PairInfo

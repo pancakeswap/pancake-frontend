@@ -19,14 +19,12 @@ const LeaderBoardDesktopView: React.FC<React.PropsWithChildren<LeaderBoardDeskto
   setCurrentPage,
 }) => {
   const { t } = useTranslation()
-
   return (
     <Card margin="0 24px">
       <Table>
         <thead>
           <tr>
-            <Th width="60px">&nbsp;</Th>
-            <Th textAlign="left">{t('User')}</Th>
+            <Th textAlign="left">{t('Rank (Top 50 users)')}</Th>
             <Th textAlign="left">{t('Trading Volume')}</Th>
             <Th textAlign="right">{t('Total Reward')}</Th>
           </tr>
@@ -34,15 +32,15 @@ const LeaderBoardDesktopView: React.FC<React.PropsWithChildren<LeaderBoardDeskto
         <tbody>
           {isLoading ? (
             <tr>
-              <Td colSpan={4} textAlign="center">
+              <Td colSpan={3} textAlign="center">
                 {t('Loading...')}
               </Td>
             </tr>
           ) : (
             <>
-              {data?.length === 0 ? (
+              {!data || data?.length === 0 ? (
                 <tr>
-                  <Td colSpan={4} textAlign="center">
+                  <Td colSpan={3} textAlign="center">
                     {t('No results')}
                   </Td>
                 </tr>
@@ -57,7 +55,9 @@ const LeaderBoardDesktopView: React.FC<React.PropsWithChildren<LeaderBoardDeskto
           )}
         </tbody>
       </Table>
-      <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
+      {data?.length > 0 && (
+        <PaginationButton showMaxPageText currentPage={currentPage} maxPage={maxPage} setCurrentPage={setCurrentPage} />
+      )}
     </Card>
   )
 }

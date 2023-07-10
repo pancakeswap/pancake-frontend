@@ -20,10 +20,11 @@ export const StyledMobileRow = styled(Box)`
 `
 
 interface MobileResultProps {
+  isMyRank?: boolean
   rank: RankListDetail
 }
 
-const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ rank }) => {
+const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ isMyRank, rank }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
   const { profile, isLoading: isProfileLoading } = useProfileForAddress(rank.origin)
@@ -37,10 +38,19 @@ const MobileResult: React.FC<React.PropsWithChildren<MobileResultProps>> = ({ ra
   return (
     <StyledMobileRow p="16px">
       <Flex justifyContent="space-between" mb="16px">
-        <Text fontWeight="bold" color="secondary" mr="auto">
-          {`#${rank.rank}`}
-        </Text>
-        <Flex width="100%" justifyContent="flex-end">
+        <Flex width="30%" alignSelf="center">
+          <Flex flexDirection="column" width="100%">
+            {isMyRank && (
+              <Text fontSize={20} fontWeight="bold" color="secondary">
+                {t('My Rank')}
+              </Text>
+            )}
+            <Text fontWeight="bold" color="secondary">
+              {rank.rank === 0 ? '--' : `#${rank.rank}`}
+            </Text>
+          </Flex>
+        </Flex>
+        <Flex width="70%" justifyContent="flex-end" alignSelf="center">
           <Text color="primary" fontWeight="bold" style={{ alignSelf: 'center' }} mr="8px">
             {profile?.username || domainName || truncateHash(rank.origin)}
           </Text>
