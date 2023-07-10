@@ -6,7 +6,7 @@ import 'swiper/css'
 import 'swiper/css/autoplay'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay } from 'swiper'
+import { Autoplay } from 'swiper/modules'
 
 const IntroSteps = [
   {

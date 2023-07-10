@@ -325,8 +325,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.3
+        version: 10.0.3
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -422,8 +422,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.3
+        version: 10.0.3
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -758,8 +758,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.3
+        version: 10.0.3
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -1443,7 +1443,7 @@ importers:
         version: 2.1.2(react-dom@17.0.2)(react@18.2.0)
       swiper:
         specifier: '*'
-        version: 9.3.2
+        version: 10.0.3
 
   packages/uikit:
     dependencies:
@@ -21447,7 +21447,7 @@ packages:
     dependencies:
       execa: 6.1.0
       parse-package-name: 1.0.0
-      semver: 7.5.0
+      semver: 7.5.1
       validate-npm-package-name: 4.0.0
     dev: true
 
@@ -24138,10 +24138,6 @@ packages:
       tweetnacl: 0.14.5
     dev: true
 
-  /ssr-window@4.0.2:
-    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
-    dev: false
-
   /stack-trace@0.0.10:
     resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==}
     dev: true
@@ -24686,11 +24682,9 @@ packages:
       picocolors: 1.0.0
     dev: false
 
-  /swiper@9.3.2:
-    resolution: {integrity: sha512-Kj9Z4kXRmJR3YT/Wj+XLWj8P6IcRt+WG38uL8M3/Wny7+6sV0TlP9vnE1X+Co9c7VzNooojWGnFa+Wf/9+CUMA==}
+  /swiper@10.0.3:
+    resolution: {integrity: sha512-jpsUDo+EmNq7N59vRCo5aDZXLF8EfWJWlTdm1jkqEH+ph8DuMTJuLjcNunN8Q88bqVxo6vceYBGIrpRIwrEGcA==}
     engines: {node: '>= 4.7.0'}
-    dependencies:
-      ssr-window: 4.0.2
     dev: false
 
   /swr@2.1.5(react@18.2.0):
