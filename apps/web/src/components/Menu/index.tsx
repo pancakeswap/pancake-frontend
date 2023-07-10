@@ -28,7 +28,7 @@ const Menu = (props) => {
   const { pathname } = useRouter()
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
-    true,
+    false,
     false,
     'usCitizenConfirmModal',
   )
