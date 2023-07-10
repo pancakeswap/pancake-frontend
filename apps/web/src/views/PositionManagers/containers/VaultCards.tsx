@@ -3,6 +3,7 @@ import { isPCSVaultConfig } from '@pancakeswap/position-managers'
 
 import { useVaultConfigs } from '../hooks'
 import { PCSVaultCard } from './PCSVaultCard'
+import { CardLayout } from '../components'
 
 export const VaultCards = memo(function VaultCards() {
   const configs = useVaultConfigs()
@@ -14,5 +15,5 @@ export const VaultCards = memo(function VaultCards() {
     return null
   })
 
-  return <>{cards}</>
+  return <CardLayout>{cards}</CardLayout>
 })
