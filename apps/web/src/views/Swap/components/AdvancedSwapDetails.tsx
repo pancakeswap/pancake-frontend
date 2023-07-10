@@ -114,7 +114,11 @@ export const TradeSummary = memo(function TradeSummary({
                       style={{ display: 'inline' }}
                       ml="4px"
                       external
-                      href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
+                      href={
+                        isMM
+                          ? 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/market-maker-integration'
+                          : 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange'
+                      }
                     >
                       {t('Fee Breakdown and Tokenomics')}
                     </Link>
@@ -125,7 +129,7 @@ export const TradeSummary = memo(function TradeSummary({
                     </Text>
                     :{' '}
                     {t(
-                      'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
+                      'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% - 0.25% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
                     )}
                   </Text>
                 </>
