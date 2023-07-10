@@ -95,14 +95,14 @@ export function useApproveCallback(
 
     const estimatedGas = await tokenContract.estimateGas
       .approve([spender as Address, MaxUint256], {
-        // account: tokenContract.account,
+        account: tokenContract.account,
       })
       .catch(() => {
         // general fallback for tokens who restrict approval amounts
         useExact = true
         return tokenContract.estimateGas
           .approve([spender as Address, amountToApprove?.quotient ?? targetAmount ?? MaxUint256], {
-            // account: tokenContract.account,
+            account: tokenContract.account,
           })
           .catch((e) => {
             console.error('estimate gas failure', e)
