@@ -58,12 +58,7 @@ interface FarmCardProps {
   account?: string
 }
 
-export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
-  farm,
-  removed,
-  // cakePrice,
-  account,
-}) => {
+export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ farm, removed, account }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)

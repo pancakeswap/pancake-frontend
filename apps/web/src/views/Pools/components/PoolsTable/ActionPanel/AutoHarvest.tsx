@@ -10,6 +10,8 @@ import {
   Pool,
   useTooltip,
   HelpIcon,
+  Button,
+  useModal,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -19,6 +21,7 @@ import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { Token } from '@pancakeswap/sdk'
+import RevenueSharingModal from 'views/Pools/components/RevenueSharing/RevenueSharingModal'
 
 import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
@@ -76,6 +79,8 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
     placement: 'bottom',
   })
 
+  const [onPresentViewBenefitsModal] = useModal(<RevenueSharingModal />, true, true, 'revenueModal')
+
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
       {t('Recent CAKE profit')}
@@ -105,76 +110,80 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
   }
 
   return (
-    <RowActionContainer justifyContent="space-between">
-      <Box width="100%">
-        <ActionTitles>{actionTitle}</ActionTitles>
-        <ActionContent>
-          <Flex flex="1" flexDirection="column" alignSelf="flex-start">
-            <>
-              {hasAutoEarnings ? (
-                <>
-                  <Flex>
-                    <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={autoCakeToDisplay} />
-                    {tagTooltipVisibleOfRecentProfit && tagTooltipOfRecentProfit}
-                    <HelpIconWrapper ref={tagTargetRefOfRecentProfit}>
-                      <HelpIcon ml="4px" color="textSubtle" />
-                    </HelpIconWrapper>
-                  </Flex>
-                  {Number.isFinite(earningTokenPrice) && earningTokenPrice > 0 && (
-                    <BalanceWithLoading
-                      display="inline"
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      value={autoUsdToDisplay}
-                      unit=" USD"
-                    />
-                  )}
-                </>
-              ) : (
-                <>
-                  <Heading color="textDisabled">0</Heading>
-                  <Text fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                </>
-              )}
-            </>
-          </Flex>
-          <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-            {[VaultPosition.Flexible, VaultPosition.None].includes(vaultPosition) && (
-              <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
-            )}
-            {/* IFO credit here */}
-          </Flex>
-        </ActionContent>
-      </Box>
-      {!isMobile && vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked && (
-        <Box minWidth="123px">
-          <ActionTitles>
-            <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-              {t('Yield boost')}
-            </Text>
-          </ActionTitles>
+    <RowActionContainer style={{ flexDirection: 'column' }}>
+      <Flex justifyContent="space-between">
+        <Box width="100%">
+          <ActionTitles>{actionTitle}</ActionTitles>
           <ActionContent>
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
-              <BalanceWithLoading
-                color="text"
-                lineHeight="1"
-                bold
-                fontSize="20px"
-                value={boostFactor ? boostFactor?.toString() : '0'}
-                decimals={2}
-                unit="x"
-              />
-              <Text fontSize="12px" color="textSubtle">
-                {t('Lock for %duration%', { duration: weekDuration })}
-              </Text>
+              <>
+                {hasAutoEarnings ? (
+                  <>
+                    <Flex>
+                      <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={autoCakeToDisplay} />
+                      {tagTooltipVisibleOfRecentProfit && tagTooltipOfRecentProfit}
+                      <HelpIconWrapper ref={tagTargetRefOfRecentProfit}>
+                        <HelpIcon ml="4px" color="textSubtle" />
+                      </HelpIconWrapper>
+                    </Flex>
+                    {Number.isFinite(earningTokenPrice) && earningTokenPrice > 0 && (
+                      <BalanceWithLoading
+                        display="inline"
+                        fontSize="12px"
+                        color="textSubtle"
+                        decimals={2}
+                        prefix="~"
+                        value={autoUsdToDisplay}
+                        unit=" USD"
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Heading color="textDisabled">0</Heading>
+                    <Text fontSize="12px" color="textDisabled">
+                      0 USD
+                    </Text>
+                  </>
+                )}
+              </>
+            </Flex>
+            <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
+              {[VaultPosition.Flexible, VaultPosition.None].includes(vaultPosition) && (
+                <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
+              )}
             </Flex>
           </ActionContent>
         </Box>
-      )}
+        {!isMobile && vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked && (
+          <Box minWidth="123px">
+            <ActionTitles>
+              <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
+                {t('Yield boost')}
+              </Text>
+            </ActionTitles>
+            <ActionContent>
+              <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+                <BalanceWithLoading
+                  color="text"
+                  lineHeight="1"
+                  bold
+                  fontSize="20px"
+                  value={boostFactor ? boostFactor?.toString() : '0'}
+                  decimals={2}
+                  unit="x"
+                />
+                <Text fontSize="12px" color="textSubtle">
+                  {t('Lock for %duration%', { duration: weekDuration })}
+                </Text>
+              </Flex>
+            </ActionContent>
+          </Box>
+        )}
+      </Flex>
+      <Button mt="16px" width="100%" variant="secondary" onClick={onPresentViewBenefitsModal}>
+        {t('View Benefits')}
+      </Button>
     </RowActionContainer>
   )
 }
