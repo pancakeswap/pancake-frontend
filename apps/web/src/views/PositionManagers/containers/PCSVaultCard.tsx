@@ -10,11 +10,20 @@ interface Props {
 
 export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
   const { vault } = usePCSVault({ config })
-  const { id, currencyA, currencyB, name, strategy } = vault
+  const { id, currencyA, currencyB, name, strategy, feeTier, autoFarm } = vault
 
   console.log(vault)
   return (
-    <DuoTokenVaultCard key={id} currencyA={currencyA} currencyB={currencyB} name={name} strategy={strategy}>
+    <DuoTokenVaultCard
+      key={id}
+      id={id}
+      currencyA={currencyA}
+      currencyB={currencyB}
+      name={name}
+      strategy={strategy}
+      feeTier={feeTier}
+      autoFarm={autoFarm}
+    >
       {id}
     </DuoTokenVaultCard>
   )
