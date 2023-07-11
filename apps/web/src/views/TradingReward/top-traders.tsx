@@ -78,7 +78,7 @@ const TradingRewardTopTraders = () => {
     <Box>
       <SubMenu />
       <Banner />
-      <YourTradingReward
+      {/* <YourTradingReward
         isFetching={isFetching}
         incentives={currentUserIncentive}
         qualification={allTradingRewardPairData.qualification}
@@ -87,7 +87,7 @@ const TradingRewardTopTraders = () => {
         rewardInfo={allTradingRewardPairData.rewardInfo}
         totalAvailableClaimData={totalAvailableClaimData}
         currentUserCampaignInfo={currentUserCampaignInfo}
-      />
+      /> */}
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
       <Leaderboard campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive} />
       <HowToEarn />
