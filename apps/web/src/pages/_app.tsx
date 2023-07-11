@@ -81,7 +81,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}
       </Head>
-      <ClientContextProvider>
+      {/* <ClientContextProvider> */}
       <DefaultSeo {...SEO} />
       <Providers store={store}>
       
@@ -102,7 +102,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         </Blocklist>
       
       </Providers>
-      </ClientContextProvider>
+      {/* </ClientContextProvider> */}
       <Script
         strategy="afterInteractive"
         id="google-tag"

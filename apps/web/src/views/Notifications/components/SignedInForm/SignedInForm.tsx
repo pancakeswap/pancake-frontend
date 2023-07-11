@@ -1,6 +1,6 @@
 import { providers } from 'ethers'
 
-import { useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 //     import PushSubscription from "../components/PushSubscription";
 import { Box, Button, CircleLoader, Flex, FlexGap, Grid, Spinner, Text } from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
@@ -14,22 +14,32 @@ import { useNativeBalances } from 'state/wallet/hooks'
 import useAuth from 'hooks/useAuth'
 import { Connector, useConnect } from 'wagmi'
 
-const SignedInView: React.FC<{  strippedAddress: string}> = ({ strippedAddress }) => {
+interface IPushSubscriptionProps {
+      account: string;
+      handleSubscribe: any
+      handleUnSubscribe: any
+      isSubscribed: any;
+      isUnsubscribing: any
+      isSubscribing: any
+      connector: any
+    }
+    
+    const SignedInView: FC<IPushSubscriptionProps> = ({ account, connector, handleSubscribe, handleUnSubscribe, isSubscribed, isSubscribing, isUnsubscribing }) => {
 //   const { disconnect, balances } = useWalletConnectClient()
 //   const nativeBalance = useNativeBalances(strippedAddress)
 // const { authorisePushSubscribe } = useAuth()
-const{
-      handleSubscribe,
-      handleUnSubscribe,
-      connectWithAuthClient,
-      isSubscribed,
-      isSubscribing,
-      isUnsubscribing,
-    } = useWalletConnectClient()
+// const{
+//       handleSubscribe,
+//       handleUnSubscribe,
+//       connectWithAuthClient,
+//       isSubscribed,
+//       isSubscribing,
+//       isUnsubscribing,
+//     } = useWalletConnectClient()
 
   const onSignOut = useCallback(() => {
-     connectWithAuthClient()
-  }, [connectWithAuthClient])
+     connector.connectWithAuthClient()
+  }, [connector])
 
   return (
     <Box className="bg-secondary" borderRadius="28px" padding="2em">
@@ -70,15 +80,15 @@ const{
         </FlexGap>
         <Flex flexDirection="column" paddingY='12px'>
           <Text fontWeight="800" fontSize="1.5em">
-            {strippedAddress ? shortenAddress(strippedAddress, 5) : null}
+            {account ? shortenAddress(account, 5) : null}
           </Text>
-          {strippedAddress ? <PushSubscription 
+          {account ? <PushSubscription 
            handleSubscribe={handleSubscribe}
            handleUnSubscribe={handleUnSubscribe}
            isSubscribed={isSubscribed}
            isSubscribing ={isSubscribing}
            isUnsubscribing={isUnsubscribing}
-          account={`${strippedAddress}`}/> : null}
+          account={`${account}`}/> : null}
         </Flex>
         <Divider />
         <Flex

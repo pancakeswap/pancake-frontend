@@ -110,13 +110,9 @@ export default function Notifications() {
   const createClient = useCallback(async () => {
     const x = await connector.getProvider()
     if (!x) return
-      const pr = await connector.getAuthClient()
-      const pr1 = await connector.getPushClient()
 
-      console.log(pr)
-
-    setPushClient(pr1)
-    setAuthClient(pr)
+    setPushClient(x.pushClient)
+    setAuthClient(x.authClient)
 //     setWeb3Modal(web3Modal)
   }, [connector])
 

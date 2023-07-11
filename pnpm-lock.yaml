@@ -636,6 +636,9 @@ importers:
       '@walletconnect/core':
         specifier: ^2.9.0
         version: 2.9.0(lokijs@1.5.12)
+      '@walletconnect/keyvaluestorage':
+        specifier: ^1.0.2
+        version: 1.0.2(lokijs@1.5.12)
       '@walletconnect/push-client':
         specifier: ^0.10.5
         version: 0.10.5(encoding@0.1.13)(lokijs@1.5.12)

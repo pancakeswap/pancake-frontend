@@ -58,6 +58,7 @@
     "@vanilla-extract/next-plugin": "^2.1.1",
     "@walletconnect/auth-client": "^2.1.0",
     "@walletconnect/core": "^2.9.0",
+    "@walletconnect/keyvaluestorage": "^1.0.2",
     "@walletconnect/push-client": "^0.10.5",
     "@walletconnect/sign-client": "^2.9.0",
     "@walletconnect/sync-client": "^0.3.7",
