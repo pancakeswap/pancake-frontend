@@ -359,7 +359,7 @@ const useV3BoostedFarm = (pids: number[]) => {
     {
       errorRetryCount: 3,
       errorRetryInterval: 3000,
-      keepPreviousData: true,
+      keepPreviousData: false,
       refreshInterval: 0,
     },
   )
@@ -371,6 +371,10 @@ export async function getV3FarmBoosterWhiteList({
   farmBoosterContract,
   chainId,
   pids,
+}: {
+  farmBoosterContract: ReturnType<typeof useBCakeFarmBoosterV3Contract>
+  chainId: ChainId
+  pids: number[]
 }): Promise<{ pid: number; boosted: boolean }[]> {
   const contracts = pids?.map((pid) => {
     return {
@@ -378,7 +382,7 @@ export async function getV3FarmBoosterWhiteList({
       functionName: 'whiteList',
       abi: bCakeFarmBoosterV3ABI,
       args: [BigInt(pid)],
-    }
+    } as const
   })
   const whiteList = await publicClient({ chainId }).multicall({
     contracts,
