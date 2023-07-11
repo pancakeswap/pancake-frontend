@@ -1,4 +1,5 @@
 import React, { ReactElement, useMemo } from "react";
+import { ChainId } from "@pancakeswap/sdk";
 import Link from "./Link";
 import OpenNewIcon from "../Svg/Icons/OpenNew";
 import BscScanIcon from "../Svg/Icons/BscScan";
@@ -6,12 +7,12 @@ import { LinkProps } from "./types";
 
 interface ScanLinkProps extends Omit<LinkProps, "external" | "showExternalIcon"> {
   icon?: ReactElement;
-  chainId?: number;
+  chainId?: ChainId;
 }
 
-const icons: { [key: number]: ReactElement } = {
-  56: <BscScanIcon />,
-  97: <BscScanIcon />,
+const icons: { [key in ChainId]?: ReactElement } = {
+  [ChainId.BSC]: <BscScanIcon />,
+  [ChainId.BSC_TESTNET]: <BscScanIcon />,
 };
 
 const ScanLink: React.FC<React.PropsWithChildren<ScanLinkProps>> = ({ children, icon, chainId, ...props }) => {
