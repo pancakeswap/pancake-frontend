@@ -1,0 +1,91 @@
+import styled from 'styled-components'
+import { Modal, Text, Card, Button, Flex, Box, LinkExternal } from '@pancakeswap/uikit'
+import Image from 'next/image'
+import useTheme from 'hooks/useTheme'
+import { useTranslation } from '@pancakeswap/localization'
+
+interface JoinRevenueModalProps {
+  onDismiss?: () => void
+}
+
+const TooltipContainer = styled(Box)`
+  position: relative;
+  padding: 16px;
+  max-width: 264px;
+  margin-left: 10px;
+  height: fit-content;
+  border-radius: 32px;
+  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#27262c')};
+
+  ${Text} {
+    color: ${({ theme }) => (theme.isDark ? '#280D5F' : '#F4EEFF')};
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 25%;
+    right: -6px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: ${({ theme }) => (theme.isDark ? '10px solid #FFFFFF' : '10px solid #27262c')};
+  }
+`
+
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
+  margin: 0 4px;
+
+  svg {
+    width: 16px;
+  }
+`
+
+const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinRevenueModalProps>> = ({ onDismiss }) => {
+  const { t } = useTranslation()
+  const { theme } = useTheme()
+
+  return (
+    <Modal
+      title={t('Join revenue sharing')}
+      width={['100%', '100%', '100%', '454px']}
+      headerBackground={theme.colors.gradientCardHeader}
+      onDismiss={onDismiss}
+    >
+      <Flex position="relative" bottom="-5px" zIndex="1">
+        <TooltipContainer>
+          <Text lineHeight="110%">
+            {
+              'Update your CAKE staking position to join the revenue sharing program for weekly revenue sharing distributions! '
+            }
+          </Text>
+        </TooltipContainer>
+        <Image
+          style={{ marginLeft: 'auto' }}
+          width={122}
+          height={122}
+          alt="lockCakeTooltip"
+          src="/images/pool/lockcaketooltip.png"
+        />
+      </Flex>
+      <Card>
+        <Box padding={16}>123</Box>
+      </Card>
+      <Button width="100%" m="24px 0 8px 0">
+        {t('Update Staking Position')}
+      </Button>
+      <Box>
+        <Text as="span" fontSize={12} color="textSubtle">
+          {t('Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More')}
+        </Text>
+        <InlineLink fontSize={12} href="https://docs.pancakeswap.finance/products/prediction" external>
+          {t('Learn More')}
+        </InlineLink>
+      </Box>
+    </Modal>
+  )
+}
+
+export default JoinRevenueModal
