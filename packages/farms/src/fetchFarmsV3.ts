@@ -443,7 +443,8 @@ export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<
   if (currencies.length > 0) {
     const list = currencies
       .map(
-        (currency) => `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as FarmV3SupportedChainId]}:${currency.wrapped.address}`,
+        (currency) =>
+          `${CHAIN_ID_TO_CHAIN_NAME[currency.chainId as FarmV3SupportedChainId]}:${currency.wrapped.address}`,
       )
       .join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(

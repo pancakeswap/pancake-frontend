@@ -76,6 +76,6 @@ export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancak
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
-export const FARMS_API = 'https://farms-api-dev.pancakeswap.com'
+export const FARMS_API = 'https://farms-api.pancakeswap.com'
 
 export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '76ba4ff5-2686-4ed4-8666-fadb0d9a5888'
