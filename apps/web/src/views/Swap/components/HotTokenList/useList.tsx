@@ -23,11 +23,11 @@ export const useMultiChianWhiteList = (chainId: ChainId) => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
   const whiteLists = multiChainTokenList[chainId]
   const lists = useMemo(() => {
-    const multiList: TokenInfo[] = []
-    for (const whiteList of whiteLists) {
-      const { current: list } = listsByUrl[whiteList]
-      multiList.concat(list.tokens)
-    }
+    let multiList: TokenInfo[] = []
+    whiteLists.forEach((whiteList) => {
+      const list = listsByUrl?.[whiteList]?.current
+      multiList = [...multiList, ...(list?.tokens ?? [])]
+    })
     return multiList
   }, [whiteLists, listsByUrl])
 
