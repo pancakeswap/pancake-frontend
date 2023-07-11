@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Modal, Text, Card, Button, Flex, Box, LinkExternal } from '@pancakeswap/uikit'
+import { Modal, Text, Card, Button, Flex, Box, LinkExternal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
@@ -46,6 +46,7 @@ const InlineLink = styled(LinkExternal)`
 const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinRevenueModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <Modal
@@ -54,19 +55,23 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
       headerBackground={theme.colors.gradientCardHeader}
       onDismiss={onDismiss}
     >
-      <Flex position="relative" bottom="-5px" zIndex="1">
+      <Flex position="relative" bottom="-5px" zIndex="1" ml="auto">
         <TooltipContainer>
-          <Text lineHeight="110%">
+          <Text fontSize={['14px', '14px', '14px', '16px']} lineHeight="110%">
             {
               'Update your CAKE staking position to join the revenue sharing program for weekly revenue sharing distributions! '
             }
           </Text>
         </TooltipContainer>
         <Image
-          style={{ marginLeft: 'auto' }}
-          width={122}
-          height={122}
           alt="lockCakeTooltip"
+          width={isMobile ? 100 : 122}
+          height={isMobile ? 100 : 122}
+          style={{
+            marginTop: 'auto',
+            maxWidth: isMobile ? '100px' : '122px',
+            maxHeight: isMobile ? '100px' : '122px',
+          }}
           src="/images/pool/lockcaketooltip.png"
         />
       </Flex>
