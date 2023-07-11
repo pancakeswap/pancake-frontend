@@ -67,14 +67,14 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: {
     defaultConfig: {
       multicallChunk: 3,
-      gasLimitOverride: 300_000,
+      gasLimitOverride: 500_000,
     },
     gasErrorFailureOverride: {
-      gasLimitOverride: 30_000,
+      gasLimitOverride: 1_500_000,
       multicallChunk: 1,
     },
     successRateFailureOverrides: {
-      gasLimitOverride: 30_000,
+      gasLimitOverride: 1_500_000,
       multicallChunk: 1,
     },
   },

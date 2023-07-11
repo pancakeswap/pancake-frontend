@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-param-reassign */
-import { masterChefV3Addresses, FarmSupportedChainId } from '@pancakeswap/farms'
+import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
@@ -29,7 +29,7 @@ export const V3_SUBGRAPH_CLIENTS = {
       fetch,
     },
   ),
-} satisfies Record<Exclude<FarmSupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
+} satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
 const zChainId = z.enum(['56', '1', '5', '97', '280'])
 
