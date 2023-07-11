@@ -70,7 +70,7 @@ const TradingRewardTopTraders = () => {
       .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
+  if (chainId !== ChainId.BSC) {
     return null
   }
 
