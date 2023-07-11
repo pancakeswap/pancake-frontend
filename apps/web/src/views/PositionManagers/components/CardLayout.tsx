@@ -11,5 +11,5 @@ export const CardHeader = styled(CardHeaderComp)`
   justify-content: space-between;
   flex-direction: row;
   align-items: flex-start;
-  padding: 1.5em;
+  padding: 1.5em 1.5em 0 1.5em;
 `
