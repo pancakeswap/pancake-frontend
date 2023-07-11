@@ -6,6 +6,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useTokenDatasSWR } from 'state/info/hooks'
+import { multiChainName } from 'state/info/constant'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
 import { useTokensData } from 'views/V3Info/hooks'
 import { parseV2TokenData, parseV3TokenData } from './utils'
@@ -31,7 +32,7 @@ export const useMultiChianWhiteList = (chainId: ChainId) => {
   }, [whiteLists, listsByUrl])
 
   const tokenList = useMemo(() => {
-    return lists ? [...lists].map((d) => d.address.toLowerCase()) : []
+    return lists ? lists?.map((d) => d.address.toLowerCase()) : []
   }, [lists])
 
   return tokenList
@@ -40,7 +41,7 @@ export const useMultiChianWhiteList = (chainId: ChainId) => {
 export const useTokenHighLightList = () => {
   const { chainId } = useActiveChainId()
   const whiteList = useMultiChianWhiteList(chainId)
-  const allTokensFromV2 = useTokenDatasSWR(whiteList)
+  const allTokensFromV2 = useTokenDatasSWR(whiteList, true, multiChainName[chainId])
   const allV3TokensFromV3 = useTokensData(whiteList, chainId)
 
   const tokens = useMemo(() => {
