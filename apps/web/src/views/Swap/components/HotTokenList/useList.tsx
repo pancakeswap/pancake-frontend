@@ -1,42 +1,54 @@
-import { PANCAKE_EXTENDED } from 'config/constants/lists'
+import { TokenInfo } from '@pancakeswap/token-lists'
+import { COINGECKO, COINGECKO_ETH, PANCAKE_ETH_DEFAULT, PANCAKE_ETH_MM, PANCAKE_EXTENDED } from 'config/constants/lists'
+
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { useTokenDatasSWR } from 'state/info/hooks'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
-import { multiChainName } from 'state/info/constant'
-import { useTokenDatasSWR, useAllTokenHighLight } from 'state/info/hooks'
 import { useTokensData } from 'views/V3Info/hooks'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/sdk'
-import { parseV3TokenData, parseV2TokenData } from './utils'
+import { parseV2TokenData, parseV3TokenData } from './utils'
 
-export const useBSCWhiteList = () => {
-  const listsByUrl = useAtomValue(selectorByUrlsAtom)
-  const lists = listsByUrl[PANCAKE_EXTENDED]
-  const list = lists?.current
-  const whiteList = useMemo(() => {
-    return list ? list.tokens.map((t) => t.address.toLowerCase()) : []
-  }, [list])
-  return whiteList
+export const multiChainTokenList: Record<number, string[]> = {
+  [ChainId.BSC]: [PANCAKE_EXTENDED, COINGECKO],
+  [ChainId.ETHEREUM]: [PANCAKE_ETH_MM, PANCAKE_ETH_DEFAULT, COINGECKO_ETH],
+  [ChainId.ZKSYNC]: [],
+  [ChainId.POLYGON_ZKEVM]: [],
+  [ChainId.ARBITRUM_ONE]: [],
 }
 
-// TODO: refactor -> remove chain specific logic
+export const useMultiChianWhiteList = (chainId: ChainId) => {
+  const listsByUrl = useAtomValue(selectorByUrlsAtom)
+  const whiteLists = multiChainTokenList[chainId]
+  const lists = useMemo(() => {
+    const multiList: TokenInfo[] = []
+    for (const whiteList of whiteLists) {
+      const { current: list } = listsByUrl[whiteList]
+      multiList.concat(list.tokens)
+    }
+    return multiList
+  }, [whiteLists, listsByUrl])
+
+  const tokenList = useMemo(() => {
+    return lists ? [...lists].map((d) => d.address.toLowerCase()) : []
+  }, [lists])
+
+  return tokenList
+}
+
 export const useTokenHighLightList = () => {
   const { chainId } = useActiveChainId()
-  const bscWhiteList = useBSCWhiteList()
-  const allTokensFromBSC = useTokenDatasSWR(chainId === ChainId.BSC ? bscWhiteList : [], false)
-  const allTokensFromETH = useAllTokenHighLight(multiChainName[chainId])
-  const tokenAddresses: string[] = useMemo(
-    () => allTokensFromETH?.map(({ address }) => address) || [],
-    [allTokensFromETH],
-  )
-  const allV3TokensFromV3 = useTokensData(chainId === ChainId.BSC ? bscWhiteList : tokenAddresses, chainId)
+  const whiteList = useMultiChianWhiteList(chainId)
+  const allTokensFromV2 = useTokenDatasSWR(whiteList)
+  const allV3TokensFromV3 = useTokensData(whiteList, chainId)
 
   const tokens = useMemo(() => {
     return {
-      v2Tokens: (chainId === ChainId.BSC ? allTokensFromBSC : allTokensFromETH)?.map(parseV2TokenData),
+      v2Tokens: allTokensFromV2?.map(parseV2TokenData),
       v3Tokens: allV3TokensFromV3?.map(parseV3TokenData) ?? [],
     }
-  }, [allTokensFromBSC, allTokensFromETH, allV3TokensFromV3, chainId])
+  }, [allTokensFromV2, allV3TokensFromV3])
 
   return tokens
 }
