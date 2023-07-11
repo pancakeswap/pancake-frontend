@@ -13,7 +13,7 @@ import { parseV2TokenData, parseV3TokenData } from './utils'
 
 export const multiChainTokenList: Record<number, string[]> = {
   [ChainId.BSC]: [PANCAKE_EXTENDED, COINGECKO],
-  [ChainId.ETHEREUM]: [PANCAKE_ETH_MM, PANCAKE_ETH_DEFAULT, COINGECKO_ETH],
+  [ChainId.ETHEREUM]: [PANCAKE_ETH_MM, PANCAKE_ETH_DEFAULT],
   [ChainId.ZKSYNC]: [],
   [ChainId.POLYGON_ZKEVM]: [],
   [ChainId.ARBITRUM_ONE]: [],

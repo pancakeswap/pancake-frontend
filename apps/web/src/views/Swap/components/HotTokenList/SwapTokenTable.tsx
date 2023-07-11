@@ -394,7 +394,7 @@ const TokenTable: React.FC<
             {sortedTokens.map((data, i) => {
               if (data) {
                 return (
-                  <Fragment key={data.address}>
+                  <Fragment key={`V${dataSource}+${data.address}+${sortField}`}>
                     <DataRow
                       dataSource={dataSource}
                       index={(page - 1) * MAX_ITEMS + i}
@@ -431,6 +431,7 @@ const TokenTable: React.FC<
         ) : (
           <>
             <TableLoader />
+            123
             <Box />
           </>
         )}
