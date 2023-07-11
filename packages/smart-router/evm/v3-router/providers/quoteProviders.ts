@@ -51,12 +51,17 @@ export function createQuoteProvider({ onChainProvider, multicallConfigs }: Confi
         routesCanQuoteOffChain.push(route)
       }
 
-      const [offChainQuotes, mixedRouteQuotes, v3Quotes] = await Promise.all([
+      const results = await Promise.allSettled([
         getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel }),
         getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber, gasModel }),
         getV3Quotes(v3Routes, { blockNumber, gasModel }),
       ])
-      return [...offChainQuotes, ...mixedRouteQuotes, ...v3Quotes]
+      if (results.every((result) => result.status === 'rejected')) {
+        throw new Error(results.map((result) => (result as PromiseRejectedResult).reason).join(','))
+      }
+      return results
+        .filter((result): result is PromiseFulfilledResult<RouteWithQuote[]> => result.status === 'fulfilled')
+        .reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur.value], [])
     }
   }
 
