@@ -23,13 +23,13 @@ import { PageMeta } from 'components/Layout/Page'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { ClientContextProvider } from 'contexts/PushContext'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-import PushProvider from 'contexts/PushProvider'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
@@ -81,7 +81,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}
       </Head>
-      <PushProvider>
+      <ClientContextProvider>
       <DefaultSeo {...SEO} />
       <Providers store={store}>
       
@@ -102,7 +102,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         </Blocklist>
       
       </Providers>
-      </PushProvider>
+      </ClientContextProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"

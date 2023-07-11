@@ -1,4 +1,4 @@
-import Notifications from 'views/Notifications'
+import Notifications from 'views/Notifications/index'
 import { SUPPORTED_CHAINS } from 'views/BuyCrypto/constants'
 
 const NotificationPage = () => {

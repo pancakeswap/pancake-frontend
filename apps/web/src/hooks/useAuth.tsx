@@ -46,6 +46,30 @@ const useAuth = () => {
     [connectors, connectAsync, chainId, setSessionChainId, t],
   )
 
+  const authorisePushSubscribe = useCallback(
+    async (connectorID: ConnectorNames) => {
+      const findConnector = connectors.find((c) => c.id === connectorID) as any
+      try {
+        const connected = findConnector.connectWithAuthClient()// await connectAsync({ connector: findConnector, networkName: network.networkName })
+
+        return {...connected, connector: findConnector}
+      } catch (error) {
+        if (error instanceof ConnectorNotFoundError) {
+          throw new WalletConnectorNotFoundError()
+        }
+        if (
+          error instanceof SwitchChainNotSupportedError
+          // TODO: wagmi
+          // || error instanceof SwitchChainError
+        ) {
+          throw new WalletSwitchChainError(t('Unable to switch network. Please try it on your wallet'))
+        }
+      }
+      return undefined
+    },
+    [connectors, t],
+  )
+
   const logout = useCallback(async () => {
     try {
       await disconnectAsync()
@@ -56,7 +80,7 @@ const useAuth = () => {
     }
   }, [disconnectAsync, dispatch, chain?.id])
 
-  return { login, logout }
+  return { login, logout, authorisePushSubscribe }
 }
 
 export default useAuth

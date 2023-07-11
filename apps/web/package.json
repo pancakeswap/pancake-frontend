@@ -66,6 +66,7 @@
     "@walletconnect/utils": "^2.9.0",
     "@web3modal/standalone": "2.3.7",
     "ajv": "^6.12.3",
+    "axios": "^1.4.0",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.5.1",
     "clsx": "^1.2.1",

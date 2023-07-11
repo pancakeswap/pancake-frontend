@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { PushContext } from "contexts/PushContext";
 import { Box, Button, Flex, Heading } from "@pancakeswap/uikit";
+import { useWalletConnectClient } from "contexts/PushContext";
 
 const DefaultView: React.FC<{
   handleAuth: () => void;
   handleSign: () => void;
 }> = ({ handleAuth, handleSign }) => {
-  const { initialized } = useContext(PushContext);
+  const { isInitializing: initialized } = useWalletConnectClient()
   return (
     <Box>
       <Box position={{ position: "relative" }}>

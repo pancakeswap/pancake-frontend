@@ -10,13 +10,20 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from './WalletConnectConnector'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 // get most configs chain nodes length
 const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {
   return cur.length > prev ? cur.length : prev
 }, 0)
+
+export const DEFAULT_APP_METADATA = {
+  description: 'A simple gm notification dApp',
+  icons: ['https://i.imgur.com/q9QDRXc.png'],
+  name: 'gm-dApp',
+  url: 'https://gm.walletconnect.com',
+}
 
 export const { publicClient, chains } = configureChains(
   CHAINS,
@@ -64,8 +71,7 @@ export const walletConnectConnector = new WalletConnectConnector({
   
   chains,
   options: {
-    
-    
+    metadata: DEFAULT_APP_METADATA,
     showQrModal: true,
     projectId: 'b5dba79e421fd90af68d0a1006caf864',
   },
