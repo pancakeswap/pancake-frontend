@@ -31,8 +31,9 @@ export const useMultiChianWhiteList = (chainId: ChainId) => {
     return multiList
   }, [whiteLists, listsByUrl])
 
-  const tokenList = useMemo(() => {
-    return lists ? lists?.map((d) => d.address.toLowerCase()) : []
+  const tokenList: string[] = useMemo(() => {
+    if (!lists) return []
+    return [...new Set(lists?.map((d) => d.address.toLowerCase()))]
   }, [lists])
 
   return tokenList
@@ -46,7 +47,7 @@ export const useTokenHighLightList = () => {
 
   const tokens = useMemo(() => {
     return {
-      v2Tokens: allTokensFromV2?.map(parseV2TokenData),
+      v2Tokens: allTokensFromV2?.map(parseV2TokenData) ?? [],
       v3Tokens: allV3TokensFromV3?.map(parseV3TokenData) ?? [],
     }
   }, [allTokensFromV2, allV3TokensFromV3])
