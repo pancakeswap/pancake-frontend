@@ -12,9 +12,9 @@ const TooltipContainer = styled(Box)`
   position: relative;
   padding: 16px;
   max-width: 264px;
-  margin-left: 10px;
+  margin: 0 0 10px 10px;
   height: fit-content;
-  border-radius: 32px;
+  border-radius: 16px;
   background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#27262c')};
 
   ${Text} {
@@ -31,6 +31,10 @@ const TooltipContainer = styled(Box)`
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     border-left: ${({ theme }) => (theme.isDark ? '10px solid #FFFFFF' : '10px solid #27262c')};
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 0 0 0 10px;
   }
 `
 
@@ -55,7 +59,7 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
       headerBackground={theme.colors.gradientCardHeader}
       onDismiss={onDismiss}
     >
-      <Flex position="relative" bottom="-5px" zIndex="1" ml="auto">
+      <Flex position="relative" zIndex="1" bottom="-5px" m={['auto', 'auto', 'auto', '0 0 0 auto']}>
         <TooltipContainer>
           <Text fontSize={['14px', '14px', '14px', '16px']} lineHeight="110%">
             {
