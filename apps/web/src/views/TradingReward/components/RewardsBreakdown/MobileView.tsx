@@ -42,7 +42,7 @@ const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewPro
           ) : (
             <>
               {list?.pairs?.map((pair) => (
-                <StyledMobileRow>
+                <StyledMobileRow key={pair.address}>
                   <PairInfo
                     chainId={pair.chainId}
                     isReady={!isFetching}
