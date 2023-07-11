@@ -75,29 +75,41 @@ const TradingRewardTopTraders = () => {
   }
 
   return (
-    <Box>
-      <SubMenu />
-      <Banner />
-      {/* <YourTradingReward
-        isFetching={isFetching}
-        incentives={currentUserIncentive}
-        qualification={allTradingRewardPairData.qualification}
-        campaignIds={allTradingRewardPairData.campaignIds}
-        campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive}
-        rewardInfo={allTradingRewardPairData.rewardInfo}
-        totalAvailableClaimData={totalAvailableClaimData}
-        currentUserCampaignInfo={currentUserCampaignInfo}
-      /> */}
-      <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
-      <Leaderboard campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive} />
-      <HowToEarn />
-      <RewardsBreakdown
-        allUserCampaignInfo={allUserCampaignInfo}
-        allTradingRewardPairData={allTradingRewardPairData}
-        campaignPairs={allTradingRewardPairData.campaignPairs}
-      />
-      <Questions />
-    </Box>
+    <>
+      <style jsx global>
+        {`
+          a[data-hs-anchor='true'] {
+            display: block;
+            position: relative;
+            visibility: hidden;
+            top: -100px;
+          }
+        `}
+      </style>
+      <Box>
+        <SubMenu />
+        <Banner />
+        <YourTradingReward
+          isFetching={isFetching}
+          incentives={currentUserIncentive}
+          qualification={allTradingRewardPairData.qualification}
+          campaignIds={allTradingRewardPairData.campaignIds}
+          campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive}
+          rewardInfo={allTradingRewardPairData.rewardInfo}
+          totalAvailableClaimData={totalAvailableClaimData}
+          currentUserCampaignInfo={currentUserCampaignInfo}
+        />
+        <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
+        <Leaderboard campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive} />
+        <HowToEarn />
+        <RewardsBreakdown
+          allUserCampaignInfo={allUserCampaignInfo}
+          allTradingRewardPairData={allTradingRewardPairData}
+          campaignPairs={allTradingRewardPairData.campaignPairs}
+        />
+        <Questions />
+      </Box>
+    </>
   )
 }
 
