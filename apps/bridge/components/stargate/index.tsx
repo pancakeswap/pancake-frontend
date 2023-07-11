@@ -38,6 +38,11 @@ export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
         .MuiFormLabel-root.Mui-focused {
           color: ${theme.colors.text} !important;
         }
+
+        ul.MuiList-root button:hover:not(:disabled),
+        ul.MuiList-root button :focus:not(:disabled) {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
       `}</style>
       {/* @ts-ignore */}
       <stargate-widget
