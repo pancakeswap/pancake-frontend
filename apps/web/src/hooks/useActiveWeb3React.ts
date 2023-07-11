@@ -1,16 +1,13 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useRouter, NextRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { isChainSupported } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
-import { getChainId, CHAIN_QUERY_NAME } from 'config/chains'
+import { CHAIN_QUERY_NAME, getChainId } from 'config/chains'
+import { getHashFromRouter } from 'utils/getHashFromRouter'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
-
-const getHashFromRouter = (router: NextRouter) => {
-  return router.asPath.match(/#([a-z0-9]+)/gi)
-}
 
 export function useNetworkConnectorUpdater() {
   const { chainId } = useActiveChainId()
