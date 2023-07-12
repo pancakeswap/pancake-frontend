@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { getHashFromRouter } from 'utils/getHashFromRouter'
+import { useSearchParams } from 'next/navigation'
 
 const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [initialScrollDone, setInitialScrollDone] = useState(false)
 
   useEffect(() => {
     if (enabled && !isFetching && router.isReady && !initialScrollDone) {
-      const hashFromRouter = getHashFromRouter(router)?.[0]
+      const hashFromRouter = searchParams.get('to')
       if (hashFromRouter !== null && hashFromRouter !== '') {
         const elementToScroll = document.getElementById(hashFromRouter)
         if (elementToScroll && window) {
