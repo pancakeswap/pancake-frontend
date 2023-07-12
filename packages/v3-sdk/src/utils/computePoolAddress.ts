@@ -35,7 +35,7 @@ const ZKSYNC_PREFIX = '0x2020dba91b30cc0006188af794c2fb30dd8520db7e2c088b7fc7c10
 
 function getCreate2AddressZkSync(from: Address, salt: `0x${string}`, initCodeHash: `0x${string}`): `0x${string}` {
   return getAddress(
-    keccak256(concat([ZKSYNC_PREFIX, pad(from, { size: 32 }), salt, initCodeHash, EMPTY_INPU_HASH])).slice(26)
+    `0x${keccak256(concat([ZKSYNC_PREFIX, pad(from, { size: 32 }), salt, initCodeHash, EMPTY_INPU_HASH])).slice(26)}`
   )
 }
 

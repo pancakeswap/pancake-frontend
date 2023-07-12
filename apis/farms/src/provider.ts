@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { createPublicClient, http, PublicClient } from 'viem'
-import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
+import { bsc, bscTestnet, goerli, mainnet, zkSyncTestnet } from 'viem/chains'
 
 const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE]
 requireCheck.forEach((node) => {
@@ -49,6 +49,16 @@ const goerliClient = createPublicClient({
   },
 })
 
+const zksyncTestnetClient = createPublicClient({
+  chain: zkSyncTestnet,
+  transport: http(),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+    },
+  },
+})
+
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {
   switch (chainId) {
     case ChainId.ETHEREUM:
@@ -59,6 +69,8 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return bscTestnetClient
     case ChainId.GOERLI:
       return goerliClient
+    case ChainId.ZKSYNC_TESTNET:
+      return zksyncTestnetClient
     default:
       return bscClient
   }

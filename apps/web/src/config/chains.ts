@@ -5,8 +5,8 @@ import {
   bscTestnet,
   goerli,
   mainnet,
-  // zkSync as zkSync_,
-  // zkSyncTestnet as zkSyncTestnet_,
+  // zkSync,
+  zkSyncTestnet,
   polygonZkEvmTestnet as polygonZkEvmTestnet_,
   polygonZkEvm as polygonZkEvm_,
   lineaTestnet as lineaTestnet_,
@@ -54,26 +54,6 @@ const bsc = {
     },
   },
 } satisfies Chain
-
-// const zkSync = {
-//   ...zkSync_,
-//   contracts: {
-//     multicall3: {
-//       address: '0x47898B2C52C957663aE9AB46922dCec150a2272c',
-//       blockCreated: 1536804,
-//     },
-//   },
-// } as const satisfies Chain
-
-// const zkSyncTestnet = {
-//   ...zkSyncTestnet_,
-//   contracts: {
-//     multicall3: {
-//       address: '0x5640049C9e2d33127B34F1bef5C070509f14B5D0',
-//       blockCreated: 5137723,
-//     },
-//   },
-// } as const satisfies Chain
 
 const polygonZkEvm = {
   ...polygonZkEvm_,
@@ -129,7 +109,7 @@ export const CHAINS = [
   bscTestnet,
   goerli,
   // zkSync,
-  // zkSyncTestnet,
+  zkSyncTestnet,
   polygonZkEvm,
   polygonZkEvmTestnet,
   lineaTestnet,

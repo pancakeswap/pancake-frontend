@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-param-reassign */
-import { masterChefV3Addresses, FarmSupportedChainId } from '@pancakeswap/farms'
+import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
@@ -23,9 +23,15 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.BSC_TESTNET]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel', {
     fetch,
   }),
-} satisfies Record<FarmSupportedChainId, GraphQLClient>
+  [ChainId.ZKSYNC_TESTNET]: new GraphQLClient(
+    'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest',
+    {
+      fetch,
+    },
+  ),
+} satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
-const zChainId = z.enum(['56', '1', '5', '97'])
+const zChainId = z.enum(['56', '1', '5', '97', '280'])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 

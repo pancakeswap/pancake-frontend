@@ -60,8 +60,8 @@ export const PUBLIC_NODES = {
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
-    'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
+    'https://polygon-zkevm-testnet.rpc.thirdweb.com',
   ],
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,

@@ -3,6 +3,8 @@ import {
   FarmV3DataWithPriceAndUserInfo,
   FarmWithStakedValue,
   filterFarmsByQuery,
+  supportedChainIdV2,
+  supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { ChainId } from '@pancakeswap/sdk'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
@@ -226,7 +228,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded
-  const userDataReady = !account || (!!account && v2UserDataLoaded && v3UserDataLoaded)
+  const userDataReady =
+    !account ||
+    (!!account &&
+      (supportedChainIdV2.includes(chainId) ? v2UserDataLoaded : true) &&
+      (supportedChainIdV3.includes(chainId) ? v3UserDataLoaded : true))
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const [v3FarmOnly, setV3FarmOnly] = useState(false)
