@@ -21,6 +21,7 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
 
           return () => {
             clearTimeout(scrollAfter)
+            setInitialScrollDone(false)
           }
         }
       }
