@@ -5,6 +5,7 @@ import { Flex, Box } from '@pancakeswap/uikit'
 import { LAYER_ZERO_JS } from 'components/layerZero/config'
 import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
 import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
+import { FEE_COLLECTOR, FEE_TENTH_BPS, PARTNER_ID } from '../components/stargate/config'
 
 const Page = styled(Box)`
   display: flex;
@@ -23,18 +24,29 @@ const AptosBridge = () => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    customElements.whenDefined('aptos-bridge').then(() => {
-      window.aptosBridge.bridge.setDstNativeAmount('0.05')
-      window.aptosBridge.config.setTokens(['CAKE'])
-      window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
+    customElements.whenDefined('lz-bridge').then((Bridge) => {
+      Bridge.bootstrap({
+        stargate: {
+          partner: {
+            partnerId: PARTNER_ID,
+            feeCollector: FEE_COLLECTOR,
+            feeBps: FEE_TENTH_BPS,
+          },
+        },
+      })
       setShow(true)
     })
+    // customElements.whenDefined('aptos-bridge').then(() => {
+    //   window.aptosBridge.bridge.setDstNativeAmount('0.05')
+    //   window.aptosBridge.config.setTokens(['CAKE'])
+    //   window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
+    // })
   }, [])
 
   return (
     <Page>
-      <Script crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
-      <link rel="stylesheet" href="https://unpkg.com/@layerzerolabs/aptos-bridge-widget@latest/element.css" />
+      <Script type="module" crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
+      <link rel="stylesheet" href={`${LAYER_ZERO_JS.css}`} />
       {show && (
         <Box width={['100%', null, '420px']} m="auto">
           <Flex flexDirection="column" bg="backgroundAlt" borderRadius={[0, null, 24]} alignItems="center">

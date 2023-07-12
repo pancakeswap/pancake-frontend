@@ -1,7 +1,8 @@
-const VERSION = '0.0.0-alpha.27-mainnet.10'
-const SHA384 = 'EoecksQ6B3PYYmi2Qmtx0m0cfnIijDdc3XGCHbRkzO8ekpvHdITE3fNxTEVmUCTW'
+const VERSION = '0.0.13'
+const SHA384 = 'J0p2iMBFaPOvdqjyk/6mmuTFLad/pyRa8aQRW5eE0g25h3SiwcAoFf1q2GdVR79L'
 
 export const LAYER_ZERO_JS = {
-  src: `https://unpkg.com/@layerzerolabs/aptos-bridge-widget@${VERSION}/element.js`,
+  src: `https://unpkg.com/@layerzerolabs/x-pancakeswap-widget@${VERSION}/element.mjs`,
+  css: `https://unpkg.com/@layerzerolabs/x-pancakeswap-widget@${VERSION}/element.css`,
   integrity: `sha384-${SHA384}`,
 }
