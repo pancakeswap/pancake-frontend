@@ -17,7 +17,7 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
               top: elementToScroll.offsetTop,
             })
             setInitialScrollDone(true)
-          }, 100)
+          }, 500)
 
           return () => {
             clearTimeout(scrollAfter)
