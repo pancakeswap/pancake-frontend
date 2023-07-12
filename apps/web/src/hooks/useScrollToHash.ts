@@ -28,7 +28,7 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
       }
     }
     return undefined
-  }, [router, isFetching, initialScrollDone, enabled])
+  }, [router, isFetching, initialScrollDone, enabled, searchParams])
 }
 
 export default useScrollToHash
