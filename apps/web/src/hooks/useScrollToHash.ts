@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { getHashFromRouter } from 'utils/getHashFromRouter'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
   const router = useRouter()
+  const { account } = useAccountActiveChain()
   const [initialScrollDone, setInitialScrollDone] = useState(false)
 
   useEffect(() => {
-    if (enabled && !isFetching && router.isReady && !initialScrollDone) {
+    if (account && enabled && !isFetching && router.isReady && !initialScrollDone) {
       const hashFromRouter = getHashFromRouter(router)?.[0]
       if (hashFromRouter !== null && hashFromRouter !== '') {
         const elementToScroll = document.getElementById(hashFromRouter)
@@ -20,7 +22,7 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
               })
               setInitialScrollDone(true)
             }
-          }, 1000)
+          }, 100)
           return () => {
             clearTimeout(scrollAfter)
           }
