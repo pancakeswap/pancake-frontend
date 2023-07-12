@@ -260,8 +260,8 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
     return <Text fontSize="14px">0%</Text>
   }
 
-  if (!displayApr) {
-    return <Skeleton height={24} width={80} />
+  if (!displayApr || true) {
+    return <Skeleton height={24} width={80} style={{ borderRadius: '12px' }} />
   }
 
   return (
