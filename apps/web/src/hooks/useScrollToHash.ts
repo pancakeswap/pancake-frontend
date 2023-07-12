@@ -16,7 +16,7 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
             window.scrollTo({
               top: elementToScroll.offsetTop,
             })
-          }, 100)
+          }, 1000)
           setInitialScrollDone(true)
 
           return () => {
