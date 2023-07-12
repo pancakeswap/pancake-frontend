@@ -13,12 +13,14 @@ const useScrollToHash = (isFetching: boolean, enabled: boolean) => {
         const elementToScroll = document.getElementById(hashFromRouter)
         if (elementToScroll && window) {
           const scrollAfter = setTimeout(() => {
-            window.scrollTo({
-              top: elementToScroll.offsetTop,
-            })
+            const elementToScrollNewPosition = document.getElementById(hashFromRouter)
+            if (elementToScrollNewPosition) {
+              window.scrollTo({
+                top: elementToScrollNewPosition.offsetTop,
+              })
+              setInitialScrollDone(true)
+            }
           }, 100)
-          setInitialScrollDone(true)
-
           return () => {
             clearTimeout(scrollAfter)
           }
