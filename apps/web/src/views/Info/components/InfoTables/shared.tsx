@@ -19,6 +19,7 @@ export const TableWrapper = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
     border-radius: ${({ theme }) => theme.radii.card};
   }
+  overflow: hidden;
 `
 
 export const PageButtons = styled.div`
