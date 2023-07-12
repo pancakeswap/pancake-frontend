@@ -10,8 +10,7 @@ import { FeeTag, FarmTag } from './Tags'
 interface Props {
   currencyA: Currency
   currencyB: Currency
-  name: string
-  id: string | number
+  vaultName: string
   feeTier: FeeAmount
 
   autoFarm?: boolean
@@ -21,14 +20,12 @@ interface Props {
 export const CardTitle = memo(function CardTitle({
   currencyA,
   currencyB,
-  name,
-  id,
+  vaultName,
   feeTier,
   autoFarm,
   autoCompound,
 }: Props) {
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
-  const vaultReadableId = useMemo(() => `(${name}#${id})`, [name, id])
 
   return (
     <CardHeader>
@@ -39,7 +36,7 @@ export const CardTitle = memo(function CardTitle({
             {tokenPairName}
           </Text>
           <Text ml="0.25em" fontSize="1.5em">
-            {vaultReadableId}
+            {vaultName}
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em">
