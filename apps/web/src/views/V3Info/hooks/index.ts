@@ -160,13 +160,15 @@ export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[])
   }
 }
 
-export const useTopTokensData = ():
+export const useTopTokensData = (
+  targetChainId?: ChainId,
+):
   | {
       [address: string]: TokenData
     }
   | undefined => {
   const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
+  const chainId = targetChainId ?? multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 

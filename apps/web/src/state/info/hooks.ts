@@ -159,10 +159,13 @@ export const useAllTokenHighLight = (targetChainName?: MultiChainNameExtend): To
   }, [isLoading, tokensWithData])
 }
 
-export const useAllTokenDataSWR = (): {
+export const useAllTokenDataSWR = (
+  targetChainName?: MultiChainNameExtend,
+): {
   [address: string]: { data?: TokenData }
 } => {
-  const chainName = useChainNameByQuery()
+  const chainNameByQuery = useChainNameByQuery()
+  const chainName = targetChainName ?? chainNameByQuery
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
