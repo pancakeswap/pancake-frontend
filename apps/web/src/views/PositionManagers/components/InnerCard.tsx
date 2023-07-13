@@ -9,6 +9,7 @@ const LightGreyCard = styled(Card)`
 
 const InnerCardBody = styled(CardBody)`
   padding: 1em;
+  background-color: ${({ theme }) => theme.colors.background};
 `
 
 // Card within a card container
