@@ -28,7 +28,7 @@ const AptosBridge = () => {
       const walletStoreWallets = (window as any)?.app?.walletStore?.wallets
       if (walletStoreWallets) {
         const wallets = Object?.fromEntries?.(
-          Object?.entries?.(walletStoreWallets)?.filter?.(([key, wallet]) => (wallet as any)?.type !== 'WalletConnect'),
+          Object?.entries?.(walletStoreWallets)?.filter?.(([_, wallet]) => (wallet as any)?.type !== 'WalletConnect'),
         )
         ;(window as any)?.app?.walletStore?.addWallets(wallets)
       }
