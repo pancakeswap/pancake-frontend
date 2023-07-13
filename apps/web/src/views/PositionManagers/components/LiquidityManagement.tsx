@@ -7,6 +7,8 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 
 import { CardSection } from './CardSection'
 import { AddLiquidity } from './AddLiquidity'
+import { InnerCard } from './InnerCard'
+import { StakedAssets } from './StakedAssets'
 
 interface Props {
   currencyA: Currency
@@ -44,7 +46,9 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   return (
     <>
       {hasStaked ? (
-        <div>Staked information</div>
+        <InnerCard>
+          <StakedAssets currencyA={currencyA} currencyB={currencyB} assets={assets} price={price} />
+        </InnerCard>
       ) : (
         <CardSection title={t('Start earning')}>
           <Button variant="primary" width="100%" onClick={showAddLiquidityModal}>

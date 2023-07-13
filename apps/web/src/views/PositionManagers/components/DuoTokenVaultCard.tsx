@@ -40,10 +40,22 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   manager,
   strategy,
 }: PropsWithChildren<Props>) {
+  // TODO: mock
   const mockApr = new Percent(2233, 10000)
   const mockCmpApr = new Percent(1122, 10000)
   const price = new Price(currencyA, currencyB, 100000n, 100000n)
   const vaultName = useMemo(() => getVaultName(id, name), [name, id])
+  const assets = useMemo(
+    () => ({
+      position: {
+        positionId: '1',
+        liquidity: 1000n,
+        tickUpper: 1,
+        tickLower: -1,
+      },
+    }),
+    [currencyA, currencyB],
+  )
 
   return (
     <Card>
@@ -64,6 +76,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           price={price}
           vaultName={vaultName}
           feeTier={feeTier}
+          assets={assets}
         />
       </CardBody>
     </Card>
