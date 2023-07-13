@@ -43,12 +43,10 @@ const AptosBridge = () => {
         },
       })
 
-      const bridgeStoreCurrencies = (window as any)?.bridgeStore?.currencies
-      const currencies = bridgeStoreCurrencies?.slice()
-      bridgeStoreCurrencies.length = 0
-      ;(window as any).bridgeStore.addCurrencies(currencies.filter((i) => i.symbol === 'CAKE'))
+      const currencies = (window as any)?.app?.bridgeStore?.currencies?.slice()
+      ;(window as any)?.app?.bridgeStore?.currencies.length = 0
+      ;(window as any)?.app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
 
-      console.log('walletStoreWallets', walletStoreWallets)
       setShow(true)
     })
   }, [])
