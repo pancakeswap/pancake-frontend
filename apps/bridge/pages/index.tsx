@@ -25,12 +25,13 @@ const AptosBridge = () => {
 
   useEffect(() => {
     customElements.whenDefined('lz-bridge').then(async (Bridge: any) => {
-      const wallets = Object?.fromEntries?.(
-        Object?.entries?.((window as any)?.app?.walletStore?.wallets)?.filter?.(
-          ([_, wallet]) => (wallet as any)?.type !== 'WalletConnect',
-        ),
-      )
-      ;(window as any)?.app?.walletStore?.addWallets(wallets)
+      const test = (window as any)?.app?.walletStore?.wallets
+      if (test) {
+        const wallets = Object?.fromEntries?.(
+          Object?.entries?.(test)?.filter?.(([_, wallet]) => (wallet as any)?.type !== 'WalletConnect'),
+        )
+        ;(window as any)?.app?.walletStore?.addWallets?.(wallets)
+      }
 
       await Bridge.bootstrap({
         stargate: {
