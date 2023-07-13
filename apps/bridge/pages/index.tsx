@@ -25,13 +25,12 @@ const AptosBridge = () => {
 
   useEffect(() => {
     customElements.whenDefined('lz-bridge').then(async (Bridge: any) => {
-      const walletStoreWallets = (window as any)?.app?.walletStore?.wallets
-      if (walletStoreWallets) {
-        const wallets = Object?.fromEntries?.(
-          Object?.entries?.(walletStoreWallets)?.filter?.(([_, wallet]) => (wallet as any)?.type !== 'WalletConnect'),
-        )
-        ;(window as any)?.app?.walletStore?.addWallets(wallets)
-      }
+      const wallets = Object?.fromEntries?.(
+        Object?.entries?.((window as any)?.app?.walletStore?.wallets)?.filter?.(
+          ([_, wallet]) => (wallet as any)?.type !== 'WalletConnect',
+        ),
+      )
+      ;(window as any)?.app?.walletStore?.addWallets(wallets)
 
       await Bridge.bootstrap({
         stargate: {
@@ -43,9 +42,9 @@ const AptosBridge = () => {
         },
       })
 
-      const currencies = (window as any)?.app?.bridgeStore?.currencies?.slice()
-      ;(window as any)?.app?.bridgeStore?.currencies.length = 0
-      ;(window as any)?.app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
+      // window?.app?.bridgeStore?.currencies.length = 0
+      // const currencies = (window as any)?.app?.bridgeStore?.currencies?.slice()
+      // ;(window as any)?.app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
 
       setShow(true)
     })
