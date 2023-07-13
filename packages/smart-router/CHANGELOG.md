@@ -1,5 +1,18 @@
 # @pancakeswap/smart-router
 
+## 4.1.0
+
+### Minor Changes
+
+- f9fda4ebe: Add Polygon zkEVM support
+
+### Patch Changes
+
+- Updated dependencies [f9fda4ebe]
+  - @pancakeswap/sdk@5.1.0
+  - @pancakeswap/v3-sdk@3.1.0
+  - @pancakeswap/tokens@0.1.5
+
 ## 4.0.1
 
 ### Patch Changes
