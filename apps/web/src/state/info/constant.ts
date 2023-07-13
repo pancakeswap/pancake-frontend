@@ -15,7 +15,7 @@ import { bsc, mainnet, polygonZkEvm } from 'wagmi/chains'
 
 export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM'
 
-export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET'
+export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET' | 'ZKSYNC_TESTNET'
 
 export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.BSC]: 'BSC',
@@ -35,6 +35,7 @@ export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
   ETH: BLOCKS_CLIENT_ETH,
   BSC_TESTNET: 'https://api.thegraph.com/subgraphs/name/lengocphuc99/bsc_testnet-blocks',
   POLYGON_ZKEVM: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
+  ZKSYNC_TESTNET: 'https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest',
 }
 
 export const multiChainStartTime = {

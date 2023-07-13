@@ -139,6 +139,22 @@ export const CAKE = {
   ),
   [ChainId.BSC]: CAKE_MAINNET,
   [ChainId.BSC_TESTNET]: CAKE_TESTNET,
+  [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM_TESTNET,
+    '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
+    ChainId.ZKSYNC_TESTNET,
+    '0xFf2FA31273c1aedB67017B52C625633d2F021f67',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
 
 export const USDC = {
