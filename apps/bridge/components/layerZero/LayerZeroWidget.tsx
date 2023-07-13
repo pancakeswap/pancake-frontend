@@ -30,7 +30,7 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
     <Box width="100%">
       <style jsx global>{`
         .aptos-bridge-container > div {
-          padding: 24px 0 !important;
+          padding: 24px !important;
           border-radius: 18px;
         }
 
@@ -86,7 +86,9 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
         }
       `}</style>
       {/* @ts-ignore */}
-      <aptos-bridge class="aptos-bridge-container" />
+      <lz-tracker />
+      {/* @ts-ignore */}
+      <lz-bridge class="aptos-bridge-container" />
     </Box>
   )
 }
