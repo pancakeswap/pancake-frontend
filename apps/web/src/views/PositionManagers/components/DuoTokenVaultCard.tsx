@@ -10,6 +10,8 @@ import { YieldInfo } from './YieldInfo'
 import { ManagerInfo } from './ManagerInfo'
 import { LiquidityManagement } from './LiquidityManagement'
 import { getVaultName } from '../utils'
+import { ExpandableSection } from './ExpandableSection'
+import { VaultInfo } from './VaultInfo'
 
 interface Props {
   currencyA: Currency
@@ -78,6 +80,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           feeTier={feeTier}
           assets={assets}
         />
+        <ExpandableSection mt="1.5em">
+          <VaultInfo />
+        </ExpandableSection>
       </CardBody>
     </Card>
   )
