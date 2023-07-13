@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
  */
 export default function useDebouncedChangeHandler<T>(
   value: T,
-  onChange: (newValue: T) => void,
+  onChange: ((newValue: T) => void) | undefined,
   debouncedMs = 100,
 ): [T, (value: T) => void] {
   const [inner, setInner] = useState<T>(() => value)
@@ -21,7 +21,7 @@ export default function useDebouncedChangeHandler<T>(
         clearTimeout(timer.current)
       }
       timer.current = setTimeout(() => {
-        onChange(newValue)
+        onChange?.(newValue)
         timer.current = undefined
       }, debouncedMs)
     },

@@ -1,10 +1,10 @@
-import { memo, useMemo, useState } from 'react'
+import { memo, useMemo } from 'react'
 import { Button, Text, RowBetween, Row, Flex, MinusIcon, AddIcon, CurrencyLogo } from '@pancakeswap/uikit'
 import type { AtomBoxProps } from '@pancakeswap/ui'
 import { BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 
 const Title = styled(Text).attrs({
@@ -23,14 +23,14 @@ interface StakedAssetsProps {
   assets: BaseAssets
   price?: Price<Currency, Currency>
   onAdd?: () => void
-  onRemove?: () => Percent
+  onRemove?: () => void
 }
 
 export const StakedAssets = memo(function StakedAssets({
   currencyA,
   currencyB,
-  assets,
-  price,
+  // assets,
+  // price,
   onAdd,
   onRemove,
 }: StakedAssetsProps) {
@@ -54,10 +54,10 @@ export const StakedAssets = memo(function StakedAssets({
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end">
-          <ActionButton variant="primary" scale="md">
+          <ActionButton variant="primary" scale="md" onClick={onRemove}>
             <MinusIcon width="1.5em" />
           </ActionButton>
-          <ActionButton variant="primary" scale="md" ml="0.5em">
+          <ActionButton variant="primary" scale="md" ml="0.5em" onClick={onAdd}>
             <AddIcon width="1.5em" />
           </ActionButton>
         </Flex>

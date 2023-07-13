@@ -9,6 +9,7 @@ import { CardSection } from './CardSection'
 import { AddLiquidity } from './AddLiquidity'
 import { InnerCard } from './InnerCard'
 import { StakedAssets } from './StakedAssets'
+import { RemoveLiquidity } from './RemoveLiquidity'
 
 interface Props {
   currencyA: Currency
@@ -33,21 +34,32 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   feeTier,
   assets,
   price,
-  onAddLiquidity,
-  onRemoveLiquidity,
-}: Props) {
+}: // onAddLiquidity,
+// onRemoveLiquidity,
+Props) {
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
+  const [removeLiquidityModalOpen, setRemoveLiquidityModalOpen] = useState(false)
   const hasStaked = useMemo(() => Boolean(assets?.position && price) || assets?.amounts?.length > 0, [assets, price])
 
   const showAddLiquidityModal = useCallback(() => setAddLiquidityModalOpen(true), [])
   const hideAddLiquidityModal = useCallback(() => setAddLiquidityModalOpen(false), [])
 
+  const showRemoveLiquidityModal = useCallback(() => setRemoveLiquidityModalOpen(true), [])
+  const hideRemoveLiquidityModal = useCallback(() => setRemoveLiquidityModalOpen(false), [])
+
   return (
     <>
       {hasStaked ? (
         <InnerCard>
-          <StakedAssets currencyA={currencyA} currencyB={currencyB} assets={assets} price={price} />
+          <StakedAssets
+            currencyA={currencyA}
+            currencyB={currencyB}
+            assets={assets}
+            price={price}
+            onAdd={showAddLiquidityModal}
+            onRemove={showRemoveLiquidityModal}
+          />
         </InnerCard>
       ) : (
         <CardSection title={t('Start earning')}>
@@ -61,6 +73,15 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         feeTier={feeTier}
         isOpen={addLiquidityModalOpen}
         onDismiss={hideAddLiquidityModal}
+        currencyA={currencyA}
+        currencyB={currencyB}
+      />
+      <RemoveLiquidity
+        isOpen={removeLiquidityModalOpen}
+        onDismiss={hideRemoveLiquidityModal}
+        assets={assets}
+        vaultName={vaultName}
+        feeTier={feeTier}
         currencyA={currencyA}
         currencyB={currencyB}
       />
