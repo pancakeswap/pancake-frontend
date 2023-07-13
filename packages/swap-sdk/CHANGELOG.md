@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.1.0
+
+### Minor Changes
+
+- f9fda4ebe: Add Polygon zkEVM support
+
 ## 5.0.0
 
 ### Major Changes
