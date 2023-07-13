@@ -1945,7 +1945,7 @@
   "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "Der tatsächliche Ausführungspreis beinhaltet die für die Ausführung Ihre Order erforderlichen Transaktionsgebühren und garantiert, dass Ihre Order zum gewünschten Preis ausgeführt wird.",
   "It fluctuates according to gas prices when the order is getting executed.": "Er schwankt je nach den Gaspreisen, wenn die Order ausgeführt wird.",
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Bei dem derzeitigen Gaspreis wird diese Order niemals ausgeführt. Versuchen Sie, die Menge der zu tauschenden Token zu erhöhen.",
-  "Bridge": "Überbrücken",
+  "Bridge": "Bridge",
   "Please switch network": "Bitte wechseln Sie das Netzwerk",
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Die URL, auf die Sie zugreifen (Chain-ID: %chainId%), gehört zu %network%; dies stimmt nicht mit dem Netzwerk Ihrer Wallet überein. Bitte wechseln Sie das Netzwerk, um fortzufahren.",
   "Error connecting, please retry and confirm in wallet!": "Verbindungsfehler, bitte versuchen Sie es erneut und bestätigen Sie in der Wallet!",
