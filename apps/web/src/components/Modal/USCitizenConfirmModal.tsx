@@ -1,4 +1,4 @@
-import DisclaimerModal from 'components/DisclaimerModal'
+import DisclaimerModal, { CheckType } from 'components/DisclaimerModal'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { memo, useCallback } from 'react'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
@@ -10,12 +10,14 @@ import { useTranslation } from '@pancakeswap/localization'
 interface USCitizenConfirmModalProps {
   id: IdType
   title: string
+  checks?: CheckType[]
   onDismiss?: () => void
 }
 
 const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmModalProps>> = ({
   id,
   title,
+  checks,
   onDismiss,
 }) => {
   const {
@@ -38,16 +40,18 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
   return (
     <DisclaimerModal
       modalHeader={title}
-      id="disclaimer-us-citizen"
+      id={id}
       header={t('To proceed to %title%, please check the checkbox below:', { title })}
-      checks={[
-        {
-          key: 'checkbox',
-          content: t(
-            'I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform',
-          ),
-        },
-      ]}
+      checks={
+        checks ?? [
+          {
+            key: 'checkbox',
+            content: t(
+              'I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform.',
+            ),
+          },
+        ]
+      }
       footer={
         <>
           <Text as="span">{t('By proceeding, you agree to comply with our')}</Text>
