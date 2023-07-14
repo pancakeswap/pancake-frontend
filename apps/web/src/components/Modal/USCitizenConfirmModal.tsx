@@ -58,7 +58,7 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
           <Link m="0 4px" display="inline" href="/terms-of-service">
             {t('terms and conditions')}
           </Link>
-          <Text as="span">{t('and all relevant laws and regulations')}</Text>
+          <Text as="span">{t('and all relevant laws and regulations.')}</Text>
         </>
       }
       onSuccess={handleSuccess}
