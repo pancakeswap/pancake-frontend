@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  LinkExternal,
   ModalBody,
   ModalWrapper,
   ModalHeader,
@@ -15,6 +14,7 @@ import {
   ModalTitle,
   Spinner,
   Text,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
@@ -87,9 +87,9 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
               <Text mb="30px" bold>
                 {t('Transaction Submitted')}
               </Text>
-              <LinkExternal isBscScan href={getBlockExploreLink(txHash, 'transaction', chainId)} mb="30px">
+              <ScanLink href={getBlockExploreLink(txHash, 'transaction', chainId)} mb="30px">
                 {t('View on BscScan')}: {truncateHash(txHash, 8, 0)}
-              </LinkExternal>
+              </ScanLink>
               <Flex
                 justifyContent="center"
                 width="100%"

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal, Skeleton, Balance } from '@pancakeswap/uikit'
+import { Box, Flex, Text, CardBody, CardRibbon, Skeleton, Balance, ScanLink } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
@@ -122,13 +122,12 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
               </Text>
             </Flex>
           </Flex>
-          <LinkExternal
-            isBscScan
+          <ScanLink
             m={['10px auto auto auto', '10px auto auto auto', 'auto 0 0 auto']}
             href={getBlockExploreLink(txid, 'transaction')}
           >
             {t('View on BscScan')}
-          </LinkExternal>
+          </ScanLink>
         </Flex>
       </Flex>
     </StyledCardBody>

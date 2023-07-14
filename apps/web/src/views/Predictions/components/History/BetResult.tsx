@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, useTooltip, InfoIcon, ScanLink } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useTranslation } from '@pancakeswap/localization'
@@ -135,9 +135,9 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         )}
         {bet.claimed && bet.claimedHash && (
           <Flex justifyContent="center">
-            <LinkExternal isBscScan href={getBlockExploreLink(bet.claimedHash, 'transaction')} mb="16px">
+            <ScanLink href={getBlockExploreLink(bet.claimedHash, 'transaction')} mb="16px">
               {t('View on BscScan')}
-            </LinkExternal>
+            </ScanLink>
           </Flex>
         )}
         {result === Result.CANCELED && isRefundable && (

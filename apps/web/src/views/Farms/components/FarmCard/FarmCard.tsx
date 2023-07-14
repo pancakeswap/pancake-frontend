@@ -188,7 +188,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             />
             <DetailsSection
               removed={removed}
-              scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
+              scanAddress={{ link: getBlockExploreLink(lpAddress, 'address', chainId), chainId }}
               infoAddress={infoUrl}
               totalValueFormatted={totalValueFormatted}
               lpLabel={lpLabel}

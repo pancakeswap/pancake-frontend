@@ -1,7 +1,6 @@
 import {
   Flex,
   IconButton,
-  LinkExternal,
   Button,
   useModal,
   Grid,
@@ -10,6 +9,7 @@ import {
   VisibilityOff,
   VisibilityOn,
   NextLinkFromReactRouter as ReactRouterLink,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBlockExploreLink, isAddress } from 'utils'
@@ -175,9 +175,9 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     return (
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
         {accountPath && profile?.username && (
-          <LinkExternal isBscScan href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
+          <ScanLink href={getBlockExploreLink(accountPath, 'address')} bold color="primary">
             {domainName || truncateHash(accountPath)}
-          </LinkExternal>
+          </ScanLink>
         )}
         {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>

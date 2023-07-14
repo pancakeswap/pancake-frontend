@@ -11,7 +11,6 @@ import {
   ExpandableLabel,
   Flex,
   Heading,
-  LinkExternal,
   NextLinkFromReactRouter,
   NotFound,
   PreTitle,
@@ -24,6 +23,7 @@ import {
   Message,
   useMatchBreakpoints,
   useModal,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -991,9 +991,9 @@ function PositionHistoryRow({
     return (
       <Box>
         <AutoRow gap="8px">
-          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
             <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
-          </LinkExternal>
+          </ScanLink>
         </AutoRow>
         <Text>{positionHistoryTypeText[type]}</Text>
         <AutoColumn gap="4px">
@@ -1046,9 +1046,9 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center" gap="8px">
-        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+        <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
           <Text ellipsis>{date.toLocaleString()}</Text>
-        </LinkExternal>
+        </ScanLink>
       </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>
       <AutoColumn gap="4px">
