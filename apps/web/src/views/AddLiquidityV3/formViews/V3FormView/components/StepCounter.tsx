@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { AddCircleIcon, AutoColumn, AutoRow, IconButton, NumericalInput, RemoveIcon } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightGreyCard } from 'components/Card'
@@ -32,6 +33,7 @@ const StepCounter = ({
   tokenA,
   tokenB,
 }: StepCounterProps) => {
+  const { t } = useTranslation()
   //  for focus state, styled components doesnt let you select input parent container
   const [, setActive] = useState(false)
 
@@ -120,7 +122,7 @@ const StepCounter = ({
             </IconButton>
           )}
         </AutoRow>
-        {tokenB} per {tokenA}
+        {t('%assetA% per %assetB%', { assetA: tokenB, assetB: tokenA })}
       </AutoColumn>
     </LightGreyCard>
   )
