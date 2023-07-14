@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MANAGER, Strategy } from '@pancakeswap/position-managers'
+import { MANAGER, ManagerFee, Strategy } from '@pancakeswap/position-managers'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { ReactNode, memo, PropsWithChildren, useMemo } from 'react'
+import styled from 'styled-components'
 
 import { CardTitle } from './CardTitle'
 import { YieldInfo } from './YieldInfo'
@@ -12,6 +13,16 @@ import { LiquidityManagement } from './LiquidityManagement'
 import { getVaultName } from '../utils'
 import { ExpandableSection } from './ExpandableSection'
 import { VaultInfo } from './VaultInfo'
+
+const StyledCard = styled(Card)`
+  align-self: baseline;
+  max-width: 100%;
+  margin: 0 0 24px 0;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: 350px;
+    margin: 0 12px 46px;
+  }
+`
 
 interface Props {
   currencyA: Currency
@@ -25,6 +36,7 @@ interface Props {
     id: MANAGER
     name: string
   }
+  managerFee: ManagerFee
 
   autoFarm?: boolean
   autoCompound?: boolean
@@ -40,6 +52,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   autoFarm,
   autoCompound,
   manager,
+  managerFee,
   strategy,
 }: PropsWithChildren<Props>) {
   // TODO: mock
@@ -51,16 +64,16 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     () => ({
       position: {
         positionId: '1',
-        liquidity: 1000n,
-        tickUpper: 1,
-        tickLower: -1,
+        liquidity: 100000n,
+        tickUpper: 45000,
+        tickLower: 44500,
       },
     }),
-    [currencyA, currencyB],
+    [],
   )
 
   return (
-    <Card>
+    <StyledCard>
       <CardTitle
         currencyA={currencyA}
         currencyB={currencyB}
@@ -81,9 +94,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           assets={assets}
         />
         <ExpandableSection mt="1.5em">
-          <VaultInfo />
+          <VaultInfo currencyA={currencyA} currencyB={currencyB} managerFee={managerFee} />
         </ExpandableSection>
       </CardBody>
-    </Card>
+    </StyledCard>
   )
 })
