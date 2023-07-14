@@ -2,7 +2,8 @@ import { useTranslation } from "@pancakeswap/localization";
 import styled, { useTheme } from "styled-components";
 import getThemeValue from "../../util/getThemeValue";
 import Modal from "./Modal";
-import { Link, Text, Button, OpenNewIcon } from "../../components";
+import { Link } from "../../components/Link";
+import { Text, Button, OpenNewIcon } from "../../components";
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string;
