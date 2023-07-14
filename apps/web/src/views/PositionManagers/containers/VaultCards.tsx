@@ -10,7 +10,7 @@ export const VaultCards = memo(function VaultCards() {
 
   const cards = configs.map((config) => {
     if (isPCSVaultConfig(config)) {
-      return <PCSVaultCard config={config} />
+      return <PCSVaultCard key={config.id} config={config} />
     }
     return null
   })

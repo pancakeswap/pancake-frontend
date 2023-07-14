@@ -22,7 +22,6 @@ export const PCSVaultCard = memo(function PCSVaultCard({ config }: Props) {
   // console.log(vault)
   return (
     <DuoTokenVaultCard
-      key={id}
       id={id}
       currencyA={currencyA}
       currencyB={currencyB}

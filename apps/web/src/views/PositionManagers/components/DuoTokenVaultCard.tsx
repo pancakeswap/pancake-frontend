@@ -13,6 +13,7 @@ import { LiquidityManagement } from './LiquidityManagement'
 import { getVaultName } from '../utils'
 import { ExpandableSection } from './ExpandableSection'
 import { VaultInfo } from './VaultInfo'
+import { VaultLinks } from './VaultLinks'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -95,6 +96,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo currencyA={currencyA} currencyB={currencyB} managerFee={managerFee} />
+          <VaultLinks currencyA={currencyA} currencyB={currencyB} managerId={manager.id} vaultId={id} mt="0.5em" />
         </ExpandableSection>
       </CardBody>
     </StyledCard>
