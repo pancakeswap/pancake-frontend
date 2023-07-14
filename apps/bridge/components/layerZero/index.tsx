@@ -40,19 +40,18 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
         },
       })
 
-      setTimeout(() => {
-        const length = window?.app?.bridgeStore?.currencies?.length
-        if (length !== null || length !== undefined) {
-          const currencies = window?.app?.bridgeStore?.currencies?.slice()
-          // @ts-ignore
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          window!.app?.bridgeStore!.currencies.length = 0
-          const filterList = isCake ? ['cake'] : ['eth', 'weth', 'usdc', 'usdt']
-          window?.app?.bridgeStore?.addCurrencies(
-            currencies?.filter((i) => filterList.includes(i.symbol.toLowerCase())),
-          )
-        }
-      }, 500)
+      if (isCake) {
+        setTimeout(() => {
+          const length = window?.app?.bridgeStore?.currencies?.length
+          if (length !== null || length !== undefined) {
+            const currencies = window?.app?.bridgeStore?.currencies?.slice()
+            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            window!.app?.bridgeStore!.currencies.length = 0
+            window?.app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
+          }
+        }, 800)
+      }
 
       setShow(true)
     })
