@@ -10,6 +10,7 @@ import { HarvestFixedStaking } from './HarvestFixedStaking'
 import { FixedStakingModal } from './FixedStakingModal'
 import { InlineText } from './InlineText'
 import { FixedStakingPool, StakedPosition } from '../type'
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 
 export function FixedStakingCard({
   pool,
@@ -21,6 +22,7 @@ export function FixedStakingCard({
   const { t } = useTranslation()
 
   const stakePosition = stakedPositions.find((position) => position.pool.token.address === pool.token.address)
+  const { boostAPR, lockAPR } = useFixedStakeAPR(pool)
 
   return (
     <StyledCard>
@@ -52,6 +54,7 @@ export function FixedStakingCard({
                 </InlineText>
               </Box>
               <HarvestFixedStaking
+                apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
                 lockPeriod={pool.lockPeriod}
                 unlockTime={stakePosition.timestampEndLockPeriod}
                 stakePositionUserInfo={stakePosition.userInfo}
@@ -71,15 +74,22 @@ export function FixedStakingCard({
                 </InlineText>
               </Box>
               <FixedStakingActions
+                apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
                 poolIndex={pool.poolIndex}
                 lockPeriod={pool.lockPeriod}
                 unlockTime={stakePosition.timestampEndLockPeriod}
                 stakePositionUserInfo={stakePosition.userInfo}
                 token={pool.token}
+                withdrawalFee={pool.withdrawalFee}
               />
             </>
           ) : (
-            <FixedStakingModal lockPeriod={pool.lockPeriod} poolIndex={pool.poolIndex} stakingToken={pool.token}>
+            <FixedStakingModal
+              apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
+              lockPeriod={pool.lockPeriod}
+              poolIndex={pool.poolIndex}
+              stakingToken={pool.token}
+            >
               {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
             </FixedStakingModal>
           )}

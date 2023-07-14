@@ -26,7 +26,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
@@ -39,10 +39,12 @@ export function FixedStakingModal({
   poolIndex,
   lockPeriod,
   children,
+  apr,
 }: {
   stakingToken: Token
   poolIndex: number
   lockPeriod: number
+  apr: Percent
   children: (openModal: () => void) => ReactNode
 }) {
   const { account } = useAccountActiveChain()
@@ -64,6 +66,10 @@ export function FixedStakingModal({
   const stakeCurrencyAmount = rawAmount.gt(0)
     ? CurrencyAmount.fromRawAmount(stakingToken, rawAmount.toString())
     : undefined
+
+  const projectedReturnAmount = stakeCurrencyAmount
+    ?.multiply(lockPeriod)
+    ?.multiply(apr.multiply(lockPeriod).divide(365))
 
   const [approval, approveCallback] = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
 
@@ -189,7 +195,7 @@ export function FixedStakingModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('APR')}
                 </Text>
-                <Text bold>0%</Text>
+                <Text bold>{apr?.toSignificant(2)}%</Text>
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
@@ -201,7 +207,9 @@ export function FixedStakingModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   Projected Return
                 </Text>
-                <Text bold>0 {stakingToken.symbol}</Text>
+                <Text bold>
+                  {projectedReturnAmount?.toSignificant(2) ?? 0} {stakingToken.symbol}
+                </Text>
               </Flex>
             </LightGreyCard>
           </Box>

@@ -19,7 +19,7 @@ import {
 import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { LightCard } from 'components/Card'
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useFixedStakingContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -42,21 +42,26 @@ export function FixedStakingActions({
   unlockTime,
   lockPeriod,
   poolIndex,
+  apr,
+  withdrawalFee,
 }: {
   poolIndex: number
   unlockTime: number
   token: Token
   stakePositionUserInfo: StakePositionUserInfo
   lockPeriod: number
+  apr: Percent
+  withdrawalFee: number
 }) {
   const { t } = useTranslation()
-  const stakeModal = useModalV2()
+  const unstakeModal = useModalV2()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const fixedStakingContract = useFixedStakingContract()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
 
   const totalStakedAmount = getBalanceAmount(stakePositionUserInfo.userDeposit, token.decimals)
+  const interestAmount = getBalanceAmount(stakePositionUserInfo.accrueInterest, token.decimals)
 
   const formattedUsdValueStaked = useStablecoinPriceAmount(token, totalStakedAmount.toNumber())
 
@@ -73,11 +78,26 @@ export function FixedStakingActions({
           {t('Your withdrawn request has been submitted.')}
         </ToastDescriptionWithTx>,
       )
-      stakeModal.onDismiss()
+      unstakeModal.onDismiss()
     }
-  }, [callWithGasPrice, fetchWithCatchTxError, fixedStakingContract, stakeModal, t, toastSuccess])
+  }, [callWithGasPrice, fetchWithCatchTxError, fixedStakingContract, unstakeModal, t, toastSuccess])
 
   const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date())
+
+  const projectedReturnAmount = CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.userDeposit.toString())
+    ?.multiply(lockPeriod)
+    ?.multiply(apr.multiply(lockPeriod).divide(365))
+
+  const feePercent = new Percent(withdrawalFee, 10000)
+
+  const amountDeposit = CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.userDeposit.toString())
+  const accrueInterest = CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.accrueInterest.toString())
+
+  const withdrawFee = amountDeposit.multiply(feePercent).add(accrueInterest)
+
+  const totalGetAmount = shouldUnlock
+    ? amountDeposit.add(accrueInterest)
+    : amountDeposit.add(accrueInterest).subtract(withdrawFee)
 
   return (
     <>
@@ -89,11 +109,11 @@ export function FixedStakingActions({
         earnings={totalStakedAmount}
         actions={
           <Flex>
-            <IconButton variant="secondary" onClick={() => stakeModal.setIsOpen(true)} mr="6px">
+            <IconButton variant="secondary" onClick={() => unstakeModal.setIsOpen(true)} mr="6px">
               <MinusIcon color="primary" width="24px" />
             </IconButton>
 
-            <FixedStakingModal lockPeriod={lockPeriod} poolIndex={poolIndex} stakingToken={token}>
+            <FixedStakingModal apr={apr} lockPeriod={lockPeriod} poolIndex={poolIndex} stakingToken={token}>
               {(openModal) => (
                 <IconButton variant="secondary" onClick={openModal}>
                   <AddIcon color="primary" width="24px" height="24px" />
@@ -103,7 +123,7 @@ export function FixedStakingActions({
           </Flex>
         }
       />
-      <ModalV2 {...stakeModal} closeOnOverlayClick>
+      <ModalV2 {...unstakeModal} closeOnOverlayClick>
         <Modal
           title={
             <Flex>
@@ -168,7 +188,7 @@ export function FixedStakingActions({
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 APR
               </Text>
-              <Text bold>0%</Text>
+              <Text bold>{apr.toSignificant(2)}%</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between">
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
@@ -180,29 +200,39 @@ export function FixedStakingActions({
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 Projected Return
               </Text>
-              <Text bold>0 {token.symbol}</Text>
+              <Text bold>
+                {projectedReturnAmount?.toSignificant(2) ?? 0} {token.symbol}
+              </Text>
             </Flex>
           </LightCard>
           <PreTitle fontSize="12px" color="textSubtle">
             {t('Withdrawal Details')}
           </PreTitle>
           <LightCard mb="16px">
-            <Message variant="warning" mb="16px">
-              <MessageText maxWidth="200px">
-                {t('No rewards are credited for early withdrawal, and commission is required')}
-              </MessageText>
-            </Message>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
-                Withdrawal Commission
-              </Text>
-              <Text bold>0 {token.symbol}</Text>
-            </Flex>
+            {shouldUnlock ? null : (
+              <Message variant="warning" mb="16px">
+                <MessageText maxWidth="200px">
+                  {t('No rewards are credited for early withdrawal, and commission is required')}
+                </MessageText>
+              </Message>
+            )}
+            {shouldUnlock ? null : (
+              <Flex alignItems="center" justifyContent="space-between">
+                <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
+                  Withdrawal Fee
+                </Text>
+                <Text bold>
+                  {withdrawFee.toSignificant(2)} {token.symbol}
+                </Text>
+              </Flex>
+            )}
             <Flex alignItems="center" justifyContent="space-between">
               <Text textTransform="uppercase" fontSize={12} color="textSubtle" bold>
                 You Will Get
               </Text>
-              <Text bold>0 {token.symbol}</Text>
+              <Text bold>
+                {totalGetAmount.toSignificant(2)} {token.symbol}
+              </Text>
             </Flex>
           </LightCard>
           <Button

@@ -14,7 +14,7 @@ import {
 import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { LightCard, LightGreyCard } from 'components/Card'
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useFixedStakingContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -36,12 +36,14 @@ export function HarvestFixedStaking({
   unlockTime,
   lockPeriod,
   poolIndex,
+  apr,
 }: {
   unlockTime: number
   token: Token
   stakePositionUserInfo: StakePositionUserInfo
   lockPeriod: number
   poolIndex: number
+  apr: Percent
 }) {
   const { t } = useTranslation()
   const stakeModal = useModalV2()
@@ -97,7 +99,7 @@ export function HarvestFixedStaking({
         <Flex justifyContent="space-between" width="100%">
           <Box>
             <Text color="textSubtle" fontSize="12px">
-              APR: 0%
+              APR: {apr.toSignificant(2)}%
             </Text>
             <Text color="textSubtle" fontSize="12px">
               Unlock on {format(unlockTime * 1_000, 'MMM d, yyyy')}

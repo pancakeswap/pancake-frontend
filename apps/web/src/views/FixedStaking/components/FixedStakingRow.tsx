@@ -30,6 +30,7 @@ import { InlineText } from './InlineText'
 import { FixedStakingActions } from './FixedStakingActions'
 import { FixedStakingModal } from './FixedStakingModal'
 import { useCurrenDay } from '../hooks/useStakedPools'
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 
 const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; stakedPositions: StakedPosition[] }) => {
   const isBoost = useMemo(() => new BigNumber(pool.boostDayPercent).gt(0), [pool.boostDayPercent])
@@ -43,6 +44,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; st
 
   const formattedUsdValueStaked = useStablecoinPriceAmount(pool.token, totalStakedAmount.toNumber())
   const stakePosition = stakedPositions.find((position) => position.pool.token.address === pool.token.address)
+  const { boostAPR, lockAPR } = useFixedStakeAPR(pool)
 
   return (
     <Pool.ExpandRow
@@ -54,7 +56,9 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; st
               <Text textTransform="uppercase" fontSize="12px">
                 {t('APR:')}
               </Text>
-              <Balance fontSize={['14px', '14px', '16px']} value={0} decimals={2} unit="%" fontWeight={[600, 400]} />
+              <Text>
+                {lockAPR.toSignificant(2)}% ~ {boostAPR.toSignificant(2)}%
+              </Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="12px">{t('Ends in')}</Text>
@@ -67,6 +71,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; st
             {stakePosition && new BigNumber(stakePosition?.userInfo?.accrueInterest).gt(0) ? (
               <ActionContainer pl={['0px', '0px', '0px', '0px', '32px']}>
                 <HarvestFixedStaking
+                  apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
                   lockPeriod={pool.lockPeriod}
                   unlockTime={stakePosition.timestampEndLockPeriod}
                   stakePositionUserInfo={stakePosition.userInfo}
@@ -87,6 +92,8 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; st
                     </InlineText>
                   </Box>
                   <FixedStakingActions
+                    withdrawalFee={pool.withdrawalFee}
+                    apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
                     poolIndex={pool.poolIndex}
                     lockPeriod={pool.lockPeriod}
                     unlockTime={stakePosition?.timestampEndLockPeriod}
@@ -112,7 +119,12 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; st
                       {`${pool.token.symbol} `}
                     </InlineText>
                   </Box>
-                  <FixedStakingModal lockPeriod={pool.lockPeriod} poolIndex={pool.poolIndex} stakingToken={pool.token}>
+                  <FixedStakingModal
+                    apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
+                    lockPeriod={pool.lockPeriod}
+                    poolIndex={pool.poolIndex}
+                    stakingToken={pool.token}
+                  >
                     {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
                   </FixedStakingModal>
                 </LightGreyCard>
@@ -182,7 +194,9 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; st
           <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
             {t('APR')}
           </Text>
-          <Balance fontSize={['14px', '14px', '16px']} value={0} decimals={2} unit="%" fontWeight={[600, 400]} />
+          <Text>
+            {lockAPR.toSignificant(2)}% ~ {boostAPR.toSignificant(2)}%
+          </Text>
         </Pool.CellContent>
       </StyledCell>
       <StyledCell>
