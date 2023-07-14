@@ -1,7 +1,7 @@
 import LayerZero from 'components/layerZero'
 
 function Stargate() {
-  return <LayerZero />
+  return <LayerZero isCake={false} />
 }
 
 export default Stargate

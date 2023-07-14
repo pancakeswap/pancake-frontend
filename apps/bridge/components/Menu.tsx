@@ -1,4 +1,4 @@
-import { Box, Flex, Logo, ThemeSwitcher, UserMenu, DropdownMenuItemType, DropdownMenu } from '@pancakeswap/uikit'
+import { Box, Flex, Logo, ThemeSwitcher, DropdownMenuItemType, DropdownMenu } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
@@ -106,12 +106,7 @@ export function Menu() {
         <Box mr="16px">
           <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
         </Box>
-        {nextRouter.pathname === '/stargate' && <User />}
       </Flex>
     </Flex>
   )
-}
-
-function User() {
-  return <UserMenu variant="default" account="" text="" avatarSrc={undefined} />
 }
