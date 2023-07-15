@@ -34,8 +34,8 @@ const RevenueSharing = () => {
             </TooltipText>
             <Text bold>in 7 days</Text>
           </Flex>
-          <Message variant="danger" mt="8px" icon={<WarningIcon color="failure" />}>
-            <MessageText>
+          <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
+            <MessageText lineHeight="120%">
               {t('Your fixed-term staking position will expire before the next revenue sharing distributions.')}
             </MessageText>
           </Message>
@@ -59,8 +59,8 @@ const RevenueSharing = () => {
             </Box>
           </Flex>
         </Box>
-        <Message variant="danger" mt="24px" icon={<WarningIcon color="failure" />}>
-          <MessageText>
+        <Message variant="danger" padding="8px" mt="24px" icon={<WarningIcon color="failure" />}>
+          <MessageText lineHeight="120%">
             {t('You need to update your staking in order to start earning from protocol revenue sharing.')}
           </MessageText>
         </Message>
