@@ -2642,4 +2642,12 @@ export const bscTokens = {
     'Pendle',
     'https://www.pendle.finance/',
   ),
+  usdd: new ERC20Token(
+    ChainId.BSC,
+    '0xd17479997F34dd9156Deef8F95A52D81D265be9c',
+    18,
+    'USDD',
+    'Decentralized USD',
+    'https://usdd.io/',
+  ),
 }

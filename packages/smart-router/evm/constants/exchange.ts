@@ -105,6 +105,9 @@ export const ADDITIONAL_BASES: {
     // unshETH - USH
     [bscTokens.unshETH.address]: [bscTokens.ush],
     [bscTokens.ush.address]: [bscTokens.unshETH],
+
+    [bscTokens.tusd.address]: [bscTokens.usdd],
+    [bscTokens.usdd.address]: [bscTokens.tusd],
   },
   [ChainId.ETHEREUM]: {
     // alETH - ALCX
