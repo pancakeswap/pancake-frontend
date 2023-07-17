@@ -43,19 +43,20 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
       }
 
       if (isCake) {
-        setTimeout(() => {
-          const length = window?.app?.bridgeStore?.currencies?.length
+        setTimeout(async () => {
+          const app: any = await customElements.whenDefined('lz-bridge')
+          const length = app?.bridgeStore?.currencies?.length
           if (length !== null || length !== undefined) {
-            const currencies = window?.app?.bridgeStore?.currencies?.slice()
+            const currencies = app?.bridgeStore?.currencies?.slice()
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            window!.app?.bridgeStore!.currencies.length = 0
-            window?.app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
+            app!.bridgeStore!.currencies.length = 0
+            app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
 
-            const srcCake = window?.app?.bridgeStore?.currencies?.find(
+            const srcCake = app?.bridgeStore?.currencies?.find(
               (i) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
             )
-            window?.app?.bridgeStore?.setSrcCurrency(srcCake)
+            app?.bridgeStore?.setSrcCurrency(srcCake)
           }
         }, 800)
       }
