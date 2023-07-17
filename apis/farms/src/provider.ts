@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { createPublicClient, http, PublicClient } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet, zkSyncTestnet, polygonZkEvm } from 'viem/chains'
 
-const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE]
+const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE, POLYGON_ZKEVM_NODE]
 requireCheck.forEach((node) => {
   if (!node) {
     throw new Error('Missing env var')
@@ -61,7 +61,7 @@ const zksyncTestnetClient = createPublicClient({
 
 const polygonZkEvmClient = createPublicClient({
   chain: polygonZkEvm,
-  transport: http(),
+  transport: http(POLYGON_ZKEVM_NODE),
   batch: {
     multicall: {
       batchSize: 1024 * 200,
