@@ -22,10 +22,6 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
     }
 
     fetch()
-
-    return () => {
-      document.body.classList.remove(themeText)
-    }
   }, [theme])
 
   return (
@@ -69,8 +65,8 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
         }
 
         .css-11zlscq {
-          background-color: rgb(255, 255, 255);
-          border: 1px solid rgb(231, 227, 235);
+          background-color: rgb(255, 255, 255) !important;
+          border: 1px solid rgb(231, 227, 235) !important;
         }
 
         .css-1tw06gh-LzButton,
@@ -85,7 +81,12 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
         }
 
         .css-5bq2ar {
-          background-color: white;
+          background-color: white !important;
+        }
+
+        .css-v2g2au .css-31r52u,
+        .css-v2g2au .css-acv5hh {
+          color: #1fc7d4;
         }
       `}</style>
       {/* @ts-ignore */}
