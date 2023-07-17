@@ -30,15 +30,17 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
 
   useEffect(() => {
     customElements.whenDefined('lz-bridge').then((Bridge: any) => {
-      Bridge.bootstrap({
-        stargate: {
-          partner: {
-            partnerId: PARTNER_ID,
-            feeCollector: FEE_COLLECTOR,
-            feeBps: FEE_TENTH_BPS,
+      if (!window?.app) {
+        Bridge.bootstrap({
+          stargate: {
+            partner: {
+              partnerId: PARTNER_ID,
+              feeCollector: FEE_COLLECTOR,
+              feeBps: FEE_TENTH_BPS,
+            },
           },
-        },
-      })
+        })
+      }
 
       if (isCake) {
         setTimeout(() => {
