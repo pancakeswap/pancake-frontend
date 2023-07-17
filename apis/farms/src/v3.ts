@@ -1,5 +1,4 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, no-await-in-loop */
 import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
@@ -155,13 +154,14 @@ const handler_ = async (req: Request) => {
     return error(400, parsed.error)
   }
 
-  const { chainId, address: address_ } = parsed.data
+  const { chainId: chainIdString, address: address_ } = parsed.data
+  const chainId = Number(chainIdString) as Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>
 
   const address = address_.toLowerCase()
 
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const client = viemProviders({ chainId: Number(chainId) })
+  const client = viemProviders({ chainId })
 
   const [pid] = await client.multicall({
     contracts: [
