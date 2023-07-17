@@ -60,7 +60,15 @@ const zksyncTestnetClient = createPublicClient({
 })
 
 const polygonZkEvmClient = createPublicClient({
-  chain: polygonZkEvm,
+  chain: {
+    ...polygonZkEvm,
+    contracts: {
+      multicall3: {
+        address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        blockCreated: 57746,
+      },
+    },
+  },
   transport: http(POLYGON_ZKEVM_NODE),
   batch: {
     multicall: {
