@@ -51,6 +51,11 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             window!.app?.bridgeStore!.currencies.length = 0
             window?.app?.bridgeStore?.addCurrencies(currencies?.filter((i) => i.symbol.toLowerCase() === 'cake'))
+
+            const srcCake = window?.app?.bridgeStore?.currencies?.find(
+              (i) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
+            )
+            window?.app?.bridgeStore?.setSrcCurrency(srcCake)
           }
         }, 800)
       }
