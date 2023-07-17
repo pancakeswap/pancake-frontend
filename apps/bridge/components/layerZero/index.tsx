@@ -30,7 +30,7 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
 
   useEffect(() => {
     customElements.whenDefined('lz-bridge').then((Bridge: any) => {
-      if (!window?.app) {
+      if (!Bridge.initialized) {
         Bridge.bootstrap({
           stargate: {
             partner: {
