@@ -226,4 +226,14 @@ export default {
     56: '0x549d484F493b778A5c70638E30Fc6Dc6B2Dcc4c0',
     97: '0x',
   },
+  vCake: {
+    1: '0x',
+    56: '0x',
+    97: '0x5DD37E97716A8b358BCbc731516F36FFff978454',
+  },
+  revenueSharingPool: {
+    1: '0x',
+    56: '0x',
+    97: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
