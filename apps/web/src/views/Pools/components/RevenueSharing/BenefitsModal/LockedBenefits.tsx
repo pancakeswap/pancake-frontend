@@ -80,7 +80,7 @@ const LockedBenefits = () => {
               <Text color="textSubtle" fontSize="14px" mr="auto">
                 {t('Cake Yield')}
               </Text>
-              <Text style={{ display: 'inline-block' }} color="primary" bold>
+              <Text style={{ display: 'inline-block' }} color="success" bold>
                 {`${Number(lockedApy).toFixed(2)}%`}
               </Text>
               <Text ml="2px" as="del" bold>{`${Number(delApy).toFixed(2)}%`}</Text>

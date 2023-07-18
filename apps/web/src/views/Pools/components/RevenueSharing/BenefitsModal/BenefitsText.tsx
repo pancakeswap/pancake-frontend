@@ -23,13 +23,13 @@ const BenefitsText: React.FC<React.PropsWithChildren<BenefitsTextProps>> = ({
 
   return (
     <Flex mt="8px" flexDirection="row" alignItems="center">
-      <Flex mr="auto">
+      <Flex mr="auto" ref={targetRef}>
         {icon}
-        <TooltipText ref={targetRef} color="textSubtle" fontSize="14px" ml="8px">
+        <TooltipText color="textSubtle" fontSize="14px" ml="8px">
           {title}
         </TooltipText>
-        {tooltipVisible && tooltip}
       </Flex>
+      {tooltipVisible && tooltip}
       <Text bold>{value}</Text>
     </Flex>
   )
