@@ -1,21 +1,34 @@
 import { ReactElement } from 'react'
-import { Flex, Text, TooltipText } from '@pancakeswap/uikit'
+import { Flex, Text, TooltipText, useTooltip, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 interface BenefitsTextProps {
   title: string
   value: string
   icon: ReactElement
-  tooltipText?: string
+  tooltipComponent?: ReactElement
 }
 
-const BenefitsText: React.FC<React.PropsWithChildren<BenefitsTextProps>> = ({ title, value, icon }) => {
+const BenefitsText: React.FC<React.PropsWithChildren<BenefitsTextProps>> = ({
+  title,
+  value,
+  icon,
+  tooltipComponent,
+}) => {
+  const { isMobile } = useMatchBreakpoints()
+
+  const { targetRef, tooltipVisible, tooltip } = useTooltip(<>{tooltipComponent}</>, {
+    placement: 'bottom',
+    ...(isMobile && { hideTimeout: 2000 }),
+  })
+
   return (
     <Flex mt="8px" flexDirection="row" alignItems="center">
       <Flex mr="auto">
         {icon}
-        <TooltipText color="textSubtle" fontSize="14px" ml="8px">
+        <TooltipText ref={targetRef} color="textSubtle" fontSize="14px" ml="8px">
           {title}
         </TooltipText>
+        {tooltipVisible && tooltip}
       </Flex>
       <Text bold>{value}</Text>
     </Flex>
