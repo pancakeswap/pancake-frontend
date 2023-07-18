@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { Modal, Text, Card, Button, Flex, Box, LinkExternal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Modal, Text, Card, Flex, Box, LinkExternal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
+import JoinButton from 'views/Pools/components/RevenueSharing/JoinRevenueModal/JoinButton'
 
 interface JoinRevenueModalProps {
   onDismiss?: () => void
@@ -82,9 +83,7 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
       <Card>
         <Box padding={16}>123</Box>
       </Card>
-      <Button width="100%" m="24px 0 8px 0">
-        {t('Update Staking Position')}
-      </Button>
+      <JoinButton onDismiss={onDismiss} />
       <Box>
         <Text as="span" fontSize={12} color="textSubtle">
           {t('Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More')}
