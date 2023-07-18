@@ -1,12 +1,28 @@
+import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, Card, ICakeIcon, BCakeIcon, VCakeIcon, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import Image from 'next/image'
+import BigNumber from 'bignumber.js'
 import BenefitsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsText'
 import useCakeBenefits from 'components/Menu/UserMenu/hooks/useCakeBenefits'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 
 const LockedBenefits = () => {
   const { t } = useTranslation()
   const { data: cakeBenefits } = useCakeBenefits()
+  const { getLockedApy, getBoostFactor } = useVaultApy()
+  const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
+  const { secondDuration } = useUserDataInVaultPresenter({
+    lockStartTime: userData?.lockStartTime ?? '0',
+    lockEndTime: userData?.lockEndTime ?? '0',
+  })
+
+  const lockedApy = useMemo(() => getLockedApy(secondDuration), [getLockedApy, secondDuration])
+  const boostFactor = useMemo(() => getBoostFactor(secondDuration), [getBoostFactor, secondDuration])
+  const delApy = useMemo(() => new BigNumber(boostFactor).div(boostFactor).toNumber(), [boostFactor])
 
   const iCakeTooltipComponent = () => (
     <>
@@ -62,9 +78,12 @@ const LockedBenefits = () => {
           <Box mt="8px">
             <Flex mt="8px" flexDirection="row" alignItems="center">
               <Text color="textSubtle" fontSize="14px" mr="auto">
-                Cake Yield
+                {t('Cake Yield')}
               </Text>
-              <Text bold>15.23%</Text>
+              <Text style={{ display: 'inline-block' }} color="primary" bold>
+                {`${Number(lockedApy).toFixed(2)}%`}
+              </Text>
+              <Text ml="2px" as="del" bold>{`${Number(delApy).toFixed(2)}%`}</Text>
             </Flex>
             <BenefitsText
               title="iCake"
