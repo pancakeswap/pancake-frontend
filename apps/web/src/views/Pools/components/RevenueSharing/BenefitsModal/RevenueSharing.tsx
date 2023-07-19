@@ -8,7 +8,6 @@ import {
   Text,
   TooltipText,
   Card,
-  Button,
   LinkExternal,
   Message,
   MessageText,
@@ -19,6 +18,7 @@ import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { distanceToNowStrict } from 'utils/timeHelper'
+import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
 
 interface RevenueSharingProps {
   onDismiss?: () => void
@@ -106,9 +106,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
             {t('You need to update your staking in order to start earning from protocol revenue sharing.')}
           </MessageText>
         </Message>
-        <Button variant="subtle" width="100%" mt="24px">
-          {t('Claim')}
-        </Button>
+        <ClaimButton availableClaim={availableClaim} onDismiss={onDismiss} />
         <LinkExternal
           external
           m="8px auto auto auto"
