@@ -14,7 +14,7 @@
     "dev": "turbo run dev --filter=web... --concurrency=19",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=19",
     "dev:blog": "pnpm turbo run dev --filter=blog...",
-    "dev:bridge": "pnpm turbo run dev --filter=bridge...",
+    "dev:bridge": "pnpm turbo run dev --filter=bridge... --concurrency=16",
     "storybook": "turbo run start --filter=uikit...",
     "build:storybook": "turbo run build:storybook --filter=uikit...",
     "build": "turbo run build --filter=web...",
