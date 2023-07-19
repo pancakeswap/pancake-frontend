@@ -2650,4 +2650,12 @@ export const bscTokens = {
     'Decentralized USD',
     'https://usdd.io/',
   ),
+  eqb: new ERC20Token(
+    ChainId.BSC,
+    '0x374Ca32fd7934c5d43240E1e73fa9B2283468609',
+    18,
+    'EQB',
+    'Equilibria Token',
+    'https://equilibria.fi/home',
+  ),
 }
