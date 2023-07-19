@@ -1,7 +1,6 @@
 import useSWR from 'swr'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVCakeContract } from 'hooks/useContract'
-import { ChainId } from '@pancakeswap/sdk'
 
 interface UseVCake {
   isInitialization: boolean
@@ -9,7 +8,7 @@ interface UseVCake {
 
 const useVCake = (): UseVCake => {
   const { account, chainId } = useAccountActiveChain()
-  const vCakeContract = useVCakeContract({ chainId: ChainId.BSC_TESTNET }) // TODO
+  const vCakeContract = useVCakeContract({ chainId })
 
   const { data } = useSWR(account && chainId && ['/v-cake-initialization', account, chainId], async () => {
     try {

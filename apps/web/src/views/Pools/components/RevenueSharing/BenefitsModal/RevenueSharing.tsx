@@ -1,4 +1,7 @@
+import { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import {
   Box,
   Flex,
@@ -10,10 +13,38 @@ import {
   Message,
   MessageText,
   WarningIcon,
+  Balance,
 } from '@pancakeswap/uikit'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
+import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { distanceToNowStrict } from 'utils/timeHelper'
 
-const RevenueSharing = () => {
-  const { t } = useTranslation()
+interface RevenueSharingProps {
+  onDismiss?: () => void
+}
+
+const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSharingProps>> = ({ onDismiss }) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const cakePriceBusd = usePriceCakeUSD()
+  const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
+    useRevenueSharingPool()
+
+  const yourShare = useMemo(() => getBalanceAmount(new BigNumber(balanceOfAt)).toNumber(), [balanceOfAt])
+  const yourSharePercentage = useMemo(
+    () => new BigNumber(balanceOfAt).div(totalSupplyAt).toNumber() || 0,
+    [balanceOfAt, totalSupplyAt],
+  )
+
+  const availableCake = useMemo(() => getBalanceAmount(new BigNumber(availableClaim)).toNumber(), [availableClaim])
+  const availableCakeUsdValue = useMemo(
+    () => new BigNumber(availableCake).times(cakePriceBusd).toNumber(),
+    [availableCake, cakePriceBusd],
+  )
+
   return (
     <Card isActive>
       <Box padding={16}>
@@ -23,16 +54,19 @@ const RevenueSharing = () => {
         <Box mt="8px">
           <Flex mt="8px" flexDirection="row" alignItems="center">
             <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              Your shares
+              {t('Your shares')}
             </TooltipText>
-            <Text bold>1,557.75 (1.23%)</Text>
+            <Box>
+              <Balance display="inline-block" bold value={yourShare} decimals={2} />
+              <Balance display="inline-block" prefix="(" unit=")%" ml="4px" value={yourSharePercentage} decimals={2} />
+            </Box>
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
             <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              Next distribution
+              {t('Next distribution')}
             </TooltipText>
-            <Text bold>in 7 days</Text>
+            <Text bold>{t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}</Text>
           </Flex>
           <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
             <MessageText lineHeight="120%">
@@ -42,30 +76,38 @@ const RevenueSharing = () => {
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
             <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              Last distribution
+              {t('Last distribution')}
             </TooltipText>
-            <Text bold>16 Jul 2023</Text>
+            <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
             <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              Available for claiming
+              {t('Available for claiming')}
             </TooltipText>
             <Box>
-              <Text bold>51.12 CAKE</Text>
-              <Text color="textSubtle" fontSize={12} textAlign="right" lineHeight="110%">
-                (~ $12312.23)
-              </Text>
+              <Balance unit=" CAKE" bold value={availableCake} decimals={2} />
+              <Balance
+                ml="4px"
+                color="textSubtle"
+                fontSize={12}
+                textAlign="right"
+                lineHeight="110%"
+                prefix="(~ $"
+                unit=")"
+                value={availableCakeUsdValue}
+                decimals={2}
+              />
             </Box>
           </Flex>
         </Box>
-        <Message variant="danger" padding="8px" mt="24px" icon={<WarningIcon color="failure" />}>
+        <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
           <MessageText lineHeight="120%">
             {t('You need to update your staking in order to start earning from protocol revenue sharing.')}
           </MessageText>
         </Message>
         <Button variant="subtle" width="100%" mt="24px">
-          Claim
+          {t('Claim')}
         </Button>
         <LinkExternal
           external

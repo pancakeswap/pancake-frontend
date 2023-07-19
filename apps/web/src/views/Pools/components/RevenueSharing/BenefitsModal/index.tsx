@@ -52,7 +52,7 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
           <ScrollableContainer px="24px">
             <SharingPoolNameCell />
             <LockedBenefits />
-            <RevenueSharing />
+            <RevenueSharing onDismiss={onDismiss} />
           </ScrollableContainer>
         </ModalBody>
         <AutoColumn px="24px" gap="16px">
