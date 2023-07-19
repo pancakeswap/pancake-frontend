@@ -81,7 +81,12 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
     placement: 'bottom',
   })
 
-  const [onPresentViewBenefitsModal] = useModal(<BenefitsModal />, true, true, 'revenueModal')
+  const [onPresentViewBenefitsModal] = useModal(
+    <BenefitsModal pool={pool} userData={(vaultData as DeserializedLockedCakeVault)?.userData} />,
+    true,
+    false,
+    'revenueModal',
+  )
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">

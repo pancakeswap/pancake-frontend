@@ -9,12 +9,15 @@ import {
   ModalBody,
   Flex,
   ModalActions,
-  Button,
   AutoColumn,
+  Pool,
 } from '@pancakeswap/uikit'
 import LockedBenefits from 'views/Pools/components/RevenueSharing/BenefitsModal/LockedBenefits'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
 import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
+import { Token } from '@pancakeswap/sdk'
+import LockedActions from 'views/Pools/components/LockedPool/Common/LockedActions'
+import { DeserializedLockedVaultUser } from 'state/types'
 
 const Container = styled(ModalContainer)`
   width: 100%;
@@ -33,10 +36,16 @@ const ScrollableContainer = styled(Flex)`
 `
 
 interface BenefitsModalProps {
+  pool: Pool.DeserializedPool<Token>
+  userData: DeserializedLockedVaultUser
   onDismiss?: () => void
 }
 
-const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({ onDismiss }) => {
+const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({
+  pool,
+  userData,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -57,9 +66,15 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
         </ModalBody>
         <AutoColumn px="24px" gap="16px">
           <ModalActions>
-            <Button width="100%" variant="primary">
-              {t('Harvest All')}
-            </Button>
+            <LockedActions
+              userShares={userData?.userShares}
+              locked={userData?.locked}
+              lockEndTime={userData?.lockEndTime}
+              lockStartTime={userData?.lockStartTime}
+              stakingToken={pool?.stakingToken}
+              stakingTokenBalance={pool?.userData?.stakingTokenBalance}
+              lockedAmount={userData?.balance?.cakeAsBigNumber}
+            />
           </ModalActions>
         </AutoColumn>
       </AtomBox>

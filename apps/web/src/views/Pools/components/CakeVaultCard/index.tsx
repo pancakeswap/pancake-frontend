@@ -66,7 +66,12 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
 }) => {
   const { t } = useTranslation()
   const { isInitialization } = useVCake()
-  const [onPresentViewBenefitsModal] = useModal(<BenefitsModal />, true, true, 'revenueModal')
+  const [onPresentViewBenefitsModal] = useModal(
+    <BenefitsModal pool={pool} userData={(vaultPool as DeserializedLockedCakeVault)?.userData} />,
+    true,
+    false,
+    'revenueModal',
+  )
 
   const vaultPosition = getVaultPosition(vaultPool.userData)
   const isLocked = (vaultPool as DeserializedLockedCakeVault)?.userData?.locked
