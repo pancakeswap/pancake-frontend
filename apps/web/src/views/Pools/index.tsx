@@ -10,6 +10,7 @@ import { ChainId, Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import useVCakeModal from 'views/Pools/hooks/useVCakeModal'
 
 import CardActions from './components/PoolCard/CardActions'
 import AprRow from './components/PoolCard/AprRow'
@@ -42,6 +43,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
   const { chainId } = useActiveChainId()
   const { pools, userDataLoaded } = usePoolsWithVault()
 
+  useVCakeModal()
   usePoolsPageFetch()
 
   return (

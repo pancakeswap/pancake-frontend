@@ -4,13 +4,14 @@ import { useVCakeContract } from 'hooks/useContract'
 
 interface UseVCake {
   isInitialization: boolean
+  refresh: () => void
 }
 
 const useVCake = (): UseVCake => {
   const { account, chainId } = useAccountActiveChain()
   const vCakeContract = useVCakeContract({ chainId })
 
-  const { data } = useSWR(account && chainId && ['/v-cake-initialization', account, chainId], async () => {
+  const { data, mutate } = useSWR(account && chainId && ['/v-cake-initialization', account, chainId], async () => {
     try {
       const initialization = await vCakeContract.read.initialization([account])
       return initialization
@@ -22,6 +23,7 @@ const useVCake = (): UseVCake => {
 
   return {
     isInitialization: data,
+    refresh: mutate,
   }
 }
 

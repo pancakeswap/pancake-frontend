@@ -7,10 +7,11 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 interface JoinButtonProps {
+  refresh?: () => void
   onDismiss?: () => void
 }
 
-const JoinButton: React.FunctionComponent<React.PropsWithChildren<JoinButtonProps>> = ({ onDismiss }) => {
+const JoinButton: React.FunctionComponent<React.PropsWithChildren<JoinButtonProps>> = ({ refresh, onDismiss }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { chainId } = useAccountActiveChain()
@@ -28,13 +29,13 @@ const JoinButton: React.FunctionComponent<React.PropsWithChildren<JoinButtonProp
             {t('Joined Revenue Sharing Pool.')}
           </ToastDescriptionWithTx>,
         )
-
+        await refresh?.()
         onDismiss?.()
       }
     } catch (error) {
       console.error('[ERROR] Submit vCake syncFromCakePool', error)
     }
-  }, [fetchWithCatchTxError, onDismiss, t, toastSuccess, vCakeContract.write])
+  }, [fetchWithCatchTxError, onDismiss, refresh, t, toastSuccess, vCakeContract.write])
 
   return (
     <Button width="100%" m="24px 0 8px 0" disabled={isPending} onClick={handleJoinButton}>

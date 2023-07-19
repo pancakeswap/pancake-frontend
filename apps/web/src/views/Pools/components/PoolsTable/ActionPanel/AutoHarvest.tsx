@@ -22,6 +22,7 @@ import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { Token } from '@pancakeswap/sdk'
 import BenefitsModal from 'views/Pools/components/RevenueSharing/BenefitsModal'
+import useVCake from 'views/Pools/hooks/useVCake'
 
 import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
@@ -39,6 +40,7 @@ interface AutoHarvestActionProps {
 const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHarvestActionProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { isInitialization } = useVCake()
   const { isMobile } = useMatchBreakpoints()
 
   const { earningTokenPrice, vaultKey, userDataLoaded } = pool
@@ -181,9 +183,14 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
           </Box>
         )}
       </Flex>
-      <Button mt="16px" width="100%" variant="secondary" onClick={onPresentViewBenefitsModal}>
-        {t('View Benefits')}
-      </Button>
+      {vaultKey === VaultKey.CakeVault &&
+        (vaultData as DeserializedLockedCakeVault).userData.locked &&
+        vaultPosition === VaultPosition.Locked &&
+        isInitialization === false && (
+          <Button mt="16px" width="100%" variant="secondary" onClick={onPresentViewBenefitsModal}>
+            {t('View Benefits')}
+          </Button>
+        )}
     </RowActionContainer>
   )
 }

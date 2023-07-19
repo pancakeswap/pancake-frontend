@@ -27,7 +27,7 @@ const LockedBenefits = () => {
   const iCakeTooltipComponent = () => (
     <>
       <Text>
-        {t(`iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.`, {
+        {t('iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.', {
           iCake: cakeBenefits?.iCake,
         })}
       </Text>
@@ -41,7 +41,7 @@ const LockedBenefits = () => {
 
   const bCakeTooltipComponent = () => (
     <>
-      <Text>{t(`bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.`)}</Text>
+      <Text>{t('bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.')}</Text>
       <NextLinkFromReactRouter to="/farms">
         <Text bold color="primary">
           {t('Learn More')}
@@ -53,7 +53,7 @@ const LockedBenefits = () => {
   const vCakeTooltipComponent = () => (
     <>
       <Text>
-        {t(`vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.`, {
+        {t('vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.', {
           totalScore: cakeBenefits?.vCake?.totalScore,
         })}
       </Text>

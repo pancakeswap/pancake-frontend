@@ -1,4 +1,16 @@
-import { Box, CardBody, CardProps, Flex, Text, TokenPairImage, FlexGap, Skeleton, Pool } from '@pancakeswap/uikit'
+import {
+  Box,
+  CardBody,
+  CardProps,
+  Button,
+  Flex,
+  Text,
+  TokenPairImage,
+  FlexGap,
+  Skeleton,
+  Pool,
+  useModal,
+} from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -7,6 +19,9 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
 import styled from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
+import BenefitsModal from 'views/Pools/components/RevenueSharing/BenefitsModal'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import useVCake from 'views/Pools/hooks/useVCake'
 
 import CardFooter from '../PoolCard/CardFooter'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
@@ -50,7 +65,10 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
   defaultFooterExpanded,
 }) => {
   const { t } = useTranslation()
+  const { isInitialization } = useVCake()
+  const [onPresentViewBenefitsModal] = useModal(<BenefitsModal />, true, true, 'revenueModal')
 
+  const vaultPosition = getVaultPosition(vaultPool.userData)
   const isLocked = (vaultPool as DeserializedLockedCakeVault)?.userData?.locked
 
   if (!pool) {
@@ -64,12 +82,19 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           <VaultPositionTagWithLabel userData={(vaultPool as DeserializedLockedCakeVault).userData} />
         )}
         {account && pool.vaultKey === VaultKey.CakeVault && isLocked ? (
-          <LockedStakingApy
-            userData={(vaultPool as DeserializedLockedCakeVault).userData}
-            showICake={showICake}
-            pool={pool}
-            account={account}
-          />
+          <>
+            <LockedStakingApy
+              userData={(vaultPool as DeserializedLockedCakeVault).userData}
+              showICake={showICake}
+              pool={pool}
+              account={account}
+            />
+            {vaultPosition === VaultPosition.Locked && isInitialization === false && (
+              <Button mt="16px" width="100%" variant="secondary" onClick={onPresentViewBenefitsModal}>
+                {t('View Benefits')}
+              </Button>
+            )}
+          </>
         ) : (
           <>
             <StakingApy pool={pool} />

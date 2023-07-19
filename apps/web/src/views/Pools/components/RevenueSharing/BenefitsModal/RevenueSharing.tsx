@@ -14,10 +14,12 @@ import {
   WarningIcon,
   Balance,
 } from '@pancakeswap/uikit'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { distanceToNowStrict } from 'utils/timeHelper'
+import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
 
 interface RevenueSharingProps {
@@ -30,6 +32,8 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = usePriceCakeUSD()
+  const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
+
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
     useRevenueSharingPool()
 
@@ -43,6 +47,16 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
   const availableCakeUsdValue = useMemo(
     () => new BigNumber(availableCake).times(cakePriceBusd).toNumber(),
     [availableCake, cakePriceBusd],
+  )
+
+  const showExpireSoonWarning = useMemo(
+    () => new BigNumber(userData?.lockEndTime ?? '0').lt(lastTokenTimestamp),
+    [lastTokenTimestamp, userData?.lockEndTime],
+  )
+
+  const showNoCakeAmountWarning = useMemo(
+    () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
+    [userData?.lockedAmount],
   )
 
   return (
@@ -68,11 +82,13 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
             </TooltipText>
             <Text bold>{t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}</Text>
           </Flex>
-          <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
-            <MessageText lineHeight="120%">
-              {t('Your fixed-term staking position will expire before the next revenue sharing distributions.')}
-            </MessageText>
-          </Message>
+          {showExpireSoonWarning && (
+            <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
+              <MessageText lineHeight="120%">
+                {t('Your fixed-term staking position will expire before the next revenue sharing distributions.')}
+              </MessageText>
+            </Message>
+          )}
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
             <TooltipText color="textSubtle" fontSize="14px" mr="auto">
@@ -101,11 +117,13 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
             </Box>
           </Flex>
         </Box>
-        <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
-          <MessageText lineHeight="120%">
-            {t('You need to update your staking in order to start earning from protocol revenue sharing.')}
-          </MessageText>
-        </Message>
+        {showNoCakeAmountWarning && (
+          <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
+            <MessageText lineHeight="120%">
+              {t('You need to update your staking in order to start earning from protocol revenue sharing.')}
+            </MessageText>
+          </Message>
+        )}
         <ClaimButton availableClaim={availableClaim} onDismiss={onDismiss} />
         <LinkExternal
           external

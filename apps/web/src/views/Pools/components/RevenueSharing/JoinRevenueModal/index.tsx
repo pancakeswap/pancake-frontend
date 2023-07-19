@@ -6,6 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import JoinButton from 'views/Pools/components/RevenueSharing/JoinRevenueModal/JoinButton'
 
 interface JoinRevenueModalProps {
+  refresh?: () => void
   onDismiss?: () => void
 }
 
@@ -48,7 +49,10 @@ const InlineLink = styled(LinkExternal)`
   }
 `
 
-const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinRevenueModalProps>> = ({ onDismiss }) => {
+const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinRevenueModalProps>> = ({
+  refresh,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
@@ -83,7 +87,7 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
       <Card>
         <Box padding={16}>123</Box>
       </Card>
-      <JoinButton onDismiss={onDismiss} />
+      <JoinButton refresh={refresh} onDismiss={onDismiss} />
       <Box>
         <Text as="span" fontSize={12} color="textSubtle">
           {t('Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More')}
