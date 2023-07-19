@@ -72,6 +72,7 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
               lockEndTime={userData?.lockEndTime}
               lockStartTime={userData?.lockStartTime}
               stakingToken={pool?.stakingToken}
+              stakingTokenPrice={pool?.stakingTokenPrice}
               stakingTokenBalance={pool?.userData?.stakingTokenBalance}
               lockedAmount={userData?.balance?.cakeAsBigNumber}
             />

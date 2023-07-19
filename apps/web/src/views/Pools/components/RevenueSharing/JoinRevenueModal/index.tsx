@@ -1,9 +1,14 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Modal, Text, Card, Flex, Box, LinkExternal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Modal, Text, Card, Flex, Box, LinkExternal, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
+import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import JoinButton from 'views/Pools/components/RevenueSharing/JoinRevenueModal/JoinButton'
+import { useVaultPoolByKey, usePoolsWithVault } from 'state/pools/hooks'
+import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import LockedStaking from 'views/Pools/components/LockedPool/LockedStaking'
 
 interface JoinRevenueModalProps {
   refresh?: () => void
@@ -57,6 +62,14 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
 
+  const { pools } = usePoolsWithVault()
+  const cakePool = useMemo(
+    () => pools.find((pool) => pool.userData && pool.sousId === 0),
+    [pools],
+  ) as Pool.DeserializedPool<Token>
+
+  const vaultPool = useVaultPoolByKey(VaultKey.CakeVault)
+
   return (
     <Modal
       title={t('Join revenue sharing')}
@@ -64,37 +77,45 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
       headerBackground={theme.colors.gradientCardHeader}
       onDismiss={onDismiss}
     >
-      <Flex position="relative" zIndex="1" bottom="-5px" m={['auto', 'auto', 'auto', '0 0 0 auto']}>
-        <TooltipContainer>
-          <Text fontSize={['14px', '14px', '14px', '16px']} lineHeight="110%">
-            {
-              'Update your CAKE staking position to join the revenue sharing program for weekly revenue sharing distributions! '
-            }
+      <Box padding="0 13px">
+        <Flex position="relative" zIndex="1" bottom="-5px" m={['auto', 'auto', 'auto', '0 0 0 auto']}>
+          <TooltipContainer>
+            <Text fontSize={['14px', '14px', '14px', '16px']} lineHeight="110%">
+              {
+                'Update your CAKE staking position to join the revenue sharing program for weekly revenue sharing distributions! '
+              }
+            </Text>
+          </TooltipContainer>
+          <Image
+            alt="lockCakeTooltip"
+            width={isMobile ? 100 : 122}
+            height={isMobile ? 100 : 122}
+            style={{
+              marginTop: 'auto',
+              maxWidth: isMobile ? '100px' : '122px',
+              maxHeight: isMobile ? '100px' : '122px',
+            }}
+            src="/images/pool/lockcaketooltip.png"
+          />
+        </Flex>
+        <Card>
+          <Box padding="16px 16px 0 16px">
+            <LockedStaking
+              buttonVariant="secondary"
+              pool={cakePool}
+              userData={(vaultPool as DeserializedLockedCakeVault)?.userData}
+            />
+          </Box>
+        </Card>
+        <JoinButton refresh={refresh} onDismiss={onDismiss} />
+        <Box>
+          <Text as="span" fontSize={12} color="textSubtle">
+            {t('Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More')}
           </Text>
-        </TooltipContainer>
-        <Image
-          alt="lockCakeTooltip"
-          width={isMobile ? 100 : 122}
-          height={isMobile ? 100 : 122}
-          style={{
-            marginTop: 'auto',
-            maxWidth: isMobile ? '100px' : '122px',
-            maxHeight: isMobile ? '100px' : '122px',
-          }}
-          src="/images/pool/lockcaketooltip.png"
-        />
-      </Flex>
-      <Card>
-        <Box padding={16}>123</Box>
-      </Card>
-      <JoinButton refresh={refresh} onDismiss={onDismiss} />
-      <Box>
-        <Text as="span" fontSize={12} color="textSubtle">
-          {t('Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More')}
-        </Text>
-        <InlineLink fontSize={12} href="https://docs.pancakeswap.finance/products/prediction" external>
-          {t('Learn More')}
-        </InlineLink>
+          <InlineLink fontSize={12} href="https://docs.pancakeswap.finance/products/prediction" external>
+            {t('Learn More')}
+          </InlineLink>
+        </Box>
       </Box>
     </Modal>
   )
