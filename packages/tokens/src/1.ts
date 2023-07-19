@@ -240,4 +240,12 @@ export const ethereumTokens = {
     'Canto',
     'https://tusd.io/',
   ),
+  pendle: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x808507121B80c02388fAd14726482e061B8da827',
+    18,
+    'PENDLE',
+    'Pendle',
+    'https://www.pendle.finance/',
+  ),
 }
