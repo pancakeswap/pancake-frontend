@@ -26,7 +26,7 @@ export interface ZoomLevels {
 }
 
 export interface LiquidityChartRangeInputProps {
-  // to distringuish between multiple charts in the DOM
+  // to distinguish between multiple charts in the DOM
   id?: string
 
   data: {

@@ -18,6 +18,7 @@ import {
   Flex,
 } from '@pancakeswap/uikit'
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
+import { tryParsePrice } from 'hooks/v3/utils'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
@@ -172,8 +173,8 @@ export default function V3FormView({
     if (feeAmount) {
       setActiveQuickAction(undefined)
       onBothRangeInput({
-        leftTypedValue: '',
-        rightTypedValue: '',
+        leftTypedValue: null,
+        rightTypedValue: null,
       })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
@@ -408,16 +409,20 @@ export default function V3FormView({
       const currentPrice = price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
       if (currentPrice) {
         onBothRangeInput({
-          leftTypedValue: (
-            currentPrice * zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin
-          ).toString(),
-          rightTypedValue: (
-            currentPrice * zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax
-          ).toString(),
+          leftTypedValue: tryParsePrice(
+            baseCurrency.wrapped,
+            quoteCurrency.wrapped,
+            (currentPrice * zoomLevel?.initialMin ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMin).toString(),
+          ),
+          rightTypedValue: tryParsePrice(
+            baseCurrency.wrapped,
+            quoteCurrency.wrapped,
+            (currentPrice * zoomLevel?.initialMax ?? ZOOM_LEVELS[feeAmount ?? FeeAmount.MEDIUM].initialMax).toString(),
+          ),
         })
       }
     },
-    [price, feeAmount, invertPrice, onBothRangeInput],
+    [price, feeAmount, invertPrice, onBothRangeInput, baseCurrency, quoteCurrency],
   )
 
   return (
@@ -508,8 +513,8 @@ export default function V3FormView({
                 currencyA={baseCurrency}
                 handleRateToggle={() => {
                   if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
-                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert()) ?? null)
+                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert()) ?? null)
                     onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
                   }
 

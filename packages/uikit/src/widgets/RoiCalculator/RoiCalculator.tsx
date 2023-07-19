@@ -28,8 +28,8 @@ import { PriceInvertSwitch } from "./PriceInvertSwitch";
 import { FarmingRewardsToggle } from "./FarmingRewardsToggle";
 
 export interface RoiCalculatorPositionInfo {
-  priceLower?: Price<Currency, Currency>;
-  priceUpper?: Price<Currency, Currency>;
+  priceLower?: Price<Token, Token>;
+  priceUpper?: Price<Token, Token>;
   depositAmountInUsd?: number | string;
   currencyAUsdPrice?: number;
   currencyBUsdPrice?: number;

@@ -176,8 +176,8 @@ export default function useV3DerivedInfo(
             (!invertPrice && typeof leftRangeTypedValue === 'boolean')
           ? tickSpaceLimits[Bound.LOWER]
           : invertPrice
-          ? tryParseTick(token1, token0, feeAmount, rightRangeTypedValue.toString())
-          : tryParseTick(token0, token1, feeAmount, leftRangeTypedValue.toString()),
+          ? tryParseTick(feeAmount, rightRangeTypedValue)
+          : tryParseTick(feeAmount, leftRangeTypedValue),
       [Bound.UPPER]:
         typeof existingPosition?.tickUpper === 'number'
           ? existingPosition.tickUpper
@@ -185,19 +185,10 @@ export default function useV3DerivedInfo(
             (invertPrice && typeof leftRangeTypedValue === 'boolean')
           ? tickSpaceLimits[Bound.UPPER]
           : invertPrice
-          ? tryParseTick(token1, token0, feeAmount, leftRangeTypedValue.toString())
-          : tryParseTick(token0, token1, feeAmount, rightRangeTypedValue.toString()),
+          ? tryParseTick(feeAmount, leftRangeTypedValue)
+          : tryParseTick(feeAmount, rightRangeTypedValue),
     }
-  }, [
-    existingPosition,
-    feeAmount,
-    invertPrice,
-    leftRangeTypedValue,
-    rightRangeTypedValue,
-    token0,
-    token1,
-    tickSpaceLimits,
-  ])
+  }, [existingPosition, feeAmount, invertPrice, leftRangeTypedValue, rightRangeTypedValue, tickSpaceLimits])
 
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks || {}
 

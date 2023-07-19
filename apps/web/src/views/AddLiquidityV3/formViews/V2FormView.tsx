@@ -52,7 +52,7 @@ export default function V2FormView({
   onFieldBInput,
   maxAmounts,
 }: LP2ChildrenProps) {
-  const mockFn = useCallback(() => '', [])
+  const mockFn = useCallback(() => null, [])
 
   const { account, isWrongNetwork } = useActiveWeb3React()
   const { t } = useTranslation()

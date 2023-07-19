@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Price, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { tryParsePrice } from 'hooks/v3/utils'
 import { AutoColumn, BunnyKnownPlaceholder, ChartDisableIcon, LineGraphIcon } from '@pancakeswap/uikit'
 import { format } from 'd3'
 import { saturate } from 'polished'
@@ -43,9 +44,15 @@ export default function LiquidityChartRangeInput({
   price: number | undefined
   priceLower?: Price<Token, Token>
   priceUpper?: Price<Token, Token>
-  onLeftRangeInput: (typedValue: string) => void
-  onRightRangeInput: (typedValue: string) => void
-  onBothRangeInput: ({ leftTypedValue, rightTypedValue }: { leftTypedValue: string; rightTypedValue: string }) => void
+  onLeftRangeInput: (typedValue: Price<Token, Token>) => void
+  onRightRangeInput: (typedValue: Price<Token, Token>) => void
+  onBothRangeInput: ({
+    leftTypedValue,
+    rightTypedValue,
+  }: {
+    leftTypedValue: Price<Token, Token>
+    rightTypedValue: Price<Token, Token>
+  }) => void
   interactive: boolean
   zoomLevel?: ZoomLevels
 }) {
@@ -64,8 +71,19 @@ export default function LiquidityChartRangeInput({
     feeAmount,
   })
 
+  const brushDomain: [number, number] | undefined = useMemo(() => {
+    const leftPrice = isSorted ? priceLower : priceUpper?.invert()
+    const rightPrice = isSorted ? priceUpper : priceLower?.invert()
+
+    return leftPrice && rightPrice
+      ? [parseFloat(leftPrice?.toSignificant(6)), parseFloat(rightPrice?.toSignificant(6))]
+      : undefined
+  }, [isSorted, priceLower, priceUpper])
+
   const onBrushDomainChangeEnded = useCallback(
     (domain: [number, number], mode: string | undefined) => {
+      const [leftPrice, rightPrice] = brushDomain || []
+
       let leftRangeValue = Number(domain[0])
       const rightRangeValue = Number(domain[1])
 
@@ -75,39 +93,32 @@ export default function LiquidityChartRangeInput({
 
       const updateLeft =
         (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === 'handle' || mode === 'reset') &&
-        leftRangeValue > 0
+        leftRangeValue > 0 &&
+        leftRangeValue !== leftPrice
 
       const updateRight =
         (!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === 'reset') &&
         rightRangeValue > 0 &&
-        rightRangeValue < 1e35
+        rightRangeValue < 1e35 &&
+        rightRangeValue !== rightPrice
 
       if (updateLeft && updateRight) {
         const parsedLeftRangeValue = parseFloat(leftRangeValue.toFixed(6))
         const parsedRightRangeValue = parseFloat(rightRangeValue.toFixed(6))
         if (parsedLeftRangeValue > 0 && parsedRightRangeValue > 0 && parsedLeftRangeValue < parsedRightRangeValue) {
           onBothRangeInput({
-            leftTypedValue: leftRangeValue.toFixed(6),
-            rightTypedValue: rightRangeValue.toFixed(6),
+            leftTypedValue: tryParsePrice(currencyA.wrapped, currencyB.wrapped, leftRangeValue.toString()),
+            rightTypedValue: tryParsePrice(currencyA.wrapped, currencyB.wrapped, rightRangeValue.toString()),
           })
         }
       } else if (updateLeft) {
-        onLeftRangeInput(leftRangeValue.toFixed(6))
+        onLeftRangeInput(tryParsePrice(currencyA.wrapped, currencyB.wrapped, leftRangeValue.toString()))
       } else if (updateRight) {
-        onRightRangeInput(rightRangeValue.toFixed(6))
+        onRightRangeInput(tryParsePrice(currencyA.wrapped, currencyB.wrapped, rightRangeValue.toString()))
       }
     },
-    [isSorted, onBothRangeInput, onLeftRangeInput, onRightRangeInput, ticksAtLimit],
+    [isSorted, onBothRangeInput, onLeftRangeInput, onRightRangeInput, ticksAtLimit, currencyA, currencyB, brushDomain],
   )
-
-  const brushDomain: [number, number] | undefined = useMemo(() => {
-    const leftPrice = isSorted ? priceLower : priceUpper?.invert()
-    const rightPrice = isSorted ? priceUpper : priceLower?.invert()
-
-    return leftPrice && rightPrice
-      ? [parseFloat(leftPrice?.toSignificant(6)), parseFloat(rightPrice?.toSignificant(6))]
-      : undefined
-  }, [isSorted, priceLower, priceUpper])
 
   const brushLabelValue = useCallback(
     (d: 'w' | 'e', x: number) => {
