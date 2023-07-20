@@ -1,45 +1,37 @@
+/* eslint-disable camelcase */
 import { ChainId } from '@pancakeswap/sdk'
 import { ACCESS_RISK_API } from 'config/constants/endpoints'
-
-import { string as zString, object as zObject, enum as zEnum } from 'zod'
-
-const zBand = zEnum(['5/5', '4/5', '3/5', '2/5', '1/5'])
-export const zRiskTokenData = zObject({
-  trust_level: zString(),
-  band: zBand,
-  scanned_ts: zString(),
-})
 
 export const TOKEN_RISK = {
   UNKNOWN: -1,
   VERY_LOW: 0,
   LOW: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-  VERY_HIGH: 4,
-} as const
-
-export const TOKEN_RISK_MAPPING = {
-  '5/5': TOKEN_RISK.VERY_LOW,
-  '4/5': TOKEN_RISK.LOW,
-  '3/5': TOKEN_RISK.MEDIUM,
-  '2/5': TOKEN_RISK.HIGH,
-  '1/5': TOKEN_RISK.VERY_HIGH,
+  LOW_MEDIUM: 2,
+  MEDIUM: 3,
+  HIGH: 4,
+  VERY_HIGH: 5,
 } as const
 
 export interface RiskTokenInfo {
   address: string
   chainId: ChainId
-  riskLevel: (typeof TOKEN_RISK)[keyof typeof TOKEN_RISK]
-  scannedTs: number
+  isSuccess: boolean
+  riskLevel: number
+  requestId: string
+  riskLevelDescription: string
 }
 
 const fetchRiskApi = async (address: string, chainId: number) => {
-  const response = await fetch(`${ACCESS_RISK_API}/${chainId}/${address}`, {
+  const response = await fetch(ACCESS_RISK_API, {
+    method: 'post',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      address,
+      chain_id: chainId,
+    }),
   })
 
   const result = await response.json()
@@ -48,14 +40,14 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   const riskApi = await fetchRiskApi(address, chainId)
-  const data = zRiskTokenData.parse(riskApi.data)
-  // eslint-disable-next-line camelcase
-  const { band, scanned_ts } = data
+  const { has_result, request_id, risk_level, risk_level_description } = riskApi.data
 
   return {
     address,
     chainId,
-    riskLevel: TOKEN_RISK_MAPPING[band],
-    scannedTs: parseInt(scanned_ts, 10),
+    isSuccess: has_result,
+    riskLevel: risk_level,
+    requestId: request_id,
+    riskLevelDescription: risk_level_description,
   }
 }

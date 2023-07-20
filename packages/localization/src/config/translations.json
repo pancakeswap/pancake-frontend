@@ -2123,7 +2123,6 @@
   "It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.": "It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.",
   "Risk scanning failed.": "Risk scanning failed.",
   "Press the button to retry.": "Press the button to retry.",
-  "Learn more about risk rating": "Learn more about risk rating",
   "Unknown": "Unknown",
   "I acknowledge the risk": "I acknowledge the risk",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "I have read the scanning result, understood the risk and want to proceed with token importing.",
@@ -2342,9 +2341,6 @@
   "Create a Pancake Profile to start earning from trades": "Create a Pancake Profile to start earning from trades",
   "Your Trading Reward": "Your Trading Reward",
   "Start trading": "Start trading",
-  "is reporting a risk level of": "is reporting a risk level of",
-  "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.",
-  "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research.",
   "PancakeSwap Perpetuals": "PancakeSwap Perpetuals",
   "I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform.": "I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform.",
   "I confirm that I am eligible to participate in IFOs on this platform.": "I confirm that I am eligible to participate in IFOs on this platform.",
@@ -2638,5 +2634,8 @@
   "Curve exploit.": "Curve exploit.",
   "For more information, please refer to Alchemix’s": "For more information, please refer to Alchemix’s",
   "and await further updates from the team": "and await further updates from the team",
-  "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the"
+  "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the",
+  "Powered by": "Powered by",
+  "Hashdit.": "Hashdit.",
+  "The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!": "The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!"
 }
