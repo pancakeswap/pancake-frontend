@@ -3,7 +3,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVCakeContract } from 'hooks/useContract'
 
 interface UseVCake {
-  isInitialization: boolean
+  isInitialization: null | boolean
   refresh: () => void
 }
 
@@ -17,7 +17,7 @@ const useVCake = (): UseVCake => {
       return initialization
     } catch (error) {
       console.error('[ERROR] Fetching vCake initialization', error)
-      return true
+      return null
     }
   })
 

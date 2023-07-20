@@ -191,7 +191,7 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<AutoHar
       {vaultKey === VaultKey.CakeVault &&
         (vaultData as DeserializedLockedCakeVault).userData.locked &&
         vaultPosition === VaultPosition.Locked &&
-        isInitialization === false && (
+        isInitialization && (
           <Button mt="16px" width="100%" variant="secondary" onClick={onPresentViewBenefitsModal}>
             {t('View Benefits')}
           </Button>
