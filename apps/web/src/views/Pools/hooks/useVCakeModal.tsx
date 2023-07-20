@@ -20,11 +20,12 @@ const useVCakeModal = () => {
   )
 
   useSWR(
-    account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && ['/use-v-cake-modal', account],
+    account &&
+      (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && ['/use-v-cake-modal', account, isInitialization],
     () => {
       if (
         isInitialization === false &&
-        cakeBenefitsFetchStatus !== FetchStatus.Fetched &&
+        cakeBenefitsFetchStatus === FetchStatus.Fetched &&
         cakeBenefits?.lockPosition === VaultPosition.Locked
       ) {
         onPresentViewJoinRevenueModal()
