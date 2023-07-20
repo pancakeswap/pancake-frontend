@@ -32,7 +32,7 @@ const PushSubscription: FC<IPushSubscriptionProps> = ({ account, handleSubscribe
     <Flex flexDirection="column">
       <Button
       variant="primary"
-        onClick={() => null}
+        onClick={handleSubscribe}
       //   disabled={isSendingGm}
       >
         Send me a gm
@@ -41,8 +41,8 @@ const PushSubscription: FC<IPushSubscriptionProps> = ({ account, handleSubscribe
       variant="primary"
 
         onClick={handleUnSubscribe}
-        isLoading={isUnsubscribing}
-        disabled={isUnsubscribing}
+      //   isLoading={isUnsubscribing}
+      //   disabled={isUnsubscribing}
       >
        {isUnsubscribing ? 'Unsubscribing..' : "Unsubscribe from gm"} 
       </Button>
@@ -53,7 +53,7 @@ const PushSubscription: FC<IPushSubscriptionProps> = ({ account, handleSubscribe
 
       onClick={handleSubscribe}
       isLoading={isSubscribing}
-      disabled={isSubscribing}
+      // disabled={isSubscribing}
     >
       {isUnsubscribing ? 'Subscribing.....' : "Subscribe from gm"} 
     </Button>

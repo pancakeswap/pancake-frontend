@@ -22,9 +22,10 @@ interface IPushSubscriptionProps {
       isUnsubscribing: any
       isSubscribing: any
       connector: any
+      renew: () => Promise<void>
     }
     
-    const SignedInView: FC<IPushSubscriptionProps> = ({ account, connector, handleSubscribe, handleUnSubscribe, isSubscribed, isSubscribing, isUnsubscribing }) => {
+    const SignedInView: FC<IPushSubscriptionProps> = ({ account, connector, handleSubscribe, handleUnSubscribe, isSubscribed, isSubscribing, isUnsubscribing, renew }) => {
 //   const { disconnect, balances } = useWalletConnectClient()
 //   const nativeBalance = useNativeBalances(strippedAddress)
 // const { authorisePushSubscribe } = useAuth()
@@ -38,7 +39,8 @@ interface IPushSubscriptionProps {
 //     } = useWalletConnectClient()
 
   const onSignOut = useCallback(() => {
-     connector.connectWithAuthClient()
+      connector.connectWithAuthClient()
+
   }, [connector])
 
   return (

@@ -115,7 +115,7 @@ export class WalletConnectConnector extends Connector<
   }
 
   async connect({ chainId, pairingTopic }: ConnectConfig = {}) {
-      console.log('connnn')
+      console.log(pairingTopic)
     try {
       let targetChainId = chainId
       if (!targetChainId) {

@@ -11,6 +11,7 @@ import AuthClient, { generateNonce } from '@walletconnect/auth-client'
 import SignClient from '@walletconnect/sign-client'
 // eslint-disable-next-line import/no-cycle
 import { IEthereumProvider as IProvider, IEthereumProviderEvents, RequestArguments } from './EthereumProvidertypes'
+const relayUrl = process.env.NEXT_PUBLIC_RELAY_URL || 'wss://relay.walletconnect.com'
 
 export const PROTOCOL = 'wc'
 export const WC_VERSION = 2
@@ -561,7 +562,7 @@ export class EthereumProvider implements IEthereumProvider {
       core,
       projectId: this.rpc.projectId,
       metadata: this.rpc.metadata,
-      relayUrl: opts.relayUrl,
+      relayUrl,
       logger: 'debug',
     })
     this.signer = await UniversalProvider.init({
@@ -569,21 +570,21 @@ export class EthereumProvider implements IEthereumProvider {
       projectId: this.rpc.projectId,
       metadata: this.rpc.metadata,
       disableProviderPing: opts.disableProviderPing,
-      relayUrl: opts.relayUrl,
+      relayUrl,
       storageOptions: opts.storageOptions,
     })
     this.pushClient = await DappClient.init({
       core,
       projectId: this.rpc.projectId,
       metadata: this.rpc.metadata,
-      relayUrl: opts.relayUrl,
+      relayUrl,
       logger: 'debug',
     })
 
     this.authClient = await AuthClient.init({
       core,
       projectId: this.rpc.projectId,
-      relayUrl: opts.relayUrl,
+      relayUrl,
       metadata: this.rpc.metadata,
     })
     this.registerEventListeners()

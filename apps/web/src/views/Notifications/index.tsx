@@ -1,4 +1,4 @@
-import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Flex, Modal, ModalV2, Text, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import AuthClient, { generateNonce } from "@walletconnect/auth-client";
@@ -12,8 +12,16 @@ import DefaultView from './components/DefaultView/DefaultView';
 import { useAccount } from 'wagmi';
 import { DEFAULT_EIP155_METHODS, DEFAULT_EIP155_OPTIONAL_METHODS } from './utils/constants';
 import { AccountAction } from './helpers';
+import SignClient from "@walletconnect/sign-client";
+import { Metadata, Namespace, UniversalProvider } from '@walletconnect/universal-provider'
+
 import { DappClient } from "@walletconnect/push-client";
+
     import { Core } from "@walletconnect/core";
+import SubscribedView from './components/SubscribeView/SubscribeView';
+import SettingsModal from './components/NotificationView/NotificationView';
+import EthereumProvider from 'utils/EthereumProvider2';
+import { useTranslation } from '@pancakeswap/localization';
 // import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 
@@ -34,18 +42,62 @@ export default function Notifications() {
   const { connector, address: account } = useAccount()
   const [pushClient, setPushClient] = useState<DappClient>()
   const [authClient, setAuthClient] = useState<AuthClient>()
+  const [client, setClient] = useState<EthereumProvider>()
+    const { toastSuccess, toastError } = useToast()
+const { t } = useTranslation()
+  
 
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
   const [isSubscribing, setIsSubscribing] = useState<boolean>(false)
   const [isUnsubscribing, setIsUnsubscribing] = useState<boolean>(false)
 
+    const onSignInWithSign = useCallback(async () => {
+    if (!client) return;
+    try {
+      const signRes = await client.signer.client.connect({
+        // Optionally: pass a known prior pairing (e.g. from `signClient.core.pairing.getPairings()`) to skip the `uri` step.
+        // Provide the namespaces and chains (e.g. `eip155` for EVM-based chains) we want to use in this session.
+        requiredNamespaces: {
+          eip155: {
+            methods: [
+              "eth_sendTransaction",
+              "eth_signTransaction",
+              "eth_sign",
+              "personal_sign",
+              "eth_signTypedData",
+            ],
+            chains: ["eip155:1"],
+            events: ["chainChanged", "accountsChanged"],
+          },
+        },
+      });
+      const { uri, approval } = signRes;
+      if (uri) {
+        client.modal.openModal({ uri });
+        // Await session approval from the wallet.
+        const session = await approval();
+        // Handle the returned session (e.g. update UI to "connected" state).
+        // * You will need to create this function *
+        // setAddress(session.namespaces.eip155.accounts[0].split(":")[2]);
+        // Close the QRCode modal in case it was open.
+        client.modal.closeModal();
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }, [client]);
+
+
+
   const handleSubscribe = useCallback(async () => {
     setIsSubscribing(true)
+    console.log('shdf')
     try {
       if (!pushClient) {
         throw new Error('Push Client not initialized')
       }
       // Resolve known pairings from the Core's Pairing API.
+      // console.log(p)
       const pairings = pushClient.core.pairing.getPairings()
       if (!pairings?.length) {
         throw new Error('No pairings found')
@@ -58,7 +110,7 @@ export default function Notifications() {
         })
       }
       const { id } = await pushClient.propose({
-        account: `eip155:1:0xE05b3E63c1A10fe0B707741aE96e368Dd6EA872d`,
+        account: `eip155:1:${account}`,
         pairingTopic: latestPairing.topic,
       })
 
@@ -67,16 +119,27 @@ export default function Notifications() {
           cause: 'Push propose failed',
         })
       }
-      console.log(`The subscription request has been sent to your wallet`)
+      toastSuccess(
+        `${t('Subscription Request')}!`,
+        <Text>
+          {t('The subscription request has been sent to your wallet')}
+        </Text>
+      )
       setIsSubscribed(true)
+      setIsSubscribing(false)
     } catch (error) {
       setIsSubscribing(false)
-      console.error({ subscribeError: error })
       if (error instanceof Error) {
-        console.log(`error, ${error.message}`)
+        toastError(
+          `${t('Subscription Request eError')}!`,
+          <Text>
+            {t(error.message)}
+          </Text>,
+        )
       }
     }
-  }, [pushClient])
+  }, [pushClient, account, toastSuccess, toastError])
+
 
   const handleUnSubscribe = useCallback(async () => {
     setIsUnsubscribing(true)
@@ -85,8 +148,9 @@ export default function Notifications() {
         throw new Error('Push Client not initialized')
       }
       const pushSubscriptions = pushClient.getActiveSubscriptions()
+      console.log(pushSubscriptions)
       const currentSubscription = Object.values(pushSubscriptions).find(
-        (sub) => sub.account === `eip155:1:0xE05b3E63c1A10fe0B707741aE96e368Dd6EA872d`,
+        (sub) => sub.account === `eip155:1:${account}`,
       )
 
       if (currentSubscription) {
@@ -96,16 +160,27 @@ export default function Notifications() {
 
         setIsUnsubscribing(false)
         setIsSubscribed(false)
-        console.log(`You unsubscribed from gm notification`)
+        toastSuccess(
+          `${t('Unsubscribed')}!`,
+          <Text>
+            {t('You unsubscribed from gm notification')}
+          </Text>
+        )
       }
     } catch (error) {
+
       setIsUnsubscribing(false)
       console.error({ unsubscribeError: error })
       if (error instanceof Error) {
-        console.log(`error, ${error.message}`)
+        toastError(
+          `${t('Subscription Request eError')}!`,
+          <Text>
+            {t(error.message)}
+          </Text>,
+        )
       }
     }
-  }, [setIsSubscribed, pushClient])
+  }, [setIsSubscribed, pushClient, account,  toastSuccess, toastError])
 
   const createClient = useCallback(async () => {
     const x = await connector.getProvider()
@@ -113,11 +188,10 @@ export default function Notifications() {
 
     setPushClient(x.pushClient)
     setAuthClient(x.authClient)
-//     setWeb3Modal(web3Modal)
+    setClient(x)
   }, [connector])
 
   useEffect(() => {
-    console.log(connector)
       if (!connector) return
     if (!pushClient || !authClient) {
       createClient()
@@ -128,19 +202,16 @@ export default function Notifications() {
     if (!pushClient) {
       return
     }
+    const x = pushClient.subscriptions.getAll()
     const activeSubscriptions = pushClient?.getActiveSubscriptions()
-    console.log('activeS', activeSubscriptions)
     if (
       Object.values(activeSubscriptions).some(
-        (sub) => sub.account === `eip155:1:0xE05b3E63c1A10fe0B707741aE96e368Dd6EA872d`,
+        (sub) => sub.account === `eip155:1:${account}`,
       )
     ) {
       setIsSubscribed(true)
     }
-  }, [pushClient])
-
-console.log('account, connector', account, connector)
-  
+  }, [pushClient, account]) 
 
   return (
     <Page>
@@ -159,7 +230,10 @@ console.log('account, connector', account, connector)
              isSubscribed={isSubscribed}
              isSubscribing ={isSubscribing}
              isUnsubscribing={isUnsubscribing}
+             renew={onSignInWithSign}
             account={account} />}
+            {/* <SubscribedView/> */}
+            {/* <SettingsModal/> */}
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>

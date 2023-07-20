@@ -15,6 +15,7 @@ import { SettingsMode } from './GlobalSettings/types'
 import { useMenuItems } from './hooks/useMenuItems'
 import UserMenu from './UserMenu'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
+import { NotificationDropdown } from 'views/Notifications/components/NotificationDropdown/NotificationDropdown'
 
 const LinkComponent = (linkProps) => {
   return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
@@ -54,6 +55,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
+            <NotificationDropdown/>
             <NetworkSwitcher />
             <UserMenu />
           </>
