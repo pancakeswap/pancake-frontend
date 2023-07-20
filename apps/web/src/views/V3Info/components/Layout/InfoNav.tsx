@@ -80,7 +80,6 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const { t } = useTranslation()
   const chainName = useChainNameByQuery()
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
-  const symbol = foundChain?.nativeCurrency?.symbol
   const router = useRouter()
   const switchNetwork = useCallback(
     (chianId: number) => {
@@ -101,7 +100,6 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
         foundChain ? (
           <>
             <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
-            <Box display={['block', null, null, null, null, 'none']}>{symbol}</Box>
           </>
         ) : (
           t('Select a Network')
