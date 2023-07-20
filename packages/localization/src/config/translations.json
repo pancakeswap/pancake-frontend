@@ -2613,5 +2613,20 @@
   "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
   "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
   "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
-  "Claim Your NFT": "Claim Your NFT"
+  "Claim Your NFT": "Claim Your NFT",
+  "View Benefits": "View Benefits",
+  "locked benefits": "locked benefits",
+  "Cake Yield": "Cake Yield",
+  "revenue sharing": "revenue sharing",
+  "Your shares": "Your shares",
+  "Next distribution": "Next distribution",
+  "in %day%": "in %day%",
+  "Your fixed-term staking position will expire before the next revenue sharing distributions.": "Your fixed-term staking position will expire before the next revenue sharing distributions.",
+  "Last distribution": "Last distribution",
+  "You need to update your staking in order to start earning from protocol revenue sharing.": "You need to update your staking in order to start earning from protocol revenue sharing.",
+  "Locked CAKE Benefits": "Locked CAKE Benefits",
+  "Joined Revenue Sharing Pool.": "Joined Revenue Sharing Pool.",
+  "Update Staking Position": "Update Staking Position",
+  "Join revenue sharing": "Join revenue sharing",
+  "Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More": "Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More"
 }
