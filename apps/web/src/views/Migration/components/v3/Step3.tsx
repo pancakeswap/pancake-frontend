@@ -1,14 +1,12 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Heading, LinkExternal, Text, Chart } from '@pancakeswap/uikit'
 import { format } from 'd3'
-// import { saturate } from 'polished'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightCard } from 'components/Card'
-import { Chart } from 'components/LiquidityChartRangeInput/Chart'
 import { Bound } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from 'hooks/v3/types'
@@ -64,7 +62,6 @@ const poolsByFeeTier = {
 }
 
 export function Step3() {
-  // const { t } = useTranslation()
   const { theme } = useTheme()
   const { chainId } = useActiveChainId()
 

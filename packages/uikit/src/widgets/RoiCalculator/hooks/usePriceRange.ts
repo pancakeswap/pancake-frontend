@@ -28,6 +28,7 @@ interface PriceRangeInfo {
   priceUpper?: Price<Token, Token>;
   onLeftRangeInput: (leftRangeValue: string) => void;
   onRightRangeInput: (rightRangeValue: string) => void;
+  onBothRangeInput: (leftRangeValue: string, rightRangeValue: string) => void;
   toggleFullRange: () => void;
   fullRange?: boolean;
   ticksAtLimit: { [bound in Bound]?: boolean };
@@ -184,6 +185,14 @@ export function usePriceRange({
     [baseCurrency, quoteCurrency, invertPrice, saveSetPriceUpper, saveSetPriceLower]
   );
 
+  const onBothRangeInput = useCallback(
+    (leftRangeValue: string, rightRangeValue: string) => {
+      onLeftRangeInput(leftRangeValue);
+      onRightRangeInput(rightRangeValue);
+    },
+    [onLeftRangeInput, onRightRangeInput]
+  );
+
   const toggleFullRange = useCallback(() => setFullRange(!fullRange), [fullRange]);
 
   useEffect(() => setPriceLower(initialPriceLower), [initialPriceLower]);
@@ -198,6 +207,7 @@ export function usePriceRange({
     priceUpper: fullRange ? priceLimits[Bound.UPPER] : priceUpper,
     onRightRangeInput,
     onLeftRangeInput,
+    onBothRangeInput,
     toggleFullRange,
     fullRange,
   };

@@ -11,6 +11,7 @@ import {
   RowBetween,
   Spinner,
   Text,
+  LiquidityChartRangeInput,
 } from '@pancakeswap/uikit'
 import { tryParsePrice } from 'hooks/v3/utils'
 import { GreyCard } from 'components/Card'
@@ -31,7 +32,7 @@ import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
 import { Address, useContractRead, useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
-import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
+import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
@@ -168,6 +169,42 @@ function V2PairMigrate({
       formState,
     )
   const { onLeftRangeInput, onRightRangeInput, onBothRangeInput } = useV3MintActionHandlers(noLiquidity)
+
+  const onBothRangePriceInput = useCallback(
+    (leftRangeValue: string, rightRangeValue: string) => {
+      onBothRangeInput({
+        leftTypedValue: tryParsePrice(
+          baseToken,
+          baseToken.equals(token0) ? token1 : token0 ?? undefined,
+          leftRangeValue,
+        ),
+        rightTypedValue: tryParsePrice(
+          baseToken,
+          baseToken.equals(token0) ? token1 : token0 ?? undefined,
+          rightRangeValue,
+        ),
+      })
+    },
+    [baseToken, token0, token1, onBothRangeInput],
+  )
+
+  const onLeftRangePriceInput = useCallback(
+    (leftRangeValue: string) => {
+      onLeftRangeInput(
+        tryParsePrice(baseToken, baseToken.equals(token0) ? token1 : token0 ?? undefined, leftRangeValue),
+      )
+    },
+    [baseToken, token0, token1, onLeftRangeInput],
+  )
+
+  const onRightRangePriceInput = useCallback(
+    (rightRangeValue: string) => {
+      onRightRangeInput(
+        tryParsePrice(baseToken, baseToken.equals(token0) ? token1 : token0 ?? undefined, rightRangeValue),
+      )
+    },
+    [baseToken, token0, token1, onRightRangeInput],
+  )
 
   // get spot prices + price difference
   const v2SpotPrice = useMemo(
@@ -520,6 +557,16 @@ function V2PairMigrate({
     [pendingMigrationHash, pairBalance],
   )
 
+  const {
+    isLoading: isChartDataLoading,
+    error: chartDataError,
+    formattedData,
+  } = useDensityChartData({
+    currencyA: baseToken ?? undefined,
+    currencyB: baseToken.equals(token0) ? token1 : token0 ?? undefined,
+    feeAmount,
+  })
+
   return (
     <CardBody>
       <ResponsiveTwoColumns>
@@ -687,9 +734,12 @@ function V2PairMigrate({
             price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
             priceLower={priceLower}
             priceUpper={priceUpper}
-            onLeftRangeInput={onLeftRangeInput}
-            onRightRangeInput={onRightRangeInput}
-            onBothRangeInput={onBothRangeInput}
+            onLeftRangeInput={onLeftRangePriceInput}
+            onRightRangeInput={onRightRangePriceInput}
+            onBothRangeInput={onBothRangePriceInput}
+            formattedData={formattedData}
+            isLoading={isChartDataLoading}
+            error={chartDataError}
             interactive
           />
           <RangeSelector

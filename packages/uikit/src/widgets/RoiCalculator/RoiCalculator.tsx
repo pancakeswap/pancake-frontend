@@ -26,6 +26,7 @@ import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
 import { PriceInvertSwitch } from "./PriceInvertSwitch";
 import { FarmingRewardsToggle } from "./FarmingRewardsToggle";
+import { useDensityChartData } from "../../components/LiquidityChartRangeInput/hooks";
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Token, Token>;
@@ -365,10 +366,23 @@ export function RoiCalculator({
     </Section>
   ) : null;
 
+  const { formattedData } = useDensityChartData({
+    tickCurrent,
+    liquidity,
+    feeAmount,
+    currencyA,
+    currencyB,
+    ticks: ticksRaw,
+  });
+
+  const isSorted = currencyA && currencyB && currencyA?.wrapped.sortsBefore(currencyB?.wrapped);
+  const priceStr = isSorted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6);
+  const currentPrice = priceStr ? parseFloat(priceStr) : undefined;
+
   const priceRangeSettings = (
     <Section title={t("Set price range")}>
       <LiquidityChartRangeInput
-        price={price}
+        price={currentPrice}
         currencyA={currencyA}
         currencyB={currencyB}
         tickCurrent={tickCurrent}
@@ -380,6 +394,8 @@ export function RoiCalculator({
         priceUpper={priceRange?.priceUpper}
         onLeftRangeInput={priceRange?.onLeftRangeInput}
         onRightRangeInput={priceRange?.onRightRangeInput}
+        onBothRangeInput={priceRange?.onBothRangeInput}
+        formattedData={formattedData}
       />
       <PriceInvertSwitch baseCurrency={currencyA} onSwitch={onSwitchBaseCurrency} />
       <DynamicSection>

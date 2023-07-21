@@ -16,6 +16,9 @@ import {
   PreTitle,
   DynamicSection,
   Flex,
+  LiquidityChartRangeInput,
+  ZOOM_LEVELS,
+  ZoomLevels,
 } from '@pancakeswap/uikit'
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { tryParsePrice } from 'hooks/v3/utils'
@@ -40,7 +43,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSendTransaction, useWalletClient } from 'wagmi'
 import styled from 'styled-components'
-import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
@@ -51,7 +53,7 @@ import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
 
-import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
+import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
@@ -158,6 +160,30 @@ export default function V3FormView({
   )
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
     useV3MintActionHandlers(noLiquidity)
+
+  const onBothRangePriceInput = useCallback(
+    (leftRangeValue: string, rightRangeValue: string) => {
+      onBothRangeInput({
+        leftTypedValue: tryParsePrice(baseCurrency?.wrapped, quoteCurrency?.wrapped, leftRangeValue),
+        rightTypedValue: tryParsePrice(baseCurrency?.wrapped, quoteCurrency?.wrapped, rightRangeValue),
+      })
+    },
+    [baseCurrency, quoteCurrency, onBothRangeInput],
+  )
+
+  const onLeftRangePriceInput = useCallback(
+    (leftRangeValue: string) => {
+      onLeftRangeInput(tryParsePrice(baseCurrency?.wrapped, quoteCurrency?.wrapped, leftRangeValue))
+    },
+    [baseCurrency, quoteCurrency, onLeftRangeInput],
+  )
+
+  const onRightRangePriceInput = useCallback(
+    (rightRangeValue: string) => {
+      onRightRangeInput(tryParsePrice(baseCurrency?.wrapped, quoteCurrency.wrapped, rightRangeValue))
+    },
+    [baseCurrency, quoteCurrency, onRightRangeInput],
+  )
 
   const isValid = !errorMessage && !invalidRange
 
@@ -425,6 +451,16 @@ export default function V3FormView({
     [price, feeAmount, invertPrice, onBothRangeInput, baseCurrency, quoteCurrency],
   )
 
+  const {
+    isLoading: isChartDataLoading,
+    error: chartDataError,
+    formattedData,
+  } = useDensityChartData({
+    currencyA: baseCurrency ?? undefined,
+    currencyB: quoteCurrency ?? undefined,
+    feeAmount,
+  })
+
   return (
     <>
       <DynamicSection
@@ -565,9 +601,12 @@ export default function V3FormView({
                   price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
                   priceLower={priceLower}
                   priceUpper={priceUpper}
-                  onBothRangeInput={onBothRangeInput}
-                  onLeftRangeInput={onLeftRangeInput}
-                  onRightRangeInput={onRightRangeInput}
+                  onBothRangeInput={onBothRangePriceInput}
+                  onLeftRangeInput={onLeftRangePriceInput}
+                  onRightRangeInput={onRightRangePriceInput}
+                  formattedData={formattedData}
+                  isLoading={isChartDataLoading}
+                  error={chartDataError}
                   interactive
                 />
               </>
