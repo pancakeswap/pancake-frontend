@@ -24,6 +24,10 @@ export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.POLYGON_ZKEVM]: 'POLYGON_ZKEVM',
 }
 
+export const multiChainShortName: Record<number, string> = {
+  [ChainId.POLYGON_ZKEVM]: 'zkEVM',
+}
+
 export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   BSC: 'BNB',
   ETH: 'ETH',

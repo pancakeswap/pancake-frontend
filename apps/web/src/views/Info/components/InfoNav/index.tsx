@@ -19,7 +19,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Search from 'views/Info/components/InfoSearch'
 import { useMultiChainPath, useChainNameByQuery, useChainIdByQuery } from 'state/info/hooks'
-import { multiChainId, multiChainPaths } from 'state/info/constant'
+import { multiChainId, multiChainPaths, multiChainShortName } from 'state/info/constant'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { bsc, mainnet, polygonZkEvm } from 'wagmi/chains'
@@ -101,7 +101,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const { t } = useTranslation()
   const chainName = useChainNameByQuery()
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
-  const symbol = foundChain?.nativeCurrency?.symbol
+  const symbol = multiChainShortName[foundChain?.id] ?? foundChain?.nativeCurrency?.symbol
   const router = useRouter()
   const switchNetwork = useCallback(
     (chianId: number) => {
