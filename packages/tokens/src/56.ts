@@ -2658,4 +2658,12 @@ export const bscTokens = {
     'Equilibria Token',
     'https://equilibria.fi/home',
   ),
+  sable: new ERC20Token(
+    ChainId.BSC,
+    '0x1eE098cBaF1f846d5Df1993f7e2d10AFb35A878d',
+    18,
+    'SABLE',
+    'SABLE',
+    'https://sable.finance/',
+  ),
 }
