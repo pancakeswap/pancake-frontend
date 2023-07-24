@@ -11,8 +11,7 @@ import CategoriesSelector from 'components/Article/CategoriesSelector'
 import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
 import SkeletonArticle from 'components/SkeletonArticle'
-import { storageLangMap } from 'utils/getLocalStorageLanguageCode'
-import { getLanguageCodeFromLS } from 'utils/getLanguageCodeFromLS'
+import { getLanguageCodeFromLS, LS_KEY } from 'utils/getLanguageCodeFromLS'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -99,8 +98,7 @@ const AllArticle = () => {
   const codeFromStorage = getLanguageCodeFromLS()
   useEffect(() => {
     if (codeFromStorage) {
-      const languageStorage = storageLangMap(codeFromStorage)
-      setLanguageOption(languageStorage)
+      setLanguageOption(codeFromStorage)
     }
   }, [codeFromStorage])
 
@@ -116,6 +114,15 @@ const AllArticle = () => {
   const handlePagination = (value: number) => {
     setCurrentPage(1)
     setCurrentPage(value)
+  }
+
+  const handleSwitchLanguage = (language: string) => {
+    setLanguageOption(language)
+
+    const blogCodeFromStorage = localStorage.getItem(LS_KEY)
+    if (blogCodeFromStorage !== language) {
+      localStorage.setItem(LS_KEY, language)
+    }
   }
 
   return (
@@ -152,7 +159,7 @@ const AllArticle = () => {
                     title={t('Languages')}
                     value={languageOption}
                     options={languageItems}
-                    setOption={setLanguageOption}
+                    setOption={handleSwitchLanguage}
                   />
                 </Box>
               )}
