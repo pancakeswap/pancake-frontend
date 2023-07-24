@@ -12,13 +12,15 @@ import {
   PreTitle,
   useToast,
   Balance,
+  MessageText,
+  Message,
 } from '@pancakeswap/uikit'
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useCallback, useMemo, useState } from 'react'
 import Divider from 'components/Divider'
 import { LightGreyCard } from 'components/Card'
 import { useFixedStakingContract } from 'hooks/useContract'
@@ -26,32 +28,43 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { format, add } from 'date-fns'
+import { FixedStakingPool } from '../type'
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 
 export function FixedStakingModal({
   stakingToken,
-  poolIndex,
-  lockPeriod,
+  pools,
   children,
-  apr,
+  initialLockPeriod,
+  stakedPeriods,
 }: {
   stakingToken: Token
-  poolIndex: number
-  lockPeriod: number
-  apr: Percent
+  pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
+  initialLockPeriod: number
+  stakedPeriods: number[]
 }) {
   const { account } = useAccountActiveChain()
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()
   const [stakeAmount, setStakeAmount] = useState('')
+
+  const [lockPeriod, setLockPeriod] = useState(initialLockPeriod)
+
+  const isStaked = !!stakedPeriods.find((p) => p === lockPeriod)
+
+  const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
+
+  const { boostAPR, lockAPR } = useFixedStakeAPR(selectedPool)
+
   const [percent, setPercent] = useState(0)
   const { balance: stakingTokenBalance } = useTokenBalance(stakingToken?.address)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -69,13 +82,13 @@ export function FixedStakingModal({
 
   const projectedReturnAmount = stakeCurrencyAmount
     ?.multiply(lockPeriod)
-    ?.multiply(apr.multiply(lockPeriod).divide(365))
+    ?.multiply(boostAPR.multiply(lockPeriod).divide(365))
 
   const [approval, approveCallback] = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
 
   const handleSubmission = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      const methodArgs = [poolIndex, rawAmount.toString()]
+      const methodArgs = [selectedPool?.poolIndex, rawAmount.toString()]
       return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs)
     })
 
@@ -88,7 +101,16 @@ export function FixedStakingModal({
       )
       stakeModal.onDismiss()
     }
-  }, [callWithGasPrice, fetchWithCatchTxError, fixedStakingContract, poolIndex, rawAmount, stakeModal, t, toastSuccess])
+  }, [
+    callWithGasPrice,
+    fetchWithCatchTxError,
+    fixedStakingContract,
+    rawAmount,
+    selectedPool?.poolIndex,
+    stakeModal,
+    t,
+    toastSuccess,
+  ])
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
@@ -172,6 +194,35 @@ export function FixedStakingModal({
           </Flex>
           <Divider />
 
+          {pools.length > 1 ? (
+            <>
+              <PreTitle textTransform="uppercase" bold mb="8px">
+                {t('Stake Duration')}
+              </PreTitle>
+              <Flex>
+                {pools.map((pool) => (
+                  <StyledButton
+                    scale="md"
+                    variant={pool.lockPeriod === lockPeriod ? 'danger' : 'bubblegum'}
+                    width="100%"
+                    mx="2px"
+                    onClick={() => setLockPeriod(pool.lockPeriod)}
+                  >
+                    {pool.lockPeriod}D
+                  </StyledButton>
+                ))}
+              </Flex>
+              {isStaked ? (
+                <Message variant="warning" my="8px">
+                  <MessageText maxWidth="200px">
+                    {`You already have a position in ${lockPeriod}D lock period, adding stake to the position will restart the whole locking period.`}
+                  </MessageText>
+                </Message>
+              ) : null}
+              <Divider />
+            </>
+          ) : null}
+
           <Box mb="16px" mt="16px">
             <PreTitle textTransform="uppercase" bold mb="8px">
               {t('Position Overview')}
@@ -195,7 +246,13 @@ export function FixedStakingModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('APR')}
                 </Text>
-                <Text bold>{apr?.toSignificant(2)}%</Text>
+                <Text bold>{lockAPR?.toSignificant(2)}%</Text>
+              </Flex>
+              <Flex alignItems="center" justifyContent="space-between">
+                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
+                  {t('vCAKE Boost')}
+                </Text>
+                <Text bold>{boostAPR?.toSignificant(2)}%</Text>
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>

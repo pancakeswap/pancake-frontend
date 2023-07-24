@@ -3,26 +3,18 @@ import { CardBody, Flex, Heading, StarFillIcon, Tag, Box, Button } from '@pancak
 import { StyledCard } from '@pancakeswap/uikit/src/widgets/Pool'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import BigNumber from 'bignumber.js'
+import first from 'lodash/first'
+import { LightGreyCard } from 'components/Card'
+import Divider from 'components/Divider'
 
 import { FixedStakingCardBody } from './FixedStakingCardBody'
-import { FixedStakingActions } from './FixedStakingActions'
-import { HarvestFixedStaking } from './HarvestFixedStaking'
+import { StakedPositionSection } from './StakedPositionSection'
 import { FixedStakingModal } from './FixedStakingModal'
 import { InlineText } from './InlineText'
-import { FixedStakingPool, StakedPosition } from '../type'
-import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { StakedPosition, PoolGroup } from '../type'
 
-export function FixedStakingCard({
-  pool,
-  stakedPositions,
-}: {
-  pool: FixedStakingPool
-  stakedPositions: StakedPosition[]
-}) {
+export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; stakedPositions: StakedPosition[] }) {
   const { t } = useTranslation()
-
-  const stakePosition = stakedPositions.find((position) => position.pool.token.address === pool.token.address)
-  const { boostAPR, lockAPR } = useFixedStakeAPR(pool)
 
   return (
     <StyledCard>
@@ -33,7 +25,7 @@ export function FixedStakingCard({
             <Heading color="secondary" scale="lg" textAlign="end">
               {pool.token.symbol}
             </Heading>
-            {new BigNumber(pool.boostDayPercent).gt(0) ? (
+            {new BigNumber(first(pool.pools)?.boostDayPercent).gt(0) ? (
               <Tag outline variant="success" startIcon={<StarFillIcon width="18px" color="success" />}>
                 vCAKE Boost
               </Tag>
@@ -43,56 +35,40 @@ export function FixedStakingCard({
       </Flex>
       <CardBody>
         <FixedStakingCardBody pool={pool}>
-          {stakePosition && new BigNumber(stakePosition?.userInfo?.accrueInterest).gt(0) ? (
-            <>
-              <Box display="inline">
-                <InlineText color="secondary" bold fontSize="12px">
-                  {`${pool.token.symbol} `}
-                </InlineText>
-                <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                  {t('Earned')}
-                </InlineText>
-              </Box>
-              <HarvestFixedStaking
-                apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
-                lockPeriod={pool.lockPeriod}
-                unlockTime={stakePosition.timestampEndLockPeriod}
-                stakePositionUserInfo={stakePosition.userInfo}
-                token={pool.token}
-                poolIndex={pool.poolIndex}
-              />
-            </>
-          ) : null}
-          {stakePosition && new BigNumber(stakePosition?.userInfo?.userDeposit).gt(0) ? (
-            <>
-              <Box display="inline">
-                <InlineText color="secondary" bold fontSize="12px">
-                  {`${pool.token.symbol} `}
-                </InlineText>
-                <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                  {t('Staked')}
-                </InlineText>
-              </Box>
-              <FixedStakingActions
-                apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
-                poolIndex={pool.poolIndex}
-                lockPeriod={pool.lockPeriod}
-                unlockTime={stakePosition.timestampEndLockPeriod}
-                stakePositionUserInfo={stakePosition.userInfo}
-                token={pool.token}
-                withdrawalFee={pool.withdrawalFee}
-              />
-            </>
-          ) : (
-            <FixedStakingModal
-              apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
-              lockPeriod={pool.lockPeriod}
-              poolIndex={pool.poolIndex}
-              stakingToken={pool.token}
-            >
-              {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
-            </FixedStakingModal>
-          )}
+          <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {stakedPositions.length} {t('Staked Position')}
+          </InlineText>
+          <LightGreyCard mb="16px" mt="8px">
+            {stakedPositions.map((stakePosition, index) => (
+              <>
+                <StakedPositionSection
+                  lockDayPercent={stakePosition.pool.lockDayPercent}
+                  lockPeriod={stakePosition.pool.lockPeriod}
+                  unlockTime={stakePosition.endLockTime}
+                  stakePositionUserInfo={stakePosition.userInfo}
+                  token={stakePosition.pool.token}
+                  poolIndex={stakePosition.pool.poolIndex}
+                  withdrawalFee={stakePosition.pool.withdrawalFee}
+                  pool={pool}
+                  stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
+                />
+                {index < stakedPositions.length - 1 ? (
+                  <Box my="16px">
+                    <Divider />
+                  </Box>
+                ) : null}
+              </>
+            ))}
+          </LightGreyCard>
+
+          <FixedStakingModal
+            initialLockPeriod={pool.pools[pool.pools.length - 1].lockPeriod}
+            pools={pool.pools}
+            stakingToken={pool.token}
+            stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
+          >
+            {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
+          </FixedStakingModal>
         </FixedStakingCardBody>
       </CardBody>
     </StyledCard>

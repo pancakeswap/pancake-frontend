@@ -1,5 +1,10 @@
 export const fixedStakingABI = [
   {
+    inputs: [],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -116,10 +121,10 @@ export const fixedStakingABI = [
         type: 'address',
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'token',
-        type: 'address',
+        indexed: false,
+        internalType: 'uint256',
+        name: 'poolIndex',
+        type: 'uint256',
       },
       {
         indexed: false,
@@ -129,6 +134,31 @@ export const fixedStakingABI = [
       },
     ],
     name: 'PendingWithdraw',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint32',
+        name: 'lockPeriod',
+        type: 'uint32',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'poolIndex',
+        type: 'uint256',
+      },
+    ],
+    name: 'PoolAdded',
     type: 'event',
   },
   {
@@ -219,7 +249,7 @@ export const fixedStakingABI = [
       {
         indexed: false,
         internalType: 'uint128',
-        name: 'pendingInterest',
+        name: 'totalInterest',
         type: 'uint128',
       },
       {
@@ -243,6 +273,19 @@ export const fixedStakingABI = [
     ],
     name: 'Withdraw',
     type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'PERCENT_BASE',
+    outputs: [
+      {
+        internalType: 'uint128',
+        name: '',
+        type: 'uint128',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
@@ -314,7 +357,7 @@ export const fixedStakingABI = [
             type: 'uint128',
           },
         ],
-        internalType: 'struct FixedStaking.Pool',
+        internalType: 'struct PancakeFixedStaking.Pool',
         name: '_pool',
         type: 'tuple',
       },
@@ -412,7 +455,7 @@ export const fixedStakingABI = [
             type: 'uint128',
           },
         ],
-        internalType: 'struct FixedStaking.Pool',
+        internalType: 'struct PancakeFixedStaking.Pool',
         name: '_pool',
         type: 'tuple',
       },
@@ -538,6 +581,11 @@ export const fixedStakingABI = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '_poolIndex',
+        type: 'uint256',
+      },
+      {
         internalType: 'address',
         name: '_user',
         type: 'address',
@@ -615,7 +663,7 @@ export const fixedStakingABI = [
                 type: 'uint128',
               },
             ],
-            internalType: 'struct FixedStaking.Pool',
+            internalType: 'struct PancakeFixedStaking.Pool',
             name: 'pool',
             type: 'tuple',
           },
@@ -641,25 +689,20 @@ export const fixedStakingABI = [
                 name: 'boost',
                 type: 'bool',
               },
-              {
-                internalType: 'bool',
-                name: 'endLockTime',
-                type: 'bool',
-              },
             ],
-            internalType: 'struct FixedStaking.UserInfo',
+            internalType: 'struct PancakeFixedStaking.UserInfo',
             name: 'userInfo',
             type: 'tuple',
           },
           {
             internalType: 'uint32',
-            name: 'timestampEndLockPeriod',
+            name: 'endLockTime',
             type: 'uint32',
           },
         ],
-        internalType: 'struct FixedStaking.InfoFront[]',
+        internalType: 'struct PancakeFixedStaking.InfoFront',
         name: 'info',
-        type: 'tuple[]',
+        type: 'tuple',
       },
       {
         internalType: 'uint32',
@@ -742,9 +785,9 @@ export const fixedStakingABI = [
         type: 'uint32',
       },
       {
-        internalType: 'address',
+        internalType: 'uint256',
         name: '',
-        type: 'address',
+        type: 'uint256',
       },
     ],
     name: 'pendingWithdraw',
@@ -987,11 +1030,6 @@ export const fixedStakingABI = [
         name: 'boost',
         type: 'bool',
       },
-      {
-        internalType: 'bool',
-        name: 'endLockTime',
-        type: 'bool',
-      },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -1004,9 +1042,9 @@ export const fixedStakingABI = [
         type: 'address',
       },
       {
-        internalType: 'address',
+        internalType: 'uint256',
         name: '',
-        type: 'address',
+        type: 'uint256',
       },
     ],
     name: 'userPendingWithdraw',

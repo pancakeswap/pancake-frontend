@@ -32,7 +32,15 @@ export interface StakePositionUserInfo {
 }
 
 export interface StakedPosition {
-  timestampEndLockPeriod: number
+  endLockTime: number
   userInfo: StakePositionUserInfo
   pool: FixedStakingPool
+}
+
+export interface PoolGroup {
+  token: Token
+  minLockDayPercent: number
+  maxLockDayPercent: number
+  totalDeposited: BigNumber
+  pools: FixedStakingPool[]
 }

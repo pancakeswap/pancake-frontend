@@ -1,42 +1,63 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Flex,
-  FlexLayout,
-  Heading,
-  PageHeader,
-  Pool,
-  ToggleView,
-  ViewMode,
-  ButtonMenu,
-  ButtonMenuItem,
-} from '@pancakeswap/uikit'
+import { Flex, FlexLayout, Heading, PageHeader } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useState } from 'react'
-import { useCurrenDay, useStakedPools, useStakedPositionsByUser } from './hooks/useStakedPools'
-import { FixedStakingCard } from './components/FixedStakingCard'
-import FixedStakingRow from './components/FixedStakingRow'
+import { useMemo } from 'react'
+import min from 'lodash/min'
+import max from 'lodash/max'
+import BigNumber from 'bignumber.js'
 
-enum POOL_STATUS {
-  Finished = 1,
-  Live = 0,
-}
+import { useStakedPools, useStakedPositionsByUser } from './hooks/useStakedPools'
+import { FixedStakingCard } from './components/FixedStakingCard'
+// import FixedStakingRow from './components/FixedStakingRow'
+import { FixedStakingPool } from './type'
 
 const FixedStaking = () => {
   const { t } = useTranslation()
 
-  const [viewMode, setViewMode] = useState(ViewMode.TABLE)
+  // const [viewMode, setViewMode] = useState(ViewMode.TABLE)
 
-  const [poolStatus, togglePoolStatus] = useState(POOL_STATUS.Live)
+  // const [poolStatus, togglePoolStatus] = useState(POOL_STATUS.Live)
 
-  const stakingPools = useStakedPools()
+  const displayPools = useStakedPools()
 
-  const stakedPositions = useStakedPositionsByUser()
-  const currentDate = useCurrenDay()
+  const stakedPositions = useStakedPositionsByUser(displayPools.map((p) => p.poolIndex))
 
-  const displayPools =
-    poolStatus === POOL_STATUS.Live
-      ? stakingPools.filter((pool) => pool.endDay > currentDate)
-      : stakingPools.filter((pool) => pool.endDay <= currentDate)
+  // Groupd pools with same token
+  const groupPoolsByToken = useMemo<Record<string, FixedStakingPool[]>>(() => {
+    return displayPools.reduce((pools, pool) => {
+      if (Array.isArray(pools[pool.token.address])) {
+        pools[pool.token.address].push(pool)
+
+        return pools
+      }
+      return {
+        [pool.token.address]: [pool],
+        ...pools,
+      }
+    }, {})
+  }, [displayPools])
+
+  const poolGroup = useMemo(() => {
+    return Object.keys(groupPoolsByToken).reduce((poolGroupResult, key) => {
+      const pools = groupPoolsByToken[key]
+
+      const minLockDayPercent = min(pools.map((p) => p.lockDayPercent))
+      const maxLockDayPercent = max(pools.map((p) => p.lockDayPercent))
+
+      const totalDeposited = pools.reduce((sum, p) => sum.plus(p.totalDeposited), new BigNumber(0))
+
+      return {
+        [key]: {
+          token: pools[0].token,
+          minLockDayPercent,
+          maxLockDayPercent,
+          totalDeposited,
+          pools,
+        },
+        ...poolGroupResult,
+      }
+    }, {})
+  }, [groupPoolsByToken])
 
   return (
     <>
@@ -53,44 +74,16 @@ const FixedStaking = () => {
         </Flex>
       </PageHeader>
       <Page title={t('Pools')}>
-        <Flex mb="24px">
-          <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
-          <Flex>
-            <ButtonMenu activeIndex={poolStatus} scale="sm" variant="subtle" onItemClick={togglePoolStatus}>
-              <ButtonMenuItem>{t('Live')}</ButtonMenuItem>
-              <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
-            </ButtonMenu>
-          </Flex>
-        </Flex>
-        {viewMode === ViewMode.TABLE ? (
-          <Pool.PoolsTable>
-            {displayPools.map(
-              (pool) =>
-                pool && (
-                  <FixedStakingRow
-                    stakedPositions={stakedPositions.filter(
-                      ({ pool: stakedPool }) => stakedPool.token.address === pool.token.address,
-                    )}
-                    pool={pool}
-                  />
-                ),
-            )}
-          </Pool.PoolsTable>
-        ) : (
-          <FlexLayout>
-            {displayPools.map(
-              (pool) =>
-                pool?.token && (
-                  <FixedStakingCard
-                    pool={pool}
-                    stakedPositions={stakedPositions.filter(
-                      ({ pool: stakedPool }) => stakedPool.token.address === pool.token.address,
-                    )}
-                  />
-                ),
-            )}
-          </FlexLayout>
-        )}
+        <FlexLayout>
+          {Object.keys(poolGroup).map((key) => (
+            <FixedStakingCard
+              pool={poolGroup[key]}
+              stakedPositions={stakedPositions.filter(
+                ({ pool: stakedPool }) => stakedPool.token.address === poolGroup[key].token.address,
+              )}
+            />
+          ))}
+        </FlexLayout>
       </Page>
     </>
   )

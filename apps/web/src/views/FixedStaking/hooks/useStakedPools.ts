@@ -26,31 +26,40 @@ export function useCurrenDay(): number {
   return (data || 0) as number
 }
 
-export function useStakedPositionsByUser(): StakedPosition[] {
+export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[] {
   const fixedStakingContract = useFixedStakingContract()
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const tokens = useOfficialsAndUserAddedTokens()
 
-  const { data: userInfo } = useContractRead({
-    abi: fixedStakingContract.abi,
-    address: fixedStakingContract.address as `0x${string}`,
+  const results = useSingleContractMultipleData({
+    contract: {
+      abi: fixedStakingContract.abi,
+      address: fixedStakingContract.address,
+    },
     functionName: 'getUserInfo',
-    enabled: true,
-    watch: true,
-    chainId,
-    args: [account],
+    args: poolIndexes.map((index) => [index, account]),
   })
 
   return useMemo(() => {
-    if (!Array.isArray(userInfo)) return []
-    return userInfo[0].map((position) => ({
-      ...position,
-      pool: {
-        ...position.pool,
-        token: tokens[getAddress(position.pool.token)],
-      },
-    }))
-  }, [tokens, userInfo])
+    if (!Array.isArray(results)) return []
+    return results
+      .map(({ result }, index) => {
+        if (Array.isArray(result) && new BigNumber(result[0].userInfo.userDeposit).gt(0)) {
+          const position = result[0]
+          return {
+            ...position,
+            pool: {
+              ...position.pool,
+              poolIndex: poolIndexes[index],
+              token: tokens[getAddress(position.pool.token)],
+            },
+          }
+        }
+
+        return undefined
+      })
+      .filter(Boolean)
+  }, [poolIndexes, results, tokens])
 }
 
 export function useStakedPools(): FixedStakingPool[] {

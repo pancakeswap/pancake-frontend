@@ -264,6 +264,6 @@ export default {
     // TODO: update 1 and 56
     1: '0xD06055869094bb28601535B84506aEE5766dcdDA',
     56: '0xD06055869094bb28601535B84506aEE5766dcdDA',
-    97: '0xeF4a2563F1cDc451bBb9B0d60175dd4D48025C1a',
+    97: '0xEBD03F14f2677F317F3b4Fab33b30dc1a84074A4',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

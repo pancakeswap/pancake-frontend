@@ -1,14 +1,12 @@
-import { Balance, Flex, Text } from '@pancakeswap/uikit'
+import { Balance, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { ReactNode } from 'react'
-import toNumber from 'lodash/toNumber'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 
-import { LockedFixedTag } from './LockedFixedTag'
-import { FixedStakingPool } from '../type'
-import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { PoolGroup } from '../type'
 
 function OverviewDataRow({ title, detail }) {
   return (
@@ -21,12 +19,13 @@ function OverviewDataRow({ title, detail }) {
   )
 }
 
-export function FixedStakingCardBody({ children, pool }: { pool: FixedStakingPool; children: ReactNode }) {
+export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; children: ReactNode }) {
   const { t } = useTranslation()
   const totalStakedAmount = getBalanceAmount(pool.totalDeposited, pool.token.decimals)
 
   const formattedUsdValueStaked = useStablecoinPriceAmount(pool.token, totalStakedAmount.toNumber())
-  const { boostAPR, lockAPR } = useFixedStakeAPR(pool)
+  const minAPR = new Percent(pool.minLockDayPercent, 1000000000).multiply(365)
+  const maxAPR = new Percent(pool.maxLockDayPercent, 1000000000).multiply(365)
 
   return (
     <>
@@ -34,12 +33,21 @@ export function FixedStakingCardBody({ children, pool }: { pool: FixedStakingPoo
         title={t('APR:')}
         detail={
           <Text>
-            {lockAPR.toSignificant(2)}% ~ {boostAPR.toSignificant(2)}%
+            {minAPR.toSignificant(2)}% ~ {maxAPR.toSignificant(2)}%
           </Text>
         }
       />
 
-      <OverviewDataRow title={t('Lock Periods:')} detail={<LockedFixedTag>{pool.lockPeriod}D</LockedFixedTag>} />
+      <OverviewDataRow
+        title={t('Lock Periods:')}
+        detail={
+          <ButtonMenu activeIndex={4} scale="sm" variant="subtle">
+            {pool.pools.map((p) => (
+              <ButtonMenuItem>{p.lockPeriod}D</ButtonMenuItem>
+            ))}
+          </ButtonMenu>
+        }
+      />
 
       <OverviewDataRow
         title={t('Total Staked:')}
