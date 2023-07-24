@@ -27,7 +27,8 @@ const ifos: Ifo[] = [
     tokenOfferingPrice: 0.06,
     version: 3.2,
     twitterUrl: 'https://twitter.com/SableFinance',
-    description: 'Sable Finance is a decentralized stablecoin protocol',
+    description:
+      'Sable Finance is a decentralized stablecoin protocol that allows users to draw interest-free loans, minting USDS, a USD-pegged stablecoin.',
     vestingTitle:
       '$SABLE is the secondary token issued by Sable Finance, enabling users to capture fee revenue and participate in governance. $SABLE will also be emitted to Stability Providers and Frontend Operators.',
   },
