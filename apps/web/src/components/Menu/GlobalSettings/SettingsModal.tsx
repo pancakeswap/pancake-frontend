@@ -172,8 +172,8 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                           <>
                             <Text>{t('Automatic risk scanning for the selected token')}</Text>
                             <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
-                            <Link style={{ display: 'inline' }} ml="4px" external href="https://www.avengerdao.org">
-                              AvengerDAO
+                            <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
+                              HashDit
                             </Link>
                             <Text my="8px">
                               {t(

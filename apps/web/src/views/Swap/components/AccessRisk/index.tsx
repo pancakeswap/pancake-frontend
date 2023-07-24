@@ -31,12 +31,12 @@ interface AccessRiskProps {
 }
 
 const TOKEN_RISK_T = {
+  [TOKEN_RISK.SOME_RISK]: <Trans>Some Risk</Trans>,
   [TOKEN_RISK.VERY_LOW]: <Trans>Very Low Risk</Trans>,
   [TOKEN_RISK.LOW]: <Trans>Low Risk</Trans>,
-  [TOKEN_RISK.LOW_MEDIUM]: <Trans>Medium Risk</Trans>,
   [TOKEN_RISK.MEDIUM]: <Trans>Medium Risk</Trans>,
   [TOKEN_RISK.HIGH]: <Trans>High Risk</Trans>,
-  [TOKEN_RISK.VERY_HIGH]: <Trans>Very High Risk</Trans>,
+  [TOKEN_RISK.SIGNIFICANT]: <Trans>Significant Risk</Trans>,
   [TOKEN_RISK.UNKNOWN]: <Trans>Unknown Risk</Trans>,
 } as const
 
@@ -116,17 +116,45 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text>
-        {t(
-          'The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!',
-        )}
-      </Text>
-      <Flex mt="4px">
-        <Text>{t('Powered by')}</Text>
-        <Link ml="4px" external href="https://www.hashdit.io/en">
-          {t('Hashdit.')}
-        </Link>
-      </Flex>
+      {error ? (
+        <Text as="span">{t('Risk scanning failed. Press the button to retry.')}</Text>
+      ) : (
+        <>
+          <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
+          <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
+            HashDit
+          </Link>
+          {tokenInLists || data?.riskLevel > TOKEN_RISK.MEDIUM ? (
+            <>
+              <Text my="8px">
+                {t(
+                  'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
+                )}
+              </Text>
+              <Flex mt="4px">
+                <Text>{t('Learn more about risk rating here.')}</Text>
+                <Link ml="4px" external href="https://hashdit.github.io/hashdit/docs/risk-level-description">
+                  {t('here.')}
+                </Link>
+              </Flex>
+            </>
+          ) : (
+            <>
+              <Text ml="4px" as="span">
+                {t('is reporting a risk level of')} <b>{TOKEN_RISK_T[data?.riskLevel] || 'Unknown'}</b>
+              </Text>
+              <Text mt="4px">
+                {t(
+                  'However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.',
+                )}
+              </Text>
+              <Flex mt="4px">
+                <Text bold>{t('Please proceed with caution and always do your own research.')}</Text>
+              </Flex>
+            </>
+          )}
+        </>
+      )}
     </>,
     { placement: 'bottom' },
   )
@@ -141,13 +169,26 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     return undefined
   }, [data, tokenInLists])
 
+  const tagColor = useMemo(() => {
+    if (data.riskLevel > TOKEN_RISK.MEDIUM) {
+      return 'failure'
+    }
+    if (data.riskLevel >= TOKEN_RISK.SOME_RISK && data.riskLevel <= TOKEN_RISK.VERY_LOW) {
+      return 'primary'
+    }
+    if (data.riskLevel > TOKEN_RISK.VERY_LOW && data.riskLevel < TOKEN_RISK.HIGH) {
+      return 'warning'
+    }
+    return 'textDisabled'
+  }, [data.riskLevel])
+
   if (data) {
     const hasRiskValue = TOKEN_RISK_T[riskLevel]
     if (!hasRiskValue) return null
     return (
       <Flex justifyContent="flex-end">
         <div ref={targetRef} style={{ userSelect: 'none' }}>
-          <Tag variant={data.riskLevel > TOKEN_RISK.MEDIUM ? 'failure' : !tokenInLists ? 'textDisabled' : 'primary'}>
+          <Tag variant={tagColor}>
             <Text bold small color="invertedContrast">
               {hasRiskValue}
             </Text>

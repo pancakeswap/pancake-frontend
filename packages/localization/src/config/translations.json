@@ -1901,7 +1901,6 @@
   "0.0001 CAKE required for enabling extension": "0.0001 CAKE required for enabling extension",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.",
   "Unknown Risk": "Unknown Risk",
-  "Very High Risk": "Very High Risk",
   "High Risk": "High Risk",
   "Medium Risk": "Medium Risk",
   "Low Risk": "Low Risk",
@@ -2635,7 +2634,11 @@
   "For more information, please refer to Alchemix’s": "For more information, please refer to Alchemix’s",
   "and await further updates from the team": "and await further updates from the team",
   "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the",
-  "Powered by": "Powered by",
-  "Hashdit.": "Hashdit.",
-  "The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!": "The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!"
+  "Learn more about risk rating here.": "Learn more about risk rating here.",
+  "is reporting a risk level of": "is reporting a risk level of",
+  "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research.",
+  "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.",
+  "Some Risk": "Some Risk",
+  "Significant Risk": "Significant Risk",
+  "Risk scanning failed. Press the button to retry.": "Risk scanning failed. Press the button to retry."
 }

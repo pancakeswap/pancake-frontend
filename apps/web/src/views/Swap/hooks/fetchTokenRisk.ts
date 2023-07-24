@@ -4,12 +4,12 @@ import { ACCESS_RISK_API } from 'config/constants/endpoints'
 
 export const TOKEN_RISK = {
   UNKNOWN: -1,
-  VERY_LOW: 0,
-  LOW: 1,
-  LOW_MEDIUM: 2,
+  SOME_RISK: 0,
+  VERY_LOW: 1,
+  LOW: 2,
   MEDIUM: 3,
   HIGH: 4,
-  VERY_HIGH: 5,
+  SIGNIFICANT: 5,
 } as const
 
 export interface RiskTokenInfo {
