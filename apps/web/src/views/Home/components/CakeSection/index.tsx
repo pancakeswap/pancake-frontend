@@ -58,6 +58,7 @@ export const CakeSectionMainBox = styled.div`
   width: 100%;
   margin-top: 50px;
   height: 400px;
+  margin-bottom: 40px;
 `
 export const CakeSectionLeftBox = styled.div`
   display: flex;
