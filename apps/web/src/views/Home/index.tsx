@@ -1,11 +1,6 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import { PageSection } from '@pancakeswap/uikit'
-import Container from 'components/Layout/Container'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { useAccount } from 'wagmi'
 import MultipleBanner from './components/Banners/MultipleBanner'
 import CakeDataRow from './components/CakeDataRow'
 import CakeSection from './components/CakeSection'
@@ -14,10 +9,7 @@ import EcoSystemSection from './components/EcoSystemSection'
 import Footer from './components/Footer'
 import Hero from './components/Hero'
 import MetricsSection from './components/MetricsSection'
-import SalesSection from './components/SalesSection'
-import { cakeSectionData } from './components/SalesSection/data'
 import { NewsSection } from './components/NewsSection'
-import UserBanner from './components/UserBanner'
 import {
   InnerWedgeWrapper,
   OuterWedgeWrapper,
@@ -34,30 +26,9 @@ const StyledHeroSection = styled(PageSection)`
   }
 `
 
-const UserBannerWrapper = styled(Container)`
-  z-index: 1;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-  padding-left: 0px;
-  padding-right: 0px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-`
-
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
-  const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
-
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
-
-  const { t } = useTranslation()
 
   return (
     <>
@@ -104,12 +75,6 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        {account && chainId === ChainId.BSC && (
-          <UserBannerWrapper>
-            <UserBanner />
-          </UserBannerWrapper>
-        )}
-        <MultipleBanner />
         <Hero />
       </StyledHeroSection>
       <PageSection
