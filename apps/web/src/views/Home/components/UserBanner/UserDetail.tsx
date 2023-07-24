@@ -34,8 +34,8 @@ const Mobile = styled(Flex)`
 `
 
 const Sticker = styled(Flex)`
-  height: 92px;
-  width: 92px;
+  height: 120px;
+  width: 120px;
   background-color: ${({ theme }) => theme.colors.invertedContrast};
   border: 3px solid ${({ theme }) => theme.colors.invertedContrast};
   border-radius: ${({ theme }) => theme.radii.circle};
