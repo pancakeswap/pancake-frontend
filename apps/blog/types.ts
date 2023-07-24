@@ -42,6 +42,8 @@ export interface ResponseArticleDataType {
     image: {
       data: ArticleImageType[]
     }
+    newsOutBoundLink: string
+    newsFromPlatform: string
   }
 }
 

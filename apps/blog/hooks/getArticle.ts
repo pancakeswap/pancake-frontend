@@ -45,6 +45,8 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
       publishedAt: '',
       description: '',
       categories: [],
+      newsOutBoundLink: '',
+      newsFromPlatform: '',
     }
   }
 }
@@ -53,6 +55,11 @@ export const getCategories = async (): Promise<Categories[]> => {
   try {
     const response = await fetchAPI('/categories', {
       fields: 'id,name',
+      filters: {
+        name: {
+          $not: 'News',
+        },
+      },
     })
 
     return (response.data as ResponseCategoriesType[]).map((category) => ({
