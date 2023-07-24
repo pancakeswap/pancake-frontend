@@ -80,6 +80,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
+        <MultipleBanner />
         <Hero />
       </StyledHeroSection>
       <PageSection
