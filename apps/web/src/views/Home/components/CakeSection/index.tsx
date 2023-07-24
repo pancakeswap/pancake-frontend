@@ -57,23 +57,26 @@ export const CakeSectionMainBox = styled.div`
   display: flex;
   width: 100%;
   margin-top: 50px;
+  height: 400px;
 `
 export const CakeSectionLeftBox = styled.div`
   display: flex;
   flex-grow: 1;
+  flex-shrink: 0;
   flex-direction: column;
   max-width: 33%;
 `
 export const CakeSectionRightBox = styled.div`
   display: flex;
   flex-grow: 1;
+  flex-shrink: 0;
   flex-direction: column;
+  justify-content: end;
   max-width: 33%;
 `
 
 export const CakeSectionCenterBox = styled.div`
-  display: flex;
-  flex-grow: 0;
+  margin-top: 20px;
 `
 
 const CakeSection: React.FC = () => {
