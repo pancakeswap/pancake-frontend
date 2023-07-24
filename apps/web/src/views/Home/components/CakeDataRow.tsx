@@ -55,9 +55,7 @@ const Grid = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-areas:
-      'a b c'
-      'd e f';
+    grid-template-areas: 'a b d e f';
     grid-gap: 32px;
     grid-template-columns: repeat(3, auto);
   }
@@ -132,15 +130,20 @@ const CakeDataRow = () => {
   return (
     <Grid>
       <Flex flexDirection="column" style={{ gridArea: 'a' }}>
-        <Text color="textSubtle">{t('Circulating Supply')}</Text>
+        <Text color="secondary" bold>
+          {t('Circulating Supply')}
+        </Text>
         {circulatingSupply ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={circulatingSupply} />
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
+        <Text color="secondary">{t('Unit')}</Text>
       </Flex>
       <StyledColumn noMobileBorder style={{ gridArea: 'b' }}>
-        <Text color="textSubtle">{t('Total supply')}</Text>
+        <Text color="secondary" bold>
+          {t('Total supply')}
+        </Text>
         {cakeSupply ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
         ) : (
@@ -149,36 +152,46 @@ const CakeDataRow = () => {
             <Skeleton height={24} width={126} my="4px" />
           </>
         )}
+        <Text color="secondary">{t('Unit')}</Text>
       </StyledColumn>
-      <StyledColumn noMobileBorder style={{ gridArea: 'c' }}>
+      {/* <StyledColumn noMobileBorder style={{ gridArea: 'c' }}>
         <Text color="textSubtle">{t('Max Supply')}</Text>
 
         <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
-      </StyledColumn>
+      </StyledColumn> */}
       <StyledColumn noDesktopBorder style={{ gridArea: 'd' }}>
-        <Text color="textSubtle">{t('Market cap')}</Text>
+        <Text color="secondary" bold>
+          {t('Market cap')}
+        </Text>
         {mcap?.gt(0) && mcapString ? (
           <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
+        <Text color="secondary">{t('Unit')}</Text>
       </StyledColumn>
       <StyledColumn style={{ gridArea: 'e' }}>
-        <Text color="textSubtle">{t('Burned to date')}</Text>
+        <Text color="secondary" bold>
+          {t('Burned to date')}
+        </Text>
         {burnedBalance ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
+        <Text color="secondary">{t('Unit')}</Text>
       </StyledColumn>
       <StyledColumn style={{ gridArea: 'f' }}>
-        <Text color="textSubtle">{t('Current emissions')}</Text>
+        <Text color="secondary" bold>
+          {t('Current emissions')}
+        </Text>
 
         {emissionsPerBlock ? (
           <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: formatNumber(emissionsPerBlock) })}</Heading>
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
+        <Text color="secondary">{t('Unit')}</Text>
       </StyledColumn>
     </Grid>
   )
