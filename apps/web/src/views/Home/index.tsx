@@ -1,12 +1,13 @@
-import { PageSection } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, PageSection, Text } from '@pancakeswap/uikit'
 import { useAnniversaryEffect } from 'hooks/useAnniversaryEffect'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
+import MultipleBanner from './components/Banners/MultipleBanner'
 import CakeDataRow from './components/CakeDataRow'
 import CakeSection from './components/CakeSection'
 import CommunitySection from './components/CommunitySection'
 import EcoSystemSection from './components/EcoSystemSection'
-import { useTranslation } from '@pancakeswap/localization'
 import Footer from './components/Footer'
 import Hero from './components/Hero'
 import MetricsSection from './components/MetricsSection'
@@ -30,11 +31,8 @@ const StyledHeroSection = styled(PageSection)`
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
-
   const { t } = useTranslation()
-
   useAnniversaryEffect()
-
   return (
     <>
       <style jsx global>
@@ -128,6 +126,12 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
         <CakeSection />
+        <Flex style={{ gap: 5 }}>
+          <Text bold>{t('CAKE')}</Text>
+          <Text bold color="secondary">
+            {t('Figures')}
+          </Text>
+        </Flex>
         <CakeDataRow />
         <OuterWedgeWrapper>
           <InnerWedgeWrapper id="bottom-wedge4-2">
