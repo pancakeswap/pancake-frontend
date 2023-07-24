@@ -103,20 +103,9 @@ const Footer = () => {
         </FloatingPancakesWrapper>
       )}
       <Wrapper>
-        <Heading mb="24px" scale="xl" color="white">
-          {t('Start in seconds.')}
+        <Heading mb="24px" scale="xl" color="white" width="550px">
+          {t("Trade and Earn Crypto on Ev3ryone's Favourite D3X")}
         </Heading>
-        <Text textAlign="center" color="white">
-          {t('Connect your crypto wallet to start using the app in seconds.')}
-        </Text>
-        <Text mb="24px" bold color="white">
-          {t('No registration needed.')}
-        </Text>
-
-        <Link external href="https://docs.pancakeswap.finance/">
-          {t('Learn how to start')}
-          <OpenNewIcon color="primary" ml="4px" />
-        </Link>
         {!account && <ConnectWalletButton mt="24px" />}
       </Wrapper>
     </>
