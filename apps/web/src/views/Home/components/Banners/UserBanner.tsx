@@ -17,12 +17,7 @@ const StyledInner = styled(S.Inner)`
   }
 `
 
-const PerpetualBanner = () => {
-  const { t } = useTranslation()
-  const { isDesktop, isMobile } = useMatchBreakpoints()
-  const { isDark } = useTheme()
-  const { chainId } = useActiveChainId()
-
+const UserBanner = () => {
   return (
     <S.Wrapper
       style={{
@@ -31,38 +26,9 @@ const PerpetualBanner = () => {
     >
       <StyledInner>
         <UserInfoBanner />
-        {/* <S.LeftWrapper>
-          <S.StyledSubheading ref={headerRef}>{t('Perpetual Futures')}</S.StyledSubheading>
-          <Header width={['160px', '160px', 'auto']}>{t('Up to 100× Leverage')}</Header>
-          <Link
-            href={perpetualUrl}
-            external
-            onClick={(e) => {
-              if (!userNotUsCitizenAcknowledgement) {
-                e.stopPropagation()
-                e.preventDefault()
-                onUSCitizenModalPresent()
-              }
-            }}
-          >
-            <Button>
-              <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {t('Trade Now')}
-              </Text>
-              <ArrowForwardIcon color="invertedContrast" />
-            </Button>
-          </Link>
-        </S.LeftWrapper>
-        <RightWrapper>
-          {isDesktop ? (
-            <Image src={perpetualImage} alt="PerpetualBanner" width={392} height={232} placeholder="blur" />
-          ) : (
-            <Image src={perpetualMobileImage} alt="PerpetualBanner" width={208} height={208} placeholder="blur" />
-          )}
-        </RightWrapper> */}
       </StyledInner>
     </S.Wrapper>
   )
 }
 
-export default memo(PerpetualBanner)
+export default memo(UserBanner)
