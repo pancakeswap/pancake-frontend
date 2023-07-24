@@ -51,8 +51,8 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 58,
-    token0: bscTokens.uni,
-    token1: bscTokens.bnb,
+    token0: bscTokens.bnb,
+    token1: bscTokens.uni,
     lpAddress: '0x647D99772863e09f47435782cbb6C96eC4A75f12',
     feeAmount: FeeAmount.MEDIUM,
   },
@@ -65,8 +65,8 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 56,
-    token0: bscTokens.btcb,
-    token1: bscTokens.usdt,
+    token0: bscTokens.usdt,
+    token1: bscTokens.btcb,
     lpAddress: '0x6ee3eE9C3395BbD136B6076A70Cb6cFF241c0E24',
     feeAmount: FeeAmount.MEDIUM,
   },
