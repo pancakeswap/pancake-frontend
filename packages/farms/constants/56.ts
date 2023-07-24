@@ -43,6 +43,48 @@ export const farmsV3 = defineFarmV3Configs([
   },
   // keep those farms on top
   {
+    pid: 59,
+    token0: bscTokens.tusd,
+    token1: bscTokens.busd,
+    lpAddress: '0xdf0c1C30e8C1aE3f189f6E6ef248d71977F7BE29',
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 58,
+    token0: bscTokens.wbnb,
+    token1: bscTokens.uni,
+    lpAddress: '0x647D99772863e09f47435782cbb6C96eC4A75f12',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 57,
+    token0: bscTokens.eth,
+    token1: bscTokens.usdt,
+    lpAddress: '0x66E9AcBA7C3a82C8EE02fAF3E325Dd55D6581a8c',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 56,
+    token0: bscTokens.usdt,
+    token1: bscTokens.btcb,
+    lpAddress: '0x6ee3eE9C3395BbD136B6076A70Cb6cFF241c0E24',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 55,
+    token0: bscTokens.btcb,
+    token1: bscTokens.wbnb,
+    lpAddress: '0x6bbc40579ad1BBD243895cA0ACB086BB6300d636',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 54,
+    token0: bscTokens.eth,
+    token1: bscTokens.wbnb,
+    lpAddress: '0xD0e226f674bBf064f54aB47F42473fF80DB98CBA',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 53,
     token0: bscTokens.eqb,
     token1: bscTokens.bnb,
