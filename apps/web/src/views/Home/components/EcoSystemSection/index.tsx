@@ -123,7 +123,7 @@ const EcoSystemSection: React.FC = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
-      <Text fontSize="40px" color={theme.colors.secondary}>
+      <Text fontSize="40px" bold color={theme.colors.secondary}>
         {t('Discover the Ecosystem')}
       </Text>
       <CardWrapper>

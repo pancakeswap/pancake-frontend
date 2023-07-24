@@ -6,10 +6,10 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   border-radius: 32px;
-  border: 1px solid var(--dark-bg-bg-cardborder, #383241);
-  background: var(--dark-bg-bg-card, #27262c);
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   /* Card/Dark Drop Shadow */
-  box-shadow: 0px 2px 0px 0px #383241;
+  box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
   padding: 24px;
   width: 355px;
   height: 338px;
