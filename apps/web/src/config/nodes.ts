@@ -44,7 +44,7 @@ export const PUBLIC_NODES = {
   [ChainId.BSC]: [
     // process.env.NEXT_PUBLIC_NODE_PRODUCTION,
     'https://devnet.pancakeswap.ai',
-    getNodeRealUrlV2(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
+    // getNodeRealUrlV2(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
   ].filter(Boolean),

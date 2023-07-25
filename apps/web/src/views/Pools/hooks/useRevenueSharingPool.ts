@@ -7,6 +7,7 @@ import { Address } from 'viem'
 import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
+import { useInitialBlockTimestamp } from 'state/block/hooks'
 
 interface RevenueSharingPool {
   balanceOfAt: string
@@ -28,10 +29,13 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const { account, chainId } = useAccountActiveChain()
   const contract = useRevenueSharingPoolContract({ chainId })
   const contractAddress = getRevenueSharingPoolAddress(chainId)
+  const blockTimestamp = useInitialBlockTimestamp()
+  console.log('blockTimestamp', blockTimestamp)
 
   const { data } = useSWR(account && chainId && ['/revenue-sharing-pool', account, chainId], async () => {
     try {
-      const now = Math.floor(Date.now() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+      const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+      // const now = Math.floor(Date.now() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
       const revenueCalls = [
         {
           functionName: 'balanceOfAt',
