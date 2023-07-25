@@ -1,6 +1,6 @@
 type AnyAsyncFunction = (...args: any[]) => Promise<any>
 
-interface AsyncCall<F extends AnyAsyncFunction> {
+export interface AsyncCall<F extends AnyAsyncFunction> {
   asyncFn: F
 
   // In millisecond
