@@ -30,6 +30,14 @@ export const livePools: SerializedPool[] = [
 // known finished pools
 export const finishedPools: SerializedPool[] = [
   {
+    sousId: 5,
+    stakingToken: ethereumTokens.cake,
+    earningToken: ethereumTokens.rpl,
+    contractAddress: '0x3f0bCCa8f5aA37e184B22e3A2ca8C292fe6B716B',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.0005093',
+  },
+  {
     sousId: 4,
     stakingToken: ethereumTokens.cake,
     earningToken: ethereumTokens.rpl,
