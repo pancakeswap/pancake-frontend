@@ -32,7 +32,7 @@ const Container = styled(ModalContainer)`
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
-  max-height: 60vh;
+  max-height: 63vh;
 `
 
 interface BenefitsModalProps {
