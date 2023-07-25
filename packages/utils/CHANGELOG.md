@@ -1,5 +1,15 @@
 # @pancakeswap/utils
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [500adb4f8]
+  - @pancakeswap/tokens@0.1.6
+  - @pancakeswap/awgmi@0.1.5
+  - @pancakeswap/localization@2.0.3
+  - @pancakeswap/token-lists@0.0.8
+
 ## 2.0.2
 
 ### Patch Changes
