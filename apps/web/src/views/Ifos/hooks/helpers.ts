@@ -22,4 +22,24 @@ export const getStatus = (currentBlock: number, startBlock: number, endBlock: nu
   return 'idle'
 }
 
+export const getStatusByTimestamp = (now: number, startTimestamp?: number, endTimestamp?: number): IfoStatus => {
+  if (!startTimestamp || !endTimestamp) {
+    return 'idle'
+  }
+
+  if (now < startTimestamp) {
+    return 'coming_soon'
+  }
+
+  if (now >= startTimestamp && now <= endTimestamp) {
+    return 'live'
+  }
+
+  if (now > endTimestamp) {
+    return 'finished'
+  }
+
+  return 'idle'
+}
+
 export default null

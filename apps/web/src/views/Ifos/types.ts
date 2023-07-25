@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 
 import { IfoStatus, PoolIds } from 'config/constants/types'
-import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract } from 'hooks/useContract'
+import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract, useIfoV7Contract } from 'hooks/useContract'
 
 // PoolCharacteristics retrieved from the contract
 export interface PoolCharacteristics {
@@ -26,12 +26,12 @@ export interface PoolCharacteristics {
 export interface PublicIfoData {
   isInitialized: boolean
   status: IfoStatus
-  blocksRemaining: number
+  blocksRemaining?: number
   secondsUntilStart: number
   progress: number
   secondsUntilEnd: number
-  startBlockNum: number
-  endBlockNum: number
+  startBlockNum?: number
+  endBlockNum?: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: bigint
@@ -41,6 +41,9 @@ export interface PublicIfoData {
   fetchIfoData: (currentBlock: number) => Promise<void>
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
+
+  startTimestamp?: number
+  endTimestamp?: number
 }
 
 export interface VestingInformation {
@@ -88,7 +91,7 @@ export type WalletIfoData = {
   fetchIfoData: () => Promise<void>
   resetIfoData: () => void
 } & WalletIfoState &
-  (WalletIfoDataV1 | WalletIfoDataV2 | WalletIfoDataV3)
+  (WalletIfoDataV1 | WalletIfoDataV2 | WalletIfoDataV3 | WalletIfoDataV7)
 
 type WalletIfoDataV1 = {
   version: 1
@@ -101,4 +104,8 @@ type WalletIfoDataV2 = {
 type WalletIfoDataV3 = {
   version: 3
   contract: ReturnType<typeof useIfoV3Contract>
+}
+type WalletIfoDataV7 = {
+  version: 7
+  contract: ReturnType<typeof useIfoV7Contract>
 }

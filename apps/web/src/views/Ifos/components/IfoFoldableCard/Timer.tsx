@@ -30,56 +30,64 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
   const { t } = useTranslation()
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
   const currentBlockTimestamp = useCurrentBlockTimestamp()
-  const hoursLeft =
-    publicIfoData.plannedStartTime && currentBlockTimestamp
-      ? (publicIfoData.plannedStartTime - Number(currentBlockTimestamp)) / 3600
-      : 0
+  const isLegacyBlockCountdown = typeof startBlockNum === 'number'
+  const now = isLegacyBlockCountdown ? currentBlockTimestamp : Math.floor(Date.now() / 1000)
+  const hoursLeft = publicIfoData.plannedStartTime && now ? (publicIfoData.plannedStartTime - Number(now)) / 3600 : 0
   const fallbackToBlockTimestamp = hoursLeft > USE_BLOCK_TIMESTAMP_UNTIL
-  let timeUntil
+  let timeUntil: ReturnType<typeof getTimePeriods> | undefined
   if (fallbackToBlockTimestamp) {
-    timeUntil = getTimePeriods(publicIfoData.plannedStartTime - Number(currentBlockTimestamp))
+    timeUntil = getTimePeriods(publicIfoData.plannedStartTime - Number(now))
   } else {
     timeUntil = getTimePeriods(secondsUntilStart)
   }
 
-  return (
-    <Flex justifyContent="center" position="relative">
-      {status === 'idle' ? (
-        <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
-      ) : (
-        <Link external href={getBlockExploreLink(startBlockNum, 'countdown', chainId)} color="secondary">
-          <FlexGap gap="8px" alignItems="center">
-            <Heading as="h3" scale="lg" color="secondary">
-              {t('Start in')}
-            </Heading>
-            <FlexGap gap="4px" alignItems="baseline">
-              {timeUntil.days ? (
-                <>
-                  <Heading scale="lg" color="secondary">
-                    {timeUntil.days}
-                  </Heading>
-                  <Text color="secondary">{t('d')}</Text>
-                </>
-              ) : null}
-              {timeUntil.days || timeUntil.hours ? (
-                <>
-                  <Heading color="secondary" scale="lg">
-                    {timeUntil.hours}
-                  </Heading>
-                  <Text color="secondary">{t('h')}</Text>
-                </>
-              ) : null}
+  const countdownDisplay =
+    status !== 'idle' ? (
+      <>
+        <FlexGap gap="8px" alignItems="center">
+          <Heading as="h3" scale="lg" color="secondary">
+            {t('Start in')}
+          </Heading>
+          <FlexGap gap="4px" alignItems="baseline">
+            {timeUntil.days ? (
+              <>
+                <Heading scale="lg" color="secondary">
+                  {timeUntil.days}
+                </Heading>
+                <Text color="secondary">{t('d')}</Text>
+              </>
+            ) : null}
+            {timeUntil.days || timeUntil.hours ? (
               <>
                 <Heading color="secondary" scale="lg">
-                  {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
+                  {timeUntil.hours}
                 </Heading>
-                <Text color="secondary">{t('m')}</Text>
+                <Text color="secondary">{t('h')}</Text>
               </>
-            </FlexGap>
+            ) : null}
+            <>
+              <Heading color="secondary" scale="lg">
+                {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
+              </Heading>
+              <Text color="secondary">{t('m')}</Text>
+            </>
           </FlexGap>
-          <TimerIcon ml="4px" color="secondary" />
-        </Link>
-      )}
+        </FlexGap>
+        <TimerIcon ml="4px" color="secondary" />
+      </>
+    ) : null
+
+  const countdown = isLegacyBlockCountdown ? (
+    <Link external href={getBlockExploreLink(startBlockNum, 'countdown', chainId)} color="secondary">
+      {countdownDisplay}
+    </Link>
+  ) : (
+    countdownDisplay
+  )
+
+  return (
+    <Flex justifyContent="center" position="relative">
+      {status === 'idle' ? <Skeleton animation="pulse" variant="rect" width="100%" height="48px" /> : countdown}
     </Flex>
   )
 }
@@ -110,43 +118,54 @@ const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) 
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { status, secondsUntilEnd, endBlockNum } = publicIfoData
+  const isLegacyBlockCountdown = typeof endBlockNum === 'number'
   const timeUntil = getTimePeriods(secondsUntilEnd)
+
+  const timeDisplay =
+    status !== 'idle' ? (
+      <>
+        <PocketWatchIcon width="42px" mr="8px" />
+        <FlexGap gap="8px" alignItems="center">
+          <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
+          <EndInHeading as="h3" scale="lg" color="white">
+            {t('Ends in')}
+          </EndInHeading>
+          <FlexGap gap="4px" alignItems="baseline">
+            {timeUntil.days ? (
+              <>
+                <GradientText scale="lg">{timeUntil.days}</GradientText>
+                <Text color="white">{t('d')}</Text>
+              </>
+            ) : null}
+            {timeUntil.days || timeUntil.hours ? (
+              <>
+                <GradientText scale="lg">{timeUntil.hours}</GradientText>
+                <Text color="white">{t('h')}</Text>
+              </>
+            ) : null}
+            <>
+              <GradientText scale="lg">
+                {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
+              </GradientText>
+              <Text color="white">{t('m')}</Text>
+            </>
+          </FlexGap>
+        </FlexGap>
+        <TimerIcon ml="4px" color="white" />
+      </>
+    ) : null
+
+  const timeNode = isLegacyBlockCountdown ? (
+    <Link external href={getBlockExploreLink(endBlockNum, 'countdown', chainId)} color="white">
+      {timeDisplay}
+    </Link>
+  ) : (
+    timeDisplay
+  )
+
   return (
     <Flex justifyContent="center" position="relative">
-      {status === 'idle' ? (
-        <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
-      ) : (
-        <Link external href={getBlockExploreLink(endBlockNum, 'countdown', chainId)} color="white">
-          <PocketWatchIcon width="42px" mr="8px" />
-          <FlexGap gap="8px" alignItems="center">
-            <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
-            <EndInHeading as="h3" scale="lg" color="white">
-              {t('Ends in')}
-            </EndInHeading>
-            <FlexGap gap="4px" alignItems="baseline">
-              {timeUntil.days ? (
-                <>
-                  <GradientText scale="lg">{timeUntil.days}</GradientText>
-                  <Text color="white">{t('d')}</Text>
-                </>
-              ) : null}
-              {timeUntil.days || timeUntil.hours ? (
-                <>
-                  <GradientText scale="lg">{timeUntil.hours}</GradientText>
-                  <Text color="white">{t('h')}</Text>
-                </>
-              ) : null}
-              <>
-                <GradientText scale="lg">
-                  {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
-                </GradientText>
-                <Text color="white">{t('m')}</Text>
-              </>
-            </FlexGap>
-          </FlexGap>
-          <TimerIcon ml="4px" color="white" />
-        </Link>
-      )}
+      {status === 'idle' ? <Skeleton animation="pulse" variant="rect" width="100%" height="48px" /> : timeNode}
     </Flex>
   )
 }
