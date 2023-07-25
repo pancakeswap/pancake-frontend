@@ -72,7 +72,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
             </TooltipText>
             <Box>
               <Balance display="inline-block" bold value={yourShare} decimals={2} />
-              <Balance display="inline-block" prefix="(" unit=")%" ml="4px" value={yourSharePercentage} decimals={2} />
+              <Balance display="inline-block" prefix="(" unit="%)" ml="4px" value={yourSharePercentage} decimals={2} />
             </Box>
           </Flex>
 
