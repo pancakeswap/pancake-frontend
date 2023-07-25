@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.2.0
+
+### Minor Changes
+
+- 8217b73c3: Add fallback configuration to v3 candidate pool fetcher
+
 ## 4.1.0
 
 ### Minor Changes
