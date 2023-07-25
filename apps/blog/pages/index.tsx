@@ -14,6 +14,13 @@ export async function getStaticProps() {
         populate: 'categories,image',
         sort: 'createAt:desc',
         pagination: { limit: 1 },
+        filters: {
+          categories: {
+            name: {
+              $not: 'News',
+            },
+          },
+        },
       },
     }),
     getArticle({
