@@ -22,7 +22,7 @@ const LockedBenefits = () => {
 
   const lockedApy = useMemo(() => getLockedApy(secondDuration), [getLockedApy, secondDuration])
   const boostFactor = useMemo(() => getBoostFactor(secondDuration), [getBoostFactor, secondDuration])
-  const delApy = useMemo(() => new BigNumber(boostFactor).div(boostFactor).toNumber(), [boostFactor])
+  const delApy = useMemo(() => new BigNumber(lockedApy).div(boostFactor).toNumber(), [lockedApy, boostFactor])
 
   const iCakeTooltipComponent = () => (
     <>
