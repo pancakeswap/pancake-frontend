@@ -60,7 +60,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
   )
 
   return (
-    <Card isActive>
+    <Card isActive mb={['24px', '24px', '24px', '0']}>
       <Box padding={16}>
         <Text fontSize={12} bold color="secondary" textTransform="uppercase">
           {t('revenue sharing')}

@@ -21,8 +21,8 @@ import { DeserializedLockedVaultUser } from 'state/types'
 
 const Container = styled(ModalContainer)`
   width: 100%;
-  max-height: '90vh';
-  overflow: 'hidden';
+  overflow: hidden;
+  max-height: 90vh;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 375px;
@@ -32,7 +32,12 @@ const Container = styled(ModalContainer)`
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
-  max-height: 63vh;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    max-height: 100vh;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-height: none;
+  }
 `
 
 interface BenefitsModalProps {
@@ -57,7 +62,7 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
           </Text>
           <ModalCloseButton onDismiss={onDismiss} />
         </RowBetween>
-        <ModalBody mt="16px">
+        <ModalBody mt="16px" width="100%" style={{ maxHeight: 'calc(100vh - 260px)' }}>
           <ScrollableContainer px="24px">
             <SharingPoolNameCell />
             <LockedBenefits />
