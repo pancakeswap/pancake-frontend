@@ -21,7 +21,14 @@ const useVCakeModal = () => {
 
   useSWR(
     account &&
-      (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && ['/use-v-cake-modal', account, isInitialization],
+      chainId === ChainId.BSC && [
+        '/use-v-cake-modal',
+        account,
+        chainId,
+        isInitialization,
+        cakeBenefitsFetchStatus,
+        cakeBenefits?.lockPosition,
+      ],
     () => {
       if (
         isInitialization === false &&
@@ -30,6 +37,12 @@ const useVCakeModal = () => {
       ) {
         onPresentViewJoinRevenueModal()
       }
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+      revalidateOnMount: true,
     },
   )
 }
