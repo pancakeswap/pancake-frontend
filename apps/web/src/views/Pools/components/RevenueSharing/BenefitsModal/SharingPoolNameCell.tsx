@@ -1,19 +1,20 @@
 import { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, Flex, LogoRoundIcon, Box, Balance } from '@pancakeswap/uikit'
-import useCakeBenefits from 'components/Menu/UserMenu/hooks/useCakeBenefits'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 
 const SharingPoolNameCell = () => {
   const { t } = useTranslation()
-  const cakePrice = usePriceCakeUSD()
-  const { data: cakeBenefits } = useCakeBenefits()
 
-  const cakeUsdValue = useMemo(
-    () => new BigNumber(cakeBenefits?.lockedCake).times(cakePrice).toNumber(),
-    [cakeBenefits?.lockedCake, cakePrice],
-  )
+  const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
+
+  const currentLockedAmountNumber = useMemo(() => {
+    return userData?.balance?.cakeAsNumberBalance
+  }, [userData?.balance?.cakeAsNumberBalance])
+
+  const usdValueStaked = useBUSDCakeAmount(currentLockedAmountNumber)
 
   return (
     <Flex mb="16px">
@@ -22,7 +23,7 @@ const SharingPoolNameCell = () => {
         <Text fontSize={12} color="secondary" bold lineHeight="110%" textTransform="uppercase">
           {t('CAKE locked')}
         </Text>
-        <Balance bold decimals={2} fontSize={20} lineHeight="110%" value={Number(cakeBenefits?.lockedCake)} />
+        <Balance bold decimals={2} fontSize={20} lineHeight="110%" value={currentLockedAmountNumber} />
         <Balance
           bold
           prefix="~ "
@@ -31,7 +32,7 @@ const SharingPoolNameCell = () => {
           fontWeight={400}
           lineHeight="110%"
           color="textSubtle"
-          value={cakeUsdValue}
+          value={usdValueStaked}
         />
       </Box>
     </Flex>
