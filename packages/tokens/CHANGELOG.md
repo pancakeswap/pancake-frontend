@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.1.6
+
+### Patch Changes
+
+- 500adb4f8: Add new tokens
+  - @pancakeswap/token-lists@0.0.8
+
 ## 0.1.5
 
 ### Patch Changes
