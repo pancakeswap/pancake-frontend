@@ -71,8 +71,23 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               {t('Your shares')}
             </TooltipText>
             <Box>
-              <Balance display="inline-block" bold value={yourShare} decimals={2} />
-              <Balance display="inline-block" prefix="(" unit="%)" ml="4px" value={yourSharePercentage} decimals={2} />
+              {yourShare === 0 ? (
+                <Text bold color="failure">
+                  0
+                </Text>
+              ) : (
+                <>
+                  <Balance display="inline-block" bold value={yourShare} decimals={2} />
+                  <Balance
+                    display="inline-block"
+                    prefix="("
+                    unit="%)"
+                    ml="4px"
+                    value={yourSharePercentage}
+                    decimals={2}
+                  />
+                </>
+              )}
             </Box>
           </Flex>
 
@@ -80,7 +95,9 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
             <TooltipText color="textSubtle" fontSize="14px" mr="auto">
               {t('Next distribution')}
             </TooltipText>
-            <Text bold>{t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}</Text>
+            <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
+              {t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}
+            </Text>
           </Flex>
           {showExpireSoonWarning && (
             <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
