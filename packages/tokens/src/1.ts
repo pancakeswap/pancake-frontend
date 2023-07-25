@@ -248,4 +248,12 @@ export const ethereumTokens = {
     'Pendle',
     'https://www.pendle.finance/',
   ),
+  wld: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x163f8C2467924be0ae7B5347228CABF260318753',
+    18,
+    'WLD',
+    'Worldcoin',
+    'https://worldcoin.org/',
+  ),
 }
