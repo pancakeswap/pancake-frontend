@@ -30,7 +30,6 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const contract = useRevenueSharingPoolContract({ chainId })
   const contractAddress = getRevenueSharingPoolAddress(chainId)
   const blockTimestamp = useInitialBlockTimestamp()
-  console.log('blockTimestamp', blockTimestamp)
 
   const { data } = useSWR(account && chainId && ['/revenue-sharing-pool', account, chainId], async () => {
     try {

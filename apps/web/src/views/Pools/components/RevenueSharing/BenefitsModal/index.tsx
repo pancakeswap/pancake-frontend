@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import {
@@ -12,6 +13,7 @@ import {
   AutoColumn,
   Pool,
 } from '@pancakeswap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import LockedBenefits from 'views/Pools/components/RevenueSharing/BenefitsModal/LockedBenefits'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
 import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
@@ -52,6 +54,21 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
   onDismiss,
 }) => {
   const { t } = useTranslation()
+  const { account, connector } = useActiveWeb3React()
+
+  useEffect(() => {
+    const handleEvent = () => {
+      onDismiss?.()
+    }
+
+    connector.addListener('disconnect', handleEvent)
+    connector.addListener('change', handleEvent)
+
+    return () => {
+      connector.removeListener('disconnect', handleEvent)
+      connector.removeListener('change', handleEvent)
+    }
+  }, [account, connector, onDismiss])
 
   return (
     <Container>
