@@ -112,7 +112,6 @@ export class WalletConnectConnector extends Connector<WalletConnectProvider, Wal
   }
 
   async connect({ chainId, pairingTopic }: ConnectConfig = {}) {
-    console.log(pairingTopic)
     try {
       let targetChainId = chainId
       if (!targetChainId) {
@@ -167,8 +166,7 @@ export class WalletConnectConnector extends Connector<WalletConnectProvider, Wal
     }
   }
 
-  async connectWithAuthClient({ chainId, pairingTopic }: ConnectConfig = {}) {
-    console.log('hola')
+  async connectWithAuthClient({ chainId }: ConnectConfig = {}) {
     if (!this.#provider) throw new Error('No connected')
     try {
       let targetChainId = chainId
@@ -385,8 +383,8 @@ export class WalletConnectConnector extends Connector<WalletConnectProvider, Wal
   #setupPushListeners() {
     if (!this.#provider) return
     this.#removePushListeners()
-    this.#provider.pushClient.on('push_response', () => console.log('abdgw'))
-    this.#provider.pushClient.on('push_delete', () => console.log('abdgw'))
+    this.#provider.pushClient.on('push_response', () => null)
+    this.#provider.pushClient.on('push_delete', () => null)
     this.#provider.authClient.on('auth_response', this.handleNotifySubscribe)
   }
 
@@ -402,8 +400,8 @@ export class WalletConnectConnector extends Connector<WalletConnectProvider, Wal
 
   #removePushListeners() {
     if (!this.#provider) return
-    this.#provider.pushClient.removeListener('push_response', () => console.log('to be implemented'))
-    this.#provider.pushClient.removeListener('push_delete', () => console.log('to be implemented'))
+    this.#provider.pushClient.removeListener('push_response', () => null)
+    this.#provider.pushClient.removeListener('push_delete', () => null)
     this.#provider.authClient.removeListener('auth_response', this.handleNotifySubscribe)
   }
 
@@ -461,21 +459,17 @@ export class WalletConnectConnector extends Connector<WalletConnectProvider, Wal
     this.emit('connect', {})
   }
 
-  protected handleNotifySubscribe = async ({ params, topic }: any) => {
+  protected handleNotifySubscribe = async ({ params }: any) => {
     // console.log('resolved subscribe')
     // console.log('handled subscribe', params, topic)
 
-    ;(await this.getProvider())?.modal?.closeModal()
+    ;(await this.getProvider()).modal?.closeModal()
 
     if ('code' in params) {
       console.error(params)
-      return
     }
     if ('error' in params) {
       console.error(params.error)
-      return
     }
-
-    console.log('handled subscribe', params, topic)
   }
 }

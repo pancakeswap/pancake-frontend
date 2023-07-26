@@ -560,7 +560,6 @@ export class EthereumProvider implements IEthereumProvider {
   }
 
   protected async initialize(opts: EthereumProviderOptions) {
-    console.log(opts)
     this.rpc = this.getRpcConfig(opts)
     this.chainId = this.rpc.chains.length
       ? getEthereumChainId(this.rpc.chains)
