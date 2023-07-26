@@ -463,7 +463,8 @@ export class WalletConnectConnector extends Connector<WalletConnectProvider, Wal
     // console.log('resolved subscribe')
     // console.log('handled subscribe', params, topic)
 
-    ;(await this.getProvider()).modal?.closeModal()
+    const provider = await this.getProvider()
+    provider.modal?.closeModal()
 
     if ('code' in params) {
       console.error(params)
