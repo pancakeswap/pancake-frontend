@@ -19,7 +19,7 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 3,
-    lpAddress: '0x4A080D9488cE2C8258185d78852275D6d3c2820c',
+    lpAddress: '0xca06375be938a2d6eF311dfaFab7E326d55D23Cc',
     token0: polygonZkEvmTokens.usdt,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
