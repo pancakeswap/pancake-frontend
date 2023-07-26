@@ -27,4 +27,9 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
 ]
 
 // default lists to be 'active' aka searched across
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [PANCAKE_EXTENDED, PANCAKE_ETH_DEFAULT, PANCAKE_ETH_MM]
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = [
+  PANCAKE_EXTENDED,
+  PANCAKE_ETH_DEFAULT,
+  PANCAKE_ETH_MM,
+  PANCAKE_POLYGON_ZKEVM_DEFAULT,
+]
