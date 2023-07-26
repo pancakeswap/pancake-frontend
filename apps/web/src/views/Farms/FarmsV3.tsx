@@ -6,9 +6,9 @@ import {
   supportedChainIdV2,
   supportedChainIdV3,
 } from '@pancakeswap/farms'
-import { ChainId } from '@pancakeswap/sdk'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   ArrowForwardIcon,
   Box,
@@ -43,13 +43,14 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import styled from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
-import { FarmsV3Context } from './context'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
+import { FarmsV3Context } from './context'
 
 const BIG_INT_ZERO = new BigNumber(0)
 const BIG_INT_ONE = new BigNumber(1)
@@ -438,13 +439,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
+  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
+
   return (
     <FarmsV3Context.Provider value={providerValue}>
       <PageHeader>
         <Flex flexDirection="column">
-          <Box m="24px 0">
-            <FarmV3MigrationBanner />
-          </Box>
+          {isMigrationSupported && (
+            <Box m="24px 0">
+              <FarmV3MigrationBanner />
+            </Box>
+          )}
           <FarmFlexWrapper justifyContent="space-between">
             <Box style={{ flex: '1 1 100%' }}>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
