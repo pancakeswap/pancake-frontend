@@ -36,7 +36,7 @@ export const getTokenLogoURLByAddress = memoize(
 const chainName: { [key: number]: string } = {
   [ChainId.BSC]: "",
   [ChainId.ETHEREUM]: "eth",
-  [ChainId.POLYGON_ZKEVM]: "polygonzkevm",
+  [ChainId.POLYGON_ZKEVM]: "polygon-zkevm",
   [ChainId.ARBITRUM_ONE]: "arb",
 };
 
