@@ -170,17 +170,17 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   }, [data, tokenInLists])
 
   const tagColor = useMemo(() => {
-    if (data.riskLevel > TOKEN_RISK.MEDIUM) {
+    if (data?.riskLevel > TOKEN_RISK.MEDIUM) {
       return 'failure'
     }
-    if (data.riskLevel >= TOKEN_RISK.SOME_RISK && data.riskLevel <= TOKEN_RISK.VERY_LOW) {
+    if (data?.riskLevel >= TOKEN_RISK.SOME_RISK && data?.riskLevel <= TOKEN_RISK.VERY_LOW) {
       return 'primary'
     }
-    if (data.riskLevel > TOKEN_RISK.VERY_LOW && data.riskLevel < TOKEN_RISK.HIGH) {
+    if (data?.riskLevel > TOKEN_RISK.VERY_LOW && data?.riskLevel < TOKEN_RISK.HIGH) {
       return 'warning'
     }
     return 'textDisabled'
-  }, [data.riskLevel])
+  }, [data?.riskLevel])
 
   if (data) {
     const hasRiskValue = TOKEN_RISK_T[riskLevel]

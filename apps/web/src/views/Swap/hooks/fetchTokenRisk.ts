@@ -22,16 +22,11 @@ export interface RiskTokenInfo {
 }
 
 const fetchRiskApi = async (address: string, chainId: number) => {
-  const response = await fetch(ACCESS_RISK_API, {
-    method: 'post',
+  const response = await fetch(`${ACCESS_RISK_API}/${chainId}/${address}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      address,
-      chain_id: chainId,
-    }),
   })
 
   const result = await response.json()
@@ -40,14 +35,5 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   const riskApi = await fetchRiskApi(address, chainId)
-  const { has_result, request_id, risk_level, risk_level_description } = riskApi.data
-
-  return {
-    address,
-    chainId,
-    isSuccess: has_result,
-    riskLevel: risk_level,
-    requestId: request_id,
-    riskLevelDescription: risk_level_description,
-  }
+  return riskApi.data
 }
