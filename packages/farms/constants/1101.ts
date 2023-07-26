@@ -32,3 +32,5 @@ export const farmsV3 = defineFarmV3Configs([
     feeAmount: FeeAmount.MEDIUM,
   },
 ])
+
+export default farmsV3
