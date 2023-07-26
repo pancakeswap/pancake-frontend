@@ -474,6 +474,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 167,
+    lpSymbol: 'SABLE-BNB LP',
+    lpAddress: '0xa0D4e270D9EB4E41f7aB02337c21692D7eECCCB0',
+    token: bscTokens.sable,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 147,
     lpSymbol: 'axlUSDC-USDT LP',
     lpAddress: '0x1c7e5a3A72b6D94DE5Ec20812E3e68713978a584',
