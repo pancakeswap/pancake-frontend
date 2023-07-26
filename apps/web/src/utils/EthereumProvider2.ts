@@ -10,7 +10,13 @@ import { Core } from '@walletconnect/core'
 import AuthClient, { generateNonce } from '@walletconnect/auth-client'
 import SignClient from '@walletconnect/sign-client'
 // eslint-disable-next-line import/no-cycle
-import { IEthereumProvider as IProvider, IEthereumProviderEvents, RequestArguments } from './EthereumProvidertypes'
+import {
+  IEthereumProvider as IProvider,
+  IEthereumProviderEvents,
+  RequestArguments,
+  ProviderAccounts,
+} from './EthereumProvidertypes'
+
 const relayUrl = process.env.NEXT_PUBLIC_RELAY_URL || 'wss://relay.walletconnect.com'
 
 export const PROTOCOL = 'wc'
@@ -270,6 +276,7 @@ export class EthereumProvider implements IEthereumProvider {
   }
 
   public async request<T = unknown>(args: RequestArguments): Promise<T> {
+    // eslint-disable-next-line no-return-await
     return await this.signer.request(args, this.formatChainId(this.chainId))
   }
 
@@ -301,6 +308,7 @@ export class EthereumProvider implements IEthereumProvider {
     this.loadConnectOpts(opts)
     const { required, optional } = buildNamespaces(this.rpc)
     try {
+      // eslint-disable-next-line no-async-promise-executor
       const session = await new Promise<SessionTypes.Struct | undefined>(async (resolve, reject) => {
         if (this.rpc.showQrModal) {
           this.modal?.subscribeModal((state) => {
@@ -325,6 +333,7 @@ export class EthereumProvider implements IEthereumProvider {
             }),
             pairingTopic: opts?.pairingTopic,
           })
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           .then((session) => {
             resolve(session)
           })
@@ -346,25 +355,24 @@ export class EthereumProvider implements IEthereumProvider {
   }
 
   public async connectWithAuthClient(): Promise<void> {
-      
-      this.authClient
-        .request({
-          aud: window.location.href,
-          domain: window.location.hostname.split(".").slice(-2).join("."),
-          chainId: "eip155:1",
-          type: "eip4361",
-          nonce: generateNonce(),
-          statement: "Sign in with wallet.",
-        })
-        .then(async ({ uri }) => {
-          if (uri) {
-            await this.modal.openModal({
-              uri,
-              standaloneChains: ["eip155:1"],
-            });
-          }
-        });
-    }
+    this.authClient
+      .request({
+        aud: window.location.href,
+        domain: window.location.hostname.split('.').slice(-2).join('.'),
+        chainId: 'eip155:1',
+        type: 'eip4361',
+        nonce: generateNonce(),
+        statement: 'Sign in with wallet.',
+      })
+      .then(async ({ uri }) => {
+        if (uri && this.modal) {
+          await this.modal.openModal({
+            uri,
+            standaloneChains: ['eip155:1'],
+          })
+        }
+      })
+  }
 
   public async disconnect(): Promise<void> {
     if (this.session) {
@@ -393,6 +401,7 @@ export class EthereumProvider implements IEthereumProvider {
     return this
   }
 
+  // eslint-disable-next-line class-methods-use-this
   get isWalletConnect() {
     return true
   }
@@ -457,11 +466,11 @@ export class EthereumProvider implements IEthereumProvider {
       this.events.emit('push_delete', event)
     })
 
-    this.authClient.on("auth_response", ({ params, topic }: any) => {
+    this.authClient.on('auth_response', ({ params, topic }: any) => {
       this.events.emit('auth_response', { params, topic })
-       // do more checjing on accounts
-      this.modal.closeModal()
-})
+      // do more checjing on accounts
+      if (this.modal) this.modal.closeModal()
+    })
   }
 
   protected switchEthereumChain(chainId: number): void {
@@ -479,6 +488,7 @@ export class EthereumProvider implements IEthereumProvider {
     return `${this.namespace}:${chainId}`
   }
 
+  // eslint-disable-next-line class-methods-use-this
   protected parseChainId(chainId: string): number {
     return Number(chainId.split(':')[1])
   }
@@ -501,6 +511,7 @@ export class EthereumProvider implements IEthereumProvider {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   protected parseAccountId(account: string): { chainId: string; address: string } {
     const [namespace, reference, address] = account.split(':')
     const chainId = `${namespace}:${reference}`
@@ -549,15 +560,15 @@ export class EthereumProvider implements IEthereumProvider {
   }
 
   protected async initialize(opts: EthereumProviderOptions) {
-      console.log(opts)
+    console.log(opts)
     this.rpc = this.getRpcConfig(opts)
     this.chainId = this.rpc.chains.length
       ? getEthereumChainId(this.rpc.chains)
       : getEthereumChainId(this.rpc.optionalChains)
 
-      const core = new Core({
-            projectId: this.rpc.projectId,
-      })
+    const core = new Core({
+      projectId: this.rpc.projectId,
+    })
     const customeSignClient = await SignClient.init({
       core,
       projectId: this.rpc.projectId,
@@ -590,10 +601,12 @@ export class EthereumProvider implements IEthereumProvider {
     this.registerEventListeners()
     await this.loadPersistedSession()
     if (this.rpc.showQrModal) {
-      let WalletConnectModalClass
+      // @ts-ignore
+      let WalletConnectModalClass: typeof Web3Modal | null = null
       try {
-        const { WalletConnectModal } = await import('@walletconnect/modal')
-        WalletConnectModalClass = WalletConnectModal
+        const { Web3Modal } = await import('@web3modal/standalone')
+        // @ts-ignore
+        WalletConnectModalClass = Web3Modal
       } catch {
         throw new Error('To use QR modal, please install @walletconnect/modal package')
       }

@@ -15,8 +15,8 @@ import { EthereumProviderOptions } from './EthereumProvider2'
 import type WalletConnectProvider from './EthereumProvider2'
 
 export type StorageStoreData = {
-      state: { data?: ConnectorData }
-    }
+  state: { data?: ConnectorData }
+}
 
 type WalletConnectOptions = {
   /**
@@ -92,10 +92,7 @@ const STORE_KEY = 'store'
 const REQUESTED_CHAINS_KEY = 'requestedChains'
 const ADD_ETH_CHAIN_METHOD = 'wallet_addEthereumChain'
 
-export class WalletConnectConnector extends Connector<
-  WalletConnectProvider,
-  WalletConnectOptions
-> {
+export class WalletConnectConnector extends Connector<WalletConnectProvider, WalletConnectOptions> {
   readonly id = 'walletConnect'
 
   readonly name = 'WalletConnect'
@@ -115,14 +112,13 @@ export class WalletConnectConnector extends Connector<
   }
 
   async connect({ chainId, pairingTopic }: ConnectConfig = {}) {
-      console.log(pairingTopic)
+    console.log(pairingTopic)
     try {
       let targetChainId = chainId
       if (!targetChainId) {
         const store = this.storage?.getItem<StorageStoreData>(STORE_KEY)
         const lastUsedChainId = store?.state?.data?.chain?.id
-        if (lastUsedChainId && !this.isChainUnsupported(lastUsedChainId))
-          targetChainId = lastUsedChainId
+        if (lastUsedChainId && !this.isChainUnsupported(lastUsedChainId)) targetChainId = lastUsedChainId
         else targetChainId = this.chains[0]?.id
       }
       if (!targetChainId) throw new Error('No chains found on connector.')
@@ -172,7 +168,7 @@ export class WalletConnectConnector extends Connector<
   }
 
   async connectWithAuthClient({ chainId, pairingTopic }: ConnectConfig = {}) {
-      console.log('hola')
+    console.log('hola')
     if (!this.#provider) throw new Error('No connected')
     try {
       let targetChainId = chainId
@@ -186,10 +182,9 @@ export class WalletConnectConnector extends Connector<
 
       const provider = await this.getProvider()
 
-
       // If there no active session, or the chains are stale, connect.
       // this.emit('message', { type: 'authenticating notifations' })
-        await provider.connectWithAuthClient()
+      await provider.connectWithAuthClient()
 
       // session already exists so make sure returned address is the same
       const account = getAddress(await this.getAccount())
@@ -237,13 +232,8 @@ export class WalletConnectConnector extends Connector<
     return this.#provider!
   }
 
-  async getWalletClient({
-    chainId,
-  }: { chainId?: number } = {}): Promise<WalletClient> {
-    const [provider, account] = await Promise.all([
-      this.getProvider({ chainId }),
-      this.getAccount(),
-    ])
+  async getWalletClient({ chainId }: { chainId?: number } = {}): Promise<WalletClient> {
+    const [provider, account] = await Promise.all([this.getProvider({ chainId }), this.getAccount()])
     const chain = this.chains.find((x) => x.id === chainId)
     if (!provider) throw new Error('provider is required.')
     return createWalletClient({
@@ -255,10 +245,7 @@ export class WalletConnectConnector extends Connector<
 
   async isAuthorized() {
     try {
-      const [account, provider] = await Promise.all([
-        this.getAccount(),
-        this.getProvider(),
-      ])
+      const [account, provider] = await Promise.all([this.getAccount(), this.getProvider()])
       const isChainsStale = this.#isChainsStale()
 
       // If an account does not exist on the session, then the connector is unauthorized.
@@ -279,9 +266,9 @@ export class WalletConnectConnector extends Connector<
   }
 
   async switchChain(chainId: number) {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const chain = this.chains.find((chain) => chain.id === chainId)
-    if (!chain)
-      throw new SwitchChainError(new Error('chain not found on connector.'))
+    if (!chain) throw new SwitchChainError(new Error('chain not found on connector.'))
 
     try {
       const provider = await this.getProvider()
@@ -313,8 +300,7 @@ export class WalletConnectConnector extends Connector<
 
       return chain
     } catch (error) {
-      const message =
-        typeof error === 'string' ? error : (error as ProviderRpcError)?.message
+      const message = typeof error === 'string' ? error : (error as ProviderRpcError)?.message
       if (/user rejected request/i.test(message)) {
         throw new UserRejectedRequestError(error as Error)
       }
@@ -330,17 +316,10 @@ export class WalletConnectConnector extends Connector<
   }
 
   async #initProvider() {
-    const { EthereumProvider, OPTIONAL_EVENTS, OPTIONAL_METHODS } =
-      await import('./EthereumProvider2')
+    const { EthereumProvider, OPTIONAL_EVENTS, OPTIONAL_METHODS } = await import('./EthereumProvider2')
     const [defaultChain, ...optionalChains] = this.chains.map(({ id }) => id)
     if (defaultChain) {
-      const {
-        projectId,
-        showQrModal = true,
-        qrModalOptions,
-        metadata,
-        relayUrl,
-      } = this.options
+      const { projectId, showQrModal = true, qrModalOptions, metadata, relayUrl } = this.options
       this.#provider = await EthereumProvider.init({
         showQrModal,
         qrModalOptions,
@@ -349,12 +328,7 @@ export class WalletConnectConnector extends Connector<
         optionalEvents: OPTIONAL_EVENTS,
         chains: [defaultChain],
         optionalChains: optionalChains.length ? optionalChains : undefined,
-        rpcMap: Object.fromEntries(
-          this.chains.map((chain) => [
-            chain.id,
-            chain.rpcUrls.default.http[0]!,
-          ]),
-        ),
+        rpcMap: Object.fromEntries(this.chains.map((chain) => [chain.id, chain.rpcUrls.default.http[0]!])),
         metadata,
         relayUrl,
       })
@@ -392,50 +366,46 @@ export class WalletConnectConnector extends Connector<
     const connectorChains = this.chains.map(({ id }) => id)
     const namespaceChains = this.#getNamespaceChainsIds()
 
-    if (
-      namespaceChains.length &&
-      !namespaceChains.some((id) => connectorChains.includes(id))
-    )
-      return false
+    if (namespaceChains.length && !namespaceChains.some((id) => connectorChains.includes(id))) return false
 
     return !connectorChains.every((id) => requestedChains.includes(id))
   }
 
   #setupListeners() {
-      if (!this.#provider) return
-      this.#removeListeners()
-      this.#provider.on('accountsChanged', this.onAccountsChanged)
-      this.#provider.on('chainChanged', this.onChainChanged)
-      this.#provider.on('disconnect', this.onDisconnect)
-      this.#provider.on('session_delete', this.onDisconnect)
-      this.#provider.on('display_uri', this.onDisplayUri)
-      this.#provider.on('connect', this.onConnect)
-    }
-  
-    #setupPushListeners() {
-      if (!this.#provider) return
-      this.#removePushListeners()
-      this.#provider.pushClient.on('push_response', () => console.log('abdgw'))
-      this.#provider.pushClient.on('push_delete', () => console.log('abdgw'))
-      this.#provider.authClient.on('auth_response',  this.handleNotifySubscribe)
-    }
-  
-    #removeListeners() {
-      if (!this.#provider) return
-      this.#provider.removeListener('accountsChanged', this.onAccountsChanged)
-      this.#provider.removeListener('chainChanged', this.onChainChanged)
-      this.#provider.removeListener('disconnect', this.onDisconnect)
-      this.#provider.removeListener('session_delete', this.onDisconnect)
-      this.#provider.removeListener('display_uri', this.onDisplayUri)
-      this.#provider.removeListener('connect', this.onConnect)
-    }
-  
-    #removePushListeners() {
-      if (!this.#provider) return
-      this.#provider.pushClient.removeListener('push_response', () => console.log('to be implemented'))
-      this.#provider.pushClient.removeListener('push_delete', () => console.log('to be implemented'))
-      this.#provider.authClient.removeListener('auth_response',this.handleNotifySubscribe)
-}
+    if (!this.#provider) return
+    this.#removeListeners()
+    this.#provider.on('accountsChanged', this.onAccountsChanged)
+    this.#provider.on('chainChanged', this.onChainChanged)
+    this.#provider.on('disconnect', this.onDisconnect)
+    this.#provider.on('session_delete', this.onDisconnect)
+    this.#provider.on('display_uri', this.onDisplayUri)
+    this.#provider.on('connect', this.onConnect)
+  }
+
+  #setupPushListeners() {
+    if (!this.#provider) return
+    this.#removePushListeners()
+    this.#provider.pushClient.on('push_response', () => console.log('abdgw'))
+    this.#provider.pushClient.on('push_delete', () => console.log('abdgw'))
+    this.#provider.authClient.on('auth_response', this.handleNotifySubscribe)
+  }
+
+  #removeListeners() {
+    if (!this.#provider) return
+    this.#provider.removeListener('accountsChanged', this.onAccountsChanged)
+    this.#provider.removeListener('chainChanged', this.onChainChanged)
+    this.#provider.removeListener('disconnect', this.onDisconnect)
+    this.#provider.removeListener('session_delete', this.onDisconnect)
+    this.#provider.removeListener('display_uri', this.onDisplayUri)
+    this.#provider.removeListener('connect', this.onConnect)
+  }
+
+  #removePushListeners() {
+    if (!this.#provider) return
+    this.#provider.pushClient.removeListener('push_response', () => console.log('to be implemented'))
+    this.#provider.pushClient.removeListener('push_delete', () => console.log('to be implemented'))
+    this.#provider.authClient.removeListener('auth_response', this.handleNotifySubscribe)
+  }
 
   #setRequestedChainsIds(chains: number[]) {
     this.storage?.setItem(REQUESTED_CHAINS_KEY, chains)
@@ -451,9 +421,7 @@ export class WalletConnectConnector extends Connector<
     if (!namespaces) return []
 
     const normalizedNamespaces = normalizeNamespaces(namespaces)
-    const chainIds = normalizedNamespaces[NAMESPACE]?.chains?.map((chain) =>
-      parseInt(chain.split(':')[1] || ''),
-    )
+    const chainIds = normalizedNamespaces[NAMESPACE]?.chains?.map((chain) => parseInt(chain.split(':')[1] || ''))
 
     return chainIds ?? []
   }
@@ -493,21 +461,21 @@ export class WalletConnectConnector extends Connector<
     this.emit('connect', {})
   }
 
-  protected handleNotifySubscribe = async({ params, topic }: any) => {
-      // console.log('resolved subscribe')
-      // console.log('handled subscribe', params, topic)
+  protected handleNotifySubscribe = async ({ params, topic }: any) => {
+    // console.log('resolved subscribe')
+    // console.log('handled subscribe', params, topic)
 
-      (await this.getProvider()).modal.closeModal()
+    ;(await this.getProvider())?.modal?.closeModal()
 
-      if ('code' in params) {
-        console.error(params)
-        return
-      }
-      if ('error' in params) {
-        console.error(params.error)
-        return
-      }
-
-      console.log('handled subscribe', params, topic)
+    if ('code' in params) {
+      console.error(params)
+      return
     }
+    if ('error' in params) {
+      console.error(params.error)
+      return
+    }
+
+    console.log('handled subscribe', params, topic)
+  }
 }
