@@ -200,12 +200,29 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     userDataLoaded: v3UserDataLoaded,
   } = useFarmsV3WithPositionsAndBooster({ mockApr })
 
+  // FIXME: temporary sort sable v2 farm in front of v3 farms
   const farmsLP: V2AndV3Farms = useMemo(() => {
-    return [
+    const farms: V2AndV3Farms = [
       ...farmsV3.map((f) => ({ ...f, version: 3 } as V3FarmWithoutStakedValue)),
       ...farmsV2.map((f) => ({ ...f, version: 2 } as V2FarmWithoutStakedValue)),
     ]
-  }, [farmsV2, farmsV3])
+    if (chainId !== ChainId.BSC) {
+      return farms
+    }
+    const sableFarm = farms.find((f) => f.version === 2 && f.pid === 167)
+    const v3TargetFarm = farms.find((f) => f.version === 3 && f.pid === 5)
+    if (!sableFarm || !v3TargetFarm) {
+      return farms
+    }
+    const sableFarmIndex = farms.indexOf(sableFarm)
+    const targetIndex = farms.indexOf(v3TargetFarm)
+    return [
+      ...farms.slice(0, targetIndex + 1),
+      sableFarm,
+      ...farms.slice(targetIndex + 1, sableFarmIndex),
+      ...farms.slice(sableFarmIndex + 1),
+    ]
+  }, [farmsV2, farmsV3, chainId])
 
   const cakePrice = usePriceCakeUSD()
 
