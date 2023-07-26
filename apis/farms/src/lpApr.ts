@@ -24,6 +24,7 @@ const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
+  [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
 }
 
 const INFO_CLIENT_WITH_CHAIN = {
