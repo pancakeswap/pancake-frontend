@@ -23,6 +23,7 @@ import {
   ToggleView,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
@@ -377,13 +378,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
+  const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
+
   return (
     <FarmsContext.Provider value={providerValue}>
       <PageHeader>
         <Flex flexDirection="column">
-          <Box m="24px 0">
-            <FarmV3MigrationBanner />
-          </Box>
+          {isMigrationSupported && (
+            <Box m="24px 0">
+              <FarmV3MigrationBanner />
+            </Box>
+          )}
           <FarmFlexWrapper justifyContent="space-between">
             <Box>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
