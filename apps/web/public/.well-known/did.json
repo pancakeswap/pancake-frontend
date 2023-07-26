@@ -1,21 +1,17 @@
 {
-      "@context": [
-        "https://www.w3.org/ns/did/v1",
-        "https://w3id.org/security/suites/jws-2020/v1"
-      ],
-      "id": "did:web:gm.walletconnect.com",
-      "verificationMethod": [
-        {
-          "id": "did:web:gm.walletconnect.com#key-0",
-          "type": "JsonWebKey2020",
-          "controller": "did:web:gm.walletconnect.com",
-          "publicKeyJwk": {
-            "kty": "OKP",
-            "crv": "X25519",
-            "x": "LkGcpjljOgCjG45iOejHwPOY7zyOhtXGcn3ovbCsBX0"
-          }
-        }
-      ],
-      "keyAgreement": ["did:web:gm.walletconnect.com#key-0"]
+  "@context": ["https://www.w3.org/ns/did/v1", "https://w3id.org/security/suites/jws-2020/v1"],
+  "id": "did:web:127.0.0.1",
+  "verificationMethod": [
+    {
+      "id": "did:web:127.0.0.1#key-0",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:127.0.0.1",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "X25519",
+        "x": "eXX3FS9aKXkVg7SKbgcz_UntlcU_YXzHzS8CT6W1qWs"
+      }
     }
-    
+  ],
+  "keyAgreement": ["did:web:127.0.0.1#key-0"]
+}

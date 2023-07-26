@@ -23,7 +23,6 @@ import { PageMeta } from 'components/Layout/Page'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { ClientContextProvider } from 'contexts/PushContext'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
@@ -84,7 +83,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
       {/* <ClientContextProvider> */}
       <DefaultSeo {...SEO} />
       <Providers store={store}>
-      
         <PageMeta />
         {(Component as NextPageWithLayout).Meta && (
           // @ts-ignore
@@ -100,7 +98,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
             <App {...props} />
           </PersistGate>
         </Blocklist>
-      
       </Providers>
       {/* </ClientContextProvider> */}
       <Script

@@ -4,10 +4,10 @@ import { DappClient } from '@walletconnect/push-client'
 import { Connector, useAccount } from 'wagmi'
 
 export const DEFAULT_APP_METADATA = {
-  description: 'A simple gm notification dApp',
+  description: 'demp for push',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 'gm-dApp',
-  url: 'https://gm.walletconnect.com',
+  name: 'test-push',
+  url: 'http://127.0.0.1:3000',
 }
 interface IContext {
   connector: Connector<any, any>
