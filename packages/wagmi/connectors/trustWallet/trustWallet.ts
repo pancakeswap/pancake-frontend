@@ -13,13 +13,6 @@ declare global {
   }
 }
 
-const mappingNetwork: Record<number, string> = {
-  1: 'eth-mainnet',
-  5: 'eth-goerli',
-  56: 'bsc-mainnet',
-  97: 'bsc-testnet',
-}
-
 export function getTrustWalletProvider(): WindowProvider | undefined {
   const isTrustWallet = (ethereum: NonNullable<Window['ethereum']>) => {
     // Identify if Trust Wallet injected provider is present.
@@ -57,7 +50,7 @@ export class TrustWalletConnector extends InjectedConnector {
   readonly id = 'trustWallet'
 
   constructor({
-    chains: _chains,
+    chains,
     options: _options,
   }: {
     chains?: Chain[]
@@ -71,7 +64,7 @@ export class TrustWalletConnector extends InjectedConnector {
       shimDisconnect: _options?.shimDisconnect ?? false,
       shimChainChangedDisconnect: _options?.shimChainChangedDisconnect ?? true,
     }
-    const chains = _chains?.filter((c) => !!mappingNetwork[c.id])
+
     super({
       chains,
       options,
