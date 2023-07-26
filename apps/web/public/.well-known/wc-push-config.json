@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastModified": 1690341830,
+  "lastModified": 1681235296477,
   "types": [
     {
       "name": "promotional",
@@ -17,6 +17,10 @@
     {
       "name": "alerts",
       "description": "Get notified when urgent action is required from your account"
+    },
+    {
+      "name": "gm_hourly",
+      "description": "Get notified every hour with a gm notification"
     }
   ]
 }

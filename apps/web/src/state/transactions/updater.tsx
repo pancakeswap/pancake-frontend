@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import forEach from 'lodash/forEach'
@@ -10,6 +10,7 @@ import { FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 import { TransactionNotFoundError } from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
+import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -22,6 +23,8 @@ import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
 import { TransactionDetails } from './reducer'
 
+export const NOTIFICATION_BODY = `your share is 000000018% and you will recieve approximately 0.0000000000578269 CAKE2-tBNB LP`
+
 export function shouldCheck(
   fetchedTransactions: { [txHash: string]: TransactionDetails },
   tx: TransactionDetails,
@@ -32,6 +35,7 @@ export function shouldCheck(
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
+  const { account, pushClient } = useWalletConnectPushClient()
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()
@@ -40,6 +44,49 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const { toastError, toastSuccess } = useToast()
 
   const fetchedTransactions = useRef<{ [txHash: string]: TransactionDetails }>({})
+
+  const handleSendTestNotification = useCallback(async () => {
+    try {
+      if (!pushClient) {
+        throw new Error('Push Client not initialized')
+      }
+
+      const notificationPayload = {
+        accounts: [`eip155:5:${account}`],
+        notification: {
+          title: 'New Liquidity Position added',
+          body: NOTIFICATION_BODY,
+          // href already contains the trailing slash
+          icon: `${window.location.href}logo.png`,
+          url: 'https://gm.walletconnect.com/',
+          type: 'gm_hourly',
+        },
+      }
+
+      const result = await fetch(`https://cast.walletconnect.com/${'b5dba79e421fd90af68d0a1006caf864'}/notify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(notificationPayload),
+      })
+
+      const gmRes = await result.json() // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
+      const isSuccessfulGm = gmRes.sent.includes(notificationPayload.accounts[0])
+
+      if (isSuccessfulGm)
+        toastSuccess(
+          `${t('Notification Sent to wallet')}!`,
+          <Text>{t('Check your mobile wallet to seee ypur most recent notifications')}</Text>,
+        )
+    } catch (error) {
+      // setIsSendingTestNoti(false);
+      console.error({ sendGmError: error })
+      if (error instanceof Error) {
+        toastError(`${t('Notification Failed')}!`, <Text>{t(error.message)}</Text>)
+      }
+    }
+  }, [toastSuccess, toastError, account, pushClient, t])
 
   useEffect(() => {
     if (!chainId || !provider) return
@@ -74,6 +121,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             )
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
+
+            setTimeout(() => handleSendTestNotification(), 5000)
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {

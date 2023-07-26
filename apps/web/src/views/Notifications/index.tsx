@@ -156,7 +156,8 @@ export default function Notifications() {
                   <SubscribedView handleSubscribed={handleSubscribed} />
                 ) : null}
                 {modalView === NotificationView.Notifications && account ? (
-                  <SettingsModal setModalView={setModalView} enabled={enabled} />
+                  // <SettingsModal setModalView={setModalView} enabled={enabled} />
+                  <></>
                 ) : null}
                 {modalView === NotificationView.Settings && account ? (
                   <NotificationSettingsMain
