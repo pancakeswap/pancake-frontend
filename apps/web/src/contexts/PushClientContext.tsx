@@ -7,7 +7,7 @@ export const DEFAULT_APP_METADATA = {
   description: 'demp for push',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
   name: 'test-push',
-  url: 'http://127.0.0.1:3000',
+  url: 'https://web-git-feat-web3-notifications.pancake.run/',
 }
 interface IContext {
   connector: Connector<any, any>
