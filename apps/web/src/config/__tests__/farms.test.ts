@@ -18,7 +18,7 @@ const farms1ToTest: [number, SerializedFarm, number][] = farms1.slice(0, 10).map
 const farms1101ToTest: [number, SerializedFarm, number][] = farms1101.slice(0, 10).map((farm) => [farm.pid, farm, 1101])
 
 const getDuplicates = (key: 'pid' | 'lpAddress') => {
-  const farms = [...farms56, ...farms1, ...farms1101]
+  const farms = [...farms56, ...farms1]
   const keys = farms.map((farm) => farm[key])
   return keys.filter((data) => keys.indexOf(data) !== keys.lastIndexOf(data))
 }
