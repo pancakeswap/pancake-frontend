@@ -166,6 +166,7 @@ export const NotificationDropdown = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${'a0cf2e17-c000-48cf-ab8f-726362ad5306'}`,
         },
         body: JSON.stringify(notificationPayload),
       })

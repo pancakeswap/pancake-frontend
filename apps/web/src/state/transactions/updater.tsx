@@ -63,7 +63,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         },
       }
 
-      const result = await fetch(`https://cast.walletconnect.com/${'701224bc70b526c94ed5f97d20c5a718'}/notify`, {
+      const result = await fetch(`https://cast.walletconnect.com/${'789dab9a8136c9164ccced21a81ca0a0'}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
