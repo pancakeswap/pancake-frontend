@@ -7,6 +7,7 @@ import {
   UNSUPPORTED_LIST_URLS,
   WARNING_LIST_URLS,
   ETH_URLS,
+  POLYGON_ZKEVM_URLS,
   BSC_URLS,
 } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
@@ -208,7 +209,8 @@ export function useAllLists(): {
         urls,
         (_, url) =>
           (chainId === ChainId.ETHEREUM && ETH_URLS.includes(url)) ||
-          (chainId === ChainId.BSC && BSC_URLS.includes(url)),
+          (chainId === ChainId.BSC && BSC_URLS.includes(url)) ||
+          (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(url)),
       ),
     [chainId, urls],
   )
