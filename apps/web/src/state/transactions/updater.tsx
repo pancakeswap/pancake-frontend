@@ -67,7 +67,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'e1bb6254-74e6-4156-9b9a-cfe7f35d4cf6s',
+          Authorization: `Bearer ${'a0cf2e17-c000-48cf-ab8f-726362ad5306'}`,
         },
         body: JSON.stringify(notificationPayload),
       })
