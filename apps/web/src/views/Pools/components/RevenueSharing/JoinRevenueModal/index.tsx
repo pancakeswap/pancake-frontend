@@ -68,7 +68,7 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
     [pools],
   ) as Pool.DeserializedPool<Token>
 
-  const vaultPool = useVaultPoolByKey(VaultKey.CakeVault)
+  const vaultPool = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
 
   return (
     <Modal
@@ -98,19 +98,17 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
             src="/images/pool/lockcaketooltip.png"
           />
         </Flex>
-        <Card>
-          <Box padding="16px 16px 0 16px">
-            <LockedStaking
-              buttonVariant="secondary"
-              pool={cakePool}
-              userData={(vaultPool as DeserializedLockedCakeVault)?.userData}
-            />
-          </Box>
-        </Card>
+        {!vaultPool?.userData?.isLoading && (
+          <Card>
+            <Box padding="16px 16px 0 16px">
+              <LockedStaking buttonVariant="secondary" pool={cakePool} userData={vaultPool?.userData} />
+            </Box>
+          </Card>
+        )}
         <JoinButton refresh={refresh} onDismiss={onDismiss} />
         <Box>
           <Text as="span" fontSize={12} color="textSubtle">
-            {t('Once updated, you need to wait a full distribution cycle to start claiming rewards. Learn More')}
+            {t('Once updated, you need to wait a full distribution cycle to start claiming rewards.')}
           </Text>
           <InlineLink fontSize={12} href="https://docs.pancakeswap.finance/products/prediction" external>
             {t('Learn More')}
