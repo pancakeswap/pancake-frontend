@@ -5,6 +5,7 @@ import {
   ethereumTokens,
   goerliTestnetTokens,
   zkSyncTestnetTokens,
+  polygonZkEvmTokens,
 } from '@pancakeswap/tokens'
 import type { CommonPrice } from '../../src/fetchFarmsV3'
 import type { FarmV3SupportedChainId } from '../../src'
@@ -34,6 +35,10 @@ export const priceHelperTokens = {
   [ChainId.BSC]: {
     chain: 'bsc',
     list: [bscTokens.wbnb, bscTokens.usdt, bscTokens.busd, bscTokens.eth],
+  },
+  [ChainId.POLYGON_ZKEVM]: {
+    chain: 'polygon_zkevm',
+    list: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdc, polygonZkEvmTokens.usdt, polygonZkEvmTokens.matic],
   },
 } satisfies Record<number, PriceHelper>
 
