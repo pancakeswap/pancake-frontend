@@ -98,10 +98,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
-  const stakedTokenDollarBalance = getBalanceNumber(
-    stakedBalance.multipliedBy(stakingTokenPrice),
-    stakingToken.decimals,
-  )
+  const stakedTokenDollarBalance = stakingTokenPrice
+    ? getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals)
+    : 0
 
   const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
@@ -155,6 +154,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     <LockedStakedModal
       currentBalance={stakingTokenBalance}
       stakingToken={stakingToken}
+      stakingTokenPrice={stakingTokenPrice}
       stakingTokenBalance={stakingTokenBalance}
     />,
   )
@@ -202,7 +202,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     placement: 'bottom',
   })
 
-  const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
+  const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit)
   const isLocked = vaultKey === VaultKey.CakeVault && (vaultData as DeserializedLockedCakeVault).userData.locked
 
   if (!account) {
@@ -328,6 +328,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                     lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
                     currentLockedAmount={cakeAsBigNumber}
                     stakingToken={stakingToken}
+                    stakingTokenPrice={stakingTokenPrice}
                     currentBalance={stakingTokenBalance}
                     stakingTokenBalance={stakingTokenBalance}
                   />
@@ -367,6 +368,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                       lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
                       lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
                       stakingToken={stakingToken}
+                      stakingTokenPrice={stakingTokenPrice}
                       currentBalance={stakingTokenBalance}
                       currentLockedAmount={cakeAsNumberBalance}
                     >
@@ -461,6 +463,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               position={vaultPosition}
               currentLockedAmount={cakeAsNumberBalance}
               stakingToken={stakingToken}
+              stakingTokenPrice={stakingTokenPrice}
               lockEndTime="0"
               lockStartTime="0"
             />
@@ -473,7 +476,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             ml={['0', '0', '12px', '12px', '32px']}
             mr={['0', '0', '12px', '12px', '0']}
           >
-            <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} isInline />
+            <ConvertToLock
+              stakingToken={stakingToken}
+              stakingTokenPrice={stakingTokenPrice}
+              currentStakedAmount={cakeAsNumberBalance}
+              isInline
+            />
           </Box>
         )}
       </>

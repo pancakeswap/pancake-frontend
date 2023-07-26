@@ -1,7 +1,6 @@
 import { Text, Box, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 
@@ -18,7 +17,10 @@ const OriginalLockedInfo: React.FC<React.PropsWithChildren<OriginalLockedInfoPro
   const { userData } = useVaultPoolByKey(pool.vaultKey)
 
   const originalLockedAmount = getBalanceNumber(userData?.lockedAmount)
-  const originalUsdValue = useBUSDCakeAmount(getBalanceNumber(userData?.lockedAmount))
+  const originalUsdValue = getBalanceNumber(
+    userData?.lockedAmount.multipliedBy(pool.stakingTokenPrice),
+    pool.stakingToken.decimals,
+  )
   const originalLockedAmountText = originalLockedAmount > 0.01 ? originalLockedAmount.toFixed(2) : '<0.01'
   const originalUsdValueText = originalUsdValue > 0.01 ? `~${originalUsdValue.toFixed(2)}` : '<0.01'
   const lastActionInMs = userData?.lastUserActionTime ? parseInt(userData?.lastUserActionTime) * 1000 : 0
