@@ -1,6 +1,7 @@
 import { SerializedFarm } from '@pancakeswap/farms'
 import farms1 from '@pancakeswap/farms/constants/1'
 import farms56 from '@pancakeswap/farms/constants/56'
+import farms1101 from '@pancakeswap/farms/constants/1101'
 import { Native } from '@pancakeswap/sdk'
 import { getLpContract } from 'utils/contractHelpers'
 import { describe, it } from 'vitest'
@@ -13,6 +14,8 @@ const farmsToTest: [number, SerializedFarm, number][] = farms56
   .map((farm) => [farm.pid, farm, 56])
 
 const farms1ToTest: [number, SerializedFarm, number][] = farms1.slice(0, 10).map((farm) => [farm.pid, farm, 1])
+
+const farms1101ToTest: [number, SerializedFarm, number][] = farms1101.slice(0, 10).map((farm) => [farm.pid, farm, 1101])
 
 const getDuplicates = (key: 'pid' | 'lpAddress') => {
   const farms = [...farms56, ...farms1]
@@ -33,7 +36,7 @@ describe.concurrent(
       expect(duplicates).toHaveLength(0)
     })
 
-    it.each([...farmsToTest, ...farms1ToTest])(
+    it.each([...farmsToTest, ...farms1ToTest, ...farms1101ToTest])(
       'Farm %d has the correct token addresses',
       async (pid, farm, chainId) => {
         const tokenAddress = farm.token.address
@@ -52,11 +55,14 @@ describe.concurrent(
       },
     )
 
-    it.each([...farmsToTest, ...farms1ToTest])('Farm %d symbol should not be native symbol', (_, farm, chainId) => {
-      const native = Native.onChain(chainId)
-      expect(farm.quoteToken.symbol).not.toEqual(native.symbol)
-      expect(farm.token.symbol).not.toEqual(native.symbol)
-    })
+    it.each([...farmsToTest, ...farms1ToTest, ...farms1101ToTest])(
+      'Farm %d symbol should not be native symbol',
+      (_, farm, chainId) => {
+        const native = Native.onChain(chainId)
+        expect(farm.quoteToken.symbol).not.toEqual(native.symbol)
+        expect(farm.token.symbol).not.toEqual(native.symbol)
+      },
+    )
 
     // The first pid using the new factory
     // BSC
@@ -79,6 +85,17 @@ describe.concurrent(
       const lpContract = getLpContract(farm.lpAddress, farm.token.chainId)
       const factory = await lpContract.read.factory()
       expect(factory.toLowerCase()).toEqual(ETH_FACTORY_ADDRESS)
+    })
+
+    // POLYGON_ZKEVM
+    const POLYGON_ZKEVM_START_PID = 1
+    const POLYGON_ZKEVM_FACTORY_ADDRESS = '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E'
+    const polygonNewFarmsToTest = farms1101.filter((farmSet) => farmSet[0] >= POLYGON_ZKEVM_START_PID)
+
+    it.each(polygonNewFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
+      const lpContract = getLpContract(farm.lpAddress, farm.token.chainId)
+      const factory = await lpContract.read.factory()
+      expect(factory.toLowerCase()).toEqual(POLYGON_ZKEVM_FACTORY_ADDRESS)
     })
   },
   { timeout: 50_000 },

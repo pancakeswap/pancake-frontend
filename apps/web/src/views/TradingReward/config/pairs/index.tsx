@@ -11,6 +11,7 @@ export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, Com
   [ChainId.GOERLI]: farm5,
   [ChainId.BSC]: [...farm56, ...tradingRewardV3Pair56],
   [ChainId.BSC_TESTNET]: farm97,
+  [ChainId.POLYGON_ZKEVM]: [],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [],
   [ChainId.ZKSYNC_TESTNET]: [],
 }

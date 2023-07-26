@@ -1,5 +1,4 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, no-await-in-loop */
 import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
@@ -29,9 +28,22 @@ export const V3_SUBGRAPH_CLIENTS = {
       fetch,
     },
   ),
+  [ChainId.POLYGON_ZKEVM]: new GraphQLClient(
+    'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/v0.0.0',
+    {
+      fetch,
+    },
+  ),
 } satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
-const zChainId = z.enum(['56', '1', '5', '97', '280'])
+const zChainId = z.enum([
+  String(ChainId.BSC),
+  String(ChainId.ETHEREUM),
+  String(ChainId.GOERLI),
+  String(ChainId.BSC_TESTNET),
+  String(ChainId.ZKSYNC_TESTNET),
+  String(ChainId.POLYGON_ZKEVM),
+])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 
@@ -121,7 +133,7 @@ export const handler = async (req: Request, event: FetchEvent) => {
   const cache = caches.default
   const cacheResponse = await cache.match(event.request)
 
-  let response
+  let response: Response | undefined
 
   if (!cacheResponse) {
     response = await handler_(req)
@@ -142,13 +154,14 @@ const handler_ = async (req: Request) => {
     return error(400, parsed.error)
   }
 
-  const { chainId, address: address_ } = parsed.data
+  const { chainId: chainIdString, address: address_ } = parsed.data
+  const chainId = Number(chainIdString) as Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>
 
   const address = address_.toLowerCase()
 
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const client = viemProviders({ chainId: Number(chainId) })
+  const client = viemProviders({ chainId })
 
   const [pid] = await client.multicall({
     contracts: [

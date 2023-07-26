@@ -113,9 +113,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
       const tvls: TvlMap = {}
-      if (
-        [ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET, ChainId.ZKSYNC_TESTNET].includes(chainId)
-      ) {
+      if (supportedChainIdV3.includes(chainId)) {
         const results = await Promise.allSettled(
           farmV3.data.farmsWithPrice.map((f) =>
             fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`)
