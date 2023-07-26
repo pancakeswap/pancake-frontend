@@ -15,7 +15,7 @@ export const TOKEN_RISK = {
 export interface RiskTokenInfo {
   address: string
   chainId: ChainId
-  isSuccess: boolean
+  hasResult: boolean
   riskLevel: number
   requestId: string
   riskLevelDescription: string

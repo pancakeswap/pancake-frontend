@@ -7,12 +7,12 @@ import {
   Flex,
   HelpIcon,
   IconButton,
-  Link,
   RefreshIcon,
   Tag,
   Text,
   useTooltip,
   promotedGradient,
+  AutoRenewIcon,
 } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
@@ -20,6 +20,7 @@ import { useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
+import AccessRiskTooltips from 'views/Swap/components/AccessRisk/AccessRiskTooltips'
 
 const AnimatedButton = styled(Button)`
   animation: ${promotedGradient} 1.5s ease infinite;
@@ -30,7 +31,7 @@ interface AccessRiskProps {
   token: ERC20Token
 }
 
-const TOKEN_RISK_T = {
+export const TOKEN_RISK_T = {
   [TOKEN_RISK.SOME_RISK]: <Trans>Some Risk</Trans>,
   [TOKEN_RISK.VERY_LOW]: <Trans>Very Low Risk</Trans>,
   [TOKEN_RISK.LOW]: <Trans>Low Risk</Trans>,
@@ -115,47 +116,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   }, [lists, token?.address])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <>
-      {error ? (
-        <Text as="span">{t('Risk scanning failed. Press the button to retry.')}</Text>
-      ) : (
-        <>
-          <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
-          <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
-            HashDit
-          </Link>
-          {tokenInLists || data?.riskLevel > TOKEN_RISK.MEDIUM ? (
-            <>
-              <Text my="8px">
-                {t(
-                  'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
-                )}
-              </Text>
-              <Flex mt="4px">
-                <Text>{t('Learn more about risk rating here.')}</Text>
-                <Link ml="4px" external href="https://hashdit.github.io/hashdit/docs/risk-level-description">
-                  {t('here.')}
-                </Link>
-              </Flex>
-            </>
-          ) : (
-            <>
-              <Text ml="4px" as="span">
-                {t('is reporting a risk level of')} <b>{TOKEN_RISK_T[data?.riskLevel] || 'Unknown'}</b>
-              </Text>
-              <Text mt="4px">
-                {t(
-                  'However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.',
-                )}
-              </Text>
-              <Flex mt="4px">
-                <Text bold>{t('Please proceed with caution and always do your own research.')}</Text>
-              </Flex>
-            </>
-          )}
-        </>
-      )}
-    </>,
+    <AccessRiskTooltips riskLevel={data?.riskLevel} hasResult={data?.hasResult} />,
     { placement: 'bottom' },
   )
 
@@ -194,7 +155,11 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
             </Text>
             {tooltipVisible && tooltip}
             <Flex>
-              <HelpIcon ml="4px" width="16px" height="16px" color="invertedContrast" />
+              {data?.hasResult ? (
+                <HelpIcon ml="4px" width="16px" height="16px" color="invertedContrast" />
+              ) : (
+                <AutoRenewIcon spin ml="4px" width="20px" height="20px" color="invertedContrast" />
+              )}
             </Flex>
           </Tag>
         </div>
@@ -233,7 +198,11 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
         </AnimatedButton>
         {tooltipVisible && tooltip}
         <Flex ref={targetRef}>
-          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+          {data?.riskLevel === TOKEN_RISK.UNKNOWN ? (
+            <AutoRenewIcon spin ml="4px" width="20px" height="20px" color="textSubtle" />
+          ) : (
+            <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+          )}
         </Flex>
       </Flex>
     </>
