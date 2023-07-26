@@ -57,17 +57,21 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
   const { account, connector } = useActiveWeb3React()
 
   useEffect(() => {
-    const handleEvent = () => {
-      onDismiss?.()
+    if (account && connector) {
+      const handleEvent = () => {
+        onDismiss?.()
+      }
+
+      connector.addListener('disconnect', handleEvent)
+      connector.addListener('change', handleEvent)
+
+      return () => {
+        connector.removeListener('disconnect', handleEvent)
+        connector.removeListener('change', handleEvent)
+      }
     }
 
-    connector.addListener('disconnect', handleEvent)
-    connector.addListener('change', handleEvent)
-
-    return () => {
-      connector.removeListener('disconnect', handleEvent)
-      connector.removeListener('change', handleEvent)
-    }
+    return undefined
   }, [account, connector, onDismiss])
 
   return (
