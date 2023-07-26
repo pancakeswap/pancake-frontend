@@ -1,15 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, FlexGap, Text } from '@pancakeswap/uikit'
+import { Box, Button, CircleLoader, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import Image from 'next/image'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 const SubscribedView = ({ handleSubscribed }: { handleSubscribed: () => void }) => {
   const { t } = useTranslation()
+  const [loading, setLoading] = useState<boolean>(false)
 
   const subscribe = useCallback(
     (e) => {
       e.stopPropagation()
-      handleSubscribed()
+      setLoading(true)
+      setTimeout(() => handleSubscribed(), 2250)
     },
     [handleSubscribed],
   )
@@ -26,8 +28,20 @@ const SubscribedView = ({ handleSubscribed }: { handleSubscribed: () => void }) 
         <Text fontSize="16px" textAlign="center" color="textSubtle">
           Get started with notifications from WalletConnect. Click the subscribe button below and accept.
         </Text>
-        <Button marginTop="8px" variant="primary" width="100%" onClick={subscribe}>
-          {t('Enable (Subscribe in wallet)')}
+        <Button
+          marginTop="8px"
+          variant="primary"
+          width="100%"
+          onClick={subscribe}
+          disabled={loading}
+          isLoading={loading}
+        >
+          <Flex alignItems="center">
+            <Text px="4px" fontWeight="bold" color="white">
+              {t('Enable (Subscribe in wallet)')}
+            </Text>
+            {loading ? <CircleLoader stroke="white" /> : null}
+          </Flex>
         </Button>
       </FlexGap>
     </Box>

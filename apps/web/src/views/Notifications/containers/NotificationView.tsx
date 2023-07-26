@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Box, FlexGap, Button } from '@pancakeswap/uikit'
+import { Flex, Text, Box, FlexGap } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 import NotificationHeader from '../components/Notificationheader/Notificationheader'
@@ -11,14 +11,13 @@ import { NotificationView } from '../types'
 interface ISettingsProps {
   setModalView: Dispatch<SetStateAction<NotificationView>>
   enabled: boolean
-  handleSendTestNotification: () => Promise<void>
 }
-const EmptyView = ({ handleSendTestNotification }: { handleSendTestNotification: () => Promise<void> }) => {
+const EmptyView = () => {
   const { t } = useTranslation()
 
   return (
     <>
-      <Flex alignItems="center" justifyContent="center" height="140px" onClick={handleSendTestNotification}>
+      <Flex alignItems="center" justifyContent="center" height="140px" onClick={() => null}>
         <Image src="/Group883379635.png" alt="#" height={100} width={100} />
       </Flex>
 
@@ -36,7 +35,7 @@ const EmptyView = ({ handleSendTestNotification }: { handleSendTestNotification:
   )
 }
 
-const SettingsModal = ({ setModalView, enabled, handleSendTestNotification }: ISettingsProps) => {
+const SettingsModal = ({ setModalView, enabled }: ISettingsProps) => {
   const onBack = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
@@ -56,8 +55,7 @@ const SettingsModal = ({ setModalView, enabled, handleSendTestNotification }: IS
           </Box>
         ) : (
           <Box marginBottom="56px">
-            <EmptyView handleSendTestNotification={handleSendTestNotification} />
-            <Button onClick={handleSendTestNotification}>hey</Button>
+            <EmptyView />
           </Box>
         )}
       </Box>

@@ -18,10 +18,10 @@ export const DEFAULT_RELAY_URL = process.env.NEXT_PUBLIC_RELAY_URL
 export const DEFAULT_LOGGER = 'debug'
 
 export const DEFAULT_APP_METADATA = {
-  description: 'A simple gm notification dApp',
+  description: 'x',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 'gm-dApp',
-  url: 'https://gm.walletconnect.com',
+  name: 't1',
+  url: 'https://web-git-feat-web3-notifications.pancake.run',
 }
 
 /**
@@ -72,8 +72,8 @@ export const REGIONALIZED_RELAYER_ENDPOINTS: RelayerType[] = [
 ]
 
 export const PROJECT_METADATA = {
-  description: 'A simple gm notification dApp',
+  description: 'x',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 'gm-dApp',
-  url: 'https://gm.walletconnect.com',
+  name: 't1',
+  url: 'https://web-git-feat-web3-notifications.pancake.run',
 }

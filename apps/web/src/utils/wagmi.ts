@@ -19,10 +19,10 @@ const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {
 }, 0)
 
 export const DEFAULT_APP_METADATA = {
-  description: 'A simple gm notification dApp',
+  description: 'x',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 'gm-dApp',
-  url: 'https://gm.walletconnect.com',
+  name: 't1',
+  url: 'https://web-git-feat-web3-notifications.pancake.run',
 }
 
 export const { publicClient, chains } = configureChains(
@@ -72,7 +72,7 @@ export const walletConnectConnector = new WalletConnectConnector({
   options: {
     metadata: DEFAULT_APP_METADATA,
     showQrModal: true,
-    projectId: 'b5dba79e421fd90af68d0a1006caf864',
+    projectId: '789dab9a8136c9164ccced21a81ca0a0',
   },
 })
 
@@ -80,7 +80,7 @@ export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
     showQrModal: false,
-    projectId: 'b5dba79e421fd90af68d0a1006caf864',
+    projectId: '789dab9a8136c9164ccced21a81ca0a0',
   },
 })
 

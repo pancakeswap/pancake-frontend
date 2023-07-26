@@ -36,7 +36,7 @@ export default function Notifications() {
   useEffect(() => {
     if (pushClient) {
       const activeSubscriptions = pushClient?.getActiveSubscriptions()
-      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:1:${account}`)) {
+      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:5:${account}`)) {
         setIsSubscribed(true)
       }
     }
@@ -97,7 +97,7 @@ export default function Notifications() {
         })
       }
       const { id } = await pushClient.propose({
-        account: `eip155:1:${account}`,
+        account: `eip155:5:${account}`,
         pairingTopic: latestPairing.topic,
       })
 
@@ -125,7 +125,7 @@ export default function Notifications() {
         throw new Error('Push Client not initialized')
       }
       const pushSubscriptions = pushClient.getActiveSubscriptions()
-      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:1:${account}`)
+      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:5:${account}`)
 
       if (currentSubscription) {
         await pushClient.deleteSubscription({

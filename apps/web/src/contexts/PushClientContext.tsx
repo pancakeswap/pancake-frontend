@@ -1,18 +1,21 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-
+import { providers } from 'ethers'
 import { DappClient } from '@walletconnect/push-client'
 import { Connector, useAccount } from 'wagmi'
 
 export const DEFAULT_APP_METADATA = {
-  description: 'A simple gm notification dApp',
+  description: 'x',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 'gm-dApp',
-  url: 'https://gm.walletconnect.com',
+  name: 't1',
+  url: 'https://web-git-feat-web3-notifications.pancake.run',
 }
 interface IContext {
   connector: Connector<any, any>
   account: `0x${string}`
   pushClient: DappClient
+  testSendTransaction: (tx: any) => Promise<{
+    hash: any
+  }>
 }
 
 export const PushClientContext = createContext<IContext>({} as IContext)
@@ -20,11 +23,30 @@ export const PushClientContext = createContext<IContext>({} as IContext)
 export function PushClientContextProvider({ children }: { children: ReactNode | ReactNode[] }) {
   const { connector, address: account } = useAccount()
   const [pushClient, setPushClient] = useState<DappClient>()
+  const [web3Provider, setWeb3Provider] = useState<providers.Web3Provider>()
 
   const createClient = useCallback(async () => {
     const provider = await connector?.getProvider()
-    if (provider) setPushClient(provider.pushClient)
+    if (provider) {
+      setPushClient(provider.pushClient)
+      setWeb3Provider(new providers.Web3Provider(provider))
+    }
   }, [connector])
+
+  const testSendTransaction = useCallback(
+    async (tx) => {
+      if (!web3Provider || !connector) {
+        throw new Error('web3Provider not connected')
+      }
+      const signer = await connector?.getProvider()
+      const receipt = await signer.request({
+        method: 'eth_sendTransaction',
+        params: [tx],
+      })
+      return { hash: receipt }
+    },
+    [connector, web3Provider],
+  )
 
   useEffect(() => {
     if (!pushClient && connector) {
@@ -37,8 +59,10 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       connector,
       account,
       pushClient,
+      testSendTransaction,
+      createClient,
     }),
-    [connector, account, pushClient],
+    [connector, account, pushClient, testSendTransaction, createClient],
   )
 
   return (

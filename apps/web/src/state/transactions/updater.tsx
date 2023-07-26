@@ -63,15 +63,17 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         },
       }
 
-      const result = await fetch(`https://cast.walletconnect.com/${'b5dba79e421fd90af68d0a1006caf864'}/notify`, {
+      const result = await fetch(`https://cast.walletconnect.com/${'701224bc70b526c94ed5f97d20c5a718'}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: 'e1bb6254-74e6-4156-9b9a-cfe7f35d4cf6s',
         },
         body: JSON.stringify(notificationPayload),
       })
 
       const gmRes = await result.json() // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
+      console.log(gmRes)
       const isSuccessfulGm = gmRes.sent.includes(notificationPayload.accounts[0])
 
       if (isSuccessfulGm)

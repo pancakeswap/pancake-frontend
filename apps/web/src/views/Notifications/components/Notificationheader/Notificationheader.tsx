@@ -32,7 +32,7 @@ const NotificationHeader = ({ isSettings = false, isEnabled, onBack, onDismiss }
   const { t } = useTranslation()
   return (
     <ModalHeader>
-      {isEnabled ? (
+      {!isEnabled ? (
         <>
           <ModalBackButton onBack={onBack} isSettings={isSettings} />
           <ModalTitle>

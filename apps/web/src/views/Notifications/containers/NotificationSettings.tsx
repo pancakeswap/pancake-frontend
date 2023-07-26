@@ -55,9 +55,11 @@ const NotificationSettingsMain = ({
         <ScrollableContainer>
           <SettingsContainer />
           <Box>
-            <Message mb="16px" variant="warning" padding="8px">
-              <MessageText>{t('Please sign again to apprve changes in wallet!')} </MessageText>
-            </Message>
+            {!isSubscribed ? (
+              <Message mb="16px" variant="warning" padding="8px">
+                <MessageText>{t('Please sign again to apprve changes in wallet!')} </MessageText>
+              </Message>
+            ) : null}
             <PushSubscriptionButton
               isSubscribed={isSubscribed}
               isSubscribing={isSubscribing}

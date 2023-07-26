@@ -18,6 +18,7 @@ import { viemClients } from 'utils/viem'
 import { Address, Hex, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 
+import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -51,6 +52,7 @@ export default function useSendSwapTransaction(
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
+  const { testSendTransaction, connector } = useWalletConnectPushClient()
   const { sendTransactionAsync } = useSendTransaction()
   const publicClient = viemClients[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
@@ -113,13 +115,15 @@ export default function useSendSwapTransaction(
           call: { address, calldata, value },
         } = bestCallOption
 
-        return sendTransactionAsync({
-          account,
-          chainId,
+        // @ts-ignore
+        return testSendTransaction({
+          from: account,
           to: address,
           data: calldata,
-          value: value && !isZero(value) ? hexToBigInt(value) : 0n,
-          ...('gasEstimate' in bestCallOption ? { gas: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
+          value,
+          ...('gasEstimate' in bestCallOption
+            ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate).toString() }
+            : {}),
         })
           .then((response) => {
             const inputSymbol = trade.inputAmount.currency.symbol
@@ -153,6 +157,7 @@ export default function useSendSwapTransaction(
                 : recipient === account
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
+            // @ts-ignore
             addTransaction(response, {
               summary: withRecipient,
               translatableSummary: {
@@ -205,5 +210,6 @@ export default function useSendSwapTransaction(
     recipientAddress,
     recipient,
     addTransaction,
+    testSendTransaction,
   ])
 }

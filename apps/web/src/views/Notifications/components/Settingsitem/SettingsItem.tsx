@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, Toggle, Box } from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
+import { useCallback, useState } from 'react'
 import {
   DEFAULT_NOTIFICATIONS,
   DummyNotificationData,
@@ -22,6 +23,7 @@ interface INotificationprops {
 
 const Settingsitem = ({ title, description, checked, onChange }: ISettingsprops) => {
   const { t } = useTranslation()
+
   return (
     <>
       <Flex flexDirection="column" mt="8px">
@@ -79,17 +81,20 @@ export const NotificationContainer = () => {
 }
 
 const SettingsContainer = () => {
+  const [toggle, setToggle] = useState(false)
+
+  const switcht = useCallback(() => setToggle((t) => !t), [setToggle])
   return (
     <>
       <Box>
         <Divider />
-        {DEFAULT_NOTIFICATIONS.map((notification: NotifyType) => {
+        {DEFAULT_NOTIFICATIONS.map((notification: NotifyType, index) => {
           return (
             <Settingsitem
               title={notification.title}
               description={notification.description}
-              checked={notification.checked}
-              onChange={notification.onChange}
+              checked={index === 0 ? toggle : notification.checked}
+              onChange={index === 0 ? switcht : notification.onChange}
             />
           )
         })}

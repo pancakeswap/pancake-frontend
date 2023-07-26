@@ -55,7 +55,7 @@ export default function PushSubscriptionButton({
     )
   }
   return (
-    <AutoColumn gap="md">
+    <AutoColumn gap="md" marginTop="6px">
       <CommitButton
         variant="primary"
         onClick={handleSubscriptionAction}
