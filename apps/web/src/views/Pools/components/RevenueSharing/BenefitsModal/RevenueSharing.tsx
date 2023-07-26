@@ -36,7 +36,6 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
 
   const { balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim } =
     useRevenueSharingPool()
-  console.log({ balanceOfAt, totalSupplyAt, nextDistributionTimestamp, lastTokenTimestamp, availableClaim })
   const yourShare = useMemo(() => getBalanceAmount(new BigNumber(balanceOfAt)).toNumber(), [balanceOfAt])
   const yourSharePercentage = useMemo(
     () => new BigNumber(balanceOfAt).div(totalSupplyAt).times(100).toNumber() || 0,
