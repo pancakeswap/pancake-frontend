@@ -23,6 +23,7 @@ export const ModalHeader = styled.div<{ background?: string }>`
 export const ModalTitle = styled(Flex)`
   align-items: center;
   flex: 1;
+  justify-content: center;
 `;
 
 export const ModalBody = styled(Flex)`

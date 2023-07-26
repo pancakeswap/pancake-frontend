@@ -68,7 +68,6 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 })
 
 export const walletConnectConnector = new WalletConnectConnector({
-  
   chains,
   options: {
     metadata: DEFAULT_APP_METADATA,
@@ -78,10 +77,8 @@ export const walletConnectConnector = new WalletConnectConnector({
 })
 
 export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
-  
   chains,
   options: {
-    
     showQrModal: false,
     projectId: 'b5dba79e421fd90af68d0a1006caf864',
   },
