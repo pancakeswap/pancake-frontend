@@ -64,15 +64,23 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
                 </Text>
               ) : (
                 <>
-                  <Balance display="inline-block" bold value={yourShare} decimals={2} />
-                  <Balance
-                    display="inline-block"
-                    prefix="("
-                    unit="%)"
-                    ml="4px"
-                    value={yourSharePercentage}
-                    decimals={2}
-                  />
+                  {yourShare <= 0.01 ? (
+                    <Text as="span" bold>{`< 0.01`}</Text>
+                  ) : (
+                    <Balance display="inline-block" bold value={yourShare} decimals={2} />
+                  )}
+                  {yourSharePercentage <= 0.01 ? (
+                    <Text as="span" ml="4px">{`(< 0.01%)`}</Text>
+                  ) : (
+                    <Balance
+                      display="inline-block"
+                      prefix="("
+                      unit="%)"
+                      ml="4px"
+                      value={yourSharePercentage}
+                      decimals={2}
+                    />
+                  )}
                 </>
               )}
             </Box>
