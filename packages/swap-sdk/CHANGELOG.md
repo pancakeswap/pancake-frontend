@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.2.0
+
+### Minor Changes
+
+- 77fc3406a: Add zkSync support
+
 ## 5.1.0
 
 ### Minor Changes
