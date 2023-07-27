@@ -50,6 +50,7 @@ const Title = styled.div`
   line-height: 98%;
   padding-right: 80px;
   margin-bottom: 20px;
+  color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 32px;
@@ -120,7 +121,7 @@ export const ZksyncBanner = () => {
             >
               <StyledButtonLeft scale={['xs', 'sm', 'md']} style={{ borderRadius: isMobile && '20px' }}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
-                  {isMobile ? t('CTA') : t('Get Started')}
+                  {isMobile ? t('Start Now') : t('Get Started')}
                 </Text>
                 <OpenNewIcon color="white" />
               </StyledButtonLeft>
