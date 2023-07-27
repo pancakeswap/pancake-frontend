@@ -232,6 +232,13 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
 }
 
 export const WBTC_ETH = new ERC20Token(
