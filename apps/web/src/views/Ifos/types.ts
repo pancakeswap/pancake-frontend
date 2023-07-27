@@ -20,6 +20,11 @@ export interface PoolCharacteristics {
   needQualifiedPoints?: boolean
   vestingInformation?: VestingInformation
   hasTax?: boolean
+
+  // 0: public sale
+  // 1: private sale
+  // 2: basic sale
+  saleType?: number
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData

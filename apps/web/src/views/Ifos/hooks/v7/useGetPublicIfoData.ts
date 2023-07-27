@@ -68,6 +68,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         duration: 0,
         slicePeriodSeconds: 0,
       },
+
+      // 0: public sale
+      // 1: private sale
+      // 2: basic sale
+      saleType: undefined,
     },
     poolUnlimited: {
       raisingAmountPool: BIG_ZERO,
@@ -83,6 +88,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         duration: 0,
         slicePeriodSeconds: 0,
       },
+      saleType: undefined,
     },
     thresholdPoints: undefined,
     startTimestamp: 0,

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, ReactNode } from 'react'
 import {
   Text,
   Flex,
@@ -28,6 +28,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
+import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+
 import { EnableStatus } from '../types'
 import IFORequirements from './IFORequirements'
 import { MessageTextLink } from '../../IfoCardStyles'
@@ -186,9 +188,9 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       )
     }
 
-    let message
+    let message: ReactNode | undefined
 
-    if (account && !hasProfile) {
+    if (account && !hasProfile && !isBasicSale(publicPoolCharacteristics.saleType)) {
       message = (
         <Message my="24px" p="8px" variant="warning">
           <Box>

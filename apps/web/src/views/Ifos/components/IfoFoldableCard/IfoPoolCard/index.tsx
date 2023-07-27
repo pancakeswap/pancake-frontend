@@ -23,6 +23,7 @@ import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTokens from './IfoCardTokens'
 import IfoVestingCard from './IfoVestingCard'
+import { isBasicSale } from '../../../hooks/v7/helpers'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -53,11 +54,13 @@ export const cardConfig = (
     version: number
     needQualifiedPoints?: boolean
     needQualifiedNFT?: boolean
+    saleType?: number
   },
 ): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
-      if (meta?.version >= 3.1) {
+      // Sale type 2 is basic sale
+      if (meta?.version >= 3.1 && !isBasicSale(meta?.saleType)) {
         const MSG_MAP = {
           needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
           needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
@@ -118,21 +121,22 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
 
-  const { admissionProfile, pointThreshold, vestingInformation } = publicIfoData[poolId]
+  const { admissionProfile, pointThreshold, vestingInformation, saleType } = publicIfoData[poolId]
 
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
-    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
+    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isBasicSale(saleType)
       ? {
           needQualifiedNFT: Boolean(admissionProfile),
           needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,
         }
       : {}
-  }, [ifo.version, admissionProfile, pointThreshold, poolId])
+  }, [ifo.version, admissionProfile, pointThreshold, poolId, saleType])
 
   const config = cardConfig(t, poolId, {
     version: ifo.version,
     needQualifiedNFT,
     needQualifiedPoints,
+    saleType,
   })
 
   const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()

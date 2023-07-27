@@ -9,10 +9,10 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 const ifos: Ifo[] = [
   {
     id: 'test',
-    address: '0xb2c9159dad4981f12ea2c3172f4d0b634c0347b2',
+    address: '0x3d8C7E2273A3d80f15743964f4d8219401c398B9',
     isActive: true,
     name: 'USDT',
-    plannedStartTime: 1690300800, // Wednesday, 26 July 2023 00:00:00 GMT+08:00
+    plannedStartTime: 1690430400, // Thursday, 27 July 2023 12:00:00 GMT+08:00
     poolBasic: {
       raiseAmount: '$0.8',
     },

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { useMemo, ReactNode } from 'react'
 import { bscTokens } from '@pancakeswap/tokens'
 import { styled } from 'styled-components'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip, IfoSkeletonCardDetails } from '@pancakeswap/uikit'
@@ -10,6 +10,7 @@ import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
@@ -59,13 +60,23 @@ const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ labe
   )
 }
 
-const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
+const MaxTokenEntry = ({
+  maxToken,
+  ifo,
+  poolId,
+  basicSale,
+}: {
+  maxToken: number
+  ifo: Ifo
+  poolId: PoolIds
+  basicSale?: boolean
+}) => {
   const isCurrencyCake = ifo.currency === bscTokens.cake
   const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
   const basicTooltipContent =
-    ifo.version >= 3.1
+    ifo.version >= 3.1 && !basicSale
       ? t(
           'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
         )
@@ -185,8 +196,9 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
       )})`)
 
   const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
+  const basicSale = useMemo(() => isBasicSale(poolCharacteristic.saleType), [poolCharacteristic.saleType])
 
-  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
+  const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} basicSale={basicSale} />
 
   const durationInSeconds = ifo.version >= 3.2 ? poolCharacteristic.vestingInformation.duration : 0
   const vestingDays = Math.ceil(durationInSeconds / DAY_IN_SECONDS)
