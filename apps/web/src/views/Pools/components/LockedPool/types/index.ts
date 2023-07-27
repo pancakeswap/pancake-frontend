@@ -13,6 +13,7 @@ export interface GenericModalProps {
   stakingToken: Token
   currentBalance: BigNumber
   stakingTokenBalance: BigNumber
+  stakingTokenPrice: number
   customLockAmount?: string
   customLockWeekInSeconds?: number
 }
@@ -28,6 +29,7 @@ export interface ValidatorReturn {
 
 export interface ExtendDurationModal {
   stakingToken: Token
+  stakingTokenPrice: number
   currentLockedAmount: number
   onDismiss?: VoidFn
   modalTitle?: string
@@ -46,6 +48,7 @@ export interface AddButtonProps {
   lockEndTime: string
   lockStartTime: string
   stakingTokenBalance: BigNumber
+  stakingTokenPrice: number
   customLockAmount?: string
 }
 
@@ -71,6 +74,7 @@ export interface AddAmountModalProps {
   lockStartTime?: string
   lockEndTime?: string
   stakingTokenBalance: BigNumber
+  stakingTokenPrice: number
   customLockAmount?: string
 }
 
@@ -83,6 +87,7 @@ export interface ModalValidator {
 export interface LockedModalBodyPropsType {
   onDismiss?: VoidFn
   stakingToken: Token
+  stakingTokenPrice: number
   currentBalance?: BigNumber
   lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
@@ -105,6 +110,7 @@ export interface LockedModalBodyPropsType {
 
 export interface ExtendDurationButtonPropsType {
   stakingToken: Token
+  stakingTokenPrice: number
   currentLockedAmount: number
   currentBalance?: BigNumber
   lockEndTime: string
@@ -120,6 +126,7 @@ export interface AfterLockedActionsPropsType {
   lockStartTime: string
   currentLockedAmount: number
   stakingToken: Token
+  stakingTokenPrice: number
   position: VaultPosition
   isInline?: boolean
   hideConvertToFlexibleButton?: boolean
@@ -130,6 +137,7 @@ export interface LockedActionsPropsType extends VaultPositionParams {
   lockStartTime: string
   stakingToken: Token
   stakingTokenBalance: BigNumber
+  stakingTokenPrice: number
   lockedAmount: BigNumber
 }
 
@@ -151,7 +159,5 @@ export interface LockDurationFieldPropsType {
 }
 
 export interface LockedStakingApyPropsType {
-  stakingToken: Token
-  stakingTokenBalance: BigNumber
   userData: DeserializedLockedVaultUser
 }

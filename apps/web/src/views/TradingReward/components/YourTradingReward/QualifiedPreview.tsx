@@ -44,7 +44,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
     balance: { cakeAsBigNumber },
   } = userData
 
-  const { stakingToken, userData: poolUserData } = pool ?? {}
+  const { stakingToken, stakingTokenPrice, userData: poolUserData } = pool ?? {}
   const { totalVolume, tradingFeeArr } = currentUserCampaignInfo ?? {}
 
   const currentBalance = useMemo(
@@ -177,6 +177,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
               lockStartTime={lockStartTime}
               currentLockedAmount={cakeAsBigNumber}
               stakingToken={stakingToken}
+              stakingTokenPrice={stakingTokenPrice}
               currentBalance={currentBalance}
               stakingTokenBalance={currentBalance}
             />

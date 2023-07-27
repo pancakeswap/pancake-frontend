@@ -8,7 +8,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
@@ -33,8 +32,6 @@ interface LockedStakingApyProps extends LockedStakingApyPropsType {
 }
 
 const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({
-  stakingToken,
-  stakingTokenBalance,
   userData,
   showICake,
   pool,
@@ -51,13 +48,24 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
     [userData],
   )
 
-  const currentLockedAmountAsBigNumber = useMemo(() => {
-    return userData?.balance?.cakeAsBigNumber
-  }, [userData?.balance?.cakeAsBigNumber])
+  const stakingToken = pool?.stakingToken
+  const stakingTokenPrice = pool?.stakingTokenPrice
+  const stakingTokenBalance = pool?.userData?.stakingTokenBalance
 
-  const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBigNumber)
+  const currentLockedAmountAsBigNumber = userData?.balance?.cakeAsBigNumber
 
-  const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
+  const currentLockedAmount = useMemo(
+    () => getBalanceNumber(currentLockedAmountAsBigNumber),
+    [currentLockedAmountAsBigNumber],
+  )
+
+  const usdValueStaked = useMemo(
+    () =>
+      stakingToken && stakingTokenPrice
+        ? getBalanceNumber(currentLockedAmountAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
+        : null,
+    [currentLockedAmountAsBigNumber, stakingTokenPrice, stakingToken],
+  )
 
   const { weekDuration, lockEndDate, secondDuration, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
     lockStartTime: userData?.lockStartTime,
@@ -158,6 +166,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
           lockStartTime={userData?.lockStartTime}
           stakingToken={stakingToken}
           stakingTokenBalance={stakingTokenBalance}
+          stakingTokenPrice={pool?.stakingTokenPrice}
           lockedAmount={currentLockedAmountAsBigNumber}
         />
       </Box>

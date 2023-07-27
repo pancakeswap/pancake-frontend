@@ -66,8 +66,6 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
         {account && pool.vaultKey === VaultKey.CakeVault && isLocked ? (
           <LockedStakingApy
             userData={(vaultPool as DeserializedLockedCakeVault).userData}
-            stakingToken={pool?.stakingToken}
-            stakingTokenBalance={pool?.userData?.stakingTokenBalance}
             showICake={showICake}
             pool={pool}
             account={account}

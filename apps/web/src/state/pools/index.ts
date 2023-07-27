@@ -95,9 +95,9 @@ const initialState: PoolsState = {
 }
 
 export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
-  const cakePrice = await getCakePriceFromOracle()
-  const stakingTokenPrice = cakePrice
+  const cakePrice = parseFloat(await getCakePriceFromOracle())
 
+  const stakingTokenPrice = cakePrice
   const earningTokenPrice = cakePrice
 
   dispatch(
@@ -260,7 +260,7 @@ export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatc
     const stakingLimits = await fetchPoolsStakingLimits({ poolsWithStakingLimit, chainId, provider: getViemClients })
 
     const poolsConfig = getPoolsConfig(chainId)
-    const stakingLimitData = poolsConfig.map((pool) => {
+    const stakingLimitData = poolsConfig?.map((pool) => {
       if (poolsWithStakingLimit.includes(pool.sousId)) {
         return { sousId: pool.sousId }
       }
@@ -274,8 +274,9 @@ export const fetchPoolsStakingLimitsAsync = (chainId: ChainId) => async (dispatc
         numberSecondsForUserLimit,
       }
     })
-
-    dispatch(setPoolsPublicData(stakingLimitData))
+    if (stakingLimitData) {
+      dispatch(setPoolsPublicData(stakingLimitData))
+    }
   } catch (error) {
     console.error('[Pools Action] error when getting staking limits', error)
   }

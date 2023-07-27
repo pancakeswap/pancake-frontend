@@ -78,7 +78,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
 }) => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveChainId()
-  const { stakingToken, earningTokenPrice, vaultKey } = pool
+  const { stakingToken, stakingTokenPrice, earningTokenPrice, vaultKey } = pool
   const { address: account } = useAccount()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey) as any
@@ -317,7 +317,11 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
       )}
       {pool.vaultKey === VaultKey.CakeVault && cakeAsNumberBalance ? (
         <Box mt="8px" maxWidth="370px">
-          <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+          <ConvertToLock
+            stakingToken={stakingToken}
+            stakingTokenPrice={stakingTokenPrice}
+            currentStakedAmount={cakeAsNumberBalance}
+          />
         </Box>
       ) : null}
       {needEnable ? (

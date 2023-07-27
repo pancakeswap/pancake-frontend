@@ -8,6 +8,7 @@ import { ExtendDurationButtonPropsType } from '../types'
 const ExtendDurationButton: React.FC<React.PropsWithChildren<ExtendDurationButtonPropsType & ButtonProps>> = ({
   modalTitle,
   stakingToken,
+  stakingTokenPrice,
   currentLockedAmount,
   currentBalance,
   lockEndTime,
@@ -28,6 +29,7 @@ const ExtendDurationButton: React.FC<React.PropsWithChildren<ExtendDurationButto
     <ExtendDurationModal
       modalTitle={modalTitle}
       stakingToken={stakingToken}
+      stakingTokenPrice={stakingTokenPrice}
       lockStartTime={lockStartTime}
       currentBalance={currentBalance}
       currentLockedAmount={currentLockedAmount}

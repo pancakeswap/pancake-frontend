@@ -1,14 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Modal, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import useTheme from 'hooks/useTheme'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useIfoCeiling } from 'state/pools/hooks'
 
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
@@ -19,6 +18,7 @@ import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   modalTitle,
   stakingToken,
+  stakingTokenPrice,
   onDismiss,
   currentLockedAmount,
   currentDuration,
@@ -32,7 +32,10 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const ceiling = useIfoCeiling()
   const { t } = useTranslation()
 
-  const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
+  const usdValueStaked = useMemo(
+    () => getBalanceNumber(new BigNumber(currentLockedAmount).multipliedBy(stakingTokenPrice), stakingToken.decimals),
+    [currentLockedAmount, stakingTokenPrice, stakingToken.decimals],
+  )
 
   const validator = useCallback(
     ({ duration }) => {
@@ -111,6 +114,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         </Box>
         <LockedBodyModal
           stakingToken={stakingToken}
+          stakingTokenPrice={stakingTokenPrice}
           currentBalance={currentBalance}
           currentDuration={currentDuration}
           currentDurationLeft={currentDurationLeft}

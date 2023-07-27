@@ -4,7 +4,6 @@ import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { useAppDispatch } from 'state'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useVaultPoolContract } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
@@ -29,7 +28,6 @@ interface HookArgs {
 }
 
 interface HookReturn {
-  usdValueStaked: number
   duration: number
   setDuration: Dispatch<SetStateAction<number>>
   pendingTx: boolean
@@ -51,7 +49,6 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { mutate } = useSWRConfig()
   const { toastSuccess } = useToast()
   const [duration, setDuration] = useState(() => defaultDuration)
-  const usdValueStaked = useBUSDCakeAmount(lockedAmount.toNumber())
 
   const handleDeposit = useCallback(
     async (convertedStakeAmount: BigNumber, lockDuration: number) => {
@@ -99,5 +96,5 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
     handleDeposit(convertedStakeAmount, finalDuration)
   }, [prepConfirmArg, stakingToken, handleDeposit, duration, lockedAmount])
 
-  return { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick }
+  return { duration, setDuration, pendingTx, handleConfirmClick }
 }
