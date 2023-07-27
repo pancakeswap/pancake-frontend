@@ -39,8 +39,8 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
   )
 
   const showExpireSoonWarning = useMemo(
-    () => new BigNumber(userData?.lockEndTime ?? '0').lt(lastTokenTimestamp),
-    [lastTokenTimestamp, userData?.lockEndTime],
+    () => new BigNumber(userData?.lockEndTime ?? '0').lt(nextDistributionTimestamp),
+    [nextDistributionTimestamp, userData?.lockEndTime],
   )
 
   const showNoCakeAmountWarning = useMemo(
