@@ -59,6 +59,10 @@ import galxeLogo from './galxe-logo.png'
 import polygonZkBg from './polygon-zk-bg.png'
 import polygonZkBgMobile from './polygon-zk-bg-mobile.png'
 import polygonZkBunny from './polygon-zk-bunny.png'
+import zkSyncBgMobile from './zkSyncBgMobile.png'
+import zkSyncBg from './zkSyncBg.png'
+import zkSyncBunny from './zkSyncBunny.png'
+import eraLogo from './eraLogo.png'
 
 export {
   lotteryImage,
@@ -121,4 +125,8 @@ export {
   polygonZkBg,
   polygonZkBgMobile,
   polygonZkBunny,
+  zkSyncBgMobile,
+  zkSyncBg,
+  zkSyncBunny,
+  eraLogo,
 }
