@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
-import { Flex, Text, TooltipText, useTooltip, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
+import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
 
 interface BenefitsTextProps {
   title: string
@@ -14,22 +15,11 @@ const BenefitsText: React.FC<React.PropsWithChildren<BenefitsTextProps>> = ({
   icon,
   tooltipComponent,
 }) => {
-  const { isMobile } = useMatchBreakpoints()
-
-  const { targetRef, tooltipVisible, tooltip } = useTooltip(<>{tooltipComponent}</>, {
-    placement: 'bottom',
-    ...(isMobile && { hideTimeout: 2000 }),
-  })
-
   return (
     <Flex mt="8px" flexDirection="row" alignItems="center">
-      <Flex mr="auto" ref={targetRef}>
-        {icon}
-        <TooltipText color="textSubtle" fontSize="14px" ml="8px">
-          {title}
-        </TooltipText>
+      <Flex mr="auto">
+        <BenefitsTooltipsText title={title} icon={icon} tooltipComponent={tooltipComponent} />
       </Flex>
-      {tooltipVisible && tooltip}
       <Text bold>{value}</Text>
     </Flex>
   )

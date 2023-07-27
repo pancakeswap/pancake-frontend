@@ -2,18 +2,7 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
-import {
-  Box,
-  Flex,
-  Text,
-  TooltipText,
-  Card,
-  LinkExternal,
-  Message,
-  MessageText,
-  WarningIcon,
-  Balance,
-} from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card, LinkExternal, Message, MessageText, WarningIcon, Balance } from '@pancakeswap/uikit'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
@@ -21,6 +10,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { distanceToNowStrict } from 'utils/timeHelper'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
+import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
 
 interface RevenueSharingProps {
   onDismiss?: () => void
@@ -66,9 +56,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
         </Text>
         <Box mt="8px">
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              {t('Your shares')}
-            </TooltipText>
+            <BenefitsTooltipsText title={t('Your shares')} tooltipComponent={<>132</>} />
             <Box>
               {yourShare === 0 ? (
                 <Text bold color="failure">
@@ -91,9 +79,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              {t('Next distribution')}
-            </TooltipText>
+            <BenefitsTooltipsText title={t('Next distribution')} tooltipComponent={<>132</>} />
             <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
               {t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}
             </Text>
@@ -107,16 +93,12 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
           )}
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              {t('Last distribution')}
-            </TooltipText>
+            <BenefitsTooltipsText title={t('Last distribution')} tooltipComponent={<>132</>} />
             <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <TooltipText color="textSubtle" fontSize="14px" mr="auto">
-              {t('Available for claiming')}
-            </TooltipText>
+            <BenefitsTooltipsText title={t('Available for claiming')} tooltipComponent={<>132</>} />
             <Box>
               <Balance unit=" CAKE" bold value={availableCake} decimals={2} />
               <Balance

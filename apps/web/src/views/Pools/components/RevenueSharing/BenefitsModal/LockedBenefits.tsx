@@ -89,19 +89,19 @@ const LockedBenefits = () => {
               title="iCake"
               value={cakeBenefits?.iCake}
               tooltipComponent={iCakeTooltipComponent()}
-              icon={<ICakeIcon width={24} height={24} />}
+              icon={<ICakeIcon width={24} height={24} mr="8px" />}
             />
             <BenefitsText
               title="bCake"
               value={t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
               tooltipComponent={bCakeTooltipComponent()}
-              icon={<BCakeIcon width={24} height={24} />}
+              icon={<BCakeIcon width={24} height={24} mr="8px" />}
             />
             <BenefitsText
               title="vCake"
               value={cakeBenefits?.vCake?.vaultScore}
               tooltipComponent={vCakeTooltipComponent()}
-              icon={<VCakeIcon width={24} height={24} />}
+              icon={<VCakeIcon width={24} height={24} mr="8px" />}
             />
           </Box>
         </Box>
