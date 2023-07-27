@@ -18,7 +18,7 @@ interface PropsType {
   lockedAmount: string
   stakingMax: BigNumber
   setLockedAmount: Dispatch<SetStateAction<string>>
-  usedValueStaked: number | undefined
+  usdValueStaked: number | undefined
   stakingTokenBalance: BigNumber
   needApprove: boolean
 }
@@ -30,7 +30,7 @@ const BalanceField: React.FC<React.PropsWithChildren<PropsType>> = ({
   lockedAmount,
   stakingMax,
   setLockedAmount,
-  usedValueStaked,
+  usdValueStaked,
   stakingTokenBalance,
   needApprove,
 }) => {
@@ -85,7 +85,7 @@ const BalanceField: React.FC<React.PropsWithChildren<PropsType>> = ({
         isWarning={userNotEnoughCake || needApprove}
         value={lockedAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={`~${usedValueStaked || 0} USD`}
+        currencyValue={`~${usdValueStaked || 0} USD`}
         decimals={stakingDecimals}
       />
       {needApprove && !userNotEnoughCake ? (
