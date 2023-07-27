@@ -4,7 +4,7 @@ import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
 import { GraphQLClient } from 'graphql-request'
 
-import { V3_SUBGRAPH_URLS } from './constants'
+import { V3_SUBGRAPH_URLS, SupportedChainId } from './constants'
 
 const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE]
 requireCheck.forEach((node) => {
@@ -49,13 +49,16 @@ export const viemProviders: OnChainProvider = ({ chainId }: { chainId?: ChainId 
   }
 }
 
-export const v3SubgraphClients = {
+export const v3SubgraphClients: Record<SupportedChainId, GraphQLClient> = {
   [ChainId.ETHEREUM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ETHEREUM], { fetch }),
+  [ChainId.POLYGON_ZKEVM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM], { fetch }),
+  [ChainId.ZKSYNC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ZKSYNC], { fetch }),
+  [ChainId.LINEA_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET], { fetch }),
   [ChainId.GOERLI]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.GOERLI], { fetch }),
   [ChainId.BSC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC], { fetch }),
   [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET], { fetch }),
-}
+} as const
 
 export const v3SubgraphProvider: SubgraphProvider = ({ chainId = ChainId.BSC }: { chainId?: ChainId }) => {
-  return v3SubgraphClients[chainId] || v3SubgraphClients[ChainId.BSC]
+  return v3SubgraphClients[chainId as SupportedChainId] || v3SubgraphClients[ChainId.BSC]
 }
