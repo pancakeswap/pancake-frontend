@@ -2612,5 +2612,6 @@
   "Round #%round%  |  %startTime% - %endTime%": "Round #%round%  |  %startTime% - %endTime%",
   "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
   "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
-  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!"
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }
