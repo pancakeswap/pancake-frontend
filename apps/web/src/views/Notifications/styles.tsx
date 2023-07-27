@@ -44,6 +44,10 @@ export const FilterContainer = styled.div`
   }
 `
 
-export const StyledInputCurrencyWrapper = styled(Box)`
-  width: 380px;
+export const StyledInputCurrencyWrapper = styled.div`
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  width: 200%; /* Specify the width of the container */
+  height: 200%; /* Specify the height of the container */
 `

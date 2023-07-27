@@ -9,11 +9,15 @@ export const types = {
 
 export type Types = (typeof types)[keyof typeof types];
 
+export type StyledToastProps = {
+  position: "left" | "right" | "top" | "bottom";
+};
 export interface ToastData {
   id: string;
   type: Types;
   title: string;
   description?: ReactNode;
+  position?: StyledToastProps;
 }
 
 export interface ToastContainerProps {

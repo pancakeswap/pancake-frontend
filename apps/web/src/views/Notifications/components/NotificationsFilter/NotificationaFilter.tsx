@@ -1,35 +1,32 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, AutoRow, SearchInput, Select } from '@pancakeswap/uikit'
+import { AutoRow, Select, Text } from '@pancakeswap/uikit'
+import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper } from 'views/Notifications/styles'
 
-const NotificationsFilter = () => {
+const NotificationsFilter = ({
+  setNotifyFilterType,
+  setSortType,
+}: {
+  setNotifyFilterType: () => void
+  setSortType: () => void
+}) => {
   const { t } = useTranslation()
   return (
-    <AutoRow marginBottom="32px">
+    <AutoRow marginBottom="32px" gap="16px" marginY="16px">
       <FilterContainer>
-        <LabelWrapper style={{ width: '85px' }}>
-          <Text textTransform="uppercase">{t('All')}</Text>
-          <Select
-            options={[
-              {
-                label: t('All'),
-                value: 'all',
-              },
-              {
-                label: t('Farms'),
-                value: 'farms',
-              },
-              {
-                label: t('LP'),
-                value: 'lp',
-              },
-            ]}
-            onOptionChange={() => null}
-          />
+        <LabelWrapper style={{ width: '120px' }}>
+          <Text textTransform="uppercase" mb="4px" ml="4px">
+            {t('Filter by type')}
+          </Text>
+          <Select onOptionChange={setNotifyFilterType} options={NotificationFilterTypes} />
         </LabelWrapper>
-        <LabelWrapper style={{ marginLeft: 16, width: '85px' }}>
-          <Text textTransform="uppercase">{t('Search')}</Text>
-          <SearchInput initialValue="normalizedUrlSearch" onChange={() => null} placeholder="Search Farms" />
+      </FilterContainer>
+      <FilterContainer>
+        <LabelWrapper style={{ width: '105px' }}>
+          <Text textTransform="uppercase" mb="4px" ml="4px">
+            {t('Sort by date')}
+          </Text>
+          <Select onOptionChange={setSortType} options={NotificationSortTypes} />
         </LabelWrapper>
       </FilterContainer>
     </AutoRow>

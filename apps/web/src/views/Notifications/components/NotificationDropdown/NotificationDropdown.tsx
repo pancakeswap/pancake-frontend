@@ -1,23 +1,38 @@
-import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, useToast } from '@pancakeswap/uikit'
-import { NotificationView } from 'views/Notifications/types'
 import { useWalletConnectPushClient } from 'contexts/PushClientContext'
-import SubscribedView from 'views/Notifications/containers/OnBoardingView'
+import { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
-import NotificationMenu from './NotificationMenu'
-import { StyledInputCurrencyWrapper } from '../../styles'
+import SubscribedView from 'views/Notifications/containers/OnBoardingView'
 import SettingsModal from '../../containers/NotificationView'
+import { StyledInputCurrencyWrapper } from '../../styles'
+import NotificationHeader from '../Notificationheader/Notificationheader'
+import NotificationMenu from './NotificationMenu'
+
+const ViewContainer = styled.div<{ isRightView: boolean }>`
+  display: flex;
+  width: 200%;
+  transition: transform 300ms ease-in-out;
+  transform: translateX(${({ isRightView }) => (isRightView ? '0%' : '-50%')});
+`
+
+const View = styled.div`
+  // flex: 1;
+  // width: 50%;
+  width: 100%;
+`
 
 export const NOTIFICATION_BODY = `your share is 000000018% and you will recieve approximately 0.0000000000578269 CAKE2-tBNB LP`
 
 export const NotificationDropdown = () => {
   const { connector, account, pushClient, testSendTransaction } = useWalletConnectPushClient()
-  const [modalView, setModalView] = useState<NotificationView>(NotificationView.onBoarding)
   const [isSubscribing, setIsSubscribing] = useState<boolean>(false)
   const [isUnsubscribing, setIsUnsubscribing] = useState<boolean>(false)
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
   const [enabled, setEnabled] = useState<boolean>(true)
+  const [isRightView, setIsRightView] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
@@ -25,19 +40,19 @@ export const NotificationDropdown = () => {
   const handleSubscribed = useCallback(() => {
     localStorage.setItem('subscribed', 'true')
     setEnabled(true)
-    setModalView(NotificationView.Settings)
+    setIsRightView(false)
   }, [])
 
   useEffect(() => {
     if (localStorage.getItem('subscribed')) {
-      if (localStorage.getItem('enabled')) setModalView(NotificationView.Notifications)
+      if (localStorage.getItem('enabled')) setIsRightView(false)
     } else setEnabled(false)
   }, [])
 
   useEffect(() => {
     if (pushClient) {
       const activeSubscriptions = pushClient?.getActiveSubscriptions()
-      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:5:${account}`)) {
+      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:1:${account}`)) {
         setIsSubscribed(true)
       }
     }
@@ -59,7 +74,7 @@ export const NotificationDropdown = () => {
         if (!localStorage.getItem('enabled')) {
           setEnabled(false)
           localStorage.setItem('enabled', 'true')
-          setModalView(NotificationView.Notifications)
+          setIsRightView(true)
         }
         toastSuccess(
           `${t('Established PushSubscription')}!`,
@@ -97,7 +112,7 @@ export const NotificationDropdown = () => {
         })
       }
       const { id } = await pushClient.propose({
-        account: `eip155:5:${account}`,
+        account: `eip155:1:${account}`,
         pairingTopic: latestPairing.topic,
       })
 
@@ -125,7 +140,7 @@ export const NotificationDropdown = () => {
         throw new Error('Push Client not initialized')
       }
       const pushSubscriptions = pushClient.getActiveSubscriptions()
-      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:5:${account}`)
+      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:1:${account}`)
 
       if (currentSubscription) {
         await pushClient.deleteSubscription({
@@ -151,14 +166,14 @@ export const NotificationDropdown = () => {
         throw new Error('Push Client not initialized')
       }
       const notificationPayload = {
-        accounts: [`eip155:5:${account}`],
+        accounts: [`eip155:1:${account}`],
         notification: {
           title: 'New Liquidity Position added',
           body: NOTIFICATION_BODY,
           // href already contains the trailing slash
           icon: `${window.location.href}logo.png`,
-          url: 'https://gm.walletconnect.com/',
-          type: 'gm_hourly',
+          url: 'http://localhost:3000',
+          type: 'alerts',
         },
       }
 
@@ -187,28 +202,52 @@ export const NotificationDropdown = () => {
     }
   }, [toastSuccess, toastError, account, pushClient, t])
 
+  const toggleSettings = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      if (isRightView) setIsRightView(false)
+      else setIsRightView(true)
+    },
+    [setIsRightView, isRightView],
+  )
+
+  const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
+
   return (
-    <NotificationMenu mr="8px">
+    <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
-        <StyledInputCurrencyWrapper>
-          {modalView === NotificationView.onBoarding ? <SubscribedView handleSubscribed={handleSubscribed} /> : null}
-          {modalView === NotificationView.Notifications && account ? (
-            <SettingsModal setModalView={setModalView} enabled={enabled} />
-          ) : null}
-          {modalView === NotificationView.Settings && account ? (
-            <NotificationSettingsMain
-              connector={connector}
-              handleSubscribe={handleSubscribe}
-              handleUnSubscribe={handleUnSubscribe}
-              isSubscribed={isSubscribed}
-              isSubscribing={isSubscribing}
-              isUnsubscribing={isUnsubscribing}
-              account={account}
-              setModalView={setModalView}
-              enabled={enabled}
+        <>
+          {!isSubscribed ? (
+            <NotificationHeader
+              onBack={toggleSettings}
+              onDismiss={onDismiss}
+              isEnabled={!enabled}
+              isSettings={!isRightView}
             />
           ) : null}
-        </StyledInputCurrencyWrapper>
+          <StyledInputCurrencyWrapper>
+            {!isSubscribed && !enabled ? (
+              <SubscribedView handleSubscribed={handleSubscribed} />
+            ) : (
+              <ViewContainer isRightView={isRightView}>
+                <View>{account && <SettingsModal />}</View>
+                <View>
+                  {account && (
+                    <NotificationSettingsMain
+                      connector={connector}
+                      handleSubscribe={handleSubscribe}
+                      handleUnSubscribe={handleUnSubscribe}
+                      isSubscribed={isSubscribed}
+                      isSubscribing={isSubscribing}
+                      isUnsubscribing={isUnsubscribing}
+                      account={account}
+                    />
+                  )}
+                </View>
+              </ViewContainer>
+            )}
+          </StyledInputCurrencyWrapper>
+        </>
       )}
     </NotificationMenu>
   )

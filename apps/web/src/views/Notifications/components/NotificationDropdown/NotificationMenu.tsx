@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Button, UserMenuProps, NotificationBellIcon } from '@pancakeswap/uikit'
 
@@ -10,6 +10,8 @@ const Menu = styled.div<{ isOpen: boolean }>`
   padding-top: 4px;
   pointer-events: auto;
   width: 380px;
+  overflow: hidden;
+  position: relative;
   visibility: visible;
   z-index: 1001;
 
@@ -21,8 +23,9 @@ const Menu = styled.div<{ isOpen: boolean }>`
   `}
 `
 
-const NotificationMenu: React.FC<UserMenuProps> = ({ children }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+const NotificationMenu: React.FC<
+  UserMenuProps & { isMenuOpen: boolean; setIsMenuOpen: Dispatch<SetStateAction<boolean>> }
+> = ({ children, isMenuOpen, setIsMenuOpen }) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

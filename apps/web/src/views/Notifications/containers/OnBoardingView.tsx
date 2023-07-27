@@ -17,7 +17,7 @@ const SubscribedView = ({ handleSubscribed }: { handleSubscribed: () => void }) 
   )
 
   return (
-    <Box padding="24px">
+    <Box padding="24px" width="50%">
       <Box>
         <Image src="/IMG.png" alt="#" height={185} width={300} />
       </Box>
@@ -38,7 +38,7 @@ const SubscribedView = ({ handleSubscribed }: { handleSubscribed: () => void }) 
         >
           <Flex alignItems="center">
             <Text px="4px" fontWeight="bold" color="white">
-              {t('Enable (Subscribe in wallet)')}
+              {t('Get started with Push!')}
             </Text>
             {loading ? <CircleLoader stroke="white" /> : null}
           </Flex>

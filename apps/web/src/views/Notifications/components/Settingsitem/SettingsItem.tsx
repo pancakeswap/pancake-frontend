@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Toggle, Box } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Toggle, useToast } from '@pancakeswap/uikit'
+import { initialNotificationState, useNotificationState } from '@pancakeswap/utils/user'
 import Divider from 'components/Divider'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   DEFAULT_NOTIFICATIONS,
   DummyNotificationData,
@@ -12,8 +13,8 @@ import {
 interface ISettingsprops {
   title: string
   description: string
-  checked: boolean
-  onChange: () => void
+  type: string
+  isToastVisible: boolean
 }
 
 interface INotificationprops {
@@ -21,8 +22,31 @@ interface INotificationprops {
   description: string
 }
 
-const Settingsitem = ({ title, description, checked, onChange }: ISettingsprops) => {
+const Settingsitem = ({ title, description, type, isToastVisible }: ISettingsprops) => {
+  const { notificationState, toggleNotification } = useNotificationState(type)
   const { t } = useTranslation()
+  const { toastSuccess, toastWarning } = useToast()
+
+  const notificationAlert = useCallback(() => {
+    toggleNotification()
+    if (isToastVisible) {
+      if (notificationState) {
+        toastSuccess(
+          `${t('Settings Update')}!`,
+          <Text>{t(`You will now recieve ${title} alerts`)}</Text>,
+          'bottom' as any,
+        )
+      } else {
+        toastWarning(
+          `${t('Settings Update')}!`,
+          <Text>
+            {t(`you have deactivated ${title} alert and will not recieve notifications until turned back on`)}
+          </Text>,
+          'bottom' as any,
+        )
+      }
+    }
+  }, [toastSuccess, toggleNotification, notificationState, t, title, isToastVisible, toastWarning])
 
   return (
     <>
@@ -35,7 +59,7 @@ const Settingsitem = ({ title, description, checked, onChange }: ISettingsprops)
         <Flex alignItems="center" maxWidth="80%">
           <Text color="textSubtle">{t(`${description}`)}</Text>
         </Flex>
-        <Toggle id="toggle-expert-mode-button" scale="md" checked={checked} onChange={onChange} />
+        <Toggle id="toggle-expert-mode-button" scale="md" checked={notificationState} onChange={notificationAlert} />
       </Flex>
     </>
   )
@@ -81,20 +105,33 @@ export const NotificationContainer = () => {
 }
 
 const SettingsContainer = () => {
-  const [toggle, setToggle] = useState(false)
+  const [isToastVisible, setToastVisible] = useState<boolean>(false)
 
-  const switcht = useCallback(() => setToggle((t) => !t), [setToggle])
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (isToastVisible) {
+      const hideToastTimer = setTimeout(() => {
+        setToastVisible(false)
+      }, 5000)
+
+      return () => {
+        clearTimeout(hideToastTimer)
+      }
+    }
+  }, [isToastVisible])
+
   return (
     <>
       <Box>
         <Divider />
-        {DEFAULT_NOTIFICATIONS.map((notification: NotifyType, index) => {
+        {DEFAULT_NOTIFICATIONS.map((notification: NotifyType, index: number) => {
+          const types = Object.keys(initialNotificationState)
           return (
             <Settingsitem
               title={notification.title}
               description={notification.description}
-              checked={index === 0 ? toggle : notification.checked}
-              onChange={index === 0 ? switcht : notification.onChange}
+              type={types[index]}
+              isToastVisible={isToastVisible}
             />
           )
         })}

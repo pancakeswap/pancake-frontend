@@ -6,7 +6,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import Page from '../Page'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from '../Swap/styles'
 import { NotificationView } from './types'
-import SettingsModal from './containers/NotificationView'
 import NotificationSettingsMain from './containers/NotificationSettings'
 import SubscribedView from './containers/OnBoardingView'
 
@@ -36,7 +35,7 @@ export default function Notifications() {
   useEffect(() => {
     if (pushClient) {
       const activeSubscriptions = pushClient?.getActiveSubscriptions()
-      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:5:${account}`)) {
+      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:1:${account}`)) {
         setIsSubscribed(true)
       }
     }
@@ -97,7 +96,7 @@ export default function Notifications() {
         })
       }
       const { id } = await pushClient.propose({
-        account: `eip155:5:${account}`,
+        account: `eip155:1:${account}`,
         pairingTopic: latestPairing.topic,
       })
 
@@ -125,7 +124,7 @@ export default function Notifications() {
         throw new Error('Push Client not initialized')
       }
       const pushSubscriptions = pushClient.getActiveSubscriptions()
-      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:5:${account}`)
+      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:1:${account}`)
 
       if (currentSubscription) {
         await pushClient.deleteSubscription({
@@ -168,8 +167,6 @@ export default function Notifications() {
                     isSubscribing={isSubscribing}
                     isUnsubscribing={isUnsubscribing}
                     account={account}
-                    setModalView={setModalView}
-                    enabled={enabled}
                   />
                 ) : null}
               </AppBody>

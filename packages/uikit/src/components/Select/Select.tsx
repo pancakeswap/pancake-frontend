@@ -122,7 +122,8 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
     event.stopPropagation();
   };
 
-  const onOptionClicked = (selectedIndex: number) => () => {
+  const onOptionClicked = (selectedIndex: number) => (e) => {
+    e.stopPropagation();
     setSelectedOptionIndex(selectedIndex);
     setIsOpen(false);
     setOptionSelected(true);

@@ -9,7 +9,7 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   const [toasts, setToasts] = useState<ToastContextApi["toasts"]>([]);
 
   const toast = useCallback(
-    ({ title, description, type }: Omit<ToastData, "id">) => {
+    ({ title, description, type, position }: Omit<ToastData, "id">) => {
       setToasts((prevToasts) => {
         const id = kebabCase(title);
 
@@ -22,6 +22,7 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             title,
             description,
             type,
+            position,
           },
           ...currentToasts,
         ];
@@ -31,29 +32,29 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   );
 
   const toastError = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.DANGER });
+    (title: ToastData["title"], description?: ToastData["description"], position?: ToastData["position"]) => {
+      return toast({ title, description, type: toastTypes.DANGER, position });
     },
     [toast]
   );
 
   const toastInfo = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.INFO });
+    (title: ToastData["title"], description?: ToastData["description"], position?: ToastData["position"]) => {
+      return toast({ title, description, type: toastTypes.INFO, position });
     },
     [toast]
   );
 
   const toastSuccess = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.SUCCESS });
+    (title: ToastData["title"], description?: ToastData["description"], position?: ToastData["position"]) => {
+      return toast({ title, description, type: toastTypes.SUCCESS, position });
     },
     [toast]
   );
 
   const toastWarning = useCallback(
-    (title: ToastData["title"], description?: ToastData["description"]) => {
-      return toast({ title, description, type: toastTypes.WARNING });
+    (title: ToastData["title"], description?: ToastData["description"], position?: ToastData["position"]) => {
+      return toast({ title, description, type: toastTypes.WARNING, position });
     },
     [toast]
   );

@@ -1,17 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Box, FlexGap } from '@pancakeswap/uikit'
+import { Box, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback } from 'react'
-import NotificationHeader from '../components/Notificationheader/Notificationheader'
+import Divider from 'components/Divider'
 import NotificationsFilter from '../components/NotificationsFilter/NotificationaFilter'
-import { DummyNotificationData } from '../constants'
 import { NotificationContainer } from '../components/Settingsitem/SettingsItem'
-import { NotificationView } from '../types'
+import { DummyNotificationData } from '../constants'
 
-interface ISettingsProps {
-  setModalView: Dispatch<SetStateAction<NotificationView>>
-  enabled: boolean
-}
 const EmptyView = () => {
   const { t } = useTranslation()
 
@@ -25,9 +19,9 @@ const EmptyView = () => {
         <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
           {t('All Set')}
         </Text>
-        <Text fontSize="12px" textAlign="center" color="textSubtle">
+        <Text fontSize="16px" textAlign="center" color="textSubtle">
           {t(
-            'Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet. Note you may periodically have to reconnect to establis a connection.',
+            'Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.',
           )}
         </Text>
       </FlexGap>
@@ -35,31 +29,22 @@ const EmptyView = () => {
   )
 }
 
-const SettingsModal = ({ setModalView, enabled }: ISettingsProps) => {
-  const onBack = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation()
-      setModalView(NotificationView.Settings)
-    },
-    [setModalView],
-  )
-
+const SettingsModal = () => {
   return (
-    <>
-      <NotificationHeader isSettings onBack={onBack} onDismiss={() => null} isEnabled={enabled} />
-      <Box paddingX="24px" paddingBottom="24px">
-        <NotificationsFilter />
-        {DummyNotificationData.length === 0 ? (
-          <Box marginBottom="56px">
-            <NotificationContainer />
-          </Box>
-        ) : (
-          <Box marginBottom="56px">
-            <EmptyView />
-          </Box>
-        )}
-      </Box>
-    </>
+    <Box paddingX="24px" paddingBottom="24px">
+      <Divider />
+
+      <NotificationsFilter setNotifyFilterType={() => null} setSortType={() => null} />
+      {DummyNotificationData.length === 0 ? (
+        <Box marginBottom="56px">
+          <NotificationContainer />
+        </Box>
+      ) : (
+        <Box marginBottom="56px">
+          <EmptyView />
+        </Box>
+      )}
+    </Box>
   )
 }
 

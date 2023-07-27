@@ -1,4 +1,5 @@
 import '@pancakeswap/ui/css/reset.css'
+import '../style/transitions.module.css'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'

@@ -52,14 +52,13 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       }
 
       const notificationPayload = {
-        accounts: [`eip155:5:${account}`],
+        accounts: [`eip155:1:${account}`],
+        type: 'alerts',
         notification: {
           title: 'New Liquidity Position added',
           body: NOTIFICATION_BODY,
-          // href already contains the trailing slash
           icon: `${window.location.href}logo.png`,
-          url: 'https://gm.walletconnect.com/',
-          type: 'gm_hourly',
+          url: 'https://web-git-feat-web3-notifications.pancake.run',
         },
       }
 
