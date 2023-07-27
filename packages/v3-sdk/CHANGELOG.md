@@ -1,5 +1,17 @@
 # @pancakeswap/v3-sdk
 
+## 3.2.0
+
+### Minor Changes
+
+- 77fc3406a: Add zkSync support
+
+### Patch Changes
+
+- Updated dependencies [77fc3406a]
+  - @pancakeswap/sdk@5.2.0
+  - @pancakeswap/tokens@0.2.0
+
 ## 3.1.1
 
 ### Patch Changes
