@@ -13,6 +13,7 @@ import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import TradingRewardBanner from '../TradingRewardBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import { PolygonZkEvmBanner } from '../PolygonZkEvmBanner'
+import { ZksyncBanner } from '../ZksyncBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -38,6 +39,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <ZksyncBanner /> },
       { shouldRender: true, banner: <PolygonZkEvmBanner /> },
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <PancakeProtectorBanner /> },
