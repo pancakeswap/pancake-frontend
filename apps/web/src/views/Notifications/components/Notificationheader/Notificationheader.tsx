@@ -43,7 +43,7 @@ const NotificationHeader = ({ isSettings = false, isEnabled, onBack, onDismiss }
           <ModalCloseButton onDismiss={onDismiss} />
         </>
       ) : (
-        <Box display="flex" padding="8px">
+        <Box display="flex" padding="8px" paddingLeft="20px">
           <LogoRoundIcon width="40px" mr="12px" />
           <Heading fontSize="24px" padding="0px" textAlign="left" mr="8px">
             {t('PancakeSwap would like to send you notifications')}

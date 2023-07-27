@@ -52,7 +52,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       }
 
       const notificationPayload = {
-        accounts: [`eip155:1:${account}`],
+        accounts: [`eip155:${chainId}:${account}`],
         type: 'alerts',
         notification: {
           title: 'New Liquidity Position added',
@@ -87,7 +87,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         toastError(`${t('Notification Failed')}!`, <Text>{t(error.message)}</Text>)
       }
     }
-  }, [toastSuccess, toastError, account, pushClient, t])
+  }, [toastSuccess, toastError, account, pushClient, t, chainId])
 
   useEffect(() => {
     if (!chainId || !provider) return

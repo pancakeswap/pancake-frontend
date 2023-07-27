@@ -11,7 +11,7 @@ const alertTypeMap = {
   [types.WARNING]: alertVariants.WARNING,
 };
 
-const StyledToast = styled.div<StyledToastProps>`
+const StyledToast = styled.div<{ position: StyledToastProps }>`
   position: fixed;
   max-width: calc(100% - 32px);
   transition: all 250ms ease-in;

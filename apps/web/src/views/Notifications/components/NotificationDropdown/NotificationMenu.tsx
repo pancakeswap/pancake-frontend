@@ -8,7 +8,7 @@ const Menu = styled.div<{ isOpen: boolean }>`
   border-radius: 24px;
   padding-bottom: 4px;
   pointer-events: auto;
-  width: 380px;
+  width: 390px;
   overflow: hidden;
   position: relative;
   visibility: visible;

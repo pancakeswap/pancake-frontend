@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import SubscribedView from 'views/Notifications/containers/OnBoardingView'
+import { useChainId } from 'wagmi'
 import SettingsModal from '../../containers/NotificationView'
 import { StyledInputCurrencyWrapper } from '../../styles'
 import NotificationHeader from '../Notificationheader/Notificationheader'
@@ -34,6 +35,7 @@ export const NotificationDropdown = () => {
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [transactions, setTransactions] = useState<any[]>([])
+  const chainId = useChainId()
 
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
@@ -53,7 +55,7 @@ export const NotificationDropdown = () => {
   useEffect(() => {
     if (pushClient) {
       const activeSubscriptions = pushClient?.getActiveSubscriptions()
-      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:1:${account}`)) {
+      if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:${chainId}:${account}`)) {
         setIsSubscribed(true)
       }
     }
@@ -113,7 +115,7 @@ export const NotificationDropdown = () => {
         })
       }
       const { id } = await pushClient.propose({
-        account: `eip155:1:${account}`,
+        account: `eip155:${chainId}:${account}`,
         pairingTopic: latestPairing.topic,
       })
 
@@ -132,7 +134,7 @@ export const NotificationDropdown = () => {
         toastError(`${t('Subscription Request eError')}!`, <Text>{t(error.message)}</Text>)
       }
     }
-  }, [pushClient, account, toastSuccess, toastError, t])
+  }, [pushClient, account, toastSuccess, toastError, t, chainId])
 
   const handleUnSubscribe = useCallback(async () => {
     setIsUnsubscribing(true)
@@ -141,7 +143,9 @@ export const NotificationDropdown = () => {
         throw new Error('Push Client not initialized')
       }
       const pushSubscriptions = pushClient.getActiveSubscriptions()
-      const currentSubscription = Object.values(pushSubscriptions).find((sub) => sub.account === `eip155:1:${account}`)
+      const currentSubscription = Object.values(pushSubscriptions).find(
+        (sub) => sub.account === `eip155:${chainId}:${account}`,
+      )
 
       if (currentSubscription) {
         await pushClient.deleteSubscription({
@@ -167,7 +171,7 @@ export const NotificationDropdown = () => {
         throw new Error('Push Client not initialized')
       }
       const notificationPayload = {
-        accounts: [`eip155:1:${account}`],
+        accounts: [`eip155:${chainId}:${account}`],
         notification: {
           title: 'New Liquidity Position added',
           body: NOTIFICATION_BODY,
@@ -187,7 +191,7 @@ export const NotificationDropdown = () => {
         body: JSON.stringify(notificationPayload),
       })
 
-      const gmRes = await result.json() // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
+      const gmRes = await result.json() // { "sent": ["eip155:${chainId}:0xafeb..."], "failed": [], "not_found": [] }
       const isSuccessfulGm = gmRes.sent.includes(notificationPayload.accounts[0])
 
       if (isSuccessfulGm)
@@ -201,7 +205,7 @@ export const NotificationDropdown = () => {
         toastError(`${t('Notification Failed')}!`, <Text>{t(error.message)}</Text>)
       }
     }
-  }, [toastSuccess, toastError, account, pushClient, t])
+  }, [toastSuccess, toastError, account, pushClient, t, chainId])
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -214,45 +218,37 @@ export const NotificationDropdown = () => {
 
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
-  // const fetchTxs = async () => {
-  //   console.log('heyyyyyy')
-  //     try {
-  //       const response = await fetch(`http://localhost:8000/users?account=0x2dC45bA781E8B9D12501bd14d01f072bA4Df1481`, {
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'application/json',
-  //         },
-  //       })
-  //       const result = response.json() as any
-  //         // console.log(transacxtionsResponse);
-  //         // const cache: any = {};
-  //         // cache[account] = x.userNotifications;
-  //         // sessionStorage.setItem('user-transactions', JSON.stringify(cache));
-  //         setTransactions(result.userNotifications);
-  //     } catch (err) {
-  //         //  setError("notifications.somethingWentWrongTryLater");
-  //         console.log(err)
-  //     }
-  //   }
+  const fetchTxs = useCallback(async () => {
+    try {
+      const transactionsResponse = await fetch(`http://localhost:8000/users?account=${account}`)
+      if (!transactionsResponse) return
+      const res = await transactionsResponse.json()
+      console.log(res)
+      const cache: any = {}
+      cache[account] = res.userNotifications
+      sessionStorage.setItem('user-transactions', JSON.stringify(cache))
+      setTransactions(res.userNotifications)
+    } catch (err) {
+      //  setError("notifications.somethingWentWrongTryLater");
+    }
+  }, [account, setTransactions])
 
-  // useEffect(() => {
-  //     fetchTxs();
-  // }, []);
+  useEffect(() => {
+    fetchTxs()
+    const intervalId: NodeJS.Timer = setInterval(fetchTxs, 30000)
+    return () => clearInterval(intervalId)
+  }, [account, fetchTxs])
 
-  // useEffect(() => {
-  //     const txns = sessionStorage.getItem('user-transactions');
-  //     if (account && txns) {
-  //         const cache = JSON.parse(txns);
-  //         if (
-  //             Object.keys(cache).length > 0 &&
-  //             cache[account] &&
-  //             cache[account].length > 0
-  //         ) {
-  //             setTransactions(cache[account]);
-  //             //  setError(null);
-  //         }
-  //     }
-  // }, [account, setTransactions]);
+  useEffect(() => {
+    const txns = sessionStorage.getItem('user-transactions')
+    if (account && txns) {
+      const cache = JSON.parse(txns)
+      if (Object.keys(cache).length > 0 && cache[account] && cache[account].length > 0) {
+        setTransactions(cache[account])
+        //  setError(null);
+      }
+    }
+  }, [account, setTransactions])
 
   return (
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
@@ -271,7 +267,9 @@ export const NotificationDropdown = () => {
               <SubscribedView handleSubscribed={handleSubscribed} />
             ) : (
               <ViewContainer isRightView={isRightView}>
-                <View>{account && <SettingsModal transactions={transactions} />}</View>
+                <View>
+                  {account && <SettingsModal transactions={transactions} account={account} fetchTxs={fetchTxs} />}
+                </View>
                 <View>
                   {account && (
                     <NotificationSettingsMain

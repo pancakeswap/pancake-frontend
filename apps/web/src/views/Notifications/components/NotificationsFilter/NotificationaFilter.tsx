@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, Select, Text } from '@pancakeswap/uikit'
+import { AutoRow, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper } from 'views/Notifications/styles'
 
@@ -7,12 +7,12 @@ const NotificationsFilter = ({
   setNotifyFilterType,
   setSortType,
 }: {
-  setNotifyFilterType: () => void
-  setSortType: () => void
+  setNotifyFilterType: (option: OptionProps) => void
+  setSortType: (option: OptionProps) => void
 }) => {
   const { t } = useTranslation()
   return (
-    <AutoRow gap="16px" marginTop="8px" marginBottom="16px">
+    <AutoRow gap="12px" marginTop="8px" marginBottom="16px" marginRight="8px">
       <FilterContainer>
         <LabelWrapper style={{ width: '120px' }}>
           <Text textTransform="uppercase" mb="4px" ml="4px">
@@ -22,7 +22,7 @@ const NotificationsFilter = ({
         </LabelWrapper>
       </FilterContainer>
       <FilterContainer>
-        <LabelWrapper style={{ width: '105px' }}>
+        <LabelWrapper style={{ width: '100px' }}>
           <Text textTransform="uppercase" mb="4px" ml="4px">
             {t('Sort by date')}
           </Text>

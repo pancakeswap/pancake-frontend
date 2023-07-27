@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "scripts": {
     "analyze": "ANALYZE=true pnpm build",
     "dev": "next dev",

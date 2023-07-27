@@ -49,33 +49,33 @@ export const DummyNotificationData: DummyNotifyType[] = [
 export const NotificationFilterTypes: OptionProps[] = [
   {
     label: 'All',
-    value: 'all',
+    value: 'All',
   },
   {
     label: 'Liquidity',
-    value: 'liquidity',
+    value: 'Liquidity',
   },
   {
     label: 'Staking',
-    value: 'staking',
+    value: 'Ltaking',
   },
   {
     label: 'Pools',
-    value: 'pools',
+    value: 'Pools',
   },
   {
     label: 'Farm',
-    value: 'farms',
+    value: 'Farms',
   },
 ]
 
 export const NotificationSortTypes: OptionProps[] = [
   {
     label: 'Oldest',
-    value: 'oldest',
+    value: 'Oldest',
   },
   {
     label: 'Latest',
-    value: 'lates',
+    value: 'Latest',
   },
 ]

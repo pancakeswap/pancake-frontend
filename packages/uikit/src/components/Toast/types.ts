@@ -9,9 +9,8 @@ export const types = {
 
 export type Types = (typeof types)[keyof typeof types];
 
-export type StyledToastProps = {
-  position: "left" | "right" | "top" | "bottom";
-};
+export type StyledToastProps = "left" | "right" | "top" | "bottom" | undefined;
+
 export interface ToastData {
   id: string;
   type: Types;
