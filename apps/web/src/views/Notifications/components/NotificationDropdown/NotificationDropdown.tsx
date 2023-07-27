@@ -33,6 +33,7 @@ export const NotificationDropdown = () => {
   const [enabled, setEnabled] = useState<boolean>(true)
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const [transactions, setTransactions] = useState<any[]>([])
 
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
@@ -213,6 +214,46 @@ export const NotificationDropdown = () => {
 
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
+  // const fetchTxs = async () => {
+  //   console.log('heyyyyyy')
+  //     try {
+  //       const response = await fetch(`http://localhost:8000/users?account=0x2dC45bA781E8B9D12501bd14d01f072bA4Df1481`, {
+  //         headers: {
+  //           Accept: 'application/json',
+  //           'Content-Type': 'application/json',
+  //         },
+  //       })
+  //       const result = response.json() as any
+  //         // console.log(transacxtionsResponse);
+  //         // const cache: any = {};
+  //         // cache[account] = x.userNotifications;
+  //         // sessionStorage.setItem('user-transactions', JSON.stringify(cache));
+  //         setTransactions(result.userNotifications);
+  //     } catch (err) {
+  //         //  setError("notifications.somethingWentWrongTryLater");
+  //         console.log(err)
+  //     }
+  //   }
+
+  // useEffect(() => {
+  //     fetchTxs();
+  // }, []);
+
+  // useEffect(() => {
+  //     const txns = sessionStorage.getItem('user-transactions');
+  //     if (account && txns) {
+  //         const cache = JSON.parse(txns);
+  //         if (
+  //             Object.keys(cache).length > 0 &&
+  //             cache[account] &&
+  //             cache[account].length > 0
+  //         ) {
+  //             setTransactions(cache[account]);
+  //             //  setError(null);
+  //         }
+  //     }
+  // }, [account, setTransactions]);
+
   return (
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
@@ -230,7 +271,7 @@ export const NotificationDropdown = () => {
               <SubscribedView handleSubscribed={handleSubscribed} />
             ) : (
               <ViewContainer isRightView={isRightView}>
-                <View>{account && <SettingsModal />}</View>
+                <View>{account && <SettingsModal transactions={transactions} />}</View>
                 <View>
                   {account && (
                     <NotificationSettingsMain

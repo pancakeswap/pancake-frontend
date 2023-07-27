@@ -29,15 +29,15 @@ const EmptyView = () => {
   )
 }
 
-const SettingsModal = () => {
+const SettingsModal = ({ transactions }: { transactions: any }) => {
   return (
     <Box paddingX="24px" paddingBottom="24px">
-      <Divider />
+      {/* <Divider /> */}
 
       <NotificationsFilter setNotifyFilterType={() => null} setSortType={() => null} />
-      {DummyNotificationData.length === 0 ? (
+      {DummyNotificationData.length !== 0 ? (
         <Box marginBottom="56px">
-          <NotificationContainer />
+          <NotificationContainer transactions={transactions} />
         </Box>
       ) : (
         <Box marginBottom="56px">

@@ -68,35 +68,38 @@ const Settingsitem = ({ title, description, type, isToastVisible }: ISettingspro
 const NotificationItem = ({ title, description }: INotificationprops) => {
   const { t } = useTranslation()
   return (
-    <>
+    <Box>
       <Divider />
-      <Flex flexDirection="column" mt="8px">
-        <Flex alignItems="center">
+      <Flex mt="8px" width="100%">
+        <Box maxWidth="5%" marginRight="12px" py="8px">
           <div
             style={{
-              backgroundColor: 'green',
+              backgroundColor: 'lightGreen',
               height: '13px',
               width: '13px',
               borderRadius: '50%',
             }}
           />
-          <Text fontWeight="bold" fontSize="16px" paddingLeft="8px">
+        </Box>
+        <Flex flexDirection="column" my="2px">
+          <Text fontWeight="bold" fontSize="19px" paddingBottom="6px">
             {t(`${title}`)}
+          </Text>
+          <Text color="textSubtle" fontSize="16px">
+            {t(`${description}`)}
           </Text>
         </Flex>
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="16px">
-        <Text color="textSubtle">{t(`${description}`)}</Text>
-      </Flex>
-    </>
+    </Box>
   )
 }
 
-export const NotificationContainer = () => {
+export const NotificationContainer = ({ transactions }: { transactions: any }) => {
+  if (transactions.length === 0) return <></>
   return (
     <>
       <Box>
-        {DummyNotificationData.map((notification: DummyNotifyType) => {
+        {transactions.map((notification: DummyNotifyType) => {
           return <NotificationItem title={notification.title} description={notification.description} />
         })}
       </Box>

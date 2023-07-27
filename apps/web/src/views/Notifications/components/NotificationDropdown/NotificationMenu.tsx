@@ -5,9 +5,8 @@ import { Box, Flex, Button, UserMenuProps, NotificationBellIcon } from '@pancake
 const Menu = styled.div<{ isOpen: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 16px;
+  border-radius: 24px;
   padding-bottom: 4px;
-  padding-top: 4px;
   pointer-events: auto;
   width: 380px;
   overflow: hidden;

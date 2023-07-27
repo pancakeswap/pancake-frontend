@@ -12,7 +12,7 @@ const NotificationsFilter = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <AutoRow marginBottom="32px" gap="16px" marginY="16px">
+    <AutoRow gap="16px" marginTop="8px" marginBottom="16px">
       <FilterContainer>
         <LabelWrapper style={{ width: '120px' }}>
           <Text textTransform="uppercase" mb="4px" ml="4px">
