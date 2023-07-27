@@ -94,7 +94,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
               pool={pool}
               account={account}
             />
-            {vaultPosition === VaultPosition.Locked && isInitialization && (
+            {vaultPosition === VaultPosition.Locked && isInitialization && !showICake && (
               <Button mt="16px" width="100%" variant="secondary" onClick={onPresentViewBenefitsModal}>
                 {t('View Benefits')}
               </Button>
