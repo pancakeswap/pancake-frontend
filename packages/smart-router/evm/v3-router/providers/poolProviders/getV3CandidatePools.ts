@@ -89,7 +89,11 @@ const createFallbackTvlRefGetter = () => {
     if (cached) {
       return cached
     }
-    const res = await fetch(`https://routing-api.pancakeswap.com/v0/v3-pools-tvl/${currencyA.chainId}`)
+    const res = await fetch(`https://routing-api.pancakeswap.com/v0/v3-pools-tvl/${currencyA.chainId}`, {
+      headers: {
+        origin: 'https://pancakeswap.com',
+      },
+    })
     const refs: V3PoolTvlReference[] = await res.json()
     cache.set(currencyA.chainId, refs)
     return refs
