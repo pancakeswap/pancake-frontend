@@ -1,20 +1,35 @@
 import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Flex, LogoRoundIcon, Box, Balance } from '@pancakeswap/uikit'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { useVaultPoolByKey } from 'state/pools/hooks'
+import { Text, Flex, LogoRoundIcon, Box, Balance, Pool } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { useVaultPoolByKey, usePoolsWithVault } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 
 const SharingPoolNameCell = () => {
   const { t } = useTranslation()
-
   const { userData } = useVaultPoolByKey(VaultKey.CakeVault) as DeserializedLockedCakeVault
+  const { pools } = usePoolsWithVault()
 
-  const currentLockedAmountNumber = useMemo(() => {
-    return userData?.balance?.cakeAsNumberBalance
-  }, [userData?.balance?.cakeAsNumberBalance])
+  const cakePool = useMemo(
+    () => pools.find((pool) => pool.userData && pool.sousId === 0),
+    [pools],
+  ) as Pool.DeserializedPool<Token>
+  const stakingToken = cakePool?.stakingToken
+  const stakingTokenPrice = cakePool?.stakingTokenPrice
 
-  const usdValueStaked = useBUSDCakeAmount(currentLockedAmountNumber)
+  const currentLockedAmountNumber = useMemo(
+    () => userData?.balance?.cakeAsNumberBalance,
+    [userData?.balance?.cakeAsNumberBalance],
+  )
+
+  const usdValueStaked = useMemo(
+    () =>
+      stakingToken && stakingTokenPrice
+        ? getBalanceNumber(userData?.balance?.cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
+        : null,
+    [userData?.balance?.cakeAsBigNumber, stakingTokenPrice, stakingToken],
+  )
 
   return (
     <Flex mb="16px">
