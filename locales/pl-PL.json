@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "Ekskluzywne NFT i skarby czekają!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap jest już dostępny na Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM DZIAŁA!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Wymieniaj i zapewniaj płynność na Polygon zkEVM już teraz",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "Kup %currency%",
   "Caution - METIS Token": "Przestroga — token METIS",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Prosimy o zachowanie należytej ostrożności podczas handlu/dostarczania płynności dla tokena METIS. Protokół ten został ostatnio dotknięty przez",
@@ -2609,5 +2609,9 @@
   "My Rank": "Moja ranga",
   "Current Round": "Bieżąca runda",
   "Previous Rounds": "Poprzednie rundy",
-  "Round #%round%  |  %startTime% - %endTime%": "Runda nr %round%  |  %startTime%–%endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "Runda nr %round%  |  %startTime%–%endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }
