@@ -250,7 +250,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       )
     }
 
-    if (account && !hasProfile) {
+    if (account && !hasProfile && !isBasicSale(publicPoolCharacteristics.saleType)) {
       return (
         <>
           <OnSaleInfo
