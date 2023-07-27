@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "독점 NFT와 보물이 기다리고 있습니다!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap이 이제 Polygon zkEVM에서 라이브로 실행됩니다!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM이 라이브 상태입니다!",
-  "Swap and provide liquidity on Polygon zkEVM now": "지금 Polygon zkEVM에서 스왑하고 유동성 제공",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "%currency% 구입",
   "Caution - METIS Token": "주의 - METIS 토큰",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "METIS 토큰에 대한 거래/유동성 제공 시 각별히 주의하시기 바랍니다. 이 프로토콜은 최근 다음에 의해 영향을 받았습니다:",
@@ -2609,5 +2609,9 @@
   "My Rank": "내 순위",
   "Current Round": "현재 라운드",
   "Previous Rounds": "이전 라운드",
-  "Round #%round%  |  %startTime% - %endTime%": "라운드 #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "라운드 #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }
