@@ -110,7 +110,7 @@ export const ZksyncBanner = () => {
           <Title>{title}</Title>
           {isDesktop && (
             <Text color="white" fontSize={20} fontWeight={700} mb="8px">
-              {t('Swap, LP, and Farms on Polygon zkEVM now')}
+              {t('Swap and Provide Liquidity on zkSync Era Now')}
             </Text>
           )}
           <Flex>
