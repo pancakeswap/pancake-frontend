@@ -79,12 +79,19 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
     [currentLockedAmount, lockedAmountAsBigNumber],
   )
 
-  const totalLockedAmount: number = useMemo(() => getBalanceNumber(totalLockedAmountBN), [totalLockedAmountBN])
+  const totalLockedAmount: number = useMemo(
+    () => getBalanceNumber(totalLockedAmountBN, stakingToken.decimals),
+    [totalLockedAmountBN, stakingToken.decimals],
+  )
 
   const currentLockedAmountAsBalance = useMemo(() => getBalanceAmount(currentLockedAmount), [currentLockedAmount])
 
   const usdValueStaked = useMemo(
-    () => getBalanceNumber(lockedAmountAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals),
+    () =>
+      getBalanceNumber(
+        getDecimalAmount(lockedAmountAsBigNumber, stakingToken.decimals).multipliedBy(stakingTokenPrice),
+        stakingToken.decimals,
+      ),
     [lockedAmountAsBigNumber, stakingTokenPrice, stakingToken.decimals],
   )
 
@@ -151,7 +158,7 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
             stakingSymbol={stakingToken.symbol}
             stakingDecimals={stakingToken.decimals}
             lockedAmount={lockedAmount}
-            usedValueStaked={usdValueStaked}
+            usdValueStaked={usdValueStaked}
             stakingMax={currentBalance}
             setLockedAmount={setLockedAmount}
             stakingTokenBalance={stakingTokenBalance}

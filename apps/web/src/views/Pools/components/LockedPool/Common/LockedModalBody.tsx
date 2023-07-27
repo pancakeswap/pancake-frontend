@@ -39,8 +39,9 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
   const { t } = useTranslation()
   const ceiling = useIfoCeiling()
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
-  const { duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
+  const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,
+    stakingTokenPrice,
     onDismiss,
     lockedAmount,
     prepConfirmArg,
@@ -131,7 +132,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
           openCalculator={_noop}
           duration={duration}
           lockedAmount={lockedAmount?.toNumber()}
-          usdValueStaked={stakingTokenPrice}
+          usdValueStaked={usdValueStaked}
           showLockWarning
           ceiling={ceiling}
         />

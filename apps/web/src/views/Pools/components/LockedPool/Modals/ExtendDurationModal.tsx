@@ -7,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useIfoCeiling } from 'state/pools/hooks'
 
-import { getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getBalanceAmount, getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
@@ -33,7 +33,11 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const { t } = useTranslation()
 
   const usdValueStaked = useMemo(
-    () => getBalanceNumber(new BigNumber(currentLockedAmount).multipliedBy(stakingTokenPrice), stakingToken.decimals),
+    () =>
+      getBalanceNumber(
+        getDecimalAmount(new BigNumber(currentLockedAmount), stakingToken.decimals).multipliedBy(stakingTokenPrice),
+        stakingToken.decimals,
+      ),
     [currentLockedAmount, stakingTokenPrice, stakingToken.decimals],
   )
 
