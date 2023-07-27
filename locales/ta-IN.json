@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "பிரத்தியேக NFTகள் மற்றும் பொக்கிஷங்கள் காத்திருக்கின்றன!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap இப்போது பாலிகான் zkEVMல் நேரலையிலுள்ளது!",
   "Polygon zkEVM is LIVE!": "பாலிகான் zkEVM நேரலையிலுள்ளது!",
-  "Swap and provide liquidity on Polygon zkEVM now": "இப்போது பாலிகான் zkEVMல் லிக்விடிட்டியை ஸ்வாப் செய்து வழங்கவும்",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "%currency% வாங்குக",
   "Caution - METIS Token": "எச்சரிக்கை – METIS டோக்கன்",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "METIS டோக்கனுக்கு டிரேட் செய்யும்போது / லிக்விடிட்டியை வழங்கும்போது கவனமாக இருங்கள். நெறிமுறை சமீபத்தில் இதனால் பாதிக்கப்பட்டது:",
@@ -2609,5 +2609,9 @@
   "My Rank": "எனது தரவரிசை",
   "Current Round": "நடப்புச் சுற்று",
   "Previous Rounds": "முந்தைய சுற்றுகள்",
-  "Round #%round%  |  %startTime% - %endTime%": "சுற்று #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "சுற்று #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }
