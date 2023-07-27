@@ -9,7 +9,8 @@ const POLYGON_ZKEVM_NODES = [
 
 export const SERVER_NODES = {
   [ChainId.BSC]: [
-    process.env.NEXT_PUBLIC_NODE_PRODUCTION,
+    // process.env.NEXT_PUBLIC_NODE_PRODUCTION,
+    'https://devnet.pancakeswap.ai',
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
   ].filter(Boolean),
@@ -41,8 +42,9 @@ export const SERVER_NODES = {
 
 export const PUBLIC_NODES = {
   [ChainId.BSC]: [
-    process.env.NEXT_PUBLIC_NODE_PRODUCTION,
-    getNodeRealUrlV2(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
+    // process.env.NEXT_PUBLIC_NODE_PRODUCTION,
+    // getNodeRealUrlV2(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
+    'https://devnet.pancakeswap.ai',
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
   ].filter(Boolean),
