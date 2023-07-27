@@ -137,6 +137,14 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
               <Box>
                 <Image src="/images/nfts/v3-part1.jpg" />
               </Box>
+              <Button
+                mt="24px"
+                disabled={isLoading}
+                onClick={handleClick}
+                endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+              >
+                {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
+              </Button>
               <Text textAlign="center" bold>
                 {t('Part 1')}
               </Text>
@@ -161,6 +169,14 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
               <Box>
                 <Image src="/images/nfts/v3-part2.jpg" />
               </Box>
+              <Button
+                mt="24px"
+                disabled={isLoading}
+                onClick={handleClick}
+                endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+              >
+                {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
+              </Button>
               <Text textAlign="center" bold>
                 {t('Part 2')}
               </Text>
@@ -184,14 +200,6 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
         <Text textAlign="center" bold color="secondary" mt="24px">
           {textDisplay()}
         </Text>
-        <Button
-          mt="24px"
-          disabled={isLoading}
-          onClick={handleClick}
-          endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-        >
-          {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
-        </Button>
       </Flex>
     </Modal>
   )

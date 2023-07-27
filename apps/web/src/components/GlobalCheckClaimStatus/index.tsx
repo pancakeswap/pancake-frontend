@@ -8,6 +8,7 @@ import useSWRImmutable from 'swr/immutable'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { FetchStatus } from 'config/constants/types'
 import useSWR from 'swr'
+import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
 import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
 
 interface GlobalCheckClaimStatusProps {
@@ -38,6 +39,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   const { pathname } = useRouter()
   const v3Airdrop = useV3AirdropContract()
   const [show, setShow] = useState(false)
+  const [showOnceAirdropModal, setShowOnceAirdropModal] = useShowOnceAirdropModal()
 
   const { data: isAccountClaimed, status: accountClaimedStatus } = useSWR(
     account && [account, '/airdrop-claimed'],
@@ -59,13 +61,25 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
       accountClaimedStatus === FetchStatus.Fetched &&
       !isAccountClaimed &&
       v3WhitelistAddress?.[account?.toLowerCase()] &&
-      !excludeLocations.some((location) => pathname.includes(location))
+      !excludeLocations.some((location) => pathname.includes(location)) &&
+      showOnceAirdropModal
     ) {
       setShow(true)
+      setShowOnceAirdropModal(false)
     } else {
       setShow(false)
     }
-  }, [account, accountClaimedStatus, excludeLocations, isAccountClaimed, pathname, setShow, v3WhitelistAddress])
+  }, [
+    account,
+    accountClaimedStatus,
+    excludeLocations,
+    isAccountClaimed,
+    pathname,
+    setShow,
+    setShowOnceAirdropModal,
+    showOnceAirdropModal,
+    v3WhitelistAddress,
+  ])
 
   return (
     <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>
