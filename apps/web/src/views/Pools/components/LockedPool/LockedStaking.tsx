@@ -47,9 +47,9 @@ const LockedStaking: React.FC<React.PropsWithChildren<LockedStakingProps>> = ({ 
   const usdValueStaked = useMemo(
     () =>
       stakingToken && stakingTokenPrice
-        ? getBalanceNumber(currentLockedAmountAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
+        ? getBalanceNumber(userData?.balance?.cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
         : null,
-    [currentLockedAmountAsBigNumber, stakingTokenPrice, stakingToken],
+    [userData?.balance?.cakeAsBigNumber, stakingTokenPrice, stakingToken],
   )
 
   const { lockEndDate, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
