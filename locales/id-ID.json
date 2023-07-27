@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "Harta karun dan NFT eksklusif telah menanti!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap Kini Aktif di Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM AKTIF!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Tukar dan berikan likuiditas di Polygon zkEVM sekarang",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "Beli %currency%",
   "Caution - METIS Token": "Perhatian - Token METIS",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Harap terapkan kehati-hatian yang cukup saat berdagang/menyediakan likuiditas untuk token METIS. Protokolnya baru-baru ini dipengaruhi oleh",
@@ -2609,5 +2609,9 @@
   "My Rank": "Peringkat Saya",
   "Current Round": "Putaran Saat Ini",
   "Previous Rounds": "Putaran Sebelumnya",
-  "Round #%round%  |  %startTime% - %endTime%": "Putaran #%round%  |  %startTime% – %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "Putaran #%round%  |  %startTime% – %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }
