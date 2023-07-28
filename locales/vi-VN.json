@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "Các NFT và kho báu độc quyền đang chờ bạn!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap hiện đã trực tuyến trên Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM đã TRỰC TUYẾN!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Hoán đổi và cung cấp thanh khoản trên Polygon zkEVM ngay",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "Mua %currency%",
   "Caution - METIS Token": "Thận trọng - Token METIS",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Hãy thận trọng khi giao dịch / cung cấp thanh khoản cho token METIS. Gần đây, giao thức này đã bị ảnh hưởng bởi",
@@ -2609,5 +2609,9 @@
   "My Rank": "Xếp hạng của tôi",
   "Current Round": "Vòng hiện tại",
   "Previous Rounds": "Vòng trước",
-  "Round #%round%  |  %startTime% - %endTime%": "Vòng #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "Vòng #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }

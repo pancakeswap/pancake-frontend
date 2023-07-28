@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "অনন্য NFT এবং সম্পদ অপেক্ষা করছে!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap এখন Polygon zkEVM-এ লাইভ!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM লাইভ!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Polygon zkEVM-এ এখন সোয়াপ করুন এবং তারল্য প্রদান করুন",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "%currency% কিনুন",
   "Caution - METIS Token": "সতর্কতা - METIS টোকেন",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "ট্রেড করার সময় / METIS টোকেনের জন্য তারল্য প্রদান করার সময় অনুগ্রহ করে যথাযথ সতর্কতা অবলম্বন করুন। সম্প্রতি প্রোটোকল যা দ্বারা প্রভাবিত হয়েছে:",
@@ -2609,5 +2609,9 @@
   "My Rank": "আমার র‍্যাঙ্কিং",
   "Current Round": "বর্তমান রাউন্ড",
   "Previous Rounds": "পূর্ববর্তী রাউন্ড",
-  "Round #%round%  |  %startTime% - %endTime%": "রাউন্ড #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "রাউন্ড #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }

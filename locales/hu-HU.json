@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "Exkluzív NFT-k és kincsek várják!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap most élőben a Polygon zkEVM gépen!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM élőben!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Most már csereügylet és likviditás biztosítása a Polygon zkEVM virtuális gépen",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "Vásárolj %currency% valutát",
   "Caution - METIS Token": "Vigyázat - METIS zseton",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Kérjük, hogy amikor a METIS zsetonnal kereskedik/likviditást biztosít, járjon el kellő óvatossággal. A protokollt nemrégiben érintette a",
@@ -2609,5 +2609,9 @@
   "My Rank": "Az én helyezésem",
   "Current Round": "Jelenlegi forduló",
   "Previous Rounds": "Korábbi fordulók",
-  "Round #%round%  |  %startTime% - %endTime%": "Forduló #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "Forduló #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }

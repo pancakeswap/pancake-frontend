@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "獨家 NFT 和寶藏等您取得！",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap 現已上線 Polygon zkEVM！",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM 已上線！",
-  "Swap and provide liquidity on Polygon zkEVM now": "立即在 Polygon zkEVM 上進行交換並提供流動性",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "購買 %currency%",
   "Caution - METIS Token": "注意 - METIS 代幣",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "在進行 METIS 代幣交易/為其提供流動性時請保持謹慎。該協議最近受到以下事件的影響：",
@@ -2609,5 +2609,9 @@
   "My Rank": "我的排名",
   "Current Round": "目前回合",
   "Previous Rounds": "之前的回合",
-  "Round #%round%  |  %startTime% - %endTime%": "回合 #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "回合 #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }

@@ -2598,7 +2598,7 @@
   "Exclusive NFTs and treasures await!": "Exklusiva NFT:er och skatter väntar!",
   "PancakeSwap Now Live on Polygon zkEVM!": "PancakeSwap nu live på Polygon zkEVM!",
   "Polygon zkEVM is LIVE!": "Polygon zkEVM är LIVE!",
-  "Swap and provide liquidity on Polygon zkEVM now": "Växla och tillhandahåll likviditet på Polygon zkEVM nu",
+  "Swap, LP, and Farms on Polygon zkEVM now": "Swap, LP, and Farms on Polygon zkEVM now",
   "Buy %currency%": "Köp %currency%",
   "Caution - METIS Token": "Varning - METIS Token",
   "Please exercise due caution when trading / providing liquidity for the METIS token. The protocol was recently affected by the": "Var försiktig när du handlar med eller tillhandahåller likviditet för METIS-token. Protokollet påverkades nyligen av",
@@ -2609,5 +2609,9 @@
   "My Rank": "Min rankning",
   "Current Round": "Nuvarande runda",
   "Previous Rounds": "Tidigare rundor",
-  "Round #%round%  |  %startTime% - %endTime%": "Runda #%round%  |  %startTime% - %endTime%"
+  "Round #%round%  |  %startTime% - %endTime%": "Runda #%round%  |  %startTime% - %endTime%",
+  "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
+  "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
+  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "CTA": "CTA"
 }
