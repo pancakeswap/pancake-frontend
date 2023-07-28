@@ -210,7 +210,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       return farms
     }
     const sableFarm = farms.find((f) => f.version === 2 && f.pid === 167)
-    const v3TargetFarm = farms.find((f) => f.version === 3 && f.pid === 5)
+    const v3TargetFarm = farms.find((f) => f.version === 3 && f.pid === 60)
     if (!sableFarm || !v3TargetFarm) {
       return farms
     }

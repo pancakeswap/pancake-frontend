@@ -43,6 +43,34 @@ export const farmsV3 = defineFarmV3Configs([
   },
   // keep those farms on top
   {
+    pid: 63,
+    token0: bscTokens.snbnb,
+    token1: bscTokens.wbnb,
+    lpAddress: '0x9474e972F49605315763c296B122CBB998b615Cf',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 62,
+    token0: bscTokens.hay,
+    token1: bscTokens.eth,
+    lpAddress: '0xfdFCdE34d2038EBeDe62e95C65b1492C28c990C9',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 61,
+    token0: bscTokens.hay,
+    token1: bscTokens.btcb,
+    lpAddress: '0x06E2D4002a693812A6348c91A2bEccf4E926FF2f',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 60,
+    token0: bscTokens.hay,
+    token1: bscTokens.wbnb,
+    lpAddress: '0xBe43E64Cd61E0b9207A6beE93e2149317A604326',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 59,
     token0: bscTokens.tusd,
     token1: bscTokens.busd,
