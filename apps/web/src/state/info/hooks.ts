@@ -295,6 +295,7 @@ export const useChainNameByQuery = (): MultiChainName => {
   const chainName = useMemo(() => {
     if (query?.chainName === 'eth') return 'ETH'
     if (query?.chainName === 'polygon-zkevm') return 'POLYGON_ZKEVM'
+    if (query?.chainName === 'zksync') return 'ZKSYNC'
     return 'BSC'
   }, [query])
   return chainName

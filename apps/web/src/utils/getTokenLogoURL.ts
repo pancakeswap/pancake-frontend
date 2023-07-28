@@ -6,6 +6,7 @@ const mapping = {
   [ChainId.BSC]: 'smartchain',
   [ChainId.ETHEREUM]: 'ethereum',
   [ChainId.POLYGON_ZKEVM]: 'polygonzkevm',
+  [ChainId.ZKSYNC]: 'zksync',
 }
 
 const getTokenLogoURL = memoize(
