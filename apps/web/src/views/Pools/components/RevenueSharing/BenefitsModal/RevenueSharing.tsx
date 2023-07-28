@@ -14,6 +14,7 @@ import {
   Balance,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
@@ -50,10 +51,10 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
     [availableCake, cakePriceBusd],
   )
 
-  const showExpireSoonWarning = useMemo(
-    () => new BigNumber(userData?.lockEndTime ?? '0').lt(nextDistributionTimestamp),
-    [nextDistributionTimestamp, userData?.lockEndTime],
-  )
+  const showExpireSoonWarning = useMemo(() => {
+    const endTime = new BigNumber(nextDistributionTimestamp).plus(ONE_WEEK_DEFAULT)
+    return new BigNumber(userData?.lockEndTime ?? '0').lt(endTime)
+  }, [nextDistributionTimestamp, userData?.lockEndTime])
 
   const showNoCakeAmountWarning = useMemo(
     () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
@@ -131,7 +132,14 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
           {showExpireSoonWarning && (
             <Message variant="danger" padding="8px" mt="8px" icon={<WarningIcon color="failure" />}>
               <MessageText lineHeight="120%">
-                {t('Your fixed-term staking position will expire before the next revenue sharing distributions.')}
+                <Text fontSize="14px" color="failure">
+                  {t(
+                    'Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.',
+                  )}
+                </Text>
+                <Text fontSize="14px" color="failure" mt="4px">
+                  {t('Extend your stakings to receive shares in the next distribution.')}
+                </Text>
               </MessageText>
             </Message>
           )}
