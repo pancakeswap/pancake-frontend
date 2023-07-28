@@ -1503,11 +1503,11 @@
   "How do I convert WBETH back to ETH?": "如何将 WBETH 转换回 ETH？",
   "You can convert WBETH to ETH through ": "可通过以下方式将 WBETH 转换为 ETH：",
   "PancakeSwap is also working to support a conversion contract on our liquid staking page to convert WBETH back to ETH seamlessly.": "PancakeSwap 还致力于在我们的流动质押页面上支持转换合约，以将 WBETH 无缝转换回 ETH。",
-  "In the current IFO format. There is a brand new Private Sale. To participate, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has no participation fee.": "在现行的 IFO 模式下，设计了一个全新的私有销售。参与者必须满足 IFO 卡上的某些要求。每位符合条件的参与者将能够投入任意数量的 CAKE，但不得超过最高投入限额，该限额与 IFO 投票提案一起发布。私有销售不收取参与手续费。",
+  "In the current IFO format. There is a brand new Private Sale. To participate, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has no participation fee.": "现行的 IFO 模式中，我们设计了一个新的私有销售。参与者必须满足 IFO 卡上的要求才能参与。每位符合条件的参与者将能够投入任意数量的 CAKE，但不得超过最高投入限额，该限额与 IFO 投票提案一起发布。私有销售不收取超募手续费。",
   "You can choose one or both at the same time!": "您可以同时参加两种销售！",
   "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "我们建议您先检查您是否有资格参与私有销售。在公开销售中，如果您参与的金额太小，有可能将入不敷出。",
   "Just remember you need an active PancakeSwap Profile in order to participate.": "您需要启用 PancakeSwap 的个人档案才能参与。",
-  "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.": "公开销售会收取参与手续费，有的 IFO 场次为超募手续费：私有销售不收取此费用。",
+  "There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.": "公开销售将收取超募手续费；私有销售不收取此费用。",
   "How to Take Part in the Public Sale": "如何参与公开销售",
   "Private Sale": "私有销售",
   "Unsupported Assets": "不受支持的资产",
@@ -1825,9 +1825,9 @@
   "Flexible staking on the side.": "灵活质押。",
   "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the iCake. To increase the max entry, Stake more CAKE into the iCake": "对于无限销售，最大 CAKE 输入的上限为您在 iCake 中的平均 CAKE 余额。要增加最大输入，请在 iCake 中质押更多 CAKE",
   "In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE users can commit, is equal to the number of iCAKE they have.": "在公开销售中，拥有有效 PancakeSwap 个人资料的每个人都可以提交。不过，CAKE 用户可以提交的最大数量等于他们拥有的 iCAKE 数量。",
-  "And there’s a fee for participation: see below.": "并且存在参与手续费：见下文。",
-  "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "根据 IFO 的 \"公开销售\" 部分中超募倍数溢出的百分比，参与手续费呈阶梯式下降。",
-  "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "注意：不同场次的 IFO 可能收费不同。欲了解更多有关参与手续费的信息，请参阅 IFO 提案（投票）中的详细信息，了解您希望参加的 IFO 场次的具体情况。",
+  "And there’s a fee for participation: see below.": "并且存在超募手续费：见下文。",
+  "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "根据 IFO 的 \"公开销售\" 部分中超募倍数溢出的百分比，超募手续费呈阶梯式降低。",
+  "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "注意：不同场次的 IFO 可能会应用不同的超募手续费收费模式。如需了解特定 IFO 场次的超募手续费的信息，请参阅该 IFO 提案（投票）。",
   "You have successfully claimed your rewards.": "您已成功领取奖励。",
   "Pottery (BETA)": "糖浆彩票（测试版）",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "此次 IFO 有线性释放机制，因此，您购买的代币将会在一段时间内逐渐释放。",
@@ -2613,5 +2613,5 @@
   "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
   "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
   "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
-  "CTA": "CTA"
+  "Claim Your NFT": "Claim Your NFT"
 }
