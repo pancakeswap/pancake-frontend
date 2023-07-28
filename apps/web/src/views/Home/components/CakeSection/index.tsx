@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef, useLayoutEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import cakeSectionMain from '../../images/cake-section-main.png'
 import { CakeSectionTag, CakePartnerTag } from './CakeSectionTag'
@@ -80,11 +80,70 @@ export const CakeSectionCenterBox = styled.div`
   margin-top: 20px;
 `
 
+const CakeBox = styled.div`
+  position: relative;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+`
+
+const CakeVideo = styled.video`
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+`
+const CakeCanvas = styled.canvas`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+let canvasInterval = 0
+const fps = 60
+const width = 800
+const height = 800
+
+const useDrawCanvas = (
+  videoRef: React.MutableRefObject<HTMLVideoElement>,
+  canvasRef: React.MutableRefObject<HTMLCanvasElement>,
+) => {
+  const video = videoRef?.current
+  const canvas = canvasRef?.current
+  const isElementReady = video && canvas
+
+  const drawImage = useCallback(() => {
+    canvas?.getContext('2d', { alpha: false }).drawImage(video, 0, 0, width, height)
+  }, [canvas, video])
+
+  if (isElementReady) {
+    video.onpause = () => {
+      clearInterval(canvasInterval)
+    }
+
+    video.onended = () => {
+      clearInterval(canvasInterval)
+    }
+  }
+
+  return { drawImage: isElementReady ? drawImage : null }
+}
+
 const CakeSection: React.FC = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const ecosystemTagData = useEcosystemTagData()
   const partnerData = usePartnerData()
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { drawImage } = useDrawCanvas(videoRef, canvasRef)
+  useLayoutEffect(() => {
+    canvasInterval = window.setInterval(() => {
+      drawImage?.()
+    }, 1000 / fps)
+  }, [drawImage])
 
   return (
     <Flex flexDirection="column" style={{ gap: 32 }}>
@@ -125,7 +184,13 @@ const CakeSection: React.FC = () => {
           </Flex>
         </CakeSectionLeftBox>
         <CakeSectionCenterBox>
-          <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" />
+          <CakeBox>
+            <CakeCanvas width={800} height={800} ref={canvasRef} />
+            <CakeVideo ref={videoRef} width="500px" loop controls autoPlay muted id="video">
+              <source src="/assets/cake.webm" type="video/webm" />
+            </CakeVideo>
+          </CakeBox>
+          {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
         <CakeSectionRightBox>
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600">
