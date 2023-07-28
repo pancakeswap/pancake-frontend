@@ -11,11 +11,13 @@ import { ReactNode, useState, useCallback } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { Bound } from 'config/constants/types'
 import Divider from 'components/Divider'
+import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { RangePriceSection } from 'components/RangePriceSection'
+import { RangeTag } from 'components/RangeTag'
 import { formatPrice } from 'utils/formatCurrencyAmount'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
-import { RangeTag } from '../../../../../components/RangeTag'
+import { useTokenInverter } from 'hooks/useTokenInverter'
 import RateToggle from './RateToggle'
 
 export const PositionPreview = ({
@@ -39,6 +41,17 @@ export const PositionPreview = ({
   const currency0 = unwrappedToken(position.pool.token0)
   const currency1 = unwrappedToken(position.pool.token1)
 
+  const pricesFromPosition = getPriceOrderingFromPositionForUI(position)
+
+  // handle manual inversion
+  const { base } = useTokenInverter({
+    priceLower: pricesFromPosition.priceLower,
+    priceUpper: pricesFromPosition.priceUpper,
+    quote: pricesFromPosition.quote,
+    base: pricesFromPosition.base,
+    invert: false,
+  })
+
   // track which currency should be base
   const [baseCurrency, setBaseCurrency] = useState(
     baseCurrencyDefault
@@ -47,7 +60,7 @@ export const PositionPreview = ({
         : baseCurrencyDefault === currency1
         ? currency1
         : currency0
-      : currency0,
+      : unwrappedToken(base),
   )
 
   const sorted = baseCurrency === currency0

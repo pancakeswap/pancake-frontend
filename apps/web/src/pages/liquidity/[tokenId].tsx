@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Fraction, Percent } from '@pancakeswap/sdk'
 import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
   AutoColumn,
@@ -74,6 +74,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { hexToBigInt } from 'viem'
 import { getViemClients } from 'utils/viem'
 import isPoolTickInRange from 'utils/isPoolTickInRange'
+import { useTokenInverter } from 'hooks/useTokenInverter'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -81,32 +82,6 @@ export const BodyWrapper = styled(Card)`
   width: 100%;
   z-index: 1;
 `
-
-const useInverter = ({
-  priceLower,
-  priceUpper,
-  quote,
-  base,
-  invert,
-}: {
-  priceLower?: Price<Token, Token>
-  priceUpper?: Price<Token, Token>
-  quote?: Token
-  base?: Token
-  invert?: boolean
-}): {
-  priceLower?: Price<Token, Token>
-  priceUpper?: Price<Token, Token>
-  quote?: Token
-  base?: Token
-} => {
-  return {
-    priceUpper: invert ? priceLower?.invert() : priceUpper,
-    priceLower: invert ? priceUpper?.invert() : priceLower,
-    quote: invert ? base : quote,
-    base: invert ? quote : base,
-  }
-}
 
 // function getRatio(
 //   lower: Price<Currency, Currency>,
@@ -201,7 +176,7 @@ export default function PoolPage() {
   const [manuallyInverted, setManuallyInverted] = useState(false)
 
   // handle manual inversion
-  const { priceLower, priceUpper, base } = useInverter({
+  const { priceLower, priceUpper, base } = useTokenInverter({
     priceLower: pricesFromPosition.priceLower,
     priceUpper: pricesFromPosition.priceUpper,
     quote: pricesFromPosition.quote,
