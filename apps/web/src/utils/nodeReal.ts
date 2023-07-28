@@ -1,3 +1,5 @@
+import { ChainId } from '@pancakeswap/sdk'
+
 export const getNodeRealUrl = (networkName: string) => {
   let host = null
 
@@ -31,19 +33,24 @@ export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
   let host = null
 
   switch (chainId) {
-    case 1:
+    case ChainId.ETHEREUM:
       if (key) {
         host = `eth-mainnet.nodereal.io/v1/${key}`
       }
       break
-    case 5:
+    case ChainId.GOERLI:
       if (key) {
         host = `eth-goerli.nodereal.io/v1/${key}`
       }
       break
-    case 56:
+    case ChainId.BSC:
       if (key) {
         host = `bsc-mainnet.nodereal.io/v1/${key}`
+      }
+      break
+    case ChainId.POLYGON_ZKEVM:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/polygon-zkevm-rpc`
       }
       break
     default:
