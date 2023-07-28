@@ -2666,4 +2666,12 @@ export const bscTokens = {
     'SABLE',
     'https://sable.finance/',
   ),
+  snbnb: new ERC20Token(
+    ChainId.BSC,
+    '0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B',
+    18,
+    'SnBNB',
+    'Synclub Staked BNB',
+    'https://www.synclub.io/',
+  ),
 }
