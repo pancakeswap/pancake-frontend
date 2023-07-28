@@ -1,5 +1,8 @@
 {
-  "@context": ["https://www.w3.org/ns/did/v1", "https://w3id.org/security/suites/jws-2020/v1"],
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
   "id": "did:web:web-git-feat-web3-notifications.pancake.run",
   "verificationMethod": [
     {
@@ -9,9 +12,11 @@
       "publicKeyJwk": {
         "kty": "OKP",
         "crv": "X25519",
-        "x": "eA_WpIw3NNSwCaxcdabXUtaK1GLoF55rsUjcziPT03Q"
+        "x": "eXX3FS9aKXkVg7SKbgcz_UntlcU_YXzHzS8CT6W1qWs"
       }
     }
   ],
-  "keyAgreement": ["did:web:web-git-feat-web3-notifications.pancake.run#key-0"]
+  "keyAgreement": [
+    "did:web:web-git-feat-web3-notifications.pancake.run#key-0"
+  ]
 }

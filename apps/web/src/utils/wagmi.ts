@@ -11,19 +11,13 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { DEFAULT_APP_METADATA } from 'views/Notifications/utils/constants'
 import { WalletConnectConnector } from './WalletConnectConnector2'
 
 // get most configs chain nodes length
 const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {
   return cur.length > prev ? cur.length : prev
 }, 0)
-
-export const DEFAULT_APP_METADATA = {
-  description: 'x',
-  icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 't1',
-  url: 'https://web-git-feat-web3-notifications.pancake.run',
-}
 
 export const { publicClient, chains } = configureChains(
   CHAINS,
@@ -72,7 +66,7 @@ export const walletConnectConnector = new WalletConnectConnector({
   options: {
     metadata: DEFAULT_APP_METADATA,
     showQrModal: true,
-    projectId: '789dab9a8136c9164ccced21a81ca0a0',
+    projectId: '701224bc70b526c94ed5f97d20c5a718',
   },
 })
 
@@ -80,7 +74,7 @@ export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
     showQrModal: false,
-    projectId: '789dab9a8136c9164ccced21a81ca0a0',
+    projectId: '701224bc70b526c94ed5f97d20c5a718',
   },
 })
 

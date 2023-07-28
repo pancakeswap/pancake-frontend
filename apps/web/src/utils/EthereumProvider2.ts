@@ -565,6 +565,7 @@ export class EthereumProvider implements IEthereumProvider {
       ? getEthereumChainId(this.rpc.chains)
       : getEthereumChainId(this.rpc.optionalChains)
 
+      
     const core = new Core({
       projectId: this.rpc.projectId,
     })

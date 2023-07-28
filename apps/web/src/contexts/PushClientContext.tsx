@@ -3,12 +3,6 @@ import { providers } from 'ethers'
 import { DappClient } from '@walletconnect/push-client'
 import { Connector, useAccount } from 'wagmi'
 
-export const DEFAULT_APP_METADATA = {
-  description: 'x',
-  icons: ['https://i.imgur.com/q9QDRXc.png'],
-  name: 't1',
-  url: 'https://web-git-feat-web3-notifications.pancake.run',
-}
 interface IContext {
   connector: Connector<any, any>
   account: `0x${string}`

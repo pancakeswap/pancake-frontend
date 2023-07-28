@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, useToast } from '@pancakeswap/uikit'
+import { Button, Text, useToast } from '@pancakeswap/uikit'
 import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -177,21 +177,23 @@ export const NotificationDropdown = () => {
           body: NOTIFICATION_BODY,
           // href already contains the trailing slash
           icon: `${window.location.href}logo.png`,
-          url: 'http://localhost:3000',
+          // url: 'http://gm.walletconnect.com',
           type: 'alerts',
         },
       }
 
-      const result = await fetch(`https://cast.walletconnect.com/${'789dab9a8136c9164ccced21a81ca0a0'}/notify`, {
+      const result = await fetch(`https://cast.walletconnect.com/${'701224bc70b526c94ed5f97d20c5a718'}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'a0cf2e17-c000-48cf-ab8f-726362ad5306'}`,
+          Authorization: `Bearer ${'1841eeb4-4bc7-4e76-8f68-f1638e05d09f'}`,
         },
         body: JSON.stringify(notificationPayload),
       })
 
       const gmRes = await result.json() // { "sent": ["eip155:${chainId}:0xafeb..."], "failed": [], "not_found": [] }
+      console.log(gmRes)
+
       const isSuccessfulGm = gmRes.sent.includes(notificationPayload.accounts[0])
 
       if (isSuccessfulGm)
@@ -254,14 +256,15 @@ export const NotificationDropdown = () => {
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
         <>
-          {!isSubscribed ? (
+          {/* {!isSubscribed ? ( */}
             <NotificationHeader
               onBack={toggleSettings}
               onDismiss={onDismiss}
-              isEnabled={!enabled}
+              isEnabled={enabled}
               isSettings={!isRightView}
             />
-          ) : null}
+            <Button onClick={handleSendTestNotification}>dgs</Button>
+          {/* ) : null} */}
           <StyledInputCurrencyWrapper>
             {!isSubscribed && !enabled ? (
               <SubscribedView handleSubscribed={handleSubscribed} />

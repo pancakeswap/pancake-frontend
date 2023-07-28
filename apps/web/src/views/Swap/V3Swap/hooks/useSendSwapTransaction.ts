@@ -115,8 +115,7 @@ export default function useSendSwapTransaction(
           call: { address, calldata, value },
         } = bestCallOption
 
-        // @ts-ignore
-        return testSendTransaction({
+        return sendTransactionAsync({
           from: account,
           to: address,
           data: calldata,

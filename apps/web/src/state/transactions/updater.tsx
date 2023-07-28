@@ -51,29 +51,23 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         throw new Error('Push Client not initialized')
       }
 
-      const notificationPayload = {
-        accounts: [`eip155:${chainId}:${account}`],
-        type: 'alerts',
-        notification: {
-          title: 'New Liquidity Position added',
-          body: NOTIFICATION_BODY,
-          icon: `${window.location.href}logo.png`,
-          url: 'https://web-git-feat-web3-notifications.pancake.run',
-        },
+      const notificationPayload ={
+        account: "0x2dC45bA781E8B9D12501bd14d01f072bA4Df1481",
+        type: "Liquidity Notification",
+          title: "Liquidity Position Added",
+          description: "Successfylly added liquidity to GOR-tUSDC Pair for 0.0001 GOR-ETH and 206.683 tUSDC"
       }
-
-      const result = await fetch(`https://cast.walletconnect.com/${'789dab9a8136c9164ccced21a81ca0a0'}/notify`, {
+      
+      const result = await fetch(`http://localhost:8000/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'a0cf2e17-c000-48cf-ab8f-726362ad5306'}`,
         },
         body: JSON.stringify(notificationPayload),
       })
 
       const gmRes = await result.json() // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
-      console.log(gmRes)
-      const isSuccessfulGm = gmRes.sent.includes(notificationPayload.accounts[0])
+      const isSuccessfulGm = gmRes.success
 
       if (isSuccessfulGm)
         toastSuccess(
