@@ -138,7 +138,7 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
                 <Image src="/images/nfts/v3-part1.jpg" />
               </Box>
               <Button
-                mt="24px"
+                m="12px 0"
                 disabled={isLoading}
                 onClick={handleClick}
                 endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
@@ -170,7 +170,7 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
                 <Image src="/images/nfts/v3-part2.jpg" />
               </Box>
               <Button
-                mt="24px"
+                m="12px 0"
                 disabled={isLoading}
                 onClick={handleClick}
                 endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}

@@ -65,7 +65,6 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
       showOnceAirdropModal
     ) {
       setShow(true)
-      setShowOnceAirdropModal(false)
     } else {
       setShow(false)
     }
@@ -81,10 +80,18 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     v3WhitelistAddress,
   ])
 
+  const handleCloseModal = () => {
+    if (showOnceAirdropModal) {
+      setShowOnceAirdropModal(!showOnceAirdropModal)
+    }
+    setShow(false)
+  }
+
   return (
-    <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>
+    <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
       <V3AirdropModal
         data={account ? (v3WhitelistAddress?.[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
+        onDismiss={handleCloseModal}
       />
     </ModalV2>
   )
