@@ -66,7 +66,7 @@ export const walletConnectConnector = new WalletConnectConnector({
   options: {
     metadata: DEFAULT_APP_METADATA,
     showQrModal: true,
-    projectId: '701224bc70b526c94ed5f97d20c5a718',
+    projectId: 'ae5413feaf0cdaee02910dc807e03203',
   },
 })
 
@@ -74,7 +74,7 @@ export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
     showQrModal: false,
-    projectId: '701224bc70b526c94ed5f97d20c5a718',
+    projectId: 'ae5413feaf0cdaee02910dc807e03203',
   },
 })
 

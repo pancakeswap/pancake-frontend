@@ -177,16 +177,16 @@ export const NotificationDropdown = () => {
           body: NOTIFICATION_BODY,
           // href already contains the trailing slash
           icon: `${window.location.href}logo.png`,
-          // url: 'http://gm.walletconnect.com',
+          url: 'https://web-git-feat-web3-notifications.pancake.run',
           type: 'alerts',
         },
       }
 
-      const result = await fetch(`https://cast.walletconnect.com/${'701224bc70b526c94ed5f97d20c5a718'}/notify`, {
+      const result = await fetch(`https://cast.walletconnect.com/${'ae5413feaf0cdaee02910dc807e03203'}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'1841eeb4-4bc7-4e76-8f68-f1638e05d09f'}`,
+          // Authorization: `Bearer ${'1841eeb4-4bc7-4e76-8f68-f1638e05d09f'}`,
         },
         body: JSON.stringify(notificationPayload),
       })
@@ -257,13 +257,13 @@ export const NotificationDropdown = () => {
       {() => (
         <>
           {/* {!isSubscribed ? ( */}
-            <NotificationHeader
-              onBack={toggleSettings}
-              onDismiss={onDismiss}
-              isEnabled={enabled}
-              isSettings={!isRightView}
-            />
-            <Button onClick={handleSendTestNotification}>dgs</Button>
+          <NotificationHeader
+            onBack={toggleSettings}
+            onDismiss={onDismiss}
+            isEnabled={enabled}
+            isSettings={!isRightView}
+          />
+          <Button onClick={handleSendTestNotification}>dgs</Button>
           {/* ) : null} */}
           <StyledInputCurrencyWrapper>
             {!isSubscribed && !enabled ? (

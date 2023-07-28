@@ -18,11 +18,10 @@ export const DEFAULT_RELAY_URL = process.env.NEXT_PUBLIC_RELAY_URL
 export const DEFAULT_LOGGER = 'debug'
 
 export const DEFAULT_APP_METADATA = {
-  description: "test-push",
-  icons: ["https://i.imgur.com/q9QDRXc.png"],
-  name: "demp for push",
-  url: "https://gm.walletconnect.com",
-
+  description: 'local',
+  icons: ['https://i.imgur.com/q9QDRXc.png'],
+  name: 'local',
+  url: 'https://web-git-feat-web3-notifications.pancake.run',
 }
 
 /**
