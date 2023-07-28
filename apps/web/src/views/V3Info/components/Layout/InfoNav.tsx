@@ -19,7 +19,7 @@ import { multiChainId, multiChainPaths, multiChainShortName } from 'state/info/c
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { chains } from 'utils/wagmi'
-import { bsc, mainnet, polygonZkEvm } from 'wagmi/chains'
+import { bsc, mainnet, polygonZkEvm, zkSync } from 'wagmi/chains'
 import { v3InfoPath } from '../../constants'
 import Search from '../Search'
 
@@ -74,7 +74,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   )
 }
 
-const targetChains = [mainnet, bsc, polygonZkEvm]
+const targetChains = [mainnet, bsc, polygonZkEvm, zkSync]
 
 export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
   const { t } = useTranslation()
