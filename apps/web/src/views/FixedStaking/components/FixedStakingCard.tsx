@@ -35,31 +35,35 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
       </Flex>
       <CardBody>
         <FixedStakingCardBody pool={pool}>
-          <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {stakedPositions.length} {t('Staked Position')}
-          </InlineText>
-          <LightGreyCard mb="16px" mt="8px">
-            {stakedPositions.map((stakePosition, index) => (
-              <>
-                <StakedPositionSection
-                  lockDayPercent={stakePosition.pool.lockDayPercent}
-                  lockPeriod={stakePosition.pool.lockPeriod}
-                  unlockTime={stakePosition.endLockTime}
-                  stakePositionUserInfo={stakePosition.userInfo}
-                  token={stakePosition.pool.token}
-                  poolIndex={stakePosition.pool.poolIndex}
-                  withdrawalFee={stakePosition.pool.withdrawalFee}
-                  pool={pool}
-                  stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
-                />
-                {index < stakedPositions.length - 1 ? (
-                  <Box my="16px">
-                    <Divider />
-                  </Box>
-                ) : null}
-              </>
-            ))}
-          </LightGreyCard>
+          {stakedPositions.length ? (
+            <>
+              <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+                {stakedPositions.length} {t('Staked Position')}
+              </InlineText>
+              <LightGreyCard mb="16px" mt="8px">
+                {stakedPositions.map((stakePosition, index) => (
+                  <>
+                    <StakedPositionSection
+                      lockDayPercent={stakePosition.pool.lockDayPercent}
+                      lockPeriod={stakePosition.pool.lockPeriod}
+                      unlockTime={stakePosition.endLockTime}
+                      stakePositionUserInfo={stakePosition.userInfo}
+                      token={stakePosition.pool.token}
+                      poolIndex={stakePosition.pool.poolIndex}
+                      withdrawalFee={stakePosition.pool.withdrawalFee}
+                      pool={pool}
+                      stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
+                    />
+                    {index < stakedPositions.length - 1 ? (
+                      <Box my="16px">
+                        <Divider />
+                      </Box>
+                    ) : null}
+                  </>
+                ))}
+              </LightGreyCard>
+            </>
+          ) : null}
 
           <FixedStakingModal
             initialLockPeriod={pool.pools[pool.pools.length - 1].lockPeriod}

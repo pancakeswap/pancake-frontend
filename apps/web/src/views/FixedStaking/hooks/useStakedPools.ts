@@ -37,7 +37,7 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
       address: fixedStakingContract.address,
     },
     functionName: 'getUserInfo',
-    args: poolIndexes.map((index) => [index, account]),
+    args: account ? poolIndexes.map((index) => [index, account]) : [],
   })
 
   return useMemo(() => {

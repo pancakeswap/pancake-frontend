@@ -56,7 +56,7 @@ export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; chil
             fontSize={['14px', '14px', '16px']}
             value={formattedUsdValueStaked}
             decimals={2}
-            unit="$"
+            prefix="$"
             fontWeight={[600, 400]}
           />
         }
