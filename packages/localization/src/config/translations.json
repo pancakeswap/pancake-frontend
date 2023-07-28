@@ -2628,5 +2628,10 @@
   "Joined Revenue Sharing Pool.": "Joined Revenue Sharing Pool.",
   "Update Staking Position": "Update Staking Position",
   "Join revenue sharing": "Join revenue sharing",
-  "Once updated, you need to wait a full distribution cycle to start claiming rewards.": "Once updated, you need to wait a full distribution cycle to start claiming rewards."
+  "Once updated, you need to wait a full distribution cycle to start claiming rewards.": "Once updated, you need to wait a full distribution cycle to start claiming rewards.",
+  "The virtual shares you currently own and the % against the whole revenue sharing pool.": "The virtual shares you currently own and the % against the whole revenue sharing pool.",
+  "Please note that after locking or updating, your shares will only update upon revenue distributions.": "Please note that after locking or updating, your shares will only update upon revenue distributions.",
+  "Time remaining until the next revenue distribution and share updates.": "Time remaining until the next revenue distribution and share updates.",
+  "The time of the last revenue distribution and shares update.": "The time of the last revenue distribution and shares update.",
+  "Amount of revenue available for claiming in CAKE.": "Amount of revenue available for claiming in CAKE."
 }

@@ -2,7 +2,18 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
-import { Box, Flex, Text, Card, LinkExternal, Message, MessageText, WarningIcon, Balance } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  Text,
+  Card,
+  LinkExternal,
+  Message,
+  MessageText,
+  WarningIcon,
+  Balance,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
@@ -57,7 +68,26 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
         </Text>
         <Box mt="8px">
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <BenefitsTooltipsText title={t('Your shares')} tooltipComponent={<>132</>} />
+            <BenefitsTooltipsText
+              title={t('Your shares')}
+              tooltipComponent={
+                <>
+                  <Text>
+                    {t('The virtual shares you currently own and the % against the whole revenue sharing pool.')}
+                  </Text>
+                  <Text m="4px 0">
+                    {t(
+                      'Please note that after locking or updating, your shares will only update upon revenue distributions.',
+                    )}
+                  </Text>
+                  <NextLinkFromReactRouter to="/voting">
+                    <Text bold color="primary">
+                      {t('Learn More')}
+                    </Text>
+                  </NextLinkFromReactRouter>
+                </>
+              }
+            />
             <Box>
               {yourShare === 0 ? (
                 <Text bold color="failure">
@@ -88,7 +118,12 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <BenefitsTooltipsText title={t('Next distribution')} tooltipComponent={<>132</>} />
+            <BenefitsTooltipsText
+              title={t('Next distribution')}
+              tooltipComponent={
+                <Text>{t('Time remaining until the next revenue distribution and share updates.')}</Text>
+              }
+            />
             <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
               {t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}
             </Text>
@@ -102,12 +137,18 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
           )}
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <BenefitsTooltipsText title={t('Last distribution')} tooltipComponent={<>132</>} />
+            <BenefitsTooltipsText
+              title={t('Last distribution')}
+              tooltipComponent={<Text>{t('The time of the last revenue distribution and shares update.')}</Text>}
+            />
             <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
-            <BenefitsTooltipsText title={t('Available for claiming')} tooltipComponent={<>132</>} />
+            <BenefitsTooltipsText
+              title={t('Available for claiming')}
+              tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
+            />
             <Box>
               <Balance unit=" CAKE" bold value={availableCake} decimals={2} />
               <Balance
