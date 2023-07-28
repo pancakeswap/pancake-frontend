@@ -5,7 +5,11 @@ import { farmsV3ConfigChainMap } from '../constants/v3'
 import { priceHelperTokens } from '../constants/common'
 import { CommonPrice, getFarmsPrices } from '../src/fetchFarmsV3'
 
-const mainnetFarms = [farmsV3ConfigChainMap[ChainId.BSC], farmsV3ConfigChainMap[ChainId.ETHEREUM]]
+const mainnetFarms = [
+  farmsV3ConfigChainMap[ChainId.BSC],
+  farmsV3ConfigChainMap[ChainId.ETHEREUM],
+  farmsV3ConfigChainMap[ChainId.POLYGON_ZKEVM],
+]
 
 function hasDuplicates(array: any[]) {
   return new Set(array).size !== array.length
