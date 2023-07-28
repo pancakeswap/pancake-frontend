@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.2.1
+
+### Patch Changes
+
+- 3ba496cb1: Fix factory address
+
 ## 5.2.0
 
 ### Minor Changes
