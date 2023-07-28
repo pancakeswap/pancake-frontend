@@ -126,6 +126,11 @@ const useDrawCanvas = (
     video.onended = () => {
       clearInterval(canvasInterval)
     }
+    video.onplay = () => {
+      window.setInterval(() => {
+        drawImage()
+      }, 1000 / fps)
+    }
   }
 
   return { drawImage: isElementReady ? drawImage : null }
@@ -143,6 +148,7 @@ const CakeSection: React.FC = () => {
     canvasInterval = window.setInterval(() => {
       drawImage?.()
     }, 1000 / fps)
+    return () => clearInterval(canvasInterval)
   }, [drawImage])
 
   return (
