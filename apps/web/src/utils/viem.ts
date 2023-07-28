@@ -12,6 +12,12 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
         (PUBLIC_NODES[cur.id] as string[]).map((url) =>
           http(url, {
             timeout: 15_000,
+            batch:
+              cur.id === ChainId.POLYGON_ZKEVM
+                ? {
+                    batchSize: 2,
+                  }
+                : false,
           }),
         ),
         {
@@ -20,7 +26,7 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
       ),
       batch: {
         multicall: {
-          batchSize: cur.id === ChainId.POLYGON_ZKEVM ? 128 : 1024 * 200,
+          batchSize: cur.id === ChainId.POLYGON_ZKEVM ? 256 : 1024 * 200,
         },
       },
     }),
