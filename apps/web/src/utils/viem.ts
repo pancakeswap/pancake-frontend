@@ -20,7 +20,7 @@ export const viemClients = CHAINS.reduce((prev, cur) => {
       ),
       batch: {
         multicall: {
-          batchSize: cur.id === ChainId.POLYGON_ZKEVM ? 128 : 1024 * 200,
+          batchSize: cur.id === ChainId.POLYGON_ZKEVM ? 64 : 1024 * 200,
         },
       },
     }),
