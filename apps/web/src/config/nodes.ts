@@ -59,7 +59,7 @@ export const PUBLIC_NODES = {
   [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: [
-    // getNodeRealUrlV2(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
+    getNodeRealUrlV2(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
     ...POLYGON_ZKEVM_NODES,
   ],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
