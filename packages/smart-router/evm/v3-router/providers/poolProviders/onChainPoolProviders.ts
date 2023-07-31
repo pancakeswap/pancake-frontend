@@ -135,7 +135,7 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
     },
   ],
   buildPool: ({ currencyA, currencyB, fee, address }, [liquidity, slot0]) => {
-    if (!liquidity || !slot0) {
+    if (!slot0) {
       return null
     }
     const [sqrtPriceX96, tick, , , , feeProtocol] = slot0
