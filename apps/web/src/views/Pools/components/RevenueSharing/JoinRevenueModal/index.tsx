@@ -110,7 +110,11 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
           <Text as="span" fontSize={12} color="textSubtle">
             {t('Once updated, you need to wait a full distribution cycle to start claiming rewards.')}
           </Text>
-          <InlineLink fontSize={12} href="https://docs.pancakeswap.finance/products/prediction" external>
+          <InlineLink
+            fontSize={12}
+            href="https://docs.pancakeswap.finance/products/revenue-sharing/faq#cae64522-4729-43a2-8fa8-6bbd2567dcea"
+            external
+          >
             {t('Learn More')}
           </InlineLink>
         </Box>
