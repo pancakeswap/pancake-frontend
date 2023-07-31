@@ -233,7 +233,7 @@ export default {
   },
   revenueSharingPool: {
     1: '0x',
-    56: '0xbBC86F201c14A4062Ee0dE8c580dA38c6E38cD2e',
+    56: '0xCD5d1935e9bfa4905f9f007C97aB1f1763dC1607',
     97: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
