@@ -2674,4 +2674,12 @@ export const bscTokens = {
     'Synclub Staked BNB',
     'https://www.synclub.io/',
   ),
+  planet: new ERC20Token(
+    ChainId.BSC,
+    '0xCa6d678e74f553f0E59cccC03ae644a3c2c5EE7d',
+    18,
+    'PLANET',
+    'PLANET',
+    'https://joinourplanet.com/',
+  ),
 }
