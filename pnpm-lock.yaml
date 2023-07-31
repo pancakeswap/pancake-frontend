@@ -829,7 +829,7 @@ importers:
         version: 18.2.0
       '@types/react-datepicker':
         specifier: ^4.4.1
-        version: 4.4.1(react@18.2.0)
+        version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       '@types/react-dom':
         specifier: ^18.0.6
         version: 18.2.1
@@ -1484,8 +1484,8 @@ importers:
         specifier: ^4.17.20
         version: 4.17.21
       react-popper:
-        specifier: ^2.2.5
-        version: 2.2.5(@popperjs/core@2.11.2)(react@18.2.0)
+        specifier: ^2.3.0
+        version: 2.3.0(@popperjs/core@2.11.2)(react-dom@18.2.0)(react@18.2.0)
       styled-system:
         specifier: ^5.1.5
         version: 5.1.5
@@ -10175,15 +10175,16 @@ packages:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
     dev: true
 
-  /@types/react-datepicker@4.4.1(react@18.2.0):
+  /@types/react-datepicker@4.4.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-M8+hzwj+bpuwxC82z35NxkD3sqMl/vVXTs6xjPAsYqjucVXFpY1DK6ETKgICZE7YpuPYpf2OYF2OVZ5E7R42rA==}
     dependencies:
       '@popperjs/core': 2.11.2
       '@types/react': 18.2.0
       date-fns: 2.29.3
-      react-popper: 2.2.5(@popperjs/core@2.11.2)(react@18.2.0)
+      react-popper: 2.3.0(@popperjs/core@2.11.2)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - react
+      - react-dom
     dev: true
 
   /@types/react-dom@18.2.1:
@@ -22642,7 +22643,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-onclickoutside: 6.12.1(react-dom@18.2.0)(react@18.2.0)
-      react-popper: 2.2.5(@popperjs/core@2.11.2)(react@18.2.0)
+      react-popper: 2.3.0(@popperjs/core@2.11.2)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /react-device-detect@2.1.2(react-dom@17.0.2)(react@18.2.0):
@@ -22818,14 +22819,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-popper@2.2.5(@popperjs/core@2.11.2)(react@18.2.0):
-    resolution: {integrity: sha512-kxGkS80eQGtLl18+uig1UIf9MKixFSyPxglsgLBxlYnyDf65BiY9B3nZSc6C9XUNDgStROB0fMQlTEz1KxGddw==}
+  /react-popper@2.3.0(@popperjs/core@2.11.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==}
     peerDependencies:
       '@popperjs/core': ^2.0.0
-      react: ^16.8.0 || ^17
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
       '@popperjs/core': 2.11.2
       react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
       react-fast-compare: 3.2.0
       warning: 4.0.3
 

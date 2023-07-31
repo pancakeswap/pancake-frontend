@@ -43,7 +43,7 @@ export function ModalV2({
   onDismiss,
   closeOnOverlayClick,
   children,
-  disableOutsidePointerEvents = true,
+  disableOutsidePointerEvents = false,
   ...props
 }: ModalV2Props & BoxProps & { disableOutsidePointerEvents?: boolean }) {
   const animationRef = useRef<HTMLDivElement>(null);
