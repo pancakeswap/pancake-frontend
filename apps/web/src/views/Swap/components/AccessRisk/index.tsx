@@ -14,7 +14,7 @@ import {
   promotedGradient,
   AutoRenewIcon,
 } from '@pancakeswap/uikit'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
@@ -102,6 +102,14 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
 
   const { data, mutate, error } = useTokenRisk(token)
+
+  useEffect(() => {
+    if (data?.pollingInterval) {
+      const refresh = setTimeout(() => mutate(), data?.pollingInterval)
+      return () => clearTimeout(refresh)
+    }
+    return undefined
+  }, [data?.pollingInterval, mutate])
 
   const lists = useAllLists()
   const tokenInLists = useMemo(() => {
