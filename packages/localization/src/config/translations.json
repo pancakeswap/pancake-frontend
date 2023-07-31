@@ -839,8 +839,6 @@
   "If you purchase a token from this list, you may not be able to sell it back.": "If you purchase a token from this list, you may not be able to sell it back.",
   "Import": "Import",
   "via": "via",
-  "Anyone can create a token with any name, including creating fake versions of existing tokens or ones that claim to represent projects without tokens.": "Anyone can create a token with any name, including creating fake versions of existing tokens or ones that claim to represent projects without tokens.",
-  "If you purchase an arbitrary token, you may be unable to sell it back.": "If you purchase an arbitrary token, you may be unable to sell it back.",
   "Unknown Source": "Unknown Source",
   "Lists": "Lists",
   "See": "See",
@@ -2507,7 +2505,6 @@
   "Subgraph is currently experiencing issues. Performance may suffer until subgraph is restored.": "Subgraph is currently experiencing issues. Performance may suffer until subgraph is restored.",
   "Affiliate program registration is paused at the moment. Please check back after subgraph status is restored": "Affiliate program registration is paused at the moment. Please check back after subgraph status is restored",
   "Pancake Protectors": "Pancake Protectors",
-  "Please be extra careful during this period as altcoin trading volumes are on the surge recently.": "Please be extra careful during this period as altcoin trading volumes are on the surge recently.",
   "Go to Farms": "Go to Farms",
   "has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.": "has an active PancakeSwap farm. Stake your position in the farm to start earning with the indicated APR with CAKE farming.",
   "This position must be staking in farm to apply the combined APR with farming rewards.": "This position must be staking in farm to apply the combined APR with farming rewards.",
@@ -2637,5 +2634,7 @@
   "Learn more about risk rating": "Learn more about risk rating",
   "Risk scan results are provided by a third party,": "Risk scan results are provided by a third party,",
   "Risk scanning is still in progress. It may take up to 5 minutes to fully scan a token which is new to the database.": "Risk scanning is still in progress. It may take up to 5 minutes to fully scan a token which is new to the database.",
-  "Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.": "Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice."
+  "Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.": "Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.",
+  "If you purchase a fraudulent token, you may be exposed to permanent loss of funds.": "If you purchase a fraudulent token, you may be exposed to permanent loss of funds.",
+  "Anyone can create tokens on BNB Smart Chain with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Anyone can create tokens on BNB Smart Chain with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token."
 }
