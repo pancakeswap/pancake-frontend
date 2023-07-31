@@ -2621,7 +2621,6 @@
   "Your shares": "Your shares",
   "Next distribution": "Next distribution",
   "in %day%": "in %day%",
-  "Your fixed-term staking position will expire before the next revenue sharing distributions.": "Your fixed-term staking position will expire before the next revenue sharing distributions.",
   "Last distribution": "Last distribution",
   "You need to update your staking in order to start earning from protocol revenue sharing.": "You need to update your staking in order to start earning from protocol revenue sharing.",
   "Locked CAKE Benefits": "Locked CAKE Benefits",
@@ -2633,5 +2632,7 @@
   "Please note that after locking or updating, your shares will only update upon revenue distributions.": "Please note that after locking or updating, your shares will only update upon revenue distributions.",
   "Time remaining until the next revenue distribution and share updates.": "Time remaining until the next revenue distribution and share updates.",
   "The time of the last revenue distribution and shares update.": "The time of the last revenue distribution and shares update.",
-  "Amount of revenue available for claiming in CAKE.": "Amount of revenue available for claiming in CAKE."
+  "Amount of revenue available for claiming in CAKE.": "Amount of revenue available for claiming in CAKE.",
+  "Extend your stakings to receive shares in the next distribution.": "Extend your stakings to receive shares in the next distribution.",
+  "Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.": "Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution."
 }
