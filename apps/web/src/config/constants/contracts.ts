@@ -228,12 +228,12 @@ export default {
   },
   vCake: {
     1: '0x',
-    56: '0x5e8742800626fD0A0C40a114695C2BE4598F1245',
+    56: '0xa3b8321173Cf3DdF37Ce3e7548203Fc25d86402F',
     97: '0x5DD37E97716A8b358BCbc731516F36FFff978454',
   },
   revenueSharingPool: {
     1: '0x',
-    56: '0x4D8b46E2eE871794f7b2966FD25e0D853fecE79a',
+    56: '0xbBC86F201c14A4062Ee0dE8c580dA38c6E38cD2e',
     97: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
