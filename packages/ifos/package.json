@@ -1,0 +1,23 @@
+{
+  "name": "@pancakeswap/ifos",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "wagmi": "^1.3.4"
+  },
+  "devDependencies": {
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "typescript": "^5.1.3",
+    "vitest": "^0.27.2",
+    "wagmi": "^1.3.4"
+  }
+}
