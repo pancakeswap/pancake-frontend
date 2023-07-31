@@ -34,7 +34,6 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const { data } = useSWR(account && chainId && ['/revenue-sharing-pool', account, chainId], async () => {
     try {
       const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
-      // const now = Math.floor(Date.now() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
       const revenueCalls = [
         {
           functionName: 'balanceOfAt',
