@@ -55,6 +55,7 @@ const handler: NextApiHandler = async (req, res) => {
       riskLevel: json.data.risk_level,
       requestId: json.data.request_id,
       riskLevelDescription: json.data.risk_level_description,
+      pollingInterval: json.data?.polling_interval ?? 0,
     },
   })
 }
