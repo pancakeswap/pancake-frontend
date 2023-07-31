@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Flex, Box } from '@pancakeswap/uikit'
+import { Flex, Box, ButtonProps } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -10,7 +10,7 @@ import ExtendButton from '../Buttons/ExtendDurationButton'
 import AfterLockedActions from './AfterLockedActions'
 import { LockedActionsPropsType } from '../types'
 
-const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType>> = ({
+const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType & ButtonProps>> = ({
   userShares,
   locked,
   lockEndTime,
@@ -19,6 +19,7 @@ const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType>> =
   stakingTokenBalance,
   stakingTokenPrice,
   lockedAmount,
+  variant,
 }) => {
   const position = useMemo(
     () =>
@@ -42,6 +43,7 @@ const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType>> =
       <Flex>
         <Box width="100%" mr="4px">
           <AddCakeButton
+            variant={variant || 'primary'}
             lockEndTime={lockEndTime}
             lockStartTime={lockStartTime}
             currentLockedAmount={lockedAmount}
@@ -53,6 +55,7 @@ const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType>> =
         </Box>
         <Box width="100%" ml="4px">
           <ExtendButton
+            variant={variant || 'primary'}
             lockEndTime={lockEndTime}
             lockStartTime={lockStartTime}
             stakingToken={stakingToken}

@@ -32,6 +32,8 @@ import {
   getV3MigratorAddress,
   getAffiliateProgramAddress,
   getTradingRewardTopTradesAddress,
+  getVCakeAddress,
+  getRevenueSharingPoolAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -78,6 +80,8 @@ import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
 import { tradingRewardABI } from 'config/abi/tradingReward'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
+import { vCakeABI } from 'config/abi/vCake'
+import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
@@ -384,6 +388,24 @@ export const getTradingRewardTopTradesContract = (signer?: WalletClient, chainId
   return getContract({
     abi: tradingRewardABI,
     address: getTradingRewardTopTradesAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getVCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: vCakeABI,
+    address: getVCakeAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getRevenueSharingPoolContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: revenueSharingPoolABI,
+    address: getRevenueSharingPoolAddress(chainId),
     signer,
     chainId,
   })
