@@ -223,7 +223,7 @@ export default {
   },
   tradingRewardTopTrades: {
     1: '0x',
-    56: '0x549d484F493b778A5c70638E30Fc6Dc6B2Dcc4c0',
+    56: '0x41920b6A17CB73D1B60f4F41D82c35eD0a46fD71',
     97: '0x',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
