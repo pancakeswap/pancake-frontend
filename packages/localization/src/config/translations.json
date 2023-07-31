@@ -2117,9 +2117,6 @@
   "Recommended Readings by Chefs": "Recommended Readings by Chefs",
   "Latest News about PancakeSwap and more!": "Latest News about PancakeSwap and more!",
   "Token Risk Scanning": "Token Risk Scanning",
-  "Automatic risk scanning for the selected token": "Automatic risk scanning for the selected token",
-  "Risk scan results are provided by a third party": "Risk scan results are provided by a third party",
-  "It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.": "It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.",
   "Risk scanning failed.": "Risk scanning failed.",
   "Press the button to retry.": "Press the button to retry.",
   "Unknown": "Unknown",
@@ -2634,11 +2631,11 @@
   "For more information, please refer to Alchemix’s": "For more information, please refer to Alchemix’s",
   "and await further updates from the team": "and await further updates from the team",
   "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the",
-  "Learn more about risk rating here.": "Learn more about risk rating here.",
-  "is reporting a risk level of": "is reporting a risk level of",
-  "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research.",
-  "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.",
   "Some Risk": "Some Risk",
   "Significant Risk": "Significant Risk",
-  "Risk scanning failed. Press the button to retry.": "Risk scanning failed. Press the button to retry."
+  "Provided by": "Provided by",
+  "Learn more about risk rating": "Learn more about risk rating",
+  "Risk scan results are provided by a third party,": "Risk scan results are provided by a third party,",
+  "Risk scanning is still in progress. It may take up to 5 minutes to fully scan a token which is new to the database.": "Risk scanning is still in progress. It may take up to 5 minutes to fully scan a token which is new to the database.",
+  "Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.": "Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice."
 }
