@@ -23,9 +23,6 @@ const AccessRiskTooltips: React.FC<AccessRiskTooltipsProps> = ({ riskLevel, hasR
         <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
           HashDit
         </Link>
-        <Link ml="4px" external href="https://hashdit.github.io/hashdit/docs/risk-level-description">
-          {t('here.')}
-        </Link>
         <Flex mt="4px">
           <Text>{t('Learn more about risk rating')}</Text>
           <Link ml="4px" external href="https://hashdit.github.io/hashdit/docs/risk-level-description">
