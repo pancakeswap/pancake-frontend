@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.3.2
+
+### Patch Changes
+
+- 640c171aa: Prevent zero liquidity pools from being ignored
+
 ## 4.3.1
 
 ### Patch Changes
