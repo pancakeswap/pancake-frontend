@@ -2682,4 +2682,12 @@ export const bscTokens = {
     'PLANET',
     'https://joinourplanet.com/',
   ),
+  dck: new ERC20Token(
+    ChainId.BSC,
+    '0x16faF9DAa401AA42506AF503Aa3d80B871c467A3',
+    18,
+    'DCK',
+    'DexCheck',
+    'https://dexcheck.ai/',
+  ),
 }
