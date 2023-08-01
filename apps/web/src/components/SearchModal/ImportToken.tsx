@@ -79,7 +79,12 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         const list = token.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
-          <Flex key={token.address} alignItems="center" justifyContent="space-between">
+          <Flex
+            flexDirection={['column', 'column', 'row']}
+            key={token.address}
+            alignItems={['left', 'left', 'center']}
+            justifyContent="space-between"
+          >
             <Grid gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
               {list !== undefined ? (
                 <Tag
@@ -112,7 +117,11 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 </>
               )}
             </Grid>
-            {token && SUPPORT_ONLY_BSC.includes(token.chainId) && <AccessRisk token={token} />}
+            {token && SUPPORT_ONLY_BSC.includes(token.chainId) && (
+              <Flex mt={['20px', '20px', '0']} minWidth="176px">
+                <AccessRisk token={token} />
+              </Flex>
+            )}
           </Flex>
         )
       })}
