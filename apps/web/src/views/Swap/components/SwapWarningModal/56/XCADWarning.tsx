@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Link } from '@pancakeswap/uikit'
+import { Box, Text, Link } from '@pancakeswap/uikit'
 
 const XCADWarning = () => {
   const { t } = useTranslation()
 
   // Break translation sentences into pieces because the current translation approach doesn't support Link interpolation.
   return (
-    <>
+    <Box maxWidth="380px">
       <Text>
         {t('XCAD is now using a new bridge provider and has migrated to a new XCAD token on BSC.')}
         <br />
@@ -27,7 +27,7 @@ const XCADWarning = () => {
           {t('New token contract address')}.
         </Link>
       </Text>
-    </>
+    </Box>
   )
 }
 

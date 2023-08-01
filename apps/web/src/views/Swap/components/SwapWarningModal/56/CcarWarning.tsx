@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Link } from '@pancakeswap/uikit'
+import { Box, Text, Link } from '@pancakeswap/uikit'
 
 const CcarWarning = () => {
   const { t } = useTranslation()
 
   return (
-    <>
+    <Box maxWidth="380px">
       <Text>
         {t('Crypto Cars (CCAR) has been migrated to')}{' '}
         <Link
@@ -22,7 +22,7 @@ const CcarWarning = () => {
           {t('the announcement.')}
         </Link>
       </Text>
-    </>
+    </Box>
   )
 }
 

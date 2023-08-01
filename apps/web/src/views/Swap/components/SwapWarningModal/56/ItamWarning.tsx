@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Link } from '@pancakeswap/uikit'
+import { Box, Text, Link } from '@pancakeswap/uikit'
 
 const ItamWarning = () => {
   const { t } = useTranslation()
 
   return (
-    <>
+    <Box maxWidth="380px">
       <Text>
         {t('ITAM has been rebranded as ITAM CUBE.')}{' '}
         <Link style={{ display: 'inline' }} external href="https://itam.network/swap">
@@ -13,7 +13,7 @@ const ItamWarning = () => {
         </Link>{' '}
         {t('All transfers of the old ITAM token will be disabled after the swap.')}
       </Text>
-    </>
+    </Box>
   )
 }
 
