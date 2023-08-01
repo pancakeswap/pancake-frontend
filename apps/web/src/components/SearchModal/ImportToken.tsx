@@ -51,7 +51,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   const { data: hasRiskToken } = useSWRImmutable(tokens && ['has-risks', tokens], async () => {
     const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
-    return result.some((r) => r.riskLevel > TOKEN_RISK.MEDIUM)
+    return result.some((r) => r.riskLevel >= TOKEN_RISK.MEDIUM)
   })
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

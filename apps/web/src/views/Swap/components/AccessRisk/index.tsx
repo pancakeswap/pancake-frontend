@@ -147,11 +147,11 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     if (data?.riskLevel > TOKEN_RISK.MEDIUM) {
       return 'failure'
     }
+    if (data?.riskLevel >= TOKEN_RISK.LOW && data?.riskLevel <= TOKEN_RISK.MEDIUM) {
+      return 'warning'
+    }
     if (data?.riskLevel >= TOKEN_RISK.SOME_RISK && data?.riskLevel <= TOKEN_RISK.VERY_LOW) {
       return 'primary'
-    }
-    if (data?.riskLevel > TOKEN_RISK.VERY_LOW && data?.riskLevel < TOKEN_RISK.HIGH) {
-      return 'warning'
     }
     return 'textDisabled'
   }, [data?.riskLevel])
