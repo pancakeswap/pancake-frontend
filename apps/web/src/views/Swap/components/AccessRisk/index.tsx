@@ -129,7 +129,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   )
 
   const isDataLoading = useMemo(
-    () => !data || !data?.isError || (data?.riskLevel === TOKEN_RISK.UNKNOWN && !data?.hasResult),
+    () => (!data && !data?.isError) || (data?.riskLevel === TOKEN_RISK.UNKNOWN && !data?.hasResult),
     [data],
   )
 
