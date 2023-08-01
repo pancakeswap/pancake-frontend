@@ -1,33 +1,32 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { TokenList, Version } from '@pancakeswap/token-lists'
 import {
+  acceptListUpdate,
+  disableList,
+  enableList,
+  removeList,
+  useFetchListCallback,
+} from '@pancakeswap/token-lists/react'
+import {
+  AutoColumn,
   Button,
   CheckmarkIcon,
   CogIcon,
+  Column,
   Input,
   LinkExternal,
   ListLogo,
   Text,
   Toggle,
   useTooltip,
-  AutoColumn,
-  Column,
 } from '@pancakeswap/uikit'
-import { TokenList, Version } from '@pancakeswap/token-lists'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
 import Card from 'components/Card'
-import { BSC_URLS, ETH_URLS, POLYGON_ZKEVM_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { MULTI_CHAIN_LIST_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists/lists'
 import styled from 'styled-components'
-import {
-  useFetchListCallback,
-  acceptListUpdate,
-  disableList,
-  enableList,
-  removeList,
-} from '@pancakeswap/token-lists/react'
-import uriToHttp from '@pancakeswap/utils/uriToHttp'
-import { ChainId } from '@pancakeswap/sdk'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
@@ -206,11 +205,7 @@ function ManageLists({
         const isValid = Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
 
         if (isValid) {
-          return (
-            (chainId === ChainId.ETHEREUM && ETH_URLS.includes(listUrl)) ||
-            (chainId === ChainId.BSC && BSC_URLS.includes(listUrl)) ||
-            (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(listUrl))
-          )
+          return MULTI_CHAIN_LIST_URLS[chainId]?.includes(listUrl)
         }
 
         return false
