@@ -6,10 +6,7 @@ import {
   OFFICIAL_LISTS,
   UNSUPPORTED_LIST_URLS,
   WARNING_LIST_URLS,
-  ETH_URLS,
-  ZKSYNC_URLS,
-  POLYGON_ZKEVM_URLS,
-  BSC_URLS,
+  MULTI_CHAIN_LIST_URLS,
 } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
 import mapValues from 'lodash/mapValues'
@@ -204,18 +201,7 @@ export function useAllLists(): {
 
   const urls = useAtomValue(selectorByUrlsAtom)
 
-  return useMemo(
-    () =>
-      _pickBy(
-        urls,
-        (_, url) =>
-          (chainId === ChainId.ETHEREUM && ETH_URLS.includes(url)) ||
-          (chainId === ChainId.BSC && BSC_URLS.includes(url)) ||
-          (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(url)) ||
-          (chainId === ChainId.ZKSYNC && ZKSYNC_URLS.includes(url)),
-      ),
-    [chainId, urls],
-  )
+  return useMemo(() => _pickBy(urls, (_, url) => MULTI_CHAIN_LIST_URLS[chainId]?.includes(url)), [chainId, urls])
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
@@ -239,17 +225,7 @@ export function useActiveListUrls(): string[] | undefined {
   const { chainId } = useActiveChainId()
   const urls = useAtomValue(activeListUrlsAtom)
 
-  return useMemo(
-    () =>
-      urls.filter(
-        (url) =>
-          (chainId === ChainId.ETHEREUM && ETH_URLS.includes(url)) ||
-          (chainId === ChainId.BSC && BSC_URLS.includes(url)) ||
-          (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(url)) ||
-          (chainId === ChainId.ZKSYNC && ZKSYNC_URLS.includes(url)),
-      ),
-    [urls, chainId],
-  )
+  return useMemo(() => urls.filter((url) => MULTI_CHAIN_LIST_URLS[chainId]?.includes(url)), [urls, chainId])
 }
 
 export function useInactiveListUrls() {

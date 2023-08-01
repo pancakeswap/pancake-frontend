@@ -1,3 +1,5 @@
+import { ChainId } from '@pancakeswap/sdk'
+
 export const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
 export const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
 export const PANCAKE_ETH_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json'
@@ -38,3 +40,10 @@ export const DEFAULT_ACTIVE_LIST_URLS: string[] = [
   PANCAKE_ETH_DEFAULT,
   PANCAKE_POLYGON_ZKEVM_DEFAULT,
 ]
+
+export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
+  [ChainId.BSC]: BSC_URLS,
+  [ChainId.ETHEREUM]: ETH_URLS,
+  [ChainId.ZKSYNC]: ZKSYNC_URLS,
+  [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_URLS,
+}
