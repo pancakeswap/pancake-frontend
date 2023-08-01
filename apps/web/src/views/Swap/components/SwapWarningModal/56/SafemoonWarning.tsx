@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Link } from '@pancakeswap/uikit'
+import { Box, Text, Link } from '@pancakeswap/uikit'
 
 const SafemoonWarning = () => {
   const { t } = useTranslation()
 
   // Break translation sentences into pieces because the current translation approach doesn't support Link interpolation.
   return (
-    <>
+    <Box maxWidth="380px">
       <Text>
         {t('SAFEMOON has been migrated to')}{' '}
         <Link
@@ -23,7 +23,7 @@ const SafemoonWarning = () => {
           {t("Safemoon's announcement")}.
         </Link>
       </Text>
-    </>
+    </Box>
   )
 }
 

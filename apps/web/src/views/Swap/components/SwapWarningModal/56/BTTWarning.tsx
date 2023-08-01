@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Link, LinkExternal } from '@pancakeswap/uikit'
+import { Box, Text, Link, LinkExternal } from '@pancakeswap/uikit'
 
 const BTTWarning = () => {
   const { t } = useTranslation()
 
   return (
-    <>
+    <Box maxWidth="380px">
       <Text>
         {t(
           'Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:',
@@ -24,7 +24,7 @@ const BTTWarning = () => {
       <LinkExternal href="https://medium.com/@BitTorrent/tutorial-how-to-swap-bttold-to-btt-453264d7142">
         {t('For more details on the swap, please refer here.')}
       </LinkExternal>
-    </>
+    </Box>
   )
 }
 
