@@ -135,7 +135,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
 
   const riskLevel = useMemo(() => {
     if (!isUndefinedOrNull(data?.riskLevel)) {
-      if (tokenInLists || data.riskLevel > TOKEN_RISK.MEDIUM) {
+      if (tokenInLists || data.riskLevel) {
         return data.riskLevel
       }
       return TOKEN_RISK.UNKNOWN
