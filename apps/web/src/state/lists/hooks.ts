@@ -7,6 +7,7 @@ import {
   UNSUPPORTED_LIST_URLS,
   WARNING_LIST_URLS,
   ETH_URLS,
+  ZKSYNC_URLS,
   POLYGON_ZKEVM_URLS,
   BSC_URLS,
 } from 'config/constants/lists'
@@ -210,7 +211,8 @@ export function useAllLists(): {
         (_, url) =>
           (chainId === ChainId.ETHEREUM && ETH_URLS.includes(url)) ||
           (chainId === ChainId.BSC && BSC_URLS.includes(url)) ||
-          (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(url)),
+          (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(url)) ||
+          (chainId === ChainId.ZKSYNC && ZKSYNC_URLS.includes(url)),
       ),
     [chainId, urls],
   )
@@ -242,7 +244,9 @@ export function useActiveListUrls(): string[] | undefined {
       urls.filter(
         (url) =>
           (chainId === ChainId.ETHEREUM && ETH_URLS.includes(url)) ||
-          (chainId === ChainId.BSC && BSC_URLS.includes(url)),
+          (chainId === ChainId.BSC && BSC_URLS.includes(url)) ||
+          (chainId === ChainId.POLYGON_ZKEVM && POLYGON_ZKEVM_URLS.includes(url)) ||
+          (chainId === ChainId.ZKSYNC && ZKSYNC_URLS.includes(url)),
       ),
     [urls, chainId],
   )
