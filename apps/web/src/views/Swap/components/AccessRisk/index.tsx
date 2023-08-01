@@ -205,8 +205,8 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
 
   return (
     <>
-      <Flex justifyContent="flex-end">
-        <AnimatedButton variant="bubblegum" scale="sm" style={{ textTransform: 'uppercase', height: '28px' }}>
+      <Flex justifyContent="flex-end" minWidth={168}>
+        <AnimatedButton variant="bubblegum" scale="sm" style={{ height: '28px' }}>
           <Dots style={{ fontSize: '14px' }}>{t('Scanning Risk')}</Dots>
         </AnimatedButton>
         {tooltipVisible && tooltip}

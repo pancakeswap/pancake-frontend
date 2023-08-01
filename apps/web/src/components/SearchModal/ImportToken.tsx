@@ -34,9 +34,6 @@ interface ImportProps {
   handleCurrencySelect?: (currency: Currency) => void
 }
 
-const getStandard = (chainId: ChainId) =>
-  chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET ? 'ERC20' : 'BEP20'
-
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   const { chainId } = useActiveChainId()
 
@@ -63,9 +60,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       <Message variant="warning">
         <Text>
           {t(
-            'Anyone can create tokens on BNB Smart Chain with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            'Anyone can create tokens on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
             {
-              standard: getStandard(chainId),
               network: chains.find((c) => c.id === chainId)?.name,
             },
           )}
@@ -118,7 +114,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               )}
             </Grid>
             {token && SUPPORT_ONLY_BSC.includes(token.chainId) && (
-              <Flex mt={['20px', '20px', '0']} minWidth="176px">
+              <Flex mt={['20px', '20px', '0']}>
                 <AccessRisk token={token} />
               </Flex>
             )}
