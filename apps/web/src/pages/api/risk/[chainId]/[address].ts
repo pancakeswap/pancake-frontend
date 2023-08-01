@@ -51,6 +51,7 @@ const handler: NextApiHandler = async (req, res) => {
     data: {
       address,
       chainId,
+      isError: response.status !== 200,
       hasResult: json.data.has_result,
       riskLevel: json.data.risk_level,
       requestId: json.data.request_id,

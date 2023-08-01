@@ -20,6 +20,7 @@ export interface RiskTokenInfo {
   requestId: string
   riskLevelDescription: string
   pollingInterval: number
+  isError: boolean
 }
 
 const fetchRiskApi = async (address: string, chainId: number) => {
@@ -36,5 +37,18 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   const riskApi = await fetchRiskApi(address, chainId)
-  return riskApi.data
+  if (!riskApi?.data?.isError) {
+    return riskApi.data
+  }
+
+  return {
+    address,
+    chainId,
+    isError: true,
+    hasResult: false,
+    riskLevel: -1,
+    requestId: '',
+    riskLevelDescription: '',
+    pollingInterval: 0,
+  }
 }

@@ -101,7 +101,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
 const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
 
-  const { data, mutate, error } = useTokenRisk(token)
+  const { data, mutate } = useTokenRisk(token)
 
   useEffect(() => {
     if (data?.pollingInterval) {
@@ -128,6 +128,11 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     { placement: 'bottom' },
   )
 
+  const isDataLoading = useMemo(
+    () => !data || !data?.isError || (data?.riskLevel === TOKEN_RISK.UNKNOWN && !data?.hasResult),
+    [data],
+  )
+
   const riskLevel = useMemo(() => {
     if (!isUndefinedOrNull(data?.riskLevel)) {
       if (tokenInLists || data.riskLevel > TOKEN_RISK.MEDIUM) {
@@ -151,7 +156,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     return 'textDisabled'
   }, [data?.riskLevel])
 
-  if (data) {
+  if (!isDataLoading) {
     const hasRiskValue = TOKEN_RISK_T[riskLevel]
     if (!hasRiskValue) return null
     return (
@@ -175,7 +180,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     )
   }
 
-  if (error) {
+  if (data?.isError) {
     return (
       <Flex justifyContent="flex-end" alignItems="center">
         <div ref={targetRef} style={{ userSelect: 'none' }}>
