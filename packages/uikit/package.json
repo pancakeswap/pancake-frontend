@@ -129,7 +129,7 @@
     "framer-motion": "10.11.2",
     "lightweight-charts": "^4.0.1",
     "lodash": "^4.17.20",
-    "react-popper": "^2.2.5",
+    "react-popper": "^2.3.0",
     "styled-system": "^5.1.5",
     "tslib": "^2.2.0"
   },
