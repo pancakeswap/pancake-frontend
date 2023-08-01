@@ -39,6 +39,7 @@ export const DEFAULT_ACTIVE_LIST_URLS: string[] = [
   PANCAKE_BSC_MM,
   PANCAKE_ETH_DEFAULT,
   PANCAKE_POLYGON_ZKEVM_DEFAULT,
+  PANCAKE_ZKSYNC_DEFAULT,
 ]
 
 export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
