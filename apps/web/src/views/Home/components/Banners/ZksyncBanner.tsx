@@ -86,7 +86,7 @@ export const ZksyncBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isDesktop } = useMatchBreakpoints()
 
-  const title = isDesktop ? t('PancakeSwap Now Live on zkSync Era!') : t('Zksync Lormips LIVE!')
+  const title = isDesktop ? t('PancakeSwap Now Live on zkSync Era!') : t('Zksync is LIVE!')
 
   return (
     <S.Wrapper
