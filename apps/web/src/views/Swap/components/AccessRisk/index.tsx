@@ -33,8 +33,8 @@ interface AccessRiskProps {
 
 export const TOKEN_RISK = {
   UNKNOWN: -1,
-  SOME_RISK: 0,
-  VERY_LOW: 1,
+  VERY_LOW: 0,
+  SOME_RISK: 1,
   LOW: 2,
   MEDIUM: 3,
   HIGH: 4,
@@ -42,8 +42,8 @@ export const TOKEN_RISK = {
 } as const
 
 export const TOKEN_RISK_T = {
-  [TOKEN_RISK.SOME_RISK]: <Trans>Some Risk</Trans>,
-  [TOKEN_RISK.VERY_LOW]: <Trans>Very Low Risk</Trans>,
+  [TOKEN_RISK.VERY_LOW]: <Trans>Some Risk</Trans>,
+  [TOKEN_RISK.SOME_RISK]: <Trans>Very Low Risk</Trans>,
   [TOKEN_RISK.LOW]: <Trans>Low Risk</Trans>,
   [TOKEN_RISK.MEDIUM]: <Trans>Medium Risk</Trans>,
   [TOKEN_RISK.HIGH]: <Trans>High Risk</Trans>,
