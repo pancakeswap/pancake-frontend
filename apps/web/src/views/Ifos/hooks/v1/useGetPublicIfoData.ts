@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
-import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
+import { Ifo, IfoStatus, PoolIds } from '@pancakeswap/ifos'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'

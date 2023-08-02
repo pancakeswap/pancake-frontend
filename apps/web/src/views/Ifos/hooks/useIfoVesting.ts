@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { PoolIds } from 'config/constants/types'
+import { PoolIds } from '@pancakeswap/ifos'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 

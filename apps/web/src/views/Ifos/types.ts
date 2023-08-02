@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
+import { IfoStatus, PoolIds } from '@pancakeswap/ifos'
 
-import { IfoStatus, PoolIds } from 'config/constants/types'
 import { useIfoV1Contract, useIfoV2Contract, useIfoV3Contract, useIfoV7Contract } from 'hooks/useContract'
 
 // PoolCharacteristics retrieved from the contract

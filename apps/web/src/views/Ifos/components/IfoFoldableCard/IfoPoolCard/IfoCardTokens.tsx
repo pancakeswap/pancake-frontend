@@ -20,7 +20,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/sdk'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { bscTokens } from '@pancakeswap/tokens'
 import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
@@ -150,7 +150,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const { currency, token, version } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio =
-    (ifo.version >= 3 ? publicIfoData[poolId].distributionRatio : ifo[poolId].distributionRatio) * 100
+    (ifo.version >= 3 ? publicIfoData[poolId]?.distributionRatio : ifo[poolId]?.distributionRatio) * 100
   const credit = useIfoCredit()
 
   const tooltipContentOfSpent = t(
@@ -183,7 +183,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         <OnSaleInfo
           token={token}
           distributionRatio={distributionRatio}
-          saleAmount={ifo.version >= 3 ? publicIfoData[poolId].offeringAmountPool : ifo[poolId].saleAmount}
+          saleAmount={ifo.version >= 3 ? publicIfoData[poolId]?.offeringAmountPool : ifo[poolId]?.saleAmount}
         />
       )
     }
@@ -256,7 +256,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
           <OnSaleInfo
             token={token}
             distributionRatio={distributionRatio}
-            saleAmount={ifo.version >= 3 ? publicIfoData[poolId].offeringAmountPool : ifo[poolId].saleAmount}
+            saleAmount={ifo.version >= 3 ? publicIfoData[poolId]?.offeringAmountPool : ifo[poolId]?.saleAmount}
           />
           {message}
         </>

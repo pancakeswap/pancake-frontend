@@ -12,7 +12,7 @@ import {
   CardFooter,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'

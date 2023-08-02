@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
+import { Ifo } from '@pancakeswap/ifos'
+
 import useGetPublicIfoV7Data from 'views/Ifos/hooks/v7/useGetPublicIfoData'
 import useGetWalletIfoV7Data from 'views/Ifos/hooks/v7/useGetWalletIfoData'
-
-import { Ifo } from 'config/constants/types'
 
 import { IfoCurrentCard } from './components/IfoFoldableCard'
 import IfoContainer from './components/IfoContainer'

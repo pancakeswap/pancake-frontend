@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { ifosConfig, FAST_INTERVAL } from 'config/constants'
 import BigNumber from 'bignumber.js'
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'

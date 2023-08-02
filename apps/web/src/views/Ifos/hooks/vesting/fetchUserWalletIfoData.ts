@@ -1,4 +1,4 @@
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
@@ -26,7 +26,7 @@ export interface VestingData {
   }
 }
 
-export const fetchUserWalletIfoData = async (ifo: Ifo, account: Address): Promise<VestingData> => {
+export const fetchUserWalletIfoData = async (ifo: Ifo, account?: Address): Promise<VestingData> => {
   const { address } = ifo
   let userVestingData = {
     vestingStartTime: 0,

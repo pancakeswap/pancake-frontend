@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
-import { Ifo, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'

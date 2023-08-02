@@ -1,8 +1,9 @@
 import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from '@pancakeswap/tokens'
+import { Ifo } from '@pancakeswap/ifos'
+
 import { CAKE_BNB_LP_MAINNET } from './lp'
-import { Ifo } from './types'
 
 export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'CAKE-BNB LP')
 
