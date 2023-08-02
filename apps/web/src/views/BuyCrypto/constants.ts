@@ -60,6 +60,8 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
 export const chainIdToNetwork: { [id: number]: string } = {
   [ChainId.ETHEREUM]: 'ETHEREUM',
   [ChainId.BSC]: 'BINANCESMARTCHAIN',
+  [ChainId.ZKSYNC]: 'ZKSYNC',
+  [ChainId.ARBITRUM_ONE]: 'ARBITRUM',
 }
 
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
