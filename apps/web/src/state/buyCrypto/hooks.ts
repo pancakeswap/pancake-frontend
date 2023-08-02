@@ -25,6 +25,13 @@ type CurrencyLimits = {
   minBuyAmount: number
 }
 
+const defaultTokenByChain = {
+  [ChainId.ETHEREUM]: 'ETH',
+  [ChainId.BSC]: 'BNB',
+  [ChainId.ZKSYNC]: 'ETH',
+  [ChainId.ARBITRUM_ONE]: 'ETH',
+}
+
 export function useBuyCryptoState() {
   return useAtomValue(buyCryptoReducerAtom)
 }
@@ -271,11 +278,7 @@ export async function queryParametersToBuyCryptoState(
   chainId: number,
 ): Promise<BuyCryptoState> {
   const inputCurrency = parsedQs.inputCurrency as any
-  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency)
-    ? inputCurrency
-    : chainId === ChainId.ETHEREUM
-    ? 'ETH'
-    : 'BNB'
+  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency) ? inputCurrency : defaultTokenByChain[chainId]
   const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
   return {
     [Field.INPUT]: {
@@ -296,7 +299,6 @@ export async function queryParametersToBuyCryptoState(
 }
 
 export function calculateDefaultAmount(minAmount: number, currencyCode: string): number {
-  console.log(currencyCode)
   switch (currencyCode) {
     case 'USD':
       return 300

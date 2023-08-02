@@ -33,11 +33,41 @@
     {
       "isNative": "false",
       "isToken": "true",
+      "name": "USD Coin",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB4",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 324,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "USD Coin",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 42161,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
       "name": "Tether USD",
       "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
       "symbol": "USDT",
       "decimals": 6,
       "chainId": 1,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "Tether USD",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 324,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
@@ -49,6 +79,36 @@
       "decimals": 18,
       "chainId": 1,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "DAI StableCoin",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 324,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "ETH ZKSYNC",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 324,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/eth.png"
+    },
+    {
+      "isNative": "false",
+      "isToken": "true",
+      "name": "ETH ARBITRUM",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 42161,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/eth.png"
     }
   ]
 }
