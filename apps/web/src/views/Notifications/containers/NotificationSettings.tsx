@@ -8,11 +8,11 @@ import { ScrollableContainer } from '../styles'
 
 interface ISettingsProps {
   pushClient: DappClient
-  chainId: number,
+  chainId: number
   account: string
-  isSubscribing: boolean;
+  isSubscribing: boolean
   setIsSubscribing: Dispatch<SetStateAction<boolean>>
-  isSubscribed: boolean;
+  isSubscribed: boolean
   setIsSubscribed: Dispatch<SetStateAction<boolean>>
   // account: string
 }
@@ -21,9 +21,9 @@ const NotificationSettingsMain = ({
   pushClient,
   chainId,
   account,
-  isSubscribing, 
+  isSubscribing,
   setIsSubscribing,
-  isSubscribed, 
+  isSubscribed,
   setIsSubscribed,
 }: ISettingsProps) => {
   const [isUnsubscribing, setIsUnsubscribing] = useState<boolean>(false)
@@ -83,19 +83,19 @@ const NotificationSettingsMain = ({
       )
 
       if (currentSubscription) {
-        const unsubscribeRawRes = await fetch("http://localhost:8000/delete-user", {
-          method: "POST",
+        const unsubscribeRawRes = await fetch('http://localhost:8000/delete-user', {
+          method: 'POST',
           body: JSON.stringify({
             account,
           }),
           headers: {
-            "content-type": "application/json",
+            'content-type': 'application/json',
           },
-        });
-        const unsubscribeRes = await unsubscribeRawRes.json();
-        const isSuccess = unsubscribeRes.success;
+        })
+        const unsubscribeRes = await unsubscribeRawRes.json()
+        const isSuccess = unsubscribeRes.success
         if (!isSuccess) {
-          throw new Error("Failed to unsubscribe!");
+          throw new Error('Failed to unsubscribe!')
         }
         await pushClient.deleteSubscription({
           topic: currentSubscription.topic,
@@ -125,7 +125,7 @@ const NotificationSettingsMain = ({
   return (
     <Box paddingX="24px" paddingBottom="24px">
       <ScrollableContainer>
-        <SettingsContainer account={account} />
+        <SettingsContainer account={account} isSubscribed={isSubscribed} />
         <Box>
           {!isSubscribed ? (
             <Message mb="16px" variant="warning" padding="8px">

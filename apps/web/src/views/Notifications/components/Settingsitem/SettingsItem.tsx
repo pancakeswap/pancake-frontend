@@ -3,9 +3,7 @@ import { Box, Flex, Text, Toggle, useToast } from '@pancakeswap/uikit'
 import { initialNotificationState, useNotificationState } from '@pancakeswap/utils/user'
 import Divider from 'components/Divider'
 import { useCallback, useEffect, useState } from 'react'
-import {
-  DEFAULT_NOTIFICATIONS,
-} from 'views/Notifications/constants'
+import { DEFAULT_NOTIFICATIONS } from 'views/Notifications/constants'
 import { NotifyType } from 'views/Notifications/types'
 
 interface ISettingsprops {
@@ -14,46 +12,47 @@ interface ISettingsprops {
   type: string
   isToastVisible: boolean
   account: string
+  isSubscribed: boolean
 }
 
-const Settingsitem = ({ title, description, type, isToastVisible, account }: ISettingsprops) => {
+const Settingsitem = ({ title, description, type, isToastVisible, account, isSubscribed }: ISettingsprops) => {
   const { notificationState, toggleNotification } = useNotificationState(type)
   const { t } = useTranslation()
   const { toastSuccess, toastWarning } = useToast()
 
   const notificationAlert = useCallback(() => {
     toggleNotification()
-    if (!isToastVisible) {
+    if (!isToastVisible && isSubscribed) {
       if (!notificationState) {
-        fetch("http://localhost:8000/update-user", {
-          method: "POST",
+        fetch('http://localhost:8000/update-user', {
+          method: 'POST',
           headers: {
-            "content-type": "application/json",
+            'content-type': 'application/json',
           },
           body: JSON.stringify({
             account,
             type: title,
-            value: true
+            value: true,
           }),
-        }).then(async (data) => data.json())
-        .then((data) => {
-          toastSuccess(
-            `${t('Settings Update')}!`,
-            <Text>{t(`You will now recieve ${title} alerts`)}</Text>,
-            'bottom' as any,
-          )
         })
-        
+          .then(async (data) => data.json())
+          .then((data) => {
+            toastSuccess(
+              `${t('Settings Update')}!`,
+              <Text>{t(`You will now recieve ${title} alerts`)}</Text>,
+              'bottom' as any,
+            )
+          })
       } else {
-        fetch("http://localhost:8000/update-user", {
-          method: "POST",
+        fetch('http://localhost:8000/update-user', {
+          method: 'POST',
           headers: {
-            "content-type": "application/json",
+            'content-type': 'application/json',
           },
           body: JSON.stringify({
             account,
             type: title,
-            value: false 
+            value: false,
           }),
         }).then(() => {
           toastWarning(
@@ -64,7 +63,6 @@ const Settingsitem = ({ title, description, type, isToastVisible, account }: ISe
             'bottom' as any,
           )
         })
-        
       }
     }
   }, [toastSuccess, toggleNotification, notificationState, t, title, isToastVisible, toastWarning, account])
@@ -86,7 +84,7 @@ const Settingsitem = ({ title, description, type, isToastVisible, account }: ISe
   )
 }
 
-const SettingsContainer = ({ account }: { account: string }) => {
+const SettingsContainer = ({ account, isSubscribed }: { account: string; isSubscribed: boolean }) => {
   const [isToastVisible, setToastVisible] = useState<boolean>(false)
 
   // eslint-disable-next-line consistent-return
@@ -116,6 +114,7 @@ const SettingsContainer = ({ account }: { account: string }) => {
               type={types[index]}
               isToastVisible={isToastVisible}
               account={account}
+              isSubscribed={isSubscribed}
             />
           )
         })}
