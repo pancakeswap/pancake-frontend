@@ -1,5 +1,5 @@
-import { Address } from 'wagmi'
-import { Token } from '@pancakeswap/sdk'
+import type { Address } from 'wagmi'
+import type { Token } from '@pancakeswap/sdk'
 
 export enum PoolIds {
   poolBasic = 'poolBasic',
@@ -8,14 +8,14 @@ export enum PoolIds {
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
-interface IfoPoolInfo {
+type IfoPoolInfo = {
   saleAmount?: string
   raiseAmount: string
   cakeToBurn?: string
   distributionRatio?: number // Range [0-1]
 }
 
-export interface Ifo {
+export type Ifo = {
   id: string
   isActive: boolean
   address: Address
@@ -24,7 +24,7 @@ export interface Ifo {
   token: Token
   articleUrl: string
   campaignId: string
-  tokenOfferingPrice: number
+  tokenOfferingPrice: number | null
   description?: string
   twitterUrl?: string
   telegramUrl?: string

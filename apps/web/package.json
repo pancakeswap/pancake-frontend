@@ -42,6 +42,7 @@
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
+    "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/pools": "workspace:*",

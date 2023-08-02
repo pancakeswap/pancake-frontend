@@ -88,29 +88,35 @@ export interface WalletIfoState {
   }
 }
 
-// Returned by useGetWalletIfoData
-export type WalletIfoData = {
+type WalletIfoBase = {
   allowance: BigNumber
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
   fetchIfoData: () => Promise<void>
   resetIfoData: () => void
-} & WalletIfoState &
-  (WalletIfoDataV1 | WalletIfoDataV2 | WalletIfoDataV3 | WalletIfoDataV7)
+} & WalletIfoState
 
-type WalletIfoDataV1 = {
+// Returned by useGetWalletIfoData
+export type WalletIfoData = WalletIfoBase & WalletIfoContract
+
+type WalletIfoDataV1Contract = {
   version: 1
   contract: ReturnType<typeof useIfoV1Contract>
 }
-type WalletIfoDataV2 = {
+type WalletIfoDataV2Contract = {
   version: 2
   contract: ReturnType<typeof useIfoV2Contract>
 }
-type WalletIfoDataV3 = {
+type WalletIfoDataV3Contract = {
   version: 3
   contract: ReturnType<typeof useIfoV3Contract>
 }
-type WalletIfoDataV7 = {
+type WalletIfoDataV7Contract = {
   version: 7
   contract: ReturnType<typeof useIfoV7Contract>
 }
+type WalletIfoContract =
+  | WalletIfoDataV1Contract
+  | WalletIfoDataV2Contract
+  | WalletIfoDataV3Contract
+  | WalletIfoDataV7Contract

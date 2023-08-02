@@ -24,10 +24,13 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
   const handleClaim = async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
-      return ifoVersion === 1 && walletIfoData.version === 1
-        ? walletIfoData.contract.write.harvest({ account, chain })
-        : walletIfoData.version === 3 &&
-            walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      if (ifoVersion === 1 && walletIfoData.version === 1) {
+        return walletIfoData.contract.write.harvest({ account, chain })
+      }
+      if (walletIfoData.version === 3 || walletIfoData.version === 7) {
+        return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      }
+      return undefined
     })
     if (receipt?.status) {
       walletIfoData.setIsClaimed(poolId)
