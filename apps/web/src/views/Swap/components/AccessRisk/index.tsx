@@ -42,8 +42,8 @@ export const TOKEN_RISK = {
 } as const
 
 export const TOKEN_RISK_T = {
-  [TOKEN_RISK.VERY_LOW]: <Trans>Some Risk</Trans>,
-  [TOKEN_RISK.SOME_RISK]: <Trans>Very Low Risk</Trans>,
+  [TOKEN_RISK.VERY_LOW]: <Trans>Very Low Risk</Trans>,
+  [TOKEN_RISK.SOME_RISK]: <Trans>Some Risk</Trans>,
   [TOKEN_RISK.LOW]: <Trans>Low Risk</Trans>,
   [TOKEN_RISK.MEDIUM]: <Trans>Medium Risk</Trans>,
   [TOKEN_RISK.HIGH]: <Trans>High Risk</Trans>,
@@ -160,7 +160,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     if (data?.riskLevel >= TOKEN_RISK.LOW && data?.riskLevel <= TOKEN_RISK.MEDIUM) {
       return 'warning'
     }
-    if (data?.riskLevel >= TOKEN_RISK.SOME_RISK && data?.riskLevel <= TOKEN_RISK.VERY_LOW) {
+    if (data?.riskLevel >= TOKEN_RISK.VERY_LOW && data?.riskLevel <= TOKEN_RISK.SOME_RISK) {
       return 'primary'
     }
     return 'textDisabled'
