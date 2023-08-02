@@ -14,4 +14,5 @@ export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, Com
   [ChainId.POLYGON_ZKEVM]: [],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [],
   [ChainId.ZKSYNC_TESTNET]: [],
+  [ChainId.ZKSYNC]: [],
 }
