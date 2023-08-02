@@ -54,6 +54,7 @@ const IFrameWrapper = styled(Flex)`
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   padding-bottom: 18px;
+  z-index: 100000;
 `
 const StyledBackArrowContainer = styled(Box)`
   position: absolute;
@@ -109,7 +110,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
 
-    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
+    const res = await fetch(`http://localhost:8081/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -279,7 +280,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: MERCURYO_WIDGET_ID,
+          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
@@ -343,7 +344,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </ModalWrapper>
       <Script
-        src="https://widget.mercuryo.io/embed.2.0.js"
+        src="https://sandbox-widget.mrcr.io/embed.2.0.js"
         onLoad={() => {
           setScriptOnLoad(true)
         }}
