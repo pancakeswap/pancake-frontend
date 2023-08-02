@@ -54,7 +54,7 @@ const useFarmV3Actions = ({
       publicClient.estimateGas(txn).then((estimate) => {
         const newTxn = {
           ...txn,
-          gas: calculateGasMargin(estimate),
+          gasLimit: calculateGasMargin(estimate),
         }
 
         return sendTransactionAsync(newTxn)
@@ -101,7 +101,7 @@ const useFarmV3Actions = ({
       publicClient.estimateGas(txn).then((estimate) => {
         const newTxn = {
           ...txn,
-          gas: calculateGasMargin(estimate),
+          gasLimit: calculateGasMargin(estimate),
         }
 
         return sendTransactionAsync(newTxn)
@@ -151,7 +151,7 @@ const useFarmV3Actions = ({
             ...txn,
             account,
             chain: signer?.chain,
-            gas: calculateGasMargin(estimate),
+            gasLimit: calculateGasMargin(estimate),
           }
 
           return sendTransactionAsync(newTxn)
@@ -214,7 +214,7 @@ export function useFarmsV3BatchHarvest() {
         publicClient.estimateGas(txn).then((estimate) => {
           const newTxn = {
             ...txn,
-            gas: calculateGasMargin(estimate),
+            gasLimit: calculateGasMargin(estimate),
           }
 
           return sendTransactionAsync(newTxn)

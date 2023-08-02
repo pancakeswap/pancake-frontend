@@ -4,7 +4,7 @@ import Divider from 'components/Divider'
 import Image from 'next/image'
 import { useCallback, useMemo, useState } from 'react'
 import NotificationsFilter from '../components/NotificationsFilter/NotificationaFilter'
-import { NotificationContainer } from '../components/Settingsitem/SettingsItem'
+import NotificationItem from '../components/NotificationItem/NotificationItem'
 
 const EmptyView = () => {
   const { t } = useTranslation()
@@ -57,7 +57,7 @@ const SettingsModal = ({
       setLoading(true)
       try {
         if (ids.length > 0) {
-          const unsubscribeRawRes = await fetch('http://localhost:8000/delete', {
+          const unsubscribeRawRes = await fetch('http://localhost:8000/delete-notifications', {
             method: 'POST',
             body: JSON.stringify({
               account,
@@ -155,7 +155,7 @@ const SettingsModal = ({
       <Divider />
       <Box maxHeight="406px" overflowY="scroll" paddingX="16px">
         {filteredNotifications.length > 0 ? (
-          <NotificationContainer
+          <NotificationItem
             transactions={filteredNotifications}
             sortOptionsType={sortOptionsType}
             removeNotification={removeNotification}

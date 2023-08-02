@@ -5,7 +5,7 @@ import { DEFAULT_GAS_LIMIT } from 'config'
 import { useGasPrice } from 'state/user/hooks'
 
 const options = {
-  gas: DEFAULT_GAS_LIMIT,
+  gasLimit: DEFAULT_GAS_LIMIT,
 }
 
 const harvestPool = async (sousChefContract, gasPrice) => {

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 
 export const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -50,4 +50,16 @@ export const StyledInputCurrencyWrapper = styled.div`
   overflow: hidden;
   width: 200%; /* Specify the width of the container */
   height: 200%; /* Specify the height of the container */
+`
+export const ViewContainer = styled.div<{ isRightView: boolean }>`
+  display: flex;
+  width: 200%;
+  transition: transform 300ms ease-in-out;
+  transform: translateX(${({ isRightView }) => (isRightView ? '0%' : '-50%')});
+`
+
+export const View = styled.div`
+  // flex: 1;
+  // width: 50%;
+  width: 100%;
 `

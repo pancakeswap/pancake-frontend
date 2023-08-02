@@ -10,7 +10,7 @@ export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amo
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
   return masterChefContract.write.deposit([pid, BigInt(value)], {
-    gas: gasLimit || DEFAULT_GAS_LIMIT,
+    gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
     account: masterChefContract.account,
     chain: masterChefContract.chain,
@@ -21,7 +21,7 @@ export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, a
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
   return masterChefContract.write.withdraw([pid, BigInt(value)], {
-    gas: gasLimit || DEFAULT_GAS_LIMIT,
+    gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
     account: masterChefContract.account,
     chain: masterChefContract.chain,
@@ -30,7 +30,7 @@ export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, a
 
 export const harvestFarm = async (masterChefContract: MasterChefContract, pid, gasPrice, gasLimit?: bigint) => {
   return masterChefContract.write.deposit([pid, 0n], {
-    gas: gasLimit || DEFAULT_GAS_LIMIT,
+    gasLimit: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
     account: masterChefContract.account,
     chain: masterChefContract.chain,

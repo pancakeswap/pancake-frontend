@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import forEach from 'lodash/forEach'
@@ -23,8 +23,6 @@ import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
 import { TransactionDetails } from './reducer'
 
-export const NOTIFICATION_BODY = `your share is 000000018% and you will recieve approximately 0.0000000000578269 CAKE2-tBNB LP`
-
 export function shouldCheck(
   fetchedTransactions: { [txHash: string]: TransactionDetails },
   tx: TransactionDetails,
@@ -35,7 +33,7 @@ export function shouldCheck(
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
-  const { account, pushClient } = useWalletConnectPushClient()
+  const { handleSendTestNotification } = useWalletConnectPushClient()
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()
@@ -44,44 +42,6 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const { toastError, toastSuccess } = useToast()
 
   const fetchedTransactions = useRef<{ [txHash: string]: TransactionDetails }>({})
-
-  const handleSendTestNotification = useCallback(async () => {
-    try {
-      if (!pushClient) {
-        throw new Error('Push Client not initialized')
-      }
-
-      const notificationPayload ={
-        account: "0x2dC45bA781E8B9D12501bd14d01f072bA4Df1481",
-        type: "Liquidity Notification",
-          title: "Liquidity Position Added",
-          description: "Successfylly added liquidity to GOR-tUSDC Pair for 0.0001 GOR-ETH and 206.683 tUSDC"
-      }
-      
-      const result = await fetch(`http://localhost:8000/notify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(notificationPayload),
-      })
-
-      const gmRes = await result.json() // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
-      const isSuccessfulGm = gmRes.success
-
-      if (isSuccessfulGm)
-        toastSuccess(
-          `${t('Notification Sent to wallet')}!`,
-          <Text>{t('Check your mobile wallet to seee ypur most recent notifications')}</Text>,
-        )
-    } catch (error) {
-      // setIsSendingTestNoti(false);
-      console.error({ sendGmError: error })
-      if (error instanceof Error) {
-        toastError(`${t('Notification Failed')}!`, <Text>{t(error.message)}</Text>)
-      }
-    }
-  }, [toastSuccess, toastError, account, pushClient, t, chainId])
 
   useEffect(() => {
     if (!chainId || !provider) return
@@ -92,7 +52,6 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         const getTransaction = async () => {
           try {
             const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash })
-
             dispatch(
               finalizeTransaction({
                 chainId,
@@ -133,7 +92,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, handleSendTestNotification])
 
   const nonBscFarmPendingTxns = useMemo(
     () =>

@@ -14,7 +14,7 @@ import { ModalHeader } from '../../styles'
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
   onDismiss: () => void
-  isEnabled: boolean
+  isSubscribed: boolean
   isSettings?: boolean
 }
 
@@ -28,11 +28,11 @@ const ModalBackButton: React.FC<
   )
 }
 
-const NotificationHeader = ({ isSettings = false, isEnabled, onBack, onDismiss }: INotifyHeaderprops) => {
+const NotificationHeader = ({ isSettings = false, isSubscribed, onBack, onDismiss }: INotifyHeaderprops) => {
   const { t } = useTranslation()
   return (
     <ModalHeader>
-      {!isEnabled ? (
+      {!isSubscribed ? (
         <>
           <ModalBackButton onBack={onBack} isSettings={isSettings} />
           <ModalTitle>

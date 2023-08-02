@@ -1,12 +1,5 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { OptionProps } from '@pancakeswap/uikit'
-
-export type NotifyType = {
-  title: string
-  description: string
-}
-
-export type DummyNotifyType = Omit<NotifyType, 'checked' | 'onChange'>
+import { NotifyType, RelayerType } from './types'
 
 export const DEFAULT_NOTIFICATIONS: NotifyType[] = [
   {
@@ -27,25 +20,6 @@ export const DEFAULT_NOTIFICATIONS: NotifyType[] = [
   },
 ]
 
-export const DummyNotificationData: DummyNotifyType[] = [
-  {
-    title: 'Liquidity Notification',
-    description: 'BNB-CAKE (#123456) is going out of range',
-  },
-  {
-    title: 'Liquidity Notification',
-    description: 'BNB-CAKE (#123456) is going out of range',
-  },
-  {
-    title: 'XYZ Notification',
-    description: 'BNB-CAKE (#123456) is going out of range',
-  },
-  {
-    title: 'XYZ Notification',
-    description: 'BNB-CAKE (#123456) is going out of range',
-  },
-]
-
 export const NotificationFilterTypes: OptionProps[] = [
   {
     label: 'All',
@@ -57,7 +31,7 @@ export const NotificationFilterTypes: OptionProps[] = [
   },
   {
     label: 'Staking',
-    value: 'Ltaking',
+    value: 'Staking',
   },
   {
     label: 'Pools',
@@ -79,3 +53,38 @@ export const NotificationSortTypes: OptionProps[] = [
     value: 'Latest',
   },
 ]
+
+if (!process.env.NEXT_PUBLIC_PROJECT_ID) throw new Error('`NEXT_PUBLIC_PROJECT_ID` env variable is missing.')
+
+export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID
+export const DEFAULT_RELAY_URL = process.env.NEXT_PUBLIC_RELAY_URL
+
+export const DEFAULT_LOGGER = 'debug'
+
+export const DEFAULT_APP_METADATA = {
+  description: 'local',
+  icons: ['https://i.imgur.com/q9QDRXc.png'],
+  name: 'local',
+  url: 'https://pc-custom-web.vercel.app',
+}
+
+export const REGIONALIZED_RELAYER_ENDPOINTS: RelayerType[] = [
+  {
+    value: DEFAULT_RELAY_URL,
+    label: 'Default',
+  },
+
+  {
+    value: 'wss://us-east-1.relay.walletconnect.com',
+    label: 'US',
+  },
+  {
+    value: 'wss://eu-central-1.relay.walletconnect.com',
+    label: 'EU',
+  },
+  {
+    value: 'wss://ap-southeast-1.relay.walletconnect.com',
+    label: 'Asia Pacific',
+  },
+]
+

@@ -19,7 +19,7 @@ const DropDownHeader = styled.div`
 `;
 
 const DropDownListContainer = styled.div`
-  // min-width: 136px;
+  min-width: 136px;
   height: 0;
   position: absolute;
   overflow: hidden;
@@ -32,7 +32,7 @@ const DropDownListContainer = styled.div`
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    // min-width: 168px;
+    min-width: 168px;
   }
 `;
 

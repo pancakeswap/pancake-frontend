@@ -28,7 +28,7 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
 
   const handleUnlock = useCallback(async () => {
     const callOptions = {
-      gas: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
+      gasLimit: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
     }
 
     const receipt = await fetchWithCatchTxError(() => {

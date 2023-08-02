@@ -59,7 +59,6 @@ export default function PushSubscriptionButton({
       <CommitButton
         variant="primary"
         onClick={handleSubscriptionAction}
-        //   disabled={Boolean(errorText)}
         isLoading={isSubscribing || isUnsubscribing}
         height="55px"
       >

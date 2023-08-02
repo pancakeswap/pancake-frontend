@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { providers } from 'ethers'
 import { DappClient } from '@walletconnect/push-client'
 import { Connector, useAccount } from 'wagmi'
 
@@ -7,9 +6,7 @@ interface IContext {
   connector: Connector<any, any>
   account: `0x${string}`
   pushClient: DappClient
-  testSendTransaction: (tx: any) => Promise<{
-    hash: any
-  }>
+  handleSendTestNotification: () => Promise<void>
 }
 
 export const PushClientContext = createContext<IContext>({} as IContext)
@@ -17,30 +14,36 @@ export const PushClientContext = createContext<IContext>({} as IContext)
 export function PushClientContextProvider({ children }: { children: ReactNode | ReactNode[] }) {
   const { connector, address: account } = useAccount()
   const [pushClient, setPushClient] = useState<DappClient>()
-  const [web3Provider, setWeb3Provider] = useState<providers.Web3Provider>()
 
   const createClient = useCallback(async () => {
     const provider = await connector?.getProvider()
-    if (provider) {
-      setPushClient(provider.pushClient)
-      setWeb3Provider(new providers.Web3Provider(provider))
-    }
+    if (provider) setPushClient(provider.pushClient)
   }, [connector])
 
-  const testSendTransaction = useCallback(
-    async (tx) => {
-      if (!web3Provider || !connector) {
-        throw new Error('web3Provider not connected')
+  const handleSendTestNotification = useCallback(async () => {
+    try {
+      if (!pushClient) {
+        throw new Error('Push Client not initialized')
       }
-      const signer = await connector?.getProvider()
-      const receipt = await signer.request({
-        method: 'eth_sendTransaction',
-        params: [tx],
+
+      const notificationPayload ={
+        account,
+        type: "Liquidity Notification",
+          title: "Liquidity Position Added",
+          description: "Successfylly added liquidity to GOR-tUSDC Pair for 0.0001 GOR-ETH and 206.683 tUSDC"
+      }
+
+      await await fetch(`http://localhost:8000/notify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(notificationPayload),
       })
-      return { hash: receipt }
-    },
-    [connector, web3Provider],
-  )
+    } catch (error) {
+      console.error({ sendGmError: error })
+    }
+  }, [ account, pushClient])
 
   useEffect(() => {
     if (!pushClient && connector) {
@@ -53,10 +56,10 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       connector,
       account,
       pushClient,
-      testSendTransaction,
       createClient,
+      handleSendTestNotification
     }),
-    [connector, account, pushClient, testSendTransaction, createClient],
+    [connector, account, pushClient, createClient, handleSendTestNotification],
   )
 
   return (

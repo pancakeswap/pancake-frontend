@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Button, UserMenuProps, NotificationBellIcon } from '@pancakeswap/uikit'
 
@@ -38,10 +38,10 @@ const NotificationMenu: React.FC<
     return () => {
       document.removeEventListener('click', checkIfClickedOutside)
     }
-  }, [isMenuOpen])
+  }, [isMenuOpen, setIsMenuOpen])
 
   return (
-    <Flex alignItems="center" height="100%" ref={ref}>
+    <Flex alignItems="center" height="100%" ref={ref} >
       <Button
         variant="text"
         startIcon={<NotificationBellIcon color="textSubtle" width="24px" />}

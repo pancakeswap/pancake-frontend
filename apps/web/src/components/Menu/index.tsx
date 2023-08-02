@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { NotificationDropdown } from 'views/Notifications/components/NotificationDropdown/NotificationDropdown'
+import Notifications from 'views/Notifications'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import { useMenuItems } from './hooks/useMenuItems'
@@ -55,7 +55,7 @@ const Menu = (props) => {
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            <NotificationDropdown />
+            <Notifications />
             <NetworkSwitcher />
             <UserMenu />
           </>
