@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { Percent } from '@pancakeswap/swap-sdk-core'
 
 import { PoolGroup } from '../type'
@@ -23,9 +23,16 @@ function OverviewDataRow({ title, detail }) {
 const PERCENT_DIGIT = 1000000000
 const DAYS_A_YEAR = 365
 
-export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; children: ReactNode }) {
+export function FixedStakingCardBody({
+  children,
+  pool,
+}: {
+  pool: PoolGroup
+  children: (selectedPeriodIndex: number | null, setSelectedPeriodIndex: (index: number | null) => void) => ReactNode
+}) {
   const { t } = useTranslation()
   const totalStakedAmount = getBalanceAmount(pool.totalDeposited, pool.token.decimals)
+  const [selectedPeriodIndex, setSelectedPeriodIndex] = useState<number | null>(null)
 
   const formattedUsdValueStaked = useStablecoinPriceAmount(pool.token, totalStakedAmount.toNumber())
   const minAPR = new Percent(pool.minLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
@@ -43,9 +50,14 @@ export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; chil
       />
 
       <OverviewDataRow
-        title={t('Lock Periods:')}
+        title={t('Stake Periods:')}
         detail={
-          <ButtonMenu activeIndex={4} scale="sm" variant="subtle">
+          <ButtonMenu
+            activeIndex={selectedPeriodIndex ?? pool.pools.length}
+            onItemClick={(index) => setSelectedPeriodIndex(index)}
+            scale="sm"
+            variant="subtle"
+          >
             {pool.pools.map((p) => (
               <ButtonMenuItem>{p.lockPeriod}D</ButtonMenuItem>
             ))}
@@ -67,7 +79,7 @@ export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; chil
       />
 
       <Flex flexDirection="column" width="100%" mb="8px">
-        {children}
+        {children(selectedPeriodIndex, setSelectedPeriodIndex)}
       </Flex>
 
       <FixedStakingCardFooter>

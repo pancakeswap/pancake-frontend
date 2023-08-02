@@ -44,12 +44,14 @@ export function FixedStakingModal({
   children,
   initialLockPeriod,
   stakedPeriods,
+  setSelectedPeriodIndex,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
   initialLockPeriod: number
   stakedPeriods: number[]
+  setSelectedPeriodIndex: (value: number | null) => void
 }) {
   const { account } = useAccountActiveChain()
 
@@ -57,7 +59,7 @@ export function FixedStakingModal({
   const stakeModal = useModalV2()
   const [stakeAmount, setStakeAmount] = useState('')
 
-  const [lockPeriod, setLockPeriod] = useState(initialLockPeriod)
+  const [lockPeriod, setLockPeriod] = useState(initialLockPeriod || 0)
 
   const isStaked = !!stakedPeriods.find((p) => p === lockPeriod)
 
@@ -147,7 +149,14 @@ export function FixedStakingModal({
   return account ? (
     <>
       {children(stakeModal.onOpen)}
-      <ModalV2 {...stakeModal} closeOnOverlayClick>
+      <ModalV2
+        {...stakeModal}
+        onDismiss={() => {
+          if (setSelectedPeriodIndex) setSelectedPeriodIndex(null)
+          stakeModal.onDismiss()
+        }}
+        closeOnOverlayClick
+      >
         <Modal title={t('Fixed Staking')} width={['100%', '100%', '420px']} maxWidth={['100%', , '420px']}>
           <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <PreTitle textTransform="uppercase" bold>
