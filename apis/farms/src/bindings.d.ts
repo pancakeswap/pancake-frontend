@@ -9,4 +9,5 @@ declare global {
   const BSC_NODE: string
   const BSC_TESTNET_NODE: string
   const POLYGON_ZKEVM_NODE: string
+  const ZKSYNC_NODE: string
 }

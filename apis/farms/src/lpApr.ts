@@ -25,6 +25,7 @@ const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
   [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
+  [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest',
 }
 
 const INFO_CLIENT_WITH_CHAIN = {
