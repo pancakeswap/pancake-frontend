@@ -85,9 +85,9 @@ export function LiquidStakingPageStake() {
         </Text>
         {optionsList.length > 0 && <Select mb="24px" options={optionsList} onOptionChange={handleSortOptionChange} />}
         <RowBetween mb="8px">
-          <ExchangeRateTitle />
+          <ExchangeRateTitle tokenOSymbol={selectedList?.token0?.symbol} token1Symbol={selectedList?.token1?.symbol} />
 
-          {exchangeRateAmount && (
+          {exchangeRateAmount ? (
             <Text>
               {t('1 %token0% = %exchangeRateAmount% %token1%', {
                 token0: selectedList?.token0?.symbol,
@@ -95,10 +95,12 @@ export function LiquidStakingPageStake() {
                 exchangeRateAmount: getFullDisplayBalance(exchangeRateAmount, 0, 6),
               })}
             </Text>
+          ) : (
+            '-'
           )}
         </RowBetween>
 
-        <LiquidStakingApr />
+        <LiquidStakingApr tokenOSymbol={selectedList?.token0?.symbol} />
         <NextLink href={`/liquid-staking/${selectedList?.symbol}`}>
           <Button width="100%">{t('Proceed')}</Button>
         </NextLink>

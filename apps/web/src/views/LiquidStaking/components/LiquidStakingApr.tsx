@@ -3,14 +3,20 @@ import { useTranslation } from '@pancakeswap/localization'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import useSWR from 'swr'
 
-export function LiquidStakingApr() {
+interface LiquidStakingAprProps {
+  tokenOSymbol: string
+}
+
+export const LiquidStakingApr: React.FC<LiquidStakingAprProps> = ({ tokenOSymbol }) => {
   const { t } = useTranslation()
 
   const {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const tooltipMsg = t(`APR is calculated based on the past 24H of staking rewards from the ETH network.`)
+  const tooltipMsg = t(`APR is calculated based on the past 24H of staking rewards from the %token0% network.`, {
+    token0: tokenOSymbol?.toUpperCase() ?? '',
+  })
 
   const { data: apr } = useSWR<number>('liquid-staking-apr', async () => {
     const { data: responseData } = await fetch(

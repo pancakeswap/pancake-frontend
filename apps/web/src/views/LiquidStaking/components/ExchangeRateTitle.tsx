@@ -1,11 +1,20 @@
 import { Text, QuestionHelper, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
-export function ExchangeRateTitle() {
+interface ExchangeRateTitleProps {
+  tokenOSymbol: string
+  token1Symbol: string
+}
+
+export const ExchangeRateTitle: React.FC<ExchangeRateTitleProps> = ({ tokenOSymbol, token1Symbol }) => {
   const { t } = useTranslation()
 
   const tooltipMsg = t(
-    `WBETH's exchange rate is determined by the value accrued vs ETH. As you receive rewards, your amount of WBETH will not change.`,
+    `%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.`,
+    {
+      token0: tokenOSymbol?.toUpperCase() ?? '',
+      token1: token1Symbol?.toUpperCase() ?? '',
+    },
   )
 
   return (
