@@ -7,6 +7,7 @@ import { ReactNode } from 'react'
 import { Percent } from '@pancakeswap/swap-sdk-core'
 
 import { PoolGroup } from '../type'
+import { FixedStakingCardFooter } from './FixedStakingCardFooter'
 
 function OverviewDataRow({ title, detail }) {
   return (
@@ -19,20 +20,23 @@ function OverviewDataRow({ title, detail }) {
   )
 }
 
+const PERCENT_DIGIT = 1000000000
+const DAYS_A_YEAR = 365
+
 export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; children: ReactNode }) {
   const { t } = useTranslation()
   const totalStakedAmount = getBalanceAmount(pool.totalDeposited, pool.token.decimals)
 
   const formattedUsdValueStaked = useStablecoinPriceAmount(pool.token, totalStakedAmount.toNumber())
-  const minAPR = new Percent(pool.minLockDayPercent, 1000000000).multiply(365)
-  const maxAPR = new Percent(pool.maxLockDayPercent, 1000000000).multiply(365)
+  const minAPR = new Percent(pool.minLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
+  const maxAPR = new Percent(pool.maxLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
 
   return (
     <>
       <OverviewDataRow
         title={t('APR:')}
         detail={
-          <Text>
+          <Text bold>
             {minAPR.toSignificant(2)}% ~ {maxAPR.toSignificant(2)}%
           </Text>
         }
@@ -62,9 +66,25 @@ export function FixedStakingCardBody({ children, pool }: { pool: PoolGroup; chil
         }
       />
 
-      <Flex flexDirection="column" width="100%" mb="24px">
+      <Flex flexDirection="column" width="100%" mb="8px">
         {children}
       </Flex>
+
+      <FixedStakingCardFooter>
+        {pool.pools.map((p) => (
+          <Flex justifyContent="space-between">
+            <Text>{p.lockPeriod}D APR</Text>
+            <Flex>
+              <Text mr="4px" color="success" bold>
+                Up to {new Percent(p.lockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR).toSignificant(2)}%
+              </Text>
+              <Text>
+                <s>{new Percent(p.lockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR).toSignificant(2)}%</s>
+              </Text>
+            </Flex>
+          </Flex>
+        ))}
+      </FixedStakingCardFooter>
     </>
   )
 }
