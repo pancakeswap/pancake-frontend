@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Link, Text } from '@pancakeswap/uikit'
-import { TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
-import { TOKEN_RISK_T } from 'views/Swap/components/AccessRisk/index'
+import { TOKEN_RISK_T, TOKEN_RISK } from 'views/Swap/components/AccessRisk'
 
 interface AccessRiskTooltipsProps {
   riskLevel: number

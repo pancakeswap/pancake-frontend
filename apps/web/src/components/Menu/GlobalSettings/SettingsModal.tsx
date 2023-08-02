@@ -45,7 +45,7 @@ import {
 import { AtomBox } from '@pancakeswap/ui'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
-import { TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
+import { TOKEN_RISK } from 'views/Swap/components/AccessRisk'
 import AccessRiskTooltips from 'views/Swap/components/AccessRisk/AccessRiskTooltips'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'

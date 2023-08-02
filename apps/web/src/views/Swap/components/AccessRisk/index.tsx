@@ -19,7 +19,7 @@ import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
+import { fetchRiskToken } from 'views/Swap/hooks/fetchTokenRisk'
 import AccessRiskTooltips from 'views/Swap/components/AccessRisk/AccessRiskTooltips'
 
 const AnimatedButton = styled(Button)`
@@ -30,6 +30,16 @@ const AnimatedButton = styled(Button)`
 interface AccessRiskProps {
   token: ERC20Token
 }
+
+export const TOKEN_RISK = {
+  UNKNOWN: -1,
+  SOME_RISK: 0,
+  VERY_LOW: 1,
+  LOW: 2,
+  MEDIUM: 3,
+  HIGH: 4,
+  SIGNIFICANT: 5,
+} as const
 
 export const TOKEN_RISK_T = {
   [TOKEN_RISK.SOME_RISK]: <Trans>Some Risk</Trans>,
