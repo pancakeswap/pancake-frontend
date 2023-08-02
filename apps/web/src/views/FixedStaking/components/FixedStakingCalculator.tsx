@@ -50,7 +50,9 @@ export function FixedStakingCalculator({
   const stakeModal = useModalV2()
   const [stakeAmount, setStakeAmount] = useState('')
 
-  const [lockPeriod, setLockPeriod] = useState(initialLockPeriod === null ? first(pools).lockPeriod : initialLockPeriod)
+  const [lockPeriod, setLockPeriod] = useState(
+    initialLockPeriod === null || initialLockPeriod === undefined ? first(pools).lockPeriod : initialLockPeriod,
+  )
 
   const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
 
@@ -228,7 +230,7 @@ export function FixedStakingCalculator({
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  Unlock On
+                  Stake Period End
                 </Text>
                 <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
               </Flex>

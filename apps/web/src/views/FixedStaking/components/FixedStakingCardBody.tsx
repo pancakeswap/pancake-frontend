@@ -93,15 +93,16 @@ export function FixedStakingCardBody({
 
       <FixedStakingCardFooter>
         {pool.pools.map((p) => (
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" alignItems="center">
             <Text>{p.lockPeriod}D APR</Text>
-            <Flex>
+            <Flex alignItems="center">
               <Text mr="4px" color="success" bold>
                 Up to {new Percent(p.lockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR).toSignificant(2)}%
               </Text>
               <Text>
                 <s>{new Percent(p.lockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR).toSignificant(2)}%</s>
               </Text>
+              <FixedStakingCalculator stakingToken={pool.token} initialLockPeriod={p.lockPeriod} pools={pool.pools} />
             </Flex>
           </Flex>
         ))}

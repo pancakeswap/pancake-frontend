@@ -13,7 +13,7 @@ const ExpandableButtonWrapper = styled(Flex)`
 
 const ExpandedWrapper = styled(Flex)`
   width: 100%;
-  svg {
+  $ > svg {
     height: 14px;
     width: 14px;
   }

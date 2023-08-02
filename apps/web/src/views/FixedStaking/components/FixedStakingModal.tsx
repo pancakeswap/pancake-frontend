@@ -11,7 +11,6 @@ import {
   Box,
   PreTitle,
   useToast,
-  Balance,
   MessageText,
   Message,
 } from '@pancakeswap/uikit'
@@ -22,7 +21,6 @@ import BigNumber from 'bignumber.js'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { ReactNode, useCallback, useMemo, useState } from 'react'
 import Divider from 'components/Divider'
-import { LightGreyCard } from 'components/Card'
 import { useFixedStakingContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -32,11 +30,13 @@ import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
+import first from 'lodash/first'
+
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { format, add } from 'date-fns'
 import { FixedStakingPool } from '../type'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import FixedStakingOverview from './FixedStakingOverview'
 
 export function FixedStakingModal({
   stakingToken,
@@ -59,7 +59,9 @@ export function FixedStakingModal({
   const stakeModal = useModalV2()
   const [stakeAmount, setStakeAmount] = useState('')
 
-  const [lockPeriod, setLockPeriod] = useState(initialLockPeriod || 0)
+  const [lockPeriod, setLockPeriod] = useState(
+    initialLockPeriod === null || initialLockPeriod === undefined ? first(stakedPeriods) : initialLockPeriod,
+  )
 
   const isStaked = !!stakedPeriods.find((p) => p === lockPeriod)
 
@@ -236,48 +238,14 @@ export function FixedStakingModal({
             <PreTitle textTransform="uppercase" bold mb="8px">
               {t('Position Overview')}
             </PreTitle>
-            <LightGreyCard>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  {t('Stake Amount')}
-                </Text>
-                <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount)} />
-              </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  {t('Duration')}
-                </Text>
-                <Text bold>
-                  {lockPeriod} {t('days')}
-                </Text>
-              </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  {t('APR')}
-                </Text>
-                <Text bold>{lockAPR?.toSignificant(2)}%</Text>
-              </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  {t('vCAKE Boost')}
-                </Text>
-                <Text bold>{boostAPR?.toSignificant(2)}%</Text>
-              </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  Unlock On
-                </Text>
-                <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
-              </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  Projected Return
-                </Text>
-                <Text bold>
-                  {projectedReturnAmount?.toSignificant(2) ?? 0} {stakingToken.symbol}
-                </Text>
-              </Flex>
-            </LightGreyCard>
+            <FixedStakingOverview
+              stakeAmount={stakeAmount}
+              lockAPR={lockAPR}
+              boostAPR={boostAPR}
+              lockPeriod={lockPeriod}
+              stakingToken={stakingToken}
+              projectedReturnAmount={projectedReturnAmount}
+            />
           </Box>
           {!rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
             <Button
