@@ -105,7 +105,7 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const baseCurrency = `${inputCurrency.toLowerCase()}_${moonapyCurrencyChainidentifier[chainId]}`
+    const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
 
     const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
