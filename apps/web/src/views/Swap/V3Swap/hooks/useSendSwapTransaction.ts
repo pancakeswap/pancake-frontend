@@ -17,8 +17,6 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { viemClients } from 'utils/viem'
 import { Address, Hex, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
-
-import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -52,7 +50,6 @@ export default function useSendSwapTransaction(
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const { testSendTransaction, connector } = useWalletConnectPushClient()
   const { sendTransactionAsync } = useSendTransaction()
   const publicClient = viemClients[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
@@ -209,6 +206,5 @@ export default function useSendSwapTransaction(
     recipientAddress,
     recipient,
     addTransaction,
-    testSendTransaction,
   ])
 }
