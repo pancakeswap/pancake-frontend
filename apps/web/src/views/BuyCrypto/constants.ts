@@ -64,6 +64,13 @@ export const chainIdToNetwork: { [id: number]: string } = {
   [ChainId.ARBITRUM_ONE]: 'ARBITRUM',
 }
 
+export const moonapyCurrencyChainidentifier: { [id: number]: string } = {
+  [ChainId.ETHEREUM]: '',
+  [ChainId.BSC]: 'bsc',
+  [ChainId.ZKSYNC]: 'zkzync',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
+}
+
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
   USD: {
     name: 'United States Dollar',

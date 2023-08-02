@@ -24,6 +24,7 @@ import {
   ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   chainIdToNetwork,
+  moonapyCurrencyChainidentifier,
   supportedTokenMap,
 } from 'views/BuyCrypto/constants'
 import { ErrorText } from 'views/Swap/components/styleds'
@@ -104,7 +105,7 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
+    const baseCurrency = `${inputCurrency.toLowerCase()}_${moonapyCurrencyChainidentifier[chainId]}`
 
     const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
