@@ -8,6 +8,7 @@ import { Percent } from '@pancakeswap/swap-sdk-core'
 
 import { PoolGroup } from '../type'
 import { FixedStakingCardFooter } from './FixedStakingCardFooter'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 
 function OverviewDataRow({ title, detail }) {
   return (
@@ -43,9 +44,17 @@ export function FixedStakingCardBody({
       <OverviewDataRow
         title={t('APR:')}
         detail={
-          <Text bold>
-            {minAPR.toSignificant(2)}% ~ {maxAPR.toSignificant(2)}%
-          </Text>
+          <Flex alignItems="center">
+            <Text bold>
+              {minAPR.toSignificant(2)}% ~ {maxAPR.toSignificant(2)}%
+            </Text>
+            <FixedStakingCalculator
+              stakingToken={pool.token}
+              pools={pool.pools}
+              key={selectedPeriodIndex}
+              initialLockPeriod={pool?.pools[selectedPeriodIndex]?.lockPeriod}
+            />
+          </Flex>
         }
       />
 

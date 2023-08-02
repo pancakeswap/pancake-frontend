@@ -69,3 +69,4 @@ export * from "./DynamicSection";
 export * from "./Chart";
 
 export * from "./AtomBox";
+export { default as RoiCard } from "./RoiCalculatorModal/RoiCard";
