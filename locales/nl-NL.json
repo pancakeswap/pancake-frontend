@@ -2612,7 +2612,7 @@
   "Round #%round%  |  %startTime% - %endTime%": "Ronde #%round%  |  %startTime% - %endTime%",
   "Swap and Provide Liquidity on zkSync Era Now": "Swap and Provide Liquidity on zkSync Era Now",
   "PancakeSwap Now Live on zkSync Era!": "PancakeSwap Now Live on zkSync Era!",
-  "Zksync Lormips LIVE!": "Zksync Lormips LIVE!",
+  "Zksync is LIVE!": "Zksync is LIVE!",
   "Claim Your NFT": "Claim Your NFT",
   "View Benefits": "View Benefits",
   "locked benefits": "locked benefits",
@@ -2634,5 +2634,9 @@
   "The time of the last revenue distribution and shares update.": "The time of the last revenue distribution and shares update.",
   "Amount of revenue available for claiming in CAKE.": "Amount of revenue available for claiming in CAKE.",
   "Extend your stakings to receive shares in the next distribution.": "Extend your stakings to receive shares in the next distribution.",
-  "Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.": "Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution."
+  "Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.": "Your fixed-term staking position will have less than 1 week in remaining duration upon the next distribution.",
+  "Curve exploit.": "Curve exploit.",
+  "For more information, please refer to Alchemix’s": "For more information, please refer to Alchemix’s",
+  "and await further updates from the team": "and await further updates from the team",
+  "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the": "Please exercise due caution when trading / providing liquidity for the alETH token. The protocol was recently affected by the"
 }
