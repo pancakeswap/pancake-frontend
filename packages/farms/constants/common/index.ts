@@ -24,7 +24,7 @@ export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.GOERLI]: 'ethereum',
   [ChainId.BSC_TESTNET]: 'bsc',
   [ChainId.POLYGON_ZKEVM]: 'polygon_zkevm',
-  [ChainId.ZKSYNC]: 'zksync',
+  [ChainId.ZKSYNC]: 'era',
   [ChainId.POLYGON_ZKEVM_TESTNET]: '',
   [ChainId.ZKSYNC_TESTNET]: '',
 } satisfies Record<FarmV3SupportedChainId, string>
