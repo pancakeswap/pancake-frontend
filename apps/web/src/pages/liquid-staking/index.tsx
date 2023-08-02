@@ -2,7 +2,7 @@
 // import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 // import { useState } from 'react'
-import { CHAIN_IDS } from 'utils/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import Page from 'views/Page'
 
 import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
@@ -43,6 +43,6 @@ const LiquidStakingPage = () => {
   )
 }
 
-LiquidStakingPage.chains = CHAIN_IDS
+LiquidStakingPage.chains = [ChainId.ETHEREUM, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.GOERLI]
 
 export default LiquidStakingPage

@@ -31,8 +31,8 @@ export function LiquidStakingPageStake() {
 
   const { data } = useContractRead({
     // @ts-ignore
-    abi: wbethContract.abi,
-    address: wbethContract.address,
+    abi: wbethContract?.abi,
+    address: wbethContract?.address,
     enabled: !!wbethContract,
     functionName: 'exchangeRate',
     chainId,

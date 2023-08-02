@@ -3,7 +3,6 @@ import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Image, AutoRen
 import { AppBody, AppHeader } from 'components/App'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import Page from 'views/Page'
-import { CHAIN_IDS } from 'utils/wagmi'
 import { useCurrency } from 'hooks/Tokens'
 import { LightGreyCard } from 'components/Card'
 import { useRouter } from 'next/router'
@@ -67,8 +66,8 @@ const LiquidStakingStakePage = () => {
 
   const { data } = useContractRead({
     // @ts-ignore
-    abi: wbethContract.abi,
-    address: wbethContract.address,
+    abi: wbethContract?.abi,
+    address: wbethContract?.address,
     functionName: 'exchangeRate',
     watch: true,
     chainId,
@@ -296,7 +295,7 @@ const LiquidStakingStakePage = () => {
   )
 }
 
-LiquidStakingStakePage.chains = CHAIN_IDS
+LiquidStakingStakePage.chains = [ChainId.ETHEREUM, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.GOERLI]
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
