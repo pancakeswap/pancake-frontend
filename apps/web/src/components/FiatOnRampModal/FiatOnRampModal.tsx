@@ -1,6 +1,8 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   AutoColumn,
+  Box,
   CircleLoader,
   Flex,
   Heading,
@@ -9,28 +11,23 @@ import {
   ModalWrapper,
   Text,
   useModal,
-  Box,
 } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
+import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { ErrorText } from 'views/Swap/components/styleds'
-import { useAccount } from 'wagmi'
+import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
-  chainIdToNetwork,
-  ETHEREUM_TOKENS,
   ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
-  SUPPORTED_MONPAY_ETH_TOKENS,
-  SUPPORTED_MOONPAY_BSC_TOKENS,
-  mercuryoWhitelist,
+  chainIdToNetwork,
+  supportedTokenMap,
 } from 'views/BuyCrypto/constants'
-import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/sdk'
-import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
+import { ErrorText } from 'views/Swap/components/styleds'
+import { useAccount } from 'wagmi'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -54,7 +51,6 @@ const IFrameWrapper = styled(Flex)`
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   padding-bottom: 18px;
-  z-index: 100000;
 `
 const StyledBackArrowContainer = styled(Box)`
   position: absolute;
@@ -110,7 +106,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
 
-    const res = await fetch(`http://localhost:8081/generate-moonpay-sig`, {
+    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -123,7 +119,7 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? SUPPORTED_MONPAY_ETH_TOKENS : SUPPORTED_MOONPAY_BSC_TOKENS,
+        showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
         walletAddress: account,
       }),
     })
@@ -280,11 +276,11 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
+          widgetId: MERCURYO_WIDGET_ID,
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
-          currencies: chainId === ChainId.ETHEREUM ? [ETHEREUM_TOKENS] : mercuryoWhitelist,
+          currencies: supportedTokenMap[chainId].mercuryoTokens,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
@@ -344,7 +340,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </ModalWrapper>
       <Script
-        src="https://sandbox-widget.mrcr.io/embed.2.0.js"
+        src="https://widget.mercuryo.io/embed.2.0.js"
         onLoad={() => {
           setScriptOnLoad(true)
         }}

@@ -1,16 +1,47 @@
 import { ChainId } from '@pancakeswap/sdk'
 
-export const SUPPORTED_CHAINS = [ChainId.ETHEREUM, ChainId.BSC]
+export const SUPPORTED_CHAINS = [ChainId.ETHEREUM, ChainId.BSC, ChainId.ZKSYNC, ChainId.ARBITRUM_ONE]
 export const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['USDT']
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
-export const mercuryoWhitelist = ['BNB', 'BUSD']
-export const ETHEREUM_TOKENS = ['ETH', 'USDT', 'DAI']
+export const SUPPORTED_MERCURYO_BSC_TOKENS = ['BNB', 'BUSD']
+export const SUPPORTED_MERCURYO_ETH_TOKENS = ['ETH', 'USDT', 'DAI']
+export const SUPPORTED_MERCURYO_ZKSYNC_TOKENS = []
+export const SUPPORTED_MERCURYO_ARBITRUM_TOKENS = ['ETH', 'USDC']
+
 export const SUPPORTED_MONPAY_ETH_TOKENS = ['eth', 'usdc', 'dai', 'usdt']
 export const SUPPORTED_MOONPAY_BSC_TOKENS = ['bnb_bsc', 'busd_bsc']
+export const SUPPORTED_MOONPAY_ZKSYNC_TOKENS = ['eth_zksync', 'usdc_zksync', 'dai_zksync', 'usdt_zksync']
+export const SUPPORTED_MOONPAY_ARBITRUM_TOKENS = ['eth_arbitrum', 'usdc_arbitrum']
+
 export const SUPPORTED_MERCURYO_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 const MOONPAY_FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
 const MERCURYO_FEE_TYPES = ['Total Fees']
+
+export const supportedTokenMap: {
+  [chainId: number]: {
+    moonPayTokens: string[]
+    mercuryoTokens: string[]
+  }
+} = {
+  [ChainId.BSC]: {
+    moonPayTokens: SUPPORTED_MOONPAY_BSC_TOKENS,
+    mercuryoTokens: SUPPORTED_MERCURYO_BSC_TOKENS,
+  },
+  [ChainId.ETHEREUM]: {
+    moonPayTokens: SUPPORTED_MONPAY_ETH_TOKENS,
+    mercuryoTokens: SUPPORTED_MERCURYO_ETH_TOKENS,
+  },
+  [ChainId.ZKSYNC]: {
+    moonPayTokens: SUPPORTED_MOONPAY_ZKSYNC_TOKENS,
+    mercuryoTokens: SUPPORTED_MERCURYO_ZKSYNC_TOKENS,
+  },
+  [ChainId.ARBITRUM_ONE]: {
+    moonPayTokens: SUPPORTED_MOONPAY_ARBITRUM_TOKENS,
+    mercuryoTokens: SUPPORTED_MERCURYO_ARBITRUM_TOKENS,
+  },
+  // Add more chainId mappings as needed
+}
 
 export function isBuyCryptoSupported(chain: ChainId) {
   return SUPPORTED_CHAINS.includes(chain)

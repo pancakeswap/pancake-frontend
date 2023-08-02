@@ -295,8 +295,32 @@ export async function queryParametersToBuyCryptoState(
   }
 }
 
-export function calculateDefaultAmount(minAmount: number): number {
-  return ceil(minAmount * 4)
+export function calculateDefaultAmount(minAmount: number, currencyCode: string): number {
+  console.log(currencyCode)
+  switch (currencyCode) {
+    case 'USD':
+      return 300
+    case 'EUR':
+      return 200
+    case 'GBP':
+      return 200
+    case 'HKD':
+      return 2000
+    case 'CAD':
+      return 400
+    case 'AUD':
+      return 400
+    case 'BRL':
+      return 1000
+    case 'JPY':
+      return 40000
+    case 'KRW':
+      return 300000
+    case 'VND':
+      return 6000000
+    default:
+      return ceil(minAmount * 10)
+  }
 }
 
 export function useDefaultsFromURLSearch(account: string | undefined) {
@@ -311,7 +335,9 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
 
       dispatch(
         replaceBuyCryptoState({
-          typedValue: parsed.minAmount ? toString(calculateDefaultAmount(parsed.minAmount)) : '',
+          typedValue: parsed.minAmount
+            ? toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId))
+            : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
           maxAmount: parsed.maxAmount,

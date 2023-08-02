@@ -70,7 +70,11 @@ export function BuyCryptoForm({
 
     if (!limitAmounts) return
 
-    onFieldAInput(toString(calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount)))
+    onFieldAInput(
+      toString(
+        calculateDefaultAmount(limitAmounts.baseCurrency?.minBuyAmount, limitAmounts.baseCurrency.code.toUpperCase()),
+      ),
+    )
 
     onLimitAmountUpdate(
       limitAmounts.baseCurrency?.minBuyAmount,
