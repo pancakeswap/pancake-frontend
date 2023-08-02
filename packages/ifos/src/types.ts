@@ -1,5 +1,6 @@
 import type { Address } from 'wagmi'
-import type { Token } from '@pancakeswap/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
+import { PublicClient } from 'viem'
 
 export enum PoolIds {
   poolBasic = 'poolBasic',
@@ -35,3 +36,5 @@ export type Ifo = {
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }
+
+export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient

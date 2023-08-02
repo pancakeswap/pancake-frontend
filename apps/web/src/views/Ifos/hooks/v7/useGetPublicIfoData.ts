@@ -1,14 +1,15 @@
 import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useState, useCallback } from 'react'
 import round from 'lodash/round'
-import { ifoV7ABI } from 'config/abi/ifoV7'
 import { bscTokens } from '@pancakeswap/tokens'
-import { Ifo, IfoStatus } from 'config/constants/types'
 
+import { ifoV7ABI } from 'config/abi/ifoV7'
+import { Ifo, IfoStatus } from 'config/constants/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+
 import { PublicIfoData } from '../../types'
 import { getStatusByTimestamp } from '../helpers'
 
@@ -41,6 +42,7 @@ const ROUND_DIGIT = 3
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
+  const { chainId } = useActiveChainId()
   const { address, plannedStartTime } = ifo
   const cakePriceUsd = usePriceCakeUSD()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
@@ -99,7 +101,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   })
 
   const fetchIfoData = useCallback(async () => {
-    const client = publicClient({ chainId: ChainId.BSC })
+    const client = publicClient({ chainId })
     const [
       [
         startTimestamp,
@@ -253,7 +255,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       plannedStartTime: plannedStartTime ?? 0,
       vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
     }))
-  }, [plannedStartTime, address])
+  }, [plannedStartTime, address, chainId])
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
 }

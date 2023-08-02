@@ -15,8 +15,6 @@ import {
   fetchUserBalances,
   fetchUserPendingRewards,
   fetchUserStakeBalances,
-  fetchPublicIfoData,
-  fetchUserIfoCredit,
   fetchPublicVaultData,
   fetchPublicFlexibleSideVaultData,
   fetchVaultUser,
@@ -30,6 +28,7 @@ import {
   getPoolAprByTokenPerBlock,
 } from '@pancakeswap/pools'
 import { ChainId } from '@pancakeswap/chains'
+import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
 
 import {
   PoolsState,

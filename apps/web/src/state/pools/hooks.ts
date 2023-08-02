@@ -7,7 +7,8 @@ import { FAST_INTERVAL } from 'config/constants'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
-import { getLivePoolsConfig } from '@pancakeswap/pools'
+import { getLivePoolsConfig, isCakeVaultSupported } from '@pancakeswap/pools'
+import { isIfoSupported } from '@pancakeswap/ifos'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -166,6 +167,8 @@ export const useCakeVaultPublicData = () => {
 
 export const useFetchIfo = () => {
   const { account, chainId } = useAccountActiveChain()
+  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
+  const ifoSupported = useMemo(() => isIfoSupported(chainId), [chainId])
   const dispatch = useAppDispatch()
 
   usePoolsConfigInitialize()
@@ -176,13 +179,15 @@ export const useFetchIfo = () => {
       batch(() => {
         if (chainId) {
           dispatch(fetchCakePoolPublicDataAsync())
-          dispatch(fetchCakeVaultPublicData(chainId))
+          if (cakeVaultSupported) {
+            dispatch(fetchCakeVaultPublicData(chainId))
+          }
           dispatch(fetchIfoPublicDataAsync(chainId))
         }
       })
     },
     {
-      enabled: Boolean(chainId),
+      enabled: Boolean(chainId && ifoSupported),
       refetchInterval: FAST_INTERVAL,
       refetchOnMount: false,
       refetchOnWindowFocus: false,
@@ -195,14 +200,16 @@ export const useFetchIfo = () => {
     async () => {
       batch(() => {
         if (account && chainId) {
-          dispatch(fetchCakePoolUserDataAsync({ account, chainId }))
-          dispatch(fetchCakeVaultUserData({ account, chainId }))
+          if (cakeVaultSupported) {
+            dispatch(fetchCakePoolUserDataAsync({ account, chainId }))
+            dispatch(fetchCakeVaultUserData({ account, chainId }))
+          }
           dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
         }
       })
     },
     {
-      enabled: Boolean(account && chainId),
+      enabled: Boolean(account && chainId && ifoSupported),
       refetchInterval: FAST_INTERVAL,
       refetchOnMount: false,
       refetchOnWindowFocus: false,
@@ -218,7 +225,7 @@ export const useFetchIfo = () => {
       }
     },
     {
-      enabled: Boolean(chainId),
+      enabled: Boolean(chainId && ifoSupported),
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,

@@ -81,7 +81,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
-    const bscClient = publicClient({ chainId: ChainId.BSC })
+    const bscClient = publicClient({ chainId })
 
     const [userInfo, amounts] = await bscClient.multicall({
       contracts: [
@@ -192,7 +192,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       unlimitedReleasableAmount = unlimitedReleasableAmountResult.result
     }
 
-    dispatch(fetchCakeVaultUserData({ account, chainId }))
+    dispatch(fetchCakeVaultUserData({ account, chainId: ChainId.BSC }))
 
     setState((prevState) => ({
       ...prevState,

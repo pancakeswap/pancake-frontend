@@ -14,3 +14,7 @@ export const SUPPORTED_CHAIN_IDS = [
 ] as const
 
 export type SupportedChainId = (typeof SUPPORTED_CHAIN_IDS)[number]
+
+export const CAKE_VAULT_SUPPORTED_CHAINS = [ChainId.BSC] as const
+
+export type CakeVaultSupportedChainId = (typeof CAKE_VAULT_SUPPORTED_CHAINS)[number]
