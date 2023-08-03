@@ -177,4 +177,6 @@ export { default as PancakeProtectorIcon } from "./Icons/PancakeProtector";
 export { default as ICakeIcon } from "./Icons/ICake";
 export { default as BCakeIcon } from "./Icons/BCake";
 export { default as VCakeIcon } from "./Icons/VCake";
+export { default as ZkEVMIcon } from "./Icons/ZkEVM";
+export { default as ZkSyncIcon } from "./Icons/ZkSync";
 export type { SvgProps } from "./types";
