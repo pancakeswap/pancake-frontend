@@ -12,8 +12,13 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { DEFAULT_APP_METADATA } from 'views/Notifications/constants'
 
+export const DEFAULT_APP_METADATA = {
+  description: 'local',
+  icons: ['https://i.imgur.com/q9QDRXc.png'],
+  name: 'local',
+  url: 'https://pc-custom-web.vercel.app',
+}
 
 // get most configs chain nodes length
 const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {

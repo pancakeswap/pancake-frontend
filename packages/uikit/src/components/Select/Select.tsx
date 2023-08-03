@@ -43,12 +43,12 @@ const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
   height: 40px;
-  // min-width: 136px;
+  min-width: 136px;
   user-select: none;
   z-index: 20;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    // min-width: 168px;
+    min-width: 168px;
   }
 
   ${(props) =>
@@ -122,8 +122,7 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
     event.stopPropagation();
   };
 
-  const onOptionClicked = (selectedIndex: number) => (e) => {
-    e.stopPropagation();
+  const onOptionClicked = (selectedIndex: number) => () => {
     setSelectedOptionIndex(selectedIndex);
     setIsOpen(false);
     setOptionSelected(true);

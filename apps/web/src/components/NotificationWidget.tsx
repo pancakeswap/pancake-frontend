@@ -1,28 +1,22 @@
-import { W3iWidget, W3iContext, W3iButton } from "@web3inbox/widget-react";
-import { useCallback, useEffect, useState } from "react";
-// import { signMessage } from "@wagmi/core";
-import { useTranslation } from "@pancakeswap/localization";
-import { Text, useToast } from "@pancakeswap/uikit";
-import { ConnectorNames } from "config/wallet";
-import useAuth from "hooks/useAuth";
-import {
-  useAccount,
-  useSignMessage
-} from "wagmi";
+import { W3iWidget, W3iContext, W3iButton } from '@web3inbox/widget-react'
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { ConnectorNames } from 'config/wallet'
+import useAuth from 'hooks/useAuth'
+import { useAccount, useSignMessage } from 'wagmi'
 
-const Notifications = () => {
+const NotificationWidget = () => {
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
- 
 
   const { t } = useTranslation()
-  const { address } = useAccount();
+  const { address } = useAccount()
   const { login } = useAuth()
-  const [account, setAccount] = useState<string | undefined>("");
+  const [account, setAccount] = useState<string | undefined>('')
 
   const SendTestOnboardNotification = useCallback(async () => {
     try {
-
       const notificationPayload2 = {
         accounts: [`eip155:${1}:${account}`],
         notification: {
@@ -34,14 +28,17 @@ const Notifications = () => {
         },
       }
 
-      const notifyResponse = await fetch(`https://cast.walletconnect.com/${'ae5413feaf0cdaee02910dc807e03203'}/notify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+      const notifyResponse = await fetch(
+        `https://cast.walletconnect.com/${'ae5413feaf0cdaee02910dc807e03203'}/notify`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+          },
+          body: JSON.stringify(notificationPayload2),
         },
-        body: JSON.stringify(notificationPayload2),
-      })
+      )
 
       const notifyResult = await notifyResponse.json()
       if (notifyResult.success) {
@@ -52,24 +49,23 @@ const Notifications = () => {
       }
     } catch (error) {
       console.error({ sendGmError: error })
-      toastError(
-        `${t('Something Went Wrong')}!`,
-        <Text>{t(`${error}`)}</Text>,
-      )
+      toastError(`${t('Something Went Wrong')}!`, <Text>{t(`${error}`)}</Text>)
     }
   }, [account, toastError, toastSuccess, t])
 
   useEffect(() => {
-    setAccount(address);
-  }, [address, setAccount]);
+    setAccount(address)
+  }, [address, setAccount])
 
-  return ( 
-<W3iContext>
-      <div className="W3i" style={{ position: "relative" }}>
-        <W3iButton />
+  return (
+    <W3iContext>
+      <div className="W3i" style={{ position: 'relative' }}>
+        <Box mr="16px">
+          <W3iButton />
+        </Box>
         <W3iWidget
           style={{
-            position: "absolute",
+            position: 'absolute',
             right: '-500%',
             top: '140%',
             display: 'block',
@@ -78,23 +74,21 @@ const Notifications = () => {
           web3inboxUrl="http://localhost:5173/"
           account={account}
           signMessage={async (message) => {
-            const rs = await signMessageAsync({ message });
+            const rs = await signMessageAsync({ message })
             SendTestOnboardNotification()
-            return rs as string;}}
+            return rs as string
+          }}
           dappIcon="https://pancakeswap.finance/logo.png"
-          
           connect={() => login('walletConnect' as ConnectorNames)}
           dappName="PancakeSwap"
           dappNotificationsDescription="Get started with notifications from WalletConnect. Click the subscribe button below and accept."
           settingsEnabled
           pushEnabled
           chatEnabled={false}
-          
-          
         />
       </div>
-      </W3iContext>
+    </W3iContext>
   )
 }
 
-export default Notifications
+export default NotificationWidget

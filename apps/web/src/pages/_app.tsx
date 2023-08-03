@@ -1,5 +1,4 @@
 import '@pancakeswap/ui/css/reset.css'
-import '../style/transitions.module.css'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
@@ -82,7 +81,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         )}
         <meta name="referrer" content="no-referrer" />
       </Head>
-      {/* <ClientContextProvider> */}
       <DefaultSeo {...SEO} />
       <Providers store={store}>
         <PageMeta />
@@ -101,7 +99,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           </PersistGate>
         </Blocklist>
       </Providers>
-      {/* </ClientContextProvider> */}
       <Script
         strategy="afterInteractive"
         id="google-tag"

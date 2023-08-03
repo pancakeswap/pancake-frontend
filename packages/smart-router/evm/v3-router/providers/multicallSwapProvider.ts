@@ -82,7 +82,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       return {
         target: address,
         callData,
-        gas: BigInt(this.gasLimitPerCall),
+        gasLimit: BigInt(this.gasLimitPerCall),
       }
     })
 
@@ -164,7 +164,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       return {
         target: address,
         callData,
-        gas: BigInt(gasLimitPerCall),
+        gasLimit: BigInt(gasLimitPerCall),
       }
     })
 
@@ -247,7 +247,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       return {
         target: address,
         callData,
-        gas: BigInt(gasLimitPerCall),
+        gasLimit: BigInt(gasLimitPerCall),
       }
     })
 
