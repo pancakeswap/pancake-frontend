@@ -1,5 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, ModalV2, useModalV2, Modal, Flex, Text, Box, PreTitle, useToast, Balance } from '@pancakeswap/uikit'
+import {
+  Button,
+  ModalV2,
+  useModalV2,
+  Modal,
+  Flex,
+  Text,
+  Box,
+  PreTitle,
+  useToast,
+  Balance,
+  Heading,
+  InfoFilledIcon,
+} from '@pancakeswap/uikit'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ReactNode, useCallback, useMemo } from 'react'
@@ -13,8 +26,11 @@ import toNumber from 'lodash/toNumber'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { format, add } from 'date-fns'
+import { CurrencyLogo } from 'components/Logo'
 import { FixedStakingPool } from '../type'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { UnlockedFixedTag } from './UnlockedFixedTag'
+import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 
 export function HarvestModal({
   stakingToken,
@@ -77,11 +93,40 @@ export function HarvestModal({
     <>
       {children(restakeModal.onOpen)}
       <ModalV2 {...restakeModal} closeOnOverlayClick>
-        <Modal title={t('Restaking')} width={['100%', '100%', '420px']} maxWidth={['100%', , '420px']}>
+        <Modal
+          title={
+            <Flex>
+              <CurrencyLogo currency={stakingToken} size="28px" />
+              <Heading color="secondary" scale="lg" mx="8px">
+                {t('Restake')} {stakingToken?.symbol}
+              </Heading>
+              <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
+            </Flex>
+          }
+          width={['100%', '100%', '420px']}
+          maxWidth={['100%', , '420px']}
+        >
           <Box mb="16px">
-            <PreTitle textTransform="uppercase" bold mb="8px">
-              {t('Position Overview')}
-            </PreTitle>
+            <LightGreyCard mb="16px">
+              <Flex justifyContent="space-between" alignItems="center" mb="8px">
+                <PreTitle color="textSubtle">{t('Claim Reward')}</PreTitle>
+                <Text bold>
+                  {accrueInterest?.toSignificant(4) ?? 0} {stakingToken.symbol}
+                </Text>
+              </Flex>
+              <Flex>
+                <InfoFilledIcon color="secondary" mr="4px" />
+                <Text fontSize="14px" color="secondary">
+                  {t('Claimed amount will be sent to your wallet')}
+                </Text>
+              </Flex>
+            </LightGreyCard>
+            <Flex alignItems="center" mb="8px">
+              <PreTitle textTransform="uppercase" bold mr="4px">
+                {t('Restaking')}
+              </PreTitle>
+              <PreTitle color="textSubtle">{t('Position Overview')}</PreTitle>
+            </Flex>
             <LightGreyCard>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
@@ -111,15 +156,9 @@ export function HarvestModal({
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  Unlock On
+                  {t('Fixed Staking Ends On')}
                 </Text>
                 <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
-              </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  Claimed Amount
-                </Text>
-                <Text bold>{accrueInterest?.toSignificant(4) ?? 0}</Text>
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
@@ -131,6 +170,7 @@ export function HarvestModal({
               </Flex>
             </LightGreyCard>
           </Box>
+          <DisclaimerCheckBox />
           <Button
             disabled={!rawAmount.gt(0) || pendingTx}
             style={{

@@ -1,9 +1,43 @@
-import { CurrencyLogo, Flex, Heading, ModalV2, Modal, Message, MessageText, Text, Button } from '@pancakeswap/uikit'
+import {
+  CurrencyLogo,
+  Flex,
+  Heading,
+  ModalV2,
+  Modal,
+  Message,
+  MessageText,
+  Text,
+  Button,
+  Balance,
+} from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { format } from 'date-fns'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { LockedFixedTag } from './LockedFixedTag'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
+
+function DetailCard({ title, amount, token }) {
+  const formattedUsdStakingAmount = useStablecoinPriceAmount(token, parseFloat(amount.toSignificant(6)))
+
+  return (
+    <LightCard mb="16px">
+      <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+        {title}
+      </Text>
+      <Text bold>
+        {amount.toSignificant(2)} {token.symbol}
+      </Text>
+      <Balance
+        color="textSubtle"
+        unit=" USD"
+        fontSize="12px"
+        prefix="~"
+        value={formattedUsdStakingAmount}
+        decimals={2}
+      />
+    </LightCard>
+  )
+}
 
 export function UnstakeEndedModal({
   unstakeModal,
@@ -12,7 +46,6 @@ export function UnstakeEndedModal({
   handleSubmission,
   stakeAmount,
   accrueInterest,
-  unlockTime,
   loading,
 }) {
   const { t } = useTranslation()
@@ -34,21 +67,9 @@ export function UnstakeEndedModal({
         width={['100%', '100%', '420px']}
         maxWidth={['100%', , '420px']}
       >
-        <LightCard mb="16px">
-          <Text fontSize="14px" color="textSubtle" textAlign="left" mb="4px">
-            {t('Staking Amount')}
-          </Text>
-          <Text bold>
-            {stakeAmount.toSignificant(2)} {token.symbol}
-          </Text>
+        <DetailCard title={t('Unstaked Amount')} amount={stakeAmount} token={token} />
 
-          <Text fontSize="14px" color="textSubtle" textAlign="left" mb="4px">
-            {t('Earnings since ')} {format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')}
-          </Text>
-          <Text bold>
-            {accrueInterest.toSignificant(2)} {token.symbol}
-          </Text>
-        </LightCard>
+        <DetailCard title={t('Reward Amount')} amount={accrueInterest} token={token} />
 
         <Button
           disabled={loading}

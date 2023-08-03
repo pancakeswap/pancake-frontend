@@ -61,9 +61,7 @@ export function StakedPositionSection({
         </Flex>
 
         {shouldUnlock ? (
-          <UnlockedFixedTag>
-            {lockPeriod}D {t('Ended')}
-          </UnlockedFixedTag>
+          <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
         ) : (
           <LockedFixedTag>{lockPeriod}D</LockedFixedTag>
         )}
@@ -82,8 +80,8 @@ export function StakedPositionSection({
             Reward: {earnedAmount.toFixed(4)} {token.symbol}
           </Text>
         </Box>
-        <Button height="auto" onClick={stakeModal.onOpen} variant="secondary">
-          {t('Details')}
+        <Button height="auto" onClick={stakeModal.onOpen}>
+          {t('Claim')}
         </Button>
       </Flex>
       <DetailModal

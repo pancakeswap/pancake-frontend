@@ -51,7 +51,7 @@ export function FixedStakingModal({
   children: (openModal: () => void) => ReactNode
   initialLockPeriod: number
   stakedPeriods: number[]
-  setSelectedPeriodIndex: (value: number | null) => void
+  setSelectedPeriodIndex?: (value: number | null) => void
 }) {
   const { account } = useAccountActiveChain()
 

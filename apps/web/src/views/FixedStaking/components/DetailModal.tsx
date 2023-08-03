@@ -122,9 +122,7 @@ export function DetailModal({
                     <Heading color="secondary" scale="lg" mx="8px">
                       {token?.symbol}
                     </Heading>
-                    <UnlockedFixedTag>
-                      {lockPeriod}D {t('Ended')}
-                    </UnlockedFixedTag>
+                    <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
                   </Flex>
                 }
                 width={['100%', '100%', '420px']}
@@ -144,13 +142,17 @@ export function DetailModal({
                       </Flex>
                       <Balance bold prefix="~$" fontSize="14px" decimals={2} value={formattedUsdStakingAmount} />
                     </Box>
-                    <Box>
+                    <Box
+                      style={{
+                        textAlign: 'end',
+                      }}
+                    >
                       <PreTitle fontSize="12px" color="textSubtle">
-                        {t('Unlocks In')}
+                        {t('Fixed-staking Ends')}
                       </PreTitle>
 
                       <Text bold color="warning">
-                        {t('Unlocked')}
+                        {t('Ended')}
                       </Text>
 
                       <Text color="warning" fontSize={12}>
@@ -160,7 +162,7 @@ export function DetailModal({
                   </Flex>
                 </LightCard>
                 <PreTitle textTransform="uppercase" bold mb="8px">
-                  {t('Position Details')}
+                  {t('Details')}
                 </PreTitle>
 
                 <LightCard mb="16px">
@@ -182,7 +184,7 @@ export function DetailModal({
                     </Text>
                     <Text bold>{format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')}</Text>
                   </Flex>
-                  <Flex justifyContent="space-between">
+                  <Flex justifyContent="space-between" mb="8px">
                     <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
                       {t('Projected Return')}
                     </Text>
@@ -190,8 +192,20 @@ export function DetailModal({
                       {projectedReturnAmount.toSignificant(2)} {token.symbol}
                     </Text>
                   </Flex>
+                  <Button
+                    variant="danger"
+                    width="100%"
+                    onClick={() => {
+                      stakeModal.onDismiss()
+                      openModal()
+                    }}
+                  >
+                    {t('Claim Reward & Restake')}
+                  </Button>
                 </LightCard>
+
                 <Button
+                  variant="secondary"
                   style={{
                     minHeight: '48px',
                     marginBottom: '8px',
@@ -203,21 +217,12 @@ export function DetailModal({
                 >
                   {t('Unstake')}
                 </Button>
-                <Button
-                  onClick={() => {
-                    stakeModal.onDismiss()
-                    openModal()
-                  }}
-                >
-                  {t('Claim & Restake')}
-                </Button>
               </Modal>
             </ModalV2>
           )}
         </HarvestModal>
         <UnstakeEndedModal
           loading={pendingTx}
-          unlockTime={unlockTime}
           stakeAmount={amountDeposit}
           accrueInterest={accrueInterest}
           handleSubmission={handleSubmission}
