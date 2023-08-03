@@ -181,7 +181,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
     publicClient.estimateGas(txn).then((gas) => {
       sendTransactionAsync({
         ...txn,
-        gasLimit: calculateGasMargin(gas),
+        gas: calculateGasMargin(gas),
         chainId,
       })
         .then((response) => {

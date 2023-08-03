@@ -184,7 +184,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             to: manager.address,
             data: calldata,
             value: hexToBigInt(value),
-            gasLimit: calculateGasMargin(gasLimit),
+            gas: calculateGasMargin(gasLimit),
             chainId,
           })
         })

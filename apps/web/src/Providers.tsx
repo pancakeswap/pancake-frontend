@@ -9,7 +9,6 @@ import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'ne
 import { WagmiConfig } from 'wagmi'
 import { wagmiConfig } from 'utils/wagmi'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
-import { PushClientContextProvider } from 'contexts/PushClientContext'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -30,7 +29,6 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiConfig config={wagmiConfig}>
-        <PushClientContextProvider>
           <Provider store={store}>
             <NextThemeProvider>
               <StyledUIKitProvider>
@@ -48,7 +46,6 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
               </StyledUIKitProvider>
             </NextThemeProvider>
           </Provider>
-        </PushClientContextProvider>
       </WagmiConfig>
     </QueryClientProvider>
   )

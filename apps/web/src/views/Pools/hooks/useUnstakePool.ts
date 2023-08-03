@@ -5,7 +5,7 @@ import { useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
 
 const options = {
-  gasLimit: DEFAULT_GAS_LIMIT,
+  gas: DEFAULT_GAS_LIMIT,
 }
 
 const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: bigint) => {

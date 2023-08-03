@@ -1,26 +1,25 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { FAST_INTERVAL } from 'config/constants'
+import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
-import forEach from 'lodash/forEach'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePublicClient } from 'wagmi'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { Box, Text, useToast } from '@pancakeswap/uikit'
-import { FAST_INTERVAL } from 'config/constants'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { RetryableError, retry } from 'state/multicall/retry'
 import useSWRImmutable from 'swr/immutable'
 import { TransactionNotFoundError } from 'viem'
-import { retry, RetryableError } from 'state/multicall/retry'
-import { useWalletConnectPushClient } from 'contexts/PushClientContext'
+import { useAccount, usePublicClient } from 'wagmi'
 import { useAppDispatch } from '../index'
 import {
-  finalizeTransaction,
   FarmTransactionStatus,
-  NonBscFarmTransactionStep,
   MsgStatus,
   NonBscFarmStepType,
+  NonBscFarmTransactionStep,
+  finalizeTransaction,
 } from './actions'
-import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
+import { useAllChainTransactions } from './hooks'
 import { TransactionDetails } from './reducer'
 
 export function shouldCheck(
@@ -33,8 +32,8 @@ export function shouldCheck(
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
-  const { handleSendTestNotification } = useWalletConnectPushClient()
   const { t } = useTranslation()
+  const { address: account } = useAccount()
 
   const dispatch = useAppDispatch()
   const transactions = useAllChainTransactions(chainId)
@@ -42,6 +41,47 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const { toastError, toastSuccess } = useToast()
 
   const fetchedTransactions = useRef<{ [txHash: string]: TransactionDetails }>({})
+
+  const pushNotification = useCallback(async () => {
+    console.log('entered')
+    try {
+
+      const notificationPayload2 = {
+        accounts: [`eip155:${1}:${account}`],
+        notification: {
+          title: 'Swap',
+          body: 'Your ETH-CAKE swap was successful',
+          icon: `https://pancakeswap.finance/logo.png`,
+          url: 'https://pancakeswap.finance/logo.png',
+          type: 'alerts',
+        },
+      }
+
+      const notifyResponse = await fetch(`https://cast.walletconnect.com/${'ae5413feaf0cdaee02910dc807e03203'}/notify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+        },
+        body: JSON.stringify(notificationPayload2),
+      })
+
+      const notifyResult = await notifyResponse.json()
+      console.log(notifyResult)
+      if (notifyResult.success) {
+        toastSuccess(
+          `${t('Subscription Success')}!`,
+          <Text>{t(`You have successfuly subscribed. a confirmation has been sent to your wallet.`)}</Text>,
+        )
+      }
+    } catch (error) {
+      console.error({ sendGmError: error })
+      toastError(
+        `${t('Something Went Wrong')}!`,
+        <Text>{t(`${error}`)}</Text>,
+      )
+    }
+  }, [account, toastError, toastSuccess, t])
 
   useEffect(() => {
     if (!chainId || !provider) return
@@ -75,8 +115,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             )
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
-
-            setTimeout(() => handleSendTestNotification(), 5000)
+console.log('heyyyyyyyy')
+            setTimeout(() => pushNotification(), 5000)
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
@@ -92,7 +132,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, handleSendTestNotification])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, pushNotification])
 
   const nonBscFarmPendingTxns = useMemo(
     () =>

@@ -67,7 +67,7 @@ export const callWithEstimateGas = async <
   // @ts-ignore
   const tx = await contract.write[methodName](methodArgs, {
     value: 0n,
-    gasLimit: gasEstimation,
+    gas: gasEstimation,
     account: contract.account,
     chain: contract.chain,
     ...overrides,

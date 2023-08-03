@@ -443,7 +443,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await routerContract.write[methodName](args, {
-        gasLimit: safeGasEstimate,
+        gas: safeGasEstimate,
         gasPrice,
       })
         .then((response: Hash) => {

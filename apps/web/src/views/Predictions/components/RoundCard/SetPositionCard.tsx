@@ -169,7 +169,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
     const callOptions =
       token.symbol === 'CAKE'
         ? {
-          gasLimit: 300000n,
+          gas: 300000n,
             value: 0n,
           }
         : { value: BigInt(valueAsBn.toString()) }

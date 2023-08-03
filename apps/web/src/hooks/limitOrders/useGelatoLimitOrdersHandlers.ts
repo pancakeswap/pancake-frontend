@@ -145,7 +145,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         orderToCancel,
         checkIfOrderExists,
         overrides ?? {
-          gasLimit: 2_000_000,
+          gas: 2_000_000,
         },
       )
 

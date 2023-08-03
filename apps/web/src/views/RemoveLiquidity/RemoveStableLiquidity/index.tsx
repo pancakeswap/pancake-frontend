@@ -215,7 +215,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await contract.write[methodName](args, {
-        gasLimit: safeGasEstimate,
+        gas: safeGasEstimate,
         gasPrice,
       })
         .then((response: Hash) => {

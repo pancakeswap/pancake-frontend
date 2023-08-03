@@ -115,7 +115,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   }, [allowance, stakeAmount, isRemovingStake])
 
   const callOptions = {
-    gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
+    gas: vaultPoolConfig[pool.vaultKey].gasLimit,
   }
 
   const interestBreakdown = getInterestBreakdown({
