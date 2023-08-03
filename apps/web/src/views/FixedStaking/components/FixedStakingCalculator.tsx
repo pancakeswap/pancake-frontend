@@ -137,15 +137,17 @@ export function FixedStakingCalculator({
           <Text color="textSubtle" textAlign="right" fontSize="12px" m="8px 0">
             {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingTokenBalance, stakingToken.decimals) })}
           </Text>
-          <Slider
-            min={0}
-            max={100}
-            value={percent}
-            onValueChanged={handleChangePercent}
-            name="stake"
-            valueLabel={`${percent}%`}
-            step={1}
-          />
+          <Box>
+            <Slider
+              min={0}
+              max={100}
+              value={percent}
+              onValueChanged={handleChangePercent}
+              name="stake"
+              valueLabel={`${percent}%`}
+              step={1}
+            />
+          </Box>
           <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="16px">
             <StyledButton scale="xs" width="100%" mx="2px" variant="tertiary" onClick={() => handleChangePercent(25)}>
               25%
