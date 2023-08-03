@@ -4,12 +4,12 @@ import { AppHeader } from 'components/App'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWBETHContract } from 'hooks/useContract'
-import { useContractRead } from 'wagmi'
 import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 
 import { ExchangeRateTitle } from '../components/ExchangeRateTitle'
 import { LiquidStakingApr } from '../components/LiquidStakingApr'
@@ -48,16 +48,7 @@ export function LiquidStakingPageStake() {
 
   const handleSortOptionChange = useCallback((option) => setSelectedList(option), [])
 
-  const wbethContract = useWBETHContract()
-
-  const { data } = useContractRead({
-    // @ts-ignore
-    abi: wbethContract?.abi,
-    address: wbethContract?.address,
-    enabled: !!wbethContract,
-    functionName: 'exchangeRate',
-    chainId,
-  })
+  const { exchangeRateList } = useExchangeRate({ decimals: selectedList?.token0?.decimals })
 
   useEffect(() => {
     if (initState) {
@@ -65,11 +56,12 @@ export function LiquidStakingPageStake() {
     }
   }, [chainId, initState])
 
-  const rateNumber: BigNumber | undefined = data
-    ? new BigNumber(data.toString()).dividedBy(new BigNumber(10 ** selectedList?.token0?.decimals))
-    : undefined
-
-  const exchangeRateAmount = rateNumber ? new BigNumber('1').dividedBy(rateNumber.toString()) : undefined
+  const exchangeRateAmount = useMemo(() => {
+    const pickedRate = exchangeRateList?.find(
+      (i) => i?.contract?.toLowerCase() === selectedList?.contract?.toLowerCase(),
+    )?.exchangeRate
+    return new BigNumber(pickedRate) ?? BIG_ZERO
+  }, [exchangeRateList, selectedList?.contract])
 
   return (
     <>
@@ -100,7 +92,7 @@ export function LiquidStakingPageStake() {
           )}
         </RowBetween>
 
-        <LiquidStakingApr tokenOSymbol={selectedList?.token0?.symbol} />
+        <LiquidStakingApr contract={selectedList?.contract} tokenOSymbol={selectedList?.token0?.symbol} />
         <NextLink href={`/liquid-staking/${selectedList?.symbol}`}>
           <Button width="100%">{t('Proceed')}</Button>
         </NextLink>

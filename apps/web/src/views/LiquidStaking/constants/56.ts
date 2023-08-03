@@ -1,21 +1,44 @@
 import { NATIVE, WETH9, ChainId } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
-import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
+import { WBETH, SNBNB } from 'config/constants/liquidStaking'
+// ABI
+import { wbethBscABI } from 'config/abi/wbethBSC'
+import { snBnbABI } from 'config/abi/snBNB'
 
 const liquidStaking: LiquidStakingList[] = [
   {
     stakingSymbol: 'ETH / WBETH',
-    contract: '0xa2E3356610840701BDf5611a53974510Ae27E2e1',
+    contract: WBETH[ChainId.BSC],
     symbol: WETH9[ChainId.BSC].symbol,
     token0: WETH9[ChainId.BSC],
     token1: bscTokens.wbeth,
+    aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
+    multiCallMethods: [
+      {
+        filterName: FunctionName.exchangeRate,
+        abi: wbethBscABI,
+        address: WBETH[ChainId.BSC],
+        functionName: FunctionName.exchangeRate,
+      },
+    ],
   },
   {
     stakingSymbol: 'BNB / SnBNB',
-    contract: '0x1adB950d8bB3dA4bE104211D5AB038628e477fE6',
+    contract: SNBNB[ChainId.BSC],
     symbol: NATIVE[ChainId.BSC].symbol,
     token0: NATIVE[ChainId.BSC],
     token1: bscTokens.snbnb,
+    aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
+    multiCallMethods: [
+      {
+        filterName: FunctionName.exchangeRate,
+        abi: snBnbABI,
+        address: SNBNB[ChainId.BSC],
+        functionName: FunctionName.convertSnBnbToBnb,
+        args: [1000000000000000000], // 1 SnBNB
+      },
+    ],
   },
 ]
 
