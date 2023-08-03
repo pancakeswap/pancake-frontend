@@ -1,9 +1,9 @@
 import { bscTokens } from '@pancakeswap/tokens'
 
-import { Ifo } from '../../types'
+import { BaseIfoConfig } from '../../types'
 import { cakeBnbLpToken } from '../lpTokens'
 
-export const ifos: Ifo[] = [
+export const ifos: BaseIfoConfig[] = [
   {
     id: 'test',
     address: '0x3d8C7E2273A3d80f15743964f4d8219401c398B9',

@@ -16,7 +16,7 @@ type IfoPoolInfo = {
   distributionRatio?: number // Range [0-1]
 }
 
-export type Ifo = {
+export type BaseIfoConfig = {
   id: string
   isActive: boolean
   address: Address
@@ -36,5 +36,9 @@ export type Ifo = {
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }
+
+export type Ifo = {
+  chainId: ChainId
+} & BaseIfoConfig
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient

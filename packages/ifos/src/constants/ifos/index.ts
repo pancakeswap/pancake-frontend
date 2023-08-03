@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 
-import { Ifo } from '../../types'
+import { BaseIfoConfig, Ifo } from '../../types'
 import { isCrossChainIfoSupportedOnly, isIfoSupported } from '../../utils'
 import { CROSS_CHAIN_ONLY_SUPPORTED_CHAIN_IDS } from '../supportedChains'
 
@@ -11,14 +11,17 @@ export async function getIfoConfig(chainId?: ChainId): Promise<Ifo[]> {
 
   try {
     const { ifos } = await import(`./${chainId}`)
-    return ifos
+    return ifos.map((ifo: BaseIfoConfig) => ({
+      ...ifo,
+      chainId,
+    }))
   } catch (e) {
     console.error(e)
     return []
   }
 }
 
-export async function getActiveIfo(chainId?: ChainId): Promise<{ ifo: Ifo; chainId: ChainId } | null> {
+export async function getActiveIfo(chainId?: ChainId): Promise<Ifo | null> {
   if (!chainId || !isIfoSupported(chainId)) {
     return null
   }
@@ -28,10 +31,7 @@ export async function getActiveIfo(chainId?: ChainId): Promise<{ ifo: Ifo; chain
   const configs = await getIfoConfig(chainId)
   const activeIfo = findActiveIfo(configs)
   if (activeIfo) {
-    return {
-      ifo: activeIfo,
-      chainId,
-    }
+    return activeIfo
   }
 
   if (isCrossChainIfoSupportedOnly(chainId)) {
@@ -40,13 +40,10 @@ export async function getActiveIfo(chainId?: ChainId): Promise<{ ifo: Ifo; chain
 
   // Check if there's cross chain ifo
   const crossChainConfigs = await Promise.all(CROSS_CHAIN_ONLY_SUPPORTED_CHAIN_IDS.map((chain) => getIfoConfig(chain)))
-  for (const [index, otherChainConfigs] of crossChainConfigs.entries()) {
+  for (const otherChainConfigs of crossChainConfigs) {
     const active = findActiveIfo(otherChainConfigs)
     if (active) {
-      return {
-        ifo: active,
-        chainId: CROSS_CHAIN_ONLY_SUPPORTED_CHAIN_IDS[index],
-      }
+      return active
     }
   }
   return null

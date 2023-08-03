@@ -8,8 +8,7 @@ import SoonIfo from './SoonIfo'
 
 const Ifo = () => {
   const { chainId } = useActiveChainId()
-  const { data } = useQuery([chainId, 'activeIfo'], () => getActiveIfo(chainId))
-  const activeIfo = data?.ifo
+  const { data: activeIfo } = useQuery([chainId, 'activeIfo'], () => getActiveIfo(chainId))
   return activeIfo ? <CurrentIfo activeIfo={activeIfo} /> : <SoonIfo />
 }
 
