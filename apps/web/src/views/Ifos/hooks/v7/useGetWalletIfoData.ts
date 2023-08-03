@@ -7,7 +7,6 @@ import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
 import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { ifoV7ABI } from 'config/abi/ifoV7'
@@ -52,13 +51,13 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>(initialState)
   const dispatch = useAppDispatch()
   const credit = useIfoCredit()
-  const { chainId } = useActiveChainId()
+  const { chainId } = ifo
 
   const { address, currency, version } = ifo
 
   const { address: account } = useAccount()
-  const contract = useIfoV7Contract(address)
-  const currencyContract = useERC20(currency.address)
+  const contract = useIfoV7Contract(address, { chainId })
+  const currencyContract = useERC20(currency.address, { chainId })
   const allowance = useIfoAllowance(currencyContract, address)
 
   const setPendingTx = (status: boolean, poolId: PoolIds) =>

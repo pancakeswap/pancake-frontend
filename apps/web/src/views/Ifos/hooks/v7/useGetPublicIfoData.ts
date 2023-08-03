@@ -6,7 +6,6 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from '@pancakeswap/ifos'
 
 import { ifoV7ABI } from 'config/abi/ifoV7'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { publicClient } from 'utils/wagmi'
 
@@ -42,7 +41,7 @@ const ROUND_DIGIT = 3
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { chainId } = useActiveChainId()
+  const { chainId } = ifo
   const { address, plannedStartTime } = ifo
   const cakePriceUsd = usePriceCakeUSD()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)

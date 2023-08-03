@@ -4,11 +4,11 @@ import { ChainId } from '@pancakeswap/sdk'
 
 import { publicClient } from 'utils/wagmi'
 import { ifoV7ABI } from 'config/abi/ifoV7'
-import { ifosConfig } from 'config/constants'
-
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
+import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 
 export const useIfoStatus = () => {
+  const activeIfo = useActiveIfoConfig()
+
   const { data = { startTime: 0, endTime: 0 } } = useSWRImmutable(
     activeIfo ? ['ifo', 'currentIfo_timestamps'] : null,
     async () => {

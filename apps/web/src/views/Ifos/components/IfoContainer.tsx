@@ -26,10 +26,14 @@ const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection
   return (
     <IfoLayout id="current-ifo" py={['24px', '24px', '40px']}>
       <Container>
-        <IfoLayoutWrapper>
-          {chainId === ChainId.BSC && <IfoPoolVaultCard />}
-          {ifoSection}
-        </IfoLayoutWrapper>
+        {chainId === ChainId.BSC ? (
+          <IfoLayoutWrapper>
+            <IfoPoolVaultCard />
+            {ifoSection}
+          </IfoLayoutWrapper>
+        ) : (
+          ifoSection
+        )}
       </Container>
       <IfoStepBackground>
         <Container>{ifoSteps}</Container>

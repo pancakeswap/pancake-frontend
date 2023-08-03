@@ -5,11 +5,11 @@ import { Ifo } from '@pancakeswap/ifos'
 import { publicClient } from 'utils/wagmi'
 
 import { ifoV3ABI } from '../config/abi/ifoV3'
-import { ifosConfig } from '../config/constants'
-
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
+import { useActiveIfoConfig } from './useIfoConfig'
 
 export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: number } => {
+  const activeIfo = useActiveIfoConfig()
+
   const { data: currentIfoBlocks = { startBlock: 0, endBlock: 0 } } = useSWRImmutable(
     activeIfo ? ['ifo', 'currentIfo'] : null,
     async () => {

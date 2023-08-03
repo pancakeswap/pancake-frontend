@@ -1,18 +1,19 @@
 import { Container } from '@pancakeswap/uikit'
-import { ifosConfig } from 'config/constants'
-import { Ifo } from '@pancakeswap/ifos'
+
+import { useInActiveIfoConfigs } from 'hooks/useIfoConfig'
+
 import IfoCardV1Data from './components/IfoCardV1Data'
 import IfoCardV2Data from './components/IfoCardV2Data'
 import IfoCardV3Data from './components/IfoCardV3Data'
 import IfoLayout from './components/IfoLayout'
 
-const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
-
 const PastIfo = () => {
+  const inactiveIfo = useInActiveIfoConfigs()
+
   return (
     <Container>
       <IfoLayout maxWidth="736px" m="auto" width="100%" id="past-ifos" py={['24px', '24px', '40px']}>
-        {inactiveIfo.map((ifo) => {
+        {inactiveIfo?.map((ifo) => {
           switch (ifo.version) {
             case 1:
               return <IfoCardV1Data key={ifo.id} ifo={ifo} />

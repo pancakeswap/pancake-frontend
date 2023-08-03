@@ -3,7 +3,7 @@ import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
-import useTokenBalance from 'hooks/useTokenBalance'
+import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
@@ -23,7 +23,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const currentBlock = useCurrentBlock()
-  const { balance: userCurrencyBalance } = useTokenBalance(ifo.currency.address)
+  const { balance: userCurrencyBalance } = useTokenBalanceByChain(ifo.currency.address, ifo.chainId)
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {

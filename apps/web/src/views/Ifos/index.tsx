@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react'
 import { SubMenuItems, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
-import { useFetchIfo } from 'state/pools/hooks'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import Hero from './components/Hero'
@@ -12,7 +11,6 @@ export const IfoPageLayout = ({ children }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const isExact = router.route === '/ifo'
-  useFetchIfo()
 
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.IFO)
   const [onUSCitizenModalPresent] = useModal(

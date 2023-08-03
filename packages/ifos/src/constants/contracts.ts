@@ -9,4 +9,5 @@ export type ContractAddresses<T extends ChainId = SupportedChainId> = {
 
 export const ICAKE = {
   [ChainId.BSC]: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
+  [ChainId.POLYGON_ZKEVM]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>

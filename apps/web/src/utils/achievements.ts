@@ -1,5 +1,5 @@
 import { Campaign, TranslatableText } from 'config/constants/types'
-import ifosList from 'config/constants/ifo'
+import { getIfoConfig } from '@pancakeswap/ifos'
 import { campaignMap } from 'config/constants/campaigns'
 import { TranslateFunction } from '@pancakeswap/localization'
 import { Achievement } from 'state/types'
@@ -41,6 +41,7 @@ export const getAchievementDescription = (campaign: Campaign, t: TranslateFuncti
  * Checks if a wallet is eligible to claim points from valid IFO's
  */
 export const getClaimableIfoData = async (account: string, t: TranslateFunction): Promise<Achievement[]> => {
+  const ifosList = (await getIfoConfig(ChainId.BSC)) || []
   const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
 
   const bscClient = publicClient({ chainId: ChainId.BSC })

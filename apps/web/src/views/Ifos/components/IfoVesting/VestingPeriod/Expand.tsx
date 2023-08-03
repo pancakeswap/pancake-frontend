@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { ifosConfig } from 'config/constants'
 import { styled, keyframes, css } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from '@pancakeswap/ifos'
+import { useIfoConfigById } from 'hooks/useIfoConfig'
+
 import Info from './Info'
 
 const expandAnimation = keyframes`
@@ -57,7 +58,8 @@ interface ExpandProps {
 const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { id, token } = data.ifo
-  const ifoIsActive = useMemo(() => ifosConfig.find((ifo) => ifo.isActive && ifo.id === id), [id])
+  const ifoConfig = useIfoConfigById(id)
+  const ifoIsActive = useMemo(() => ifoConfig?.isActive, [ifoConfig])
   const router = useRouter()
 
   const handleViewIfo = () => {

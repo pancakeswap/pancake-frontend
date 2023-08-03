@@ -3,6 +3,7 @@ import { Ifo } from '@pancakeswap/ifos'
 
 import useGetPublicIfoV7Data from 'views/Ifos/hooks/v7/useGetPublicIfoData'
 import useGetWalletIfoV7Data from 'views/Ifos/hooks/v7/useGetWalletIfoData'
+import { useFetchIfo } from 'state/pools/hooks'
 
 import { IfoCurrentCard } from './components/IfoFoldableCard'
 import IfoContainer from './components/IfoContainer'
@@ -13,6 +14,7 @@ interface TypeProps {
 }
 
 const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo }) => {
+  useFetchIfo({ chainId: activeIfo.chainId })
   const publicIfoData = useGetPublicIfoV7Data(activeIfo)
   const walletIfoData = useGetWalletIfoV7Data(activeIfo)
 
@@ -29,6 +31,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
       ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
       ifoSteps={
         <IfoSteps
+          ifoChainId={activeIfo.chainId}
           isLive={publicIfoData.status === 'live'}
           hasClaimed={poolBasic.hasClaimed || poolUnlimited.hasClaimed}
           isCommitted={isCommitted}

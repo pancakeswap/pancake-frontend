@@ -1,6 +1,6 @@
 import { useMemo, ReactNode } from 'react'
-import { bscTokens } from '@pancakeswap/tokens'
 import { styled } from 'styled-components'
+import { CAKE } from '@pancakeswap/tokens'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip, IfoSkeletonCardDetails } from '@pancakeswap/uikit'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
@@ -71,18 +71,19 @@ const MaxTokenEntry = ({
   poolId: PoolIds
   basicSale?: boolean
 }) => {
-  const isCurrencyCake = ifo.currency === bscTokens.cake
+  const cake = CAKE[ifo.chainId]
+  const isCurrencyCake = cake && ifo.currency.wrapped?.equals(cake)
   const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
   const basicTooltipContent =
     ifo.version >= 3.1 && !basicSale
       ? t(
-          'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
-        )
+        'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+      )
       : t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
-        )
+        'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
+      )
 
   const unlimitedToolipContent =
     ifo.version >= 3.1 ? (
@@ -124,9 +125,8 @@ const MaxTokenEntry = ({
         }
         value={
           <Text small textAlign="right" color={maxToken > 0 ? 'text' : 'failure'}>
-            {`${formatNumber(maxToken, 3, 3)} ${
-              !isCurrencyCake ? ifo.currency.symbol : ''
-            } ${` ~($${dollarValueOfToken.toFixed(0)})`}`}
+            {`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''
+              } ${` ~($${dollarValueOfToken.toFixed(0)})`}`}
           </Text>
         }
       />
@@ -149,9 +149,9 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
 
   let version3MaxTokens = walletIfoData.ifoCredit?.creditLeft
     ? // if creditLeft > limit show limit else show creditLeft
-      walletIfoData.ifoCredit.creditLeft.gt(
-        poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP),
-      )
+    walletIfoData.ifoCredit.creditLeft.gt(
+      poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP),
+    )
       ? poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP)
       : walletIfoData.ifoCredit.creditLeft
     : null

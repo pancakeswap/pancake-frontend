@@ -7,6 +7,7 @@ import { FAST_INTERVAL } from 'config/constants'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getLivePoolsConfig, isCakeVaultSupported } from '@pancakeswap/pools'
 import { isIfoSupported } from '@pancakeswap/ifos'
 
@@ -165,8 +166,13 @@ export const useCakeVaultPublicData = () => {
   }, [dispatch, chainId])
 }
 
-export const useFetchIfo = () => {
-  const { account, chainId } = useAccountActiveChain()
+type FetchIfoOptions = {
+  chainId?: ChainId
+}
+
+export const useFetchIfo = (options?: FetchIfoOptions) => {
+  const { account, chainId: currentChainId } = useAccountActiveChain()
+  const chainId = options?.chainId || currentChainId
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const ifoSupported = useMemo(() => isIfoSupported(chainId), [chainId])
   const dispatch = useAppDispatch()

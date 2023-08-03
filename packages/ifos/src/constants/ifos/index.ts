@@ -48,3 +48,12 @@ export async function getActiveIfo(chainId?: ChainId): Promise<Ifo | null> {
   }
   return null
 }
+
+export async function getInActiveIfos(chainId?: ChainId): Promise<Ifo[]> {
+  if (!chainId || !isIfoSupported(chainId)) {
+    return []
+  }
+
+  const configs = await getIfoConfig(chainId)
+  return configs.filter(({ isActive }) => !isActive)
+}
