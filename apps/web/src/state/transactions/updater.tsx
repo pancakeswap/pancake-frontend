@@ -43,10 +43,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const fetchedTransactions = useRef<{ [txHash: string]: TransactionDetails }>({})
 
   const pushNotification = useCallback(async () => {
-    console.log('entered')
     try {
-
-      const notificationPayload2 = {
+      const notificationPayload = {
         accounts: [`eip155:${1}:${account}`],
         notification: {
           title: 'Swap',
@@ -57,18 +55,20 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         },
       }
 
-      const notifyResponse = await fetch(`https://cast.walletconnect.com/${'ae5413feaf0cdaee02910dc807e03203'}/notify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+      const notifyResponse = await fetch(
+        `https://cast.walletconnect.com/${'ae5413feaf0cdaee02910dc807e03203'}/notify`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+          },
+          body: JSON.stringify(notificationPayload),
         },
-        body: JSON.stringify(notificationPayload2),
-      })
+      )
 
       const notifyResult = await notifyResponse.json()
-      console.log(notifyResult)
-      if (notifyResult.success) {
+      if (notifyResult.sent.includes(notificationPayload.accounts[0])) {
         toastSuccess(
           `${t('Subscription Success')}!`,
           <Text>{t(`You have successfuly subscribed. a confirmation has been sent to your wallet.`)}</Text>,
@@ -76,10 +76,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
       }
     } catch (error) {
       console.error({ sendGmError: error })
-      toastError(
-        `${t('Something Went Wrong')}!`,
-        <Text>{t(`${error}`)}</Text>,
-      )
+      toastError(`${t('Something Went Wrong')}!`, <Text>{t(`${error}`)}</Text>)
     }
   }, [account, toastError, toastSuccess, t])
 
@@ -115,7 +112,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             )
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
-console.log('heyyyyyyyy')
+            console.log('heyyyyyyyy')
             setTimeout(() => pushNotification(), 5000)
           } catch (error) {
             console.error(error)
