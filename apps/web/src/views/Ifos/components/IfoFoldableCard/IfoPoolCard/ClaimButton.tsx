@@ -27,7 +27,10 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
       if (ifoVersion === 1 && walletIfoData.version === 1) {
         return walletIfoData.contract.write.harvest({ account, chain })
       }
-      if (walletIfoData.version === 3 || walletIfoData.version === 7) {
+      if (walletIfoData.version === 3) {
+        return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
+      }
+      if (walletIfoData.version === 7) {
         return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
       }
       return undefined
