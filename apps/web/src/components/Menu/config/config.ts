@@ -17,7 +17,7 @@ import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import { SUPPORT_FARMS, SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import { SUPPORT_FARMS, SUPPORT_ONLY_BSC, SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { NewIconButton } from 'views/BuyCrypto/components/NewIcon'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
@@ -85,6 +85,7 @@ const config: (
           label: t('Buy Crypto'),
           LabelIcon: NewIconButton,
           href: '/buy-crypto',
+          supportChainIds: SUPPORT_BUY_CRYPTO,
           status: { text: t('New'), color: 'success' },
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
