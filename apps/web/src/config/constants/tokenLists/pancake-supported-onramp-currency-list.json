@@ -33,41 +33,11 @@
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "USD Coin",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB4",
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": 324,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "USD Coin",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": 42161,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
       "name": "Tether USD",
       "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
       "symbol": "USDT",
       "decimals": 6,
       "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
-    },
-    {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "Tether USD",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "USDT",
-      "decimals": 6,
-      "chainId": 324,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
@@ -83,32 +53,38 @@
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "DAI StableCoin",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "name": "DAI StableCoin Zksync",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
       "symbol": "DAI",
       "decimals": 18,
       "chainId": 324,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
     },
     {
-      "isNative": "false",
-      "isToken": "true",
-      "name": "ETH ZKSYNC",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "ETH",
-      "decimals": 18,
+      "name": "USD Coin Zksync",
+      "symbol": "USDC",
+      "address": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
       "chainId": 324,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/eth.png"
+      "decimals": 6,
+      "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4.png"
+    },
+    {
+      "name": "Tether USD Zksync",
+      "symbol": "USDT",
+      "address": "0x493257fD37EDB34451f62EDf8D2a0C418852bA4C",
+      "chainId": 324,
+      "decimals": 6,
+      "logoURI": "https://tokens.pancakeswap.finance/images/zksync/0x493257fD37EDB34451f62EDf8D2a0C418852bA4C.png"
     },
     {
       "isNative": "false",
       "isToken": "true",
-      "name": "ETH ARBITRUM",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "ETH",
-      "decimals": 18,
+      "name": "USD Coin Arbitrum",
+      "address": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+      "symbol": "USDC",
+      "decimals": 6,
       "chainId": 42161,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/eth.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     }
   ]
 }

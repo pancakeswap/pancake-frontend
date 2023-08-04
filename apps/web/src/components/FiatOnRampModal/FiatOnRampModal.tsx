@@ -1,5 +1,4 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import {
   AutoColumn,
   Box,
@@ -281,6 +280,10 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
+          fixAmount: true,
+          fixFiatAmount: true,
+          fixFiatCurrency: true,
+          fixCurrency: true,
           currencies: supportedTokenMap[chainId].mercuryoTokens,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
