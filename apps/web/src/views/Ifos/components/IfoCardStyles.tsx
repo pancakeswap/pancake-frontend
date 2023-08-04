@@ -33,4 +33,5 @@ export const MessageTextLink = styled(Link)`
   font-weight: bold;
   font-size: 14px;
   white-space: nowrap;
+  cursor: pointer;
 `

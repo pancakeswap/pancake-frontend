@@ -6,7 +6,7 @@ import { useERC20 } from 'hooks/useContract'
 import { Address } from 'viem'
 
 const useIfoApprove = (ifo: Ifo, spenderAddress: string) => {
-  const raisingTokenContract = useERC20(ifo.currency.address)
+  const raisingTokenContract = useERC20(ifo.currency.address, { chainId: ifo.chainId })
   const { callWithGasPrice } = useCallWithGasPrice()
   const onApprove = useCallback(async () => {
     return callWithGasPrice(raisingTokenContract, 'approve', [spenderAddress as Address, MaxUint256])

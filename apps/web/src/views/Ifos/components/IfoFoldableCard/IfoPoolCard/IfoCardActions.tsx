@@ -5,11 +5,13 @@ import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
 import { EnableStatus } from '../types'
 import { ActivateProfileButton } from './ActivateProfileButton'
+import { SwitchNetworkTips } from './SwitchNetworkTips'
 
 interface Props {
   poolId: PoolIds
@@ -33,6 +35,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   enableStatus,
 }) => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const userPoolCharacteristics = walletIfoData[poolId]
 
   if (isLoading) {
@@ -55,6 +58,10 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
 
   if (needClaim) {
     return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
+  }
+
+  if (ifo.version >= 7 && ifo.chainId !== chainId) {
+    return <SwitchNetworkTips ifoChainId={ifo.chainId} />
   }
 
   if (

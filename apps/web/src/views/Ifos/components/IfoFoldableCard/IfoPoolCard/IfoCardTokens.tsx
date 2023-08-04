@@ -28,6 +28,7 @@ import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance
 import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { EnableStatus } from '../types'
 import IFORequirements from './IFORequirements'
@@ -135,6 +136,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.',
@@ -269,7 +271,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
           </Text>
           {message}
-          {enableStatus !== EnableStatus.ENABLED && account && (
+          {enableStatus !== EnableStatus.ENABLED && account && chainId === ifo.chainId && (
             <Button
               width="100%"
               mt="16px"
