@@ -33,6 +33,7 @@ import { EnableStatus } from '../types'
 import IFORequirements from './IFORequirements'
 import { MessageTextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
+import { ICakeTips } from './ICakeTips'
 
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Token
@@ -237,16 +238,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) &&
       getBalanceNumber(credit) === 0
     ) {
-      message = (
-        <Message my="24px" p="8px" variant="danger">
-          <Box>
-            <MessageText display="inline">{t('You don’t have any iCAKE available for IFO public sale.')}</MessageText>{' '}
-            <MessageTextLink display="inline" fontWeight={700} href="/ifo#ifo-how-to" color="failure">
-              {t('How does it work?')} »
-            </MessageTextLink>
-          </Box>
-        </Message>
-      )
+      message = <ICakeTips />
     }
 
     if (account && !hasProfile && !isBasicSale(publicPoolCharacteristics.saleType)) {

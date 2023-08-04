@@ -8,7 +8,7 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { getLivePoolsConfig, isCakeVaultSupported } from '@pancakeswap/pools'
+import { getLivePoolsConfig, CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { isIfoSupported } from '@pancakeswap/ifos'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -40,6 +40,8 @@ import {
   ifoCeilingSelector,
   makeVaultPoolWithKeySelector,
 } from './selectors'
+
+const defaultCakeVaultChain = CAKE_VAULT_SUPPORTED_CHAINS[0] || ChainId.BSC
 
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {
@@ -173,7 +175,6 @@ type FetchIfoOptions = {
 export const useFetchIfo = (options?: FetchIfoOptions) => {
   const { account, chainId: currentChainId } = useAccountActiveChain()
   const chainId = options?.chainId || currentChainId
-  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const ifoSupported = useMemo(() => isIfoSupported(chainId), [chainId])
   const dispatch = useAppDispatch()
 
@@ -185,9 +186,7 @@ export const useFetchIfo = (options?: FetchIfoOptions) => {
       batch(() => {
         if (chainId) {
           dispatch(fetchCakePoolPublicDataAsync())
-          if (cakeVaultSupported) {
-            dispatch(fetchCakeVaultPublicData(chainId))
-          }
+          dispatch(fetchCakeVaultPublicData(defaultCakeVaultChain))
           dispatch(fetchIfoPublicDataAsync(chainId))
         }
       })
@@ -206,10 +205,8 @@ export const useFetchIfo = (options?: FetchIfoOptions) => {
     async () => {
       batch(() => {
         if (account && chainId) {
-          if (cakeVaultSupported) {
-            dispatch(fetchCakePoolUserDataAsync({ account, chainId }))
-            dispatch(fetchCakeVaultUserData({ account, chainId }))
-          }
+          dispatch(fetchCakePoolUserDataAsync({ account, chainId: defaultCakeVaultChain }))
+          dispatch(fetchCakeVaultUserData({ account, chainId: defaultCakeVaultChain }))
           dispatch(fetchUserIfoCreditDataAsync({ account, chainId }))
         }
       })
