@@ -1,16 +1,18 @@
-import { Box, Button, Flex, Text, useModalV2, Balance, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Text, Balance, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
 
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { differenceInMilliseconds, format } from 'date-fns'
+import { useMemo } from 'react'
 
 import { LockedFixedTag } from './LockedFixedTag'
 import { PoolGroup, StakePositionUserInfo } from '../type'
-import { DetailModal } from './DetailModal'
+import { ClaimModal } from './ClaimModal'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { FixedRestakingModal } from './RestakeFixedStakingModal'
+import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
 
 export function StakedPositionSection({
   token,
@@ -34,9 +36,8 @@ export function StakedPositionSection({
   stakedPeriods: number[]
 }) {
   const { t } = useTranslation()
-  const stakeModal = useModalV2()
 
-  const apr = new Percent(lockDayPercent, 1000000000).multiply(365)
+  const apr = useMemo(() => new Percent(lockDayPercent, 1000000000).multiply(365), [lockDayPercent])
 
   const earnedAmount = getBalanceAmount(stakePositionUserInfo.accrueInterest, token.decimals)
 
@@ -78,18 +79,44 @@ export function StakedPositionSection({
           </Text>
 
           <Text color="textSubtle" fontSize="12px">
-            Reward: {earnedAmount.toFixed(4)} {token.symbol}
+            {t('Reward')}: {earnedAmount.toFixed(4)} {token.symbol}
           </Text>
         </Box>
         {shouldUnlock ? (
-          <Button height="auto" onClick={stakeModal.onOpen}>
-            {t('Claim')}
-          </Button>
+          <ClaimModal
+            stakedPeriods={stakedPeriods}
+            pool={pool}
+            apr={apr}
+            poolIndex={poolIndex}
+            stakePositionUserInfo={stakePositionUserInfo}
+            token={token}
+            lockPeriod={lockPeriod}
+            unlockTime={unlockTime}
+            stakingAmount={stakingAmount}
+            formattedUsdStakingAmount={formattedUsdStakingAmount}
+          >
+            {(openClaimModal) => (
+              <Button height="auto" onClick={openClaimModal}>
+                {t('Claim')}
+              </Button>
+            )}
+          </ClaimModal>
         ) : (
           <Flex>
-            <IconButton variant="secondary" onClick={stakeModal.onOpen} mr="6px">
-              <MinusIcon color="primary" width="14px" />
-            </IconButton>
+            <UnstakeBeforeEnededModal
+              token={token}
+              lockPeriod={lockPeriod}
+              apr={apr}
+              stakePositionUserInfo={stakePositionUserInfo}
+              withdrawalFee={withdrawalFee}
+              poolIndex={poolIndex}
+            >
+              {(openUnstakeModal) => (
+                <IconButton variant="secondary" onClick={openUnstakeModal} mr="6px">
+                  <MinusIcon color="primary" width="14px" />
+                </IconButton>
+              )}
+            </UnstakeBeforeEnededModal>
             <FixedRestakingModal
               stakedPeriods={stakedPeriods}
               stakingToken={token}
@@ -105,23 +132,6 @@ export function StakedPositionSection({
           </Flex>
         )}
       </Flex>
-      <DetailModal
-        stakedPeriods={stakedPeriods}
-        pool={pool}
-        apr={apr}
-        poolIndex={poolIndex}
-        withdrawalFee={withdrawalFee}
-        stakeModal={{
-          ...stakeModal,
-          closeOnOverlayClick: true,
-        }}
-        stakePositionUserInfo={stakePositionUserInfo}
-        token={token}
-        lockPeriod={lockPeriod}
-        unlockTime={unlockTime}
-        stakingAmount={stakingAmount}
-        formattedUsdStakingAmount={formattedUsdStakingAmount}
-      />
     </>
   )
 }

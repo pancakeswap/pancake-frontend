@@ -16,7 +16,7 @@ export default function FixedStakingOverview({
   stakingToken,
   projectedReturnAmount,
 }: {
-  stakeAmount?: number
+  stakeAmount?: string
   lockAPR?: Percent
   boostAPR?: Percent
   stakingToken: Token

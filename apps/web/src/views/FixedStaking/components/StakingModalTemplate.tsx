@@ -178,7 +178,7 @@ export function StakingModalTemplate({
       width={['100%', '100%', '420px']}
       maxWidth={['100%', , '420px']}
     >
-      {head(params)}
+      {head ? head(params) : null}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <PreTitle textTransform="uppercase" bold>
           {t('Stake Amount')}
