@@ -1,18 +1,20 @@
 import { Percent } from '@pancakeswap/sdk'
-import { FixedStakingPool } from '../type'
+import { useMemo } from 'react'
 
-export function useFixedStakeAPR(pool?: FixedStakingPool) {
-  if (!pool)
-    return {
-      boostAPR: new Percent(0, 1000000000),
-      lockDayPercent: new Percent(0, 1000000000),
-    }
+const PERCENT_NUMBER = 1000000000
 
-  const boostDayPercent = new Percent(pool.boostDayPercent, 1000000000)
-  const lockDayPercent = new Percent(pool.lockDayPercent, 1000000000)
-
-  const boostAPR = boostDayPercent.multiply(365)
-  const lockAPR = lockDayPercent.multiply(365)
-
-  return { boostAPR, lockAPR }
+export function useFixedStakeAPR({
+  boostDayPercent,
+  lockDayPercent,
+}: {
+  boostDayPercent: number
+  lockDayPercent: number
+}) {
+  return useMemo(
+    () => ({
+      boostAPR: new Percent(boostDayPercent || 0, PERCENT_NUMBER).multiply(365),
+      lockAPR: new Percent(lockDayPercent || 0, PERCENT_NUMBER).multiply(365),
+    }),
+    [boostDayPercent, lockDayPercent],
+  )
 }

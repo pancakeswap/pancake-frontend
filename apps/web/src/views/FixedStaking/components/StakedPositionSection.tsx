@@ -1,11 +1,10 @@
 import { Box, Button, Flex, Text, Balance, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { Token } from '@pancakeswap/swap-sdk-core'
 
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { differenceInMilliseconds, format } from 'date-fns'
-import { useMemo } from 'react'
 
 import { LockedFixedTag } from './LockedFixedTag'
 import { PoolGroup, StakePositionUserInfo } from '../type'
@@ -13,6 +12,7 @@ import { ClaimModal } from './ClaimModal'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { FixedRestakingModal } from './RestakeFixedStakingModal'
 import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 
 export function StakedPositionSection({
   token,
@@ -21,11 +21,13 @@ export function StakedPositionSection({
   lockPeriod,
   poolIndex,
   lockDayPercent,
+  boostDayPercent,
   withdrawalFee,
   pool,
   stakedPeriods,
 }: {
   unlockTime: number
+  boostDayPercent: number
   token: Token
   stakePositionUserInfo: StakePositionUserInfo
   lockPeriod: number
@@ -37,8 +39,6 @@ export function StakedPositionSection({
 }) {
   const { t } = useTranslation()
 
-  const apr = useMemo(() => new Percent(lockDayPercent, 1000000000).multiply(365), [lockDayPercent])
-
   const earnedAmount = getBalanceAmount(stakePositionUserInfo.accrueInterest, token.decimals)
 
   const formattedUsdEarnedAmount = useStablecoinPriceAmount(token, earnedAmount.toNumber())
@@ -46,6 +46,8 @@ export function StakedPositionSection({
   const stakingAmount = getBalanceAmount(stakePositionUserInfo.userDeposit, token.decimals)
   const formattedUsdStakingAmount = useStablecoinPriceAmount(token, stakingAmount.toNumber())
   const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
+
+  const { boostAPR, lockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent })
 
   return (
     <>
@@ -71,7 +73,7 @@ export function StakedPositionSection({
       <Flex justifyContent="space-between" width="100%">
         <Box>
           <Text color="textSubtle" fontSize="12px">
-            APR: {apr.toSignificant(2)}%
+            APR: {lockAPR.toSignificant(2)}%
           </Text>
 
           <Text color="textSubtle" fontSize="12px">
@@ -86,7 +88,8 @@ export function StakedPositionSection({
           <ClaimModal
             stakedPeriods={stakedPeriods}
             pool={pool}
-            apr={apr}
+            lockAPR={lockAPR}
+            boostAPR={boostAPR}
             poolIndex={poolIndex}
             stakePositionUserInfo={stakePositionUserInfo}
             token={token}
@@ -106,7 +109,8 @@ export function StakedPositionSection({
             <UnstakeBeforeEnededModal
               token={token}
               lockPeriod={lockPeriod}
-              apr={apr}
+              lockAPR={lockAPR}
+              boostAPR={boostAPR}
               stakePositionUserInfo={stakePositionUserInfo}
               withdrawalFee={withdrawalFee}
               poolIndex={poolIndex}

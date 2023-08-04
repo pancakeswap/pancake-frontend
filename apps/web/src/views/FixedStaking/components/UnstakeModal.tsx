@@ -66,7 +66,7 @@ export function UnstakeEndedModal({
           }}
           onClick={handleSubmission}
         >
-          {loading ? t('Unstaking') : t('Confirm Unstake')}
+          {loading ? t('Unstaking') : t('Unstake')}
         </Button>
       </Modal>
     </ModalV2>

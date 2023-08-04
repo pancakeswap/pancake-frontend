@@ -21,17 +21,19 @@ export function ClaimModal({
   unlockTime,
   stakingAmount,
   formattedUsdStakingAmount,
-  apr,
+  lockAPR,
   stakePositionUserInfo,
   poolIndex,
   pool,
+  boostAPR,
 }: {
   token: Token
   lockPeriod: number
   unlockTime: number
   stakingAmount: BigNumber
   formattedUsdStakingAmount: number
-  apr: Percent
+  lockAPR: Percent
+  boostAPR: Percent
   stakePositionUserInfo: StakePositionUserInfo
   poolIndex: number
   pool: PoolGroup
@@ -46,7 +48,7 @@ export function ClaimModal({
     token,
     stakePositionUserInfo,
     lockPeriod,
-    apr,
+    apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
   })
 
   const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({ poolIndex })
@@ -124,7 +126,7 @@ export function ClaimModal({
                   <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
                     {t('APR')}
                   </Text>
-                  <Text bold>{apr.toSignificant(2)}%</Text>
+                  <Text bold>{lockAPR.toSignificant(2)}%</Text>
                 </Flex>
                 <Flex justifyContent="space-between">
                   <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">

@@ -35,26 +35,30 @@ export default function FixedStakingOverview({
           <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount)} />
         </Flex>
       ) : null}
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-          {t('Duration')}
-        </Text>
-        <Text bold>
-          {lockPeriod} {t('days')}
-        </Text>
-      </Flex>
+      {lockPeriod ? (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
+            {t('Duration')}
+          </Text>
+          <Text bold>
+            {lockPeriod} {t('days')}
+          </Text>
+        </Flex>
+      ) : null}
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('APR')}
         </Text>
         <Text bold>{lockAPR?.toSignificant(2)}%</Text>
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-          {t('vCAKE Boost')}
-        </Text>
-        <Text bold>{boostAPR?.toSignificant(2)}%</Text>
-      </Flex>
+      {boostAPR ? (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
+            {t('vCAKE Boost')}
+          </Text>
+          <Text bold>{boostAPR?.toSignificant(2)}%</Text>
+        </Flex>
+      ) : null}
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Ends on')}
