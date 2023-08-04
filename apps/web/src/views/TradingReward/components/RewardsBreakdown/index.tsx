@@ -54,7 +54,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   })
 
   const sortData = useMemo(() => data.sort((a, b) => Number(b.campaignId) - Number(a.campaignId)), [data])
-  const currentList = useMemo(() => sortData.find((i) => i.campaignClaimTime < Date.now() / 1000), [sortData])
+  const currentList = useMemo(() => sortData.find((i) => i.campaignClaimTime >= Date.now() / 1000), [sortData])
 
   useEffect(() => {
     if (sortData.length > 0) {
@@ -124,7 +124,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
           })}
         </Text>
       )}
-      {index === 1 && list?.pairs?.length && (
+      {index === 1 || !currentList ? (
         <Box mb="-16px">
           <PaginationButton
             showMaxPageText
@@ -133,7 +133,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
             setCurrentPage={handlePagination}
           />
         </Box>
-      )}
+      ) : null}
       <Card mt="40px">
         {isDesktop ? (
           <DesktopView list={list} isFetching={isFetching} />
