@@ -60,7 +60,6 @@ const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[])
 
 const combineTokenMapsWithOnRamp = () => {
   const onRampTokens = listToTokenMap(ONRAMP_TOKEN_LIST as TokenList, 'symbol')
-  console.log(onRampTokens)
   return onRampTokens
 }
 
