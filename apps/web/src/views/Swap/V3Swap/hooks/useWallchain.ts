@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
-import WallchainSDK, { TOptions } from '@wallchain/sdk'
+import type WallchainSDK from '@wallchain/sdk'
+import { TOptions } from '@wallchain/sdk'
 import { Token, TradeType, Currency } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useWalletClient } from 'wagmi'
@@ -12,7 +13,7 @@ import { captureException } from '@sentry/nextjs'
 
 import Bottleneck from 'bottleneck'
 import { Address, Hex } from 'viem'
-import { WallchainKeys } from 'config/wallchain'
+import { WallchainKeys, WallchainPairs } from 'config/wallchain'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
 interface SwapCall {
@@ -34,6 +35,14 @@ const limiter = new Bottleneck({
 
 const overrideAddresses = {
   56: '0x6346e0a39e2fBbc133e4ce8390ab567108e62aEe',
+}
+
+const checkAddresses = (src: false | `0x${string}`, dst: false | `0x${string}`) => {
+  if (src && dst) {
+    const pair = WallchainPairs.find(([a, b]) => (a === src && b === dst) || (a === dst && b === src))
+    return !!pair
+  }
+  return false
 }
 
 const loadData = async (account: string, sdk: WallchainSDK, swapCalls: SwapCall[]) => {
@@ -64,7 +73,7 @@ const extractTokensFromTrade = (trade: SmartRouterTrade<TradeType> | undefined |
   const srcToken = inputCurrency ? extractAddressFromCurrency(inputCurrency) : false
   const dstToken = outputCurrency ? extractAddressFromCurrency(outputCurrency) : false
 
-  return [srcToken, dstToken]
+  return [srcToken, dstToken] as [false | `0x${string}`, false | `0x${string}`]
 }
 
 export function useWallchainApi(
@@ -79,43 +88,46 @@ export function useWallchainApi(
   const { account } = useAccountActiveChain()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
+  const [sdk, setSDK] = useState<WallchainSDK | undefined>(undefined)
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
 
   useEffect(() => {
-    if (!walletClient) {
-      return
-    }
-    const sdk = new WallchainSDK({
-      keys: WallchainKeys,
-      provider: walletClient.transport as TOptions['provider'],
-      overrideAddresses,
-    })
-
-    if (
-      swapCalls[0] &&
-      swapCalls[0].calldata.toLowerCase().includes('190b589cf9Fb8DDEabBFeae36a813FFb2A702454'.toLowerCase()) &&
-      swapCalls[0].calldata.toLowerCase().includes('bb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'.toLowerCase())
-    ) {
-      setStatus('pending')
-      wrappedLoadData(account, sdk, swapCalls)
-        .then(([reqStatus, address, recievedMasterInput]) => {
-          setStatus(reqStatus as WallchainStatus)
-          setApprovalAddress(address)
-          setMasterInput(recievedMasterInput)
-        })
-        .catch((e) => {
-          setStatus('not-found')
-          setApprovalAddress(undefined)
-          setMasterInput(undefined)
-          captureException(e)
-        })
-    } else {
-      setStatus('not-found')
-      setApprovalAddress(undefined)
-      setMasterInput(undefined)
-    }
-  }, [walletClient, account, swapCalls])
+    ;(async () => {
+      if (!walletClient) return
+      if (!sdk) {
+        const WallchainSDK = (await import('@wallchain/sdk')).default
+        setSDK(
+          new WallchainSDK({
+            keys: WallchainKeys,
+            provider: walletClient.transport as TOptions['provider'],
+            overrideAddresses,
+          }),
+        )
+        return
+      }
+      const [srcToken, dstToken] = extractTokensFromTrade(trade)
+      if (checkAddresses(srcToken, dstToken)) {
+        setStatus('pending')
+        wrappedLoadData(account, sdk, swapCalls)
+          .then(([reqStatus, address, recievedMasterInput]) => {
+            setStatus(reqStatus as WallchainStatus)
+            setApprovalAddress(address)
+            setMasterInput(recievedMasterInput)
+          })
+          .catch((e) => {
+            setStatus('not-found')
+            setApprovalAddress(undefined)
+            setMasterInput(undefined)
+            captureException(e)
+          })
+      } else {
+        setStatus('not-found')
+        setApprovalAddress(undefined)
+        setMasterInput(undefined)
+      }
+    })()
+  }, [walletClient, account, swapCalls, sdk, trade])
 
   return [status, approvalAddress, masterInput]
 }
@@ -156,6 +168,7 @@ export function useWallchainSwapCallArguments(
 
       const callback = async () => {
         try {
+          const WallchainSDK = (await import('@wallchain/sdk')).default
           const sdk = new WallchainSDK({
             keys: WallchainKeys,
             provider: walletClient.transport as TOptions['provider'],
