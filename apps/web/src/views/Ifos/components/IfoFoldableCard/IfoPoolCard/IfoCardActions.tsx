@@ -1,6 +1,4 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, IfoSkeletonCardActions } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { IfoSkeletonCardActions } from '@pancakeswap/uikit'
 
 import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
@@ -11,6 +9,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
 import { EnableStatus } from '../types'
+import { ActivateProfileButton } from './ActivateProfileButton'
 
 interface Props {
   poolId: PoolIds
@@ -33,7 +32,6 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   isEligible,
   enableStatus,
 }) => {
-  const { t } = useTranslation()
   const { address: account } = useAccount()
   const userPoolCharacteristics = walletIfoData[poolId]
 
@@ -46,11 +44,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   if (!hasProfile && !isBasicSale(publicIfoData[poolId].saleType)) {
-    return (
-      <Button as={NextLinkFromReactRouter} to={`/profile/${account.toLowerCase()}`} width="100%">
-        {t('Activate your Profile')}
-      </Button>
-    )
+    return <ActivateProfileButton ifo={ifo} />
   }
 
   const needClaim =

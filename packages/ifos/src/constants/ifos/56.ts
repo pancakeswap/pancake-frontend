@@ -7,7 +7,7 @@ export const ifos: BaseIfoConfig[] = [
   {
     id: 'test',
     address: '0x3d8C7E2273A3d80f15743964f4d8219401c398B9',
-    isActive: true,
+    isActive: false,
     name: 'USDT',
     plannedStartTime: 1690430400, // Thursday, 27 July 2023 12:00:00 GMT+08:00
     poolBasic: {
