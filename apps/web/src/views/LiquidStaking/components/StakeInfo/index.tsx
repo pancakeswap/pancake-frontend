@@ -21,7 +21,9 @@ const StakeInfo: React.FC<StakeInfoProps> = ({ selectedList }) => {
     const pickedRate = exchangeRateList?.find(
       (i) => i?.contract?.toLowerCase() === selectedList?.contract?.toLowerCase(),
     )?.exchangeRate
-    return new BigNumber(pickedRate) ?? BIG_ZERO
+
+    const amount = pickedRate ? new BigNumber('1').dividedBy(pickedRate.toString()) : BIG_ZERO
+    return amount
   }, [exchangeRateList, selectedList?.contract])
 
   return (

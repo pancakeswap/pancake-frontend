@@ -4,6 +4,7 @@ interface NativeToken {
   name: string
   symbol: string
   decimals: number
+  address?: string
 }
 
 export enum FunctionName {
@@ -16,7 +17,7 @@ export interface LiquidStakingList {
   contract: string
   symbol: string
   token0: Token | NativeToken
-  token1: Token
+  token1: Token | NativeToken
   aprUrl: string
   multiCallMethods?: any
 }

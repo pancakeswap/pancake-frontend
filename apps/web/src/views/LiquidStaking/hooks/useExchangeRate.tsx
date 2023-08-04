@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import { FunctionName } from 'views/LiquidStaking/constants/types'
@@ -51,9 +52,8 @@ export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchange
 
               const rateNumber: BigNumber | undefined = exchangeRate
                 ? new BigNumber(exchangeRate?.toString()).dividedBy(new BigNumber(10 ** decimals ?? 18))
-                : undefined
-              const exchangeRateAmount = rateNumber ? new BigNumber('1').dividedBy(rateNumber.toString()) : undefined
-              rate = exchangeRateAmount?.toString() ?? '0'
+                : BIG_ZERO
+              rate = rateNumber?.toString() ?? '0'
             }
 
             return {
