@@ -7,6 +7,7 @@ const mapping: { [key: number]: string } = {
   [ChainId.ETHEREUM]: "ethereum",
   [ChainId.POLYGON_ZKEVM]: "polygonzkevm",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
+  [ChainId.ZKSYNC]: "zksync",
 };
 
 export const getTokenLogoURL = memoize(
@@ -38,6 +39,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.ETHEREUM]: "eth",
   [ChainId.POLYGON_ZKEVM]: "polygon-zkevm",
   [ChainId.ARBITRUM_ONE]: "arb",
+  [ChainId.ZKSYNC]: "zksync",
 };
 
 // TODO: move to utils or token-list
