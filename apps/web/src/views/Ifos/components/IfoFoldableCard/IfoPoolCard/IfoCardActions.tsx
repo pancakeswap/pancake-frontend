@@ -44,7 +44,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   if (!hasProfile && !isBasicSale(publicIfoData[poolId].saleType)) {
-    return <ActivateProfileButton ifo={ifo} />
+    return <ActivateProfileButton />
   }
 
   const needClaim =

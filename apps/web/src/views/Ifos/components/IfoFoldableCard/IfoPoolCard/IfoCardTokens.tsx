@@ -238,7 +238,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) &&
       getBalanceNumber(credit) === 0
     ) {
-      message = <ICakeTips />
+      message = <ICakeTips ifoChainId={ifo.chainId} ifoCredit={walletIfoData.ifoCredit?.credit} />
     }
 
     if (account && !hasProfile && !isBasicSale(publicPoolCharacteristics.saleType)) {
