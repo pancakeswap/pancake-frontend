@@ -50,11 +50,13 @@ export function StakingModalTemplate({
   initialLockPeriod,
   stakedPeriods,
   body,
+  head,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   initialLockPeriod: number
   stakedPeriods: number[]
+  head?: (params: BodyParam) => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
 }) {
   const { t } = useTranslation()
@@ -150,6 +152,19 @@ export function StakingModalTemplate({
     ?.multiply(lockPeriod)
     ?.multiply(boostAPR.multiply(lockPeriod).divide(365))
 
+  const params = useMemo(
+    () => ({
+      setLockPeriod,
+      stakeAmount,
+      projectedReturnAmount,
+      lockPeriod,
+      isStaked,
+      boostAPR,
+      lockAPR,
+    }),
+    [boostAPR, isStaked, lockAPR, lockPeriod, projectedReturnAmount, stakeAmount],
+  )
+
   return (
     <Modal
       title={
@@ -163,6 +178,7 @@ export function StakingModalTemplate({
       width={['100%', '100%', '420px']}
       maxWidth={['100%', , '420px']}
     >
+      {head(params)}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <PreTitle textTransform="uppercase" bold>
           {t('Stake Amount')}
@@ -210,17 +226,7 @@ export function StakingModalTemplate({
       </Flex>
       <Divider />
 
-      {typeof body === 'function'
-        ? body({
-            setLockPeriod,
-            stakeAmount,
-            projectedReturnAmount,
-            lockPeriod,
-            isStaked,
-            boostAPR,
-            lockAPR,
-          })
-        : body}
+      {typeof body === 'function' ? body(params) : body}
 
       <DisclaimerCheckBox />
 

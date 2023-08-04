@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Balance } from '@pancakeswap/uikit'
+import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Balance, Message, MessageText } from '@pancakeswap/uikit'
 import { ReactNode } from 'react'
 import { Token } from '@pancakeswap/sdk'
 import { LightGreyCard } from '@pancakeswap/uikit/src/widgets/RoiCalculator/Card'
@@ -48,6 +48,13 @@ export function FixedRestakingModal({
           pools={pools}
           initialLockPeriod={initialLockPeriod}
           stakedPeriods={stakedPeriods}
+          head={() => (
+            <Message variant="warning" mb="24px">
+              <MessageText maxWidth="200px">
+                {t('Adding stake to the position will restart the entire fixed staking period.')}
+              </MessageText>
+            </Message>
+          )}
           body={({ stakeAmount, projectedReturnAmount, lockPeriod, boostAPR, lockAPR }) => (
             <>
               <Box mb="16px" mt="16px">

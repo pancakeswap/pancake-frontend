@@ -6,6 +6,7 @@ import { LightGreyCard } from 'components/Card'
 import toNumber from 'lodash/toNumber'
 
 import { format, add } from 'date-fns'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 
 export default function FixedStakingOverview({
   stakeAmount,
@@ -14,6 +15,13 @@ export default function FixedStakingOverview({
   lockPeriod,
   stakingToken,
   projectedReturnAmount,
+}: {
+  stakeAmount?: number
+  lockAPR?: Percent
+  boostAPR?: Percent
+  stakingToken: Token
+  projectedReturnAmount: CurrencyAmount<Token>
+  lockPeriod?: number
 }) {
   const { t } = useTranslation()
 
