@@ -1,19 +1,23 @@
-import { WETH9 } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
-import { useActiveChainId } from './useActiveChainId'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
-export const useETHApprovalStatus = (spender: Address) => {
+interface UseLiquidStakingApprovalProps {
+  tokenAddress: string
+  contractAddress: Address
+}
+
+export const useLiquidStakingApprovalStatus = ({ tokenAddress, contractAddress }: UseLiquidStakingApprovalProps) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
   const { data, refetch } = useContractRead({
     chainId,
     abi: erc20ABI,
-    address: WETH9[chainId]?.address,
+    address: tokenAddress as Address,
     functionName: 'allowance',
-    args: [account, spender],
-    enabled: !!account && !!spender,
+    args: [account, contractAddress],
+    enabled: !!account && !!contractAddress,
   })
 
   return {
@@ -23,4 +27,4 @@ export const useETHApprovalStatus = (spender: Address) => {
   }
 }
 
-export default useETHApprovalStatus
+export default useLiquidStakingApprovalStatus

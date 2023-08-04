@@ -1,3 +1,4 @@
+import { Abi, Address } from 'viem'
 import { Token } from '@pancakeswap/swap-sdk-core'
 
 interface NativeToken {
@@ -14,10 +15,11 @@ export enum FunctionName {
 
 export interface LiquidStakingList {
   stakingSymbol: string
-  contract: string
+  contract: Address
   symbol: string
   token0: Token | NativeToken
   token1: Token | NativeToken
   aprUrl: string
   multiCallMethods?: any
+  abi: Abi
 }

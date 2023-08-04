@@ -1,5 +1,4 @@
 import { WETH9, ChainId } from '@pancakeswap/sdk'
-import { bscTokens } from '@pancakeswap/tokens'
 import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
 import { WBETH } from 'config/constants/liquidStaking'
 // ABI
@@ -11,7 +10,8 @@ const liquidStaking: LiquidStakingList[] = [
     contract: WBETH[ChainId.BSC],
     symbol: WETH9[ChainId.BSC_TESTNET].symbol,
     token0: WETH9[ChainId.BSC_TESTNET],
-    token1: bscTokens.wbeth,
+    token1: WETH9[ChainId.BSC_TESTNET],
+    abi: wbethBscABI,
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     multiCallMethods: [
       {

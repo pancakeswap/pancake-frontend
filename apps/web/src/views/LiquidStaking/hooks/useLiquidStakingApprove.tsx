@@ -7,21 +7,23 @@ import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { Address } from 'viem'
 import { useTokenContract } from 'hooks/useContract'
-import { WETH9 } from '@pancakeswap/sdk'
-import { useActiveChainId } from './useActiveChainId'
 
-export const useApproveETH = (spender: string) => {
+interface UseLiquidStakingApproveProps {
+  tokenAddress: string
+  contractAddress: string
+}
+
+export const useLiquidStakingApprove = ({ tokenAddress, contractAddress }: UseLiquidStakingApproveProps) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { chainId } = useActiveChainId()
 
-  const ethContract = useTokenContract(WETH9[chainId].address)
+  const tokenContract = useTokenContract(tokenAddress as Address)
 
   const onApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(ethContract, 'approve', [spender as Address, MaxUint256])
+      return callWithGasPrice(tokenContract, 'approve', [contractAddress as Address, MaxUint256])
     })
 
     if (receipt?.status) {
@@ -32,7 +34,7 @@ export const useApproveETH = (spender: string) => {
         </ToastDescriptionWithTx>,
       )
     }
-  }, [spender, ethContract, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
+  }, [fetchWithCatchTxError, callWithGasPrice, tokenContract, contractAddress, toastSuccess, t])
 
   return { isPending, onApprove }
 }

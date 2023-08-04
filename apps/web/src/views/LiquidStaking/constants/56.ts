@@ -12,7 +12,8 @@ const liquidStaking: LiquidStakingList[] = [
     contract: WBETH[ChainId.BSC],
     symbol: WETH9[ChainId.BSC].symbol,
     token0: WETH9[ChainId.BSC],
-    token1: bscTokens.wbeth,
+    token1: WETH9[ChainId.BSC],
+    abi: wbethBscABI,
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     multiCallMethods: [
       {
@@ -29,6 +30,7 @@ const liquidStaking: LiquidStakingList[] = [
     symbol: NATIVE[ChainId.BSC].symbol,
     token0: NATIVE[ChainId.BSC],
     token1: bscTokens.snbnb,
+    abi: snBnbABI,
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     multiCallMethods: [
       {
