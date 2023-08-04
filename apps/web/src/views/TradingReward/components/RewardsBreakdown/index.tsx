@@ -54,7 +54,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   })
 
   const sortData = useMemo(() => data.sort((a, b) => Number(b.campaignId) - Number(a.campaignId)), [data])
-  const currentList = useMemo(() => sortData.find((i) => i.campaignClaimTime >= Date.now() / 1000), [sortData])
+  const currentList = useMemo(() => sortData.find((i) => i.campaignClaimTime < Date.now() / 1000), [sortData])
 
   useEffect(() => {
     if (sortData.length > 0) {
@@ -75,25 +75,26 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
   }, [currentPage, sortData])
 
   useEffect(() => {
-    const getActivitySlice = () => {
-      if (currentList?.campaignId) {
-        if (index === 0) {
-          setCurrentPage(1)
-          setList(currentList)
-        } else {
-          setCurrentPage(2)
-          sliceData()
-        }
-      } else {
-        setIndex(1)
-        sliceData()
-      }
-    }
-
     if (sortData.length > 0) {
-      getActivitySlice()
+      sliceData()
     }
-  }, [index, currentPage, sortData, currentList, sliceData])
+  }, [sliceData, sortData])
+
+  const handlePagination = (page: number) => {
+    if (!isFetching) {
+      setCurrentPage(currentList ? page + 1 : page)
+    }
+  }
+
+  const handleIndex = (pageIndex: number) => {
+    if (pageIndex === 0) {
+      setCurrentPage(1)
+      setList(currentList)
+    } else {
+      setCurrentPage(2)
+    }
+    setIndex(pageIndex)
+  }
 
   return (
     <Flex
@@ -108,7 +109,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       </Text>
       {currentList && (
         <Box width="350px" margin="auto auto 16px auto">
-          <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
+          <ButtonMenu activeIndex={index} onItemClick={handleIndex} fullWidth scale="sm" variant="subtle">
             <ButtonMenuItem>{t('Current Round')}</ButtonMenuItem>
             <ButtonMenuItem>{t('Previous Rounds')}</ButtonMenuItem>
           </ButtonMenu>
@@ -129,7 +130,7 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
             showMaxPageText
             currentPage={currentList ? currentPage - 1 : currentPage}
             maxPage={currentList ? maxPage - 1 : maxPage}
-            setCurrentPage={setCurrentPage}
+            setCurrentPage={handlePagination}
           />
         </Box>
       )}

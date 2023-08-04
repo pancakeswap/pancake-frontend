@@ -136,9 +136,11 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
             {index === 1 && (
               <PaginationButton
                 showMaxPageText
-                currentPage={campaignPage}
-                maxPage={campaignMaxPage}
-                setCurrentPage={setCampaignPage}
+                currentPage={currentLeaderBoard ? campaignPage - 1 : campaignPage}
+                maxPage={currentLeaderBoard ? campaignMaxPage - 1 : campaignMaxPage}
+                setCurrentPage={(page) => {
+                  setCampaignPage(currentLeaderBoard ? page + 1 : page)
+                }}
               />
             )}
           </>
