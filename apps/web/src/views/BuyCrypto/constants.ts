@@ -67,7 +67,7 @@ export const chainIdToNetwork: { [id: number]: string } = {
 export const moonapyCurrencyChainidentifier: { [id: number]: string } = {
   [ChainId.ETHEREUM]: '',
   [ChainId.BSC]: '_bsc',
-  [ChainId.ZKSYNC]: '_zkzync',
+  [ChainId.ZKSYNC]: '_zksync',
   [ChainId.ARBITRUM_ONE]: '_arbitrum',
 }
 
