@@ -178,7 +178,7 @@ export function HarvestModal({
             }}
             onClick={handleSubmission}
           >
-            {pendingTx ? t('Restaking') : t('Confirm Claim & Restake')}
+            {pendingTx ? t('Restaking') : t('Confirm Restake')}
           </Button>
         </Modal>
       </ModalV2>

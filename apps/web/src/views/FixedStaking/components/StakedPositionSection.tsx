@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, useModalV2, Balance } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Text, useModalV2, Balance, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
 
@@ -10,6 +10,7 @@ import { LockedFixedTag } from './LockedFixedTag'
 import { PoolGroup, StakePositionUserInfo } from '../type'
 import { DetailModal } from './DetailModal'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
+import { FixedRestakingModal } from './RestakeFixedStakingModal'
 
 export function StakedPositionSection({
   token,
@@ -80,9 +81,29 @@ export function StakedPositionSection({
             Reward: {earnedAmount.toFixed(4)} {token.symbol}
           </Text>
         </Box>
-        <Button height="auto" onClick={stakeModal.onOpen}>
-          {t('Claim')}
-        </Button>
+        {shouldUnlock ? (
+          <Button height="auto" onClick={stakeModal.onOpen}>
+            {t('Claim')}
+          </Button>
+        ) : (
+          <Flex>
+            <IconButton variant="secondary" onClick={stakeModal.onOpen} mr="6px">
+              <MinusIcon color="primary" width="14px" />
+            </IconButton>
+            <FixedRestakingModal
+              stakedPeriods={stakedPeriods}
+              stakingToken={token}
+              pools={pool.pools}
+              initialLockPeriod={lockPeriod}
+            >
+              {(openModal) => (
+                <IconButton variant="secondary" onClick={openModal}>
+                  <AddIcon color="primary" width="14px" />
+                </IconButton>
+              )}
+            </FixedRestakingModal>
+          </Flex>
+        )}
       </Flex>
       <DetailModal
         stakedPeriods={stakedPeriods}

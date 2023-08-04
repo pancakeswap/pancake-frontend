@@ -19,12 +19,14 @@ export default function FixedStakingOverview({
 
   return (
     <LightGreyCard>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-          {t('Stake Amount')}
-        </Text>
-        <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount)} />
-      </Flex>
+      {stakeAmount ? (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
+            {t('Stake Amount')}
+          </Text>
+          <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount)} />
+        </Flex>
+      ) : null}
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Duration')}
@@ -47,7 +49,7 @@ export default function FixedStakingOverview({
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-          Stake Period End
+          {t('Ends on')}
         </Text>
         <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
       </Flex>
