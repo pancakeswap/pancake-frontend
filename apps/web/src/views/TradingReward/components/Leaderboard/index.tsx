@@ -133,7 +133,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
                 endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
               })}
             </Text>
-            {index === 1 && (
+            {index === 1 || !currentLeaderBoard ? (
               <PaginationButton
                 showMaxPageText
                 currentPage={currentLeaderBoard ? campaignPage - 1 : campaignPage}
@@ -142,7 +142,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
                   setCampaignPage(currentLeaderBoard ? page + 1 : page)
                 }}
               />
-            )}
+            ) : null}
           </>
         )}
         {campaignLeaderBoardList.campaignStart > 0 && (
