@@ -256,4 +256,12 @@ export const ethereumTokens = {
     'Worldcoin',
     'https://worldcoin.org/',
   ),
+  wom: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xc0B314a8c08637685Fc3daFC477b92028c540CFB',
+    18,
+    'WOM',
+    'Wombat Token',
+    'https://www.wombat.exchange/',
+  ),
 }
