@@ -35,14 +35,7 @@ export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchange
         const result = await Promise.all(
           liquidStakingList.map(async (i) => {
             let rate = '0'
-            const calls = i.multiCallMethods
-              .filter((methods) => methods?.filterName === FunctionName.exchangeRate)
-              .map((call) => ({
-                abi: call.abi,
-                address: call.address,
-                functionName: call.functionName,
-                args: call?.args ?? [],
-              }))
+            const calls = i.exchangeRateMultiCall
 
             if (calls.length > 0) {
               const [exchangeRate] = await client.multicall({

@@ -8,6 +8,13 @@ interface NativeToken {
   address?: string
 }
 
+interface ExchangeRateMultiCall {
+  abi: Abi
+  address: Address
+  functionName: FunctionName
+  args?: any
+}
+
 export enum FunctionName {
   exchangeRate = 'exchangeRate',
   convertSnBnbToBnb = 'convertSnBnbToBnb',
@@ -20,6 +27,7 @@ export interface LiquidStakingList {
   token0: Token | NativeToken
   token1: Token | NativeToken
   aprUrl: string
-  multiCallMethods?: any
   abi: Abi
+  shouldCheckApproval: boolean
+  exchangeRateMultiCall: ExchangeRateMultiCall[]
 }

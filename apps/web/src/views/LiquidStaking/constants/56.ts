@@ -14,10 +14,10 @@ const liquidStaking: LiquidStakingList[] = [
     token0: WETH9[ChainId.BSC],
     token1: bscTokens.wbeth,
     abi: wbethBscABI,
+    shouldCheckApproval: true,
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
-    multiCallMethods: [
+    exchangeRateMultiCall: [
       {
-        filterName: FunctionName.exchangeRate,
         abi: wbethBscABI,
         address: WBETH[ChainId.BSC],
         functionName: FunctionName.exchangeRate,
@@ -31,10 +31,10 @@ const liquidStaking: LiquidStakingList[] = [
     token0: NATIVE[ChainId.BSC],
     token1: bscTokens.snbnb,
     abi: snBnbABI,
+    shouldCheckApproval: false,
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
-    multiCallMethods: [
+    exchangeRateMultiCall: [
       {
-        filterName: FunctionName.exchangeRate,
         abi: snBnbABI,
         address: SNBNB[ChainId.BSC],
         functionName: FunctionName.convertSnBnbToBnb,

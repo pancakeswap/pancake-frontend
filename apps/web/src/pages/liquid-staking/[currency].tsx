@@ -1,203 +1,58 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Text, RowBetween, Button, Box, useToast, Flex, Image, AutoRenewIcon } from '@pancakeswap/uikit'
+import { CardBody, Text, RowBetween, Box, Flex, Image } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import Page from 'views/Page'
 import { useCurrency } from 'hooks/Tokens'
 import { LightGreyCard } from 'components/Card'
 import { useRouter } from 'next/router'
-import { useWBETHContract } from 'hooks/useContract'
-import useETHApprovalStatus from 'hooks/useETHApprovalStatus'
-import { useApproveETH } from 'hooks/useApproveETH'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { useMemo, useState } from 'react'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/sdk'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { ExchangeRateTitle } from 'views/LiquidStaking/components/ExchangeRateTitle'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GetStaticPaths, GetStaticProps } from 'next/types'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
-import { LiquidStakingApr } from 'views/LiquidStaking/components/LiquidStakingApr'
-import { masterChefV3Addresses } from '@pancakeswap/farms'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useContractRead } from 'wagmi'
-// import { calculateGasMargin } from 'utils'
+import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
+import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
+import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
 
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { account } = useAccountActiveChain()
+  const liquidStakingList = useLiquidStakingList()
   const [stakeAmount, setStakeAmount] = useState('')
-  // const [estimatedGas, setEstimatedGas] = useState()
-  const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, loading } = useCatchTxError()
-  const { account, chainId } = useAccountActiveChain()
 
-  const masterChefAddress = masterChefV3Addresses[chainId]
+  const selectedList = useMemo(() => {
+    const currency = (router?.query?.currency as string) ?? ''
+    const query: string = (router?.query?.contract as string) ?? ''
+    return liquidStakingList?.find(
+      (i) => i.contract.toLowerCase() === query?.toLowerCase() || i.token0.symbol === currency,
+    )
+  }, [liquidStakingList, router])
 
-  const ethToken = [ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId) ? NATIVE[chainId] : WETH9[chainId]
+  const { exchangeRateList } = useExchangeRate({ decimals: selectedList?.token0?.decimals })
 
-  const inputCurrency = useCurrency(ethToken?.address || ethToken?.symbol)
-
+  const inputCurrency = useCurrency(selectedList?.token0?.address || selectedList?.token0?.symbol)
   const currencyBalance = useCurrencyBalance(account, inputCurrency)
+  const currentAmount = useMemo(() => (stakeAmount ? new BigNumber(stakeAmount) : BIG_ZERO), [stakeAmount])
 
-  const currentAmount = stakeAmount ? new BigNumber(stakeAmount) : undefined
+  const outputCurrency = useCurrency(selectedList?.token1?.address)
+  const outputCurrencyBalance = useCurrencyBalance(account, outputCurrency)
 
-  const balance = useMemo(
-    () => (currencyBalance ? new BigNumber(currencyBalance.quotient.toString()) : BIG_ZERO),
-    [currencyBalance],
-  )
+  const quoteAmount = useMemo(() => {
+    const pickedRate = exchangeRateList?.find(
+      (i) => i?.contract?.toLowerCase() === selectedList?.contract?.toLowerCase(),
+    )?.exchangeRate
 
-  const convertedStakeAmount =
-    currentAmount && inputCurrency ? getDecimalAmount(currentAmount, inputCurrency.decimals) : undefined
-
-  const wbethContract = useWBETHContract()
-
-  const wbethCurrency = useCurrency(wbethContract?.address)
-
-  const wbethCurrencyBalance = useCurrencyBalance(account, wbethCurrency)
-
-  const { data } = useContractRead({
-    // @ts-ignore
-    abi: wbethContract?.abi,
-    address: wbethContract?.address,
-    functionName: 'exchangeRate',
-    watch: true,
-    chainId,
-  })
-
-  const { isApproved, allowance, setLastUpdated } = useETHApprovalStatus(wbethContract?.address)
-
-  const isApprovedEnough = isApproved && allowance?.isGreaterThanOrEqualTo(convertedStakeAmount)
-
-  const { isPending, onApprove } = useApproveETH(wbethContract?.address)
-
-  useEffect(() => {
-    setLastUpdated()
-  }, [isPending, setLastUpdated])
-
-  const decimals = ethToken?.decimals
-
-  const rateNumber: BigNumber | undefined = data
-    ? new BigNumber(data.toString()).dividedBy(new BigNumber(10 ** decimals))
-    : undefined
-
-  const quoteAmount = currentAmount && rateNumber ? currentAmount.dividedBy(rateNumber.toString()) : undefined
-  const exchangeRateAmount = rateNumber ? new BigNumber('1').dividedBy(rateNumber.toString()) : undefined
-
-  // const estimateFn = useCallback(async () => {
-  //   if (!convertedStakeAmount || !account) return
-
-  //   const estimate = wbethContract.estimateGas.deposit
-  //   const methodArgs = [convertedStakeAmount.toString(), account]
-
-  //   let response
-
-  //   try {
-  //     response = await estimate(...methodArgs)
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-
-  //   if (response) setEstimatedGas(response)
-  // }, [account, convertedStakeAmount, wbethContract.estimateGas.deposit])
-
-  // useEffect(() => {
-  //   // TODO: throttle
-  //   estimateFn()
-  // }, [estimateFn])
-
-  const onStake = useCallback(async () => {
-    if (!convertedStakeAmount || !account) return
-
-    const receipt = await fetchWithCatchTxError(() => {
-      if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
-        const methodArgs = [masterChefAddress] as const
-        return callWithGasPrice(wbethContract, 'deposit', methodArgs, {
-          value: BigInt(convertedStakeAmount.toString()),
-        })
-      }
-
-      const methodArgs = [BigInt(convertedStakeAmount.toString()), masterChefAddress] as const
-
-      return callWithGasPrice(wbethContract, 'deposit', methodArgs, {})
-    })
-
-    if (receipt?.status && quoteAmount) {
-      toastSuccess(
-        t('Staked!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, decimals)} WBETH`}
-        </ToastDescriptionWithTx>,
-      )
-
-      router.push('/liquid-staking')
-    }
-  }, [
-    account,
-    callWithGasPrice,
-    chainId,
-    convertedStakeAmount,
-    decimals,
-    fetchWithCatchTxError,
-    masterChefAddress,
-    quoteAmount,
-    router,
-    t,
-    toastSuccess,
-    wbethContract,
-  ])
-
-  let error = ''
-
-  if (convertedStakeAmount?.isGreaterThan(balance)) {
-    error = t('Insufficient Balance')
-  } else if (convertedStakeAmount?.toString()?.includes('.') || !currentAmount?.isGreaterThan(0)) {
-    error = t('Enter an amount')
-  }
-
-  let button = null
-
-  if (!account) {
-    button = <ConnectWalletButton width="100%" />
-  } else if (error) {
-    button = (
-      <Button disabled width="100%">
-        {error}
-      </Button>
-    )
-  } else if (!isApprovedEnough) {
-    button = (
-      <Button
-        endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-        isLoading={isPending}
-        onClick={() => {
-          onApprove()
-        }}
-        width="100%"
-      >
-        {isPending ? t('Enabling') : t('Enable')}
-      </Button>
-    )
-  } else if (isApprovedEnough && account) {
-    button = (
-      <Button
-        endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-        isLoading={loading}
-        onClick={onStake}
-        width="100%"
-      >
-        {loading ? `${t('Staking')}` : t('Stake')}
-      </Button>
-    )
-  }
+    return currentAmount && pickedRate ? currentAmount.dividedBy(pickedRate?.toString()) : BIG_ZERO
+  }, [currentAmount, exchangeRateList, selectedList?.contract])
 
   return (
     <Page>
@@ -240,17 +95,17 @@ const LiquidStakingStakePage = () => {
                 pr="4px"
                 height="auto"
                 width="fit-content"
-                tokenAddress={wbethContract?.address}
-                tokenSymbol={wbethCurrency?.symbol}
-                tokenDecimals={wbethCurrency?.decimals}
+                tokenAddress={selectedList?.token1?.address}
+                tokenSymbol={outputCurrency?.symbol}
+                tokenDecimals={outputCurrency?.decimals}
                 tokenLogo={undefined}
               />
               <Text color="textSubtle" fontSize="12px" ellipsis>
                 {t('Balance: %balance%', {
-                  balance: wbethCurrencyBalance
+                  balance: outputCurrencyBalance
                     ? getFullDisplayBalance(
-                        new BigNumber(wbethCurrencyBalance.quotient.toString()),
-                        wbethCurrencyBalance.currency.decimals,
+                        new BigNumber(outputCurrencyBalance.quotient.toString()),
+                        outputCurrencyBalance.currency.decimals,
                         6,
                       )
                     : '0',
@@ -261,31 +116,31 @@ const LiquidStakingStakePage = () => {
           <LightGreyCard mb="16px" padding="8px 12px">
             <RowBetween>
               <Text>
-                {quoteAmount && quoteAmount.isGreaterThan(0) ? getFullDisplayBalance(quoteAmount, 0, decimals) : '0'}
+                {quoteAmount && quoteAmount.isGreaterThan(0)
+                  ? getFullDisplayBalance(quoteAmount, 0, selectedList?.token0?.decimals)
+                  : '0'}
               </Text>
               <Flex>
                 <Box width={24} height={24}>
-                  <Image src={`/images/tokens/${wbethContract?.address}.png`} width={24} height={24} alt="WBETH" />
+                  <Image
+                    src={`/images/tokens/${selectedList?.token1?.address}.png`}
+                    width={24}
+                    height={24}
+                    alt={selectedList?.token1?.symbol}
+                  />
                 </Box>
-                <Text ml="4px">WBETH</Text>
+                <Text ml="4px">{selectedList?.token1?.symbol}</Text>
               </Flex>
             </RowBetween>
           </LightGreyCard>
-          <RowBetween mb="8px">
-            <ExchangeRateTitle />
-            {exchangeRateAmount ? (
-              <Text>{`1 ETH = ${getFullDisplayBalance(exchangeRateAmount, 0, 8)} WBETH`}</Text>
-            ) : (
-              '-'
-            )}
-          </RowBetween>
-          <LiquidStakingApr />
-          {/*
-          <RowBetween mb="24px">
-            <Text color="textSubtle">Gas Fee</Text>-
-          </RowBetween> */}
-
-          {button}
+          <StakeInfo selectedList={selectedList} />
+          <LiquidStakingButton
+            quoteAmount={quoteAmount}
+            inputCurrency={inputCurrency}
+            currentAmount={currentAmount}
+            selectedList={selectedList}
+            currencyBalance={currencyBalance}
+          />
         </CardBody>
       </AppBody>
       <AppBody>
@@ -307,7 +162,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { currency } = params
 
-  if (!['ETH', 'WETH', 'GOR'].includes(currency as string)) {
+  if (!['ETH', 'WETH', 'BNB', 'GOR'].includes(currency as string)) {
     return {
       redirect: {
         statusCode: 303,

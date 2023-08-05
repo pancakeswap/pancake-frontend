@@ -5,9 +5,14 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 interface UseLiquidStakingApprovalProps {
   tokenAddress: string
   contractAddress: Address
+  shouldCheckApproval: boolean
 }
 
-export const useLiquidStakingApprovalStatus = ({ tokenAddress, contractAddress }: UseLiquidStakingApprovalProps) => {
+export const useLiquidStakingApprovalStatus = ({
+  tokenAddress,
+  contractAddress,
+  shouldCheckApproval,
+}: UseLiquidStakingApprovalProps) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
@@ -17,7 +22,7 @@ export const useLiquidStakingApprovalStatus = ({ tokenAddress, contractAddress }
     address: tokenAddress as Address,
     functionName: 'allowance',
     args: [account, contractAddress],
-    enabled: !!account && !!contractAddress,
+    enabled: !!account && !!contractAddress && !!shouldCheckApproval,
   })
 
   return {
