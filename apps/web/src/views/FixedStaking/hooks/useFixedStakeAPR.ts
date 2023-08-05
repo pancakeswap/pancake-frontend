@@ -1,7 +1,6 @@
 import { Percent } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-
-const PERCENT_NUMBER = 1000000000
+import { DAYS_A_YEAR, PERCENT_DIGIT } from '../constant'
 
 export function useFixedStakeAPR({
   boostDayPercent,
@@ -12,8 +11,8 @@ export function useFixedStakeAPR({
 }) {
   return useMemo(
     () => ({
-      boostAPR: new Percent(boostDayPercent || 0, PERCENT_NUMBER).multiply(365),
-      lockAPR: new Percent(lockDayPercent || 0, PERCENT_NUMBER).multiply(365),
+      boostAPR: new Percent(boostDayPercent || 0, PERCENT_DIGIT).multiply(DAYS_A_YEAR),
+      lockAPR: new Percent(lockDayPercent || 0, PERCENT_DIGIT).multiply(DAYS_A_YEAR),
     }),
     [boostDayPercent, lockDayPercent],
   )

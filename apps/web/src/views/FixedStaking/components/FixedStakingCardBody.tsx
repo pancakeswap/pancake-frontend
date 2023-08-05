@@ -1,4 +1,4 @@
-import { Balance, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { Balance, ButtonMenu, ButtonMenuItem, Flex, StarCircle, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
@@ -9,6 +9,8 @@ import { Percent } from '@pancakeswap/swap-sdk-core'
 import { PoolGroup } from '../type'
 import { FixedStakingCardFooter } from './FixedStakingCardFooter'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { DAYS_A_YEAR, PERCENT_DIGIT } from '../constant'
 
 function OverviewDataRow({ title, detail }) {
   return (
@@ -21,8 +23,27 @@ function OverviewDataRow({ title, detail }) {
   )
 }
 
-const PERCENT_DIGIT = 1000000000
-const DAYS_A_YEAR = 365
+function AprFooter({ lockPeriod, stakingToken, boostDayPercent, lockDayPercent, pools }) {
+  const { boostAPR, lockAPR } = useFixedStakeAPR({ boostDayPercent, lockDayPercent })
+
+  return (
+    <Flex justifyContent="space-between" alignItems="center">
+      <Text>{lockPeriod}D APR</Text>
+      <Flex alignItems="center">
+        {boostAPR.greaterThan(0) ? (
+          <>
+            <StarCircle width="18px" color="success" />
+            <Text mx="4px" color="success" bold>
+              Up to {boostAPR.toSignificant(2)}%
+            </Text>
+          </>
+        ) : null}
+        <Text>{boostAPR.greaterThan(0) ? <s>{lockAPR.toSignificant(2)}%</s> : <>{lockAPR.toSignificant(2)}%</>}</Text>
+        <FixedStakingCalculator stakingToken={stakingToken} initialLockPeriod={lockPeriod} pools={pools} />
+      </Flex>
+    </Flex>
+  )
+}
 
 export function FixedStakingCardBody({
   children,
@@ -93,18 +114,13 @@ export function FixedStakingCardBody({
 
       <FixedStakingCardFooter>
         {pool.pools.map((p) => (
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text>{p.lockPeriod}D APR</Text>
-            <Flex alignItems="center">
-              <Text mr="4px" color="success" bold>
-                Up to {new Percent(p.lockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR).toSignificant(2)}%
-              </Text>
-              <Text>
-                <s>{new Percent(p.lockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR).toSignificant(2)}%</s>
-              </Text>
-              <FixedStakingCalculator stakingToken={pool.token} initialLockPeriod={p.lockPeriod} pools={pool.pools} />
-            </Flex>
-          </Flex>
+          <AprFooter
+            stakingToken={pool.token}
+            lockPeriod={p.lockPeriod}
+            pools={pool.pools}
+            boostDayPercent={p.boostDayPercent}
+            lockDayPercent={p.lockDayPercent}
+          />
         ))}
       </FixedStakingCardFooter>
     </>

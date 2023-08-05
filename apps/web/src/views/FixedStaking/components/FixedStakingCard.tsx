@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Flex, Heading, StarFillIcon, Tag, Box, Button } from '@pancakeswap/uikit'
+import { CardBody, Flex, Heading, Tag, Box, Button, StarCircle } from '@pancakeswap/uikit'
 import { StyledCard } from '@pancakeswap/uikit/src/widgets/Pool'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import BigNumber from 'bignumber.js'
@@ -26,7 +26,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
               {pool.token.symbol}
             </Heading>
             {new BigNumber(first(pool.pools)?.boostDayPercent).gt(0) ? (
-              <Tag outline variant="success" startIcon={<StarFillIcon width="18px" color="success" />}>
+              <Tag outline variant="success" startIcon={<StarCircle width="18px" color="success" />}>
                 vCAKE Boost
               </Tag>
             ) : null}
