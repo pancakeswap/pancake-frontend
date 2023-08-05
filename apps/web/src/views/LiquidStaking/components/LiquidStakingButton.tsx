@@ -173,16 +173,3 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
 }
 
 export default LiquidStakingButton
-
-// SNBNB
-
-// WBETH
-// ETH
-// const methodArgs = [masterChefAddress] as const
-// return callWithGasPrice(contract, 'deposit', methodArgs, {
-//   value: BigInt(convertedStakeAmount.toString()),
-// })
-
-// BSC
-// const methodArgs = [BigInt(convertedStakeAmount.toString()), masterChefAddress] as const
-// return callWithGasPrice(contract, 'deposit', methodArgs, {})
