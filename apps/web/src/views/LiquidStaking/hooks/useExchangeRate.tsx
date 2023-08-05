@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
 import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
-import { FunctionName } from 'views/LiquidStaking/constants/types'
 
 interface UseExchangeRateProps {
   decimals: number
