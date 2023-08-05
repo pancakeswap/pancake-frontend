@@ -91,7 +91,6 @@ export function FixedRestakingModal({
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
-                  stakingToken={stakingToken}
                   projectedReturnAmount={projectedReturnAmount}
                 />
               </Box>

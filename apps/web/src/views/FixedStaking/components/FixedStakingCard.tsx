@@ -35,52 +35,54 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
       </Flex>
       <CardBody>
         <FixedStakingCardBody pool={pool}>
-          {(selectedPeriodIndex, setSelectedPeriodIndex) =>
-            stakedPositions.length ? (
-              <>
-                <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                  {stakedPositions.length} {t('Staked Position')}
-                </InlineText>
-                <LightGreyCard mb="16px" mt="8px">
-                  {stakedPositions.map((stakePosition, index) => (
-                    <>
-                      <StakedPositionSection
-                        lockDayPercent={stakePosition.pool.lockDayPercent}
-                        boostDayPercent={stakePosition.pool.boostDayPercent}
-                        lockPeriod={stakePosition.pool.lockPeriod}
-                        unlockTime={stakePosition.endLockTime}
-                        stakePositionUserInfo={stakePosition.userInfo}
-                        token={stakePosition.pool.token}
-                        poolIndex={stakePosition.pool.poolIndex}
-                        withdrawalFee={stakePosition.pool.withdrawalFee}
-                        pool={pool}
-                        stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
-                      />
-                      {index < stakedPositions.length - 1 ? (
-                        <Box my="16px">
-                          <Divider />
-                        </Box>
-                      ) : null}
-                    </>
-                  ))}
-                </LightGreyCard>
-                {pool?.pools?.length ? (
-                  <FixedStakingModal
-                    setSelectedPeriodIndex={setSelectedPeriodIndex}
-                    key={selectedPeriodIndex}
-                    initialLockPeriod={
-                      selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
-                    }
-                    pools={pool.pools}
-                    stakingToken={pool.token}
-                    stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
-                  >
-                    {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
-                  </FixedStakingModal>
-                ) : null}
-              </>
-            ) : null
-          }
+          {(selectedPeriodIndex, setSelectedPeriodIndex) => (
+            <>
+              {stakedPositions.length ? (
+                <>
+                  <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+                    {stakedPositions.length} {t('Staked Position')}
+                  </InlineText>
+                  <LightGreyCard mb="16px" mt="8px">
+                    {stakedPositions.map((stakePosition, index) => (
+                      <>
+                        <StakedPositionSection
+                          lockDayPercent={stakePosition.pool.lockDayPercent}
+                          boostDayPercent={stakePosition.pool.boostDayPercent}
+                          lockPeriod={stakePosition.pool.lockPeriod}
+                          unlockTime={stakePosition.endLockTime}
+                          stakePositionUserInfo={stakePosition.userInfo}
+                          token={stakePosition.pool.token}
+                          poolIndex={stakePosition.pool.poolIndex}
+                          withdrawalFee={stakePosition.pool.withdrawalFee}
+                          pool={pool}
+                          stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
+                        />
+                        {index < stakedPositions.length - 1 ? (
+                          <Box my="16px">
+                            <Divider />
+                          </Box>
+                        ) : null}
+                      </>
+                    ))}
+                  </LightGreyCard>
+                </>
+              ) : null}
+              {pool?.pools?.length ? (
+                <FixedStakingModal
+                  setSelectedPeriodIndex={setSelectedPeriodIndex}
+                  key={selectedPeriodIndex}
+                  initialLockPeriod={
+                    selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
+                  }
+                  pools={pool.pools}
+                  stakingToken={pool.token}
+                  stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
+                >
+                  {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
+                </FixedStakingModal>
+              ) : null}
+            </>
+          )}
         </FixedStakingCardBody>
       </CardBody>
     </StyledCard>

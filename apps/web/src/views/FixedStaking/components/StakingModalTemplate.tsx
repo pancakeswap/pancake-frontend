@@ -52,6 +52,7 @@ export function StakingModalTemplate({
   stakedPeriods,
   body,
   head,
+  hideStakeButton,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
@@ -59,6 +60,7 @@ export function StakingModalTemplate({
   stakedPeriods: number[]
   head?: (params: BodyParam) => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
+  hideStakeButton?: boolean
 }) {
   const { t } = useTranslation()
   const stakeModal = useModalV2()
@@ -240,28 +242,32 @@ export function StakingModalTemplate({
 
       {typeof body === 'function' ? body(params) : body}
 
-      <DisclaimerCheckBox />
+      {hideStakeButton ? null : (
+        <>
+          <DisclaimerCheckBox />
 
-      {!rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
-        <Button
-          disabled={!rawAmount.gt(0) || pendingTx}
-          style={{
-            minHeight: '48px',
-          }}
-          onClick={handleSubmission}
-        >
-          {pendingTx ? t('Staking') : t('Stake')}
-        </Button>
-      ) : (
-        <Button
-          disabled={!rawAmount.gt(0) || approval === ApprovalState.PENDING || approval === ApprovalState.UNKNOWN}
-          style={{
-            minHeight: '48px',
-          }}
-          onClick={approveCallback}
-        >
-          {approval === ApprovalState.PENDING ? t('Enabling') : t('Enable')}
-        </Button>
+          {!rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
+            <Button
+              disabled={!rawAmount.gt(0) || pendingTx}
+              style={{
+                minHeight: '48px',
+              }}
+              onClick={handleSubmission}
+            >
+              {pendingTx ? t('Staking') : t('Stake')}
+            </Button>
+          ) : (
+            <Button
+              disabled={!rawAmount.gt(0) || approval === ApprovalState.PENDING || approval === ApprovalState.UNKNOWN}
+              style={{
+                minHeight: '48px',
+              }}
+              onClick={approveCallback}
+            >
+              {approval === ApprovalState.PENDING ? t('Enabling') : t('Enable')}
+            </Button>
+          )}
+        </>
       )}
     </Modal>
   )

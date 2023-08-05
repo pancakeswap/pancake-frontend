@@ -9,13 +9,11 @@ import {
   RoiCard,
   CalculatorMode,
   Flex,
-  StyledButton,
 } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import toNumber from 'lodash/toNumber'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
+import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
@@ -30,14 +28,12 @@ export function FixedStakingCalculator({
   pools: FixedStakingPool[]
   initialLockPeriod: number
 }) {
-  const { account } = useAccountActiveChain()
-
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()
 
-  return account ? (
+  return (
     <>
       <IconButton variant="text" scale="sm" onClick={() => stakeModal.onOpen()}>
         <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
@@ -50,6 +46,7 @@ export function FixedStakingCalculator({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          hideStakeButton
           stakingToken={stakingToken}
           pools={pools}
           initialLockPeriod={initialLockPeriod}
@@ -111,7 +108,5 @@ export function FixedStakingCalculator({
         />
       </ModalV2>
     </>
-  ) : (
-    <ConnectWalletButton />
   )
 }

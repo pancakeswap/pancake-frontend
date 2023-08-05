@@ -17,7 +17,7 @@ import { CurrencyLogo } from 'components/Logo'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
 
-import { StakePositionUserInfo } from '../type'
+import { StakePositionUserInfo, UnstakeType } from '../type'
 import { LockedFixedTag } from './LockedFixedTag'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
@@ -55,9 +55,15 @@ export function UnstakeBeforeEnededModal({
 
   const feePercent = useMemo(() => new Percent(withdrawalFee, 10000), [withdrawalFee])
 
-  const withdrawFee = amountDeposit.multiply(feePercent).add(accrueInterest)
+  const withdrawFee = useMemo(
+    () => amountDeposit.multiply(feePercent).add(accrueInterest),
+    [accrueInterest, amountDeposit, feePercent],
+  )
 
-  const totalGetAmount = amountDeposit.add(accrueInterest).subtract(withdrawFee)
+  const totalGetAmount = useMemo(
+    () => amountDeposit.add(accrueInterest).subtract(withdrawFee),
+    [accrueInterest, amountDeposit, withdrawFee],
+  )
 
   const { handleSubmission, pendingTx: loading } = useHandleWithdrawSubmission({ poolIndex })
 
@@ -83,7 +89,7 @@ export function UnstakeBeforeEnededModal({
           <LightCard mb="16px">
             <Flex justifyContent="space-between">
               <Box>
-                <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle">
+                <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('Commission')}
                 </Text>
                 <Text color="warning" bold>
@@ -98,7 +104,7 @@ export function UnstakeBeforeEnededModal({
                   textAlign: 'end',
                 }}
               >
-                <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle">
+                <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('You will get')}
                 </Text>
                 <AmountWithUSDSub amount={totalGetAmount} />
@@ -110,12 +116,7 @@ export function UnstakeBeforeEnededModal({
             {t('Position Details')}
           </PreTitle>
 
-          <FixedStakingOverview
-            lockAPR={lockAPR}
-            boostAPR={boostAPR}
-            stakingToken={token}
-            projectedReturnAmount={projectedReturnAmount}
-          />
+          <FixedStakingOverview lockAPR={lockAPR} boostAPR={boostAPR} projectedReturnAmount={projectedReturnAmount} />
 
           <Message variant="warning" my="16px">
             <MessageText maxWidth="200px">
@@ -128,7 +129,7 @@ export function UnstakeBeforeEnededModal({
             style={{
               minHeight: '48px',
             }}
-            onClick={handleSubmission}
+            onClick={() => handleSubmission(UnstakeType.WITHDRAW)}
           >
             {loading ? t('Unstaking') : t('Unstake')}
           </Button>
