@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useAccount } from 'wagmi'
-import { getBridgeICakeGasFee } from '@pancakeswap/ifos'
+import { getBridgeICakeGasFee, getCrossChainMessage } from '@pancakeswap/ifos'
 import { SpaceProps } from 'styled-system'
 import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { useCallback } from 'react'
@@ -41,7 +41,11 @@ export function BridgeButton({ ifoChainId, icake, ...props }: Props) {
       account,
       provider: getViemClients,
     })
-    console.log(gasEstimate.toExact())
+    const message = await getCrossChainMessage({
+      chainId: ChainId.BSC,
+      txHash: '0x54b077aa600b0f9f4a7c29ef3137fcbd3ccf11d429797b397987293373413680',
+    })
+    console.log(gasEstimate.toExact(), message)
   }, [account, sourceChain, ifoChainId])
 
   return (

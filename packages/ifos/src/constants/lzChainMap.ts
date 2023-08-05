@@ -8,3 +8,11 @@ export const LZ_CHAIN_MAP = {
   [ChainId.ZKSYNC]: 165,
   [ChainId.ARBITRUM_ONE]: 110,
 } as const
+
+export const LZ_MAP_REVERSE = Object.keys(LZ_CHAIN_MAP).reduce<Record<number, ChainId>>(
+  (acc, cur) => ({
+    ...acc,
+    [(LZ_CHAIN_MAP as Record<string, number>)[cur]]: Number(cur) as ChainId,
+  }),
+  {},
+)

@@ -1,6 +1,7 @@
 import type { Address } from 'wagmi'
 import { ChainId, Token } from '@pancakeswap/sdk'
 import { PublicClient } from 'viem'
+import { MessageStatus } from '@layerzerolabs/scan-client'
 
 export enum PoolIds {
   poolBasic = 'poolBasic',
@@ -50,4 +51,5 @@ export type CrossChainMessage = {
   dstChainId: ChainId
   dstUaAddress: Address
   dstTxHash?: string
+  status: MessageStatus
 }

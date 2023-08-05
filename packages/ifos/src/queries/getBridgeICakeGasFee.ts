@@ -25,11 +25,6 @@ export async function getBridgeICakeGasFee({
   gasMultiplierEnabled = true,
 }: Params) {
   const lzDstChainId = getLayerZeroChainId(dstChainId)
-  if (!lzDstChainId) {
-    throw new Error(
-      `Chain ${srcChainId} not supported on LayerZero network. See https://layerzero.gitbook.io/docs/technical-reference/mainnet/supported-chain-ids for more information`,
-    )
-  }
   if (!isNativeIfoSupported(srcChainId)) {
     throw new Error(`Native ifo not supported on ${srcChainId}`)
   }
