@@ -90,7 +90,7 @@ export function useCallWithGasPrice() {
         functionName: methodName,
         args: methodArgs,
         gasPrice,
-        gasLimit: calculateGasMargin(gas),
+        gas: calculateGasMargin(gas),
         value: 0n,
         ...overrides,
       } as unknown as WriteContractParameters)

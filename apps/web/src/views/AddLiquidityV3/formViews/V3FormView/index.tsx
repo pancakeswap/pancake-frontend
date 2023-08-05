@@ -240,7 +240,7 @@ export default function V3FormView({
         .then((gas) => {
           sendTransactionAsync({
             ...txn,
-            gasLimit: calculateGasMargin(gas),
+            gas: calculateGasMargin(gas),
           })
             .then((response) => {
               const baseAmount = formatRawAmount(

@@ -17,6 +17,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { viemClients } from 'utils/viem'
 import { Address, Hex, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
+
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -113,13 +114,12 @@ export default function useSendSwapTransaction(
         } = bestCallOption
 
         return sendTransactionAsync({
-          from: account,
+          account,
+          chainId,
           to: address,
           data: calldata,
-          value,
-          ...('gasEstimate' in bestCallOption
-            ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate).toString() }
-            : {}),
+          value: value && !isZero(value) ? hexToBigInt(value) : 0n,
+          ...('gasEstimate' in bestCallOption ? { gas: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
         })
           .then((response) => {
             const inputSymbol = trade.inputAmount.currency.symbol
@@ -153,7 +153,6 @@ export default function useSendSwapTransaction(
                 : recipient === account
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
-            // @ts-ignore
             addTransaction(response, {
               summary: withRecipient,
               translatableSummary: {

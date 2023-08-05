@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, CloseIcon, Flex, Text } from '@pancakeswap/uikit'
+import { PushClientTypes } from '@walletconnect/push-client'
 import CircleLoader from 'components/Loader/CircleLoader'
 import { useCallback, useState } from 'react'
-import { NotificationType } from 'views/Notifications/types'
 import { formatTime } from 'views/Notifications/utils/date'
 
 interface INotificationprops {
@@ -10,7 +10,7 @@ interface INotificationprops {
   description: string
   id: number
   date: number
-  removeNotification: (ids: number[]) => Promise<void>
+  removeNotification: (id: number) => Promise<void>
   key: number
 }
 
@@ -23,7 +23,7 @@ const NotificationItem = ({ title, description, id, date, removeNotification }: 
     (e: React.MouseEvent<HTMLElement>) => {
       e.stopPropagation()
       setDeleting(true)
-      removeNotification([id]).then(() => setDeleting(false))
+      removeNotification(id).then(() => setDeleting(false))
     },
     [removeNotification, id],
   )
@@ -55,7 +55,7 @@ const NotificationItem = ({ title, description, id, date, removeNotification }: 
           </Text>
         </Flex>
         <Flex py="8px" justifyContent="center">
-          <Box onClick={deleting ? () => null : deleteNotification}>
+          <Box onClick={deleteNotification}>
             {deleting ? <CircleLoader /> : <CloseIcon cursor="pointer" />}
           </Box>
         </Flex>
@@ -70,27 +70,27 @@ const NotificationContainer = ({
   sortOptionsType,
   removeNotification,
 }: {
-  transactions: any
+  transactions: PushClientTypes.PushMessageRecord[]
   sortOptionsType: string
-  removeNotification: (ids: number[]) => Promise<void>
+  removeNotification: (id: number) => Promise<void>
 }) => {
   if (transactions.length === 0) return <></>
   return (
     <>
       <Box>
         {transactions
-          .sort((a: NotificationType, b: NotificationType) => {
-            if (sortOptionsType === 'Latest') return b.date - a.date
-            return a.date - b.date
+          .sort((a: PushClientTypes.PushMessageRecord, b: PushClientTypes.PushMessageRecord) => {
+            if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
+            return a.publishedAt - b.publishedAt
           })
-          .map((notification: NotificationType) => {
+          .map((notification:  PushClientTypes.PushMessageRecord) => {
             return (
               <NotificationItem
                 key={notification.id}
-                title={notification.title}
-                description={notification.description}
+                title={notification.message.title}
+                description={notification.message.body}
                 id={notification.id}
-                date={notification.date}
+                date={notification.publishedAt}
                 removeNotification={removeNotification}
               />
             )

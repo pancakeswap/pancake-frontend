@@ -1,78 +1,81 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Message, MessageText, Text, useToast } from '@pancakeswap/uikit'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
-import { DappClient } from '@walletconnect/push-client'
+import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { PushClientTypes, WalletClient } from '@walletconnect/push-client'
+import _isEqual from 'lodash/isEqual'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import PushSubscriptionButton from '../components/PushSubscribeButton/PushSubscribeButton'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
+import { SubscriptionState } from '../index'
 import { ScrollableContainer } from '../styles'
 
 interface ISettingsProps {
-  pushClient: DappClient
+  pushClient: WalletClient
   chainId: number
   account: string
-  isSubscribing: boolean
-  setIsSubscribing: Dispatch<SetStateAction<boolean>>
-  isSubscribed: boolean
-  setIsSubscribed: Dispatch<SetStateAction<boolean>>
-  // account: string
+  setSubscriptionState: Dispatch<SetStateAction<SubscriptionState>>
+  subscriptionState: SubscriptionState
+  activeSubscriptions: PushClientTypes.PushSubscription[],
 }
 
 const NotificationSettingsMain = ({
   pushClient,
   chainId,
   account,
-  isSubscribing,
-  setIsSubscribing,
-  isSubscribed,
-  setIsSubscribed,
+ setSubscriptionState,
+ subscriptionState,
+ activeSubscriptions
 }: ISettingsProps) => {
-  const [isUnsubscribing, setIsUnsubscribing] = useState<boolean>(false)
 
-  const { toastSuccess, toastError } = useToast()
+  const { toastError } = useToast()
   const { t } = useTranslation()
+  const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
+  const prevScopesRef = useRef<PushClientTypes.PushSubscription['scope']>(scopes);
 
-  const handleSubscribe = useCallback(async () => {
-    setIsSubscribing(true)
-    try {
-      if (!pushClient) {
-        throw new Error('Push Client not initialized')
-      }
-      // Resolve known pairings from the Core's Pairing API.
-      const pairings = pushClient.core.pairing.getPairings()
-      if (!pairings?.length) {
-        throw new Error('No pairings found')
-      }
+  const objectsAreEqual = _isEqual(scopes, prevScopesRef.current);
 
-      const latestPairing = pairings[pairings.length - 1]
-      if (!latestPairing?.topic) {
-        throw new Error('Subscription failed', {
-          cause: 'pairingTopic is missing',
+  // Reduces the scopes mapping to only an array of enabled scopes
+  const getEnabledScopes = (scopesMap: PushClientTypes.PushSubscription['scope']) => {
+    const enabledScopeKeys: string[] = []
+    Object.entries(scopesMap).forEach(([key, scope]) => {
+      if (scope.enabled) {
+        enabledScopeKeys.push(key)
+      }
+    })
+
+    return enabledScopeKeys
+  }
+
+  useEffect(() => {
+    const app = activeSubscriptions.find(sub => sub.account === `eip155:${chainId}:${account}`)
+    if (!app) {
+      return
+    }
+    setScopes(app.scope)
+    prevScopesRef.current = app.scope
+  }, [activeSubscriptions, account, chainId])
+
+  const handleUpdatePreferences = useCallback(async () => {
+    const { topic } = activeSubscriptions.find(sub => sub.account === `eip155:${chainId}:${account}`)
+    if (pushClient && topic) {
+      try {
+        // @ts-ignore
+        pushClient?.emit('push_update', {})
+        await pushClient.update({
+          topic,
+          scope: getEnabledScopes(scopes)
         })
-      }
-      const { id } = await pushClient.propose({
-        account: `eip155:${chainId}:${account}`,
-        pairingTopic: latestPairing.topic,
-      })
-
-      if (!id) {
-        throw new Error('Subscription request failed', {
-          cause: 'Push propose failed',
-        })
-      }
-      toastSuccess(
-        `${t('Subscription Request')}!`,
-        <Text>{t('The subscription request has been sent to your wallet')}</Text>,
-      )
-    } catch (error) {
-      setIsSubscribing(false)
-      if (error instanceof Error) {
-        toastError(`${t('Subscription Request eError')}!`, <Text>{t(error.message)}</Text>)
+        const newScope = activeSubscriptions.find(sub => sub.account === `eip155:${chainId}:${account}`)
+        prevScopesRef.current = newScope?.scope
+      } catch (error) {
+        console.error(error)
       }
     }
-  }, [pushClient, account, toastSuccess, toastError, t, chainId, setIsSubscribing])
+  }, [pushClient, scopes, account, activeSubscriptions, chainId])
 
-  const handleUnSubscribe = useCallback(async () => {
-    setIsUnsubscribing(true)
+  const handleUnSubscribe = useCallback(
+    async(e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    setSubscriptionState((prevState) => ({ ...prevState, isUnsubscribing: true}))
     try {
       if (!pushClient) {
         throw new Error('Push Client not initialized')
@@ -83,60 +86,32 @@ const NotificationSettingsMain = ({
       )
 
       if (currentSubscription) {
-        const unsubscribeRawRes = await fetch('http://localhost:8000/delete-user', {
-          method: 'POST',
-          body: JSON.stringify({
-            account,
-          }),
-          headers: {
-            'content-type': 'application/json',
-          },
-        })
-        const unsubscribeRes = await unsubscribeRawRes.json()
-        const isSuccess = unsubscribeRes.success
-        if (!isSuccess) {
-          throw new Error('Failed to unsubscribe!')
-        }
         await pushClient.deleteSubscription({
           topic: currentSubscription.topic,
         })
 
-        setIsUnsubscribing(false)
-        setIsSubscribed(false)
-        toastSuccess(`${t('Unsubscribed')}!`, <Text>{t('You unsubscribed from gm notification')}</Text>)
+        setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: false, isSubscribed: false, isUnsubscribing: false}))
+        // @ts-ignore
+        pushClient.emit('push_delete', { })
       }
     } catch (error) {
-      setIsUnsubscribing(false)
-      console.error({ unsubscribeError: error })
+      setSubscriptionState((prevState) => ({ ...prevState, isUnsubscribing: false}))
+
       if (error instanceof Error) {
-        toastError(`${t('Subscription Request eError')}!`, <Text>{t(error.message)}</Text>)
+        toastError(`${t('Something went wrong')}!`, <Text>{t(error.message)}</Text>)
       }
     }
-  }, [setIsSubscribed, pushClient, account, toastSuccess, toastError, t, chainId])
-
-  const handleSubscriptionAction = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation()
-      return isSubscribed ? handleUnSubscribe() : handleSubscribe()
-    },
-    [handleSubscribe, handleUnSubscribe, isSubscribed],
-  )
+  }, [setSubscriptionState, pushClient, account, toastError, t, chainId])
 
   return (
     <Box paddingX="24px" paddingBottom="24px">
       <ScrollableContainer>
-        <SettingsContainer account={account} isSubscribed={isSubscribed} />
+        <SettingsContainer account={account} scopes={scopes} setScopes={setScopes} />
         <Box>
-          {!isSubscribed ? (
-            <Message mb="16px" variant="warning" padding="8px">
-              <MessageText>{t('Please sign again to apprve changes in wallet!')} </MessageText>
-            </Message>
-          ) : null}
           <PushSubscriptionButton
-            isSubscribed={isSubscribed}
-            isSubscribing={isSubscribing}
-            isUnsubscribing={isUnsubscribing}
-            handleSubscriptionAction={handleSubscriptionAction}
+            isUnsubscribing={subscriptionState.isUnsubscribing}
+            handleSubscriptionAction={objectsAreEqual ? handleUnSubscribe : handleUpdatePreferences}
+            objectsAreEqual={objectsAreEqual}
           />
         </Box>
       </ScrollableContainer>

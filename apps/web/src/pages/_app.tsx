@@ -1,5 +1,4 @@
 import '@pancakeswap/ui/css/reset.css'
-import '../style/transitions.module.css'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
@@ -80,9 +79,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           // eslint-disable-next-line @next/next/no-sync-scripts
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}
-        <meta name="referrer" content="no-referrer" />
       </Head>
-      {/* <ClientContextProvider> */}
       <DefaultSeo {...SEO} />
       <Providers store={store}>
         <PageMeta />
@@ -101,7 +98,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           </PersistGate>
         </Blocklist>
       </Providers>
-      {/* </ClientContextProvider> */}
       <Script
         strategy="afterInteractive"
         id="google-tag"

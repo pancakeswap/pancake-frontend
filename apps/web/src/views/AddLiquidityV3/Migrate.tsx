@@ -72,8 +72,8 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
     chainId,
   })
 
-  const token0 = useToken(token0Address as any)
-  const token1 = useToken(token1Address as any)
+  const token0 = useToken(token0Address)
+  const token1 = useToken(token1Address)
 
   const [, pair] = useV2Pair(token0, token1)
   const totalSupply = useTotalSupply(pair?.liquidityToken)
@@ -334,7 +334,7 @@ function V2PairMigrate({
       owner: account,
       spender: migrator.address,
       value: pairBalance.toString(),
-      nonce: toHex(nonce as any),
+      nonce: toHex(nonce),
       deadline: Number(deadline),
     }
 
@@ -450,7 +450,7 @@ function V2PairMigrate({
       .multicall([data], { account: migrator.account, value: 0n })
       .then((gasEstimate) => {
         return migrator.write
-          .multicall([data], { gasLimit: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
+          .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
           .then((response) => {
             addTransaction(
               {

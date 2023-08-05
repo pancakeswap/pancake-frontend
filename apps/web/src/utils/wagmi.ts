@@ -12,7 +12,7 @@ import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { DEFAULT_APP_METADATA } from 'views/Notifications/constants'
-import { WalletConnectConnector } from './WalletConnectConnector2'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 // get most configs chain nodes length
 const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {

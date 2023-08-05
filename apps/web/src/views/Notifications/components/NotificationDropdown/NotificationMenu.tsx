@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
+import { Box, Flex, NotificationBellIcon, UserMenuProps } from '@pancakeswap/uikit'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Button, UserMenuProps, NotificationBellIcon } from '@pancakeswap/uikit'
 
 const Menu = styled.div<{ isOpen: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
@@ -23,10 +23,20 @@ const Menu = styled.div<{ isOpen: boolean }>`
 `
 
 const NotificationMenu: React.FC<
-  UserMenuProps & { isMenuOpen: boolean; setIsMenuOpen: Dispatch<SetStateAction<boolean>> }
-> = ({ children, isMenuOpen, setIsMenuOpen }) => {
+  UserMenuProps & 
+  { isMenuOpen: boolean; 
+    setIsMenuOpen: Dispatch<SetStateAction<boolean>>, 
+    setUnread: React.Dispatch<React.SetStateAction<number>>
+unread: number
+}
+> = ({ children, isMenuOpen, setIsMenuOpen, unread, setUnread }) => {
   const ref = useRef<HTMLDivElement>(null)
 
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(true)
+    setUnread(0)
+  }, [setIsMenuOpen, setUnread])
+  
   useEffect(() => {
     const checkIfClickedOutside = (e: Event) => {
       if (!ref.current) return
@@ -42,11 +52,17 @@ const NotificationMenu: React.FC<
 
   return (
     <Flex alignItems="center" height="100%" ref={ref} >
-      <Button
-        variant="text"
-        startIcon={<NotificationBellIcon color="textSubtle" width="24px" />}
-        onClick={() => setIsMenuOpen(true)}
-      />
+      <Box
+        position='relative'
+        paddingRight='16px'
+        paddingLeft='8px'
+        onClick={toggleMenu}
+      >
+<NotificationBellIcon color="textSubtle" width="30px" />
+{ unread > 0 ? <div style={{ position: 'absolute', bottom: '60%', left: '45%', width: '20px', height: '20px', borderRadius: '50%', background: 'red', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold'}}>
+  { unread}
+</div> : null}
+      </Box>
       <Menu isOpen={isMenuOpen} style={{ top: '100%', left: '63%', position: 'fixed' }}>
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>
       </Menu>

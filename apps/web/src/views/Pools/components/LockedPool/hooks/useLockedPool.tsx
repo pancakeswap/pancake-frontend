@@ -56,7 +56,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const handleDeposit = useCallback(
     async (convertedStakeAmount: BigNumber, lockDuration: number) => {
       const callOptions = {
-        gasLimit: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
+        gas: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
       }
 
       const receipt = await fetchWithCatchTxError(() => {

@@ -32,7 +32,7 @@ export const ToastContainer: React.FC<React.PropsWithChildren<ToastContainerProp
   toasts,
   onRemove,
   ttl = 6000,
-  stackSpacing = 24,
+  stackSpacing = 110,
 }) => {
   return (
     <StyledToastContainer>

@@ -1,71 +1,33 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, Toggle, useToast } from '@pancakeswap/uikit'
-import { initialNotificationState, useNotificationState } from '@pancakeswap/utils/user'
+import { Box, Flex, Text, Toggle } from '@pancakeswap/uikit'
+import { PushClientTypes } from '@walletconnect/push-client'
 import Divider from 'components/Divider'
-import { useCallback, useEffect, useState } from 'react'
-import { DEFAULT_NOTIFICATIONS } from 'views/Notifications/constants'
-import { NotifyType } from 'views/Notifications/types'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 interface ISettingsprops {
   title: string
   description: string
-  type: string
   isToastVisible: boolean
   account: string
-  isSubscribed: boolean
+  isSubscribed: {
+    description: string
+    enabled: boolean
+  }
+  setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
 }
 
-const Settingsitem = ({ title, description, type, isToastVisible, account, isSubscribed }: ISettingsprops) => {
-  const { notificationState, toggleNotification } = useNotificationState(type)
+const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettingsprops) => {
   const { t } = useTranslation()
-  const { toastSuccess, toastWarning } = useToast()
 
-  const notificationAlert = useCallback(() => {
-    toggleNotification()
-    if (!isToastVisible && isSubscribed) {
-      if (!notificationState) {
-        fetch('http://localhost:8000/update-user', {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            account,
-            type: title,
-            value: true,
-          }),
-        })
-          .then(async (data) => data.json())
-          .then((data) => {
-            toastSuccess(
-              `${t('Settings Update')}!`,
-              <Text>{t(`You will now recieve ${title} alerts`)}</Text>,
-              'bottom' as any,
-            )
-          })
-      } else {
-        fetch('http://localhost:8000/update-user', {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            account,
-            type: title,
-            value: false,
-          }),
-        }).then(() => {
-          toastWarning(
-            `${t('Settings Update')}!`,
-            <Text>
-              {t(`you have deactivated ${title} alert and will not recieve notifications until turned back on`)}
-            </Text>,
-            'bottom' as any,
-          )
-        })
-      }
-    }
-  }, [toastSuccess, toggleNotification, notificationState, t, title, isToastVisible, toastWarning, account])
+  const toggleScopeEnabled = () => {
+    setScopes((prevScopes) => ({
+      ...prevScopes,
+      [title]: {
+        ...prevScopes[title],
+        enabled: !prevScopes[title].enabled,
+      },
+    }))
+  }
 
   return (
     <>
@@ -78,13 +40,26 @@ const Settingsitem = ({ title, description, type, isToastVisible, account, isSub
         <Flex alignItems="center" maxWidth="80%">
           <Text color="textSubtle">{t(`${description}`)}</Text>
         </Flex>
-        <Toggle id="toggle-expert-mode-button" scale="md" checked={notificationState} onChange={notificationAlert} />
+        <Toggle
+          id="toggle-expert-mode-button"
+          scale="md"
+          checked={isSubscribed.enabled}
+          onChange={toggleScopeEnabled}
+        />
       </Flex>
     </>
   )
 }
 
-const SettingsContainer = ({ account, isSubscribed }: { account: string; isSubscribed: boolean }) => {
+const SettingsContainer = ({
+  account,
+  scopes,
+  setScopes,
+}: {
+  account: string
+  scopes: PushClientTypes.ScopeMap
+  setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
+}) => {
   const [isToastVisible, setToastVisible] = useState<boolean>(false)
 
   // eslint-disable-next-line consistent-return
@@ -99,22 +74,20 @@ const SettingsContainer = ({ account, isSubscribed }: { account: string; isSubsc
       }
     }
   }, [isToastVisible])
-
   return (
     <>
       <Box>
         <Divider />
-        {DEFAULT_NOTIFICATIONS.map((notification: NotifyType, index: number) => {
-          const types = Object.keys(initialNotificationState)
+        {Object.entries(scopes).map(([title, scope]) => {
           return (
             <Settingsitem
-              key={notification.title}
-              title={notification.title}
-              description={notification.description}
-              type={types[index]}
+              key={title}
+              title={title}
+              description={scope.description}
               isToastVisible={isToastVisible}
               account={account}
-              isSubscribed={isSubscribed}
+              isSubscribed={scope}
+              setScopes={setScopes}
             />
           )
         })}

@@ -1,9 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, CircleLoader, Flex, FlexGap, OptionProps, Text, useToast } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  CircleLoader,
+  Flex,
+  FlexGap,
+  useToast,
+  AutoRow,
+  OptionProps,
+  Select,
+  Text,
+} from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
 import Image from 'next/image'
-import { useCallback, useMemo, useState } from 'react'
-import NotificationsFilter from '../components/NotificationsFilter/NotificationaFilter'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { PushClientTypes, WalletClient } from '@walletconnect/push-client'
+import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
+import { FilterContainer, LabelWrapper } from 'views/Notifications/styles'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 
 const EmptyView = () => {
@@ -30,19 +43,42 @@ const EmptyView = () => {
 }
 
 const SettingsModal = ({
-  transactions,
+  activeSubscriptions,
   account,
-  fetchTxs,
+  getMessageHistory,
+  pushClient,
 }: {
-  transactions: any
+  activeSubscriptions: PushClientTypes.PushSubscription[]
   account: string
-  fetchTxs: () => Promise<void>
+  getMessageHistory: (params: { topic: string }) => Promise<Record<number, PushClientTypes.PushMessageRecord>>
+  pushClient: WalletClient
 }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [sortOptionsType, setSortOptionsType] = useState<string>('All')
   const [notificationType, setNotificationType] = useState<string>('All')
-  const { toastSuccess, toastError } = useToast()
+  const { toastSuccess } = useToast()
+  const [transactions, setTransactions] = useState<PushClientTypes.PushMessageRecord[]>([])
+
   const { t } = useTranslation()
+
+  const updateMessages = useCallback(async () => {
+    const currentSubscription = Object.values(activeSubscriptions).find(
+      (sub) => sub.account === `eip155:${5}:${account}`,
+    )
+    if (pushClient && currentSubscription?.topic) {
+      try {
+        const messageHistory = await getMessageHistory({ topic: currentSubscription?.topic })
+        setTransactions(Object.values(messageHistory))
+      } catch (error) {
+        //
+      }
+    } else setTransactions([])
+  }, [setTransactions, pushClient, activeSubscriptions, getMessageHistory, account])
+
+  useEffect(() => {
+    if (!pushClient || !activeSubscriptions) return
+    updateMessages()
+  }, [updateMessages, pushClient, activeSubscriptions])
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
     setNotificationType(option.value)
@@ -53,50 +89,21 @@ const SettingsModal = ({
   }, [])
 
   const removeNotification = useCallback(
-    async (ids: number[]) => {
+    async (id: number) => {
       setLoading(true)
-      try {
-        if (ids.length > 0) {
-          const unsubscribeRawRes = await fetch('http://localhost:8000/delete-notifications', {
-            method: 'POST',
-            body: JSON.stringify({
-              account,
-              ids,
-            }),
-            headers: {
-              'content-type': 'application/json',
-            },
-          })
-          const unsubscribeRes = await unsubscribeRawRes.json()
-          const isSuccess = unsubscribeRes.success
-          if (!isSuccess) {
-            throw new Error('Failed to unsubscribe!')
-          }
-          await fetchTxs()
-
-          setLoading(false)
-          toastSuccess(`${t('Success')}!`, <Text>{t('Notification(s) have been cleared')}</Text>, 'left')
-        } else setLoading(false)
-      } catch (error) {
-        setLoading(false)
-        toastError(
-          `${t('Something went wrong')}!`,
-          <Text>{t('An unknown error occured while deleting your notification')}</Text>,
-          'left',
-        )
-      }
+      pushClient?.deletePushMessage({ id: Number(id) })
+      updateMessages()
+      setLoading(false)
+      toastSuccess(`${t('Success')}!`, <Text>{t('Notification(s) have been cleared')}</Text>)
     },
-    [toastSuccess, toastError, account, t, fetchTxs],
+    [toastSuccess, t, pushClient, updateMessages],
   )
 
   const removeAllNotifications = useCallback(async () => {
-    const ids = transactions.map((transaction) => {
-      const extractedType = transaction.type.split(' ')[0]
-      if (extractedType === notificationType || notificationType === 'All') return transaction.id
-      return null
+    transactions.forEach((transaction) => {
+      removeNotification(transaction.id)
     })
-    await removeNotification(ids)
-  }, [notificationType, transactions, removeNotification])
+  }, [transactions, removeNotification])
 
   const filteredNotifications: any = useMemo(() => {
     const sortFarms = (notifications: any[]): any[] => {
@@ -105,24 +112,29 @@ const SettingsModal = ({
           // @ts-ignore
           return notifications.filter(() => true)
         case 'Liquidity':
-          return notifications.filter((notification: any) => {
-            const extractedType = notification.type.split(' ')[0]
+          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+            const extractedType = notification.message.type
             return extractedType === 'Liquidity'
           })
         case 'Staking':
-          return notifications.filter((notification: any) => {
-            const extractedType = notification.type.split(' ')[0]
+          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+            const extractedType = notification.message.type
             return extractedType === 'Staking'
           })
         case 'Pools':
-          return notifications.filter((notification: any) => {
-            const extractedType = notification.type.split(' ')[0]
+          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+            const extractedType = notification.message.type
             return extractedType === 'Pools'
           })
         case 'Farms':
-          return notifications.filter((notification: any) => {
-            const extractedType = notification.type.split(' ')[0]
+          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+            const extractedType = notification.message.type
             return extractedType === 'Farms'
+          })
+        case 'alerts':
+          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+            const extractedType = notification.message.type
+            return extractedType === 'alerts'
           })
         default:
           return notifications
@@ -134,7 +146,24 @@ const SettingsModal = ({
   return (
     <Box paddingBottom="24px">
       <Flex alignItems="center" paddingX="24px">
-        <NotificationsFilter setNotifyFilterType={handleNotifyOptionChange} setSortType={handleSortOptionChange} />
+        <AutoRow gap="12px" marginTop="8px" marginBottom="16px" marginRight="8px">
+          <FilterContainer>
+            <LabelWrapper style={{ width: '120px' }}>
+              <Text textTransform="uppercase" mb="4px" ml="4px">
+                {t('Filter by type')}
+              </Text>
+              <Select onOptionChange={handleNotifyOptionChange} options={NotificationFilterTypes} />
+            </LabelWrapper>
+          </FilterContainer>
+          <FilterContainer>
+            <LabelWrapper style={{ width: '100px' }}>
+              <Text textTransform="uppercase" mb="4px" ml="4px">
+                {t('Sort by date')}
+              </Text>
+              <Select onOptionChange={handleSortOptionChange} options={NotificationSortTypes} />
+            </LabelWrapper>
+          </FilterContainer>
+        </AutoRow>
         <Button
           marginTop="13px"
           height="40px"

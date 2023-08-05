@@ -308,7 +308,7 @@ export default function PoolPage() {
       .then((estimate) => {
         const newTxn = {
           ...txn,
-          gasLimit: calculateGasMargin(estimate),
+          gas: calculateGasMargin(estimate),
         }
 
         return sendTransactionAsync(newTxn).then((response) => {

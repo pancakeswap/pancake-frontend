@@ -1,24 +1,6 @@
 import { OptionProps } from '@pancakeswap/uikit'
-import { NotifyType, RelayerType } from './types'
+import { RelayerType } from './types'
 
-export const DEFAULT_NOTIFICATIONS: NotifyType[] = [
-  {
-    title: 'Liquidity Notifications',
-    description: 'Recieve notifications when your V3 LP position goes out of range',
-  },
-  {
-    title: 'Staking Notifications',
-    description: 'Recieve notifications when a fixed term staking period ends',
-  },
-  {
-    title: 'Pool Notifications',
-    description: 'Recieve notifications for new syrup pool or important pool updates',
-  },
-  {
-    title: 'Farm Notifications',
-    description: 'Recieve notifications for initial arm offerings or newly deployted farms',
-  },
-]
 
 export const NotificationFilterTypes: OptionProps[] = [
   {
