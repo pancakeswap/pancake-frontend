@@ -22,3 +22,11 @@ export type RelayerType = {
   value: string | undefined
   label: string
 }
+
+export type SubscriptionState = {
+  isSubscribing: boolean
+  isSubscribed: boolean
+  isUnsubscribing: boolean
+  isOnboarding: boolean
+  isOnboarded: boolean
+}

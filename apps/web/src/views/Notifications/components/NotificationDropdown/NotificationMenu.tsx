@@ -23,12 +23,12 @@ const Menu = styled.div<{ isOpen: boolean }>`
 `
 
 const NotificationMenu: React.FC<
-  UserMenuProps & 
-  { isMenuOpen: boolean; 
-    setIsMenuOpen: Dispatch<SetStateAction<boolean>>, 
+  UserMenuProps & {
+    isMenuOpen: boolean
+    setIsMenuOpen: Dispatch<SetStateAction<boolean>>
     setUnread: React.Dispatch<React.SetStateAction<number>>
-unread: number
-}
+    unread: number
+  }
 > = ({ children, isMenuOpen, setIsMenuOpen, unread, setUnread }) => {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -36,7 +36,7 @@ unread: number
     setIsMenuOpen(true)
     setUnread(0)
   }, [setIsMenuOpen, setUnread])
-  
+
   useEffect(() => {
     const checkIfClickedOutside = (e: Event) => {
       if (!ref.current) return
@@ -51,17 +51,29 @@ unread: number
   }, [isMenuOpen, setIsMenuOpen])
 
   return (
-    <Flex alignItems="center" height="100%" ref={ref} >
-      <Box
-        position='relative'
-        paddingRight='16px'
-        paddingLeft='8px'
-        onClick={toggleMenu}
-      >
-<NotificationBellIcon color="textSubtle" width="30px" />
-{ unread > 0 ? <div style={{ position: 'absolute', bottom: '60%', left: '45%', width: '20px', height: '20px', borderRadius: '50%', background: 'red', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold'}}>
-  { unread}
-</div> : null}
+    <Flex alignItems="center" height="100%" ref={ref}>
+      <Box position="relative" paddingRight="16px" paddingLeft="8px" onClick={toggleMenu}>
+        <NotificationBellIcon color="textSubtle" width="30px" />
+        {unread > 0 ? (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '60%',
+              left: '45%',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              background: 'red',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            {unread}
+          </div>
+        ) : null}
       </Box>
       <Menu isOpen={isMenuOpen} style={{ top: '100%', left: '63%', position: 'fixed' }}>
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>

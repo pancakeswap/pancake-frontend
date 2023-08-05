@@ -3,32 +3,12 @@ import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import SubscribedView from 'views/Notifications/containers/OnBoardingView'
 import { useAccount, useChainId } from 'wagmi'
-import {
-  CogIcon,
-  IconButton,
-  ArrowBackIcon,
-  ModalTitle,
-  Heading,
-  ModalCloseButton,
-  LogoRoundIcon,
-  Box,
-} from '@pancakeswap/uikit'
+import { CogIcon, IconButton, ArrowBackIcon, Heading, ModalCloseButton, LogoRoundIcon, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import SettingsModal from './containers/NotificationView'
-import { StyledInputCurrencyWrapper, View, ViewContainer, ModalHeader } from './styles'
-
-export interface AppNotificationsDragProps {
-  id: number
-  isDragged: boolean
-}
-export type SubscriptionState = {
-  isSubscribing: boolean
-  isSubscribed: boolean
-  isUnsubscribing: boolean
-  isOnboarding: boolean
-  isOnboarded: boolean
-}
+import { StyledInputCurrencyWrapper, View, ViewContainer, ModalHeader, ModalTitle } from './styles'
+import { SubscriptionState } from './types'
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -60,7 +40,7 @@ const NotificationHeader = ({ isSettings = false, isSubscribed, onBack, onDismis
               {t('Notifications')}
             </Heading>
           </ModalTitle>
-          { account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
+          {account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
         </>
       ) : (
         <Box display="flex" padding="8px" paddingLeft="20px">
@@ -95,6 +75,7 @@ const Notifications = () => {
     unread,
     setUnread,
     registerMessage: pushRegisterMessage,
+    currentSubscription,
   } = useWalletConnectPushClient()
 
   const toggleSettings = useCallback(
@@ -139,18 +120,14 @@ const Notifications = () => {
           />
           <StyledInputCurrencyWrapper>
             {!subscriptionState.isSubscribed || !account ? (
-              <SubscribedView
-                setSubscriptionState={setSubscriptionState}
-                subscriptionState={subscriptionState}
-              />
+              <SubscribedView setSubscriptionState={setSubscriptionState} subscriptionState={subscriptionState} />
             ) : (
               <ViewContainer isRightView={isRightView}>
                 <View>
                   <SettingsModal
-                    activeSubscriptions={activeSubscriptions}
-                    account={account}
                     getMessageHistory={getMessageHistory}
                     pushClient={pushClient}
+                    currentSubscription={currentSubscription}
                   />
                 </View>
                 <View>
@@ -160,7 +137,7 @@ const Notifications = () => {
                     account={account}
                     setSubscriptionState={setSubscriptionState}
                     subscriptionState={subscriptionState}
-                    activeSubscriptions={activeSubscriptions}
+                    currentSubscription={currentSubscription}
                   />
                 </View>
               </ViewContainer>

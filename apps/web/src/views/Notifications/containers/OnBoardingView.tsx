@@ -9,7 +9,7 @@ import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 import { useChainId, useSignMessage } from 'wagmi'
 import { DEFAULT_APP_METADATA } from '../constants'
-import { SubscriptionState } from '../index'
+import { SubscriptionState } from '../types'
 
 function OnboardingButton({
   setSubscriptionState,
@@ -27,10 +27,7 @@ function OnboardingButton({
 
   const handleOnboarding = useCallback(() => {
     setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: true }))
-    toastSuccess(
-      `${t('Request Sent')}!`,
-      <Text>{t('Please sign the subscription request sent to your wallet')}</Text>,
-    )
+    toastSuccess(`${t('Request Sent')}!`, <Text>{t('Please sign the subscription request sent to your wallet')}</Text>)
     signMessageAsync({ message: pushRegisterMessage })
       .then((signature) => {
         postMessage(formatJsonRpcRequest('push_signature_delivered', { signature }))
@@ -57,10 +54,9 @@ function OnboardingButton({
         account: `eip155:${chainId}:${account}`,
         metadata: DEFAULT_APP_METADATA,
         onSign: async (message) => {
-            const signature = await signMessageAsync({ message })
-            return signature
-        }
-        
+          const signature = await signMessageAsync({ message })
+          return signature
+        },
       })
       if (!subscribed) {
         throw new Error('Subscription request failed', {
@@ -68,11 +64,11 @@ function OnboardingButton({
         })
       }
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true, isSubscribing: false }))
-      if (!subscribed.subscriptionAuth){ 
+      if (!subscribed.subscriptionAuth) {
         toastSuccess(
-        `${t('Subscription Request')}!`,
-        <Text>{t('Please sign the subscription request sent to your wallet')}</Text>,
-      )
+          `${t('Subscription Request')}!`,
+          <Text>{t('Please sign the subscription request sent to your wallet')}</Text>,
+        )
       }
     } catch (error) {
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: false }))

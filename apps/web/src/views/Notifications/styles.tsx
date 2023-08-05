@@ -50,13 +50,19 @@ export const StyledInputCurrencyWrapper = styled.div`
   overflow: hidden;
   width: 200%; /* Specify the width of the container */
   height: 200%; /* Specify the height of the container */
-  max-height: 545px;
+  min-height: 450px;
 `
 export const ViewContainer = styled.div<{ isRightView: boolean }>`
   display: flex;
   width: 200%;
   transition: transform 300ms ease-in-out;
   transform: translateX(${({ isRightView }) => (isRightView ? '0%' : '-50%')});
+`
+
+export const ModalTitle = styled(Flex)`
+  align-items: center;
+  flex: 1;
+  justify-content: center;
 `
 
 export const View = styled.div`

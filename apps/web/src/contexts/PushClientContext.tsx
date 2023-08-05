@@ -26,6 +26,8 @@ interface IContext {
   setUnread: React.Dispatch<React.SetStateAction<number>>
   unread: number
   postMessage: (messageData: JsonRpcRequest<unknown>) => void
+  setCurrentSubscribtion: React.Dispatch<React.SetStateAction<PushClientTypes.PushSubscription | null>>
+  currentSubscription: PushClientTypes.PushSubscription | null
 }
 
 const core = new Core({
@@ -36,6 +38,7 @@ export const PushClientContext = createContext<IContext>({} as IContext)
 
 export function PushClientContextProvider({ children }: { children: ReactNode | ReactNode[] }) {
   const [activeSubscriptions, setActiveSubscriptions] = useState<PushClientTypes.PushSubscription[]>([])
+  const [currentSubscription, setCurrentSubscribtion] = useState<PushClientTypes.PushSubscription | null>(null)
   const [emitter] = useState(new EventEmitter())
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const [pushClient, setPushClient] = useState<WalletClient | null>(null)
@@ -156,8 +159,13 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
 
     getActiveSubscriptions().then((subscriptions) => {
       setActiveSubscriptions(Object.values(subscriptions))
+      const _currentSubscription = Object.values(subscriptions).find(
+        (sub) => sub.account === `eip155:${chainId}:${account}`,
+      )
+      if (_currentSubscription) setCurrentSubscribtion(_currentSubscription)
+      else setCurrentSubscribtion(null)
     })
-  }, [pushClient, getActiveSubscriptions])
+  }, [pushClient, getActiveSubscriptions, setCurrentSubscribtion, account, chainId])
 
   const SendTestOnboardNotification = useCallback(async () => {
     try {
@@ -320,6 +328,8 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
         setUnread,
         unread,
         postMessage,
+        currentSubscription,
+        setCurrentSubscribtion,
       }}
     >
       {children}
