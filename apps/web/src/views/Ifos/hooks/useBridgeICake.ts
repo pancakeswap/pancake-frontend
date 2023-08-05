@@ -36,13 +36,13 @@ export type BridgeSuccessState = {
 export type BridgeState = BaseBridgeState | PendingCrossChainState | BridgeSuccessState
 
 const INITIAL_BRIDGE_STATE: BridgeState = {
-  state: BRIDGE_STATE.FINISHED,
-  srcUaAddress: '0x39061b58ecb2df82b5886528d77b3094179ce292',
-  srcChainId: ChainId.BSC,
-  srcUaNonce: 1,
-  dstChainId: ChainId.POLYGON_ZKEVM,
-  dstUaAddress: '0xe5de11958969e75c57e5708651a49f0cf3f34d13',
-  dstTxHash: '0x8617b7ef9569113b09befdc0f11bd18caa912e3f68f38999a179cdb80fd96f77',
+  state: BRIDGE_STATE.INITIAL,
+  // srcUaAddress: '0x39061b58ecb2df82b5886528d77b3094179ce292',
+  // srcChainId: ChainId.BSC,
+  // srcUaNonce: 1,
+  // dstChainId: ChainId.POLYGON_ZKEVM,
+  // dstUaAddress: '0xe5de11958969e75c57e5708651a49f0cf3f34d13',
+  // dstTxHash: '0x8617b7ef9569113b09befdc0f11bd18caa912e3f68f38999a179cdb80fd96f77',
 }
 
 export function useBridgeICake() {
