@@ -8,86 +8,50 @@ import {
   Text,
   Box,
   PreTitle,
-  useToast,
-  Balance,
   Heading,
   InfoFilledIcon,
 } from '@pancakeswap/uikit'
-import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
-import BigNumber from 'bignumber.js'
-import { ReactNode, useCallback, useMemo } from 'react'
+
+import { ReactNode } from 'react'
 import { LightGreyCard } from 'components/Card'
-import { useFixedStakingContract } from 'hooks/useContract'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
-import toNumber from 'lodash/toNumber'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { format, add } from 'date-fns'
 import { CurrencyLogo } from 'components/Logo'
-import { FixedStakingPool } from '../type'
-import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { FixedStakingPool, UnstakeType } from '../type'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 
 export function HarvestModal({
   stakingToken,
-  pools,
   children,
   lockPeriod,
-  stakeAmount,
+  amountDeposit,
   accrueInterest,
+  projectedReturnAmount,
+  boostAPR,
+  lockAPR,
+  handleSubmission,
+  pendingTx,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
   lockPeriod: number
-  stakeAmount: number
+  amountDeposit: CurrencyAmount<Token>
   accrueInterest: CurrencyAmount<Token>
+  projectedReturnAmount: CurrencyAmount<Token>
+  boostAPR: Percent
+  lockAPR: Percent
+  pendingTx: boolean
+  handleSubmission: (type: UnstakeType) => void
 }) {
   const { account } = useAccountActiveChain()
 
   const { t } = useTranslation()
   const restakeModal = useModalV2()
-
-  const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
-
-  const { boostAPR, lockAPR } = useFixedStakeAPR(selectedPool)
-
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const fixedStakingContract = useFixedStakingContract()
-  const { callWithGasPrice } = useCallWithGasPrice()
-  const { toastSuccess } = useToast()
-
-  const rawAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
-
-  const stakeCurrencyAmount = rawAmount.gt(0)
-    ? CurrencyAmount.fromRawAmount(stakingToken, rawAmount.toString())
-    : undefined
-
-  const projectedReturnAmount = stakeCurrencyAmount
-    ?.multiply(lockPeriod)
-    ?.multiply(boostAPR.multiply(lockPeriod).divide(365))
-
-  const handleSubmission = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      if (!selectedPool) return null
-      const methodArgs = [selectedPool.poolIndex]
-      return callWithGasPrice(fixedStakingContract, 'harvest', methodArgs)
-    })
-
-    if (receipt?.status) {
-      toastSuccess(
-        t('Restaked!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your funds have been restaked in the pool')}
-        </ToastDescriptionWithTx>,
-      )
-      restakeModal.onDismiss()
-    }
-  }, [fetchWithCatchTxError, selectedPool, callWithGasPrice, fixedStakingContract, toastSuccess, t, restakeModal])
 
   return account ? (
     <>
@@ -108,11 +72,11 @@ export function HarvestModal({
         >
           <Box mb="16px">
             <LightGreyCard mb="16px">
-              <Flex justifyContent="space-between" alignItems="center" mb="8px">
+              <Flex justifyContent="space-between" alignItems="baseline" mb="8px">
                 <PreTitle color="textSubtle">{t('Claim Reward')}</PreTitle>
-                <Text bold>
-                  {accrueInterest?.toSignificant(4) ?? 0} {stakingToken.symbol}
-                </Text>
+                <Box style={{ textAlign: 'end' }}>
+                  <AmountWithUSDSub amount={accrueInterest} />
+                </Box>
               </Flex>
               <Flex>
                 <InfoFilledIcon color="secondary" mr="4px" />
@@ -130,9 +94,11 @@ export function HarvestModal({
             <LightGreyCard>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  {t('Restake Amount')}
+                  {t('Stake Amount')}
                 </Text>
-                <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount)} />
+                <Text bold>
+                  {amountDeposit.toSignificant(2)} {amountDeposit.currency.symbol}
+                </Text>
               </Flex>
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
@@ -148,37 +114,39 @@ export function HarvestModal({
                 </Text>
                 <Text bold>{lockAPR?.toSignificant(2)}%</Text>
               </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
-                <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  {t('vCAKE Boost')}
-                </Text>
-                <Text bold>{boostAPR?.toSignificant(2)}%</Text>
-              </Flex>
+              {boostAPR?.greaterThan(0) ? (
+                <Flex alignItems="center" justifyContent="space-between">
+                  <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
+                    {t('vCAKE Boost')}
+                  </Text>
+                  <Text bold>{boostAPR?.toSignificant(2)}%</Text>
+                </Flex>
+              ) : null}
               <Flex alignItems="center" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('Fixed Staking Ends On')}
                 </Text>
                 <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
               </Flex>
-              <Flex alignItems="center" justifyContent="space-between">
+              <Flex alignItems="baseline" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-                  Projected Return
+                  {t('Projected Return')}
                 </Text>
-                <Text bold>
-                  {projectedReturnAmount?.toSignificant(2) ?? 0} {stakingToken.symbol}
-                </Text>
+                <Box style={{ textAlign: 'end' }}>
+                  <AmountWithUSDSub amount={projectedReturnAmount} />
+                </Box>
               </Flex>
             </LightGreyCard>
           </Box>
           <DisclaimerCheckBox />
           <Button
-            disabled={!rawAmount.gt(0) || pendingTx}
+            disabled={!amountDeposit.greaterThan(0) || pendingTx}
             style={{
               minHeight: '48px',
             }}
-            onClick={handleSubmission}
+            onClick={() => handleSubmission(UnstakeType.HARVEST)}
           >
-            {pendingTx ? t('Restaking') : t('Confirm Restake')}
+            {pendingTx ? t('Restaking') : t('Confirm Claim & Restake')}
           </Button>
         </Modal>
       </ModalV2>

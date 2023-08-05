@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Balance } from '@pancakeswap/uikit'
+import { Flex, Text, Balance, Box } from '@pancakeswap/uikit'
 
 import { LightGreyCard } from 'components/Card'
 
@@ -7,19 +7,18 @@ import toNumber from 'lodash/toNumber'
 
 import { format, add } from 'date-fns'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 
 export default function FixedStakingOverview({
   stakeAmount,
   lockAPR,
   boostAPR,
   lockPeriod,
-  stakingToken,
   projectedReturnAmount,
 }: {
   stakeAmount?: string
   lockAPR?: Percent
   boostAPR?: Percent
-  stakingToken: Token
   projectedReturnAmount: CurrencyAmount<Token>
   lockPeriod?: number
 }) {
@@ -27,7 +26,7 @@ export default function FixedStakingOverview({
 
   return (
     <LightGreyCard>
-      {stakeAmount ? (
+      {stakeAmount !== null || stakeAmount !== undefined ? (
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Stake Amount')}
@@ -61,17 +60,17 @@ export default function FixedStakingOverview({
       ) : null}
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-          {t('Ends on')}
+          {t('Stake Period Ends')}
         </Text>
         <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems="baseline" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-          Projected Return
+          {t('Projected Return')}
         </Text>
-        <Text bold>
-          {projectedReturnAmount?.toSignificant(2) ?? 0} {stakingToken.symbol}
-        </Text>
+        <Box style={{ textAlign: 'end' }}>
+          <AmountWithUSDSub amount={projectedReturnAmount} />
+        </Box>
       </Flex>
     </LightGreyCard>
   )

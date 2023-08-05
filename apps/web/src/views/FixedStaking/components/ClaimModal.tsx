@@ -1,10 +1,9 @@
-import { Box, Flex, Heading, Modal, ModalV2, PreTitle, Text, Balance, Button, useModalV2 } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Modal, ModalV2, PreTitle, Text, Button, useModalV2 } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { format } from 'date-fns'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
-import BigNumber from 'bignumber.js'
 import { ReactNode } from 'react'
 
 import { UnstakeEndedModal } from './UnstakeModal'
@@ -13,14 +12,13 @@ import { HarvestModal } from './HarvestModal'
 import { PoolGroup, StakePositionUserInfo } from '../type'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 
 export function ClaimModal({
   token,
   lockPeriod,
   children,
   unlockTime,
-  stakingAmount,
-  formattedUsdStakingAmount,
   lockAPR,
   stakePositionUserInfo,
   poolIndex,
@@ -30,8 +28,6 @@ export function ClaimModal({
   token: Token
   lockPeriod: number
   unlockTime: number
-  stakingAmount: BigNumber
-  formattedUsdStakingAmount: number
   lockAPR: Percent
   boostAPR: Percent
   stakePositionUserInfo: StakePositionUserInfo
@@ -44,7 +40,7 @@ export function ClaimModal({
   const unstakeModal = useModalV2()
   const claimModal = useModalV2()
 
-  const { projectedReturnAmount, accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
+  const { accrueInterest, amountDeposit, projectedReturnAmount } = useCalculateProjectedReturnAmount({
     token,
     stakePositionUserInfo,
     lockPeriod,
@@ -57,7 +53,12 @@ export function ClaimModal({
     <>
       {children(claimModal.onOpen)}
       <HarvestModal
-        stakeAmount={stakingAmount.toNumber()}
+        handleSubmission={handleSubmission}
+        pendingTx={pendingTx}
+        lockAPR={lockAPR}
+        boostAPR={boostAPR}
+        projectedReturnAmount={projectedReturnAmount}
+        amountDeposit={amountDeposit}
         accrueInterest={accrueInterest}
         lockPeriod={lockPeriod}
         pools={pool.pools}
@@ -78,19 +79,14 @@ export function ClaimModal({
               width={['100%', '100%', '420px']}
               maxWidth={['100%', , '420px']}
             >
+              <PreTitle color="textSubtle">{t('Overview')}</PreTitle>
               <LightCard mb="16px">
                 <Flex justifyContent="space-between">
                   <Box>
                     <PreTitle fontSize="12px" color="textSubtle">
                       {t('Stake Amount')}
                     </PreTitle>
-                    <Flex>
-                      <Balance bold fontSize="16px" decimals={4} value={stakingAmount.toNumber()} />
-                      <Text ml="4px" bold>
-                        {token.symbol}
-                      </Text>
-                    </Flex>
-                    <Balance bold prefix="~$" fontSize="14px" decimals={2} value={formattedUsdStakingAmount} />
+                    <AmountWithUSDSub amount={amountDeposit} />
                   </Box>
                   <Box
                     style={{
@@ -116,31 +112,25 @@ export function ClaimModal({
               </PreTitle>
 
               <LightCard mb="16px">
-                <Flex justifyContent="space-between">
-                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('Duration')}
+                <Flex justifyContent="space-between" mb="4px">
+                  <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                    {t('Rewards')}
                   </Text>
-                  <Text bold>{lockPeriod} Days</Text>
+                  <Box style={{ textAlign: 'end' }}>
+                    <AmountWithUSDSub amount={accrueInterest} />
+                  </Box>
                 </Flex>
                 <Flex justifyContent="space-between">
-                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('APR')}
-                  </Text>
-                  <Text bold>{lockAPR.toSignificant(2)}%</Text>
-                </Flex>
-                <Flex justifyContent="space-between">
-                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('Unlock Date')}
+                  <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                    {t('Fixed Staking Ended On')}
                   </Text>
                   <Text bold>{format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')}</Text>
                 </Flex>
                 <Flex justifyContent="space-between" mb="8px">
-                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('Projected Return')}
+                  <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                    {t('APR')}
                   </Text>
-                  <Text bold>
-                    {projectedReturnAmount.toSignificant(2)} {token.symbol}
-                  </Text>
+                  <Text bold>{lockAPR.toSignificant(2)}%</Text>
                 </Flex>
                 <Button
                   variant="danger"
@@ -178,7 +168,7 @@ export function ClaimModal({
         handleSubmission={handleSubmission}
         token={token}
         lockPeriod={lockPeriod}
-        unstakeModal={{ ...unstakeModal, closeOnOverlayClick: true }}
+        unstakeModal={unstakeModal}
       />
     </>
   )

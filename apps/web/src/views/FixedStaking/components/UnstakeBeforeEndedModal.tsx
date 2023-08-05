@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
 import {
-  Balance,
   Box,
   Button,
   Flex,
@@ -17,14 +16,13 @@ import {
 import { CurrencyLogo } from 'components/Logo'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
-import toNumber from 'lodash/toNumber'
 
 import { StakePositionUserInfo } from '../type'
 import { LockedFixedTag } from './LockedFixedTag'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import FixedStakingOverview from './FixedStakingOverview'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 
 export function UnstakeBeforeEnededModal({
   token,
@@ -62,8 +60,6 @@ export function UnstakeBeforeEnededModal({
   const totalGetAmount = amountDeposit.add(accrueInterest).subtract(withdrawFee)
 
   const { handleSubmission, pendingTx: loading } = useHandleWithdrawSubmission({ poolIndex })
-
-  const formattedUsdTotalAmount = useStablecoinPriceAmount(token, toNumber(totalGetAmount.toSignificant(6)))
 
   return (
     <>
@@ -105,17 +101,7 @@ export function UnstakeBeforeEnededModal({
                 <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle">
                   {t('You will get')}
                 </Text>
-                <Text bold>
-                  {totalGetAmount.toSignificant(2)} {token.symbol}
-                </Text>
-                <Balance
-                  unit=" USD"
-                  color="textSubtle"
-                  prefix="~$"
-                  fontSize="12px"
-                  decimals={2}
-                  value={formattedUsdTotalAmount}
-                />
+                <AmountWithUSDSub amount={totalGetAmount} />
               </Box>
             </Flex>
           </LightCard>

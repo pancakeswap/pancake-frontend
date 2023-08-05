@@ -44,3 +44,8 @@ export interface PoolGroup {
   totalDeposited: BigNumber
   pools: FixedStakingPool[]
 }
+
+export enum UnstakeType {
+  WITHDRAW = 'withdraw',
+  HARVEST = 'harvest',
+}

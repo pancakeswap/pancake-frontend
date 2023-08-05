@@ -1,9 +1,7 @@
-import { Box, Button, Flex, Text, Balance, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Text, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
 
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { differenceInMilliseconds, format } from 'date-fns'
 
 import { LockedFixedTag } from './LockedFixedTag'
@@ -13,6 +11,8 @@ import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { FixedRestakingModal } from './RestakeFixedStakingModal'
 import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 
 export function StakedPositionSection({
   token,
@@ -39,28 +39,23 @@ export function StakedPositionSection({
 }) {
   const { t } = useTranslation()
 
-  const earnedAmount = getBalanceAmount(stakePositionUserInfo.accrueInterest, token.decimals)
-
-  const formattedUsdEarnedAmount = useStablecoinPriceAmount(token, earnedAmount.toNumber())
-
-  const stakingAmount = getBalanceAmount(stakePositionUserInfo.userDeposit, token.decimals)
-  const formattedUsdStakingAmount = useStablecoinPriceAmount(token, stakingAmount.toNumber())
-  const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
-
   const { boostAPR, lockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent })
+
+  const { accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
+    token,
+    stakePositionUserInfo,
+    lockPeriod,
+    apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
+  })
+
+  const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
 
   return (
     <>
       <Flex mb="8px" justifyContent="space-between" width="100%">
         <Flex>
           <Box>
-            <Flex>
-              <Balance color="secondary" bold fontSize="16px" decimals={4} value={stakingAmount.toNumber()} />
-              <Text color="secondary" ml="4px" bold>
-                {token.symbol}
-              </Text>
-            </Flex>
-            <Balance unit=" USD" bold prefix="~$" fontSize="14px" decimals={2} value={formattedUsdEarnedAmount} />
+            <AmountWithUSDSub amount={amountDeposit} />
           </Box>
         </Flex>
 
@@ -77,11 +72,11 @@ export function StakedPositionSection({
           </Text>
 
           <Text color="textSubtle" fontSize="12px">
-            {shouldUnlock ? 'Unlocked' : `Unlock on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
+            {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
           </Text>
 
           <Text color="textSubtle" fontSize="12px">
-            {t('Reward')}: {earnedAmount.toFixed(4)} {token.symbol}
+            {shouldUnlock ? t('Reward') : t('Est. Reward')}: {accrueInterest.toFixed(4)} {token.symbol}
           </Text>
         </Box>
         {shouldUnlock ? (
@@ -95,8 +90,6 @@ export function StakedPositionSection({
             token={token}
             lockPeriod={lockPeriod}
             unlockTime={unlockTime}
-            stakingAmount={stakingAmount}
-            formattedUsdStakingAmount={formattedUsdStakingAmount}
           >
             {(openClaimModal) => (
               <Button height="auto" onClick={openClaimModal}>

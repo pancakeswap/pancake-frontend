@@ -42,6 +42,7 @@ interface BodyParam {
   isStaked: boolean
   boostAPR: Percent
   lockAPR: Percent
+  formattedUsdProjectedReturnAmount: number
 }
 
 export function StakingModalTemplate({
@@ -80,9 +81,7 @@ export function StakingModalTemplate({
 
   const rawAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
 
-  const stakeCurrencyAmount = rawAmount.gt(0)
-    ? CurrencyAmount.fromRawAmount(stakingToken, rawAmount.toString())
-    : undefined
+  const stakeCurrencyAmount = CurrencyAmount.fromRawAmount(stakingToken, rawAmount.gt(0) ? rawAmount.toString() : '0')
 
   const [approval, approveCallback] = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
 
@@ -146,12 +145,24 @@ export function StakingModalTemplate({
 
   const isStaked = !!stakedPeriods.find((p) => p === lockPeriod)
 
-  const { boostAPR, lockAPR } = useFixedStakeAPR(selectedPool)
+  const aprParams = useMemo(
+    () => ({
+      boostDayPercent: selectedPool?.boostDayPercent || 0,
+      lockDayPercent: selectedPool?.lockDayPercent || 0,
+    }),
+    [selectedPool?.boostDayPercent, selectedPool?.lockDayPercent],
+  )
+
+  const { boostAPR, lockAPR } = useFixedStakeAPR(aprParams)
 
   const projectedReturnAmount = stakeCurrencyAmount
     ?.multiply(lockPeriod)
     ?.multiply(boostAPR.multiply(lockPeriod).divide(365))
 
+  const formattedUsdProjectedReturnAmount = useStablecoinPriceAmount(
+    stakingToken,
+    toNumber(projectedReturnAmount?.toSignificant(2)),
+  )
   const params = useMemo(
     () => ({
       setLockPeriod,
@@ -161,8 +172,9 @@ export function StakingModalTemplate({
       isStaked,
       boostAPR,
       lockAPR,
+      formattedUsdProjectedReturnAmount,
     }),
-    [boostAPR, isStaked, lockAPR, lockPeriod, projectedReturnAmount, stakeAmount],
+    [boostAPR, formattedUsdProjectedReturnAmount, isStaked, lockAPR, lockPeriod, projectedReturnAmount, stakeAmount],
   )
 
   return (
