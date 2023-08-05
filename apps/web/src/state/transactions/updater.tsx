@@ -92,7 +92,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, handleSendTestNotification])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
   const nonBscFarmPendingTxns = useMemo(
     () =>
