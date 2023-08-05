@@ -18,6 +18,15 @@ import {
 import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
+import crypto from 'crypto'
+
+function generateRandomHash(length: number): string {
+  const randomBytes = crypto.randomBytes(length)
+  const hash = crypto.createHash('sha256').update(randomBytes).digest('hex')
+  return hash
+}
+
+// Example usage:
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -261,6 +270,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === 'Mercuryo') {
       if (sig && window?.mercuryoWidget) {
+        const randomHash = generateRandomHash(32)
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
@@ -271,6 +281,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
+          merchantTransactionId: randomHash,
           signature: sig,
           height: '750px',
           width: '400px',
