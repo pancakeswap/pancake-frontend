@@ -14,7 +14,7 @@ interface TypeProps {
 }
 
 const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo }) => {
-  useFetchIfo({ chainId: activeIfo.chainId })
+  useFetchIfo()
   const publicIfoData = useGetPublicIfoV7Data(activeIfo)
   const walletIfoData = useGetWalletIfoV7Data(activeIfo)
 
