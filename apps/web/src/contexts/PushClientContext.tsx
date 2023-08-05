@@ -165,7 +165,7 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       if (_currentSubscription) setCurrentSubscribtion(_currentSubscription)
       else setCurrentSubscribtion(null)
     })
-  }, [pushClient, getActiveSubscriptions, setCurrentSubscribtion, account, chainId])
+  }, [pushClient, getActiveSubscriptions, account, chainId])
 
   const SendTestOnboardNotification = useCallback(async () => {
     try {

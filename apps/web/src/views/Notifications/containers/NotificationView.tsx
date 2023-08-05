@@ -46,10 +46,12 @@ const SettingsModal = ({
   getMessageHistory,
   pushClient,
   currentSubscription,
+  activeSubscriptions,
 }: {
   getMessageHistory: (params: { topic: string }) => Promise<Record<number, PushClientTypes.PushMessageRecord>>
   pushClient: WalletClient
   currentSubscription: PushClientTypes.PushSubscription | null
+  activeSubscriptions: PushClientTypes.PushSubscription[]
 }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [sortOptionsType, setSortOptionsType] = useState<string>('All')
@@ -58,11 +60,12 @@ const SettingsModal = ({
   const [transactions, setTransactions] = useState<PushClientTypes.PushMessageRecord[]>([])
 
   const { t } = useTranslation()
-
+  // console.log(currentSubscription)
   const updateMessages = useCallback(async () => {
     if (pushClient && currentSubscription?.topic) {
       try {
         const messageHistory = await getMessageHistory({ topic: currentSubscription?.topic })
+        console.log(messageHistory)
         setTransactions(Object.values(messageHistory))
       } catch (error) {
         //
@@ -73,7 +76,7 @@ const SettingsModal = ({
   useEffect(() => {
     if (!pushClient || !currentSubscription?.topic) return
     updateMessages()
-  }, [updateMessages, pushClient, currentSubscription?.topic])
+  }, [updateMessages, pushClient, currentSubscription?.topic, activeSubscriptions])
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
     setNotificationType(option.value)

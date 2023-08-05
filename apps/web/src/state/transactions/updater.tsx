@@ -10,7 +10,7 @@ import { FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 import { TransactionNotFoundError } from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
-import { useWalletConnectPushClient } from 'contexts/PushClientContext'
+// import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -33,7 +33,7 @@ export function shouldCheck(
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
-  const { handleSendTestNotification } = useWalletConnectPushClient()
+  // const { handleSendTestNotification } = useWalletConnectPushClient()
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()
@@ -76,7 +76,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
 
-            setTimeout(() => handleSendTestNotification(), 5000)
+            // setTimeout(() => handleSendTestNotification(), 5000)
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {

@@ -128,6 +128,7 @@ const Notifications = () => {
                     getMessageHistory={getMessageHistory}
                     pushClient={pushClient}
                     currentSubscription={currentSubscription}
+                    activeSubscriptions={activeSubscriptions}
                   />
                 </View>
                 <View>
