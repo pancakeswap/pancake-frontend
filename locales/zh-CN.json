@@ -1585,7 +1585,7 @@
   "Your execution gas fees are paid for by the spread between your specified price and the real execution price.": "您的执行 gas 费用由您指定的价格与实际执行价格之间的差价支付。",
   "Gas fees are volatile and thus the exact market price at which your order will execute is unpredictable.": "Gas 费用不稳定，因此您的订单将执行的确切市场价格不可预测。",
   "It might take much longer than you expected to reach the price that fills your order + fees.": "达到成交您的订单 + 费用的价格可能需要比您预期更长的时间。",
-  "\"Fee on Transfer\" Tokens": "“转账费用”代币",
+  "\"Fee on Transfer\" Tokens": "“转账收取费用” 代币",
   "\"Fee on transfer\" tokens should not be used with Limit Orders (use at your own risk)": "“转账费用”代币不应与限价订单一起使用（使用风险自负）",
   "Can't execute this order": "无法执行此订单",
   "Limit": "限价",
