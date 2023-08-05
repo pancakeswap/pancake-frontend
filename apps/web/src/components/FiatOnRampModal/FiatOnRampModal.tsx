@@ -264,7 +264,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: MERCURYO_WIDGET_ID,
+          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
@@ -327,7 +327,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </Modal>
       <Script
-        src="https://widget.mercuryo.io/embed.2.0.js"
+        src="https://sandbox-widget.mrcr.io/embed.2.0.js"
         onLoad={() => {
           setScriptOnLoad(true)
         }}
