@@ -1,14 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { isNativeIfoSupported, PROFILE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
+// import { isNativeIfoSupported, PROFILE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
 import { SpaceProps } from 'styled-system'
-import { useMemo } from 'react'
+// import { useMemo } from 'react'
 import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, useModalV2 } from '@pancakeswap/uikit'
 
-import { useActiveChainId } from 'hooks/useActiveChainId'
+// import { useActiveChainId } from 'hooks/useActiveChainId'
 
-import { NetworkSwitcherModal } from './NetworkSwitcherModal'
-import { useChainNames } from '../../../hooks/useChainNames'
+// import { useChainNames } from '../../../hooks/useChainNames'
+import { useIfoSourceChain } from '../../../hooks/useIfoSourceChain'
+import { BridgeICakeModal } from './BridgeICakeModal'
 
 type Props = {
   ifoChainId: ChainId
@@ -17,37 +18,20 @@ type Props = {
 } & SpaceProps
 
 export function BridgeButton({ ifoChainId, ...props }: Props) {
-  const { chainId } = useActiveChainId()
-  const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
+  // const { chainId } = useActiveChainId()
+  const sourceChain = useIfoSourceChain()
+  // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
-  const sourceChainName = useChainNames(PROFILE_SUPPORTED_CHAIN_IDS)
-  const ifoChainName = useChainNames([ifoChainId])
+  // const sourceChainName = useChainNames(PROFILE_SUPPORTED_CHAIN_IDS)
+  // const ifoChainName = useChainNames([ifoChainId])
 
-  const button = !nativeIfoSupported ? (
+  return (
     <>
-      <NetworkSwitcherModal
-        isOpen={isOpen}
-        supportedChains={PROFILE_SUPPORTED_CHAIN_IDS}
-        title={t('Bridge iCAKE')}
-        description={t('Switch to %sourceChain% to bridge your iCAKE to participate this sale on %ifoChain%', {
-          sourceChain: sourceChainName,
-          ifoChain: ifoChainName,
-        })}
-        buttonText={t('Switch chain to bridge iCAKE')}
-        onDismiss={onDismiss}
-      />
+      <BridgeICakeModal isOpen={isOpen} onDismiss={onDismiss} sourceChainId={sourceChain} ifoChainId={ifoChainId} />
       <Button width="100%" onClick={onOpen} {...props}>
         {t('Bridge iCAKE')}
       </Button>
     </>
-  ) : (
-    <>
-      <Button width="100%" {...props}>
-        {t('Bridge iCAKE')}
-      </Button>
-    </>
   )
-
-  return button
 }

@@ -3,12 +3,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { PROFILE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
 
 import { MessageTextLink } from '../../IfoCardStyles'
 import { StakeButton } from './StakeButton'
 import { useIfoCredit } from '../../../hooks/useIfoCredit'
 import { useChainNames } from '../../../hooks/useChainNames'
+import { useIfoSourceChain } from '../../../hooks/useIfoSourceChain'
 import { BridgeButton } from './BridgeButton'
 
 type Props = {
@@ -19,8 +19,7 @@ type Props = {
 
 export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
   const { t } = useTranslation()
-  // By deafult source chain is the first chain that supports native ifo
-  const sourceChain = PROFILE_SUPPORTED_CHAIN_IDS[0] || ChainId.BSC
+  const sourceChain = useIfoSourceChain()
   const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoCredit })
   const sourceChainCredit = useIfoCredit({ chainId: sourceChain, ifoCredit })
   const chainName = useChainNames([ifoChainId])
