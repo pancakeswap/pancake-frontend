@@ -9,6 +9,7 @@ import { Button, useModalV2 } from '@pancakeswap/uikit'
 
 // import { useChainNames } from '../../../hooks/useChainNames'
 import { useIfoSourceChain } from '../../../hooks/useIfoSourceChain'
+import { useBridgeICake } from '../../../hooks/useBridgeICake'
 import { BridgeICakeModal } from './BridgeICakeModal'
 
 type Props = {
@@ -17,18 +18,26 @@ type Props = {
   icake?: CurrencyAmount<Currency>
 } & SpaceProps
 
-export function BridgeButton({ ifoChainId, ...props }: Props) {
+export function BridgeButton({ ifoChainId, icake, ...props }: Props) {
   // const { chainId } = useActiveChainId()
   const sourceChain = useIfoSourceChain()
   // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
+  const { state } = useBridgeICake()
   // const sourceChainName = useChainNames(PROFILE_SUPPORTED_CHAIN_IDS)
   // const ifoChainName = useChainNames([ifoChainId])
 
   return (
     <>
-      <BridgeICakeModal isOpen={isOpen} onDismiss={onDismiss} sourceChainId={sourceChain} ifoChainId={ifoChainId} />
+      <BridgeICakeModal
+        icake={icake}
+        isOpen={isOpen}
+        onDismiss={onDismiss}
+        sourceChainId={sourceChain}
+        ifoChainId={ifoChainId}
+        state={state}
+      />
       <Button width="100%" onClick={onOpen} {...props}>
         {t('Bridge iCAKE')}
       </Button>

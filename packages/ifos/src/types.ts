@@ -42,3 +42,12 @@ export type Ifo = {
 } & BaseIfoConfig
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
+
+export type CrossChainMessage = {
+  srcUaAddress: Address
+  srcChainId: ChainId
+  srcUaNonce: number
+  dstChainId: ChainId
+  dstUaAddress: Address
+  dstTxHash?: string
+}
