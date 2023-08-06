@@ -9,7 +9,7 @@ export function AmountWithUSDSub({ amount }: { amount: CurrencyAmount<Token> }) 
 
   return (
     <>
-      <Text bold>
+      <Text bold mb="-4px">
         {amount.toSignificant(2)} {amount.currency.symbol}
       </Text>
       <Balance unit=" USD" color="textSubtle" prefix="~$" fontSize="12px" decimals={2} value={formattedUsdAmount} />

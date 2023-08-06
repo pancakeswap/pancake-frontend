@@ -77,6 +77,7 @@ const FixedStaking = () => {
         <FlexLayout>
           {Object.keys(poolGroup).map((key) => (
             <FixedStakingCard
+              key={key}
               pool={poolGroup[key]}
               stakedPositions={stakedPositions.filter(
                 ({ pool: stakedPool }) => stakedPool.token.address === poolGroup[key].token.address,

@@ -26,6 +26,7 @@ export function UnstakeEndedModal({
   stakeAmount,
   accrueInterest,
   loading,
+  onBack,
 }) {
   const { t } = useTranslation()
 
@@ -54,10 +55,20 @@ export function UnstakeEndedModal({
           disabled={loading}
           style={{
             minHeight: '48px',
+            marginBottom: '8px',
           }}
           onClick={() => handleSubmission(UnstakeType.WITHDRAW)}
         >
           {loading ? t('Unstaking') : t('Unstake')}
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            unstakeModal.onDismiss()
+            onBack()
+          }}
+        >
+          Back
         </Button>
       </Modal>
     </ModalV2>

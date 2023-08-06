@@ -49,10 +49,13 @@ export function ClaimModal({
 
   const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({ poolIndex })
 
+  const unlockTimeFormat = format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')
+
   return (
     <>
       {children(claimModal.onOpen)}
       <HarvestModal
+        onBack={claimModal.onOpen}
         handleSubmission={handleSubmission}
         pendingTx={pendingTx}
         lockAPR={lockAPR}
@@ -97,12 +100,12 @@ export function ClaimModal({
                       {t('Fixed-staking Ends')}
                     </PreTitle>
 
-                    <Text bold color="warning">
+                    <Text bold color="warning" mb="-4px">
                       {t('Ended')}
                     </Text>
 
                     <Text color="warning" fontSize={12}>
-                      On {format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')}
+                      On {unlockTimeFormat}
                     </Text>
                   </Box>
                 </Flex>
@@ -124,7 +127,7 @@ export function ClaimModal({
                   <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
                     {t('Fixed Staking Ended On')}
                   </Text>
-                  <Text bold>{format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')}</Text>
+                  <Text bold>{unlockTimeFormat}</Text>
                 </Flex>
                 <Flex justifyContent="space-between" mb="8px">
                   <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
@@ -145,7 +148,6 @@ export function ClaimModal({
               </LightCard>
 
               <Button
-                variant="secondary"
                 style={{
                   minHeight: '48px',
                   marginBottom: '8px',
@@ -162,6 +164,7 @@ export function ClaimModal({
         )}
       </HarvestModal>
       <UnstakeEndedModal
+        onBack={claimModal.onOpen}
         loading={pendingTx}
         stakeAmount={amountDeposit}
         accrueInterest={accrueInterest}

@@ -35,7 +35,9 @@ export function HarvestModal({
   lockAPR,
   handleSubmission,
   pendingTx,
+  onBack,
 }: {
+  onBack: () => void
   stakingToken: Token
   pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
@@ -143,10 +145,20 @@ export function HarvestModal({
             disabled={!amountDeposit.greaterThan(0) || pendingTx}
             style={{
               minHeight: '48px',
+              marginBottom: '8px',
             }}
             onClick={() => handleSubmission(UnstakeType.HARVEST)}
           >
             {pendingTx ? t('Restaking') : t('Confirm Claim & Restake')}
+          </Button>
+          <Button
+            onClick={() => {
+              restakeModal.onDismiss()
+              onBack()
+            }}
+            variant="secondary"
+          >
+            Back
           </Button>
         </Modal>
       </ModalV2>

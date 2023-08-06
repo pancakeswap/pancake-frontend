@@ -92,7 +92,7 @@ export function UnstakeBeforeEnededModal({
                 <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('Commission')}
                 </Text>
-                <Text color="warning" bold>
+                <Text color="warning" bold marginBottom="-4px">
                   {withdrawFee.toSignificant(2)} {token.symbol}
                 </Text>
                 <Text fontSize="12px" color="warning">

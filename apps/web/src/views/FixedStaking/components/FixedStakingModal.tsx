@@ -67,6 +67,7 @@ export function FixedStakingModal({
                   <Flex>
                     {pools.map((pool) => (
                       <StyledButton
+                        key={pool.lockPeriod}
                         scale="md"
                         variant={pool.lockPeriod === lockPeriod ? 'danger' : 'bubblegum'}
                         width="100%"

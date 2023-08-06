@@ -1,20 +1,19 @@
-import { Balance, ButtonMenu, ButtonMenuItem, Flex, StarCircle, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, StarCircle, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { ReactNode, useState } from 'react'
-import { Percent } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
 
 import { PoolGroup } from '../type'
 import { FixedStakingCardFooter } from './FixedStakingCardFooter'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { DAYS_A_YEAR, PERCENT_DIGIT } from '../constant'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 
-function OverviewDataRow({ title, detail }) {
+function OverviewDataRow({ title, detail, alignItems = 'center' }) {
   return (
-    <Flex alignItems="center" justifyContent="space-between" mb="8px">
+    <Flex alignItems={alignItems} justifyContent="space-between" mb="8px">
       <Text fontSize={['14px', '14px', '16px']} textAlign="left">
         {title}
       </Text>
@@ -53,10 +52,9 @@ export function FixedStakingCardBody({
   children: (selectedPeriodIndex: number | null, setSelectedPeriodIndex: (index: number | null) => void) => ReactNode
 }) {
   const { t } = useTranslation()
-  const totalStakedAmount = getBalanceAmount(pool.totalDeposited, pool.token.decimals)
+  const totalStakedAmount = CurrencyAmount.fromRawAmount(pool.token, pool.totalDeposited.toNumber())
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState<number | null>(null)
 
-  const formattedUsdValueStaked = useStablecoinPriceAmount(pool.token, totalStakedAmount.toNumber())
   const minAPR = new Percent(pool.minLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
   const maxAPR = new Percent(pool.maxLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
 
@@ -89,22 +87,19 @@ export function FixedStakingCardBody({
             variant="subtle"
           >
             {pool.pools.map((p) => (
-              <ButtonMenuItem>{p.lockPeriod}D</ButtonMenuItem>
+              <ButtonMenuItem key={p.lockPeriod}>{p.lockPeriod}D</ButtonMenuItem>
             ))}
           </ButtonMenu>
         }
       />
 
       <OverviewDataRow
+        alignItems="baseline"
         title={t('Total Staked:')}
         detail={
-          <Balance
-            fontSize={['14px', '14px', '16px']}
-            value={formattedUsdValueStaked}
-            decimals={2}
-            prefix="$"
-            fontWeight={[600, 400]}
-          />
+          <Box style={{ textAlign: 'end' }}>
+            <AmountWithUSDSub amount={totalStakedAmount} />
+          </Box>
         }
       />
 
@@ -115,6 +110,7 @@ export function FixedStakingCardBody({
       <FixedStakingCardFooter>
         {pool.pools.map((p) => (
           <AprFooter
+            key={p.lockPeriod}
             stakingToken={pool.token}
             lockPeriod={p.lockPeriod}
             pools={pool.pools}
