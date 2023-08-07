@@ -34,7 +34,7 @@ export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
   // )
 
   if (!noICake && isICakeSynced) {
-    return null
+    return <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} buttonVisible={false} />
   }
 
   const tips = noICake

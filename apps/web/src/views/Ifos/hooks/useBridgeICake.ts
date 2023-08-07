@@ -20,6 +20,7 @@ import { getViemClients } from 'utils/viem'
 import { useContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useTransactionAdder } from 'state/transactions/hooks'
+import useCatchTxError from 'hooks/useCatchTxError'
 
 import { useChainName } from './useChainNames'
 
@@ -57,12 +58,6 @@ export type BridgeState = BaseBridgeState | PendingCrossChainState | BridgeSucce
 
 const INITIAL_BRIDGE_STATE: BridgeState = {
   state: BRIDGE_STATE.INITIAL,
-  // srcUaAddress: '0x39061b58ecb2df82b5886528d77b3094179ce292',
-  // srcChainId: ChainId.BSC,
-  // srcUaNonce: 1,
-  // dstChainId: ChainId.POLYGON_ZKEVM,
-  // dstUaAddress: '0xe5de11958969e75c57e5708651a49f0cf3f34d13',
-  // dstTxHash: '0x8617b7ef9569113b09befdc0f11bd18caa912e3f68f38999a179cdb80fd96f77',
 }
 
 type Params = {
@@ -81,62 +76,53 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake }: Params) {
   const infoSender = useContract(INFO_SENDER, pancakeInfoSenderABI, { chainId: srcChainId })
   const { receipt, saveTransactionHash, clearTransactionHash, txHash } = useLatestBridgeTx(srcChainId)
   const message = useCrossChainMessage({ txHash: receipt?.transactionHash, srcChainId })
+  const { fetchWithCatchTxError } = useCatchTxError()
 
   const bridge = useCallback(async () => {
     if (!account) {
       return
     }
-
     try {
-      setSigning(true)
-      const gasEstimate = await getBridgeICakeGasFee({
-        srcChainId,
-        dstChainId: ifoChainId,
-        account,
-        provider: getViemClients,
-      })
-      const txReceipt = await callWithGasPrice(infoSender, 'sendSyncMsg', [account, getLayerZeroChainId(ifoChainId)], {
-        value: gasEstimate.quotient,
-      })
-      setSigning(false)
-      saveTransactionHash(txReceipt.hash)
-      const summary = `Bridge ${icake?.toExact()} iCAKE from ${sourceChainName} to ${ifoChainName}`
-      addTransaction(txReceipt, {
-        summary,
-        translatableSummary: {
-          text: 'Bridge %icakeAmount% iCAKE from %srcChain% to %ifoChain%',
-          data: {
-            icakeAmount: icake?.toExact() || '',
-            srcChain: sourceChainName,
-            ifoChain: ifoChainName,
+      await fetchWithCatchTxError(async () => {
+        setSigning(true)
+        const gasEstimate = await getBridgeICakeGasFee({
+          srcChainId,
+          dstChainId: ifoChainId,
+          account,
+          provider: getViemClients,
+        })
+        const txReceipt = await callWithGasPrice(
+          infoSender,
+          'sendSyncMsg',
+          [account, getLayerZeroChainId(ifoChainId)],
+          {
+            value: gasEstimate.quotient,
           },
-        },
-        type: 'bridge-icake',
+        )
+        saveTransactionHash(txReceipt.hash)
+        const summary = `Bridge ${icake?.toExact()} iCAKE from ${sourceChainName} to ${ifoChainName}`
+        addTransaction(txReceipt, {
+          summary,
+          translatableSummary: {
+            text: 'Bridge %icakeAmount% iCAKE from %srcChain% to %ifoChain%',
+            data: {
+              icakeAmount: icake?.toExact() || '',
+              srcChain: sourceChainName,
+              ifoChain: ifoChainName,
+            },
+          },
+          type: 'bridge-icake',
+        })
+        setSigning(false)
+        return txReceipt
       })
     } catch (e) {
       console.error(e)
-      // mock
-      // saveTransactionHash('0x54b077aa600b0f9f4a7c29ef3137fcbd3ccf11d429797b397987293373413680')
-      // const summary = `Bridge ${icake?.toExact()} iCAKE from ${sourceChainName} to ${ifoChainName}`
-      // addTransaction(
-      //   { hash: '0x54b077aa600b0f9f4a7c29ef3137fcbd3ccf11d429797b397987293373413680' },
-      //   {
-      //     summary,
-      //     translatableSummary: {
-      //       text: 'Bridge %icakeAmount% iCAKE from %srcChain% to %ifoChain%',
-      //       data: {
-      //         icakeAmount: icake?.toExact() || '',
-      //         srcChain: sourceChainName,
-      //         ifoChain: ifoChainName,
-      //       },
-      //     },
-      //     type: 'bridge-icake',
-      //   },
-      // )
     } finally {
       setSigning(false)
     }
   }, [
+    fetchWithCatchTxError,
     saveTransactionHash,
     account,
     srcChainId,
@@ -165,7 +151,7 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake }: Params) {
         state: BRIDGE_STATE.PENDING_WALLET_SIGN,
       }
     }
-    if (txHash && !receipt) {
+    if (txHash && (!receipt || !message)) {
       return {
         state: BRIDGE_STATE.PENDING_SOURCE_CHAIN_TX,
       }

@@ -20,7 +20,6 @@ import {
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
