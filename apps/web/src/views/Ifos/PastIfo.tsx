@@ -5,6 +5,7 @@ import { useInActiveIfoConfigs } from 'hooks/useIfoConfig'
 import IfoCardV1Data from './components/IfoCardV1Data'
 import IfoCardV2Data from './components/IfoCardV2Data'
 import IfoCardV3Data from './components/IfoCardV3Data'
+import { IfoCardV7Data } from './components/IfoCardV7Data'
 import IfoLayout from './components/IfoLayout'
 
 const PastIfo = () => {
@@ -23,6 +24,8 @@ const PastIfo = () => {
             case 3.1:
             case 3.2:
               return <IfoCardV3Data key={ifo.id} ifo={ifo} />
+            case 7:
+              return <IfoCardV7Data key={ifo.id} ifo={ifo} />
             default:
               return null
           }

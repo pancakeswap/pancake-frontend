@@ -11,7 +11,7 @@ import {
   MessageStatus,
 } from '@pancakeswap/ifos'
 import { useAccount } from 'wagmi'
-import { Hash } from 'viem'
+import { Hash, Address } from 'viem'
 import localforage from 'localforage'
 import { useQuery } from '@tanstack/react-query'
 
@@ -197,11 +197,13 @@ export function useBridgeSuccessTxUrl(state: BridgeState) {
   )
 }
 
-const getLastBridgeTxStorageKey = (chainId?: ChainId) => chainId && `bridge-icake-tx-hash-latest-${chainId}`
+const getLastBridgeTxStorageKey = (chainId?: ChainId, account?: Address) =>
+  chainId && account && `bridge-icake-tx-hash-latest-${account}-${chainId}`
 
 export function useLatestBridgeTx(chainId?: ChainId) {
+  const { address: account } = useAccount()
   const [tx, setTx] = useState<Hash | null>(null)
-  const storageKey = useMemo(() => getLastBridgeTxStorageKey(chainId), [chainId])
+  const storageKey = useMemo(() => getLastBridgeTxStorageKey(chainId, account), [chainId, account])
 
   const tryGetTxFromStorage = useCallback(async () => {
     if (!storageKey) {
