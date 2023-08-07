@@ -3,7 +3,7 @@ import { Address } from 'wagmi'
 
 import { getViemClients } from 'utils/viem'
 
-export { VestingCharacteristics }
+export type { VestingCharacteristics }
 
 export interface VestingData {
   ifo: Ifo
