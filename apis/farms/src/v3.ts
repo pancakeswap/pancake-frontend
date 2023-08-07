@@ -141,13 +141,11 @@ export const handler = async (req: Request, event: FetchEvent) => {
   let response: Response | undefined
 
   if (!cacheResponse) {
-    console.log('cache miss')
     response = await handler_(req, event)
     if (response.status === 200) {
       event.waitUntil(cache.put(event.request, response.clone()))
     }
   } else {
-    console.log('cache')
     response = new Response(cacheResponse.body, cacheResponse)
   }
 
