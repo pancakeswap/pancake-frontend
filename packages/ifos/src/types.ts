@@ -2,6 +2,7 @@ import type { Address } from 'wagmi'
 import { ChainId, Token } from '@pancakeswap/sdk'
 import { PublicClient } from 'viem'
 import { MessageStatus } from '@layerzerolabs/scan-client'
+import BigNumber from 'bignumber.js'
 
 export enum PoolIds {
   poolBasic = 'poolBasic',
@@ -52,6 +53,23 @@ export type CrossChainMessage = {
   dstUaAddress: Address
   dstTxHash?: string
   status: MessageStatus
+}
+
+export type VestingCharacteristics = {
+  vestingId: string
+  offeringAmountInToken: BigNumber
+  vestingReleased: BigNumber
+  vestingAmountTotal: BigNumber
+  vestingComputeReleasableAmount: BigNumber
+  vestingInformationPercentage: number
+  vestingInformationDuration: number
+  isVestingInitialized: boolean
+}
+
+export type UserVestingData = {
+  vestingStartTime: number
+  [PoolIds.poolBasic]: VestingCharacteristics
+  [PoolIds.poolUnlimited]: VestingCharacteristics
 }
 
 export { MessageStatus }
