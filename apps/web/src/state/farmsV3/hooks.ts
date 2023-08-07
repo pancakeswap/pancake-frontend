@@ -41,12 +41,14 @@ export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
       }))
 
       return {
+        chainId,
         ...data,
         farmsWithPrice,
       }
     })
 
 const fallback: Awaited<ReturnType<typeof farmFetcherV3.fetchFarms>> = {
+  chainId: ChainId.BSC,
   farmsWithPrice: [],
   poolLength: 0,
   cakePerSecond: '0',
@@ -91,7 +93,7 @@ export const useFarmsV3Public = () => {
     },
     {
       refreshInterval: FAST_INTERVAL * 3,
-      keepPreviousData: true,
+      keepPreviousData: false,
       fallbackData: fallback,
     },
   )
@@ -112,6 +114,9 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     farmV3.data.farmsWithPrice.length > 0 && [chainId, 'cake-apr-tvl'],
     async () => {
+      if (chainId !== farmV3?.data.chainId) {
+        throw new Error('ChainId mismatch')
+      }
       const tvls: TvlMap = {}
       if (supportedChainIdV3.includes(chainId)) {
         const results = await Promise.allSettled(
@@ -167,12 +172,16 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
     {
       refreshInterval: FAST_INTERVAL * 3,
       dedupingInterval: FAST_INTERVAL,
-      keepPreviousData: true,
+      keepPreviousData: false,
     },
   )
 
   return {
-    data: (data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
+    data: useMemo(() => {
+      return farmV3.isLoading || farmV3.data.chainId !== chainId
+        ? farmV3.data
+        : ((data?.chainId !== chainId ? farmV3.data : data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>)
+    }, [chainId, data, farmV3.data, farmV3.isLoading]),
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }

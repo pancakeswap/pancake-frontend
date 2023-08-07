@@ -236,6 +236,7 @@ export interface SerializedFarmsV3Response {
 }
 
 export interface FarmsV3Response<T extends FarmV3DataWithPrice = FarmV3DataWithPrice> {
+  chainId: number
   poolLength: number
   farmsWithPrice: T[]
   cakePerSecond: string
