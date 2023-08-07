@@ -23,11 +23,11 @@ export enum FunctionName {
 export interface LiquidStakingList {
   stakingSymbol: string
   contract: Address
-  symbol: string
   token0: Token | NativeToken
   token1: Token | NativeToken
   aprUrl: string
   abi: Abi
+  approveToken: Token
   shouldCheckApproval: boolean
   exchangeRateMultiCall: ExchangeRateMultiCall[]
 }

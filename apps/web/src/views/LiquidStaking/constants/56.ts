@@ -10,11 +10,11 @@ const liquidStaking: LiquidStakingList[] = [
   {
     stakingSymbol: 'ETH / WBETH',
     contract: WBETH[ChainId.BSC],
-    symbol: WETH9[ChainId.BSC].symbol,
     token0: WETH9[ChainId.BSC],
     token1: bscTokens.wbeth,
     abi: wbethBscABI,
     shouldCheckApproval: true,
+    approveToken: WETH9[ChainId.BSC],
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {
@@ -27,11 +27,11 @@ const liquidStaking: LiquidStakingList[] = [
   {
     stakingSymbol: 'BNB / SnBNB',
     contract: SNBNB[ChainId.BSC],
-    symbol: NATIVE[ChainId.BSC].symbol,
     token0: NATIVE[ChainId.BSC],
     token1: bscTokens.snbnb,
     abi: snBnbABI,
     shouldCheckApproval: false,
+    approveToken: null,
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {

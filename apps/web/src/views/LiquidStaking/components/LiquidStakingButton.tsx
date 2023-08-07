@@ -52,13 +52,13 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
     currentAmount && inputCurrency ? getDecimalAmount(currentAmount, inputCurrency.decimals) : BIG_ZERO
 
   const { isApproved, allowance, setLastUpdated } = useLiquidStakingApprovalStatus({
-    tokenAddress: selectedList?.token0?.address,
+    approveToken: selectedList?.approveToken?.address,
     contractAddress: selectedList?.contract,
     shouldCheckApproval: selectedList?.shouldCheckApproval,
   })
 
   const { isPending, onApprove } = useLiquidStakingApprove({
-    tokenAddress: selectedList?.token0?.address,
+    approveToken: selectedList?.approveToken?.address,
     contractAddress: selectedList?.contract,
   })
 

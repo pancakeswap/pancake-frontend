@@ -3,13 +3,13 @@ import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 interface UseLiquidStakingApprovalProps {
-  tokenAddress: string
+  approveToken: string
   contractAddress: Address
   shouldCheckApproval: boolean
 }
 
 export const useLiquidStakingApprovalStatus = ({
-  tokenAddress,
+  approveToken,
   contractAddress,
   shouldCheckApproval,
 }: UseLiquidStakingApprovalProps) => {
@@ -19,7 +19,7 @@ export const useLiquidStakingApprovalStatus = ({
   const { data, refetch } = useContractRead({
     chainId,
     abi: erc20ABI,
-    address: tokenAddress as Address,
+    address: approveToken as Address,
     functionName: 'allowance',
     args: [account, contractAddress],
     enabled: !!account && !!contractAddress && !!shouldCheckApproval,

@@ -9,11 +9,11 @@ const liquidStaking: LiquidStakingList[] = [
   {
     stakingSymbol: 'ETH / WBETH',
     contract: WBETH[ChainId.GOERLI],
-    symbol: WETH9[ChainId.GOERLI].symbol,
     token0: NATIVE[ChainId.GOERLI],
     token1: ethereumTokens.wbeth,
     abi: wbethEthABI,
     shouldCheckApproval: true,
+    approveToken: WETH9[ChainId.GOERLI],
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {

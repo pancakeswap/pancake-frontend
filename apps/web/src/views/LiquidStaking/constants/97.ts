@@ -9,11 +9,11 @@ const liquidStaking: LiquidStakingList[] = [
   {
     stakingSymbol: 'ETH / WBETH',
     contract: WBETH[ChainId.BSC],
-    symbol: WETH9[ChainId.BSC_TESTNET].symbol,
     token0: WETH9[ChainId.BSC_TESTNET],
     token1: bscTokens.wbeth,
     abi: wbethBscABI,
     shouldCheckApproval: true,
+    approveToken: WETH9[ChainId.BSC_TESTNET],
     aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
     exchangeRateMultiCall: [
       {

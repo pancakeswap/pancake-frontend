@@ -1,29 +1,27 @@
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { Address } from 'viem'
+import { useTokenContract } from 'hooks/useContract'
+import { WETH9 } from '@pancakeswap/sdk'
 import { useCallback } from 'react'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { Address } from 'viem'
-import { useTokenContract } from 'hooks/useContract'
+import { useActiveChainId } from './useActiveChainId'
 
-interface UseLiquidStakingApproveProps {
-  approveToken: string
-  contractAddress: string
-}
-
-export const useLiquidStakingApprove = ({ approveToken, contractAddress }: UseLiquidStakingApproveProps) => {
+export const useApproveETH = (spender: string) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const { chainId } = useActiveChainId()
 
-  const tokenContract = useTokenContract(approveToken as Address)
+  const ethContract = useTokenContract(WETH9[chainId].address)
 
   const onApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(tokenContract, 'approve', [contractAddress as Address, MaxUint256])
+      return callWithGasPrice(ethContract, 'approve', [spender as Address, MaxUint256])
     })
 
     if (receipt?.status) {
@@ -34,7 +32,7 @@ export const useLiquidStakingApprove = ({ approveToken, contractAddress }: UseLi
         </ToastDescriptionWithTx>,
       )
     }
-  }, [fetchWithCatchTxError, callWithGasPrice, tokenContract, contractAddress, toastSuccess, t])
+  }, [spender, ethContract, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
 
   return { isPending, onApprove }
 }
