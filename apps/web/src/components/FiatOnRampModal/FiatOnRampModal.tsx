@@ -276,7 +276,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: MERCURYO_WIDGET_ID,
+          widgetId: '3b8eed96-f637-4c90-9e4f-661fc326223b',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
