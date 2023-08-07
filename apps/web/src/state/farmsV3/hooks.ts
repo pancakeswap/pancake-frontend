@@ -179,7 +179,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   return {
     data: useMemo(() => {
       return farmV3.isLoading || farmV3.data.chainId !== chainId
-        ? farmV3.data
+        ? (farmV3.data as FarmsV3Response<FarmV3DataWithPriceTVL>)
         : ((data?.chainId !== chainId ? farmV3.data : data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>)
     }, [chainId, data, farmV3.data, farmV3.isLoading]),
     isLoading: farmV3.isLoading,
