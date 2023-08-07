@@ -10,7 +10,7 @@ import {
   scrollSepolia,
 } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
-import { opbnbTestnet } from './chains'
+import { opbnbTestnet, linea } from './chains'
 
 const POLYGON_ZKEVM_NODES = [
   'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
@@ -48,6 +48,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
+  [ChainId.LINEA]: linea.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
     'https://rpc.goerli.linea.build',
     'https://linea-testnet.rpc.thirdweb.com',
@@ -87,6 +88,7 @@ export const PUBLIC_NODES = {
   ],
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,
+  [ChainId.LINEA]: linea.rpcUrls.public.http,
   [ChainId.LINEA_TESTNET]: [
     'https://rpc.goerli.linea.build',
     'https://linea-testnet.rpc.thirdweb.com',
