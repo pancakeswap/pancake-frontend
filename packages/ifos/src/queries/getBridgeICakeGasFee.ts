@@ -3,7 +3,7 @@ import { Address } from 'viem'
 import BigNumber from 'bignumber.js'
 
 import { OnChainProvider } from '../types'
-import { getInfoSenderContract, getLayerZeroChainId, isNativeIfoSupported } from '../utils'
+import { getInfoSenderContract, getLayerZeroChainId } from '../utils'
 import { CROSS_CHAIN_GAS_MULTIPLIER } from '../constants'
 
 type Params = {

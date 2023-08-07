@@ -25,7 +25,6 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -153,7 +152,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio =
     (ifo.version >= 3 ? publicIfoData[poolId]?.distributionRatio : ifo[poolId]?.distributionRatio) * 100
-  const credit = useIfoCredit()
 
   const tooltipContentOfSpent = t(
     'Based on "overflow" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.',
