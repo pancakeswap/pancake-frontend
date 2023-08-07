@@ -110,7 +110,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
   const cakePrice = useCakePriceAsBN()
 
   const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
-    [chainId, 'cake-apr-tvl', farmV3.data],
+    farmV3.data.farmsWithPrice.length > 0 && [chainId, 'cake-apr-tvl'],
     async () => {
       const tvls: TvlMap = {}
       if (supportedChainIdV3.includes(chainId)) {
