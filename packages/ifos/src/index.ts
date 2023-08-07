@@ -5,3 +5,4 @@ export * from './queries'
 
 export * from './abis/ICake'
 export * from './abis/PancakeInfoSender'
+export * from './abis/IfoV7'

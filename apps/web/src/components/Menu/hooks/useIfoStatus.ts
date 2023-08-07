@@ -1,9 +1,9 @@
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
+import { ifoV7ABI } from '@pancakeswap/ifos'
 
 import { publicClient } from 'utils/wagmi'
-import { ifoV7ABI } from 'config/abi/ifoV7'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
 
 export const useIfoStatus = () => {

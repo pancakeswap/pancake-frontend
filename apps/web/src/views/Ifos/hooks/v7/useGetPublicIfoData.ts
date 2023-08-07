@@ -3,9 +3,8 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useState, useCallback } from 'react'
 import round from 'lodash/round'
 import { CAKE } from '@pancakeswap/tokens'
-import { Ifo, IfoStatus } from '@pancakeswap/ifos'
+import { Ifo, IfoStatus, ifoV7ABI } from '@pancakeswap/ifos'
 
-import { ifoV7ABI } from 'config/abi/ifoV7'
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { publicClient } from 'utils/wagmi'
 

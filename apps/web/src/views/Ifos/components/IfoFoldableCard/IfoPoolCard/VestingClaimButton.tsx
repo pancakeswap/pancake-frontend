@@ -30,12 +30,14 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   )
 
   const handleClaim = useCallback(async () => {
-    if (walletIfoData.version < 3) {
+    if (walletIfoData.version !== 3 && walletIfoData.version !== 7) {
       throw new Error('Invalid IFO version')
     }
     const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
-      return walletIfoData.contract.write.release([userPoolCharacteristics.vestingId as Address], { account, chain })
+      return walletIfoData.version === 3
+        ? walletIfoData.contract.write.release([userPoolCharacteristics.vestingId as Address], { account, chain })
+        : walletIfoData.contract.write.release([userPoolCharacteristics.vestingId as Address], { account, chain })
     })
     if (receipt?.status) {
       walletIfoData.setIsClaimed(poolId)
