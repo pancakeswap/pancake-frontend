@@ -1,6 +1,7 @@
 import { parseEther, parseUnits } from 'viem'
 import { useTranslation } from '@pancakeswap/localization'
-import { bscTokens } from '@pancakeswap/tokens'
+import { CAKE } from '@pancakeswap/tokens'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import {
   BalanceInput,
   Box,
@@ -64,8 +65,10 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const [value, setValue] = useState('')
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
-  const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
-  const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
+  const multiplier = useMemo(() => getFullDecimalMultiplier(currency.decimals), [currency])
+  const valueWithTokenDecimals = new BigNumber(value).times(multiplier)
+  const cake = CAKE[ifo.chainId]
+  const label = cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -84,7 +87,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
         return callWithGasPrice(
           contract as any,
           'depositPool',
-          [valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1],
+          [valueWithTokenDecimals.integerValue(), poolId === PoolIds.poolBasic ? 0 : 1],
           {
             gasPrice,
           },

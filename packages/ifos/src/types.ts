@@ -53,3 +53,5 @@ export type CrossChainMessage = {
   dstTxHash?: string
   status: MessageStatus
 }
+
+export { MessageStatus }

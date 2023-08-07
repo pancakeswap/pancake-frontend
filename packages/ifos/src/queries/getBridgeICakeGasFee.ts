@@ -1,11 +1,9 @@
 import { ChainId, CurrencyAmount, Native } from '@pancakeswap/sdk'
-import { Address, getContract } from 'viem'
+import { Address } from 'viem'
 import BigNumber from 'bignumber.js'
 
 import { OnChainProvider } from '../types'
-import { getLayerZeroChainId, isNativeIfoSupported } from '../utils'
-import { INFO_SENDER } from '../constants/contracts'
-import { pancakeInfoSenderABI } from '../abis/PancakeInfoSender'
+import { getInfoSenderContract, getLayerZeroChainId, isNativeIfoSupported } from '../utils'
 import { CROSS_CHAIN_GAS_MULTIPLIER } from '../constants'
 
 type Params = {
@@ -25,15 +23,7 @@ export async function getBridgeICakeGasFee({
   gasMultiplierEnabled = true,
 }: Params) {
   const lzDstChainId = getLayerZeroChainId(dstChainId)
-  if (!isNativeIfoSupported(srcChainId)) {
-    throw new Error(`Native ifo not supported on ${srcChainId}`)
-  }
-  const senderContractAddress = INFO_SENDER[srcChainId]
-  const contract = getContract({
-    abi: pancakeInfoSenderABI,
-    address: senderContractAddress,
-    publicClient: provider({ chainId: srcChainId }),
-  })
+  const contract = getInfoSenderContract({ chainId: srcChainId, provider })
 
   try {
     const [nativeFee] = await contract.read.getEstimateGasFees([account, lzDstChainId])
