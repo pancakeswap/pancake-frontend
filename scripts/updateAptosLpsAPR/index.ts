@@ -50,7 +50,7 @@ const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse
       break
     }
   }
-  console.log('allPairs', allPairs)
+
   return addresses.map((address): SingleFarmResponse => {
     // eslint-disable-next-line array-callback-return, consistent-return
     const farmPriceInfo = allPairs.find((pair) => {
