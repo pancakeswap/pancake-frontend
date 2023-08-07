@@ -10,6 +10,7 @@ import { z } from 'zod'
 import { Address } from 'viem'
 
 import { viemProviders } from './provider'
+import { FarmKV } from './kv'
 
 export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ETHEREUM]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth', {
@@ -140,7 +141,7 @@ export const handler = async (req: Request, event: FetchEvent) => {
   let response: Response | undefined
 
   if (!cacheResponse) {
-    response = await handler_(req)
+    response = await handler_(req, event)
     if (response.status === 200) {
       event.waitUntil(cache.put(event.request, response.clone()))
     }
@@ -151,7 +152,7 @@ export const handler = async (req: Request, event: FetchEvent) => {
   return response
 }
 
-const handler_ = async (req: Request) => {
+const handler_ = async (req: Request, event: FetchEvent) => {
   const parsed = zParams.safeParse(req.params)
 
   if (parsed.success === false) {
@@ -204,168 +205,195 @@ const handler_ = async (req: Request) => {
     return error(404, { error: 'PoolInfo not found' })
   }
 
-  const poolTokens = await V3_SUBGRAPH_CLIENTS[chainId].request(
-    gql`
-      query pool($poolAddress: String!) {
-        pool(id: $poolAddress) {
-          token0 {
-            id
-            decimals
-          }
-          token1 {
-            id
-            decimals
-          }
-        }
-      }
-    `,
-    {
-      poolAddress: address,
-    },
-  )
+  const kvCache = await FarmKV.getV3Liquidity(chainId, address)
 
-  const updatedAt = new Date().toISOString()
-
-  const [allocPoint, , , , , totalLiquidity] = poolInfo
-  const [sqrtPriceX96, tick] = slot0
-
-  // don't cache when pool is not active or has no liquidity
-  if (!allocPoint || !totalLiquidity) {
-    return json(
-      {
-        tvl: {
-          token0: '0',
-          token1: '0',
+  if (kvCache) {
+    // 5 mins
+    if (new Date().getTime() < new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
+      return json(
+        {
+          tvl: {
+            token0: kvCache.tvl.token0,
+            token1: kvCache.tvl.token1,
+          },
+          formatted: {
+            token0: kvCache.formatted.token0,
+            token1: kvCache.formatted.token1,
+          },
+          updatedAt: kvCache.updatedAt,
         },
-        formatted: {
-          token0: '0',
-          token1: '0',
+        {
+          headers: {
+            'Cache-Control': CACHE_TIME.short,
+          },
         },
-        updatedAt,
-      },
-      {
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      },
-    )
+      )
+    }
   }
 
-  let allActivePositions: any[] = []
-
-  async function fetchPositionByMasterChefId(posId = '0') {
-    const resp = await V3_SUBGRAPH_CLIENTS[chainId].request(
+  try {
+    const poolTokens = await V3_SUBGRAPH_CLIENTS[chainId].request(
       gql`
-        query tvl($poolAddress: String!, $owner: String!, $posId: String!, $currentTick: String!) {
-          positions(
-            where: { pool: $poolAddress, liquidity_gt: "0", owner: $owner, id_gt: $posId }
-            first: 1000
-            orderBy: id
-            tickLower_: { tickIdx_lte: currentTick }
-            tickUpper_: { tickIdx_gt: currentTick }
-          ) {
-            liquidity
-            id
-            tickUpper {
-              tickIdx
+        query pool($poolAddress: String!) {
+          pool(id: $poolAddress) {
+            token0 {
+              id
+              decimals
             }
-            tickLower {
-              tickIdx
+            token1 {
+              id
+              decimals
             }
           }
         }
       `,
       {
         poolAddress: address,
-        owner: masterChefV3Address.toLowerCase(),
-        currentTick: tick.toString(),
-        posId,
       },
     )
 
-    return resp.positions
-  }
+    const updatedAt = new Date().toISOString()
 
-  let posId = '0'
+    const [allocPoint, , , , , totalLiquidity] = poolInfo
+    const [sqrtPriceX96, tick] = slot0
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    // eslint-disable-next-line no-await-in-loop
-    const pos = await fetchPositionByMasterChefId(posId)
-    allActivePositions = [...allActivePositions, ...pos]
-    if (pos.length < 1000) {
-      break
+    // don't cache when pool is not active or has no liquidity
+    if (!allocPoint || !totalLiquidity) {
+      return json(
+        {
+          tvl: {
+            token0: '0',
+            token1: '0',
+          },
+          formatted: {
+            token0: '0',
+            token1: '0',
+          },
+          updatedAt,
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        },
+      )
     }
-    posId = pos[pos.length - 1].id
-  }
 
-  console.info('fetching farms active liquidity', {
-    address,
-    chainId,
-    allActivePositions: allActivePositions.length,
-  })
+    let allActivePositions: any[] = []
 
-  if (allActivePositions.length === 0) {
-    return json(
-      {
-        tvl: {
-          token0: '0',
-          token1: '0',
+    // eslint-disable-next-line no-inner-declarations
+    async function fetchPositionByMasterChefId(posId_ = '0') {
+      const resp = await V3_SUBGRAPH_CLIENTS[chainId].request(
+        gql`
+          query tvl($poolAddress: String!, $owner: String!, $posId: String!, $currentTick: String!) {
+            positions(
+              where: { pool: $poolAddress, liquidity_gt: "0", owner: $owner, id_gt: $posId }
+              first: 1000
+              orderBy: id
+              tickLower_: { tickIdx_lte: currentTick }
+              tickUpper_: { tickIdx_gt: currentTick }
+            ) {
+              liquidity
+              id
+              tickUpper {
+                tickIdx
+              }
+              tickLower {
+                tickIdx
+              }
+            }
+          }
+        `,
+        {
+          poolAddress: address,
+          owner: masterChefV3Address.toLowerCase(),
+          currentTick: tick.toString(),
+          posId: posId_,
         },
-        formatted: {
-          token0: '0',
-          token1: '0',
+      )
+
+      return resp.positions
+    }
+
+    let posId = '0'
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      // eslint-disable-next-line no-await-in-loop
+      const pos = await fetchPositionByMasterChefId(posId)
+      allActivePositions = [...allActivePositions, ...pos]
+      if (pos.length < 1000) {
+        break
+      }
+      posId = pos[pos.length - 1].id
+    }
+
+    console.info('fetching farms active liquidity', {
+      address,
+      chainId,
+      allActivePositions: allActivePositions.length,
+    })
+
+    if (allActivePositions.length === 0) {
+      return json(
+        {
+          tvl: {
+            token0: '0',
+            token1: '0',
+          },
+          formatted: {
+            token0: '0',
+            token1: '0',
+          },
+          updatedAt,
         },
-        updatedAt,
-      },
-      {
-        headers: {
-          'Cache-Control': 'no-cache',
+        {
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
         },
-      },
-    )
-  }
+      )
+    }
 
-  const currentTick = tick
-  const sqrtRatio = sqrtPriceX96
+    const currentTick = tick
+    const sqrtRatio = sqrtPriceX96
 
-  let totalToken0 = 0n
-  let totalToken1 = 0n
+    let totalToken0 = 0n
+    let totalToken1 = 0n
 
-  for (const position of allActivePositions.filter(
-    // double check that the position is within the current tick range
-    (p) => +p.tickLower.tickIdx <= currentTick && +p.tickUpper.tickIdx > currentTick,
-  )) {
-    const token0 = PositionMath.getToken0Amount(
-      currentTick,
-      +position.tickLower.tickIdx,
-      +position.tickUpper.tickIdx,
-      sqrtRatio,
-      BigInt(position.liquidity),
-    )
+    for (const position of allActivePositions.filter(
+      // double check that the position is within the current tick range
+      (p) => +p.tickLower.tickIdx <= currentTick && +p.tickUpper.tickIdx > currentTick,
+    )) {
+      const token0 = PositionMath.getToken0Amount(
+        currentTick,
+        +position.tickLower.tickIdx,
+        +position.tickUpper.tickIdx,
+        sqrtRatio,
+        BigInt(position.liquidity),
+      )
 
-    const token1 = PositionMath.getToken1Amount(
-      currentTick,
-      +position.tickLower.tickIdx,
-      +position.tickUpper.tickIdx,
-      sqrtRatio,
-      BigInt(position.liquidity),
-    )
-    totalToken0 += token0
-    totalToken1 += token1
-  }
+      const token1 = PositionMath.getToken1Amount(
+        currentTick,
+        +position.tickLower.tickIdx,
+        +position.tickUpper.tickIdx,
+        sqrtRatio,
+        BigInt(position.liquidity),
+      )
+      totalToken0 += token0
+      totalToken1 += token1
+    }
 
-  const curr0 = CurrencyAmount.fromRawAmount(
-    new ERC20Token(+chainId, poolTokens.pool.token0.id, +poolTokens.pool.token0.decimals, '0'),
-    totalToken0.toString(),
-  ).toExact()
-  const curr1 = CurrencyAmount.fromRawAmount(
-    new ERC20Token(+chainId, poolTokens.pool.token1.id, +poolTokens.pool.token1.decimals, '1'),
-    totalToken1.toString(),
-  ).toExact()
+    const curr0 = CurrencyAmount.fromRawAmount(
+      new ERC20Token(+chainId, poolTokens.pool.token0.id, +poolTokens.pool.token0.decimals, '0'),
+      totalToken0.toString(),
+    ).toExact()
+    const curr1 = CurrencyAmount.fromRawAmount(
+      new ERC20Token(+chainId, poolTokens.pool.token1.id, +poolTokens.pool.token1.decimals, '1'),
+      totalToken1.toString(),
+    ).toExact()
 
-  return json(
-    {
+    const result = {
       tvl: {
         token0: totalToken0.toString(),
         token1: totalToken1.toString(),
@@ -375,11 +403,39 @@ const handler_ = async (req: Request) => {
         token1: curr1,
       },
       updatedAt,
-    },
-    {
+    }
+
+    event.waitUntil(FarmKV.saveV3Liquidity(chainId, address, result))
+
+    return json(result, {
       headers: {
         'Cache-Control': allActivePositions.length > 50 ? CACHE_TIME.long : CACHE_TIME.short,
       },
-    },
-  )
+    })
+  } catch (e) {
+    console.error(e)
+
+    if (kvCache) {
+      return json(
+        {
+          tvl: {
+            token0: kvCache.tvl.token0,
+            token1: kvCache.tvl.token1,
+          },
+          formatted: {
+            token0: kvCache.formatted.token0,
+            token1: kvCache.formatted.token1,
+          },
+          updatedAt: kvCache.updatedAt,
+        },
+        {
+          headers: {
+            'Cache-Control': CACHE_TIME.short,
+          },
+        },
+      )
+    }
+
+    return error(500, { error: 'Failed to get active liquidity' })
+  }
 }
