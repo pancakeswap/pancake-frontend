@@ -4,11 +4,17 @@ import { TOKEN_RISK_T, TOKEN_RISK } from 'views/Swap/components/AccessRisk'
 
 interface AccessRiskTooltipsProps {
   riskLevel: number
+  showRiskLevel?: boolean
   hasResult: boolean
-  riskLevelDescription?: string
+  riskLevelDescription: string
 }
 
-const AccessRiskTooltips: React.FC<AccessRiskTooltipsProps> = ({ riskLevel, hasResult, riskLevelDescription }) => {
+const AccessRiskTooltips: React.FC<AccessRiskTooltipsProps> = ({
+  showRiskLevel,
+  riskLevel,
+  hasResult,
+  riskLevelDescription,
+}) => {
   const { t } = useTranslation()
 
   if (riskLevel === TOKEN_RISK.UNKNOWN || !hasResult) {
@@ -36,8 +42,8 @@ const AccessRiskTooltips: React.FC<AccessRiskTooltipsProps> = ({ riskLevel, hasR
   if (hasResult && riskLevel >= TOKEN_RISK.VERY_LOW) {
     return (
       <>
-        <Text my="8px">{TOKEN_RISK_T[riskLevel] || 'Unknown'}</Text>
-        {riskLevelDescription && <Text my="8px">{riskLevelDescription}</Text>}
+        {showRiskLevel && <Text my="8px">{TOKEN_RISK_T[riskLevel] || 'Unknown'}</Text>}
+        <Text my="8px">{riskLevelDescription}</Text>
         <Text as="span">{t('Risk scan results are provided by a third party,')}</Text>
         <Link style={{ display: 'inline' }} ml="4px" external href="https://www.hashdit.io">
           HashDit

@@ -169,7 +169,16 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                     <Flex alignItems="center">
                       <Text>{t('Token Risk Scanning')}</Text>
                       <QuestionHelper
-                        text={<AccessRiskTooltips riskLevel={TOKEN_RISK.SOME_RISK} hasResult />}
+                        text={
+                          <AccessRiskTooltips
+                            hasResult
+                            showRiskLevel={false}
+                            riskLevel={TOKEN_RISK.SOME_RISK}
+                            riskLevelDescription={t(
+                              'Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.',
+                            )}
+                          />
+                        }
                         placement="top"
                         ml="4px"
                       />
