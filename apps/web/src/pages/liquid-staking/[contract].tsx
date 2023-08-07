@@ -12,12 +12,12 @@ import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { GetStaticPaths, GetStaticProps } from 'next/types'
 import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useLiquidStakingList, fetchLiquidStaking } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
+import { fetchLiquidStaking } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
 import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
@@ -26,9 +26,9 @@ const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const { account, chainId } = useAccountActiveChain()
-  const liquidStakingList = useLiquidStakingList()
   const [stakeAmount, setStakeAmount] = useState('')
   const [showPage, setShowPage] = useState(false)
+  const [selectedList, setSelectedList] = useState<null | LiquidStakingList>(null)
 
   useEffect(() => {
     const contract: string = (router?.query?.contract as string) ?? ''
@@ -36,6 +36,7 @@ const LiquidStakingStakePage = () => {
       const list = await fetchLiquidStaking(chainId)
       const hasContract = list?.find((i) => i.contract.toLowerCase() === contract?.toLowerCase())
       if (hasContract) {
+        setSelectedList(hasContract)
         setShowPage(true)
       } else {
         await router.push('/liquid-staking')
@@ -46,14 +47,6 @@ const LiquidStakingStakePage = () => {
       fetch()
     }
   }, [chainId, router])
-
-  const selectedList = useMemo(() => {
-    const currency = (router?.query?.currency as string) ?? ''
-    const contract: string = (router?.query?.contract as string) ?? ''
-    return liquidStakingList?.find(
-      (i) => i.contract.toLowerCase() === contract?.toLowerCase() || i.token0.symbol === currency,
-    )
-  }, [liquidStakingList, router])
 
   const { exchangeRateList } = useExchangeRate({ decimals: selectedList?.token0?.decimals })
 
@@ -173,29 +166,5 @@ const LiquidStakingStakePage = () => {
 }
 
 LiquidStakingStakePage.chains = [ChainId.ETHEREUM, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.GOERLI]
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { currency } = params
-
-  if (!['ETH', 'WETH', 'BNB', 'GOR'].includes(currency as string)) {
-    return {
-      redirect: {
-        statusCode: 303,
-        destination: `/liquid-staking`,
-      },
-    }
-  }
-
-  return {
-    props: {},
-  }
-}
 
 export default LiquidStakingStakePage
