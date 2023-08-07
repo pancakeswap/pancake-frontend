@@ -134,7 +134,11 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   }, [lists, token?.address])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <AccessRiskTooltips riskLevel={data?.riskLevel} hasResult={data?.hasResult} />,
+    <AccessRiskTooltips
+      riskLevel={data?.riskLevel}
+      hasResult={data?.hasResult}
+      riskLevelDescription={data?.riskLevelDescription}
+    />,
     { placement: 'bottom' },
   )
 
