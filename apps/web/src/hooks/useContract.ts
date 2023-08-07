@@ -291,8 +291,8 @@ export function useBytes32TokenContract(tokenAddress?: Address) {
   return useContract(tokenAddress, erc20Bytes32ABI)
 }
 
-export function usePairContract(pairAddress?: Address) {
-  return useContract(pairAddress, pancakePairV2ABI)
+export function usePairContract(pairAddress?: Address, options?: UseContractOptions) {
+  return useContract(pairAddress, pancakePairV2ABI, options)
 }
 
 export function useMulticallContract() {
