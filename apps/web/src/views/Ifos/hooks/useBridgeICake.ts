@@ -268,13 +268,9 @@ export function useCrossChainMessage({ txHash, srcChainId }: CrossChainMeesagePa
         chainId: srcChainId,
         txHash,
       }),
-    // () =>
-    //   getCrossChainMessage({
-    //     chainId: ChainId.BSC,
-    //     txHash: '0x54b077aa600b0f9f4a7c29ef3137fcbd3ccf11d429797b397987293373413680',
-    //   }),
     {
       enabled: Boolean(txHash && srcChainId),
+      refetchInterval: 5 * 1000,
     },
   )
   return message
