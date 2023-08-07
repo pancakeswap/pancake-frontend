@@ -7,11 +7,15 @@ import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIfoVesting from 'views/Ifos/hooks/useIfoVesting'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+
+import { useActiveChainId } from 'hooks/useActiveChainId'
+
 import TotalPurchased from './TotalPurchased'
 import TotalAvailableClaim from './TotalAvailableClaim'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
 import ClaimButton from '../ClaimButton'
 import VestingClaimButton from '../VestingClaimButton'
+import { SwitchNetworkTips } from '../SwitchNetworkTips'
 
 interface IfoVestingCardProps {
   poolId: PoolIds
@@ -27,6 +31,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   walletIfoData,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { token } = ifo
   const { vestingStartTime } = publicIfoData
   const userPool = walletIfoData[poolId]
@@ -58,6 +63,14 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
     return new BigNumber(rateBalance).gte(0.00001) ? rateBalance : '< 0.00001'
   }, [vestingInformation, userPool, token])
 
+  const claimButton = !userPool.isVestingInitialized ? (
+    <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
+  ) : (
+    <VestingClaimButton poolId={poolId} amountAvailableToClaim={amountAvailableToClaim} walletIfoData={walletIfoData} />
+  )
+
+  const claimAction = ifo.chainId === chainId ? claimButton : <SwitchNetworkTips ifoChainId={ifo.chainId} />
+
   return (
     <Flex flexDirection="column">
       <Box>
@@ -79,17 +92,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
         <Text mb="24px" color="textSubtle" fontSize="14px">
           {t('You’ve already claimed %amount% %symbol%', { symbol: token.symbol, amount: amountClaimed })}
         </Text>
-        <Box mb="24px">
-          {!userPool.isVestingInitialized ? (
-            <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
-          ) : (
-            <VestingClaimButton
-              poolId={poolId}
-              amountAvailableToClaim={amountAvailableToClaim}
-              walletIfoData={walletIfoData}
-            />
-          )}
-        </Box>
+        <Box mb="24px">{claimAction}</Box>
       </Box>
       <IfoVestingFooter
         duration={vestingInformation?.duration || 0}

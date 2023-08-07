@@ -3,8 +3,11 @@ import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from '@pancakeswap/ifos'
+import { ChainId } from '@pancakeswap/sdk'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WalletIfoData } from 'views/Ifos/types'
+
+import { SwitchNetworkTips } from './SwitchNetworkTips'
 
 interface Props {
   poolId: PoolIds
