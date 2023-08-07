@@ -38,7 +38,7 @@ const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse
   const maxLoop = 20 // 50 * 20 = max get 1000 pair
   for (let i = 0; i < maxLoop; i++) {
     const offset = i === 0 ? 1 : 50 * i + 1
-    const params = `?platform-id=141&dexer-id=4788&sort-field=volumeUsd24h&category=spot&operation=next&desc=true&offset=${offset}`
+    const params = `?platform-id=141&dexer-id=4788&sort-field=volumeUsd24h&category=spot&desc=true&page=${offset}`
     // eslint-disable-next-line no-await-in-loop
     const result = await (await fetch(`${FETCH_URL}${params}`)).json()
 
@@ -50,7 +50,7 @@ const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse
       break
     }
   }
-
+  console.log('allPairs', allPairs)
   return addresses.map((address): SingleFarmResponse => {
     // eslint-disable-next-line array-callback-return, consistent-return
     const farmPriceInfo = allPairs.find((pair) => {
