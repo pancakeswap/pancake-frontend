@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useState, useCallback } from 'react'
 import round from 'lodash/round'
-import { bscTokens } from '@pancakeswap/tokens'
+import { CAKE } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from '@pancakeswap/ifos'
 
 import { ifoV7ABI } from 'config/abi/ifoV7'
@@ -45,7 +45,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, plannedStartTime } = ifo
   const cakePriceUsd = usePriceCakeUSD()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
-  const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
+  const currencyPriceInUSD = ifo.currency === CAKE[ifo.chainId] ? cakePriceUsd : lpTokenPriceInUsd
 
   const [state, setState] = useState({
     isInitialized: false,
