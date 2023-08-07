@@ -6,7 +6,7 @@ import Page from 'views/Page'
 import { useCurrency } from 'hooks/Tokens'
 import { LightGreyCard } from 'components/Card'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
@@ -17,7 +17,7 @@ import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import { useLiquidStakingList, fetchLiquidStaking } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
 import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
@@ -25,15 +25,33 @@ import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingBut
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { account } = useAccountActiveChain()
+  const { account, chainId } = useAccountActiveChain()
   const liquidStakingList = useLiquidStakingList()
   const [stakeAmount, setStakeAmount] = useState('')
+  const [showPage, setShowPage] = useState(false)
+
+  useEffect(() => {
+    const contract: string = (router?.query?.contract as string) ?? ''
+    const fetch = async () => {
+      const list = await fetchLiquidStaking(chainId)
+      const hasContract = list?.find((i) => i.contract.toLowerCase() === contract?.toLowerCase())
+      if (hasContract) {
+        setShowPage(true)
+      } else {
+        await router.push('/liquid-staking')
+      }
+    }
+
+    if (contract) {
+      fetch()
+    }
+  }, [chainId, router])
 
   const selectedList = useMemo(() => {
     const currency = (router?.query?.currency as string) ?? ''
-    const query: string = (router?.query?.contract as string) ?? ''
+    const contract: string = (router?.query?.contract as string) ?? ''
     return liquidStakingList?.find(
-      (i) => i.contract.toLowerCase() === query?.toLowerCase() || i.token0.symbol === currency,
+      (i) => i.contract.toLowerCase() === contract?.toLowerCase() || i.token0.symbol === currency,
     )
   }, [liquidStakingList, router])
 
@@ -53,6 +71,10 @@ const LiquidStakingStakePage = () => {
 
     return currentAmount && pickedRate ? currentAmount.dividedBy(pickedRate?.toString()) : BIG_ZERO
   }, [currentAmount, exchangeRateList, selectedList?.contract])
+
+  if (!showPage) {
+    return null
+  }
 
   return (
     <Page>

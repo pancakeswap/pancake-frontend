@@ -2,6 +2,10 @@ import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 
+export const fetchLiquidStaking = async (chainId: number) => {
+  return (await import(`../constants/${chainId}.ts`)).default
+}
+
 export const useLiquidStakingList = (): LiquidStakingList[] => {
   const { chainId } = useActiveChainId()
 
@@ -9,7 +13,7 @@ export const useLiquidStakingList = (): LiquidStakingList[] => {
     ['/liquidStaking-list', chainId],
     async () => {
       try {
-        return (await import(`../constants/${chainId}.ts`)).default
+        return fetchLiquidStaking(chainId)
       } catch (error) {
         console.error('Cannot get liquid staking list', error, chainId)
         return []
