@@ -26,7 +26,7 @@ export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchange
   const liquidStakingList = useLiquidStakingList()
 
   const { data, isLoading, mutate } = useSWR(
-    liquidStakingList?.length && ['/user-exchange-rate', chainId, liquidStakingList],
+    liquidStakingList?.length && decimals && ['/user-exchange-rate', chainId, liquidStakingList, decimals],
     async () => {
       try {
         const client = publicClient({ chainId })
