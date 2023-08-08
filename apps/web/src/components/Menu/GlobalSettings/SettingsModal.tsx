@@ -172,7 +172,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                         text={
                           <AccessRiskTooltips
                             hasResult
-                            showRiskLevel={false}
                             riskLevel={TOKEN_RISK.SOME_RISK}
                             riskLevelDescription={t(
                               'Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.',
