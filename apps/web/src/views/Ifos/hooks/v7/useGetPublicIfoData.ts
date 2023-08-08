@@ -1,12 +1,14 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import round from 'lodash/round'
 import { CAKE } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus, ifoV7ABI } from '@pancakeswap/ifos'
+import { useAccount } from 'wagmi'
 
 import { useLpTokenPrice, usePriceCakeUSD } from 'state/farms/hooks'
 import { publicClient } from 'utils/wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { PublicIfoData } from '../../types'
 import { getStatusByTimestamp } from '../helpers'
@@ -36,67 +38,71 @@ const formatVestingInfo = (pool: readonly [bigint, bigint, bigint, bigint]) => (
 
 const ROUND_DIGIT = 3
 
+const INITIAL_STATE = {
+  isInitialized: false,
+  status: 'idle' as IfoStatus,
+  secondsUntilStart: 0,
+  progress: 5,
+  secondsUntilEnd: 0,
+  poolBasic: {
+    raisingAmountPool: BIG_ZERO,
+    offeringAmountPool: BIG_ZERO,
+    limitPerUserInLP: BIG_ZERO,
+    taxRate: 0,
+    distributionRatio: 0,
+    totalAmountPool: BIG_ZERO,
+    sumTaxesOverflow: BIG_ZERO,
+    pointThreshold: 0,
+    admissionProfile: undefined,
+    vestingInformation: {
+      percentage: 0,
+      cliff: 0,
+      duration: 0,
+      slicePeriodSeconds: 0,
+    },
+
+    // 0: public sale
+    // 1: private sale
+    // 2: basic sale
+    saleType: undefined,
+  },
+  poolUnlimited: {
+    raisingAmountPool: BIG_ZERO,
+    offeringAmountPool: BIG_ZERO,
+    limitPerUserInLP: BIG_ZERO,
+    taxRate: 0,
+    distributionRatio: 0,
+    totalAmountPool: BIG_ZERO,
+    sumTaxesOverflow: BIG_ZERO,
+    vestingInformation: {
+      percentage: 0,
+      cliff: 0,
+      duration: 0,
+      slicePeriodSeconds: 0,
+    },
+    saleType: undefined,
+  },
+  thresholdPoints: undefined,
+  startTimestamp: 0,
+  endTimestamp: 0,
+  numberPoints: 0,
+  vestingStartTime: 0,
+  plannedStartTime: 0,
+}
+
 /**
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
+  const { chainId: currenctChainId } = useActiveChainId()
+  const { address: account } = useAccount()
   const { chainId } = ifo
   const { address, plannedStartTime } = ifo
   const cakePriceUsd = usePriceCakeUSD()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === CAKE[ifo.chainId] ? cakePriceUsd : lpTokenPriceInUsd
 
-  const [state, setState] = useState({
-    isInitialized: false,
-    status: 'idle' as IfoStatus,
-    secondsUntilStart: 0,
-    progress: 5,
-    secondsUntilEnd: 0,
-    poolBasic: {
-      raisingAmountPool: BIG_ZERO,
-      offeringAmountPool: BIG_ZERO,
-      limitPerUserInLP: BIG_ZERO,
-      taxRate: 0,
-      distributionRatio: 0,
-      totalAmountPool: BIG_ZERO,
-      sumTaxesOverflow: BIG_ZERO,
-      pointThreshold: 0,
-      admissionProfile: undefined,
-      vestingInformation: {
-        percentage: 0,
-        cliff: 0,
-        duration: 0,
-        slicePeriodSeconds: 0,
-      },
-
-      // 0: public sale
-      // 1: private sale
-      // 2: basic sale
-      saleType: undefined,
-    },
-    poolUnlimited: {
-      raisingAmountPool: BIG_ZERO,
-      offeringAmountPool: BIG_ZERO,
-      limitPerUserInLP: BIG_ZERO,
-      taxRate: 0,
-      distributionRatio: 0,
-      totalAmountPool: BIG_ZERO,
-      sumTaxesOverflow: BIG_ZERO,
-      vestingInformation: {
-        percentage: 0,
-        cliff: 0,
-        duration: 0,
-        slicePeriodSeconds: 0,
-      },
-      saleType: undefined,
-    },
-    thresholdPoints: undefined,
-    startTimestamp: 0,
-    endTimestamp: 0,
-    numberPoints: 0,
-    vestingStartTime: 0,
-    plannedStartTime: 0,
-  })
+  const [state, setState] = useState(INITIAL_STATE)
 
   const fetchIfoData = useCallback(async () => {
     const client = publicClient({ chainId })
@@ -254,6 +260,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       vestingStartTime: vestingStartTime.result ? Number(vestingStartTime.result) : 0,
     }))
   }, [plannedStartTime, address, chainId])
+
+  useEffect(() => setState(INITIAL_STATE), [currenctChainId, account])
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
 }

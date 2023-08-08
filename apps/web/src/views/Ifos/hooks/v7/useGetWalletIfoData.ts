@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds, ifoV7ABI } from '@pancakeswap/ifos'
@@ -9,6 +9,8 @@ import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
+
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
@@ -47,6 +49,7 @@ const initialState = {
  * Gets all data from an IFO related to a wallet
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
+  const { chainId: currenctChainId } = useActiveChainId()
   const [state, setState] = useState<WalletIfoState>(initialState)
   const dispatch = useAppDispatch()
   const credit = useIfoCredit()
@@ -240,6 +243,8 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     credit,
     creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
+
+  useEffect(() => resetIfoData(), [currenctChainId, account, resetIfoData])
 
   return {
     ...state,
