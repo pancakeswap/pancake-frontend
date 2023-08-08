@@ -19,7 +19,7 @@ import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { fetchRiskToken } from 'hooks/fetchTokenRisk'
+import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 
 const AnimatedButton = styled(Button)`

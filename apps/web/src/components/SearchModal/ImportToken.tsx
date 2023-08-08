@@ -27,7 +27,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import AccessRisk, { TOKEN_RISK } from 'components/AccessRisk'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
-import { fetchRiskToken } from 'hooks/fetchTokenRisk'
+import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
 
 interface ImportProps {
   tokens: Token[]
