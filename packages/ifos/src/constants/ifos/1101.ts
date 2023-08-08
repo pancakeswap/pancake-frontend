@@ -5,10 +5,10 @@ import { BaseIfoConfig } from '../../types'
 export const ifos: BaseIfoConfig[] = [
   {
     id: 'test',
-    address: '0x5539A7A6D2d5a0Ff35A833bD13bC35EF666fdFB3',
+    address: '0x09287da58b99faa724057d6612519023f6323728',
     isActive: true,
     name: 'USDT',
-    plannedStartTime: 1691370000,
+    plannedStartTime: 1691474400,
     poolBasic: {
       raiseAmount: '$0.8',
     },
