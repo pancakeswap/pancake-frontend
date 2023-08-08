@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Balance, Message, MessageText } from '@pancakeswap/uikit'
 import { ReactNode } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { LightGreyCard } from '@pancakeswap/uikit/src/widgets/RoiCalculator/Card'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -19,6 +19,7 @@ export function FixedRestakingModal({
   initialLockPeriod,
   stakedPeriods,
   setSelectedPeriodIndex,
+  amountDeposit,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
@@ -26,6 +27,7 @@ export function FixedRestakingModal({
   initialLockPeriod: number
   stakedPeriods: number[]
   setSelectedPeriodIndex?: (value: number | null) => void
+  amountDeposit: CurrencyAmount<Token>
 }) {
   const { account } = useAccountActiveChain()
 
@@ -55,7 +57,7 @@ export function FixedRestakingModal({
               </MessageText>
             </Message>
           )}
-          body={({ stakeAmount, projectedReturnAmount, lockPeriod, boostAPR, lockAPR }) => (
+          body={({ stakeCurrencyAmount, lockPeriod, boostAPR, lockAPR }) => (
             <>
               <Box mb="16px" mt="16px">
                 <PreTitle textTransform="uppercase" bold mb="8px">
@@ -71,7 +73,7 @@ export function FixedRestakingModal({
                           fontSize="16px"
                           decimals={2}
                           unit={` ${stakingToken.symbol}`}
-                          value={toNumber(stakeAmount)}
+                          value={toNumber(amountDeposit.add(stakeCurrencyAmount).toExact())}
                         />{' '}
                       </Text>
                     </Box>
@@ -88,10 +90,10 @@ export function FixedRestakingModal({
                   {t('Position Details')}
                 </PreTitle>
                 <FixedStakingOverview
+                  stakeAmount={amountDeposit.add(stakeCurrencyAmount)}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
-                  projectedReturnAmount={projectedReturnAmount}
                 />
               </Box>
             </>

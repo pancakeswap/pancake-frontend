@@ -36,7 +36,7 @@ import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
-  stakeAmount: string
+  stakeCurrencyAmount: CurrencyAmount<Token>
   projectedReturnAmount: CurrencyAmount<Token>
   lockPeriod: number
   isStaked: boolean
@@ -58,7 +58,7 @@ export function StakingModalTemplate({
   pools: FixedStakingPool[]
   initialLockPeriod: number
   stakedPeriods: number[]
-  head?: (params: BodyParam) => ReactNode
+  head?: () => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
   hideStakeButton?: boolean
 }) {
@@ -157,9 +157,11 @@ export function StakingModalTemplate({
 
   const { boostAPR, lockAPR } = useFixedStakeAPR(aprParams)
 
+  const apr = boostAPR.greaterThan(0) ? boostAPR : lockAPR
+
   const projectedReturnAmount = stakeCurrencyAmount
     ?.multiply(lockPeriod)
-    ?.multiply(boostAPR.multiply(lockPeriod).divide(365))
+    ?.multiply(apr.multiply(lockPeriod).divide(365))
 
   const formattedUsdProjectedReturnAmount = useStablecoinPriceAmount(
     stakingToken,
@@ -167,8 +169,8 @@ export function StakingModalTemplate({
   )
   const params = useMemo(
     () => ({
+      stakeCurrencyAmount,
       setLockPeriod,
-      stakeAmount,
       projectedReturnAmount,
       lockPeriod,
       isStaked,
@@ -176,7 +178,15 @@ export function StakingModalTemplate({
       lockAPR,
       formattedUsdProjectedReturnAmount,
     }),
-    [boostAPR, formattedUsdProjectedReturnAmount, isStaked, lockAPR, lockPeriod, projectedReturnAmount, stakeAmount],
+    [
+      boostAPR,
+      formattedUsdProjectedReturnAmount,
+      isStaked,
+      lockAPR,
+      lockPeriod,
+      projectedReturnAmount,
+      stakeCurrencyAmount,
+    ],
   )
 
   return (
@@ -192,7 +202,7 @@ export function StakingModalTemplate({
       width={['100%', '100%', '420px']}
       maxWidth={['100%', , '420px']}
     >
-      {head ? head(params) : null}
+      {head ? head() : null}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <PreTitle textTransform="uppercase" bold>
           {t('Stake Amount')}

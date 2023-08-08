@@ -53,7 +53,7 @@ export function FixedStakingCalculator({
           stakedPeriods={stakedPeriods}
           body={({
             setLockPeriod,
-            stakeAmount,
+            stakeCurrencyAmount,
             projectedReturnAmount,
             formattedUsdProjectedReturnAmount,
             lockPeriod,
@@ -97,11 +97,10 @@ export function FixedStakingCalculator({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
-                  stakeAmount={stakeAmount}
+                  stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
-                  projectedReturnAmount={projectedReturnAmount}
                 />
               </Box>
             </>

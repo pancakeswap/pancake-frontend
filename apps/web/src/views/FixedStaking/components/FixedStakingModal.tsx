@@ -57,7 +57,7 @@ export function FixedStakingModal({
           pools={pools}
           initialLockPeriod={initialLockPeriod}
           stakedPeriods={stakedPeriods}
-          body={({ setLockPeriod, stakeAmount, projectedReturnAmount, lockPeriod, isStaked, boostAPR, lockAPR }) => (
+          body={({ setLockPeriod, stakeCurrencyAmount, lockPeriod, isStaked, boostAPR, lockAPR }) => (
             <>
               {pools.length > 1 ? (
                 <>
@@ -109,11 +109,10 @@ export function FixedStakingModal({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
-                  stakeAmount={stakeAmount}
+                  stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
-                  projectedReturnAmount={projectedReturnAmount}
                 />
               </Box>
             </>

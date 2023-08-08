@@ -46,7 +46,7 @@ export function UnstakeBeforeEnededModal({
   const { t } = useTranslation()
   const unstakeModal = useModalV2()
 
-  const { accrueInterest, amountDeposit, projectedReturnAmount } = useCalculateProjectedReturnAmount({
+  const { accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
     token,
     stakePositionUserInfo,
     lockPeriod,
@@ -116,7 +116,12 @@ export function UnstakeBeforeEnededModal({
             {t('Position Details')}
           </PreTitle>
 
-          <FixedStakingOverview lockAPR={lockAPR} boostAPR={boostAPR} projectedReturnAmount={projectedReturnAmount} />
+          <FixedStakingOverview
+            lockPeriod={lockPeriod}
+            stakeAmount={amountDeposit}
+            lockAPR={lockAPR}
+            boostAPR={boostAPR}
+          />
 
           <Message variant="warning" my="16px">
             <MessageText maxWidth="200px">

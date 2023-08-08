@@ -4,25 +4,35 @@ import { Flex, Text, Balance, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 
 import toNumber from 'lodash/toNumber'
+import { useMemo } from 'react'
 
 import { format, add } from 'date-fns'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { DAYS_A_YEAR } from '../constant'
 
 export default function FixedStakingOverview({
   stakeAmount,
   lockAPR,
   boostAPR,
   lockPeriod,
-  projectedReturnAmount,
 }: {
-  stakeAmount?: string
+  stakeAmount: CurrencyAmount<Token>
   lockAPR?: Percent
   boostAPR?: Percent
-  projectedReturnAmount: CurrencyAmount<Token>
   lockPeriod?: number
 }) {
   const { t } = useTranslation()
+
+  const apr = boostAPR?.greaterThan(0) ? boostAPR : lockAPR
+
+  const projectedReturnAmount = useMemo(
+    () =>
+      lockPeriod && apr
+        ? stakeAmount.multiply(lockPeriod).multiply(apr.multiply(lockPeriod).divide(DAYS_A_YEAR))
+        : stakeAmount.multiply(0),
+    [apr, lockPeriod, stakeAmount],
+  )
 
   return (
     <LightGreyCard>
@@ -31,7 +41,7 @@ export default function FixedStakingOverview({
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Stake Amount')}
           </Text>
-          <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount)} />
+          <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount.toSignificant(6))} />
         </Flex>
       ) : null}
       {lockPeriod ? (

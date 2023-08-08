@@ -115,6 +115,7 @@ export function StakedPositionSection({
               )}
             </UnstakeBeforeEnededModal>
             <FixedRestakingModal
+              amountDeposit={amountDeposit}
               stakedPeriods={stakedPeriods}
               stakingToken={token}
               pools={pool.pools}
