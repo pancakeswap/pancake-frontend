@@ -1,15 +1,18 @@
 import { useState, useEffect, useMemo } from 'react'
 import type WallchainSDK from '@wallchain/sdk'
 import { TOptions } from '@wallchain/sdk'
-import { Token, TradeType, Currency } from '@pancakeswap/sdk'
+import { Token, TradeType, Currency, ChainId } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useWalletClient } from 'wagmi'
+import useSWRImmutable from 'swr/immutable'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { basisPointsToPercent } from 'utils/exchange'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { captureException } from '@sentry/nextjs'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { atom, useAtom } from 'jotai'
 
 import Bottleneck from 'bottleneck'
 import { Address, Hex } from 'viem'
@@ -34,15 +37,8 @@ const limiter = new Bottleneck({
 })
 
 const overrideAddresses = {
+  // MetaSwapWrapper
   56: '0x6346e0a39e2fBbc133e4ce8390ab567108e62aEe',
-}
-
-const checkAddresses = (src: false | `0x${string}`, dst: false | `0x${string}`) => {
-  if (src && dst) {
-    const pair = WallchainPairs.find(([a, b]) => (a === src && b === dst) || (a === dst && b === src))
-    return !!pair
-  }
-  return false
 }
 
 const loadData = async (account: string, sdk: WallchainSDK, swapCalls: SwapCall[]) => {
@@ -76,58 +72,76 @@ const extractTokensFromTrade = (trade: SmartRouterTrade<TradeType> | undefined |
   return [srcToken, dstToken] as [false | `0x${string}`, false | `0x${string}`]
 }
 
+function useWallchainSDK() {
+  const { data: walletClient } = useWalletClient()
+  const { chainId } = useActiveChainId()
+  const { data: wallchainSDK } = useSWRImmutable(
+    chainId === ChainId.BSC && walletClient && ['wallchainSDK', walletClient.account, walletClient.chain],
+    async () => {
+      const WallchainSDK = (await import('@wallchain/sdk')).default
+      return new WallchainSDK({
+        keys: WallchainKeys,
+        provider: walletClient?.transport as TOptions['provider'],
+        overrideAddresses,
+      })
+    },
+  )
+
+  return wallchainSDK
+}
+
+const wallchainStatusAtom = atom<WallchainStatus>('pending')
+export function useWallchainStatus() {
+  return useAtom(wallchainStatusAtom)
+}
+
 export function useWallchainApi(
   trade?: SmartRouterTrade<TradeType>,
   deadline?: bigint,
   feeOptions?: FeeOptions,
 ): [WallchainStatus, string | undefined, string | undefined] {
   const [approvalAddress, setApprovalAddress] = useState<undefined | string>(undefined)
-  const [status, setStatus] = useState<WallchainStatus>('pending')
+  const [status, setStatus] = useWallchainStatus()
   const [masterInput, setMasterInput] = useState<undefined | string>(undefined)
   const { data: walletClient } = useWalletClient()
   const { account } = useAccountActiveChain()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
-  const [sdk, setSDK] = useState<WallchainSDK | undefined>(undefined)
+
+  const sdk = useWallchainSDK()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
 
   useEffect(() => {
-    ;(async () => {
-      if (!walletClient) return
-      if (!sdk) {
-        const WallchainSDK = (await import('@wallchain/sdk')).default
-        setSDK(
-          new WallchainSDK({
-            keys: WallchainKeys,
-            provider: walletClient.transport as TOptions['provider'],
-            overrideAddresses,
-          }),
-        )
-        return
-      }
-      const [srcToken, dstToken] = extractTokensFromTrade(trade)
-      if (checkAddresses(srcToken, dstToken)) {
-        setStatus('pending')
-        wrappedLoadData(account, sdk, swapCalls)
-          .then(([reqStatus, address, recievedMasterInput]) => {
-            setStatus(reqStatus as WallchainStatus)
-            setApprovalAddress(address)
-            setMasterInput(recievedMasterInput)
-          })
-          .catch((e) => {
-            setStatus('not-found')
-            setApprovalAddress(undefined)
-            setMasterInput(undefined)
-            captureException(e)
-          })
-      } else {
-        setStatus('not-found')
-        setApprovalAddress(undefined)
-        setMasterInput(undefined)
-      }
-    })()
-  }, [walletClient, account, swapCalls, sdk, trade])
+    if (!sdk || !walletClient || !trade) return
+    if (trade.routes.length === 0 || trade.inputAmount.currency.chainId !== ChainId.BSC) return
+    const includesPair = trade.routes.some(
+      (route) =>
+        (route.inputAmount.wrapped.currency.equals(WallchainPairs[0]) &&
+          route.outputAmount.wrapped.currency.equals(WallchainPairs[1])) ||
+        (route.inputAmount.wrapped.currency.equals(WallchainPairs[1]) &&
+          route.outputAmount.wrapped.currency.equals(WallchainPairs[0])),
+    )
+    if (includesPair) {
+      setStatus('pending')
+      wrappedLoadData(account, sdk, swapCalls)
+        .then(([reqStatus, address, recievedMasterInput]) => {
+          setStatus(reqStatus as WallchainStatus)
+          setApprovalAddress(address)
+          setMasterInput(recievedMasterInput)
+        })
+        .catch((e) => {
+          setStatus('not-found')
+          setApprovalAddress(undefined)
+          setMasterInput(undefined)
+          captureException(e)
+        })
+    } else {
+      setStatus('not-found')
+      setApprovalAddress(undefined)
+      setMasterInput(undefined)
+    }
+  }, [walletClient, account, swapCalls, sdk, trade, setStatus])
 
   return [status, approvalAddress, masterInput]
 }
@@ -145,70 +159,65 @@ export function useWallchainSwapCallArguments(
   const amountIn = trade?.inputAmount?.numerator?.toString() as `0x${string}`
   const needPermit = !trade?.inputAmount?.currency?.isNative
 
+  const sdk = useWallchainSDK()
+
   useEffect(() => {
-    ;(async () => {
-      if (
-        !walletClient ||
-        !masterInput ||
-        !srcToken ||
-        !dstToken ||
-        !amountIn ||
-        !previousSwapCalls ||
-        !previousSwapCalls[0] ||
-        !account
-      ) {
-        if (!previousSwapCalls || !previousSwapCalls.length) {
-          setSwapCalls([])
-        } else {
-          setSwapCalls(previousSwapCalls)
-        }
-
-        return
+    if (
+      !walletClient ||
+      !masterInput ||
+      !srcToken ||
+      !dstToken ||
+      !amountIn ||
+      !previousSwapCalls ||
+      !previousSwapCalls[0] ||
+      !sdk ||
+      !account
+    ) {
+      if (!previousSwapCalls || !previousSwapCalls.length) {
+        setSwapCalls([])
+      } else {
+        setSwapCalls(previousSwapCalls)
       }
 
-      const callback = async () => {
-        try {
-          const WallchainSDK = (await import('@wallchain/sdk')).default
-          const sdk = new WallchainSDK({
-            keys: WallchainKeys,
-            provider: walletClient.transport as TOptions['provider'],
-            overrideAddresses,
-          })
-          const spender = (await sdk.getSpender()) as `0x${string}`
+      return
+    }
 
-          let witness: false | Awaited<ReturnType<typeof sdk.signPermit>> = false
-          if (needPermit) {
-            witness = await sdk.signPermit(srcToken as `0x${string}`, account, spender, amountIn)
-          }
+    const callback = async () => {
+      try {
+        const spender = (await sdk.getSpender()) as `0x${string}`
 
-          const data = await sdk.createNewTransaction(
-            {
-              value: previousSwapCalls[0].value,
-              to: previousSwapCalls[0].address,
-              data: previousSwapCalls[0].calldata,
-              from: account,
-              srcToken: srcToken as `0x${string}`,
-              dstToken: dstToken as `0x${string}`,
-              amountIn,
-              isPermit: false,
-            },
-            masterInput,
-            witness,
-          )
-
-          return {
-            address: data.to as `0x${string}`,
-            calldata: data.data as `0x${string}`,
-            value: data.value as `0x${string}`,
-          }
-        } catch (e) {
-          return previousSwapCalls[0]
+        let witness: false | Awaited<ReturnType<typeof sdk.signPermit>> = false
+        if (needPermit) {
+          witness = await sdk.signPermit(srcToken as `0x${string}`, account, spender, amountIn)
         }
-      }
 
-      setSwapCalls([{ getCall: callback }])
-    })()
-  }, [account, previousSwapCalls, masterInput, srcToken, dstToken, amountIn, needPermit, walletClient])
+        const data = await sdk.createNewTransaction(
+          {
+            value: previousSwapCalls[0].value,
+            to: previousSwapCalls[0].address,
+            data: previousSwapCalls[0].calldata,
+            from: account,
+            srcToken: srcToken as `0x${string}`,
+            dstToken: dstToken as `0x${string}`,
+            amountIn,
+            isPermit: false,
+          },
+          masterInput,
+          witness,
+        )
+
+        return {
+          address: data.to as `0x${string}`,
+          calldata: data.data as `0x${string}`,
+          value: data.value as `0x${string}`,
+        }
+      } catch (e) {
+        return previousSwapCalls[0]
+      }
+    }
+
+    setSwapCalls([{ getCall: callback }])
+  }, [account, previousSwapCalls, masterInput, srcToken, dstToken, amountIn, needPermit, walletClient, sdk])
 
   return swapCalls
 }
