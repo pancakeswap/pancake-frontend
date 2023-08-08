@@ -28,7 +28,7 @@ import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { Field } from 'state/limitOrders/types'
 import { useExchangeChartManager } from 'state/user/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import AccessRisk from 'components/AccessRisk'
+import AccessRisk from 'views/Swap/components/AccessRisk'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
 
 import { CommonBasesType } from 'components/SearchModal/types'
