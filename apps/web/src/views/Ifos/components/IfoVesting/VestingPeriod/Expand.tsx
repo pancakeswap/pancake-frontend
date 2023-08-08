@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from '@pancakeswap/ifos'
-import { useIfoConfigById } from 'hooks/useIfoConfig'
+import { useIfoConfigAcrossChainsById } from 'hooks/useIfoConfig'
 
 import Info from './Info'
 
@@ -43,7 +43,7 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
       : css`
           ${collapseAnimation} 300ms linear forwards
         `};
-  overflow: hidden;
+  overflow: ${({ expanded }) => (expanded ? 'auto' : 'hidden')};
   margin: 0 -24px;
   padding: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
@@ -64,7 +64,7 @@ const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { id, token } = data.ifo
-  const ifoConfig = useIfoConfigById(id)
+  const ifoConfig = useIfoConfigAcrossChainsById(id)
   const ifoIsActive = useMemo(() => ifoConfig?.isActive, [ifoConfig])
   const router = useRouter()
 

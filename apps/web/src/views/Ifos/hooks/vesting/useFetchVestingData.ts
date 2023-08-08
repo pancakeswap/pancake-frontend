@@ -4,14 +4,14 @@ import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
 
-import { useIfoConfigs } from 'hooks/useIfoConfig'
+import { useIfoConfigsAcrossChains } from 'hooks/useIfoConfig'
 import { FAST_INTERVAL } from 'config/constants'
 
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
 const useFetchVestingData = () => {
   const { address: account } = useAccount()
-  const configs = useIfoConfigs()
+  const configs = useIfoConfigsAcrossChains()
   const allVestingIfo = useMemo<Ifo[]>(
     () => configs?.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle) || [],
     [configs],

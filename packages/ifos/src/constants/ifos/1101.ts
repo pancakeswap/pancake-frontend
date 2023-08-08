@@ -2,9 +2,10 @@ import { polygonZkEvmTokens } from '@pancakeswap/tokens'
 
 import { BaseIfoConfig } from '../../types'
 
+// id should be unique across chains
 export const ifos: BaseIfoConfig[] = [
   {
-    id: 'test',
+    id: '1101-test',
     address: '0x09287da58b99faa724057d6612519023f6323728',
     isActive: true,
     name: 'USDT',

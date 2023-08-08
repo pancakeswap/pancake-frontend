@@ -9,6 +9,8 @@ import { useIfoV3Contract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 
+import { SwitchNetworkTips } from '../../IfoFoldableCard/IfoPoolCard/SwitchNetworkTips'
+
 interface Props {
   poolId: PoolIds
   data: VestingData
@@ -27,7 +29,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   const { account, chain } = useWeb3React()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { address, token } = data.ifo
+  const { address, token, chainId } = data.ifo
   const contract = useIfoV3Contract(address)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
@@ -64,6 +66,10 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
     t,
     fetchUserVestingData,
   ])
+
+  if (chain?.id !== chainId) {
+    return <SwitchNetworkTips ifoChainId={chainId} />
+  }
 
   return (
     <Button

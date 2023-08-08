@@ -28,10 +28,11 @@ export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
     () => destChainCredit && sourceChainCredit && destChainCredit.quotient === sourceChainCredit.quotient,
     [sourceChainCredit, destChainCredit],
   )
-  // const shouldBridgeAgain = useMemo(
-  //   () => ifoCredit && ifoCredit.gt(0) && sourceChainCredit.quotient !== BigInt(ifoCredit.toString()),
-  //   [ifoCredit, sourceChainCredit],
-  // )
+  const shouldBridgeAgain = useMemo(
+    () =>
+      ifoCredit && sourceChainCredit && ifoCredit.gt(0) && sourceChainCredit.quotient !== BigInt(ifoCredit.toString()),
+    [ifoCredit, sourceChainCredit],
+  )
 
   if (!noICake && isICakeSynced) {
     return <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} buttonVisible={false} />
@@ -39,6 +40,8 @@ export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
 
   const tips = noICake
     ? t('You don’t have any iCAKE available for IFO public sale.')
+    : shouldBridgeAgain
+    ? t('Bridge iCAKE again if you have extended your CAKE staking or added more CAKE')
     : t('Bridge your iCAKE to participate this sale on %chain%', {
         chain: chainName,
       })
