@@ -144,6 +144,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   )
 
   const publicPoolCharacteristics = publicIfoData[poolId]
+  const isPublicPoolBasicSale = isBasicSale(publicPoolCharacteristics.saleType)
   const userPoolCharacteristics = walletIfoData[poolId]
   const { offeringAmountInToken, amountTokenCommittedInLP, refundingAmountInLP } = userPoolCharacteristics
   const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
@@ -190,7 +191,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
     let message: ReactNode | undefined
 
-    if (account && !hasProfile && !isBasicSale(publicPoolCharacteristics.saleType)) {
+    if (account && !hasProfile && !isPublicPoolBasicSale) {
       message = (
         <Message my="24px" p="8px" variant="warning">
           <Box>
@@ -238,7 +239,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       message = <ICakeTips ifoChainId={ifo.chainId} ifoCredit={walletIfoData.ifoCredit?.credit} />
     }
 
-    if (account && !hasProfile && !isBasicSale(publicPoolCharacteristics.saleType)) {
+    if (account && !hasProfile && !isPublicPoolBasicSale && publicIfoData.status !== 'finished') {
       return (
         <>
           <OnSaleInfo
@@ -330,17 +331,18 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
-          {ifov31Msg || (
-            <>
-              <Text textAlign="center" fontSize="14px">
-                {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
-              </Text>
-              <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
-                {t('How does it work?')} »
-              </MessageTextLink>
-              <StakeVaultButton mt="24px" />
-            </>
-          )}
+          {!isPublicPoolBasicSale &&
+            (ifov31Msg || (
+              <>
+                <Text textAlign="center" fontSize="14px">
+                  {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
+                </Text>
+                <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
+                  {t('How does it work?')} »
+                </MessageTextLink>
+                <StakeVaultButton mt="24px" />
+              </>
+            ))}
         </Flex>
       ) : (
         <>
