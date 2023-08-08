@@ -235,7 +235,10 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         </Box>
       ) : null
 
-    if (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) {
+    if (
+      (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) &&
+      publicIfoData.status !== 'finished'
+    ) {
       message = <ICakeTips ifoChainId={ifo.chainId} ifoCredit={walletIfoData.ifoCredit?.credit} />
     }
 

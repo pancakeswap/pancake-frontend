@@ -269,7 +269,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
     if (status === 'finished') {
       return (
         <StyledIfoCardDetails flexDirection="column">
-          {(poolId === PoolIds.poolBasic || ifo.isActive) && tokenEntry}
+          {poolId === PoolIds.poolBasic && tokenEntry}
           {hasTax && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId]?.raiseAmount} />
