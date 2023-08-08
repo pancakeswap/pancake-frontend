@@ -1,5 +1,6 @@
 import { Abi, Address } from 'viem'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { TranslateFunction } from '@pancakeswap/localization'
 
 interface NativeToken {
   name: string
@@ -20,6 +21,11 @@ export enum FunctionName {
   convertSnBnbToBnb = 'convertSnBnbToBnb',
 }
 
+export interface FAQType {
+  title: JSX.Element
+  description: JSX.Element
+}
+
 export interface LiquidStakingList {
   stakingSymbol: string
   contract: Address
@@ -30,4 +36,5 @@ export interface LiquidStakingList {
   approveToken: Token
   shouldCheckApproval: boolean
   exchangeRateMultiCall: ExchangeRateMultiCall[]
+  FAQs: FAQType[]
 }

@@ -2,6 +2,9 @@ import { NATIVE, WETH9, ChainId } from '@pancakeswap/sdk'
 import { bscTokens } from '@pancakeswap/tokens'
 import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
 import { WBETH, SNBNB } from 'config/constants/liquidStaking'
+// FAQs
+import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
+import { BnbSnbnbFaq } from 'views/LiquidStaking/constants/FAQs/BnbSnbnbFaq'
 // ABI
 import { wbethBscABI } from 'config/abi/wbethBSC'
 import { snBnbABI } from 'config/abi/snBNB'
@@ -23,6 +26,7 @@ const liquidStaking: LiquidStakingList[] = [
         functionName: FunctionName.exchangeRate,
       },
     ],
+    FAQs: EthWbethFaq(),
   },
   {
     stakingSymbol: 'BNB / SnBNB',
@@ -41,6 +45,7 @@ const liquidStaking: LiquidStakingList[] = [
         args: [1000000000000000000], // 1 SnBNB
       },
     ],
+    FAQs: BnbSnbnbFaq(),
   },
 ]
 

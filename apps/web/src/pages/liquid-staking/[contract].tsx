@@ -159,7 +159,7 @@ const LiquidStakingStakePage = () => {
         </CardBody>
       </AppBody>
       <AppBody>
-        <LiquidStakingFAQs />
+        <LiquidStakingFAQs config={selectedList?.FAQs} />
       </AppBody>
     </Page>
   )

@@ -2,6 +2,8 @@ import { WETH9, NATIVE, ChainId } from '@pancakeswap/sdk'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { LiquidStakingList, FunctionName } from 'views/LiquidStaking/constants/types'
 import { WBETH } from 'config/constants/liquidStaking'
+// FAQs
+import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
 import { wbethEthABI } from 'config/abi/wbethETH'
 
@@ -22,6 +24,7 @@ const liquidStaking: LiquidStakingList[] = [
         functionName: FunctionName.exchangeRate,
       },
     ],
+    FAQs: EthWbethFaq(),
   },
 ]
 
