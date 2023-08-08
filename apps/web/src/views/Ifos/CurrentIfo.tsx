@@ -28,6 +28,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
 
   return (
     <IfoContainer
+      ifoBasicSaleType={publicIfoData.poolBasic.saleType}
       ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
       ifoSteps={
         <IfoSteps

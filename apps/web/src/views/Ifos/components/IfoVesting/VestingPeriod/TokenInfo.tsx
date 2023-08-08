@@ -20,9 +20,15 @@ interface TokenInfoProps {
   index: number
   data: VestingData
   fetchUserVestingData: () => void
+  ifoBasicSaleType?: number
 }
 
-const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, data, fetchUserVestingData }) => {
+const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({
+  index,
+  data,
+  fetchUserVestingData,
+  ifoBasicSaleType,
+}) => {
   const { vestingTitle, token } = data.ifo
   const { vestingComputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
   const { vestingComputeReleasableAmount: basicReleaseAmount } = data.userVestingData[PoolIds.poolBasic]
@@ -64,7 +70,14 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
         </Flex>
         <ArrowIcon $toggled={expanded} color="primary" ml="auto" />
       </Flex>
-      {shouldRenderExpand && <Expand expanded={expanded} data={data} fetchUserVestingData={fetchUserVestingData} />}
+      {shouldRenderExpand && (
+        <Expand
+          expanded={expanded}
+          data={data}
+          fetchUserVestingData={fetchUserVestingData}
+          ifoBasicSaleType={ifoBasicSaleType}
+        />
+      )}
     </Box>
   )
 }

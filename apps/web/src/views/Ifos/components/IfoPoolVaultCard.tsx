@@ -11,7 +11,11 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import IfoPoolVaultCardMobile from './IfoPoolVaultCardMobile'
 import IfoVesting from './IfoVesting/index'
 
-const IfoPoolVaultCard = () => {
+type Props = {
+  ifoBasicSaleType?: number
+}
+
+const IfoPoolVaultCard = ({ ifoBasicSaleType }: Props) => {
   const { chainId } = useActiveChainId()
   const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
   const { isXl, isLg, isMd, isXs, isSm } = useMatchBreakpoints()
@@ -31,7 +35,7 @@ const IfoPoolVaultCard = () => {
   return (
     <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">
       {cakeVaultSupported ? vault : null}
-      <IfoVesting pool={cakePool} />
+      <IfoVesting pool={cakePool} ifoBasicSaleType={ifoBasicSaleType} />
     </Flex>
   )
 }

@@ -16,14 +16,14 @@ const expandAnimation = keyframes`
   }
   to {
     opacity: 1;
-    max-height: 484px;
+    max-height: 548px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
     opacity: 1;
-    max-height: 484px;
+    max-height: 548px;
   }
   to {
     opacity: 0;
@@ -53,9 +53,15 @@ interface ExpandProps {
   data: VestingData
   expanded: boolean
   fetchUserVestingData: () => void
+  ifoBasicSaleType?: number
 }
 
-const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded, fetchUserVestingData }) => {
+const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({
+  data,
+  expanded,
+  fetchUserVestingData,
+  ifoBasicSaleType,
+}) => {
   const { t } = useTranslation()
   const { id, token } = data.ifo
   const ifoConfig = useIfoConfigById(id)
@@ -69,7 +75,12 @@ const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded
   return (
     <StyledExpand expanded={expanded}>
       <Info poolId={PoolIds.poolUnlimited} data={data} fetchUserVestingData={fetchUserVestingData} />
-      <Info poolId={PoolIds.poolBasic} data={data} fetchUserVestingData={fetchUserVestingData} />
+      <Info
+        poolId={PoolIds.poolBasic}
+        data={data}
+        fetchUserVestingData={fetchUserVestingData}
+        ifoBasicSaleType={ifoBasicSaleType}
+      />
       {!ifoIsActive && (
         <Text bold color="primary" textAlign="center" style={{ cursor: 'pointer' }} onClick={handleViewIfo}>
           {t('View IFO')}
