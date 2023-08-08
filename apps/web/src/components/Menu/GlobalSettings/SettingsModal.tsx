@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import {
   Flex,
   InjectedModalProps,
+  Link,
   Modal,
   ExpertModal,
   PancakeToggle,
@@ -45,8 +46,6 @@ import {
 import { AtomBox } from '@pancakeswap/ui'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
-import { TOKEN_RISK } from 'components/AccessRisk'
-import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
@@ -170,13 +169,18 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                       <Text>{t('Token Risk Scanning')}</Text>
                       <QuestionHelper
                         text={
-                          <AccessRiskTooltips
-                            hasResult
-                            riskLevel={TOKEN_RISK.SOME_RISK}
-                            riskLevelDescription={t(
-                              'Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.',
-                            )}
-                          />
+                          <>
+                            <Text>{t('Automatic risk scanning for the selected token')}</Text>
+                            <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
+                            <Link style={{ display: 'inline' }} ml="4px" external href="https://www.avengerdao.org">
+                              AvengerDAO
+                            </Link>
+                            <Text my="8px">
+                              {t(
+                                'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
+                              )}
+                            </Text>
+                          </>
                         }
                         placement="top"
                         ml="4px"
