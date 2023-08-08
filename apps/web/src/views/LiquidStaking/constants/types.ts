@@ -1,6 +1,5 @@
 import { Abi, Address } from 'viem'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { TranslateFunction } from '@pancakeswap/localization'
 
 interface NativeToken {
   name: string
