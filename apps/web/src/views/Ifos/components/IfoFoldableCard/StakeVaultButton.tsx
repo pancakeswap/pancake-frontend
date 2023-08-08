@@ -1,15 +1,24 @@
-import { useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { Button } from '@pancakeswap/uikit'
-import { useConfig } from 'views/Ifos/contexts/IfoContext'
-
+import { Button, useModalV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { isCakeVaultSupported, CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
+
+import { useConfig } from 'views/Ifos/contexts/IfoContext'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+
+import { NetworkSwitcherModal } from './IfoPoolCard/NetworkSwitcherModal'
+import { useChainNames } from '../../hooks/useChainNames'
 
 const StakeVaultButton = (props) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const router = useRouter()
   const { isExpanded, setIsExpanded } = useConfig()
   const isFinishedPage = router.pathname.includes('history')
+  const cakeVaultSupported = useMemo(() => isCakeVaultSupported(chainId), [chainId])
+  const chainNames = useChainNames(CAKE_VAULT_SUPPORTED_CHAINS)
+  const { onOpen, onDismiss, isOpen } = useModalV2()
 
   const scrollToTop = useCallback(() => {
     window.scrollTo({
@@ -18,7 +27,12 @@ const StakeVaultButton = (props) => {
     })
   }, [])
 
-  const handleClickButton = () => {
+  const handleClickButton = useCallback(() => {
+    if (!cakeVaultSupported) {
+      onOpen()
+      return
+    }
+
     // Always expand for mobile
     if (!isExpanded) {
       setIsExpanded(true)
@@ -29,12 +43,24 @@ const StakeVaultButton = (props) => {
     } else {
       scrollToTop()
     }
-  }
+  }, [cakeVaultSupported, onOpen, isExpanded, isFinishedPage, router, scrollToTop, setIsExpanded])
 
   return (
-    <Button {...props} onClick={handleClickButton}>
-      {t('Go to CAKE pool')}
-    </Button>
+    <>
+      <NetworkSwitcherModal
+        isOpen={isOpen}
+        supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
+        title={t('Lock CAKE')}
+        description={t('Lock CAKE on %chain% to obtain iCAKE', {
+          chain: chainNames,
+        })}
+        buttonText={t('Switch chain to stake CAKE')}
+        onDismiss={onDismiss}
+      />
+      <Button {...props} onClick={handleClickButton}>
+        {t('Go to CAKE pool')}
+      </Button>
+    </>
   )
 }
 
