@@ -18,7 +18,7 @@ export const EthWbethFaq = () => [
       <>
         <Trans>
           Post-merge, the APR is hovering at around 3-5% for Ethereum validators. For WBETH, the daily APR is published
-          by the Binance Earn team,
+          by the Binance Earn team
         </Trans>
         <LinkExternal style={{ display: 'inline-flex' }} href="https://www.binance.com/en/eth2">
           <Trans>here.</Trans>
@@ -66,9 +66,9 @@ export const EthWbethFaq = () => [
     title: <Trans>How do I convert WBETH back to ETH?</Trans>,
     description: (
       <>
-        <Trans>You can convert WBETH to ETH through </Trans>
-        <Link style={{ display: 'inline' }} href="/swap">
-          <Trans>our swap page</Trans>.{' '}
+        <Trans>You can convert WBETH to ETH through</Trans>
+        <Link m="0 4px" style={{ display: 'inline' }} href="/swap">
+          <Trans>our swap page</Trans>.
         </Link>
         <Trans>
           PancakeSwap is also working to support a conversion contract on our liquid staking page to convert WBETH back
