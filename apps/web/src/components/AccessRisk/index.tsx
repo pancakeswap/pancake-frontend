@@ -19,8 +19,8 @@ import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { fetchRiskToken } from 'views/Swap/hooks/fetchTokenRisk'
-import AccessRiskTooltips from 'views/Swap/components/AccessRisk/AccessRiskTooltips'
+import { fetchRiskToken } from 'hooks/fetchTokenRisk'
+import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 
 const AnimatedButton = styled(Button)`
   animation: ${promotedGradient} 1.5s ease infinite;

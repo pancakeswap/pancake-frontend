@@ -25,9 +25,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import AccessRisk, { TOKEN_RISK } from 'views/Swap/components/AccessRisk'
+import AccessRisk, { TOKEN_RISK } from 'components/AccessRisk'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
-import { fetchRiskToken } from 'views/Swap/hooks/fetchTokenRisk'
+import { fetchRiskToken } from 'hooks/fetchTokenRisk'
 
 interface ImportProps {
   tokens: Token[]
