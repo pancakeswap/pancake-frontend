@@ -450,7 +450,7 @@ function V2PairMigrate({
       .multicall([data], { account: migrator.account, value: 0n })
       .then((gasEstimate) => {
         return migrator.write
-          .multicall([data], { gasLimit: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
+          .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
           .then((response) => {
             addTransaction(
               {
