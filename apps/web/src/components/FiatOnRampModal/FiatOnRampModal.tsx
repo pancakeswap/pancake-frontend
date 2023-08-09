@@ -279,14 +279,19 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
-          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : chainId === ChainId.GOERLI ? GOERLI_TOKENS : mercuryoWhitelist,
+          currencies:
+            chainId === ChainId.ETHEREUM
+              ? ETHEREUM_TOKENS
+              : chainId === ChainId.GOERLI
+              ? GOERLI_TOKENS
+              : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
-          merchantTransactionId: randomHash,
+          merchantTransactionId: `${chainId}_randomHash`,
           signature: sig,
           height: '750px',
           width: '400px',
-          network: chainId === ChainId.ETHEREUM  || chainId === ChainId.GOERLI ? ChainId.ETHEREUM : ChainId.BSC,
+          network: chainId === ChainId.ETHEREUM || chainId === ChainId.GOERLI ? ChainId.ETHEREUM : ChainId.BSC,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
         })
