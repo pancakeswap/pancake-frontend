@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, Text, useToast } from '@pancakeswap/uikit'
-import { PushClientTypes, WalletClient } from '@walletconnect/push-client'
+import { PushClientTypes } from '@walletconnect/push-client'
 import { CommitButton } from 'components/CommitButton'
+import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import _isEqual from 'lodash/isEqual'
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
@@ -37,26 +38,18 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
 }
 
 interface ISettingsProps {
-  pushClient: WalletClient
   chainId: number
   account: string
   setSubscriptionState: Dispatch<SetStateAction<SubscriptionState>>
   subscriptionState: SubscriptionState
-  currentSubscription: PushClientTypes.PushSubscription | null
 }
 
-const NotificationSettingsMain = ({
-  pushClient,
-  chainId,
-  account,
-  setSubscriptionState,
-  subscriptionState,
-  currentSubscription,
-}: ISettingsProps) => {
+const NotificationSettingsMain = ({ chainId, account, setSubscriptionState, subscriptionState }: ISettingsProps) => {
   const { toastError } = useToast()
   const { t } = useTranslation()
   const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
   const prevScopesRef = useRef<PushClientTypes.PushSubscription['scope']>(scopes)
+  const { pushClient, currentSubscription } = useWalletConnectPushClient()
 
   const objectsAreEqual = _isEqual(scopes, prevScopesRef.current)
 
@@ -124,10 +117,10 @@ const NotificationSettingsMain = ({
   )
 
   return (
-    <Box paddingX="24px" paddingBottom="24px">
+    <Box paddingBottom="24px">
       <ScrollableContainer>
         <SettingsContainer account={account} scopes={scopes} setScopes={setScopes} />
-        <Box>
+        <Box paddingX="24px">
           <NotificationActionButton
             isUnsubscribing={subscriptionState.isUnsubscribing}
             handleSubscriptionAction={objectsAreEqual ? handleUnSubscribe : handleUpdatePreferences}

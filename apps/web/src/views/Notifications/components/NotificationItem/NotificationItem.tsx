@@ -1,9 +1,16 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Box, CloseIcon, Flex, Text } from '@pancakeswap/uikit'
+import { AnimatePresence, Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
 import { PushClientTypes } from '@walletconnect/push-client'
-import CircleLoader from 'components/Loader/CircleLoader'
-import { useCallback, useState } from 'react'
+import Image from 'next/image'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  ContentsContainer,
+  Description,
+  ExpandButton,
+  StyledLink,
+  StyledNotificationWrapper,
+} from 'views/Notifications/styles'
 import { formatTime } from 'views/Notifications/utils/date'
+import FlexRow from 'views/Predictions/components/FlexRow'
 
 interface INotificationprops {
   title: string
@@ -11,57 +18,130 @@ interface INotificationprops {
   id: number
   date: number
   removeNotification: (id: number) => Promise<void>
-  key: number
+  url?: string
+  image?: string
 }
 
-const NotificationItem = ({ title, description, id, date, removeNotification }: INotificationprops) => {
-  const [deleting, setDeleting] = useState<boolean>(false)
-  const { t } = useTranslation()
+const NotificationItem = ({ title, description, id, date, url, image, removeNotification }: INotificationprops) => {
+  const [isHovered, setIsHovered] = useState(false)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
+  const [textClamped, setTextClamped] = useState<boolean>(false)
+  const [show, setShow] = useState<boolean>(false)
+  const [elementHeight, setElementHeight] = useState<number>(0)
+  const [animating, setAnimating] = useState<boolean>(false)
+  const containerRef = useRef(null)
+  const [isClosing, setIsClosing] = useState<boolean>(false)
+
+  const y = false
 
   const deleteNotification = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       e.stopPropagation()
-      setDeleting(true)
-      removeNotification(id).then(() => setDeleting(false))
+      setIsClosing(true)
+      setTimeout(() => {
+        removeNotification(id).then(() => setIsClosing(false))
+      }, 300)
     },
     [removeNotification, id],
   )
 
+  const handleHover = useCallback(() => {
+    setIsHovered(!isHovered)
+  }, [isHovered])
+
+  const contentRef = useRef<HTMLElement>(null)
+
+  const handleExpandClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const target = e.target as HTMLDivElement
+      if (!animating && target.tagName !== 'BUTTON') {
+        setShow(!show)
+      }
+    },
+    [animating, show],
+  )
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setElementHeight(contentRef.current.scrollHeight)
+      setTextClamped(contentRef.current.scrollHeight > contentRef.current.clientHeight + 6)
+    }
+  }, [])
+
   return (
-    <Box>
-      <Flex mt="8px" width="100%">
-        <Box maxWidth="5%" marginRight="12px" py="10px">
-          <div
-            style={{
-              backgroundColor: 'lightGreen',
-              height: '13px',
-              width: '13px',
-              borderRadius: '50%',
-            }}
-          />
-        </Box>
-        <Flex flexDirection="column" my="2px">
-          <Text fontWeight="bold" fontSize="19px" paddingBottom="6px">
-            {t(`${title}`)}
-          </Text>
-          <div style={{ width: '100%', wordBreak: 'break-all' }}>
-            <Text color="textSubtle" fontSize="16px">
-              {t(`${description}`)}
-            </Text>
-          </div>
-          <Text fontSize="16px" paddingTop="6px">
-            {t(`${formattedDate}`)}
-          </Text>
-        </Flex>
-        <Flex py="8px" justifyContent="center">
-          <Box onClick={deleteNotification}>
-            {deleting ? <CircleLoader /> : <CloseIcon cursor="pointer" />}
+    <StyledNotificationWrapper
+      transition={{ duration: 0.05 }}
+      whileHover={{ scale: 1.01 }}
+      isclosing={isClosing}
+      ref={containerRef}
+      onClick={handleExpandClick}
+    >
+      <AnimatePresence>
+        <ContentsContainer
+          transition={{ duration: 0.3 }}
+          style={{
+            backgroundColor: !isHovered ? '#f7f6f9' : 'white',
+            transition: 'background-color 0.15s ease',
+          }}
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
+        >
+          <Box marginRight="15px" display="flex" minWidth="40px">
+            <Image src="/logo.png" alt="Notification Image" height={40} width={40} />
           </Box>
-        </Flex>
-      </Flex>
-      <hr style={{ border: '1px solid #E7E3EB' }} />
-    </Box>
+          <Flex flexDirection="column">
+            <Flex justifyContent="space-between">
+              <Text fontWeight="bold">{title}</Text>
+              <Box paddingX="5px" height="fit-content" onClick={deleteNotification}>
+                <CloseIcon cursor="pointer" />
+              </Box>
+            </Flex>
+            <Description
+              ref={contentRef}
+              transition={{ duration: 0.33, ease: 'easeInOut' }}
+              initial={{ maxHeight: 32 }}
+              animate={{ maxHeight: show ? elementHeight : 32 }}
+              onAnimationStart={() => {
+                setAnimating(true)
+                if (show) {
+                  if (contentRef.current) {
+                    contentRef.current.style.webkitLineClamp = 'unset'
+                  }
+                }
+              }}
+              onAnimationComplete={() => {
+                setAnimating(false)
+                if (!show) {
+                  if (contentRef.current) {
+                    contentRef.current.style.webkitLineClamp = '2'
+                  }
+                }
+              }}
+            >
+              {description}
+              {url ? (
+                <StyledLink href={url} target="_blank" rel="noreferrer noopener">
+                  View Link
+                </StyledLink>
+              ) : null}
+            </Description>
+            {textClamped ? (
+              <Row justifyContent="space-between">
+                <FlexRow>
+                  <ExpandButton color="secondary" marginY="5px" fontSize="15px">
+                    {show ? 'Show Less' : 'Show More'}
+                  </ExpandButton>
+                  {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
+                </FlexRow>
+                <Text fontSize="15px" marginRight="8px">
+                  {formattedDate}
+                </Text>
+              </Row>
+            ) : null}
+          </Flex>
+        </ContentsContainer>
+      </AnimatePresence>
+    </StyledNotificationWrapper>
   )
 }
 
@@ -70,7 +150,7 @@ const NotificationContainer = ({
   sortOptionsType,
   removeNotification,
 }: {
-  transactions: PushClientTypes.PushMessageRecord[]
+  transactions: any[] // PushClientTypes.PushMessageRecord[]
   sortOptionsType: string
   removeNotification: (id: number) => Promise<void>
 }) => {
@@ -83,7 +163,7 @@ const NotificationContainer = ({
             if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
             return a.publishedAt - b.publishedAt
           })
-          .map((notification:  PushClientTypes.PushMessageRecord) => {
+          .map((notification: PushClientTypes.PushMessageRecord) => {
             return (
               <NotificationItem
                 key={notification.id}
@@ -91,6 +171,8 @@ const NotificationContainer = ({
                 description={notification.message.body}
                 id={notification.id}
                 date={notification.publishedAt}
+                url={notification.message.url}
+                image={notification.message.icon}
                 removeNotification={removeNotification}
               />
             )

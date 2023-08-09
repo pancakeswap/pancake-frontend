@@ -7,7 +7,7 @@ import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import useAuth from 'hooks/useAuth'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback } from 'react'
-import { useChainId, useSignMessage } from 'wagmi'
+import { useAccount, useChainId, useSignMessage } from 'wagmi'
 import { DEFAULT_APP_METADATA } from '../constants'
 import { SubscriptionState } from '../types'
 
@@ -23,7 +23,8 @@ function OnboardingButton({
   const { signMessageAsync } = useSignMessage()
   const { toastSuccess, toastError } = useToast()
   const chainId = useChainId()
-  const { pushClient, registerMessage: pushRegisterMessage, postMessage, account } = useWalletConnectPushClient()
+  const { address: account } = useAccount()
+  const { pushClient, registerMessage: pushRegisterMessage, postMessage } = useWalletConnectPushClient()
 
   const handleOnboarding = useCallback(() => {
     setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: true }))
@@ -31,6 +32,7 @@ function OnboardingButton({
     signMessageAsync({ message: pushRegisterMessage })
       .then((signature) => {
         postMessage(formatJsonRpcRequest('push_signature_delivered', { signature }))
+        setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true }))
       })
       .catch((error) => {
         if (error instanceof Error) {
@@ -64,12 +66,14 @@ function OnboardingButton({
         })
       }
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true, isSubscribing: false }))
-      if (!subscribed.subscriptionAuth) {
+      const alreadySynced = pushClient.syncClient.signatures.getAll({
+        account: `eip155:${chainId}:${account}`,
+      })
+      if (!alreadySynced[0].signature)
         toastSuccess(
           `${t('Subscription Request')}!`,
           <Text>{t('Please sign the subscription request sent to your wallet')}</Text>,
         )
-      }
     } catch (error) {
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: false }))
       if (error instanceof Error) {
@@ -82,7 +86,7 @@ function OnboardingButton({
     (e) => {
       e.stopPropagation()
       if (subscriptionState.isOnboarded) handleSubscribe()
-      handleOnboarding()
+      else handleOnboarding()
     },
     [handleOnboarding, handleSubscribe, subscriptionState.isOnboarded],
   )

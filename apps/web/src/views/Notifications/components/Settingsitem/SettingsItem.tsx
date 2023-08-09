@@ -76,8 +76,8 @@ const SettingsContainer = ({
   }, [isToastVisible])
   return (
     <>
-      <Box>
-        <Divider />
+      <Divider />
+      <Box maxHeight="360px" overflowY="scroll" paddingX="24px">
         {Object.entries(scopes).map(([title, scope]) => {
           return (
             <Settingsitem

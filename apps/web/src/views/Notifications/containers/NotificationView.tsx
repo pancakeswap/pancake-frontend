@@ -1,22 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  AutoRow,
   Box,
   Button,
   CircleLoader,
   Flex,
   FlexGap,
-  useToast,
-  AutoRow,
   OptionProps,
   Select,
   Text,
+  useToast,
 } from '@pancakeswap/uikit'
-import Divider from 'components/Divider'
+import { PushClientTypes } from '@walletconnect/push-client'
+import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PushClientTypes, WalletClient } from '@walletconnect/push-client'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
-import { FilterContainer, LabelWrapper } from 'views/Notifications/styles'
+import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 
 const EmptyView = () => {
@@ -24,11 +24,11 @@ const EmptyView = () => {
 
   return (
     <>
-      <Flex alignItems="center" justifyContent="center" height="140px" onClick={() => null}>
+      <Flex paddingX="26px" alignItems="center" justifyContent="center" height="140px" onClick={() => null}>
         <Image src="/Group883379635.png" alt="#" height={100} width={100} />
       </Flex>
 
-      <FlexGap rowGap="16px" flexDirection="column" justifyContent="center" alignItems="center">
+      <FlexGap paddingX="26px" rowGap="16px" flexDirection="column" justifyContent="center" alignItems="center">
         <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
           {t('All Set')}
         </Text>
@@ -42,22 +42,13 @@ const EmptyView = () => {
   )
 }
 
-const SettingsModal = ({
-  getMessageHistory,
-  pushClient,
-  currentSubscription,
-  activeSubscriptions,
-}: {
-  getMessageHistory: (params: { topic: string }) => Promise<Record<number, PushClientTypes.PushMessageRecord>>
-  pushClient: WalletClient
-  currentSubscription: PushClientTypes.PushSubscription | null
-  activeSubscriptions: PushClientTypes.PushSubscription[]
-}) => {
+const SettingsModal = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [sortOptionsType, setSortOptionsType] = useState<string>('All')
   const [notificationType, setNotificationType] = useState<string>('All')
   const { toastSuccess } = useToast()
   const [transactions, setTransactions] = useState<PushClientTypes.PushMessageRecord[]>([])
+  const { pushClient, activeSubscriptions, getMessageHistory, currentSubscription } = useWalletConnectPushClient()
 
   const { t } = useTranslation()
   // console.log(currentSubscription)
@@ -65,7 +56,6 @@ const SettingsModal = ({
     if (pushClient && currentSubscription?.topic) {
       try {
         const messageHistory = await getMessageHistory({ topic: currentSubscription?.topic })
-        console.log(messageHistory)
         setTransactions(Object.values(messageHistory))
       } catch (error) {
         //
@@ -89,7 +79,7 @@ const SettingsModal = ({
   const removeNotification = useCallback(
     async (id: number) => {
       setLoading(true)
-      pushClient?.deletePushMessage({ id: Number(id) })
+      pushClient?.deletePushMessage?.({ id: Number(id) })
       updateMessages()
       setLoading(false)
       toastSuccess(`${t('Success')}!`, <Text>{t('Notification(s) have been cleared')}</Text>)
@@ -179,17 +169,18 @@ const SettingsModal = ({
           </Flex>
         </Button>
       </Flex>
-      <Divider />
-      <Box maxHeight="406px" overflowY="scroll" paddingX="16px">
-        {filteredNotifications.length > 0 ? (
-          <NotificationItem
-            transactions={filteredNotifications}
-            sortOptionsType={sortOptionsType}
-            removeNotification={removeNotification}
-          />
-        ) : (
-          <EmptyView />
-        )}
+      <Box maxHeight="360px" overflowY="scroll">
+        <NotificationContainerStyled>
+          {filteredNotifications.length > 0 ? (
+            <NotificationItem
+              transactions={filteredNotifications}
+              sortOptionsType={sortOptionsType}
+              removeNotification={removeNotification}
+            />
+          ) : (
+            <EmptyView />
+          )}
+        </NotificationContainerStyled>
       </Box>
     </Box>
   )

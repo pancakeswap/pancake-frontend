@@ -68,15 +68,7 @@ const Notifications = () => {
 
   const chainId = useChainId()
   const { address: account } = useAccount()
-  const {
-    pushClient,
-    activeSubscriptions,
-    getMessageHistory,
-    unread,
-    setUnread,
-    registerMessage: pushRegisterMessage,
-    currentSubscription,
-  } = useWalletConnectPushClient()
+  const { activeSubscriptions, registerMessage: pushRegisterMessage } = useWalletConnectPushClient()
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -103,13 +95,7 @@ const Notifications = () => {
   }, [account, activeSubscriptions, chainId])
 
   return (
-    <NotificationMenu
-      isMenuOpen={isMenuOpen}
-      setIsMenuOpen={setIsMenuOpen}
-      mr="8px"
-      unread={unread}
-      setUnread={setUnread}
-    >
+    <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
         <>
           <NotificationHeader
@@ -124,21 +110,14 @@ const Notifications = () => {
             ) : (
               <ViewContainer isRightView={isRightView}>
                 <View>
-                  <SettingsModal
-                    getMessageHistory={getMessageHistory}
-                    pushClient={pushClient}
-                    currentSubscription={currentSubscription}
-                    activeSubscriptions={activeSubscriptions}
-                  />
+                  <SettingsModal />
                 </View>
                 <View>
                   <NotificationSettingsMain
-                    pushClient={pushClient}
                     chainId={chainId}
                     account={account}
                     setSubscriptionState={setSubscriptionState}
                     subscriptionState={subscriptionState}
-                    currentSubscription={currentSubscription}
                   />
                 </View>
               </ViewContainer>

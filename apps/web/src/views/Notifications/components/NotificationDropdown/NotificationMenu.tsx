@@ -1,4 +1,5 @@
 import { Box, Flex, NotificationBellIcon, UserMenuProps } from '@pancakeswap/uikit'
+import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
@@ -8,7 +9,7 @@ const Menu = styled.div<{ isOpen: boolean }>`
   border-radius: 24px;
   padding-bottom: 4px;
   pointer-events: auto;
-  width: 390px;
+  width: 400px;
   overflow: hidden;
   position: relative;
   visibility: visible;
@@ -26,10 +27,9 @@ const NotificationMenu: React.FC<
   UserMenuProps & {
     isMenuOpen: boolean
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
-    setUnread: React.Dispatch<React.SetStateAction<number>>
-    unread: number
   }
-> = ({ children, isMenuOpen, setIsMenuOpen, unread, setUnread }) => {
+> = ({ children, isMenuOpen, setIsMenuOpen }) => {
+  const { unread, setUnread } = useWalletConnectPushClient()
   const ref = useRef<HTMLDivElement>(null)
 
   const toggleMenu = useCallback(() => {
