@@ -287,7 +287,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
               : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
-          merchantTransactionId: `${chainId}_randomHash`,
+          merchantTransactionId: `${chainId}_${randomHash}`,
           signature: sig,
           height: '750px',
           width: '400px',
