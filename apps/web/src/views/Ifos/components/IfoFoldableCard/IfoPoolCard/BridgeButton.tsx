@@ -4,7 +4,7 @@ import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, useModalV2 } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
 
-// import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 // import { useChainNames } from '../../../hooks/useChainNames'
 import { useIfoSourceChain } from '../../../hooks/useIfoSourceChain'
@@ -20,7 +20,7 @@ type Props = {
 } & SpaceProps
 
 export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ...props }: Props) {
-  // const { chainId } = useActiveChainId()
+  const { chainId } = useActiveChainId()
   const sourceChain = useIfoSourceChain()
   // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
@@ -32,6 +32,7 @@ export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ...props
   })
   // const sourceChainName = useChainNames(PROFILE_SUPPORTED_CHAIN_IDS)
   // const ifoChainName = useChainNames([ifoChainId])
+  const isCurrentChainSourceChain = chainId === sourceChain
 
   useEffect(() => {
     if (state.state !== BRIDGE_STATE.INITIAL) {
@@ -52,7 +53,7 @@ export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ...props
       />
       {buttonVisible && (
         <Button width="100%" onClick={onOpen} {...props}>
-          {t('Bridge iCAKE')}
+          {isCurrentChainSourceChain ? t('Bridge iCAKE') : t('Switch Network to Bridge')}
         </Button>
       )}
     </>
