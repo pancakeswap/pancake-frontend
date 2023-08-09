@@ -54,8 +54,8 @@ export const TradeSummary = memo(function TradeSummary({
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount.currency.symbol}` ?? '-'
-              : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount.currency.symbol}` ?? '-'}
+              ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount?.currency?.symbol}` ?? '-'
+              : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount?.currency?.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -134,7 +134,7 @@ export const TradeSummary = memo(function TradeSummary({
               placement="top"
             />
           </RowFixed>
-          <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount.currency.symbol}`}</Text>
+          <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
         </RowBetween>
       )}
     </AutoColumn>
@@ -191,10 +191,12 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
               <RowBetween style={{ padding: '0 24px' }}>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <Text fontSize="14px" color="textSubtle">
-                    {t('Route')}
+                    {t('MM Route')}
                   </Text>
                   <QuestionHelper
-                    text={t('Routing through these tokens resulted in the best price for your trade.')}
+                    text={t(
+                      'The Market Maker (MM) route is automatically selected for your trade to achieve the best price for your trade.',
+                    )}
                     ml="4px"
                     placement="top"
                   />
@@ -219,10 +221,10 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
                   >
                     <RouterViewer
                       isMM={isMM}
-                      inputCurrency={inputAmount.currency}
+                      inputCurrency={inputAmount?.currency}
                       pairs={pairs}
                       path={path}
-                      outputCurrency={outputAmount.currency}
+                      outputCurrency={outputAmount?.currency}
                     />
                     <Flex mt="3em" width="100%" justifyContent="center">
                       <RoutingSettingsButton />
