@@ -43,16 +43,3 @@ export async function fetchMercuryoQuote(payload: any) {
   const result = await response.json()
   return result.result.result
 }
-
-export async function fetchBinanceConnectQuote(payload: any) {
-  const response = await fetch(`${ONRAMP_API_BASE_URL}/fetch-bsc-quote`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify(payload),
-  })
-  const result = response.json()
-  return result
-}

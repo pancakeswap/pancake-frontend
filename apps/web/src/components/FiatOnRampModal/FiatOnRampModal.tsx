@@ -132,30 +132,6 @@ const fetchMoonPaySignedUrl = async (
   }
 }
 
-const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
-  try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        cryptoCurrency: inputCurrency.toUpperCase() === 'WBTC' ? 'BTC' : inputCurrency.toUpperCase(),
-        fiatCurrency: outputCurrency.toUpperCase(),
-        amount,
-        walletAddress: account,
-      }),
-    })
-
-    const result: FetchResponse = await res.json()
-    return result.urlWithSignature
-  } catch (error) {
-    console.error('Error fetching signature:', error)
-    return '' // Return an empty string in case of an error
-  }
-}
-
 export const FiatOnRampModalButton = ({
   provider,
   inputCurrency,
@@ -228,17 +204,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     setError(null)
 
     try {
-      let result = ''
-      if (provider === ONRAMP_PROVIDERS.MoonPay)
-        result = await fetchMoonPaySignedUrl(
-          inputCurrency,
-          outputCurrency,
-          amount,
-          theme.isDark,
-          account.address,
-          chainId,
-        )
-      else result = await fetchBinanceConnectSignedUrl(inputCurrency, outputCurrency, amount, account.address)
+      const result = await fetchMoonPaySignedUrl(
+        inputCurrency,
+        outputCurrency,
+        amount,
+        theme.isDark,
+        account.address,
+        chainId,
+      )
 
       setSignedIframeUrl(result)
     } catch (e) {
@@ -246,7 +219,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     } finally {
       setTimeout(() => setLoading(false), 2000)
     }
-  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t, chainId])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, t, chainId])
 
   useEffect(() => {
     const fetchSig = async () => {

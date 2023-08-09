@@ -72,18 +72,18 @@ const StepIntro = ({ docLink, docText }: { docLink: string; docText: string }) =
       alignItems="center"
     >
       <Swiper
+        loop
         initialSlide={0}
+        slidesPerView={1}
         modules={[Autoplay]}
-        slidesPerView="auto"
         onSwiper={setSwiper}
         autoplay={{
           delay: 5000,
+          pauseOnMouseEnter: true,
           disableOnInteraction: false,
         }}
         onRealIndexChange={handleRealIndexChange}
-        centeredSlides
-        loop
-        style={{ marginLeft: '0px', marginRight: '0px' }}
+        style={{ width: '100%', marginLeft: '0px', marginRight: '0px' }}
       >
         {IntroSteps.map((introStep) => (
           <SwiperSlide key={introStep.icon}>

@@ -20,6 +20,7 @@ const TradingReward = () => {
     status: RewardStatus.ALL,
     type: RewardType.CAKE_STAKERS,
   })
+
   const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo({
     campaignId,

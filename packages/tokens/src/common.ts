@@ -163,6 +163,14 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x3A287a06c66f9E95a56327185cA2BDF5f031cEcD',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
 
 export const USDC = {

@@ -9,6 +9,7 @@ const mainnetFarms = [
   farmsV3ConfigChainMap[ChainId.BSC],
   farmsV3ConfigChainMap[ChainId.ETHEREUM],
   farmsV3ConfigChainMap[ChainId.POLYGON_ZKEVM],
+  farmsV3ConfigChainMap[ChainId.ZKSYNC],
 ]
 
 function hasDuplicates(array: any[]) {
