@@ -35,5 +35,7 @@ export interface LiquidStakingList {
   approveToken: Token
   shouldCheckApproval: boolean
   exchangeRateMultiCall: ExchangeRateMultiCall[]
+  stakingMethodArgs: string[]
+  stakingOverrides: string[]
   FAQs: FAQType[]
 }

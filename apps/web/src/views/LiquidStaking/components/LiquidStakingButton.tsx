@@ -12,11 +12,10 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { Currency, CurrencyAmount, ERC20Token, ChainId } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { useLiquidStakingApprove } from 'views/LiquidStaking/hooks/useLiquidStakingApprove'
 import { useLiquidStakingApprovalStatus } from 'views/LiquidStaking/hooks/useLiquidStakingApprovalStatus'
-import { useContract } from 'hooks/useContract'
-import { SNBNB } from 'config/constants/liquidStaking'
+import { useCallStakingContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
 
 interface LiquidStakingButtonProps {
   quoteAmount: BigNumber
@@ -41,7 +40,7 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
   const { fetchWithCatchTxError, loading } = useCatchTxError()
 
   const masterChefAddress = masterChefV3Addresses[chainId]
-  const contract = useContract(selectedList?.contract, selectedList?.abi)
+  const stakingCall = useCallStakingContract(selectedList)
 
   const balance = useMemo(
     () => (currencyBalance ? new BigNumber(currencyBalance.quotient.toString()) : BIG_ZERO),
@@ -77,23 +76,12 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
     if (!convertedStakeAmount || !account) return
 
     const receipt = await fetchWithCatchTxError(() => {
-      // SNBNB
-      if (selectedList?.contract === SNBNB[ChainId.BSC]) {
-        return callWithGasPrice(contract, 'deposit', [], {
+      return stakingCall(
+        { masterChefAddress, convertedStakeAmount: BigInt(convertedStakeAmount.toString()) },
+        {
           value: BigInt(convertedStakeAmount.toString()),
-        })
-      }
-
-      // WBETH
-      if ([ChainId.ETHEREUM, ChainId.GOERLI].includes(chainId)) {
-        const methodArgs = [masterChefAddress] as const
-        return callWithGasPrice(contract, 'deposit', methodArgs, {
-          value: BigInt(convertedStakeAmount.toString()),
-        })
-      }
-
-      const methodArgs = [BigInt(convertedStakeAmount.toString()), masterChefAddress] as const
-      return callWithGasPrice(contract, 'deposit', methodArgs, {})
+        },
+      )
     })
 
     const decimals = selectedList?.token0?.decimals
@@ -101,7 +89,7 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
       toastSuccess(
         t('Staked!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, decimals)} WBETH`}
+          {`${t('Received')} ${getFullDisplayBalance(quoteAmount, 0, decimals)} ${selectedList?.token1.symbol}`}
         </ToastDescriptionWithTx>,
       )
 
@@ -109,16 +97,13 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
     }
   }, [
     account,
-    callWithGasPrice,
-    chainId,
-    contract,
     convertedStakeAmount,
     fetchWithCatchTxError,
     masterChefAddress,
     quoteAmount,
     router,
-    selectedList?.contract,
-    selectedList?.token0?.decimals,
+    selectedList,
+    stakingCall,
     t,
     toastSuccess,
   ])
