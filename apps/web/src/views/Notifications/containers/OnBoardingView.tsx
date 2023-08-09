@@ -102,7 +102,7 @@ function OnboardingButton({
     buttonText = t('Authorize Notifications')
   }
   if (subscriptionState.isSubscribing) {
-    buttonText = t('Subscribing')
+    buttonText = t('Sign again in wallet')
   }
 
   return (

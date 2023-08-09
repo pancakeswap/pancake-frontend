@@ -11,6 +11,8 @@ import useSWRImmutable from 'swr/immutable'
 import { TransactionNotFoundError } from 'viem'
 import { retry, RetryableError } from 'state/multicall/retry'
 // import { useWalletConnectPushClient } from 'contexts/PushClientContext'
+import { BuilderNames } from 'views/Notifications/types'
+import useSendPushNotification from 'views/Notifications/components/hooks/sendPushNotification'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -33,7 +35,8 @@ export function shouldCheck(
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
-  // const { handleSendTestNotification } = useWalletConnectPushClient()
+  const { sendPushNotification } = useSendPushNotification()
+  const supportedNotifyTxTypes = ['add-liquidity', 'add-liquidity-v3', 'increase-liquidity']
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()
@@ -76,7 +79,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
 
-            // setTimeout(() => handleSendTestNotification(), 5000)
+            if(supportedNotifyTxTypes.includes(transaction.type)) setTimeout(() => sendPushNotification(BuilderNames.newLpNotification, []), 5000)
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
@@ -92,7 +95,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, sendPushNotification, supportedNotifyTxTypes])
 
   const nonBscFarmPendingTxns = useMemo(
     () =>

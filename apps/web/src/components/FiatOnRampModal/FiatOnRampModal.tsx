@@ -13,6 +13,7 @@ import {
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   SUPPORTED_MONPAY_ETH_TOKENS,
   SUPPORTED_MOONPAY_BSC_TOKENS,
+  GOERLI_TOKENS,
   mercuryoWhitelist,
 } from 'views/BuyCrypto/constants'
 import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
@@ -82,7 +83,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
 
-    const res = await fetch(`http://localhost:8081/generate-moonpay-sig`, {
+    const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -278,14 +279,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
-          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : mercuryoWhitelist,
+          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : chainId === ChainId.GOERLI ? GOERLI_TOKENS : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           merchantTransactionId: randomHash,
           signature: sig,
           height: '750px',
           width: '400px',
-          network: chainId === ChainId.ETHEREUM ? ChainId.ETHEREUM : ChainId.BSC,
+          network: chainId === ChainId.ETHEREUM  || chainId === ChainId.GOERLI ? ChainId.ETHEREUM : ChainId.BSC,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
         })

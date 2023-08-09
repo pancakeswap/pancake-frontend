@@ -129,8 +129,8 @@ export const ContentsContainer = styled(motion.div)`
 export const Description = styled(motion.span)`
   margin-bottom: 5px 0;
   overflow: hidden;
-  width: 100%;
-  word-reak: break-all;
+  max-width: 100%;
+  word-break: break-all;
 `
 
 export const ExpandButton = styled(Text)`
