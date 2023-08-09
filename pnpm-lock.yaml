@@ -989,8 +989,8 @@ importers:
         version: 4.1.1(react@18.2.0)
     devDependencies:
       '@blocto/sdk':
-        specifier: ^0.3.1
-        version: 0.3.1(aptos@1.3.16)
+        specifier: ^0.5.4
+        version: 0.5.4(aptos@1.3.16)
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1803,7 +1803,7 @@ importers:
     devDependencies:
       '@blocto/sdk':
         specifier: ^0.5.4
-        version: 0.5.4
+        version: 0.5.4(aptos@1.3.16)
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -4206,29 +4206,7 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@blocto/sdk@0.3.1(aptos@1.3.16):
-    resolution: {integrity: sha512-vYZTq9QAgJyUQ15BljGhwVZzbrGLl1pEebRcLkoi7/UTyCsaU5p+oeVxyv1crCd8mARgbIcJGONdpOXLfpolaA==}
-    peerDependencies:
-      '@solana/web3.js': ^1.30.2
-      aptos: ^1.3.14
-    peerDependenciesMeta:
-      '@solana/web3.js':
-        optional: true
-      aptos:
-        optional: true
-    dependencies:
-      aptos: 1.3.16
-      bs58: 4.0.1
-      buffer: 6.0.3
-      eip1193-provider: 1.0.1
-      js-sha3: 0.8.0
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
-    dev: true
-
-  /@blocto/sdk@0.5.4:
+  /@blocto/sdk@0.5.4(aptos@1.3.16):
     resolution: {integrity: sha512-VjzkT3tpz5YkjXNbx6Au4C0sphHeI+DRoTWMKX3N01U+XLl04/dn+Ao5Hsb4ZU7uS4Lw6mUjNfq+z3Fm5eZKaw==}
     peerDependencies:
       '@solana/web3.js': ^1.30.2
@@ -4239,6 +4217,7 @@ packages:
       aptos:
         optional: true
     dependencies:
+      aptos: 1.3.16
       bs58: 5.0.0
       buffer: 6.0.3
       eip1193-provider: 1.0.1
