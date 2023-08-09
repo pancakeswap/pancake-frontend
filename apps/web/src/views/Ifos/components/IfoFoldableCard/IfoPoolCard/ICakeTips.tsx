@@ -1,14 +1,12 @@
 import { Box, Message, MessageText, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 
 import { MessageTextLink } from '../../IfoCardStyles'
 import { StakeButton } from './StakeButton'
-import { useIfoCredit } from '../../../hooks/useIfoCredit'
+import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
 import { useChainNames } from '../../../hooks/useChainNames'
-import { useIfoSourceChain } from '../../../hooks/useIfoSourceChain'
 import { BridgeButton } from './BridgeButton'
 
 type Props = {
@@ -19,22 +17,10 @@ type Props = {
 
 export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
   const { t } = useTranslation()
-  const sourceChain = useIfoSourceChain()
-  const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoCredit })
-  const sourceChainCredit = useIfoCredit({ chainId: sourceChain, ifoCredit })
+  const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit } = useICakeBridgeStatus({ ifoChainId, ifoCredit })
   const chainName = useChainNames([ifoChainId])
-  const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
-  const isICakeSynced = useMemo(
-    () => destChainCredit && sourceChainCredit && destChainCredit.quotient === sourceChainCredit.quotient,
-    [sourceChainCredit, destChainCredit],
-  )
-  const shouldBridgeAgain = useMemo(
-    () =>
-      ifoCredit && sourceChainCredit && ifoCredit.gt(0) && sourceChainCredit.quotient !== BigInt(ifoCredit.toString()),
-    [ifoCredit, sourceChainCredit],
-  )
 
-  if (!noICake && isICakeSynced) {
+  if (hasBridged) {
     return <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} buttonVisible={false} />
   }
 

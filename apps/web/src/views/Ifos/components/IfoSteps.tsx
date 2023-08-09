@@ -40,6 +40,8 @@ interface TypeProps {
   hasClaimed: boolean
   isCommitted: boolean
   isLive?: boolean
+  isCrossChainIfo?: boolean
+  hasBridged?: boolean
 }
 
 const SmallStakePoolCard = styled(Box)`
@@ -171,12 +173,16 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   hasClaimed,
   isLive,
   ifoCurrencyAddress,
+  isCrossChainIfo,
+  hasBridged,
 }) => {
   const { hasActiveProfile } = useProfile()
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const { balance } = useTokenBalanceByChain(ifoCurrencyAddress, ifoChainId)
-  const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
+  const stepsValidationStatus = isCrossChainIfo
+    ? [hasActiveProfile, balance.isGreaterThan(0), hasBridged, isCommitted, hasClaimed]
+    : [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
@@ -212,6 +218,40 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
       )
     }
 
+    const renderCommitCakeStep = () => <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
+    const renderClaimStep = () => (
+      <CardBody>
+        <Heading as="h4" color="secondary" mb="16px">
+          {t('Claim your tokens and achievement')}
+        </Heading>
+        <Text color="textSubtle" small>
+          {t(
+            'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
+          )}
+        </Text>
+      </CardBody>
+    )
+    const renderBridge = () => (
+      <CardBody>
+        <Heading as="h4" color="secondary" mb="16px">
+          {t('Bridge iCAKE')}
+        </Heading>
+        <Text color="textSubtle" small>
+          {t(
+            'To participate in the cross chain Public Sale, you need to bridge your iCAKE to the blockchain where the IFO will be hosted on.',
+          )}
+        </Text>
+        <Text color="textSubtle" small>
+          {t(
+            'Before or during the sale, you may bridge you iCAKE again if you’ve added more CAKE or extended your lock staking position.',
+          )}
+        </Text>
+        <Button as="a" href="#bridge-icake" mt="16px">
+          {t('Bridge iCAKE')}
+        </Button>
+      </CardBody>
+    )
+
     switch (step) {
       case 0:
         return (
@@ -228,20 +268,17 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
       case 1:
         return <Step1 hasProfile={hasActiveProfile} />
       case 2:
-        return <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
+        if (isCrossChainIfo) {
+          return renderBridge()
+        }
+        return renderCommitCakeStep()
       case 3:
-        return (
-          <CardBody>
-            <Heading as="h4" color="secondary" mb="16px">
-              {t('Claim your tokens and achievement')}
-            </Heading>
-            <Text color="textSubtle" small>
-              {t(
-                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
-              )}
-            </Text>
-          </CardBody>
-        )
+        if (isCrossChainIfo) {
+          return renderCommitCakeStep()
+        }
+        return renderClaimStep()
+      case 4:
+        return renderClaimStep()
       default:
         return null
     }

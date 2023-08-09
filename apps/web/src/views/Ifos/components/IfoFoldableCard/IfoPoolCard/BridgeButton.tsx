@@ -52,7 +52,7 @@ export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ...props
         onBridge={bridge}
       />
       {buttonVisible && (
-        <Button width="100%" onClick={onOpen} {...props}>
+        <Button width="100%" id="bridge-icake" onClick={onOpen} {...props}>
           {isCurrentChainSourceChain ? t('Bridge iCAKE') : t('Switch Network to Bridge')}
         </Button>
       )}

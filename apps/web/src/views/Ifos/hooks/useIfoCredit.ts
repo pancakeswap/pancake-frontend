@@ -9,6 +9,8 @@ import BigNumber from 'bignumber.js'
 import { getViemClients } from 'utils/viem'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
+import { useIfoSourceChain } from './useIfoSourceChain'
+
 type IfoCreditParams = {
   chainId?: ChainId
   // Ifo credit on current chain
@@ -39,4 +41,35 @@ export function useIfoCredit({ chainId, ifoCredit }: IfoCreditParams) {
         : creditAmountRaw && CurrencyAmount.fromRawAmount(CAKE[chainId], creditAmountRaw)),
     [creditAmountRaw, chainId, shouldUseCreditFromCurrentChain, ifoCredit],
   )
+}
+
+type ICakeStatusParams = {
+  ifoChainId?: ChainId
+
+  // Ifo credit on destination chain, i.e. the chain on which ifo is hosted
+  ifoCredit?: BigNumber
+}
+
+export function useICakeBridgeStatus({ ifoChainId, ifoCredit }: ICakeStatusParams) {
+  const srcChainId = useIfoSourceChain()
+  const destChainCredit = useIfoCredit({ chainId: ifoChainId, ifoCredit })
+  const sourceChainCredit = useIfoCredit({ chainId: srcChainId, ifoCredit })
+  const noICake = useMemo(() => !sourceChainCredit || sourceChainCredit.quotient === 0n, [sourceChainCredit])
+  const isICakeSynced = useMemo(
+    () => destChainCredit && sourceChainCredit && destChainCredit.quotient === sourceChainCredit.quotient,
+    [sourceChainCredit, destChainCredit],
+  )
+  const shouldBridgeAgain = useMemo(
+    () =>
+      ifoCredit && sourceChainCredit && ifoCredit.gt(0) && sourceChainCredit.quotient !== BigInt(ifoCredit.toString()),
+    [ifoCredit, sourceChainCredit],
+  )
+
+  return {
+    noICake,
+    isICakeSynced,
+    shouldBridgeAgain,
+    sourceChainCredit,
+    hasBridged: !noICake && isICakeSynced,
+  }
 }
