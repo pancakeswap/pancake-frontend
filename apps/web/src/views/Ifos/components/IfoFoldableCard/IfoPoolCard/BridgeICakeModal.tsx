@@ -1,14 +1,27 @@
-import { Button, Modal, ModalV2, ModalBody, ModalV2Props, Text, Flex, LinkExternal } from '@pancakeswap/uikit'
+import {
+  Button,
+  Modal,
+  ModalV2,
+  ModalBody,
+  ModalV2Props,
+  Text,
+  Flex,
+  LinkExternal,
+  Card,
+  CardBody,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { useCallback } from 'react'
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 import { useChainName } from '../../../hooks/useChainNames'
 import { BridgeState, BRIDGE_STATE, useBridgeMessageUrl, useBridgeSuccessTxUrl } from '../../../hooks/useBridgeICake'
+import { ICakeLogo } from '../../Icons'
 
 type Props = {
   // iCAKE on source chain to bridge
@@ -42,6 +55,21 @@ const MessageLink = styled(LinkExternal).attrs({
   bold: true,
 })``
 
+const StyledCardBody = styled(CardBody)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.625rem 1rem;
+  background-color: ${({ theme }) => theme.colors.background};
+`
+
+const ICakeDisplayContainer = styled(Flex).attrs({
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  alignItems: 'flex-start',
+})``
+
 export function BridgeICakeModal({ icake, sourceChainId, ifoChainId, state, onBridge, ...rest }: Props) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -51,6 +79,7 @@ export function BridgeICakeModal({ icake, sourceChainId, ifoChainId, state, onBr
     () => sourceChainId && !isCurrentChainSourceChain && switchNetworkAsync(sourceChainId),
     [sourceChainId, switchNetworkAsync, isCurrentChainSourceChain],
   )
+  const sourceChainName = useChainName(sourceChainId)
 
   const onBridgeClick = useCallback(async () => {
     if (isCurrentChainSourceChain) {
@@ -80,9 +109,26 @@ export function BridgeICakeModal({ icake, sourceChainId, ifoChainId, state, onBr
                   'Before or during the sale, you may bridge you iCAKE again if you’ve added more CAKE or extended your lock staking position.',
                 )}
               </BodyText>
-              <Button mt="1.5rem" width="100%" onClick={onBridgeClick}>
-                {isCurrentChainSourceChain ? t('Bridge iCAKE') : t('Switch Network to Bridge')}
-              </Button>
+              <Card mt="1rem">
+                <StyledCardBody>
+                  <ICakeDisplayContainer flex="3">
+                    <ICakeLogo />
+                    <Flex ml="1rem" flexDirection="column" justifyContent="flex-start" alignItems="flex-start">
+                      <Text fontSize="0.75rem" bold color="secondary">
+                        {t('Your iCAKE on %chainName%', {
+                          chainName: sourceChainName,
+                        })}
+                      </Text>
+                      <Text fontSize="1.25rem" bold>
+                        {formatAmount(icake)}
+                      </Text>
+                    </Flex>
+                  </ICakeDisplayContainer>
+                  <Button ml="1.25rem" width="100%" onClick={onBridgeClick} style={{ flex: '4' }}>
+                    {isCurrentChainSourceChain ? t('Bridge iCAKE') : t('Switch Network to Bridge')}
+                  </Button>
+                </StyledCardBody>
+              </Card>
             </ModalBody>
           </StyledModal>
         )
