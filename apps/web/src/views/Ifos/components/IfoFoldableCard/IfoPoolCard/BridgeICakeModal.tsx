@@ -9,9 +9,14 @@ import {
   LinkExternal,
   Card,
   CardBody,
+  Spinner,
+  CheckmarkCircleIcon,
+  LogoRoundIcon,
+  ArrowForwardIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
+import { SpaceProps } from 'styled-system'
 import { useCallback } from 'react'
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -21,7 +26,7 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 import { useChainName } from '../../../hooks/useChainNames'
 import { BridgeState, BRIDGE_STATE, useBridgeMessageUrl, useBridgeSuccessTxUrl } from '../../../hooks/useBridgeICake'
-import { ICakeLogo } from '../../Icons'
+import { ICakeLogo, IfoIcon } from '../../Icons'
 
 type Props = {
   // iCAKE on source chain to bridge
@@ -179,11 +184,6 @@ export function BridgeStateModal({ state, icake, sourceChainId, ifoChainId }: Br
       })}
     </BodyTextMain>
   ) : null
-  const title = isSuccess
-    ? t('Transaction receipt')
-    : t('Bridge %amount% iCAKE', {
-        amount: icake?.toExact() || '',
-      })
 
   const link =
     messageUrl && !isSuccess ? (
@@ -223,17 +223,63 @@ export function BridgeStateModal({ state, icake, sourceChainId, ifoChainId }: Br
     }
   }
 
+  const statusIcon = isSuccess ? (
+    <CheckmarkCircleIcon color="success" width="50px" height="50px" mt="3rem" mb="3rem" />
+  ) : (
+    <Spinner />
+  )
+
   return (
     <StyledStateModal title={t('Bridge iCAKE')}>
       <ModalBody>
         <Flex flexDirection="column" justifyContent="flex-start" alignItems="center">
-          <StateTitle>{title}</StateTitle>
+          {statusIcon}
+          {!isSuccess && (
+            <StateTitle mt="1rem">
+              {t('Bridging %amount% iCAKE', {
+                amount: formatAmount(icake) || '',
+              })}
+            </StateTitle>
+          )}
           {crossChainInfo}
-          {renderTips()}
+          <BridgeStateIconDisplay mt="0.75rem" srcChainId={sourceChainId} ifoChainId={ifoChainId} state={state} />
+          <Flex mt="1rem" alignItems="center" flexDirection="column">
+            {renderTips()}
+          </Flex>
           {link}
+          {isSuccess && <StateTitle mt="1rem">{t('Transaction receipt')}:</StateTitle>}
           {txLink}
         </Flex>
       </ModalBody>
     </StyledStateModal>
+  )
+}
+
+type BridgeStateIconDisplayProps = {
+  srcChainId?: ChainId
+  ifoChainId?: ChainId
+  state: BridgeState
+} & SpaceProps
+
+export function BridgeStateIconDisplay({ state, srcChainId, ifoChainId, ...props }: BridgeStateIconDisplayProps) {
+  const content =
+    state.state === BRIDGE_STATE.FINISHED ? (
+      <>
+        <LogoRoundIcon width="24px" height="24px" />
+        <IfoIcon chainId={ifoChainId} ml="0.125rem" />
+      </>
+    ) : (
+      <>
+        <LogoRoundIcon width="24px" height="24px" />
+        <IfoIcon chainId={srcChainId} ml="0.25rem" />
+        <ArrowForwardIcon width="16px" height="16px" ml="0.5rem" color="textSubtle" />
+        <IfoIcon chainId={ifoChainId} ml="0.125rem" />
+      </>
+    )
+
+  return (
+    <Flex flexDirection="row" justifyContent="center" alignItems="center" {...props}>
+      {content}
+    </Flex>
   )
 }

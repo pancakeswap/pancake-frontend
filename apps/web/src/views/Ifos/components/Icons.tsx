@@ -2,11 +2,12 @@ import { ReactNode } from 'react'
 import { Box, ICakeIcon, ChainLogo, LogoRoundIcon } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import styled from 'styled-components'
+import { SpaceProps } from 'styled-system'
 
 type Props = {
   iconTop: ReactNode
   iconBottom: ReactNode
-}
+} & SpaceProps
 
 const DoubleContainer = styled(Box)`
   position: relative;
@@ -24,9 +25,9 @@ const IconTopContainer = styled(Box)`
   z-index: 2;
 `
 
-export function DoubleIcon({ iconTop, iconBottom }: Props) {
+export function DoubleIcon({ iconTop, iconBottom, ...props }: Props) {
   return (
-    <DoubleContainer>
+    <DoubleContainer {...props}>
       <IconBottomContainer>{iconBottom}</IconBottomContainer>
       <IconTopContainer>{iconTop}</IconTopContainer>
     </DoubleContainer>
@@ -35,22 +36,24 @@ export function DoubleIcon({ iconTop, iconBottom }: Props) {
 
 type IfoIconProps = {
   chainId?: ChainId
-}
+} & SpaceProps
 
-export function IfoIcon({ chainId }: IfoIconProps) {
+export function IfoIcon({ chainId, ...props }: IfoIconProps) {
   return (
     <DoubleIcon
       iconBottom={<ICakeIcon width="24px" height="24px" />}
       iconTop={<ChainLogo chainId={chainId} width={16} height={16} />}
+      {...props}
     />
   )
 }
 
-export function ICakeLogo() {
+export function ICakeLogo(props: SpaceProps) {
   return (
     <DoubleIcon
       iconBottom={<LogoRoundIcon width="32px" height="32px" />}
       iconTop={<ICakeIcon width="24px" height="24px" />}
+      {...props}
     />
   )
 }
