@@ -26,12 +26,12 @@ export const NotificationFilterTypes: OptionProps[] = [
 
 export const NotificationSortTypes: OptionProps[] = [
   {
-    label: 'Oldest',
-    value: 'Oldest',
-  },
-  {
     label: 'Latest',
     value: 'Latest',
+  },
+  {
+    label: 'Oldest',
+    value: 'Oldest',
   },
 ]
 

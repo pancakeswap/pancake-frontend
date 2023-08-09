@@ -50,7 +50,10 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
           <UserMenuItem
             key={chain.id}
             style={{ justifyContent: 'flex-start' }}
-            onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (chain.id !== chainId) switchNetwork(chain.id)
+            }}
           >
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">

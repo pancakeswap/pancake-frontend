@@ -44,7 +44,7 @@ const EmptyView = () => {
 
 const SettingsModal = () => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [sortOptionsType, setSortOptionsType] = useState<string>('All')
+  const [sortOptionsType, setSortOptionsType] = useState<string>('Latest')
   const [notificationType, setNotificationType] = useState<string>('All')
   const { toastSuccess } = useToast()
   const [transactions, setTransactions] = useState<PushClientTypes.PushMessageRecord[]>([])

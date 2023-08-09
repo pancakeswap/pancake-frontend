@@ -86,12 +86,12 @@ const Notifications = () => {
     if (account && pushSignatureRequired) setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false }))
     else setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true }))
     setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: false }))
-  }, [account, pushRegisterMessage, setSubscriptionState])
+  }, [account, pushRegisterMessage, setSubscriptionState, chainId])
 
   useEffect(() => {
     if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:${chainId}:${account}`)) {
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true }))
-    }
+    } else setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: false }))
   }, [account, activeSubscriptions, chainId])
 
   return (
