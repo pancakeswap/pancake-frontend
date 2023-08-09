@@ -118,7 +118,7 @@ export function useApproveCallback(
       'approve' as const,
       [spender as Address, useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256],
       {
-        gas: calculateGasMargin(estimatedGas),
+        gasLimit: calculateGasMargin(estimatedGas),
       },
     )
       .then((response) => {

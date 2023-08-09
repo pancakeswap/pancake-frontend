@@ -36,6 +36,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
   const { t } = useTranslation()
   const { sendPushNotification } = useSendPushNotification()
+  const supportedNotifyTxTypes = ['add-liquidity', 'add-liquidity-v3', 'increase-liquidity']
+
 
   const dispatch = useAppDispatch()
   const transactions = useAllChainTransactions(chainId)
@@ -76,7 +78,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             )
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
-            setTimeout(() => sendPushNotification(BuilderNames.newLpNotification), 5000)
+            if(supportedNotifyTxTypes.includes(transaction.type)) setTimeout(() => sendPushNotification(BuilderNames.newLpNotification, []), 5000)
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
