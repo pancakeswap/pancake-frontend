@@ -11,7 +11,7 @@ import { snBnbABI } from 'config/abi/snBNB'
 
 const liquidStaking: LiquidStakingList[] = [
   {
-    stakingSymbol: 'ETH / WBETH',
+    stakingSymbol: 'ETH / wBETH',
     contract: WBETH[ChainId.BSC],
     token0: WETH9[ChainId.BSC],
     token1: bscTokens.wbeth,

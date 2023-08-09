@@ -9,7 +9,7 @@ import { wbethEthABI } from 'config/abi/wbethETH'
 
 const liquidStaking: LiquidStakingList[] = [
   {
-    stakingSymbol: 'ETH / WBETH',
+    stakingSymbol: 'ETH / wBETH',
     contract: WBETH[ChainId.ETHEREUM],
     token0: NATIVE[ChainId.ETHEREUM],
     token1: ethereumTokens.wbeth,

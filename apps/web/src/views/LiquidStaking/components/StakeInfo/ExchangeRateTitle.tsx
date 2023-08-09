@@ -12,8 +12,8 @@ export const ExchangeRateTitle: React.FC<ExchangeRateTitleProps> = ({ tokenOSymb
   const tooltipMsg = t(
     `%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.`,
     {
-      token0: tokenOSymbol?.toUpperCase() ?? '',
-      token1: token1Symbol?.toUpperCase() ?? '',
+      token0: tokenOSymbol ?? '',
+      token1: token1Symbol ?? '',
     },
   )
 

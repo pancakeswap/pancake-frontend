@@ -17,7 +17,7 @@ export const LiquidStakingApr: React.FC<LiquidStakingAprProps> = ({ contract, to
   const { aprs } = useLiquidStakingApr()
 
   const tooltipMsg = t(`APR is calculated based on the past 24H of staking rewards from the %token0% network.`, {
-    token0: tokenOSymbol?.toUpperCase() ?? '',
+    token0: tokenOSymbol ?? '',
   })
 
   const apr = useMemo(
