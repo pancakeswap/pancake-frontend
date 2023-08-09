@@ -5,7 +5,6 @@ import { Button, useToast, AutoRenewIcon } from '@pancakeswap/uikit'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -35,7 +34,6 @@ const LiquidStakingButton: React.FC<LiquidStakingButtonProps> = ({
   const { t } = useTranslation()
   const router = useRouter()
   const { account, chainId } = useAccountActiveChain()
-  const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading } = useCatchTxError()
 
