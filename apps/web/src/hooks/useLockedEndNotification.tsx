@@ -1,4 +1,4 @@
-import { useToast, Text, Link } from '@pancakeswap/uikit'
+import { useToast, Text, NextLinkFromReactRouter, Link } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
 import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
@@ -16,12 +16,14 @@ function useLockedNotificationShow() {
 const LockedEndDescription: React.FC = () => {
   const { t } = useTranslation()
   return (
-    <Text>
-      <>
-        {t('The locked staking duration has ended.')}
-        <Link href="/pools">{t('Go to Pools')}</Link>
-      </>
-    </Text>
+    <>
+      <Text>{t('The locked staking duration has ended.')}</Text>
+      <NextLinkFromReactRouter to="/pools" prefetch={false}>
+        <Link href="/pools" color="primary">
+          {t('Go to Pools')}
+        </Link>
+      </NextLinkFromReactRouter>
+    </>
   )
 }
 
