@@ -1,0 +1,149 @@
+:root {
+      --accent-color-1: #1fc7d4 !important;
+      --bg-color-1: hsla(0, 0%, 8%, 1);
+      --bg-color-2: hsla(180, 4%, 16%, 1);
+      --bg-color-3: hsla(0, 0%, 0%, 0.1);
+      --bg-color-4: hsla(0, 0%, 100%, 0.1);
+      --bg-gradient-1: linear-gradient(180deg, #1b1d1d 0%, #141414 29.96%);
+      --bg-gradient-2: linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%);
+      --active-link-gradient: linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%);
+      --sender-bubble-bg: #272a2a;
+      --sender-box-shadow: inset 1px 1px 4px #585f5f, inset -1px -1px 4px #141414;
+      --fg-color-1: hsla(180, 6%, 90%, 1);
+      --fg-color-2: hsla(0, 0%, 100%, 0.66);
+      --fg-color-3: hsla(180, 6%, 64%, 1);
+      --fg-color-4: hsla(180, 5%, 50%, 1);
+      --fg-color-5: hsla(0, 0%, 100%, 1);
+      --border-color-1: hsla(0, 0%, 0%, 0.5);
+      --border-color-2: hsla(0, 0%, 100%, 0.1);
+      --accent-color-1: hsla(211, 90%, 50%, 1);
+      --error-color-1: hsla(5, 85%, 60%, 1);
+      --icon-color-1: hsla(180, 6%, 80%, 1);
+      --qr-color-1: #e4e7e7;
+      --brightness-multiplier: 0.66;
+      --shimmer-color-1: rgba(255, 255, 255, 0.05);
+      --shimmer-color-2: rgba(255, 255, 255, 0.1);
+    }
+    
+    
+    .Button__primary {
+      position: relative;
+        -webkit-box-align: center;
+        align-items: center;
+        border: 0px;
+        border-radius: 16px;
+        box-shadow: rgb(14 14 44 / 40%) 0px -1px 0px 0px inset;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        -webkit-box-pack: center;
+        justify-content: center;
+        letter-spacing: 0.03em;
+        line-height: 1;
+        opacity: 1;
+        outline: 0px;
+        transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s;
+        height: 48px;
+        padding: 0px 24px;
+    }
+    
+    .Button__danger {
+      position: relative;
+        -webkit-box-align: center;
+        align-items: center;
+        border: 0px;
+        border-radius: 16px;
+        box-shadow: rgb(14 14 44 / 40%) 0px -1px 0px 0px inset;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        -webkit-box-pack: center;
+        justify-content: center;
+        letter-spacing: 0.03em;
+        line-height: 1;
+        opacity: 1;
+        outline: 0px;
+        transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s;
+        height: 48px;
+        padding: 0px 24px;
+        background: #1fc7d4 !important;
+        color: white;
+    }
+    
+    .WidgetSubscribe__container {
+        padding: 24px;
+        text-align: center;
+    }
+    
+    .WidgetSubscribe__icon {
+      display: block;
+    }
+    
+    .WidgetSubscribe__icon > img {
+      /* Your CSS properties for the targeted image */
+      width: 280px;
+      height: 185px;
+    }
+    
+    .Main {
+      padding: 24px !important;
+    }
+    
+    .AppNotificationsEmpty {
+      margin-top: 40%;
+    }
+    
+    .AppNotifications__list {
+      padding-left: 0;
+      padding-right: 0;
+      margin-top: 20;
+    }
+    
+    .AppNotifications__list:nth-child(3) {
+      margin-top: 20px;
+    }
+    
+    h1 {
+      color: #280d5f;
+    }
+    h3 {
+      color: #280d5f;
+    }
+    
+    h2 {
+      font-size: 18px !important;
+      color: #280d5f;
+    }
+    
+    .Anchor {
+      border: 1px solid #1fc7d4;
+      background: transparent;
+      color: #1fc7d4;
+    }
+    
+    .Text Text__paragraph-500 {
+      color: #280d5f;
+      font-weight: bold;
+    }
+    
+    .Button Button__action {
+      color: #280d5f;
+    }
+    
+    .Label Label__main {
+      padding-left: 10px !important;
+      color: #280d5f !important;
+    }
+    
+    .Text Text__micro-700 {
+      padding-left: 10px !important;
+      color: #280d5f !important;
+    }
+
+    #w3i-widget {
+      display: block;
+    }

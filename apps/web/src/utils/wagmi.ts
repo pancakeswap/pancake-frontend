@@ -13,6 +13,13 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
+export const DEFAULT_APP_METADATA = {
+  description: 'local',
+  icons: ['https://i.imgur.com/q9QDRXc.png'],
+  name: 'local',
+  url: 'https://pc-custom-web.vercel.app',
+}
+
 // get most configs chain nodes length
 const mostNodesConfig = Object.values(PUBLIC_NODES).reduce((prev, cur) => {
   return cur.length > prev ? cur.length : prev
@@ -63,8 +70,9 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
+    metadata: DEFAULT_APP_METADATA,
     showQrModal: true,
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+    projectId: 'ae5413feaf0cdaee02910dc807e03203',
   },
 })
 
@@ -72,7 +80,7 @@ export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
     showQrModal: false,
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+    projectId: 'ae5413feaf0cdaee02910dc807e03203',
   },
 })
 

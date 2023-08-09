@@ -1,25 +1,27 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { FAST_INTERVAL } from 'config/constants'
+import { BuilderNames } from 'config/constants/notifications/types'
+import useSendPushNotification from 'hooks/useSendNotification'
+import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
-import forEach from 'lodash/forEach'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePublicClient } from 'wagmi'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { Box, Text, useToast } from '@pancakeswap/uikit'
-import { FAST_INTERVAL } from 'config/constants'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { RetryableError, retry } from 'state/multicall/retry'
 import useSWRImmutable from 'swr/immutable'
 import { TransactionNotFoundError } from 'viem'
-import { retry, RetryableError } from 'state/multicall/retry'
+import { usePublicClient } from 'wagmi'
 import { useAppDispatch } from '../index'
 import {
-  finalizeTransaction,
   FarmTransactionStatus,
-  NonBscFarmTransactionStep,
   MsgStatus,
   NonBscFarmStepType,
+  NonBscFarmTransactionStep,
+  finalizeTransaction,
 } from './actions'
-import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
+import { useAllChainTransactions } from './hooks'
 import { TransactionDetails } from './reducer'
 
 export function shouldCheck(
@@ -33,6 +35,7 @@ export function shouldCheck(
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   const provider = usePublicClient({ chainId })
   const { t } = useTranslation()
+  const { sendPushNotification } = useSendPushNotification()
 
   const dispatch = useAppDispatch()
   const transactions = useAllChainTransactions(chainId)
@@ -50,7 +53,6 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         const getTransaction = async () => {
           try {
             const receipt: any = await provider.waitForTransactionReceipt({ hash: transaction.hash })
-
             dispatch(
               finalizeTransaction({
                 chainId,
@@ -74,6 +76,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             )
 
             merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
+            setTimeout(() => sendPushNotification(BuilderNames.newLpNotification), 5000)
           } catch (error) {
             console.error(error)
             if (error instanceof TransactionNotFoundError) {
@@ -89,7 +92,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, sendPushNotification])
 
   const nonBscFarmPendingTxns = useMemo(
     () =>

@@ -31,6 +31,13 @@ import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'confi
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
+import crypto from 'crypto'
+
+function generateRandomHash(length: number): string {
+  const randomBytes = crypto.randomBytes(length)
+  const hash = crypto.createHash('sha256').update(randomBytes).digest('hex')
+  return hash
+}
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -109,7 +116,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
 
-    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
+    const res = await fetch(`http://localhost:8081/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -276,11 +283,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
+        const randomHash = generateRandomHash(32)
+
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: MERCURYO_WIDGET_ID,
+          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
           fiatCurrency: outputCurrency.toUpperCase(),
+          merchantTransactionId: randomHash,
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
           currencies: chainId === ChainId.ETHEREUM ? [ETHEREUM_TOKENS] : mercuryoWhitelist,
@@ -343,7 +353,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </ModalWrapper>
       <Script
-        src="https://widget.mercuryo.io/embed.2.0.js"
+        src="https://sandbox-widget.mercuryo.io/embed.2.0.js"
         onLoad={() => {
           setScriptOnLoad(true)
         }}
