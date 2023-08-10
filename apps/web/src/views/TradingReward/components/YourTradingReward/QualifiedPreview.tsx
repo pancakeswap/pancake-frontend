@@ -81,7 +81,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
   const additionalAmount = useMemo(() => {
     const totalMapCap =
       tradingFeeArr?.map((fee) => fee.maxCap).reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0) ?? 0
-    return new BigNumber(totalMapCap).minus(currentUserCampaignInfo.totalEstimateRewardUSD).toNumber()
+    return new BigNumber(totalMapCap).minus(currentUserCampaignInfo.totalEstimateRewardUSD).toNumber() ?? 0
   }, [currentUserCampaignInfo, tradingFeeArr])
 
   // MAX REWARD CAP
