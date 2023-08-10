@@ -56,10 +56,10 @@ export function NetworkSwitcherModal({
       console.error(e)
     }
   }, [switchNetworkAsync, supportedChains, onSwitchNetworkSuccess])
-  const { targetRef, tooltip } = useTooltip(<Box style={{ maxWidth: '150px' }}>{tips}</Box>, {
+  const { targetRef, tooltip } = useTooltip(<Box style={{ maxWidth: '160px' }}>{tips}</Box>, {
     placement: 'left',
     manualVisible: true,
-    tooltipOffset: [0, -12],
+    tooltipOffset: [0, -22],
     isInPortal: false,
   })
 
@@ -84,7 +84,7 @@ export function NetworkSwitcherModal({
             />
             {tips && tooltip}
           </Flex>
-          <Button mt="2.5rem" width="100%" onClick={onSwitch}>
+          <Button mt="3rem" width="100%" onClick={onSwitch}>
             {buttonText}
           </Button>
         </ModalBody>

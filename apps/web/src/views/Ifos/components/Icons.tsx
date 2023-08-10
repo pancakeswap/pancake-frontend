@@ -11,6 +11,7 @@ type Props = {
 
 const DoubleContainer = styled(Box)`
   position: relative;
+  align-self: flex-start;
 `
 
 const IconBottomContainer = styled(Box)`
