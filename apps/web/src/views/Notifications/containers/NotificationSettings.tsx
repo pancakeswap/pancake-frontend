@@ -19,9 +19,9 @@ interface PushSubButtonProps {
 function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, objectsAreEqual }: PushSubButtonProps) {
   const { t } = useTranslation()
 
-  let buttonText: string = t('Unsubscribe')
+  let buttonText: string = t('UnSubscribe')
   if (objectsAreEqual) {
-    buttonText = isUnsubscribing ? t('unSubscribing') : t('Unsubscribe')
+    buttonText = isUnsubscribing ? t('UnSubscribing') : t('UnSubscribe')
   } else buttonText = isUnsubscribing ? t('Updating') : t('Update Preferences')
 
   return (
@@ -57,7 +57,6 @@ const NotificationSettingsMain = ({ setSubscriptionState, subscriptionState }: I
     })
     return enabledScopeKeys
   }
-  console.log(currentSubscription, prevScopesRef.current)
 
   useEffect(() => {
     if (!currentSubscription.scope) return

@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { AnimatePresence, Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
 import { PushClientTypes } from '@walletconnect/push-client'
 import Image from 'next/image'
@@ -35,6 +36,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLElement>(null)
+  const { t } = useTranslation()
 
   const deleteNotification = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
@@ -73,7 +75,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
         <ContentsContainer
           transition={{ duration: 0.3 }}
           style={{
-            backgroundColor: !isHovered ? '#f7f6f9' : 'white',
+            backgroundColor: isHovered ? 'transparent' : '#372F46',
             transition: 'background-color 0.15s ease',
           }}
           onMouseEnter={handleHover}
@@ -97,7 +99,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
             >
               {description}
               <StyledLink visible={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
-                View Link
+                {t('View Link')}
               </StyledLink>
             </Description>
             <BottomRow show={show} formattedDate={formattedDate} />
@@ -109,11 +111,12 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
 }
 
 const BottomRow = ({ show, formattedDate }: { show: boolean; formattedDate: string }) => {
+  const { t } = useTranslation()
   return (
     <Row justifyContent="space-between">
       <FlexRow>
         <ExpandButton color="secondary" marginY="5px" fontSize="15px">
-          {show ? 'Show Less' : 'Show More'}
+          {show ? t('Show Less') : t('Show More')}
         </ExpandButton>
         {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
       </FlexRow>

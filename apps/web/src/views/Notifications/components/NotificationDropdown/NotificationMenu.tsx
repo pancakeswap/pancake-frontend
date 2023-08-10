@@ -45,7 +45,7 @@ const NotificationMenu: React.FC<
   return (
     <Flex alignItems="center" height="100%" ref={ref}>
       <NotificationBell unread={unread} toggleMenu={toggleMenu} />
-      <Menu isOpen={isMenuOpen} style={{ top: '100%', left: '63%', position: 'fixed' }}>
+      <Menu isOpen={isMenuOpen} style={{ top: '100%', left: '69%', position: 'fixed' }}>
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>
       </Menu>
     </Flex>

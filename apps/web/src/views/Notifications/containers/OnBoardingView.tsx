@@ -67,6 +67,7 @@ const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboarding
   const { toastSuccess, toastError } = useToast()
   const { formattedEip155Account, account } = useFormattedEip155Account()
   const { registerMessage, postMessage, subscribe } = useWalletConnectPushClient()
+  const { t } = useTranslation()
 
   const handleOnboarding = useCallback(() => {
     setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: true }))
@@ -79,7 +80,7 @@ const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboarding
       })
       .catch((error: Error) => {
         setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false, isOnboarding: false }))
-        const errormessage = error.message.includes('User rejected') ? 'User Rejected the request' : error.message
+        const errormessage = error.message.includes('User rejected') ? t('User Rejected the request') : error.message
         toastError(Events.SignatureRequestError.title, errormessage)
       })
   }, [registerMessage, setSubscriptionState, postMessage, signMessageAsync, toastError, toastSuccess])
@@ -111,10 +112,10 @@ const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboarding
       </Box>
       <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
         <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
-          Notifications From PancakeSwap
+          {t('Notifications From PancakeSwap')}
         </Text>
         <Text fontSize="16px" textAlign="center" color="textSubtle">
-          Get started with notifications from WalletConnect. Click the subscribe button below and accept.
+          {t('Get started with notifications from WalletConnect. Click the subscribe button below and accept')}
         </Text>
         <OnboardingButton subscriptionState={subscriptionState} onClick={handleAction} account={account} />
       </FlexGap>

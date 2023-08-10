@@ -137,6 +137,8 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       setActiveSubscriptions(Object.values(subscriptions))
       const _currentSubscription = Object.values(subscriptions).find((sub) => sub.account === userPublicKey)
       if (_currentSubscription) setCurrentSubscribtion(_currentSubscription)
+      const p = pushClient.core.pairing.getPairings()
+      console.log(p)
     })
   }, [pushClient, getActiveSubscriptions, userPublicKey])
 

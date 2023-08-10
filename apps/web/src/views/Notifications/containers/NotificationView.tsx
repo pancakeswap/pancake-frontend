@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
+import { SubsctiptionType } from '../types'
 
 interface INotificationFilterProps {
   options: OptionProps[]
@@ -80,30 +81,30 @@ const SettingsModal = () => {
         case 'All':
           // @ts-ignore
           return notifications.filter(() => true)
-        case 'Liquidity':
+        case SubsctiptionType.Liquidity:
           return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
             const extractedType = notification.message.type
-            return extractedType === 'Liquidity'
+            return extractedType === SubsctiptionType.Liquidity
           })
-        case 'Staking':
+        case SubsctiptionType.Staking:
           return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
             const extractedType = notification.message.type
-            return extractedType === 'Staking'
+            return extractedType === SubsctiptionType.Staking
           })
-        case 'Pools':
+        case SubsctiptionType.Pools:
           return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
             const extractedType = notification.message.type
-            return extractedType === 'Pools'
+            return extractedType === SubsctiptionType.Pools
           })
-        case 'Farms':
+        case SubsctiptionType.Farms:
           return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
             const extractedType = notification.message.type
-            return extractedType === 'Farms'
+            return extractedType === SubsctiptionType.Farms
           })
-        case 'alerts':
+        case SubsctiptionType.Alerts:
           return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
             const extractedType = notification.message.type
-            return extractedType === 'alerts'
+            return extractedType === SubsctiptionType.Alerts
           })
         default:
           return notifications

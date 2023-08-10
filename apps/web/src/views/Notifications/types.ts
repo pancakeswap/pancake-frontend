@@ -12,6 +12,14 @@ export enum ResponseEvents {
   UnsubscribeError = 'UnsubscribeError',
 }
 
+export enum SubsctiptionType {
+  Liquidity = 'Liquidity',
+  Staking = 'Staking',
+  Farms = 'Farms',
+  Pools = 'Pools',
+  Alerts = 'alerts',
+}
+
 export type EventInformation = {
   title: string
   message?: string
@@ -51,6 +59,7 @@ export type SubscriptionState = {
 }
 
 export type pushNotifyTypes = 'Liquidity' | 'Staking' | 'Pools' | 'Farms' | 'alerts'
+
 export enum BuilderNames {
   OnBoardNotification = 'OnBoardNotification',
   newLpNotification = 'newLpNotification',

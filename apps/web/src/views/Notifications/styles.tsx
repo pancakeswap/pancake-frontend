@@ -142,6 +142,7 @@ export const ContentsContainer = styled(motion.div)`
   border: 1px solid #ccc;
   border-radius: 18px;
   overflow: hidden;
+  background: #372f46;
   // min-height: 110px;
 `
 
