@@ -1,4 +1,5 @@
-import { Button, Modal, ModalV2, ModalBody, ModalV2Props, Text } from '@pancakeswap/uikit'
+import { Button, Modal, ModalV2, ModalBody, ModalV2Props, Text, Flex, useTooltip, Box } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { ReactNode, useCallback } from 'react'
@@ -55,6 +56,12 @@ export function NetworkSwitcherModal({
       console.error(e)
     }
   }, [switchNetworkAsync, supportedChains, onSwitchNetworkSuccess])
+  const { targetRef, tooltip } = useTooltip(<Box style={{ maxWidth: '150px' }}>{tips}</Box>, {
+    placement: 'left',
+    manualVisible: true,
+    tooltipOffset: [0, -12],
+    isInPortal: false,
+  })
 
   return (
     <ModalV2 {...rest}>
@@ -66,8 +73,18 @@ export function NetworkSwitcherModal({
             })}
           </BodyTitle>
           <BodyText mt="1rem">{description}</BodyText>
-          {tips}
-          <Button mt="1.5rem" width="100%" onClick={onSwitch}>
+          <Flex flexDirection="row" justifyContent="flex-end" mt="2.5rem">
+            <Image
+              ref={targetRef}
+              alt="instructor-bunny"
+              style={{ maxHeight: '115px' }}
+              src="/images/ifos/assets/bunny-instructor.png"
+              width={117}
+              height={115}
+            />
+            {tips && tooltip}
+          </Flex>
+          <Button mt="2.5rem" width="100%" onClick={onSwitch}>
             {buttonText}
           </Button>
         </ModalBody>

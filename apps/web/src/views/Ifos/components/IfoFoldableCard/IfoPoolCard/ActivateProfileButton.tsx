@@ -4,7 +4,8 @@ import { useAccount } from 'wagmi'
 import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { Button, NextLinkFromReactRouter, useModalV2 } from '@pancakeswap/uikit'
+import { Flex, Button, NextLinkFromReactRouter, useModalV2, ProfileAvatar, Text } from '@pancakeswap/uikit'
+
 import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 import { useChainNames } from '../../../hooks/useChainNames'
 
@@ -22,6 +23,13 @@ export function ActivateProfileButton() {
   // It's a temp fix
   const goToProfilePage = useCallback(() => window.setTimeout(() => router.push(to), 0), [router, to])
 
+  const tips = (
+    <Flex flexDirection="column" justifyContent="flex-start">
+      <ProfileAvatar width={40} height={40} src="https://via.placeholder.com" />
+      <Text mt="0.625rem">{t('Pancakeswap profile is needed for IFO public sale eligibility.')}</Text>
+    </Flex>
+  )
+
   const button = profileSupported ? (
     <Button as={NextLinkFromReactRouter} to={to} width="100%">
       {t('Activate your Profile')}
@@ -38,6 +46,7 @@ export function ActivateProfileButton() {
         buttonText={t('Switch chain to create profile')}
         onSwitchNetworkSuccess={goToProfilePage}
         onDismiss={onDismiss}
+        tips={tips}
       />
       <Button width="100%" onClick={onOpen}>
         {t('Activate your Profile')}
