@@ -2,12 +2,9 @@ import { SWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import { NotFound, Box } from '@pancakeswap/uikit'
 import ArticleInfo from 'components/Article/SingleArticle/ArticleInfo'
-import HowItWork from 'components/Article/SingleArticle/HowItWork'
-import SimilarArticles from 'components/Article/SingleArticle/SimilarArticles'
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
-import { getArticle, getSingleArticle } from 'hooks/getArticle'
+import { getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
-import { filterTagArray } from 'utils/filterTagArray'
 
 export async function getStaticPaths() {
   return {
@@ -36,30 +33,8 @@ export const getStaticProps = (async ({ params }) => {
       filters: {
         categories: {
           name: {
-            $notIn: filterTagArray,
+            $eq: 'Preview',
           },
-        },
-      },
-    },
-  })
-
-  const similarArticles = await getArticle({
-    url: '/articles',
-    urlParamsObject: {
-      locale: article.locale,
-      sort: 'createAt:desc',
-      populate: 'categories,image',
-      pagination: { limit: 6 },
-      filters: {
-        id: {
-          $not: article.id,
-        },
-        categories: {
-          $or: article.categories.map((category) => ({
-            name: {
-              $eq: category,
-            },
-          })),
         },
       },
     },
@@ -68,8 +43,7 @@ export const getStaticProps = (async ({ params }) => {
   return {
     props: {
       fallback: {
-        '/article': article,
-        '/similarArticles': similarArticles.data,
+        '/preview-article': article,
       },
     },
     revalidate: 60,
@@ -78,20 +52,18 @@ export const getStaticProps = (async ({ params }) => {
 
 const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback }) => {
   const router = useRouter()
-  if (!router.isFallback && !fallback?.['/article']?.title) {
+  if (!router.isFallback && !fallback?.['/preview-article']?.title) {
     return <NotFound />
   }
 
-  const { title, description, imgUrl } = fallback['/article']
+  const { title, description, imgUrl } = fallback['/preview-article']
 
   return (
     <div>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
       <SWRConfig value={{ fallback }}>
         <Box>
-          <ArticleInfo articleName="/article" />
-          <HowItWork />
-          <SimilarArticles />
+          <ArticleInfo articleName="/preview-article" />
         </Box>
       </SWRConfig>
     </div>

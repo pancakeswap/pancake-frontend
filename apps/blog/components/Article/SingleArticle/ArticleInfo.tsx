@@ -32,9 +32,13 @@ const StyledTagGroup = styled(Flex)`
   }
 `
 
-const ArticleInfo = () => {
+interface ArticleInfoProps {
+  articleName: string
+}
+
+const ArticleInfo: React.FC<ArticleInfoProps> = ({ articleName }) => {
   const router = useRouter()
-  const { data: article } = useSWR<ArticleDataType>('/article')
+  const { data: article } = useSWR<ArticleDataType>(articleName)
 
   const handleClickTag = (category: string) => {
     router.push(`/?category=${category}#all`)
