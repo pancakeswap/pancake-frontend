@@ -50,7 +50,7 @@ export const getStaticProps = (async ({ params }) => {
   }
 }) satisfies GetStaticProps
 
-const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback }) => {
+const PreviewArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback }) => {
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/preview-article']?.title) {
     return <NotFound />
@@ -70,4 +70,4 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   )
 }
 
-export default ArticlePage
+export default PreviewArticlePage
