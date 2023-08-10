@@ -22,20 +22,20 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Address, useAccount } from 'wagmi'
+import { useMemo } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
 import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
-import { getICakeWeekDisplay } from 'views/Pools/helpers'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { getICakeWeekDisplay } from 'views/Pools/helpers'
+import { useIfoCeiling } from '../hooks/useIfoCredit'
 
 interface TypeProps {
-  ifoChainId?: ChainId
+  sourceChainIfoCredit?: CurrencyAmount<Currency>
+  srcChainId?: ChainId
   ifoCurrencyAddress: Address
   hasClaimed: boolean
   isCommitted: boolean
@@ -66,12 +66,23 @@ const InlineLink = styled(Link)`
   display: inline;
 `
 
-const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
+const Step1 = ({
+  srcChainId,
+  hasProfile,
+  sourceChainIfoCredit,
+}: {
+  srcChainId?: ChainId
+  hasProfile: boolean
+  sourceChainIfoCredit?: CurrencyAmount<Currency>
+}) => {
   const { t } = useTranslation()
-  const credit = useIfoCredit()
-  const ceiling = useIfoCeiling()
   const cakePrice = useCakePrice()
-  const creditDollarValue = cakePrice.multipliedBy(getBalanceNumber(credit)).toNumber()
+  const balanceNumber = useMemo(
+    () => sourceChainIfoCredit && Number(sourceChainIfoCredit.toExact()),
+    [sourceChainIfoCredit],
+  )
+  const ceiling = useIfoCeiling({ chainId: srcChainId })
+  const creditDollarValue = cakePrice.multipliedBy(balanceNumber).toNumber()
   const weeksDisplay = getICakeWeekDisplay(ceiling)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -121,7 +132,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
                   {t('Your max CAKE entry')}
                 </Text>
-                <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
+                <Balance fontSize="20px" bold decimals={5} value={balanceNumber} />
                 <Text fontSize="12px" color="textSubtle">
                   {creditDollarValue !== undefined ? (
                     <Balance
@@ -168,21 +179,24 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
 }
 
 const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
-  ifoChainId,
+  sourceChainIfoCredit,
+  srcChainId,
   isCommitted,
   hasClaimed,
   isLive,
-  ifoCurrencyAddress,
   isCrossChainIfo,
   hasBridged,
 }) => {
   const { hasActiveProfile } = useProfile()
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  const { balance } = useTokenBalanceByChain(ifoCurrencyAddress, ifoChainId)
+  const sourceChainHasICake = useMemo(
+    () => sourceChainIfoCredit && sourceChainIfoCredit.quotient > 0n,
+    [sourceChainIfoCredit],
+  )
   const stepsValidationStatus = isCrossChainIfo
-    ? [hasActiveProfile, balance.isGreaterThan(0), hasBridged, isCommitted, hasClaimed]
-    : [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
+    ? [hasActiveProfile, sourceChainHasICake, hasBridged, isCommitted, hasClaimed]
+    : [hasActiveProfile, sourceChainHasICake, isCommitted, hasClaimed]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
@@ -266,7 +280,9 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
           </CardBody>
         )
       case 1:
-        return <Step1 hasProfile={hasActiveProfile} />
+        return (
+          <Step1 hasProfile={hasActiveProfile} sourceChainIfoCredit={sourceChainIfoCredit} srcChainId={srcChainId} />
+        )
       case 2:
         if (isCrossChainIfo) {
           return renderBridge()

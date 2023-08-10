@@ -1,5 +1,5 @@
 import { ChainId, CurrencyAmount } from '@pancakeswap/sdk'
-import { fetchUserIfoCredit } from '@pancakeswap/ifos'
+import { fetchUserIfoCredit, fetchPublicIfoData } from '@pancakeswap/ifos'
 import { CAKE } from '@pancakeswap/tokens'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
@@ -43,6 +43,13 @@ export function useIfoCredit({ chainId, ifoCredit }: IfoCreditParams) {
   )
 }
 
+export function useIfoCeiling({ chainId }: { chainId?: ChainId }): BigNumber | undefined {
+  const { data } = useQuery([chainId, 'ifo-ceiling'], () => fetchPublicIfoData(chainId, getViemClients), {
+    enabled: !!chainId,
+  })
+  return useMemo(() => data?.ceiling && new BigNumber(data.ceiling), [data])
+}
+
 type ICakeStatusParams = {
   ifoChainId?: ChainId
 
@@ -66,6 +73,7 @@ export function useICakeBridgeStatus({ ifoChainId, ifoCredit }: ICakeStatusParam
   )
 
   return {
+    srcChainId,
     noICake,
     isICakeSynced,
     shouldBridgeAgain,

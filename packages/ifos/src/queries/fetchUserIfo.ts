@@ -22,7 +22,13 @@ export const getIfoCreditAddressContract = (
   return getContract({ abi: iCakeABI, address, publicClient: provider({ chainId }), walletClient })
 }
 
-export const fetchPublicIfoData = async (chainId: ChainId, provider: OnChainProvider) => {
+export const fetchPublicIfoData = async (chainId: ChainId | undefined, provider: OnChainProvider) => {
+  if (!chainId) {
+    return {
+      ceiling: BIG_ZERO.toJSON(),
+    }
+  }
+
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract(chainId, provider)
     const ceiling = await ifoCreditAddressContract.read.ceiling()
