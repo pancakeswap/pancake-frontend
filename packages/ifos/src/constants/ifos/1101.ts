@@ -6,7 +6,7 @@ import { BaseIfoConfig } from '../../types'
 export const ifos: BaseIfoConfig[] = [
   {
     id: '1101-test',
-    address: '0x567c8af8c369f9d886453b250fb7c2313fef9be9',
+    address: '0x640b30d6122569a17f5e78cbac8a18a76164bc00',
     isActive: true,
     name: 'USDT',
     plannedStartTime: 1691474400,
