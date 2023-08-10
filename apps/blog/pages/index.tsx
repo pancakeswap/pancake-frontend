@@ -5,6 +5,7 @@ import { Box } from '@pancakeswap/uikit'
 import NewBlog from 'components/NewBlog'
 import ChefsChoice from 'components/ChefsChoice'
 import AllArticle from 'components/Article/AllArticle'
+import { filterTagArray } from 'utils/filterTagArray'
 
 export async function getStaticProps() {
   const [latestArticles, chefChoiceArticle, categories] = await Promise.all([
@@ -17,7 +18,7 @@ export async function getStaticProps() {
         filters: {
           categories: {
             name: {
-              $not: 'News',
+              $notIn: filterTagArray,
             },
           },
         },
