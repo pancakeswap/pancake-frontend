@@ -1,25 +1,28 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, Toggle } from '@pancakeswap/uikit'
+import { Box, Flex, Row, Text, Toggle } from '@pancakeswap/uikit'
 import { PushClientTypes } from '@walletconnect/push-client'
 import Divider from 'components/Divider'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback } from 'react'
 
 interface ISettingsprops {
   title: string
   description: string
-  isToastVisible: boolean
-  account: string
+  setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
   isSubscribed: {
     description: string
     enabled: boolean
   }
+}
+
+interface ISettingsContainerProps {
+  scopes: PushClientTypes.ScopeMap
   setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
 }
 
 const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettingsprops) => {
   const { t } = useTranslation()
 
-  const toggleScopeEnabled = () => {
+  const toggleScopeEnabled = useCallback(() => {
     setScopes((prevScopes) => ({
       ...prevScopes,
       [title]: {
@@ -27,19 +30,19 @@ const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettings
         enabled: !prevScopes[title].enabled,
       },
     }))
-  }
+  }, [setScopes, title])
 
   return (
-    <>
-      <Flex flexDirection="column" mt="8px">
-        <Text fontWeight="bold" fontSize="16px">
+    <Box>
+      <Row flexDirection="column" mt="8px" alignItems="flex-start">
+        <Text fontWeight="bold" fontSize="16px" textAlign="left">
           {t(`${title}`)}
         </Text>
-      </Flex>
+      </Row>
       <Flex justifyContent="space-between" alignItems="center" mb="16px">
-        <Flex alignItems="center" maxWidth="80%">
-          <Text color="textSubtle">{t(`${description}`)}</Text>
-        </Flex>
+        <Text maxWidth="80%" color="textSubtle">
+          {t(`${description}`)}
+        </Text>
         <Toggle
           id="toggle-expert-mode-button"
           scale="md"
@@ -47,33 +50,11 @@ const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettings
           onChange={toggleScopeEnabled}
         />
       </Flex>
-    </>
+    </Box>
   )
 }
 
-const SettingsContainer = ({
-  account,
-  scopes,
-  setScopes,
-}: {
-  account: string
-  scopes: PushClientTypes.ScopeMap
-  setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
-}) => {
-  const [isToastVisible, setToastVisible] = useState<boolean>(false)
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (isToastVisible) {
-      const hideToastTimer = setTimeout(() => {
-        setToastVisible(false)
-      }, 5000)
-
-      return () => {
-        clearTimeout(hideToastTimer)
-      }
-    }
-  }, [isToastVisible])
+const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   return (
     <>
       <Divider />
@@ -84,8 +65,6 @@ const SettingsContainer = ({
               key={title}
               title={title}
               description={scope.description}
-              isToastVisible={isToastVisible}
-              account={account}
               isSubscribed={scope}
               setScopes={setScopes}
             />

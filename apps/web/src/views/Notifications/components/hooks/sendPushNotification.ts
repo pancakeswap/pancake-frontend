@@ -1,13 +1,20 @@
-import { DEFAULT_PROJECT_ID, DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
+import {
+  DEFAULT_CAST_SIGN_KEY,
+  DEFAULT_PROJECT_ID,
+  DEFAULT_RELAY_URL,
+  PancakeNotifications,
+} from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import useFormattedEip155Account from './useFormatEip155Account'
 
 type NotifyResponse = { sent: string[]; failed: string[]; not_found: string[] }
-
-const useSendPushNotification = (): {
+interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
-} => {
-  const formattedEip155Account = useFormattedEip155Account()
+}
+
+const useSendPushNotification = (): IUseSendNotification => {
+  const { formattedEip155Account } = useFormattedEip155Account()
+
   const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {
     const notificationPayload: NotificationPayload = {
       accounts: [formattedEip155Account],
@@ -18,7 +25,7 @@ const useSendPushNotification = (): {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+          Authorization: `Bearer ${DEFAULT_CAST_SIGN_KEY}`,
         },
         body: JSON.stringify(notificationPayload),
       })
@@ -27,11 +34,11 @@ const useSendPushNotification = (): {
       const success = result.sent.includes(formattedEip155Account)
 
       if (!success) {
-        //   toastError(`${t('Something went wrong!')}!`, t('Unable to find subscription'))
+        // NO access to toaster yet
       }
     } catch (error) {
       if (error instanceof Error) {
-        //   toastError(`${t('Something went wrong')}!`, t(error.message))
+        //
       }
     }
   }

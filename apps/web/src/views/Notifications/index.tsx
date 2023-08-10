@@ -1,14 +1,23 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
 import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
-import SubscribedView from 'views/Notifications/containers/OnBoardingView'
-import { useAccount, useChainId } from 'wagmi'
-import { CogIcon, IconButton, ArrowBackIcon, Heading, ModalCloseButton, LogoRoundIcon, Box } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
+import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
+import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
-import { StyledInputCurrencyWrapper, View, ViewContainer, ModalHeader, ModalTitle } from './styles'
+import { ModalHeader, ModalTitle, View, ViewContainer } from './styles'
 import { SubscriptionState } from './types'
+
+export const initialState: SubscriptionState = {
+  isSubscribing: false,
+  isSubscribed: false,
+  isUnsubscribing: false,
+  isOnboarding: false,
+  isOnboarded: false,
+}
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -55,20 +64,11 @@ const NotificationHeader = ({ isSettings = false, isSubscribed, onBack, onDismis
 }
 
 const Notifications = () => {
-  const [subscriptionState, setSubscriptionState] = useState<SubscriptionState>({
-    isSubscribing: false,
-    isSubscribed: false,
-    isUnsubscribing: false,
-    isOnboarding: false,
-    isOnboarded: false,
-  })
-
+  const [subscriptionState, setSubscriptionState] = useState<SubscriptionState>(initialState)
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-
-  const chainId = useChainId()
-  const { address: account } = useAccount()
-  const { activeSubscriptions, registerMessage: pushRegisterMessage } = useWalletConnectPushClient()
+  const { formattedEip155Account, account } = useFormattedEip155Account()
+  const { activeSubscriptions, registerMessage } = useWalletConnectPushClient()
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,48 +82,43 @@ const Notifications = () => {
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
   useEffect(() => {
-    const pushSignatureRequired = Boolean(pushRegisterMessage)
-    if (account && pushSignatureRequired) setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false }))
+    const pushSignatureRequired = Boolean(registerMessage)
+    if (pushSignatureRequired) setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false }))
     else setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true }))
-    setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: false }))
-  }, [account, pushRegisterMessage, setSubscriptionState, chainId])
+  }, [registerMessage, setSubscriptionState, formattedEip155Account])
 
   useEffect(() => {
-    if (Object.values(activeSubscriptions).some((sub) => sub.account === `eip155:${chainId}:${account}`)) {
+    if (Object.values(activeSubscriptions).some((sub) => sub.account === formattedEip155Account)) {
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true }))
     } else setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: false }))
-  }, [account, activeSubscriptions, chainId])
+  }, [formattedEip155Account, activeSubscriptions])
 
   return (
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
-        <>
+        <Box>
           <NotificationHeader
             onBack={toggleSettings}
             onDismiss={onDismiss}
             isSubscribed={subscriptionState.isSubscribed}
             isSettings={!isRightView}
           />
-          <StyledInputCurrencyWrapper>
-            {!subscriptionState.isSubscribed || !account ? (
-              <SubscribedView setSubscriptionState={setSubscriptionState} subscriptionState={subscriptionState} />
-            ) : (
-              <ViewContainer isRightView={isRightView}>
-                <View>
-                  <SettingsModal />
-                </View>
-                <View>
-                  <NotificationSettingsMain
-                    chainId={chainId}
-                    account={account}
-                    setSubscriptionState={setSubscriptionState}
-                    subscriptionState={subscriptionState}
-                  />
-                </View>
-              </ViewContainer>
-            )}
-          </StyledInputCurrencyWrapper>
-        </>
+          {subscriptionState.isSubscribed && account ? (
+            <ViewContainer isRightView={isRightView}>
+              <View>
+                <SettingsModal />
+              </View>
+              <View>
+                <NotificationSettingsMain
+                  setSubscriptionState={setSubscriptionState}
+                  subscriptionState={subscriptionState}
+                />
+              </View>
+            </ViewContainer>
+          ) : (
+            <OnBoardingView setSubscriptionState={setSubscriptionState} subscriptionState={subscriptionState} />
+          )}
+        </Box>
       )}
     </NotificationMenu>
   )

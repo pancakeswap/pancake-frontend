@@ -19,20 +19,22 @@ interface INotificationprops {
   date: number
   removeNotification: (id: number) => Promise<void>
   url?: string
-  image?: string
 }
 
-const NotificationItem = ({ title, description, id, date, url, image, removeNotification }: INotificationprops) => {
+interface INotificationContainerProps {
+  notifications: PushClientTypes.PushMessageRecord[]
+  sortOptionsType: string
+  removeNotification: (id: number) => Promise<void>
+}
+
+const NotificationItem = ({ title, description, id, date, url, removeNotification }: INotificationprops) => {
   const [isHovered, setIsHovered] = useState(false)
-  const formattedDate = formatTime(Math.floor(date / 1000).toString())
-  const [textClamped, setTextClamped] = useState<boolean>(false)
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
-  const [animating, setAnimating] = useState<boolean>(false)
-  const containerRef = useRef(null)
   const [isClosing, setIsClosing] = useState<boolean>(false)
-
-  const y = false
+  const formattedDate = formatTime(Math.floor(date / 1000).toString())
+  const containerRef = useRef(null)
+  const contentRef = useRef<HTMLElement>(null)
 
   const deleteNotification = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
@@ -45,27 +47,18 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
     [removeNotification, id],
   )
 
-  const handleHover = useCallback(() => {
-    setIsHovered(!isHovered)
-  }, [isHovered])
-
-  const contentRef = useRef<HTMLElement>(null)
+  const handleHover = useCallback(() => setIsHovered(!isHovered), [isHovered])
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const target = e.target as HTMLDivElement
-      if (!animating && target.tagName !== 'BUTTON') {
-        setShow(!show)
-      }
+      if (target.tagName !== 'BUTTON') setShow(!show)
     },
-    [animating, show],
+    [show],
   )
 
   useEffect(() => {
-    if (contentRef.current) {
-      setElementHeight(contentRef.current.scrollHeight)
-      setTextClamped(contentRef.current.scrollHeight > contentRef.current.clientHeight + 6)
-    }
+    if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
   }, [])
 
   return (
@@ -101,43 +94,13 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
               transition={{ duration: 0.33, ease: 'easeInOut' }}
               initial={{ maxHeight: 32 }}
               animate={{ maxHeight: show ? elementHeight : 32 }}
-              onAnimationStart={() => {
-                setAnimating(true)
-                if (show) {
-                  if (contentRef.current) {
-                    contentRef.current.style.webkitLineClamp = 'unset'
-                  }
-                }
-              }}
-              onAnimationComplete={() => {
-                setAnimating(false)
-                if (!show) {
-                  if (contentRef.current) {
-                    contentRef.current.style.webkitLineClamp = '2'
-                  }
-                }
-              }}
             >
               {description}
-              {url ? (
-                <StyledLink href={url} target="_blank" rel="noreferrer noopener">
-                  View Link
-                </StyledLink>
-              ) : null}
+              <StyledLink visible={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
+                View Link
+              </StyledLink>
             </Description>
-            {textClamped ? (
-              <Row justifyContent="space-between">
-                <FlexRow>
-                  <ExpandButton color="secondary" marginY="5px" fontSize="15px">
-                    {show ? 'Show Less' : 'Show More'}
-                  </ExpandButton>
-                  {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
-                </FlexRow>
-                <Text fontSize="15px" marginRight="8px">
-                  {formattedDate}
-                </Text>
-              </Row>
-            ) : null}
+            <BottomRow show={show} formattedDate={formattedDate} />
           </Flex>
         </ContentsContainer>
       </AnimatePresence>
@@ -145,40 +108,44 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
   )
 }
 
-const NotificationContainer = ({
-  transactions,
-  sortOptionsType,
-  removeNotification,
-}: {
-  transactions: any[] // PushClientTypes.PushMessageRecord[]
-  sortOptionsType: string
-  removeNotification: (id: number) => Promise<void>
-}) => {
-  if (transactions.length === 0) return <></>
+const BottomRow = ({ show, formattedDate }: { show: boolean; formattedDate: string }) => {
   return (
-    <>
-      <Box>
-        {transactions
-          .sort((a: PushClientTypes.PushMessageRecord, b: PushClientTypes.PushMessageRecord) => {
-            if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
-            return a.publishedAt - b.publishedAt
-          })
-          .map((notification: PushClientTypes.PushMessageRecord) => {
-            return (
-              <NotificationItem
-                key={notification.id}
-                title={notification.message.title}
-                description={notification.message.body}
-                id={notification.id}
-                date={notification.publishedAt}
-                url={notification.message.url}
-                image={notification.message.icon}
-                removeNotification={removeNotification}
-              />
-            )
-          })}
-      </Box>
-    </>
+    <Row justifyContent="space-between">
+      <FlexRow>
+        <ExpandButton color="secondary" marginY="5px" fontSize="15px">
+          {show ? 'Show Less' : 'Show More'}
+        </ExpandButton>
+        {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}
+      </FlexRow>
+      <Text fontSize="15px" marginRight="8px">
+        {formattedDate}
+      </Text>
+    </Row>
+  )
+}
+
+const NotificationContainer = ({ notifications, sortOptionsType, removeNotification }: INotificationContainerProps) => {
+  return (
+    <Box>
+      {notifications
+        .sort((a: PushClientTypes.PushMessageRecord, b: PushClientTypes.PushMessageRecord) => {
+          if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
+          return a.publishedAt - b.publishedAt
+        })
+        .map((notification: PushClientTypes.PushMessageRecord) => {
+          return (
+            <NotificationItem
+              key={notification.id}
+              title={notification.message.title}
+              description={notification.message.body}
+              id={notification.id}
+              date={notification.publishedAt}
+              url={notification.message.url}
+              removeNotification={removeNotification}
+            />
+          )
+        })}
+    </Box>
   )
 }
 

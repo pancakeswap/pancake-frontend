@@ -1,7 +1,27 @@
 import styled, { keyframes } from 'styled-components'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+
+export const Menu = styled.div<{ isOpen: boolean }>`
+  background-color: ${({ theme }) => theme.card.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 24px;
+  padding-bottom: 4px;
+  pointer-events: auto;
+  width: 400px;
+  overflow: hidden;
+  position: relative;
+  visibility: visible;
+  z-index: 1001;
+
+  ${({ isOpen }) =>
+    !isOpen &&
+    `
+    pointer-events: none;
+    visibility: hidden;
+  `}
+`
 
 export const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -96,7 +116,6 @@ export const NotificationContainerStyled = styled.div`
   max-height: 360px;
   overflow-y: scroll;
   overflow-x: hidden;
-  // z-index: 10000000000;
   &:hover {
     cursor: pointer;
   }
@@ -139,7 +158,7 @@ export const ExpandButton = styled(Text)`
   }
 `
 
-export const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)<{ visible: boolean }>`
   max-height: 35px;
   height: 35px;
   width: 100%;
@@ -147,9 +166,35 @@ export const StyledLink = styled(Link)`
   border-radius: 12px;
   color: ${({ theme }) => `${theme.colors.primary}`};
   font-weight: bold;
-  display: flex;
+  display: ${({ visible }) => `${visible ? 'flex' : 'none'}`};
   margin-top: 12px;
   margin-bottom: 6px;
   justify-content: center;
   align-items: center;
+`
+export const BellIconContainer = styled(Box)`
+  position: relative;
+  padding-right: 16px;
+  padding-left: 8px;
+  cursor: pointer;
+
+  svg {
+    color: ${({ theme }) => theme.colors.textSubtle};
+    width: 30px;
+  }
+
+  .notification-badge {
+    position: absolute;
+    bottom: 60%;
+    left: 45%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+  }
 `

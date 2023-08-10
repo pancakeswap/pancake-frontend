@@ -1,5 +1,5 @@
 import { OptionProps } from '@pancakeswap/uikit'
-import { PancakeNotificationBuilders, RelayerType, pushNotification } from './types'
+import { EventInformation, PancakeNotificationBuilders, ResponseEvents, pushNotification } from './types'
 
 export const NotificationFilterTypes: OptionProps[] = [
   {
@@ -37,37 +37,15 @@ export const NotificationSortTypes: OptionProps[] = [
 
 if (!process.env.NEXT_PUBLIC_PROJECT_ID) throw new Error('`NEXT_PUBLIC_PROJECT_ID` env variable is missing.')
 
+export const DEFAULT_CAST_SIGN_KEY = process.env.CAST_SERVER_SIGN_KEY
 export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID
 export const DEFAULT_RELAY_URL = 'https://cast.walletconnect.com'
-
-export const DEFAULT_LOGGER = 'debug'
-
 export const DEFAULT_APP_METADATA = {
   description: 'local',
   icons: ['https://i.imgur.com/q9QDRXc.png'],
   name: 'local',
   url: 'https://pc-custom-web.vercel.app',
 }
-
-export const REGIONALIZED_RELAYER_ENDPOINTS: RelayerType[] = [
-  {
-    value: DEFAULT_RELAY_URL,
-    label: 'Default',
-  },
-
-  {
-    value: 'wss://us-east-1.relay.walletconnect.com',
-    label: 'US',
-  },
-  {
-    value: 'wss://eu-central-1.relay.walletconnect.com',
-    label: 'EU',
-  },
-  {
-    value: 'wss://ap-southeast-1.relay.walletconnect.com',
-    label: 'Asia Pacific',
-  },
-]
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(args: T[]) => pushNotification
@@ -90,5 +68,31 @@ export const PancakeNotifications: {
       type: 'Liquidity',
     }
     // ... add more as we create use cases
+  },
+}
+
+export const Events: { [event in keyof typeof ResponseEvents]: EventInformation } = {
+  [ResponseEvents.SignatureRequest]: {
+    title: 'Request Sent',
+    message: 'Please sign the subscription request sent to your wallet',
+  },
+  [ResponseEvents.SignatureRequestError]: {
+    title: 'Request Error',
+    message: 'User rejected the signature request',
+  },
+  [ResponseEvents.SubscriptionRequestError]: {
+    title: 'Subscription Error',
+  },
+  [ResponseEvents.PreferencesUpdated]: {
+    title: 'Success',
+    message: 'your notification preferences have been updated.',
+  },
+  [ResponseEvents.PreferencesError]: {
+    title: 'Something went wrong',
+    message: 'Unable to update your preferences',
+  },
+  [ResponseEvents.UnsubscribeError]: {
+    title: 'Error',
+    message: 'Unable to unsubscribe.',
   },
 }

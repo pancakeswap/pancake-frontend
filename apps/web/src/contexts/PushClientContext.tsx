@@ -10,6 +10,7 @@ import useSendPushNotification from 'views/Notifications/components/hooks/sendPu
 import useFormattedEip155Account from 'views/Notifications/components/hooks/useFormatEip155Account'
 import { BuilderNames } from 'views/Notifications/types'
 import { useSignMessage } from 'wagmi'
+import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
 
 interface IContext {
   activeSubscriptions: PushClientTypes.PushSubscription[]
@@ -17,12 +18,10 @@ interface IContext {
   pushClient: WalletClient
   refreshPushState: () => void
   getMessageHistory: (params: { topic: string }) => Promise<Record<number, PushClientTypes.PushMessageRecord>>
-  reject: (params: { id: number; reason: string }) => Promise<void>
   subscribe: (params: { metadata: PushClientTypes.Metadata; account: string }) => Promise<{
     id: number
     subscriptionAuth: string
   }>
-  update: (params: { topic: string; scope: string[] }) => Promise<boolean>
   deleteSubscription: (params: { topic: string }) => Promise<void>
   deletePushMessage: (params: { id: number }) => Promise<void>
   setUnread: React.Dispatch<React.SetStateAction<number>>
@@ -34,26 +33,27 @@ interface IContext {
 
 const core = new Core({
   logger: 'debug',
-  projectId: 'ae5413feaf0cdaee02910dc807e03203',
+  projectId: DEFAULT_PROJECT_ID,
 })
 
 export const PushClientContext = createContext<IContext>({} as IContext)
 
 export function PushClientContextProvider({ children }: { children: ReactNode | ReactNode[] }) {
   const [activeSubscriptions, setActiveSubscriptions] = useState<PushClientTypes.PushSubscription[]>([])
-  const [currentSubscription, setCurrentSubscribtion] = useState<PushClientTypes.PushSubscription | null>(null)
+  const [currentSubscription, setCurrentSubscribtion] = useState({} as PushClientTypes.PushSubscription)
   const [emitter] = useState(new EventEmitter())
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const [pushClient, setPushClient] = useState<WalletClient | null>(null)
   const [unread, setUnread] = useState<number>(0)
-  const userPublicKey = useFormattedEip155Account()
+
+  const { formattedEip155Account: userPublicKey } = useFormattedEip155Account()
   const { signMessageAsync } = useSignMessage()
   const { sendPushNotification } = useSendPushNotification()
 
   const createClient = useCallback(async () => {
     const syncClient = await SyncClient.init({
       core,
-      projectId: 'ae5413feaf0cdaee02910dc807e03203',
+      projectId: DEFAULT_PROJECT_ID,
     })
     const _pushClient = await WalletClient.init({
       core,
@@ -67,15 +67,6 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
   const formatClientRelatedError = (method: string) => {
     return `An initialized PushClient is required for method: [${method}].`
   }
-  const reject = useCallback(
-    async (params: { id: number; reason: string }) => {
-      if (!pushClient) {
-        throw new Error(formatClientRelatedError('reject'))
-      }
-      return pushClient.reject(params)
-    },
-    [pushClient],
-  )
 
   const subscribe = useCallback(
     async (params: { metadata: PushClientTypes.Metadata; account: string }) => {
@@ -92,17 +83,6 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       return subscribed
     },
     [pushClient, signMessageAsync],
-  )
-
-  const update = useCallback(
-    async (params: { topic: string; scope: string[] }) => {
-      if (!pushClient) {
-        throw new Error(formatClientRelatedError('update'))
-      }
-      const updated = await pushClient.update(params)
-      return updated
-    },
-    [pushClient],
   )
 
   const deleteSubscription = useCallback(
@@ -150,24 +130,19 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
     [pushClient],
   )
 
-  useEffect(() => {
-    if (!pushClient) {
-      createClient()
-    }
-  }, [pushClient, createClient])
-
   const refreshPushState = useCallback(() => {
-    if (!pushClient) {
-      return
-    }
+    if (!pushClient) return
 
-    getActiveSubscriptions().then((subscriptions) => {
+    getActiveSubscriptions({ account: userPublicKey }).then((subscriptions) => {
       setActiveSubscriptions(Object.values(subscriptions))
       const _currentSubscription = Object.values(subscriptions).find((sub) => sub.account === userPublicKey)
       if (_currentSubscription) setCurrentSubscribtion(_currentSubscription)
-      else setCurrentSubscribtion(null)
     })
   }, [pushClient, getActiveSubscriptions, userPublicKey])
+
+  useEffect(() => {
+    if (!pushClient) createClient()
+  }, [pushClient, createClient])
 
   useEffect(() => {
     refreshPushState()
@@ -190,67 +165,55 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
 
   const handleRegistration = useCallback(
     async (key: string) => {
-      if (!pushClient) {
-        return
-      }
+      if (!pushClient || !key) return
 
       const alreadySynced = pushClient.syncClient.signatures.getAll({
         account: key,
       }).length
 
-      if (alreadySynced) {
-        // eslint-disable-next-line consistent-return
-        return Promise.resolve()
-      }
+      // eslint-disable-next-line consistent-return
+      if (alreadySynced) return Promise.resolve()
+      try {
+        await pushClient.enableSync({
+          account: key,
+          onSign: async (message) => {
+            emitter.emit('push_signature_requested', { message })
 
-      if (pushClient && key) {
-        try {
-          await pushClient.enableSync({
-            account: key,
-            onSign: async (message) => {
-              emitter.emit('push_signature_requested', { message })
-
-              return new Promise((resolve) => {
-                const intervalId = setInterval(() => {
-                  const signatureForAccountExists = pushClient?.syncClient.signatures.getAll({
-                    account: key,
-                  })?.length
-                  if (pushClient && signatureForAccountExists) {
-                    const { signature } = pushClient.syncClient.signatures.get(key)
-                    emitter.emit('push_signature_request_cancelled', {})
-                    clearInterval(intervalId)
-                    resolve(signature)
-                  }
-                }, 1000)
-
-                emitter.on('push_signature_delivered', ({ signature }: { signature: string }) => {
+            return new Promise((resolve) => {
+              const intervalId = setInterval(() => {
+                const signatureForAccountExists = pushClient?.syncClient.signatures.getAll({
+                  account: key,
+                })?.length
+                if (pushClient && signatureForAccountExists) {
+                  const { signature } = pushClient.syncClient.signatures.get(key)
+                  emitter.emit('push_signature_request_cancelled', {})
+                  clearInterval(intervalId)
                   resolve(signature)
-                })
+                }
+              }, 1000)
+
+              emitter.on('push_signature_delivered', ({ signature }: { signature: string }) => {
+                resolve(signature)
               })
-            },
-          })
-          setRegisterMessage(null)
-          refreshPushState()
-        } catch (error) {
-          setRegisterMessage(null)
-        }
+            })
+          },
+        })
+        setRegisterMessage(null)
+        refreshPushState()
+      } catch (error) {
+        setRegisterMessage(null)
       }
     },
     [pushClient, refreshPushState, setRegisterMessage, emitter],
   )
 
   useEffect(() => {
-    if (userPublicKey) {
-      handleRegistration(userPublicKey)
-    } else {
-      setRegisterMessage(null)
-    }
+    if (userPublicKey) handleRegistration(userPublicKey)
+    else setRegisterMessage(null)
   }, [handleRegistration, setRegisterMessage, userPublicKey])
 
   useEffect(() => {
-    if (!pushClient) {
-      return
-    }
+    if (!pushClient) return
 
     const handlePushSubscription = async () => {
       await sendPushNotification(BuilderNames.OnBoardNotification, [])
@@ -265,12 +228,8 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       refreshPushState()
       setUnread((prev) => prev + 1)
     }
-    emitter.on('push_signature_requested', ({ message }) => {
-      setRegisterMessage(message)
-    })
 
     emitter.on('push_signature_request_cancelled', () => setRegisterMessage(null))
-
     pushClient.on('push_subscription', handlePushSubscription)
     pushClient.on('push_response', handlePushSubscription)
     pushClient.on('push_delete', handlePushClientEvent)
@@ -278,22 +237,22 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
     pushClient.on('push_message', handleNotificationEvent)
     pushClient.syncClient.on('sync_update', handlePushClientEvent)
     pushClient.subscriptions.core.on('sync_store_update', handlePushClientEvent)
-
+    emitter.on('push_signature_requested', ({ message }) => {
+      setRegisterMessage(message)
+    })
     // eslint-disable-next-line consistent-return
     return () => {
       pushClient.off('push_subscription', handlePushSubscription)
       pushClient.off('push_response', handlePushSubscription)
-
       pushClient.off('push_delete', handlePushClientEvent)
       pushClient.off('push_update', handlePushClientEvent)
       pushClient.off('push_message', handleNotificationEvent)
       pushClient.syncClient.off('sync_update', handlePushClientEvent)
       pushClient.subscriptions.core.off('sync_store_update', handlePushClientEvent)
+      emitter.off('push_signature_request_cancelled', () => setRegisterMessage(null))
       emitter.off('push_signature_requested', ({ message }) => {
         setRegisterMessage(message)
       })
-
-      emitter.off('push_signature_request_cancelled', () => setRegisterMessage(null))
     }
   }, [pushClient, refreshPushState, emitter, sendPushNotification])
 
@@ -306,8 +265,6 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
         refreshPushState,
         getMessageHistory,
         subscribe,
-        reject,
-        update,
         deleteSubscription,
         deletePushMessage,
         setUnread,

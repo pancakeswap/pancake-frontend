@@ -2,99 +2,30 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { CommitButton } from 'components/CommitButton'
-import { ConnectorNames } from 'config/wallet'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useWalletConnectPushClient } from 'contexts/PushClientContext'
-import useAuth from 'hooks/useAuth'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback } from 'react'
-import { useAccount, useChainId, useSignMessage } from 'wagmi'
-import { DEFAULT_APP_METADATA } from '../constants'
+import { useSignMessage } from 'wagmi'
+import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
+import { DEFAULT_APP_METADATA, Events } from '../constants'
 import { SubscriptionState } from '../types'
 
-function OnboardingButton({
-  setSubscriptionState,
-  subscriptionState,
-}: {
+interface IOnboardingButtonProps {
+  account: string
+  onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
+  subscriptionState: SubscriptionState
+}
+
+interface IOnboardingProps {
   setSubscriptionState: Dispatch<SetStateAction<SubscriptionState>>
   subscriptionState: SubscriptionState
-}) {
+}
+
+function OnboardingButton({ account, onClick, subscriptionState }: IOnboardingButtonProps) {
   const { t } = useTranslation()
-  const { login } = useAuth()
-  const { signMessageAsync } = useSignMessage()
-  const { toastSuccess, toastError } = useToast()
-  const chainId = useChainId()
-  const { address: account } = useAccount()
-  const { pushClient, registerMessage: pushRegisterMessage, postMessage } = useWalletConnectPushClient()
-
-  const handleOnboarding = useCallback(() => {
-    setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: true }))
-    toastSuccess(`${t('Request Sent')}!`, <Text>{t('Please sign the subscription request sent to your wallet')}</Text>)
-    signMessageAsync({ message: pushRegisterMessage })
-      .then((signature) => {
-        postMessage(formatJsonRpcRequest('push_signature_delivered', { signature }))
-        setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true }))
-      })
-      .catch((error) => {
-        if (error instanceof Error) {
-          toastError(`${t('Subscription Request Error')}!`, <Text>{t(error.message)}</Text>)
-        }
-      })
-  }, [pushRegisterMessage, t, setSubscriptionState, postMessage, signMessageAsync, toastError, toastSuccess])
-
-  const handleSubscribe = useCallback(async () => {
-    if (!account) {
-      login('walletConnect' as ConnectorNames)
-      return
-    }
-    setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: true }))
-    try {
-      if (!pushClient) {
-        throw new Error('Push Client not initialized')
-      }
-      // Resolve known pairings from the Core's Pairing API.
-      const subscribed = await pushClient.subscribe({
-        account: `eip155:${chainId}:${account}`,
-        metadata: DEFAULT_APP_METADATA,
-        onSign: async (message) => {
-          const signature = await signMessageAsync({ message })
-          return signature
-        },
-      })
-      if (!subscribed) {
-        throw new Error('Subscription request failed', {
-          cause: 'Push propose failed',
-        })
-      }
-      setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true, isSubscribing: false }))
-      const alreadySynced = pushClient.syncClient.signatures.getAll({
-        account: `eip155:${chainId}:${account}`,
-      })
-      if (!alreadySynced[0].signature)
-        toastSuccess(
-          `${t('Subscription Request')}!`,
-          <Text>{t('Please sign the subscription request sent to your wallet')}</Text>,
-        )
-    } catch (error) {
-      setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: false }))
-      if (error instanceof Error) {
-        toastError(`${t('Subscription Request eError')}!`, <Text>{t(error.message)}</Text>)
-      }
-    }
-  }, [pushClient, account, toastSuccess, toastError, t, chainId, signMessageAsync, setSubscriptionState, login])
-
-  const handleAction = useCallback(
-    (e) => {
-      e.stopPropagation()
-      if (subscriptionState.isOnboarded) handleSubscribe()
-      else handleOnboarding()
-    },
-    [handleOnboarding, handleSubscribe, subscriptionState.isOnboarded],
-  )
 
   let buttonText: string = t('Enable (Subscribe in wallet)')
-  if (!account) {
-    buttonText = t('Connect Wallet')
-  }
   if (subscriptionState.isOnboarding) {
     buttonText = t('Awaiting signature response')
   }
@@ -105,13 +36,20 @@ function OnboardingButton({
     buttonText = t('Sign again in wallet')
   }
 
+  if (!account)
+    return (
+      <AutoColumn gap="md" marginTop="6px" width="100%">
+        <ConnectWalletButton height="50px" />
+      </AutoColumn>
+    )
+
   return (
     <AutoColumn gap="md" marginTop="6px" width="100%">
       <CommitButton
         variant="primary"
-        onClick={handleAction}
+        onClick={onClick}
         isLoading={subscriptionState.isSubscribing || subscriptionState.isOnboarding}
-        height="55px"
+        height="50px"
       >
         <Flex alignItems="center">
           <Text px="4px" fontWeight="bold" color="white">
@@ -124,17 +62,52 @@ function OnboardingButton({
   )
 }
 
-const SubscribedView = ({
-  setSubscriptionState,
-  subscriptionState,
-}: {
-  setSubscriptionState: Dispatch<SetStateAction<SubscriptionState>>
-  subscriptionState: SubscriptionState
-}) => {
+const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboardingProps) => {
+  const { signMessageAsync } = useSignMessage()
+  const { toastSuccess, toastError } = useToast()
+  const { formattedEip155Account, account } = useFormattedEip155Account()
+  const { registerMessage, postMessage, subscribe } = useWalletConnectPushClient()
+
+  const handleOnboarding = useCallback(() => {
+    setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: true }))
+    toastSuccess(Events.SignatureRequest.title, Events.SignatureRequest.message)
+
+    signMessageAsync({ message: registerMessage })
+      .then((signature) => {
+        postMessage(formatJsonRpcRequest('push_signature_delivered', { signature }))
+        setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true, isOnboarding: false }))
+      })
+      .catch((error: Error) => {
+        setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false, isOnboarding: false }))
+        const errormessage = error.message.includes('User rejected') ? 'User Rejected the request' : error.message
+        toastError(Events.SignatureRequestError.title, errormessage)
+      })
+  }, [registerMessage, setSubscriptionState, postMessage, signMessageAsync, toastError, toastSuccess])
+
+  const handleSubscribe = useCallback(async () => {
+    try {
+      setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: true }))
+      const subscribed = await subscribe({ account: formattedEip155Account, metadata: DEFAULT_APP_METADATA })
+      if (subscribed) setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true, isSubscribing: false }))
+      else throw new Error('Subscription request failed')
+    } catch (error: any) {
+      setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: false }))
+      toastError(Events.SubscriptionRequestError.title, Events.SubscriptionRequestError.message)
+    }
+  }, [formattedEip155Account, toastError, setSubscriptionState, subscribe])
+
+  const handleAction = useCallback(
+    (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+      e.stopPropagation()
+      if (subscriptionState.isOnboarded) handleSubscribe()
+      else handleOnboarding()
+    },
+    [handleOnboarding, handleSubscribe, subscriptionState.isOnboarded],
+  )
   return (
-    <Box padding="24px" width="50%">
-      <Box>
-        <Image src="/IMG.png" alt="#" height={185} width={300} />
+    <Box padding="24px">
+      <Box pl="24px">
+        <Image src="/IMG.png" alt="#" height={185} width={270} />
       </Box>
       <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
         <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
@@ -143,10 +116,10 @@ const SubscribedView = ({
         <Text fontSize="16px" textAlign="center" color="textSubtle">
           Get started with notifications from WalletConnect. Click the subscribe button below and accept.
         </Text>
-        <OnboardingButton subscriptionState={subscriptionState} setSubscriptionState={setSubscriptionState} />
+        <OnboardingButton subscriptionState={subscriptionState} onClick={handleAction} account={account} />
       </FlexGap>
     </Box>
   )
 }
 
-export default SubscribedView
+export default OnBoardingView
