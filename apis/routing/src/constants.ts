@@ -8,6 +8,7 @@ export const SUPPORTED_CHAINS = [
   ChainId.ZKSYNC,
   ChainId.BSC_TESTNET,
   ChainId.GOERLI,
+  ChainId.ARBITRUM_ONE,
 ] as const
 
 export type SupportedChainId = (typeof SUPPORTED_CHAINS)[number]
@@ -21,4 +22,5 @@ export const V3_SUBGRAPH_URLS: Record<SupportedChainId, string> = {
   [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest',
   [ChainId.LINEA_TESTNET]:
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
+  [ChainId.ARBITRUM_ONE]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-arbitrum/version/latest',
 }
