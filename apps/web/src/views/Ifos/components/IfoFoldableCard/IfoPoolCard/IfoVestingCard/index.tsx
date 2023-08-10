@@ -37,16 +37,12 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   const userPool = walletIfoData[poolId]
   const { vestingInformation } = publicIfoData[poolId]
 
-  const currentTimeStamp = Date.now()
-  const timeVestingEnd =
-    vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + vestingInformation.duration) * 1000
-  const isVestingOver = currentTimeStamp > timeVestingEnd
-
-  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } = useIfoVesting({
-    poolId,
-    publicIfoData,
-    walletIfoData,
-  })
+  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed, isVestingOver } =
+    useIfoVesting({
+      poolId,
+      publicIfoData,
+      walletIfoData,
+    })
 
   const amountClaimed = useMemo(
     () => (amountAlreadyClaimed.gt(0) ? getFullDisplayBalance(amountAlreadyClaimed, token.decimals, 4) : '0'),

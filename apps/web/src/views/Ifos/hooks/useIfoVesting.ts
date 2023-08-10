@@ -13,6 +13,15 @@ interface UseIfoVestingProps {
 const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingProps) => {
   const publicPool = publicIfoData[poolId]
   const userPool = walletIfoData[poolId]
+  const { vestingStartTime } = publicIfoData
+  const { vestingInformation } = publicPool
+
+  const isVestingOver = useMemo(() => {
+    const currentTimeStamp = Date.now()
+    const timeVestingEnd =
+      vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + vestingInformation?.duration) * 1000
+    return currentTimeStamp > timeVestingEnd
+  }, [vestingStartTime, vestingInformation])
 
   const vestingPercentage = useMemo(
     () => new BigNumber(publicPool.vestingInformation.percentage).times(0.01),
@@ -24,12 +33,14 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   }, [userPool, vestingPercentage])
 
   const amountReleased = useMemo(() => {
-    return new BigNumber(releasedAtSaleEnd).plus(userPool.vestingReleased).plus(userPool.vestingComputeReleasableAmount)
-  }, [userPool, releasedAtSaleEnd])
+    return isVestingOver
+      ? new BigNumber(userPool.offeringAmountInToken)
+      : new BigNumber(releasedAtSaleEnd).plus(userPool.vestingReleased).plus(userPool.vestingComputeReleasableAmount)
+  }, [isVestingOver, userPool, releasedAtSaleEnd])
 
   const amountInVesting = useMemo(() => {
-    return new BigNumber(userPool.offeringAmountInToken).minus(amountReleased)
-  }, [userPool, amountReleased])
+    return isVestingOver ? BIG_ZERO : new BigNumber(userPool.offeringAmountInToken).minus(amountReleased)
+  }, [userPool, amountReleased, isVestingOver])
 
   const amountAvailableToClaim = useMemo(() => {
     return userPool.isVestingInitialized ? userPool.vestingComputeReleasableAmount : releasedAtSaleEnd
@@ -41,6 +52,7 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   }, [releasedAtSaleEnd, userPool])
 
   return {
+    isVestingOver,
     vestingPercentage,
     releasedAtSaleEnd,
     amountReleased,

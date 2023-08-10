@@ -260,9 +260,11 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
             'Before or during the sale, you may bridge you iCAKE again if you’ve added more CAKE or extended your lock staking position.',
           )}
         </Text>
-        <Button as="a" href="#bridge-icake" mt="16px">
-          {t('Bridge iCAKE')}
-        </Button>
+        {!isStepValid && (
+          <Button as="a" href="#bridge-icake" mt="16px">
+            {t('Bridge iCAKE')}
+          </Button>
+        )}
       </CardBody>
     )
 
