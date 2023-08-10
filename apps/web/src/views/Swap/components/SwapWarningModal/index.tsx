@@ -38,11 +38,11 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
   return (
     <StyledModalContainer minWidth="280px">
       <ModalHeader background={theme.colors.gradientCardHeader}>
-        <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING.symbol })}</Heading>
+        <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING?.symbol })}</Heading>
       </ModalHeader>
       <ModalBody p="24px">
         <MessageContainer variant="warning" mb="24px">
-          <Box>{SWAP_WARNING.component}</Box>
+          <Box>{SWAP_WARNING?.component}</Box>
         </MessageContainer>
         <Acknowledgement handleContinueClick={onDismiss} />
       </ModalBody>
