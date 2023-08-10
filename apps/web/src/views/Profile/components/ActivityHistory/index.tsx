@@ -7,9 +7,9 @@ import { PaginationButton, Card, Flex, Table, Text, Th, useMatchBreakpoints } fr
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
 import TableLoader from 'components/TableLoader'
-import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
+import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
 import { sortUserActivity } from '../../utils/sortUserActivity'
 import NoNftsImage from '../../../Nft/market/components/Activity/NoNftsImage'
 import ActivityRow from '../../../Nft/market/components/Activity/ActivityRow'
@@ -29,7 +29,7 @@ const ActivityHistory = () => {
   const [nftMetadata, setNftMetadata] = useState<NftToken[]>([])
   const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const bnbBusdPrice = useBNBBusdPrice()
+  const bnbBusdPrice = useBNBPriceAsBN()
   const { isXs, isSm } = useMatchBreakpoints()
 
   useEffect(() => {

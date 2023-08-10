@@ -1,9 +1,10 @@
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
-import useBUSDPrice, { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import useBUSDPrice from 'hooks/useBUSDPrice'
 import { bscTokens } from '@pancakeswap/tokens'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
 
 export const localiseTradingVolume = (value: number, decimals = 0) => {
   return value.toLocaleString('en-US', { maximumFractionDigits: decimals })
@@ -12,10 +13,10 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
 export const useCompetitionCakeRewards = (userCakeReward: string | number) => {
   const cakeAsBigNumber = new BigNumber(userCakeReward as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const cakePriceBusd = useCakeBusdPrice()
+  const cakePriceBusd = useCakePriceAsBN()
   return {
     cakeReward: cakeBalance,
-    dollarValueOfCakeReward: multiplyPriceByAmount(cakePriceBusd, cakeBalance),
+    dollarValueOfCakeReward: cakePriceBusd.multipliedBy(cakeBalance).toNumber(),
   }
 }
 
@@ -41,11 +42,11 @@ export const useFanTokenCompetitionRewards = ({
   const lazioBalance = getBalanceNumber(lazioAsBigNumber, 8)
   const portoBalance = getBalanceNumber(portoAsBigNumber, 8)
   const santosBalance = getBalanceNumber(santosAsBigNumber, 8)
-  const cakePriceBusd = useCakeBusdPrice()
+  const cakePriceBusd = useCakePriceAsBN()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && lazioPriceBUSD && portoPriceBUSD && santosPriceBUSD
-      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
+      ? cakePriceBusd.multipliedBy(cakeBalance).toNumber() +
         multiplyPriceByAmount(lazioPriceBUSD, lazioBalance, 8) +
         multiplyPriceByAmount(portoPriceBUSD, portoBalance, 8) +
         multiplyPriceByAmount(santosPriceBUSD, santosBalance, 8)
@@ -72,11 +73,11 @@ export const useMoboxCompetitionRewards = ({
   const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const moboxBalance = getBalanceNumber(moboxAsBigNumber)
-  const cakePriceBusd = useCakeBusdPrice()
+  const cakePriceBusd = useCakePriceAsBN()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && moboxPriceBUSD
-      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) + multiplyPriceByAmount(moboxPriceBUSD, moboxBalance, 8)
+      ? cakePriceBusd.multipliedBy(cakeBalance).toNumber() + multiplyPriceByAmount(moboxPriceBUSD, moboxBalance, 8)
       : null
 
   return {
@@ -98,11 +99,11 @@ export const useModCompetitionRewards = ({
   const darAsBigNumber = new BigNumber(userDarRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const darBalance = getBalanceNumber(darAsBigNumber, bscTokens.dar.decimals)
-  const cakePriceBusd = useCakeBusdPrice()
+  const cakePriceBusd = useCakePriceAsBN()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && darPriceBUSD
-      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
+      ? cakePriceBusd.multipliedBy(cakeBalance).toNumber() +
         multiplyPriceByAmount(darPriceBUSD, darBalance, bscTokens.dar.decimals)
       : null
 

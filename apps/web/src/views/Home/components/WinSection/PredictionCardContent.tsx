@@ -5,10 +5,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatLocalisedCompactNumber } from '@pancakeswap/utils/formatBalance'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { getTotalWon } from 'state/predictions/helpers'
-import { useBNBBusdPrice, useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import { multiplyPriceByAmount } from 'utils/prices'
+import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
+import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
 
 const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
@@ -30,15 +30,15 @@ const PredictionCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const bnbBusdPrice = useBNBBusdPrice({ forceMainnet: true })
-  const cakePriceBusd = useCakeBusdPrice({ forceMainnet: true })
+  const bnbBusdPrice = useBNBPriceAsBN()
+  const cakePriceAsBN = useCakePriceAsBN()
 
   const { data } = useSWR(loadData ? ['prediction', 'tokenWon'] : null, getTotalWon, {
     refreshInterval: SLOW_INTERVAL,
   })
 
-  const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, data?.totalWonBNB || 0)
-  const cakeWonInUsd = multiplyPriceByAmount(cakePriceBusd, data?.totalWonCAKE || 0)
+  const bnbWonInUsd = bnbBusdPrice.multipliedBy(data?.totalWonBNB || 0).toNumber()
+  const cakeWonInUsd = cakePriceAsBN.multipliedBy(data?.totalWonCAKE || 0).toNumber()
 
   const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd + cakeWonInUsd)
   const bnbWonText = t('$%wonInUsd% in BNB + CAKE won so far', { wonInUsd: localisedBnbUsdString })

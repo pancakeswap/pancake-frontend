@@ -1,11 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip, Skeleton } from '@pancakeswap/uikit'
-import { multiplyPriceByAmount } from 'utils/prices'
 import { escapeRegExp } from 'utils'
-import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
 import { useGetCollection } from 'state/nftMarket/hooks'
+import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
 import { Divider } from '../shared/styles'
 import { GreyedOutContainer, BnbAmountCell, RightAlignedInput, FeeAmountCell } from './styles'
 
@@ -43,9 +42,9 @@ const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
   const { creatorFee = '', tradingFee = '' } = useGetCollection(nftToSell.collectionAddress) || {}
   const creatorFeeAsNumber = parseFloat(creatorFee)
   const tradingFeeAsNumber = parseFloat(tradingFee)
-  const bnbPrice = useBNBBusdPrice()
+  const bnbPrice = useBNBPriceAsBN()
   const priceAsFloat = parseFloat(price)
-  const priceInUsd = multiplyPriceByAmount(bnbPrice, priceAsFloat)
+  const priceInUsd = bnbPrice.multipliedBy(priceAsFloat).toNumber()
 
   const priceIsOutOfRange = priceAsFloat > MAX_PRICE || priceAsFloat < MIN_PRICE
 

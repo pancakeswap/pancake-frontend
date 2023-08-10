@@ -9,20 +9,22 @@ import useSWR from 'swr'
 import { FAST_INTERVAL } from 'config/constants'
 
 // for migration to bignumber.js to avoid breaking changes
-export const useCakePriceAsBN = () => {
-  const { data } = useSWR(['cakePriceAsBN'], async () => new BigNumber(await getCakePriceFromOracle()), {
+export const useBNBPriceAsBN = () => {
+  const { data } = useSWR(['bnbPriceAsBN'], async () => new BigNumber(await getBNBPriceFromOracle()), {
     dedupingInterval: FAST_INTERVAL,
     refreshInterval: FAST_INTERVAL,
   })
   return data ?? BIG_ZERO
 }
 
-export const getCakePriceFromOracle = async () => {
+export const getBNBPriceFromOracle = async () => {
   const data = await publicClient({ chainId: ChainId.BSC }).readContract({
     abi: chainlinkOracleABI,
-    address: contracts.chainlinkOracleCAKE[ChainId.BSC],
+    address: contracts.chainlinkOracleBNB[ChainId.BSC],
     functionName: 'latestAnswer',
   })
+
+  console.info(data)
 
   return formatUnits(data, 8)
 }
