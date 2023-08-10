@@ -88,7 +88,7 @@ const Notifications = () => {
   }, [registerMessage, setSubscriptionState, formattedEip155Account])
 
   useEffect(() => {
-    if (Object.values(activeSubscriptions).some((sub) => sub.account === formattedEip155Account)) {
+    if (activeSubscriptions.some((sub) => sub.account === formattedEip155Account)) {
       setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true }))
     } else setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: false }))
   }, [formattedEip155Account, activeSubscriptions])

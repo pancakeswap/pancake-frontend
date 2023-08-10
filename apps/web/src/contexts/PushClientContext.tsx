@@ -68,6 +68,28 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
     return `An initialized PushClient is required for method: [${method}].`
   }
 
+  const findCurrentSubscription = (
+    account: string,
+    subscriptions: Record<string, PushClientTypes.PushSubscription>,
+  ) => {
+    return Object.values(subscriptions).find((sub: PushClientTypes.PushSubscription) => sub.account === account)
+  }
+
+  const handleMessage = async (request: JsonRpcRequest<unknown>) => {
+    switch (request.method) {
+      case 'push_signature_delivered':
+        emitter.emit('push_signature_delivered', request.params)
+        break
+      default:
+        throw new Error(`Method ${request.method} unsupported by provider`)
+    }
+  }
+
+  const postMessage = (messageData: JsonRpcRequest<unknown>) => {
+    emitter.emit(messageData.id.toString(), messageData)
+    handleMessage(messageData)
+  }
+
   const subscribe = useCallback(
     async (params: { metadata: PushClientTypes.Metadata; account: string }) => {
       if (!pushClient) {
@@ -133,37 +155,14 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
   const refreshPushState = useCallback(() => {
     if (!pushClient) return
 
-    getActiveSubscriptions({ account: userPublicKey }).then((subscriptions) => {
-      setActiveSubscriptions(Object.values(subscriptions))
-      const _currentSubscription = Object.values(subscriptions).find((sub) => sub.account === userPublicKey)
-      if (_currentSubscription) setCurrentSubscribtion(_currentSubscription)
-      const p = pushClient.core.pairing.getPairings()
-      console.log(p)
-    })
+    getActiveSubscriptions({ account: userPublicKey }).then(
+      (subscriptions: Record<string, PushClientTypes.PushSubscription>) => {
+        setActiveSubscriptions(Object.values(subscriptions))
+        const _currentSubscription = findCurrentSubscription(userPublicKey, subscriptions)
+        if (_currentSubscription) setCurrentSubscribtion(_currentSubscription)
+      },
+    )
   }, [pushClient, getActiveSubscriptions, userPublicKey])
-
-  useEffect(() => {
-    if (!pushClient) createClient()
-  }, [pushClient, createClient])
-
-  useEffect(() => {
-    refreshPushState()
-  }, [refreshPushState])
-
-  const handleMessage = async (request: JsonRpcRequest<unknown>) => {
-    switch (request.method) {
-      case 'push_signature_delivered':
-        emitter.emit('push_signature_delivered', request.params)
-        break
-      default:
-        throw new Error(`Method ${request.method} unsupported by provider`)
-    }
-  }
-
-  const postMessage = (messageData: JsonRpcRequest<unknown>) => {
-    emitter.emit(messageData.id.toString(), messageData)
-    handleMessage(messageData)
-  }
 
   const handleRegistration = useCallback(
     async (key: string) => {
@@ -208,6 +207,14 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
     },
     [pushClient, refreshPushState, setRegisterMessage, emitter],
   )
+
+  useEffect(() => {
+    if (!pushClient) createClient()
+  }, [pushClient, createClient])
+
+  useEffect(() => {
+    refreshPushState()
+  }, [refreshPushState])
 
   useEffect(() => {
     if (userPublicKey) handleRegistration(userPublicKey)

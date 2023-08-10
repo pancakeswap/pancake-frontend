@@ -96,3 +96,5 @@ export const Events: { [event in keyof typeof ResponseEvents]: EventInformation 
     message: 'Unable to unsubscribe.',
   },
 }
+
+export const supportedNotifyTxTypes = ['add-liquidity', 'add-liquidity-v3', 'increase-liquidity']

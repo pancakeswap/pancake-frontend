@@ -83,7 +83,7 @@ const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboarding
         const errormessage = error.message.includes('User rejected') ? t('User Rejected the request') : error.message
         toastError(Events.SignatureRequestError.title, errormessage)
       })
-  }, [registerMessage, setSubscriptionState, postMessage, signMessageAsync, toastError, toastSuccess])
+  }, [registerMessage, setSubscriptionState, postMessage, signMessageAsync, toastError, toastSuccess, t])
 
   const handleSubscribe = useCallback(async () => {
     try {

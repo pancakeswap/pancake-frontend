@@ -25,7 +25,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${DEFAULT_CAST_SIGN_KEY}`,
+          Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
         },
         body: JSON.stringify(notificationPayload),
       })

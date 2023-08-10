@@ -142,7 +142,6 @@ export const ContentsContainer = styled(motion.div)`
   border: 1px solid #ccc;
   border-radius: 18px;
   overflow: hidden;
-  background: #372f46;
   // min-height: 110px;
 `
 
@@ -159,7 +158,7 @@ export const ExpandButton = styled(Text)`
   }
 `
 
-export const StyledLink = styled(Link)<{ visible: boolean }>`
+export const StyledLink = styled(Link)<{ hidden: boolean }>`
   max-height: 35px;
   height: 35px;
   width: 100%;
@@ -167,7 +166,7 @@ export const StyledLink = styled(Link)<{ visible: boolean }>`
   border-radius: 12px;
   color: ${({ theme }) => `${theme.colors.primary}`};
   font-weight: bold;
-  display: ${({ visible }) => `${visible ? 'flex' : 'none'}`};
+  display: ${({ hidden }) => `${hidden ? 'flex' : 'none'}`};
   margin-top: 12px;
   margin-bottom: 6px;
   justify-content: center;

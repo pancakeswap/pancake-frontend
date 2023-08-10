@@ -48,11 +48,6 @@ const SettingsModal = () => {
     }
   }, [setNotifications, getMessageHistory, currentSubscription.topic])
 
-  useEffect(() => {
-    if (!currentSubscription.topic) return
-    updateMessages()
-  }, [updateMessages, currentSubscription.topic, activeSubscriptions])
-
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
     setNotificationType(option.value)
   }, [])
@@ -78,9 +73,6 @@ const SettingsModal = () => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const sortFarms = (notifications: any[]): any[] => {
       switch (notificationType) {
-        case 'All':
-          // @ts-ignore
-          return notifications.filter(() => true)
         case SubsctiptionType.Liquidity:
           return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
             const extractedType = notification.message.type
@@ -112,6 +104,11 @@ const SettingsModal = () => {
     }
     return sortFarms(notifications)
   }, [notifications, notificationType])
+
+  useEffect(() => {
+    if (!currentSubscription.topic) return
+    updateMessages()
+  }, [updateMessages, currentSubscription.topic, activeSubscriptions])
 
   return (
     <Box paddingBottom="24px">

@@ -3,6 +3,7 @@ import { AnimatePresence, Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, 
 import { PushClientTypes } from '@walletconnect/push-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTheme } from 'styled-components'
 import {
   ContentsContainer,
   Description,
@@ -19,7 +20,7 @@ interface INotificationprops {
   id: number
   date: number
   removeNotification: (id: number) => Promise<void>
-  url?: string
+  url?: string | undefined
 }
 
 interface INotificationContainerProps {
@@ -36,6 +37,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLElement>(null)
+  const theme = useTheme()
   const { t } = useTranslation()
 
   const deleteNotification = useCallback(
@@ -75,7 +77,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
         <ContentsContainer
           transition={{ duration: 0.3 }}
           style={{
-            backgroundColor: isHovered ? 'transparent' : '#372F46',
+            backgroundColor: isHovered ? 'transparent' : theme.isDark ? '#372F46' : 'white',
             transition: 'background-color 0.15s ease',
           }}
           onMouseEnter={handleHover}
@@ -98,7 +100,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
               animate={{ maxHeight: show ? elementHeight : 32 }}
             >
               {description}
-              <StyledLink visible={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
+              <StyledLink hidden={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
                 {t('View Link')}
               </StyledLink>
             </Description>
