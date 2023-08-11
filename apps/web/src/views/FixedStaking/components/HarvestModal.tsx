@@ -37,7 +37,9 @@ export function HarvestModal({
   handleSubmission,
   pendingTx,
   onBack,
+  poolEndDay,
 }: {
+  poolEndDay: number
   onBack: () => void
   stakingToken: Token
   pools: FixedStakingPool[]
@@ -129,7 +131,7 @@ export function HarvestModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('Fixed Staking Ends On')}
                 </Text>
-                <StakedLimitEndOn lockPeriod={lockPeriod} />
+                <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
               </Flex>
               <Flex alignItems="baseline" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>

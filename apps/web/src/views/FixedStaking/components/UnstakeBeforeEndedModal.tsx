@@ -32,8 +32,10 @@ export function UnstakeBeforeEnededModal({
   withdrawalFee,
   poolIndex,
   boostAPR,
+  poolEndDay,
   children,
 }: {
+  poolEndDay: number
   boostAPR: Percent
   token: Token
   lockPeriod: number
@@ -117,10 +119,12 @@ export function UnstakeBeforeEnededModal({
           </PreTitle>
 
           <FixedStakingOverview
+            isUnstakeView
             lockPeriod={lockPeriod}
             stakeAmount={amountDeposit}
             lockAPR={lockAPR}
             boostAPR={boostAPR}
+            poolEndDay={poolEndDay}
           />
 
           <Message variant="warning" my="16px">

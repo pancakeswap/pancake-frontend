@@ -31,6 +31,7 @@ interface BodyParam {
   boostAPR: Percent
   lockAPR: Percent
   formattedUsdProjectedReturnAmount: number
+  poolEndDay: number
 }
 
 export function StakingModalTemplate({
@@ -182,6 +183,7 @@ export function StakingModalTemplate({
       boostAPR,
       lockAPR,
       formattedUsdProjectedReturnAmount,
+      poolEndDay: selectedPool?.endDay || 0,
     }),
     [
       boostAPR,
@@ -190,6 +192,7 @@ export function StakingModalTemplate({
       lockAPR,
       lockPeriod,
       projectedReturnAmount,
+      selectedPool?.endDay,
       stakeCurrencyAmount,
     ],
   )

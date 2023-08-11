@@ -15,11 +15,15 @@ export default function FixedStakingOverview({
   lockAPR,
   boostAPR,
   lockPeriod,
+  poolEndDay,
+  isUnstakeView,
 }: {
+  isUnstakeView?: boolean
   stakeAmount: CurrencyAmount<Token>
   lockAPR?: Percent
   boostAPR?: Percent
   lockPeriod?: number
+  poolEndDay: number
 }) {
   const { t } = useTranslation()
 
@@ -35,7 +39,7 @@ export default function FixedStakingOverview({
 
   return (
     <LightGreyCard>
-      {stakeAmount !== null || stakeAmount !== undefined ? (
+      {!isUnstakeView ? (
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Stake Amount')}
@@ -43,7 +47,7 @@ export default function FixedStakingOverview({
           <Text bold>{stakeAmount.toSignificant(2)}</Text>
         </Flex>
       ) : null}
-      {lockPeriod ? (
+      {!isUnstakeView && lockPeriod ? (
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Duration')}
@@ -71,14 +75,14 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Stake Period Ends')}
         </Text>
-        <StakedLimitEndOn lockPeriod={lockPeriod} />
+        <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
       </Flex>
       <Flex alignItems="baseline" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Projected Return')}
         </Text>
         <Box style={{ textAlign: 'end' }}>
-          <AmountWithUSDSub amount={projectedReturnAmount} />
+          <AmountWithUSDSub shouldStrike={isUnstakeView} amount={projectedReturnAmount} />
         </Box>
       </Flex>
     </LightGreyCard>

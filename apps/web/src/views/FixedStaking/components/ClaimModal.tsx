@@ -24,7 +24,9 @@ export function ClaimModal({
   poolIndex,
   pool,
   boostAPR,
+  poolEndDay,
 }: {
+  poolEndDay: number
   token: Token
   lockPeriod: number
   unlockTime: number
@@ -55,6 +57,7 @@ export function ClaimModal({
     <>
       {children(claimModal.onOpen)}
       <HarvestModal
+        poolEndDay={poolEndDay}
         onBack={claimModal.onOpen}
         handleSubmission={handleSubmission}
         pendingTx={pendingTx}

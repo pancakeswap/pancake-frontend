@@ -48,6 +48,8 @@ export function StakedPositionSection({
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
   })
 
+  const poolEndDay = pool.pools[poolIndex].endDay
+
   const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
 
   return (
@@ -81,6 +83,7 @@ export function StakedPositionSection({
         </Box>
         {shouldUnlock ? (
           <ClaimModal
+            poolEndDay={poolEndDay}
             stakedPeriods={stakedPeriods}
             pool={pool}
             lockAPR={lockAPR}
@@ -100,6 +103,7 @@ export function StakedPositionSection({
         ) : (
           <Flex>
             <UnstakeBeforeEnededModal
+              poolEndDay={poolEndDay}
               token={token}
               lockPeriod={lockPeriod}
               lockAPR={lockAPR}

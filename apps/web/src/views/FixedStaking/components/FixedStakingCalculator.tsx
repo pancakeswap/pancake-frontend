@@ -59,6 +59,7 @@ export function FixedStakingCalculator({
             lockPeriod,
             boostAPR,
             lockAPR,
+            poolEndDay,
           }) => (
             <>
               <PreTitle textTransform="uppercase" bold mb="8px">
@@ -97,6 +98,7 @@ export function FixedStakingCalculator({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
+                  poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
