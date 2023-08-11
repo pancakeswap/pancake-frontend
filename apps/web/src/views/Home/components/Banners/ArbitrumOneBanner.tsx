@@ -134,10 +134,11 @@ const ArbitrumOneBanner = () => {
               bold
               fontSize={isMobile ? '12px' : '16px'}
               mr="4px"
+              color="white"
             >
               {t('Get Started')}
             </Text>
-            <OpenNewIcon />
+            <OpenNewIcon color="white" />
           </Link>
         </S.LeftWrapper>
         <RightWrapper>
