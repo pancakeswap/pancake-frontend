@@ -18,13 +18,12 @@ import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { CurrencyLogo } from 'components/Logo'
-import { formatTime } from 'utils/formatTime'
-import { add } from 'date-fns'
 
 import { FixedStakingPool, UnstakeType } from '../type'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { StakedLimitEndOn } from './StakedLimitEndOn'
 
 export function HarvestModal({
   stakingToken,
@@ -130,7 +129,7 @@ export function HarvestModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('Fixed Staking Ends On')}
                 </Text>
-                <Text bold>{formatTime(add(new Date(), { days: lockPeriod }))}</Text>
+                <StakedLimitEndOn lockPeriod={lockPeriod} />
               </Flex>
               <Flex alignItems="baseline" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
