@@ -30,7 +30,7 @@ export const V3_SUBGRAPH_CLIENTS = {
     },
   ),
   [ChainId.POLYGON_ZKEVM]: new GraphQLClient(
-    'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/v0.0.0',
+    'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest',
     {
       fetch,
     },
@@ -301,7 +301,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
       },
     })
   } catch (e) {
-    console.error(e)
+    console.error('fetching error falling back to kv cache if any', e)
 
     if (kvCache) {
       return json(
