@@ -1,9 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Balance, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box } from '@pancakeswap/uikit'
 
 import { LightGreyCard } from 'components/Card'
 
-import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 
 import { formatTime } from 'utils/formatTime'
@@ -43,7 +42,7 @@ export default function FixedStakingOverview({
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Stake Amount')}
           </Text>
-          <Balance bold fontSize="16px" decimals={2} value={toNumber(stakeAmount.toSignificant(6))} />
+          <Text bold>{stakeAmount.toSignificant(2)}</Text>
         </Flex>
       ) : null}
       {lockPeriod ? (

@@ -57,11 +57,12 @@ export function UnstakeEndedModal({
             minHeight: '48px',
             marginBottom: '8px',
           }}
-          onClick={() => handleSubmission(UnstakeType.WITHDRAW)}
+          onClick={() => handleSubmission(UnstakeType.WITHDRAW).then(() => unstakeModal.onDismiss())}
         >
           {loading ? t('Unstaking') : t('Unstake')}
         </Button>
         <Button
+          disabled={loading}
           variant="secondary"
           onClick={() => {
             unstakeModal.onDismiss()

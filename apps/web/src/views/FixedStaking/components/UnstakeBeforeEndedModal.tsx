@@ -134,7 +134,9 @@ export function UnstakeBeforeEnededModal({
             style={{
               minHeight: '48px',
             }}
-            onClick={() => handleSubmission(UnstakeType.WITHDRAW)}
+            onClick={() => {
+              handleSubmission(UnstakeType.WITHDRAW).then(() => unstakeModal?.onDismiss())
+            }}
           >
             {loading ? t('Unstaking') : t('Unstake')}
           </Button>

@@ -1,17 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Button,
-  useModalV2,
-  Modal,
-  Flex,
-  Text,
-  BalanceInput,
-  Slider,
-  Box,
-  PreTitle,
-  useToast,
-  Heading,
-} from '@pancakeswap/uikit'
+import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Heading } from '@pancakeswap/uikit'
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
@@ -53,6 +41,7 @@ export function StakingModalTemplate({
   body,
   head,
   hideStakeButton,
+  onSubmissionComplete,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
@@ -60,10 +49,10 @@ export function StakingModalTemplate({
   stakedPeriods: number[]
   head?: () => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
+  onSubmissionComplete?: () => void
   hideStakeButton?: boolean
 }) {
   const { t } = useTranslation()
-  const stakeModal = useModalV2()
   const [stakeAmount, setStakeAmount] = useState('')
 
   const [lockPeriod, setLockPeriod] = useState(
@@ -85,11 +74,26 @@ export function StakingModalTemplate({
 
   const stakeCurrencyAmount = CurrencyAmount.fromRawAmount(stakingToken, rawAmount.gt(0) ? rawAmount.toString() : '0')
 
+  const maxStakeAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.maxDeposit : '0')
+  const minStakeAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.minDeposit : '0')
+  const maxStakePoolAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.maxPoolAmount : '0')
+
+  let error = null
+
+  if (stakeCurrencyAmount.greaterThan(maxStakeAmount)) {
+    error = t('Maximum stake amount exceeded')
+  } else if (stakeCurrencyAmount.lessThan(minStakeAmount)) {
+    error = t('Minimum stake amount required')
+  } else if (stakeCurrencyAmount.greaterThan(maxStakePoolAmount)) {
+    error = t('Maximum pool stake amount exceeded')
+  }
+
   const [approval, approveCallback] = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
 
   const handleSubmission = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       const methodArgs = [selectedPool?.poolIndex, rawAmount.toString()]
+
       return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs)
     })
 
@@ -100,15 +104,16 @@ export function StakingModalTemplate({
           {t('Your funds have been staked in the pool')}
         </ToastDescriptionWithTx>,
       )
-      stakeModal.onDismiss()
     }
+
+    if (onSubmissionComplete) onSubmissionComplete()
   }, [
     callWithGasPrice,
     fetchWithCatchTxError,
     fixedStakingContract,
+    onSubmissionComplete,
     rawAmount,
     selectedPool?.poolIndex,
-    stakeModal,
     t,
     toastSuccess,
   ])
@@ -144,8 +149,6 @@ export function StakingModalTemplate({
     },
     [stakingToken.decimals, stakingTokenBalance],
   )
-
-  console.log('stakedPeriods:', stakedPeriods)
 
   const isStaked = !!stakedPeriods.find((p) => p === lockPeriod)
 
@@ -258,9 +261,18 @@ export function StakingModalTemplate({
         <>
           <DisclaimerCheckBox />
 
-          {!rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
+          {error ? (
             <Button
-              disabled={!rawAmount.gt(0) || pendingTx}
+              disabled
+              style={{
+                minHeight: '48px',
+              }}
+            >
+              {error}
+            </Button>
+          ) : !rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
+            <Button
+              disabled={!rawAmount.gt(0) || pendingTx || error}
               style={{
                 minHeight: '48px',
               }}

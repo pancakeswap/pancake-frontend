@@ -46,6 +46,7 @@ export function FixedRestakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          onSubmissionComplete={() => stakeModal.onDismiss()}
           stakingToken={stakingToken}
           pools={pools}
           initialLockPeriod={initialLockPeriod}
