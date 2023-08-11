@@ -1,6 +1,7 @@
 import { fetchAPI } from 'utils/api'
 import { ResponseArticleType, ResponseArticleDataType, ResponseCategoriesType, Categories } from 'types'
 import { transformArticle, ArticleType, ArticleDataType } from 'utils/transformArticle'
+import { filterTagArray } from 'utils/filterTagArray'
 
 interface GetArticleProps {
   url: string
@@ -57,7 +58,7 @@ export const getCategories = async (): Promise<Categories[]> => {
       fields: 'id,name',
       filters: {
         name: {
-          $not: 'News',
+          $notIn: filterTagArray,
         },
       },
     })

@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.2.2
+
+### Patch Changes
+
+- e0a681bc6: Usd native USDC in Arbitrum
+  - @pancakeswap/token-lists@0.0.8
+
 ## 0.2.1
 
 ### Patch Changes

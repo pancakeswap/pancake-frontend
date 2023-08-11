@@ -63,6 +63,10 @@ import zkSyncBgMobile from './zkSyncBgMobile.png'
 import zkSyncBg from './zkSyncBg.png'
 import zkSyncBunny from './zkSyncBunny.png'
 import eraLogo from './eraLogo.png'
+import arbBg from './arbBg.png'
+import arbBgMobile from './arbBgMobile.png'
+import arbBunny from './arbBunny.png'
+import arbLogo from './arbLogo.png'
 
 export {
   lotteryImage,
@@ -129,4 +133,8 @@ export {
   zkSyncBg,
   zkSyncBunny,
   eraLogo,
+  arbBg,
+  arbBgMobile,
+  arbBunny,
+  arbLogo,
 }

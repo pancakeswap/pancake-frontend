@@ -98,6 +98,7 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
       })
 
       return {
+        chainId,
         poolLength: Number(poolLength),
         farmsWithPrice,
         cakePerSecond,

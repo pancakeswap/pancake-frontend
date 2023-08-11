@@ -1,5 +1,11 @@
 # @pancakeswap/awgmi
 
+## 0.1.8
+
+### Patch Changes
+
+- @pancakeswap/utils@3.0.2
+
 ## 0.1.7
 
 ### Patch Changes

@@ -242,11 +242,11 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
-    if (txHash) {
+    if (txHash && tokenId) {
       onFieldAInput('')
-      router.push('/liquidity')
+      router.push(`/liquidity/${tokenId}`)
     }
-  }, [onFieldAInput, router, txHash])
+  }, [onFieldAInput, router, txHash, tokenId])
 
   const pendingText = `Supplying ${
     !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
@@ -338,7 +338,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                   maxAmount={maxAmounts[Field.CURRENCY_A]}
                   onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
                   onPercentInput={(percent) =>
-                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                    onFieldAInput(maxAmounts?.[Field.CURRENCY_A]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
                   }
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onFieldAInput}
@@ -357,7 +357,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                   maxAmount={maxAmounts[Field.CURRENCY_B]}
                   onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
                   onPercentInput={(percent) =>
-                    onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                    onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100))?.toExact() ?? '')
                   }
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}

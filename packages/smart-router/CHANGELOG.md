@@ -1,5 +1,19 @@
 # @pancakeswap/smart-router
 
+## 4.3.4
+
+### Patch Changes
+
+- 51b7b1ceb: Export transformer utils
+
+## 4.3.3
+
+### Patch Changes
+
+- Updated dependencies [e0a681bc6]
+  - @pancakeswap/tokens@0.2.2
+  - @pancakeswap/v3-sdk@3.2.2
+
 ## 4.3.2
 
 ### Patch Changes
