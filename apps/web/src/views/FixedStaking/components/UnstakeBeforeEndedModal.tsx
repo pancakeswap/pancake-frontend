@@ -128,9 +128,7 @@ export function UnstakeBeforeEnededModal({
           />
 
           <Message variant="warning" my="16px">
-            <MessageText maxWidth="200px">
-              {t('No rewards are credited for early withdrawal, and commission is required')}
-            </MessageText>
+            <MessageText>{t('No rewards are credited for early withdrawal, and commission is required')}</MessageText>
           </Message>
 
           <Button

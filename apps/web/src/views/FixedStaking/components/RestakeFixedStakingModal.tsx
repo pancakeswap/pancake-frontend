@@ -53,7 +53,7 @@ export function FixedRestakingModal({
           stakedPeriods={stakedPeriods}
           head={() => (
             <Message variant="warning" mb="24px">
-              <MessageText maxWidth="200px">
+              <MessageText>
                 {t('Adding stake to the position will restart the entire fixed staking period.')}
               </MessageText>
             </Message>

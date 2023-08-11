@@ -95,7 +95,7 @@ export function FixedStakingModal({
                   </Flex>
                   {isStaked ? (
                     <Message variant="warning" my="8px">
-                      <MessageText maxWidth="200px">
+                      <MessageText>
                         {`You already have a position in ${lockPeriod}D lock period, adding stake to the position will restart the whole locking period.`}
                       </MessageText>
                     </Message>
