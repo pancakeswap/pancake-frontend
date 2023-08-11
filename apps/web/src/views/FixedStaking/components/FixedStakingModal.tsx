@@ -79,28 +79,28 @@ export function FixedStakingModal({
                       </StyledButton>
                     ))}
                   </Flex>
+                  <Flex mt="8px">
+                    <InfoFilledIcon
+                      style={{
+                        alignSelf: 'baseline',
+                        marginTop: '4px',
+                        marginRight: '8px',
+                      }}
+                      color="textSubtle"
+                      mr="4px"
+                    />
+                    <Text fontSize="14px" color="textSubtle">
+                      {t('A withdrawal fee of 2% will be applied if amount is unstaked before locked period is up.')}
+                    </Text>
+                  </Flex>
                   {isStaked ? (
                     <Message variant="warning" my="8px">
                       <MessageText maxWidth="200px">
                         {`You already have a position in ${lockPeriod}D lock period, adding stake to the position will restart the whole locking period.`}
                       </MessageText>
                     </Message>
-                  ) : (
-                    <Flex my="8px">
-                      <InfoFilledIcon
-                        style={{
-                          alignSelf: 'baseline',
-                          marginTop: '4px',
-                          marginRight: '8px',
-                        }}
-                        color="textSubtle"
-                        mr="4px"
-                      />
-                      <Text fontSize="14px" color="textSubtle">
-                        {t('A withdrawal fee of 2% will be applied if amount is unstaked before locked period is up.')}
-                      </Text>
-                    </Flex>
-                  )}
+                  ) : null}
+
                   <Divider />
                 </>
               ) : null}
