@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.3.4
+
+### Patch Changes
+
+- 51b7b1ceb: Export transformer utils
+
 ## 4.3.3
 
 ### Patch Changes
