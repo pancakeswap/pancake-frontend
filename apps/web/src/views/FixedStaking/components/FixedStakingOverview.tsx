@@ -6,7 +6,9 @@ import { LightGreyCard } from 'components/Card'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 
-import { format, add } from 'date-fns'
+import { formatTime } from 'utils/formatTime'
+
+import { add } from 'date-fns'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { DAYS_A_YEAR } from '../constant'
@@ -72,7 +74,7 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Stake Period Ends')}
         </Text>
-        <Text bold>{format(add(new Date(), { days: lockPeriod }), 'MMM d, yyyy hh:mm')}</Text>
+        <Text bold>{formatTime(add(new Date(), { days: lockPeriod }))}</Text>
       </Flex>
       <Flex alignItems="baseline" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>

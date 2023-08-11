@@ -1,10 +1,10 @@
 import { Box, Flex, Heading, Modal, ModalV2, PreTitle, Text, Button, useModalV2 } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
-import { format } from 'date-fns'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { ReactNode } from 'react'
+import { formatTime } from 'utils/formatTime'
 
 import { UnstakeEndedModal } from './UnstakeModal'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
@@ -49,7 +49,7 @@ export function ClaimModal({
 
   const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({ poolIndex })
 
-  const unlockTimeFormat = format(unlockTime * 1_000, 'MMM d, yyyy hh:mm')
+  const unlockTimeFormat = formatTime(unlockTime * 1_000)
 
   return (
     <>
