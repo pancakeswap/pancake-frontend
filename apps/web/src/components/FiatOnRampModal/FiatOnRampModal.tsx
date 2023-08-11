@@ -282,7 +282,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   return (
     <>
-      <ModalWrapper minHeight="650px" minWidth="360px">
+      <ModalWrapper minHeight="700px" minWidth="360px">
         <ModalHeader background={theme.colors.gradientCardHeader}>
           <ModalTitle pt="6px" justifyContent="center">
             <StyledBackArrowContainer onClick={handleDismiss}>
