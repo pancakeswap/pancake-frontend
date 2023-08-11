@@ -123,8 +123,8 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
     },
     {
-      "name": "Mock BUSD Token",
-      "symbol": "BUSD",
+      "name": "Test BUSD Token",
+      "symbol": "tBUSD",
       "address": "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
       "chainId": 97,
       "decimals": 18,
@@ -304,7 +304,7 @@
       "address": "0x64544969ed7EBf5f083679233325356EbE738930",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
       "name": "DAI Token",
