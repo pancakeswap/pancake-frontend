@@ -83,7 +83,7 @@ const Notifications = () => {
 
   useEffect(() => {
     const pushSignatureRequired = Boolean(registerMessage)
-    if (pushSignatureRequired) setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false }))
+    if (pushSignatureRequired) setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true }))
     else setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true }))
   }, [registerMessage, setSubscriptionState, formattedEip155Account])
 
