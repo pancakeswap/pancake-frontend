@@ -12,6 +12,8 @@ import { BRIDGE_STATE, useBridgeICake } from '../../../hooks/useBridgeICake'
 import { BridgeICakeModal } from './BridgeICakeModal'
 
 type Props = {
+  ifoId: string
+
   ifoChainId: ChainId
   // The amount of icake on source chain
   icake?: CurrencyAmount<Currency>
@@ -19,13 +21,14 @@ type Props = {
   buttonVisible?: boolean
 } & SpaceProps
 
-export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ...props }: Props) {
+export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ifoId, ...props }: Props) {
   const { chainId } = useActiveChainId()
   const sourceChain = useIfoSourceChain()
   // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
   const { state, bridge } = useBridgeICake({
+    ifoId,
     icake,
     srcChainId: sourceChain,
     ifoChainId,

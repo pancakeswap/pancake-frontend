@@ -240,7 +240,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       publicIfoData.status !== 'finished' &&
       hasProfile
     ) {
-      message = <ICakeTips ifoChainId={ifo.chainId} ifoCredit={walletIfoData.ifoCredit?.credit} />
+      message = <ICakeTips ifoId={ifo.id} ifoChainId={ifo.chainId} ifoCredit={walletIfoData.ifoCredit?.credit} />
     }
 
     if (account && !hasProfile && !isPublicPoolBasicSale && publicIfoData.status !== 'finished') {

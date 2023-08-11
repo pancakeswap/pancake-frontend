@@ -61,12 +61,13 @@ const INITIAL_BRIDGE_STATE: BridgeState = {
 }
 
 type Params = {
+  ifoId: string
   srcChainId: ChainId
   ifoChainId: ChainId
   icake?: CurrencyAmount<Currency>
 }
 
-export function useBridgeICake({ srcChainId, ifoChainId, icake }: Params) {
+export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId }: Params) {
   const [signing, setSigning] = useState(false)
   const sourceChainName = useChainName(srcChainId)
   const ifoChainName = useChainName(ifoChainId)
@@ -74,7 +75,7 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake }: Params) {
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()
   const infoSender = useContract(INFO_SENDER, pancakeInfoSenderABI, { chainId: srcChainId })
-  const { receipt, saveTransactionHash, clearTransactionHash, txHash } = useLatestBridgeTx(srcChainId)
+  const { receipt, saveTransactionHash, clearTransactionHash, txHash } = useLatestBridgeTx(ifoId, srcChainId)
   const message = useCrossChainMessage({ txHash: receipt?.transactionHash, srcChainId })
   const { fetchWithCatchTxError } = useCatchTxError()
 
@@ -197,13 +198,13 @@ export function useBridgeSuccessTxUrl(state: BridgeState) {
   )
 }
 
-const getLastBridgeTxStorageKey = (chainId?: ChainId, account?: Address) =>
-  chainId && account && `bridge-icake-tx-hash-latest-${account}-${chainId}`
+const getLastBridgeTxStorageKey = (ifoId: string, chainId?: ChainId, account?: Address) =>
+  chainId && account && `bridge-icake-tx-hash-latest-${account}-${chainId}-${ifoId}`
 
-export function useLatestBridgeTx(chainId?: ChainId) {
+export function useLatestBridgeTx(ifoId: string, chainId?: ChainId) {
   const { address: account } = useAccount()
   const [tx, setTx] = useState<Hash | null>(null)
-  const storageKey = useMemo(() => getLastBridgeTxStorageKey(chainId, account), [chainId, account])
+  const storageKey = useMemo(() => getLastBridgeTxStorageKey(ifoId, chainId, account), [ifoId, chainId, account])
 
   const tryGetTxFromStorage = useCallback(async () => {
     if (!storageKey) {

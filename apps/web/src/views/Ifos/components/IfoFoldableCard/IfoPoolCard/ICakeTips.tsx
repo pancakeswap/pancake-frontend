@@ -10,18 +10,28 @@ import { useChainNames } from '../../../hooks/useChainNames'
 import { BridgeButton } from './BridgeButton'
 
 type Props = {
+  ifoId: string
+
   ifoChainId: ChainId
   // Ifo credit on destination chain, i.e. the chain on which ifo is hosted
   ifoCredit?: BigNumber
 }
 
-export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
+export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
   const { t } = useTranslation()
   const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit } = useICakeBridgeStatus({ ifoChainId, ifoCredit })
   const chainName = useChainNames([ifoChainId])
 
   if (hasBridged) {
-    return <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} buttonVisible={false} />
+    return (
+      <BridgeButton
+        mt="0.625rem"
+        ifoChainId={ifoChainId}
+        icake={sourceChainCredit}
+        buttonVisible={false}
+        ifoId={ifoId}
+      />
+    )
   }
 
   const tips = noICake
@@ -35,7 +45,7 @@ export function ICakeTips({ ifoChainId, ifoCredit }: Props) {
   const action = noICake ? (
     <StakeButton mt="0.625rem" />
   ) : (
-    <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} />
+    <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} ifoId={ifoId} />
   )
 
   return (
