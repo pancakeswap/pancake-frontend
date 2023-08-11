@@ -145,6 +145,8 @@ export function StakingModalTemplate({
     [stakingToken.decimals, stakingTokenBalance],
   )
 
+  console.log('stakedPeriods:', stakedPeriods)
+
   const isStaked = !!stakedPeriods.find((p) => p === lockPeriod)
 
   const aprParams = useMemo(

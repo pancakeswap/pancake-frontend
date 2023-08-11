@@ -17,7 +17,7 @@ import { StakedPosition, PoolGroup } from '../type'
 export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; stakedPositions: StakedPosition[] }) {
   const { t } = useTranslation()
 
-  const lockPeriods = useMemo(() => pool?.pools.map((p) => p.lockPeriod), [pool?.pools])
+  const stakedPeriods = useMemo(() => stakedPositions.map((sP) => sP.pool.lockPeriod), [stakedPositions])
 
   return (
     <StyledCard>
@@ -79,7 +79,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                   }
                   pools={pool.pools}
                   stakingToken={pool.token}
-                  stakedPeriods={lockPeriods}
+                  stakedPeriods={stakedPeriods}
                 >
                   {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
                 </FixedStakingModal>
