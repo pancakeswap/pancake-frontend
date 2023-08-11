@@ -31,7 +31,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
 import { getICakeWeekDisplay } from 'views/Pools/helpers'
-import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 interface TypeProps {
   ifoCurrencyAddress: Address
@@ -66,8 +66,8 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
   const credit = useIfoCredit()
   const ceiling = useIfoCeiling()
-  const cakePriceAsBN = useCakePriceAsBN()
-  const creditDollarValue = cakePriceAsBN.multipliedBy(getBalanceNumber(credit)).toNumber()
+  const cakePrice = useCakePrice()
+  const creditDollarValue = cakePrice.multipliedBy(getBalanceNumber(credit)).toNumber()
   const weeksDisplay = getICakeWeekDisplay(ceiling)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

@@ -5,14 +5,16 @@ import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import contracts from 'config/constants/contracts'
 import { publicClient } from 'utils/wagmi'
 import { formatUnits } from 'viem'
-import useSWR from 'swr'
 import { FAST_INTERVAL } from 'config/constants'
+import { useQuery } from '@tanstack/react-query'
 
 // for migration to bignumber.js to avoid breaking changes
-export const useCakePriceAsBN = () => {
-  const { data } = useSWR(['cakePriceAsBN'], async () => new BigNumber(await getCakePriceFromOracle()), {
-    dedupingInterval: FAST_INTERVAL,
-    refreshInterval: FAST_INTERVAL,
+export const useCakePrice = () => {
+  const { data } = useQuery<BigNumber, Error>({
+    queryKey: ['cakePrice'],
+    queryFn: async () => new BigNumber(await getCakePriceFromOracle()),
+    staleTime: FAST_INTERVAL,
+    refetchInterval: FAST_INTERVAL,
   })
   return data ?? BIG_ZERO
 }

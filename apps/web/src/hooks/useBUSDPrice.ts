@@ -3,7 +3,7 @@ import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { warningSeverity } from 'utils/exchange'
@@ -28,7 +28,7 @@ export function useStablecoinPrice(
   const chainId = currency?.chainId
   const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
-  const cakePrice = useCakePriceAsBN()
+  const cakePrice = useCakePrice()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
   const isCake = currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
 

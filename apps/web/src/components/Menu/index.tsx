@@ -3,7 +3,7 @@ import { footerLinks, Menu as UikitMenu, NextLinkFromReactRouter, useModal } fro
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
-import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
+import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -24,7 +24,7 @@ const LinkComponent = (linkProps) => {
 const Menu = (props) => {
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
-  const cakePriceAsBN = useCakePriceAsBN()
+  const cakePrice = useCakePrice()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
   const [onUSCitizenModalPresent] = useModal(
@@ -66,7 +66,7 @@ const Menu = (props) => {
         currentLang={currentLanguage.code}
         langs={languageList}
         setLang={setLanguage}
-        cakePriceUsd={cakePriceAsBN.eq(BIG_ZERO) ? undefined : cakePriceAsBN}
+        cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
         links={menuItems}
         subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
         footerLinks={getFooterLinks}

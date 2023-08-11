@@ -8,7 +8,7 @@ import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
 import SellModal from 'views/Nft/market/components/BuySellModals/SellModal'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import { isAddress } from 'utils'
-import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
+import { useBNBPrice } from 'hooks/useBNBPrice'
 import BigNumber from 'bignumber.js'
 import { ButtonContainer } from '../../shared/styles'
 
@@ -94,7 +94,7 @@ interface ForSaleTableRowsProps {
 const ForSaleTableRow: React.FC<React.PropsWithChildren<ForSaleTableRowsProps>> = ({ nftsForSale, onSuccessSale }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  const bnbBusdPrice = useBNBPriceAsBN()
+  const bnbBusdPrice = useBNBPrice()
   return (
     <OwnersTableRow>
       {nftsForSale.map((nft) => (

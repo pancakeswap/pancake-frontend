@@ -5,7 +5,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import EditProfileModal from 'views/Profile/components/EditProfileModal'
-import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
+import { useBNBPrice } from 'hooks/useBNBPrice'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import { nftsBaseUrl } from '../../../constants'
@@ -25,7 +25,7 @@ const MainNFTCard: React.FC<React.PropsWithChildren<MainNFTCardProps>> = ({
   onSuccess,
 }) => {
   const { t } = useTranslation()
-  const bnbBusdPrice = useBNBPriceAsBN()
+  const bnbBusdPrice = useBNBPrice()
 
   const currentAskPriceAsNumber = nft?.marketData?.currentAskPrice ? parseFloat(nft.marketData?.currentAskPrice) : 0
   const priceInUsd = bnbBusdPrice.multipliedBy(currentAskPriceAsNumber).toNumber()

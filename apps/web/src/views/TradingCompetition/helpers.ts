@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { bscTokens } from '@pancakeswap/tokens'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 export const localiseTradingVolume = (value: number, decimals = 0) => {
   return value.toLocaleString('en-US', { maximumFractionDigits: decimals })
@@ -13,7 +13,7 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
 export const useCompetitionCakeRewards = (userCakeReward: string | number) => {
   const cakeAsBigNumber = new BigNumber(userCakeReward as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const cakePriceBusd = useCakePriceAsBN()
+  const cakePriceBusd = useCakePrice()
   return {
     cakeReward: cakeBalance,
     dollarValueOfCakeReward: cakePriceBusd.multipliedBy(cakeBalance).toNumber(),
@@ -42,7 +42,7 @@ export const useFanTokenCompetitionRewards = ({
   const lazioBalance = getBalanceNumber(lazioAsBigNumber, 8)
   const portoBalance = getBalanceNumber(portoAsBigNumber, 8)
   const santosBalance = getBalanceNumber(santosAsBigNumber, 8)
-  const cakePriceBusd = useCakePriceAsBN()
+  const cakePriceBusd = useCakePrice()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && lazioPriceBUSD && portoPriceBUSD && santosPriceBUSD
@@ -73,7 +73,7 @@ export const useMoboxCompetitionRewards = ({
   const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const moboxBalance = getBalanceNumber(moboxAsBigNumber)
-  const cakePriceBusd = useCakePriceAsBN()
+  const cakePriceBusd = useCakePrice()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && moboxPriceBUSD
@@ -99,7 +99,7 @@ export const useModCompetitionRewards = ({
   const darAsBigNumber = new BigNumber(userDarRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const darBalance = getBalanceNumber(darAsBigNumber, bscTokens.dar.decimals)
-  const cakePriceBusd = useCakePriceAsBN()
+  const cakePriceBusd = useCakePrice()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && darPriceBUSD

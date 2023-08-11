@@ -5,7 +5,7 @@ import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useNftOwner from 'views/Nft/market/hooks/useNftOwner'
-import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
+import { useBNBPrice } from 'hooks/useBNBPrice'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import ProfileCell from '../../../components/ProfileCell'
@@ -42,7 +42,7 @@ const OwnerCard: React.FC<React.PropsWithChildren<OwnerCardProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const bnbBusdPrice = useBNBPriceAsBN()
+  const bnbBusdPrice = useBNBPrice()
 
   const { owner, isLoadingOwner } = useNftOwner(nft, isOwnNft)
 

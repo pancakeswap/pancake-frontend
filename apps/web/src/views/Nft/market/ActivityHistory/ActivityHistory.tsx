@@ -10,7 +10,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useLastUpdated } from '@pancakeswap/hooks'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
-import { useBNBPriceAsBN } from 'hooks/useBNBPriceAsBN'
+import { useBNBPrice } from 'hooks/useBNBPrice'
 import NoNftsImage from '../components/Activity/NoNftsImage'
 import ActivityFilters from './ActivityFilters'
 import ActivityRow from '../components/Activity/ActivityRow'
@@ -40,7 +40,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
   const [isInitialized, setIsInitialized] = useState(false)
   const [queryPage, setQueryPage] = useState(1)
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
-  const bnbBusdPrice = useBNBPriceAsBN()
+  const bnbBusdPrice = useBNBPrice()
   const { isXs, isSm, isMd } = useMatchBreakpoints()
 
   const nftActivityFiltersString = JSON.stringify(nftActivityFilters)
