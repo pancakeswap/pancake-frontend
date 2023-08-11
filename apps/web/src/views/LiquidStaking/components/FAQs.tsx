@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, CardHeader, Heading, CardBody, Text, Link, LinkExternal } from '@pancakeswap/uikit'
+import {
+  Card,
+  CardHeader,
+  Heading,
+  CardBody,
+  Text,
+  Link,
+  LinkExternal,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 
 import FoldableText from 'components/FoldableSection/FoldableText'
 
@@ -56,9 +65,11 @@ const config = (t) => [
     description: (
       <>
         {t('You can convert WBETH to ETH through ')}
-        <Link style={{ display: 'inline' }} href="/swap">
-          {t('our swap page')}.{' '}
-        </Link>
+        <NextLinkFromReactRouter to="/swap" prefetch={false}>
+          <Link style={{ display: 'inline' }} href="/swap">
+            {t('our swap page')}.{' '}
+          </Link>
+        </NextLinkFromReactRouter>
         {t(
           'PancakeSwap is also working to support a conversion contract on our liquid staking page to convert WBETH back to ETH seamlessly.',
         )}
