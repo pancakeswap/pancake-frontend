@@ -21,6 +21,7 @@ interface INotificationprops {
   date: number
   removeNotification: (id: number) => Promise<void>
   url?: string | undefined
+  image?: string | undefined
 }
 
 interface INotificationContainerProps {
@@ -29,7 +30,7 @@ interface INotificationContainerProps {
   removeNotification: (id: number) => Promise<void>
 }
 
-const NotificationItem = ({ title, description, id, date, url, removeNotification }: INotificationprops) => {
+const NotificationItem = ({ title, description, id, date, url, image, removeNotification }: INotificationprops) => {
   const [isHovered, setIsHovered] = useState(false)
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
@@ -65,6 +66,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
   }, [])
 
+  console.log(description)
   return (
     <StyledNotificationWrapper
       transition={{ duration: 0.05 }}
@@ -84,7 +86,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
           onMouseLeave={handleHover}
         >
           <Box marginRight="15px" display="flex" minWidth="40px">
-            <Image src="/logo.png" alt="Notification Image" height={40} width={40} />
+            <Image src={image ?? '/logo.png'} alt="Notification Image" height={40} width={40} />
           </Box>
           <Flex flexDirection="column">
             <Flex justifyContent="space-between">
@@ -146,6 +148,7 @@ const NotificationContainer = ({ notifications, sortOptionsType, removeNotificat
               id={notification.id}
               date={notification.publishedAt}
               url={notification.message.url}
+              image={notification.message.icon}
               removeNotification={removeNotification}
             />
           )

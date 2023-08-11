@@ -54,7 +54,7 @@ export const PancakeNotifications: {
     return {
       title: 'Welcome Aboard',
       body: 'You have successfully subscribed to Pancake Notifications Wooo!',
-      icon: `${window.location.href}logo.png`,
+      icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pc-custom-web.vercel.app',
       type: 'alerts',
     }
@@ -63,7 +63,7 @@ export const PancakeNotifications: {
     return {
       title: 'New LP Position Added',
       body: `New LP position successfully added. you will be notified on important updates.`,
-      icon: `${window.location.href}logo.png`,
+      icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pc-custom-web.vercel.app',
       type: 'Liquidity',
     }

@@ -63,6 +63,7 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
+    domains: ['i.imgur.com', 'assets.pancakeswap.finance', 'pancakeswap.finance'], 
     contentDispositionType: 'attachment',
     remotePatterns: [
       {

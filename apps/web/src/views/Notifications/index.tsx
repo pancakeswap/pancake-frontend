@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
-import { useWalletConnectPushClient } from 'contexts/PushClientContext'
+import { PushClientContextProvider, useWalletConnectPushClient } from 'contexts/PushClientContext'
 import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
@@ -124,4 +124,12 @@ const Notifications = () => {
   )
 }
 
-export default Notifications
+const NotificationsState = () => {
+  return (
+    <PushClientContextProvider>
+      <Notifications />
+    </PushClientContextProvider>
+  )
+}
+
+export default NotificationsState

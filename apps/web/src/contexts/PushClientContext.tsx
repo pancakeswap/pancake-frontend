@@ -46,11 +46,12 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
   const [pushClient, setPushClient] = useState<WalletClient | null>(null)
   const [unread, setUnread] = useState<number>(0)
 
-  const { formattedEip155Account: userPublicKey } = useFormattedEip155Account()
+  const { formattedEip155Account: userPublicKey, account } = useFormattedEip155Account()
   const { signMessageAsync } = useSignMessage()
   const { sendPushNotification } = useSendPushNotification()
 
   const createClient = useCallback(async () => {
+    if (!account) return
     const syncClient = await SyncClient.init({
       core,
       projectId: DEFAULT_PROJECT_ID,
@@ -62,17 +63,17 @@ export function PushClientContextProvider({ children }: { children: ReactNode | 
       logger: 'info',
     })
     setPushClient(_pushClient)
-  }, [])
+  }, [account])
 
   const formatClientRelatedError = (method: string) => {
     return `An initialized PushClient is required for method: [${method}].`
   }
 
   const findCurrentSubscription = (
-    account: string,
+    address: string,
     subscriptions: Record<string, PushClientTypes.PushSubscription>,
   ) => {
-    return Object.values(subscriptions).find((sub: PushClientTypes.PushSubscription) => sub.account === account)
+    return Object.values(subscriptions).find((sub: PushClientTypes.PushSubscription) => sub.account === address)
   }
 
   const handleMessage = async (request: JsonRpcRequest<unknown>) => {
