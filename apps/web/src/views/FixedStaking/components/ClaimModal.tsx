@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Modal, ModalV2, PreTitle, Text, Button, useModalV2 } from '@pancakeswap/uikit'
-import { LightCard } from 'components/Card'
+import { Box, Flex, Heading, Modal, ModalV2, PreTitle, Text, Button, useModalV2, Card } from '@pancakeswap/uikit'
+import { LightCard, LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
@@ -117,38 +117,40 @@ export function ClaimModal({
                 {t('Details')}
               </PreTitle>
 
-              <LightCard mb="16px">
-                <Flex justifyContent="space-between" mb="4px">
-                  <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('Rewards')}
-                  </Text>
-                  <Box style={{ textAlign: 'end' }}>
-                    <AmountWithUSDSub amount={accrueInterest} />
-                  </Box>
-                </Flex>
-                <Flex justifyContent="space-between">
-                  <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('Fixed Staking Ended On')}
-                  </Text>
-                  <Text bold>{unlockTimeFormat}</Text>
-                </Flex>
-                <Flex justifyContent="space-between" mb="8px">
-                  <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
-                    {t('APR')}
-                  </Text>
-                  <Text bold>{lockAPR.toSignificant(2)}%</Text>
-                </Flex>
-                <Button
-                  variant="danger"
-                  width="100%"
-                  onClick={() => {
-                    claimModal.onDismiss()
-                    openModal()
-                  }}
-                >
-                  {t('Claim Reward & Restake')}
-                </Button>
-              </LightCard>
+              <Card mb="16px" isActive>
+                <LightGreyCard>
+                  <Flex justifyContent="space-between" mb="4px">
+                    <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                      {t('Rewards')}
+                    </Text>
+                    <Box style={{ textAlign: 'end' }}>
+                      <AmountWithUSDSub amount={accrueInterest} />
+                    </Box>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                      {t('Fixed Staking Ended On')}
+                    </Text>
+                    <Text bold>{unlockTimeFormat}</Text>
+                  </Flex>
+                  <Flex justifyContent="space-between" mb="8px">
+                    <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                      {t('APR')}
+                    </Text>
+                    <Text bold>{lockAPR.toSignificant(2)}%</Text>
+                  </Flex>
+                  <Button
+                    variant="danger"
+                    width="100%"
+                    onClick={() => {
+                      claimModal.onDismiss()
+                      openModal()
+                    }}
+                  >
+                    {t('Claim Reward & Restake')}
+                  </Button>
+                </LightGreyCard>
+              </Card>
 
               <Button
                 style={{

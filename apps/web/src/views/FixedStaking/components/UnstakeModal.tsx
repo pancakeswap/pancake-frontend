@@ -1,22 +1,10 @@
-import { CurrencyLogo, Flex, Heading, ModalV2, Modal, Text, Button } from '@pancakeswap/uikit'
-import { LightCard } from 'components/Card'
+import { CurrencyLogo, Flex, Heading, ModalV2, Modal, Text, Button, Card } from '@pancakeswap/uikit'
+import { GreyCard, LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { UnstakeType } from '../type'
-
-function DetailCard({ title, amount }: { title: string; amount: CurrencyAmount<Token> }) {
-  return (
-    <LightCard mb="16px">
-      <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
-        {title}
-      </Text>
-      <AmountWithUSDSub amount={amount} />
-    </LightCard>
-  )
-}
 
 export function UnstakeEndedModal({
   unstakeModal,
@@ -47,9 +35,21 @@ export function UnstakeEndedModal({
         width={['100%', '100%', '420px']}
         maxWidth={['100%', , '420px']}
       >
-        <DetailCard title={t('Unstaked Amount')} amount={stakeAmount} />
+        <Card isActive mb="16px">
+          <GreyCard>
+            <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+              {t('Unstaked Amount')}
+            </Text>
+            <AmountWithUSDSub amount={stakeAmount} />
+          </GreyCard>
+        </Card>
 
-        <DetailCard title={t('Reward Amount')} amount={accrueInterest} />
+        <LightCard mb="16px">
+          <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+            {t('Reward Amount')}
+          </Text>
+          <AmountWithUSDSub amount={accrueInterest} />
+        </LightCard>
 
         <Button
           disabled={loading}

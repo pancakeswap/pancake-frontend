@@ -9,7 +9,7 @@ export function StakedLimitEndOn({
   poolEndDay,
   color,
 }: {
-  color: string
+  color?: string
   lockPeriod: number
   poolEndDay: number
 }) {
