@@ -6,7 +6,6 @@ import BigNumber from 'bignumber.js'
 import first from 'lodash/first'
 import { LightGreyCard } from 'components/Card'
 import Divider from 'components/Divider'
-import { useMemo } from 'react'
 
 import { FixedStakingCardBody } from './FixedStakingCardBody'
 import { StakedPositionSection } from './StakedPositionSection'
@@ -16,8 +15,6 @@ import { StakedPosition, PoolGroup } from '../type'
 
 export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; stakedPositions: StakedPosition[] }) {
   const { t } = useTranslation()
-
-  const stakedPeriods = useMemo(() => stakedPositions.map((sP) => sP.pool.lockPeriod), [stakedPositions])
 
   return (
     <StyledCard>
@@ -49,6 +46,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                     {stakedPositions.map((stakePosition, index) => (
                       <>
                         <StakedPositionSection
+                          stakePosition={stakePosition}
                           lockDayPercent={stakePosition.pool.lockDayPercent}
                           boostDayPercent={stakePosition.pool.boostDayPercent}
                           lockPeriod={stakePosition.pool.lockPeriod}
@@ -79,7 +77,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                   }
                   pools={pool.pools}
                   stakingToken={pool.token}
-                  stakedPeriods={stakedPeriods}
+                  stakedPositions={stakedPositions}
                 >
                   {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
                 </FixedStakingModal>

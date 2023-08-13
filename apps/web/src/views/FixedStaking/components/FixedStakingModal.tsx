@@ -11,13 +11,13 @@ import {
   InfoFilledIcon,
 } from '@pancakeswap/uikit'
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
-import { Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { FixedStakingPool } from '../type'
+import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
 
@@ -26,20 +26,22 @@ export function FixedStakingModal({
   pools,
   children,
   initialLockPeriod,
-  stakedPeriods,
+  stakedPositions,
   setSelectedPeriodIndex,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   children: (openModal: () => void) => ReactNode
   initialLockPeriod: number
-  stakedPeriods: number[]
+  stakedPositions: StakedPosition[]
   setSelectedPeriodIndex?: (value: number | null) => void
 }) {
   const { account } = useAccountActiveChain()
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()
+
+  const stakedPeriods = useMemo(() => stakedPositions.map((sP) => sP.pool.lockPeriod), [stakedPositions])
 
   return account ? (
     <>
@@ -58,7 +60,17 @@ export function FixedStakingModal({
           pools={pools}
           initialLockPeriod={initialLockPeriod}
           stakedPeriods={stakedPeriods}
-          body={({ setLockPeriod, poolEndDay, stakeCurrencyAmount, lockPeriod, isStaked, boostAPR, lockAPR }) => (
+          stakedPositions={stakedPositions}
+          body={({
+            setLockPeriod,
+            alreadyStakedAmount,
+            poolEndDay,
+            stakeCurrencyAmount,
+            lockPeriod,
+            isStaked,
+            boostAPR,
+            lockAPR,
+          }) => (
             <>
               {pools.length > 1 ? (
                 <>
@@ -110,6 +122,7 @@ export function FixedStakingModal({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
+                  alreadyStakedAmount={alreadyStakedAmount}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}

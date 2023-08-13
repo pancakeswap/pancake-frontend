@@ -18,13 +18,14 @@ import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
 import first from 'lodash/first'
 
-import { FixedStakingPool } from '../type'
+import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
   stakeCurrencyAmount: CurrencyAmount<Token>
+  alreadyStakedAmount: CurrencyAmount<Token>
   projectedReturnAmount: CurrencyAmount<Token>
   lockPeriod: number
   isStaked: boolean
@@ -43,9 +44,11 @@ export function StakingModalTemplate({
   head,
   hideStakeButton,
   onSubmissionComplete,
+  stakedPositions,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
+  stakedPositions?: StakedPosition[]
   initialLockPeriod: number
   stakedPeriods: number[]
   head?: () => ReactNode
@@ -59,6 +62,15 @@ export function StakingModalTemplate({
   const [lockPeriod, setLockPeriod] = useState(
     initialLockPeriod === null || initialLockPeriod === undefined ? first(stakedPeriods) : initialLockPeriod,
   )
+
+  const depositedAmount = useMemo(() => {
+    const selectedStakedPosition = stakedPositions?.find((sP) => sP.pool.lockPeriod === lockPeriod)
+
+    return CurrencyAmount.fromRawAmount(
+      stakingToken,
+      selectedStakedPosition ? selectedStakedPosition.userInfo.userDeposit.toString() : '0',
+    )
+  }, [lockPeriod, stakedPositions, stakingToken])
 
   const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
 
@@ -75,18 +87,34 @@ export function StakingModalTemplate({
 
   const stakeCurrencyAmount = CurrencyAmount.fromRawAmount(stakingToken, rawAmount.gt(0) ? rawAmount.toString() : '0')
 
+  const totalPoolDeposited = CurrencyAmount.fromRawAmount(
+    stakingToken,
+    selectedPool ? selectedPool.totalDeposited.toString() : '0',
+  )
+
   const maxStakeAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.maxDeposit : '0')
   const minStakeAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.minDeposit : '0')
   const maxStakePoolAmount = CurrencyAmount.fromRawAmount(stakingToken, selectedPool ? selectedPool.maxPoolAmount : '0')
 
   let error = null
 
-  if (stakeCurrencyAmount.greaterThan(maxStakeAmount)) {
-    error = t('Maximum stake amount exceeded')
-  } else if (stakeCurrencyAmount.lessThan(minStakeAmount)) {
-    error = t('Minimum stake amount required')
-  } else if (stakeCurrencyAmount.greaterThan(maxStakePoolAmount)) {
-    error = t('Maximum pool stake amount exceeded')
+  const totalStakedAmount = stakeCurrencyAmount.add(depositedAmount)
+
+  if (totalStakedAmount.greaterThan(maxStakeAmount)) {
+    error = t('Maximum %amount% %symbol%', {
+      amount: maxStakeAmount.toSignificant(2),
+      symbol: stakingToken.symbol,
+    })
+  } else if (stakeCurrencyAmount.greaterThan(0) && totalStakedAmount.lessThan(minStakeAmount)) {
+    error = t('Minimum %amount% %symbol%', {
+      amount: minStakeAmount.toSignificant(2),
+      symbol: stakingToken.symbol,
+    })
+  } else if (stakeCurrencyAmount.add(totalPoolDeposited).greaterThan(maxStakePoolAmount)) {
+    error = t('Maximum pool %amount% %symbol%', {
+      amount: maxStakePoolAmount.toSignificant(2),
+      symbol: stakingToken.symbol,
+    })
   }
 
   const [approval, approveCallback] = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
@@ -175,6 +203,7 @@ export function StakingModalTemplate({
   )
   const params = useMemo(
     () => ({
+      alreadyStakedAmount: depositedAmount,
       stakeCurrencyAmount,
       setLockPeriod,
       projectedReturnAmount,
@@ -193,6 +222,7 @@ export function StakingModalTemplate({
       lockPeriod,
       projectedReturnAmount,
       selectedPool?.endDay,
+      depositedAmount,
       stakeCurrencyAmount,
     ],
   )

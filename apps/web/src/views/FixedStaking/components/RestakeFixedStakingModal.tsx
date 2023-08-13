@@ -8,7 +8,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import toNumber from 'lodash/toNumber'
 
-import { FixedStakingPool } from '../type'
+import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
 
@@ -20,6 +20,7 @@ export function FixedRestakingModal({
   stakedPeriods,
   setSelectedPeriodIndex,
   amountDeposit,
+  stakedPositions,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
@@ -28,6 +29,7 @@ export function FixedRestakingModal({
   stakedPeriods: number[]
   setSelectedPeriodIndex?: (value: number | null) => void
   amountDeposit: CurrencyAmount<Token>
+  stakedPositions: StakedPosition[]
 }) {
   const { account } = useAccountActiveChain()
 
@@ -46,6 +48,7 @@ export function FixedRestakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          stakedPositions={stakedPositions}
           onSubmissionComplete={() => stakeModal.onDismiss()}
           stakingToken={stakingToken}
           pools={pools}
@@ -58,7 +61,7 @@ export function FixedRestakingModal({
               </MessageText>
             </Message>
           )}
-          body={({ stakeCurrencyAmount, poolEndDay, lockPeriod, boostAPR, lockAPR }) => (
+          body={({ stakeCurrencyAmount, alreadyStakedAmount, poolEndDay, lockPeriod, boostAPR, lockAPR }) => (
             <>
               <Box mb="16px" mt="16px">
                 <PreTitle textTransform="uppercase" bold mb="8px">
@@ -91,8 +94,9 @@ export function FixedRestakingModal({
                   {t('Position Details')}
                 </PreTitle>
                 <FixedStakingOverview
+                  alreadyStakedAmount={alreadyStakedAmount}
                   poolEndDay={poolEndDay}
-                  stakeAmount={amountDeposit.add(stakeCurrencyAmount)}
+                  stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}

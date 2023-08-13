@@ -4,6 +4,7 @@ import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 
 import { useMemo } from 'react'
+import BalanceRow from 'views/Pools/components/LockedPool/Common/Overview/BalanceRow'
 
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
@@ -17,9 +18,11 @@ export default function FixedStakingOverview({
   lockPeriod,
   poolEndDay,
   isUnstakeView,
+  alreadyStakedAmount,
 }: {
   isUnstakeView?: boolean
   stakeAmount: CurrencyAmount<Token>
+  alreadyStakedAmount?: CurrencyAmount<Token>
   lockAPR?: Percent
   boostAPR?: Percent
   lockPeriod?: number
@@ -40,19 +43,23 @@ export default function FixedStakingOverview({
   return (
     <LightGreyCard>
       {!isUnstakeView ? (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-            {t('Stake Amount')}
-          </Text>
-          <Text bold>{stakeAmount.toSignificant(2)}</Text>
-        </Flex>
+        <BalanceRow
+          title={t('Stake Amount')}
+          value={
+            alreadyStakedAmount?.greaterThan(0) ? alreadyStakedAmount.toSignificant(2) : stakeAmount.toSignificant(2)
+          }
+          newValue={
+            alreadyStakedAmount ? stakeAmount.add(alreadyStakedAmount).toSignificant(2) : stakeAmount.toSignificant(2)
+          }
+          decimals={2}
+        />
       ) : null}
       {!isUnstakeView && lockPeriod ? (
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Duration')}
           </Text>
-          <Text bold>
+          <Text bold color={alreadyStakedAmount?.greaterThan(0) ? 'failure' : ''}>
             {lockPeriod} {t('days')}
           </Text>
         </Flex>
@@ -75,7 +82,11 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Stake Period Ends')}
         </Text>
-        <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+        <StakedLimitEndOn
+          color={alreadyStakedAmount?.greaterThan(0) ? 'failure' : ''}
+          lockPeriod={lockPeriod}
+          poolEndDay={poolEndDay}
+        />
       </Flex>
       <Flex alignItems="baseline" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>

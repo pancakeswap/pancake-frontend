@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Text, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { useMemo } from 'react'
 
 import { differenceInMilliseconds, format } from 'date-fns'
 
 import { LockedFixedTag } from './LockedFixedTag'
-import { PoolGroup, StakePositionUserInfo } from '../type'
+import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'
 import { ClaimModal } from './ClaimModal'
 import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { FixedRestakingModal } from './RestakeFixedStakingModal'
@@ -25,10 +26,12 @@ export function StakedPositionSection({
   withdrawalFee,
   pool,
   stakedPeriods,
+  stakePosition,
 }: {
   unlockTime: number
   boostDayPercent: number
   token: Token
+  stakePosition: StakedPosition
   stakePositionUserInfo: StakePositionUserInfo
   lockPeriod: number
   poolIndex: number
@@ -39,11 +42,13 @@ export function StakedPositionSection({
 }) {
   const { t } = useTranslation()
 
+  console.log('token: ', token.address)
+
   const { boostAPR, lockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent })
 
   const { accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
     token,
-    stakePositionUserInfo,
+    stakePositionUserInfo: stakePosition.userInfo,
     lockPeriod,
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
   })
@@ -51,6 +56,8 @@ export function StakedPositionSection({
   const poolEndDay = pool.pools[poolIndex].endDay
 
   const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
+
+  const stakedPositions = useMemo(() => [stakePosition], [stakePosition])
 
   return (
     <>
@@ -119,6 +126,7 @@ export function StakedPositionSection({
               )}
             </UnstakeBeforeEnededModal>
             <FixedRestakingModal
+              stakedPositions={stakedPositions}
               amountDeposit={amountDeposit}
               stakedPeriods={stakedPeriods}
               stakingToken={token}
