@@ -42,8 +42,6 @@ export function StakedPositionSection({
 }) {
   const { t } = useTranslation()
 
-  console.log('token: ', token.address)
-
   const { boostAPR, lockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent })
 
   const { accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
