@@ -1133,6 +1133,7 @@
   "Output will be sent to %recipient%": "Output will be sent to %recipient%",
   "Price Updated": "Price Updated",
   "Accept": "Accept",
+  "Confirm Unstake": "Confirm Unstake",
   "For each trade a %amount% fee is paid": "For each trade a %amount% fee is paid",
   "%amount% to LP token holders": "%amount% to LP token holders",
   "%amount% to the Treasury": "%amount% to the Treasury",

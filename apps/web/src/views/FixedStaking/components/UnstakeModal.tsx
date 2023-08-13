@@ -59,7 +59,7 @@ export function UnstakeEndedModal({
           }}
           onClick={() => handleSubmission(UnstakeType.WITHDRAW).then(() => unstakeModal.onDismiss())}
         >
-          {loading ? t('Unstaking') : t('Unstake')}
+          {loading ? t('Confirming') : t('Confirm Unstake')}
         </Button>
         <Button
           disabled={loading}

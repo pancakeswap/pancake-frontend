@@ -311,7 +311,7 @@ export function StakingModalTemplate({
               }}
               onClick={handleSubmission}
             >
-              {pendingTx ? t('Staking') : t('Stake')}
+              {pendingTx ? t('Confirming') : t('Confirm')}
             </Button>
           ) : (
             <Button

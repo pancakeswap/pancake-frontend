@@ -140,7 +140,7 @@ export function UnstakeBeforeEnededModal({
               handleSubmission(UnstakeType.WITHDRAW).then(() => unstakeModal?.onDismiss())
             }}
           >
-            {loading ? t('Unstaking') : t('Unstake')}
+            {loading ? t('Confirming') : t('Confirm Unstake')}
           </Button>
         </Modal>
       </ModalV2>
