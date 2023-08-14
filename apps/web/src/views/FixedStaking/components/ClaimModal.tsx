@@ -103,11 +103,11 @@ export function ClaimModal({
                       {t('Fixed-staking Ends')}
                     </PreTitle>
 
-                    <Text bold color="warning" mb="-4px">
+                    <Text bold color="gold" mb="-4px">
                       {t('Ended')}
                     </Text>
 
-                    <Text color="warning" fontSize={12}>
+                    <Text color="gold" fontSize={12}>
                       On {unlockTimeFormat}
                     </Text>
                   </Box>
