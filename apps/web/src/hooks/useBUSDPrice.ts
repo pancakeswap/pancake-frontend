@@ -1,29 +1,12 @@
-import {
-  ChainId,
-  Currency,
-  CurrencyAmount,
-  Pair,
-  Price,
-  Token,
-  WNATIVE,
-  WBNB,
-  ERC20Token,
-  WETH9,
-  TradeType,
-} from '@pancakeswap/sdk'
-import { FAST_INTERVAL } from 'config/constants'
+import { ChainId, Currency, CurrencyAmount, Price, WNATIVE, WETH9, TradeType } from '@pancakeswap/sdk'
 import { BUSD, CAKE, USDC, STABLE_COIN } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
-import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { useCakePriceAsBN } from 'hooks/useCakePriceAsBN'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
-import { isChainTestnet } from 'utils/wagmi'
 import { warningSeverity } from 'utils/exchange'
-import { usePairContract } from './useContract'
 import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
@@ -45,7 +28,7 @@ export function useStablecoinPrice(
   const chainId = currency?.chainId
   const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
-  const cakePrice = useCakePriceAsBN()
+  const cakePrice = useCakePrice()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
   const isCake = currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
 
@@ -244,40 +227,6 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   ])
 }
 
-/**
- * @deprecated it's using v2 pair
- */
-export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
-  const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
-  const pairAddress = getLpAddress(tokenA, tokenB)
-  const pairContract = usePairContract(pairAddress)
-
-  const { data: price } = useSWR(
-    currencyA && currencyB && ['pair-price', currencyA, currencyB],
-    async () => {
-      const reserves = await pairContract.read.getReserves()
-      if (!reserves) {
-        return null
-      }
-      if (!tokenA || !tokenB) {
-        return null
-      }
-      const [reserve0, reserve1] = reserves
-      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
-
-      const pair = new Pair(
-        CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
-        CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
-      )
-
-      return pair.priceOf(tokenB)
-    },
-    { dedupingInterval: FAST_INTERVAL, refreshInterval: FAST_INTERVAL },
-  )
-
-  return price
-}
-
 export const useStablecoinPriceAmount = (
   currency?: Currency,
   amount?: number,
@@ -291,45 +240,4 @@ export const useStablecoinPriceAmount = (
     }
   }
   return undefined
-}
-
-/**
- * @deprecated it's using v2 pair, use `useStablecoinPriceAsBN` instead
- */
-export const useBUSDCakeAmount = (amount: number): number | undefined => {
-  const cakeBusdPrice = useCakeBusdPrice()
-  if (cakeBusdPrice) {
-    return multiplyPriceByAmount(cakeBusdPrice, amount)
-  }
-  return undefined
-}
-
-/**
- * @deprecated it's using v2 pair, use `useCakePriceAsBN` instead
- * @Note: only fetch from one pair
- */
-export const useCakeBusdPrice = (
-  { forceMainnet } = { forceMainnet: false },
-): Price<ERC20Token, ERC20Token> | undefined => {
-  const { chainId } = useActiveChainId()
-  const isTestnet = !forceMainnet && isChainTestnet(chainId)
-  // Return bsc testnet cake if chain is testnet
-  const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
-  return usePriceByPairs(BUSD[cake.chainId], cake)
-}
-
-/**
- * @deprecated it's using v2 pair
- * @Note: only fetch from one pair
- */
-
-// @Note: only fetch from one pair
-export const useBNBBusdPrice = (
-  { forceMainnet } = { forceMainnet: false },
-): Price<ERC20Token, ERC20Token> | undefined => {
-  const { chainId } = useActiveChainId()
-  const isTestnet = !forceMainnet && isChainTestnet(chainId)
-  // Return bsc testnet wbnb if chain is testnet
-  const wbnb: Token = isTestnet ? WBNB[ChainId.BSC_TESTNET] : WBNB[ChainId.BSC]
-  return usePriceByPairs(BUSD[wbnb.chainId], wbnb)
 }

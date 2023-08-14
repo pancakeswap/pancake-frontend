@@ -46,7 +46,7 @@ import { publicClient } from 'utils/wagmi'
 import { getViemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
-import { getCakePriceFromOracle } from 'hooks/useCakePriceAsBN'
+import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 
 import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
