@@ -11,6 +11,7 @@ import toNumber from 'lodash/toNumber'
 import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 
 export function FixedRestakingModal({
   stakingToken,
@@ -99,6 +100,9 @@ export function FixedRestakingModal({
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
+                  calculator={
+                    <FixedStakingCalculator stakingToken={stakingToken} pools={pools} initialLockPeriod={lockPeriod} />
+                  }
                 />
               </Box>
             </>

@@ -45,6 +45,7 @@ export function StakingModalTemplate({
   head,
   hideStakeButton,
   stakedPositions,
+  onBack,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
@@ -54,6 +55,7 @@ export function StakingModalTemplate({
   head?: () => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
   hideStakeButton?: boolean
+  onBack?: () => void
 }) {
   const { t } = useTranslation()
   const [stakeAmount, setStakeAmount] = useState('')
@@ -262,6 +264,7 @@ export function StakingModalTemplate({
       }
       width={['100%', '100%', '420px']}
       maxWidth={['100%', , '420px']}
+      onBack={onBack}
     >
       {head ? head() : null}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">

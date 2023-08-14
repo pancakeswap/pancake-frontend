@@ -26,6 +26,7 @@ import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
 import { StakeConfirmModal } from './StakeConfirmModal'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 
 export function HarvestModal({
   stakingToken,
@@ -40,6 +41,7 @@ export function HarvestModal({
   pendingTx,
   onBack,
   poolEndDay,
+  pools,
 }: {
   poolEndDay: number
   onBack: () => void
@@ -154,9 +156,16 @@ export function HarvestModal({
                     <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                       {t('Projected Return')}
                     </Text>
-                    <Box style={{ textAlign: 'end' }}>
-                      <AmountWithUSDSub amount={projectedReturnAmount} />
-                    </Box>
+                    <Flex>
+                      <Box style={{ textAlign: 'end' }}>
+                        <AmountWithUSDSub amount={projectedReturnAmount} />
+                      </Box>
+                      <FixedStakingCalculator
+                        stakingToken={stakingToken}
+                        pools={pools}
+                        initialLockPeriod={lockPeriod}
+                      />
+                    </Flex>
                   </Flex>
                 </LightGreyCard>
               </Box>

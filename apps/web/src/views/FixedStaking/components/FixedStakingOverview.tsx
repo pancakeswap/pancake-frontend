@@ -3,7 +3,7 @@ import { Flex, Text, Box } from '@pancakeswap/uikit'
 
 import { LightGreyCard } from 'components/Card'
 
-import { useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import BalanceRow from 'views/Pools/components/LockedPool/Common/Overview/BalanceRow'
 
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
@@ -20,6 +20,7 @@ export default function FixedStakingOverview({
   isUnstakeView,
   alreadyStakedAmount,
   disableStrike,
+  calculator,
 }: {
   disableStrike?: boolean
   isUnstakeView?: boolean
@@ -29,6 +30,7 @@ export default function FixedStakingOverview({
   boostAPR?: Percent
   lockPeriod?: number
   poolEndDay: number
+  calculator?: ReactNode
 }) {
   const { t } = useTranslation()
 
@@ -90,9 +92,12 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Projected Return')}
         </Text>
-        <Box style={{ textAlign: 'end' }}>
-          <AmountWithUSDSub shouldStrike={isUnstakeView && !disableStrike} amount={projectedReturnAmount} />
-        </Box>
+        <Flex>
+          <Box style={{ textAlign: 'end' }}>
+            <AmountWithUSDSub shouldStrike={isUnstakeView && !disableStrike} amount={projectedReturnAmount} />
+          </Box>
+          {calculator}
+        </Flex>
       </Flex>
     </LightGreyCard>
   )

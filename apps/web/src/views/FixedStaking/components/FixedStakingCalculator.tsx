@@ -46,6 +46,7 @@ export function FixedStakingCalculator({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          onBack={() => stakeModal.onDismiss()}
           hideStakeButton
           stakingToken={stakingToken}
           pools={pools}

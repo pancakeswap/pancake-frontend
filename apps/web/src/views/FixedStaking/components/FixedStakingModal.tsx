@@ -21,6 +21,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 
 export function FixedStakingModal({
   stakingToken,
@@ -146,6 +147,9 @@ export function FixedStakingModal({
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
+                  calculator={
+                    <FixedStakingCalculator stakingToken={stakingToken} pools={pools} initialLockPeriod={lockPeriod} />
+                  }
                 />
               </Box>
             </>

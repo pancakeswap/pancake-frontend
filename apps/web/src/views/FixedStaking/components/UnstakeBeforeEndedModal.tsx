@@ -17,12 +17,13 @@ import { CurrencyLogo } from 'components/Logo'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
 
-import { StakePositionUserInfo, UnstakeType } from '../type'
+import { FixedStakingPool, StakePositionUserInfo, UnstakeType } from '../type'
 import { LockedFixedTag } from './LockedFixedTag'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import FixedStakingOverview from './FixedStakingOverview'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 
 export function UnstakeBeforeEnededModal({
   token,
@@ -32,6 +33,7 @@ export function UnstakeBeforeEnededModal({
   withdrawalFee,
   poolIndex,
   boostAPR,
+  pools,
   poolEndDay,
   children,
 }: {
@@ -44,6 +46,7 @@ export function UnstakeBeforeEnededModal({
   withdrawalFee: number
   poolIndex: number
   children: (openModal: () => void) => ReactNode
+  pools: FixedStakingPool[]
 }) {
   const { t } = useTranslation()
   const unstakeModal = useModalV2()
@@ -125,6 +128,7 @@ export function UnstakeBeforeEnededModal({
             lockAPR={lockAPR}
             boostAPR={boostAPR}
             poolEndDay={poolEndDay}
+            calculator={<FixedStakingCalculator stakingToken={token} pools={pools} initialLockPeriod={lockPeriod} />}
           />
 
           <Message variant="warning" my="16px">
