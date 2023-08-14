@@ -16,7 +16,7 @@ export async function getStaticPaths() {
   }
 }
 
-export const getStaticProps = (async ({ params }) => {
+export const getStaticProps = (async ({ params, previewData }) => {
   if (!params)
     return {
       redirect: {
@@ -26,7 +26,13 @@ export const getStaticProps = (async ({ params }) => {
       },
     }
 
-  const { slug } = params
+  const previewDataSlug = (previewData as any)?.slug
+  const slug = previewDataSlug || params.slug
+
+  let name: any = { $notIn: filterTagArray }
+  if (previewDataSlug) {
+    name = { $eq: 'Preview' }
+  }
 
   const article = await getSingleArticle({
     url: `/slugify/slugs/article/${slug}`,
@@ -35,9 +41,7 @@ export const getStaticProps = (async ({ params }) => {
       locale: 'all',
       filters: {
         categories: {
-          name: {
-            $notIn: filterTagArray,
-          },
+          name,
         },
       },
     },
@@ -89,7 +93,7 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
       <SWRConfig value={{ fallback }}>
         <Box>
-          <ArticleInfo articleName="/article" />
+          <ArticleInfo />
           <HowItWork />
           <SimilarArticles />
         </Box>
