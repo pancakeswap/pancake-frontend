@@ -47,11 +47,9 @@ export default function FixedStakingOverview({
       {!isUnstakeView ? (
         <BalanceRow
           title={t('Stake Amount')}
-          value={
-            alreadyStakedAmount?.greaterThan(0) ? alreadyStakedAmount.toSignificant(2) : stakeAmount.toSignificant(2)
-          }
+          value={alreadyStakedAmount?.greaterThan(0) ? alreadyStakedAmount.toExact() : stakeAmount.toExact()}
           newValue={
-            alreadyStakedAmount ? stakeAmount.add(alreadyStakedAmount).toSignificant(2) : stakeAmount.toSignificant(2)
+            alreadyStakedAmount?.greaterThan(0) ? stakeAmount.add(alreadyStakedAmount).toExact() : stakeAmount.toExact()
           }
           decimals={2}
         />

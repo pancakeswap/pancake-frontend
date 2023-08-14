@@ -13,14 +13,13 @@ import {
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
-import { StakeConfirmModal } from './StakeConfirmModal'
 
 export function FixedStakingModal({
   stakingToken,

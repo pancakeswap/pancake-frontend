@@ -49,7 +49,6 @@ export function FixedRestakingModal({
       >
         <StakingModalTemplate
           stakedPositions={stakedPositions}
-          onSubmissionComplete={() => stakeModal.onDismiss()}
           stakingToken={stakingToken}
           pools={pools}
           initialLockPeriod={initialLockPeriod}

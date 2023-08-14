@@ -60,7 +60,7 @@ export function StakingModalTemplate({
   const [isConfirmed, setIsConfirmed] = useState(false)
 
   const [lockPeriod, setLockPeriod] = useState(
-    initialLockPeriod === null || initialLockPeriod === undefined ? first(stakedPeriods) : initialLockPeriod,
+    initialLockPeriod === null || initialLockPeriod === undefined ? first(pools).lockPeriod : initialLockPeriod,
   )
 
   const depositedAmount = useMemo(() => {
