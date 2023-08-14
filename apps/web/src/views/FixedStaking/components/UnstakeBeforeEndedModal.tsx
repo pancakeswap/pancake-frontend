@@ -70,7 +70,7 @@ export function UnstakeBeforeEnededModal({
     [accrueInterest, amountDeposit, withdrawFee],
   )
 
-  const { handleSubmission, pendingTx: loading } = useHandleWithdrawSubmission({ poolIndex })
+  const { handleSubmission, pendingTx: loading } = useHandleWithdrawSubmission({ poolIndex, stakingToken: token })
 
   return (
     <>
@@ -141,7 +141,7 @@ export function UnstakeBeforeEnededModal({
               minHeight: '48px',
             }}
             onClick={() => {
-              handleSubmission(UnstakeType.WITHDRAW).then(() => unstakeModal?.onDismiss())
+              handleSubmission(UnstakeType.WITHDRAW, totalGetAmount).then(() => unstakeModal?.onDismiss())
             }}
           >
             {loading ? t('Confirming') : t('Confirm Unstake')}

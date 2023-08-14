@@ -55,7 +55,7 @@ export function HarvestModal({
   boostAPR: Percent
   lockAPR: Percent
   pendingTx: boolean
-  handleSubmission: (type: UnstakeType) => Promise<void>
+  handleSubmission: (type: UnstakeType, amount: CurrencyAmount<Token>) => Promise<void>
 }) {
   const { account } = useAccountActiveChain()
 
@@ -176,7 +176,7 @@ export function HarvestModal({
                   minHeight: '48px',
                   marginBottom: '8px',
                 }}
-                onClick={() => handleSubmission(UnstakeType.HARVEST).then(() => setIsConfirmed(true))}
+                onClick={() => handleSubmission(UnstakeType.HARVEST, accrueInterest).then(() => setIsConfirmed(true))}
               >
                 {pendingTx ? t('Restaking') : t('Confirm Claim & Restake')}
               </Button>
@@ -187,7 +187,7 @@ export function HarvestModal({
                 }}
                 variant="secondary"
               >
-                Back
+                {t('Back')}
               </Button>
             </>
           )}

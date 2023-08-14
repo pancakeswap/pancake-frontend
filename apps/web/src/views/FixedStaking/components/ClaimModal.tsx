@@ -49,7 +49,7 @@ export function ClaimModal({
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
   })
 
-  const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({ poolIndex })
+  const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({ poolIndex, stakingToken: token })
 
   const unlockTimeFormat = formatTime(unlockTime * 1_000)
 
