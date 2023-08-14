@@ -26,11 +26,11 @@ export const getStaticProps = (async ({ params, previewData }) => {
       },
     }
 
-  const previewDataSlug = (previewData as any)?.slug
-  const slug = previewDataSlug || params.slug
+  const { slug } = params
+  const hasPreviewDataSlug = (previewData as any)?.slug
 
   let name: any = { $notIn: filterTagArray }
-  if (previewDataSlug) {
+  if (hasPreviewDataSlug) {
     name = { $eq: 'Preview' }
   }
 
