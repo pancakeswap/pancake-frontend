@@ -74,7 +74,7 @@ export const getStaticProps = (async ({ params, previewData }) => {
       fallback: {
         '/article': article,
         '/similarArticles': similarArticles.data,
-        isPreviewMode,
+        isPreviewMode: !!isPreviewMode,
       },
     },
     revalidate: 60,
