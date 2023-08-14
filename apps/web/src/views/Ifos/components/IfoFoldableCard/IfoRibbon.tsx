@@ -1,16 +1,25 @@
 import { Box, Flex, Heading, Progress, ProgressBar } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
+import { ChainId } from '@pancakeswap/sdk'
+import { ReactNode } from 'react'
+
 import { PublicIfoData } from '../../types'
 import LiveTimer, { SoonTimer } from './Timer'
+import { IfoChainBoard } from '../IfoChainBoard'
 
-const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
+const Container = styled(Box)`
+  position: relative;
+`
+
+const BigCurve = styled(Box) <{ $status: PublicIfoData['status'] }>`
   width: 150%;
   position: absolute;
   top: -150%;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1;
 
   ${({ theme }) => theme.mediaQueries.md} {
     border-radius: 50%;
@@ -36,16 +45,40 @@ const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
   }}
 `
 
-export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
+const RibbonContainer = styled(Box)`
+  z-index: 2;
+  position: relative;
+`
+
+const ChainBoardContainer = styled(Box)`
+  position: absolute;
+  top: -4rem;
+  left: 50%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    left: unset;
+    top: unset;
+    right: 90px;
+    bottom: 3px;
+  }
+`
+
+export const IfoRibbon = ({ ifoChainId, publicIfoData }: { ifoChainId?: ChainId; publicIfoData: PublicIfoData }) => {
   const { status } = publicIfoData
 
-  let Component
-  if (status === 'finished') {
-    Component = <IfoRibbonEnd />
-  } else if (status === 'live') {
-    Component = <IfoRibbonLive publicIfoData={publicIfoData} />
-  } else if (status === 'coming_soon') {
-    Component = <IfoRibbonSoon publicIfoData={publicIfoData} />
+  let ribbon: ReactNode = null
+  switch (status) {
+    case 'finished':
+      ribbon = <IfoRibbonEnd />
+      break
+    case 'live':
+      ribbon = <IfoRibbonLive publicIfoData={publicIfoData} />
+      break
+    case 'coming_soon':
+      ribbon = <IfoRibbonSoon publicIfoData={publicIfoData} />
+      break
+    default:
+      ribbon = null
   }
 
   if (status === 'idle') {
@@ -53,7 +86,7 @@ export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) =
   }
 
   return (
-    <>
+    <Container>
       {status === 'live' && (
         <Progress variant="flat">
           <ProgressBar
@@ -70,10 +103,14 @@ export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) =
         minHeight={['48px', '48px', '48px', '75px']}
         position="relative"
         overflow="hidden"
+        zIndex={1}
       >
-        {Component}
+        {ribbon}
       </Flex>
-    </>
+      <ChainBoardContainer zIndex={2}>
+        <IfoChainBoard chainId={ifoChainId} />
+      </ChainBoardContainer>
+    </Container>
   )
 }
 
@@ -82,11 +119,11 @@ const IfoRibbonEnd = () => {
   return (
     <>
       <BigCurve $status="finished" />
-      <Box position="relative">
+      <RibbonContainer>
         <Heading as="h3" scale="lg" color="textSubtle">
           {t('Sale Finished!')}
         </Heading>
-      </Box>
+      </RibbonContainer>
     </>
   )
 }
@@ -95,11 +132,11 @@ const IfoRibbonSoon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   return (
     <>
       <BigCurve $status="coming_soon" />
-      <Box position="relative">
+      <RibbonContainer>
         <Heading as="h3" scale="lg" color="secondary">
           <SoonTimer publicIfoData={publicIfoData} />
         </Heading>
-      </Box>
+      </RibbonContainer>
     </>
   )
 }
@@ -108,9 +145,9 @@ const IfoRibbonLive = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
   return (
     <>
       <BigCurve $status="live" />
-      <Box position="relative">
+      <RibbonContainer>
         <LiveTimer publicIfoData={publicIfoData} />
-      </Box>
+      </RibbonContainer>
     </>
   )
 }
