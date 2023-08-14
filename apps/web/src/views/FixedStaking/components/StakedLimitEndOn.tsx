@@ -4,15 +4,7 @@ import { formatTime } from 'utils/formatTime'
 
 import { useCurrenDay } from '../hooks/useStakedPools'
 
-export function StakedLimitEndOn({
-  lockPeriod,
-  poolEndDay,
-  color,
-}: {
-  color?: string
-  lockPeriod: number
-  poolEndDay: number
-}) {
+export function StakedLimitEndOn({ lockPeriod, poolEndDay }: { lockPeriod: number; poolEndDay: number }) {
   const lastDayAction = useCurrenDay()
 
   /**
@@ -29,9 +21,5 @@ export function StakedLimitEndOn({
 
   const endTime = exceedPoolEndDay ? lockEndDay : poolEndDay
 
-  return (
-    <Text color={color} bold>
-      {formatTime((endTime * 86400 + 43200) * 1_000)}
-    </Text>
-  )
+  return <>{formatTime((endTime * 86400 + 43200) * 1_000)}</>
 }

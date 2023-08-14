@@ -134,7 +134,9 @@ export function HarvestModal({
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                   {t('Fixed Staking Ends On')}
                 </Text>
-                <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+                <Text bold>
+                  <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+                </Text>
               </Flex>
               <Flex alignItems="baseline" justifyContent="space-between">
                 <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>

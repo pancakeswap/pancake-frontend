@@ -20,6 +20,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
+import { StakeConfirmModal } from './StakeConfirmModal'
 
 export function FixedStakingModal({
   stakingToken,
@@ -55,7 +56,6 @@ export function FixedStakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
-          onSubmissionComplete={() => stakeModal.onDismiss()}
           stakingToken={stakingToken}
           pools={pools}
           initialLockPeriod={initialLockPeriod}

@@ -19,7 +19,9 @@ export default function FixedStakingOverview({
   poolEndDay,
   isUnstakeView,
   alreadyStakedAmount,
+  disableStrike,
 }: {
+  disableStrike?: boolean
   isUnstakeView?: boolean
   stakeAmount: CurrencyAmount<Token>
   alreadyStakedAmount?: CurrencyAmount<Token>
@@ -59,7 +61,7 @@ export default function FixedStakingOverview({
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Duration')}
           </Text>
-          <Text bold color={alreadyStakedAmount?.greaterThan(0) ? 'failure' : ''}>
+          <Text bold color={alreadyStakedAmount?.greaterThan(0) ? 'failure' : undefined}>
             {lockPeriod} {t('days')}
           </Text>
         </Flex>
@@ -82,18 +84,16 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Stake Period Ends')}
         </Text>
-        <StakedLimitEndOn
-          color={alreadyStakedAmount?.greaterThan(0) ? 'failure' : ''}
-          lockPeriod={lockPeriod}
-          poolEndDay={poolEndDay}
-        />
+        <Text color={alreadyStakedAmount?.greaterThan(0) ? 'failure' : undefined} bold>
+          <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+        </Text>
       </Flex>
       <Flex alignItems="baseline" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Projected Return')}
         </Text>
         <Box style={{ textAlign: 'end' }}>
-          <AmountWithUSDSub shouldStrike={isUnstakeView} amount={projectedReturnAmount} />
+          <AmountWithUSDSub shouldStrike={isUnstakeView && !disableStrike} amount={projectedReturnAmount} />
         </Box>
       </Flex>
     </LightGreyCard>

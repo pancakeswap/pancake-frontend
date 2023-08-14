@@ -21,6 +21,7 @@ import first from 'lodash/first'
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import { StakeConfirmModal } from './StakeConfirmModal'
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
@@ -43,7 +44,6 @@ export function StakingModalTemplate({
   body,
   head,
   hideStakeButton,
-  onSubmissionComplete,
   stakedPositions,
 }: {
   stakingToken: Token
@@ -53,11 +53,11 @@ export function StakingModalTemplate({
   stakedPeriods: number[]
   head?: () => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
-  onSubmissionComplete?: () => void
   hideStakeButton?: boolean
 }) {
   const { t } = useTranslation()
   const [stakeAmount, setStakeAmount] = useState('')
+  const [isConfirmed, setIsConfirmed] = useState(false)
 
   const [lockPeriod, setLockPeriod] = useState(
     initialLockPeriod === null || initialLockPeriod === undefined ? first(stakedPeriods) : initialLockPeriod,
@@ -133,14 +133,12 @@ export function StakingModalTemplate({
           {t('Your funds have been staked in the pool')}
         </ToastDescriptionWithTx>,
       )
+      setIsConfirmed(true)
     }
-
-    if (onSubmissionComplete) onSubmissionComplete()
   }, [
     callWithGasPrice,
     fetchWithCatchTxError,
     fixedStakingContract,
-    onSubmissionComplete,
     rawAmount,
     selectedPool?.poolIndex,
     t,
@@ -226,6 +224,31 @@ export function StakingModalTemplate({
       stakeCurrencyAmount,
     ],
   )
+
+  if (isConfirmed) {
+    return (
+      <Modal
+        title={
+          <Flex>
+            <CurrencyLogo currency={stakingToken} size="28px" />
+            <Heading color="secondary" scale="lg" mx="8px">
+              {t('Stake')} {stakingToken?.symbol}
+            </Heading>
+          </Flex>
+        }
+        width={['100%', '100%', '420px']}
+        maxWidth={['100%', , '420px']}
+      >
+        <StakeConfirmModal
+          stakeCurrencyAmount={stakeCurrencyAmount}
+          poolEndDay={params.poolEndDay}
+          lockAPR={lockAPR}
+          boostAPR={boostAPR}
+          lockPeriod={lockPeriod}
+        />
+      </Modal>
+    )
+  }
 
   return (
     <Modal
