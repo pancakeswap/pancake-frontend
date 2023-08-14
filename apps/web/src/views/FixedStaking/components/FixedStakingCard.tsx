@@ -79,7 +79,9 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                   stakingToken={pool.token}
                   stakedPositions={stakedPositions}
                 >
-                  {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
+                  {(openModal, hideStakeButton) =>
+                    hideStakeButton ? null : <Button onClick={openModal}>{t('Stake')}</Button>
+                  }
                 </FixedStakingModal>
               ) : null}
             </>

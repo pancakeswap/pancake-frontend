@@ -14,6 +14,7 @@ import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
+import { differenceInMilliseconds } from 'date-fns'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -31,7 +32,7 @@ export function FixedStakingModal({
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
-  children: (openModal: () => void) => ReactNode
+  children: (openModal: () => void, hideStakeButton: boolean) => ReactNode
   initialLockPeriod: number
   stakedPositions: StakedPosition[]
   setSelectedPeriodIndex?: (value: number | null) => void
@@ -41,11 +42,27 @@ export function FixedStakingModal({
   const { t } = useTranslation()
   const stakeModal = useModalV2()
 
-  const stakedPeriods = useMemo(() => stakedPositions.map((sP) => sP.pool.lockPeriod), [stakedPositions])
+  const stakedPeriods = useMemo(
+    () =>
+      stakedPositions
+        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) > 0)
+        .map((sP) => sP.pool.lockPeriod),
+    [stakedPositions],
+  )
+
+  const claimedPeriods = useMemo(
+    () =>
+      stakedPositions
+        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) <= 0)
+        .map((sP) => sP.pool.lockPeriod),
+    [stakedPositions],
+  )
+
+  const hideStakeButton = stakedPeriods.length === pools.length
 
   return account ? (
     <>
-      {children(stakeModal.onOpen)}
+      {children(stakeModal.onOpen, hideStakeButton)}
       <ModalV2
         {...stakeModal}
         onDismiss={() => {
@@ -77,18 +94,20 @@ export function FixedStakingModal({
                     {t('Stake Duration')}
                   </PreTitle>
                   <Flex>
-                    {pools.map((pool) => (
-                      <StyledButton
-                        key={pool.lockPeriod}
-                        scale="md"
-                        variant={pool.lockPeriod === lockPeriod ? 'danger' : 'bubblegum'}
-                        width="100%"
-                        mx="2px"
-                        onClick={() => setLockPeriod(pool.lockPeriod)}
-                      >
-                        {pool.lockPeriod}D
-                      </StyledButton>
-                    ))}
+                    {pools
+                      .filter((pool) => !claimedPeriods.includes(pool.lockPeriod))
+                      .map((pool) => (
+                        <StyledButton
+                          key={pool.lockPeriod}
+                          scale="md"
+                          variant={pool.lockPeriod === lockPeriod ? 'danger' : 'bubblegum'}
+                          width="100%"
+                          mx="2px"
+                          onClick={() => setLockPeriod(pool.lockPeriod)}
+                        >
+                          {pool.lockPeriod}D
+                        </StyledButton>
+                      ))}
                   </Flex>
                   <Flex mt="8px">
                     <InfoFilledIcon
