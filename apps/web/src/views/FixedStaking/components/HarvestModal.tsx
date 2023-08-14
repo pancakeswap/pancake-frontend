@@ -139,7 +139,7 @@ export function HarvestModal({
                       <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                         {t('vCAKE Boost')}
                       </Text>
-                      <Text bold>{boostAPR?.toSignificant(2)}%</Text>
+                      <Text bold>{boostAPR.divide(lockAPR).divide(100).toSignificant(2)}x</Text>
                     </Flex>
                   ) : null}
                   <Flex alignItems="center" justifyContent="space-between">

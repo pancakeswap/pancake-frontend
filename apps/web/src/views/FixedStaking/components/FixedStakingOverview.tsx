@@ -70,12 +70,12 @@ export default function FixedStakingOverview({
         </Text>
         <Text bold>{lockAPR?.toSignificant(2)}%</Text>
       </Flex>
-      {boostAPR ? (
+      {boostAPR && lockAPR ? (
         <Flex alignItems="center" justifyContent="space-between">
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('vCAKE Boost')}
           </Text>
-          <Text bold>{boostAPR?.toSignificant(2)}%</Text>
+          <Text bold>{boostAPR.divide(lockAPR).divide(100).toSignificant(2)}x</Text>
         </Flex>
       ) : null}
       <Flex alignItems="center" justifyContent="space-between">
