@@ -15,7 +15,6 @@ declare global {
 
 const Page = styled(Box)`
   display: flex;
-  height: 100%;
   height: calc(100vh - 56px);
   background: ${({ theme }) => theme.colors.backgroundAlt};
 
