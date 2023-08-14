@@ -27,10 +27,10 @@ export const getStaticProps = (async ({ params, previewData }) => {
     }
 
   const { slug } = params
-  const hasPreviewDataSlug = (previewData as any)?.slug
+  const isPreviewMode = (previewData as any)?.slug
 
   let name: any = { $notIn: filterTagArray }
-  if (hasPreviewDataSlug) {
+  if (isPreviewMode) {
     name = { $eq: 'Preview' }
   }
 
@@ -74,6 +74,7 @@ export const getStaticProps = (async ({ params, previewData }) => {
       fallback: {
         '/article': article,
         '/similarArticles': similarArticles.data,
+        isPreviewMode,
       },
     },
     revalidate: 60,
@@ -94,8 +95,12 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <SWRConfig value={{ fallback }}>
         <Box>
           <ArticleInfo />
-          <HowItWork />
-          <SimilarArticles />
+          {!fallback.isPreviewMode && (
+            <>
+              <HowItWork />
+              <SimilarArticles />
+            </>
+          )}
         </Box>
       </SWRConfig>
     </div>
