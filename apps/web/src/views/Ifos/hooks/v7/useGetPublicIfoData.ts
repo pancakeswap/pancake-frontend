@@ -94,7 +94,7 @@ const INITIAL_STATE = {
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { chainId: currenctChainId } = useActiveChainId()
+  const { chainId: currentChainId } = useActiveChainId()
   const { address: account } = useAccount()
   const { chainId } = ifo
   const { address, plannedStartTime } = ifo
@@ -261,7 +261,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     }))
   }, [plannedStartTime, address, chainId])
 
-  useEffect(() => setState(INITIAL_STATE), [currenctChainId, account])
+  useEffect(() => setState(INITIAL_STATE), [currentChainId, account])
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
 }
