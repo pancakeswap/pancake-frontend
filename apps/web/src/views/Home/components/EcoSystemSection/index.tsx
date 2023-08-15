@@ -1,4 +1,4 @@
-import { Flex, Text, Box, ChevronRightIcon } from '@pancakeswap/uikit'
+import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
@@ -21,15 +21,19 @@ import gamePancakeProtectors from '../../images/game-pancake-protectors.png'
 import gameLottery from '../../images/game-lottery.png'
 import gamePottery from '../../images/game-pottery.png'
 import nftMarketplace from '../../images/nft-marketplace.png'
+import GradientLogo from '../GradientLogoSvg'
 
 export const CardWrapper = styled.div`
   border-radius: 24px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  width: 1152px;
+  width: 100%;
   box-sizing: border-box;
   padding: 48px 24px 24px 24px;
   min-height: 360px;
   margin-top: 48px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: 1152px;
+  }
 `
 
 export const ItemWrapper = styled(Flex)`
@@ -47,7 +51,6 @@ export const Title = styled.div`
   margin-bottom: 24px;
   font-weight: 600;
   line-height: 110%;
-  padding-left: 24px;
   color: ${({ theme }) => theme.colors.secondary};
 `
 
@@ -167,8 +170,9 @@ const FeatureBox: React.FC<{
   ctaTitle: string
 }> = ({ title, description, image, width, ctaTitle }) => {
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
   return (
-    <ItemWrapper flexBasis={`${width}%`}>
+    <ItemWrapper flexBasis={isMobile ? `50%` : `${width}%`}>
       <Image src={image} width={108} height={108} alt={title} />
       <Box>
         <Text fontSize="20px" mb="8px" lineHeight="110%" fontWeight={600} color={theme.colors.text}>
@@ -194,16 +198,18 @@ const EcoSystemSection: React.FC = () => {
   const tradeBlockData = useTradeBlockData()
   const earnBlockData = useEarnBlockData()
   const nftGameBlockData = useNftGameBlockData()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
+      <GradientLogo height="48px" width="48px" mb="24px" />
       <Text fontSize="40px" bold color={theme.colors.secondary}>
         {t('Discover the Ecosystem')}
       </Text>
       <CardWrapper>
-        <Flex>
+        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row'}>
           <Image
-            style={{ marginLeft: -72 }}
+            style={{ marginLeft: isMobile ? -32 : -72 }}
             src={tradeBunny}
             alt="tradeBunny"
             width={340}
@@ -212,7 +218,7 @@ const EcoSystemSection: React.FC = () => {
           />
           <Flex flexDirection="column">
             <Title>{t('Trade')}</Title>
-            <Flex>
+            <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
               {tradeBlockData.map((item) => (
                 <FeatureBox
                   key={`${item.title}Block`}
@@ -228,10 +234,10 @@ const EcoSystemSection: React.FC = () => {
         </Flex>
       </CardWrapper>
       <CardWrapper>
-        <Flex style={{ gap: 32 }}>
+        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column-reverse' : 'row'}>
           <Flex flexDirection="column">
             <Title>{t('Earn')}</Title>
-            <Flex pl="24px">
+            <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
               {earnBlockData.map((item) => (
                 <FeatureBox
                   key={`${item.title}Block`}
@@ -255,9 +261,9 @@ const EcoSystemSection: React.FC = () => {
         </Flex>
       </CardWrapper>
       <CardWrapper>
-        <Flex style={{ gap: 32 }}>
+        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row'}>
           <Image
-            style={{ marginLeft: -72 }}
+            style={{ marginLeft: isMobile ? -32 : -72 }}
             src={gameNftBunny}
             alt="gameNftBunny"
             width={344}
@@ -266,7 +272,7 @@ const EcoSystemSection: React.FC = () => {
           />
           <Flex flexDirection="column">
             <Title>{t('Game & NFT')}</Title>
-            <Flex>
+            <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
               {nftGameBlockData.map((item) => (
                 <FeatureBox
                   key={`${item.title}Block`}
