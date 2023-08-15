@@ -1,27 +1,29 @@
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { Address } from 'viem'
-import { useTokenContract } from 'hooks/useContract'
-import { WETH9 } from '@pancakeswap/sdk'
 import { useCallback } from 'react'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import { useActiveChainId } from './useActiveChainId'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { Address } from 'viem'
+import { useTokenContract } from 'hooks/useContract'
 
-export const useApproveETH = (spender: string) => {
+interface UseLiquidStakingApproveProps {
+  approveToken: string
+  contractAddress: string
+}
+
+export const useLiquidStakingApprove = ({ approveToken, contractAddress }: UseLiquidStakingApproveProps) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { chainId } = useActiveChainId()
 
-  const ethContract = useTokenContract(WETH9[chainId].address)
+  const tokenContract = useTokenContract(approveToken as Address)
 
   const onApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(ethContract, 'approve', [spender as Address, MaxUint256])
+      return callWithGasPrice(tokenContract, 'approve', [contractAddress as Address, MaxUint256])
     })
 
     if (receipt?.status) {
@@ -32,7 +34,7 @@ export const useApproveETH = (spender: string) => {
         </ToastDescriptionWithTx>,
       )
     }
-  }, [spender, ethContract, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
+  }, [fetchWithCatchTxError, callWithGasPrice, tokenContract, contractAddress, toastSuccess, t])
 
   return { isPending, onApprove }
 }
