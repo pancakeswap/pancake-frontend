@@ -209,7 +209,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
 
   if (kvCache) {
     // 5 mins
-    if (new Date().getTime() > new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
+    if (new Date().getTime() < new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
       return json(
         {
           tvl: {
@@ -258,7 +258,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
     }
 
     const resultTimeout = await Promise.race([
-      timeout(15),
+      timeout(20),
       fetchLiquidityFromSubgraph(chainId, address, masterChefV3Address, tick, sqrtPriceX96),
     ])
 
