@@ -258,7 +258,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
     }
 
     const resultTimeout = await Promise.race([
-      timeout(15),
+      timeout(20),
       fetchLiquidityFromSubgraph(chainId, address, masterChefV3Address, tick, sqrtPriceX96),
     ])
 
