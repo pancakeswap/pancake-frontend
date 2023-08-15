@@ -1,5 +1,13 @@
 import Image from 'next/image'
-import { BinanceChainIcon, EthChainIcon, AptosIcon, ZkEVMIcon, ZkSyncIcon, Arbitrum, Text } from '@pancakeswap/uikit'
+import {
+  BinanceChainIcon,
+  EthChainIcon,
+  AptosIcon,
+  ZkEVMIcon,
+  Arbitrum,
+  Text,
+  ZksyncWithOutCircleIcon,
+} from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
 import styled, { keyframes } from 'styled-components'
 import Marquee from 'react-fast-marquee'
@@ -44,13 +52,13 @@ const newsItems = [
     key: 'Polygon zkEVM',
     component: <ZkEVMIcon />,
     background: '#AD73DE',
-    iconWidth: '26px',
+    iconWidth: '24px',
   },
   {
     key: 'zkSync Era',
-    component: <ZkSyncIcon />,
+    component: <ZksyncWithOutCircleIcon />,
     background: '#686EA7',
-    iconWidth: '22px',
+    iconWidth: '26px',
   },
   {
     key: 'Arbitrum One',
@@ -65,7 +73,7 @@ export const ChainTags: React.FC = () => {
     <StyledMarquee>
       {newsItems.map((d) => (
         <TagWrapper style={{ background: d.background }} key={d.key}>
-          {cloneElement(d.component, { width: d.iconWidth, color: 'white' })}
+          {cloneElement(d.component, { width: d.iconWidth, color: 'invertedContrast' })}
           <Text fontWeight={600} ml="10px" color="invertedContrast">
             {d.key}
           </Text>
