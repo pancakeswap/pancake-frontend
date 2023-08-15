@@ -31,7 +31,7 @@ export function useHandleWithdrawSubmission({ poolIndex, stakingToken }: { poolI
     args: [fixedStakingContract.address],
   })
 
-  const stakingTokenBalanceInPool = CurrencyAmount.fromRawAmount(stakingToken, data)
+  const stakingTokenBalanceInPool = CurrencyAmount.fromRawAmount(stakingToken, data || '0')
 
   const handleSubmission = useCallback(
     async (type: UnstakeType, totalGetAmount: CurrencyAmount<Token>) => {
