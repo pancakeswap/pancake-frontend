@@ -234,7 +234,15 @@ const EcoSystemSection: React.FC = () => {
         </Flex>
       </CardWrapper>
       <CardWrapper>
-        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column-reverse' : 'row'}>
+        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row-reverse'}>
+          <Image
+            style={{ marginRight: isMobile ? 'auto' : -72, marginLeft: isMobile ? 32 : 'auto' }}
+            src={earnNftBunny}
+            alt="earnNftBunny"
+            width={296}
+            height={360}
+            placeholder="blur"
+          />
           <Flex flexDirection="column">
             <Title>{t('Earn')}</Title>
             <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
@@ -250,14 +258,6 @@ const EcoSystemSection: React.FC = () => {
               ))}
             </Flex>
           </Flex>
-          <Image
-            style={{ marginRight: -72 }}
-            src={earnNftBunny}
-            alt="earnNftBunny"
-            width={296}
-            height={360}
-            placeholder="blur"
-          />
         </Flex>
       </CardWrapper>
       <CardWrapper>
