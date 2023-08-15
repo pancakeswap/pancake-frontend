@@ -196,7 +196,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
         ? getFarmsPrices([...bnbBusdFarms, ...poolsWithDifferentFarmToken], nativeStableLpMap[chainId], 18)
         : []
 
-    const prices = getTokenPricesFromFarm([...farmsV3Data, ...farmsV2Data, ...farmsWithPricesOfDifferentTokenPools])
+    const prices = getTokenPricesFromFarm([...farmsV2Data, ...farmsV3Data, ...farmsWithPricesOfDifferentTokenPools])
 
     const liveData: any[] = []
 
