@@ -18,9 +18,9 @@ export const LiquidStakingFAQs: React.FC<LiquidStakingFAQsProps> = ({ config }) 
         </Heading>
       </CardHeader>
       <CardBody>
-        {config?.map(({ title, description }, i, { length }) => (
+        {config?.map(({ id, title, description }, i, { length }) => (
           // eslint-disable-next-line react/no-array-index-key
-          <FoldableText key={i} mb={i + 1 === length ? '' : '24px'} title={title}>
+          <FoldableText key={id} mb={i + 1 === length ? '' : '24px'} title={title}>
             <Text color="textSubtle" as="p">
               {description}
             </Text>

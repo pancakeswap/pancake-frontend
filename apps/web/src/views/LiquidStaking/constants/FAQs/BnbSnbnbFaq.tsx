@@ -3,6 +3,7 @@ import { Box, Link } from '@pancakeswap/uikit'
 
 export const BnbSnbnbFaq = () => [
   {
+    id: 1,
     title: <Trans>How does SnBNB generate staking rewards?</Trans>,
     description: (
       <>
@@ -27,6 +28,7 @@ export const BnbSnbnbFaq = () => [
     ),
   },
   {
+    id: 2,
     title: <Trans>How is the APR calculated for SnBNB?</Trans>,
     description: (
       <>
@@ -51,6 +53,7 @@ export const BnbSnbnbFaq = () => [
     ),
   },
   {
+    id: 3,
     title: <Trans>How can I use SnBNB?</Trans>,
     description: (
       <>
@@ -69,6 +72,7 @@ export const BnbSnbnbFaq = () => [
     ),
   },
   {
+    id: 4,
     // eslint-disable-next-line react/no-unescaped-entities
     title: <Trans>Do I need to claim staking rewards if I'm using SnBNB?</Trans>,
     description: (
@@ -78,6 +82,7 @@ export const BnbSnbnbFaq = () => [
     ),
   },
   {
+    id: 5,
     title: <Trans>How do I convert SnBNB back to BNB?</Trans>,
     description: (
       <>

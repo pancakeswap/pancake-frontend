@@ -3,6 +3,7 @@ import { Link, LinkExternal } from '@pancakeswap/uikit'
 
 export const EthWbethFaq = () => [
   {
+    id: 1,
     title: <Trans>How does wBETH generate staking rewards?</Trans>,
     description: (
       <Trans>
@@ -13,6 +14,7 @@ export const EthWbethFaq = () => [
     ),
   },
   {
+    id: 2,
     title: <Trans>What staking APR can I get from liquid staking?</Trans>,
     description: (
       <>
@@ -27,6 +29,7 @@ export const EthWbethFaq = () => [
     ),
   },
   {
+    id: 3,
     title: <Trans>What is the difference between wBETH and BETH?</Trans>,
     description: (
       <>
@@ -44,6 +47,7 @@ export const EthWbethFaq = () => [
     ),
   },
   {
+    id: 4,
     title: <Trans>How can I use wBETH?</Trans>,
     description: (
       <Trans>
@@ -54,6 +58,7 @@ export const EthWbethFaq = () => [
     ),
   },
   {
+    id: 5,
     // eslint-disable-next-line react/no-unescaped-entities
     title: <Trans>Do I need to claim staking rewards if I'm using wBETH?</Trans>,
     description: (
@@ -63,6 +68,7 @@ export const EthWbethFaq = () => [
     ),
   },
   {
+    id: 6,
     title: <Trans>How do I convert wBETH back to ETH?</Trans>,
     description: (
       <>

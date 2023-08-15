@@ -21,6 +21,7 @@ export enum FunctionName {
 }
 
 export interface FAQType {
+  id: number
   title: JSX.Element
   description: JSX.Element
 }
