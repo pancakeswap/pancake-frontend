@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading } from '@pancakeswap/uikit'
+import { Flex, Heading, useMatchBreakpoints, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Image from 'next/legacy/image'
 import useSWRImmutable from 'swr/immutable'
@@ -40,25 +40,30 @@ const Stats = () => {
   const { data: tvl } = useSWRImmutable('tvl')
   const { data: txCount } = useSWRImmutable('totalTx30Days')
   const { data: addressCount } = useSWRImmutable('addressCount30Days')
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
-      <GradientLogo height="48px" width="48px" mb="24px" />
-      <Heading textAlign="center" scale="xl">
+      {/* <GradientLogo height="48px" width="48px" mb="24px" /> */}
+      <Text textAlign="center" fontWeight={600} fontSize={isMobile ? '20px' : '32px'}>
         {t('Shaping the Future of Decentralized Trading:')}
-      </Heading>
-      <Heading textAlign="center" scale="xl" mb="32px">
+      </Text>
+      <Text textAlign="center" fontWeight={600} fontSize={isMobile ? '20px' : '32px'} mb="32px">
         {t(' PancakeSwap’s Unstoppable Expansion')}
-      </Heading>
-      <Flex justifyContent="space-between" width="800px">
+      </Text>
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        flexDirection={isMobile ? 'column' : 'row'}
+        width={['100%', '100%', '800px', '800px']}
+        style={{ gap: isMobile ? 32 : 50 }}
+      >
         <MetricsCard title={t('Total Users:')} value={addressCount} description={t('in the last 30 days')} />
-        <Divider />
         <MetricsCard title={t('Total Trading Volume:')} value={txCount} description={t('in the last 30 days')} />
-        <Divider />
         <MetricsCard title={t('Total Value Locked:')} value={tvl} description={t('in the last 30 days')} />
       </Flex>
       <ChainTags />
-      <ImageLayer>
+      <ImageLayer style={{ display: isMobile ? 'none' : 'block' }}>
         <BnbBallRocket>
           <Image src={bnbBallRocket} alt="bnbBallRocket" width={144} height={168} placeholder="blur" />
         </BnbBallRocket>
