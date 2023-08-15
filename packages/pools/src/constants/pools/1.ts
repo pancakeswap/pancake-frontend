@@ -61,6 +61,12 @@ export const finishedPools: SerializedPool[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.04629',
   },
-]
+].map((p) => ({
+  ...p,
+  isFinished: true,
+  contractAddress: getAddress(p.contractAddress),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
 
 export const pools: SerializedPool[] = [...livePools, ...finishedPools]
