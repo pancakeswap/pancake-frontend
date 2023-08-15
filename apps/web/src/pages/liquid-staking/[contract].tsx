@@ -33,7 +33,7 @@ const LiquidStakingStakePage = () => {
 
   useEffect(() => {
     const contract: string = (router?.query?.contract as string) ?? ''
-    const fetch = async () => {
+    const fetch = () => {
       const hasContract = list?.find((i) => i.contract.toLowerCase() === contract?.toLowerCase())
       if (hasContract) {
         setSelectedList(hasContract)
