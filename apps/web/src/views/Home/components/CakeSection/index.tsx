@@ -82,8 +82,8 @@ export const CakeSectionCenterBox = styled.div`
 
 const CakeBox = styled.div`
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 360px;
+  height: 360px;
   overflow: hidden;
 `
 
@@ -99,12 +99,13 @@ const CakeCanvas = styled.canvas`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: transparent;
 `
 
 let canvasInterval = 0
 const fps = 60
-const width = 800
-const height = 800
+const width = 734
+const height = 734
 
 const useDrawCanvas = (
   videoRef: React.MutableRefObject<HTMLVideoElement>,
@@ -115,7 +116,9 @@ const useDrawCanvas = (
   const isElementReady = video && canvas
 
   const drawImage = useCallback(() => {
-    canvas?.getContext('2d', { alpha: false }).drawImage(video, 0, 0, width, height)
+    const context = canvas?.getContext('2d', { alpha: true })
+    context.clearRect(0, 0, width, height)
+    context.drawImage(video, 0, 0, width, height)
   }, [canvas, video])
 
   if (isElementReady) {
@@ -179,7 +182,7 @@ const CakeSection: React.FC = () => {
         </Link>
       </Flex>
       <CakeSectionMainBox>
-        <CakeSectionLeftBox>
+        <CakeSectionLeftBox style={{ opacity: '0' }}>
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600" mb="20px">
             {t('Ecosystem')}
           </Text>
@@ -191,14 +194,14 @@ const CakeSection: React.FC = () => {
         </CakeSectionLeftBox>
         <CakeSectionCenterBox>
           <CakeBox>
-            <CakeCanvas width={800} height={800} ref={canvasRef} />
-            <CakeVideo ref={videoRef} width="500px" loop controls autoPlay muted id="video">
-              <source src="/assets/cake.webm" type="video/webm" />
+            <CakeCanvas width={width} height={height} ref={canvasRef} />
+            <CakeVideo ref={videoRef} width={width} loop controls autoPlay muted id="video">
+              <source src="/assets/cake-alpha.webm" type="video/webm" />
             </CakeVideo>
           </CakeBox>
           {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
-        <CakeSectionRightBox>
+        <CakeSectionRightBox style={{ opacity: '0' }}>
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600">
             {t('Partners')}
           </Text>

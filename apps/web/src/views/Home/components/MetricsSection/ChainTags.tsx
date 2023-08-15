@@ -1,49 +1,76 @@
 import Image from 'next/image'
-import styled from 'styled-components'
-import bnbTag from '../../images/bnb-tag.png'
-import aptosTag from '../../images/aptos-tag.png'
-import ethTag from '../../images/eth-tag.png'
-import polygonTag from '../../images/polygon-zkevm-tag.png'
-import lineanTag from '../../images/linea-tag.png'
+import { BinanceChainIcon, EthChainIcon, AptosIcon, ZkEVMIcon, ZkSyncIcon, Arbitrum, Text } from '@pancakeswap/uikit'
+import React, { cloneElement } from 'react'
+import styled, { keyframes } from 'styled-components'
+import Marquee from 'react-fast-marquee'
 
-const Wrapper = styled.div`
-  margin-top: 30px;
-  white-space: nowrap;
-  max-width: 800px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-`
 const TagWrapper = styled.div`
-  display: inline-block;
-  margin-right: 32px;
-  scroll-snap-align: start;
+  padding: 12px 24px;
+  display: flex;
+  height: 46px;
+  justify-content: start;
+  align-items: center;
+  border-radius: 25px;
+  margin-right: 12px;
 `
+
+const StyledMarquee = styled(Marquee)`
+  width: 100%;
+  max-width: 850px;
+  margin-top: 30px;
+  mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
+`
+
+const newsItems = [
+  {
+    key: 'BNB Chain',
+    component: <BinanceChainIcon />,
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #F0B90B',
+    iconWidth: '22px',
+  },
+  {
+    key: 'Aptos',
+    component: <AptosIcon />,
+    background: '#17BA92',
+    iconWidth: '22px',
+  },
+  {
+    key: 'Ethereum',
+    component: <EthChainIcon />,
+    background: '#627AD8',
+    iconWidth: '16px',
+  },
+  {
+    key: 'Polygon zkEVM',
+    component: <ZkEVMIcon />,
+    background: '#AD73DE',
+    iconWidth: '26px',
+  },
+  {
+    key: 'zkSync Era',
+    component: <ZkSyncIcon />,
+    background: '#686EA7',
+    iconWidth: '22px',
+  },
+  {
+    key: 'Arbitrum One',
+    component: <Arbitrum />,
+    background: '#6E89AE',
+    iconWidth: '20px',
+  },
+]
 
 export const ChainTags: React.FC = () => {
   return (
-    <Wrapper>
-      <TagWrapper>
-        <Image src={bnbTag} alt="bnbTag" width={304} height={72} placeholder="blur" />
-      </TagWrapper>
-      <TagWrapper>
-        <Image src={aptosTag} alt="aptosTag" width={186} height={72} placeholder="blur" />
-      </TagWrapper>
-      <TagWrapper>
-        <Image src={ethTag} alt="ethTag" width={237} height={72} placeholder="blur" />
-      </TagWrapper>
-      <TagWrapper>
-        <Image src={polygonTag} alt="polygonTag" width={214} height={72} placeholder="blur" />
-      </TagWrapper>
-      <TagWrapper>
-        <Image src={lineanTag} alt="lineanTag" width={150} height={72} placeholder="blur" />
-      </TagWrapper>
-    </Wrapper>
+    <StyledMarquee>
+      {newsItems.map((d) => (
+        <TagWrapper style={{ background: d.background }} key={d.key}>
+          {cloneElement(d.component, { width: d.iconWidth, color: 'white' })}
+          <Text fontWeight={600} ml="10px" color="invertedContrast">
+            {d.key}
+          </Text>
+        </TagWrapper>
+      ))}
+    </StyledMarquee>
   )
 }

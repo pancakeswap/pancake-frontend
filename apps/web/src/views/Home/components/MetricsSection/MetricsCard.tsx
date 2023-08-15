@@ -17,10 +17,10 @@ export const MetricsCard: React.FC<{ title: string; value: number; description: 
   const { theme } = useTheme()
   return (
     <Box>
-      <Text fontSize={16} lineHeight="120%">
+      <Text fontSize={16} textAlign="center" fontWeight={600} lineHeight="120%">
         {title}
       </Text>
-      <Text lineHeight="110%" fontSize="24px" color={theme.colors.secondary}>
+      <Text lineHeight="110%" textAlign="center" fontWeight={600} fontSize="24px" color={theme.colors.secondary}>
         <CountUp
           start={0}
           preserveValue
@@ -35,7 +35,7 @@ export const MetricsCard: React.FC<{ title: string; value: number; description: 
           {({ countUpRef }) => <span ref={countUpRef} />}
         </CountUp>
       </Text>
-      <Text fontSize={16} lineHeight="120%" color={theme.colors.textSubtle}>
+      <Text fontSize={16} textAlign="center" fontWeight={600} lineHeight="120%" color={theme.colors.textSubtle}>
         {description}
       </Text>
     </Box>
