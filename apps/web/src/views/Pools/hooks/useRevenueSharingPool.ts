@@ -34,6 +34,8 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
   const { data } = useSWR(account && chainId && ['/revenue-sharing-pool', account, chainId], async () => {
     try {
       const now = Math.floor(blockTimestamp / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+      const lastTokenTimestamp = Math.floor(new Date().getTime() / 1000 / ONE_WEEK_DEFAULT) * ONE_WEEK_DEFAULT
+
       const revenueCalls = [
         {
           functionName: 'balanceOfAt',
@@ -47,12 +49,6 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
           abi: revenueSharingPoolABI,
           args: [now],
         },
-        {
-          functionName: 'lastTokenTimestamp',
-          address: contractAddress as Address,
-          abi: revenueSharingPoolABI,
-          args: [],
-        },
       ]
 
       const client = publicClient({ chainId })
@@ -64,15 +60,13 @@ const useRevenueSharingPool = (): RevenueSharingPool => {
         contract.simulate.claim([account]),
       ])
 
-      const nextDistributionTimestamp = new BigNumber(revenueResult[2].result.toString())
-        .plus(ONE_WEEK_DEFAULT)
-        .toNumber()
+      const nextDistributionTimestamp = new BigNumber(lastTokenTimestamp).plus(ONE_WEEK_DEFAULT).toNumber()
 
       return {
         balanceOfAt: revenueResult[0].result.toString(),
         totalSupplyAt: revenueResult[1].result.toString(),
         nextDistributionTimestamp,
-        lastTokenTimestamp: Number(revenueResult[2].result.toString()),
+        lastTokenTimestamp,
         availableClaim: claimResult.result.toString(),
       }
     } catch (error) {
