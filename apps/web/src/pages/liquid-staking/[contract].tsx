@@ -43,7 +43,7 @@ const LiquidStakingStakePage = () => {
       }
     }
 
-    if (contract && isFetching) {
+    if (contract && !isFetching) {
       fetch()
     }
   }, [chainId, list, router, isFetching])
