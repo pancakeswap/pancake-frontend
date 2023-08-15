@@ -23,7 +23,7 @@ interface UseExchangeRateType {
 
 export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchangeRateType => {
   const { chainId } = useActiveChainId()
-  const liquidStakingList = useLiquidStakingList()
+  const { data: liquidStakingList } = useLiquidStakingList()
 
   const { data, isLoading, mutate } = useSWR(
     liquidStakingList?.length && decimals && ['/user-exchange-rate', chainId, liquidStakingList, decimals],

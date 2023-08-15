@@ -17,7 +17,7 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { fetchLiquidStaking } from 'views/LiquidStaking/hooks/useLiquidStakingList'
+import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStakingList'
 import StakeInfo from 'views/LiquidStaking/components/StakeInfo'
 import { useExchangeRate } from 'views/LiquidStaking/hooks/useExchangeRate'
 import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
@@ -25,6 +25,7 @@ import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingBut
 const LiquidStakingStakePage = () => {
   const { t } = useTranslation()
   const router = useRouter()
+  const { data: list, isFetching } = useLiquidStakingList()
   const { account, chainId } = useAccountActiveChain()
   const [stakeAmount, setStakeAmount] = useState('')
   const [showPage, setShowPage] = useState(false)
@@ -33,20 +34,19 @@ const LiquidStakingStakePage = () => {
   useEffect(() => {
     const contract: string = (router?.query?.contract as string) ?? ''
     const fetch = async () => {
-      const list = await fetchLiquidStaking(chainId)
       const hasContract = list?.find((i) => i.contract.toLowerCase() === contract?.toLowerCase())
       if (hasContract) {
         setSelectedList(hasContract)
         setShowPage(true)
       } else {
-        await router.push('/liquid-staking')
+        router.push('/liquid-staking')
       }
     }
 
-    if (contract) {
+    if (contract && isFetching) {
       fetch()
     }
-  }, [chainId, router])
+  }, [chainId, list, router, isFetching])
 
   const { exchangeRateList } = useExchangeRate({ decimals: selectedList?.token0?.decimals })
 

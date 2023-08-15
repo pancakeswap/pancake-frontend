@@ -16,7 +16,7 @@ interface UseLiquidStakingAprType {
 
 export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
   const { chainId } = useActiveChainId()
-  const liquidStakingList = useLiquidStakingList()
+  const { data: liquidStakingList } = useLiquidStakingList()
 
   const { data, isLoading, mutate } = useSWR(
     liquidStakingList?.length && ['liquid-staking-apr', chainId, liquidStakingList],
