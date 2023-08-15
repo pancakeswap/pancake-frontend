@@ -55,7 +55,7 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
       footer={
         <>
           <Text as="span">{t('By proceeding, you agree to comply with our')}</Text>
-          <Link m="0 4px" display="inline" href="/terms-of-service">
+          <Link external m="0 4px" display="inline" href="/terms-of-service">
             {t('terms and conditions')}
           </Link>
           <Text as="span">{t('and all relevant laws and regulations.')}</Text>
