@@ -1,6 +1,5 @@
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
-import { ChainId } from '@pancakeswap/sdk'
 import { ifoV7ABI } from '@pancakeswap/ifos'
 
 import { publicClient } from 'utils/wagmi'
@@ -10,10 +9,17 @@ export const useIfoStatus = () => {
   const activeIfo = useActiveIfoConfig()
 
   const { data = { startTime: 0, endTime: 0 } } = useSWRImmutable(
-    activeIfo ? ['ifo', 'currentIfo_timestamps'] : null,
+    activeIfo ? ['ifo', 'currentIfo_timestamps', activeIfo.chainId] : null,
     async () => {
-      const bscClient = publicClient({ chainId: ChainId.BSC })
-      const [startTimeResponse, endTimeResponse] = await bscClient.multicall({
+      const client = publicClient({ chainId: activeIfo.chainId })
+      if (!client) {
+        return {
+          startTime: 0,
+          endTime: 0,
+        }
+      }
+
+      const [startTimeResponse, endTimeResponse] = await client.multicall({
         contracts: [
           {
             address: activeIfo.address,
