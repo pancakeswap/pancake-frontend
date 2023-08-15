@@ -264,4 +264,12 @@ export const ethereumTokens = {
     'Wombat Token',
     'https://www.wombat.exchange/',
   ),
+  cyber: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x14778860E937f509e651192a90589dE711Fb88a9',
+    18,
+    'CYBER',
+    'CyberConnect',
+    'https://cyberconnect.me/',
+  ),
 }
