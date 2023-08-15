@@ -209,7 +209,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
 
   if (kvCache) {
     // 5 mins
-    if (new Date().getTime() > new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
+    if (new Date().getTime() < new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
       return json(
         {
           tvl: {
