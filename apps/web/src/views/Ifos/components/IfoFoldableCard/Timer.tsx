@@ -9,6 +9,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 
 interface Props {
   publicIfoData: PublicIfoData
+  dark?: boolean
 }
 
 const GradientText = styled(Heading)`
@@ -25,7 +26,7 @@ const FlexGap = styled(Flex)<{ gap: string }>`
 
 const USE_BLOCK_TIMESTAMP_UNTIL = 3
 
-export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
+export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData, dark }) => {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
@@ -40,45 +41,46 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
   } else {
     timeUntil = getTimePeriods(secondsUntilStart)
   }
+  const textColor = dark ? '#EFF3F4' : '#674F9C'
 
   const countdownDisplay =
     status !== 'idle' ? (
       <>
         <FlexGap gap="8px" alignItems="center">
-          <Heading as="h3" scale="lg" color="contrast">
+          <Heading as="h3" scale="lg" color={textColor}>
             {t('Starts in')}
           </Heading>
           <FlexGap gap="4px" alignItems="baseline">
             {timeUntil.days ? (
               <>
-                <Heading scale="lg" color="contrast">
+                <Heading scale="lg" color={textColor}>
                   {timeUntil.days}
                 </Heading>
-                <Text color="contrast">{t('d')}</Text>
+                <Text color={textColor}>{t('d')}</Text>
               </>
             ) : null}
             {timeUntil.days || timeUntil.hours ? (
               <>
-                <Heading color="contrast" scale="lg">
+                <Heading color={textColor} scale="lg">
                   {timeUntil.hours}
                 </Heading>
-                <Text color="contrast">{t('h')}</Text>
+                <Text color={textColor}>{t('h')}</Text>
               </>
             ) : null}
             <>
-              <Heading color="contrast" scale="lg">
+              <Heading color={textColor} scale="lg">
                 {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
               </Heading>
-              <Text color="contrast">{t('m')}</Text>
+              <Text color={textColor}>{t('m')}</Text>
             </>
           </FlexGap>
         </FlexGap>
-        <TimerIcon ml="4px" color="contrast" />
+        <TimerIcon ml="4px" color={textColor} />
       </>
     ) : null
 
   const countdown = isLegacyBlockCountdown ? (
-    <Link external href={getBlockExploreLink(startBlockNum, 'countdown', chainId)} color="contrast">
+    <Link external href={getBlockExploreLink(startBlockNum, 'countdown', chainId)} color={textColor}>
       {countdownDisplay}
     </Link>
   ) : (

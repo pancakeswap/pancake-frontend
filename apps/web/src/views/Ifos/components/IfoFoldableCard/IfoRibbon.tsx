@@ -2,17 +2,19 @@ import { Box, Flex, Heading, Progress, ProgressBar } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { ChainId } from '@pancakeswap/sdk'
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
+import { useImageColor } from '@pancakeswap/hooks'
 
 import { PublicIfoData } from '../../types'
 import LiveTimer, { SoonTimer } from './Timer'
 import { IfoChainBoard } from '../IfoChainBoard'
+import { getBannerUrl } from '../../helpers'
 
 const Container = styled(Box)`
   position: relative;
 `
 
-const BigCurve = styled(Box) <{ $status: PublicIfoData['status'] }>`
+const BigCurve = styled(Box)<{ $status: PublicIfoData['status']; $dark?: boolean }>`
   width: 150%;
   position: absolute;
   top: -150%;
@@ -25,15 +27,15 @@ const BigCurve = styled(Box) <{ $status: PublicIfoData['status'] }>`
     border-radius: 50%;
   }
 
-  ${({ $status, theme }) => {
+  ${({ $status, $dark, theme }) => {
     switch ($status) {
       case 'coming_soon':
         return `
-          background: ${theme.colors.tertiary};
+          background: ${$dark ? '#353547' : '#EFF3F4'};
         `
       case 'live':
         return `
-          background: linear-gradient(#8051D6 100%, #492286 100%);
+          background: linear-gradient(180deg, #8051D6 0%, #492286 100%);
         `
       case 'finished':
         return `
@@ -63,8 +65,18 @@ const ChainBoardContainer = styled(Box)`
   }
 `
 
-export const IfoRibbon = ({ ifoChainId, publicIfoData }: { ifoChainId?: ChainId; publicIfoData: PublicIfoData }) => {
+export const IfoRibbon = ({
+  ifoId,
+  ifoChainId,
+  publicIfoData,
+}: {
+  ifoChainId?: ChainId
+  publicIfoData: PublicIfoData
+  ifoId?: string
+}) => {
   const { status } = publicIfoData
+  const bannerUrl = useMemo(() => ifoId && getBannerUrl(ifoId), [ifoId])
+  const { isDarkColor } = useImageColor({ url: bannerUrl })
 
   let ribbon: ReactNode = null
   switch (status) {
@@ -72,10 +84,10 @@ export const IfoRibbon = ({ ifoChainId, publicIfoData }: { ifoChainId?: ChainId;
       ribbon = <IfoRibbonEnd />
       break
     case 'live':
-      ribbon = <IfoRibbonLive publicIfoData={publicIfoData} />
+      ribbon = <IfoRibbonLive publicIfoData={publicIfoData} dark={isDarkColor} />
       break
     case 'coming_soon':
-      ribbon = <IfoRibbonSoon publicIfoData={publicIfoData} />
+      ribbon = <IfoRibbonSoon publicIfoData={publicIfoData} dark={isDarkColor} />
       break
     default:
       ribbon = null
@@ -114,6 +126,10 @@ export const IfoRibbon = ({ ifoChainId, publicIfoData }: { ifoChainId?: ChainId;
   )
 }
 
+type RibbonProps = {
+  dark?: boolean
+}
+
 const IfoRibbonEnd = () => {
   const { t } = useTranslation()
   return (
@@ -128,23 +144,23 @@ const IfoRibbonEnd = () => {
   )
 }
 
-const IfoRibbonSoon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
+const IfoRibbonSoon = ({ publicIfoData, dark }: { publicIfoData: PublicIfoData } & RibbonProps) => {
   return (
     <>
-      <BigCurve $status="coming_soon" />
+      <BigCurve $status="coming_soon" $dark={dark} />
       <RibbonContainer>
         <Heading as="h3" scale="lg" color="secondary">
-          <SoonTimer publicIfoData={publicIfoData} />
+          <SoonTimer publicIfoData={publicIfoData} dark={dark} />
         </Heading>
       </RibbonContainer>
     </>
   )
 }
 
-const IfoRibbonLive = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
+const IfoRibbonLive = ({ publicIfoData, dark }: { publicIfoData: PublicIfoData } & RibbonProps) => {
   return (
     <>
-      <BigCurve $status="live" />
+      <BigCurve $status="live" $dark={dark} />
       <RibbonContainer>
         <LiveTimer publicIfoData={publicIfoData} />
       </RibbonContainer>

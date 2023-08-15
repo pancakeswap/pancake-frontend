@@ -30,6 +30,7 @@ import IfoAchievement from './Achievement'
 import IfoPoolCard from './IfoPoolCard'
 import { IfoRibbon } from './IfoRibbon'
 import { EnableStatus } from './types'
+import { getBannerUrl } from '../../helpers'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -80,7 +81,7 @@ const Header = styled(CardHeader)<{ ifoId: string; $isCurrent?: boolean }>`
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
   background-color: ${({ theme }) => theme.colors.dropdown};
-  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.png')`};
+  background-image: ${({ ifoId }) => `url('${getBannerUrl(ifoId)}')`};
   ${({ theme }) => theme.mediaQueries.md} {
     height: 112px;
   }
@@ -125,7 +126,7 @@ export const IfoCurrentCard = ({
           maxWidth={['400px', '400px', '400px', '100%']}
         >
           <Header $isCurrent ifoId={ifo.id} />
-          <IfoRibbon publicIfoData={publicIfoData} ifoChainId={ifo.chainId} />
+          <IfoRibbon ifoId={ifo.id} publicIfoData={publicIfoData} ifoChainId={ifo.chainId} />
         </Box>
       )}
       <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '400px', '400px', '100%']}>
@@ -133,7 +134,7 @@ export const IfoCurrentCard = ({
           {!isMobile && (
             <>
               <Header $isCurrent ifoId={ifo.id} />
-              <IfoRibbon publicIfoData={publicIfoData} ifoChainId={ifo.chainId} />
+              <IfoRibbon ifoId={ifo.id} publicIfoData={publicIfoData} ifoChainId={ifo.chainId} />
             </>
           )}
           <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
@@ -164,7 +165,6 @@ const IfoFoldableCard = ({
   walletIfoData: WalletIfoData
 }) => {
   const { asPath } = useRouter()
-  const { isDesktop } = useMatchBreakpoints()
   const [isExpanded, setIsExpanded] = useState(false)
   const wrapperEl = useRef<HTMLDivElement>(null)
 
@@ -185,7 +185,7 @@ const IfoFoldableCard = ({
           </Header>
           {isExpanded && (
             <>
-              <IfoRibbon publicIfoData={publicIfoData} ifoChainId={ifo.chainId} />
+              <IfoRibbon ifoId={ifo.id} publicIfoData={publicIfoData} ifoChainId={ifo.chainId} />
             </>
           )}
         </Box>
