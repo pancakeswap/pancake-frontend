@@ -34,6 +34,8 @@ const ChildrenWrapper = styled(Container)`
   min-height: auto;
   padding-top: 16px;
   padding-bottom: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-top: 32px;

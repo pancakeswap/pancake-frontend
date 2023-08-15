@@ -182,7 +182,7 @@ const CakeSection: React.FC = () => {
         </Link>
       </Flex>
       <CakeSectionMainBox>
-        <CakeSectionLeftBox style={{ opacity: '0' }}>
+        <CakeSectionLeftBox>
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600" mb="20px">
             {t('Ecosystem')}
           </Text>
@@ -201,7 +201,7 @@ const CakeSection: React.FC = () => {
           </CakeBox>
           {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
-        <CakeSectionRightBox style={{ opacity: '0' }}>
+        <CakeSectionRightBox>
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600">
             {t('Partners')}
           </Text>

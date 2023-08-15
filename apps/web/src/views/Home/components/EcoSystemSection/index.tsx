@@ -67,7 +67,7 @@ const useTradeBlockData = () => {
       {
         title: t('Liquidity'),
         description: t('Fund liquidity pools, earn trading fees'),
-        ctaTitle: t('Add Liquidity'),
+        ctaTitle: t('Add Now'),
         image: tradeLiquidity,
       },
       {
@@ -111,7 +111,7 @@ const useEarnBlockData = () => {
       {
         title: t('Liquid Staking'),
         description: t('Earn rewards while retaining asset flexibility'),
-        ctaTitle: t('Add Liquidity Now'),
+        ctaTitle: t('Add Now'),
         image: earnLiquidStaking,
       },
       {
