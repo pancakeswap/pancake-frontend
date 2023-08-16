@@ -277,6 +277,7 @@ export async function queryParametersToBuyCryptoState(
     ? 'ETH'
     : 'BNB'
   const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
+
   return {
     [Field.INPUT]: {
       currencyId: DEFAULT_FIAT_CURRENCY,
@@ -292,6 +293,7 @@ export async function queryParametersToBuyCryptoState(
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
+    isNewCustomer: false,
   }
 }
 
