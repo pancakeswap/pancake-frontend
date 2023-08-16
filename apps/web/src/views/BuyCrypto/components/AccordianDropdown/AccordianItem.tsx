@@ -165,8 +165,8 @@ function AccordionItem({
             else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
-          <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
-            {isCampaignEligible ? (
+          {isCampaignEligible ? (
+            <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={40} width={40} />
                 <Text marginLeft="16px">
@@ -177,8 +177,8 @@ function AccordionItem({
                   })}
                 </Text>
               </Flex>
-            ) : null}
-          </Box>
+            </Box>
+          ) : null}
           <FiatOnRampModalButton
             provider={quote.provider}
             inputCurrency={quote.cryptoCurrency}
