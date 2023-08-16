@@ -67,7 +67,7 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
         </Box>
         {notMeetRequired || notMeetThreshold ? (
           <ProfileRequirementWarning profileRequirement={profileRequirement} />
-        ) : needsApproval && !isStaked ? (
+        ) : needsApproval && !isStaked && !pool.isFinished ? (
           <ApprovalAction pool={pool} isLoading={isLoading} />
         ) : (
           <StakeActions
