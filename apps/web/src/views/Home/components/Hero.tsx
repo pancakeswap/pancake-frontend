@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Heading, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -94,7 +94,7 @@ const Hero = () => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const { theme } = useTheme()
-
+  const { isMobile } = useMatchBreakpoints()
   return (
     <>
       <style jsx global>
@@ -127,23 +127,50 @@ const Hero = () => {
         mt={['50px', null, 0]}
         id="homepage-hero"
       >
-        <Flex flex="1.1" flexDirection="column">
-          <Heading scale="xxl" color="text">
-            {t("Everyone's")}
-          </Heading>
-          <Flex style={{ gap: 20 }}>
-            <Heading scale="xxl" color="secondary" mb="24px">
+        <Flex flex="1" flexDirection="column">
+          <Text textAlign={isMobile ? 'center' : 'left'} pr="10px" mb="16px">
+            <Text
+              display="inline-block"
+              lineHeight="110%"
+              fontSize={['32px', '32px', '64px', '88px']}
+              fontWeight={600}
+              color="text"
+              mr="8px"
+            >
+              {t("Everyone's")}
+            </Text>
+            <Text
+              display="inline-block"
+              fontSize={['32px', '32px', '64px', '88px']}
+              fontWeight={600}
+              lineHeight="110%"
+              color="secondary"
+              mr="8px"
+            >
               {t('Favorite')}
-            </Heading>
-            <Heading scale="xxl" color="text">
+            </Text>
+            <Text
+              display="inline-block"
+              lineHeight="110%"
+              fontSize={['32px', '32px', '64px', '88px']}
+              fontWeight={600}
+              color="text"
+            >
               {t('DEX')}
-            </Heading>
-          </Flex>
-          <Heading scale="md" mb="24px" color="secondary" maxWidth={600}>
+            </Text>
+          </Text>
+          <Text
+            mb="24px"
+            color={theme.isDark ? '#B8ADD2' : '#7A6EAA'}
+            maxWidth={600}
+            fontSize={['20px', '20px', null, '24px']}
+            textAlign={isMobile ? 'center' : 'left'}
+            lineHeight="110%"
+          >
             {t('Trade, earn, and own crypto on the all-in-one multichain DEX')}
-          </Heading>
+          </Text>
 
-          <Flex>
+          <Flex justifyContent={isMobile ? 'center' : 'start'}>
             {!account && <ConnectWalletButton mr="8px" />}
             <NextLinkFromReactRouter to="/swap">
               <Button variant={!account ? 'secondary' : 'primary'}>{t('Trade Now')}</Button>
