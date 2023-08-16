@@ -24,7 +24,7 @@ export default function BuyCrypto({ userIp }: { userIp: string | null }) {
       try {
         const moonpayCustomerResponse = await fetch(`https://pcs-on-ramp-api.com/checkItem?searchAddress=${address}`)
         const moonpayCustomerResult = await moonpayCustomerResponse.json()
-        onIsNewCustomer(moonpayCustomerResult.found)
+        onIsNewCustomer(!moonpayCustomerResult.found)
       } catch (error) {
         throw new Error('failed to fetch customer details')
       }
