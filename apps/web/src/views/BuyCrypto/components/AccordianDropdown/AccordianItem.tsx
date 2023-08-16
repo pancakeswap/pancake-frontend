@@ -69,7 +69,7 @@ function AccordionItem({
     currentLanguage: { locale },
   } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(active ? 227 : 90)
+  const [height, setHeight] = useState(active ? 240 : 90)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -168,9 +168,9 @@ function AccordionItem({
           {isCampaignEligible ? (
             <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
-                <Image src={pocketWatch} alt="pocket-watch" height={40} width={40} />
-                <Text marginLeft="16px" color="#D67E0B">
-                  {t('0$ Provider Fees. Ends in %d% days, %h% hours and %m% mins', {
+                <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
+                <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
+                  {t('0$ Provider Fees. Ends in %d% days and %h% hours.', {
                     d,
                     h,
                     m,

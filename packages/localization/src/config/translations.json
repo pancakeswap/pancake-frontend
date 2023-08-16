@@ -2640,5 +2640,5 @@
   "Arbitrum One is LIVE!": "Arbitrum One is LIVE!",
   "PancakeSwap Now Live on Arbitrum One": "PancakeSwap Now Live on Arbitrum One",
   "Swap and Provide Liquidity Now": "Swap and Provide Liquidity Now",
-  "0$ Provider Fees. Ends in %d% days, %h% hours and %m% mins": "0$ Provider Fees. Ends in %d% days, %h% hours and %m% mins"
+  "0$ Provider Fees. Ends in %d% days, %h% hours.": "0$ Provider Fees. Ends in %d% days, %h% hours."
 }
