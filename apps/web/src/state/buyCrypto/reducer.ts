@@ -9,6 +9,7 @@ import {
   setRecipient,
   setUsersIpAddress,
   typeInput,
+  setIsNewCustomer,
 } from './actions'
 
 export interface BuyCryptoState {
@@ -71,6 +72,9 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
     })
     .addCase(setUsersIpAddress, (state, { payload: { ip } }) => {
       state.userIpAddress = ip
+    })
+    .addCase(setIsNewCustomer, (state, { payload: { isNew } }) => {
+      state.isNewCustomer = isNew
     })
     .addCase(
       replaceBuyCryptoState,

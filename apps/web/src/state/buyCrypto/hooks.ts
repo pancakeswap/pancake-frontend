@@ -17,7 +17,15 @@ import toUpper from 'lodash/toUpper'
 
 import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
-import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
+import {
+  Field,
+  replaceBuyCryptoState,
+  selectCurrency,
+  setMinAmount,
+  setUsersIpAddress,
+  typeInput,
+  setIsNewCustomer,
+} from './actions'
 
 type CurrencyLimits = {
   code: string
@@ -218,6 +226,7 @@ export function useBuyCryptoActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
   onUsersIp: (ip: string | null) => void
+  onIsNewCustomer: (isNew: boolean) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -262,11 +271,21 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const onIsNewCustomer = useCallback((isNew: boolean) => {
+    dispatch(
+      setIsNewCustomer({
+        isNew,
+      }),
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return {
     onFieldAInput,
     onCurrencySelection,
     onLimitAmountUpdate,
     onUsersIp,
+    onIsNewCustomer,
   }
 }
 
