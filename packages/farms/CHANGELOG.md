@@ -1,5 +1,11 @@
 # @pancakeswap/farms
 
+## 1.0.7
+
+### Patch Changes
+
+- b61dcaf37: Adapt farms prices for v3 farms
+
 ## 1.0.6
 
 ### Patch Changes
