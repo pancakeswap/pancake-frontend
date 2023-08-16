@@ -1,11 +1,11 @@
-import styled from 'styled-components'
-import { Flex, Heading, Text, Link, useMatchBreakpoints, OpenNewIcon, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
+import styled from 'styled-components'
 import { useAccount } from 'wagmi'
-import SunburstSvg from './SunburstSvg'
 import CompositeImage from './CompositeImage'
+import SunburstSvg from './SunburstSvg'
 
 const BgWrapper = styled.div`
   overflow: hidden;
@@ -104,7 +104,7 @@ const Footer = () => {
         </FloatingPancakesWrapper>
       )}
       <Wrapper>
-        <Text mb="24px" fontWeight={600} fontSize={isMobile ? 32 : 40}>
+        <Text mb="24px" fontWeight={600} color="#F4EEFF" fontSize={isMobile ? 32 : 40}>
           {t("Join Everyone's Favorite DEX Now!")}
         </Text>
         {!account && <ConnectWalletButton mt="24px" />}

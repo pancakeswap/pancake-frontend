@@ -11,6 +11,7 @@ import {
   Skeleton,
   Text,
   useToast,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -44,7 +45,7 @@ const HarvestCard = () => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
-
+  const { isMobile } = useMatchBreakpoints()
   const cakePriceBusd = usePriceCakeUSD()
   const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
@@ -134,7 +135,7 @@ const HarvestCard = () => {
               endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
               disabled={pendingTx}
               onClick={harvestAllFarms}
-              scale={['sm', null, null, 'md']}
+              scale={isMobile ? 'sm' : 'md'}
             >
               <Text color="invertedContrast" bold>
                 {pendingTx ? t('Harvesting') : t('Harvest all')}

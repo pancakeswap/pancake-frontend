@@ -102,7 +102,7 @@ const UserDetail = () => {
       {isMobile && (
         <Mobile>
           {profile ? (
-            <Heading mb="18px" textAlign="center">
+            <Heading mb="8px" textAlign="center">
               {t('Hi, %userName%!', {
                 userName: usernameWithVisibility,
               })}
