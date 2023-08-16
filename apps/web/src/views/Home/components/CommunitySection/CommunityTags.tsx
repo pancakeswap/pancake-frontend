@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { useMemo } from 'react'
+import { useMemo, cloneElement } from 'react'
 import {
-  AddCircleIcon,
   TwitterIcon,
   TelegramIcon,
   DiscordIcon,
@@ -10,6 +9,7 @@ import {
   YoutubeIcon,
   Link,
 } from '@pancakeswap/uikit'
+import useTheme from 'hooks/useTheme'
 
 const CommunityWrapper = styled.div`
   display: flex;
@@ -28,8 +28,12 @@ const CommunityTag = styled.div`
   align-items: center;
   border-radius: 32px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  width: 52px;
-  height: 52px;
+  width: 32px;
+  height: 32px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 48px;
+    height: 48px;
+  }
 `
 const useCommunityData = () => {
   return useMemo(() => {
@@ -46,14 +50,12 @@ const useCommunityData = () => {
 
 export const CommunityTags: React.FC = () => {
   const communityData = useCommunityData()
+  const { theme } = useTheme()
   return (
     <CommunityWrapper>
-      <CommunityTag>
-        <AddCircleIcon />
-      </CommunityTag>
       {communityData.map((item) => (
         <Link href={item.href} key={item.alt} external>
-          <CommunityTag>{item.icon}</CommunityTag>
+          <CommunityTag>{cloneElement(item.icon, { color: theme.colors.primary, width: 18 })}</CommunityTag>
         </Link>
       ))}
     </CommunityWrapper>
