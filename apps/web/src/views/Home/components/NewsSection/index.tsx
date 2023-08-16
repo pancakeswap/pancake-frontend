@@ -56,6 +56,9 @@ const NewsCard = styled.div`
   margin-right: 34px;
   cursor: pointer;
   scroll-snap-align: start;
+  &:last-child {
+    scroll-snap-align: end;
+  }
 `
 const ImageBox = styled.div`
   height: 200px;
