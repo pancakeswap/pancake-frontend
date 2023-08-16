@@ -1,20 +1,40 @@
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import Image from 'next/image'
 import { Box, Button, Container, Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMemo } from 'react'
+import { isIfoSupported } from '@pancakeswap/ifos'
+import { ChainId } from '@pancakeswap/sdk'
 
 const StyledHero = styled(Box)`
-  background-image: url('/images/ifos/assets/ifo-banner-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');
-  background-position: top, center;
-  background-repeat: no-repeat;
-  background-size: auto 100%;
+  position: relative;
+  overflow: hidden;
+  background: ${({ theme }) =>
+    theme.isDark
+      ? 'linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)'
+      : 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'};
+`
+
+const BunnyContainer = styled(Box)`
+  z-index: 1;
+  position: absolute;
+  right: -20%;
+  bottom: -15%;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    right: 10%;
+    bottom: 0;
+  }
 `
 
 const StyledHeading = styled(Heading)`
-  font-size: 40px;
+  font-size: 2.5rem;
+  color: ${({ theme }) => theme.colors.secondary};
 
   ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 64px;
+    font-size: 4rem;
   }
 `
 
@@ -28,7 +48,6 @@ const StyledButton = styled(Button)`
   font-size: 12px;
   box-shadow: ${({ theme }) => theme.shadows.inset};
   border-radius: 8px;
-  margin-left: 8px;
 `
 
 const DesktopButton = styled(Button)`
@@ -59,23 +78,25 @@ const Hero = () => {
 
   return (
     <Box mb="8px">
-      <StyledHero py={['16px', '16px', '32px']} minHeight={['212px', '212px', '197px']}>
-        <Container>
+      <StyledHero py={['14px', '14px', '40px']} minHeight={['212px', '212px', '197px']}>
+        <HeaderBunny />
+        <Container position="relative" zIndex="2">
           <Flex
             justifyContent="space-between"
             flexDirection={['column', 'column', 'column', 'row']}
             style={{ gap: '4px' }}
           >
             <Box>
-              <StyledHeading as="h1" mb={['12px', '12px', '16px']}>
+              <StyledHeading as="h1" mb={['12px', '12px', '24px']}>
                 {t('IFO: Initial Farm Offerings')}
               </StyledHeading>
-              <StyledSubTitle bold>
-                {t('Buy new tokens launching on BNB Smart Chain')}
-                {isMobile && <StyledButton onClick={handleClick}>{t('How does it work?')}</StyledButton>}
-              </StyledSubTitle>
+              <StyledSubTitle bold>{t('Buy new tokens launching on BNB Smart Chain')}</StyledSubTitle>
             </Box>
-            {!isMobile && (
+            {isMobile ? (
+              <StyledButton onClick={handleClick} mt="0.375rem">
+                {t('How does it work?')}
+              </StyledButton>
+            ) : (
               <DesktopButton onClick={handleClick} variant="subtle">
                 {t('How does it work?')}
               </DesktopButton>
@@ -84,6 +105,21 @@ const Hero = () => {
         </Container>
       </StyledHero>
     </Box>
+  )
+}
+
+function HeaderBunny() {
+  const { chainId: currentChainId } = useActiveChainId()
+  const { isDesktop } = useMatchBreakpoints()
+  const bunnyImageUrl = useMemo(() => {
+    const chainId = isIfoSupported(currentChainId) ? currentChainId : ChainId.BSC
+    return `/images/ifos/header-bunny/${chainId}.png`
+  }, [currentChainId])
+
+  return (
+    <BunnyContainer>
+      <Image alt="header-bunny" src={bunnyImageUrl} width={isDesktop ? 393 : 302} height={isDesktop ? 197 : 151} />
+    </BunnyContainer>
   )
 }
 
