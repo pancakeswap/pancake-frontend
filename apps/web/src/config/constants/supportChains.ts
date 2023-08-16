@@ -10,4 +10,5 @@ export const SUPPORT_FARMS = [
   ChainId.POLYGON_ZKEVM_TESTNET,
   ChainId.POLYGON_ZKEVM,
   ChainId.ZKSYNC,
+  ChainId.ARBITRUM_ONE,
 ]

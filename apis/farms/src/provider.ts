@@ -1,8 +1,16 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { createPublicClient, http, PublicClient } from 'viem'
-import { bsc, bscTestnet, goerli, mainnet, zkSyncTestnet, polygonZkEvm, zkSync } from 'viem/chains'
+import { bsc, bscTestnet, goerli, mainnet, zkSyncTestnet, polygonZkEvm, zkSync, arbitrum } from 'viem/chains'
 
-const requireCheck = [ETH_NODE, GOERLI_NODE, BSC_NODE, BSC_TESTNET_NODE, POLYGON_ZKEVM_NODE, ZKSYNC_NODE]
+const requireCheck = [
+  ETH_NODE,
+  GOERLI_NODE,
+  BSC_NODE,
+  BSC_TESTNET_NODE,
+  POLYGON_ZKEVM_NODE,
+  ZKSYNC_NODE,
+  ARBITRUM_ONE_NODE,
+]
 requireCheck.forEach((node) => {
   if (!node) {
     throw new Error('Missing env var')
@@ -87,6 +95,16 @@ const zksyncClient = createPublicClient({
   },
 })
 
+const arbitrumOneClient = createPublicClient({
+  chain: arbitrum,
+  transport: http(ARBITRUM_ONE_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+    },
+  },
+})
+
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {
   switch (chainId) {
     case ChainId.ETHEREUM:
@@ -103,6 +121,8 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return polygonZkEvmClient
     case ChainId.ZKSYNC:
       return zksyncClient
+    case ChainId.ARBITRUM_ONE:
+      return arbitrumOneClient
     default:
       return bscClient
   }
