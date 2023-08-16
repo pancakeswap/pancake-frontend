@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints, Box } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { useRef, useLayoutEffect, useCallback } from 'react'
 import styled from 'styled-components'

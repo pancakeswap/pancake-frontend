@@ -71,7 +71,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         `}
       </style>
       <StyledHeroSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
+        innerProps={{ style: { margin: '0', width: '100%', overflow: 'hidden' } }}
         containerProps={{
           id: 'home-1',
         }}
