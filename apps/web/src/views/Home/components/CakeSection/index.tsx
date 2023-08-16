@@ -150,7 +150,13 @@ const CakeSection: React.FC = () => {
         </Text>
       </Text>
       <Flex justifyContent="center">
-        <Text fontSize={20} fontWeight={600} color={theme.isDark ? '#B8ADD2' : '#7A6EAA'} lineHeight="110%">
+        <Text
+          fontSize={20}
+          fontWeight={600}
+          color={theme.isDark ? '#B8ADD2' : '#7A6EAA'}
+          textAlign="center"
+          lineHeight="110%"
+        >
           {t(
             'Experience the power of community ownership, global governance, and explore infinite use cases within the PancakeSwap ecosystem',
           )}

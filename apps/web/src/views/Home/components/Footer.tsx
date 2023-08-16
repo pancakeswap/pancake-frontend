@@ -104,7 +104,7 @@ const Footer = () => {
         </FloatingPancakesWrapper>
       )}
       <Wrapper>
-        <Text mb="24px" fontWeight={600} fontSize={isMobile ? 32 : 40}>
+        <Text mb="24px" fontWeight={600} color="#F4EEFF" fontSize={isMobile ? 32 : 40}>
           {t("Join Everyone's Favorite DEX Now!")}
         </Text>
         {!account && <ConnectWalletButton mt="24px" />}

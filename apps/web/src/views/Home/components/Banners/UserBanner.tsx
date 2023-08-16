@@ -12,7 +12,6 @@ const StyledInner = styled(S.Inner)`
   max-height: auto;
   > div {
     width: 100%;
-    min-height: 188px;
     border-radius: 32px;
   }
 `

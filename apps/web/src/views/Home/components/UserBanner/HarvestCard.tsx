@@ -10,14 +10,15 @@ import {
   NextLinkFromReactRouter,
   Skeleton,
   Text,
+  useMatchBreakpoints,
   useToast,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BOOSTED_FARM_GAS_LIMIT } from 'config'
+import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useGasPrice } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
@@ -46,6 +47,7 @@ const HarvestCard = () => {
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
 
   const cakePriceBusd = useCakePrice()
+  const { isMobile } = useMatchBreakpoints()
   const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
@@ -134,7 +136,7 @@ const HarvestCard = () => {
               endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
               disabled={pendingTx}
               onClick={harvestAllFarms}
-              scale={['sm', null, null, 'md']}
+              scale={isMobile ? 'sm' : 'md'}
             >
               <Text color="invertedContrast" bold>
                 {pendingTx ? t('Harvesting') : t('Harvest all')}

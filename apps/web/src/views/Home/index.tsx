@@ -126,9 +126,11 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
         <CakeSection />
-        <Flex style={{ gap: 5 }}>
-          <Text bold>{t('CAKE')}</Text>
-          <Text bold color="secondary">
+        <Flex style={{ gap: 5 }} justifyContent="center">
+          <Text fontSize={20} bold>
+            {t('CAKE')}
+          </Text>
+          <Text fontSize={20} bold color="secondary">
             {t('Figures')}
           </Text>
         </Flex>
