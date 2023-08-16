@@ -133,10 +133,6 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
         label: t("Careers"),
         href: "https://docs.pancakeswap.finance/hiring/become-a-chef",
       },
-      {
-        label: t("Community"),
-        href: "https://docs.pancakeswap.finance/contact-us/telegram",
-      },
     ],
   },
 ];

@@ -30,6 +30,12 @@ const StyledCard = styled(Card)`
   width: 100%;
   height: fit-content;
 `
+const StyledCardBody = styled(CardBody)`
+  padding: 4px 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 24px;
+  }
+`
 
 const masterChefAddress = getMasterChefV2Address()
 
@@ -87,7 +93,7 @@ const HarvestCard = () => {
 
   return (
     <StyledCard>
-      <CardBody>
+      <StyledCardBody>
         <Flex flexDirection={['column', null, null, 'row']} justifyContent="space-between" alignItems="center">
           <Flex flexDirection="column" alignItems={['center', null, null, 'flex-start']}>
             {preText && (
@@ -98,7 +104,7 @@ const HarvestCard = () => {
             {!earningsBusd.isNaN() ? (
               <Balance
                 decimals={earningsBusd.gt(0) ? 2 : 0}
-                fontSize="24px"
+                fontSize="20px"
                 bold
                 prefix={earningsBusd.gt(0) ? '~$' : '$'}
                 lineHeight="1.1"
@@ -107,7 +113,7 @@ const HarvestCard = () => {
             ) : (
               <Skeleton width={96} height={24} my="2px" />
             )}
-            <Text mb={['16px', null, null, '0']} color="textSubtle">
+            <Text mb={['8px', null, null, '0']} color="textSubtle">
               {toCollectText}
             </Text>
           </Flex>
@@ -128,6 +134,7 @@ const HarvestCard = () => {
               endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
               disabled={pendingTx}
               onClick={harvestAllFarms}
+              scale={['sm', null, null, 'md']}
             >
               <Text color="invertedContrast" bold>
                 {pendingTx ? t('Harvesting') : t('Harvest all')}
@@ -135,7 +142,7 @@ const HarvestCard = () => {
             </Button>
           )}
         </Flex>
-      </CardBody>
+      </StyledCardBody>
     </StyledCard>
   )
 }
