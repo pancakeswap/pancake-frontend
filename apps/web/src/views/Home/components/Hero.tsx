@@ -139,7 +139,7 @@ const Hero = () => {
               {t('DEX')}
             </Heading>
           </Flex>
-          <Heading scale="md" mb="24px" maxWidth={500}>
+          <Heading scale="md" mb="24px" color="secondary" maxWidth={600}>
             {t('Trade, earn, and own crypto on the all-in-one multichain DEX')}
           </Heading>
 
