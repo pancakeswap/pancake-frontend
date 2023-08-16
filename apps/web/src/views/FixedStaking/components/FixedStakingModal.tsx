@@ -59,7 +59,7 @@ export function FixedStakingModal({
     [stakedPositions],
   )
 
-  const hideStakeButton = stakedPeriods.length === pools.length
+  const hideStakeButton = stakedPositions.length === pools.length
 
   return account ? (
     <>
