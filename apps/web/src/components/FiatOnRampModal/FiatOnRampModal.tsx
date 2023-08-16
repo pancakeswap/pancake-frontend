@@ -17,6 +17,7 @@ import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoint
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
+import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import styled, { useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
@@ -191,15 +192,24 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { onIsNewCustomer } = useBuyCryptoActionHandlers()
 
   const theme = useTheme()
   const account = useAccount()
-  // const { t } = useTranslation()
 
-  const handleDismiss = useCallback(() => {
+  const handleDismiss = useCallback(async () => {
     onDismiss?.()
     setModalView(CryptoFormView.Input)
-  }, [onDismiss, setModalView])
+    try {
+      const moonpayCustomerResponse = await fetch(
+        `https://pcs-on-ramp-api.com/checkItem?searchAddress=${account.address}`,
+      )
+      const moonpayCustomerResult = await moonpayCustomerResponse.json()
+      onIsNewCustomer(!moonpayCustomerResult.found)
+    } catch (err) {
+      throw new Error(`unable to fetch new customer status ${err}`)
+    }
+  }, [onDismiss, setModalView, onIsNewCustomer, account.address])
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
