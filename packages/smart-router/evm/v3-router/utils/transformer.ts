@@ -6,23 +6,23 @@ import { isStablePool, isV2Pool, isV3Pool } from './pool'
 
 const ONE_HUNDRED = 100n
 
-interface SerializedCurrency {
+export interface SerializedCurrency {
   address: Address
   decimals: number
   symbol: string
 }
 
-interface SerializedCurrencyAmount {
+export interface SerializedCurrencyAmount {
   currency: SerializedCurrency
   value: string
 }
 
-interface SerializedV2Pool extends Omit<V2Pool, 'reserve0' | 'reserve1'> {
+export interface SerializedV2Pool extends Omit<V2Pool, 'reserve0' | 'reserve1'> {
   reserve0: SerializedCurrencyAmount
   reserve1: SerializedCurrencyAmount
 }
 
-interface SerializedV3Pool
+export interface SerializedV3Pool
   extends Omit<V3Pool, 'token0' | 'token1' | 'liquidity' | 'sqrtRatioX96' | 'token0ProtocolFee' | 'token1ProtocolFee'> {
   token0: SerializedCurrency
   token1: SerializedCurrency
@@ -32,22 +32,23 @@ interface SerializedV3Pool
   token1ProtocolFee: string
 }
 
-interface SerializedStablePool extends Omit<StablePool, 'balances' | 'amplifier' | 'fee'> {
+export interface SerializedStablePool extends Omit<StablePool, 'balances' | 'amplifier' | 'fee'> {
   balances: SerializedCurrencyAmount[]
   amplifier: string
   fee: string
 }
 
-type SerializedPool = SerializedV2Pool | SerializedV3Pool | SerializedStablePool
+export type SerializedPool = SerializedV2Pool | SerializedV3Pool | SerializedStablePool
 
-interface SerializedRoute extends Omit<Route, 'pools' | 'path' | 'input' | 'output' | 'inputAmount' | 'outputAmount'> {
+export interface SerializedRoute
+  extends Omit<Route, 'pools' | 'path' | 'input' | 'output' | 'inputAmount' | 'outputAmount'> {
   pools: SerializedPool[]
   path: SerializedCurrency[]
   inputAmount: SerializedCurrencyAmount
   outputAmount: SerializedCurrencyAmount
 }
 
-interface SerializedTrade
+export interface SerializedTrade
   extends Omit<
     SmartRouterTrade<TradeType>,
     'inputAmount' | 'outputAmount' | 'gasEstimate' | 'gasEstimateInUSD' | 'routes'
