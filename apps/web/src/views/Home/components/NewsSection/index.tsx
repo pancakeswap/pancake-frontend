@@ -55,6 +55,7 @@ const NewsCard = styled.div`
   display: inline-block;
   margin-right: 34px;
   cursor: pointer;
+  scroll-snap-align: start;
 `
 const ImageBox = styled.div`
   height: 200px;
@@ -95,7 +96,16 @@ const DescriptionBox = styled.div`
 
 const CardWrapper = styled.div`
   white-space: nowrap;
-  overflow-x: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 24px;
+  &::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 `
 
 export const NewsSection: React.FC = () => {
