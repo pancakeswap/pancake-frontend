@@ -1,11 +1,10 @@
 import { InjectedModalProps, Modal, Flex, Text, Button, BinanceIcon, Box, BscScanIcon } from '@pancakeswap/uikit'
-import { Price, Currency } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { multiplyPriceByAmount } from 'utils/prices'
 import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useDomainNameForAddress } from 'hooks/useDomain'
@@ -15,7 +14,7 @@ import NFTMedia from '../NFTMedia'
 interface MobileModalProps extends InjectedModalProps {
   activity: Activity
   nft: NftToken
-  bnbBusdPrice: Price<Currency, Currency>
+  bnbBusdPrice: BigNumber
   localeTimestamp: string
   isUserActivity?: boolean
 }
@@ -32,7 +31,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const priceAsFloat = parseFloat(activity.price)
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
+  const priceInUsd = bnbBusdPrice.multipliedBy(priceAsFloat)
   const { domainName: otherPartySidName } = useDomainNameForAddress(activity.otherParty)
   const { domainName: sellerSidName } = useDomainNameForAddress(activity.seller)
   const { domainName: buyerSidName } = useDomainNameForAddress(activity.buyer)
@@ -63,7 +62,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
                   {priceAsFloat}
                 </Text>
                 <Text color="textSubtle">
-                  {`(~$${priceInUsd.toLocaleString(undefined, {
+                  {`(~$${priceInUsd.toNumber().toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })})`}

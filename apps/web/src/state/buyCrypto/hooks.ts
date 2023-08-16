@@ -280,6 +280,7 @@ export async function queryParametersToBuyCryptoState(
   const inputCurrency = parsedQs.inputCurrency as any
   const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency) ? inputCurrency : defaultTokenByChain[chainId]
   const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
+
   return {
     [Field.INPUT]: {
       currencyId: DEFAULT_FIAT_CURRENCY,
@@ -295,6 +296,7 @@ export async function queryParametersToBuyCryptoState(
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
+    isNewCustomer: false,
   }
 }
 
@@ -328,12 +330,22 @@ export function calculateDefaultAmount(minAmount: number, currencyCode: string):
 export function useDefaultsFromURLSearch(account: string | undefined) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { chainId } = useActiveChainId()
+  const { address } = useAccount()
   const { query, isReady } = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
+
+      let isNewCustomer = false
+      try {
+        const moonpayCustomerResponse = await fetch(`https://pcs-on-ramp-api.com/checkItem?searchAddress=${address}`)
+        const moonpayCustomerResult = await moonpayCustomerResponse.json()
+        isNewCustomer = !moonpayCustomerResult.found
+      } catch (error) {
+        throw new Error('failed to fetch customer details')
+      }
 
       dispatch(
         replaceBuyCryptoState({
@@ -347,11 +359,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: null,
+          isNewCustomer,
         }),
       )
     }
     fetchData()
-  }, [dispatch, query, isReady, account, chainId])
+  }, [dispatch, query, isReady, account, chainId, address])
 
   // return result
 }

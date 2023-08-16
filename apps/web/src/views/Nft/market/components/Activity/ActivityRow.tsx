@@ -12,7 +12,7 @@ import {
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import { Activity, NftToken } from 'state/nftMarket/types'
-import { Price, Currency } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
 import { getBlockExploreLink, isAddress } from 'utils'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -25,7 +25,7 @@ import NFTMedia from '../NFTMedia'
 interface ActivityRowProps {
   activity: Activity
   nft: NftToken
-  bnbBusdPrice: Price<Currency, Currency>
+  bnbBusdPrice: BigNumber
   isUserActivity?: boolean
   isNftActivity?: boolean
 }

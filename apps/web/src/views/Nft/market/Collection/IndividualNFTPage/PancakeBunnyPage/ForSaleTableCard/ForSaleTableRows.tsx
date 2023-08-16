@@ -1,16 +1,15 @@
 import styled from 'styled-components'
 import { useAccount } from 'wagmi'
-import { Price, Currency } from '@pancakeswap/sdk'
 import { Button, Grid, Text, Flex, Box, BinanceIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
-import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
-import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
 import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
 import SellModal from 'views/Nft/market/components/BuySellModals/SellModal'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import { isAddress } from 'utils'
+import { useBNBPrice } from 'hooks/useBNBPrice'
+import BigNumber from 'bignumber.js'
 import { ButtonContainer } from '../../shared/styles'
 
 const OwnersTableRow = styled(Grid)`
@@ -26,13 +25,13 @@ const OwnersTableRow = styled(Grid)`
 interface RowProps {
   t: ContextApi['t']
   nft: NftToken
-  bnbBusdPrice: Price<Currency, Currency>
+  bnbBusdPrice: BigNumber
   account: string
   onSuccessSale: () => void
 }
 
 const Row: React.FC<React.PropsWithChildren<RowProps>> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft?.marketData?.currentAskPrice))
+  const priceInUsd = bnbBusdPrice.multipliedBy(parseFloat(nft?.marketData?.currentAskPrice)).toNumber()
 
   const ownNft = account ? isAddress(nft.marketData.currentSeller) === isAddress(account) : false
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
@@ -95,7 +94,7 @@ interface ForSaleTableRowsProps {
 const ForSaleTableRow: React.FC<React.PropsWithChildren<ForSaleTableRowsProps>> = ({ nftsForSale, onSuccessSale }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  const bnbBusdPrice = useBNBBusdPrice()
+  const bnbBusdPrice = useBNBPrice()
   return (
     <OwnersTableRow>
       {nftsForSale.map((nft) => (

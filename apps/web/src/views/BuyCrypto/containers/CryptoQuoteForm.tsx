@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState, useRef } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
+import { useAccount } from 'wagmi'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from './FormContainer'
 import Accordion from '../components/AccordianDropdown/Accordian'
@@ -17,12 +18,17 @@ export function CryptoQuoteForm({
 }) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { address } = useAccount()
   const [timer, setTimer] = useState(30)
   const [fetching, setFetching] = useState<boolean>(false)
   const currentChain = useRef(chainId ?? undefined)
+  const currentAcccount = useRef(address ?? undefined)
 
   useEffect(() => {
-    if (chainId !== currentChain.current) setModalView(CryptoFormView.Input)
+    if (chainId !== currentChain.current || address !== currentAcccount.current) {
+      setModalView(CryptoFormView.Input)
+    }
+
     const interval = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1)
     }, 1000)

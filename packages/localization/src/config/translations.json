@@ -2639,5 +2639,6 @@
   "Anyone can create tokens on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Anyone can create tokens on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
   "Arbitrum One is LIVE!": "Arbitrum One is LIVE!",
   "PancakeSwap Now Live on Arbitrum One": "PancakeSwap Now Live on Arbitrum One",
-  "Swap and Provide Liquidity Now": "Swap and Provide Liquidity Now"
+  "Swap and Provide Liquidity Now": "Swap and Provide Liquidity Now",
+  "0$ Provider Fees. Ends in %d% days, %h% hours.": "0$ Provider Fees. Ends in %d% days, %h% hours."
 }
