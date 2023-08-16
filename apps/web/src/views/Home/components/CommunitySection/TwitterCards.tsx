@@ -4,6 +4,13 @@ import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 
+export const BlogImage = styled.div`
+  width: 292px;
+  height: 140px;
+  border-radius: 16px;
+  background-size: cover;
+`
+
 export const Wrapper = styled.div`
   border-radius: 32px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -11,8 +18,8 @@ export const Wrapper = styled.div`
   /* Card/Dark Drop Shadow */
   box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
   padding: 24px;
-  width: 355px;
-  height: 338px;
+  width: 340px;
+  height: 345px;
   transform: rotate(2deg);
 `
 
@@ -56,7 +63,18 @@ export const useTweetsData = () => {
   }, [])
 }
 
-const TwitterCards: React.FC = () => {
+export const useLatestBlogData = () => {
+  return useMemo(() => {
+    return {
+      title: 'Step by Step Guide to Use Arbitrum PancakeSwap v3',
+      imageSrc: 'https://sgp1.digitaloceanspaces.com/strapi.space/b477fb73428ef9accc2b312873e9140c.jpg',
+      link: 'https://blog.pancakeswap.finance/articles/step-by-step-guide-to-use-arbitrum-one-pancake-swap-v3',
+      date: 'Aug 10, 2023',
+    }
+  }, [])
+}
+
+export const TwitterCards: React.FC = () => {
   const { t } = useTranslation()
   const tweets = useTweetsData()
   const { theme } = useTheme()
@@ -99,4 +117,22 @@ const TwitterCards: React.FC = () => {
   )
 }
 
-export default TwitterCards
+export const BlogCard: React.FC = () => {
+  const { t } = useTranslation()
+  const { imageSrc, title, date } = useLatestBlogData()
+  const { theme } = useTheme()
+  return (
+    <Wrapper>
+      <Text bold mb="24px">
+        {t('Our Latest Blog')}
+      </Text>
+      <BlogImage style={{ backgroundImage: `url(${imageSrc})` }} />
+      <Text mt="8px" fontSize={14} color={theme.colors.textSubtle} textAlign="right">
+        {date}
+      </Text>
+      <Text mt="10px" fontSize={14} bold>
+        {title}
+      </Text>
+    </Wrapper>
+  )
+}
