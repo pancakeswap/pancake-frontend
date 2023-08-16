@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Heading, Text, Link, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, Link, useMatchBreakpoints, OpenNewIcon, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
@@ -27,6 +27,7 @@ const StyledSunburst = styled(SunburstSvg)`
 `
 
 const Wrapper = styled(Flex)`
+  width: 100%;
   z-index: 1;
   position: relative;
   flex-direction: column;
@@ -83,10 +84,10 @@ const bottomRightImage = {
 const Footer = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { isTablet, isDesktop } = useMatchBreakpoints()
+  const { isTablet, isDesktop, isMobile } = useMatchBreakpoints()
 
   return (
-    <>
+    <Box p="48px">
       <BgWrapper>
         <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
           <StyledSunburst />
@@ -103,12 +104,12 @@ const Footer = () => {
         </FloatingPancakesWrapper>
       )}
       <Wrapper>
-        <Heading mb="24px" scale="xl" color="white" width="550px">
-          {t("Trade and Earn Crypto on Ev3ryone's Favourite D3X")}
-        </Heading>
+        <Text mb="24px" fontWeight={600} fontSize={isMobile ? 32 : 40}>
+          {t("Join Everyone's Favorite DEX Now!")}
+        </Text>
         {!account && <ConnectWalletButton mt="24px" />}
       </Wrapper>
-    </>
+    </Box>
   )
 }
 
