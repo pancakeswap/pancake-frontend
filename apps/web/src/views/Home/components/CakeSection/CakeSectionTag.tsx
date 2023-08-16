@@ -11,7 +11,7 @@ import {
   TrophyIcon,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { cloneElement, useMemo, useRef } from 'react'
+import { cloneElement, useMemo, useRef, useLayoutEffect, useState } from 'react'
 import Marquee from 'react-fast-marquee'
 import styled from 'styled-components'
 
@@ -108,6 +108,7 @@ export const FeatureTag = styled.div<{ $bgWidth: number }>`
     margin-right: 0px;
     width: 52px;
     white-space: nowrap;
+    background: none;
     position: relative;
     left: -${({ $bgWidth }) => (MARQUEE_WIDTH - $bgWidth) / 2}px;
     &::before {
@@ -163,8 +164,14 @@ export const CakePartnerWrapper = styled.div<{ $bgWidth: number }>`
 export const CakeSectionTag: React.FC<{ icon: React.ReactElement; text: string }> = ({ icon, text }) => {
   const { theme } = useTheme()
   const textRef = useRef<HTMLDivElement>()
+  useLayoutEffect(() => {
+    if (textRef?.current) {
+      setBgWidth(textRef.current.offsetWidth)
+    }
+  }, [])
+  const [bgWidth, setBgWidth] = useState(() => textRef?.current?.offsetWidth ?? 0)
   return (
-    <FeatureTag $bgWidth={(textRef?.current?.offsetWidth ?? 0) + 50}>
+    <FeatureTag $bgWidth={bgWidth + 50}>
       {cloneElement(icon, { color: theme.isDark ? '#A881FC' : theme.colors.secondary })}
       <Text fontWeight="600" ref={textRef}>
         {text}
