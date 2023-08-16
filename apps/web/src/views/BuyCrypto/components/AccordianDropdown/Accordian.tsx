@@ -1,10 +1,18 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
-import { ProviderQoute } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
 import { useTranslation } from '@pancakeswap/localization'
 import AccordionItem from './AccordianItem'
 
-function Accordion({ combinedQuotes, fetching }: { combinedQuotes: ProviderQoute[]; fetching: boolean }) {
+function Accordion({
+  combinedQuotes,
+  fetching,
+  setModalView,
+}: {
+  combinedQuotes: ProviderQoute[]
+  fetching: boolean
+  setModalView: Dispatch<SetStateAction<CryptoFormView>>
+}) {
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
 
@@ -31,6 +39,7 @@ function Accordion({ combinedQuotes, fetching }: { combinedQuotes: ProviderQoute
             btnOnClick={() => setCurrentIdx((a) => (a === idx ? '' : idx))}
             quote={quote}
             fetching={fetching}
+            setModalView={setModalView}
           />
         )
       })}

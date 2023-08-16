@@ -16,7 +16,7 @@ import { CommitButton } from 'components/CommitButton'
 import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
-import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
@@ -26,6 +26,7 @@ import {
   moonapyCurrencyChainidentifier,
   supportedTokenMap,
 } from 'views/BuyCrypto/constants'
+import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 
@@ -78,6 +79,7 @@ interface FiatOnRampProps {
   inputCurrency: string
   outputCurrency: string
   amount: string
+  setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }
 
 interface FetchResponse {
@@ -138,6 +140,7 @@ export const FiatOnRampModalButton = ({
   outputCurrency,
   amount,
   disabled,
+  setModalView,
 }: FiatOnRampProps & { disabled: boolean }) => {
   const { t } = useTranslation()
   const [onPresentConfirmModal] = useModal(
@@ -146,6 +149,7 @@ export const FiatOnRampModalButton = ({
       inputCurrency={inputCurrency}
       outputCurrency={outputCurrency}
       amount={amount}
+      setModalView={setModalView}
     />,
   )
 
@@ -177,6 +181,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   outputCurrency,
   amount,
   provider,
+  setModalView,
 }) {
   const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
 
@@ -193,7 +198,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   const handleDismiss = useCallback(() => {
     onDismiss?.()
-  }, [onDismiss])
+    setModalView(CryptoFormView.Input)
+  }, [onDismiss, setModalView])
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {

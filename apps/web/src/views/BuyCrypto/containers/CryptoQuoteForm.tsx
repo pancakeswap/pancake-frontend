@@ -48,7 +48,7 @@ export function CryptoQuoteForm({
     }
 
     return () => clearInterval(interval)
-  }, [timer, fetchQuotes, chainId, setModalView])
+  }, [timer, fetchQuotes, chainId, setModalView, address])
 
   return (
     <>
@@ -59,7 +59,7 @@ export function CryptoQuoteForm({
         backTo={() => setModalView(CryptoFormView.Input)}
       />
       <FormContainer>
-        <Accordion fetching={fetching} combinedQuotes={combinedQuotes} />
+        <Accordion fetching={fetching} combinedQuotes={combinedQuotes} setModalView={setModalView} />
       </FormContainer>
     </>
   )

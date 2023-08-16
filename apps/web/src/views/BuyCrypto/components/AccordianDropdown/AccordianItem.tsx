@@ -1,9 +1,9 @@
 import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { ProviderQoute } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
@@ -58,11 +58,13 @@ function AccordionItem({
   btnOnClick,
   quote,
   fetching,
+  setModalView,
 }: {
   active: boolean
   btnOnClick: any
   quote: ProviderQoute
   fetching: boolean
+  setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }) {
   const {
     t,
@@ -185,6 +187,7 @@ function AccordionItem({
             outputCurrency={quote.fiatCurrency}
             amount={quote.amount.toString()}
             disabled={fetching}
+            setModalView={setModalView}
           />
         </DropdownWrapper>
       </CryptoCard>
