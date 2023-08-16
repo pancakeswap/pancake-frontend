@@ -35,6 +35,12 @@ export const CardWrapper = styled.div`
     width: 1152px;
   }
 `
+export const ImageBox = styled.div`
+  transition: filter 0.25s linear;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    filter: grayscale(100%);
+  }
+`
 
 export const ItemWrapper = styled(Flex)`
   align-items: left;
@@ -43,7 +49,18 @@ export const ItemWrapper = styled(Flex)`
   flex-grow: 1;
   gap: 12px;
   cursor: pointer;
+  .cta > * {
+    transition: color 0.25s ease-in-out;
+  }
   padding: 12px;
+  &:hover {
+    .cta > * {
+      color: ${({ theme }) => theme.colors.primary};
+    }
+    ${ImageBox} {
+      filter: grayscale(0%);
+    }
+  }
 `
 
 export const Title = styled.div`
@@ -173,7 +190,9 @@ const FeatureBox: React.FC<{
   const { isMobile } = useMatchBreakpoints()
   return (
     <ItemWrapper flexBasis={isMobile ? `50%` : `${width}%`}>
-      <Image src={image} width={108} height={108} alt={title} />
+      <ImageBox>
+        <Image src={image} width={108} height={108} alt={title} />
+      </ImageBox>
       <Box>
         <Text fontSize="20px" mb="8px" lineHeight="110%" fontWeight={600} color={theme.colors.text}>
           {title}
@@ -182,7 +201,7 @@ const FeatureBox: React.FC<{
           {description}
         </Text>
       </Box>
-      <Flex>
+      <Flex className="cta">
         <Text fontSize="16px" fontWeight={600} color={theme.colors.textSubtle}>
           {ctaTitle}
         </Text>
