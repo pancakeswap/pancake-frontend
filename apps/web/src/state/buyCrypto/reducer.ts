@@ -13,6 +13,7 @@ import {
 
 export interface BuyCryptoState {
   readonly typedValue: string
+  readonly isNewCustomer: boolean
   readonly recipient: string | null
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
@@ -29,6 +30,7 @@ export interface BuyCryptoState {
 
 const initialState: BuyCryptoState = {
   typedValue: '',
+  isNewCustomer: false,
   recipient: null,
   [Field.INPUT]: {
     currencyId: '',
@@ -84,6 +86,7 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
             minBaseAmount,
             maxAmount,
             maxBaseAmount,
+            isNewCustomer,
           },
         },
       ) => {
@@ -100,6 +103,7 @@ export const reducer = createReducer<BuyCryptoState>(initialState, (builder) =>
           minBaseAmount,
           maxAmount,
           maxBaseAmount,
+          isNewCustomer,
           userIpAddress: state.userIpAddress,
         }
       },

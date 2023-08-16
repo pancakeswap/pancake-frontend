@@ -1,4 +1,4 @@
-import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, InfoIcon, Message, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -9,13 +9,33 @@ import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { providerFeeTypes } from 'views/BuyCrypto/constants'
+import Image from 'next/image'
+import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
+import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 
 const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   display: ${({ isClicked }) => (isClicked ? 'none' : 'block')};
   width: 100%;
   transition: display 0.6s ease-in-out;
 `
+const targetDate = new Date('2023-08-30T00:00:00')
+
+const getTimeUntilDate = (date: Date) => {
+  const currentDate = new Date()
+  // @ts-ignore
+  const timeDifference = date - currentDate
+
+  const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+  const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const minutesLeft = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
+
+  return {
+    d: daysLeft,
+    h: hoursLeft,
+    m: minutesLeft,
+  }
+}
 
 const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
   const {
@@ -53,8 +73,11 @@ function AccordionItem({
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
+  const { isNewCustomer } = useBuyCryptoState()
 
   const isActive = () => (multiple ? visiblity : active)
+  const { d, h, m } = getTimeUntilDate(targetDate)
+  const isCampaignEligible = isNewCustomer && quote.provider === 'MoonPay'
 
   const toogleVisiblity = useCallback(() => {
     setVisiblity((v) => !v)
@@ -137,11 +160,25 @@ function AccordionItem({
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.networkFee + quote.providerFee
+            if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : quote.providerFee)
             else if (index === 1) fee = quote.networkFee
-            else fee = quote.providerFee
+            else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
+          <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
+            {isCampaignEligible ? (
+              <Flex>
+                <Image src={pocketWatch} alt="pocket-watch" height={40} width={40} />
+                <Text marginLeft="16px">
+                  {t('0$ Provider Fees. Ends in %d% days, %h% hours and %m% mins', {
+                    d,
+                    h,
+                    m,
+                  })}
+                </Text>
+              </Flex>
+            ) : null}
+          </Box>
           <FiatOnRampModalButton
             provider={quote.provider}
             inputCurrency={quote.cryptoCurrency}

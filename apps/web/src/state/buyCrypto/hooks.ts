@@ -302,12 +302,22 @@ export function calculateDefaultAmount(minAmount: number): number {
 export function useDefaultsFromURLSearch(account: string | undefined) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { chainId } = useActiveChainId()
+  const { address } = useAccount()
   const { query, isReady } = useRouter()
 
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
+
+      let isNewCustomer = false
+      try {
+        const moonpayCustomerResponse = await fetch(`https://pcs-on-ramp-api.com/checkItem?searchAddress=${address}`)
+        const moonpayCustomerResult = await moonpayCustomerResponse.json()
+        isNewCustomer = !moonpayCustomerResult.found
+      } catch (error) {
+        throw new Error('failed to fetch customer details')
+      }
 
       dispatch(
         replaceBuyCryptoState({
@@ -319,11 +329,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: null,
+          isNewCustomer,
         }),
       )
     }
     fetchData()
-  }, [dispatch, query, isReady, account, chainId])
+  }, [dispatch, query, isReady, account, chainId, address])
 
   // return result
 }

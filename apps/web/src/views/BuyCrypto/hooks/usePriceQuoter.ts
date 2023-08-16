@@ -16,6 +16,7 @@ const usePriceQuotes = () => {
     [Field.INPUT]: { currencyId: inputCurrency },
     [Field.OUTPUT]: { currencyId: outputCurrency },
     userIpAddress: userIp,
+    isNewCustomer,
   } = useBuyCryptoState()
 
   const sortProviderQuotes = useCallback(
@@ -53,13 +54,12 @@ const usePriceQuotes = () => {
         network: chainIdToNetwork[chainId],
       })
       const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes)
-
-      setQuotes(sortedFilteredQuotes)
+      setQuotes(isNewCustomer ? providerQuotes : sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
     }
-  }, [amount, inputCurrency, outputCurrency, chainId, sortProviderQuotes])
+  }, [amount, inputCurrency, outputCurrency, chainId, sortProviderQuotes, isNewCustomer])
 
   return { quotes, fetchQuotes, fetchProviderAvailability: sortProviderQuotes }
 }
