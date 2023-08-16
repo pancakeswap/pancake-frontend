@@ -17,7 +17,7 @@ export const setMinAmount = createAction<{
   maxBaseAmount: number
 }>('buyCrypto/setMinAmount')
 export const setUsersIpAddress = createAction<{ ip: string | null }>('buyCrypto/setUsersIpAddress')
-export const setIsNewCustomer = createAction<{ ip: string | null }>('buyCrypto/setIsNewCustomer')
+export const setIsNewCustomer = createAction<{ isNew: boolean }>('buyCrypto/setIsNewCustomer')
 export const replaceBuyCryptoState = createAction<{
   typedValue: string
   inputCurrencyId?: string
