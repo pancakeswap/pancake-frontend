@@ -169,7 +169,7 @@ function AccordionItem({
             <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={40} width={40} />
-                <Text marginLeft="16px">
+                <Text marginLeft="16px" color="#D67E0B">
                   {t('0$ Provider Fees. Ends in %d% days, %h% hours and %m% mins', {
                     d,
                     h,
