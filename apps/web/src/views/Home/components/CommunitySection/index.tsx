@@ -2,10 +2,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import CompositeImage from '../CompositeImage'
 import CommunitySummary from './CommunitySummary'
 import { CommunityTags } from './CommunityTags'
-import { TwitterCards, BlogCard } from './TwitterCards'
+import { BlogCard, TwitterCards } from './TwitterCards'
 
 const TransparentFrame = styled.div<{ isDark: boolean }>`
   background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
@@ -17,6 +19,36 @@ const TransparentFrame = styled.div<{ isDark: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 40px;
+  }
+`
+
+const StyledSwiper = styled(Swiper)`
+  width: 345px;
+  position: relative;
+  padding-bottom: 3px;
+  .swiper-pagination {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    width: 72px;
+    display: flex;
+    height: 8px;
+    border-radius: 24px;
+    span {
+      width: 50%;
+      margin: 0 !important;
+      border-radius: 24px;
+      background-color: rgba(122, 110, 170, 0.7);
+      &:first-child {
+        border-radius: 4px 0px 0px 4px;
+      }
+      &:last-child {
+        border-radius: 0px 4px 4px 0px;
+      }
+      &.swiper-pagination-bullet-active {
+        background-color: #7645d9;
+      }
+    }
   }
 `
 
@@ -109,8 +141,25 @@ const CommunitySection = () => {
               <CommunitySummary />
             </Flex>
             <Flex flex="1" maxWidth={['275px', null, null, '100%']}>
-              <TwitterCards />
-              {/* <BlogCard /> */}
+              <StyledSwiper
+                modules={[Autoplay, Pagination, EffectFade]}
+                spaceBetween={50}
+                observer
+                slidesPerView={1}
+                effect="fade"
+                fadeEffect={{ crossFade: true }}
+                speed={500}
+                autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false }}
+                loop
+                pagination={{ clickable: true }}
+              >
+                <SwiperSlide key="TwitterCards">
+                  <TwitterCards />
+                </SwiperSlide>
+                <SwiperSlide key="BlogCard">
+                  <BlogCard />
+                </SwiperSlide>
+              </StyledSwiper>
             </Flex>
           </Flex>
         </Flex>
