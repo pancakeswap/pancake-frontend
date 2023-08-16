@@ -284,6 +284,7 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
 }
 
 export const WBTC_ETH = new ERC20Token(
