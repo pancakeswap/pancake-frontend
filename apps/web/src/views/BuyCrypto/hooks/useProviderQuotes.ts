@@ -4,7 +4,7 @@ import { ProviderQoute } from '../types'
 export async function fetchMoonpayQuote(baseAmount: number, currencyCode: string, outputCurrency: string) {
   // Fetch data from endpoint 1
   const response = await fetch(
-    `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrency.toLowerCase()}/buy_quote/?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&baseCurrencyAmount=${baseAmount}&&baseCurrencyCode=${currencyCode.toLowerCase()}`,
+    `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrency.toLowerCase()}/buy_quote/?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyAmount=${baseAmount}&&baseCurrencyCode=${currencyCode.toLowerCase()}`,
     {
       headers: {
         Accept: 'application/json',
