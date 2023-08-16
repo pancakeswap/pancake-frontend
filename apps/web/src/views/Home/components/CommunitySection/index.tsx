@@ -86,23 +86,23 @@ const TopRightImgWrapper = styled(Flex)`
 `
 
 const bottomLeftImage = {
-  path: '/images/home/prediction-cards/',
+  path: '/images/home/socials/',
   attributes: [
-    { src: 'bottom-left', alt: 'CAKE card' },
-    { src: 'green', alt: 'Green CAKE card with up arrow' },
-    { src: 'red', alt: 'Red Cake card with down arrow' },
-    { src: 'top-right', alt: 'CAKE card' },
+    { src: '1', alt: 'CAKE card' },
+    { src: '2', alt: 'Green CAKE card with up arrow' },
+    { src: '3', alt: 'Red Cake card with down arrow' },
+    { src: '4', alt: 'CAKE card' },
   ],
 }
 
 const topRightImage = {
-  path: '/images/home/lottery-balls/',
+  path: '/images/home/community-items/',
   attributes: [
-    { src: '2', alt: 'Lottery ball number 2' },
-    { src: '4', alt: 'Lottery ball number 4' },
-    { src: '6', alt: 'Lottery ball number 6' },
-    { src: '7', alt: 'Lottery ball number 7' },
-    { src: '9', alt: 'Lottery ball number 9' },
+    { src: '5', alt: 'Lottery ball number 9' },
+    { src: '1', alt: 'Lottery ball number 2' },
+    { src: '2', alt: 'Lottery ball number 4' },
+    { src: '3', alt: 'Lottery ball number 6' },
+    { src: '4', alt: 'Lottery ball number 7' },
   ],
 }
 

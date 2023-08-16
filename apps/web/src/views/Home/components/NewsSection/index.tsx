@@ -116,7 +116,7 @@ export const NewsSection: React.FC = () => {
   const { t } = useTranslation()
   return (
     <Flex flexDirection="column" style={{ gap: 36 }}>
-      <Heading color="#7645D9" scale="xl">
+      <Heading color="#7645D9" scale="xl" textAlign="center">
         {t('Featured News')}
       </Heading>
       <CardWrapper>
