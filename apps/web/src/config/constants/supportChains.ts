@@ -11,5 +11,6 @@ export const SUPPORT_FARMS = [
   ChainId.POLYGON_ZKEVM,
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
+  ChainId.ARBITRUM_GOERLI,
 ]
 export const SUPPORT_BUY_CRYPTO = [ChainId.BSC, ChainId.ETHEREUM, ChainId.ARBITRUM_ONE]
