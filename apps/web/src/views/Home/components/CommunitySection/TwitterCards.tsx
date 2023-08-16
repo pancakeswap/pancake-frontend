@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 
 export const BlogImage = styled.div`
-  width: 292px;
+  width: 100%;
   height: 140px;
   border-radius: 16px;
   background-size: cover;
@@ -18,8 +18,11 @@ export const Wrapper = styled.div`
   /* Card/Dark Drop Shadow */
   box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
   padding: 24px;
-  width: 340px;
+  width: 100%;
   height: 345px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 340px;
+  }
 `
 
 const LogoBox = styled.div`

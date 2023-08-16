@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, Text } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
@@ -109,6 +109,7 @@ const topRightImage = {
 const CommunitySection = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <>
@@ -122,13 +123,18 @@ const CommunitySection = () => {
       </BgWrapper>
       <TransparentFrame isDark={theme.isDark}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center">
-          <Flex style={{ gap: 8 }}>
+          <Flex
+            style={{ gap: isMobile ? 0 : 8 }}
+            justifyContent="center"
+            alignItems="center"
+            flexDirection={isMobile ? 'column' : 'row'}
+          >
             <Heading scale="xl">{t('Join our')}</Heading>{' '}
             <Heading color={theme.isDark ? '#A881FC' : theme.colors.secondary} scale="xl">
               {t('Community')}
             </Heading>
           </Flex>
-          <Text mb="40px" color="textSubtle">
+          <Text mb="40px" color="textSubtle" fontWeight={600} textAlign="center">
             {t('Together we can make the PancakeSwap community even stronger')}
           </Text>
           <Flex m="0 auto" flexDirection={['column', null, null, 'row']} justifyContent="center" maxWidth="600px">
