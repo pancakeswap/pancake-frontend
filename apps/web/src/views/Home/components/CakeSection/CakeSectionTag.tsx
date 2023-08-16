@@ -96,7 +96,9 @@ export const FeatureTag = styled.div<{ $bgWidth: number }>`
   align-items: center;
   gap: 8px;
   border-radius: 24px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background: ${({ theme }) => theme.colors.backgroundAlt};
+  box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
   box-sizing: border-box;
   height: 40px;
   flex-grow: 0;
@@ -111,6 +113,9 @@ export const FeatureTag = styled.div<{ $bgWidth: number }>`
     background: none;
     position: relative;
     left: -${({ $bgWidth }) => (MARQUEE_WIDTH - $bgWidth) / 2}px;
+    border: none;
+    background: none;
+    box-shadow: none;
     &::before {
       z-index: -1;
       content: attr(data-content);
@@ -118,8 +123,10 @@ export const FeatureTag = styled.div<{ $bgWidth: number }>`
       position: absolute;
       top: 0;
       width: ${({ $bgWidth }) => $bgWidth}px;
-      background-color: white;
       border-radius: 24px;
+      border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+      background: ${({ theme }) => theme.colors.backgroundAlt};
+      box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
     }
   }
 `
