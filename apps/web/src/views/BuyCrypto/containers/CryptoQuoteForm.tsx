@@ -22,7 +22,7 @@ export function CryptoQuoteForm({
   const [timer, setTimer] = useState(30)
   const [fetching, setFetching] = useState<boolean>(false)
   const currentChain = useRef(chainId ?? undefined)
-  const currentAcccount = useRef(chainId ?? undefined)
+  const currentAcccount = useRef(address ?? undefined)
 
   useEffect(() => {
     if (chainId !== currentChain.current || address !== currentAcccount.current) {
