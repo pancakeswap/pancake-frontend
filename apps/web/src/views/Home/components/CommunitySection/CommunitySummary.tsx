@@ -5,13 +5,13 @@ import styled from 'styled-components'
 
 const Wrapper = styled.div`
   width: 337px;
-  transform: rotate(-2deg);
   border-radius: 32px;
   border: 2px solid #3c1786;
   background: var(--linear, linear-gradient(180deg, #7645d9 0%, #5121b1 100%));
   box-shadow: 0px 4px 0px 0px #3c1786;
   padding: 24px 0px 24px 60px;
   box-sizing: border-box;
+  height: 340px;
 `
 
 const StyledText = styled(Text)`

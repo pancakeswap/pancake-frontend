@@ -20,7 +20,6 @@ export const Wrapper = styled.div`
   padding: 24px;
   width: 340px;
   height: 345px;
-  transform: rotate(2deg);
 `
 
 const LogoBox = styled.div`
@@ -119,10 +118,15 @@ export const TwitterCards: React.FC = () => {
 
 export const BlogCard: React.FC = () => {
   const { t } = useTranslation()
-  const { imageSrc, title, date } = useLatestBlogData()
+  const { imageSrc, title, date, link } = useLatestBlogData()
   const { theme } = useTheme()
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        window.open(link, '_blank', 'noopener noreferrer')
+      }}
+      style={{ cursor: 'pointer' }}
+    >
       <Text bold mb="24px">
         {t('Our Latest Blog')}
       </Text>
