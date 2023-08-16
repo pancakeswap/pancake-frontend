@@ -10,7 +10,7 @@ export const livePools: SerializedPool[] = [
     earningToken: arbitrumTokens.mockA,
     contractAddress: '0x1b08a836d43719EF2a7D8F3bb2A093EF3DBc9D09',
     poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '0.01',
+    tokenPerSecond: '0.01',
     version: 3,
   },
 ].map((p) => ({
