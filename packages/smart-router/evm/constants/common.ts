@@ -20,4 +20,6 @@ export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.ZKSYNC]: 'era',
   [ChainId.ZKSYNC_TESTNET]: '',
   [ChainId.LINEA_TESTNET]: '',
+  [ChainId.BASE_TESTNET]: '',
+  [ChainId.OPBNB_TESTNET]: '',
 } satisfies Record<ChainId, string>

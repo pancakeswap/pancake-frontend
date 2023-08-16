@@ -12,6 +12,7 @@ import {
   lineaTestnet as lineaTestnet_,
   arbitrum,
   arbitrumGoerli,
+  baseGoerli,
   Chain,
 } from 'wagmi/chains'
 
@@ -27,6 +28,8 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
+  [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
+  [ChainId.BASE_TESTNET]: 'baseTestnet',
 } as const satisfies Record<ChainId, string>
 
 const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
@@ -90,6 +93,34 @@ const lineaTestnet = {
   },
 } as const satisfies Chain
 
+export const opbnbTestnet = {
+  id: 5_611,
+  name: 'opBNB Testnet',
+  network: 'opbnb-testnet',
+  nativeCurrency: bscTestnet.nativeCurrency,
+  rpcUrls: {
+    default: {
+      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
+    },
+    public: {
+      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'opBNBScan',
+      url: 'http://opbnbscan.com',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 3705108,
+    },
+  },
+  testnet: true,
+} as const satisfies Chain
+
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
  * The expectation is that all of these networks have immediate transaction confirmation.
@@ -116,4 +147,6 @@ export const CHAINS = [
   lineaTestnet,
   arbitrumGoerli,
   arbitrum,
+  baseGoerli,
+  opbnbTestnet,
 ]

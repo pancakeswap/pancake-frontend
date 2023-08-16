@@ -29,6 +29,8 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.ZKSYNC]: 0.1,
   [ChainId.ZKSYNC_TESTNET]: 0.1,
   [ChainId.LINEA_TESTNET]: 0.1,
+  [ChainId.OPBNB_TESTNET]: 0.1,
+  [ChainId.BASE_TESTNET]: 0.1,
 } as const satisfies Record<ChainId, number>
 
 // Normally we expect to get quotes from within the same block
@@ -45,6 +47,8 @@ const BLOCK_CONFLICT_TOLERANCE = {
   [ChainId.ZKSYNC]: 3,
   [ChainId.ZKSYNC_TESTNET]: 3,
   [ChainId.LINEA_TESTNET]: 3,
+  [ChainId.OPBNB_TESTNET]: 3,
+  [ChainId.BASE_TESTNET]: 3,
 } as const satisfies Record<ChainId, number>
 
 type V3Inputs = [string, string]
