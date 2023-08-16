@@ -1,24 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   EarnIcon,
+  GovernanceIcon,
+  InsertChartOutlinedIcon,
   NftIcon,
   PoolIcon,
+  StoreIcon,
   SwapIcon,
   Text,
   TrophyIcon,
-  InsertChartOutlinedIcon,
-  GovernanceIcon,
-  StoreIcon,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import Image, { StaticImageData } from 'next/image'
 import { cloneElement, useMemo, useRef } from 'react'
 import Marquee from 'react-fast-marquee'
 import styled from 'styled-components'
 
-import { PartnerBinance, Partner1Inch, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
+import { Partner1Inch, PartnerBinance, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
 
-const MARQUEE_WIDTH = 200
+const MARQUEE_WIDTH = 210
 
 export const usePartnerData = () => {
   return useMemo(() => {
@@ -53,7 +52,15 @@ export const useEcosystemTagData = () => {
   }, [t])
 }
 
+export const EcoSystemTagOuterWrapper = styled.div`
+  position: relative;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-left: 10px;
+  }
+`
+
 export const FeatureTagsWrapper = styled(Marquee)`
+  position: relative;
   width: ${MARQUEE_WIDTH}px;
   mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -63,7 +70,15 @@ export const FeatureTagsWrapper = styled(Marquee)`
   overflow: hidden;
 `
 
+export const PartnerTagOuterWrapper = styled.div`
+  position: relative;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-left: 40px;
+  }
+`
+
 export const PartnerTagsWrapper = styled(Marquee)`
+  position: relative;
   width: ${MARQUEE_WIDTH}px;
   mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -119,6 +134,7 @@ export const CakePartnerWrapper = styled.div<{ $bgWidth: number }>`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background: ${({ theme }) => theme.colors.backgroundAlt};
   box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
+  margin-right: 16px;
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-bottom: 0px;
     margin-right: 0px;
