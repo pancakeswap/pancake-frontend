@@ -181,7 +181,7 @@ export const CAKE = {
   ),
   [ChainId.ARBITRUM_GOERLI]: new ERC20Token(
     ChainId.ARBITRUM_GOERLI,
-    '0x394d64eD40a6aF892D8562eE816D5e71D8999E52',
+    '0x62FF25CFD64E55673168c3656f4902bD7Aa5F0f4',
     18,
     'CAKE',
     'PancakeSwap Token',
