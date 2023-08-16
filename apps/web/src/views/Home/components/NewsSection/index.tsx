@@ -51,7 +51,7 @@ const NewsCard = styled.div`
   height: 387px;
   border-radius: 24px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  box-shadow: 0px 2px 0px 0px #383241;
+  box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
   display: inline-block;
   margin-right: 34px;
   cursor: pointer;
