@@ -203,8 +203,19 @@ const EcoSystemSection: React.FC = () => {
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
       <GradientLogo height="48px" width="48px" mb="24px" />
-      <Text fontSize="40px" bold color={theme.colors.secondary}>
-        {t('Discover the Ecosystem')}
+      <Text textAlign="center" p="0px 20px">
+        <Text fontSize={['32px', null, null, '40px']} display="inline-block" bold color={theme.colors.text}>
+          {t('Discover the')}
+        </Text>
+        <Text
+          fontSize={['32px', null, null, '40px']}
+          ml="8px"
+          display="inline-block"
+          bold
+          color={theme.colors.secondary}
+        >
+          {t('Ecosystem')}
+        </Text>
       </Text>
       <CardWrapper>
         <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row'}>
