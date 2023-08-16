@@ -53,6 +53,8 @@ export function ClaimModal({
 
   const unlockTimeFormat = formatTime(unlockTime * 1_000)
 
+  const apr = stakePositionUserInfo.boost ? boostAPR : lockAPR
+
   return (
     <>
       {children(claimModal.onOpen)}
@@ -137,7 +139,7 @@ export function ClaimModal({
                     <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
                       {t('APR')}
                     </Text>
-                    <Text bold>{lockAPR.toSignificant(2)}%</Text>
+                    <Text bold>{apr.toSignificant(2)}%</Text>
                   </Flex>
                   <Button
                     variant="danger"

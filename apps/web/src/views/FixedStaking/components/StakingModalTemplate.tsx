@@ -65,14 +65,19 @@ export function StakingModalTemplate({
     initialLockPeriod === null || initialLockPeriod === undefined ? first(pools).lockPeriod : initialLockPeriod,
   )
 
-  const depositedAmount = useMemo(() => {
-    const selectedStakedPosition = stakedPositions?.find((sP) => sP.pool.lockPeriod === lockPeriod)
+  const selectedStakedPosition = useMemo(
+    () => stakedPositions?.find((sP) => sP.pool.lockPeriod === lockPeriod),
+    [lockPeriod, stakedPositions],
+  )
 
+  const isBoost = Boolean(selectedStakedPosition?.userInfo?.boost)
+
+  const depositedAmount = useMemo(() => {
     return CurrencyAmount.fromRawAmount(
       stakingToken,
       selectedStakedPosition ? selectedStakedPosition.userInfo.userDeposit.toString() : '0',
     )
-  }, [lockPeriod, stakedPositions, stakingToken])
+  }, [selectedStakedPosition, stakingToken])
 
   const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
 
@@ -191,7 +196,7 @@ export function StakingModalTemplate({
 
   const { boostAPR, lockAPR } = useFixedStakeAPR(aprParams)
 
-  const apr = boostAPR.greaterThan(0) ? boostAPR : lockAPR
+  const apr = isBoost ? boostAPR : lockAPR
 
   const projectedReturnAmount = stakeCurrencyAmount
     ?.multiply(lockPeriod)

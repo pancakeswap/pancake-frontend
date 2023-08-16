@@ -57,6 +57,8 @@ export function StakedPositionSection({
 
   const stakedPositions = useMemo(() => [stakePosition], [stakePosition])
 
+  const apr = stakePosition.userInfo.boost ? boostAPR : lockAPR
+
   return (
     <>
       <Flex mb="8px" justifyContent="space-between" width="100%">
@@ -75,7 +77,7 @@ export function StakedPositionSection({
       <Flex justifyContent="space-between" width="100%">
         <Box>
           <Text color="textSubtle" fontSize="12px">
-            APR: {lockAPR.toSignificant(2)}%
+            APR: {apr.toSignificant(2)}%
           </Text>
 
           <Text color="textSubtle" fontSize="12px">
