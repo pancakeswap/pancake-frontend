@@ -178,7 +178,7 @@ export const CakeSectionTag: React.FC<{ icon: React.ReactElement; text: string }
   }, [])
   const [bgWidth, setBgWidth] = useState(() => textRef?.current?.offsetWidth ?? 0)
   return (
-    <FeatureTag $bgWidth={bgWidth + 50}>
+    <FeatureTag $bgWidth={bgWidth + 54}>
       {cloneElement(icon, { color: theme.isDark ? '#A881FC' : theme.colors.secondary })}
       <Text fontWeight="600" ref={textRef}>
         {text}
