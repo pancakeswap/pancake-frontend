@@ -10,6 +10,7 @@ export const supportedChainIdV3 = [
   ChainId.POLYGON_ZKEVM_TESTNET,
   ChainId.POLYGON_ZKEVM,
   ChainId.ZKSYNC,
+  ChainId.ARBITRUM_ONE,
 ] as const
 export const bCakeSupportedChainId = [ChainId.BSC] as const
 
@@ -33,6 +34,7 @@ export const masterChefV3Addresses = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: '0xb66b07590B30d4E6E22e45Ddc83B06Bb018A7B44',
   [ChainId.POLYGON_ZKEVM]: '0xe9c7f3196ab8c09f6616365e8873daeb207c0391',
   [ChainId.ZKSYNC]: '0x4c615E78c5fCA1Ad31e4d66eb0D8688d84307463',
+  [ChainId.ARBITRUM_ONE]: '0x5e09ACf80C0296740eC5d6F643005a4ef8DaA694',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
 export const nonBSCVaultAddresses = {

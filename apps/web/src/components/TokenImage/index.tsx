@@ -16,6 +16,7 @@ export const tokenImageChainNameMapping = {
   [ChainId.ETHEREUM]: 'eth/',
   [ChainId.POLYGON_ZKEVM]: 'polygon-zkevm/',
   [ChainId.ZKSYNC]: 'zksync/',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum/',
 }
 
 const getImageUrlFromToken = (token: Token) => {

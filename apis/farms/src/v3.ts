@@ -38,6 +38,9 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ZKSYNC]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest', {
     fetch,
   }),
+  [ChainId.ARBITRUM_ONE]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb', {
+    fetch,
+  }),
 } satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
 const zChainId = z.enum([
@@ -48,6 +51,7 @@ const zChainId = z.enum([
   String(ChainId.ZKSYNC_TESTNET),
   String(ChainId.POLYGON_ZKEVM),
   String(ChainId.ZKSYNC),
+  String(ChainId.ARBITRUM_ONE),
 ])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
