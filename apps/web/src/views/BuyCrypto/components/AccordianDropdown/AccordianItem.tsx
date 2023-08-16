@@ -1,4 +1,4 @@
-import { Box, Flex, InfoIcon, Message, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { useCallback, useEffect, useRef, useState } from 'react'
