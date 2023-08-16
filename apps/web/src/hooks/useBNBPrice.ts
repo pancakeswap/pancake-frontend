@@ -5,17 +5,19 @@ import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import contracts from 'config/constants/contracts'
 import { publicClient } from 'utils/wagmi'
 import { formatUnits } from 'viem'
-import { FAST_INTERVAL } from 'config/constants'
-import { useQuery } from '@tanstack/react-query'
+import { useContractRead } from 'wagmi'
 
 // for migration to bignumber.js to avoid breaking changes
 export const useBNBPrice = () => {
-  const { data } = useQuery<BigNumber, Error>({
-    queryKey: ['bnbPrice'],
-    queryFn: async () => new BigNumber(await getBNBPriceFromOracle()),
-    staleTime: FAST_INTERVAL,
-    refetchInterval: FAST_INTERVAL,
+  const { data } = useContractRead({
+    abi: chainlinkOracleABI,
+    address: contracts.chainlinkOracleBNB[ChainId.BSC],
+    functionName: 'latestAnswer',
+    chainId: ChainId.BSC,
+    watch: true,
+    select: (d) => new BigNumber(formatUnits(d, 8)),
   })
+
   return data ?? BIG_ZERO
 }
 
