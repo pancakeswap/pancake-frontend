@@ -1,16 +1,15 @@
-import Image from 'next/image'
 import {
+  AptosIcon,
+  Arbitrum,
   BinanceChainIcon,
   EthChainIcon,
-  AptosIcon,
-  ZkEVMIcon,
-  Arbitrum,
   Text,
+  ZkEVMIcon,
   ZksyncWithOutCircleIcon,
 } from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
-import styled, { keyframes } from 'styled-components'
 import Marquee from 'react-fast-marquee'
+import styled from 'styled-components'
 
 const TagWrapper = styled.div`
   padding: 12px 24px;

@@ -181,4 +181,7 @@ export { default as ZkEVMIcon } from "./Icons/ZkEVM";
 export { default as ZkSyncIcon } from "./Icons/ZkSync";
 export { ZksyncWithOutCircleIcon } from "./Icons/ZksyncWithOutCircle";
 export { default as Arbitrum } from "./Icons/Arbitrum";
+export { InsertChartOutlinedIcon } from "./Icons/InsertChartOutlined";
+export { GovernanceIcon } from "./Icons/Governance";
+export { StoreIcon } from "./Icons/Store";
 export type { SvgProps } from "./types";

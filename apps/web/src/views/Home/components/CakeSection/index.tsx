@@ -1,63 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Button,
-  Flex,
-  Link,
-  OpenNewIcon,
-  Text,
-  PoolIcon,
-  EarnIcon,
-  SwapIcon,
-  NftIcon,
-  TrophyIcon,
-} from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/image'
-import React, { useMemo, useRef, useLayoutEffect, useCallback } from 'react'
+import React, { useRef, useLayoutEffect, useCallback } from 'react'
 import styled from 'styled-components'
-import cakeSectionMain from '../../images/cake-section-main.png'
-import { CakeSectionTag, CakePartnerTag } from './CakeSectionTag'
-import partnerBinance from '../../images/partner-binance.png'
-import partner1inch from '../../images/partner-1inch.png'
-import partnerMetamask from '../../images/partner-metamask.png'
-import partnerLedger from '../../images/partner-ledger.png'
-import partnerMore from '../../images/partner-more.png'
 
-const useEcosystemTagData = () => {
-  const { t } = useTranslation()
-  return useMemo(() => {
-    return [
-      { icon: <PoolIcon />, text: t('Staking') },
-      { icon: <EarnIcon />, text: t('Farming') },
-      { icon: <SwapIcon />, text: t('Trade') },
-      { icon: <NftIcon />, text: t('NFT') },
-      {
-        icon: <TrophyIcon />,
-        text: t('Liquidity Provision'),
-      },
-      { icon: <TrophyIcon />, text: t('Governance') },
-      { icon: <TrophyIcon />, text: t('Win') },
-    ]
-  }, [t])
-}
-
-const usePartnerData = () => {
-  return useMemo(() => {
-    return [
-      { src: partnerBinance, width: 116, height: 44, alt: 'partnerBinance' },
-      { src: partner1inch, width: 105, height: 44, alt: 'partner1inch' },
-      { src: partnerMetamask, width: 111, height: 44, alt: 'partnerMetamask' },
-      { src: partnerLedger, width: 97, height: 44, alt: 'partnerLedger' },
-      { src: partnerMore, width: 71, height: 44, alt: 'partnerMore' },
-    ]
-  }, [])
-}
+import {
+  CakeSectionTag,
+  CakePartnerTag,
+  useEcosystemTagData,
+  usePartnerData,
+  FeatureTagsWrapper,
+  PartnerTagsWrapper,
+} from './CakeSectionTag'
 
 export const CakeSectionMainBox = styled.div`
   display: flex;
-  width: 100%;
+  width: 936px;
   margin-top: 50px;
-  height: 400px;
+  height: 500px;
   margin-bottom: 40px;
 `
 export const CakeSectionLeftBox = styled.div`
@@ -66,14 +26,16 @@ export const CakeSectionLeftBox = styled.div`
   flex-shrink: 0;
   flex-direction: column;
   max-width: 33%;
+  padding: 24px 36px;
 `
 export const CakeSectionRightBox = styled.div`
   display: flex;
   flex-grow: 1;
   flex-shrink: 0;
   flex-direction: column;
-  justify-content: end;
+  justify-content: start;
   max-width: 33%;
+  padding: 24px 36px;
 `
 
 export const CakeSectionCenterBox = styled.div`
@@ -147,6 +109,7 @@ const CakeSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { drawImage } = useDrawCanvas(videoRef, canvasRef)
+  const { isMobile } = useMatchBreakpoints()
   useLayoutEffect(() => {
     canvasInterval = window.setInterval(() => {
       drawImage?.()
@@ -165,7 +128,7 @@ const CakeSection: React.FC = () => {
         </Text>
       </Flex>
       <Flex justifyContent="center">
-        <Text fontSize={16} style={{ whiteSpace: 'nowrap' }}>
+        <Text fontSize={16}>
           {t(
             'Experience the power of community ownership, global governance, and explore infinite use cases within the PancakeSwap ecosystem',
           )}
@@ -186,11 +149,11 @@ const CakeSection: React.FC = () => {
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600" mb="20px">
             {t('Ecosystem')}
           </Text>
-          <Flex flexWrap="wrap" style={{ gap: 0 }}>
+          <FeatureTagsWrapper direction={isMobile ? 'right' : 'down'} play={false}>
             {ecosystemTagData.map((item) => (
               <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
             ))}
-          </Flex>
+          </FeatureTagsWrapper>
         </CakeSectionLeftBox>
         <CakeSectionCenterBox>
           <CakeBox>
@@ -205,11 +168,11 @@ const CakeSection: React.FC = () => {
           <Text color={theme.isDark ? '#A881FC' : theme.colors.secondary} fontSize="40px" fontWeight="600">
             {t('Partners')}
           </Text>
-          <Flex flexWrap="wrap" style={{ gap: 0 }}>
-            {partnerData.map((item) => (
-              <CakePartnerTag key={item.alt} src={item.src} width={item.width} height={item.height} alt={item.alt} />
+          <PartnerTagsWrapper direction={isMobile ? 'right' : 'down'} play={isMobile}>
+            {partnerData.map((d) => (
+              <CakePartnerTag icon={d.icon} width={d.width} />
             ))}
-          </Flex>
+          </PartnerTagsWrapper>
         </CakeSectionRightBox>
       </CakeSectionMainBox>
     </Flex>

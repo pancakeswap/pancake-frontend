@@ -1,47 +1,170 @@
+import { useTranslation } from '@pancakeswap/localization'
+import {
+  EarnIcon,
+  NftIcon,
+  PoolIcon,
+  SwapIcon,
+  Text,
+  TrophyIcon,
+  InsertChartOutlinedIcon,
+  GovernanceIcon,
+  StoreIcon,
+} from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
-import { Text } from '@pancakeswap/uikit'
-import { cloneElement } from 'react'
 import Image, { StaticImageData } from 'next/image'
+import { cloneElement, useMemo, useRef } from 'react'
+import Marquee from 'react-fast-marquee'
+import styled from 'styled-components'
 
-export const CakeSectionWrapper = styled.div`
+import { PartnerBinance, Partner1Inch, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
+
+const MARQUEE_WIDTH = 200
+
+export const usePartnerData = () => {
+  return useMemo(() => {
+    return [
+      { icon: <PartnerBinance />, width: 92 },
+      { icon: <Partner1Inch />, width: 72 },
+      { icon: <PartnerLedger />, width: 60 },
+      { icon: <PartnerMetaMask />, width: 86 },
+    ]
+  }, [])
+}
+
+export const useEcosystemTagData = () => {
+  const { t } = useTranslation()
+  return useMemo(() => {
+    return [
+      { icon: <PoolIcon />, text: t('Staking') },
+      { icon: <EarnIcon />, text: t('Farming') },
+      { icon: <SwapIcon />, text: t('Trade') },
+      { icon: <NftIcon />, text: t('NFT') },
+      {
+        icon: <InsertChartOutlinedIcon />,
+        text: t('Liquidity Provision'),
+      },
+      {
+        icon: <TrophyIcon />,
+        text: t('Game'),
+      },
+      { icon: <GovernanceIcon />, text: t('Governance') },
+      { icon: <StoreIcon />, text: t('IFO') },
+    ]
+  }, [t])
+}
+
+export const FeatureTagsWrapper = styled(Marquee)`
+  width: ${MARQUEE_WIDTH}px;
+  mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: ${MARQUEE_WIDTH}px !important;
+    width: ${MARQUEE_WIDTH}px !important;
+  }
+  overflow: hidden;
+`
+
+export const PartnerTagsWrapper = styled(Marquee)`
+  width: ${MARQUEE_WIDTH}px;
+  mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: ${MARQUEE_WIDTH}px !important;
+    width: ${MARQUEE_WIDTH}px !important;
+    mask-image: none;
+  }
+  overflow: hidden;
+`
+
+export const FeatureTag = styled.div<{ $bgWidth: number }>`
   display: flex;
   padding: 8px 16px;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  border-radius: 25.548px;
+  border-radius: 24px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
   box-sizing: border-box;
   height: 40px;
+  flex-grow: 0;
+  width: fit-content;
   margin-bottom: 21px;
   margin-right: 16px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-bottom: 0px;
+    margin-right: 0px;
+    width: 52px;
+    white-space: nowrap;
+    position: relative;
+    left: -${({ $bgWidth }) => (MARQUEE_WIDTH - $bgWidth) / 2}px;
+    &::before {
+      z-index: -1;
+      content: attr(data-content);
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: ${({ $bgWidth }) => $bgWidth}px;
+      background-color: white;
+      border-radius: 24px;
+    }
+  }
 `
 
-export const CakePartnerWrapper = styled.div`
-  margin-bottom: 8px;
-  margin-right: 17px;
+export const CakePartnerWrapper = styled.div<{ $bgWidth: number }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-bottom: 0px;
+    margin-right: 0px;
+    width: 52px;
+    white-space: nowrap;
+    position: relative;
+    left: -${({ $bgWidth }) => (MARQUEE_WIDTH - $bgWidth) / 2}px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    &::before {
+      z-index: -1;
+      content: attr(data-content);
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: ${({ $bgWidth }) => $bgWidth}px;
+      border-radius: 24px;
+      border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+      background: ${({ theme }) => theme.colors.backgroundAlt};
+      box-shadow: 0px 2px 0px 0px ${({ theme }) => theme.colors.cardBorder};
+    }
+  }
 `
 
 export const CakeSectionTag: React.FC<{ icon: React.ReactElement; text: string }> = ({ icon, text }) => {
   const { theme } = useTheme()
+  const textRef = useRef<HTMLDivElement>()
   return (
-    <CakeSectionWrapper>
+    <FeatureTag $bgWidth={(textRef?.current?.offsetWidth ?? 0) + 50}>
       {cloneElement(icon, { color: theme.isDark ? '#A881FC' : theme.colors.secondary })}
-      <Text fontWeight="600"> {text}</Text>
-    </CakeSectionWrapper>
+      <Text fontWeight="600" ref={textRef}>
+        {text}
+      </Text>
+    </FeatureTag>
   )
 }
 
 export const CakePartnerTag: React.FC<{
-  src: string | StaticImageData
+  icon: React.ReactElement
   width: number
-  height: number
-  alt: string
-}> = ({ src, width, height, alt }) => {
+}> = ({ icon, width }) => {
+  const { theme } = useTheme()
   return (
-    <CakePartnerWrapper>
-      <Image alt={alt} src={src} width={width} height={height} />
+    <CakePartnerWrapper $bgWidth={width + 50}>
+      {cloneElement(icon, { color: theme.isDark ? 'white' : 'black', width })}
     </CakePartnerWrapper>
   )
 }
