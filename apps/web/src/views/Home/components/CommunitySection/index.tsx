@@ -5,7 +5,7 @@ import { styled } from 'styled-components'
 import CompositeImage from '../CompositeImage'
 import CommunitySummary from './CommunitySummary'
 import { CommunityTags } from './CommunityTags'
-import TwitterCards from './TwitterCards'
+import { TwitterCards, BlogCard } from './TwitterCards'
 
 const TransparentFrame = styled.div<{ isDark: boolean }>`
   background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
@@ -110,6 +110,7 @@ const CommunitySection = () => {
             </Flex>
             <Flex flex="1" maxWidth={['275px', null, null, '100%']}>
               <TwitterCards />
+              {/* <BlogCard /> */}
             </Flex>
           </Flex>
         </Flex>
