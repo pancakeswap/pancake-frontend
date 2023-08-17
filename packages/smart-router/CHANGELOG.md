@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.3.5
+
+### Patch Changes
+
+- 726a09484: Export types from Transformer
+
 ## 4.3.4
 
 ### Patch Changes

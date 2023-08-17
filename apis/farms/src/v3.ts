@@ -38,6 +38,9 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ZKSYNC]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest', {
     fetch,
   }),
+  [ChainId.ARBITRUM_ONE]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb', {
+    fetch,
+  }),
 } satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
 const zChainId = z.enum([
@@ -48,6 +51,7 @@ const zChainId = z.enum([
   String(ChainId.ZKSYNC_TESTNET),
   String(ChainId.POLYGON_ZKEVM),
   String(ChainId.ZKSYNC),
+  String(ChainId.ARBITRUM_ONE),
 ])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
@@ -209,7 +213,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
 
   if (kvCache) {
     // 5 mins
-    if (new Date().getTime() > new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
+    if (new Date().getTime() < new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
       return json(
         {
           tvl: {
@@ -258,7 +262,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
     }
 
     const resultTimeout = await Promise.race([
-      timeout(15),
+      timeout(20),
       fetchLiquidityFromSubgraph(chainId, address, masterChefV3Address, tick, sqrtPriceX96),
     ])
 

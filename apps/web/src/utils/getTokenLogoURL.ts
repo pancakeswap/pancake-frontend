@@ -7,6 +7,7 @@ const mapping = {
   [ChainId.ETHEREUM]: 'ethereum',
   [ChainId.POLYGON_ZKEVM]: 'polygonzkevm',
   [ChainId.ZKSYNC]: 'zksync',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
 }
 
 const getTokenLogoURL = memoize(

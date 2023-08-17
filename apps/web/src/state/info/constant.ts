@@ -52,6 +52,7 @@ export const multiChainStartTime = {
   ETH: PCS_ETH_START,
   POLYGON_ZKEVM: 1686236845,
   ZKSYNC: 1690462800, // Thu Jul 27 2023 13:00:00 UTC+0000
+  ARB: 1686732526,
 }
 
 export const multiChainId: Record<MultiChainName, ChainId> = {
@@ -75,6 +76,7 @@ export const multiChainQueryClient = {
   ETH: infoClientETH,
   POLYGON_ZKEVM: v2Clients[ChainId.POLYGON_ZKEVM],
   ZKSYNC: v2Clients[ChainId.ZKSYNC],
+  ARB: v2Clients[ChainId.ARBITRUM_ONE],
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {

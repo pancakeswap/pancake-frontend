@@ -56,8 +56,9 @@ export function useSingleTokenSwapInfo(
   outputCurrencyId: string | undefined,
   outputCurrency: Currency | undefined,
 ): { [key: string]: number } {
-  const token0Address = useMemo(() => getTokenAddress(inputCurrencyId), [inputCurrencyId])
-  const token1Address = useMemo(() => getTokenAddress(outputCurrencyId), [outputCurrencyId])
+  const { chainId } = useActiveChainId()
+  const token0Address = useMemo(() => getTokenAddress(chainId, inputCurrencyId), [chainId, inputCurrencyId])
+  const token1Address = useMemo(() => getTokenAddress(chainId, outputCurrencyId), [chainId, outputCurrencyId])
 
   const amount = useMemo(() => tryParseAmount('1', inputCurrency ?? undefined), [inputCurrency])
 

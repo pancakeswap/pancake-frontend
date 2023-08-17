@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
+import orderBy from 'lodash/orderBy'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { bscTokens } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { fetchTokenUSDValue } from '@pancakeswap/utils/llamaPrice'
+import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import {
   fetchPoolsTimeLimits,
   fetchPoolsTotalStaking,
@@ -44,12 +46,12 @@ import { Address, erc20ABI } from 'wagmi'
 import { isAddress } from 'utils'
 import { publicClient } from 'utils/wagmi'
 import { getViemClients } from 'utils/viem'
-import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
+import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 
 import fetchFarms from '../farms/fetchFarms'
-import getFarmsPrices from '../farms/getFarmsPrices'
+import { nativeStableLpMap } from '../farms/getFarmsPrices'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
 
@@ -167,12 +169,13 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       )
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const fetchFarmV3Promise = farmV3ApiFetch(chainId).catch((error) => {
-      return undefined
-    })
+    const fetchFarmV3Promise = farmV3ApiFetch(chainId)
+      .then((result) => result?.farmsWithPrice || [])
+      .catch(() => {
+        return []
+      })
 
-    const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmV3] = await Promise.all([
+    const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmsV3Data] = await Promise.all([
       fetchPoolsTotalStaking(chainId, getViemClients),
       fetchPoolsProfileRequirement(chainId, getViemClients),
       activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
@@ -181,20 +184,19 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
 
     const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
-    const farmsData = getState().farms.data
-    const bnbBusdFarm =
+    const farmsV2Data = getState().farms.data
+    const bnbBusdFarms =
       activePriceHelperLpsConfig.length > 0
-        ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
-        : null
-    const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
-      ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
-      : []
+        ? [...orderBy(farmsV3Data, 'lmPoolLiquidity', 'desc'), ...farmsV2Data].filter(
+            (farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB',
+          )
+        : []
+    const farmsWithPricesOfDifferentTokenPools =
+      bnbBusdFarms.length > 0
+        ? getFarmsPrices([...bnbBusdFarms, ...poolsWithDifferentFarmToken], nativeStableLpMap[chainId], 18)
+        : []
 
-    const prices = getTokenPricesFromFarm([
-      ...farmsData,
-      ...farmsWithPricesOfDifferentTokenPools,
-      ...(farmV3?.farmsWithPrice ?? []),
-    ])
+    const prices = getTokenPricesFromFarm([...farmsV2Data, ...farmsV3Data, ...farmsWithPricesOfDifferentTokenPools])
 
     const liveData: any[] = []
 

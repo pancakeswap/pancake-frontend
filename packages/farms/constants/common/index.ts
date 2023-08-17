@@ -7,6 +7,7 @@ import {
   zkSyncTestnetTokens,
   polygonZkEvmTokens,
   zksyncTokens,
+  arbitrumTokens,
 } from '@pancakeswap/tokens'
 import type { CommonPrice } from '../../src/fetchFarmsV3'
 import type { FarmV3SupportedChainId } from '../../src'
@@ -27,6 +28,7 @@ export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.ZKSYNC]: 'era',
   [ChainId.POLYGON_ZKEVM_TESTNET]: '',
   [ChainId.ZKSYNC_TESTNET]: '',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
 } satisfies Record<FarmV3SupportedChainId, string>
 
 export const priceHelperTokens = {
@@ -45,6 +47,10 @@ export const priceHelperTokens = {
   [ChainId.ZKSYNC]: {
     chain: 'zksync',
     list: [zksyncTokens.weth, zksyncTokens.usdc, zksyncTokens.usdt],
+  },
+  [ChainId.ARBITRUM_ONE]: {
+    chain: 'arbitrum',
+    list: [arbitrumTokens.weth, arbitrumTokens.usdc, arbitrumTokens.usdt, arbitrumTokens.arb],
   },
 } satisfies Record<number, PriceHelper>
 
@@ -67,4 +73,5 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.POLYGON_ZKEVM]: {},
   [ChainId.ZKSYNC]: {},
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
+  [ChainId.ARBITRUM_ONE]: {},
 }

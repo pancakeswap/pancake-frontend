@@ -91,7 +91,7 @@ const getFarmFromTokenAddress = (
 
 const filterFarmsByQuoteToken = (
   farms: SerializedFarmPublicData[],
-  preferredQuoteTokens: string[] = ['BUSD', 'WBNB'],
+  preferredQuoteTokens: string[] | undefined = ['BUSD', 'WBNB'],
 ): SerializedFarmPublicData => {
   const preferredFarm = farms.find((farm) => {
     return preferredQuoteTokens.some((quoteToken) => {
@@ -150,6 +150,24 @@ export type FarmWithPrices = FarmData & {
   lpTokenPrice: string
 }
 
+const isNativeFarm = (
+  farm: FarmData,
+  nativeStableLp: {
+    address: string
+    wNative: string
+    stable: string
+  },
+) => {
+  const isLpFound = equalsIgnoreCase(farm.lpAddress, nativeStableLp.address)
+  if (!isLpFound) {
+    return (
+      equalsIgnoreCase(farm.token.symbol, nativeStableLp.stable) &&
+      equalsIgnoreCase(farm.quoteToken.symbol, nativeStableLp.wNative)
+    )
+  }
+  return true
+}
+
 export const getFarmsPrices = (
   farms: FarmData[],
   nativeStableLp: {
@@ -159,9 +177,11 @@ export const getFarmsPrices = (
   },
   decimals: number,
 ): FarmWithPrices[] => {
-  const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLp.address))
+  if (!farms || !nativeStableLp || farms.length === 0) return []
 
-  const isNativeFirst = nativeStableFarm?.token.symbol === nativeStableLp.wNative
+  const nativeStableFarm = farms.find((farm) => isNativeFarm(farm, nativeStableLp))
+
+  const isNativeFirst = nativeStableFarm?.token?.symbol === nativeStableLp.wNative
 
   const nativePriceUSD =
     nativeStableFarm && toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
