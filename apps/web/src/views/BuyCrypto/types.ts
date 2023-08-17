@@ -6,6 +6,7 @@ export type ProviderQoute = {
   fiatCurrency: string
   cryptoCurrency: string
   provider: string
+  price?: number
 }
 
 export enum CryptoFormView {
