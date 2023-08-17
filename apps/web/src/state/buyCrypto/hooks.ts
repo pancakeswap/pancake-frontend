@@ -311,7 +311,7 @@ export async function queryParametersToBuyCryptoState(
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: limitAmounts?.baseCurrency?.minBuyAmount + 1,
+    minAmount: limitAmounts?.baseCurrency?.minBuyAmount,
     minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
