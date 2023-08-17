@@ -92,7 +92,7 @@ function AccordionItem({
     },
   )
 
-  const providerFee = quote.providerFee < 3.5 ? 3.5 : quote.providerFee
+  const providerFee = quote.providerFee < 3.5 && quote.provider === 'MoonPay' ? 3.5 : quote.providerFee
 
   if (quote.amount === 0) {
     return (
@@ -134,7 +134,7 @@ function AccordionItem({
 
           <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
             {formatLocaleNumber({
-              number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
+              number: !isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
               locale,
             })}{' '}
             {providerFee === 3.5 ? 'USD' : quote.cryptoCurrency}
