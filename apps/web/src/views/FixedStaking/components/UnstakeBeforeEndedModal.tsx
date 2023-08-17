@@ -13,12 +13,10 @@ import {
   Text,
   useModalV2,
 } from '@pancakeswap/uikit'
-import { CurrencyLogo } from 'components/Logo'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
 
 import { FixedStakingPool, StakePositionUserInfo, UnstakeType } from '../type'
-import { LockedFixedTag } from './LockedFixedTag'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import FixedStakingOverview from './FixedStakingOverview'

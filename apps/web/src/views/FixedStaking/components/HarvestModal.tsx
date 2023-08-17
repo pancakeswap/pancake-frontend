@@ -1,27 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Button,
-  ModalV2,
-  useModalV2,
-  Modal,
-  Flex,
-  Text,
-  Box,
-  PreTitle,
-  Heading,
-  InfoFilledIcon,
-  Card,
-} from '@pancakeswap/uikit'
+import { Button, ModalV2, useModalV2, Modal, Flex, Text, Box, PreTitle, InfoFilledIcon, Card } from '@pancakeswap/uikit'
 
 import { ReactNode } from 'react'
 import { GreyCard, LightGreyCard } from 'components/Card'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { CurrencyLogo } from 'components/Logo'
 
 import { FixedStakingPool, UnstakeType } from '../type'
-import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
