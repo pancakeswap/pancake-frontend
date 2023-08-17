@@ -53,6 +53,11 @@ export const getNodeRealUrlV2 = (chainId: number, key?: string) => {
         host = `open-platform.nodereal.io/${key}/polygon-zkevm-rpc`
       }
       break
+    case ChainId.ARBITRUM_ONE:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/arbitrum-nitro`
+      }
+      break
     default:
       host = null
   }
