@@ -11,6 +11,7 @@ import {
 } from '@pancakeswap/tokens'
 import type { CommonPrice } from '../../src/fetchFarmsV3'
 import type { FarmV3SupportedChainId } from '../../src'
+import { chainIdTOName } from './chainIdToName'
 
 export const CAKE_BNB_LP_MAINNET = '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0'
 
@@ -20,15 +21,15 @@ export type PriceHelper = {
 }
 
 export const CHAIN_ID_TO_CHAIN_NAME = {
-  [ChainId.BSC]: 'bsc',
-  [ChainId.ETHEREUM]: 'ethereum',
-  [ChainId.GOERLI]: 'ethereum',
-  [ChainId.BSC_TESTNET]: 'bsc',
-  [ChainId.POLYGON_ZKEVM]: 'polygon_zkevm',
-  [ChainId.ZKSYNC]: 'era',
+  [ChainId.BSC]: chainIdTOName[ChainId.BSC],
+  [ChainId.ETHEREUM]: chainIdTOName[ChainId.ETHEREUM],
+  [ChainId.GOERLI]: chainIdTOName[ChainId.ETHEREUM],
+  [ChainId.BSC_TESTNET]: chainIdTOName[ChainId.BSC],
+  [ChainId.POLYGON_ZKEVM]: chainIdTOName[ChainId.POLYGON_ZKEVM],
+  [ChainId.ZKSYNC]: chainIdTOName[ChainId.ZKSYNC],
   [ChainId.POLYGON_ZKEVM_TESTNET]: '',
   [ChainId.ZKSYNC_TESTNET]: '',
-  [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.ARBITRUM_ONE]: chainIdTOName[ChainId.ARBITRUM_ONE],
 } satisfies Record<FarmV3SupportedChainId, string>
 
 export const priceHelperTokens = {
