@@ -11,7 +11,7 @@ export const chainIdTOName = {
   50: 'xdc',
   52: 'csc',
   55: 'zyx',
-  56: 'binance',
+  56: 'bsc',
   57: 'syscoin',
   60: 'gochain',
   61: 'ethereumclassic',
