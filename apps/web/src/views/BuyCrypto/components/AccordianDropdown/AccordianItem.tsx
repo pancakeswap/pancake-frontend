@@ -60,7 +60,7 @@ function AccordionItem({
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { isNewCustomer } = useBuyCryptoState()
-  const { days, hours } = getTimePeriods(1680288000)
+  const { days, hours } = getTimePeriods(1681699200)
 
   const isActive = () => (multiple ? visiblity : active)
   const isCampaignEligible = isNewCustomer && quote.provider === 'MoonPay'
