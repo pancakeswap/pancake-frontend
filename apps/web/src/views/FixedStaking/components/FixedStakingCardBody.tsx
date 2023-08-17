@@ -1,10 +1,11 @@
 import { Box, ButtonMenu, ButtonMenuItem, Flex, StarCircle, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useMemo, useState } from 'react'
 import { CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
+import { differenceInMilliseconds } from 'date-fns'
 
-import { PoolGroup } from '../type'
+import { PoolGroup, StakedPosition } from '../type'
 import { FixedStakingCardFooter } from './FixedStakingCardFooter'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
@@ -47,8 +48,10 @@ function AprFooter({ lockPeriod, stakingToken, boostDayPercent, lockDayPercent, 
 export function FixedStakingCardBody({
   children,
   pool,
+  stakedPositions,
 }: {
   pool: PoolGroup
+  stakedPositions: StakedPosition[]
   children: (selectedPeriodIndex: number | null, setSelectedPeriodIndex: (index: number | null) => void) => ReactNode
 }) {
   const { t } = useTranslation()
@@ -57,6 +60,19 @@ export function FixedStakingCardBody({
 
   const minAPR = new Percent(pool.minLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
   const maxAPR = new Percent(pool.maxLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
+
+  const claimedPeriods = useMemo(
+    () =>
+      stakedPositions
+        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) <= 0)
+        .map((sP) => sP.pool.lockPeriod),
+    [stakedPositions],
+  )
+
+  const disabledIndexes = useMemo(
+    () => pool.pools.map((p, index) => (claimedPeriods.includes(p.lockPeriod) ? index : undefined)),
+    [claimedPeriods, pool.pools],
+  )
 
   return (
     <>
@@ -81,6 +97,7 @@ export function FixedStakingCardBody({
         title={t('Stake Periods:')}
         detail={
           <ButtonMenu
+            disabledIndexes={disabledIndexes}
             activeIndex={selectedPeriodIndex ?? pool.pools.length}
             onItemClick={(index) => setSelectedPeriodIndex(index)}
             scale="sm"

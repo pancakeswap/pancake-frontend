@@ -57,6 +57,7 @@ const StyledButtonMenu = styled.div.withConfig({
 `;
 
 const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
+  disabledIndexes = [],
   activeIndex = 0,
   scale = scales.MD,
   variant = variants.PRIMARY,
@@ -74,7 +75,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
           onClick: onItemClick ? () => onItemClick(index) : undefined,
           scale,
           variant,
-          disabled,
+          disabled: disabled || disabledIndexes.includes(index),
         });
       })}
     </StyledButtonMenu>

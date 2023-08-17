@@ -35,7 +35,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
         </>
       </Flex>
       <CardBody>
-        <FixedStakingCardBody pool={pool}>
+        <FixedStakingCardBody pool={pool} stakedPositions={stakedPositions}>
           {(selectedPeriodIndex, setSelectedPeriodIndex) => (
             <>
               {stakedPositions.length ? (

@@ -25,7 +25,7 @@ export default function FixedStakingOverview({
   disableStrike?: boolean
   isUnstakeView?: boolean
   stakeAmount: CurrencyAmount<Token>
-  alreadyStakedAmount: CurrencyAmount<Token>
+  alreadyStakedAmount?: CurrencyAmount<Token>
   lockAPR?: Percent
   boostAPR?: Percent
   lockPeriod?: number
@@ -36,15 +36,17 @@ export default function FixedStakingOverview({
 
   const apr = boostAPR?.greaterThan(0) ? boostAPR : lockAPR
 
+  const safeAlreadyStakedAmount = alreadyStakedAmount || CurrencyAmount.fromRawAmount(stakeAmount.currency, '0')
+
   const projectedReturnAmount = useMemo(
     () =>
       lockPeriod && apr
         ? stakeAmount
-            .add(alreadyStakedAmount)
+            .add(safeAlreadyStakedAmount)
             .multiply(lockPeriod)
             .multiply(apr.multiply(lockPeriod).divide(DAYS_A_YEAR))
         : stakeAmount.multiply(0),
-    [alreadyStakedAmount, apr, lockPeriod, stakeAmount],
+    [safeAlreadyStakedAmount, apr, lockPeriod, stakeAmount],
   )
 
   return (
@@ -52,9 +54,11 @@ export default function FixedStakingOverview({
       {!isUnstakeView ? (
         <BalanceRow
           title={t('Stake Amount')}
-          value={alreadyStakedAmount.greaterThan(0) ? alreadyStakedAmount.toExact() : stakeAmount.toExact()}
+          value={safeAlreadyStakedAmount.greaterThan(0) ? safeAlreadyStakedAmount.toExact() : stakeAmount.toExact()}
           newValue={
-            alreadyStakedAmount.greaterThan(0) ? stakeAmount.add(alreadyStakedAmount).toExact() : stakeAmount.toExact()
+            safeAlreadyStakedAmount.greaterThan(0)
+              ? stakeAmount.add(safeAlreadyStakedAmount).toExact()
+              : stakeAmount.toExact()
           }
           decimals={2}
         />
@@ -64,7 +68,7 @@ export default function FixedStakingOverview({
           <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
             {t('Duration')}
           </Text>
-          <Text bold color={alreadyStakedAmount.greaterThan(0) ? 'failure' : undefined}>
+          <Text bold color={safeAlreadyStakedAmount.greaterThan(0) ? 'failure' : undefined}>
             {lockPeriod} {t('days')}
           </Text>
         </Flex>
@@ -87,7 +91,7 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('Stake Period Ends')}
         </Text>
-        <Text color={alreadyStakedAmount.greaterThan(0) ? 'failure' : undefined} bold>
+        <Text color={safeAlreadyStakedAmount.greaterThan(0) ? 'failure' : undefined} bold>
           <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
         </Text>
       </Flex>

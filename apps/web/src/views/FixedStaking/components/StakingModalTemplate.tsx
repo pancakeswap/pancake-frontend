@@ -17,6 +17,7 @@ import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
 import first from 'lodash/first'
+import { differenceInMilliseconds } from 'date-fns'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
@@ -44,7 +45,7 @@ export function StakingModalTemplate({
   body,
   head,
   hideStakeButton,
-  stakedPositions,
+  stakedPositions = [],
   onBack,
 }: {
   stakingToken: Token
@@ -61,8 +62,18 @@ export function StakingModalTemplate({
   const [stakeAmount, setStakeAmount] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
 
+  const claimedPeriods = useMemo(
+    () =>
+      stakedPositions
+        .filter((sP) => differenceInMilliseconds(sP.endLockTime * 1_000, new Date()) <= 0)
+        .map((sP) => sP.pool.lockPeriod),
+    [stakedPositions],
+  )
+
   const [lockPeriod, setLockPeriod] = useState(
-    initialLockPeriod === null || initialLockPeriod === undefined ? first(pools).lockPeriod : initialLockPeriod,
+    initialLockPeriod === null || initialLockPeriod === undefined
+      ? first(pools.filter((p) => !claimedPeriods.includes(p.lockPeriod))).lockPeriod
+      : initialLockPeriod,
   )
 
   const selectedStakedPosition = useMemo(
