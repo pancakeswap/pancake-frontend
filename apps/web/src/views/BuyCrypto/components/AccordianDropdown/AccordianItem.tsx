@@ -1,19 +1,15 @@
 import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
+import { ProviderQoute } from 'views/BuyCrypto/types'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { providerFeeTypes } from 'views/BuyCrypto/constants'
-import Image from 'next/image'
-import { useBuyCryptoState } from 'state/buyCrypto/hooks'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
-import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 
 const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   display: ${({ isClicked }) => (isClicked ? 'none' : 'block')};
@@ -42,28 +38,23 @@ function AccordionItem({
   btnOnClick,
   quote,
   fetching,
-  setModalView,
 }: {
   active: boolean
   btnOnClick: any
   quote: ProviderQoute
   fetching: boolean
-  setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }) {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(active ? 240 : 90)
+  const [height, setHeight] = useState(active ? 227 : 90)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
-  const { isNewCustomer } = useBuyCryptoState()
-  const { days, hours } = getTimePeriods(1681699200)
 
   const isActive = () => (multiple ? visiblity : active)
-  const isCampaignEligible = isNewCustomer && quote.provider === 'MoonPay'
 
   const toogleVisiblity = useCallback(() => {
     setVisiblity((v) => !v)
@@ -91,8 +82,6 @@ function AccordionItem({
       ...(isMobile && { manualVisible: mobileTooltipShow }),
     },
   )
-
-  const providerFee = quote.providerFee < 3.5 && quote.provider === 'MoonPay' ? 3.5 : quote.providerFee
 
   if (quote.amount === 0) {
     return (
@@ -133,11 +122,7 @@ function AccordionItem({
           <OnRampProviderLogo provider={quote.provider} />
 
           <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
-            {formatLocaleNumber({
-              number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
-              locale,
-            })}{' '}
-            {quote.cryptoCurrency}
+            {formatLocaleNumber({ number: quote.quote, locale })} {quote.cryptoCurrency}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
@@ -145,39 +130,24 @@ function AccordionItem({
             {quote.cryptoCurrency} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: Number(quote.price), locale })}{' '}
-            {providerFee === 3.5 ? 'USD' : quote.fiatCurrency}
+            = {formatLocaleNumber({ number: quote.amount, locale })} {quote.fiatCurrency}
           </Text>
         </RowBetween>
 
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : providerFee)
+            if (index === 0) fee = quote.networkFee + quote.providerFee
             else if (index === 1) fee = quote.networkFee
-            else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : providerFee
+            else fee = quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
-          {isCampaignEligible ? (
-            <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
-              <Flex>
-                <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
-                <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                  {t('No provider fees. Ends in %days% days and %hours% hours.', {
-                    days,
-                    hours,
-                  })}
-                </Text>
-              </Flex>
-            </Box>
-          ) : null}
           <FiatOnRampModalButton
             provider={quote.provider}
             inputCurrency={quote.cryptoCurrency}
             outputCurrency={quote.fiatCurrency}
             amount={quote.amount.toString()}
             disabled={fetching}
-            setModalView={setModalView}
           />
         </DropdownWrapper>
       </CryptoCard>
