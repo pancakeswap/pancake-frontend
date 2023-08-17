@@ -50,7 +50,7 @@ export const IfoChainBoard = memo(function IfoChainBoard({ chainId }: Props) {
     <Container>
       {!isMobile && <Image alt={`chain-${chainId}`} src={boardImageUrl} width={100} height={85} />}
       <Tag background={BACKGROUND[chainId]}>
-        <Text fontSize="0.875rem" bold color="contrast">
+        <Text fontSize="0.875rem" bold color="white">
           {t('On %chainName%', { chainName })}
         </Text>
       </Tag>
