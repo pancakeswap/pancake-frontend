@@ -92,6 +92,8 @@ function AccordionItem({
     },
   )
 
+  const providerFee = quote.providerFee < 3.5 ? 3.5 : quote.providerFee
+
   if (quote.amount === 0) {
     return (
       <Flex flexDirection="column">
@@ -135,7 +137,7 @@ function AccordionItem({
               number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
               locale,
             })}{' '}
-            {quote.cryptoCurrency}
+            {providerFee === 3.5 ? 'USD' : quote.cryptoCurrency}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
@@ -150,9 +152,9 @@ function AccordionItem({
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : quote.providerFee)
+            if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : providerFee)
             else if (index === 1) fee = quote.networkFee
-            else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : quote.providerFee
+            else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
           {isCampaignEligible ? (
