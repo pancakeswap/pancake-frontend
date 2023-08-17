@@ -135,7 +135,7 @@ const IfoAchievement: React.FC<React.PropsWithChildren<Props>> = ({ ifo, publicI
             <Link external href={ifo.articleUrl}>
               <ProposalIcon color="textSubtle" />
             </Link>
-            <Link external href={getBlockExploreLink(ifo.address, 'address')}>
+            <Link external href={getBlockExploreLink(ifo.address, 'address', ifo.chainId)}>
               <SmartContractIcon color="textSubtle" />
             </Link>
             {ifo.twitterUrl && (
