@@ -3,7 +3,7 @@ import { LightCard, LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { formatTime } from 'utils/formatTime'
 
 import { UnstakeEndedModal } from './UnstakeModal'
@@ -41,6 +41,7 @@ export function ClaimModal({
   const { t } = useTranslation()
   const unstakeModal = useModalV2()
   const claimModal = useModalV2()
+  const [isConfirmed, setIsConfirmed] = useState(false)
 
   const { accrueInterest, amountDeposit, projectedReturnAmount } = useCalculateProjectedReturnAmount({
     token,
@@ -49,7 +50,11 @@ export function ClaimModal({
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
   })
 
-  const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({ poolIndex, stakingToken: token })
+  const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({
+    poolIndex,
+    stakingToken: token,
+    onSuccess: () => (unstakeModal.isOpen ? unstakeModal.onDismiss() : setIsConfirmed(true)),
+  })
 
   const unlockTimeFormat = formatTime(unlockTime * 1_000)
 
@@ -59,6 +64,7 @@ export function ClaimModal({
     <>
       {children(claimModal.onOpen)}
       <HarvestModal
+        isConfirmed={isConfirmed}
         poolEndDay={poolEndDay}
         onBack={claimModal.onOpen}
         handleSubmission={handleSubmission}

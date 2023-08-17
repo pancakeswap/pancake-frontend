@@ -13,7 +13,7 @@ import {
   Card,
 } from '@pancakeswap/uikit'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 import { GreyCard, LightGreyCard } from 'components/Card'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -42,7 +42,9 @@ export function HarvestModal({
   onBack,
   poolEndDay,
   pools,
+  isConfirmed,
 }: {
+  isConfirmed?: boolean
   poolEndDay: number
   onBack: () => void
   stakingToken: Token
@@ -61,7 +63,6 @@ export function HarvestModal({
 
   const { t } = useTranslation()
   const restakeModal = useModalV2()
-  const [isConfirmed, setIsConfirmed] = useState(false)
 
   return account ? (
     <>
@@ -176,7 +177,7 @@ export function HarvestModal({
                   minHeight: '48px',
                   marginBottom: '8px',
                 }}
-                onClick={() => handleSubmission(UnstakeType.HARVEST, accrueInterest).then(() => setIsConfirmed(true))}
+                onClick={() => handleSubmission(UnstakeType.HARVEST, accrueInterest)}
               >
                 {pendingTx ? t('Restaking') : t('Confirm Claim & Restake')}
               </Button>

@@ -13,7 +13,15 @@ import { getBep20Contract } from 'utils/contractHelpers'
 
 import { UnstakeType } from '../type'
 
-export function useHandleWithdrawSubmission({ poolIndex, stakingToken }: { poolIndex: number; stakingToken: Token }) {
+export function useHandleWithdrawSubmission({
+  poolIndex,
+  stakingToken,
+  onSuccess,
+}: {
+  poolIndex: number
+  stakingToken: Token
+  onSuccess?: () => void
+}) {
   const { t } = useTranslation()
   const { toastSuccess, toastInfo } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -66,6 +74,8 @@ export function useHandleWithdrawSubmission({ poolIndex, stakingToken }: { poolI
           )
 
           toastSuccess(t('Successfully submitted!'), successComp)
+
+          if (onSuccess) onSuccess()
         }
       }
     },
@@ -73,6 +83,7 @@ export function useHandleWithdrawSubmission({ poolIndex, stakingToken }: { poolI
       callWithGasPrice,
       fetchWithCatchTxError,
       fixedStakingContract,
+      onSuccess,
       poolIndex,
       stakingTokenBalanceInPool,
       t,

@@ -57,9 +57,7 @@ export function UnstakeEndedModal({
             minHeight: '48px',
             marginBottom: '8px',
           }}
-          onClick={() =>
-            handleSubmission(UnstakeType.WITHDRAW, stakeAmount.add(accrueInterest)).then(() => unstakeModal.onDismiss())
-          }
+          onClick={() => handleSubmission(UnstakeType.WITHDRAW, stakeAmount.add(accrueInterest))}
         >
           {loading ? t('Confirming') : t('Confirm Unstake')}
         </Button>
