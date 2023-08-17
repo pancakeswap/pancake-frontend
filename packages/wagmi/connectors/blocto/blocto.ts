@@ -108,17 +108,10 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
   }
 
   async isAuthorized(): Promise<boolean> {
-    try {
-      const provider = await this.getProvider()
-      if (!provider) throw new ConnectorNotFoundError()
-      const accounts = await provider.request({
-        method: 'eth_requestAccounts',
-      })
-      const account = accounts[0]
-      return !!account
-    } catch {
-      return false
-    }
+    const walletName = this.storage?.getItem('wallet')
+    const connected = Boolean(this.storage?.getItem('connected'))
+    const isConnect = walletName === 'blocto' && connected
+    return Promise.resolve(isConnect)
   }
 
   async getWalletClient({ chainId }: { chainId?: number } = {}): Promise<WalletClient> {
@@ -177,6 +170,9 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
 
   async disconnect() {
     const provider = await this.getProvider()
+    if (provider) {
+      await provider.request({ method: 'wallet_disconnect' })
+    }
     if (!provider?.removeListener) return
 
     provider.removeListener('accountsChanged', this.onAccountsChanged)
