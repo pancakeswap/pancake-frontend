@@ -37,8 +37,8 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.GOERLI]: DEFAULT,
   [ChainId.ARBITRUM_ONE]: {
     defaultConfig: {
-      multicallChunk: 150,
-      gasLimitOverride: 1_000_000,
+      multicallChunk: 50,
+      gasLimitOverride: 36_000_000,
     },
     gasErrorFailureOverride: {
       gasLimitOverride: 30_000_000,
