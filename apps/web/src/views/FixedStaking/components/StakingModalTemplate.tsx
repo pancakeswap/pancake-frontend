@@ -118,7 +118,9 @@ export function StakingModalTemplate({
 
   const totalStakedAmount = stakeCurrencyAmount.add(depositedAmount)
 
-  if (totalStakedAmount.greaterThan(maxStakeAmount)) {
+  if (stakeCurrencyAmount.greaterThan(stakingTokenBalance.toNumber())) {
+    error = t('Insufficient %symbol% balance', { symbol: stakingToken.symbol })
+  } else if (totalStakedAmount.greaterThan(maxStakeAmount)) {
     error = t('Maximum %amount% %symbol%', {
       amount: maxStakeAmount.toSignificant(2),
       symbol: stakingToken.symbol,
