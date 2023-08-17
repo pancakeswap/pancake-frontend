@@ -28,10 +28,10 @@ const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmoun
   return (
     <RowBetween>
       <Text fontSize="14px" color="textSubtle">
-        ≈{feeTitle}
+        {feeTitle}
       </Text>
       <Text ml="4px" fontSize="14px" color="textSubtle">
-        {formatLocaleNumber({ number: feeAmount, locale })} {currency}
+        ≈ {formatLocaleNumber({ number: feeAmount, locale })} {currency}
       </Text>
     </RowBetween>
   )

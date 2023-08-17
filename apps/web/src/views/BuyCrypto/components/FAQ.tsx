@@ -49,9 +49,9 @@ const config = (t) => [
     ),
   },
   {
-    title: t('Why did I get sent USDC.e on Arbitrum'),
+    title: t('Why do i recieve different USDC tokens on Arbitrum?'),
     description: t(
-      'Moonpay uses the USDC.e bridged token on arbitrum as it has higher liquidity compared to its USDC counterpart.',
+      'In the case of Aibitrum, theres a bridged version of USDC known as USDC.e that has been bridged from Ethereum to Arbitrum, and native USDC, known as USDC. Depending on providers, we support both USDC.E and USDC. Please check your wallet balances for both tokens',
     ),
   },
 ]
