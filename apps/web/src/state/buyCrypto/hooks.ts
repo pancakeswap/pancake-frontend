@@ -15,7 +15,7 @@ import max from 'lodash/max'
 import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
-import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MOONPAY_API_KEY, MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
 import {
   Field,
@@ -112,7 +112,7 @@ const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: st
   try {
     const baseCurrency = `${outputCurrencyId.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
     const response = await fetch(
-      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
+      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=${MOONPAY_API_KEY}&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
     // console.log(await response.json())
