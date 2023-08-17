@@ -19,7 +19,10 @@ type Props = {
 
 export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
   const { t } = useTranslation()
-  const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit } = useICakeBridgeStatus({ ifoChainId, ifoCredit })
+  const { noICake, hasBridged, shouldBridgeAgain, sourceChainCredit, destChainCredit } = useICakeBridgeStatus({
+    ifoChainId,
+    ifoCredit,
+  })
   const chainName = useChainNames([ifoChainId])
 
   if (hasBridged) {
@@ -28,6 +31,7 @@ export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
         mt="0.625rem"
         ifoChainId={ifoChainId}
         icake={sourceChainCredit}
+        dstIcake={destChainCredit}
         buttonVisible={false}
         ifoId={ifoId}
       />
@@ -45,7 +49,13 @@ export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
   const action = noICake ? (
     <StakeButton mt="0.625rem" />
   ) : (
-    <BridgeButton mt="0.625rem" ifoChainId={ifoChainId} icake={sourceChainCredit} ifoId={ifoId} />
+    <BridgeButton
+      mt="0.625rem"
+      ifoChainId={ifoChainId}
+      icake={sourceChainCredit}
+      dstIcake={destChainCredit}
+      ifoId={ifoId}
+    />
   )
 
   return (

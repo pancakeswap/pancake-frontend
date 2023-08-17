@@ -78,6 +78,7 @@ export function useICakeBridgeStatus({ ifoChainId, ifoCredit }: ICakeStatusParam
     isICakeSynced,
     shouldBridgeAgain,
     sourceChainCredit,
+    destChainCredit,
     hasBridged: !noICake && isICakeSynced,
   }
 }

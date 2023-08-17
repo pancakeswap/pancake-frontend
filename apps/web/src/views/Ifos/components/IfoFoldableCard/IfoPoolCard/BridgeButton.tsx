@@ -17,11 +17,13 @@ type Props = {
   ifoChainId: ChainId
   // The amount of icake on source chain
   icake?: CurrencyAmount<Currency>
+  // The amount of icake on destination chain
+  dstIcake?: CurrencyAmount<Currency>
 
   buttonVisible?: boolean
 } & SpaceProps
 
-export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ifoId, ...props }: Props) {
+export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true, ifoId, ...props }: Props) {
   const { chainId } = useActiveChainId()
   const sourceChain = useIfoSourceChain()
   // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
@@ -30,6 +32,7 @@ export function BridgeButton({ ifoChainId, icake, buttonVisible = true, ifoId, .
   const { state, bridge } = useBridgeICake({
     ifoId,
     icake,
+    dstIcake,
     srcChainId: sourceChain,
     ifoChainId,
   })

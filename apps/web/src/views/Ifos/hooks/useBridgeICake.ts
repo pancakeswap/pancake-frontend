@@ -64,10 +64,15 @@ type Params = {
   ifoId: string
   srcChainId: ChainId
   ifoChainId: ChainId
+
+  // icake on source chain
   icake?: CurrencyAmount<Currency>
+  // icake on destination chain
+  dstIcake?: CurrencyAmount<Currency>
 }
 
-export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId }: Params) {
+// NOTE: this hook has side effect
+export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake }: Params) {
   const [signing, setSigning] = useState(false)
   const sourceChainName = useChainName(srcChainId)
   const ifoChainName = useChainName(ifoChainId)
@@ -78,6 +83,10 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId }: Params)
   const { receipt, saveTransactionHash, clearTransactionHash, txHash } = useLatestBridgeTx(ifoId, srcChainId)
   const message = useCrossChainMessage({ txHash: receipt?.transactionHash, srcChainId })
   const { fetchWithCatchTxError } = useCatchTxError()
+  const isICakeSynced = useMemo(
+    () => icake && dstIcake && icake.quotient === dstIcake.quotient && icake.quotient > 0n,
+    [icake, dstIcake],
+  )
 
   const bridge = useCallback(async () => {
     if (!account) {
@@ -138,10 +147,10 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId }: Params)
 
   // Clear tx hash from local storage if message delivered
   useEffect(() => {
-    if (message?.status === MessageStatus.DELIVERED) {
+    if (isICakeSynced || message?.status === MessageStatus.DELIVERED) {
       clearTransactionHash()
     }
-  }, [message?.status, clearTransactionHash])
+  }, [isICakeSynced, message?.status, clearTransactionHash])
 
   const state = useMemo<BridgeState>(() => {
     if (!txHash && !signing && !receipt && !message) {
