@@ -47,7 +47,9 @@ export function StakingModalTemplate({
   hideStakeButton,
   stakedPositions = [],
   onBack,
+  title,
 }: {
+  title?: string
   stakingToken: Token
   pools: FixedStakingPool[]
   stakedPositions?: StakedPosition[]
@@ -273,12 +275,14 @@ export function StakingModalTemplate({
   return (
     <Modal
       title={
-        <Flex>
-          <CurrencyLogo currency={stakingToken} size="28px" />
-          <Heading color="secondary" scale="lg" mx="8px">
-            {t('Stake')} {stakingToken?.symbol}
-          </Heading>
-        </Flex>
+        title || (
+          <Flex>
+            <CurrencyLogo currency={stakingToken} size="28px" />
+            <Heading color="secondary" scale="lg" mx="8px">
+              {t('Stake')} {stakingToken?.symbol}
+            </Heading>
+          </Flex>
+        )
       }
       width={['100%', '100%', '420px']}
       maxWidth={['100%', , '420px']}

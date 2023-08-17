@@ -46,6 +46,7 @@ export function FixedStakingCalculator({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          title={t('ROI Calculator')}
           onBack={() => stakeModal.onDismiss()}
           hideStakeButton
           stakingToken={stakingToken}
