@@ -25,6 +25,7 @@ const usePriceQuotes = () => {
       try {
         if (userIp) {
           const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
+          console.log(providerAvailabilities)
           sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
             return providerAvailabilities[quote.provider]
           })
@@ -54,7 +55,7 @@ const usePriceQuotes = () => {
         network: chainIdToNetwork[chainId],
       })
       const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes)
-      setQuotes(isNewCustomer ? providerQuotes : sortedFilteredQuotes)
+      setQuotes(isNewCustomer && sortedFilteredQuotes.length > 0 ? providerQuotes : sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
       setQuotes([])
