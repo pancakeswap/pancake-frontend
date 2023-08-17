@@ -24,6 +24,8 @@ const chainIdToNetwork: { [network: number]: string } = {
   80001: 'mumbai', // Polygon Testnet
   43114: 'avalanche', // Avalanche Mainnet
   43113: 'fuji', // Avalanche Testnet
+  42161: 'arbitrum', // Arbitrum Mainnet
+  421613: 'arbitrumGoerli', // Arbitrum Testnet
 }
 
 export class BloctoConnector extends Connector<EthereumProviderInterface, { defaultChainId: number; appId?: string }> {
@@ -109,7 +111,9 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
-      const accounts = provider.accounts
+      const accounts = await provider.request({
+        method: 'eth_requestAccounts',
+      })
       const account = accounts[0]
       return !!account
     } catch {

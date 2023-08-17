@@ -7,18 +7,19 @@ export interface SignMessagePayload {
   application?: boolean // Should we include the domain of the dapp
   chainId?: boolean // Should we include the current chain id the wallet is connected to
   message: string // The message to be signed and displayed to the user
-  nonce: number // A nonce the dapp should generate
+  nonce: string // A nonce the dapp should generate
 }
 
 export interface SignMessageResponse {
-  address: Address
-  application: string
-  chainId: number
+  address?: Address | string
+  application?: string
+  chainId?: number
   fullMessage: string // The message that was generated to sign
   message: string // The message passed in by the user
-  nonce: number
+  nonce: string
   prefix: 'APTOS' // Should always be APTOS
-  signature: string // The signed full message
+  signature: string | string[] // The signed full message
+  bitmap?: Uint8Array
 }
 
 export type Account = {
