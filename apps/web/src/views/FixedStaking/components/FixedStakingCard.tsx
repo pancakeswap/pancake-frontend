@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js'
 import first from 'lodash/first'
 import { LightGreyCard } from 'components/Card'
 import Divider from 'components/Divider'
+import React from 'react'
 
 import { FixedStakingCardBody } from './FixedStakingCardBody'
 import { StakedPositionSection } from './StakedPositionSection'
@@ -44,7 +45,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                   </InlineText>
                   <LightGreyCard mb="16px" mt="8px">
                     {stakedPositions.map((stakePosition, index) => (
-                      <>
+                      <React.Fragment key={stakePosition.pool.poolIndex}>
                         <StakedPositionSection
                           stakePosition={stakePosition}
                           lockDayPercent={stakePosition.pool.lockDayPercent}
@@ -63,7 +64,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                             <Divider />
                           </Box>
                         ) : null}
-                      </>
+                      </React.Fragment>
                     ))}
                   </LightGreyCard>
                 </>

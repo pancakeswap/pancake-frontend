@@ -24,17 +24,19 @@ const FixedStaking = () => {
 
   // Groupd pools with same token
   const groupPoolsByToken = useMemo<Record<string, FixedStakingPool[]>>(() => {
-    return displayPools.reduce((pools, pool) => {
-      if (Array.isArray(pools[pool.token.address])) {
-        pools[pool.token.address].push(pool)
+    return displayPools
+      .filter((pool) => pool.token)
+      .reduce((pools, pool) => {
+        if (Array.isArray(pools[pool.token.address])) {
+          pools[pool.token.address].push(pool)
 
-        return pools
-      }
-      return {
-        [pool.token.address]: [pool],
-        ...pools,
-      }
-    }, {})
+          return pools
+        }
+        return {
+          [pool.token.address]: [pool],
+          ...pools,
+        }
+      }, {})
   }, [displayPools])
 
   const poolGroup = useMemo(() => {
