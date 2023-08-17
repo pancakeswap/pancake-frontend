@@ -141,7 +141,7 @@ export function ClaimModal({
                     <Text bold>{apr.toSignificant(2)}%</Text>
                   </Flex>
                   <Button
-                    variant="danger"
+                    variant="subtle"
                     width="100%"
                     onClick={() => {
                       claimModal.onDismiss()
