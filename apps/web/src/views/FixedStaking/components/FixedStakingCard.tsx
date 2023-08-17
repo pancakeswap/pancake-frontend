@@ -23,7 +23,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
         <>
           <CurrencyLogo currency={pool.token} size="56px" />
           <Box>
-            <Heading color="secondary" scale="lg" textAlign="end">
+            <Heading scale="lg" textAlign="end">
               {pool.token.symbol}
             </Heading>
             {new BigNumber(first(pool.pools)?.boostDayPercent).gt(0) ? (

@@ -13,6 +13,7 @@ import { PoolGroup, StakePositionUserInfo } from '../type'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { ModalTitle } from './ModalTitle'
 
 export function ClaimModal({
   token,
@@ -81,15 +82,7 @@ export function ClaimModal({
         {(openModal) => (
           <ModalV2 {...claimModal} closeOnOverlayClick>
             <Modal
-              title={
-                <Flex>
-                  <CurrencyLogo currency={token} size="28px" />
-                  <Heading color="secondary" scale="lg" mx="8px">
-                    {token?.symbol}
-                  </Heading>
-                  <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
-                </Flex>
-              }
+              title={<ModalTitle tokenTitle={token.symbol} token={token} lockPeriod={lockPeriod} />}
               width={['100%', '100%', '420px']}
               maxWidth={['100%', , '420px']}
             >
@@ -111,11 +104,11 @@ export function ClaimModal({
                       {t('Fixed-staking Ends')}
                     </PreTitle>
 
-                    <Text bold color="gold" mb="-4px">
+                    <Text bold color="#D67E0A" mb="-4px">
                       {t('Ended')}
                     </Text>
 
-                    <Text color="gold" fontSize={12}>
+                    <Text color="#D67E0A" fontSize={12}>
                       On {unlockTimeFormat}
                     </Text>
                   </Box>
@@ -161,6 +154,7 @@ export function ClaimModal({
               </Card>
 
               <Button
+                variant="secondary"
                 style={{
                   minHeight: '48px',
                   marginBottom: '8px',

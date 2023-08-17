@@ -24,6 +24,7 @@ import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmissio
 import FixedStakingOverview from './FixedStakingOverview'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+import { ModalTitle } from './ModalTitle'
 
 export function UnstakeBeforeEnededModal({
   token,
@@ -81,16 +82,7 @@ export function UnstakeBeforeEnededModal({
       {children(unstakeModal.onOpen)}
       <ModalV2 {...unstakeModal} closeOnOverlayClick>
         <Modal
-          title={
-            <Flex>
-              <CurrencyLogo currency={token} size="28px" />
-              <Heading color="secondary" scale="lg" mx="8px">
-                {token?.symbol}
-              </Heading>
-
-              <LockedFixedTag>{lockPeriod}D</LockedFixedTag>
-            </Flex>
-          }
+          title={<ModalTitle token={token} tokenTitle={token.symbol} lockPeriod={lockPeriod} />}
           width={['100%', '100%', '420px']}
           maxWidth={['100%', , '420px']}
         >
@@ -101,9 +93,10 @@ export function UnstakeBeforeEnededModal({
                 <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('Commission')}
                 </Text>
-                <Text color="warning" bold marginBottom="-4px">
+                <Heading color="warning" as="h4">
                   {withdrawFee.toSignificant(2)} {token.symbol}
-                </Text>
+                </Heading>
+
                 <Text fontSize="12px" color="warning">
                   {t('for early withdrawal')}
                 </Text>
@@ -116,7 +109,7 @@ export function UnstakeBeforeEnededModal({
                 <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('You will get')}
                 </Text>
-                <AmountWithUSDSub amount={totalGetAmount} />
+                <AmountWithUSDSub fontSize="22px" amount={totalGetAmount} />
               </Box>
             </Flex>
           </LightCard>

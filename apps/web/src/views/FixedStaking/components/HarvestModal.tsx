@@ -27,6 +27,7 @@ import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
 import { StakeConfirmModal } from './StakeConfirmModal'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+import { ModalTitle } from './ModalTitle'
 
 export function HarvestModal({
   stakingToken,
@@ -70,13 +71,11 @@ export function HarvestModal({
       <ModalV2 {...restakeModal} closeOnOverlayClick>
         <Modal
           title={
-            <Flex>
-              <CurrencyLogo currency={stakingToken} size="28px" />
-              <Heading color="secondary" scale="lg" mx="8px">
-                {t('Restake')} {stakingToken?.symbol}
-              </Heading>
-              <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
-            </Flex>
+            <ModalTitle
+              token={stakingToken}
+              tokenTitle={`${t('Restake')} ${stakingToken?.symbol}`}
+              lockPeriod={lockPeriod}
+            />
           }
           width={['100%', '100%', '420px']}
           maxWidth={['100%', , '420px']}

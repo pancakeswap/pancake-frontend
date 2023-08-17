@@ -1,10 +1,10 @@
-import { CurrencyLogo, Flex, Heading, ModalV2, Modal, Text, Button, Card } from '@pancakeswap/uikit'
+import { ModalV2, Modal, Text, Button, Card } from '@pancakeswap/uikit'
 import { GreyCard, LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 
-import { UnlockedFixedTag } from './UnlockedFixedTag'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { UnstakeType } from '../type'
+import { ModalTitle } from './ModalTitle'
 
 export function UnstakeEndedModal({
   unstakeModal,
@@ -21,17 +21,7 @@ export function UnstakeEndedModal({
   return (
     <ModalV2 {...unstakeModal} closeOnOverlayClick>
       <Modal
-        title={
-          <Flex>
-            <CurrencyLogo currency={token} size="28px" />
-            <Heading color="secondary" scale="lg" mx="8px">
-              {token?.symbol}
-            </Heading>
-            <UnlockedFixedTag>
-              {lockPeriod}D {t('Ended')}
-            </UnlockedFixedTag>{' '}
-          </Flex>
-        }
+        title={<ModalTitle token={token} tokenTitle={token.symbol} lockPeriod={lockPeriod} isEnded />}
         width={['100%', '100%', '420px']}
         maxWidth={['100%', , '420px']}
       >
