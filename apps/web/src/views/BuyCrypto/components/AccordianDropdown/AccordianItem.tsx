@@ -155,7 +155,7 @@ function AccordionItem({
             {quote.cryptoCurrency} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: quote.amount, locale })} {quote.price}
+            = {formatLocaleNumber({ number: Number(quote.price), locale })} {quote.fiatCurrency}
           </Text>
         </RowBetween>
 
