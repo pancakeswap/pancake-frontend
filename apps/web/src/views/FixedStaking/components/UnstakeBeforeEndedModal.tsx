@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import {
   Box,
   Button,
@@ -123,6 +123,7 @@ export function UnstakeBeforeEnededModal({
 
           <FixedStakingOverview
             isUnstakeView
+            alreadyStakedAmount={CurrencyAmount.fromRawAmount(token, '0')}
             lockPeriod={lockPeriod}
             stakeAmount={amountDeposit}
             lockAPR={lockAPR}

@@ -15,7 +15,7 @@ export function AmountWithUSDSub({ amount, shouldStrike }: { shouldStrike?: bool
       <Text bold mb="-4px">
         {amount.toSignificant(2)} {amount.currency.symbol}
       </Text>
-      <Balance unit=" USD" color="textSubtle" prefix="~$" fontSize="12px" decimals={2} value={formattedUsdAmount} />,
+      <Balance unit=" USD" color="textSubtle" prefix="~$" fontSize="12px" decimals={2} value={formattedUsdAmount} />
     </>,
   )
 }
