@@ -137,7 +137,7 @@ function AccordionItem({
               number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
               locale,
             })}{' '}
-            {providerFee === 3.5 ? 'USD' : quote.cryptoCurrency}
+            {quote.cryptoCurrency}
           </Text>
         </RowBetween>
         <RowBetween pt="12px">
@@ -145,7 +145,8 @@ function AccordionItem({
             {quote.cryptoCurrency} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: Number(quote.price), locale })} {quote.fiatCurrency}
+            = {formatLocaleNumber({ number: Number(quote.price), locale })}{' '}
+            {providerFee === 3.5 ? 'USD' : quote.fiatCurrency}
           </Text>
         </RowBetween>
 
