@@ -29,30 +29,31 @@ import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { Hash } from 'viem'
 
-import { LightGreyCard } from '../../../components/Card'
-import ConnectWalletButton from '../../../components/ConnectWalletButton'
-import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
-import { RowBetween } from '../../../components/Layout/Row'
-import { CurrencyLogo } from '../../../components/Logo'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import { LightGreyCard } from 'components/Card'
+import { RowBetween } from 'components/Layout/Row'
 
-import StyledInternalLink from '../../../components/Links'
-import Dots from '../../../components/Loader/Dots'
-import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
-import { useBurnActionHandlers, useBurnState } from '../../../state/burn/hooks'
-import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { calculateGasMargin } from '../../../utils'
-import { currencyId } from '../../../utils/currencyId'
-import { calculateSlippageAmount } from '../../../utils/exchange'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { useBurnActionHandlers } from 'state/burn/hooks'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { calculateGasMargin } from 'utils'
+import { currencyId } from 'utils/currencyId'
+import { calculateSlippageAmount } from 'utils/exchange'
 
-import { Field } from '../../../state/burn/actions'
-import { useGasPrice } from '../../../state/user/hooks'
+import { Field } from 'state/burn/actions'
+import { useGasPrice } from 'state/user/hooks'
+import { isUserRejected, logError } from 'utils/sentry'
+import { CommonBasesType } from 'components/SearchModal/types'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
-import { isUserRejected, logError } from '../../../utils/sentry'
-import { CommonBasesType } from '../../../components/SearchModal/types'
 import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
 import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
-import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
+import Dots from '../../../components/Loader/Dots'
+import StyledInternalLink from '../../../components/Links'
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import { CurrencyLogo } from '../../../components/Logo'
+import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
+import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import { RemoveLiquidityLayout } from '..'
 
 const BorderCard = styled.div`
@@ -74,7 +75,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   const gasPrice = useGasPrice()
 
   // burn state
-  const { independentField, typedValue } = useBurnState()
+  const { independentField, typedValue } = useRemoveLiquidityV2FormState()
 
   const nativeHelperContract = useStableSwapNativeHelperContract()
 

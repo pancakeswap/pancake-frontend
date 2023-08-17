@@ -40,36 +40,37 @@ import { formattedCurrencyAmount } from 'components/Chart/FormattedCurrencyAmoun
 import { splitSignature } from 'utils/splitSignature'
 import { Hash } from 'viem'
 
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { MinimalPositionCard } from '../../components/PositionCard'
-import { AppHeader, AppBody } from '../../components/App'
-import { RowBetween } from '../../components/Layout/Row'
-import ConnectWalletButton from '../../components/ConnectWalletButton'
-import { LightGreyCard } from '../../components/Card'
+import { MinimalPositionCard } from 'components/PositionCard'
+import { RowBetween } from 'components/Layout/Row'
+import { LightGreyCard } from 'components/Card'
 
-import { CurrencyLogo } from '../../components/Logo'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { usePairContract, useZapContract } from '../../hooks/useContract'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
+import { usePairContract, useZapContract } from 'hooks/useContract'
 
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import StyledInternalLink from '../../components/Links'
-import { calculateGasMargin } from '../../utils'
-import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
-import { currencyId } from '../../utils/currencyId'
-import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
-import Dots from '../../components/Loader/Dots'
-import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { calculateGasMargin } from 'utils'
+import { calculateSlippageAmount, useRouterContract } from 'utils/exchange'
+import { currencyId } from 'utils/currencyId'
+import { useApproveCallback, ApprovalState } from 'hooks/useApproveCallback'
+import { useBurnActionHandlers, useDerivedBurnInfo } from 'state/burn/hooks'
 
-import { Field } from '../../state/burn/actions'
-import { useGasPrice } from '../../state/user/hooks'
+import { Field } from 'state/burn/actions'
+import { useGasPrice } from 'state/user/hooks'
+import { isUserRejected, logError } from 'utils/sentry'
+import { CommonBasesType } from 'components/SearchModal/types'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
-import { isUserRejected, logError } from '../../utils/sentry'
 import { formatAmount } from '../../utils/formatInfoNumbers'
-import { CommonBasesType } from '../../components/SearchModal/types'
 import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
-import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
+import Dots from '../../components/Loader/Dots'
+import StyledInternalLink from '../../components/Links'
+import useTransactionDeadline from '../../hooks/useTransactionDeadline'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { CurrencyLogo } from '../../components/Logo'
+import ConnectWalletButton from '../../components/ConnectWalletButton'
+import { AppHeader, AppBody } from '../../components/App'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -93,7 +94,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const gasPrice = useGasPrice()
 
   // burn state
-  const { independentField, typedValue } = useBurnState()
+  const { independentField, typedValue } = useRemoveLiquidityV2FormState()
   const [removalCheckedA, setRemovalCheckedA] = useState(true)
   const [removalCheckedB, setRemovalCheckedB] = useState(true)
   const { pair, parsedAmounts, error, tokenToReceive, estimateZapOutAmount } = useDerivedBurnInfo(

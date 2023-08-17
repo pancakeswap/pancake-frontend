@@ -6,15 +6,10 @@ import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { useAtom, useAtomValue } from 'jotai'
-import { burnReducerAtom } from 'state/burn/reducer'
+import { useRemoveLiquidityV2FormDispatch, useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
-
-export function useBurnState() {
-  return useAtomValue(burnReducerAtom)
-}
 
 export function useDerivedBurnInfo(
   currencyA: Currency | undefined,
@@ -36,7 +31,7 @@ export function useDerivedBurnInfo(
 } {
   const { account, chainId } = useAccountActiveChain()
 
-  const { independentField, typedValue } = useBurnState()
+  const { independentField, typedValue } = useRemoveLiquidityV2FormState()
 
   const { t } = useTranslation()
 
@@ -180,7 +175,7 @@ export function useDerivedBurnInfo(
 export function useBurnActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
 } {
-  const [, dispatch] = useAtom(burnReducerAtom)
+  const dispatch = useRemoveLiquidityV2FormDispatch()
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
