@@ -1,6 +1,7 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import {
   AutoColumn,
+  Box,
   CircleLoader,
   Flex,
   Heading,
@@ -9,28 +10,26 @@ import {
   ModalWrapper,
   Text,
   useModal,
-  Box,
 } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
+import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
-import { ReactNode, memo, useCallback, useEffect, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
+import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import styled, { useTheme } from 'styled-components'
-import { ErrorText } from 'views/Swap/components/styleds'
-import { useAccount } from 'wagmi'
+import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
-  chainIdToNetwork,
-  ETHEREUM_TOKENS,
   ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
-  SUPPORTED_MONPAY_ETH_TOKENS,
-  SUPPORTED_MOONPAY_BSC_TOKENS,
-  mercuryoWhitelist,
+  chainIdToNetwork,
+  moonapyCurrencyChainidentifier,
+  supportedTokenMap,
 } from 'views/BuyCrypto/constants'
-import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/sdk'
-import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
+import { CryptoFormView } from 'views/BuyCrypto/types'
+import { ErrorText } from 'views/Swap/components/styleds'
+import { useAccount } from 'wagmi'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -81,6 +80,7 @@ interface FiatOnRampProps {
   inputCurrency: string
   outputCurrency: string
   amount: string
+  setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }
 
 interface FetchResponse {
@@ -107,7 +107,7 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
+    const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
 
     const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
@@ -122,36 +122,12 @@ const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: chainId === ChainId.ETHEREUM ? SUPPORTED_MONPAY_ETH_TOKENS : SUPPORTED_MOONPAY_BSC_TOKENS,
+        showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
         walletAddress: account,
       }),
     })
     const result: FetchResponse = await res.json()
 
-    return result.urlWithSignature
-  } catch (error) {
-    console.error('Error fetching signature:', error)
-    return '' // Return an empty string in case of an error
-  }
-}
-
-const fetchBinanceConnectSignedUrl = async (inputCurrency, outputCurrency, amount, account) => {
-  try {
-    const res = await fetch(`https://pcs-onramp-api.com/generate-binance-connect-sig`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        cryptoCurrency: inputCurrency.toUpperCase() === 'WBTC' ? 'BTC' : inputCurrency.toUpperCase(),
-        fiatCurrency: outputCurrency.toUpperCase(),
-        amount,
-        walletAddress: account,
-      }),
-    })
-
-    const result: FetchResponse = await res.json()
     return result.urlWithSignature
   } catch (error) {
     console.error('Error fetching signature:', error)
@@ -165,6 +141,7 @@ export const FiatOnRampModalButton = ({
   outputCurrency,
   amount,
   disabled,
+  setModalView,
 }: FiatOnRampProps & { disabled: boolean }) => {
   const { t } = useTranslation()
   const [onPresentConfirmModal] = useModal(
@@ -173,6 +150,7 @@ export const FiatOnRampModalButton = ({
       inputCurrency={inputCurrency}
       outputCurrency={outputCurrency}
       amount={amount}
+      setModalView={setModalView}
     />,
   )
 
@@ -204,6 +182,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   outputCurrency,
   amount,
   provider,
+  setModalView,
 }) {
   const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
 
@@ -213,14 +192,24 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
+  const { onIsNewCustomer } = useBuyCryptoActionHandlers()
 
   const theme = useTheme()
   const account = useAccount()
-  // const { t } = useTranslation()
 
-  const handleDismiss = useCallback(() => {
+  const handleDismiss = useCallback(async () => {
     onDismiss?.()
-  }, [onDismiss])
+    setModalView(CryptoFormView.Input)
+    try {
+      const moonpayCustomerResponse = await fetch(
+        `https://pcs-on-ramp-api.com/checkItem?searchAddress=${account.address}`,
+      )
+      const moonpayCustomerResult = await moonpayCustomerResponse.json()
+      onIsNewCustomer(!moonpayCustomerResult.found)
+    } catch (err) {
+      throw new Error(`unable to fetch new customer status ${err}`)
+    }
+  }, [onDismiss, setModalView, onIsNewCustomer, account.address])
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
@@ -231,17 +220,14 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     setError(null)
 
     try {
-      let result = ''
-      if (provider === ONRAMP_PROVIDERS.MoonPay)
-        result = await fetchMoonPaySignedUrl(
-          inputCurrency,
-          outputCurrency,
-          amount,
-          theme.isDark,
-          account.address,
-          chainId,
-        )
-      else result = await fetchBinanceConnectSignedUrl(inputCurrency, outputCurrency, amount, account.address)
+      const result = await fetchMoonPaySignedUrl(
+        inputCurrency,
+        outputCurrency,
+        amount,
+        theme.isDark,
+        account.address,
+        chainId,
+      )
 
       setSignedIframeUrl(result)
     } catch (e) {
@@ -249,7 +235,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     } finally {
       setTimeout(() => setLoading(false), 2000)
     }
-  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, provider, t, chainId])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, t, chainId])
 
   useEffect(() => {
     const fetchSig = async () => {
@@ -279,11 +265,15 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: MERCURYO_WIDGET_ID,
+          widgetId: '3b8eed96-f637-4c90-9e4f-661fc326223b',
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
-          currencies: chainId === ChainId.ETHEREUM ? [ETHEREUM_TOKENS] : mercuryoWhitelist,
+          fixAmount: true,
+          fixFiatAmount: true,
+          fixFiatCurrency: true,
+          fixCurrency: true,
+          currencies: supportedTokenMap[chainId].mercuryoTokens,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
@@ -308,7 +298,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
 
   return (
     <>
-      <ModalWrapper minHeight="575px" minWidth="360px">
+      <ModalWrapper minHeight="700px" minWidth="360px">
         <ModalHeader background={theme.colors.gradientCardHeader}>
           <ModalTitle pt="6px" justifyContent="center">
             <StyledBackArrowContainer onClick={handleDismiss}>

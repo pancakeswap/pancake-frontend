@@ -48,6 +48,12 @@ const config = (t) => [
       </>
     ),
   },
+  {
+    title: t('Why did I get sent USDC.e on Arbitrum'),
+    description: t(
+      'Moonpay uses the USDC.e bridged token on arbitrum as it has higher liquidity compared to its USDC counterpart.',
+    ),
+  },
 ]
 
 export const OnRamoFaqs = () => {

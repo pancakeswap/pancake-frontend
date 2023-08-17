@@ -2638,6 +2638,8 @@
   "Arbitrum One is LIVE!": "Arbitrum One is LIVE!",
   "PancakeSwap Now Live on Arbitrum One": "PancakeSwap Now Live on Arbitrum One",
   "Swap and Provide Liquidity Now": "Swap and Provide Liquidity Now",
+  "Why did I get sent USDC.e on Arbitrum": "Why did I get sent USDC.e on Arbitrum",
+  "Moonpay uses the USDC.e bridged token on arbitrum as it has higher liquidity compared to its USDC counterpart.": "Moonpay uses the USDC.e bridged token on arbitrum as it has higher liquidity compared to its USDC counterpart.",
   "%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.": "%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.",
   "APR is calculated based on the past 24H of staking rewards from the %token0% network.": "APR is calculated based on the past 24H of staking rewards from the %token0% network.",
   "1 %token0% = %exchangeRateAmount% %token1%": "1 %token0% = %exchangeRateAmount% %token1%",
@@ -2657,5 +2659,6 @@
   "No. Staking rewards accrue in the SnBNB token. This means that the SnBNB token will increase in value over BNB.": "No. Staking rewards accrue in the SnBNB token. This means that the SnBNB token will increase in value over BNB.",
   "How do I convert SnBNB back to BNB?": "How do I convert SnBNB back to BNB?",
   "Please visit": "Please visit",
-  "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly."
+  "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.",
+  "No provider fees. Ends in %days% days and %hours% hours.": "No provider fees. Ends in %days% days and %hours% hours."
 }
