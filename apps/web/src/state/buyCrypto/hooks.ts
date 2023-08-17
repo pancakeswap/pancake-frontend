@@ -15,7 +15,7 @@ import max from 'lodash/max'
 import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
-import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
 import {
   Field,
