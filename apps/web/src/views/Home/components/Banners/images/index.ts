@@ -67,6 +67,10 @@ import arbBg from './arbBg.png'
 import arbBgMobile from './arbBgMobile.png'
 import arbBunny from './arbBunny.png'
 import arbLogo from './arbLogo.png'
+import moonpayBgMobile from './moonpay-bg-mobile.png'
+import moonpayBg from './moonpay-bg.png'
+import moonpayCash from './moonpay-cash.png'
+import moonpayLogo from './moonpay-logo.png'
 
 export {
   lotteryImage,
@@ -137,4 +141,8 @@ export {
   arbBgMobile,
   arbBunny,
   arbLogo,
+  moonpayBgMobile,
+  moonpayBg,
+  moonpayCash,
+  moonpayLogo,
 }
