@@ -25,7 +25,6 @@ const usePriceQuotes = () => {
       try {
         if (userIp) {
           const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
-          console.log(providerAvailabilities)
           sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
             return providerAvailabilities[quote.provider]
           })
