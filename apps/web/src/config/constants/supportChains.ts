@@ -12,3 +12,4 @@ export const SUPPORT_FARMS = [
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
 ]
+export const SUPPORT_BUY_CRYPTO = [ChainId.BSC, ChainId.ETHEREUM, ChainId.ARBITRUM_ONE]
