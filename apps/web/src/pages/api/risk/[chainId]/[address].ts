@@ -43,7 +43,7 @@ const handler: NextApiHandler = async (req, res) => {
   const json = await response.json()
 
   if (json.data.risk_level >= 0 && json.data.has_result) {
-    res.setHeader('Cache-Control', 's-maxage=86400, max-age=3600')
+    res.setHeader('Cache-Control', 's-maxage=60, max-age=60')
   }
 
   return res.status(response.status).json({
