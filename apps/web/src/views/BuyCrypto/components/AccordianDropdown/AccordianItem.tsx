@@ -132,7 +132,7 @@ function AccordionItem({
 
           <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
             {formatLocaleNumber({
-              number: !isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
+              number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
               locale,
             })}{' '}
             {quote.cryptoCurrency}
@@ -155,7 +155,7 @@ function AccordionItem({
             else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
-          {!isCampaignEligible ? (
+          {isCampaignEligible ? (
             <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
