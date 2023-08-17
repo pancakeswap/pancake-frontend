@@ -44,7 +44,7 @@ export function StakedPositionSection({
 
   const { boostAPR, lockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent })
 
-  const { accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
+  const { accrueInterest, amountDeposit, projectedReturnAmount } = useCalculateProjectedReturnAmount({
     token,
     stakePositionUserInfo: stakePosition.userInfo,
     lockPeriod,
@@ -85,7 +85,15 @@ export function StakedPositionSection({
           </Text>
 
           <Text color="textSubtle" fontSize="12px">
-            {shouldUnlock ? t('Reward') : t('Est. Reward')}: {accrueInterest.toFixed(4)} {token.symbol}
+            {shouldUnlock ? (
+              <>
+                {t('Reward')}: {accrueInterest.toSignificant(3)}
+              </>
+            ) : (
+              <>
+                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)}
+              </>
+            )}
           </Text>
         </Box>
         {shouldUnlock ? (
