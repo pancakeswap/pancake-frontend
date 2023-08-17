@@ -2638,7 +2638,7 @@
   "Arbitrum One is LIVE!": "Arbitrum One is LIVE!",
   "PancakeSwap Now Live on Arbitrum One": "PancakeSwap Now Live on Arbitrum One",
   "Swap and Provide Liquidity Now": "Swap and Provide Liquidity Now",
-  "0$ Provider Fees. Ends in %days% days, %hours% hours.": "0$ Provider Fees. Ends in %days% days, %hours% hours.",
+  "No provider fees. Ends in %days% days and %hours% hours.": "No provider fees. Ends in %days% days and %hours% hours.",
   "Why did I get sent USDC.e on Arbitrum": "Why did I get sent USDC.e on Arbitrum",
   "Moonpay uses the USDC.e bridged token on arbitrum as it has higher liquidity compared to its USDC counterpart.": "Moonpay uses the USDC.e bridged token on arbitrum as it has higher liquidity compared to its USDC counterpart.",
   "%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.": "%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.",
