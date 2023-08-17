@@ -15,7 +15,7 @@ import max from 'lodash/max'
 import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
-import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
 import {
   Field,
@@ -75,7 +75,7 @@ function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
 const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string) => {
   try {
     const response = await fetch(
-      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=a9f3d282-db2d-4364-ae62-602c5000f003      &type=buy&from=${toUpper(
+      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=a9f3d282-db2d-4364-ae62-602c5000f003&type=buy&from=${toUpper(
         inputCurrencyId,
       )}&to=${toUpper(outputCurrencyId)}&amount=1`,
     )
