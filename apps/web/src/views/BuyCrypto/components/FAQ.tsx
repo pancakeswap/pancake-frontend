@@ -51,7 +51,7 @@ const config = (t) => [
   {
     title: t('Why do i receive different USDC tokens on Arbitrum?'),
     description: t(
-      'In the case of Arbitrum, theres a bridged version of USDC known as USDC.e that has been bridged from Ethereum to Arbitrum, and native USDC, known as USDC. Depending on providers, we support both USDC.E and USDC. Please check your wallet balances for both tokens',
+      'In the case of Arbitrum, theres a bridged version of USDC known as USDC.E that has been bridged from Ethereum to Arbitrum, and native USDC, known as USDC. Depending on providers, we support both USDC.E and USDC. Please check your wallet balances for both tokens',
     ),
   },
 ]
