@@ -14,6 +14,7 @@ import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import toString from 'lodash/toString'
 import { CryptoFormView } from 'views/BuyCrypto/types'
+import { useChainId } from 'wagmi'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
@@ -32,6 +33,7 @@ export function BuyCryptoForm({
   fetchQuotes: () => Promise<void>
 }) {
   const { t } = useTranslation()
+  const chainId = useChainId()
   const theme = useTheme()
   const {
     typedValue,
@@ -66,7 +68,7 @@ export function BuyCryptoForm({
   )
   // need to reloacte this
   const fetchMinBuyAmounts = useCallback(async () => {
-    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId)
+    const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
 
     if (!limitAmounts) return
 

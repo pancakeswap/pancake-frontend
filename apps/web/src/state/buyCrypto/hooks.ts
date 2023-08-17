@@ -16,7 +16,7 @@ import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
 import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
-import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
+import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
 import {
   Field,
   replaceBuyCryptoState,
@@ -108,10 +108,11 @@ const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string
   }
 }
 
-const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string) => {
+const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string, chainId: number) => {
   try {
+    const baseCurrency = `${outputCurrencyId.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
     const response = await fetch(
-      `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
+      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
     // console.log(await response.json())
@@ -135,10 +136,11 @@ const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: st
 export const fetchMinimumBuyAmount = async (
   inputCurrencyId: string,
   outputCurrencyId: string,
+  chainId: number,
 ): Promise<LimitQuote | undefined> => {
   try {
     const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId)
-    const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId)
+    const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId, chainId)
 
     const quotes = [moonpayLimitQuote, mercuryLimitQuote].filter(Boolean)
 
@@ -298,7 +300,7 @@ export async function queryParametersToBuyCryptoState(
 ): Promise<BuyCryptoState> {
   const inputCurrency = parsedQs.inputCurrency as any
   const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency) ? inputCurrency : defaultTokenByChain[chainId]
-  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
+  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr, chainId)
 
   return {
     [Field.INPUT]: {
@@ -309,7 +311,7 @@ export async function queryParametersToBuyCryptoState(
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE
-    minAmount: limitAmounts?.baseCurrency?.minBuyAmount,
+    minAmount: limitAmounts?.baseCurrency?.minBuyAmount + 1,
     minBaseAmount: limitAmounts?.quoteCurrency?.minBuyAmount,
     maxAmount: limitAmounts?.baseCurrency?.maxBuyAmount,
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
