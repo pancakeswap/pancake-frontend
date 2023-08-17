@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { useBuyCryptoActionHandlers, useBuyCryptoState, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
+import { useState } from 'react'
+import { useBuyCryptoActionHandlers, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { useAccount } from 'wagmi'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import Page from '../Page'

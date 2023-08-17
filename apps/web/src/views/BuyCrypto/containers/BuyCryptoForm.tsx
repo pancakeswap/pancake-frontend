@@ -84,7 +84,7 @@ export function BuyCryptoForm({
       limitAmounts.baseCurrency?.maxBuyAmount,
       limitAmounts.quoteCurrency?.maxBuyAmount,
     )
-  }, [outputCurrencyId, inputCurrencyId, onFieldAInput, onLimitAmountUpdate])
+  }, [outputCurrencyId, inputCurrencyId, onFieldAInput, onLimitAmountUpdate, chainId])
 
   useEffect(() => {
     fetchMinBuyAmounts()
