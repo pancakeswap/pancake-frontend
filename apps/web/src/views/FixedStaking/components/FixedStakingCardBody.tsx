@@ -45,6 +45,10 @@ function AprFooter({ lockPeriod, stakingToken, boostDayPercent, lockDayPercent, 
   )
 }
 
+function calculateAPRPercent(percent: number) {
+  return new Percent(percent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
+}
+
 export function FixedStakingCardBody({
   children,
   pool,
@@ -58,8 +62,8 @@ export function FixedStakingCardBody({
   const totalStakedAmount = CurrencyAmount.fromRawAmount(pool.token, pool.totalDeposited.toNumber())
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState<number | null>(null)
 
-  const minAPR = new Percent(pool.minLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
-  const maxAPR = new Percent(pool.maxLockDayPercent, PERCENT_DIGIT).multiply(DAYS_A_YEAR)
+  const minAPR = calculateAPRPercent(pool.minLockDayPercent)
+  const maxAPR = calculateAPRPercent(pool.maxLockDayPercent)
 
   const claimedPeriods = useMemo(
     () =>
@@ -74,22 +78,49 @@ export function FixedStakingCardBody({
     [claimedPeriods, pool.pools],
   )
 
+  const selectedPool = pool.pools[selectedPeriodIndex]
+
   return (
     <>
       <OverviewDataRow
         title={t('APR:')}
         detail={
-          <Flex alignItems="center">
-            <Text bold>
-              {minAPR.toSignificant(2)}% ~ {maxAPR.toSignificant(2)}%
-            </Text>
-            <FixedStakingCalculator
-              stakingToken={pool.token}
-              pools={pool.pools}
-              key={selectedPeriodIndex}
-              initialLockPeriod={pool?.pools[selectedPeriodIndex]?.lockPeriod}
-            />
-          </Flex>
+          selectedPeriodIndex === null || !selectedPool ? (
+            <Flex alignItems="center">
+              <Text bold>
+                {minAPR.toSignificant(2)}% ~ {maxAPR.toSignificant(2)}%
+              </Text>
+              <FixedStakingCalculator
+                stakingToken={pool.token}
+                pools={pool.pools}
+                key={selectedPeriodIndex}
+                initialLockPeriod={pool?.pools[selectedPeriodIndex]?.lockPeriod}
+              />
+            </Flex>
+          ) : (
+            <Flex alignItems="center">
+              {calculateAPRPercent(selectedPool.boostDayPercent).greaterThan(0) ? (
+                <>
+                  <StarCircle width="18px" color="success" />
+                  <Text mx="4px" color="success" bold>
+                    Up to {calculateAPRPercent(selectedPool.boostDayPercent).toSignificant(2)}%
+                  </Text>
+                </>
+              ) : null}
+              <Text>
+                {calculateAPRPercent(selectedPool.boostDayPercent).greaterThan(0) ? (
+                  <s>{calculateAPRPercent(selectedPool.lockDayPercent).toSignificant(2)}%</s>
+                ) : (
+                  <>{calculateAPRPercent(selectedPool.lockDayPercent).toSignificant(2)}%</>
+                )}
+              </Text>
+              <FixedStakingCalculator
+                stakingToken={selectedPool.token}
+                initialLockPeriod={selectedPool.lockPeriod}
+                pools={pool.pools}
+              />
+            </Flex>
+          )
         }
       />
 

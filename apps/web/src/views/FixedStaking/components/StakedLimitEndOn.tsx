@@ -1,5 +1,3 @@
-import { Text } from '@pancakeswap/uikit'
-
 import { formatTime } from 'utils/formatTime'
 
 import { useCurrenDay } from '../hooks/useStakedPools'

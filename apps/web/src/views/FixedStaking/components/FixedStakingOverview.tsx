@@ -5,11 +5,29 @@ import { LightGreyCard } from 'components/Card'
 
 import { ReactNode, useMemo } from 'react'
 import BalanceRow from 'views/Pools/components/LockedPool/Common/Overview/BalanceRow'
+import TextRow from 'views/Pools/components/LockedPool/Common/Overview/TextRow'
 
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { DAYS_A_YEAR } from '../constant'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
+import { useCurrenDay } from '../hooks/useStakedPools'
+
+function DiffDuration({ lockPeriod }: { lockPeriod: number }) {
+  const { t } = useTranslation()
+
+  const lastDayAction = useCurrenDay()
+
+  const lockEndDay = lastDayAction + lockPeriod
+
+  return (
+    <TextRow
+      title={t('Duration')}
+      value={t('%lockPeriod% days', { lockPeriod })}
+      newValue={t('%lockPeriod% days', { lockPeriod: lockEndDay - lastDayAction })}
+    />
+  )
+}
 
 export default function FixedStakingOverview({
   stakeAmount,
@@ -64,14 +82,18 @@ export default function FixedStakingOverview({
         />
       ) : null}
       {!isUnstakeView && lockPeriod ? (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
-            {t('Duration')}
-          </Text>
-          <Text bold color={safeAlreadyStakedAmount.greaterThan(0) ? 'failure' : undefined}>
-            {lockPeriod} {t('days')}
-          </Text>
-        </Flex>
+        safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.greaterThan(0) ? (
+          <DiffDuration lockPeriod={lockPeriod} />
+        ) : (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
+              {t('Duration')}
+            </Text>
+            <Text bold>
+              {lockPeriod} {t('days')}
+            </Text>
+          </Flex>
+        )
       ) : null}
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>

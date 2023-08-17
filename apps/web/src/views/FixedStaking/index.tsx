@@ -43,8 +43,8 @@ const FixedStaking = () => {
     return Object.keys(groupPoolsByToken).reduce((poolGroupResult, key) => {
       const pools = groupPoolsByToken[key]
 
-      const minLockDayPercent = min(pools.map((p) => p.lockDayPercent))
-      const maxLockDayPercent = max(pools.map((p) => p.lockDayPercent))
+      const minLockDayPercent = min(pools.map((p) => p.lockDayPercent || p.boostDayPercent))
+      const maxLockDayPercent = max(pools.map((p) => p.boostDayPercent || p.lockDayPercent))
 
       const totalDeposited = pools.reduce((sum, p) => sum.plus(p.totalDeposited), new BigNumber(0))
 
