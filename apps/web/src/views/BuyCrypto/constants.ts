@@ -13,8 +13,8 @@ export const SUPPORTED_MOONPAY_BSC_TOKENS = ['bnb_bsc', 'busd_bsc']
 export const SUPPORTED_MOONPAY_ARBITRUM_TOKENS = ['eth_arbitrum', 'usdc_arbitrum']
 
 export const SUPPORTED_MERCURYO_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
-const MOONPAY_FEE_TYPES = ['Total Fees', 'Networking Fees', 'Provider Fees']
-const MERCURYO_FEE_TYPES = ['Total Fees']
+const MOONPAY_FEE_TYPES = ['Esti. Total Fees', 'Networking Fees', 'Provider Fees']
+const MERCURYO_FEE_TYPES = ['Esti. Total Fees']
 
 export const supportedTokenMap: {
   [chainId: number]: {
