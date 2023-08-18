@@ -21,6 +21,7 @@ import { useContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { isUserRejected } from 'utils/sentry'
 
 import { useChainName } from './useChainNames'
 
@@ -69,10 +70,13 @@ type Params = {
   icake?: CurrencyAmount<Currency>
   // icake on destination chain
   dstIcake?: CurrencyAmount<Currency>
+
+  // Called if user reject signing bridge tx
+  onUserReject?: () => void
 }
 
 // NOTE: this hook has side effect
-export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake }: Params) {
+export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake, onUserReject }: Params) {
   const [signing, setSigning] = useState(false)
   const sourceChainName = useChainName(srcChainId)
   const ifoChainName = useChainName(ifoChainId)
@@ -82,7 +86,7 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake 
   const infoSender = useContract(INFO_SENDER, pancakeInfoSenderABI, { chainId: srcChainId })
   const { receipt, saveTransactionHash, clearTransactionHash, txHash } = useLatestBridgeTx(ifoId, srcChainId)
   const message = useCrossChainMessage({ txHash: receipt?.transactionHash, srcChainId })
-  const { fetchWithCatchTxError } = useCatchTxError()
+  const { fetchWithCatchTxError } = useCatchTxError({ throwUserRejectError: true })
   const isICakeSynced = useMemo(
     () => icake && dstIcake && icake.quotient === dstIcake.quotient && icake.quotient > 0n,
     [icake, dstIcake],
@@ -122,11 +126,16 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake 
         return txReceipt
       })
     } catch (e) {
+      if (isUserRejected(e)) {
+        onUserReject?.()
+        return
+      }
       console.error(e)
     } finally {
       setSigning(false)
     }
   }, [
+    onUserReject,
     fetchWithCatchTxError,
     saveTransactionHash,
     account,

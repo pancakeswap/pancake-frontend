@@ -46,15 +46,9 @@ export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
       })
 
   const action = noICake ? (
-    <StakeButton mt="0.625rem" />
+    <StakeButton />
   ) : (
-    <BridgeButton
-      mt="0.625rem"
-      ifoChainId={ifoChainId}
-      icake={sourceChainCredit}
-      dstIcake={destChainCredit}
-      ifoId={ifoId}
-    />
+    <BridgeButton ifoChainId={ifoChainId} icake={sourceChainCredit} dstIcake={destChainCredit} ifoId={ifoId} />
   )
 
   return (

@@ -17,12 +17,10 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
-import { useCallback } from 'react'
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 import { useChainName } from '../../../hooks/useChainNames'
 import { BridgeState, BRIDGE_STATE, useBridgeMessageUrl, useBridgeSuccessTxUrl } from '../../../hooks/useBridgeICake'
@@ -36,8 +34,6 @@ type Props = {
   ifoChainId?: ChainId
 
   state: BridgeState
-
-  onBridge?: (icake?: CurrencyAmount<Currency>) => void
 } & ModalV2Props
 
 const StyledModal = styled(Modal)`
@@ -75,28 +71,11 @@ const ICakeDisplayContainer = styled(Flex).attrs({
   alignItems: 'flex-start',
 })``
 
-export function BridgeICakeModal({ icake, sourceChainId, ifoChainId, state, onBridge, ...rest }: Props) {
+export function BridgeICakeModal({ icake, sourceChainId, ifoChainId, state, ...rest }: Props) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { switchNetworkAsync } = useSwitchNetwork()
   const isCurrentChainSourceChain = chainId === sourceChainId
-  const switchToSourceChain = useCallback(
-    () => sourceChainId && !isCurrentChainSourceChain && switchNetworkAsync(sourceChainId),
-    [sourceChainId, switchNetworkAsync, isCurrentChainSourceChain],
-  )
   const sourceChainName = useChainName(sourceChainId)
-
-  const onBridgeClick = useCallback(async () => {
-    if (isCurrentChainSourceChain) {
-      onBridge?.(icake)
-      return
-    }
-    try {
-      await switchToSourceChain()
-    } catch (e) {
-      console.error(e)
-    }
-  }, [icake, isCurrentChainSourceChain, switchToSourceChain, onBridge])
 
   const renderModal = () => {
     switch (state.state) {
@@ -129,7 +108,7 @@ export function BridgeICakeModal({ icake, sourceChainId, ifoChainId, state, onBr
                       </Text>
                     </Flex>
                   </ICakeDisplayContainer>
-                  <Button ml="1.25rem" width="100%" onClick={onBridgeClick} style={{ flex: '4' }}>
+                  <Button ml="1.25rem" width="100%" style={{ flex: '4' }}>
                     {isCurrentChainSourceChain ? t('Bridge iCAKE') : t('Switch Network to Bridge')}
                   </Button>
                 </StyledCardBody>
