@@ -111,7 +111,7 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
         <Value>
           {typeof saleAmount === 'string'
             ? saleAmount
-            : `${formatNumber(getBalanceNumber(saleAmount, token.decimals), 0, 0)} ${token.symbol}`}
+            : `${formatNumber(getBalanceNumber(saleAmount, token.decimals), 0, 1)} ${token.symbol}`}
         </Value>
         <Text fontSize="14px" color="textSubtle">
           {t('%ratio%% of total sale', { ratio: distributionRatio })}
@@ -266,7 +266,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             <Value>{`${formatNumber(
               getBalanceNumber(publicIfoData[poolId].offeringAmountPool, ifo.token.decimals),
               0,
-              0,
+              1,
             )} ${token.symbol}`}</Value>
           </TokenSection>
           <Text fontSize="14px" color="textSubtle" pl="48px">

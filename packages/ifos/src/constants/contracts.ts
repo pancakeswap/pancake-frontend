@@ -9,7 +9,7 @@ export type ContractAddresses<T extends ChainId = SupportedChainId> = {
 
 export const ICAKE = {
   [ChainId.BSC]: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
-  [ChainId.POLYGON_ZKEVM]: '0x8C5ddc4737E98eAcF6aeDb4591d182f360362F88',
+  [ChainId.POLYGON_ZKEVM]: '0x6ebfF05D15808Ff3065b8e0F71ff541998ebe2e2',
 } as const satisfies ContractAddresses<SupportedChainId>
 
 // Used to send cross chain message
