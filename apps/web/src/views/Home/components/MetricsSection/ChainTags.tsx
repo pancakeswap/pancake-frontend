@@ -26,6 +26,7 @@ const StyledMarquee = styled(Marquee)`
   max-width: 850px;
   margin-top: 30px;
   mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
+  border-radius: 12px;
 `
 
 const newsItems = [
