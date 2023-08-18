@@ -12,7 +12,7 @@ export function ModalTitle({
   isEnded?: boolean
   token: Token
   tokenTitle: string
-  lockPeriod: number
+  lockPeriod?: number
 }) {
   const { t } = useTranslation()
 
@@ -22,9 +22,11 @@ export function ModalTitle({
       <Heading scale="lg" mx="8px">
         {tokenTitle}
       </Heading>
-      <UnlockedFixedTag>
-        {lockPeriod}D {isEnded ? t('Ended') : null}
-      </UnlockedFixedTag>
+      {lockPeriod ? (
+        <UnlockedFixedTag>
+          {lockPeriod}D {isEnded ? t('Ended') : null}
+        </UnlockedFixedTag>
+      ) : null}
     </Flex>
   )
 }

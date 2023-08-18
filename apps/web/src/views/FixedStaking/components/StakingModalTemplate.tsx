@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Heading } from '@pancakeswap/uikit'
+import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast } from '@pancakeswap/uikit'
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
@@ -23,6 +23,7 @@ import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { StakeConfirmModal } from './StakeConfirmModal'
+import { ModalTitle } from './ModalTitle'
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
@@ -250,14 +251,7 @@ export function StakingModalTemplate({
   if (isConfirmed) {
     return (
       <Modal
-        title={
-          <Flex>
-            <CurrencyLogo currency={stakingToken} size="28px" />
-            <Heading color="secondary" scale="lg" mx="8px">
-              {t('Stake')} {stakingToken?.symbol}
-            </Heading>
-          </Flex>
-        }
+        title={<ModalTitle token={stakingToken} tokenTitle={`${t('Stake')} ${stakingToken?.symbol}`} />}
         width={['100%', '100%', '420px']}
         maxWidth={['100%', , '420px']}
       >
@@ -274,16 +268,7 @@ export function StakingModalTemplate({
 
   return (
     <Modal
-      title={
-        title || (
-          <Flex>
-            <CurrencyLogo currency={stakingToken} size="28px" />
-            <Heading color="secondary" scale="lg" mx="8px">
-              {t('Stake')} {stakingToken?.symbol}
-            </Heading>
-          </Flex>
-        )
-      }
+      title={title || <ModalTitle token={stakingToken} tokenTitle={`${t('Stake')} ${stakingToken?.symbol}`} />}
       width={['100%', '100%', '420px']}
       maxWidth={['100%', , '420px']}
       onBack={onBack}

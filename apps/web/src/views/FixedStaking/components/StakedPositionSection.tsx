@@ -51,7 +51,7 @@ export function StakedPositionSection({
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
   })
 
-  const poolEndDay = pool.pools[poolIndex].endDay
+  const poolEndDay = pool.pools.find((p) => p.poolIndex === poolIndex)?.endDay || 0
 
   const shouldUnlock = differenceInMilliseconds(unlockTime * 1_000, new Date()) <= 0
 
