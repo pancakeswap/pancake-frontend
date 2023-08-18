@@ -101,14 +101,9 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake 
           account,
           provider: getViemClients,
         })
-        const txReceipt = await callWithGasPrice(
-          infoSender,
-          'sendSyncMsg',
-          [account, getLayerZeroChainId(ifoChainId)],
-          {
-            value: gasEstimate.quotient,
-          },
-        )
+        const txReceipt = await callWithGasPrice(infoSender, 'sendSyncMsg', [getLayerZeroChainId(ifoChainId)], {
+          value: gasEstimate.quotient,
+        })
         saveTransactionHash(txReceipt.hash)
         const summary = `Bridge ${icake?.toExact()} iCAKE from ${sourceChainName} to ${ifoChainName}`
         addTransaction(txReceipt, {

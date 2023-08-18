@@ -12,6 +12,15 @@ export const pancakeInfoSenderABI = [
   {
     anonymous: false,
     inputs: [
+      { indexed: false, internalType: 'uint16', name: 'version', type: 'uint16' },
+      { indexed: false, internalType: 'uint256', name: 'gas', type: 'uint256' },
+    ],
+    name: 'GasForDestinationLzReceiveUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
       { indexed: false, internalType: 'uint16', name: '_srcChainId', type: 'uint16' },
       { indexed: false, internalType: 'bytes', name: '_srcAddress', type: 'bytes' },
       { indexed: false, internalType: 'uint64', name: '_nonce', type: 'uint64' },
@@ -145,6 +154,13 @@ export const pancakeInfoSenderABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'gasForDestinationLzReceive',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'uint16', name: '_version', type: 'uint16' },
       { internalType: 'uint16', name: '_chainId', type: 'uint16' },
@@ -223,13 +239,6 @@ export const pancakeInfoSenderABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'minSyncPeriod',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       { internalType: 'uint16', name: '_srcChainId', type: 'uint16' },
       { internalType: 'bytes', name: '_srcAddress', type: 'bytes' },
@@ -297,10 +306,7 @@ export const pancakeInfoSenderABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_userAddress', type: 'address' },
-      { internalType: 'uint16', name: '_dstChainId', type: 'uint16' },
-    ],
+    inputs: [{ internalType: 'uint16', name: '_dstChainId', type: 'uint16' }],
     name: 'sendSyncMsg',
     outputs: [],
     stateMutability: 'payable',
@@ -395,9 +401,26 @@ export const pancakeInfoSenderABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'uint16', name: '_version', type: 'uint16' },
+      { internalType: 'uint256', name: '_gasForDestinationLzReceive', type: 'uint256' },
+    ],
+    name: 'updateGasForDestinationLzReceive',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'userLastSyncTimes',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [{ internalType: 'uint16', name: '', type: 'uint16' }],
     stateMutability: 'view',
     type: 'function',
   },
