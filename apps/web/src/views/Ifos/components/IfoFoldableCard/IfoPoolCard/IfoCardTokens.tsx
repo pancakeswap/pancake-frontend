@@ -31,7 +31,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { EnableStatus } from '../types'
 import IFORequirements from './IFORequirements'
-import { MessageTextLink } from '../../IfoCardStyles'
+import { TextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
 import { ICakeTips } from './ICakeTips'
 
@@ -326,9 +326,9 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
                 <Text textAlign="center" fontSize="14px">
                   {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
                 </Text>
-                <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
+                <TextLink href="/ifo#ifo-how-to" textAlign="center">
                   {t('How does it work?')} »
-                </MessageTextLink>
+                </TextLink>
                 <StakeVaultButton mt="24px" />
               </>
             ))}
