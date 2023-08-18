@@ -43,6 +43,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
           srcChainId={srcChainId}
           ifoChainId={activeIfo.chainId}
           isLive={publicIfoData.status === 'live'}
+          isFinished={publicIfoData.status === 'finished'}
           hasClaimed={poolBasic.hasClaimed || poolUnlimited.hasClaimed}
           isCommitted={isCommitted}
           ifoCurrencyAddress={activeIfo.currency.address}

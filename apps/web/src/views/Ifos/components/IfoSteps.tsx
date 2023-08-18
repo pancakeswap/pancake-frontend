@@ -44,6 +44,7 @@ interface TypeProps {
   hasClaimed: boolean
   isCommitted: boolean
   isLive?: boolean
+  isFinished?: boolean
   isCrossChainIfo?: boolean
   hasBridged?: boolean
 }
@@ -218,6 +219,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   isCommitted,
   hasClaimed,
   isLive,
+  isFinished,
   isCrossChainIfo,
   hasBridged,
 }) => {
@@ -301,7 +303,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
             credit={dstChainIfoCredit}
             title={t('Your iCAKE on %chainName%', { chainName: ifoChainName })}
             action={
-              !isStepValid ? (
+              !isStepValid && !isFinished ? (
                 <Button as="a" href="#bridge-icake">
                   {t('Bridge iCAKE')}
                 </Button>
