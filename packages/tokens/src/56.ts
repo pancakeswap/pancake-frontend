@@ -2690,4 +2690,12 @@ export const bscTokens = {
     'DexCheck',
     'https://dexcheck.ai/',
   ),
+  cyber: new ERC20Token(
+    ChainId.BSC,
+    '0x14778860E937f509e651192a90589dE711Fb88a9',
+    18,
+    'CYBER',
+    'CyberConnect',
+    'https://cyberconnect.me/',
+  ),
 }
