@@ -1730,7 +1730,7 @@ export const bscTokens = {
   ),
   rpg: new ERC20Token(
     ChainId.BSC,
-    '0xc2098a8938119A52B1F7661893c0153A6CB116d5',
+    '0x61dc650C10Ec3c758d251Cd2D1Ab45AF1A43e941',
     18,
     'RPG',
     'Rangers Protocol',
@@ -2235,7 +2235,7 @@ export const bscTokens = {
   ),
   MIX: new ERC20Token(
     ChainId.BSC,
-    '0x398f7827DcCbeFe6990478876bBF3612D93baF05',
+    '0xCF1B55D79E824da0Ae0652F96C66fe33263d743f',
     18,
     'MIX',
     'MixMarvel Token',
