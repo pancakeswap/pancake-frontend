@@ -1,13 +1,20 @@
-import { Box, Message, MessageText, Flex } from '@pancakeswap/uikit'
+import { Box, Message, MessageText, Flex, ChainLogo } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { useCallback, MouseEvent } from 'react'
+import styled from 'styled-components'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 import { useChainNames } from '../../../hooks/useChainNames'
 import { MessageTextLink } from '../../IfoCardStyles'
+
+const StyledMessage = styled(Message)`
+  padding: 1rem;
+  border-color: ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.background};
+`
 
 type Props = {
   ifoChainId: ChainId
@@ -35,8 +42,8 @@ export function SwitchNetworkTips({ ifoChainId }: Props) {
   }
 
   return (
-    <Message my="24px" p="8px" variant="primary">
-      <Flex flexDirection="column">
+    <StyledMessage my="24px" p="8px" variant="primary" icon={<ChainLogo chainId={ifoChainId} width={24} height={24} />}>
+      <Flex flexDirection="column" flex="1">
         <Box>
           <MessageText display="inline">
             {t('This IFO is hosted on %chain%.', {
@@ -49,6 +56,6 @@ export function SwitchNetworkTips({ ifoChainId }: Props) {
           <MessageText display="inline">{t('to participate')}</MessageText>
         </Box>
       </Flex>
-    </Message>
+    </StyledMessage>
   )
 }
