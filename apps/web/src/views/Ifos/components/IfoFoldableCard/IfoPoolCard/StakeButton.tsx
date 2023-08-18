@@ -26,7 +26,7 @@ export function StakeButton(props: Props) {
     </Flex>
   )
 
-  const button = !cakeVaultSupported ? (
+  return !cakeVaultSupported ? (
     <>
       <NetworkSwitcherModal
         isOpen={isOpen}
@@ -44,6 +44,4 @@ export function StakeButton(props: Props) {
       </Button>
     </>
   ) : null
-
-  return button
 }

@@ -1,13 +1,12 @@
-import { Box, Message, MessageText, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 
-import { MessageTextLink } from '../../IfoCardStyles'
 import { StakeButton } from './StakeButton'
 import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
 import { useChainNames } from '../../../hooks/useChainNames'
 import { BridgeButton } from './BridgeButton'
+import { WarningTips, LinkTitle, ContentText } from '../../WarningTips'
 
 type Props = {
   ifoId: string
@@ -59,15 +58,10 @@ export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
   )
 
   return (
-    <Message my="24px" p="8px" variant="warning" action={action}>
-      <Flex flexDirection="column">
-        <Box>
-          <MessageText display="inline">{tips}</MessageText>{' '}
-          <MessageTextLink display="inline" fontWeight={700} href="/ifo#ifo-how-to" color="warning">
-            {t('How does it work?')} »
-          </MessageTextLink>
-        </Box>
-      </Flex>
-    </Message>
+    <WarningTips
+      action={action}
+      title={<LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
+      content={<ContentText>{tips}</ContentText>}
+    />
   )
 }

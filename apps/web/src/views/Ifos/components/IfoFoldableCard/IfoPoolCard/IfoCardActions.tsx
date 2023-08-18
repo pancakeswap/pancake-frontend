@@ -47,7 +47,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   }
 
   if (!hasProfile && !isBasicSale(publicIfoData[poolId].saleType)) {
-    return <ActivateProfileButton />
+    return <ActivateProfileButton saleFinished={publicIfoData.status === 'finished'} />
   }
 
   if (ifo.version >= 7 && ifo.chainId !== chainId) {

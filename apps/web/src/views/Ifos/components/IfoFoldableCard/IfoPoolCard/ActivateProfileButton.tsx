@@ -8,8 +8,13 @@ import { Flex, Button, NextLinkFromReactRouter, useModalV2, ProfileAvatar, Text 
 
 import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 import { useChainNames } from '../../../hooks/useChainNames'
+import { WarningTips, LinkTitle, ContentText } from '../../WarningTips'
 
-export function ActivateProfileButton() {
+type Props = {
+  saleFinished?: boolean
+}
+
+export function ActivateProfileButton({ saleFinished }: Props) {
   const router = useRouter()
   const { chainId } = useActiveChainId()
   const profileSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
@@ -54,5 +59,17 @@ export function ActivateProfileButton() {
     </>
   )
 
-  return button
+  return (
+    <WarningTips
+      action={button}
+      title={<LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
+      content={
+        <ContentText>
+          {saleFinished
+            ? t('Activate PancakeSwap Profile to take part in next IFO.')
+            : t('You need to create a profile to participate in the IFO.')}
+        </ContentText>
+      }
+    />
+  )
 }
