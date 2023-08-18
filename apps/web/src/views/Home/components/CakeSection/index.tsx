@@ -54,7 +54,10 @@ export const CakeSectionRightBox = styled.div`
 `
 
 export const CakeSectionCenterBox = styled.div`
+  display: flex;
   margin-top: 20px;
+  justify-content: center;
+  align-items: center;
 `
 
 const CakeBox = styled.div`

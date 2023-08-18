@@ -62,6 +62,7 @@ export const EcoSystemTagOuterWrapper = styled.div`
 export const FeatureTagsWrapper = styled(Marquee)`
   position: relative;
   width: ${MARQUEE_WIDTH}px;
+  border-radius: 12px;
   mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
   ${({ theme }) => theme.mediaQueries.lg} {
     height: ${MARQUEE_WIDTH}px !important;
@@ -80,6 +81,7 @@ export const PartnerTagOuterWrapper = styled.div`
 export const PartnerTagsWrapper = styled(Marquee)`
   position: relative;
   width: ${MARQUEE_WIDTH}px;
+  border-radius: 12px;
   mask-image: linear-gradient(to left, transparent, black 80px, black calc(100% - 80px), transparent);
   ${({ theme }) => theme.mediaQueries.lg} {
     height: ${MARQUEE_WIDTH}px !important;
