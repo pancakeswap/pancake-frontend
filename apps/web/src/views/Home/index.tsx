@@ -109,11 +109,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
-        background={
-          theme.isDark
-            ? 'radial-gradient(105.94% 70.71% at 50.00% 50.00%, #152534 0%, #191326 100%)'
-            : 'linear-gradient(135deg, #F2ECF2 0%, #E8F2F6 100%)'
-        }
+        background={theme.isDark ? theme.colors.background : 'linear-gradient(135deg, #F2ECF2 0%, #E8F2F6 100%)'}
         containerProps={{
           id: 'home4-2',
         }}
