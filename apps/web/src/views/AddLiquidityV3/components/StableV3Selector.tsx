@@ -35,12 +35,17 @@ export function StableV3Selector({
 
   const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
 
-  const pools = usePools([
-    [currencyA, currencyB, FeeAmount.LOWEST],
-    [currencyA, currencyB, FeeAmount.LOW],
-    [currencyA, currencyB, FeeAmount.MEDIUM],
-    [currencyA, currencyB, FeeAmount.HIGH],
-  ])
+  const pools = usePools(
+    useMemo(
+      () => [
+        [currencyA, currencyB, FeeAmount.LOWEST],
+        [currencyA, currencyB, FeeAmount.LOW],
+        [currencyA, currencyB, FeeAmount.MEDIUM],
+        [currencyA, currencyB, FeeAmount.HIGH],
+      ],
+      [currencyA, currencyB],
+    ),
+  )
 
   const poolsByFeeTier: Record<FeeAmount, PoolState> = useMemo(
     () =>

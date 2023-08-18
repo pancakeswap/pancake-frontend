@@ -251,6 +251,18 @@ export function UniversalAddLiquidity({
     [currencyIdA, currencyIdB, router, setSelectorType],
   )
 
+  const handleSelectV2 = useCallback(() => {
+    setSelectorType(SELECTOR_TYPE.V2)
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: router.query,
+      },
+      `/v2/add/${currencyIdA}/${currencyIdB}`,
+      { shallow: true },
+    )
+  }, [currencyIdA, currencyIdB, router, setSelectorType])
+
   useEffect(() => {
     if (preferredFeeAmount && !feeAmountFromUrl && selectorType === SELECTOR_TYPE.V3) {
       handleFeePoolSelect({ type: selectorType, feeAmount: preferredFeeAmount })
@@ -312,7 +324,7 @@ export function UniversalAddLiquidity({
                   currencyB={quoteCurrency ?? undefined}
                   handleFeePoolSelect={handleFeePoolSelect}
                   feeAmount={feeAmount}
-                  handleSelectV2={() => setSelectorType(SELECTOR_TYPE.V2)}
+                  handleSelectV2={handleSelectV2}
                 />
               )}
             </DynamicSection>
