@@ -16,6 +16,7 @@ import {
 } from './CakeSectionTag'
 
 export const CakeSectionMainBox = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   margin-top: 50px;
@@ -54,10 +55,24 @@ export const CakeSectionRightBox = styled.div`
 `
 
 export const CakeSectionCenterBox = styled.div`
+  position: relative;
   display: flex;
   margin-top: 20px;
   justify-content: center;
   align-items: center;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 600px;
+    height: 600px;
+    background: ${({ theme }) =>
+      theme.isDark
+        ? `radial-gradient(50% 50% at 50% 50%, rgba(151, 71, 255, 0.4) 0%, rgba(151, 71, 255, 0) 100%)`
+        : `background: radial-gradient(50% 50.00% at 50% 50.00%, #FFF 0%, rgba(255, 255, 255, 0.00) 100%)`};
+  }
 `
 
 const CakeBox = styled.div`
