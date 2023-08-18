@@ -3,7 +3,7 @@ import { FooterLinkType } from "../../../components/Footer/types";
 
 export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
   {
-    label: "Ecosystem",
+    label: t("Ecosystem"),
     items: [
       {
         label: t("Trade"),
@@ -11,11 +11,11 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Earn"),
-        href: "/pools",
+        href: "/farms",
       },
       {
         label: t("Game"),
-        href: "https://protectors.pancakeswap.finance/",
+        href: "/prediction",
       },
       {
         label: t("NFT"),
@@ -23,11 +23,11 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Tokenomics"),
-        href: "/swap",
+        href: "https://docs.pancakeswap.finance/governance-and-tokenomics/cake-tokenomics",
       },
       {
         label: t("Litepaper"),
-        href: "https://v2litepaper.pancakeswap.finance/",
+        href: "https://assets.pancakeswap.finance/litepaper/v2litepaper.pdf",
       },
       {
         label: t("CAKE Emission Projection"),
@@ -52,40 +52,44 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
     items: [
       {
         label: t("Farms and Syrup Pools"),
-        href: "/swap",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform",
       },
       {
         label: t("IFO"),
-        href: "/swap",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSf0Vmy3k0KyXtXwqxr8QLjD8Xd6KBAmkYxcBRRVTUYJVX17fA/viewform",
       },
       {
         label: t("NFT Marketplace"),
-        href: "/swap",
+        href: "https://docs.google.com/forms/d/e/1FAIpQLSdLjOEiJT4s8No2QT2TKknuUSlVMndARFgng4MDJMsoFQjR-A/viewform",
       },
       {
-        label: t("Etherum Expansion"),
-        href: "/swap",
+        label: t("Multichain Deployment"),
+        href: "https://docs.pancakeswap.finance/multichain",
       },
-      {
-        label: t("Aptos Development"),
-        href: "/swap",
-      },
+      // {
+      //   label: t("Etherum Expansion"),
+      //   href: "/swap",
+      // },
+      // {
+      //   label: t("Aptos Development"),
+      //   href: "/swap",
+      // },
     ],
   },
   {
     label: t("Developers"),
     items: [
       {
+        label: t("Contributing"),
+        href: "https://docs.pancakeswap.finance/developers/contributing",
+      },
+      {
         label: t("Github"),
         href: "https://github.com/pancakeswap",
       },
       {
-        label: t("Documentation"),
-        href: "https://docs.pancakeswap.finance",
-      },
-      {
         label: t("Bug Bounty"),
-        href: "https://docs.pancakeswap.finance/code/bug-bounty",
+        href: "https://docs.pancakeswap.finance/developers/bug-bounty",
       },
       // {
       //   label: t("Audits"),
@@ -98,7 +102,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
     items: [
       {
         label: t("Contact"),
-        href: "https://docs.pancakeswap.finance/contact-us",
+        href: "https://docs.pancakeswap.finance/contact-us/customer-support",
       },
       // {
       //   label: t("Customer Support"),
@@ -106,11 +110,11 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       // },
       {
         label: t("Troubleshooting"),
-        href: "https://docs.pancakeswap.finance/help/troubleshooting",
+        href: "https://docs.pancakeswap.finance/readme/help/troubleshooting",
       },
       {
-        label: t("FAQ"),
-        href: "https://docs.pancakeswap.finance/get-started",
+        label: t("Documentation"),
+        href: "https://docs.pancakeswap.finance/",
       },
     ],
   },
@@ -127,11 +131,11 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Brand Assets"),
-        href: "https://docs.pancakeswap.finance/brand",
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/brand",
       },
       {
         label: t("Careers"),
-        href: "https://docs.pancakeswap.finance/hiring/become-a-chef",
+        href: "https://docs.pancakeswap.finance/team/become-a-chef",
       },
     ],
   },
