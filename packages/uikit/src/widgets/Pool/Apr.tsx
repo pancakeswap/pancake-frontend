@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { useCallback, useMemo } from "react";
+import styled, { css } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
@@ -15,10 +16,15 @@ import {
 } from "../../components";
 import { useModal } from "../Modal";
 
-const AprLabelContainer = styled(Flex)`
-  &:hover {
-    opacity: 0.5;
-  }
+const AprLabelContainer = styled(Flex)<{ enableHover: boolean }>`
+  ${({ enableHover }) =>
+    enableHover
+      ? css`
+          &:hover {
+            opacity: 0.5;
+          }
+        `
+      : null}
 `;
 
 interface AprProps<T> extends FlexProps {
@@ -56,9 +62,15 @@ export function Apr<T>({
   } = pool;
   const { t } = useTranslation();
 
-  const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO;
+  const stakingTokenBalance = useMemo(
+    () => (userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO),
+    [userData]
+  );
 
-  const apyModalLink = stakingToken?.address ? `/swap?outputCurrency=${stakingToken.address}` : "/swap";
+  const apyModalLink = useMemo(
+    () => (stakingToken?.address ? `/swap?outputCurrency=${stakingToken.address}` : "/swap"),
+    [stakingToken]
+  );
 
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
@@ -77,22 +89,25 @@ export function Apr<T>({
     />
   );
 
-  const openRoiModal = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    onPresentApyModal();
-  };
+  const openRoiModal = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      event.stopPropagation();
+      onPresentApyModal();
+    },
+    [onPresentApyModal]
+  );
 
   const isValidate = apr !== undefined && !Number.isNaN(apr);
 
   return (
-    <AprLabelContainer alignItems="center" justifyContent="flex-start" {...props}>
+    <AprLabelContainer enableHover={!isFinished} alignItems="center" justifyContent="flex-start" {...props}>
       {isValidate || isFinished ? (
         <>
           {shouldShowApr ? (
             <>
               <BalanceWithLoading
                 onClick={(event) => {
-                  if (!showIcon) return;
+                  if (!showIcon || isFinished) return;
                   openRoiModal(event);
                 }}
                 fontSize={fontSize}
