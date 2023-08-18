@@ -12,7 +12,7 @@ import TextRow from './TextRow'
 import BalanceRow from './BalanceRow'
 import DateRow from './DateRow'
 import formatRoi from '../../utils/formatRoi'
-import formateICake from '../../utils/formatICake'
+import formatICake from '../../utils/formatICake'
 import { OverviewPropsType } from '../../types'
 import CalculatorButton from '../../Buttons/CalculatorButton'
 
@@ -53,14 +53,14 @@ const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
     : addSeconds(now, duration)
 
   const formattediCake = useMemo(() => {
-    return formateICake({ lockedAmount, duration, ceiling }) || 0
+    return formatICake({ lockedAmount, duration, ceiling }) || 0
   }, [lockedAmount, duration, ceiling])
 
   const newFormattediCake = useMemo(() => {
     const amount = Number(newLockedAmount) ? newLockedAmount : lockedAmount
     const lockDuration = Number(newDuration) ? newDuration : duration
 
-    return formateICake({ lockedAmount: amount, duration: lockDuration, ceiling }) || 0
+    return formatICake({ lockedAmount: amount, duration: lockDuration, ceiling }) || 0
   }, [lockedAmount, newLockedAmount, duration, newDuration, ceiling])
 
   return (
