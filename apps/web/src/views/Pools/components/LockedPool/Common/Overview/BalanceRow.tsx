@@ -19,7 +19,12 @@ const DiffBalance: React.FC<React.PropsWithChildren<DiffBalancePropsType>> = ({
   unit,
   prefix,
 }) => {
-  if (isUndefinedOrNull(newValue) || isUndefinedOrNull(value) || _toNumber(value) === _toNumber(newValue)) {
+  if (
+    isUndefinedOrNull(newValue) ||
+    isUndefinedOrNull(value) ||
+    _toNumber(value) === _toNumber(newValue) ||
+    _toNumber(newValue) === 0
+  ) {
     return <BalanceWithLoading bold fontSize="16px" value={value} decimals={decimals} unit={unit} prefix={prefix} />
   }
 
