@@ -15,5 +15,5 @@ export const ICAKE = {
 // Used to send cross chain message
 // Name derived from smart contract
 export const INFO_SENDER = {
-  [ChainId.BSC]: '0x189bD3C6e124951F01d34800e85196eF0F0F5D4a',
+  [ChainId.BSC]: '0x63772320a2FA3B9002A863126806b9EeF23e9C81',
 } as const satisfies ContractAddresses<ProfileSupportedChainId>
