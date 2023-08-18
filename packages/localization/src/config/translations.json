@@ -335,7 +335,6 @@
   "Funds to raise:": "Funds to raise:",
   "Price per %symbol%:": "Price per %symbol%:",
   "Price per %symbol% with fee:": "Price per %symbol% with fee:",
-  "You need an active PancakeSwap Profile to take part in an IFO!": "You need an active PancakeSwap Profile to take part in an IFO!",
   "Achievement": "Achievement",
   "What staking APR can I get from liquid staking?": "What staking APR can I get from liquid staking?",
   "Post-merge, the APR is hovering at around 3-5% for Ethereum validators. For wBETH, the daily APR is published by the Binance Earn team": "Post-merge, the APR is hovering at around 3-5% for Ethereum validators. For wBETH, the daily APR is published by the Binance Earn team",
@@ -576,7 +575,6 @@
   "Contact": "Contact",
   "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
   "Get Ready": "Get Ready",
-  "Activate PancakeSwap Profile to take part in next IFO‘s!": "Activate PancakeSwap Profile to take part in next IFO‘s!",
   "Trading Battle": "Trading Battle",
   "Prediction": "Prediction",
   "Initial Farm Offering": "Initial Farm Offering",
@@ -2904,5 +2902,8 @@
   "This IFO is hosted on %chain%.": "This IFO is hosted on %chain%.",
   "to participate": "to participate",
   "Stake CAKE to obtain iCAKE - in order to be eligible in the next IFO.": "Stake CAKE to obtain iCAKE - in order to be eligible in the next IFO.",
-  "Bridge CAKE": "Bridge CAKE"
+  "Bridge CAKE": "Bridge CAKE",
+  "How to Take Part": "How to Take Part",
+  "Activate PancakeSwap Profile to take part in next IFO.": "Activate PancakeSwap Profile to take part in next IFO.",
+  "You need to create a profile to participate in the IFO.": "You need to create a profile to participate in the IFO."
 }

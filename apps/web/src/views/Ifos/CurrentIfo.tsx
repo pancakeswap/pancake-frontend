@@ -18,7 +18,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
   useFetchIfo()
   const publicIfoData = useGetPublicIfoV7Data(activeIfo)
   const walletIfoData = useGetWalletIfoV7Data(activeIfo)
-  const { hasBridged, sourceChainCredit, srcChainId } = useICakeBridgeStatus({
+  const { hasBridged, sourceChainCredit, srcChainId, destChainCredit } = useICakeBridgeStatus({
     ifoChainId: activeIfo.chainId,
     ifoCredit: walletIfoData.ifoCredit?.credit,
   })
@@ -39,7 +39,9 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
       ifoSteps={
         <IfoSteps
           sourceChainIfoCredit={sourceChainCredit}
+          dstChainIfoCredit={destChainCredit}
           srcChainId={srcChainId}
+          ifoChainId={activeIfo.chainId}
           isLive={publicIfoData.status === 'live'}
           hasClaimed={poolBasic.hasClaimed || poolUnlimited.hasClaimed}
           isCommitted={isCommitted}

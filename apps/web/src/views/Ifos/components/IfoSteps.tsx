@@ -24,18 +24,22 @@ import {
 import { NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
 import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Address, useAccount } from 'wagmi'
-import { useMemo } from 'react'
+import { useMemo, ReactNode } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { getICakeWeekDisplay } from 'views/Pools/helpers'
+
 import { useIfoCeiling } from '../hooks/useIfoCredit'
+import { useChainName } from '../hooks/useChainNames'
 
 interface TypeProps {
   sourceChainIfoCredit?: CurrencyAmount<Currency>
+  dstChainIfoCredit?: CurrencyAmount<Currency>
   srcChainId?: ChainId
+  ifoChainId?: ChainId
   ifoCurrencyAddress: Address
   hasClaimed: boolean
   isCommitted: boolean
@@ -65,6 +69,40 @@ const Wrapper = styled(Container)`
 const InlineLink = styled(Link)`
   display: inline;
 `
+
+function ICakeCard({
+  icon,
+  title,
+  credit,
+  more,
+  action,
+}: {
+  action?: ReactNode
+  icon?: ReactNode
+  title?: ReactNode
+  credit?: CurrencyAmount<Currency>
+  more?: ReactNode
+}) {
+  const balanceNumber = useMemo(() => credit && Number(credit.toExact()), [credit])
+
+  return (
+    <SmallStakePoolCard borderRadius="default" p="16px">
+      <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
+        <Flex>
+          {icon}
+          <Box ml="16px">
+            <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
+              {title}
+            </Text>
+            <Balance fontSize="20px" bold decimals={5} value={balanceNumber} />
+            {more}
+          </Box>
+        </Flex>
+        {action}
+      </FlexGap>
+    </SmallStakePoolCard>
+  )
+}
 
 const Step1 = ({
   srcChainId,
@@ -124,33 +162,27 @@ const Step1 = ({
         </Text>
       </Box>
       {hasProfile && (
-        <SmallStakePoolCard borderRadius="default" p="16px">
-          <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
-            <Flex>
-              <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
-              <Box ml="16px">
-                <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
-                  {t('Your max CAKE entry')}
-                </Text>
-                <Balance fontSize="20px" bold decimals={5} value={balanceNumber} />
-                <Text fontSize="12px" color="textSubtle">
-                  {creditDollarValue !== undefined ? (
-                    <Balance
-                      value={creditDollarValue}
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      unit=" USD"
-                    />
-                  ) : (
-                    <Skeleton mt="1px" height={16} width={64} />
-                  )}
-                </Text>
-              </Box>
-            </Flex>
-          </FlexGap>
-        </SmallStakePoolCard>
+        <ICakeCard
+          icon={<LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />}
+          credit={sourceChainIfoCredit}
+          title={t('Your max CAKE entry')}
+          more={
+            <Text fontSize="12px" color="textSubtle">
+              {creditDollarValue !== undefined ? (
+                <Balance
+                  value={creditDollarValue}
+                  fontSize="12px"
+                  color="textSubtle"
+                  decimals={2}
+                  prefix="~"
+                  unit=" USD"
+                />
+              ) : (
+                <Skeleton mt="1px" height={16} width={64} />
+              )}
+            </Text>
+          }
+        />
       )}
     </CardBody>
   )
@@ -179,8 +211,10 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
 }
 
 const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
+  dstChainIfoCredit,
   sourceChainIfoCredit,
   srcChainId,
+  ifoChainId,
   isCommitted,
   hasClaimed,
   isLive,
@@ -190,6 +224,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   const { hasActiveProfile } = useProfile()
   const { address: account } = useAccount()
   const { t } = useTranslation()
+  const ifoChainName = useChainName(ifoChainId)
   const sourceChainHasICake = useMemo(
     () => sourceChainIfoCredit && sourceChainIfoCredit.quotient > 0n,
     [sourceChainIfoCredit],
@@ -255,15 +290,24 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
             'To participate in the cross chain Public Sale, you need to bridge your iCAKE to the blockchain where the IFO will be hosted on.',
           )}
         </Text>
-        <Text color="textSubtle" small>
+        <Text color="textSubtle" small mt="1rem">
           {t(
             'Before or during the sale, you may bridge you iCAKE again if you’ve added more CAKE or extended your lock staking position.',
           )}
         </Text>
-        {!isStepValid && (
-          <Button as="a" href="#bridge-icake" mt="16px">
-            {t('Bridge iCAKE')}
-          </Button>
+        {sourceChainHasICake && (
+          <ICakeCard
+            icon={<LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />}
+            credit={dstChainIfoCredit}
+            title={t('Your iCAKE on %chainName%', { chainName: ifoChainName })}
+            action={
+              !isStepValid ? (
+                <Button as="a" href="#bridge-icake">
+                  {t('Bridge iCAKE')}
+                </Button>
+              ) : null
+            }
+          />
         )}
       </CardBody>
     )
