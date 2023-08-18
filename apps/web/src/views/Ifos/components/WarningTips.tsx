@@ -14,11 +14,11 @@ export const LinkTitle = styled(Link)`
   font-weight: bold;
   font-size: 0.875rem;
   text-decoration: underline;
-  color: ${({ theme }) => theme.colors.warning};
+  color: ${({ theme }) => theme.colors.yellow};
 `
 
 export const ContentText = styled(Text)`
-  color: ${({ theme }) => theme.colors.warning};
+  color: ${({ theme }) => theme.colors.yellow};
   font-size: 0.875rem;
 `
 
