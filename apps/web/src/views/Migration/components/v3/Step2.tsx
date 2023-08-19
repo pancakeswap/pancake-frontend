@@ -22,6 +22,7 @@ import RemoveStableLiquidity from 'views/RemoveLiquidity/RemoveStableLiquidity'
 import useStableConfig, { StableConfigContext, useLPTokensWithBalanceByAccount } from 'views/Swap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import RemoveLiquidityV2FormProvider from 'views/RemoveLiquidity/RemoveLiquidityV2FormProvider'
 
 export const STABLE_LP_TO_MIGRATE = [
   '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
@@ -104,14 +105,14 @@ export function Step2() {
             <Image src="/images/decorations/liquidity.png" width={174} height={184} alt="liquidity-image" />
           </AtomBox>
         ) : (
-          <>
+          <RemoveLiquidityV2FormProvider>
             {allV2PairsWithLiquidity?.map((pair) => (
               <LpCard key={pair.liquidityToken.address} pair={pair} />
             ))}
             {stablePairs?.map((pair) => (
               <StableLpCard key={pair.liquidityToken.address} pair={pair} />
             ))}
-          </>
+          </RemoveLiquidityV2FormProvider>
         )}
       </AtomBox>
     </AppBody>
