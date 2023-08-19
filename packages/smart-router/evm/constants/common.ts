@@ -22,4 +22,5 @@ export const CHAIN_ID_TO_CHAIN_NAME = {
   [ChainId.LINEA_TESTNET]: '',
   [ChainId.BASE_TESTNET]: '',
   [ChainId.OPBNB_TESTNET]: '',
+  [ChainId.SCROLL_SEPOLIA]: '',
 } satisfies Record<ChainId, string>

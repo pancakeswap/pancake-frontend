@@ -16,6 +16,7 @@ import {
   lineaTestnetTokens,
   baseTestnetTokens,
   opBnbTestnetTokens,
+  scrollSepoliaTokens,
 } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
@@ -34,6 +35,7 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.LINEA_TESTNET]: '0x21d809FB4052bb1807cfe2418bA638d72F4aEf87',
   [ChainId.OPBNB_TESTNET]: '0xf317eD77Baed624d0EA2384AA88D91B774a9b009',
   [ChainId.BASE_TESTNET]: '0xDDC44b8507B4Ca992fB60F0ECdF5651A87668509',
+  [ChainId.SCROLL_SEPOLIA]: '0xDDC44b8507B4Ca992fB60F0ECdF5651A87668509',
 } as const satisfies Record<ChainId, string>
 
 export const V2_ROUTER_ADDRESS: ChainMap<string> = {
@@ -50,6 +52,7 @@ export const V2_ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.LINEA_TESTNET]: '0xD7A304138D50C125733d1fE8a2041199E4944Aa1',
   [ChainId.OPBNB_TESTNET]: '0x62FF25CFD64E55673168c3656f4902bD7Aa5F0f4',
   [ChainId.BASE_TESTNET]: '0xC259d1D3476558630d83b0b60c105ae958382792',
+  [ChainId.SCROLL_SEPOLIA]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
 }
 
 export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
@@ -66,6 +69,7 @@ export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
   [ChainId.LINEA_TESTNET]: '',
   [ChainId.OPBNB_TESTNET]: '',
   [ChainId.BASE_TESTNET]: '',
+  [ChainId.SCROLL_SEPOLIA]: '',
 }
 
 // used to construct intermediary pairs for trading
@@ -91,6 +95,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
   [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.usdc, opBnbTestnetTokens.wbnb],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
 /**

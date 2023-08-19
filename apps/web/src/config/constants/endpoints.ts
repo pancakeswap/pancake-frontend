@@ -78,6 +78,7 @@ export const V3_SUBGRAPH_URLS = {
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
   [ChainId.BASE_TESTNET]: null,
   [ChainId.OPBNB_TESTNET]: null,
+  [ChainId.SCROLL_SEPOLIA]: null,
 } satisfies Record<ChainId, string | null>
 
 export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancakeswap.com/api/v1'

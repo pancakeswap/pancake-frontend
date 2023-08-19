@@ -14,6 +14,7 @@ export enum ChainId {
   POLYGON_ZKEVM_TESTNET = 1442,
   ARBITRUM_ONE = 42161,
   ARBITRUM_GOERLI = 421613,
+  SCROLL_SEPOLIA = 534351,
   LINEA_TESTNET = 59140,
   BASE_TESTNET = 84531,
 }
@@ -39,6 +40,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.LINEA_TESTNET]: '0xB6FAfd4ADbCd21cF665909767e0eD0D05709abfB',
   [ChainId.OPBNB_TESTNET]: '0x776e4bD2f72de2176A59465e316335aaf8ed4E8F',
   [ChainId.BASE_TESTNET]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
+  [ChainId.SCROLL_SEPOLIA]: '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
 } as const satisfies Record<ChainId, Address>
 
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
@@ -58,6 +60,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.LINEA_TESTNET]: INIT_CODE_HASH_ETH,
   [ChainId.OPBNB_TESTNET]: INIT_CODE_HASH_ETH,
   [ChainId.BASE_TESTNET]: INIT_CODE_HASH_ETH,
+  [ChainId.SCROLL_SEPOLIA]: INIT_CODE_HASH_ETH,
 } as const satisfies Record<ChainId, Hash>
 
 export const WETH9 = {
@@ -165,6 +168,14 @@ export const WETH9 = {
     'Wrapped Ether',
     'https://weth.io'
   ),
+  [ChainId.SCROLL_SEPOLIA]: new ERC20Token(
+    ChainId.SCROLL_SEPOLIA,
+    '0x5300000000000000000000000000000000000004',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
 }
 
 export const WBNB = {
@@ -216,6 +227,7 @@ export const WNATIVE = {
   [ChainId.LINEA_TESTNET]: WETH9[ChainId.LINEA_TESTNET],
   [ChainId.OPBNB_TESTNET]: WBNB[ChainId.OPBNB_TESTNET],
   [ChainId.BASE_TESTNET]: WETH9[ChainId.BASE_TESTNET],
+  [ChainId.SCROLL_SEPOLIA]: WETH9[ChainId.SCROLL_SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>
 
 const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
@@ -250,6 +262,7 @@ export const NATIVE = {
     decimals: 18,
   },
   [ChainId.BASE_TESTNET]: ETHER,
+  [ChainId.SCROLL_SEPOLIA]: ETHER,
 } satisfies Record<
   ChainId,
   {

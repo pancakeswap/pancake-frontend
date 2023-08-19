@@ -7,6 +7,7 @@ import {
   polygonZkEvmTestnet,
   arbitrumGoerli,
   baseGoerli,
+  scrollSepolia,
 } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
 import { opbnbTestnet } from './chains'
@@ -54,6 +55,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
+  [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
@@ -92,4 +94,5 @@ export const PUBLIC_NODES = {
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
+  [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>

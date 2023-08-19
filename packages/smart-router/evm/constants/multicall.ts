@@ -70,4 +70,5 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.LINEA_TESTNET]: DEFAULT,
   [ChainId.BASE_TESTNET]: DEFAULT,
   [ChainId.OPBNB_TESTNET]: DEFAULT,
+  [ChainId.SCROLL_SEPOLIA]: DEFAULT,
 }

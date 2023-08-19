@@ -1374,6 +1374,9 @@ importers:
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       tsup:
         specifier: ^6.7.0

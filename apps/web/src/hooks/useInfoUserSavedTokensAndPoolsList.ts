@@ -1,17 +1,22 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { enumValues } from '@pancakeswap/utils/enumValues'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
 type TokenAndPoolList = Record<ChainId, Record<'tokens' | 'pools', string[]>>
 
-const defaultTokenAndPoolList = Object.values(ChainId).reduce((acc, chainId) => {
-  // eslint-disable-next-line no-param-reassign
-  acc[chainId] = {
-    tokens: [],
-    pools: [],
+const createDefaultTokenAndPoolList = () => {
+  const list = {} as TokenAndPoolList
+  for (const chainId of enumValues(ChainId)) {
+    list[chainId] = {
+      pools: [],
+      tokens: [],
+    }
   }
-  return acc
-}, {} as TokenAndPoolList)
+  return list
+}
+
+const defaultTokenAndPoolList = createDefaultTokenAndPoolList()
 
 const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList)
 
