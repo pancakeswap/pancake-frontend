@@ -1,22 +1,19 @@
 import { isStableFarm } from '@pancakeswap/farms'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo } from 'react'
-import { useAtom } from 'jotai'
+import { useCallback, useMemo } from 'react'
 import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
-import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV3'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
-import { mintReducerAtom } from 'state/mint/reducer'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import AddLiquidityV2FormProvider from 'views/AddLiquidity/AddLiquidityV2FormProvider'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
-  const [, dispatch] = useAtom(mintReducerAtom)
 
   // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
   const { data: farmsV2Public } = useFarmV2PublicAPI()
@@ -56,12 +53,6 @@ const AddLiquidityPage = () => {
       : undefined
   }, [farmsV2Public, farmV3Public?.farmsWithPrice, currencyA, currencyB, router])
 
-  useEffect(() => {
-    if (!currencyIdA && !currencyIdB) {
-      dispatch(resetMintState())
-    }
-  }, [dispatch, currencyIdA, currencyIdB])
-
   const handleRefresh = useCallback(() => {
     router.replace(
       {
@@ -76,21 +67,23 @@ const AddLiquidityPage = () => {
   }, [router, currencyIdA, currencyIdB])
 
   return (
-    <LiquidityFormProvider>
-      <AddLiquidityV3Layout
-        handleRefresh={handleRefresh}
-        showRefreshButton={preferFarmType?.type === SELECTOR_TYPE.V3 && preferFarmType?.feeAmount !== feeAmount}
-      >
-        <UniversalAddLiquidity
-          currencyIdA={currencyIdA}
-          currencyIdB={currencyIdB}
-          preferredSelectType={!feeAmount ? preferFarmType?.type : undefined}
-          isV2={!feeAmount ? preferFarmType?.type === SELECTOR_TYPE.V2 : undefined}
-          preferredFeeAmount={!feeAmount ? preferFarmType?.feeAmount : undefined}
-        />
-        <V3SubgraphHealthIndicator />
-      </AddLiquidityV3Layout>
-    </LiquidityFormProvider>
+    <AddLiquidityV2FormProvider>
+      <LiquidityFormProvider>
+        <AddLiquidityV3Layout
+          handleRefresh={handleRefresh}
+          showRefreshButton={preferFarmType?.type === SELECTOR_TYPE.V3 && preferFarmType?.feeAmount !== feeAmount}
+        >
+          <UniversalAddLiquidity
+            currencyIdA={currencyIdA}
+            currencyIdB={currencyIdB}
+            preferredSelectType={!feeAmount ? preferFarmType?.type : undefined}
+            isV2={!feeAmount ? preferFarmType?.type === SELECTOR_TYPE.V2 : undefined}
+            preferredFeeAmount={!feeAmount ? preferFarmType?.feeAmount : undefined}
+          />
+          <V3SubgraphHealthIndicator />
+        </AddLiquidityV3Layout>
+      </LiquidityFormProvider>
+    </AddLiquidityV2FormProvider>
   )
 }
 

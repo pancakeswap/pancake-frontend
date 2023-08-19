@@ -15,21 +15,22 @@ import { Hash } from 'viem'
 import { SendTransactionResult } from 'wagmi/actions'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { PairState } from '../../hooks/usePairs'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import { Field } from '../../state/mint/actions'
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { PairState } from 'hooks/usePairs'
+import { Field } from 'state/mint/actions'
+import { useDerivedMintInfo, useMintActionHandlers } from 'state/mint/hooks'
 
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useGasPrice, usePairAdder } from '../../state/user/hooks'
-import { calculateGasMargin } from '../../utils'
-import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { useGasPrice, usePairAdder } from 'state/user/hooks'
+import { calculateGasMargin } from 'utils'
+import { calculateSlippageAmount, useRouterContract } from 'utils/exchange'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { useAddLiquidityV2FormState } from 'state/mint/reducer'
 import ConfirmAddLiquidityModal from './components/ConfirmAddLiquidityModal'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
-import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
+import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
 export interface LP2ChildrenProps {
   error: string
@@ -92,7 +93,7 @@ export default function AddLiquidity({
   const gasPrice = useGasPrice()
 
   // mint state
-  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const { independentField, typedValue, otherTypedValue } = useAddLiquidityV2FormState()
   const {
     dependentField,
     currencies,

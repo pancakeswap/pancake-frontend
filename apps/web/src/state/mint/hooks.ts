@@ -5,21 +5,16 @@ import { PairState, useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useCallback, useMemo } from 'react'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { mintReducerAtom } from 'state/mint/reducer'
+import { useAddLiquidityV2FormDispatch, useAddLiquidityV2FormState } from 'state/mint/reducer'
 import { useAccount } from 'wagmi'
-import { useAtom, useAtomValue } from 'jotai'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
-
-export function useMintState() {
-  return useAtomValue(mintReducerAtom)
-}
 
 export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
-  const [, dispatch] = useAtom(mintReducerAtom)
+  const dispatch = useAddLiquidityV2FormDispatch()
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
@@ -61,7 +56,7 @@ export function useDerivedMintInfo(
 
   const { t } = useTranslation()
 
-  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const { independentField, typedValue, otherTypedValue } = useAddLiquidityV2FormState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 

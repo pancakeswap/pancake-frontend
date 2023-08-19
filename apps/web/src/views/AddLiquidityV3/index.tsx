@@ -35,6 +35,8 @@ import { getAddress } from 'viem'
 
 import noop from 'lodash/noop'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
+import { resetMintState } from 'state/mint/actions'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -87,6 +89,14 @@ export function UniversalAddLiquidity({
 }: UniversalAddLiquidityPropsType) {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
+
+  const dispatch = useAddLiquidityV2FormDispatch()
+
+  useEffect(() => {
+    if (!currencyIdA && !currencyIdB) {
+      dispatch(resetMintState())
+    }
+  }, [dispatch, currencyIdA, currencyIdB])
 
   const router = useRouter()
   const baseCurrency = useCurrency(currencyIdA)

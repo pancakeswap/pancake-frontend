@@ -12,8 +12,8 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext, UseStableSwapInfoContract } from 'views/Swap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/hooks/useEstimatedAmount'
-import { useMintState } from 'state/mint/hooks'
 import { Address } from 'viem'
+import { useAddLiquidityV2FormState } from 'state/mint/reducer'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -160,7 +160,7 @@ export function useStableLPDerivedMintInfo(
 
   const { t } = useTranslation()
 
-  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const { independentField, typedValue, otherTypedValue } = useAddLiquidityV2FormState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
