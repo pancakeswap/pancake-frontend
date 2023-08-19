@@ -43,7 +43,7 @@ export default function FeeSelector({
     if (currencyA && currencyB) {
       const [tokenA, tokenB] = [currencyA.wrapped, currencyB.wrapped]
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
-      return farmV3Config?.length > 0 && farmV3Config.find((f) => f.token.equals(token0) && f.quoteToken.equals(token1))
+      return farmV3Config?.find((f) => f.token.equals(token0) && f.quoteToken.equals(token1))
     }
     return null
   }, [currencyA, currencyB, farmV3Config])
@@ -57,12 +57,17 @@ export default function FeeSelector({
 
   const [showOptions, setShowOptions] = useState(false)
   // get pool data on-chain for latest states
-  const pools = usePools([
-    [currencyA, currencyB, FeeAmount.LOWEST],
-    [currencyA, currencyB, FeeAmount.LOW],
-    [currencyA, currencyB, FeeAmount.MEDIUM],
-    [currencyA, currencyB, FeeAmount.HIGH],
-  ])
+  const pools = usePools(
+    useMemo(
+      () => [
+        [currencyA, currencyB, FeeAmount.LOWEST],
+        [currencyA, currencyB, FeeAmount.LOW],
+        [currencyA, currencyB, FeeAmount.MEDIUM],
+        [currencyA, currencyB, FeeAmount.HIGH],
+      ],
+      [currencyA, currencyB],
+    ),
+  )
 
   const poolsByFeeTier: Record<FeeAmount, PoolState> = useMemo(
     () =>
