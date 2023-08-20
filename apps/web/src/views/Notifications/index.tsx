@@ -105,15 +105,12 @@ const Notifications = () => {
 }
 
 const NotificationsState = () => {
+  const [isRightView, setIsRightView] = useState(true)
+
   const { address } = useAccount()
   const chainId = useChainId()
 
-  if (!address || !chainId) return <></>
-  return (
-    <PushContextProvider>
-      <Notifications />
-    </PushContextProvider>
-  )
+  return <></>
 }
 
 export default NotificationsState

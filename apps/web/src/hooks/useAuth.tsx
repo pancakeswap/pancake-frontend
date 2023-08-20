@@ -55,7 +55,7 @@ const useAuth = () => {
     } finally {
       clearUserStates(dispatch, { chainId: chain?.id })
     }
-  }, [dispatch, chain?.id])
+  }, [disconnect, dispatch, chain?.id])
 
   return { login, logout }
 }
