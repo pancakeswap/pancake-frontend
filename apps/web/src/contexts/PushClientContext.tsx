@@ -42,7 +42,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
 
     pushClient.getActiveSubscriptions().then((subscriptions) => {
       const _activeSubscriptions = Object.values(subscriptions)
-      const isSynced = syncClient.signatures.getAll({ account: userPubkey }).length === 0
+      const isSynced = syncClient.signatures.getAll({ account: userPubkey }).length > 0
       setActiveSubscriptions(_activeSubscriptions)
 
       if (_activeSubscriptions.some((sub) => sub.account === eip155Account)) {

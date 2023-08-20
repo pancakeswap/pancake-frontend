@@ -10,6 +10,7 @@ import { BuilderNames } from '../types'
 
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
+import { requestNotificationPermission } from '../utils/notification'
 
 interface IOnboardingButtonProps {
   account: string
@@ -100,7 +101,7 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (isOnBoarded) handleSubscribe()
+      if (isOnBoarded) requestNotificationPermission().then(async () => handleSubscribe())
       else handleOnboarding()
     },
     [handleOnboarding, handleSubscribe, isOnBoarded],

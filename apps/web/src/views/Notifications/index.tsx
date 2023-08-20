@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  Box,
+  Button,
+  CogIcon,
+  Heading,
+  IconButton,
+  LogoRoundIcon,
+  ModalCloseButton,
+} from '@pancakeswap/uikit'
 import PushContextProvider, { usePushClient } from 'contexts/PushClientContext'
 import { useCallback, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
@@ -8,6 +17,7 @@ import NotificationMenu from './components/NotificationDropdown/NotificationMenu
 import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
 import { ModalHeader, ModalTitle, ViewContainer } from './styles'
+import useSendPushNotification from './components/hooks/sendPushNotification'
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -57,6 +67,7 @@ const Notifications = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { userPubkey, isSubscribed, activeSubscriptions, pushClientProxy: pushClient } = usePushClient()
   const { eip155Account } = useFormattedEip155Account()
+  const { sendBrowserNotification } = useSendPushNotification()
 
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
 
@@ -74,6 +85,11 @@ const Notifications = () => {
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
         <Box>
+          <Button
+            onClick={() => sendBrowserNotification('pancake alert', 'you recieved a notification from pancakeswap')}
+          >
+            register
+          </Button>
           <NotificationHeader onBack={toggleSettings} onDismiss={onDismiss} isSettings={!isRightView} />
           {isSubscribed && userPubkey ? (
             <ViewContainer isRightView={isRightView}>

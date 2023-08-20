@@ -70,7 +70,7 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettings
         toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
       })
       await pushClient.update({
-        topic: currentSubscription.topic,
+        topic: currentSubscription?.topic,
         scope: getEnabledScopes(scopes),
       })
       const newScope = currentSubscription
@@ -83,7 +83,7 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettings
   const handleUnSubscribe = useCallback(async () => {
     setloading(true)
     try {
-      await pushClient.deleteSubscription({ topic: currentSubscription.topic })
+      await pushClient.deleteSubscription({ topic: currentSubscription?.topic })
       pushClient?.emitter.on('push_delete', () => {
         toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
       })
@@ -91,7 +91,7 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettings
       toast.toastError(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
     setloading(false)
-  }, [pushClient, currentSubscription.topic, toast])
+  }, [pushClient, currentSubscription?.topic, toast])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {

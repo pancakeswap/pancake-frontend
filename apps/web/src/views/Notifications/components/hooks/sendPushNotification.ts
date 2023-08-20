@@ -6,11 +6,60 @@ import useFormattedEip155Account from './useFormatEip155Account'
 type NotifyResponse = { sent: string[]; failed: string[]; not_found: string[] }
 interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
+  sendBrowserNotification(title: string, body: string): Promise<void>
+  subscribeToPushNotifications(): Promise<void>
 }
+const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
 
 const useSendPushNotification = (): IUseSendNotification => {
   const { eip155Account } = useFormattedEip155Account()
   const toast = useToast()
+
+  async function subscribeToPushNotifications() {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
+        await navigator.serviceWorker.ready
+
+        const subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: publicVapidKey,
+        })
+
+        await fetch('http://localhost:8081/subscribe', {
+          method: 'POST',
+          body: JSON.stringify(subscription),
+          headers: { 'Content-Type': 'application/json' },
+        })
+      } catch (error) {
+        throw new Error('Error:', error)
+      }
+    }
+  }
+
+  async function sendBrowserNotification(title: string, body: string) {
+    console.log('heyyyy')
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.ready
+        const subscription = await registration.pushManager.getSubscription()
+
+        console.log(subscription)
+        if (subscription) {
+          await fetch('http://localhost:8081/send-notification', {
+            method: 'POST',
+            body: JSON.stringify({ payload: { title, body }, subscription }),
+            headers: { 'Content-Type': 'application/json' },
+          })
+        } else {
+          await subscribeToPushNotifications()
+        }
+      } catch (error) {
+        console.log(error)
+        throw new Error('Error:', error)
+      }
+    } else console.log('not here')
+  }
 
   const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {
     const notificationPayload: NotificationPayload = {
@@ -32,6 +81,8 @@ const useSendPushNotification = (): IUseSendNotification => {
 
       if (!success) {
         toast.toastError('Failed to send', 'Failed to send push notification as account was not found')
+      } else {
+        await sendBrowserNotification(notificationPayload.notification.title, notificationPayload.notification.body)
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -39,7 +90,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       }
     }
   }
-  return { sendPushNotification }
+  return { sendPushNotification, sendBrowserNotification, subscribeToPushNotifications }
 }
 
 export default useSendPushNotification
