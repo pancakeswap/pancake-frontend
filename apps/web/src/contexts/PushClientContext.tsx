@@ -44,7 +44,6 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
       const _activeSubscriptions = Object.values(subscriptions)
       const isSynced = syncClient.signatures.getAll({ account: userPubkey }).length > 0
       setActiveSubscriptions(_activeSubscriptions)
-      console.log(_activeSubscriptions)
       if (_activeSubscriptions.some((sub) => sub.account === eip155Account)) {
         setIsSubscribed(true)
       } else setIsSubscribed(false)
@@ -84,12 +83,11 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   useEffect(() => {
     refreshPushState()
     const intervalId = setInterval(refreshPushState, 30000) // 30 seconds
-
     // Clean up the interval when the component unmounts
     return () => {
       clearInterval(intervalId)
     }
-  }, [])
+  }, [refreshPushState])
 
   useEffect(() => {
     if (!pushClient) return () => null
