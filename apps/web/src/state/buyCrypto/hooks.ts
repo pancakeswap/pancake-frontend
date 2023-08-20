@@ -274,7 +274,7 @@ export async function queryParametersToBuyCryptoState(
   const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency)
     ? inputCurrency
     : chainId === ChainId.ETHEREUM
-    ? 'ETH' : chainId === ChainId.GOERLI ? 'USDT' 
+    ? 'ETH'
     : 'BNB'
   const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
   return {

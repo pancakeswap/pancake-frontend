@@ -89,7 +89,7 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
           onMouseLeave={handleHover}
         >
           <Box marginRight="15px" display="flex" minWidth="40px">
-            <Image src={image ?? '/logo.png'} alt="Notification Image" height={40} width={40} />
+            <Image src="/logo.png" alt="Notification Image" height={40} width={40} />
           </Box>
           <Flex flexDirection="column">
             <Flex justifyContent="space-between">

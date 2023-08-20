@@ -42,18 +42,15 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
       </Box>
       <UserMenuDivider />
       {chains
-        // .filter(
-        //   (chain) =>
-        //     chain.id === ChainId.LINEA_TESTNET || !('testnet' in chain && chain.testnet) || chain.id === chainId,
-        // )
+        .filter(
+          (chain) =>
+            chain.id === ChainId.LINEA_TESTNET || !('testnet' in chain && chain.testnet) || chain.id === chainId,
+        )
         .map((chain) => (
           <UserMenuItem
             key={chain.id}
             style={{ justifyContent: 'flex-start' }}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (chain.id !== chainId) switchNetwork(chain.id)
-            }}
+            onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
           >
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">

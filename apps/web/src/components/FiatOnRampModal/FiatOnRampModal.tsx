@@ -13,21 +13,11 @@ import {
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   SUPPORTED_MONPAY_ETH_TOKENS,
   SUPPORTED_MOONPAY_BSC_TOKENS,
-  GOERLI_TOKENS,
   mercuryoWhitelist,
 } from 'views/BuyCrypto/constants'
 import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
-import crypto from 'crypto'
-
-function generateRandomHash(length: number): string {
-  const randomBytes = crypto.randomBytes(length)
-  const hash = crypto.createHash('sha256').update(randomBytes).digest('hex')
-  return hash
-}
-
-// Example usage:
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   border-bottom-left-radius: 24px;
@@ -83,7 +73,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = chainId === ChainId.BSC ? `${inputCurrency.toLowerCase()}_bsc` : inputCurrency.toLowerCase()
 
-    const res = await fetch(`https://pcs-onramp-api.com/generate-moonpay-sig`, {
+    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -271,27 +261,20 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === 'Mercuryo') {
       if (sig && window?.mercuryoWidget) {
-        const randomHash = generateRandomHash(32)
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: '64d1f9f9-85ee-4558-8168-1dc0e7057ce6',
+          widgetId: MERCURYO_WIDGET_ID,
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,
-          currencies:
-            chainId === ChainId.ETHEREUM
-              ? ETHEREUM_TOKENS
-              : chainId === ChainId.GOERLI
-              ? GOERLI_TOKENS
-              : mercuryoWhitelist,
+          currencies: chainId === ChainId.ETHEREUM ? ETHEREUM_TOKENS : mercuryoWhitelist,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
-          merchantTransactionId: `${chainId}_${account.address}_${randomHash}`,
           signature: sig,
           height: '750px',
           width: '400px',
-          network: chainId === ChainId.ETHEREUM || chainId === ChainId.GOERLI ? ChainId.ETHEREUM : ChainId.BSC,
+          network: chainId === ChainId.ETHEREUM ? ChainId.ETHEREUM : ChainId.BSC,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'xzen' : 'phemex',
         })
@@ -344,7 +327,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </Modal>
       <Script
-        src="https://sandbox-widget.mrcr.io/embed.2.0.js"
+        src="https://widget.mercuryo.io/embed.2.0.js"
         onLoad={() => {
           setScriptOnLoad(true)
         }}
