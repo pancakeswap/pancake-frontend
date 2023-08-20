@@ -15,11 +15,11 @@ import { ChainLogo } from 'components/Logo/ChainLogo'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
-import { multiChainId, multiChainPaths } from 'state/info/constant'
+import { multiChainId, multiChainPaths, multiChainShortName } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { chains } from 'utils/wagmi'
-import { bsc, mainnet, polygonZkEvm } from 'wagmi/chains'
+import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync } from 'wagmi/chains'
 import { v3InfoPath } from '../../constants'
 import Search from '../Search'
 
@@ -74,13 +74,13 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   )
 }
 
-const targetChains = [mainnet, bsc, polygonZkEvm]
+const targetChains = [mainnet, bsc, polygonZkEvm, zkSync, arbitrum]
 
 export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
   const { t } = useTranslation()
   const chainName = useChainNameByQuery()
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
-  const symbol = foundChain?.nativeCurrency?.symbol
+  const symbol = multiChainShortName[foundChain?.id] ?? foundChain?.nativeCurrency?.symbol
   const router = useRouter()
   const switchNetwork = useCallback(
     (chianId: number) => {

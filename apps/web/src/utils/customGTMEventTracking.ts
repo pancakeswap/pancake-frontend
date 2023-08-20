@@ -3,6 +3,7 @@ export enum GTMEvent {
   Swap = 'swap',
   AddLiquidity = 'addLiquidity',
   Farm = 'stakeFarm',
+  WalletConnect = 'walletConnect',
 }
 
 export enum GTMCategory {
@@ -10,6 +11,7 @@ export enum GTMCategory {
   Swap = 'Swap',
   AddLiquidity = 'AddLiquidity',
   Farm = 'Farm',
+  WalletConnect = 'WalletConnect',
 }
 
 export enum GTMAction {
@@ -17,6 +19,7 @@ export enum GTMAction {
   ClickSwapButton = 'Click Swap Button',
   ClickAddLiquidityButton = 'Click Add Liquidity Button',
   ClickStakeButton = 'Click Stake Button',
+  ClickWalletConnectButton = 'Click Wallet Connect and Connected',
 }
 
 interface CustomGTMDataLayer {
@@ -69,5 +72,14 @@ export const logGTMClickAddLiquidityEvent = () => {
     event: GTMEvent.AddLiquidity,
     action: GTMAction.ClickAddLiquidityButton,
     category: GTMCategory.AddLiquidity,
+  })
+}
+
+export const logGTMWalletConnectEvent = () => {
+  console.info('---WalletConnect---')
+  window?.dataLayer?.push({
+    event: GTMEvent.WalletConnect,
+    action: GTMAction.ClickWalletConnectButton,
+    category: GTMCategory.WalletConnect,
   })
 }

@@ -1,18 +1,14 @@
-import styled from 'styled-components'
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-
-import { Flex, Text, Box, TooltipText, useTooltip, HelpIcon, BalanceWithLoading, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, TooltipText, useTooltip, BalanceWithLoading, Pool } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
-import LockedActions from './Common/LockedActions'
 import YieldBoostRow from './Common/YieldBoostRow'
 import LockDurationRow from './Common/LockDurationRow'
 import IfoCakeRow from './Common/IfoCakeRow'
@@ -20,11 +16,7 @@ import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import { LockedStakingApyPropsType } from './types'
 import LockedAprTooltipContent from './Common/LockedAprTooltipContent'
 import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
-import OriginalLockedInfo from '../OriginalLockedInfo'
-
-const HelpIconWrapper = styled.div`
-  align-self: center;
-`
+import LockedStaking from './LockedStaking'
 
 interface LockedStakingApyProps extends LockedStakingApyPropsType {
   showICake?: boolean
@@ -33,8 +25,6 @@ interface LockedStakingApyProps extends LockedStakingApyPropsType {
 }
 
 const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({
-  stakingToken,
-  stakingTokenBalance,
   userData,
   showICake,
   pool,
@@ -51,15 +41,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
     [userData],
   )
 
-  const currentLockedAmountAsBigNumber = useMemo(() => {
-    return userData?.balance?.cakeAsBigNumber
-  }, [userData?.balance?.cakeAsBigNumber])
-
-  const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBigNumber)
-
-  const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
-
-  const { weekDuration, lockEndDate, secondDuration, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
+  const { weekDuration, secondDuration } = useUserDataInVaultPresenter({
     lockStartTime: userData?.lockStartTime,
     lockEndTime: userData?.lockEndTime,
     burnStartTime: userData?.burnStartTime,
@@ -69,8 +51,8 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
 
   // earningTokenBalance includes overdue fee if any
   const earningTokenBalance = useMemo(() => {
-    return getBalanceNumber(currentLockedAmountAsBigNumber.minus(userData?.cakeAtLastUserAction))
-  }, [currentLockedAmountAsBigNumber, userData?.cakeAtLastUserAction])
+    return getBalanceNumber(userData?.balance?.cakeAsBigNumber.minus(userData?.cakeAtLastUserAction))
+  }, [userData?.balance?.cakeAsBigNumber, userData?.cakeAtLastUserAction])
 
   const boostedYieldAmount = useMemo(() => {
     return getFullDisplayBalance(userData?.cakeAtLastUserAction, 18, 5)
@@ -79,27 +61,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   const tooltipContent = <LockedAprTooltipContent boostedYieldAmount={boostedYieldAmount} />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
-  const tooltipContentOfBurn = t(
-    'After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.',
-    { burnStartTime },
-  )
-  const {
-    targetRef: tagTargetRefOfBurn,
-    tooltip: tagTooltipOfBurn,
-    tooltipVisible: tagTooltipVisibleOfBurn,
-  } = useTooltip(tooltipContentOfBurn, {
-    placement: 'bottom',
-  })
-
   const originalLockedAmount = getBalanceNumber(userData?.lockedAmount)
-
-  const {
-    targetRef: tagTargetRefOfLocked,
-    tooltip: tagTooltipOfLocked,
-    tooltipVisible: tagTooltipVisibleOfLocked,
-  } = useTooltip(<OriginalLockedInfo pool={pool} />, {
-    placement: 'bottom',
-  })
 
   const {
     targetRef: tagTargetRefOfRecentProfit,
@@ -111,56 +73,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
 
   return (
     <LightGreyCard>
-      <Flex justifyContent="space-between" mb="16px">
-        <Box>
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('CAKE locked')}
-          </Text>
-          <Flex>
-            <BalanceWithLoading color="text" bold fontSize="16px" value={currentLockedAmount} decimals={5} />
-            {tagTooltipVisibleOfLocked && tagTooltipOfLocked}
-            <HelpIconWrapper ref={tagTargetRefOfLocked}>
-              <HelpIcon ml="4px" mt="2px" width="20px" height="20px" color="textSubtle" />
-            </HelpIconWrapper>
-          </Flex>
-          <BalanceWithLoading
-            value={usdValueStaked}
-            fontSize="12px"
-            color="textSubtle"
-            decimals={2}
-            prefix="~"
-            unit=" USD"
-          />
-        </Box>
-        <Box>
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Unlocks In')}
-          </Text>
-          <Flex>
-            <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
-              {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
-            </Text>
-            {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
-            <span ref={tagTargetRefOfBurn}>
-              <HelpIcon ml="4px" mt="2px" width="20px" height="20px" color="textSubtle" />
-            </span>
-          </Flex>
-          <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
-            {t('On %date%', { date: lockEndDate })}
-          </Text>
-        </Box>
-      </Flex>
-      <Box mb="16px">
-        <LockedActions
-          userShares={userData?.userShares}
-          locked={userData?.locked}
-          lockEndTime={userData?.lockEndTime}
-          lockStartTime={userData?.lockStartTime}
-          stakingToken={stakingToken}
-          stakingTokenBalance={stakingTokenBalance}
-          lockedAmount={currentLockedAmountAsBigNumber}
-        />
-      </Box>
+      <LockedStaking pool={pool} userData={userData} />
       <Divider />
       {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
         <Flex alignItems="center" justifyContent="space-between">

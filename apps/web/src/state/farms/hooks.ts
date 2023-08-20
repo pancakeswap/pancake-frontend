@@ -14,7 +14,7 @@ import {
   supportedChainIdV2,
 } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
@@ -111,5 +111,5 @@ export const useLpTokenPrice = (symbol: string) => {
 }
 
 export const usePriceCakeUSD = (): BigNumber => {
-  return useCakePriceAsBN()
+  return useCakePrice()
 }

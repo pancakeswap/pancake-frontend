@@ -1,6 +1,7 @@
 import { fetchAPI } from 'utils/api'
 import { ResponseArticleType, ResponseArticleDataType, ResponseCategoriesType, Categories } from 'types'
 import { transformArticle, ArticleType, ArticleDataType } from 'utils/transformArticle'
+import { filterTagArray } from 'utils/filterTagArray'
 
 interface GetArticleProps {
   url: string
@@ -45,6 +46,8 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
       publishedAt: '',
       description: '',
       categories: [],
+      newsOutBoundLink: '',
+      newsFromPlatform: '',
     }
   }
 }
@@ -53,6 +56,11 @@ export const getCategories = async (): Promise<Categories[]> => {
   try {
     const response = await fetchAPI('/categories', {
       fields: 'id,name',
+      filters: {
+        name: {
+          $notIn: filterTagArray,
+        },
+      },
     })
 
     return (response.data as ResponseCategoriesType[]).map((category) => ({

@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import dayjs from 'dayjs'
 import {
   AutoColumn,
@@ -8,12 +7,12 @@ import {
   Card,
   Flex,
   Heading,
-  LinkExternal,
   NextLinkFromReactRouter,
   Spinner,
   Text,
   useMatchBreakpoints,
   Button,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -160,13 +159,13 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
             </Breadcrumbs>
 
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <LinkExternal
-                isBscScan={multiChainId[chainName] === ChainId.BSC}
-                mr="8px"
+              <ScanLink
+                chainId={multiChainId[chainName]}
                 href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+                mr="8px"
               >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
-              </LinkExternal>
+              </ScanLink>
               {/* <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} /> */}
             </Flex>
           </Flex>

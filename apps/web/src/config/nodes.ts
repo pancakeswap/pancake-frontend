@@ -7,6 +7,12 @@ const POLYGON_ZKEVM_NODES = [
   ...polygonZkEvm.rpcUrls.public.http,
 ]
 
+const ARBITRUM_NODES = [
+  ...arbitrum.rpcUrls.public.http,
+  process.env.NEXT_PUBLIC_QUICK_NODE_ARB_PRODUCTION,
+  getNodeRealUrlV2(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
+]
+
 export const SERVER_NODES = {
   [ChainId.BSC]: [
     process.env.NEXT_PUBLIC_NODE_PRODUCTION,
@@ -23,7 +29,7 @@ export const SERVER_NODES = {
     getNodeRealUrlV2(ChainId.GOERLI, process.env.SERVER_NODE_REAL_API_GOERLI),
     'https://eth-goerli.public.blastapi.io',
   ].filter(Boolean),
-  [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
+  [ChainId.ARBITRUM_ONE]: ARBITRUM_NODES,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
   [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
@@ -56,12 +62,15 @@ export const PUBLIC_NODES = {
     getNodeRealUrlV2(ChainId.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI),
     'https://eth-goerli.public.blastapi.io',
   ].filter(Boolean),
-  [ChainId.ARBITRUM_ONE]: arbitrum.rpcUrls.public.http,
+  [ChainId.ARBITRUM_ONE]: ARBITRUM_NODES,
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerli.rpcUrls.public.http,
-  [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_NODES,
+  [ChainId.POLYGON_ZKEVM]: [
+    ...POLYGON_ZKEVM_NODES,
+    getNodeRealUrlV2(ChainId.POLYGON_ZKEVM, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH),
+  ],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [
-    'https://polygon-zkevm-testnet.rpc.thirdweb.com',
     ...polygonZkEvmTestnet.rpcUrls.public.http,
+    'https://polygon-zkevm-testnet.rpc.thirdweb.com',
   ],
   [ChainId.ZKSYNC]: zkSync.rpcUrls.public.http,
   [ChainId.ZKSYNC_TESTNET]: zkSyncTestnet.rpcUrls.public.http,

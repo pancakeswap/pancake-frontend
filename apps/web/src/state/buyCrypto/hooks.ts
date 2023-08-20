@@ -15,14 +15,29 @@ import max from 'lodash/max'
 import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
-import { MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
-import { SUPPORTED_ONRAMP_TOKENS } from 'views/BuyCrypto/constants'
-import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
+import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
+import {
+  Field,
+  replaceBuyCryptoState,
+  selectCurrency,
+  setMinAmount,
+  setUsersIpAddress,
+  typeInput,
+  setIsNewCustomer,
+} from './actions'
 
 type CurrencyLimits = {
   code: string
   maxBuyAmount: number
   minBuyAmount: number
+}
+
+const defaultTokenByChain = {
+  [ChainId.ETHEREUM]: 'ETH',
+  [ChainId.BSC]: 'BNB',
+  [ChainId.ZKSYNC]: 'ETH',
+  [ChainId.ARBITRUM_ONE]: 'ETH',
 }
 
 export function useBuyCryptoState() {
@@ -60,7 +75,7 @@ function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
 const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string) => {
   try {
     const response = await fetch(
-      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=${MERCURYO_WIDGET_ID}&type=buy&from=${toUpper(
+      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=a9f3d282-db2d-4364-ae62-602c5000f003&type=buy&from=${toUpper(
         inputCurrencyId,
       )}&to=${toUpper(outputCurrencyId)}&amount=1`,
     )
@@ -93,10 +108,11 @@ const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string
   }
 }
 
-const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string) => {
+const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string, chainId: number) => {
   try {
+    const baseCurrency = `${outputCurrencyId.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
     const response = await fetch(
-      `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrencyId.toLowerCase()}/limits?apiKey=pk_live_Ch5fat39X8NvMZwih2k7hK4sDrKanSPz&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
+      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
     // console.log(await response.json())
@@ -120,10 +136,11 @@ const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: st
 export const fetchMinimumBuyAmount = async (
   inputCurrencyId: string,
   outputCurrencyId: string,
+  chainId: number,
 ): Promise<LimitQuote | undefined> => {
   try {
     const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId)
-    const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId)
+    const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId, chainId)
 
     const quotes = [moonpayLimitQuote, mercuryLimitQuote].filter(Boolean)
 
@@ -211,6 +228,7 @@ export function useBuyCryptoActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
   onUsersIp: (ip: string | null) => void
+  onIsNewCustomer: (isNew: boolean) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -255,11 +273,21 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const onIsNewCustomer = useCallback((isNew: boolean) => {
+    dispatch(
+      setIsNewCustomer({
+        isNew,
+      }),
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return {
     onFieldAInput,
     onCurrencySelection,
     onLimitAmountUpdate,
     onUsersIp,
+    onIsNewCustomer,
   }
 }
 
@@ -271,12 +299,9 @@ export async function queryParametersToBuyCryptoState(
   chainId: number,
 ): Promise<BuyCryptoState> {
   const inputCurrency = parsedQs.inputCurrency as any
-  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency)
-    ? inputCurrency
-    : chainId === ChainId.ETHEREUM
-    ? 'ETH'
-    : 'BNB'
-  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr)
+  const defaultCurr = SUPPORTED_ONRAMP_TOKENS.includes(inputCurrency) ? inputCurrency : defaultTokenByChain[chainId]
+  const limitAmounts = await fetchMinimumBuyAmount(DEFAULT_FIAT_CURRENCY, defaultCurr, chainId)
+
   return {
     [Field.INPUT]: {
       currencyId: DEFAULT_FIAT_CURRENCY,
@@ -292,16 +317,41 @@ export async function queryParametersToBuyCryptoState(
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
+    isNewCustomer: false,
   }
 }
 
-export function calculateDefaultAmount(minAmount: number): number {
-  return ceil(minAmount * 4)
+export function calculateDefaultAmount(minAmount: number, currencyCode: string): number {
+  switch (currencyCode) {
+    case 'USD':
+      return 300
+    case 'EUR':
+      return 200
+    case 'GBP':
+      return 200
+    case 'HKD':
+      return 2000
+    case 'CAD':
+      return 400
+    case 'AUD':
+      return 400
+    case 'BRL':
+      return 1000
+    case 'JPY':
+      return 40000
+    case 'KRW':
+      return 300000
+    case 'VND':
+      return 6000000
+    default:
+      return ceil(minAmount * 10)
+  }
 }
 
 export function useDefaultsFromURLSearch(account: string | undefined) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { chainId } = useActiveChainId()
+  const { address } = useAccount()
   const { query, isReady } = useRouter()
 
   useEffect(() => {
@@ -309,9 +359,20 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
       if (!isReady || !chainId) return
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
 
+      let isNewCustomer = false
+      try {
+        const moonpayCustomerResponse = await fetch(`https://pcs-on-ramp-api.com/checkItem?searchAddress=${address}`)
+        const moonpayCustomerResult = await moonpayCustomerResponse.json()
+        isNewCustomer = !moonpayCustomerResult.found
+      } catch (error) {
+        throw new Error('failed to fetch customer details')
+      }
+
       dispatch(
         replaceBuyCryptoState({
-          typedValue: parsed.minAmount ? toString(calculateDefaultAmount(parsed.minAmount)) : '',
+          typedValue: parsed.minAmount
+            ? toString(calculateDefaultAmount(parsed.minAmount, parsed[Field.INPUT].currencyId))
+            : '',
           minAmount: parsed.minAmount,
           minBaseAmount: parsed.minBaseAmount,
           maxAmount: parsed.maxAmount,
@@ -319,11 +380,12 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: null,
+          isNewCustomer,
         }),
       )
     }
     fetchData()
-  }, [dispatch, query, isReady, account, chainId])
+  }, [dispatch, query, isReady, account, chainId, address])
 
   // return result
 }

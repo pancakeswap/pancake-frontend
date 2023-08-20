@@ -1,3 +1,4 @@
+import { useTranslation } from "@pancakeswap/localization";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
 import { ReactNode, useCallback, useEffect, useState, memo } from "react";
 
@@ -35,6 +36,7 @@ export const StepCounter = memo(
     tokenA,
     tokenB,
   }: StepCounterProps) => {
+    const { t } = useTranslation();
     //  for focus state, styled components doesnt let you select input parent container
     const [, setActive] = useState(false);
 
@@ -123,7 +125,7 @@ export const StepCounter = memo(
               </IconButton>
             )}
           </AutoRow>
-          {tokenB} per {tokenA}
+          {tokenA && tokenB && t("%assetA% per %assetB%", { assetA: tokenB, assetB: tokenA })}
         </AutoColumn>
       </LightGreyCard>
     );

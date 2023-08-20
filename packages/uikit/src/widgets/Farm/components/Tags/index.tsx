@@ -18,6 +18,8 @@ import {
   CurrencyIcon,
   BinanceChainIcon,
   EthChainIcon,
+  ZkEVMIcon,
+  ZkSyncIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -217,6 +219,26 @@ const BscTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
+const ZkEVMTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag
+      style={{ background: "linear-gradient(57deg, #A726C1 0%, #803BDF 88.00%, #7B3FE4 100%)" }}
+      startIcon={<ZkEVMIcon width="18px" mr="4px" />}
+      {...props}
+    >
+      zkEVM
+    </Tag>
+  );
+};
+
+const ZkSyncTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: "#08060B" }} startIcon={<ZkSyncIcon width="18px" mr="4px" />} {...props}>
+      zkSync
+    </Tag>
+  );
+};
+
 const Tags = {
   CoreTag,
   FarmAuctionTag,
@@ -237,6 +259,8 @@ const Tags = {
   V3Tag,
   EthTag,
   BscTag,
+  ZkEVMTag,
+  ZkSyncTag,
 };
 
 export default Tags;

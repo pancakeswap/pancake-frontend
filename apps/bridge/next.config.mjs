@@ -19,6 +19,15 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/aptos',
+        destination: '/stargate',
+        permanent: true,
+      },
+    ]
+  }
 }
 
 export default withAxiom(withVanillaExtract(withWebSecurityHeaders(nextConfig)))

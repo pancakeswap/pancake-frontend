@@ -3,19 +3,11 @@ import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import SwapWarningTokensConfig from 'config/constants/swapWarningTokens'
-import SafemoonWarning from './SafemoonWarning'
-import ItamWarning from './ItamWarning'
-import BondlyWarning from './BondlyWarning'
+import { ChainId } from '@pancakeswap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ETH_WARNING_LIST from './1'
+import BSC_WARNING_LIST from './56'
 import Acknowledgement from './Acknowledgement'
-import CcarWarning from './CcarWarning'
-import BTTWarning from './BTTWarning'
-import RugPullWarning from './RugPullWarning'
-import FREEWarning from './FREEWarning'
-import GalaWarning from './GalaWarning'
-import ABNBWarning from './ABNBWarning'
-import XCADWarning from './XCADWarning'
-import METISWarning from './METISWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -34,64 +26,23 @@ interface SwapWarningModalProps {
 const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>> = ({ swapCurrency, onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { chainId } = useActiveWeb3React()
 
   const TOKEN_WARNINGS = {
-    [SwapWarningTokensConfig.safemoon.address]: {
-      symbol: SwapWarningTokensConfig.safemoon.symbol,
-      component: <SafemoonWarning />,
-    },
-    [SwapWarningTokensConfig.bondly.address]: {
-      symbol: SwapWarningTokensConfig.bondly.symbol,
-      component: <BondlyWarning />,
-    },
-    [SwapWarningTokensConfig.itam.address]: {
-      symbol: SwapWarningTokensConfig.itam.symbol,
-      component: <ItamWarning />,
-    },
-    [SwapWarningTokensConfig.ccar.address]: {
-      symbol: SwapWarningTokensConfig.ccar.symbol,
-      component: <CcarWarning />,
-    },
-    [SwapWarningTokensConfig.bttold.address]: {
-      symbol: SwapWarningTokensConfig.bttold.symbol,
-      component: <BTTWarning />,
-    },
-    [SwapWarningTokensConfig.pokemoney.address]: {
-      symbol: SwapWarningTokensConfig.pokemoney.symbol,
-      component: <RugPullWarning />,
-    },
-    [SwapWarningTokensConfig.free.address]: {
-      symbol: SwapWarningTokensConfig.free.symbol,
-      component: <FREEWarning />,
-    },
-    [SwapWarningTokensConfig.gala.address]: {
-      symbol: SwapWarningTokensConfig.gala.symbol,
-      component: <GalaWarning />,
-    },
-    [SwapWarningTokensConfig.abnbc.address]: {
-      symbol: SwapWarningTokensConfig.abnbc.symbol,
-      component: <ABNBWarning />,
-    },
-    [SwapWarningTokensConfig.xcad.address]: {
-      symbol: SwapWarningTokensConfig.xcad.symbol,
-      component: <XCADWarning />,
-    },
-    [SwapWarningTokensConfig.metis.address]: {
-      symbol: SwapWarningTokensConfig.metis.symbol,
-      component: <METISWarning />,
-    },
+    [ChainId.ETHEREUM]: ETH_WARNING_LIST,
+    [ChainId.BSC]: BSC_WARNING_LIST,
   }
 
-  const SWAP_WARNING = TOKEN_WARNINGS[swapCurrency.address]
+  const SWAP_WARNING = TOKEN_WARNINGS?.[chainId]?.[swapCurrency.address]
 
   return (
     <StyledModalContainer minWidth="280px">
       <ModalHeader background={theme.colors.gradientCardHeader}>
-        <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING.symbol })}</Heading>
+        <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING?.symbol })}</Heading>
       </ModalHeader>
       <ModalBody p="24px">
         <MessageContainer variant="warning" mb="24px">
-          <Box>{SWAP_WARNING.component}</Box>
+          <Box>{SWAP_WARNING?.component}</Box>
         </MessageContainer>
         <Acknowledgement handleContinueClick={onDismiss} />
       </ModalBody>

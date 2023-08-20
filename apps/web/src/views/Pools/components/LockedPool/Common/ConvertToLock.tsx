@@ -9,12 +9,14 @@ import useAvgLockDuration from '../hooks/useAvgLockDuration'
 
 interface ConvertToLockProps {
   stakingToken: Token
+  stakingTokenPrice: number
   currentStakedAmount: number
   isInline?: boolean
 }
 
 const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
   stakingToken,
+  stakingTokenPrice,
   currentStakedAmount,
   isInline,
 }) => {
@@ -34,6 +36,7 @@ const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
             lockEndTime="0"
             lockStartTime="0"
             stakingToken={stakingToken}
+            stakingTokenPrice={stakingTokenPrice}
             currentLockedAmount={currentStakedAmount}
           >
             {t('Convert to Lock')}

@@ -21,9 +21,11 @@ import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
 import { useDomainNameForAddress } from 'hooks/useDomain'
+import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
+import ClaimYourNFT from './ClaimYourNFT'
 
 const UserMenuItems = () => {
   const { t } = useTranslation()
@@ -32,6 +34,8 @@ const UserMenuItems = () => {
   const { address: account } = useAccount()
   const { hasPendingTransactions } = usePendingTransactions()
   const { isInitialized, isLoading, profile } = useProfile()
+  const { shouldShowModal } = useAirdropModalStatus()
+
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [onPresentWrongNetworkModal] = useModal(<WalletModal initialView={WalletView.WRONG_NETWORK} />)
@@ -56,6 +60,7 @@ const UserMenuItems = () => {
       <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
         <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>
       </NextLink>
+      {shouldShowModal && <ClaimYourNFT />}
       <ProfileUserMenuItem
         isLoading={isLoading}
         hasProfile={hasProfile}

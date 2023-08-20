@@ -23,6 +23,7 @@ const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 
 const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType>> = ({
   stakingToken,
+  stakingTokenPrice,
   onDismiss,
   lockedAmount,
   currentBalance,
@@ -40,6 +41,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,
+    stakingTokenPrice,
     onDismiss,
     lockedAmount,
     prepConfirmArg,
@@ -53,7 +55,8 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
           duration,
         })
       : {
-          isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
+          isValidAmount:
+            lockedAmount?.toNumber() > 0 && currentBalance && getBalanceAmount(currentBalance).gte(lockedAmount),
           isValidDuration: duration > 0 && duration <= MAX_LOCK_DURATION,
           isOverMax: duration > MAX_LOCK_DURATION,
         }

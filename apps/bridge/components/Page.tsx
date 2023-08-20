@@ -3,7 +3,6 @@ import { Box } from '@pancakeswap/uikit'
 
 const PageContainer = styled(Box)`
   display: flex;
-  height: 100%;
   height: calc(100vh - 56px);
   background: ${({ theme }) => theme.colors.backgroundAlt};
 

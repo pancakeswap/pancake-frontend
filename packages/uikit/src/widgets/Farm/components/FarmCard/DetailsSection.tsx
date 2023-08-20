@@ -1,7 +1,9 @@
+import { ReactElement } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
 import { LinkExternal } from "../../../../components/Link";
+import ScanLink from "../../../../components/Link/ScanLink";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Text } from "../../../../components/Text";
 import { HelpIcon } from "../../../../components/Svg";
@@ -9,7 +11,7 @@ import { useTooltip } from "../../../../hooks/useTooltip";
 import { FarmMultiplierInfo } from "../FarmMultiplierInfo";
 
 export interface ExpandableSectionProps {
-  scanAddressLink?: string;
+  scanAddress?: { link: string; chainId?: number; icon?: ReactElement };
   infoAddress?: string;
   removed?: boolean;
   totalValueFormatted?: string;
@@ -32,6 +34,10 @@ const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
 `;
 
+const StyledScanLink = styled(ScanLink)`
+  font-weight: 400;
+`;
+
 const StyledText = styled(Text)`
   &:hover {
     text-decoration: underline;
@@ -40,7 +46,7 @@ const StyledText = styled(Text)`
 `;
 
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
-  scanAddressLink,
+  scanAddress,
   infoAddress,
   removed,
   totalValueLabel,
@@ -118,11 +124,11 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
           <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>
         </Flex>
       )}
-      {scanAddressLink && (
+      {scanAddress && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
-          <StyledLinkExternal isBscScan href={scanAddressLink}>
+          <StyledScanLink icon={scanAddress.icon} chainId={scanAddress.chainId} href={scanAddress.link}>
             {t("View Contract")}
-          </StyledLinkExternal>
+          </StyledScanLink>
         </Flex>
       )}
     </Wrapper>

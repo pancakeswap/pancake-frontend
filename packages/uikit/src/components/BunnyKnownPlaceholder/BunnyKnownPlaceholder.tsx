@@ -1,5 +1,5 @@
 import { useTheme } from "styled-components";
-import { Svg, SvgProps } from "..";
+import { Svg, SvgProps } from "../Svg";
 
 const BunnyKnownPlaceholder: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   const theme = useTheme();

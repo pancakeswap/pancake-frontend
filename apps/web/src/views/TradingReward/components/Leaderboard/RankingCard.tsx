@@ -9,6 +9,7 @@ import {
   LaurelRightIcon,
   Text,
   SubMenu,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -51,11 +52,11 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
   const cakePriceBusd = usePriceCakeUSD()
-  const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.origin)
-  const { domainName, avatar } = useDomainNameForAddress(user.origin, !profile && !isProfileLoading)
+  const { profile, isLoading: isProfileLoading } = useProfileForAddress(user?.origin)
+  const { domainName, avatar } = useDomainNameForAddress(user?.origin, !profile && !isProfileLoading)
 
   const cakeAmount = useMemo(
-    () => new BigNumber(user?.estimateRewardUSD).div(cakePriceBusd).toNumber(),
+    () => new BigNumber(user?.estimateRewardUSD).div(cakePriceBusd).toNumber() ?? 0,
     [cakePriceBusd, user?.estimateRewardUSD],
   )
 
@@ -87,9 +88,13 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
                     </Box>
                     <RotatedLaurelRightIcon color={rankColor} width="32px" />
                   </Flex>
-                  <Text color="primary" fontWeight="bold" textAlign="center">
-                    {profile?.username || domainName || truncateHash(user.origin)}
-                  </Text>
+                  {!user ? (
+                    <Skeleton width="60px" m="0 auto" />
+                  ) : (
+                    <Text color="primary" fontWeight="bold" textAlign="center">
+                      {profile?.username || domainName || truncateHash(user?.origin)}
+                    </Text>
+                  )}
                 </Flex>
               }
               options={{ placement: 'bottom' }}
@@ -100,21 +105,34 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
               {t('Total Reward')}
             </Text>
             <Box>
-              <Text textAlign="right" bold color="text" fontSize="20px" lineHeight="110%">
-                {`$${formatNumber(user.estimateRewardUSD)}`}
-              </Text>
-              <Text textAlign="right" color="textSubtle" fontSize="12px">
-                {`~${formatNumber(cakeAmount)} CAKE`}
-              </Text>
+              {!user ? (
+                <>
+                  <Skeleton width="60px" mb="2px" />
+                  <Skeleton width="60px" />
+                </>
+              ) : (
+                <>
+                  <Text textAlign="right" bold color="text" fontSize="20px" lineHeight="110%">
+                    {`$${formatNumber(user?.estimateRewardUSD)}`}
+                  </Text>
+                  <Text textAlign="right" color="textSubtle" fontSize="12px">
+                    {`~${formatNumber(cakeAmount)} CAKE`}
+                  </Text>
+                </>
+              )}
             </Box>
           </Flex>
           <Flex justifyContent="space-between">
             <Text bold color="textSubtle">
               {t('Trading Volume')}
             </Text>
-            <Text textAlign="right" bold color="text" fontSize="20px">
-              {`$${formatNumber(user.volume)}`}
-            </Text>
+            {!user ? (
+              <Skeleton width="100px" />
+            ) : (
+              <Text textAlign="right" bold color="text" fontSize="20px">
+                {`$${formatNumber(user?.volume)}`}
+              </Text>
+            )}
           </Flex>
         </CardBody>
       </Card>

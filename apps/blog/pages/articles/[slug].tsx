@@ -7,6 +7,7 @@ import SimilarArticles from 'components/Article/SingleArticle/SimilarArticles'
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
+import { filterTagArray } from 'utils/filterTagArray'
 
 export async function getStaticPaths() {
   return {
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
   }
 }
 
-export const getStaticProps = (async ({ params }) => {
+export const getStaticProps = (async ({ params, previewData }) => {
   if (!params)
     return {
       redirect: {
@@ -26,12 +27,23 @@ export const getStaticProps = (async ({ params }) => {
     }
 
   const { slug } = params
+  const isPreviewMode = (previewData as any)?.slug
+
+  let name: any = { $notIn: filterTagArray }
+  if (isPreviewMode) {
+    name = { $eq: 'Preview' }
+  }
 
   const article = await getSingleArticle({
     url: `/slugify/slugs/article/${slug}`,
     urlParamsObject: {
       populate: 'categories,image',
       locale: 'all',
+      filters: {
+        categories: {
+          name,
+        },
+      },
     },
   })
 
@@ -62,6 +74,7 @@ export const getStaticProps = (async ({ params }) => {
       fallback: {
         '/article': article,
         '/similarArticles': similarArticles.data,
+        isPreviewMode: !!isPreviewMode,
       },
     },
     revalidate: 60,
@@ -82,8 +95,12 @@ const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <SWRConfig value={{ fallback }}>
         <Box>
           <ArticleInfo />
-          <HowItWork />
-          <SimilarArticles />
+          {!fallback.isPreviewMode && (
+            <>
+              <HowItWork />
+              <SimilarArticles />
+            </>
+          )}
         </Box>
       </SWRConfig>
     </div>

@@ -46,6 +46,8 @@ import {
   getV3AirdropContract,
   getV3MigratorContract,
   getTradingRewardTopTradesContract,
+  getVCakeContract,
+  getRevenueSharingPoolContract,
 } from 'utils/contractHelpers'
 
 import { ChainId, WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -391,4 +393,16 @@ export const useTradingRewardTopTraderContract = ({ chainId: chainId_ }: { chain
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getTradingRewardTopTradesContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
+}
+
+export const useVCakeContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getVCakeContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
+}
+
+export const useRevenueSharingPoolContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getRevenueSharingPoolContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
 }

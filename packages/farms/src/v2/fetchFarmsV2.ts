@@ -7,10 +7,10 @@ import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
 import { isStableFarm, SerializedFarmConfig } from '../types'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
-import { FarmSupportedChainId, supportedChainIdV2 } from '../const'
+import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
 
 const evmNativeStableLpMap: Record<
-  FarmSupportedChainId,
+  FarmV2SupportedChainId,
   {
     address: Address
     wNative: string
@@ -123,7 +123,7 @@ export async function farmV2FetchFarms({
     }
   })
 
-  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId as FarmSupportedChainId], 18)
+  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId as FarmV2SupportedChainId], 18)
 
   return farmsDataWithPrices
 }

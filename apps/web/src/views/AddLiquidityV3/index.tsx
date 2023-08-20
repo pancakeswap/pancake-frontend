@@ -35,6 +35,8 @@ import { getAddress } from 'viem'
 
 import noop from 'lodash/noop'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useAddLiquidityV2FormDispatch } from 'state/mint/reducer'
+import { resetMintState } from 'state/mint/actions'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
@@ -87,6 +89,14 @@ export function UniversalAddLiquidity({
 }: UniversalAddLiquidityPropsType) {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
+
+  const dispatch = useAddLiquidityV2FormDispatch()
+
+  useEffect(() => {
+    if (!currencyIdA && !currencyIdB) {
+      dispatch(resetMintState())
+    }
+  }, [dispatch, currencyIdA, currencyIdB])
 
   const router = useRouter()
   const baseCurrency = useCurrency(currencyIdA)
@@ -251,6 +261,18 @@ export function UniversalAddLiquidity({
     [currencyIdA, currencyIdB, router, setSelectorType],
   )
 
+  const handleSelectV2 = useCallback(() => {
+    setSelectorType(SELECTOR_TYPE.V2)
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: router.query,
+      },
+      `/v2/add/${currencyIdA}/${currencyIdB}`,
+      { shallow: true },
+    )
+  }, [currencyIdA, currencyIdB, router, setSelectorType])
+
   useEffect(() => {
     if (preferredFeeAmount && !feeAmountFromUrl && selectorType === SELECTOR_TYPE.V3) {
       handleFeePoolSelect({ type: selectorType, feeAmount: preferredFeeAmount })
@@ -312,7 +334,7 @@ export function UniversalAddLiquidity({
                   currencyB={quoteCurrency ?? undefined}
                   handleFeePoolSelect={handleFeePoolSelect}
                   feeAmount={feeAmount}
-                  handleSelectV2={() => setSelectorType(SELECTOR_TYPE.V2)}
+                  handleSelectV2={handleSelectV2}
                 />
               )}
             </DynamicSection>

@@ -58,6 +58,8 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.BSC]: 26956207,
   [ChainId.ETHEREUM]: 16950686,
   [ChainId.POLYGON_ZKEVM]: 750149,
+  [ChainId.ZKSYNC]: 8639214,
+  [ChainId.ARBITRUM_ONE]: 101028949,
 }
 
 export const NODE_REAL_ADDRESS_LIMIT = 50

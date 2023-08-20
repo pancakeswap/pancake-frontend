@@ -26,7 +26,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
     },
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { stakingToken } = pool
+  const { stakingToken, stakingTokenPrice } = pool
 
   const cakePriceBusd = usePriceCakeUSD()
   const stakedDollarValue = cakePriceBusd.gt(0)
@@ -81,7 +81,11 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
       </Flex>
       {pool.vaultKey === VaultKey.CakeVault && (
         <Box mb="16px">
-          <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+          <ConvertToLock
+            stakingToken={stakingToken}
+            stakingTokenPrice={stakingTokenPrice}
+            currentStakedAmount={cakeAsNumberBalance}
+          />
         </Box>
       )}
     </>

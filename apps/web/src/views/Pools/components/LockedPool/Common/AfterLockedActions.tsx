@@ -29,6 +29,7 @@ const msg: Record<VaultPosition, ReactNode> = {
 const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPropsType>> = ({
   currentLockedAmount,
   stakingToken,
+  stakingTokenPrice,
   position,
   isInline,
   hideConvertToFlexibleButton,
@@ -50,6 +51,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
             lockEndTime="0"
             lockStartTime="0"
             stakingToken={stakingToken}
+            stakingTokenPrice={stakingTokenPrice}
             currentLockedAmount={currentLockedAmount}
             minWidth="186px"
             variant="primary"

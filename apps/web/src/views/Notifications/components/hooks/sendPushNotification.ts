@@ -26,7 +26,7 @@ const useSendPushNotification = (): IUseSendNotification => {
           applicationServerKey: publicVapidKey,
         })
 
-        await fetch('http://localhost:8081/subscribe', {
+        await fetch('http://localhost:8000/subscribe', {
           method: 'POST',
           body: JSON.stringify(subscription),
           headers: { 'Content-Type': 'application/json' },
@@ -38,15 +38,12 @@ const useSendPushNotification = (): IUseSendNotification => {
   }
 
   async function sendBrowserNotification(title: string, body: string) {
-    console.log('heyyyy')
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.ready
         const subscription = await registration.pushManager.getSubscription()
-
-        console.log(subscription)
         if (subscription) {
-          await fetch('http://localhost:8081/send-notification', {
+          await fetch('http://localhost:8000/send-notification', {
             method: 'POST',
             body: JSON.stringify({ payload: { title, body }, subscription }),
             headers: { 'Content-Type': 'application/json' },
@@ -55,10 +52,9 @@ const useSendPushNotification = (): IUseSendNotification => {
           await subscribeToPushNotifications()
         }
       } catch (error) {
-        console.log(error)
         throw new Error('Error:', error)
       }
-    } else console.log('not here')
+    } 
   }
 
   const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {

@@ -122,7 +122,11 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           <LazyMotion features={isMobile ? DomMax : DomAnimation}>
             <AnimatePresence>
               {isOpen && (
-                <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>
+                <DismissableLayer
+                  role="dialog"
+                  disableOutsidePointerEvents={false}
+                  onEscapeKeyDown={handleOverlayDismiss}
+                >
                   <StyledModalWrapper
                     ref={animationRef}
                     onAnimationStart={() => animationHandler(animationRef.current)}

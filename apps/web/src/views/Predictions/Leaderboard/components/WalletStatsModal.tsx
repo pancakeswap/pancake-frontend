@@ -6,13 +6,13 @@ import {
   Text,
   IconButton,
   InjectedModalProps,
-  LinkExternal,
   ModalWrapper,
   ModalHeader,
   ProfileAvatar,
   Skeleton,
   Heading,
   useMatchBreakpoints,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
@@ -39,7 +39,7 @@ interface WalletStatsModalProps extends InjectedModalProps {
   api: string
 }
 
-const ExternalLink = styled(LinkExternal)`
+const StyledScanLink = styled(ScanLink)`
   color: ${({ theme }) => theme.colors.text};
 
   svg {
@@ -84,9 +84,9 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
                 {profile?.username}
               </Heading>
             )}
-            <ExternalLink isBscScan href={getBlockExploreLink(address, 'address')}>
+            <StyledScanLink href={getBlockExploreLink(address, 'address')}>
               {domainName || truncateHash(address)}
-            </ExternalLink>
+            </StyledScanLink>
           </Box>
         </Flex>
         <IconButton variant="text" onClick={handleDismiss} aria-label="Close the dialog">

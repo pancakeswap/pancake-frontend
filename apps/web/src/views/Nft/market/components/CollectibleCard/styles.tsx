@@ -12,10 +12,9 @@ import {
   WalletFilledIcon,
   Skeleton,
 } from '@pancakeswap/uikit'
-import { Currency, Price } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
-import { multiplyPriceByAmount } from 'utils/prices'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 
 export const Footer: React.FC<React.PropsWithChildren<BoxProps>> = ({ children, ...props }) => (
   <Box borderTop={[null, null, null, '1px solid']} borderColor="cardBorder" pt="8px" {...props}>
@@ -41,11 +40,11 @@ export const BNBAmountLabel: React.FC<React.PropsWithChildren<BNBAmountLabelProp
 
 interface CostLabelProps extends FlexProps {
   cost: number
-  bnbBusdPrice: Price<Currency, Currency>
+  bnbBusdPrice: BigNumber
 }
 
 export const CostLabel: React.FC<React.PropsWithChildren<CostLabelProps>> = ({ cost, bnbBusdPrice, ...props }) => {
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, cost)
+  const priceInUsd = bnbBusdPrice.multipliedBy(cost).toNumber()
 
   return (
     <Flex alignItems="center" {...props}>
@@ -141,7 +140,7 @@ export const StyledCollectibleCard = styled(Card)`
 interface LowestPriceMetaRowProps {
   lowestPrice: number
   isFetching: boolean
-  bnbBusdPrice: Price<Currency, Currency>
+  bnbBusdPrice: BigNumber
 }
 
 export const LowestPriceMetaRow = ({ lowestPrice, isFetching, bnbBusdPrice }: LowestPriceMetaRowProps) => {

@@ -20,6 +20,7 @@ const TradingReward = () => {
     status: RewardStatus.ALL,
     type: RewardType.CAKE_STAKERS,
   })
+
   const campaignId = allTradingRewardPairData.campaignIds[allTradingRewardPairData.campaignIds.length - 1]
   const { data: campaignInfoData, isFetching: isCampaignInfoFetching } = useCampaignIdInfo({
     campaignId,
@@ -66,7 +67,7 @@ const TradingReward = () => {
       .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
+  if (chainId !== ChainId.BSC) {
     return null
   }
 
@@ -92,7 +93,6 @@ const TradingReward = () => {
       />
       <HowToEarn />
       <RewardsBreakdown
-        latestCampaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         campaignPairs={allTradingRewardPairData.campaignPairs}

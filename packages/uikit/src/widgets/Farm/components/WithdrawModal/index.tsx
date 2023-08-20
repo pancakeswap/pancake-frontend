@@ -39,7 +39,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
     return getFullDisplayBalance(max, decimals);
   }, [max, decimals]);
 
-  const valNumber = new BigNumber(val);
+  const valNumber = useMemo(() => new BigNumber(val), [val]);
   const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);
 
   const handleChange = useCallback(

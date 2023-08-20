@@ -139,6 +139,46 @@ export const CAKE = {
   ),
   [ChainId.BSC]: CAKE_MAINNET,
   [ChainId.BSC_TESTNET]: CAKE_TESTNET,
+  [ChainId.POLYGON_ZKEVM]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0x0D1E753a25eBda689453309112904807625bEFBe',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
+    ChainId.POLYGON_ZKEVM_TESTNET,
+    '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
+    ChainId.ZKSYNC_TESTNET,
+    '0xFf2FA31273c1aedB67017B52C625633d2F021f67',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x3A287a06c66f9E95a56327185cA2BDF5f031cEcD',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.ARBITRUM_ONE]: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x1b896893dfc86bb67Cf57767298b9073D2c1bA2c',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
 
 export const USDC = {
@@ -156,7 +196,7 @@ export const USDC = {
   ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
-    '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
     6,
     'USDC',
     'USD Coin',
@@ -204,6 +244,13 @@ export const USDT = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
     ChainId.POLYGON_ZKEVM_TESTNET,
     '0x7379a261bC347BDD445484A91648Abf4A2BDEe5E',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C',
     6,
     'USDT',
     'Tether USD',

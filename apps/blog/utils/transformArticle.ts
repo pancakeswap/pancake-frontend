@@ -11,6 +11,8 @@ export interface ArticleDataType {
   publishedAt: string
   description: string
   categories: Array<string>
+  newsOutBoundLink: string
+  newsFromPlatform: string
 }
 
 export interface ArticleType {
@@ -28,7 +30,9 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
     publishedAt: article?.attributes?.publishedAt ?? '',
     locale: article?.attributes?.locale ?? '',
     description: article?.attributes?.description ?? '',
-    imgUrl: article?.attributes?.image?.data?.[0]?.attributes?.url ?? '',
+    newsFromPlatform: article?.attributes?.newsFromPlatform ?? '',
+    newsOutBoundLink: article?.attributes?.newsOutBoundLink ?? '',
+    imgUrl: article?.attributes?.image?.data?.attributes?.url ?? '',
     categories: article.attributes?.categories?.data?.map((i) => i.attributes.name),
   }
 }

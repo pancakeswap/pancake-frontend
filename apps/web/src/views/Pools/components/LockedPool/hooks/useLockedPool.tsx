@@ -1,13 +1,12 @@
-import { useState, useCallback, Dispatch, SetStateAction } from 'react'
+import { useState, useCallback, Dispatch, SetStateAction, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { useAppDispatch } from 'state'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useVaultPoolContract } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
-import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
@@ -23,6 +22,7 @@ import { PrepConfirmArg } from '../types'
 interface HookArgs {
   lockedAmount: BigNumber
   stakingToken: Token
+  stakingTokenPrice: number
   onDismiss: () => void
   prepConfirmArg: PrepConfirmArg
   defaultDuration?: number
@@ -37,7 +37,14 @@ interface HookReturn {
 }
 
 export default function useLockedPool(hookArgs: HookArgs): HookReturn {
-  const { lockedAmount, stakingToken, onDismiss, prepConfirmArg, defaultDuration = ONE_WEEK_DEFAULT } = hookArgs
+  const {
+    lockedAmount,
+    stakingToken,
+    stakingTokenPrice,
+    onDismiss,
+    prepConfirmArg,
+    defaultDuration = ONE_WEEK_DEFAULT,
+  } = hookArgs
 
   const dispatch = useAppDispatch()
   const { chainId } = useActiveChainId()
@@ -46,12 +53,19 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
   const { callWithGasPrice } = useCallWithGasPrice()
+  const usdValueStaked = useMemo(
+    () =>
+      getBalanceNumber(
+        getDecimalAmount(lockedAmount, stakingToken.decimals).multipliedBy(stakingTokenPrice),
+        stakingToken.decimals,
+      ),
+    [lockedAmount, stakingTokenPrice, stakingToken.decimals],
+  )
 
   const { t } = useTranslation()
   const { mutate } = useSWRConfig()
   const { toastSuccess } = useToast()
   const [duration, setDuration] = useState(() => defaultDuration)
-  const usdValueStaked = useBUSDCakeAmount(lockedAmount.toNumber())
 
   const handleDeposit = useCallback(
     async (convertedStakeAmount: BigNumber, lockDuration: number) => {

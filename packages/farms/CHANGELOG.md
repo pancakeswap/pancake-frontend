@@ -1,5 +1,64 @@
 # @pancakeswap/farms
 
+## 1.0.7
+
+### Patch Changes
+
+- b61dcaf37: Adapt farms prices for v3 farms
+
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies [e0a681bc6]
+  - @pancakeswap/tokens@0.2.2
+  - @pancakeswap/utils@3.0.2
+  - @pancakeswap/v3-sdk@3.2.2
+  - @pancakeswap/token-lists@0.0.8
+
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [3ba496cb1]
+  - @pancakeswap/sdk@5.2.1
+  - @pancakeswap/tokens@0.2.1
+  - @pancakeswap/utils@3.0.1
+  - @pancakeswap/v3-sdk@3.2.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [77fc3406a]
+  - @pancakeswap/sdk@5.2.0
+  - @pancakeswap/tokens@0.2.0
+  - @pancakeswap/v3-sdk@3.2.0
+  - @pancakeswap/utils@3.0.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [500adb4f8]
+  - @pancakeswap/tokens@0.1.6
+  - @pancakeswap/utils@2.0.3
+  - @pancakeswap/v3-sdk@3.1.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [f9fda4ebe]
+  - @pancakeswap/sdk@5.1.0
+  - @pancakeswap/v3-sdk@3.1.0
+  - @pancakeswap/tokens@0.1.5
+  - @pancakeswap/utils@2.0.2
+  - @pancakeswap/token-lists@0.0.8
+
 ## 1.0.1
 
 ### Patch Changes

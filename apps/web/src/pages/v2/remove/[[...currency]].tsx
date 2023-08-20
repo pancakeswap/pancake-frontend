@@ -5,6 +5,7 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import RemoveLiquidity, { RemoveLiquidityV2Layout } from 'views/RemoveLiquidity'
 import RemoveStableLiquidity, { RemoveLiquidityStableLayout } from 'views/RemoveLiquidity/RemoveStableLiquidity'
 import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
+import RemoveLiquidityV2FormProvider from 'views/RemoveLiquidity/RemoveLiquidityV2FormProvider'
 
 const RemoveLiquidityPage = () => {
   const router = useRouter()
@@ -26,15 +27,19 @@ const RemoveLiquidityPage = () => {
   }
 
   return stableConfig.stableSwapConfig && Boolean(router.query.stable) ? (
-    <StableConfigContext.Provider value={stableConfig}>
-      <RemoveLiquidityStableLayout {...props}>
-        <RemoveStableLiquidity {...props} />
-      </RemoveLiquidityStableLayout>
-    </StableConfigContext.Provider>
+    <RemoveLiquidityV2FormProvider>
+      <StableConfigContext.Provider value={stableConfig}>
+        <RemoveLiquidityStableLayout {...props}>
+          <RemoveStableLiquidity {...props} />
+        </RemoveLiquidityStableLayout>
+      </StableConfigContext.Provider>
+    </RemoveLiquidityV2FormProvider>
   ) : (
-    <RemoveLiquidityV2Layout {...props}>
-      <RemoveLiquidity {...props} />
-    </RemoveLiquidityV2Layout>
+    <RemoveLiquidityV2FormProvider>
+      <RemoveLiquidityV2Layout {...props}>
+        <RemoveLiquidity {...props} />
+      </RemoveLiquidityV2Layout>
+    </RemoveLiquidityV2FormProvider>
   )
 }
 

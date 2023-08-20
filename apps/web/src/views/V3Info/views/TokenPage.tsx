@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import {
   AutoColumn,
   Box,
@@ -9,13 +8,13 @@ import {
   Flex,
   Heading,
   Image,
-  LinkExternal,
   NextLinkFromReactRouter,
   Spinner,
   Text,
   useMatchBreakpoints,
   Message,
   MessageText,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -184,14 +183,14 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   </Flex>
                 </Breadcrumbs>
                 <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-                  <LinkExternal
-                    isBscScan={multiChainId[chainName] === ChainId.BSC}
+                  <ScanLink
                     mr="8px"
                     color="primary"
+                    chainId={multiChainId[chainName]}
                     href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                   >
                     {t('View on %site%', { site: multiChainScan[chainName] })}
-                  </LinkExternal>
+                  </ScanLink>
                   {cmcLink && (
                     <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">
                       <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />

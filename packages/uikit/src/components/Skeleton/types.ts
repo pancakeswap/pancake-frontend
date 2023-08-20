@@ -17,6 +17,8 @@ export type Variant = (typeof variant)[keyof typeof variant];
 export interface SkeletonProps extends SpaceProps, LayoutProps, BorderRadiusProps {
   animation?: Animation;
   variant?: Variant;
+  isDark?: boolean;
+  style?: React.CSSProperties;
 }
 
 export interface SkeletonV2Props extends SpaceProps, LayoutProps, BorderRadiusProps {
@@ -26,4 +28,5 @@ export interface SkeletonV2Props extends SpaceProps, LayoutProps, BorderRadiusPr
   wrapperProps?: SpaceProps & LayoutProps;
   skeletonTop?: string;
   skeletonLeft?: string;
+  style?: React.CSSProperties;
 }

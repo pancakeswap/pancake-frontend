@@ -40,8 +40,8 @@ export const v3Clients = {
   [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET]),
   [ChainId.ARBITRUM_ONE]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE]),
   [ChainId.ARBITRUM_GOERLI]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ARBITRUM_GOERLI]),
-  // TODO: new chain
   [ChainId.POLYGON_ZKEVM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM]),
+  [ChainId.ZKSYNC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ZKSYNC]),
   [ChainId.ZKSYNC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ZKSYNC_TESTNET]),
   [ChainId.LINEA_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET]),
 }
@@ -54,6 +54,7 @@ export const v2Clients = {
   [ChainId.ETHEREUM]: infoClientETH,
   [ChainId.BSC]: infoClient,
   [ChainId.POLYGON_ZKEVM]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.POLYGON_ZKEVM]),
+  [ChainId.ZKSYNC]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.ZKSYNC]),
 }
 
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)

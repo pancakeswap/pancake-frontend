@@ -5,12 +5,37 @@ import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
   {
+    sousId: 6,
+    stakingToken: ethereumTokens.cake,
+    earningToken: ethereumTokens.rpl,
+    contractAddress: '0x3f0bCCa8f5aA37e184B22e3A2ca8C292fe6B716B',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.0005093',
+  },
+].map((p) => ({
+  ...p,
+  contractAddress: getAddress(p.contractAddress),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
+
+// known finished pools
+export const finishedPools: SerializedPool[] = [
+  {
     sousId: 5,
     stakingToken: ethereumTokens.cake,
     earningToken: ethereumTokens.rpl,
     contractAddress: '0x0A150c0AbbbD852ec8940AeE67A1aB59d9Fe76d1',
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.000331',
+  },
+  {
+    sousId: 1,
+    stakingToken: ethereumTokens.cake,
+    earningToken: ethereumTokens.wncg,
+    contractAddress: '0x5eC855219e236b75E7cfba0D56105b9Cc88B4A18',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.04061',
   },
   {
     sousId: 4,
@@ -36,22 +61,12 @@ export const livePools: SerializedPool[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerSecond: '0.04629',
   },
-  {
-    sousId: 1,
-    stakingToken: ethereumTokens.cake,
-    earningToken: ethereumTokens.wncg,
-    contractAddress: '0x5eC855219e236b75E7cfba0D56105b9Cc88B4A18',
-    poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '0.04061',
-  },
 ].map((p) => ({
   ...p,
+  isFinished: true,
   contractAddress: getAddress(p.contractAddress),
   stakingToken: p.stakingToken.serialize,
   earningToken: p.earningToken.serialize,
 }))
-
-// known finished pools
-export const finishedPools: SerializedPool[] = []
 
 export const pools: SerializedPool[] = [...livePools, ...finishedPools]

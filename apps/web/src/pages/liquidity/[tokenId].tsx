@@ -11,7 +11,6 @@ import {
   ExpandableLabel,
   Flex,
   Heading,
-  LinkExternal,
   NextLinkFromReactRouter,
   NotFound,
   PreTitle,
@@ -24,6 +23,7 @@ import {
   Message,
   useMatchBreakpoints,
   useModal,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -983,17 +983,45 @@ function PositionHistoryRow({
 }) {
   const { isMobile } = useMatchBreakpoints()
 
-  const date = new Date(+positionTx.timestamp * 1_000)
-
   const isPlus = type !== 'burn'
+
+  const date = useMemo(() => dayjs(+positionTx.timestamp * 1_000), [positionTx.timestamp])
+  const mobileDate = useMemo(() => isMobile && date.format('YYYY/MM/DD'), [isMobile, date])
+  const mobileTime = useMemo(() => isMobile && date.format('HH:mm:ss'), [isMobile, date])
+  const desktopDate = useMemo(() => !isMobile && date.toDate().toLocaleString(), [isMobile, date])
+
+  const position0AmountString = useMemo(() => {
+    const amount0Number = +positionTx.amount0
+    if (amount0Number > 0) {
+      return amount0Number.toLocaleString(undefined, {
+        maximumFractionDigits: 6,
+        maximumSignificantDigits: 6,
+      })
+    }
+    return null
+  }, [positionTx.amount0])
+
+  const position1AmountString = useMemo(() => {
+    const amount1Number = +positionTx.amount1
+    if (amount1Number > 0) {
+      return amount1Number.toLocaleString(undefined, {
+        maximumFractionDigits: 6,
+        maximumSignificantDigits: 6,
+      })
+    }
+    return null
+  }, [positionTx.amount1])
 
   if (isMobile) {
     return (
       <Box>
-        <AutoRow gap="8px">
-          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
-            <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
-          </LinkExternal>
+        <AutoRow>
+          <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+            <Flex flexDirection="column" alignItems="center">
+              <Text ellipsis>{mobileDate}</Text>
+              <Text fontSize="12px">{mobileTime}</Text>
+            </Flex>
+          </ScanLink>
         </AutoRow>
         <Text>{positionHistoryTypeText[type]}</Text>
         <AutoColumn gap="4px">
@@ -1006,11 +1034,7 @@ function PositionHistoryRow({
                 <Text display={['none', , 'block']}>{currency0.symbol}</Text>
               </AutoRow>
               <Text bold ellipsis title={positionTx.amount0}>
-                {isPlus ? '+' : '-'}{' '}
-                {(+positionTx.amount0).toLocaleString(undefined, {
-                  maximumFractionDigits: 6,
-                  maximumSignificantDigits: 6,
-                })}
+                {isPlus ? '+' : '-'} {position0AmountString}
               </Text>
             </AutoRow>
           )}
@@ -1023,11 +1047,7 @@ function PositionHistoryRow({
                 <Text display={['none', , 'block']}>{currency1.symbol}</Text>
               </AutoRow>
               <Text bold ellipsis title={positionTx.amount1}>
-                {isPlus ? '+' : '-'}{' '}
-                {(+positionTx.amount1).toLocaleString(undefined, {
-                  maximumFractionDigits: 6,
-                  maximumSignificantDigits: 6,
-                })}
+                {isPlus ? '+' : '-'} {position1AmountString}
               </Text>
             </AutoRow>
           )}
@@ -1045,21 +1065,17 @@ function PositionHistoryRow({
       borderTop="1"
       p="16px"
     >
-      <AutoRow justifyContent="center" gap="8px">
-        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
-          <Text ellipsis>{date.toLocaleString()}</Text>
-        </LinkExternal>
+      <AutoRow justifyContent="center">
+        <ScanLink chainId={chainId} href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <Text ellipsis>{desktopDate}</Text>
+        </ScanLink>
       </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>
       <AutoColumn gap="4px">
         {+positionTx.amount0 > 0 && (
           <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
             <Text bold ellipsis title={positionTx.amount0}>
-              {isPlus ? '+' : '-'}{' '}
-              {(+positionTx.amount0).toLocaleString(undefined, {
-                maximumFractionDigits: 6,
-                maximumSignificantDigits: 6,
-              })}
+              {isPlus ? '+' : '-'} {position0AmountString}
             </Text>
             <AutoRow width="auto" flexWrap="nowrap" gap="4px">
               <AtomBox minWidth="24px">
@@ -1072,11 +1088,7 @@ function PositionHistoryRow({
         {+positionTx.amount1 > 0 && (
           <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
             <Text bold ellipsis title={positionTx.amount1}>
-              {isPlus ? '+' : '-'}{' '}
-              {(+positionTx.amount1).toLocaleString(undefined, {
-                maximumFractionDigits: 6,
-                maximumSignificantDigits: 6,
-              })}
+              {isPlus ? '+' : '-'} {position1AmountString}
             </Text>
             <AutoRow width="auto" flexWrap="nowrap" gap="4px">
               <AtomBox minWidth="24px">

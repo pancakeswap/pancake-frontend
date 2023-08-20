@@ -7,6 +7,32 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 
 const ifos: Ifo[] = [
   {
+    id: 'sable',
+    address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
+    isActive: true,
+    cIFO: true,
+    name: 'SABLE',
+    plannedStartTime: 1690372800, // Wed Jul 26 2023 12:00:00 UTC
+    poolBasic: {
+      raiseAmount: '$156,000',
+    },
+    poolUnlimited: {
+      raiseAmount: '$624,000',
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.sable,
+    campaignId: '512200000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x01ced179a39d30bc11436fd7f578ae45089bacaace57caa47881146fce7586ba',
+    tokenOfferingPrice: 0.06,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/SableFinance',
+    description:
+      'Sable Finance is a decentralized stablecoin protocol that allows users to draw interest-free loans, minting USDS, a USD-pegged stablecoin.',
+    vestingTitle:
+      '$SABLE is the secondary token issued by Sable Finance, enabling users to capture fee revenue and participate in governance. $SABLE will also be emitted to Stability Providers and Frontend Operators.',
+  },
+  {
     id: 'arena',
     address: '0xC7d259712a26fa33a9a94cFB58964a67dAB27095',
     isActive: false,

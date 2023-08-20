@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../../../../components/Text";
@@ -32,7 +33,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
 }) => {
   const { t } = useTranslation();
 
-  const handleRenderFarming = (): JSX.Element => {
+  const handleRenderFarming = useMemo(() => {
     if (isStaking) {
       return (
         <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
@@ -41,7 +42,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
       );
     }
     return <></>;
-  };
+  }, [t, isStaking]);
 
   if (!isReady) {
     return (
@@ -59,7 +60,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
     <Container>
       <TokenWrapper>{children}</TokenWrapper>
       <div>
-        {handleRenderFarming()}
+        {handleRenderFarming}
         <Text bold>{label}</Text>
       </div>
     </Container>

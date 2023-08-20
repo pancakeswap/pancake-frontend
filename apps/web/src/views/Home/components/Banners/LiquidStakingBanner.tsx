@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Flex, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  ArrowForwardIcon,
+  Box,
+  Button,
+  Flex,
+  Link,
+  NextLinkFromReactRouter,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
@@ -210,7 +219,7 @@ const PerpetualBanner = () => {
             {isMobile ? t('Stake ETH Receive WBETH') : t('ETH to WBETH conversion and earn ETH staking rewards!')}
           </StyledSubheading>
           <Flex style={{ gap: isMobile ? 4 : 16 }}>
-            <Link href="/liquid-staking">
+            <NextLinkFromReactRouter to="/liquid-staking" prefetch={false}>
               <StyledButton scale={isMobile ? 'sm' : 'md'}>
                 <Text
                   color="invertedContrast"
@@ -223,7 +232,7 @@ const PerpetualBanner = () => {
                 </Text>
                 {!isMobile && <ArrowForwardIcon color="invertedContrast" />}
               </StyledButton>
-            </Link>
+            </NextLinkFromReactRouter>
             <Link
               href="https://blog.pancakeswap.finance/articles/liquid-staking-integration-with-binance-earn-stake-eth-and-receive-wbeth-to-earn-eth-staking-rewards"
               external

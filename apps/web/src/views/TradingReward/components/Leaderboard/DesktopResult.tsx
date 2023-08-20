@@ -24,13 +24,11 @@ const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ 
 
   return (
     <tr>
-      <Td>
-        <Text bold color="secondary">
-          {`#${rank.rank}`}
-        </Text>
-      </Td>
       <Td textAlign="left">
         <Flex>
+          <Text bold mr="4px" width="56px" color="secondary" style={{ alignSelf: 'center' }}>
+            {rank.rank === 0 ? '--' : `#${rank.rank}`}
+          </Text>
           <ProfileAvatar width={42} height={42} src={profile?.nft?.image?.thumbnail ?? avatar} />
           <Text style={{ alignSelf: 'center' }} color="primary" bold ml="8px">
             {profile?.username || domainName || truncateHash(rank.origin)}

@@ -1,4 +1,4 @@
-import { Box } from '@pancakeswap/uikit'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -13,9 +13,11 @@ import useCampaignIdInfo from 'views/TradingReward/hooks/useCampaignIdInfo'
 import useAllUserCampaignInfo from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import SubMenu from 'views/TradingReward/components/SubMenu'
 import Leaderboard from 'views/TradingReward/components/Leaderboard'
+import useScrollToHash from 'hooks/useScrollToHash'
 
 const TradingRewardTopTraders = () => {
   const { chainId } = useActiveChainId()
+  const { isMobile } = useMatchBreakpoints()
   const { data: allTradingRewardPairData, isFetching: isAllTradingRewardPairDataFetching } = useAllTradingRewardPair({
     status: RewardStatus.ALL,
     type: RewardType.TOP_TRADERS,
@@ -34,6 +36,8 @@ const TradingRewardTopTraders = () => {
     () => isAllTradingRewardPairDataFetching || isAllUserCampaignInfo || isCampaignInfoFetching,
     [isAllTradingRewardPairDataFetching, isAllUserCampaignInfo, isCampaignInfoFetching],
   )
+
+  useScrollToHash(isFetching, isMobile)
 
   const currentUserIncentive = useMemo(
     () =>
@@ -66,7 +70,7 @@ const TradingRewardTopTraders = () => {
       .filter((item) => currentTime > item?.campaignClaimTime ?? 0)
   }, [allTradingRewardPairData, allUserCampaignInfo])
 
-  if (isAllTradingRewardPairDataFetching || chainId !== ChainId.BSC) {
+  if (chainId !== ChainId.BSC) {
     return null
   }
 
@@ -85,10 +89,9 @@ const TradingRewardTopTraders = () => {
         currentUserCampaignInfo={currentUserCampaignInfo}
       />
       <CurrentRewardPool incentives={currentUserIncentive} campaignInfoData={campaignInfoData} />
-      <Leaderboard campaignId={campaignId} incentives={currentUserIncentive} />
+      <Leaderboard campaignIdsIncentive={allTradingRewardPairData.campaignIdsIncentive} />
       <HowToEarn />
       <RewardsBreakdown
-        latestCampaignId={campaignId}
         allUserCampaignInfo={allUserCampaignInfo}
         allTradingRewardPairData={allTradingRewardPairData}
         campaignPairs={allTradingRewardPairData.campaignPairs}

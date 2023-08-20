@@ -12,6 +12,7 @@ import {
   useTooltip,
   TooltipText,
   InfoFilledIcon,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import { ChainId, WNATIVE } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
@@ -163,9 +164,9 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               BNB Smart Chain
             </Text>
           </Flex>
-          <LinkExternal isBscScan href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
+          <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
             {getBlockExploreName(ChainId.BSC)}
-          </LinkExternal>
+          </ScanLink>
         </Flex>
         {chainId === 56 ? (
           <Flex alignItems="center" justifyContent="space-between">

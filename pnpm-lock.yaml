@@ -295,8 +295,8 @@ importers:
         specifier: ^2.29.3
         version: 2.29.3
       jotai:
-        specifier: ^2.2.1
-        version: 2.2.1(react@18.2.0)
+        specifier: ^2.2.2
+        version: 2.2.2(react@18.2.0)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -325,8 +325,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.4
+        version: 10.0.4
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -422,8 +422,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.4
+        version: 10.0.4
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -695,8 +695,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.6.0)
       jotai:
-        specifier: ^2.2.1
-        version: 2.2.1(react@18.2.0)
+        specifier: ^2.2.2
+        version: 2.2.2(react@18.2.0)
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
@@ -782,8 +782,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       swiper:
-        specifier: ^9.3.2
-        version: 9.3.2
+        specifier: ^10.0.4
+        version: 10.0.4
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -1016,8 +1016,8 @@ importers:
         version: 4.1.1(react@18.2.0)
     devDependencies:
       '@blocto/sdk':
-        specifier: ^0.3.1
-        version: 0.3.1(aptos@1.3.16)
+        specifier: ^0.5.4
+        version: 0.5.4(aptos@1.3.16)
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1381,8 +1381,8 @@ importers:
         specifier: ^18.0.17
         version: 18.2.0
       jotai:
-        specifier: ^2.2.1
-        version: 2.2.1(react@18.2.0)
+        specifier: ^2.2.2
+        version: 2.2.2(react@18.2.0)
       localforage:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1457,8 +1457,8 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
       jotai:
-        specifier: ^2.2.1
-        version: 2.2.1(react@18.2.0)
+        specifier: ^2.2.2
+        version: 2.2.2(react@18.2.0)
       qrcode.react:
         specifier: ^3.1.0
         version: 3.1.0(react@18.2.0)
@@ -1511,7 +1511,7 @@ importers:
         specifier: ^4.17.20
         version: 4.17.21
       react-popper:
-        specifier: ^2.2.5
+        specifier: ^2.3.0
         version: 2.3.0(@popperjs/core@2.11.2)(react-dom@18.2.0)(react@18.2.0)
       styled-system:
         specifier: ^5.1.5
@@ -1765,8 +1765,8 @@ importers:
         specifier: ^9.0.0
         version: 9.1.1
       jotai:
-        specifier: ^2.2.1
-        version: 2.2.1(react@18.2.0)
+        specifier: ^2.2.2
+        version: 2.2.2(react@18.2.0)
       styled-components:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
@@ -1829,8 +1829,8 @@ importers:
   packages/wagmi:
     devDependencies:
       '@blocto/sdk':
-        specifier: ^0.3.1
-        version: 0.3.1(aptos@1.3.16)
+        specifier: ^0.5.4
+        version: 0.5.4(aptos@1.3.16)
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -4252,8 +4252,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@blocto/sdk@0.3.1(aptos@1.3.16):
-    resolution: {integrity: sha512-vYZTq9QAgJyUQ15BljGhwVZzbrGLl1pEebRcLkoi7/UTyCsaU5p+oeVxyv1crCd8mARgbIcJGONdpOXLfpolaA==}
+  /@blocto/sdk@0.5.4(aptos@1.3.16):
+    resolution: {integrity: sha512-VjzkT3tpz5YkjXNbx6Au4C0sphHeI+DRoTWMKX3N01U+XLl04/dn+Ao5Hsb4ZU7uS4Lw6mUjNfq+z3Fm5eZKaw==}
     peerDependencies:
       '@solana/web3.js': ^1.30.2
       aptos: ^1.3.14
@@ -4264,7 +4264,7 @@ packages:
         optional: true
     dependencies:
       aptos: 1.3.16
-      bs58: 4.0.1
+      bs58: 5.0.0
       buffer: 6.0.3
       eip1193-provider: 1.0.1
       js-sha3: 0.8.0
@@ -6318,6 +6318,7 @@ packages:
 
   /@json-rpc-tools/provider@1.7.6:
     resolution: {integrity: sha512-z7D3xvJ33UfCGv77n40lbzOYjZKVM3k2+5cV7xS8G6SCvKTzMkhkUYuD/qzQUNT4cG/lv0e9mRToweEEVLVVmA==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     dependencies:
       '@json-rpc-tools/utils': 1.7.6
       axios: 0.21.4(debug@4.3.2)
@@ -6330,11 +6331,13 @@ packages:
 
   /@json-rpc-tools/types@1.7.6:
     resolution: {integrity: sha512-nDSqmyRNEqEK9TZHtM15uNnDljczhCUdBmRhpNZ95bIPKEDQ+nTDmGMFd2lLin3upc5h2VVVd9tkTDdbXUhDIQ==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     dependencies:
       keyvaluestorage-interface: 1.0.0
 
   /@json-rpc-tools/utils@1.7.6:
     resolution: {integrity: sha512-HjA8x/U/Q78HRRe19yh8HVKoZ+Iaoo3YZjakJYxR+rw52NHo6jM+VE9b8+7ygkCFXl/EHID5wh/MkXaE/jGyYw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     dependencies:
       '@json-rpc-tools/types': 1.7.6
       '@pedrouid/environment': 1.0.1
@@ -12505,6 +12508,7 @@ packages:
 
   /JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
+    hasBin: true
     dependencies:
       jsonparse: 1.3.1
       through: 2.3.8
@@ -13397,7 +13401,7 @@ packages:
 
   /base-x@4.0.0:
     resolution: {integrity: sha512-FuwxlW4H5kh37X/oW59pwTzzTKRzfrrQwhmyspRM7swOEZcHtDZSCt45U6oKgtuFE+WYPblePMVIPR4RZrh/hw==}
-    dev: false
+    dev: true
 
   /base16@1.0.0:
     resolution: {integrity: sha512-pNdYkNPiJUnEhnfXV56+sQy8+AaPcG3POZAUnwr4EeqCUZFz4u2PePbo3e5Gj4ziYPCWGUZT9RHisvJKnwFuBQ==}
@@ -13742,7 +13746,7 @@ packages:
     resolution: {integrity: sha512-r+ihvQJvahgYT50JD05dyJNKlmmSlMoOGwn1lCcEzanPglg7TxYjioQUYehQ9mAR/+hOSd2jRc/Z2y5UxBymvQ==}
     dependencies:
       base-x: 4.0.0
-    dev: false
+    dev: true
 
   /bs58check@2.1.2:
     resolution: {integrity: sha512-0TS1jicxdU09dwJMNZtVAfzPi6Q6QeN0pM1Fkzrjn+XYHvzMKPU3pHVpva+769iNVSfIYWf7LJ6WR+BuuMf8cA==}
@@ -15781,6 +15785,7 @@ packages:
 
   /eip1193-provider@1.0.1:
     resolution: {integrity: sha512-kSuqwQ26d7CzuS/t3yRXo2Su2cVH0QfvyKbr2H7Be7O5YDyIq4hQGCNTo5wRdP07bt+E2R/8nPCzey4ojBHf7g==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     dependencies:
       '@json-rpc-tools/provider': 1.7.6
     transitivePeerDependencies:
@@ -19942,8 +19947,8 @@ packages:
       '@sideway/pinpoint': 2.0.0
     dev: true
 
-  /jotai@2.2.1(react@18.2.0):
-    resolution: {integrity: sha512-Gz4tpbRQy9OiFgBwF9F7TieDn0UTE3C0IFSDuxHjOIvgn2tACH30UKz6p/wIlfoZROXSTCIxEvYEa7Y25WM+8g==}
+  /jotai@2.2.2(react@18.2.0):
+    resolution: {integrity: sha512-Cn8hnBg1sc5ppFwEgVGTfMR5WSM0hbAasd/bdAwIwTaum0j3OUPqBSC4tyk3jtB95vicML+RRWgKFOn6gtfN0A==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       react: '>=17.0.0'
@@ -24615,10 +24620,6 @@ packages:
       tweetnacl: 0.14.5
     dev: true
 
-  /ssr-window@4.0.2:
-    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
-    dev: false
-
   /stack-trace@0.0.10:
     resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==}
     dev: true
@@ -25167,13 +25168,6 @@ packages:
   /swiper@10.0.4:
     resolution: {integrity: sha512-DlNR3KiaVkPep6RraZ2tNr7lvyuzELuR+4NZr4wO42t0UworIO3DxDlz8b5Q3uUioh7cJad99EdRJLkPF+r8Ag==}
     engines: {node: '>= 4.7.0'}
-    dev: false
-
-  /swiper@9.3.2:
-    resolution: {integrity: sha512-Kj9Z4kXRmJR3YT/Wj+XLWj8P6IcRt+WG38uL8M3/Wny7+6sV0TlP9vnE1X+Co9c7VzNooojWGnFa+Wf/9+CUMA==}
-    engines: {node: '>= 4.7.0'}
-    dependencies:
-      ssr-window: 4.0.2
     dev: false
 
   /swr@2.1.5(react@18.2.0):

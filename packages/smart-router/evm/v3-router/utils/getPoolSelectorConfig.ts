@@ -22,6 +22,7 @@ function poolSelectorConfigFactory(
 
     const additionalConfigA = tokenPoolSelectorConfigMap[chainId]?.[currencyA?.wrapped?.address || '0x']
     const additionalConfigB = tokenPoolSelectorConfigMap[chainId]?.[currencyB?.wrapped?.address || '0x']
+
     return mergePoolSelectorConfig(
       mergePoolSelectorConfig(poolSelecorConfigMap[chainId], additionalConfigA),
       additionalConfigB,

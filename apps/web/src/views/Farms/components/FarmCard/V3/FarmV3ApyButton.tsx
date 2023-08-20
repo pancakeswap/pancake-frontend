@@ -17,7 +17,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { useMemo, useState } from 'react'
@@ -80,7 +80,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
     formState,
   )
 
-  const cakePrice = useCakePriceAsBN()
+  const cakePrice = useCakePrice()
 
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
@@ -261,7 +261,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   }
 
   if (!displayApr) {
-    return <Skeleton height={24} width={80} />
+    return <Skeleton height={24} width={80} style={{ borderRadius: '12px' }} />
   }
 
   return (

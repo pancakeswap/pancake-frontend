@@ -37,7 +37,6 @@ const SWAP_INFO_BY_CHAIN = {
     v3: V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET],
   },
   [ChainId.GOERLI]: {},
-  // TODO: new chains
   [ChainId.ARBITRUM_ONE]: {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.ARBITRUM_ONE],
     v3: V3_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
@@ -47,7 +46,9 @@ const SWAP_INFO_BY_CHAIN = {
     v3: V3_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM],
   },
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
-  [ChainId.ZKSYNC]: {},
+  [ChainId.ZKSYNC]: {
+    v3: V3_SUBGRAPH_URLS[ChainId.ZKSYNC],
+  },
   [ChainId.ZKSYNC_TESTNET]: {},
   [ChainId.LINEA_TESTNET]: {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],

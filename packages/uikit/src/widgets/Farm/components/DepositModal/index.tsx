@@ -97,20 +97,27 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
     return false;
   }, [allowance, decimals, val]);
 
-  const lpTokensToStake = new BigNumber(val);
+  const lpTokensToStake = useMemo(() => new BigNumber(val), [val]);
   const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);
 
-  const usdToStake = lpTokensToStake.times(lpPrice);
+  const usdToStake = useMemo(() => lpTokensToStake.times(lpPrice), [lpTokensToStake, lpPrice]);
 
-  const interestBreakdown = getInterestBreakdown({
-    principalInUSD: !lpTokensToStake.isNaN() ? usdToStake.toNumber() : 0,
-    apr,
-    earningTokenPrice: cakePrice.toNumber(),
-  });
+  const interestBreakdown = useMemo(
+    () =>
+      getInterestBreakdown({
+        principalInUSD: !lpTokensToStake.isNaN() ? usdToStake.toNumber() : 0,
+        apr,
+        earningTokenPrice: cakePrice.toNumber(),
+      }),
+    [lpTokensToStake, usdToStake, cakePrice, apr]
+  );
 
-  const annualRoi = cakePrice.times(interestBreakdown[3]);
-  const annualRoiAsNumber = annualRoi.toNumber();
-  const formattedAnnualRoi = formatNumber(annualRoiAsNumber, annualRoi.gt(10000) ? 0 : 2, annualRoi.gt(10000) ? 0 : 2);
+  const annualRoi = useMemo(() => cakePrice.times(interestBreakdown[3]), [cakePrice, interestBreakdown]);
+  const annualRoiAsNumber = useMemo(() => annualRoi.toNumber(), [annualRoi]);
+  const formattedAnnualRoi = useMemo(
+    () => formatNumber(annualRoiAsNumber, annualRoi.gt(10000) ? 0 : 2, annualRoi.gt(10000) ? 0 : 2),
+    [annualRoiAsNumber, annualRoi]
+  );
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {

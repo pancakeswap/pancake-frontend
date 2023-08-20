@@ -1,5 +1,80 @@
 # @pancakeswap/smart-router
 
+## 4.3.5
+
+### Patch Changes
+
+- 726a09484: Export types from Transformer
+
+## 4.3.4
+
+### Patch Changes
+
+- 51b7b1ceb: Export transformer utils
+
+## 4.3.3
+
+### Patch Changes
+
+- Updated dependencies [e0a681bc6]
+  - @pancakeswap/tokens@0.2.2
+  - @pancakeswap/v3-sdk@3.2.2
+
+## 4.3.2
+
+### Patch Changes
+
+- 640c171aa: Prevent zero liquidity pools from being ignored
+
+## 4.3.1
+
+### Patch Changes
+
+- Updated dependencies [3ba496cb1]
+  - @pancakeswap/sdk@5.2.1
+  - @pancakeswap/tokens@0.2.1
+  - @pancakeswap/v3-sdk@3.2.1
+
+## 4.3.0
+
+### Minor Changes
+
+- 77fc3406a: Add zkSync support
+
+### Patch Changes
+
+- Updated dependencies [77fc3406a]
+  - @pancakeswap/sdk@5.2.0
+  - @pancakeswap/tokens@0.2.0
+  - @pancakeswap/v3-sdk@3.2.0
+
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies [500adb4f8]
+  - @pancakeswap/tokens@0.1.6
+  - @pancakeswap/v3-sdk@3.1.1
+
+## 4.2.0
+
+### Minor Changes
+
+- 8217b73c3: Add fallback configuration to v3 candidate pool fetcher
+
+## 4.1.0
+
+### Minor Changes
+
+- f9fda4ebe: Add Polygon zkEVM support
+
+### Patch Changes
+
+- Updated dependencies [f9fda4ebe]
+  - @pancakeswap/sdk@5.1.0
+  - @pancakeswap/v3-sdk@3.1.0
+  - @pancakeswap/tokens@0.1.5
+
 ## 4.0.1
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { ChainId, ERC20Token, OnRampCurrency } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
@@ -70,7 +70,7 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
   }, [userAddedTokens, tokenMap, chainId])
 }
 
-export function useAllOnRampTokens(): { [address: string]: OnRampCurrency } {
+export function useAllOnRampTokens(): { [address: string]: Currency } {
   const { chainId } = useActiveChainId()
   const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
   return useMemo(() => {
@@ -178,11 +178,11 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   }, [token, chainId, address, isLoading, data])
 }
 
-export function useOnRampToken(tokenAddress?: string): OnRampCurrency | undefined {
+export function useOnRampToken(tokenAddress?: string): Currency | undefined {
   const { chainId } = useActiveChainId()
   const tokens = useAllOnRampTokens()
   const address = isAddress(tokenAddress)
-  const token: OnRampCurrency | undefined = tokens[tokenAddress]
+  const token = tokens[tokenAddress]
 
   return useMemo(() => {
     if (token) return token
@@ -199,7 +199,7 @@ export function useCurrency(currencyId: string | undefined): Currency | ERC20Tok
   return isNative ? native : token
 }
 
-export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | OnRampCurrency | null | undefined {
+export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | Currency | null | undefined {
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE

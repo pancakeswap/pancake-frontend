@@ -1,14 +1,25 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { Flex, LinkExternal, Text, Box, HelpIcon, useTooltip, RocketIcon, Link } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Text,
+  Box,
+  HelpIcon,
+  useTooltip,
+  RocketIcon,
+  Link,
+  ScanLink,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
+import { ChainId } from '@pancakeswap/sdk'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 
-const StyledLinkExternal = styled(LinkExternal)`
+const StyledScanLink = styled(ScanLink)`
   display: inline-flex;
   font-size: 14px;
   > svg {
@@ -43,10 +54,6 @@ const FixedTermCardInner = styled(Box)<{ expired?: boolean }>`
     border-radius: ${({ theme }) => theme.radii.default};
     background: ${({ theme, expired }) => (expired ? 'rgba(255, 178, 55, 0.098)' : theme.colors.gradientBubblegum)};
   }
-`
-
-const StyleLink = styled(Link)`
-  text-decoration: underline;
 `
 
 interface DetailsViewProps {
@@ -97,7 +104,11 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text bold m="10px 0">
             {`${t('CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
           </Text>
-          <StyleLink href="/pools">{t('Go to Pools')}</StyleLink>
+          <NextLinkFromReactRouter to="/pools" prefetch={false}>
+            <Link href="/pools" color="primary">
+              {t('Go to Pools')}
+            </Link>
+          </NextLinkFromReactRouter>
         </Box>
       )}
     </>,
@@ -126,9 +137,9 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledLinkExternal isBscScan href={getBlockExploreLink(block, 'block')} ml="8px">
+        <StyledScanLink chainId={ChainId.BSC} href={getBlockExploreLink(block, 'block')} ml="8px">
           {block}
-        </StyledLinkExternal>
+        </StyledScanLink>
       </Text>
       {Number.isFinite(cakeBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">

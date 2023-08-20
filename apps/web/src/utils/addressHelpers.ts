@@ -140,3 +140,11 @@ export const getAffiliateProgramAddress = (chainId?: number) => {
 export const getTradingRewardTopTradesAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.tradingRewardTopTrades, chainId)
 }
+
+export const getVCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.vCake, chainId)
+}
+
+export const getRevenueSharingPoolAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.revenueSharingPool, chainId)
+}

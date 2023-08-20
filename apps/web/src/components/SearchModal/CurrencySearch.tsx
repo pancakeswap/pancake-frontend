@@ -201,7 +201,7 @@ function CurrencySearch({
     }
 
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
-      <Box mx="-24px" my={mode === 'onramp-input' && '24px'}>
+      <Box mx="-24px" my="24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showNative={showNative}

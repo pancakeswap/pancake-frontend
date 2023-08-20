@@ -6,7 +6,7 @@ interface FormatiCake {
   ceiling: BigNumber
 }
 
-export default function formatiCake({ lockedAmount, duration, ceiling }: FormatiCake) {
+export default function formatICake({ lockedAmount, duration, ceiling }: FormatiCake) {
   const durationAsBn = new BigNumber(duration)
   if (durationAsBn.gte(ceiling)) {
     return new BigNumber(lockedAmount).toNumber()

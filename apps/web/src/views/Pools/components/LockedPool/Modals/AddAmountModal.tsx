@@ -8,7 +8,6 @@ import BigNumber from 'bignumber.js'
 import { useIfoCeiling } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
 import useTheme from 'hooks/useTheme'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -55,6 +54,7 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
   lockStartTime,
   lockEndTime,
   stakingTokenBalance,
+  stakingTokenPrice,
   customLockAmount,
 }) => {
   const { theme } = useTheme()
@@ -74,13 +74,31 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
     [lockedAmount],
   )
 
-  const totalLockedAmount: number = getBalanceNumber(
-    currentLockedAmount.plus(getDecimalAmount(lockedAmountAsBigNumber)),
+  const totalLockedAmountBN = useMemo(
+    () => currentLockedAmount.plus(getDecimalAmount(lockedAmountAsBigNumber)),
+    [currentLockedAmount, lockedAmountAsBigNumber],
   )
-  const currentLockedAmountAsBalance = getBalanceAmount(currentLockedAmount)
 
-  const usdValueStaked = useBUSDCakeAmount(lockedAmountAsBigNumber.toNumber())
-  const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
+  const totalLockedAmount: number = useMemo(
+    () => getBalanceNumber(totalLockedAmountBN, stakingToken.decimals),
+    [totalLockedAmountBN, stakingToken.decimals],
+  )
+
+  const currentLockedAmountAsBalance = useMemo(() => getBalanceAmount(currentLockedAmount), [currentLockedAmount])
+
+  const usdValueStaked = useMemo(
+    () =>
+      getBalanceNumber(
+        getDecimalAmount(lockedAmountAsBigNumber, stakingToken.decimals).multipliedBy(stakingTokenPrice),
+        stakingToken.decimals,
+      ),
+    [lockedAmountAsBigNumber, stakingTokenPrice, stakingToken.decimals],
+  )
+
+  const usdValueNewStaked = useMemo(
+    () => getBalanceNumber(totalLockedAmountBN.multipliedBy(stakingTokenPrice), stakingToken.decimals),
+    [totalLockedAmountBN, stakingTokenPrice, stakingToken.decimals],
+  )
 
   const remainingDuration = differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), new Date(), {
     roundingMethod: 'ceil',
@@ -140,7 +158,7 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
             stakingSymbol={stakingToken.symbol}
             stakingDecimals={stakingToken.decimals}
             lockedAmount={lockedAmount}
-            usedValueStaked={usdValueStaked}
+            usdValueStaked={usdValueStaked}
             stakingMax={currentBalance}
             setLockedAmount={setLockedAmount}
             stakingTokenBalance={stakingTokenBalance}
@@ -150,6 +168,7 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
         <LockedBodyModal
           currentBalance={currentBalance}
           stakingToken={stakingToken}
+          stakingTokenPrice={stakingTokenPrice}
           onDismiss={onDismiss}
           lockedAmount={lockedAmountAsBigNumber}
           editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}

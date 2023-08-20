@@ -33,7 +33,7 @@ const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewPro
         </StyledMobileRow>
       ) : (
         <>
-          {list?.pairs?.length === 0 ? (
+          {!list?.pairs || list?.pairs?.length === 0 ? (
             <StyledMobileRow>
               <Text padding="48px 0px" textAlign="center">
                 {t('No results')}
@@ -41,8 +41,8 @@ const MobileView: React.FC<React.PropsWithChildren<RewardsBreakdownMobileViewPro
             </StyledMobileRow>
           ) : (
             <>
-              {list.pairs.map((pair) => (
-                <StyledMobileRow>
+              {list?.pairs?.map((pair) => (
+                <StyledMobileRow key={pair.address}>
                   <PairInfo
                     chainId={pair.chainId}
                     isReady={!isFetching}

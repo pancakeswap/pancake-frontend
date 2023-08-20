@@ -1,8 +1,8 @@
 import { Flex, BinanceIcon, Text, Skeleton } from '@pancakeswap/uikit'
-import { multiplyPriceByAmount } from 'utils/prices'
+import BigNumber from 'bignumber.js'
 
-const ActivityPrice = ({ bnbBusdPrice, price }) => {
-  const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, price)
+const ActivityPrice = ({ bnbBusdPrice, price }: { bnbBusdPrice: BigNumber; price: number }) => {
+  const priceInUsd = bnbBusdPrice.multipliedBy(price).toNumber()
 
   return (
     <Flex flexDirection="column" alignItems="flex-end">

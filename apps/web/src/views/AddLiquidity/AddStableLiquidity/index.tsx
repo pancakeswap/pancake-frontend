@@ -15,7 +15,7 @@ import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Field } from 'state/mint/actions'
-import { useMintActionHandlers, useMintState } from 'state/mint/hooks'
+import { useMintActionHandlers } from 'state/mint/hooks'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
@@ -24,6 +24,7 @@ import { calculateGasMargin } from 'utils'
 import { calculateSlippageAmount } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useAddLiquidityV2FormState } from 'state/mint/reducer'
 import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
 
 import { StablePair, useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
@@ -93,7 +94,7 @@ export default function AddStableLiquidity({
   const gasPrice = useGasPrice()
 
   // mint state
-  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const { independentField, typedValue, otherTypedValue } = useAddLiquidityV2FormState()
   const {
     dependentField,
     currencies,

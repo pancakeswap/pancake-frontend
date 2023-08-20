@@ -4,11 +4,12 @@ import {
   FarmTableMultiplierProps,
   Farm as FarmUI,
   Flex,
-  LinkExternal,
   Skeleton,
   Text,
   useMatchBreakpoints,
   useModalV2,
+  ScanLink,
+  LinkExternal,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -102,6 +103,10 @@ const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
 `
 
+const StyledScanLink = styled(ScanLink)`
+  font-weight: 400;
+`
+
 const ActionContainer = styled.div`
   display: flex;
   overflow: auto;
@@ -161,6 +166,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
   const farm = details
   const isActive = farm.multiplier !== '0X'
@@ -226,9 +232,9 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal isBscScan href={bsc}>
+              <StyledScanLink chainId={chainId} href={bsc}>
                 {t('View Contract')}
-              </StyledLinkExternal>
+              </StyledScanLink>
             </Flex>
           </>
         }
@@ -349,9 +355,9 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal isBscScan href={bsc}>
+              <StyledScanLink chainId={chainId} href={bsc}>
                 {t('View Contract')}
-              </StyledLinkExternal>
+              </StyledScanLink>
             </Flex>
           </>
         }

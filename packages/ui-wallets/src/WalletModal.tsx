@@ -58,6 +58,7 @@ interface WalletModalV2Props<T = unknown> extends ModalV2Props {
   login: (connectorId: T) => Promise<any>
   docLink: string
   docText: string
+  onWalletConnectCallBack?: () => void
 }
 
 export class WalletConnectorNotFoundError extends Error {}
@@ -386,7 +387,7 @@ function DesktopModal<T>({
 }
 
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets: _wallets, login, docLink, docText, ...rest } = props
+  const { wallets: _wallets, login, docLink, docText, onWalletConnectCallBack, ...rest } = props
 
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
 
@@ -414,6 +415,11 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
         .then((v) => {
           if (v) {
             localStorage.setItem(walletLocalStorageKey, wallet.title)
+          }
+          try {
+            onWalletConnectCallBack?.()
+          } catch (e) {
+            console.error(e)
           }
         })
         .catch((err) => {

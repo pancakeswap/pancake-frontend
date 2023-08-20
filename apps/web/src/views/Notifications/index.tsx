@@ -67,7 +67,7 @@ const Notifications = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { userPubkey, isSubscribed, activeSubscriptions, pushClientProxy: pushClient } = usePushClient()
   const { eip155Account } = useFormattedEip155Account()
-  const { sendBrowserNotification } = useSendPushNotification()
+  const { sendBrowserNotification, subscribeToPushNotifications } = useSendPushNotification()
 
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
 

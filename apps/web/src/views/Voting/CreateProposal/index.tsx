@@ -9,11 +9,11 @@ import {
   Flex,
   Heading,
   Input,
-  LinkExternal,
   Text,
   useModal,
   useToast,
   ReactMarkdown,
+  ScanLink,
 } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import isEmpty from 'lodash/isEmpty'
@@ -31,6 +31,7 @@ import { useRouter } from 'next/router'
 import { getBlockExploreLink } from 'utils'
 import { DatePicker, DatePickerPortal, TimePicker } from 'views/Voting/components/DatePicker'
 import { useAccount, useWalletClient } from 'wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
@@ -270,18 +271,18 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <LinkExternal isBscScan href={getBlockExploreLink(account, 'address')}>
+                    <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(account, 'address')}>
                       {truncateHash(account)}
-                    </LinkExternal>
+                    </ScanLink>
                   </Flex>
                 )}
                 <Flex alignItems="center" mb="16px">
                   <Text color="textSubtle" mr="16px">
                     {t('Snapshot')}
                   </Text>
-                  <LinkExternal isBscScan href={getBlockExploreLink(snapshot, 'block')}>
+                  <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(snapshot, 'block')}>
                     {snapshot}
-                  </LinkExternal>
+                  </ScanLink>
                 </Flex>
                 {account ? (
                   <>

@@ -1,6 +1,5 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-param-reassign */
-import { masterChefV3Addresses, FarmSupportedChainId } from '@pancakeswap/farms'
+/* eslint-disable no-param-reassign, no-await-in-loop */
+import { masterChefV3Addresses, FarmV3SupportedChainId } from '@pancakeswap/farms'
 import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
@@ -11,6 +10,7 @@ import { z } from 'zod'
 import { Address } from 'viem'
 
 import { viemProviders } from './provider'
+import { FarmKV } from './kv'
 
 export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.ETHEREUM]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth', {
@@ -23,9 +23,36 @@ export const V3_SUBGRAPH_CLIENTS = {
   [ChainId.BSC_TESTNET]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel', {
     fetch,
   }),
-} satisfies Record<FarmSupportedChainId, GraphQLClient>
+  [ChainId.ZKSYNC_TESTNET]: new GraphQLClient(
+    'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync-testnet/version/latest',
+    {
+      fetch,
+    },
+  ),
+  [ChainId.POLYGON_ZKEVM]: new GraphQLClient(
+    'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/version/latest',
+    {
+      fetch,
+    },
+  ),
+  [ChainId.ZKSYNC]: new GraphQLClient('https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest', {
+    fetch,
+  }),
+  [ChainId.ARBITRUM_ONE]: new GraphQLClient('https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb', {
+    fetch,
+  }),
+} satisfies Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>, GraphQLClient>
 
-const zChainId = z.enum(['56', '1', '5', '97'])
+const zChainId = z.enum([
+  String(ChainId.BSC),
+  String(ChainId.ETHEREUM),
+  String(ChainId.GOERLI),
+  String(ChainId.BSC_TESTNET),
+  String(ChainId.ZKSYNC_TESTNET),
+  String(ChainId.POLYGON_ZKEVM),
+  String(ChainId.ZKSYNC),
+  String(ChainId.ARBITRUM_ONE),
+])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 
@@ -115,10 +142,10 @@ export const handler = async (req: Request, event: FetchEvent) => {
   const cache = caches.default
   const cacheResponse = await cache.match(event.request)
 
-  let response
+  let response: Response | undefined
 
   if (!cacheResponse) {
-    response = await handler_(req)
+    response = await handler_(req, event)
     if (response.status === 200) {
       event.waitUntil(cache.put(event.request, response.clone()))
     }
@@ -129,20 +156,21 @@ export const handler = async (req: Request, event: FetchEvent) => {
   return response
 }
 
-const handler_ = async (req: Request) => {
+const handler_ = async (req: Request, event: FetchEvent) => {
   const parsed = zParams.safeParse(req.params)
 
   if (parsed.success === false) {
     return error(400, parsed.error)
   }
 
-  const { chainId, address: address_ } = parsed.data
+  const { chainId: chainIdString, address: address_ } = parsed.data
+  const chainId = Number(chainIdString) as Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET>
 
   const address = address_.toLowerCase()
 
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const client = viemProviders({ chainId: Number(chainId) })
+  const client = viemProviders({ chainId })
 
   const [pid] = await client.multicall({
     contracts: [
@@ -181,6 +209,139 @@ const handler_ = async (req: Request) => {
     return error(404, { error: 'PoolInfo not found' })
   }
 
+  const kvCache = await FarmKV.getV3Liquidity(chainId, address)
+
+  if (kvCache) {
+    // 5 mins
+    if (new Date().getTime() < new Date(kvCache.updatedAt).getTime() + 1000 * 60 * 5) {
+      return json(
+        {
+          tvl: {
+            token0: kvCache.tvl.token0,
+            token1: kvCache.tvl.token1,
+          },
+          formatted: {
+            token0: kvCache.formatted.token0,
+            token1: kvCache.formatted.token1,
+          },
+          updatedAt: kvCache.updatedAt,
+        },
+        {
+          headers: {
+            'Cache-Control': CACHE_TIME.short,
+          },
+        },
+      )
+    }
+  }
+
+  try {
+    const [allocPoint, , , , , totalLiquidity] = poolInfo
+    const [sqrtPriceX96, tick] = slot0
+
+    // don't cache when pool is not active or has no liquidity
+    if (!allocPoint || !totalLiquidity) {
+      return json(
+        {
+          tvl: {
+            token0: '0',
+            token1: '0',
+          },
+          formatted: {
+            token0: '0',
+            token1: '0',
+          },
+          updatedAt: new Date().toISOString(),
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        },
+      )
+    }
+
+    const resultTimeout = await Promise.race([
+      timeout(20),
+      fetchLiquidityFromSubgraph(chainId, address, masterChefV3Address, tick, sqrtPriceX96),
+    ])
+
+    if (!resultTimeout) {
+      throw new Error('Timeout')
+    }
+
+    const { allActivePositions, result } = resultTimeout
+
+    if (allActivePositions.length === 0) {
+      return json(
+        {
+          tvl: {
+            token0: '0',
+            token1: '0',
+          },
+          formatted: {
+            token0: '0',
+            token1: '0',
+          },
+          updatedAt: new Date().toISOString(),
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        },
+      )
+    }
+
+    if (!result) {
+      throw new Error('No result')
+    }
+
+    event.waitUntil(FarmKV.saveV3Liquidity(chainId, address, result))
+
+    return json(result, {
+      headers: {
+        'Cache-Control': allActivePositions.length > 50 ? CACHE_TIME.long : CACHE_TIME.short,
+      },
+    })
+  } catch (e) {
+    console.error('fetching error falling back to kv cache if any', e)
+
+    if (kvCache) {
+      return json(
+        {
+          tvl: {
+            token0: kvCache.tvl.token0,
+            token1: kvCache.tvl.token1,
+          },
+          formatted: {
+            token0: kvCache.formatted.token0,
+            token1: kvCache.formatted.token1,
+          },
+          updatedAt: kvCache.updatedAt,
+        },
+        {
+          headers: {
+            'Cache-Control': CACHE_TIME.short,
+          },
+        },
+      )
+    }
+
+    return error(500, { error: 'Failed to get active liquidity' })
+  }
+}
+
+async function fetchLiquidityFromSubgraph(
+  chainId: keyof typeof V3_SUBGRAPH_CLIENTS,
+  address: string,
+  masterChefV3Address: string,
+  tick: number,
+  sqrtPriceX96: bigint,
+) {
+  const updatedAt = new Date().toISOString()
+  let allActivePositions: any[] = []
+
   const poolTokens = await V3_SUBGRAPH_CLIENTS[chainId].request(
     gql`
       query pool($poolAddress: String!) {
@@ -201,36 +362,8 @@ const handler_ = async (req: Request) => {
     },
   )
 
-  const updatedAt = new Date().toISOString()
-
-  const [allocPoint, , , , , totalLiquidity] = poolInfo
-  const [sqrtPriceX96, tick] = slot0
-
-  // don't cache when pool is not active or has no liquidity
-  if (!allocPoint || !totalLiquidity) {
-    return json(
-      {
-        tvl: {
-          token0: '0',
-          token1: '0',
-        },
-        formatted: {
-          token0: '0',
-          token1: '0',
-        },
-        updatedAt,
-      },
-      {
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      },
-    )
-  }
-
-  let allActivePositions: any[] = []
-
-  async function fetchPositionByMasterChefId(posId = '0') {
+  // eslint-disable-next-line no-inner-declarations
+  async function fetchPositionByMasterChefId(posId_ = '0') {
     const resp = await V3_SUBGRAPH_CLIENTS[chainId].request(
       gql`
         query tvl($poolAddress: String!, $owner: String!, $posId: String!, $currentTick: String!) {
@@ -256,7 +389,7 @@ const handler_ = async (req: Request) => {
         poolAddress: address,
         owner: masterChefV3Address.toLowerCase(),
         currentTick: tick.toString(),
-        posId,
+        posId: posId_,
       },
     )
 
@@ -283,24 +416,9 @@ const handler_ = async (req: Request) => {
   })
 
   if (allActivePositions.length === 0) {
-    return json(
-      {
-        tvl: {
-          token0: '0',
-          token1: '0',
-        },
-        formatted: {
-          token0: '0',
-          token1: '0',
-        },
-        updatedAt,
-      },
-      {
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      },
-    )
+    return {
+      allActivePositions,
+    }
   }
 
   const currentTick = tick
@@ -341,22 +459,27 @@ const handler_ = async (req: Request) => {
     totalToken1.toString(),
   ).toExact()
 
-  return json(
-    {
-      tvl: {
-        token0: totalToken0.toString(),
-        token1: totalToken1.toString(),
-      },
-      formatted: {
-        token0: curr0,
-        token1: curr1,
-      },
-      updatedAt,
+  const result = {
+    tvl: {
+      token0: totalToken0.toString(),
+      token1: totalToken1.toString(),
     },
-    {
-      headers: {
-        'Cache-Control': allActivePositions.length > 50 ? CACHE_TIME.long : CACHE_TIME.short,
-      },
+    formatted: {
+      token0: curr0,
+      token1: curr1,
     },
+    updatedAt,
+  }
+  return {
+    result,
+    allActivePositions,
+  }
+}
+
+function timeout(seconds: number) {
+  return new Promise<null>((resolve) =>
+    setTimeout(() => {
+      resolve(null)
+    }, seconds * 1_000),
   )
 }

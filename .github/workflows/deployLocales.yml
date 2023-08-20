@@ -31,4 +31,4 @@ jobs:
           projectName: pcs-locales
           directory: ./locales
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name == 'develop' && 'master' ||  null  }}
+          branch: ${{ github.ref_name == 'develop' && 'main' ||  null  }}

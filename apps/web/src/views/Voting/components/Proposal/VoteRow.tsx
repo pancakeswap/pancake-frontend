@@ -1,7 +1,8 @@
-import { Flex, LinkExternal, Text, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text, Farm as FarmUI, ScanLink } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { getBlockExploreLink } from 'utils'
 import { Vote } from 'state/types'
+import { ChainId } from '@pancakeswap/sdk'
 import { IPFS_GATEWAY } from '../../config'
 import TextEllipsis from '../TextEllipsis'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from './Row'
@@ -27,9 +28,9 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVote
     <Row>
       <AddressColumn>
         <Flex alignItems="center">
-          <LinkExternal isBscScan href={getBlockExploreLink(vote.voter, 'address')}>
+          <ScanLink chainId={ChainId.BSC} href={getBlockExploreLink(vote.voter, 'address')}>
             {truncateHash(vote.voter)}
-          </LinkExternal>
+          </ScanLink>
           {isVoter && <VotedTag mr="4px" />}
         </Flex>
       </AddressColumn>

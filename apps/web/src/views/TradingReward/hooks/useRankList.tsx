@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { useState } from 'react'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
+import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 interface UseRankListProps {
   campaignId: string
@@ -35,15 +36,21 @@ const TOP_RANK_NUMBER = 3
 
 export const useRankList = ({ campaignId, currentPage }: UseRankListProps): RankList => {
   const [isLoading, setIsLoading] = useState(false)
+  const [lastCampaignId, setLastCampaignId] = useState('')
   const [topThreeTraders, setTopThreeTraders] = useState<RankListDetail[]>([])
 
   const { data } = useSWR(
-    campaignId && currentPage && ['/trader-rank-list', campaignId, currentPage],
+    Number(campaignId) > 0 && currentPage && ['/trader-rank-list', campaignId, currentPage],
     async () => {
       try {
         setIsLoading(true)
+        setLastCampaignId(campaignId)
+        if (campaignId !== lastCampaignId) {
+          setTopThreeTraders([])
+        }
+
         const response = await fetch(
-          `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/tt/page/${currentPage}/size/${MAX_PER_PAGE}`,
+          `${TRADING_REWARD_API}/rank_list/campaignId/${campaignId}/type/${RewardType.TOP_TRADERS}/page/${currentPage}/size/${MAX_PER_PAGE}`,
         )
         const result: RankListResponse = await response.json()
 
@@ -73,7 +80,6 @@ export const useRankList = ({ campaignId, currentPage }: UseRankListProps): Rank
     },
     {
       revalidateOnFocus: false,
-      revalidateIfStale: false,
       revalidateOnReconnect: false,
       revalidateOnMount: true,
     },

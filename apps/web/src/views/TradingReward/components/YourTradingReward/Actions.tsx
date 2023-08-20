@@ -14,6 +14,7 @@ interface ActionsProps {
   lockStartTime: string
   lockedAmount: BigNumber
   stakingToken: Token
+  stakingTokenPrice: number
   currentBalance: BigNumber
   isOnlyNeedExtendLock: boolean
   customLockWeekInSeconds: number
@@ -24,6 +25,7 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
   lockStartTime,
   lockedAmount,
   stakingToken,
+  stakingTokenPrice,
   currentBalance,
   isOnlyNeedExtendLock,
   customLockWeekInSeconds,
@@ -41,6 +43,7 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
     <LockedStakedModal
       currentBalance={currentBalance}
       stakingToken={stakingToken}
+      stakingTokenPrice={stakingTokenPrice}
       stakingTokenBalance={currentBalance}
       customLockWeekInSeconds={customLockWeekInSeconds}
     />,
@@ -69,6 +72,7 @@ const Actions: React.FC<React.PropsWithChildren<ActionsProps>> = ({
           lockEndTime={lockEndTime}
           lockStartTime={lockStartTime}
           stakingToken={stakingToken}
+          stakingTokenPrice={stakingTokenPrice}
           currentBalance={currentBalance}
           currentLockedAmount={lockedAmountAsNumber}
           customLockWeekInSeconds={customLockWeekInSeconds}

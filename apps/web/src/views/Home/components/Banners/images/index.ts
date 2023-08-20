@@ -59,6 +59,18 @@ import galxeLogo from './galxe-logo.png'
 import polygonZkBg from './polygon-zk-bg.png'
 import polygonZkBgMobile from './polygon-zk-bg-mobile.png'
 import polygonZkBunny from './polygon-zk-bunny.png'
+import zkSyncBgMobile from './zkSyncBgMobile.png'
+import zkSyncBg from './zkSyncBg.png'
+import zkSyncBunny from './zkSyncBunny.png'
+import eraLogo from './eraLogo.png'
+import arbBg from './arbBg.png'
+import arbBgMobile from './arbBgMobile.png'
+import arbBunny from './arbBunny.png'
+import arbLogo from './arbLogo.png'
+import moonpayBgMobile from './moonpay-bg-mobile.png'
+import moonpayBg from './moonpay-bg.png'
+import moonpayCash from './moonpay-cash.png'
+import moonpayLogo from './moonpay-logo.png'
 
 export {
   lotteryImage,
@@ -121,4 +133,16 @@ export {
   polygonZkBg,
   polygonZkBgMobile,
   polygonZkBunny,
+  zkSyncBgMobile,
+  zkSyncBg,
+  zkSyncBunny,
+  eraLogo,
+  arbBg,
+  arbBgMobile,
+  arbBunny,
+  arbLogo,
+  moonpayBgMobile,
+  moonpayBg,
+  moonpayCash,
+  moonpayLogo,
 }

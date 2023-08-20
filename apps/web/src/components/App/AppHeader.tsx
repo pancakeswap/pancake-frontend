@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import {
   Text,
   Flex,
@@ -24,14 +24,21 @@ interface Props {
   buttons?: React.ReactNode
   filter?: React.ReactNode
   shouldCenter?: boolean
+  borderHidden?: boolean
 }
 
-const AppHeaderContainer = styled(Flex)`
+const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
   align-items: center;
   justify-content: space-between;
   padding: 24px;
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+
+  ${({ borderHidden }) =>
+    borderHidden &&
+    css`
+      border-bottom: 1px solid transparent;
+    `}
 `
 
 const FilterSection = styled(AutoRow)`
@@ -50,11 +57,12 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
   buttons,
   filter,
   shouldCenter = false,
+  borderHidden = false,
 }) => {
   const [expertMode] = useExpertMode()
 
   return (
-    <AppHeaderContainer>
+    <AppHeaderContainer borderHidden={borderHidden}>
       <Flex alignItems="center" width="100%" style={{ gap: '16px' }}>
         {backTo &&
           (typeof backTo === 'string' ? (

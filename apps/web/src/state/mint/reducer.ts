@@ -1,5 +1,7 @@
+import { createContext, useContext } from 'react'
 import { createReducer } from '@reduxjs/toolkit'
 import { atomWithReducer } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { Field, resetMintState, typeInput } from './actions'
 
 export interface MintState {
@@ -45,4 +47,20 @@ export const reducer = createReducer<MintState>(initialState, (builder) =>
     }),
 )
 
-export const mintReducerAtom = atomWithReducer(initialState, reducer)
+export const createFormAtom = () => atomWithReducer(initialState, reducer)
+
+const AddLiquidityV2AtomContext = createContext({
+  formAtom: createFormAtom(),
+})
+
+export const AddLiquidityV2AtomProvider = AddLiquidityV2AtomContext.Provider
+
+export function useAddLiquidityV2FormState() {
+  const ctx = useContext(AddLiquidityV2AtomContext)
+  return useAtomValue(ctx.formAtom)
+}
+
+export function useAddLiquidityV2FormDispatch() {
+  const ctx = useContext(AddLiquidityV2AtomContext)
+  return useSetAtom(ctx.formAtom)
+}

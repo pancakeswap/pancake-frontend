@@ -15,6 +15,7 @@ const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonPropsType>> = ({
   lockEndTime,
   lockStartTime,
   stakingTokenBalance,
+  stakingTokenPrice,
   customLockAmount,
   ...props
 }) => {
@@ -32,6 +33,7 @@ const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonPropsType>> = ({
       lockStartTime={lockStartTime}
       lockEndTime={lockEndTime}
       stakingTokenBalance={stakingTokenBalance}
+      stakingTokenPrice={stakingTokenPrice}
       customLockAmount={customLockAmount}
     />,
     true,

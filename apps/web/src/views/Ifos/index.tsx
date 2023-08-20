@@ -16,8 +16,17 @@ export const IfoPageLayout = ({ children }) => {
 
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.IFO)
   const [onUSCitizenModalPresent] = useModal(
-    <USCitizenConfirmModal title={t('PancakeSwap IFOs')} id={IdType.IFO} />,
-    true,
+    <USCitizenConfirmModal
+      title={t('PancakeSwap IFOs')}
+      id={IdType.IFO}
+      checks={[
+        {
+          key: 'checkbox',
+          content: t('I confirm that I am eligible to participate in IFOs on this platform.'),
+        },
+      ]}
+    />,
+    false,
     false,
     'usCitizenConfirmModal',
   )
