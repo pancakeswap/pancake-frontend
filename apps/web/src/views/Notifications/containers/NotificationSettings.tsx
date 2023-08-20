@@ -26,7 +26,7 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   let buttonText: string = t('UnSubscribe')
   if (objectsAreEqual) {
     buttonText = isUnsubscribing ? t('UnSubscribing') : t('UnSubscribe')
-  } else buttonText = isUnsubscribing ? t('Updating') : t('Update Preferences')
+  } else buttonText = isUnsubscribing ? t('Updating..') : t('Update Preferences')
 
   return (
     <AutoColumn gap="md" marginTop="6px">

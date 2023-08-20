@@ -22,10 +22,10 @@ function OnboardingButton({ account, onClick, loading, isOnBoarded }: IOnboardin
 
   let buttonText: string = t('Enable (Subscribe in wallet)')
   if (loading) {
-    buttonText = t('Awaiting response')
+    buttonText = t('Awaiting signature response')
   }
   if (!isOnBoarded) {
-    buttonText = t('Authorize Notifications')
+    buttonText = t('Authorize In Wallet')
   }
 
   if (!account)
