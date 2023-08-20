@@ -1,9 +1,5 @@
-import {
-  DEFAULT_CAST_SIGN_KEY,
-  DEFAULT_PROJECT_ID,
-  DEFAULT_RELAY_URL,
-  PancakeNotifications,
-} from 'views/Notifications/constants'
+import { useToast } from '@pancakeswap/uikit'
+import { DEFAULT_PROJECT_ID, DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import useFormattedEip155Account from './useFormatEip155Account'
 
@@ -13,11 +9,12 @@ interface IUseSendNotification {
 }
 
 const useSendPushNotification = (): IUseSendNotification => {
-  const { formattedEip155Account } = useFormattedEip155Account()
+  const { eip155Account } = useFormattedEip155Account()
+  const toast = useToast()
 
   const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {
     const notificationPayload: NotificationPayload = {
-      accounts: [formattedEip155Account],
+      accounts: [eip155Account],
       notification: PancakeNotifications[notificationType](args),
     }
     try {
@@ -31,14 +28,14 @@ const useSendPushNotification = (): IUseSendNotification => {
       })
 
       const result: NotifyResponse = await notifyResponse.json()
-      const success = result.sent.includes(formattedEip155Account)
+      const success = result.sent.includes(eip155Account as string)
 
       if (!success) {
-        // NO access to toaster yet
+        toast.toastError('Failed to send', 'Failed to send push notification as account was not found')
       }
     } catch (error) {
       if (error instanceof Error) {
-        //
+        toast.toastError('Failed to send', error.message)
       }
     }
   }

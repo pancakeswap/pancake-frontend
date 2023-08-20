@@ -29,6 +29,14 @@ interface INotificationContainerProps {
   sortOptionsType: string
   removeNotification: (id: number) => Promise<void>
 }
+const formatStringWithNewlines = (inputString: string) => {
+  return inputString.split('\n').map((line: string, index: number) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <Text key={`message-line-${index}`} lineHeight="15px" color="textSubtle">
+      {line}
+    </Text>
+  ))
+}
 
 const NotificationItem = ({ title, description, id, date, url, image, removeNotification }: INotificationprops) => {
   const [isHovered, setIsHovered] = useState(false)
@@ -37,7 +45,7 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
-  const contentRef = useRef<HTMLElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const theme = useTheme()
   const { t } = useTranslation()
 
@@ -66,20 +74,15 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
   }, [])
 
-  console.log(description)
+  const formatedDescription = formatStringWithNewlines(description)
+
   return (
-    <StyledNotificationWrapper
-      transition={{ duration: 0.05 }}
-      whileHover={{ scale: 1.01 }}
-      isclosing={isClosing}
-      ref={containerRef}
-      onClick={handleExpandClick}
-    >
+    <StyledNotificationWrapper isclosing={isClosing} ref={containerRef} onClick={handleExpandClick}>
       <AnimatePresence>
         <ContentsContainer
           transition={{ duration: 0.3 }}
           style={{
-            backgroundColor: isHovered ? 'transparent' : theme.isDark ? '#372F46' : 'white',
+            backgroundColor: isHovered ? 'transparent' : theme.isDark ? '#372F46' : '#EDEAF4',
             transition: 'background-color 0.15s ease',
           }}
           onMouseEnter={handleHover}
@@ -101,7 +104,7 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
               initial={{ maxHeight: 32 }}
               animate={{ maxHeight: show ? elementHeight : 32 }}
             >
-              {description}
+              {formatedDescription}
               <StyledLink hidden={Boolean(url)} href={url} target="_blank" rel="noreferrer noopener">
                 {t('View Link')}
               </StyledLink>
@@ -117,9 +120,9 @@ const NotificationItem = ({ title, description, id, date, url, image, removeNoti
 const BottomRow = ({ show, formattedDate }: { show: boolean; formattedDate: string }) => {
   const { t } = useTranslation()
   return (
-    <Row justifyContent="space-between">
+    <Row justifyContent="space-between" marginTop="6px">
       <FlexRow>
-        <ExpandButton color="secondary" marginY="5px" fontSize="15px">
+        <ExpandButton color="secondary" fontSize="15px">
           {show ? t('Show Less') : t('Show More')}
         </ExpandButton>
         {show ? <ChevronUpIcon color="secondary" /> : <ChevronDownIcon color="secondary" />}

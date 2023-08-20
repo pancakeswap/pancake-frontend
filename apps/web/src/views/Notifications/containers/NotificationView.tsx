@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRow, Box, Button, Flex, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import { PushClientTypes } from '@walletconnect/push-client'
-import { useWalletConnectPushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { PushClient } from 'state/PushClientProxy'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
@@ -14,6 +14,12 @@ interface INotificationFilterProps {
   onOptionChange: (option: OptionProps) => void
   description: string
   width?: string
+}
+
+interface ISettingsModalProps {
+  activeSubscriptions: PushClientTypes.PushSubscription[]
+  currentSubscription: PushClientTypes.PushSubscription | null
+  pushClient: PushClient
 }
 
 const NotificationFilter = ({ options, onOptionChange, width, description }: INotificationFilterProps) => {
@@ -29,24 +35,23 @@ const NotificationFilter = ({ options, onOptionChange, width, description }: INo
     </FilterContainer>
   )
 }
-const SettingsModal = () => {
+const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }: ISettingsModalProps) => {
   const [sortOptionsType, setSortOptionsType] = useState<string>('Latest')
   const [notificationType, setNotificationType] = useState<string>('All')
   const [notifications, setNotifications] = useState<PushClientTypes.PushMessageRecord[]>([])
-  const { activeSubscriptions, getMessageHistory, currentSubscription, deletePushMessage } =
-    useWalletConnectPushClient()
+
   const { t } = useTranslation()
 
   const updateMessages = useCallback(async () => {
-    if (currentSubscription.topic) {
+    if (currentSubscription?.topic) {
       try {
-        const messageHistory = await getMessageHistory({ topic: currentSubscription.topic })
+        const messageHistory = await pushClient.getMessageHistory({ topic: currentSubscription?.topic })
         setNotifications(Object.values(messageHistory))
       } catch (error) {
-        //
+        throw new Error(JSON.stringify(error))
       }
     }
-  }, [setNotifications, getMessageHistory, currentSubscription.topic])
+  }, [setNotifications, pushClient, currentSubscription?.topic])
 
   const handleNotifyOptionChange = useCallback((option: OptionProps) => {
     setNotificationType(option.value)
@@ -58,9 +63,9 @@ const SettingsModal = () => {
 
   const removeNotification = useCallback(
     async (id: number) => {
-      await deletePushMessage({ id: Number(id) }).then(() => updateMessages())
+      await pushClient.deletePushMessage({ id: Number(id) }).then(() => updateMessages())
     },
-    [updateMessages, deletePushMessage],
+    [updateMessages, pushClient],
   )
 
   const removeAllNotifications = useCallback(async () => {
@@ -70,70 +75,61 @@ const SettingsModal = () => {
   }, [notifications, removeNotification])
 
   const filteredNotifications: any = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const sortFarms = (notifications: any[]): any[] => {
+    const typeFilter = (
+      subscriptionType: SubsctiptionType,
+      unFilteredNotifications: PushClientTypes.PushMessageRecord[],
+    ) => {
+      return unFilteredNotifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+        const extractedType = notification.message.type
+        return extractedType === subscriptionType
+      })
+    }
+    const sortNotifications = (unFilteredNotifications: PushClientTypes.PushMessageRecord[]): any[] => {
       switch (notificationType) {
         case SubsctiptionType.Liquidity:
-          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
-            const extractedType = notification.message.type
-            return extractedType === SubsctiptionType.Liquidity
-          })
+          return typeFilter(SubsctiptionType.Liquidity, unFilteredNotifications)
         case SubsctiptionType.Staking:
-          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
-            const extractedType = notification.message.type
-            return extractedType === SubsctiptionType.Staking
-          })
+          return typeFilter(SubsctiptionType.Staking, unFilteredNotifications)
         case SubsctiptionType.Pools:
-          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
-            const extractedType = notification.message.type
-            return extractedType === SubsctiptionType.Pools
-          })
+          return typeFilter(SubsctiptionType.Pools, unFilteredNotifications)
         case SubsctiptionType.Farms:
-          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
-            const extractedType = notification.message.type
-            return extractedType === SubsctiptionType.Farms
-          })
+          return typeFilter(SubsctiptionType.Farms, unFilteredNotifications)
         case SubsctiptionType.Alerts:
-          return notifications.filter((notification: PushClientTypes.PushMessageRecord) => {
-            const extractedType = notification.message.type
-            return extractedType === SubsctiptionType.Alerts
-          })
+          return typeFilter(SubsctiptionType.Alerts, unFilteredNotifications)
         default:
           return notifications
       }
     }
-    return sortFarms(notifications)
+    return sortNotifications(notifications)
   }, [notifications, notificationType])
 
   useEffect(() => {
-    if (!currentSubscription.topic) return
+    if (!currentSubscription?.topic) return
     updateMessages()
-  }, [updateMessages, currentSubscription.topic, activeSubscriptions])
+  }, [updateMessages, currentSubscription?.topic, activeSubscriptions])
 
   return (
-    <Box paddingBottom="24px">
-      <Flex alignItems="center" paddingX="24px">
-        <AutoRow gap="12px" marginTop="8px" marginBottom="16px" marginRight="8px">
-          <NotificationFilter
-            onOptionChange={handleNotifyOptionChange}
-            options={NotificationFilterTypes}
-            description="Filter By Type"
-            width="120px"
-          />
-          <NotificationFilter
-            onOptionChange={handleSortOptionChange}
-            options={NotificationSortTypes}
-            description="Sort By Date"
-            width="100px"
-          />
-        </AutoRow>
-        <Button marginTop="13px" height="40px" maxWidth="95px" variant="primary" onClick={removeAllNotifications}>
+    <Box paddingBottom="24px" width="100%">
+      <Flex alignItems="center" justifyContent="space-between" paddingX="24px" marginBottom="16px">
+        <NotificationFilter
+          onOptionChange={handleNotifyOptionChange}
+          options={NotificationFilterTypes}
+          description="Filter By Type"
+          width="120px"
+        />
+        <NotificationFilter
+          onOptionChange={handleSortOptionChange}
+          options={NotificationSortTypes}
+          description="Sort By Date"
+          width="100px"
+        />
+        <Button marginTop="20px" height="40px" maxWidth="95px" variant="primary" onClick={removeAllNotifications}>
           <Text px="4px" fontWeight="bold" color="white">
             {t('Clear')}
           </Text>
         </Button>
       </Flex>
-      <Box maxHeight="360px" overflowY="scroll">
+      <Box minHeight="360px" overflowY="scroll">
         {filteredNotifications.length > 0 ? (
           <NotificationContainerStyled>
             <NotificationItem

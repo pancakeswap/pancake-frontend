@@ -1,39 +1,32 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useWalletConnectPushClient } from 'contexts/PushClientContext'
+import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback } from 'react'
-import { useSignMessage } from 'wagmi'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Events } from '../constants'
+import { BuilderNames } from '../types'
+
+import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
-import { DEFAULT_APP_METADATA, Events } from '../constants'
-import { SubscriptionState } from '../types'
 
 interface IOnboardingButtonProps {
   account: string
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
-  subscriptionState: SubscriptionState
+  loading: boolean
+  isOnBoarded: boolean
 }
 
-interface IOnboardingProps {
-  setSubscriptionState: Dispatch<SetStateAction<SubscriptionState>>
-  subscriptionState: SubscriptionState
-}
-
-function OnboardingButton({ account, onClick, subscriptionState }: IOnboardingButtonProps) {
+function OnboardingButton({ account, onClick, loading, isOnBoarded }: IOnboardingButtonProps) {
   const { t } = useTranslation()
 
   let buttonText: string = t('Enable (Subscribe in wallet)')
-  if (subscriptionState.isOnboarding) {
-    buttonText = t('Awaiting signature response')
+  if (loading) {
+    buttonText = t('Awaiting response')
   }
-  if (!subscriptionState.isOnboarded) {
+  if (!isOnBoarded) {
     buttonText = t('Authorize Notifications')
-  }
-  if (subscriptionState.isSubscribing) {
-    buttonText = t('Sign again in wallet')
   }
 
   if (!account)
@@ -45,66 +38,74 @@ function OnboardingButton({ account, onClick, subscriptionState }: IOnboardingBu
 
   return (
     <AutoColumn gap="md" marginTop="6px" width="100%">
-      <CommitButton
-        variant="primary"
-        onClick={onClick}
-        isLoading={subscriptionState.isSubscribing || subscriptionState.isOnboarding}
-        height="50px"
-      >
+      <CommitButton variant="primary" onClick={onClick} isLoading={loading} height="50px">
         <Flex alignItems="center">
           <Text px="4px" fontWeight="bold" color="white">
             {buttonText}
           </Text>
-          {subscriptionState.isSubscribing || subscriptionState.isOnboarding ? <CircleLoader stroke="white" /> : null}
+          {loading ? <CircleLoader stroke="white" /> : null}
         </Flex>
       </CommitButton>
     </AutoColumn>
   )
 }
 
-const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboardingProps) => {
-  const { signMessageAsync } = useSignMessage()
-  const { toastSuccess, toastError } = useToast()
-  const { formattedEip155Account, account } = useFormattedEip155Account()
-  const { registerMessage, postMessage, subscribe } = useWalletConnectPushClient()
+const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateAction<boolean>> }) => {
+  const [loading, setloading] = useState<boolean>(false)
+  const {
+    pushClientProxy: pushClient,
+    userPubkey,
+    refreshNotifications,
+    isOnBoarded,
+    handleRegistration,
+  } = usePushClient()
+
+  const toast = useToast()
+  const { eip155Account } = useFormattedEip155Account()
+  const { sendPushNotification } = useSendPushNotification()
   const { t } = useTranslation()
 
-  const handleOnboarding = useCallback(() => {
-    setSubscriptionState((prevState) => ({ ...prevState, isOnboarding: true }))
-    toastSuccess(Events.SignatureRequest.title, Events.SignatureRequest.message)
+  const handleOnboarding = useCallback(async () => {
+    setloading(true)
+    toast.toastSuccess(Events.SignatureRequest.title, Events.SignatureRequest.message)
 
-    signMessageAsync({ message: registerMessage })
-      .then((signature) => {
-        postMessage(formatJsonRpcRequest('push_signature_delivered', { signature }))
-        setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: true, isOnboarding: false }))
-      })
-      .catch((error: Error) => {
-        setSubscriptionState((prevState) => ({ ...prevState, isOnboarded: false, isOnboarding: false }))
-        const errormessage = error.message.includes('User rejected') ? t('User Rejected the request') : error.message
-        toastError(Events.SignatureRequestError.title, errormessage)
-      })
-  }, [registerMessage, setSubscriptionState, postMessage, signMessageAsync, toastError, toastSuccess, t])
+    handleRegistration(userPubkey, false).catch((error: Error) => {
+      const errormessage = error.message.includes('User rejected') ? t('User Rejected the request') : error.message
+      toast.toastError(Events.SignatureRequestError.title, errormessage)
+    })
+    setloading(false)
+  }, [toast, t, handleRegistration, userPubkey])
 
   const handleSubscribe = useCallback(async () => {
-    try {
-      setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: true }))
-      const subscribed = await subscribe({ account: formattedEip155Account, metadata: DEFAULT_APP_METADATA })
-      if (subscribed) setSubscriptionState((prevState) => ({ ...prevState, isSubscribed: true, isSubscribing: false }))
-      else throw new Error('Subscription request failed')
-    } catch (error: any) {
-      setSubscriptionState((prevState) => ({ ...prevState, isSubscribing: false }))
-      toastError(Events.SubscriptionRequestError.title, Events.SubscriptionRequestError.message)
-    }
-  }, [formattedEip155Account, toastError, setSubscriptionState, subscribe])
+    setloading(true)
+    setIsRightView(false)
+
+    pushClient?.emitter.on('push_subscription', () => {
+      toast.toastSuccess('succcess', Events.SubscriptionRequestError.message)
+      sendPushNotification(BuilderNames.OnBoardNotification, [])
+      refreshNotifications()
+    })
+    pushClient
+      .subscribe({ account: eip155Account })
+      .then((subscribed: { id: number; subscriptionAuth: string }) => {
+        if (!subscribed) throw new Error('Subscription request failed')
+        setloading(false)
+      })
+      .catch((error: Error) => {
+        toast.toastError(Events.SubscriptionRequestError.title, error.message)
+        setloading(false)
+      })
+  }, [eip155Account, pushClient, toast, sendPushNotification, refreshNotifications, setIsRightView])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (subscriptionState.isOnboarded) handleSubscribe()
+      if (isOnBoarded) handleSubscribe()
       else handleOnboarding()
     },
-    [handleOnboarding, handleSubscribe, subscriptionState.isOnboarded],
+    [handleOnboarding, handleSubscribe, isOnBoarded],
   )
+
   return (
     <Box padding="24px">
       <Box pl="24px">
@@ -117,7 +118,7 @@ const OnBoardingView = ({ setSubscriptionState, subscriptionState }: IOnboarding
         <Text fontSize="16px" textAlign="center" color="textSubtle">
           {t('Get started with notifications from WalletConnect. Click the subscribe button below and accept')}
         </Text>
-        <OnboardingButton subscriptionState={subscriptionState} onClick={handleAction} account={account} />
+        <OnboardingButton loading={loading} onClick={handleAction} account={userPubkey} isOnBoarded={isOnBoarded} />
       </FlexGap>
     </Box>
   )

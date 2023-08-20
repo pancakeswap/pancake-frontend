@@ -58,7 +58,6 @@ export const FilterContainer = styled.div`
   juxtify-content: space-between;
   align-items: center;
   width: 100%;
-  //   padding: 8px 0px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
@@ -87,12 +86,6 @@ export const ModalTitle = styled(Flex)`
   justify-content: center;
 `
 
-export const View = styled.div`
-  // flex: 1;
-  // width: 50%;
-  width: 100%;
-`
-
 export const opneRight = keyframes` 
     0% {
         right: -150%;
@@ -111,17 +104,14 @@ export const openLeft = keyframes`
 `
 
 export const NotificationContainerStyled = styled.div`
-  position: fixed;
-  width: 400px;
   max-height: 360px;
-  overflow-y: scroll;
   overflow-x: hidden;
   &:hover {
     cursor: pointer;
   }
 `
 
-export const StyledNotificationWrapper = styled(motion.div)<{ isclosing: boolean }>`
+export const StyledNotificationWrapper = styled.div<{ isclosing: boolean }>`
   animation-fill-mode: forwards;
   width: 100%;
   border-radius: 10px;
@@ -130,7 +120,6 @@ export const StyledNotificationWrapper = styled(motion.div)<{ isclosing: boolean
   position: relative;
   overflow: hidden;
   z-index: 9999;
-  animation-fill-mode: forwards;
 
   animation: ${({ isclosing }) => (!isclosing ? opneRight : openLeft)} 0.65s;
 `
@@ -142,14 +131,17 @@ export const ContentsContainer = styled(motion.div)`
   border: 1px solid #ccc;
   border-radius: 18px;
   overflow: hidden;
-  // min-height: 110px;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.01);
+  }
 `
 
-export const Description = styled(motion.span)`
+export const Description = styled(motion.div)`
   margin-bottom: 5px 0;
   overflow: hidden;
   max-width: 100%;
-  word-break: break-all;
 `
 
 export const ExpandButton = styled(Text)`
