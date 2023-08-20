@@ -1,22 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, FlexLayout, Heading, PageHeader } from '@pancakeswap/uikit'
+import { Flex, FlexLayout, Heading, PageHeader, Pool, ToggleView, ViewMode } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import min from 'lodash/min'
 import max from 'lodash/max'
 import BigNumber from 'bignumber.js'
 
 import { useStakedPools, useStakedPositionsByUser } from './hooks/useStakedPools'
 import { FixedStakingCard } from './components/FixedStakingCard'
-// import FixedStakingRow from './components/FixedStakingRow'
+import FixedStakingRow from './components/FixedStakingRow'
 import { FixedStakingPool } from './type'
 
 const FixedStaking = () => {
   const { t } = useTranslation()
 
-  // const [viewMode, setViewMode] = useState(ViewMode.TABLE)
-
-  // const [poolStatus, togglePoolStatus] = useState(POOL_STATUS.Live)
+  const [viewMode, setViewMode] = useState(ViewMode.TABLE)
 
   const displayPools = useStakedPools()
 
@@ -76,17 +74,34 @@ const FixedStaking = () => {
         </Flex>
       </PageHeader>
       <Page title={t('Pools')}>
-        <FlexLayout>
-          {Object.keys(poolGroup).map((key) => (
-            <FixedStakingCard
-              key={key}
-              pool={poolGroup[key]}
-              stakedPositions={stakedPositions.filter(
-                ({ pool: stakedPool }) => stakedPool.token.address === poolGroup[key].token.address,
-              )}
-            />
-          ))}
-        </FlexLayout>
+        <Flex mb="24px">
+          <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+        </Flex>
+        {viewMode === ViewMode.TABLE ? (
+          <Pool.PoolsTable>
+            {Object.keys(poolGroup).map((key) => (
+              <FixedStakingRow
+                key={key}
+                stakedPositions={stakedPositions.filter(
+                  ({ pool: stakedPool }) => stakedPool.token.address === poolGroup[key].token.address,
+                )}
+                pool={poolGroup[key]}
+              />
+            ))}
+          </Pool.PoolsTable>
+        ) : (
+          <FlexLayout>
+            {Object.keys(poolGroup).map((key) => (
+              <FixedStakingCard
+                key={key}
+                pool={poolGroup[key]}
+                stakedPositions={stakedPositions.filter(
+                  ({ pool: stakedPool }) => stakedPool.token.address === poolGroup[key].token.address,
+                )}
+              />
+            ))}
+          </FlexLayout>
+        )}
       </Page>
     </>
   )

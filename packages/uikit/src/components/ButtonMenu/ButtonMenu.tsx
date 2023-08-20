@@ -72,7 +72,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
       {Children.map(children, (child: ReactElement, index) => {
         return cloneElement(child, {
           isActive: activeIndex === index,
-          onClick: onItemClick ? () => onItemClick(index) : undefined,
+          onClick: onItemClick ? (e: React.MouseEvent<HTMLElement>) => onItemClick(index, e) : undefined,
           scale,
           variant,
           disabled: disabled || disabledIndexes.includes(index),

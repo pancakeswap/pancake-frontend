@@ -35,7 +35,15 @@ export function FixedStakingCalculator({
 
   return (
     <>
-      <IconButton variant="text" scale="sm" onClick={() => stakeModal.onOpen()}>
+      <IconButton
+        height="24px"
+        variant="text"
+        scale="sm"
+        onClick={(e) => {
+          e.stopPropagation()
+          stakeModal.onOpen()
+        }}
+      >
         <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
       </IconButton>
       <ModalV2
@@ -75,7 +83,10 @@ export function FixedStakingCalculator({
                     variant={pool.lockPeriod === lockPeriod ? 'danger' : 'bubblegum'}
                     width="100%"
                     mx="2px"
-                    onClick={() => setLockPeriod(pool.lockPeriod)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setLockPeriod(pool.lockPeriod)
+                    }}
                   >
                     {pool.lockPeriod}D
                   </StyledButton>

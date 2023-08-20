@@ -9,10 +9,12 @@ export function AmountWithUSDSub({
   amount,
   shouldStrike,
   fontSize,
+  mb = '-4px',
 }: {
   fontSize?: string
   shouldStrike?: boolean
   amount: CurrencyAmount<Token>
+  mb?: string
 }) {
   const formattedUsdAmount = useStablecoinPriceAmount(amount.currency, toNumber(amount.toSignificant(6)))
 
@@ -20,7 +22,7 @@ export function AmountWithUSDSub({
     shouldStrike ? 's' : React.Fragment,
     undefined,
     <>
-      <Text fontSize={fontSize} bold mb="-4px">
+      <Text fontSize={fontSize} bold mb={mb}>
         {amount.toSignificant(5)} {amount.currency.symbol}
       </Text>
       <Balance unit=" USD" color="textSubtle" prefix="~$" fontSize="12px" decimals={2} value={formattedUsdAmount} />

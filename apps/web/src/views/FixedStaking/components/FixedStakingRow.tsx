@@ -1,234 +1,252 @@
-// import { memo, useMemo } from 'react'
-// import {
-//   CurrencyLogo,
-//   Text,
-//   Pool,
-//   Flex,
-//   StarFillIcon,
-//   Tag,
-//   Balance,
-//   Box,
-//   Button,
-//   useMatchBreakpoints,
-// } from '@pancakeswap/uikit'
-// import { StyledCell } from 'views/Pools/components/PoolsTable/Cells/NameCell'
-// import BigNumber from 'bignumber.js'
-// import { useTranslation } from '@pancakeswap/localization'
-// import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
-// import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-// import {
-//   ActionContainer,
-//   InfoSection,
-//   StyledActionPanel,
-// } from 'views/Pools/components/PoolsTable/ActionPanel/ActionPanel'
-// import { LightGreyCard } from 'components/Card'
+import {
+  CurrencyLogo,
+  Text,
+  Pool,
+  Flex,
+  Box,
+  Button,
+  ButtonMenuItem,
+  ButtonMenu,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
+import { StyledCell } from 'views/Pools/components/PoolsTable/Cells/NameCell'
+import { useTranslation } from '@pancakeswap/localization'
+import React from 'react'
+import Divider from 'components/Divider'
 
-// import { LockedFixedTag } from './LockedFixedTag'
-// import { StakedPositionSection } from './StakedPositionSection'
-// import { FixedStakingPool, StakedPosition } from '../type'
-// import { InlineText } from './InlineText'
-// import { FixedStakingActions } from './FixedStakingActions'
-// import { FixedStakingModal } from './FixedStakingModal'
-// import { useCurrenDay } from '../hooks/useStakedPools'
-// import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import {
+  ActionContainer,
+  InfoSection,
+  StyledActionPanel,
+} from 'views/Pools/components/PoolsTable/ActionPanel/ActionPanel'
+import { LightGreyCard } from 'components/Card'
+import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 
-// const FixedStakingRow = ({ pool, stakedPositions }: { pool: FixedStakingPool; stakedPositions: StakedPosition[] }) => {
-//   const isBoost = useMemo(() => new BigNumber(pool.boostDayPercent).gt(0), [pool.boostDayPercent])
-//   const { t } = useTranslation()
-//   const totalStakedAmount = getBalanceAmount(pool.totalDeposited, pool.token.decimals)
-//   const { isMobile, isTablet } = useMatchBreakpoints()
+import { PoolGroup, StakedPosition } from '../type'
+import { InlineText } from './InlineText'
+import { FixedStakingModal } from './FixedStakingModal'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { AprFooter } from './AprFooter'
+import { StakedPositionSection } from './StakedPositionSection'
+import useSelectedPeriod from '../hooks/useSelectedPeriod'
+import AprCell from './AprCell'
 
-//   const currentDate = useCurrenDay()
+const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPositions: StakedPosition[] }) => {
+  const { t } = useTranslation()
+  const totalStakedAmount = CurrencyAmount.fromRawAmount(pool.token, pool.totalDeposited.toNumber())
+  const { isMobile, isTablet } = useMatchBreakpoints()
 
-//   const remainingDays = pool.endDay - currentDate
+  const { selectedPeriodIndex, setSelectedPeriodIndex, disabledIndexes, selectedPool } = useSelectedPeriod({
+    pool,
+    stakedPositions,
+  })
 
-//   const formattedUsdValueStaked = useStablecoinPriceAmount(pool.token, totalStakedAmount.toNumber())
-//   const stakePosition = stakedPositions.find((position) => position.pool.token.address === pool.token.address)
-//   const { boostAPR, lockAPR } = useFixedStakeAPR(pool)
+  return (
+    <>
+      {isMobile ? (
+        <StyledCell
+          style={{
+            border: 'none',
+            paddingBottom: '0px',
+          }}
+          display="flex"
+          alignItems="center"
+        >
+          <CurrencyLogo currency={pool.token} size="32px" />
+          <Flex flexDirection="column" justifyContent="center" alignItems="start" ml="8px">
+            <Text color="secondary" textTransform="uppercase" fontSize="12px" bold mb="-4px">
+              {t('Stake & Earn')}
+            </Text>
+            <Text fontSize="16px" bold>
+              {pool.token.symbol}
+            </Text>
+          </Flex>
+          <Box ml="auto" pr="4px">
+            <Text color="secondary" textAlign="end" textTransform="uppercase" fontSize="12px" bold mb="-4px">
+              {t('APR')}
+            </Text>
 
-//   return (
-//     <Pool.ExpandRow
-//       initialActivity={false}
-//       panel={
-//         <StyledActionPanel expanded>
-//           <InfoSection mt="8px">
-//             <Flex alignItems="center" justifyContent="space-between">
-//               <Text textTransform="uppercase" fontSize="12px">
-//                 {t('APR:')}
-//               </Text>
-//               <Text>
-//                 {lockAPR.toSignificant(2)}% ~ {boostAPR.toSignificant(2)}%
-//               </Text>
-//             </Flex>
-//             <Flex alignItems="center" justifyContent="space-between">
-//               <Text fontSize="12px">{t('Ends in')}</Text>
-//               <Text color="textSubtle" fontSize="12px">
-//                 {remainingDays > 0 ? remainingDays : 0} {t('days')}
-//               </Text>
-//             </Flex>
-//           </InfoSection>
-//           <ActionContainer>
-//             {stakePosition && new BigNumber(stakePosition?.userInfo?.accrueInterest).gt(0) ? (
-//               <ActionContainer pl={['0px', '0px', '0px', '0px', '32px']}>
-//                 <StakedPositionSection
-//                   apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
-//                   lockPeriod={pool.lockPeriod}
-//                   unlockTime={stakePosition.endLockTime}
-//                   stakePositionUserInfo={stakePosition.userInfo}
-//                   token={pool.token}
-//                   poolIndex={pool.poolIndex}
-//                 />
-//               </ActionContainer>
-//             ) : null}
-//             <ActionContainer>
-//               {stakePosition && new BigNumber(stakePosition?.userInfo?.userDeposit).gt(0) ? (
-//                 <LightGreyCard mb="16px" mt="8px" ml={['0px', '0px', '32px']}>
-//                   <Box display="inline">
-//                     <InlineText color="secondary" bold fontSize="12px">
-//                       {`${pool.token.symbol} `}
-//                     </InlineText>
-//                     <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-//                       {t('Staked')}
-//                     </InlineText>
-//                   </Box>
-//                   <FixedStakingActions
-//                     withdrawalFee={pool.withdrawalFee}
-//                     apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
-//                     poolIndex={pool.poolIndex}
-//                     lockPeriod={pool.lockPeriod}
-//                     unlockTime={stakePosition?.endLockTime}
-//                     stakePositionUserInfo={stakePosition?.userInfo}
-//                     token={pool.token}
-//                   />
-//                 </LightGreyCard>
-//               ) : (
-//                 <LightGreyCard
-//                   mb="16px"
-//                   mt="8px"
-//                   ml="32px"
-//                   style={{
-//                     display: 'flex',
-//                     flexDirection: 'column',
-//                   }}
-//                 >
-//                   <Box display="inline">
-//                     <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px" mr="4px">
-//                       {t('Stake')}
-//                     </InlineText>
-//                     <InlineText color="secondary" bold fontSize="12px">
-//                       {`${pool.token.symbol} `}
-//                     </InlineText>
-//                   </Box>
-//                   <FixedStakingModal
-//                     apr={boostAPR.greaterThan(0) ? boostAPR : lockAPR}
-//                     lockPeriod={pool.lockPeriod}
-//                     poolIndex={pool.poolIndex}
-//                     stakingToken={pool.token}
-//                   >
-//                     {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
-//                   </FixedStakingModal>
-//                 </LightGreyCard>
-//               )}
-//             </ActionContainer>
-//           </ActionContainer>
-//         </StyledActionPanel>
-//       }
-//     >
-//       <StyledCell minWidth="120px" display="flex" alignItems="center">
-//         <CurrencyLogo currency={pool.token} size="40px" />
-//         <Flex flexDirection="column" justifyContent="center" alignItems="start" ml="8px">
-//           <Text color="secondary" fontSize="16px" bold>
-//             {pool.token.symbol}
-//           </Text>
-//           {isBoost ? (
-//             isMobile || isTablet ? (
-//               <>
-//                 <LockedFixedTag
-//                   style={{
-//                     height: '16px',
-//                     marginBottom: '4px',
-//                   }}
-//                 >
-//                   {pool.lockPeriod}D
-//                 </LockedFixedTag>
-//                 {isBoost ? (
-//                   <Tag
-//                     outline
-//                     variant="success"
-//                     style={{ height: '16px', width: 'fit-content', padding: '0 4px' }}
-//                     startIcon={<StarFillIcon width="12px" color="success" scale="sm" />}
-//                   >
-//                     <Text bold color="success" fontSize="12px">
-//                       vCAKE
-//                     </Text>
-//                   </Tag>
-//                 ) : null}
-//               </>
-//             ) : isBoost ? (
-//               <Tag
-//                 outline
-//                 variant="success"
-//                 style={{ height: '16px', width: 'fit-content', padding: '0 4px' }}
-//                 startIcon={<StarFillIcon width="12px" color="success" scale="sm" />}
-//               >
-//                 <Text bold color="success" fontSize="12px">
-//                   vCAKE Boost
-//                 </Text>
-//               </Tag>
-//             ) : null
-//           ) : null}
-//         </Flex>
-//       </StyledCell>
-//       {isMobile || isTablet ? null : (
-//         <StyledCell>
-//           <Pool.CellContent>
-//             <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-//               Lock Periods
-//             </Text>
-//             <LockedFixedTag>{pool.lockPeriod}D</LockedFixedTag>
-//           </Pool.CellContent>
-//         </StyledCell>
-//       )}
-//       <StyledCell>
-//         <Pool.CellContent>
-//           <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-//             {t('APR')}
-//           </Text>
-//           <Text>
-//             {lockAPR.toSignificant(2)}% ~ {boostAPR.toSignificant(2)}%
-//           </Text>
-//         </Pool.CellContent>
-//       </StyledCell>
-//       <StyledCell>
-//         <Pool.CellContent>
-//           <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-//             {t('Total Staked:')}
-//           </Text>
-//           <Balance
-//             fontSize={['14px', '14px', '16px']}
-//             value={formattedUsdValueStaked}
-//             decimals={2}
-//             unit="$"
-//             fontWeight={[600, 400]}
-//           />
-//         </Pool.CellContent>
-//       </StyledCell>
-//       {isMobile || isTablet ? null : (
-//         <StyledCell>
-//           <Pool.CellContent>
-//             <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-//               {t('Ends in')}
-//             </Text>
-//             <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-//               {remainingDays > 0 ? remainingDays : 0} {t('days')}
-//             </Text>
-//           </Pool.CellContent>
-//         </StyledCell>
-//       )}
-//     </Pool.ExpandRow>
-//   )
-// }
+            <AprCell
+              hideCalculator={isMobile}
+              selectedPeriodIndex={selectedPeriodIndex}
+              selectedPool={selectedPool}
+              pool={pool}
+            />
+          </Box>
+        </StyledCell>
+      ) : null}
+      <Pool.ExpandRow
+        initialActivity={false}
+        panel={
+          <StyledActionPanel expanded>
+            <InfoSection mt="8px">
+              {isMobile || isTablet ? (
+                <Flex justifyContent="space-between" mb="8px">
+                  <Text textAlign="left">{t('Total Staked:')}</Text>
+                  <Box
+                    style={{
+                      textAlign: 'end',
+                    }}
+                  >
+                    <AmountWithUSDSub amount={totalStakedAmount} />
+                  </Box>
+                </Flex>
+              ) : null}
+              {pool.pools.map((p) => (
+                <AprFooter
+                  key={p.lockPeriod}
+                  stakingToken={pool.token}
+                  lockPeriod={p.lockPeriod}
+                  pools={pool.pools}
+                  boostDayPercent={p.boostDayPercent}
+                  lockDayPercent={p.lockDayPercent}
+                />
+              ))}
+            </InfoSection>
+            <ActionContainer style={{ alignItems: isMobile ? 'center' : 'start' }}>
+              <ActionContainer width="100%" pl={['0px', '0px', '0px', '0px', '32px']}>
+                {stakedPositions?.length ? (
+                  <LightGreyCard mb="16px" mt="8px">
+                    {stakedPositions.map((stakePosition, index) => (
+                      <React.Fragment key={stakePosition.pool.poolIndex}>
+                        <StakedPositionSection
+                          stakePosition={stakePosition}
+                          lockDayPercent={stakePosition.pool.lockDayPercent}
+                          boostDayPercent={stakePosition.pool.boostDayPercent}
+                          lockPeriod={stakePosition.pool.lockPeriod}
+                          unlockTime={stakePosition.endLockTime}
+                          stakePositionUserInfo={stakePosition.userInfo}
+                          token={stakePosition.pool.token}
+                          poolIndex={stakePosition.pool.poolIndex}
+                          withdrawalFee={stakePosition.pool.withdrawalFee}
+                          pool={pool}
+                          stakedPeriods={stakedPositions.map((position) => position.pool.lockPeriod)}
+                        />
+                        {index < stakedPositions.length - 1 ? (
+                          <Box my="16px">
+                            <Divider />
+                          </Box>
+                        ) : null}
+                      </React.Fragment>
+                    ))}
+                  </LightGreyCard>
+                ) : isMobile ? null : (
+                  <LightGreyCard mb="16px" mt="8px">
+                    <Text textAlign="center" color="textSubtle">
+                      {t('No stake position')}
+                    </Text>
+                  </LightGreyCard>
+                )}
+              </ActionContainer>
+              <ActionContainer width="100%">
+                <LightGreyCard
+                  mb="16px"
+                  mt="8px"
+                  ml={['0px', '0px', '32px', '32px', '32px']}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Box display="inline">
+                    <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px" mr="4px">
+                      {t('Stake')}
+                    </InlineText>
+                    <InlineText color="secondary" bold fontSize="12px">
+                      {`${pool.token.symbol} `}
+                    </InlineText>
+                  </Box>
+                  <FixedStakingModal
+                    setSelectedPeriodIndex={setSelectedPeriodIndex}
+                    key={selectedPeriodIndex}
+                    initialLockPeriod={
+                      selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
+                    }
+                    pools={pool.pools}
+                    stakingToken={pool.token}
+                    stakedPositions={stakedPositions}
+                  >
+                    {(openModal, hideStakeButton) =>
+                      hideStakeButton ? null : <Button onClick={openModal}>{t('Stake')}</Button>
+                    }
+                  </FixedStakingModal>
+                </LightGreyCard>
+              </ActionContainer>
+            </ActionContainer>
+          </StyledActionPanel>
+        }
+      >
+        {(isExpanded) => (
+          <>
+            {isMobile ? null : (
+              <StyledCell minWidth="120px" display="flex" alignItems="center">
+                <CurrencyLogo currency={pool.token} size="48px" />
+                <Flex flexDirection="column" justifyContent="center" alignItems="start" ml="8px">
+                  <Text color="secondary" textTransform="uppercase" fontSize="12px" bold mb="-4px">
+                    {t('Stake & Earn')}
+                  </Text>
+                  <Text fontSize="16px" bold>
+                    {pool.token.symbol}
+                  </Text>
+                </Flex>
+              </StyledCell>
+            )}
 
-export default function FixedStakingRow() {
-  return null
+            <StyledCell>
+              <Pool.CellContent>
+                <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
+                  {t('Stake Periods')}
+                </Text>
+                <ButtonMenu
+                  disabledIndexes={disabledIndexes}
+                  activeIndex={selectedPeriodIndex ?? pool.pools.length}
+                  onItemClick={(index, event) => {
+                    if (isExpanded) {
+                      event.stopPropagation()
+                    }
+                    setSelectedPeriodIndex(index)
+                  }}
+                  scale="sm"
+                  variant="subtle"
+                >
+                  {pool.pools.map((p) => (
+                    <ButtonMenuItem key={p.lockPeriod}>{p.lockPeriod}D</ButtonMenuItem>
+                  ))}
+                </ButtonMenu>
+              </Pool.CellContent>
+            </StyledCell>
+
+            {isMobile ? null : (
+              <StyledCell>
+                <Pool.CellContent>
+                  <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
+                    {t('APR')}
+                  </Text>
+
+                  <AprCell
+                    hideCalculator={isMobile}
+                    selectedPeriodIndex={selectedPeriodIndex}
+                    selectedPool={selectedPool}
+                    pool={pool}
+                  />
+                </Pool.CellContent>
+              </StyledCell>
+            )}
+            {isMobile || isTablet ? null : (
+              <StyledCell>
+                <Pool.CellContent>
+                  <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
+                    {t('Total Staked:')}
+                  </Text>
+                  <AmountWithUSDSub mb="0px" amount={totalStakedAmount} />
+                </Pool.CellContent>
+              </StyledCell>
+            )}
+          </>
+        )}
+      </Pool.ExpandRow>
+    </>
+  )
 }
+
+export default FixedStakingRow
