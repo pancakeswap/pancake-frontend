@@ -1,7 +1,8 @@
 import { Box, Flex, ModalV2, ModalWrapper, NotificationBellIcon, UserMenuProps } from '@pancakeswap/uikit'
 import { usePushClient } from 'contexts/PushClientContext'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
+import { useViewport } from '../hooks/useViewPort'
 
 interface InotificationBellProps {
   unread: number
@@ -23,9 +24,9 @@ const NotificationMenu: React.FC<
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
   }
 > = ({ children, isMenuOpen, setIsMenuOpen }) => {
-  const [width, setWidth] = useState(-1)
-  const ref = useRef<HTMLDivElement>(null)
   const { unread, setUnread } = usePushClient()
+  const ref = useRef<HTMLDivElement>(null)
+  const { width } = useViewport()
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen)
@@ -39,19 +40,11 @@ const NotificationMenu: React.FC<
         setIsMenuOpen(false)
       }
     }
-    const handleWindowResize = (): void => {
-      setWidth(window.innerWidth)
-    }
-
-    window.addEventListener('resize', handleWindowResize)
     document.addEventListener('click', checkIfClickedOutside)
-    return () => {
-      document.removeEventListener('click', checkIfClickedOutside)
-      window.removeEventListener('resize', handleWindowResize)
-    }
+    return () => document.removeEventListener('click', checkIfClickedOutside)
   }, [isMenuOpen, setIsMenuOpen])
 
-  if (width <= 575) {
+  if (width <= 650) {
     return (
       <Flex alignItems="center" justifyContent="center" height="100%">
         <NotificationBell unread={unread} toggleMenu={toggleMenu} />

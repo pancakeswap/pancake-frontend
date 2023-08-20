@@ -66,7 +66,6 @@ export default class InternalPushProvider implements PushProvider {
     const syncClientSignatures = this.pushClient.syncClient.signatures.getAll({
       account: params.account,
     })
-
     const alreadySynced = syncClientSignatures.length
     if (!alreadySynced) {
       this.emitter.emit('push_signature_requested', { message: 'dummy sig' })
@@ -119,11 +118,14 @@ export default class InternalPushProvider implements PushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
+    console.log('InternalPushProvider > PushClient.subscribe > params', params)
+
     const subscribed = await this.pushClient.subscribe({
       account: params.account,
       metadata: DEFAULT_APP_METADATA,
       onSign: async (message) =>
         window.web3inbox.signMessage(message).then((signature) => {
+          console.log('PushClient.subscribe > onSign > signature', signature)
           return signature
         }),
     })
@@ -149,8 +151,12 @@ export default class InternalPushProvider implements PushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
+
     const subscriptions = this.pushClient.getActiveSubscriptions(params)
-    return Promise.resolve(subscriptions)
+
+    console.log('InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions', subscriptions)
+
+    return Promise.resolve(this.pushClient.getActiveSubscriptions())
   }
 
   public async getMessageHistory(params: { topic: string }) {
@@ -159,6 +165,9 @@ export default class InternalPushProvider implements PushProvider {
     }
 
     const messages = this.pushClient.getMessageHistory(params)
+
+    console.log('InternalPushProvider > PushClient.getMessageHistory > messages', messages)
+
     return Promise.resolve(messages)
   }
 
@@ -166,7 +175,9 @@ export default class InternalPushProvider implements PushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('deletePushMessage'))
     }
+
     this.pushClient.deletePushMessage(params)
+
     return Promise.resolve()
   }
 }
