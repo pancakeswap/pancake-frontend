@@ -4,6 +4,7 @@ import PushContextProvider, { usePushClient } from 'contexts/PushClientContext'
 import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
+import { useAccount, useChainId } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
@@ -104,6 +105,10 @@ const Notifications = () => {
 }
 
 const NotificationsState = () => {
+  const { address } = useAccount()
+  const chainId = useChainId()
+
+  if (!address || !chainId) return <></>
   return (
     <PushContextProvider>
       <Notifications />
