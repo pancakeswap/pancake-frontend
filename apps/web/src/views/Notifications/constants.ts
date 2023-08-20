@@ -35,10 +35,8 @@ export const NotificationSortTypes: OptionProps[] = [
   },
 ]
 
-if (!process.env.NEXT_PUBLIC_PROJECT_ID) throw new Error('`NEXT_PUBLIC_PROJECT_ID` env variable is missing.')
-
 export const DEFAULT_CAST_SIGN_KEY = process.env.CAST_SERVER_SIGN_KEY
-export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID
+export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID || 'ae5413feaf0cdaee02910dc807e03203'
 export const DEFAULT_RELAY_URL = 'https://cast.walletconnect.com'
 export const DEFAULT_APP_METADATA = {
   description: 'local',
