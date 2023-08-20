@@ -124,7 +124,7 @@ const fetchMoonPaySignedUrl = async (
         theme: isDark ? 'dark' : 'light',
         showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
         walletAddress: account,
-        isTest: 'true'
+        isTest: 'true',
       }),
     })
     const result: FetchResponse = await res.json()
@@ -170,7 +170,7 @@ export const FiatOnRampModalButton = ({
   }
   return (
     <AutoColumn gap="md">
-      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
+      <CommitButton onClick={onPresentConfirmModal} disabled={disabled} isLoading={disabled}>
         {buttonText}
       </CommitButton>
     </AutoColumn>

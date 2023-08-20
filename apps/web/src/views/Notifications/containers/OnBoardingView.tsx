@@ -71,7 +71,7 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
     toast.toastSuccess(Events.SignatureRequest.title, Events.SignatureRequest.message)
 
     handleRegistration(userPubkey, false).catch((error: Error) => {
-      const errormessage = error.message.includes('User rejected') ? t('User Rejected the request') : error.message
+      const errormessage = error.message.includes('User rejected') ? t('User ejected the request') : error.message
       toast.toastError(Events.SignatureRequestError.title, errormessage)
     })
     setloading(false)

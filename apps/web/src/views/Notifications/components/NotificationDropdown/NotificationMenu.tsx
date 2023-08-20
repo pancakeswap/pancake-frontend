@@ -51,7 +51,7 @@ const NotificationMenu: React.FC<
     }
   }, [isMenuOpen, setIsMenuOpen])
 
-  if (width <= 650) {
+  if (width <= 575) {
     return (
       <Flex alignItems="center" justifyContent="center" height="100%">
         <NotificationBell unread={unread} toggleMenu={toggleMenu} />
