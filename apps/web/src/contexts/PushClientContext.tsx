@@ -38,7 +38,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   const { eip155Account, account: userPubkey } = useFormattedEip155Account()
 
   const refreshPushState = useCallback(() => {
-    if (!pushClient || !userPubkey || !syncClient) return
+    if (!pushClient || !syncClient || !eip155Account) return
 
     pushClient.getActiveSubscriptions().then((subscriptions) => {
       const _activeSubscriptions = Object.values(subscriptions)
@@ -77,13 +77,12 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   }, [w3iProxy, setPushClient, setSyncClient])
 
   useEffect(() => {
-    if (eip155Account) handleRegistration(eip155Account, true)
+    handleRegistration(eip155Account, true)
   }, [handleRegistration, eip155Account])
 
   useEffect(() => {
     refreshPushState()
-    const intervalId = setInterval(refreshPushState, 30000) // 30 seconds
-    // Clean up the interval when the component unmounts
+    const intervalId: NodeJS.Timer = setInterval(refreshPushState, 60000)
     return () => {
       clearInterval(intervalId)
     }

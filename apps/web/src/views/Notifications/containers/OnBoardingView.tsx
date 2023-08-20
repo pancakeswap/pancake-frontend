@@ -86,6 +86,17 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
       sendPushNotification(BuilderNames.OnBoardNotification, [])
       refreshNotifications()
     })
+    // dont have multiple subs with same acc
+    const allSubscriptions = await pushClient.getActiveSubscriptions()
+    const userSubs = Object.values(allSubscriptions).filter((sub) => {
+      return sub.account === eip155Account
+    })
+    if (userSubs.length >= 1) {
+      toast.toastSuccess('Already subscribed', 'actibating current subscription')
+      refreshNotifications()
+      await pushClient.deleteSubscription({ topic: userSubs[userSubs.length - 1].topic })
+      return
+    }
     pushClient
       .subscribe({ account: eip155Account })
       .then((subscribed: { id: number; subscriptionAuth: string }) => {
