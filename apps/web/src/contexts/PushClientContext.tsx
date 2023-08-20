@@ -44,7 +44,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
       const _activeSubscriptions = Object.values(subscriptions)
       const isSynced = syncClient.signatures.getAll({ account: userPubkey }).length > 0
       setActiveSubscriptions(_activeSubscriptions)
-
+      console.log(_activeSubscriptions)
       if (_activeSubscriptions.some((sub) => sub.account === eip155Account)) {
         setIsSubscribed(true)
       } else setIsSubscribed(false)
@@ -52,7 +52,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
       if (isSynced) setIsOnBoarded(true)
       else setIsOnBoarded(false)
     })
-  }, [pushClient, eip155Account, userPubkey, setIsSubscribed, syncClient, setIsOnBoarded])
+  }, [pushClient, eip155Account, userPubkey, setIsSubscribed, syncClient, setIsOnBoarded, setActiveSubscriptions])
 
   const handleRegistration = useCallback(
     async (key: string, isOnLoad) => {
@@ -60,6 +60,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
         try {
           if (isOnLoad) await pushClient.enablePresistantSync({ account: key })
           else await pushClient.enableSync({ account: key })
+
           refreshPushState()
         } catch (error) {
           throw new Error(`Push client sync registration failed`)
@@ -82,7 +83,13 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     refreshPushState()
-  }, [refreshPushState])
+    const intervalId = setInterval(refreshPushState, 30000) // 30 seconds
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
 
   useEffect(() => {
     if (!pushClient) return () => null
