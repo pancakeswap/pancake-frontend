@@ -8,12 +8,27 @@ interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
   sendBrowserNotification(title: string, body: string): Promise<void>
   subscribeToPushNotifications(): Promise<void>
+  requestNotificationPermission: () => Promise<void | NotificationPermission>
 }
 const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
 
 const useSendPushNotification = (): IUseSendNotification => {
   const { eip155Account } = useFormattedEip155Account()
   const toast = useToast()
+
+  const requestNotificationPermission = async () => {
+    if (!('Notification' in window)) {
+      return Promise.reject(new Error('This browser does not support desktop push notifications'))
+    }
+    switch (Notification.permission) {
+      case 'granted':
+        return Promise.resolve()
+      case 'denied':
+        return Promise.reject(new Error('User does not want to receive notifications'))
+      default:
+        return Notification.requestPermission()
+    }
+  }
 
   async function subscribeToPushNotifications() {
     if ('serviceWorker' in navigator) {
@@ -54,7 +69,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       } catch (error) {
         throw new Error('Error:', error)
       }
-    } 
+    }
   }
 
   const sendPushNotification = async (notificationType: BuilderNames, args?: string[]) => {
@@ -86,7 +101,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       }
     }
   }
-  return { sendPushNotification, sendBrowserNotification, subscribeToPushNotifications }
+  return { sendPushNotification, sendBrowserNotification, subscribeToPushNotifications, requestNotificationPermission }
 }
 
 export default useSendPushNotification

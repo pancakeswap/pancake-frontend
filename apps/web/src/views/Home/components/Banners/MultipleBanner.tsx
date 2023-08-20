@@ -5,7 +5,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
 import type SwiperCore from 'swiper'
-import { Autoplay, EffectFade, Pagination } from 'swiper'
+import Autoplay, { EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/pagination'
@@ -102,7 +102,7 @@ const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   const { address: account } = useAccount()
   const { isDesktop, isTablet } = useMatchBreakpoints()
   const { chainId } = useActiveChainId()
-  const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
+  const [swiperRef, setSwiperRef] = useState<SwiperCore | null>(null)
 
   useIsomorphicEffect(() => {
     if (swiperRef) {

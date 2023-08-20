@@ -7,10 +7,8 @@ import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { Events } from '../constants'
 import { BuilderNames } from '../types'
-
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
-import { requestNotificationPermission } from '../utils/notification'
 
 interface IOnboardingButtonProps {
   account: string
@@ -63,7 +61,9 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
 
   const toast = useToast()
   const { eip155Account } = useFormattedEip155Account()
-  const { sendPushNotification } = useSendPushNotification()
+  const { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission } =
+    useSendPushNotification()
+
   const { t } = useTranslation()
 
   const handleOnboarding = useCallback(async () => {
@@ -91,12 +91,21 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
       .then((subscribed: { id: number; subscriptionAuth: string }) => {
         if (!subscribed) throw new Error('Subscription request failed')
         setloading(false)
+        subscribeToPushNotifications()
       })
       .catch((error: Error) => {
         toast.toastError(Events.SubscriptionRequestError.title, error.message)
         setloading(false)
       })
-  }, [eip155Account, pushClient, toast, sendPushNotification, refreshNotifications, setIsRightView])
+  }, [
+    eip155Account,
+    pushClient,
+    toast,
+    sendPushNotification,
+    refreshNotifications,
+    setIsRightView,
+    subscribeToPushNotifications,
+  ])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
@@ -104,7 +113,7 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
       if (isOnBoarded) requestNotificationPermission().then(async () => handleSubscribe())
       else handleOnboarding()
     },
-    [handleOnboarding, handleSubscribe, isOnBoarded],
+    [handleOnboarding, handleSubscribe, isOnBoarded, requestNotificationPermission],
   )
 
   return (

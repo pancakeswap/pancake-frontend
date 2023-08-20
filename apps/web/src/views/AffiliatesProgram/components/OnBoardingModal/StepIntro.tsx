@@ -9,7 +9,7 @@ import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay, Navigation } from 'swiper/modules'
+import Autoplay, { Navigation } from 'swiper'
 
 const MobileNavigation = styled('div')`
   position: absolute;

@@ -38,7 +38,7 @@ const formatStringWithNewlines = (inputString: string) => {
   ))
 }
 
-const NotificationItem = ({ title, description, id, date, url, image, removeNotification }: INotificationprops) => {
+const NotificationItem = ({ title, description, id, date, url, removeNotification }: INotificationprops) => {
   const [isHovered, setIsHovered] = useState(false)
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
