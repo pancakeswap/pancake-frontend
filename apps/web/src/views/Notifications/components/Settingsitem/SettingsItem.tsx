@@ -1,4 +1,3 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Row, Text, Toggle } from '@pancakeswap/uikit'
 import { PushClientTypes } from '@walletconnect/push-client'
 import Divider from 'components/Divider'
@@ -20,8 +19,6 @@ interface ISettingsContainerProps {
 }
 
 const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettingsprops) => {
-  const { t } = useTranslation()
-
   const toggleScopeEnabled = useCallback(() => {
     setScopes((prevScopes) => ({
       ...prevScopes,
@@ -36,12 +33,12 @@ const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettings
     <Box>
       <Row flexDirection="column" mt="8px" alignItems="flex-start">
         <Text fontWeight="bold" fontSize="16px" textAlign="left">
-          {t(`${title}`)}
+          {title}
         </Text>
       </Row>
       <Flex justifyContent="space-between" alignItems="center" mb="16px">
         <Text maxWidth="80%" color="textSubtle">
-          {t(`${description}`)}
+          {description}
         </Text>
         <Toggle
           id="toggle-expert-mode-button"

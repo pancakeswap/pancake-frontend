@@ -23,12 +23,11 @@ interface ISettingsModalProps {
 }
 
 const NotificationFilter = ({ options, onOptionChange, width, description }: INotificationFilterProps) => {
-  const { t } = useTranslation()
   return (
     <FilterContainer>
       <LabelWrapper style={{ width: `${width}` }}>
         <Text textTransform="uppercase" mb="4px" ml="4px">
-          {t(`${description}`)}
+          {description}
         </Text>
         <Select onOptionChange={onOptionChange} options={options} />
       </LabelWrapper>
