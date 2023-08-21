@@ -12,6 +12,7 @@ import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmissio
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { ModalTitle } from './ModalTitle'
+import { StakedLimitEndOn } from './StakedLimitEndOn'
 
 export function ClaimModal({
   token,
@@ -118,22 +119,24 @@ export function ClaimModal({
 
               <Card mb="16px" isActive>
                 <LightGreyCard>
-                  <Flex justifyContent="space-between" mb="4px">
-                    <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                  <Flex justifyContent="space-between" alignItems="start">
+                    <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
                       {t('Rewards')}
                     </Text>
                     <Box style={{ textAlign: 'end' }}>
-                      <AmountWithUSDSub amount={accrueInterest} />
+                      <AmountWithUSDSub amount={projectedReturnAmount} />
                     </Box>
                   </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
                       {t('Fixed Staking Ended On')}
                     </Text>
-                    <Text bold>{unlockTimeFormat}</Text>
+                    <Text bold>
+                      <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+                    </Text>
                   </Flex>
-                  <Flex justifyContent="space-between" mb="8px">
-                    <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left" mb="4px">
+                  <Flex justifyContent="space-between" mb="8px" alignItems="center">
+                    <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
                       {t('APR')}
                     </Text>
                     <Text bold>{apr.toSignificant(2)}%</Text>
