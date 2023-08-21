@@ -68,8 +68,11 @@ export function useICakeBridgeStatus({ ifoChainId, ifoCredit }: ICakeStatusParam
   )
   const shouldBridgeAgain = useMemo(
     () =>
-      ifoCredit && sourceChainCredit && ifoCredit.gt(0) && sourceChainCredit.quotient !== BigInt(ifoCredit.toString()),
-    [ifoCredit, sourceChainCredit],
+      destChainCredit &&
+      sourceChainCredit &&
+      destChainCredit.quotient > 0n &&
+      sourceChainCredit.quotient !== destChainCredit.quotient,
+    [destChainCredit, sourceChainCredit],
   )
 
   return {

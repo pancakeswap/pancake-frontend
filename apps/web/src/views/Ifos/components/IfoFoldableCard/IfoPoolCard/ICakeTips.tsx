@@ -55,7 +55,7 @@ export function ICakeTips({ ifoChainId, ifoCredit, ifoId }: Props) {
     <WarningTips
       mt="1.5rem"
       action={action}
-      title={<LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
+      title={!shouldBridgeAgain && <LinkTitle href="/ifo#ifo-how-to">{t('How to Take Part')} »</LinkTitle>}
       content={<ContentText>{tips}</ContentText>}
     />
   )

@@ -33,7 +33,7 @@ export function WarningTips({ action, title, content, ...props }: Props) {
     >
       <Flex flexDirection="column" mb="0.625rem">
         {title}
-        <Box mt="0.25rem">{content}</Box>
+        <Box mt={title ? '0.25rem' : undefined}>{content}</Box>
       </Flex>
     </Message>
   )
