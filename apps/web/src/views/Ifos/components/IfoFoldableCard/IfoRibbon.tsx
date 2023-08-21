@@ -10,6 +10,10 @@ import LiveTimer, { SoonTimer } from './Timer'
 import { IfoChainBoard } from '../IfoChainBoard'
 import { getBannerUrl } from '../../helpers'
 
+const StyledProgress = styled(Progress)`
+  background-color: #281a5b;
+`
+
 const Container = styled(Box)`
   position: relative;
 `
@@ -100,13 +104,13 @@ export const IfoRibbon = ({
   return (
     <Container>
       {status === 'live' && (
-        <Progress variant="flat">
+        <StyledProgress variant="flat">
           <ProgressBar
             $useDark
             $background="linear-gradient(273deg, #ffd800 -2.87%, #eb8c00 113.73%)"
             style={{ width: `${Math.min(Math.max(publicIfoData.progress, 0), 100)}%` }}
           />
-        </Progress>
+        </StyledProgress>
       )}
       <Flex
         justifyContent="center"
