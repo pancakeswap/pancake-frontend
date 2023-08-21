@@ -9,7 +9,7 @@
   "Earn": "赚取",
   "%asset% Earned": "已赚取的 %asset%",
   "Coming Soon": "即将推出",
-  "APY": "年化收益率",
+  "APY": "APY",
   "View on BscScan": "在 BscScan 上查看",
   "Finished": "已结束",
   "Project Site": "项目网站",
@@ -2662,5 +2662,7 @@
   "Please visit": "请访问此网页",
   "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "PancakeSwap 正致力于在我们的流动权益质押页面上支持转换合约，以协助持有者将 SnBNB 无缝转换回 BNB。",
   "0% Fee": "0% Fee",
-  "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee"
+  "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
+  "Get more details from": "Get more details from",
+  "RedAlarm": "RedAlarm"
 }
