@@ -137,6 +137,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     <AccessRiskTooltips
       riskLevel={data?.riskLevel}
       hasResult={data?.hasResult}
+      tokenAddress={data?.address}
       riskLevelDescription={data?.riskLevelDescription}
     />,
     { placement: 'bottom' },
