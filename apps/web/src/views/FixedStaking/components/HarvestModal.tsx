@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, ModalV2, useModalV2, Modal, Flex, Text, Box, PreTitle, InfoFilledIcon, Card } from '@pancakeswap/uikit'
 
 import { ReactNode } from 'react'
-import { GreyCard, LightGreyCard } from 'components/Card'
+import { LightGreyCard } from 'components/Card'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -77,21 +77,26 @@ export function HarvestModal({
           ) : (
             <>
               <Box mb="16px">
-                <Card isActive mb="16px">
-                  <GreyCard>
-                    <Flex justifyContent="space-between" alignItems="baseline" mb="8px">
-                      <PreTitle color="textSubtle">{t('Claim Reward')}</PreTitle>
-                      <Box style={{ textAlign: 'end' }}>
-                        <AmountWithUSDSub amount={accrueInterest} />
-                      </Box>
-                    </Flex>
-                    <Flex>
-                      <InfoFilledIcon color="secondary" mr="4px" />
-                      <Text fontSize="14px" color="secondary">
-                        {t('Claimed amount will be sent to your wallet')}
-                      </Text>
-                    </Flex>
-                  </GreyCard>
+                <Card
+                  isActive
+                  mb="16px"
+                  innerCardProps={{
+                    padding: '16px',
+                    opacity: '0.9',
+                  }}
+                >
+                  <Flex justifyContent="space-between" alignItems="baseline" mb="8px">
+                    <PreTitle color="textSubtle">{t('Claim Reward')}</PreTitle>
+                    <Box style={{ textAlign: 'end' }}>
+                      <AmountWithUSDSub fontSize="20px" amount={accrueInterest} />
+                    </Box>
+                  </Flex>
+                  <Flex>
+                    <InfoFilledIcon color="secondary" mr="4px" />
+                    <Text fontSize="14px" color="secondary">
+                      {t('Claimed amount will be sent to your wallet')}
+                    </Text>
+                  </Flex>
                 </Card>
                 <Flex alignItems="center" mb="8px">
                   <PreTitle textTransform="uppercase" bold mr="4px">

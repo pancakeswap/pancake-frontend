@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Balance, Message, MessageText } from '@pancakeswap/uikit'
+import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Message, MessageText } from '@pancakeswap/uikit'
 import { ReactNode } from 'react'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { LightGreyCard } from '@pancakeswap/uikit/src/widgets/RoiCalculator/Card'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import toNumber from 'lodash/toNumber'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
 
 export function FixedRestakingModal({
   stakingToken,
@@ -70,19 +70,14 @@ export function FixedRestakingModal({
                 <LightGreyCard>
                   <Flex justifyContent="space-between">
                     <Box>
-                      <PreTitle>{t('New Staked Amount')}</PreTitle>
-                      <Text bold>
-                        <Balance
-                          bold
-                          fontSize="16px"
-                          decimals={2}
-                          unit={` ${stakingToken.symbol}`}
-                          value={toNumber(amountDeposit.add(stakeCurrencyAmount).toExact())}
-                        />{' '}
-                      </Text>
+                      <Flex>
+                        <PreTitle mr="4px">{t('New')}</PreTitle>
+                        <PreTitle color="textSubtle">{t('Staked Amount')}</PreTitle>
+                      </Flex>
+                      <AmountWithUSDSub amount={amountDeposit.add(stakeCurrencyAmount)} />
                     </Box>
                     <Box style={{ textAlign: 'end' }}>
-                      <PreTitle>{t('Stake Period')}</PreTitle>
+                      <PreTitle color="textSubtle">{t('Stake Period')}</PreTitle>
                       <Text bold>{lockPeriod} Days</Text>
                     </Box>
                   </Flex>

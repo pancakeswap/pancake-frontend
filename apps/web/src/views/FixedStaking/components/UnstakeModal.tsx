@@ -1,5 +1,5 @@
 import { ModalV2, Modal, Text, Button, Card } from '@pancakeswap/uikit'
-import { GreyCard, LightCard } from 'components/Card'
+import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { AmountWithUSDSub } from './AmountWithUSDSub'
@@ -25,21 +25,26 @@ export function UnstakeEndedModal({
         width={['100%', '100%', '420px']}
         maxWidth={['100%', , '420px']}
       >
-        <Card isActive mb="16px">
-          <GreyCard>
-            <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
-              {t('Unstaked Amount')}
-            </Text>
-            <AmountWithUSDSub amount={stakeAmount} />
-          </GreyCard>
-        </Card>
-
         <LightCard mb="16px">
+          <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+            {t('Unstaked Amount')}
+          </Text>
+          <AmountWithUSDSub fontSize="20px" amount={stakeAmount} />
+        </LightCard>
+
+        <Card
+          isActive
+          mb="16px"
+          innerCardProps={{
+            padding: '16px',
+            opacity: '0.9',
+          }}
+        >
           <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
             {t('Reward Amount')}
           </Text>
-          <AmountWithUSDSub amount={accrueInterest} />
-        </LightCard>
+          <AmountWithUSDSub fontSize="20px" amount={accrueInterest} />
+        </Card>
 
         <Button
           disabled={loading}

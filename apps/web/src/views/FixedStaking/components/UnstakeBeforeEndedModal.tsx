@@ -1,18 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Message,
-  MessageText,
-  Modal,
-  ModalV2,
-  PreTitle,
-  Text,
-  useModalV2,
-} from '@pancakeswap/uikit'
+import { Box, Button, Flex, Message, MessageText, Modal, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
 
@@ -91,11 +79,11 @@ export function UnstakeBeforeEnededModal({
                 <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('Commission')}
                 </Text>
-                <Heading color="warning" as="h4">
+                <Text color="#D67E0A" fontSize="20px" bold mb="-4px">
                   {withdrawFee.toSignificant(2)} {token.symbol}
-                </Heading>
+                </Text>
 
-                <Text fontSize="12px" color="warning">
+                <Text fontSize="12px" color="#D67E0A">
                   {t('for early withdrawal')}
                 </Text>
               </Box>
@@ -107,7 +95,7 @@ export function UnstakeBeforeEnededModal({
                 <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
                   {t('You will get')}
                 </Text>
-                <AmountWithUSDSub fontSize="22px" amount={totalGetAmount} />
+                <AmountWithUSDSub fontSize="20px" amount={totalGetAmount} />
               </Box>
             </Flex>
           </LightCard>

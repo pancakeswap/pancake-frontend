@@ -1,5 +1,5 @@
 import { Box, Flex, Modal, ModalV2, PreTitle, Text, Button, useModalV2, Card } from '@pancakeswap/uikit'
-import { LightCard, LightGreyCard } from 'components/Card'
+import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { ReactNode, useState } from 'react'
@@ -92,7 +92,7 @@ export function ClaimModal({
                     <PreTitle fontSize="12px" color="textSubtle">
                       {t('Stake Amount')}
                     </PreTitle>
-                    <AmountWithUSDSub amount={amountDeposit} />
+                    <AmountWithUSDSub fontSize="20px" amount={amountDeposit} />
                   </Box>
                   <Box
                     style={{
@@ -103,7 +103,7 @@ export function ClaimModal({
                       {t('Fixed-staking Ends')}
                     </PreTitle>
 
-                    <Text bold color="#D67E0A" mb="-4px">
+                    <Text fontSize="20px" bold color="#D67E0A" mb="-4px">
                       {t('Ended')}
                     </Text>
 
@@ -117,41 +117,46 @@ export function ClaimModal({
                 {t('Details')}
               </PreTitle>
 
-              <Card mb="16px" isActive>
-                <LightGreyCard>
-                  <Flex justifyContent="space-between" alignItems="start">
-                    <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
-                      {t('Rewards')}
-                    </Text>
-                    <Box style={{ textAlign: 'end' }}>
-                      <AmountWithUSDSub amount={projectedReturnAmount} />
-                    </Box>
-                  </Flex>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
-                      {t('Fixed Staking Ended On')}
-                    </Text>
-                    <Text bold>
-                      <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
-                    </Text>
-                  </Flex>
-                  <Flex justifyContent="space-between" mb="8px" alignItems="center">
-                    <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
-                      {t('APR')}
-                    </Text>
-                    <Text bold>{apr.toSignificant(2)}%</Text>
-                  </Flex>
-                  <Button
-                    variant="subtle"
-                    width="100%"
-                    onClick={() => {
-                      claimModal.onDismiss()
-                      openModal()
-                    }}
-                  >
-                    {t('Claim Reward & Restake')}
-                  </Button>
-                </LightGreyCard>
+              <Card
+                mb="16px"
+                isActive
+                innerCardProps={{
+                  padding: '16px',
+                  opacity: '0.9',
+                }}
+              >
+                <Flex justifyContent="space-between" alignItems="start">
+                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+                    {t('Rewards')}
+                  </Text>
+                  <Box style={{ textAlign: 'end' }}>
+                    <AmountWithUSDSub amount={projectedReturnAmount} />
+                  </Box>
+                </Flex>
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+                    {t('Fixed Staking Ended On')}
+                  </Text>
+                  <Text bold>
+                    <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
+                  </Text>
+                </Flex>
+                <Flex justifyContent="space-between" mb="8px" alignItems="center">
+                  <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
+                    {t('APR')}
+                  </Text>
+                  <Text bold>{apr.toSignificant(2)}%</Text>
+                </Flex>
+                <Button
+                  variant="subtle"
+                  width="100%"
+                  onClick={() => {
+                    claimModal.onDismiss()
+                    openModal()
+                  }}
+                >
+                  {t('Claim Reward & Restake')}
+                </Button>
               </Card>
 
               <Button
