@@ -155,7 +155,7 @@ export default function PoolListPage() {
                   <>
                     {p.isStaked && (
                       <Tag outline variant="warning" mr="8px">
-                        Farming
+                        {t('Farming')}
                       </Tag>
                     )}
                     <RangeTag removed={removed} outOfRange={outOfRange} />
