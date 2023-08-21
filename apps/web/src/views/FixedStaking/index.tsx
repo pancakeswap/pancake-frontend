@@ -18,6 +18,8 @@ const FixedStaking = () => {
 
   const displayPools = useStakedPools()
 
+  console.log('displayPools:', displayPools)
+
   const stakedPositions = useStakedPositionsByUser(displayPools.map((p) => p.poolIndex))
 
   // Groupd pools with same token
