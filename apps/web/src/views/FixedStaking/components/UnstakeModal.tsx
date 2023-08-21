@@ -21,6 +21,10 @@ export function UnstakeEndedModal({
   return (
     <ModalV2 {...unstakeModal} closeOnOverlayClick>
       <Modal
+        onBack={() => {
+          unstakeModal.onDismiss()
+          onBack()
+        }}
         title={<ModalTitle token={token} tokenTitle={token.symbol} lockPeriod={lockPeriod} isEnded />}
         width={['100%', '100%', '420px']}
         maxWidth={['100%', , '420px']}
@@ -55,16 +59,6 @@ export function UnstakeEndedModal({
           onClick={() => handleSubmission(UnstakeType.WITHDRAW, stakeAmount.add(accrueInterest))}
         >
           {loading ? t('Confirming') : t('Confirm Unstake')}
-        </Button>
-        <Button
-          disabled={loading}
-          variant="secondary"
-          onClick={() => {
-            unstakeModal.onDismiss()
-            onBack()
-          }}
-        >
-          Back
         </Button>
       </Modal>
     </ModalV2>

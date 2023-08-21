@@ -56,6 +56,10 @@ export function HarvestModal({
       {children(restakeModal.onOpen)}
       <ModalV2 {...restakeModal} closeOnOverlayClick>
         <Modal
+          onBack={() => {
+            restakeModal.onDismiss()
+            onBack()
+          }}
           title={
             <ModalTitle
               token={stakingToken}
@@ -170,15 +174,6 @@ export function HarvestModal({
                 onClick={() => handleSubmission(UnstakeType.HARVEST, accrueInterest)}
               >
                 {pendingTx ? t('Restaking') : t('Confirm Claim & Restake')}
-              </Button>
-              <Button
-                onClick={() => {
-                  restakeModal.onDismiss()
-                  onBack()
-                }}
-                variant="secondary"
-              >
-                {t('Back')}
               </Button>
             </>
           )}
