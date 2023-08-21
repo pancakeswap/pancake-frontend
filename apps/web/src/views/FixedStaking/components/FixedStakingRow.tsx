@@ -44,6 +44,8 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
       stakedPositions,
     })
 
+  const hideStakeButton = stakedPositions.length === pool.pools.length
+
   return (
     <>
       {isMobile ? (
@@ -113,6 +115,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                     {stakedPositions.map((stakePosition, index) => (
                       <React.Fragment key={stakePosition.pool.poolIndex}>
                         <StakedPositionSection
+                          showRow={hideStakeButton && !isMobile}
                           stakePosition={stakePosition}
                           lockDayPercent={stakePosition.pool.lockDayPercent}
                           boostDayPercent={stakePosition.pool.boostDayPercent}
@@ -133,48 +136,42 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                       </React.Fragment>
                     ))}
                   </LightGreyCard>
-                ) : isMobile ? null : (
-                  <LightGreyCard mb="16px" mt="8px">
-                    <Text textAlign="center" color="textSubtle">
-                      {t('No stake position')}
-                    </Text>
-                  </LightGreyCard>
-                )}
+                ) : null}
               </ActionContainer>
-              <ActionContainer width="100%">
-                <LightGreyCard
-                  mb="16px"
-                  mt="8px"
-                  ml={['0px', '0px', '32px', '32px', '32px']}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Box display="inline">
-                    <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px" mr="4px">
-                      {t('Stake')}
-                    </InlineText>
-                    <InlineText color="secondary" bold fontSize="12px">
-                      {`${pool.token.symbol} `}
-                    </InlineText>
-                  </Box>
-                  <FixedStakingModal
-                    setSelectedPeriodIndex={setSelectedPeriodIndex}
-                    key={selectedPeriodIndex}
-                    initialLockPeriod={
-                      selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
-                    }
-                    pools={pool.pools}
-                    stakingToken={pool.token}
-                    stakedPositions={stakedPositions}
+              {hideStakeButton ? null : (
+                <ActionContainer width="100%">
+                  <LightGreyCard
+                    mb="16px"
+                    mt="8px"
+                    ml={['0px', '0px', '32px', '32px', '32px']}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
                   >
-                    {(openModal, hideStakeButton) =>
-                      hideStakeButton ? null : <Button onClick={openModal}>{t('Stake')}</Button>
-                    }
-                  </FixedStakingModal>
-                </LightGreyCard>
-              </ActionContainer>
+                    <Box display="inline">
+                      <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px" mr="4px">
+                        {t('Stake')}
+                      </InlineText>
+                      <InlineText color="secondary" bold fontSize="12px">
+                        {`${pool.token.symbol} `}
+                      </InlineText>
+                    </Box>
+                    <FixedStakingModal
+                      setSelectedPeriodIndex={setSelectedPeriodIndex}
+                      key={selectedPeriodIndex}
+                      initialLockPeriod={
+                        selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
+                      }
+                      pools={pool.pools}
+                      stakingToken={pool.token}
+                      stakedPositions={stakedPositions}
+                    >
+                      {(openModal) => <Button onClick={openModal}>{t('Stake')}</Button>}
+                    </FixedStakingModal>
+                  </LightGreyCard>
+                </ActionContainer>
+              )}
             </ActionContainer>
           </StyledActionPanel>
         }
