@@ -45,10 +45,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
         .filter((chain) => {
           if (chain.id === chainId) return true
           if ('testnet' in chain && chain.testnet) {
-            if (process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview') {
-              return false
-            }
-            return true
+            return process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
           }
           return true
         })
