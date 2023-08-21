@@ -101,7 +101,7 @@ export function FixedStakingModal({
                         <StyledButton
                           key={pool.lockPeriod}
                           scale="md"
-                          variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'light'}
+                          variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'bubblegum'}
                           width="100%"
                           mx="2px"
                           onClick={() => setLockPeriod(pool.lockPeriod)}

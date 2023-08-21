@@ -19,7 +19,12 @@ export function AprFooter({ lockPeriod, stakingToken, boostDayPercent, lockDayPe
           </>
         ) : null}
         <Text>{boostAPR.greaterThan(0) ? <s>{lockAPR.toSignificant(2)}%</s> : <>{lockAPR.toSignificant(2)}%</>}</Text>
-        <FixedStakingCalculator stakingToken={stakingToken} initialLockPeriod={lockPeriod} pools={pools} />
+        <FixedStakingCalculator
+          hideBackButton
+          stakingToken={stakingToken}
+          initialLockPeriod={lockPeriod}
+          pools={pools}
+        />
       </Flex>
     </Flex>
   )

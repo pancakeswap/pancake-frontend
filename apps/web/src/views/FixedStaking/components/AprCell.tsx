@@ -22,6 +22,7 @@ export default function AprCell({
       </Text>
       {hideCalculator ? null : (
         <FixedStakingCalculator
+          hideBackButton
           stakingToken={pool.token}
           pools={pool.pools}
           key={selectedPeriodIndex}
@@ -48,6 +49,7 @@ export default function AprCell({
       </Text>
       {hideCalculator ? null : (
         <FixedStakingCalculator
+          hideBackButton
           stakingToken={selectedPool.token}
           initialLockPeriod={selectedPool.lockPeriod}
           pools={pool.pools}

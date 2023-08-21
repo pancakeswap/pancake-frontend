@@ -23,10 +23,12 @@ export function FixedStakingCalculator({
   stakingToken,
   pools,
   initialLockPeriod,
+  hideBackButton,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   initialLockPeriod: number
+  hideBackButton?: boolean
 }) {
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
 
@@ -55,7 +57,7 @@ export function FixedStakingCalculator({
       >
         <StakingModalTemplate
           title={t('ROI Calculator')}
-          onBack={() => stakeModal.onDismiss()}
+          onBack={hideBackButton ? null : () => stakeModal.onDismiss()}
           hideStakeButton
           stakingToken={stakingToken}
           pools={pools}
@@ -80,7 +82,7 @@ export function FixedStakingCalculator({
                   <StyledButton
                     key={pool.lockPeriod}
                     scale="md"
-                    variant={pool.lockPeriod === lockPeriod ? 'danger' : 'bubblegum'}
+                    variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'bubblegum'}
                     width="100%"
                     mx="2px"
                     onClick={(e) => {
