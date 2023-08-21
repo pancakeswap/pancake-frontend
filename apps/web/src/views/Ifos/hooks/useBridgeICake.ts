@@ -149,13 +149,6 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake,
     ifoChainName,
   ])
 
-  // Clear tx hash from local storage if message delivered
-  useEffect(() => {
-    if (isICakeSynced || message?.status === MessageStatus.DELIVERED) {
-      clearTransactionHash()
-    }
-  }, [isICakeSynced, message?.status, clearTransactionHash])
-
   const state = useMemo<BridgeState>(() => {
     if (!txHash && !signing && !receipt && !message) {
       return INITIAL_BRIDGE_STATE
@@ -190,10 +183,17 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake,
     [state.state],
   )
 
+  const isBridged = useMemo(
+    () => isICakeSynced || message?.status === MessageStatus.DELIVERED,
+    [message?.status, isICakeSynced],
+  )
+
   return {
     state,
     bridge,
     isBridging,
+    isBridged,
+    clearBridgeHistory: clearTransactionHash,
   }
 }
 

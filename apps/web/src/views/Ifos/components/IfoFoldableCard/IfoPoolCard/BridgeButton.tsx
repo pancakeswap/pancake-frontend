@@ -37,7 +37,7 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
   // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
-  const { state, bridge, isBridging } = useBridgeICake({
+  const { state, bridge, isBridging, isBridged, clearBridgeHistory } = useBridgeICake({
     ifoId,
     icake,
     dstIcake,
@@ -63,6 +63,13 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
     }
   }, [isCurrentChainSourceChain, switchToSourceChain, bridge])
 
+  const onModalDismiss = useCallback(() => {
+    if (isBridged) {
+      clearBridgeHistory()
+    }
+    return onDismiss()
+  }, [onDismiss, isBridged, clearBridgeHistory])
+
   useEffect(() => {
     if (state.state !== BRIDGE_STATE.INITIAL) {
       onOpen()
@@ -76,7 +83,7 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
       <BridgeICakeModal
         icake={icake}
         isOpen={isOpen}
-        onDismiss={onDismiss}
+        onDismiss={onModalDismiss}
         sourceChainId={sourceChain}
         ifoChainId={ifoChainId}
         state={state}
