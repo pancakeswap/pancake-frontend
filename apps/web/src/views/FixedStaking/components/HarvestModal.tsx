@@ -120,7 +120,7 @@ export function HarvestModal({
                     <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                       {t('APR')}
                     </Text>
-                    <Text bold>{lockAPR?.toSignificant(2)}%</Text>
+                    <Text bold>{boostAPR.greaterThan(0) ? boostAPR.toSignificant(2) : lockAPR?.toSignificant(2)}%</Text>
                   </Flex>
                   {boostAPR?.greaterThan(0) ? (
                     <Flex alignItems="center" justifyContent="space-between">

@@ -99,7 +99,7 @@ export default function FixedStakingOverview({
         <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
           {t('APR')}
         </Text>
-        <Text bold>{lockAPR?.toSignificant(2)}%</Text>
+        <Text bold>{apr?.toSignificant(2)}%</Text>
       </Flex>
       {boostAPR && lockAPR ? (
         <Flex alignItems="center" justifyContent="space-between">
