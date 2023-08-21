@@ -104,10 +104,13 @@ const NotificationsState = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [isReady, setIsReady] = useState<boolean>(false)
 
+  const { address } = useAccount()
+
   useEffect(() => {
+    if (!address) return () => null
     const t = setTimeout(() => setIsReady(true), 8000)
     return () => clearTimeout(t)
-  }, [])
+  }, [address])
 
   if (!isReady) return <></>
   return (
