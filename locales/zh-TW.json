@@ -4,7 +4,7 @@
   "Docs": "文件",
   "Voting": "投票",
   "Lottery": "彩券",
-  "Connect Wallet": "與錢包連線",
+  "Connect Wallet": "連接錢包",
   "Blog": "網誌",
   "Earn": "賺取",
   "%asset% Earned": "已賺取的 %asset%",
@@ -85,7 +85,7 @@
   "Search": "搜尋",
   "History": "歷程記錄",
   "Burned": "銷毀量",
-  "Prize Pot": "獎金池",
+  "Prize Pot": "獎池",
   "Winning Tickets": "中獎彩券",
   "Enable Contract": "授權合約",
   "%asset% staked": "%asset% 已質押",
@@ -469,7 +469,7 @@
   "Show More": "展開",
   "Share Score": "分享分數",
   "Your tier: gold": "您的級別：黃金",
-  "Love, The Chefs x": "廚師 x 的問候",
+  "Love, The Chefs x": "大廚 x 的問候",
   "HECK YEAH!": "太棒了！",
   "Next tier": "下一個級別",
   "to become #%rank% in team": "成為團隊中的第 %rank% 名",
@@ -2662,5 +2662,7 @@
   "Please visit": "請前往頁面",
   "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "PancakeSwap 正致力於在我們的流動權益質押頁面上支援轉換合約，以期未來能協助持有者將 SnBNB 無縫轉換回 BNB。",
   "0% Fee": "0% Fee",
-  "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee"
+  "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
+  "Get more details from": "Get more details from",
+  "RedAlarm": "RedAlarm"
 }
