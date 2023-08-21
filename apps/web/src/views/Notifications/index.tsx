@@ -77,10 +77,6 @@ const Notifications = () => {
   )
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
-  useEffect(() => {
-    refreshNotifications()
-  }, [isMenuOpen])
-
   return (
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
@@ -105,12 +101,11 @@ const Notifications = () => {
 }
 
 const NotificationsState = () => {
-  const [isRightView, setIsRightView] = useState(true)
-
-  const { address } = useAccount()
-  const chainId = useChainId()
-
-  return <></>
+  return (
+    <PushContextProvider>
+      <Notifications />
+    </PushContextProvider>
+  )
 }
 
 export default NotificationsState
