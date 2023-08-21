@@ -158,7 +158,7 @@ export default function PoolListPage() {
                         {t('Farming')}
                       </Tag>
                     )}
-                    <RangeTag removed={removed} outOfRange={outOfRange} />
+                    {token0Symbol && token1Symbol ? <RangeTag removed={removed} outOfRange={outOfRange} /> : null}
                   </>
                 }
                 subtitle={subtitle}

@@ -366,7 +366,7 @@ function Remove({ tokenId }: { tokenId: bigint }) {
                   {t('Farming')}
                 </Tag>
               )}
-              <RangeTag removed={removed} outOfRange={outOfRange} />
+              {liquidityValue0 && liquidityValue1 ? <RangeTag removed={removed} outOfRange={outOfRange} /> : null}
             </Flex>
           </AutoRow>
           <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
