@@ -7,11 +7,13 @@ import {
   mainnet,
   zkSync,
   zkSyncTestnet,
-  polygonZkEvmTestnet as polygonZkEvmTestnet_,
-  polygonZkEvm as polygonZkEvm_,
-  lineaTestnet as lineaTestnet_,
+  polygonZkEvmTestnet,
+  polygonZkEvm,
+  lineaTestnet,
   arbitrum,
   arbitrumGoerli,
+  baseGoerli,
+  scrollSepolia as scrollSepolia_,
   Chain,
 } from 'wagmi/chains'
 
@@ -27,6 +29,9 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'zkSyncTestnet',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
+  [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
+  [ChainId.BASE_TESTNET]: 'baseTestnet',
+  [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
 } as const satisfies Record<ChainId, string>
 
 const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
@@ -56,38 +61,42 @@ const bsc = {
   },
 } satisfies Chain
 
-const polygonZkEvm = {
-  ...polygonZkEvm_,
+const scrollSepolia = {
+  ...scrollSepolia_,
   contracts: {
     multicall3: {
       address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 57746,
+      blockCreated: 9473,
     },
   },
 } as const satisfies Chain
 
-const polygonZkEvmTestnet = {
-  ...polygonZkEvmTestnet_,
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 525686,
-    },
-  },
-} as const satisfies Chain
-
-const lineaTestnet = {
-  ...lineaTestnet_,
-  blockExplorers: {
-    etherscan: {
-      name: 'LineaScan',
-      url: 'https://goerli.lineascan.build',
-    },
+export const opbnbTestnet = {
+  id: 5_611,
+  name: 'opBNB Testnet',
+  network: 'opbnb-testnet',
+  nativeCurrency: bscTestnet.nativeCurrency,
+  rpcUrls: {
     default: {
-      name: 'LineaScan',
-      url: 'https://goerli.lineascan.build',
+      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
+    },
+    public: {
+      http: ['https://opbnb-testnet-rpc.bnbchain.org'],
     },
   },
+  blockExplorers: {
+    default: {
+      name: 'opBNBScan',
+      url: 'http://opbnbscan.com',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 3705108,
+    },
+  },
+  testnet: true,
 } as const satisfies Chain
 
 /**
@@ -116,4 +125,7 @@ export const CHAINS = [
   lineaTestnet,
   arbitrumGoerli,
   arbitrum,
+  baseGoerli,
+  opbnbTestnet,
+  scrollSepolia,
 ]

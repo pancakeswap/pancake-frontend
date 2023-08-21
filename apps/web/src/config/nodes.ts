@@ -1,6 +1,16 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { arbitrum, polygonZkEvm, zkSync, zkSyncTestnet, polygonZkEvmTestnet, arbitrumGoerli } from 'wagmi/chains'
+import {
+  arbitrum,
+  polygonZkEvm,
+  zkSync,
+  zkSyncTestnet,
+  polygonZkEvmTestnet,
+  arbitrumGoerli,
+  baseGoerli,
+  scrollSepolia,
+} from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
+import { opbnbTestnet } from './chains'
 
 const POLYGON_ZKEVM_NODES = [
   'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
@@ -43,6 +53,9 @@ export const SERVER_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
+  [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
+  [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
@@ -79,4 +92,7 @@ export const PUBLIC_NODES = {
     'https://linea-testnet.rpc.thirdweb.com',
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
+  [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
+  [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>

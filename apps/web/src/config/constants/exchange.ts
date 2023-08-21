@@ -13,6 +13,9 @@ import {
   zkSyncTestnetTokens,
   lineaTestnetTokens,
   arbitrumGoerliTokens,
+  opBnbTestnetTokens,
+  baseTestnetTokens,
+  scrollSepoliaTokens,
 } from '@pancakeswap/tokens'
 import { ChainTokenList } from './types'
 
@@ -35,6 +38,9 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.ZKSYNC]: 3_000,
   [ChainId.ZKSYNC_TESTNET]: 3_000,
   [ChainId.LINEA_TESTNET]: 12_000,
+  [ChainId.OPBNB_TESTNET]: 6_000,
+  [ChainId.BASE_TESTNET]: 6_000,
+  [ChainId.SCROLL_SEPOLIA]: 6_000,
 } as const satisfies Record<ChainId, number>
 
 // used for display in the default list when adding liquidity
@@ -50,6 +56,14 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
+  [ChainId.OPBNB_TESTNET]: [
+    opBnbTestnetTokens.usdc,
+    opBnbTestnetTokens.weth,
+    opBnbTestnetTokens.wbnb,
+    opBnbTestnetTokens.usdt,
+  ],
+  [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -65,6 +79,9 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
+  [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.usdc, opBnbTestnetTokens.wbnb, opBnbTestnetTokens.usdt],
+  [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
+  [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -87,6 +104,9 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.ZKSYNC]: [[zksyncTokens.usdc, zksyncTokens.weth]],
   [ChainId.ZKSYNC_TESTNET]: [[zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth]],
   [ChainId.LINEA_TESTNET]: [[lineaTestnetTokens.usdc, lineaTestnetTokens.weth]],
+  [ChainId.OPBNB_TESTNET]: [[opBnbTestnetTokens.usdc, opBnbTestnetTokens.wbnb]],
+  [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
+  [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
 }
 
 export const BIG_INT_ZERO = 0n

@@ -9,11 +9,14 @@ export enum ChainId {
   BSC_TESTNET = 97,
   ZKSYNC_TESTNET = 280,
   ZKSYNC = 324,
+  OPBNB_TESTNET = 5611,
   POLYGON_ZKEVM = 1101,
   POLYGON_ZKEVM_TESTNET = 1442,
   ARBITRUM_ONE = 42161,
   ARBITRUM_GOERLI = 421613,
+  SCROLL_SEPOLIA = 534351,
   LINEA_TESTNET = 59140,
+  BASE_TESTNET = 84531,
 }
 
 export const ZERO_PERCENT = new Percent('0')
@@ -35,6 +38,9 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.ZKSYNC]: '0xd03D8D566183F0086d8D09A84E1e30b58Dd5619d',
   [ChainId.ZKSYNC_TESTNET]: '0x48a33610Cd0E130af2024D55F67aE72a8C51aC27',
   [ChainId.LINEA_TESTNET]: '0xB6FAfd4ADbCd21cF665909767e0eD0D05709abfB',
+  [ChainId.OPBNB_TESTNET]: '0x776e4bD2f72de2176A59465e316335aaf8ed4E8F',
+  [ChainId.BASE_TESTNET]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
+  [ChainId.SCROLL_SEPOLIA]: '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
 } as const satisfies Record<ChainId, Address>
 
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
@@ -52,6 +58,9 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.ZKSYNC]: '0x0100045707a42494392b3558029b9869f865ff9df8f375dc1bf20b0555093f43',
   [ChainId.ZKSYNC_TESTNET]: '0x0100045707a42494392b3558029b9869f865ff9df8f375dc1bf20b0555093f43',
   [ChainId.LINEA_TESTNET]: INIT_CODE_HASH_ETH,
+  [ChainId.OPBNB_TESTNET]: INIT_CODE_HASH_ETH,
+  [ChainId.BASE_TESTNET]: INIT_CODE_HASH_ETH,
+  [ChainId.SCROLL_SEPOLIA]: INIT_CODE_HASH_ETH,
 } as const satisfies Record<ChainId, Hash>
 
 export const WETH9 = {
@@ -143,6 +152,30 @@ export const WETH9 = {
     'Wrapped Ether',
     'https://weth.io'
   ),
+  [ChainId.OPBNB_TESTNET]: new ERC20Token(
+    ChainId.OPBNB_TESTNET,
+    '0x584f7b986d9942B0859a1E6921efA5342A673d04',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
+  [ChainId.BASE_TESTNET]: new ERC20Token(
+    ChainId.BASE_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
+  [ChainId.SCROLL_SEPOLIA]: new ERC20Token(
+    ChainId.SCROLL_SEPOLIA,
+    '0x5300000000000000000000000000000000000004',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
 }
 
 export const WBNB = {
@@ -170,6 +203,14 @@ export const WBNB = {
     'Wrapped BNB',
     'https://www.binance.org'
   ),
+  [ChainId.OPBNB_TESTNET]: new ERC20Token(
+    ChainId.OPBNB_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WBNB',
+    'Wrapped BNB',
+    'https://www.binance.org'
+  ),
 }
 
 export const WNATIVE = {
@@ -184,6 +225,9 @@ export const WNATIVE = {
   [ChainId.ZKSYNC]: WETH9[ChainId.ZKSYNC],
   [ChainId.ZKSYNC_TESTNET]: WETH9[ChainId.ZKSYNC_TESTNET],
   [ChainId.LINEA_TESTNET]: WETH9[ChainId.LINEA_TESTNET],
+  [ChainId.OPBNB_TESTNET]: WBNB[ChainId.OPBNB_TESTNET],
+  [ChainId.BASE_TESTNET]: WETH9[ChainId.BASE_TESTNET],
+  [ChainId.SCROLL_SEPOLIA]: WETH9[ChainId.SCROLL_SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>
 
 const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
@@ -212,6 +256,13 @@ export const NATIVE = {
   [ChainId.ZKSYNC]: ETHER,
   [ChainId.ZKSYNC_TESTNET]: ETHER,
   [ChainId.LINEA_TESTNET]: ETHER,
+  [ChainId.OPBNB_TESTNET]: {
+    name: 'Binance Chain Native Token',
+    symbol: 'tBNB',
+    decimals: 18,
+  },
+  [ChainId.BASE_TESTNET]: ETHER,
+  [ChainId.SCROLL_SEPOLIA]: ETHER,
 } satisfies Record<
   ChainId,
   {

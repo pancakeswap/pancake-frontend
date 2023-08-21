@@ -9,7 +9,7 @@ import {
   custom,
   getAddress,
 } from 'viem'
-import { Connector, Chain, WalletClient, ConnectorNotFoundError, ChainNotConfiguredError } from '@wagmi/core'
+import { Connector, Chain, WalletClient, ConnectorNotFoundError, ChainNotConfiguredError } from 'wagmi'
 import type { EthereumProviderInterface } from '@blocto/sdk'
 import { normalizeChainId } from '../utils'
 

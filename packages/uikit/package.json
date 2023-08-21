@@ -89,7 +89,7 @@
     "viem": "^1.2.9",
     "vite": "^4.3.1",
     "vitest": "^0.27.2",
-    "wagmi": "^1.3.4"
+    "wagmi": "^1.3.10"
   },
   "peerDependencies": {
     "@pancakeswap/farms": "workspace:*",

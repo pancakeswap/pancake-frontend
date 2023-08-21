@@ -42,7 +42,16 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
       </Box>
       <UserMenuDivider />
       {chains
-        .filter((chain) => !('testnet' in chain && chain.testnet) || chain.id === chainId)
+        .filter((chain) => {
+          if (chain.id === chainId) return true
+          if ('testnet' in chain && chain.testnet) {
+            if (process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview') {
+              return false
+            }
+            return true
+          }
+          return true
+        })
         .map((chain) => (
           <UserMenuItem
             key={chain.id}
@@ -144,6 +153,9 @@ const SHORT_SYMBOL = {
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ZKSYNC_TESTNET]: 'tZkSync',
   [ChainId.LINEA_TESTNET]: 'tLinea',
+  [ChainId.OPBNB_TESTNET]: 'tOpBNB',
+  [ChainId.BASE_TESTNET]: 'tBase',
+  [ChainId.SCROLL_SEPOLIA]: 'tScroll',
 } as const satisfies Record<ChainId, string>
 
 export const NetworkSwitcher = () => {
