@@ -66,7 +66,7 @@ export function BuyCryptoForm({
     },
     [onFieldAInput],
   )
-  // need to reloacte this
+  // need to relocate this
   const fetchMinBuyAmounts = useCallback(async () => {
     const limitAmounts = await fetchMinimumBuyAmount(outputCurrencyId, inputCurrencyId, chainId)
 

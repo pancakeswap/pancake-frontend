@@ -115,7 +115,6 @@ const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: st
       `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=${MOONPAY_API_KEY}&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
-    // console.log(await response.json())
     if (!response.ok) {
       return undefined
     }
@@ -386,6 +385,4 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
     }
     fetchData()
   }, [dispatch, query, isReady, account, chainId, address])
-
-  // return result
 }
