@@ -105,7 +105,8 @@ const NotificationsState = () => {
   const [isReady, setIsReady] = useState<boolean>(false)
 
   useEffect(() => {
-    if (isMenuOpen) setIsReady(true)
+    const t = setTimeout(() => setIsReady(true), 8000)
+    return () => clearTimeout(t)
   }, [])
 
   if (!isReady) return <></>
