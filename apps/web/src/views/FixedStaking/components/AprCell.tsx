@@ -2,8 +2,19 @@ import { Flex, StarCircle, Text } from '@pancakeswap/uikit'
 
 import { FixedStakingCalculator } from './FixedStakingCalculator'
 import { AprRange, calculateAPRPercent } from './AprRange'
+import { FixedStakingPool, PoolGroup } from '../type'
 
-export default function AprCell({ selectedPeriodIndex, selectedPool, pool, hideCalculator }) {
+export default function AprCell({
+  selectedPeriodIndex,
+  selectedPool,
+  pool,
+  hideCalculator,
+}: {
+  selectedPeriodIndex: number
+  selectedPool: FixedStakingPool
+  pool: PoolGroup
+  hideCalculator?: boolean
+}) {
   return selectedPeriodIndex === null || !selectedPool ? (
     <Flex alignItems="center">
       <Text bold>

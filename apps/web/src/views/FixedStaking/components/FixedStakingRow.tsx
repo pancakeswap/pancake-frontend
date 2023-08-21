@@ -8,6 +8,8 @@ import {
   ButtonMenuItem,
   ButtonMenu,
   useMatchBreakpoints,
+  UnlockIcon,
+  LockIcon,
 } from '@pancakeswap/uikit'
 import { StyledCell } from 'views/Pools/components/PoolsTable/Cells/NameCell'
 import { useTranslation } from '@pancakeswap/localization'
@@ -36,10 +38,11 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
   const totalStakedAmount = CurrencyAmount.fromRawAmount(pool.token, pool.totalDeposited.toNumber())
   const { isMobile, isTablet } = useMatchBreakpoints()
 
-  const { selectedPeriodIndex, setSelectedPeriodIndex, disabledIndexes, selectedPool } = useSelectedPeriod({
-    pool,
-    stakedPositions,
-  })
+  const { selectedPeriodIndex, setSelectedPeriodIndex, claimedIndexes, lockedIndexes, selectedPool } =
+    useSelectedPeriod({
+      pool,
+      stakedPositions,
+    })
 
   return (
     <>
@@ -198,7 +201,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                   {t('Stake Periods')}
                 </Text>
                 <ButtonMenu
-                  disabledIndexes={disabledIndexes}
+                  disabledIndexes={[...claimedIndexes, ...lockedIndexes]}
                   activeIndex={selectedPeriodIndex ?? pool.pools.length}
                   onItemClick={(index, event) => {
                     if (isExpanded) {
@@ -209,8 +212,12 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                   scale="sm"
                   variant="subtle"
                 >
-                  {pool.pools.map((p) => (
-                    <ButtonMenuItem key={p.lockPeriod}>{p.lockPeriod}D</ButtonMenuItem>
+                  {pool.pools.map((p, index) => (
+                    <ButtonMenuItem width="48px" key={p.lockPeriod}>
+                      {claimedIndexes.includes(index) ? <UnlockIcon color="secondary" /> : null}
+                      {lockedIndexes.includes(index) ? <LockIcon color="secondary" /> : null}
+                      {p.lockPeriod}D
+                    </ButtonMenuItem>
                   ))}
                 </ButtonMenu>
               </Pool.CellContent>

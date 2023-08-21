@@ -1,4 +1,4 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, LockIcon, Text, UnlockIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { ReactNode } from 'react'
@@ -34,10 +34,11 @@ export function FixedStakingCardBody({
   const { t } = useTranslation()
   const totalStakedAmount = CurrencyAmount.fromRawAmount(pool.token, pool.totalDeposited.toNumber())
 
-  const { selectedPeriodIndex, setSelectedPeriodIndex, disabledIndexes, selectedPool } = useSelectedPeriod({
-    pool,
-    stakedPositions,
-  })
+  const { selectedPeriodIndex, setSelectedPeriodIndex, claimedIndexes, lockedIndexes, selectedPool } =
+    useSelectedPeriod({
+      pool,
+      stakedPositions,
+    })
 
   return (
     <>
@@ -50,14 +51,18 @@ export function FixedStakingCardBody({
         title={t('Stake Periods:')}
         detail={
           <ButtonMenu
-            disabledIndexes={disabledIndexes}
+            disabledIndexes={[...claimedIndexes, ...lockedIndexes]}
             activeIndex={selectedPeriodIndex ?? pool.pools.length}
             onItemClick={(index) => setSelectedPeriodIndex(index)}
             scale="sm"
             variant="subtle"
           >
-            {pool.pools.map((p) => (
-              <ButtonMenuItem key={p.lockPeriod}>{p.lockPeriod}D</ButtonMenuItem>
+            {pool.pools.map((p, index) => (
+              <ButtonMenuItem width="48px" key={p.lockPeriod}>
+                {claimedIndexes.includes(index) ? <UnlockIcon color="secondary" /> : null}
+                {lockedIndexes.includes(index) ? <LockIcon color="secondary" /> : null}
+                {p.lockPeriod}D
+              </ButtonMenuItem>
             ))}
           </ButtonMenu>
         }
