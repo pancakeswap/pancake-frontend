@@ -256,7 +256,7 @@ export function StakingModalTemplate({
         maxWidth={['100%', , '420px']}
       >
         <StakeConfirmModal
-          stakeCurrencyAmount={stakeCurrencyAmount}
+          stakeCurrencyAmount={stakeCurrencyAmount.add(depositedAmount)}
           poolEndDay={params.poolEndDay}
           lockAPR={lockAPR}
           boostAPR={boostAPR}
