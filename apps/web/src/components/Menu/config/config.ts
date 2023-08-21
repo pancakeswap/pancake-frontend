@@ -85,7 +85,7 @@ const config: (
           label: t('Buy Crypto'),
           LabelIcon: NewIconButton,
           href: '/buy-crypto',
-          supportedCainIds: SUPPORT_BUY_CRYPTO,
+          supportChainIds: SUPPORT_BUY_CRYPTO,
           status: { text: t('New'), color: 'success' },
         },
       ].map((item) => addMenuItemSupported(item, chainId)),

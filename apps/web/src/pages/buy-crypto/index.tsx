@@ -1,6 +1,6 @@
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import BuyCrypto from 'views/BuyCrypto'
-import { SUPPORTED_CHAINS } from 'views/BuyCrypto/constants'
 
 const BuyCryptoPage = ({ userIp }) => {
   return <BuyCrypto userIp={userIp} />
@@ -22,6 +22,6 @@ export async function getServerSideProps() {
   }
 }
 
-BuyCryptoPage.chains = SUPPORTED_CHAINS
+BuyCryptoPage.chains = SUPPORT_BUY_CRYPTO
 
 export default BuyCryptoPage
