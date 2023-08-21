@@ -10,7 +10,7 @@ type Props = {
   content?: ReactNode
 } & SpaceProps
 
-export const LinkTitle = styled(Link)`
+export const LinkTitle = styled(Link).attrs({ scroll: false })`
   font-weight: bold;
   font-size: 0.875rem;
   text-decoration: underline;
