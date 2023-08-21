@@ -53,9 +53,9 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHe
   )
 }
 
-const Notifications = () => {
+const Notifications = ({ isMenuOpen, setIsMenuOpen }: any) => {
   const [isRightView, setIsRightView] = useState(true)
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  // const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const {
     userPubkey,
     isSubscribed,
@@ -101,9 +101,17 @@ const Notifications = () => {
 }
 
 const NotificationsState = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const [isReady, setIsReady] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (isMenuOpen) setIsReady(true)
+  }, [])
+
+  if (!isReady) return <></>
   return (
     <PushContextProvider>
-      <Notifications />
+      <Notifications isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
     </PushContextProvider>
   )
 }
