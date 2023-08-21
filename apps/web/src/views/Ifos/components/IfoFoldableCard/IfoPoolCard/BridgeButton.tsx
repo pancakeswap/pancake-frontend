@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { SpaceProps } from 'styled-system'
 import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
-import { Button, useModalV2 } from '@pancakeswap/uikit'
-import { useCallback, useEffect } from 'react'
+import { Button, useModalV2, Loading } from '@pancakeswap/uikit'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -28,6 +28,7 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
   const { chainId } = useActiveChainId()
   const sourceChain = useIfoSourceChain()
   const isCurrentChainSourceChain = chainId === sourceChain
+  const [isSwitching, setIsSwitching] = useState(false)
   const { switchNetworkAsync } = useSwitchNetwork()
   const switchToSourceChain = useCallback(
     () => sourceChain && !isCurrentChainSourceChain && switchNetworkAsync(sourceChain),
@@ -36,7 +37,7 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
   // const nativeIfoSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
   const { onOpen, onDismiss, isOpen } = useModalV2()
-  const { state, bridge } = useBridgeICake({
+  const { state, bridge, isBridging } = useBridgeICake({
     ifoId,
     icake,
     dstIcake,
@@ -53,9 +54,12 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
       return
     }
     try {
+      setIsSwitching(true)
       await switchToSourceChain()
     } catch (e) {
       console.error(e)
+    } finally {
+      setIsSwitching(false)
     }
   }, [isCurrentChainSourceChain, switchToSourceChain, bridge])
 
@@ -64,6 +68,8 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
       onOpen()
     }
   }, [state.state, onOpen])
+
+  const loading = isSwitching || isBridging
 
   return (
     <>
@@ -76,8 +82,9 @@ export function BridgeButton({ ifoChainId, icake, dstIcake, buttonVisible = true
         state={state}
       />
       {buttonVisible && (
-        <Button width="100%" id="bridge-icake" onClick={onBridgeClick} {...props}>
+        <Button width="100%" id="bridge-icake" disabled={loading} onClick={onBridgeClick} {...props}>
           {isCurrentChainSourceChain ? t('Bridge iCAKE') : t('Switch Network to Bridge')}
+          {loading && <Loading width="1rem" height="1rem" ml="0.5rem" />}
         </Button>
       )}
     </>

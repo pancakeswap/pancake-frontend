@@ -185,9 +185,15 @@ export function useBridgeICake({ srcChainId, ifoChainId, icake, ifoId, dstIcake,
     return INITIAL_BRIDGE_STATE
   }, [signing, receipt, message, txHash])
 
+  const isBridging = useMemo(
+    () => state.state !== BRIDGE_STATE.INITIAL && state.state !== BRIDGE_STATE.FINISHED,
+    [state.state],
+  )
+
   return {
     state,
     bridge,
+    isBridging,
   }
 }
 
