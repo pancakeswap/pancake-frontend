@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { getCakeContract } from 'utils/contractHelpers'
 import { useAccount, useContractRead } from 'wagmi'
@@ -16,11 +17,14 @@ export const useCakeApprovalStatus = (spender) => {
     watch: true,
   })
 
-  return {
-    isVaultApproved: data > 0,
-    allowance: new BigNumber(data?.toString()),
-    setLastUpdated: refetch,
-  }
+  return useMemo(
+    () => ({
+      isVaultApproved: data > 0,
+      allowance: new BigNumber(data?.toString()),
+      setLastUpdated: refetch,
+    }),
+    [data, refetch],
+  )
 }
 
 export default useCakeApprovalStatus
