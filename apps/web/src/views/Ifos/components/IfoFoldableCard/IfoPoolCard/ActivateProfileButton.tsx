@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { isNativeIfoSupported, PROFILE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
-import { useAccount } from 'wagmi'
 import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -19,10 +18,9 @@ export function ActivateProfileButton({ saleFinished }: Props) {
   const { chainId } = useActiveChainId()
   const profileSupported = useMemo(() => isNativeIfoSupported(chainId), [chainId])
   const { t } = useTranslation()
-  const { address: account } = useAccount()
   const { onOpen, onDismiss, isOpen } = useModalV2()
   const chainNames = useChainNames(PROFILE_SUPPORTED_CHAIN_IDS)
-  const to = useMemo(() => `/profile/${account?.toLowerCase() || ''}`, [account])
+  const to = useMemo(() => '/create-profile', [])
 
   // FIXME: not sure why push got canceled after network switching. Need further investigation
   // It's a temp fix
