@@ -95,20 +95,19 @@ export function FixedStakingModal({
                     {t('Stake Duration')}
                   </PreTitle>
                   <Flex>
-                    {pools
-                      .filter((pool) => !claimedPeriods.includes(pool.lockPeriod))
-                      .map((pool) => (
-                        <StyledButton
-                          key={pool.lockPeriod}
-                          scale="md"
-                          variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'bubblegum'}
-                          width="100%"
-                          mx="2px"
-                          onClick={() => setLockPeriod(pool.lockPeriod)}
-                        >
-                          {pool.lockPeriod}D
-                        </StyledButton>
-                      ))}
+                    {pools.map((pool) => (
+                      <StyledButton
+                        disabled={claimedPeriods.includes(pool.lockPeriod)}
+                        key={pool.lockPeriod}
+                        scale="md"
+                        variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'bubblegum'}
+                        width="100%"
+                        mx="2px"
+                        onClick={() => setLockPeriod(pool.lockPeriod)}
+                      >
+                        {pool.lockPeriod}D
+                      </StyledButton>
+                    ))}
                   </Flex>
                   <Flex mt="8px">
                     <InfoFilledIcon
