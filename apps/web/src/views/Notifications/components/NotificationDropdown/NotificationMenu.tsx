@@ -24,7 +24,7 @@ const NotificationMenu: React.FC<
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
   }
 > = ({ children, isMenuOpen, setIsMenuOpen }) => {
-  const { unread, setUnread } = usePushClient()
+  const { unread, setUnread, refreshNotifications } = usePushClient()
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useViewport()
 
@@ -40,9 +40,10 @@ const NotificationMenu: React.FC<
         setIsMenuOpen(false)
       }
     }
+    refreshNotifications()
     document.addEventListener('click', checkIfClickedOutside)
     return () => document.removeEventListener('click', checkIfClickedOutside)
-  }, [isMenuOpen, setIsMenuOpen])
+  }, [isMenuOpen, setIsMenuOpen, refreshNotifications])
 
   if (width <= 650) {
     return (

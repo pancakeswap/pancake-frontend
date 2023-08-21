@@ -5,7 +5,6 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
-import { disconnect } from 'wagmi/actions'
 import { ConnectorNotFoundError, SwitchChainNotSupportedError, useConnect, useDisconnect, useNetwork } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
@@ -49,13 +48,13 @@ const useAuth = () => {
 
   const logout = useCallback(async () => {
     try {
-      await disconnect()
+      await disconnectAsync()
     } catch (error) {
       console.error(error)
     } finally {
       clearUserStates(dispatch, { chainId: chain?.id })
     }
-  }, [disconnect, dispatch, chain?.id])
+  }, [disconnectAsync, dispatch, chain?.id])
 
   return { login, logout }
 }
