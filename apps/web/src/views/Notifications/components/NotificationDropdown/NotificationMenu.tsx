@@ -40,9 +40,12 @@ const NotificationMenu: React.FC<
         setIsMenuOpen(false)
       }
     }
-    refreshNotifications()
+    const t = setTimeout(() => refreshNotifications(), 1000)
     document.addEventListener('click', checkIfClickedOutside)
-    return () => document.removeEventListener('click', checkIfClickedOutside)
+    return () => {
+      document.removeEventListener('click', checkIfClickedOutside)
+      clearTimeout(t)
+    }
   }, [isMenuOpen, setIsMenuOpen, refreshNotifications])
 
   if (width <= 650) {
