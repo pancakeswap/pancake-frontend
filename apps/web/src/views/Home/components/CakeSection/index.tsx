@@ -142,7 +142,7 @@ const CakeSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { drawImage } = useDrawCanvas(videoRef, canvasRef)
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
     canvasInterval = window.setInterval(() => {
       drawImage?.()
@@ -202,7 +202,7 @@ const CakeSection: React.FC = () => {
             {t('Ecosystem')}
           </Text>
           <EcoSystemTagOuterWrapper>
-            <FeatureTagsWrapper direction={isMobile ? 'right' : 'up'}>
+            <FeatureTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
               {ecosystemTagData.map((item) => (
                 <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
               ))}
@@ -223,7 +223,7 @@ const CakeSection: React.FC = () => {
             {t('Partners')}
           </Text>
           <PartnerTagOuterWrapper>
-            <PartnerTagsWrapper direction={isMobile ? 'right' : 'up'} play={isMobile}>
+            <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'} play={isMobile || isTablet}>
               {partnerData.map((d) => (
                 <CakePartnerTag icon={d.icon} width={d.width} />
               ))}
