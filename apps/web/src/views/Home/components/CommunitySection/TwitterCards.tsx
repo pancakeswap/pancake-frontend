@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Link, LogoIcon, OpenNewIcon, Text, VerifiedIcon } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Link,
+  LogoIcon,
+  OpenNewIcon,
+  Text,
+  VerifiedIcon,
+  FavoriteBorderIcon,
+  BarChartIcon,
+} from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
 import styled from 'styled-components'
@@ -9,6 +18,13 @@ export const BlogImage = styled.div`
   height: 140px;
   border-radius: 16px;
   background-size: cover;
+`
+export const Divider = styled.div`
+  width: 1px;
+  height: 16px;
+  background-color: ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 25%;
+  margin: 0 6px;
 `
 
 export const Wrapper = styled.div`
@@ -94,17 +110,21 @@ export const TwitterCards: React.FC = () => {
         </Text>
         <VerifiedIcon ml="3px" mt="9px" color={theme.colors.secondary} />
       </Flex>
-
-      <Flex style={{ gap: 8 }}>
+      <Flex style={{ gap: 2 }} alignItems="center" justifyContent="center">
         <Text fontSize={14} color={theme.colors.textSubtle}>
           @PancakeSwap
         </Text>
+        <Divider />
         <Text fontSize={14} color={theme.isDark ? '#A881FC' : theme.colors.secondary}>
           {tweets[0].date}
         </Text>
+        <Divider />
+        <FavoriteBorderIcon fontSize={14} color={theme.colors.textSubtle} />
         <Text fontSize={14} color={theme.colors.textSubtle}>
           {tweets[0].like}
         </Text>
+        <Divider />
+        <BarChartIcon color={theme.colors.textSubtle} />
         <Text fontSize={14} color={theme.colors.textSubtle}>
           {tweets[0].impression}
         </Text>

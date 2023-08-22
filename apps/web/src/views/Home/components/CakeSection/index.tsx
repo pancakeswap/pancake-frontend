@@ -156,7 +156,7 @@ const CakeSection: React.FC = () => {
       style={{ gap: 32 }}
       marginLeft={isMobile ? '-8px' : '0px'}
       width={isMobile ? 'calc(100% + 16px)' : '100%'}
-      overflow="hidden"
+      overflow={isMobile ? 'hidden' : 'visible'}
     >
       <Text textAlign="center">
         <Text fontSize="40px" display="inline" fontWeight={600} lineHeight="110%">

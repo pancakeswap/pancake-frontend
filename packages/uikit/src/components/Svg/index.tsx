@@ -187,5 +187,7 @@ export { ZksyncWithOutCircleIcon } from "./Icons/ZksyncWithOutCircle";
 export { default as Arbitrum } from "./Icons/Arbitrum";
 export { InsertChartOutlinedIcon } from "./Icons/InsertChartOutlined";
 export { GovernanceIcon } from "./Icons/Governance";
+export { FavoriteBorderIcon } from "./Icons/FavoriteBorder";
+export { BarChartIcon } from "./Icons/BarChart";
 export { StoreIcon } from "./Icons/Store";
 export type { SvgProps } from "./types";
