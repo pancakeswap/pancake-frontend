@@ -34,7 +34,7 @@ export const IfoPageLayout = ({ children }) => {
       if (!userNotUsCitizenAcknowledgement) {
         onUSCitizenModalPresent()
       }
-    }, 1000)
+    }, 2000)
 
     return () => clearTimeout(timer)
   }, [userNotUsCitizenAcknowledgement, onUSCitizenModalPresent])
