@@ -31,6 +31,19 @@ import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 
+function generateRandomNumberString(): string {
+  const length = 32
+  const characters = '0123456789'
+  let result = ''
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length)
+    result += characters.charAt(randomIndex)
+  }
+
+  return result
+}
+
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
   width: 100%;
@@ -263,6 +276,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
+        const randomString = generateRandomNumberString()
+
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
@@ -274,7 +289,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fixFiatAmount: true,
           fixFiatCurrency: true,
           fixCurrency: true,
-          merchantTransactionId: `${chainId}_${account.address}`,
+          merchantTransactionId: `${chainId}_${account.address}_${randomString}`,
           currencies: supportedTokenMap[chainId].mercuryoTokens,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,

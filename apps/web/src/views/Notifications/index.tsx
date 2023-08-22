@@ -103,7 +103,7 @@ const NotificationsState = () => {
       setIsReady(false)
       return () => null
     }
-    const t = setTimeout(() => setIsReady(true), 5000)
+    const t = setTimeout(() => setIsReady(true), 3000)
     return () => clearTimeout(t)
   }, [address])
 
