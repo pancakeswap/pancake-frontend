@@ -274,6 +274,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fixFiatAmount: true,
           fixFiatCurrency: true,
           fixCurrency: true,
+          merchantTransactionId: `${chainId}_${account.address}`,
           currencies: supportedTokenMap[chainId].mercuryoTokens,
           fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,

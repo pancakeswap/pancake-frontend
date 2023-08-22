@@ -60,7 +60,7 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
   } = usePushClient()
 
   const toast = useToast()
-  const { eip155Account } = useFormattedEip155Account()
+  const { eip155Account, account } = useFormattedEip155Account()
   const { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission } =
     useSendPushNotification()
 
@@ -103,12 +103,21 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
         if (!subscribed) throw new Error('Subscription request failed')
         setloading(false)
         subscribeToPushNotifications()
+        fetch(`https://pcs-on-ramp-api/add-user`, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({ user: account }),
+        })
       })
       .catch((error: Error) => {
         toast.toastError(Events.SubscriptionRequestError.title, error.message)
         setloading(false)
       })
   }, [
+    account,
     eip155Account,
     pushClient,
     toast,
