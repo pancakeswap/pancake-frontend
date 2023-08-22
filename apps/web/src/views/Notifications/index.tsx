@@ -4,7 +4,7 @@ import PushContextProvider, { usePushClient } from 'contexts/PushClientContext'
 import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
-import { useAccount, useChainId } from 'wagmi'
+import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
@@ -53,16 +53,10 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHe
   )
 }
 
-const Notifications = ({ isMenuOpen, setIsMenuOpen }: any) => {
+const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
-  // const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const {
-    userPubkey,
-    isSubscribed,
-    activeSubscriptions,
-    pushClientProxy: pushClient,
-    refreshNotifications,
-  } = usePushClient()
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const { userPubkey, isSubscribed, activeSubscriptions, pushClientProxy: pushClient } = usePushClient()
   const { eip155Account } = useFormattedEip155Account()
 
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
@@ -101,21 +95,22 @@ const Notifications = ({ isMenuOpen, setIsMenuOpen }: any) => {
 }
 
 const NotificationsState = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [isReady, setIsReady] = useState<boolean>(false)
-
   const { address } = useAccount()
 
   useEffect(() => {
-    if (!address) return () => null
-    const t = setTimeout(() => setIsReady(true), 8000)
+    if (!address) {
+      setIsReady(false)
+      return () => null
+    }
+    const t = setTimeout(() => setIsReady(true), 5000)
     return () => clearTimeout(t)
   }, [address])
 
   if (!isReady) return <></>
   return (
     <PushContextProvider>
-      <Notifications isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      <Notifications />
     </PushContextProvider>
   )
 }

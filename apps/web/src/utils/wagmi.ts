@@ -4,7 +4,6 @@ import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import memoize from 'lodash/memoize'
-import { DEFAULT_APP_METADATA, DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
 import { configureChains, createConfig, createStorage } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -64,18 +63,16 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
-    metadata: DEFAULT_APP_METADATA,
     showQrModal: true,
-    projectId: DEFAULT_PROJECT_ID,
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })
 
 export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
-    metadata: DEFAULT_APP_METADATA,
     showQrModal: false,
-    projectId: DEFAULT_PROJECT_ID,
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })
 
@@ -97,7 +94,7 @@ const bloctoConnector = new BloctoConnector({
 const ledgerConnector = new LedgerConnector({
   chains,
   options: {
-    projectId: DEFAULT_PROJECT_ID,
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
   },
 })
 
