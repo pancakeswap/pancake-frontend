@@ -1,14 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, useMatchBreakpoints, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
+import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import GradientLogo from '../GradientLogoSvg'
-import { ChainTags } from './ChainTags'
-import { Divider, MetricsCard } from './MetricsCard'
-import bnbBallRocket from '../../images/bnb-ball-rocket.png'
 import aptosBallRocket from '../../images/aptos-ball-rocket.png'
+import bnbBallRocket from '../../images/bnb-ball-rocket.png'
 import ethBallRocket from '../../images/eth-ball-rocket.png'
+import { ChainTags } from './ChainTags'
+import { MetricsCard } from './MetricsCard'
 
 const ImageLayer = styled.div`
   position: absolute;
@@ -17,6 +16,7 @@ const ImageLayer = styled.div`
   top: 0;
   left: 0;
   pointer-events: none;
+  overflow: hidden;
 `
 const BnbBallRocket = styled.div`
   position: absolute;
@@ -43,7 +43,7 @@ const Stats = () => {
   const { isMobile } = useMatchBreakpoints()
 
   return (
-    <Flex justifyContent="center" alignItems="center" flexDirection="column">
+    <Flex justifyContent="center" alignItems="center" flexDirection="column" overflow="hidden">
       {/* <GradientLogo height="48px" width="48px" mb="24px" /> */}
       <Text textAlign="center" fontWeight={600} fontSize={isMobile ? '20px' : '32px'}>
         {t('Shaping the Future of Decentralized Trading:')}
@@ -55,7 +55,7 @@ const Stats = () => {
         justifyContent="center"
         alignItems="center"
         flexDirection={isMobile ? 'column' : 'row'}
-        width={['100%', '100%', '800px', '800px']}
+        width={['100%', '100%', '100%', '800px']}
         style={{ gap: isMobile ? 32 : 50 }}
       >
         <MetricsCard title={t('Total Users:')} value={addressCount} description={t('in the last 30 days')} />

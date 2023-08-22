@@ -92,7 +92,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         <MetricsSection />
       </PageSection>
       <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
+        innerProps={{ style: { ...HomeSectionContainerStyles, maxWidth: 'auto' } }}
         background={theme.colors.background}
         containerProps={{
           id: 'home-4',
