@@ -151,7 +151,13 @@ const CakeSection: React.FC = () => {
   }, [drawImage])
 
   return (
-    <Flex flexDirection="column" style={{ gap: 32 }}>
+    <Flex
+      flexDirection="column"
+      style={{ gap: 32 }}
+      marginLeft={isMobile ? '-8px' : '0px'}
+      width={isMobile ? 'calc(100% + 16px)' : '100%'}
+      overflow="hidden"
+    >
       <Text textAlign="center">
         <Text fontSize="40px" display="inline" fontWeight={600} lineHeight="110%">
           {t('Unlock the Full Potential of DeFi with')}
