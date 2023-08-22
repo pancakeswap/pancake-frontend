@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
-import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
@@ -265,7 +265,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: 'a9f3d282-db2d-4364-ae62-602c5000f003',
+          widgetId: MERCURYO_WIDGET_ID,
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,

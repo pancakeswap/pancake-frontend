@@ -1,10 +1,10 @@
-import { MOONPAY_BASE_URL, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MOONPAY_API_KEY, MOONPAY_BASE_URL, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { ProviderQoute } from '../types'
 
 export async function fetchMoonpayQuote(baseAmount: number, currencyCode: string, outputCurrency: string) {
   // Fetch data from endpoint 1
   const response = await fetch(
-    `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrency.toLowerCase()}/buy_quote/?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyAmount=${baseAmount}&&baseCurrencyCode=${currencyCode.toLowerCase()}`,
+    `${MOONPAY_BASE_URL}/v3/currencies/${outputCurrency.toLowerCase()}/buy_quote/?apiKey=${MOONPAY_API_KEY}&baseCurrencyAmount=${baseAmount}&&baseCurrencyCode=${currencyCode.toLowerCase()}`,
     {
       headers: {
         Accept: 'application/json',

@@ -15,7 +15,7 @@ import max from 'lodash/max'
 import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
-import { MOONPAY_BASE_URL } from 'config/constants/endpoints'
+import { MOONPAY_API_KEY, MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
 import {
   Field,
@@ -75,7 +75,7 @@ function getMinMaxAmountCap(quotes: LimitQuote[]): LimitQuote {
 const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string) => {
   try {
     const response = await fetch(
-      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=a9f3d282-db2d-4364-ae62-602c5000f003&type=buy&from=${toUpper(
+      `https://api.mercuryo.io/v1.6/widget/buy/rate?widget_id=${MERCURYO_WIDGET_ID}&type=buy&from=${toUpper(
         inputCurrencyId,
       )}&to=${toUpper(outputCurrencyId)}&amount=1`,
     )
@@ -112,10 +112,9 @@ const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: st
   try {
     const baseCurrency = `${outputCurrencyId.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
     const response = await fetch(
-      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=pk_live_XtlA4L91XMYQyZ1wC9NFwqHWOMCPhQFD&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
+      `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=${MOONPAY_API_KEY}&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
 
-    // console.log(await response.json())
     if (!response.ok) {
       return undefined
     }
@@ -386,6 +385,4 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
     }
     fetchData()
   }, [dispatch, query, isReady, account, chainId, address])
-
-  // return result
 }
