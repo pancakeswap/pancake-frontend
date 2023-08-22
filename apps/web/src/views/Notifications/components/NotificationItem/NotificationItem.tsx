@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AnimatePresence, Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
 import { PushClientTypes } from '@walletconnect/push-client'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
@@ -14,7 +13,6 @@ import {
 } from 'views/Notifications/styles'
 import { formatTime } from 'views/Notifications/utils/date'
 import FlexRow from 'views/Predictions/components/FlexRow'
-import { useChainId } from 'wagmi'
 
 interface INotificationprops {
   title: string
@@ -40,14 +38,13 @@ const formatStringWithNewlines = (inputString: string) => {
   ))
 }
 
-const NotificationItem = ({ title, description, id, date, url, removeNotification }: INotificationprops) => {
+const NotificationItem = ({ title, description, id, date, image, url, removeNotification }: INotificationprops) => {
   const [isHovered, setIsHovered] = useState(false)
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const containerRef = useRef(null)
-  const chainId = useChainId()
   const contentRef = useRef<HTMLDivElement>(null)
   const theme = useTheme()
   const { t } = useTranslation()
@@ -92,13 +89,7 @@ const NotificationItem = ({ title, description, id, date, url, removeNotificatio
           onMouseLeave={handleHover}
         >
           <Box marginRight="15px" display="flex" minWidth="40px">
-            <Image
-              src={title.includes('Price') ? `${ASSET_CDN}/web/chains/${chainId}.png` : '/logo.png'}
-              alt="Notification Image"
-              height={40}
-              width={40}
-              unoptimized
-            />
+            <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={40} width={40} unoptimized />
           </Box>
           <Flex flexDirection="column">
             <Flex justifyContent="space-between">
