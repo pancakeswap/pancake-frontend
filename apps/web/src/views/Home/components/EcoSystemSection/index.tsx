@@ -182,7 +182,7 @@ const useNftGameBlockData = () => {
       {
         title: t('Pancake Protectors'),
         description: t('Immersive PvP & PvE tower-defense GameFi'),
-        ctaTitle: t('Try Now'),
+        ctaTitle: t('Play Now'),
         image: gamePancakeProtectors,
       },
       {
@@ -200,7 +200,7 @@ const useNftGameBlockData = () => {
       {
         title: t('NFT Marketplace'),
         description: t('Trade unique NFTs on BNB Chain'),
-        ctaTitle: t('Try Now'),
+        ctaTitle: t('Trade Now'),
         image: nftMarketplace,
       },
     ]
