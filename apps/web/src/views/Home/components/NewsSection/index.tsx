@@ -116,9 +116,14 @@ export const NewsSection: React.FC = () => {
   const { t } = useTranslation()
   return (
     <Flex flexDirection="column" style={{ gap: 36 }}>
-      <Heading color="#7645D9" scale="xl" textAlign="center">
-        {t('Featured News')}
-      </Heading>
+      <Flex justifyContent="center" style={{ gap: 8 }}>
+        <Text fontSize={40} fontWeight={600} textAlign="center">
+          {t('Featured')}
+        </Text>
+        <Text fontSize={40} fontWeight={600} color="secondary" textAlign="center">
+          {t('News')}
+        </Text>
+      </Flex>
       <CardWrapper>
         {newsData.map((d) => (
           <NewsCard

@@ -130,29 +130,27 @@ const CakeDataRow = () => {
   return (
     <Grid>
       <Flex flexDirection="column" style={{ gridArea: 'a' }}>
-        <Text color="secondary" bold>
+        <Text color="text" bold>
           {t('Circulating Supply')}
         </Text>
         {circulatingSupply ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={circulatingSupply} />
+          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={circulatingSupply} color="secondary" />
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="secondary">{t('Unit')}</Text>
+        <Text color="textSubtle">{t('Unit')}</Text>
       </Flex>
       <StyledColumn noMobileBorder style={{ gridArea: 'b' }}>
-        <Text color="secondary" bold>
-          {t('Total supply')}
-        </Text>
+        <Text bold>{t('Total supply')}</Text>
         {cakeSupply ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
+          <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
         ) : (
           <>
             <div ref={observerRef} />
             <Skeleton height={24} width={126} my="4px" />
           </>
         )}
-        <Text color="secondary">{t('Unit')}</Text>
+        <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
       {/* <StyledColumn noMobileBorder style={{ gridArea: 'c' }}>
         <Text color="textSubtle">{t('Max Supply')}</Text>
@@ -160,38 +158,36 @@ const CakeDataRow = () => {
         <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
       </StyledColumn> */}
       <StyledColumn noDesktopBorder style={{ gridArea: 'd' }}>
-        <Text color="secondary" bold>
-          {t('Market cap')}
-        </Text>
+        <Text bold>{t('Market cap')}</Text>
         {mcap?.gt(0) && mcapString ? (
-          <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
+          <Heading color="secondary" scale="lg">
+            {t('$%marketCap%', { marketCap: mcapString })}
+          </Heading>
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="secondary">{t('Unit')}</Text>
+        <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
       <StyledColumn style={{ gridArea: 'e' }}>
-        <Text color="secondary" bold>
-          {t('Burned to date')}
-        </Text>
+        <Text bold>{t('Burned to date')}</Text>
         {burnedBalance ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
+          <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="secondary">{t('Unit')}</Text>
+        <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
       <StyledColumn style={{ gridArea: 'f' }}>
-        <Text color="secondary" bold>
-          {t('Current emissions')}
-        </Text>
+        <Text bold>{t('Current emissions')}</Text>
 
         {emissionsPerBlock ? (
-          <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: formatNumber(emissionsPerBlock) })}</Heading>
+          <Heading color="secondary" scale="lg">
+            {t('%cakeEmissions%/block', { cakeEmissions: formatNumber(emissionsPerBlock) })}
+          </Heading>
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
-        <Text color="secondary">{t('Unit')}</Text>
+        <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
     </Grid>
   )
