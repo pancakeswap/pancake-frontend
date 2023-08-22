@@ -17,4 +17,11 @@ export const farmsV3 = defineFarmV3Configs([
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
   },
+  {
+    pid: 3,
+    lpAddress: '0x3832fB996C49792e71018f948f5bDdd987778424',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.usdt,
+    feeAmount: FeeAmount.LOWEST,
+  },
 ])
