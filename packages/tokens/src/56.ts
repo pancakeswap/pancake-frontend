@@ -2698,4 +2698,12 @@ export const bscTokens = {
     'CyberConnect',
     'https://cyberconnect.me/',
   ),
+  wncg: new ERC20Token(
+    ChainId.BSC,
+    '0x52242cbAb41e290E9E17CCC50Cc437bB60020a9d',
+    18,
+    'WNCG',
+    'WrappedNCG',
+    'https://nine-chronicles.com/',
+  ),
 }
