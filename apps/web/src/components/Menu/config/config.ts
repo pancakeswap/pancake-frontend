@@ -89,6 +89,11 @@ const config: (
           href: '/buy-crypto',
           supportChainIds: SUPPORT_BUY_CRYPTO,
         },
+        {
+          label: t('Trading Reward'),
+          href: '/trading-reward',
+          hideSubNav: true,
+        },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
@@ -116,24 +121,27 @@ const config: (
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
+    // {
+    //   label: t('Win'),
+    //   href: '/prediction',
+    //   icon: TrophyIcon,
+    //   fillIcon: TrophyFillIcon,
+    //   supportChainIds: SUPPORT_ONLY_BSC,
+    //   items: [
+    //     {
+    //       label: t('Trading Competition'),
+    //       href: '/competition',
+    //       image: '/images/decorations/tc.png',
+    //       hideSubNav: true,
+    //     },
+    //   ],
+    // },
     {
-      label: t('Win'),
-      href: '/prediction',
-      icon: TrophyIcon,
-      fillIcon: TrophyFillIcon,
-      supportChainIds: SUPPORT_ONLY_BSC,
+      label: t('Game'),
+      icon: PancakeProtectorIcon,
+      hideSubNav: true,
+      href: 'https://protectors.pancakeswap.finance',
       items: [
-        {
-          label: t('Trading Reward'),
-          href: '/trading-reward',
-          hideSubNav: true,
-        },
-        {
-          label: t('Trading Competition'),
-          href: '/competition',
-          image: '/images/decorations/tc.png',
-          hideSubNav: true,
-        },
         {
           label: t('Prediction (BETA)'),
           href: '/prediction',
@@ -149,14 +157,6 @@ const config: (
           href: '/pottery',
           image: '/images/decorations/lottery.png',
         },
-      ],
-    },
-    {
-      label: t('Game'),
-      icon: PancakeProtectorIcon,
-      hideSubNav: true,
-      href: 'https://protectors.pancakeswap.finance',
-      items: [
         {
           label: t('Pancake Protectors'),
           href: 'https://protectors.pancakeswap.finance',
