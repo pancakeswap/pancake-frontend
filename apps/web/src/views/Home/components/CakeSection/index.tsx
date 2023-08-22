@@ -202,7 +202,7 @@ const CakeSection: React.FC = () => {
             {t('Ecosystem')}
           </Text>
           <EcoSystemTagOuterWrapper>
-            <FeatureTagsWrapper direction={isMobile ? 'right' : 'down'}>
+            <FeatureTagsWrapper direction={isMobile ? 'right' : 'up'}>
               {ecosystemTagData.map((item) => (
                 <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
               ))}
@@ -223,7 +223,7 @@ const CakeSection: React.FC = () => {
             {t('Partners')}
           </Text>
           <PartnerTagOuterWrapper>
-            <PartnerTagsWrapper direction={isMobile ? 'right' : 'down'} play={isMobile}>
+            <PartnerTagsWrapper direction={isMobile ? 'right' : 'up'} play={isMobile}>
               {partnerData.map((d) => (
                 <CakePartnerTag icon={d.icon} width={d.width} />
               ))}
