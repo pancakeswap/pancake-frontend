@@ -55,7 +55,7 @@ const Grid = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-areas: 'a b d e f';
+    grid-template-areas: 'a b c d e';
     grid-gap: 32px;
     grid-template-columns: repeat(3, auto);
   }
@@ -157,7 +157,7 @@ const CakeDataRow = () => {
 
         <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
       </StyledColumn> */}
-      <StyledColumn noDesktopBorder style={{ gridArea: 'd' }}>
+      <StyledColumn style={{ gridArea: 'c' }}>
         <Text bold>{t('Market cap')}</Text>
         {mcap?.gt(0) && mcapString ? (
           <Heading color="secondary" scale="lg">
@@ -168,8 +168,8 @@ const CakeDataRow = () => {
         )}
         <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
-      <StyledColumn style={{ gridArea: 'e' }}>
-        <Text bold>{t('Burned to date')}</Text>
+      <StyledColumn style={{ gridArea: 'd' }}>
+        <Text bold>{t('Token Burn')}</Text>
         {burnedBalance ? (
           <Balance color="secondary" decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
         ) : (
@@ -177,7 +177,7 @@ const CakeDataRow = () => {
         )}
         <Text color="textSubtle">{t('Unit')}</Text>
       </StyledColumn>
-      <StyledColumn style={{ gridArea: 'f' }}>
+      <StyledColumn style={{ gridArea: 'e' }}>
         <Text bold>{t('Current emissions')}</Text>
 
         {emissionsPerBlock ? (
