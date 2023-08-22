@@ -8,6 +8,7 @@ import {
   VerifiedIcon,
   FavoriteBorderIcon,
   BarChartIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
@@ -24,7 +25,7 @@ export const Divider = styled.div`
   height: 16px;
   background-color: ${({ theme }) => theme.colors.cardBorder};
   border-radius: 25%;
-  margin: 0 6px;
+  margin: 0 8px;
 `
 
 export const Wrapper = styled.div`
@@ -92,10 +93,18 @@ export const useLatestBlogData = () => {
   }, [])
 }
 
+const mobileStyle: React.CSSProperties = {
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  width: 33,
+  overflow: 'hidden',
+}
+
 export const TwitterCards: React.FC = () => {
   const { t } = useTranslation()
   const tweets = useTweetsData()
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <Wrapper>
       <Text bold mb="24px">
@@ -110,8 +119,8 @@ export const TwitterCards: React.FC = () => {
         </Text>
         <VerifiedIcon ml="3px" mt="9px" color={theme.colors.secondary} />
       </Flex>
-      <Flex style={{ gap: 2 }} alignItems="center" justifyContent="center">
-        <Text fontSize={14} color={theme.colors.textSubtle}>
+      <Flex style={{ gap: 0 }} alignItems="center" justifyContent="center">
+        <Text fontSize={14} color={theme.colors.textSubtle} style={isMobile ? mobileStyle : undefined}>
           @PancakeSwap
         </Text>
         <Divider />
