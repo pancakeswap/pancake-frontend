@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Text, lightColors } from '@pancakeswap/uikit'
+import { Box, Text, lightColors, useMatchBreakpoints } from '@pancakeswap/uikit'
 import CountUp from 'react-countup'
 import useTheme from 'hooks/useTheme'
 
@@ -15,12 +15,19 @@ export const MetricsCard: React.FC<{ title: string; value: number; description: 
   description,
 }) => {
   const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <Box>
       <Text fontSize={16} textAlign="center" fontWeight={600} lineHeight="120%">
         {title}
       </Text>
-      <Text lineHeight="110%" textAlign="center" fontWeight={600} fontSize="24px" color={theme.colors.secondary}>
+      <Text
+        lineHeight="110%"
+        textAlign="center"
+        fontWeight={600}
+        fontSize={isMobile ? '32px' : '40px'}
+        color={theme.colors.secondary}
+      >
         <CountUp
           start={0}
           preserveValue
