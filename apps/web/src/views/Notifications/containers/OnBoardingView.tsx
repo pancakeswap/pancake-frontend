@@ -103,7 +103,7 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
         if (!subscribed) throw new Error('Subscription request failed')
         setloading(false)
         subscribeToPushNotifications()
-        fetch(`https://pcs-on-ramp-api/add-user`, {
+        fetch(`https://pcs-on-ramp-api.com/add-user`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
