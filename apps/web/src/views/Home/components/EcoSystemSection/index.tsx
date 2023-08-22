@@ -31,7 +31,10 @@ export const CardWrapper = styled.div`
   padding: 48px 24px 24px 24px;
   min-height: 360px;
   margin-top: 48px;
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 100%;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1152px;
   }
 `
@@ -42,7 +45,7 @@ export const ImageBox = styled.div`
   }
 `
 
-export const ItemWrapper = styled(Flex)`
+export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
   align-items: left;
   justify-content: start;
   flex-direction: column;
@@ -60,6 +63,31 @@ export const ItemWrapper = styled(Flex)`
     ${ImageBox} {
       filter: grayscale(0%);
     }
+  }
+  flex-basis: 50%;
+
+  &.type-a {
+    ${({ theme }) => theme.mediaQueries.sm} {
+      flex-basis: 33.3%;
+    }
+    ${({ theme }) => theme.mediaQueries.xxl} {
+      flex-basis: ${({ $flexBasis }) => $flexBasis}%;
+    }
+  }
+  &.type-b {
+    ${({ theme }) => theme.mediaQueries.lg} {
+      flex-basis: ${({ $flexBasis }) => $flexBasis}%;
+    }
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    flex-wrap: nowrap;
+  }
+`
+
+export const FeatureBoxesWrapper = styled(Flex)`
+  flex-wrap: wrap;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    flex-wrap: nowrap;
   }
 `
 
@@ -185,11 +213,11 @@ const FeatureBox: React.FC<{
   image: StaticImageData
   width: number
   ctaTitle: string
-}> = ({ title, description, image, width, ctaTitle }) => {
+  className?: string
+}> = ({ title, description, image, ctaTitle, width, className }) => {
   const { theme } = useTheme()
-  const { isMobile } = useMatchBreakpoints()
   return (
-    <ItemWrapper flexBasis={isMobile ? `50%` : `${width}%`}>
+    <ItemWrapper className={className} $flexBasis={width}>
       <ImageBox>
         <Image src={image} width={108} height={108} alt={title} />
       </ImageBox>
@@ -217,7 +245,7 @@ const EcoSystemSection: React.FC = () => {
   const tradeBlockData = useTradeBlockData()
   const earnBlockData = useEarnBlockData()
   const nftGameBlockData = useNftGameBlockData()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isMd } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
@@ -237,7 +265,11 @@ const EcoSystemSection: React.FC = () => {
         </Text>
       </Text>
       <CardWrapper>
-        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row'}>
+        <Flex
+          style={{ gap: 32 }}
+          flexDirection={isMobile || isMd ? 'column' : 'row'}
+          alignItems={isMobile || isMd ? undefined : 'center'}
+        >
           <Image
             style={{ marginLeft: isMobile ? -32 : -72 }}
             src={tradeBunny}
@@ -248,10 +280,11 @@ const EcoSystemSection: React.FC = () => {
           />
           <Flex flexDirection="column">
             <Title>{t('Trade')}</Title>
-            <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+            <FeatureBoxesWrapper>
               {tradeBlockData.map((item) => (
                 <FeatureBox
                   key={`${item.title}Block`}
+                  className="type-a"
                   title={item.title}
                   description={item.description}
                   image={item.image}
@@ -259,12 +292,16 @@ const EcoSystemSection: React.FC = () => {
                   ctaTitle={item.ctaTitle}
                 />
               ))}
-            </Flex>
+            </FeatureBoxesWrapper>
           </Flex>
         </Flex>
       </CardWrapper>
       <CardWrapper>
-        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row-reverse'}>
+        <Flex
+          style={{ gap: 32 }}
+          flexDirection={isMobile || isMd ? 'column' : 'row-reverse'}
+          alignItems={isMobile || isMd ? undefined : 'center'}
+        >
           <Image
             style={{ marginRight: isMobile ? 'auto' : -72, marginLeft: isMobile ? 32 : 'auto' }}
             src={earnNftBunny}
@@ -275,9 +312,10 @@ const EcoSystemSection: React.FC = () => {
           />
           <Flex flexDirection="column">
             <Title>{t('Earn')}</Title>
-            <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+            <FeatureBoxesWrapper>
               {earnBlockData.map((item) => (
                 <FeatureBox
+                  className="type-b"
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
@@ -286,12 +324,16 @@ const EcoSystemSection: React.FC = () => {
                   ctaTitle={item.ctaTitle}
                 />
               ))}
-            </Flex>
+            </FeatureBoxesWrapper>
           </Flex>
         </Flex>
       </CardWrapper>
       <CardWrapper>
-        <Flex style={{ gap: 32 }} flexDirection={isMobile ? 'column' : 'row'}>
+        <Flex
+          style={{ gap: 32 }}
+          flexDirection={isMobile || isMd ? 'column' : 'row'}
+          alignItems={isMobile || isMd ? undefined : 'center'}
+        >
           <Image
             style={{ marginLeft: isMobile ? -32 : -72 }}
             src={gameNftBunny}
@@ -302,9 +344,10 @@ const EcoSystemSection: React.FC = () => {
           />
           <Flex flexDirection="column">
             <Title>{t('Game & NFT')}</Title>
-            <Flex flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+            <FeatureBoxesWrapper>
               {nftGameBlockData.map((item) => (
                 <FeatureBox
+                  className="type-a"
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
@@ -313,7 +356,7 @@ const EcoSystemSection: React.FC = () => {
                   ctaTitle={item.ctaTitle}
                 />
               ))}
-            </Flex>
+            </FeatureBoxesWrapper>
           </Flex>
         </Flex>
       </CardWrapper>

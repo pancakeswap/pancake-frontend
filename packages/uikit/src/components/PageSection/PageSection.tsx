@@ -45,6 +45,12 @@ const ChildrenWrapper = styled(Container)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-top: 48px;
     padding-bottom: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow: hidden;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    overflow: visible;
   }
 `;
 
