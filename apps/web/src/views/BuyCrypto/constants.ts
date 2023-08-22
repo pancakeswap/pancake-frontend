@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 
-export const SUPPORTED_CHAINS = [ChainId.ETHEREUM, ChainId.BSC, ChainId.ARBITRUM_ONE]
 export const MOONPAY_UNSUPPORTED_CURRENCY_CODES = ['USDT']
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
 export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
@@ -38,7 +38,7 @@ export const supportedTokenMap: {
 }
 
 export function isBuyCryptoSupported(chain: ChainId) {
-  return SUPPORTED_CHAINS.includes(chain)
+  return SUPPORT_BUY_CRYPTO.includes(chain)
 }
 
 export enum ONRAMP_PROVIDERS {
