@@ -119,7 +119,6 @@ export const StyledNotificationWrapper = styled.div<{ isclosing: boolean }>`
   padding: 8px 15px;
   position: relative;
   overflow: hidden;
-  z-index: 9999;
 
   animation: ${({ isclosing }) => (!isclosing ? opneRight : openLeft)} 0.65s;
 `
