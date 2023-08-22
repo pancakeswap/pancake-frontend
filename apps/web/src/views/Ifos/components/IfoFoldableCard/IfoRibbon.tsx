@@ -18,7 +18,7 @@ const Container = styled(Box)`
   position: relative;
 `
 
-const BigCurve = styled(Box)<{ $status: PublicIfoData['status']; $dark?: boolean }>`
+const BigCurve = styled(Box)<{ $status?: PublicIfoData['status']; $dark?: boolean }>`
   width: 150%;
   position: absolute;
   top: -150%;
