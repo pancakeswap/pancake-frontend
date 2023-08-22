@@ -9,6 +9,8 @@ export const SUPPORTED_CHAINS = [
   ChainId.BSC_TESTNET,
   ChainId.GOERLI,
   ChainId.ARBITRUM_ONE,
+  ChainId.SCROLL_SEPOLIA,
+  ChainId.BASE_TESTNET,
 ] as const
 
 export type SupportedChainId = (typeof SUPPORTED_CHAINS)[number]
@@ -20,6 +22,8 @@ export const V3_SUBGRAPH_URLS: Record<SupportedChainId, string> = {
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
   [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-polygon-zkevm/v0.0.0',
   [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-zksync/version/latest',
+  [ChainId.SCROLL_SEPOLIA]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest',
+  [ChainId.BASE_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest',
   [ChainId.LINEA_TESTNET]:
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-arb',
