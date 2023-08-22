@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 const CHAIN_MAPPING = {
   [ChainId.ETHEREUM]: 'ethereum',
   [ChainId.BSC]: 'bsc',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
 } as const satisfies Record<number, string>
 
 // use for fetch usd outside of the liquidity pools on PancakeSwap
