@@ -1,5 +1,14 @@
 # @pancakeswap/farms
 
+## 1.0.8
+
+### Patch Changes
+
+- @pancakeswap/utils@3.0.3
+- @pancakeswap/token-lists@0.0.8
+- @pancakeswap/tokens@0.2.3
+- @pancakeswap/v3-sdk@3.2.3
+
 ## 1.0.7
 
 ### Patch Changes
