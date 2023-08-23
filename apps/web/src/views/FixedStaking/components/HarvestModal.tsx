@@ -114,7 +114,7 @@ export function HarvestModal({
                       {t('Stake Amount')}
                     </Text>
                     <Text bold>
-                      {amountDeposit.toSignificant(2)} {amountDeposit.currency.symbol}
+                      {amountDeposit.toSignificant(5)} {amountDeposit.currency.symbol}
                     </Text>
                   </Flex>
                   <Flex alignItems="center" justifyContent="space-between">

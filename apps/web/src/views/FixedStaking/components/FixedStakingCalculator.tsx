@@ -82,7 +82,7 @@ export function FixedStakingCalculator({
                   <StyledButton
                     key={pool.lockPeriod}
                     scale="md"
-                    variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'bubblegum'}
+                    variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'light'}
                     width="100%"
                     mx="2px"
                     onClick={(e) => {

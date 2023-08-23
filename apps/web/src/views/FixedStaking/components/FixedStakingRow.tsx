@@ -109,8 +109,8 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
               ))}
             </InfoSection>
             <ActionContainer style={{ alignItems: isMobile ? 'center' : 'start' }}>
-              <ActionContainer width="100%" pl={['0px', '0px', '0px', '0px', '32px']}>
-                {stakedPositions?.length ? (
+              {stakedPositions?.length ? (
+                <ActionContainer width="100%" pl={['0px', '0px', '0px', '0px', '32px']}>
                   <LightGreyCard mb="16px" mt="8px">
                     {stakedPositions.map((stakePosition, index) => (
                       <React.Fragment key={stakePosition.pool.poolIndex}>
@@ -136,8 +136,8 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                       </React.Fragment>
                     ))}
                   </LightGreyCard>
-                ) : null}
-              </ActionContainer>
+                </ActionContainer>
+              ) : null}
               {hideStakeButton ? null : (
                 <ActionContainer width="100%">
                   <LightGreyCard

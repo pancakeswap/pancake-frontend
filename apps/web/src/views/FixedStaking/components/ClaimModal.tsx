@@ -137,7 +137,7 @@ export function ClaimModal({
                   <Text fontSize="14px" textTransform="uppercase" bold color="textSubtle" textAlign="left">
                     {t('Fixed Staking Ended On')}
                   </Text>
-                  <Text bold>
+                  <Text textAlign="end" bold>
                     <StakedLimitEndOn lockPeriod={lockPeriod} poolEndDay={poolEndDay} />
                   </Text>
                 </Flex>

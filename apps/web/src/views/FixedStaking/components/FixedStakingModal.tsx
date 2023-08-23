@@ -100,7 +100,7 @@ export function FixedStakingModal({
                         disabled={claimedPeriods.includes(pool.lockPeriod)}
                         key={pool.lockPeriod}
                         scale="md"
-                        variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'bubblegum'}
+                        variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'light'}
                         width="100%"
                         mx="2px"
                         onClick={() => setLockPeriod(pool.lockPeriod)}
