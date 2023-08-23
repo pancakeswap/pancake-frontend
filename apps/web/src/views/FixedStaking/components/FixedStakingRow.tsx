@@ -176,7 +176,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
           </StyledActionPanel>
         }
       >
-        {(isExpanded) => (
+        {() => (
           <>
             {isMobile ? null : (
               <StyledCell minWidth="120px" display="flex" alignItems="center">
@@ -198,12 +198,14 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                   {t('Stake Periods')}
                 </Text>
                 <ButtonMenu
-                  disabledIndexes={[...claimedIndexes, ...lockedIndexes]}
                   activeIndex={selectedPeriodIndex ?? pool.pools.length}
                   onItemClick={(index, event) => {
-                    if (isExpanded) {
-                      event.stopPropagation()
+                    event.stopPropagation()
+
+                    if ([...claimedIndexes, ...lockedIndexes].includes(index)) {
+                      return
                     }
+
                     setSelectedPeriodIndex(index)
                   }}
                   scale="sm"

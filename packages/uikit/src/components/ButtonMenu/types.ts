@@ -14,5 +14,4 @@ export interface ButtonMenuProps extends SpaceProps {
   disabled?: boolean;
   children: ReactElement[];
   fullWidth?: boolean;
-  disabledIndexes?: number[];
 }

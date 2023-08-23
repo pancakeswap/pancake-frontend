@@ -51,9 +51,14 @@ export function FixedStakingCardBody({
         title={t('Stake Periods:')}
         detail={
           <ButtonMenu
-            disabledIndexes={[...claimedIndexes, ...lockedIndexes]}
             activeIndex={selectedPeriodIndex ?? pool.pools.length}
-            onItemClick={(index) => setSelectedPeriodIndex(index)}
+            onItemClick={(index) => {
+              if ([...claimedIndexes, ...lockedIndexes].includes(index)) {
+                return
+              }
+
+              setSelectedPeriodIndex(index)
+            }}
             scale="sm"
             variant="subtle"
           >

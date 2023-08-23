@@ -46,7 +46,6 @@ const StyledButtonMenu = styled.div.withConfig({
         opacity: 0.5;
 
         & > button:disabled {
-          background-color: transparent;
           color: ${variant === variants.PRIMARY ? theme.colors.primary : theme.colors.textSubtle};
         }
     `;
@@ -57,7 +56,6 @@ const StyledButtonMenu = styled.div.withConfig({
 `;
 
 const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
-  disabledIndexes = [],
   activeIndex = 0,
   scale = scales.MD,
   variant = variants.PRIMARY,
@@ -72,9 +70,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
       {Children.map(children, (child: ReactElement, index) => {
         return cloneElement(child, {
           isActive: activeIndex === index,
-          onClick: onItemClick
-            ? (e: React.MouseEvent<HTMLElement>) => (disabledIndexes.includes(index) ? null : onItemClick(index, e))
-            : undefined,
+          onClick: onItemClick ? (e: React.MouseEvent<HTMLElement>) => onItemClick(index, e) : undefined,
           scale,
           variant,
           disabled,
