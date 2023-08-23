@@ -26,19 +26,17 @@ const Page: React.FC<
   const externalLinkUrl = isBSC ? 'https://bridge.pancakeswap.finance/' : ''
 
   return (
-    <>
-      <Swap.Page
-        removePadding={removePadding}
-        noMinHeight={noMinHeight}
-        hideFooterOnDesktop={hideFooterOnDesktop}
-        helpUrl={helpUrl}
-        externalText={externalText}
-        externalLinkUrl={externalLinkUrl}
-        {...props}
-      >
-        {children}
-      </Swap.Page>
-    </>
+    <Swap.Page
+      removePadding={removePadding}
+      noMinHeight={noMinHeight}
+      hideFooterOnDesktop={hideFooterOnDesktop}
+      helpUrl={helpUrl}
+      externalText={externalText}
+      externalLinkUrl={externalLinkUrl}
+      {...props}
+    >
+      {children}
+    </Swap.Page>
   )
 }
 
