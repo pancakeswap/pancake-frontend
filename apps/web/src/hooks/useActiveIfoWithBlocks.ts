@@ -1,9 +1,10 @@
+import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
-import { ifoV3ABI } from '../config/abi/ifoV3'
+import { ifoV3ABI } from 'config/abi/ifoV3'
+import { Ifo } from 'config/constants/types'
 import { ifosConfig } from '../config/constants'
-import { Ifo } from '../config/constants/types'
 
 const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 
@@ -15,12 +16,12 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
       const [startBlockResponse, endBlockResponse] = await bscClient.multicall({
         contracts: [
           {
-            address: activeIfo.address,
+            address: activeIfo?.address,
             abi: ifoV3ABI,
             functionName: 'startBlock',
           },
           {
-            address: activeIfo.address,
+            address: activeIfo?.address,
             abi: ifoV3ABI,
             functionName: 'endBlock',
           },
@@ -34,5 +35,5 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
     },
   )
 
-  return activeIfo ? { ...activeIfo, ...currentIfoBlocks } : null
+  return useMemo(() => (activeIfo ? { ...activeIfo, ...currentIfoBlocks } : null), [currentIfoBlocks])
 }

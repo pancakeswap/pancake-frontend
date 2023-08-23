@@ -19,10 +19,13 @@ export const useMenuItemsStatus = (): Record<string, string> => {
   const isUserLocked = useUserCakeLockStatus()
   const tradingRewardStatus = useTradingRewardStatus()
 
-  const ifoStatus =
-    currentBlock && activeIfo && activeIfo.endBlock > currentBlock
-      ? getStatus(Number(currentBlock), activeIfo.startBlock, activeIfo.endBlock)
-      : null
+  const ifoStatus = useMemo(
+    () =>
+      currentBlock && activeIfo && activeIfo.endBlock > currentBlock
+        ? getStatus(Number(currentBlock), activeIfo.startBlock, activeIfo.endBlock)
+        : null,
+    [currentBlock, activeIfo],
+  )
 
   return useMemo(() => {
     return {
