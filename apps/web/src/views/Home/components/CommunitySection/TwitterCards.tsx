@@ -128,7 +128,7 @@ export const TwitterCards: React.FC = () => {
           {tweets[0].date}
         </Text>
         <Divider />
-        <FavoriteBorderIcon width={14} color={theme.colors.textSubtle} mr="2px" />
+        <FavoriteBorderIcon width={isMobile ? 14 : 16} color={theme.colors.textSubtle} mr="2px" />
         <Text fontSize={14} color={theme.colors.textSubtle}>
           {tweets[0].like}
         </Text>
