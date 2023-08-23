@@ -5,7 +5,7 @@ import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/form
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
 import Divider from 'components/Divider'
 import { useFixedStakingContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -18,6 +18,7 @@ import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
 import first from 'lodash/first'
 import { differenceInMilliseconds } from 'date-fns'
+import usePrevious from 'views/V3Info/hooks/usePrevious'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
@@ -248,6 +249,14 @@ export function StakingModalTemplate({
     ],
   )
 
+  const prevDepositedAmount = usePrevious(depositedAmount)
+
+  useEffect(() => {
+    if (prevDepositedAmount && !depositedAmount.equalTo(prevDepositedAmount)) {
+      setStakeAmount('')
+    }
+  }, [depositedAmount, prevDepositedAmount])
+
   if (isConfirmed) {
     return (
       <Modal
@@ -256,7 +265,7 @@ export function StakingModalTemplate({
         maxWidth={['100%', , '420px']}
       >
         <StakeConfirmModal
-          stakeCurrencyAmount={stakeCurrencyAmount.add(depositedAmount)}
+          stakeCurrencyAmount={depositedAmount.add(stakeCurrencyAmount)}
           poolEndDay={params.poolEndDay}
           lockAPR={lockAPR}
           boostAPR={boostAPR}
