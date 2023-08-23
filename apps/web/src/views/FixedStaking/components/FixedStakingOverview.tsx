@@ -4,7 +4,6 @@ import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 
 import { ReactNode, useMemo } from 'react'
-import BalanceRow from 'views/Pools/components/LockedPool/Common/Overview/BalanceRow'
 import TextRow from 'views/Pools/components/LockedPool/Common/Overview/TextRow'
 
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
@@ -70,15 +69,18 @@ export default function FixedStakingOverview({
   return (
     <LightGreyCard>
       {!isUnstakeView ? (
-        <BalanceRow
+        <TextRow
           title={t('Stake Amount')}
-          value={safeAlreadyStakedAmount.greaterThan(0) ? safeAlreadyStakedAmount.toExact() : stakeAmount.toExact()}
+          value={
+            safeAlreadyStakedAmount.greaterThan(0)
+              ? safeAlreadyStakedAmount.toSignificant(5)
+              : stakeAmount.toSignificant(5)
+          }
           newValue={
             safeAlreadyStakedAmount.greaterThan(0)
-              ? stakeAmount.add(safeAlreadyStakedAmount).toExact()
-              : stakeAmount.toExact()
+              ? stakeAmount.add(safeAlreadyStakedAmount).toSignificant(5)
+              : stakeAmount.toSignificant(5)
           }
-          decimals={2}
         />
       ) : null}
       {!isUnstakeView && lockPeriod ? (
