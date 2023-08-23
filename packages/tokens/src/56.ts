@@ -1736,6 +1736,14 @@ export const bscTokens = {
     'Rangers Protocol',
     'https://www.rangersprotocol.com/',
   ),
+  deprecated_rpg: new ERC20Token(
+    ChainId.BSC,
+    '0xc2098a8938119A52B1F7661893c0153A6CB116d5',
+    18,
+    'RPGOLD',
+    'Rangers Protocol(Deprecated)',
+    'https://www.rangersprotocol.com/',
+  ),
   mcb: new ERC20Token(
     ChainId.BSC,
     '0x5fE80d2CD054645b9419657d3d10d26391780A7B',
@@ -2239,6 +2247,14 @@ export const bscTokens = {
     18,
     'MIX',
     'MixMarvel Token',
+    'https://www.mixmarvel.com/',
+  ),
+  deprecated_MIX: new ERC20Token(
+    ChainId.BSC,
+    '0x398f7827DcCbeFe6990478876bBF3612D93baF05',
+    18,
+    'MIXOLD',
+    'MixMarvel Token(Deprecated)',
     'https://www.mixmarvel.com/',
   ),
   peak: new ERC20Token(
