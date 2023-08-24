@@ -50,10 +50,10 @@ const StepCounter = ({
   //   setPulsing,
   // ] = useState<boolean>(false)
 
-  const handleOnFocus = () => {
+  const handleOnFocus = useCallback(() => {
     setUseLocalValue(true)
     setActive(true)
-  }
+  }, [])
 
   const handleOnBlur = useCallback(() => {
     setUseLocalValue(false)
@@ -106,9 +106,7 @@ const StepCounter = ({
             fontSize="20px"
             align="center"
             disabled={locked}
-            onUserInput={(val) => {
-              setLocalValue(val)
-            }}
+            onUserInput={setLocalValue}
           />
 
           {!locked && (
