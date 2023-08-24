@@ -86,7 +86,7 @@ const SubTitle = styled.div`
   line-height: 98%; /* 19.45px */
 `
 
-const MoonPayBanner = () => {
+const LineaBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isDesktop } = useMatchBreakpoints()
 
@@ -111,8 +111,8 @@ const MoonPayBanner = () => {
               style={{ marginLeft: isMobile ? -3 : -5 }}
               src={lineaLogo}
               alt="arbLogo"
-              width={isMobile ? 86 : 131}
-              height={isMobile ? 15 : 23}
+              width={isMobile ? 52 : 70}
+              height={isMobile ? 15 : 20}
             />
           </Flex>
           <Header>{isMobile ? t('Linea is LIVE!') : t('PancakeSwap Now Live on Linea!')}</Header>
@@ -137,15 +137,15 @@ const MoonPayBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           {isDesktop ? (
-            <Image src={lineaBunny} alt="liquidStakingBunny" width={72} height={55} placeholder="blur" />
+            <Image src={lineaBunny} alt="liquidStakingBunny" width={353} height={196} placeholder="blur" />
           ) : (
-            <Image src={lineaBunnyMobile} alt="liquidStakingBunnyMobile" width={56} height={43} placeholder="blur" />
+            <Image src={lineaBunnyMobile} alt="liquidStakingBunnyMobile" width={169} height={191} placeholder="blur" />
           )}
           <BgWrapper>
             {!isMobile ? (
-              <Image src={lineaBg} alt="arbBg" width={504} height={214} placeholder="blur" />
+              <Image src={lineaBg} alt="arbBg" width={941} height={170} placeholder="blur" />
             ) : (
-              <Image src={lineaBgMobile} alt="liquidStakingBunnyMobile" width={213} height={135} placeholder="blur" />
+              <Image src={lineaBgMobile} alt="liquidStakingBunnyMobile" width={211} height={147} placeholder="blur" />
             )}
           </BgWrapper>
         </RightWrapper>
@@ -154,4 +154,4 @@ const MoonPayBanner = () => {
   )
 }
 
-export default memo(MoonPayBanner)
+export default memo(LineaBanner)
