@@ -2487,7 +2487,7 @@
   "Lock more CAKE to keep earning.": "जीतना शुरू करने के लिए और CAKE लॉक करें।",
   "Your Current Max Reward Cap": "आपका वर्तमान अधिकतम पुरस्कार कैप",
   "Equals to your %amount%% of locked CAKE divided by": "आपके द्वारा लॉक किए गए %amount%% के CAKE के बराबर, इससे डिवाइड करके ",
-  "of the amount of your locked CAKE. Lock more CAKE to raise this limit": "of the amount of your locked CAKE. Lock more CAKE to raise this limit",
+  "of the amount of your locked CAKE. Lock more CAKE to raise this limit": "आपके लॉक किए गए CAKE की राशि के इतना बराबर है। यह सीमा बढ़ाने के लिए और CAKE लॉक करें",
   "Lock any amount of CAKE for": "Lock any amount of CAKE for",
   "or more to claim rewards from trades!": "or more to claim rewards from trades!",
   "Not enough remaining lock duration": "बची हुई लॉक अवधि पर्याप्त नहीं है",
@@ -2664,5 +2664,6 @@
   "0% Fee": "0% Fee",
   "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
   "Get more details from": "Get more details from",
-  "RedAlarm": "RedAlarm"
+  "RedAlarm": "RedAlarm",
+  "Merchandise": "Merchandise"
 }
