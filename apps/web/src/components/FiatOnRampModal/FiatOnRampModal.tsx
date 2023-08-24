@@ -320,13 +320,23 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             {loading && <LoadingBuffer />}
             <IFrameWrapper id="mercuryo-widget" />;
           </>
-        ) : (
+        ) : provider === 'MoonPay' ? (
           <>
             {loading && <LoadingBuffer />}
             <StyledIframe
               id="moonpayIframe"
               src={signedIframeUrl ?? ''}
               title="fiat-onramp-iframe"
+              isDark={theme.isDark}
+            />
+          </>
+        ) : (
+          <>
+            {loading && <LoadingBuffer />}
+            <StyledIframe
+              id="moonpayIframe"
+              src="https://global-stg.transak.com?apiKey=<YOUR_API_KEY>&<QUERY_PARAMETERS>"
+              allow="camera;microphone;fullscreen;payment"
               isDark={theme.isDark}
             />
           </>

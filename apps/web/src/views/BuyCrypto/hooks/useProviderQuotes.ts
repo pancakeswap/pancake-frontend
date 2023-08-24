@@ -18,7 +18,7 @@ export async function fetchMoonpayQuote(baseAmount: number, currencyCode: string
 
 export async function fetchProviderQuotes(payload): Promise<ProviderQoute[]> {
   // Fetch data from endpoint 1
-  const response = await fetch(`${MOONPAY_SIGN_URL}/fetch-provider-quotes`, {
+  const response = await fetch(`http://localhost:8081/fetch-provider-quotes`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

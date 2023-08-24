@@ -27,7 +27,7 @@ export async function fetchMercuryoAvailability(userIp: string): Promise<Respons
 
 export async function fetchProviderAvailabilities(payload): Promise<{ [provider: string]: boolean }> {
   // Fetch data from endpoint 1
-  const response = await fetch(`${MOONPAY_SIGN_URL}/fetch-provider-availability`, {
+  const response = await fetch(`http://localhost:8081/fetch-provider-availability`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

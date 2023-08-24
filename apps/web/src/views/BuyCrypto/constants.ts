@@ -44,11 +44,13 @@ export function isBuyCryptoSupported(chain: ChainId) {
 export enum ONRAMP_PROVIDERS {
   MoonPay = 'MoonPay',
   Mercuryo = 'Mercuryo',
+  Transak = 'Transak',
 }
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,
+  [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
 }
 
 export const chainIdToNetwork: { [id: number]: string } = {
