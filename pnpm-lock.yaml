@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -805,7 +805,7 @@ importers:
         version: 18.2.0
       react-countup:
         specifier: ^6.4.0
-        version: 6.4.0(@babel/core@7.21.3)(react@18.2.0)(rollup@2.78.0)
+        version: 6.4.0(@babel/core@7.21.4)(react@18.2.0)
       react-datepicker:
         specifier: ^4.8.0
         version: 4.8.0(react-dom@18.2.0)(react@18.2.0)
@@ -815,6 +815,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-fast-marquee:
+        specifier: ^1.6.0
+        version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
       react-redux:
         specifier: ^8.0.5
         version: 8.0.5(@types/react-dom@18.2.1)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -1379,6 +1382,7 @@ importers:
         specifier: ^1.3.10
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.10.9)(zod@3.21.4)
 =======
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)
@@ -1386,6 +1390,9 @@ importers:
 =======
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)
+>>>>>>> 573ac7a17 (chore: update lock file)
     devDependencies:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
@@ -1961,6 +1968,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
         specifier: ^1.3.10
+<<<<<<< HEAD
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.10.9)(zod@3.21.4)
 
   packages/utils:
@@ -1979,6 +1987,9 @@ importers:
 =======
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)
+>>>>>>> 573ac7a17 (chore: update lock file)
 
   packages/utils:
     dependencies:
@@ -2128,6 +2139,7 @@ importers:
 <<<<<<< HEAD
 <<<<<<< HEAD
         specifier: ^1.3.10
+<<<<<<< HEAD
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.10.9)(zod@3.21.4)
 
   packages/widgets-internal:
@@ -2226,6 +2238,9 @@ importers:
 =======
         version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)
+>>>>>>> 573ac7a17 (chore: update lock file)
 
   packages/worker-utils: {}
 
@@ -2486,7 +2501,7 @@ packages:
       '@babel/helpers': 7.21.0
       '@babel/parser': 7.21.5
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       convert-source-map: 1.8.0
       debug: 4.3.4(supports-color@8.1.1)
@@ -2495,6 +2510,7 @@ packages:
       semver: 6.3.0
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@babel/core@7.21.4:
     resolution: {integrity: sha512-qt/YV149Jman/6AfmlxJ04LMIu8bMoyl3RB91yTFrxQmgbrSvQMy7cI8Q62FHx1t8wJ8B5fu0UDoLwHAhUo1QA==}
@@ -2508,7 +2524,7 @@ packages:
       '@babel/helpers': 7.21.0
       '@babel/parser': 7.21.5
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       convert-source-map: 1.8.0
       debug: 4.3.4(supports-color@8.1.1)
@@ -2587,10 +2603,14 @@ packages:
 =======
       semver: 6.3.0
 <<<<<<< HEAD
+<<<<<<< HEAD
     dev: true
 >>>>>>> e4e09ec5c (chore: update section 1 and 2)
 =======
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+    dev: true
+>>>>>>> 573ac7a17 (chore: update lock file)
 
   /@babel/helper-compilation-targets@7.21.5(@babel/core@7.21.4):
     resolution: {integrity: sha512-1RkbFGUKex4lvsB9yhIfWltJM5cZKUftB2eNajaDv3dCMEp49iBG0K14uH8NnX9IPux2+mK7JGEOB0jn48/J6w==}
@@ -2814,7 +2834,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.18.6
       '@babel/helper-validator-identifier': 7.19.1
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
     transitivePeerDependencies:
       - supports-color
@@ -2884,7 +2904,7 @@ packages:
       '@babel/helper-member-expression-to-functions': 7.21.5
       '@babel/helper-optimise-call-expression': 7.18.6
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
     transitivePeerDependencies:
       - supports-color
@@ -2949,7 +2969,7 @@ packages:
     dependencies:
       '@babel/helper-function-name': 7.21.0
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
     transitivePeerDependencies:
       - supports-color
@@ -2959,7 +2979,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
     transitivePeerDependencies:
       - supports-color
@@ -9332,6 +9352,25 @@ packages:
       '@babel/helper-module-imports': 7.21.4
       '@rollup/pluginutils': 5.0.2(rollup@2.78.0)
       rollup: 2.78.0
+    dev: true
+
+  /@rollup/plugin-babel@6.0.3(@babel/core@7.21.4):
+    resolution: {integrity: sha512-fKImZKppa1A/gX73eg4JGo+8kQr/q1HBQaCGKECZ0v4YBBv3lFqi14+7xyApECzvkLTHCifx+7ntcrvtBIRcpg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@types/babel__core': ^7.1.9
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      '@types/babel__core':
+        optional: true
+      rollup:
+        optional: true
+    dependencies:
+      '@babel/core': 7.21.4
+      '@babel/helper-module-imports': 7.21.4
+      '@rollup/pluginutils': 5.0.2(rollup@2.78.0)
+    dev: false
 
   /@rollup/plugin-commonjs@24.0.0(rollup@2.78.0):
     resolution: {integrity: sha512-0w0wyykzdyRRPHOb0cQt14mIBLujfAv6GgP6g8nvg/iBxEm112t3YPPq+Buqe2+imvElTka+bjNlJ/gB56TD8g==}
@@ -10832,7 +10871,7 @@ packages:
     dependencies:
       '@babel/generator': 7.21.5
       '@babel/parser': 7.21.5
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       '@storybook/csf': 0.1.0
       '@storybook/types': 7.0.7
@@ -19859,7 +19898,7 @@ packages:
     resolution: {integrity: sha512-YNF+mZ/Wu2FU/gvmzuWtYc8rloubL7wfXCTgouFrnjGVXPA/EeYYA7pupXWrb3Iv1cTBeSSxxJIbK23l4MRNqg==}
     engines: {node: '>=8.3.0'}
     dependencies:
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       c8: 7.13.0
     transitivePeerDependencies:
@@ -23100,7 +23139,7 @@ packages:
       '@babel/core': 7.21.4
       '@babel/generator': 7.21.5
       '@babel/plugin-syntax-typescript': 7.20.0(@babel/core@7.21.4)
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
@@ -23131,7 +23170,7 @@ packages:
       '@babel/generator': 7.21.5
       '@babel/plugin-syntax-jsx': 7.21.4(@babel/core@7.21.4)
       '@babel/plugin-syntax-typescript': 7.20.0(@babel/core@7.21.4)
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       '@jest/expect-utils': 29.3.1
       '@jest/transform': 29.3.1
@@ -26774,6 +26813,21 @@ packages:
       - '@babel/core'
       - '@types/babel__core'
       - rollup
+    dev: true
+
+  /react-countup@6.4.0(@babel/core@7.21.4)(react@18.2.0):
+    resolution: {integrity: sha512-7vvz0IIcDwWdd1JDzDB3z+9wSWL5Cf7pqwMPUXnIe66M3UXZyMWrvTp1p96wpPgg8/v4Gvf8YLvJoO+34G0GMA==}
+    peerDependencies:
+      react: '>= 16.3.0'
+    dependencies:
+      '@rollup/plugin-babel': 6.0.3(@babel/core@7.21.4)
+      countup.js: 2.3.2
+      react: 18.2.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/babel__core'
+      - rollup
+    dev: false
 
   /react-datepicker@4.8.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-u69zXGHMpxAa4LeYR83vucQoUCJQ6m/WBsSxmUMu/M8ahTSVMMyiyQzauHgZA2NUr9y0FUgOAix71hGYUb6tvg==}
@@ -26883,6 +26937,16 @@ packages:
 
   /react-fast-compare@3.2.0:
     resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
+
+  /react-fast-marquee@1.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-jtuwT9SNjrqxnE7lGZ8mTL1I8Q4+9G4aBta2p+y2Pa3SjR17QROblwrLICyM8rbjQFHgHawTHcaH9HvoVO2NOA==}
+    peerDependencies:
+      react: '>= 16.8.0 || 18.0.0'
+      react-dom: '>= 16.8.0 || 18.0.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /react-icons@4.8.0(react@18.2.0):
     resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
@@ -31254,6 +31318,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /wagmi@1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.10.9)(zod@3.21.4):
     resolution: {integrity: sha512-MMGJcnxOmeUZWDmzUxgRGcB1cqxbJoSFSa+pNY4vBCWMz0n4ptpE5F8FKISLCx+BGoDwsaz2ldcMALcdJZ+29w==}
 =======
@@ -31267,6 +31332,10 @@ packages:
   /wagmi@1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9):
     resolution: {integrity: sha512-MMGJcnxOmeUZWDmzUxgRGcB1cqxbJoSFSa+pNY4vBCWMz0n4ptpE5F8FKISLCx+BGoDwsaz2ldcMALcdJZ+29w==}
 >>>>>>> b75132f07 (chore: update package json)
+=======
+  /wagmi@1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9):
+    resolution: {integrity: sha512-MMGJcnxOmeUZWDmzUxgRGcB1cqxbJoSFSa+pNY4vBCWMz0n4ptpE5F8FKISLCx+BGoDwsaz2ldcMALcdJZ+29w==}
+>>>>>>> 573ac7a17 (chore: update lock file)
     peerDependencies:
       react: '>=17.0.0'
       typescript: '>=5.0.4'
@@ -31275,6 +31344,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       '@tanstack/query-sync-storage-persister': 4.29.1
@@ -31288,16 +31358,25 @@ packages:
       "@wagmi/core": 1.3.4(encoding@0.1.13)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
 >>>>>>> e4e09ec5c (chore: update section 1 and 2)
 =======
+=======
+>>>>>>> 573ac7a17 (chore: update lock file)
       '@tanstack/query-sync-storage-persister': 4.29.1
       '@tanstack/react-query': 4.29.1(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-persist-client': 4.29.1(@tanstack/react-query@4.29.1)
       '@wagmi/core': 1.3.9(encoding@0.1.13)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
+<<<<<<< HEAD
 >>>>>>> b75132f07 (chore: update package json)
+=======
+>>>>>>> 573ac7a17 (chore: update lock file)
       abitype: 0.8.7(typescript@5.1.3)(zod@3.21.4)
       react: 18.2.0
       typescript: 5.1.3
       use-sync-external-store: 1.2.0(react@18.2.0)
+<<<<<<< HEAD
       viem: 1.10.9(typescript@5.1.3)(zod@3.21.4)
+=======
+      viem: 1.2.9(typescript@5.1.3)(zod@3.21.4)
+>>>>>>> 573ac7a17 (chore: update lock file)
     transitivePeerDependencies:
       - '@react-native-async-storage/async-storage'
       - bufferutil
@@ -31310,8 +31389,11 @@ packages:
       - utf-8-validate
       - zod
 
+<<<<<<< HEAD
 =======
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+>>>>>>> 573ac7a17 (chore: update lock file)
   /wagmi@1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4):
     resolution: {integrity: sha512-MMGJcnxOmeUZWDmzUxgRGcB1cqxbJoSFSa+pNY4vBCWMz0n4ptpE5F8FKISLCx+BGoDwsaz2ldcMALcdJZ+29w==}
     peerDependencies:
@@ -31342,6 +31424,7 @@ packages:
       - supports-color
       - utf-8-validate
       - zod
+    dev: false
 
   /wait-on@6.0.0(debug@4.3.2):
     resolution: {integrity: sha512-tnUJr9p5r+bEYXPUdRseolmz5XqJTTj98JgOsfBn7Oz2dxfE2g3zw1jE+Mo8lopM3j3et/Mq1yW7kKX6qw7RVw==}
@@ -31570,6 +31653,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: true
 
   /well-known-symbols@2.0.0:
     resolution: {integrity: sha512-ZMjC3ho+KXo0BfJb7JgtQ5IBuvnShdlACNkKkdsqBmYw3bPAaJfPeYUo6tLUaT5tG/Gkh7xkpBhKRQ9e7pyg9Q==}
