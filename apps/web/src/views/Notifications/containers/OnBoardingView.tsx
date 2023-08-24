@@ -2,13 +2,15 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { usePushClient } from 'contexts/PushClientContext'
+// import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
-import { Events } from '../constants'
+import { Dispatch, SetStateAction, useCallback, useContext, useState } from 'react'
+import { DEFAULT_APP_METADATA, Events } from '../constants'
 import { BuilderNames } from '../types'
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
+import W3iContext from 'contexts/W3iContext/context'
+import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 
 interface IOnboardingButtonProps {
   account: string
@@ -49,15 +51,14 @@ function OnboardingButton({ account, onClick, loading, isOnBoarded }: IOnboardin
   )
 }
 
-const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateAction<boolean>> }) => {
+const OnBoardingView = ({ setIsRightView, isOnBoarded }: { setIsRightView: Dispatch<SetStateAction<boolean>>, isOnBoarded: boolean }) => {
   const [loading, setloading] = useState<boolean>(false)
   const {
     pushClientProxy: pushClient,
     userPubkey,
     refreshNotifications,
-    isOnBoarded,
-    handleRegistration,
-  } = usePushClient()
+    pushRegisterMessage
+  } = useContext(W3iContext)
 
   const toast = useToast()
   const { eip155Account, account } = useFormattedEip155Account()
@@ -66,71 +67,117 @@ const OnBoardingView = ({ setIsRightView }: { setIsRightView: Dispatch<SetStateA
 
   const { t } = useTranslation()
 
-  const handleOnboarding = useCallback(async () => {
+  // const handleOnboarding = useCallback(async () => {
+  //   setloading(true)
+  //   toast.toastSuccess(Events.SignatureRequest.title, Events.SignatureRequest.message)
+
+  //   handleRegistration(userPubkey, false).catch((error: Error) => {
+  //     const errormessage = error.message.includes('User rejected') ? t('User rejected the request') : error.message
+  //     toast.toastError(Events.SignatureRequestError.title, errormessage)
+  //   })
+  //   setloading(false)
+  // }, [toast, t, handleRegistration, userPubkey])
+
+  const handleOnboarding = useCallback(() => {
     setloading(true)
-    toast.toastSuccess(Events.SignatureRequest.title, Events.SignatureRequest.message)
+    window.web3inbox
+      .signMessage(pushRegisterMessage)
+      .then(signature => {
+        window.web3inbox.notify.postMessage(
+          formatJsonRpcRequest('notify_signature_delivered', { signature })
+        )
+      })
+      .catch((error) => {
+        console.log(error)
+        setloading(false)
+      })
+      setloading(false)
 
-    handleRegistration(userPubkey, false).catch((error: Error) => {
-      const errormessage = error.message.includes('User rejected') ? t('User rejected the request') : error.message
-      toast.toastError(Events.SignatureRequestError.title, errormessage)
-    })
-    setloading(false)
-  }, [toast, t, handleRegistration, userPubkey])
+  }, [pushRegisterMessage, setloading])
 
-  const handleSubscribe = useCallback(async () => {
-    setloading(true)
-    setIsRightView(false)
+  // const handleSubscribe = useCallback(async () => {
+  //   setloading(true)
+  //   setIsRightView(false)
 
-    pushClient?.emitter.on('push_subscription', () => {
-      toast.toastSuccess('succcess', Events.SubscriptionRequestError.message)
-      sendPushNotification(BuilderNames.OnBoardNotification, [])
-      refreshNotifications()
-    })
-    // dont have multiple subs with same acc
-    const allSubscriptions = await pushClient.getActiveSubscriptions()
-    const userSubs = Object.values(allSubscriptions).filter((sub) => {
-      return sub.account === eip155Account
-    })
-    if (userSubs.length >= 1) {
+  //   pushClient?.emitter.on('push_subscription', () => {
+  //     toast.toastSuccess('succcess', Events.SubscriptionRequestError.message)
+  //     sendPushNotification(BuilderNames.OnBoardNotification, [])
+  //     refreshNotifications()
+  //   })
+  //   // dont have multiple subs with same acc
+  //   const allSubscriptions = await pushClient.getActiveSubscriptions()
+  //   const userSubs = Object.values(allSubscriptions).filter((sub) => {
+  //     return sub.account === eip155Account
+  //   })
+  //   if (userSubs.length >= 1) {
+  //     toast.toastSuccess('Already subscribed', 'actibating current subscription')
+  //     refreshNotifications()
+  //     await pushClient.deleteSubscription({ topic: userSubs[userSubs.length - 1].topic })
+  //     return
+  //   }
+  //   pushClient
+  //     .subscribe({ account: eip155Account })
+  //     .then((subscribed: { id: number; subscriptionAuth: string }) => {
+  //       if (!subscribed) throw new Error('Subscription request failed')
+  //       setloading(false)
+  //       subscribeToPushNotifications()
+  //       fetch(`https://pcs-on-ramp-api.com/add-user`, {
+  //         headers: {
+  //           Accept: 'application/json',
+  //           'Content-Type': 'application/json',
+  //         },
+  //         method: 'POST',
+  //         body: JSON.stringify({ user: account }),
+  //       })
+  //     })
+  //     .catch((error: Error) => {
+  //       toast.toastError(Events.SubscriptionRequestError.title, error.message)
+  //       setloading(false)
+  //     })
+  // }, [
+  //   account,
+  //   eip155Account,
+  //   pushClient,
+  //   toast,
+  //   sendPushNotification,
+  //   refreshNotifications,
+  //   setIsRightView,
+  //   subscribeToPushNotifications,
+  // ])
+
+  const handleSubscribe = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      if (!userPubkey) {
+        return
+      }
+
+      setloading(true)
+
+      try {
+        pushClient?.observeOne('notify_subscription', {
+          next: () => {
       toast.toastSuccess('Already subscribed', 'actibating current subscription')
-      refreshNotifications()
-      await pushClient.deleteSubscription({ topic: userSubs[userSubs.length - 1].topic })
-      return
-    }
-    pushClient
-      .subscribe({ account: eip155Account })
-      .then((subscribed: { id: number; subscriptionAuth: string }) => {
-        if (!subscribed) throw new Error('Subscription request failed')
-        setloading(false)
-        subscribeToPushNotifications()
-        fetch(`https://pcs-on-ramp-api.com/add-user`, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify({ user: account }),
+          }
         })
-      })
-      .catch((error: Error) => {
-        toast.toastError(Events.SubscriptionRequestError.title, error.message)
-        setloading(false)
-      })
-  }, [
-    account,
-    eip155Account,
-    pushClient,
-    toast,
-    sendPushNotification,
-    refreshNotifications,
-    setIsRightView,
-    subscribeToPushNotifications,
-  ])
+
+        await pushClient?.subscribe({
+          account: `eip155:1:${userPubkey}`,
+          metadata:DEFAULT_APP_METADATA
+        })
+      } catch (error) {
+        console.log({ error })
+        // showErrorMessageToast(`Failed to subscribe to ${name}`)
+      }
+      setloading(false)
+    },
+    [userPubkey, pushClient, setloading, toast]
+  )
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       e.stopPropagation()
-      if (isOnBoarded) requestNotificationPermission().then(async () => handleSubscribe())
+      if (isOnBoarded) requestNotificationPermission().then(async () => handleSubscribe(e))
       else handleOnboarding()
     },
     [handleOnboarding, handleSubscribe, isOnBoarded, requestNotificationPermission],

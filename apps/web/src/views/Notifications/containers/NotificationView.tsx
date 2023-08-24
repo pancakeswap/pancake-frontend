@@ -8,6 +8,7 @@ import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notificati
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
+import { W3iPushClient } from 'w3iProxy'
 
 interface INotificationFilterProps {
   options: OptionProps[]
@@ -19,7 +20,7 @@ interface INotificationFilterProps {
 interface ISettingsModalProps {
   activeSubscriptions: PushClientTypes.PushSubscription[]
   currentSubscription: PushClientTypes.PushSubscription | null
-  pushClient: PushClient
+  pushClient: W3iPushClient
 }
 
 const NotificationFilter = ({ options, onOptionChange, width, description }: INotificationFilterProps) => {
@@ -62,7 +63,7 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
 
   const removeNotification = useCallback(
     async (id: number) => {
-      await pushClient.deletePushMessage({ id: Number(id) }).then(() => updateMessages())
+      await pushClient.deleteNotifyMessage({ id: Number(id) }).then(() => updateMessages())
     },
     [updateMessages, pushClient],
   )

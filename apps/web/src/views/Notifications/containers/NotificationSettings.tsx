@@ -84,9 +84,9 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettings
     setloading(true)
     try {
       await pushClient.deleteSubscription({ topic: currentSubscription?.topic })
-      pushClient?.emitter.on('push_delete', () => {
-        toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
-      })
+      // pushClient?.emitter.on('notify_delete', () => {
+      //   toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
+      // })
     } catch (error: any) {
       toast.toastError(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }

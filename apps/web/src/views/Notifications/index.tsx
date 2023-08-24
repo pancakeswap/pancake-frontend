@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
-import PushContextProvider, { usePushClient } from 'contexts/PushClientContext'
-import { useCallback, useEffect, useState } from 'react'
+import W3iContext from 'contexts/W3iContext/context'
+import W3iContextProvider from 'contexts/W3iContext'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { useAccount } from 'wagmi'
@@ -13,6 +14,8 @@ import { ModalHeader, ModalTitle, ViewContainer } from './styles'
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
   onDismiss: () => void
+  isSubscribed: boolean;
+  userPubkey: string
   isSettings?: boolean
 }
 
@@ -26,20 +29,20 @@ const ModalBackButton: React.FC<
   )
 }
 
-const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHeaderprops) => {
+const NotificationHeader = ({ isSettings = false, onBack, onDismiss, userPubkey, isSubscribed }: INotifyHeaderprops) => {
   const { t } = useTranslation()
-  const { userPubkey: account, isSubscribed } = usePushClient()
+  // const { userPubkey: account } = usePushClient()
   return (
     <ModalHeader>
       {isSubscribed ? (
         <>
-          {account ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
+          {userPubkey ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
           <ModalTitle>
             <Heading fontSize="20px" padding="0px" textAlign="center">
               {t('Notifications')}
             </Heading>
           </ModalTitle>
-          {account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
+          {userPubkey ? <ModalCloseButton onDismiss={onDismiss} /> : null}
         </>
       ) : (
         <Box display="flex" padding="8px" paddingLeft="20px">
@@ -56,10 +59,29 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHe
 const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const { userPubkey, isSubscribed, activeSubscriptions, pushClientProxy: pushClient } = usePushClient()
-  const { eip155Account } = useFormattedEip155Account()
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
+  const [isOnBoarded, setIsOnBoarded] = useState<boolean>(false)
+  
+  const {
+    chatRegisterMessage,
+    chatRegisteredKey,
+    userPubkey,
+    activeSubscriptions,
+    pushClientProxy: pushClient
+  } = useContext(W3iContext)
 
+  const { eip155Account } = useFormattedEip155Account()
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
+
+  useEffect(() => {
+    const pushSignatureRequired = !chatRegisteredKey && chatRegisterMessage
+    console.log(chatRegisterMessage)
+    if (userPubkey && (pushSignatureRequired))  setIsOnBoarded(false)
+    else setIsOnBoarded(true)
+    
+    if (activeSubscriptions.find((sub) => sub.account === eip155Account)) setIsSubscribed(true)
+    else setIsSubscribed(false)
+  }, [userPubkey, chatRegisteredKey, chatRegisterMessage, activeSubscriptions, eip155Account])
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +97,7 @@ const Notifications = () => {
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
         <Box>
-          <NotificationHeader onBack={toggleSettings} onDismiss={onDismiss} isSettings={!isRightView} />
+          <NotificationHeader onBack={toggleSettings} onDismiss={onDismiss} isSettings={!isRightView} userPubkey={userPubkey} isSubscribed={isSubscribed}/>
           {isSubscribed && userPubkey ? (
             <ViewContainer isRightView={isRightView}>
               <SettingsModal
@@ -86,7 +108,7 @@ const Notifications = () => {
               <NotificationSettingsMain currentSubscription={currentSubscription} pushClient={pushClient} />
             </ViewContainer>
           ) : (
-            <OnBoardingView setIsRightView={setIsRightView} />
+            <OnBoardingView setIsRightView={setIsRightView} isOnBoarded={isOnBoarded}/>
           )}
         </Box>
       )}
@@ -107,11 +129,11 @@ const NotificationsState = () => {
     return () => clearTimeout(t)
   }, [address])
 
-  if (!isReady) return <></>
+  // if (!isReady) return <></>
   return (
-    <PushContextProvider>
+    <W3iContextProvider>
       <Notifications />
-    </PushContextProvider>
+    </W3iContextProvider>
   )
 }
 
