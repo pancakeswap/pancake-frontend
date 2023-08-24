@@ -7,7 +7,6 @@ import BundleAnalyzer from '@next/bundle-analyzer'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
 import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -190,7 +189,6 @@ const config = {
   webpack: (webpackConfig, { webpack, isServer }) => {
     // tree shake sentry tracing
     webpackConfig.plugins.push(
-      new MiniCssExtractPlugin(),
       new webpack.DefinePlugin({
         __SENTRY_DEBUG__: false,
         __SENTRY_TRACING__: false,
