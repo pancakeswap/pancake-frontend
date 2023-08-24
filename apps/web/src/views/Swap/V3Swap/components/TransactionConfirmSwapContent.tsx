@@ -85,6 +85,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
         <SwapModalHeader
           inputAmount={trade.inputAmount}
           outputAmount={trade.outputAmount}
+          currencyBalances={currencyBalances}
           tradeType={trade.tradeType}
           priceImpactWithoutFee={priceImpactWithoutFee}
           allowedSlippage={allowedSlippage}
@@ -97,6 +98,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       ) : null
     }, [
       priceImpactWithoutFee,
+      currencyBalances,
       allowedSlippage,
       onAcceptChanges,
       recipient,

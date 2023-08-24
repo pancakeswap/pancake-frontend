@@ -81,6 +81,7 @@ const TransactionConfirmSwapContent = ({
       <SwapModalHeader
         inputAmount={trade.inputAmount}
         outputAmount={trade.outputAmount}
+        currencyBalances={currencyBalances}
         tradeType={trade.tradeType}
         priceImpactWithoutFee={priceImpactWithoutFee}
         allowedSlippage={<MMSlippageTolerance />}
@@ -93,6 +94,7 @@ const TransactionConfirmSwapContent = ({
     ) : null
   }, [
     priceImpactWithoutFee,
+    currencyBalances,
     onAcceptChanges,
     recipient,
     showAcceptChanges,
