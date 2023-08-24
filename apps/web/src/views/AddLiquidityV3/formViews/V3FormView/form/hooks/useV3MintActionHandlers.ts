@@ -71,8 +71,8 @@ export function useV3MintActionHandlers(
             pathname: router.pathname,
             query: {
               ...rest,
-              ...(leftTypedValue && { minPrice: leftTypedValue.toFixed(6) }),
-              ...(rightTypedValue && { maxPrice: rightTypedValue.toFixed(6) }),
+              ...(leftTypedValue && { minPrice: leftTypedValue.toFixed(18) }),
+              ...(rightTypedValue && { maxPrice: rightTypedValue.toFixed(18) }),
             },
           },
           undefined,
@@ -92,7 +92,7 @@ export function useV3MintActionHandlers(
         router.replace(
           {
             pathname: router.pathname,
-            query: { ...router.query, minPrice: typedValue.toFixed(6) },
+            query: { ...router.query, minPrice: typedValue.toFixed(18) },
           },
           undefined,
           {

@@ -140,14 +140,14 @@ export default function useV3DerivedInfo(
 
   // used for ratio calculation when pool not initialized
   const mockPool = useMemo(() => {
-    if (tokenA && tokenB && feeAmount && price && !invalidPrice) {
+    if (!pool && tokenA && tokenB && feeAmount && price && !invalidPrice) {
       const currentTick = priceToClosestTick(price)
       const currentSqrt = TickMath.getSqrtRatioAtTick(currentTick)
       return new Pool(tokenA, tokenB, feeAmount, currentSqrt, 0n, currentTick, [])
     }
 
     return undefined
-  }, [feeAmount, invalidPrice, price, tokenA, tokenB])
+  }, [feeAmount, invalidPrice, price, tokenA, tokenB, pool])
 
   // if pool exists use it, if not use the mock pool
   const poolForPosition: Pool | undefined = pool ?? mockPool
@@ -219,9 +219,9 @@ export default function useV3DerivedInfo(
   )
 
   // amounts
-  const independentAmount: CurrencyAmount<Currency> | undefined = tryParseCurrencyAmount(
-    typedValue,
-    currencies[independentField],
+  const independentAmount: CurrencyAmount<Currency> | undefined = useMemo(
+    () => tryParseCurrencyAmount(typedValue, currencies[independentField]),
+    [typedValue, currencies, independentField],
   )
 
   const dependentAmount: CurrencyAmount<Currency> | undefined = useMemo(() => {

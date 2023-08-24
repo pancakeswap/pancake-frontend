@@ -70,14 +70,17 @@ export function LiquidityChartRangeInput({
   const tokenAColor = "#7645D9";
   const tokenBColor = "#7645D9";
 
-  const isSorted = currencyA && currencyB && currencyA?.wrapped.sortsBefore(currencyB?.wrapped);
+  const isSorted = useMemo(
+    () => currencyA && currencyB && currencyA?.wrapped.sortsBefore(currencyB?.wrapped),
+    [currencyA, currencyB]
+  );
 
   const brushDomain: [number, number] | undefined = useMemo(() => {
     const leftPrice = isSorted ? priceLower : priceUpper?.invert();
     const rightPrice = isSorted ? priceUpper : priceLower?.invert();
 
     return leftPrice && rightPrice
-      ? [parseFloat(leftPrice?.toSignificant(6)), parseFloat(rightPrice?.toSignificant(6))]
+      ? [parseFloat(leftPrice?.toSignificant(18)), parseFloat(rightPrice?.toSignificant(18))]
       : undefined;
   }, [isSorted, priceLower, priceUpper]);
 
@@ -104,15 +107,15 @@ export function LiquidityChartRangeInput({
         rightRangeValue !== rightPrice;
 
       if (updateLeft && updateRight) {
-        const parsedLeftRangeValue = parseFloat(leftRangeValue.toFixed(6));
-        const parsedRightRangeValue = parseFloat(rightRangeValue.toFixed(6));
+        const parsedLeftRangeValue = parseFloat(leftRangeValue.toFixed(18));
+        const parsedRightRangeValue = parseFloat(rightRangeValue.toFixed(18));
         if (parsedLeftRangeValue > 0 && parsedRightRangeValue > 0 && parsedLeftRangeValue < parsedRightRangeValue) {
-          onBothRangeInput?.(leftRangeValue.toString(), rightRangeValue.toString());
+          onBothRangeInput?.(leftRangeValue.toFixed(18), rightRangeValue.toFixed(18));
         }
       } else if (updateLeft) {
-        onLeftRangeInput?.(leftRangeValue.toString());
+        onLeftRangeInput?.(leftRangeValue.toFixed(18));
       } else if (updateRight) {
-        onRightRangeInput?.(rightRangeValue.toString());
+        onRightRangeInput?.(rightRangeValue.toFixed(18));
       }
     },
     [isSorted, onBothRangeInput, onLeftRangeInput, onRightRangeInput, ticksAtLimit, brushDomain]
