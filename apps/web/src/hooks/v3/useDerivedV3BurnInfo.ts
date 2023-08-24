@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Position } from '@pancakeswap/v3-sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useToken } from 'hooks/Tokens'
 import { ReactNode, useMemo } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { PositionDetails } from '@pancakeswap/farms'
+import { useAccount } from 'wagmi'
 import { usePool } from './usePools'
 import { useV3PositionFees } from './useV3PositionFees'
 
@@ -24,7 +24,7 @@ export function useDerivedV3BurnInfo(
   error?: ReactNode
 } {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const token0 = useToken(position?.token0)
   const token1 = useToken(position?.token1)
