@@ -45,10 +45,10 @@ const Stats = () => {
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column" overflow="hidden">
       {/* <GradientLogo height="48px" width="48px" mb="24px" /> */}
-      <Text textAlign="center" fontWeight={600} fontSize={isMobile ? '20px' : '32px'}>
+      <Text textAlign="center" lineHeight="110%" fontWeight={600} mb="4px" fontSize={isMobile ? '20px' : '32px'}>
         {t('Shaping the Future of Decentralized Trading:')}
       </Text>
-      <Text textAlign="center" fontWeight={600} fontSize={isMobile ? '20px' : '32px'} mb="32px">
+      <Text textAlign="center" lineHeight="110%" fontWeight={600} fontSize={isMobile ? '20px' : '32px'} mb="32px">
         {t(' PancakeSwap’s Unstoppable Expansion')}
       </Text>
       <Flex
