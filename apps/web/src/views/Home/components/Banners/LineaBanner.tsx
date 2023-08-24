@@ -29,14 +29,18 @@ const RightWrapper = styled.div`
   bottom: -2px;
   z-index: 1;
   > span:first-child {
-    animation: ${flyingAnim} 3.5s ease-in-out infinite;
+    // animation: ${flyingAnim} 3.5s ease-in-out infinite;
     position: absolute !important;
-    right: 28px;
-    top: -8px;
+    right: -10px;
+    top: 8px;
     z-index: 2;
     ${({ theme }) => theme.mediaQueries.sm} {
-      right: 72px;
-      top: -16px;
+      right: 20px;
+      top: 10px;
+    }
+    ${({ theme }) => theme.mediaQueries.lg} {
+      right: 30px;
+      top: -20px;
     }
   }
 `
@@ -50,8 +54,8 @@ const BgWrapper = styled.div`
   border-radius: 32px;
   > span:first-child {
     position: relative !important;
-    right: -50px;
-    top: 25px;
+    right: 30px;
+    top: 0px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     bottom: auto;
@@ -61,7 +65,7 @@ const BgWrapper = styled.div`
     > span:first-child {
       position: relative !important;
       right: 0px;
-      top: -20px;
+      top: 20px;
     }
   }
 `
@@ -75,6 +79,12 @@ const Header = styled.div`
   line-height: 98%;
   letter-spacing: 0.01em;
   color: #37ffff;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
 `
 const SubTitle = styled.div`
   color: #37ffff;
@@ -84,6 +94,10 @@ const SubTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 98%; /* 19.45px */
+  margin-bottom: 20px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 10px;
+  }
 `
 
 const LineaBanner = () => {
@@ -93,7 +107,7 @@ const LineaBanner = () => {
   return (
     <S.Wrapper
       style={{
-        background: `linear-gradient(360deg, rgba(0, 0, 0, 0.00) 100%), linear-gradient(180deg, rgba(0, 160, 173, 0.20) 0%, rgba(0, 0, 0, 0.00) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.85) 100%), linear-gradient(180deg, #53DEE9 0%, #81EFF8 79.86%, #1FC7D4 100%)`,
+        background: `linear-gradient(180deg, rgba(0, 160, 173, 0.20) 0%, rgba(0, 0, 0, 0.00) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.85) 100%)`,
       }}
     >
       <S.Inner>
@@ -107,13 +121,7 @@ const LineaBanner = () => {
               unoptimized
             />
             <CrossSVG />
-            <Image
-              style={{ marginLeft: isMobile ? -3 : -5 }}
-              src={lineaLogo}
-              alt="arbLogo"
-              width={isMobile ? 52 : 70}
-              height={isMobile ? 15 : 20}
-            />
+            <Image src={lineaLogo} alt="lineaLogo" width={isMobile ? 54 : 70} height={isMobile ? 15 : 20} />
           </Flex>
           <Header>{isMobile ? t('Linea is LIVE!') : t('PancakeSwap Now Live on Linea!')}</Header>
           {!isMobile && <SubTitle>{t('Swap and Provide Liquidity on Linea now')}</SubTitle>}
@@ -142,7 +150,7 @@ const LineaBanner = () => {
             <Image src={lineaBunnyMobile} alt="liquidStakingBunnyMobile" width={169} height={191} placeholder="blur" />
           )}
           <BgWrapper>
-            {!isMobile ? (
+            {isDesktop ? (
               <Image src={lineaBg} alt="arbBg" width={941} height={170} placeholder="blur" />
             ) : (
               <Image src={lineaBgMobile} alt="liquidStakingBunnyMobile" width={211} height={147} placeholder="blur" />
