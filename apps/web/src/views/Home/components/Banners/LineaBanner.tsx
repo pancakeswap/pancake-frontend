@@ -93,7 +93,7 @@ const LineaBanner = () => {
   return (
     <S.Wrapper
       style={{
-        background: `radial-gradient(195.13% 169.76% at 81.48% 50.00%, #54DADE 0%, #4C69B8 12.23%, #48209F 39.90%, #250D59 100%)`,
+        background: `linear-gradient(360deg, rgba(0, 0, 0, 0.00) 100%), linear-gradient(180deg, rgba(0, 160, 173, 0.20) 0%, rgba(0, 0, 0, 0.00) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.85) 100%), linear-gradient(180deg, #53DEE9 0%, #81EFF8 79.86%, #1FC7D4 100%)`,
       }}
     >
       <S.Inner>
