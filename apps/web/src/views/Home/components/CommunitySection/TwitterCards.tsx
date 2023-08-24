@@ -124,7 +124,7 @@ export const TwitterCards: React.FC = () => {
           @PancakeSwap
         </Text>
         <Divider />
-        <Text fontSize={14} color={theme.isDark ? '#A881FC' : theme.colors.secondary}>
+        <Text fontSize={14} color={theme.colors.textSubtle}>
           {tweets[0].date}
         </Text>
         <Divider />
