@@ -1,5 +1,18 @@
 # @pancakeswap/smart-router
 
+## 4.4.0
+
+### Minor Changes
+
+- 5e15c611e: Add linea support
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/sdk@5.3.0
+  - @pancakeswap/tokens@0.3.0
+  - @pancakeswap/v3-sdk@3.3.0
+
 ## 4.3.6
 
 ### Patch Changes
