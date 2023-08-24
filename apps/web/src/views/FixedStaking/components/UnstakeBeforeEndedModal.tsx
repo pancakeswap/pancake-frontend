@@ -110,6 +110,7 @@ export function UnstakeBeforeEnededModal({
             stakeAmount={amountDeposit}
             lockAPR={lockAPR}
             boostAPR={boostAPR}
+            isBoost={stakePositionUserInfo.boost}
             poolEndDay={poolEndDay}
             calculator={<FixedStakingCalculator stakingToken={token} pools={pools} initialLockPeriod={lockPeriod} />}
           />

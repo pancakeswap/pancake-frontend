@@ -13,12 +13,14 @@ export function StakeConfirmModal({
   lockAPR,
   boostAPR,
   lockPeriod,
+  isBoost,
 }: {
   stakeCurrencyAmount: CurrencyAmount<Token>
   lockPeriod: number
   boostAPR: Percent
   lockAPR: Percent
   poolEndDay: number
+  isBoost?: boolean
 }) {
   const { t } = useTranslation()
 
@@ -60,6 +62,7 @@ export function StakeConfirmModal({
         disableStrike
         poolEndDay={poolEndDay}
         stakeAmount={stakeCurrencyAmount}
+        isBoost={isBoost}
         lockAPR={lockAPR}
         boostAPR={boostAPR}
         lockPeriod={lockPeriod}

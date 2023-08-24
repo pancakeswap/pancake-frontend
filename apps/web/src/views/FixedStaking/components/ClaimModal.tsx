@@ -64,6 +64,7 @@ export function ClaimModal({
     <>
       {children(claimModal.onOpen)}
       <HarvestModal
+        isBoost={stakePositionUserInfo.boost}
         isConfirmed={isConfirmed}
         poolEndDay={poolEndDay}
         onBack={claimModal.onOpen}

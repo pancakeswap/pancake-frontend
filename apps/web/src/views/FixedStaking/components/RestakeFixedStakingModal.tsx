@@ -61,7 +61,7 @@ export function FixedRestakingModal({
               </MessageText>
             </Message>
           )}
-          body={({ stakeCurrencyAmount, alreadyStakedAmount, poolEndDay, lockPeriod, boostAPR, lockAPR }) => (
+          body={({ isBoost, stakeCurrencyAmount, alreadyStakedAmount, poolEndDay, lockPeriod, boostAPR, lockAPR }) => (
             <>
               <Box mb="16px" mt="16px">
                 <PreTitle textTransform="uppercase" bold mb="8px">
@@ -92,8 +92,9 @@ export function FixedRestakingModal({
                   alreadyStakedAmount={alreadyStakedAmount}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
-                  lockAPR={lockAPR}
+                  isBoost={isBoost}
                   boostAPR={boostAPR}
+                  lockAPR={lockAPR}
                   lockPeriod={lockPeriod}
                   calculator={
                     <FixedStakingCalculator stakingToken={stakingToken} pools={pools} initialLockPeriod={lockPeriod} />

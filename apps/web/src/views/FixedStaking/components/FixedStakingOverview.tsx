@@ -32,6 +32,7 @@ export default function FixedStakingOverview({
   stakeAmount,
   lockAPR,
   boostAPR,
+  isBoost,
   lockPeriod,
   poolEndDay,
   isUnstakeView,
@@ -48,10 +49,11 @@ export default function FixedStakingOverview({
   lockPeriod?: number
   poolEndDay: number
   calculator?: ReactNode
+  isBoost?: boolean
 }) {
   const { t } = useTranslation()
 
-  const apr = boostAPR?.greaterThan(0) ? boostAPR : lockAPR
+  const apr = isBoost ? boostAPR : lockAPR
 
   const safeAlreadyStakedAmount = alreadyStakedAmount || CurrencyAmount.fromRawAmount(stakeAmount.currency, '0')
 

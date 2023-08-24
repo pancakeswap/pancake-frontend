@@ -30,7 +30,9 @@ export function HarvestModal({
   poolEndDay,
   pools,
   isConfirmed,
+  isBoost,
 }: {
+  isBoost?: boolean
   isConfirmed?: boolean
   poolEndDay: number
   onBack: () => void
@@ -72,6 +74,7 @@ export function HarvestModal({
         >
           {isConfirmed ? (
             <StakeConfirmModal
+              isBoost={isBoost}
               stakeCurrencyAmount={amountDeposit}
               poolEndDay={poolEndDay}
               lockAPR={lockAPR}
@@ -129,7 +132,7 @@ export function HarvestModal({
                     <Text fontSize={12} textTransform="uppercase" color="textSubtle" bold>
                       {t('APR')}
                     </Text>
-                    <Text bold>{boostAPR.greaterThan(0) ? boostAPR.toSignificant(2) : lockAPR?.toSignificant(2)}%</Text>
+                    <Text bold>{isBoost ? boostAPR.toSignificant(2) : lockAPR?.toSignificant(2)}%</Text>
                   </Flex>
                   {boostAPR?.greaterThan(0) ? (
                     <Flex alignItems="center" justifyContent="space-between">

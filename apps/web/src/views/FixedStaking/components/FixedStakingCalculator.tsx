@@ -24,11 +24,13 @@ export function FixedStakingCalculator({
   pools,
   initialLockPeriod,
   hideBackButton,
+  isBoost,
 }: {
   stakingToken: Token
   pools: FixedStakingPool[]
   initialLockPeriod: number
   hideBackButton?: boolean
+  isBoost?: boolean
 }) {
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
 
@@ -113,6 +115,7 @@ export function FixedStakingCalculator({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
+                  isBoost={isBoost}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}

@@ -37,6 +37,7 @@ interface BodyParam {
   lockAPR: Percent
   formattedUsdProjectedReturnAmount: number
   poolEndDay: number
+  isBoost: boolean
 }
 
 export function StakingModalTemplate({
@@ -233,19 +234,21 @@ export function StakingModalTemplate({
       isStaked,
       boostAPR,
       lockAPR,
+      isBoost,
       formattedUsdProjectedReturnAmount,
       poolEndDay: selectedPool?.endDay || 0,
     }),
     [
-      boostAPR,
-      formattedUsdProjectedReturnAmount,
-      isStaked,
-      lockAPR,
-      lockPeriod,
-      projectedReturnAmount,
-      selectedPool?.endDay,
       depositedAmount,
       stakeCurrencyAmount,
+      projectedReturnAmount,
+      lockPeriod,
+      isStaked,
+      boostAPR,
+      lockAPR,
+      isBoost,
+      formattedUsdProjectedReturnAmount,
+      selectedPool?.endDay,
     ],
   )
 
@@ -265,6 +268,7 @@ export function StakingModalTemplate({
         maxWidth={['100%', , '420px']}
       >
         <StakeConfirmModal
+          isBoost={isBoost}
           stakeCurrencyAmount={depositedAmount.add(stakeCurrencyAmount)}
           poolEndDay={params.poolEndDay}
           lockAPR={lockAPR}

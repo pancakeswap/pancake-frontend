@@ -87,6 +87,7 @@ export function FixedStakingModal({
             isStaked,
             boostAPR,
             lockAPR,
+            isBoost,
           }) => (
             <>
               {pools.length > 1 ? (
@@ -140,6 +141,7 @@ export function FixedStakingModal({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
+                  isBoost={isBoost}
                   alreadyStakedAmount={alreadyStakedAmount}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
@@ -147,7 +149,12 @@ export function FixedStakingModal({
                   boostAPR={boostAPR}
                   lockPeriod={lockPeriod}
                   calculator={
-                    <FixedStakingCalculator stakingToken={stakingToken} pools={pools} initialLockPeriod={lockPeriod} />
+                    <FixedStakingCalculator
+                      isBoost={isBoost}
+                      stakingToken={stakingToken}
+                      pools={pools}
+                      initialLockPeriod={lockPeriod}
+                    />
                   }
                 />
               </Box>
