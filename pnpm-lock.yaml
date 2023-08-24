@@ -13637,6 +13637,7 @@ packages:
       react-refresh: 0.14.0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.3.1(@types/node@18.16.2)
     transitivePeerDependencies:
       - supports-color
@@ -13659,6 +13660,9 @@ packages:
 =======
       vite: 4.3.1(@types/node@18.0.4)
 >>>>>>> b75132f07 (chore: update package json)
+=======
+      vite: 4.3.1(@types/node@13.13.52)
+>>>>>>> f5900781a (chore: update package json part2)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -30808,6 +30812,7 @@ packages:
       tsconfck: 2.0.2(typescript@5.1.3)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.3.1(@types/node@18.16.2)
     transitivePeerDependencies:
       - supports-color
@@ -30829,6 +30834,9 @@ packages:
 =======
       vite: 4.3.1(@types/node@18.0.4)
 >>>>>>> b75132f07 (chore: update package json)
+=======
+      vite: 4.3.1(@types/node@13.13.52)
+>>>>>>> f5900781a (chore: update package json part2)
     transitivePeerDependencies:
       - supports-color
       - typescript
