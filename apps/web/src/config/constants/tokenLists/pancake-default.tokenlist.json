@@ -260,6 +260,14 @@
     },
     {
       "name": "USD Coin",
+      "address": "0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 59144,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "name": "USD Coin",
       "address": "0x02a3e7E0480B668bD46b42852C58363F93e3bA5C",
       "symbol": "USDC",
       "decimals": 6,

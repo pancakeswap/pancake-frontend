@@ -50,6 +50,7 @@ const SWAP_INFO_BY_CHAIN = {
     v3: V3_SUBGRAPH_URLS[ChainId.ZKSYNC],
   },
   [ChainId.ZKSYNC_TESTNET]: {},
+  [ChainId.LINEA]: {},
   [ChainId.LINEA_TESTNET]: {
     v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],
     v3: V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],

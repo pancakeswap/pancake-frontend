@@ -40,6 +40,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.POLYGON_ZKEVM]: "polygon-zkevm",
   [ChainId.ARBITRUM_ONE]: "arb",
   [ChainId.ZKSYNC]: "zksync",
+  [ChainId.LINEA]: "linea",
 };
 
 // TODO: move to utils or token-list

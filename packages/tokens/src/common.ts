@@ -215,6 +215,7 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
+  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0x176211869cA2b568f2A7D4EE941E073a821EE1ff', 6, 'USDC', 'USD Coin'),
   [ChainId.LINEA_TESTNET]: new ERC20Token(
     ChainId.LINEA_TESTNET,
     '0xf56dc6695cF1f5c364eDEbC7Dc7077ac9B586068',
@@ -283,6 +284,7 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
 }
 
 export const WBTC_ETH = new ERC20Token(
@@ -304,6 +306,7 @@ export const STABLE_COIN = {
   [ChainId.ZKSYNC_TESTNET]: USDC[ChainId.ZKSYNC_TESTNET],
   [ChainId.POLYGON_ZKEVM]: USDT[ChainId.POLYGON_ZKEVM],
   [ChainId.POLYGON_ZKEVM_TESTNET]: USDT[ChainId.POLYGON_ZKEVM_TESTNET],
+  [ChainId.LINEA]: USDC[ChainId.LINEA],
   [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
   [ChainId.OPBNB_TESTNET]: USDC[ChainId.OPBNB_TESTNET],
   [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],
