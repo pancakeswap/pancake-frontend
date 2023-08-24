@@ -2482,8 +2482,8 @@
   "learn more": "daha fazla bilgi edin",
   "Show pairs with trading rewards": "Alım satım ödülleri olan çiftleri göster",
   "Your Trading Fee": "İşlem Ücretiniz",
-  "An additional amount of reward of": "Ek bir miktar ödül",
-  "can not be claim due to the max reward cap.": "Maksimum ödül sınırı nedeniyle alınamaz.",
+  "An additional amount of reward of": "Ödülün",
+  "can not be claim due to the max reward cap.": "kadarı, maksimum ödül sınırı nedeniyle alınamıyor.",
   "Lock more CAKE to keep earning.": "Kazanmaya devam etmek için daha fazla CAKE kilitleyin.",
   "Your Current Max Reward Cap": "Mevcut Maksimum Ödül Sınırınız",
   "Equals to your %amount%% of locked CAKE divided by": "Kilitli CAKE'inizin %amount% kadarına eşittir, şuna bölünür:",
@@ -2664,5 +2664,6 @@
   "0% Fee": "0% Fee",
   "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
   "Get more details from": "Get more details from",
-  "RedAlarm": "RedAlarm"
+  "RedAlarm": "RedAlarm",
+  "Merchandise": "Merchandise"
 }

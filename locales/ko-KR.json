@@ -2487,7 +2487,7 @@
   "Lock more CAKE to keep earning.": "계속 적립하려면 더 많은 CAKE를 잠그세요.",
   "Your Current Max Reward Cap": "현재 최대 리워드 캡",
   "Equals to your %amount%% of locked CAKE divided by": "- 잠긴 CAKE의 %amount%%를 다음으로 나눈 값과 같습니다:",
-  "of the amount of your locked CAKE. Lock more CAKE to raise this limit": "잠긴 CAKE 금액. 이 한도를 높이려면 CAKE를 더 잠그세요.",
+  "of the amount of your locked CAKE. Lock more CAKE to raise this limit": "/ 잠긴 CAKE 금액. 이 한도를 높이려면 CAKE를 더 잠그세요.",
   "Lock any amount of CAKE for": "원하는 양의 CAKE 잠그기",
   "or more to claim rewards from trades!": "이상 리워드를 거래에서 클레임하세요!",
   "Not enough remaining lock duration": "남은 잠금 기간 부족",
@@ -2664,5 +2664,6 @@
   "0% Fee": "0% Fee",
   "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
   "Get more details from": "Get more details from",
-  "RedAlarm": "RedAlarm"
+  "RedAlarm": "RedAlarm",
+  "Merchandise": "Merchandise"
 }
