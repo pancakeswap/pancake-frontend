@@ -47,6 +47,7 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
         const messageHistory = await pushClient.getMessageHistory({ topic: currentSubscription?.topic })
         setNotifications(Object.values(messageHistory))
       } catch (error) {
+        console.error(error)
         throw new Error(JSON.stringify(error))
       }
     }

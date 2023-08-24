@@ -25,7 +25,7 @@ class PushClientProxy {
 
   private readonly projectId: string
 
-  private syncClient: ISyncClient | undefined
+  public syncClient: ISyncClient | undefined
 
   private readonly core: ICore | undefined
 

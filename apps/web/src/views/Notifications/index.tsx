@@ -27,18 +27,19 @@ const ModalBackButton: React.FC<
 
 const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHeaderprops) => {
   const { t } = useTranslation()
-  const { userPubkey, isSubscribed } = usePushClient()
+  const { isSubscribed } = usePushClient()
+  const { eip155Account } = useFormattedEip155Account()
   return (
     <ModalHeader>
       {isSubscribed ? (
         <>
-          {userPubkey ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
+          {eip155Account ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
           <ModalTitle>
             <Heading fontSize="20px" padding="0px" textAlign="center">
               {t('Notifications')}
             </Heading>
           </ModalTitle>
-          {userPubkey ? <ModalCloseButton onDismiss={onDismiss} /> : null}
+          {eip155Account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
         </>
       ) : (
         <Box display="flex" padding="8px" paddingLeft="20px">
@@ -55,17 +56,9 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHe
 const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-
-  const {
-    userPubkey,
-    isOnBoarded,
-    activeSubscriptions,
-    pushClientProxy: pushClient,
-    isSubscribed,
-    refreshNotifications,
-  } = usePushClient()
-
   const { eip155Account } = useFormattedEip155Account()
+  const { activeSubscriptions, pushClientProxy: pushClient, isSubscribed, refreshNotifications } = usePushClient()
+
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
 
   const toggleSettings = useCallback(
@@ -83,7 +76,7 @@ const Notifications = () => {
       {() => (
         <Box>
           <NotificationHeader onBack={toggleSettings} onDismiss={onDismiss} isSettings={!isRightView} />
-          {isSubscribed && userPubkey ? (
+          {isSubscribed && eip155Account ? (
             <ViewContainer isRightView={isRightView}>
               <SettingsModal
                 currentSubscription={currentSubscription}

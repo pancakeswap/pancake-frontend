@@ -36,15 +36,12 @@ const useSendPushNotification = (): IUseSendNotification => {
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
         await navigator.serviceWorker.ready
 
-        const subscription = await registration.pushManager.subscribe({
+        const existingSubscription = await registration.pushManager.getSubscription()
+        if (existingSubscription) return
+
+        await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: publicVapidKey,
-        })
-
-        await fetch('http://localhost:8000/subscribe', {
-          method: 'POST',
-          body: JSON.stringify(subscription),
-          headers: { 'Content-Type': 'application/json' },
         })
       } catch (error) {
         throw new Error('Error:', error)
@@ -88,6 +85,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       })
 
       const result: NotifyResponse = await notifyResponse.json()
+      console.log('resultttt', result)
       const success = result.sent.includes(eip155Account as string)
 
       if (!success) {

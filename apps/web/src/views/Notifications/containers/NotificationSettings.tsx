@@ -94,7 +94,7 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription, refreshNoti
       toast.toastError(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }
     setloading(false)
-  }, [pushClient, currentSubscription?.topic, toast])
+  }, [pushClient, currentSubscription?.topic, toast, refreshNotifications])
 
   const handleAction = useCallback(
     (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {

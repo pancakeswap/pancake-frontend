@@ -4,12 +4,11 @@ import { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
 import PushClientProxy, { PushClient } from 'PushNotificationClient'
-import { useAccount } from 'wagmi'
+import useFormattedEip155Account from 'views/Notifications/components/hooks/useFormatEip155Account'
 
 interface PushClientContext {
   refreshNotifications: () => void
   activeSubscriptions: NotifyClientTypes.NotifySubscription[]
-  userPubkey?: string
   pushClientProxy: PushClient | null
   pushRegisteredKey: string | null
   pushRegisterMessage: string | null
@@ -26,8 +25,7 @@ interface PushContextProviderProps {
 }
 
 const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) => {
-  const { address: userPubkey } = useAccount()
-
+  const { eip155Account } = useFormattedEip155Account()
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
   const [unread, setUnread] = useState<number>(0)
   const [isOnBoarded, setIsOnBoarded] = useState<boolean>(false)
@@ -44,6 +42,12 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   const [proxyReady, setProxyReady] = useState(false)
   const [w3iProxy] = useState(PushClientProxy.getProxy(projectId, relayUrl))
 
+  console.log(
+    'signaturessss',
+    w3iProxy.syncClient?.signatures.getAll({
+      account: eip155Account,
+    }),
+  )
   useEffect(() => {
     w3iProxy.init().then(() => setProxyReady(true))
   }, [w3iProxy, setProxyReady])
@@ -56,22 +60,22 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
-    if (userPubkey && pushSignatureRequired) setIsOnBoarded(false)
+    if (eip155Account && pushSignatureRequired) setIsOnBoarded(false)
     else setIsOnBoarded(true)
-  }, [userPubkey, pushRegisteredKey, pushRegisterMessage])
+  }, [eip155Account, pushRegisteredKey, pushRegisterMessage])
 
   const refreshPushState = useCallback(() => {
-    if (!pushClient || !userPubkey) {
+    if (!pushClient || !eip155Account) {
       return
     }
 
-    pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey}` }).then((subscriptions) => {
+    pushClient.getActiveSubscriptions({ account: eip155Account }).then((subscriptions) => {
       setActiveSubscriptions(Object.values(subscriptions))
-      if (Object.values(subscriptions).some((sub) => sub.account === `eip155:1:${userPubkey}`)) {
+      if (Object.values(subscriptions).some((sub) => sub.account === eip155Account)) {
         setIsSubscribed(true)
       } else setIsSubscribed(false)
     })
-  }, [pushClient, userPubkey])
+  }, [pushClient, eip155Account])
 
   useEffect(() => {
     // Account for sync init
@@ -82,11 +86,9 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
 
   const handleRegistration = useCallback(
     async (key: string) => {
-      console.log(pushClient && key)
       if (pushClient && key) {
         try {
-          const identityKey = await pushClient.register({ account: `eip155:1:${key}` })
-          console.log('yooooooooooooooooooooooooo')
+          const identityKey = await pushClient.register({ account: key })
           setRegisterMessage(null)
           setRegistered(identityKey)
           refreshPushState()
@@ -99,12 +101,12 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   )
 
   useEffect(() => {
-    if (userPubkey) {
-      handleRegistration(userPubkey)
+    if (eip155Account) {
+      handleRegistration(eip155Account)
     } else {
       setRegisterMessage(null)
     }
-  }, [handleRegistration, setRegisterMessage, userPubkey])
+  }, [handleRegistration, setRegisterMessage, eip155Account])
 
   useEffect(() => {
     if (!pushClient) {
@@ -139,7 +141,6 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   return (
     <PushClientContext.Provider
       value={{
-        userPubkey,
         refreshNotifications: refreshPushState,
         activeSubscriptions,
         pushRegisteredKey,
