@@ -65,7 +65,7 @@ const BgWrapper = styled.div`
     > span:first-child {
       position: relative !important;
       right: 0px;
-      top: 20px;
+      top: 22px;
     }
   }
 `
