@@ -88,6 +88,7 @@ class PushClientProxy {
     }
 
     if (this.core) {
+      // @ts-ignore
       this.identityKeys = new IdentityKeys(this.core)
     }
 

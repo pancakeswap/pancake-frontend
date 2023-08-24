@@ -42,12 +42,6 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   const [proxyReady, setProxyReady] = useState(false)
   const [w3iProxy] = useState(PushClientProxy.getProxy(projectId, relayUrl))
 
-  console.log(
-    'signaturessss',
-    w3iProxy.syncClient?.signatures.getAll({
-      account: eip155Account,
-    }),
-  )
   useEffect(() => {
     w3iProxy.init().then(() => setProxyReady(true))
   }, [w3iProxy, setProxyReady])
