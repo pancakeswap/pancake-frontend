@@ -636,7 +636,7 @@ const finishedPools = [
   {
     sousId: 281,
     stakingToken: bscTokens.cake,
-    earningToken: bscTokens.MIX,
+    earningToken: bscTokens.deprecated_MIX,
     contractAddress: '0x0F96E19Bdc787e767BA1e8F1aDD0f62cbdad87C8',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '63.136',
@@ -663,7 +663,7 @@ const finishedPools = [
   {
     sousId: 278,
     stakingToken: bscTokens.cake,
-    earningToken: bscTokens.rpg,
+    earningToken: bscTokens.deprecated_rpg,
     contractAddress: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.06794',
@@ -1093,7 +1093,7 @@ const finishedPools = [
   {
     sousId: 223,
     stakingToken: bscTokens.cake,
-    earningToken: bscTokens.rpg,
+    earningToken: bscTokens.deprecated_rpg,
     contractAddress: '0x65C0940C50A3C98AEEc95a115Ae62E9804588713',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01863',
