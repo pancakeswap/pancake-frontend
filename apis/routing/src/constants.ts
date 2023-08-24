@@ -11,6 +11,7 @@ export const SUPPORTED_CHAINS = [
   ChainId.ARBITRUM_ONE,
   ChainId.SCROLL_SEPOLIA,
   ChainId.BASE_TESTNET,
+  ChainId.LINEA,
 ] as const
 
 export type SupportedChainId = (typeof SUPPORTED_CHAINS)[number]
