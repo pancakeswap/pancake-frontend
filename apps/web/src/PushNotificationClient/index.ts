@@ -6,7 +6,7 @@ import type { ISyncClient } from '@walletconnect/sync-client'
 import { SyncClient, SyncStore } from '@walletconnect/sync-client'
 import type { ICore } from '@walletconnect/types'
 import { EventEmitter } from 'events'
-import InternalPushProvider from './pushProviders/internalPushProvider'
+import InternalPushProvider from './internalPushProvider'
 
 export type PushClient = Omit<InternalPushProvider, 'initState'>
 

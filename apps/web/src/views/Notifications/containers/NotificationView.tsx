@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
-import { PushClient } from 'w3iProxy'
+import { PushClient } from 'PushNotificationClient'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
 

@@ -3,7 +3,7 @@
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
-import PushClientProxy, { PushClient } from 'w3iProxy'
+import PushClientProxy, { PushClient } from 'PushNotificationClient'
 import { useAccount } from 'wagmi'
 
 interface PushClientContext {

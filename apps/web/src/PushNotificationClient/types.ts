@@ -47,8 +47,7 @@ interface ModifiedPushClientFunctions {
 }
 
 export type PushClientFunctions = Omit<NotifyClient, NonMethodPushClientKeys>
-export type W3iPush = ModifiedPushClientFunctions &
-  Omit<PushClientFunctions, keyof ModifiedPushClientFunctions>
+export type W3iPush = ModifiedPushClientFunctions & Omit<PushClientFunctions, keyof ModifiedPushClientFunctions>
 
 export type W3iPushProvider = W3iPush & {
   isListeningToMethodFromPostMessage: (method: string) => boolean
