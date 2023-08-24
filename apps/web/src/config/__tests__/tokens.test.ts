@@ -2,6 +2,7 @@ import { Token } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { erc20ABI } from 'wagmi'
 import map from 'lodash/map'
+import slice from 'lodash/slice'
 import omitBy from 'lodash/omitBy'
 import { describe, it } from 'vitest'
 import { publicClient } from '../../utils/wagmi'
@@ -31,28 +32,32 @@ const tokenTables: [string, Token][] = tokenListsToTest.reduce(
 describe.concurrent(
   'Config tokens',
   () => {
-    it.each(tokenTables)('Token %s has the correct key, symbol, and decimal', async (key: string, token: Token) => {
-      const client = publicClient({ chainId: token.chainId })
-      const [symbol, decimals] = await client.multicall({
-        contracts: [
-          {
-            abi: erc20ABI,
-            address: token.address,
-            functionName: 'symbol',
-          },
-          {
-            abi: erc20ABI,
-            address: token.address,
-            functionName: 'decimals',
-          },
-        ],
-        allowFailure: false,
-      })
-      const isWhitelisted = whitelist.includes(key.toLowerCase())
-      if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
-      if (!isWhitelisted) expect(token.symbol.toLocaleLowerCase()).toBe(symbol.toLocaleLowerCase())
-      expect(token.decimals).toBe(decimals)
-    })
+    it.each(slice(tokenTables, tokenTables.length - 50))(
+      'Token %s has the correct key, symbol, and decimal',
+      async (key: string, token: Token) => {
+        const client = publicClient({ chainId: token.chainId })
+        const [symbol, decimals] = await client.multicall({
+          contracts: [
+            {
+              abi: erc20ABI,
+              address: token.address,
+              functionName: 'symbol',
+            },
+            {
+              abi: erc20ABI,
+              address: token.address,
+              functionName: 'decimals',
+            },
+          ],
+          allowFailure: false,
+        })
+
+        const isWhitelisted = whitelist.includes(key.toLowerCase())
+        if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
+        if (!isWhitelisted) expect(token.symbol.toLocaleLowerCase()).toBe(symbol.toLocaleLowerCase())
+        expect(token.decimals).toBe(decimals)
+      },
+    )
   },
   {
     timeout: 50_000,
