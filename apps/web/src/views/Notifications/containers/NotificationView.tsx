@@ -1,14 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, FlexGap, OptionProps, Select, Text } from '@pancakeswap/uikit'
-import { PushClientTypes } from '@walletconnect/push-client'
+import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PushClient } from 'state/PushClientProxy'
 import { NotificationFilterTypes, NotificationSortTypes } from 'views/Notifications/constants'
 import { FilterContainer, LabelWrapper, NotificationContainerStyled } from 'views/Notifications/styles'
+import { PushClient } from 'w3iProxy'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
-import { W3iPushClient } from 'w3iProxy'
 
 interface INotificationFilterProps {
   options: OptionProps[]
@@ -18,9 +17,9 @@ interface INotificationFilterProps {
 }
 
 interface ISettingsModalProps {
-  activeSubscriptions: PushClientTypes.PushSubscription[]
-  currentSubscription: PushClientTypes.PushSubscription | null
-  pushClient: W3iPushClient
+  activeSubscriptions: NotifyClientTypes.NotifySubscription[]
+  currentSubscription: NotifyClientTypes.NotifySubscription | null
+  pushClient: PushClient
 }
 
 const NotificationFilter = ({ options, onOptionChange, width, description }: INotificationFilterProps) => {
@@ -38,7 +37,7 @@ const NotificationFilter = ({ options, onOptionChange, width, description }: INo
 const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }: ISettingsModalProps) => {
   const [sortOptionsType, setSortOptionsType] = useState<string>('Latest')
   const [notificationType, setNotificationType] = useState<string>('All')
-  const [notifications, setNotifications] = useState<PushClientTypes.PushMessageRecord[]>([])
+  const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
 
   const { t } = useTranslation()
 
@@ -77,14 +76,14 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
   const filteredNotifications: any = useMemo(() => {
     const typeFilter = (
       subscriptionType: SubsctiptionType,
-      unFilteredNotifications: PushClientTypes.PushMessageRecord[],
+      unFilteredNotifications: NotifyClientTypes.NotifyMessageRecord[],
     ) => {
-      return unFilteredNotifications.filter((notification: PushClientTypes.PushMessageRecord) => {
+      return unFilteredNotifications.filter((notification: NotifyClientTypes.NotifyMessageRecord) => {
         const extractedType = notification.message.type
         return extractedType === subscriptionType
       })
     }
-    const sortNotifications = (unFilteredNotifications: PushClientTypes.PushMessageRecord[]): any[] => {
+    const sortNotifications = (unFilteredNotifications: NotifyClientTypes.NotifyMessageRecord[]): any[] => {
       switch (notificationType) {
         case SubsctiptionType.Liquidity:
           return typeFilter(SubsctiptionType.Liquidity, unFilteredNotifications)
@@ -107,6 +106,20 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
     if (!currentSubscription?.topic) return
     updateMessages()
   }, [updateMessages, currentSubscription?.topic, activeSubscriptions])
+
+  useEffect(() => {
+    if (!(pushClient && currentSubscription?.topic)) {
+      return () => null
+    }
+
+    pushClient.emitter.on('notify_message', () => updateMessages())
+    pushClient.emitter.on('notify_message', () => updateMessages())
+
+    return () => {
+      pushClient.emitter.off('notify_message', () => updateMessages())
+      pushClient.emitter.off('notify_message', () => updateMessages())
+    }
+  }, [pushClient, setNotifications, currentSubscription?.topic, updateMessages])
 
   return (
     <Box paddingBottom="24px" width="100%">

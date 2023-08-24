@@ -1,23 +1,22 @@
 'use client'
 
-import { PushClientTypes } from '@walletconnect/push-client'
-import { ISyncClient } from '@walletconnect/sync-client'
-import EventEmitter from 'events'
+import { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import Web3InboxProxy, { PushClient } from 'state/PushClientProxy'
-import useFormattedEip155Account from 'views/Notifications/components/hooks/useFormatEip155Account'
 import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
+import PushClientProxy, { PushClient } from 'w3iProxy'
+import { useAccount } from 'wagmi'
 
 interface PushClientContext {
   refreshNotifications: () => void
-  activeSubscriptions: PushClientTypes.PushSubscription[]
+  activeSubscriptions: NotifyClientTypes.NotifySubscription[]
   userPubkey?: string
   pushClientProxy: PushClient | null
-  setUnread: React.Dispatch<React.SetStateAction<number>>
-  unread: number
-  handleRegistration: (key: string, isOnLoad: any) => Promise<void>
+  pushRegisteredKey: string | null
+  pushRegisterMessage: string | null
   isSubscribed: boolean
   isOnBoarded: boolean
+  unread: number
+  setUnread: React.Dispatch<React.SetStateAction<number>>
 }
 
 export const PushClientContext = createContext<PushClientContext>({} as PushClientContext)
@@ -27,89 +26,115 @@ interface PushContextProviderProps {
 }
 
 const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) => {
-  const [activeSubscriptions, setActiveSubscriptions] = useState<PushClientTypes.PushSubscription[]>([])
-  const [unread, setUnread] = useState<number>(0)
+  const { address: userPubkey } = useAccount()
+
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
+  const [unread, setUnread] = useState<number>(0)
   const [isOnBoarded, setIsOnBoarded] = useState<boolean>(false)
+  const [activeSubscriptions, setActiveSubscriptions] = useState<NotifyClientTypes.NotifySubscription[]>([])
+
+  const [pushRegisterMessage, setRegisterMessage] = useState<string | null>(null)
+  const [pushRegisteredKey, setRegistered] = useState<string | null>(null)
+
   const [pushClient, setPushClient] = useState<PushClient | null>(null)
-  const [syncClient, setSyncClient] = useState<ISyncClient | null>(null)
-  const [emitter] = useState(new EventEmitter())
-  const [w3iProxy] = useState(Web3InboxProxy.getProxy(DEFAULT_PROJECT_ID, 'wss://relay.walletconnect.com'))
-  const { eip155Account, account: userPubkey } = useFormattedEip155Account()
+
+  const relayUrl = 'wss://relay.walletconnect.com'
+  const projectId = DEFAULT_PROJECT_ID
+
+  const [proxyReady, setProxyReady] = useState(false)
+  const [w3iProxy] = useState(PushClientProxy.getProxy(projectId, relayUrl))
+
+  useEffect(() => {
+    w3iProxy.init().then(() => setProxyReady(true))
+  }, [w3iProxy, setProxyReady])
+
+  useEffect(() => {
+    if (proxyReady) {
+      setPushClient(w3iProxy.notify)
+    }
+  }, [w3iProxy, proxyReady])
+
+  useEffect(() => {
+    const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
+    if (userPubkey && pushSignatureRequired) setIsOnBoarded(false)
+    else setIsOnBoarded(true)
+  }, [userPubkey, pushRegisteredKey, pushRegisterMessage])
 
   const refreshPushState = useCallback(() => {
-    if (!pushClient || !syncClient || !eip155Account) return
+    if (!pushClient || !userPubkey) {
+      return
+    }
 
-    pushClient.getActiveSubscriptions().then((subscriptions) => {
-      const _activeSubscriptions = Object.values(subscriptions)
-      const isSynced = syncClient.signatures.getAll({ account: userPubkey }).length > 0
-      setActiveSubscriptions(_activeSubscriptions)
-      if (_activeSubscriptions.some((sub) => sub.account === eip155Account)) {
+    pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey}` }).then((subscriptions) => {
+      setActiveSubscriptions(Object.values(subscriptions))
+      if (Object.values(subscriptions).some((sub) => sub.account === `eip155:1:${userPubkey}`)) {
         setIsSubscribed(true)
       } else setIsSubscribed(false)
-
-      if (isSynced) setIsOnBoarded(true)
-      else setIsOnBoarded(false)
     })
-  }, [pushClient, eip155Account, userPubkey, setIsSubscribed, syncClient, setIsOnBoarded, setActiveSubscriptions])
+  }, [pushClient, userPubkey])
+
+  useEffect(() => {
+    // Account for sync init
+    const timeoutId = setTimeout(() => refreshPushState(), 100)
+
+    return () => clearTimeout(timeoutId)
+  }, [refreshPushState])
 
   const handleRegistration = useCallback(
-    async (key: string, isOnLoad) => {
+    async (key: string) => {
+      console.log(pushClient && key)
       if (pushClient && key) {
         try {
-          if (isOnLoad) await pushClient.enablePresistantSync({ account: key })
-          else await pushClient.enableSync({ account: key })
-
+          const identityKey = await pushClient.register({ account: `eip155:1:${key}` })
+          console.log('yooooooooooooooooooooooooo')
+          setRegisterMessage(null)
+          setRegistered(identityKey)
           refreshPushState()
         } catch (error) {
-          throw new Error(`Push client sync registration failed`)
+          setRegisterMessage(null)
         }
       }
     },
-    [pushClient, refreshPushState],
+    [pushClient, refreshPushState, setRegisterMessage],
   )
 
   useEffect(() => {
-    w3iProxy.init().then(() => {
-      setPushClient(w3iProxy.push)
-      setSyncClient(w3iProxy.push.pushClient.syncClient)
-    })
-  }, [w3iProxy, setPushClient, setSyncClient])
-
-  useEffect(() => {
-    handleRegistration(eip155Account, true)
-  }, [handleRegistration, eip155Account])
-
-  useEffect(() => {
-    refreshPushState()
-    const intervalId: NodeJS.Timer = setInterval(refreshPushState, 60000)
-    return () => {
-      clearInterval(intervalId)
+    if (userPubkey) {
+      handleRegistration(userPubkey)
+    } else {
+      setRegisterMessage(null)
     }
-  }, [refreshPushState])
+  }, [handleRegistration, setRegisterMessage, userPubkey])
 
   useEffect(() => {
-    if (!pushClient) return () => null
+    if (!pushClient) {
+      return () => null
+    }
 
     const handleNotificationEvent = async () => {
       refreshPushState()
       setUnread((prev) => prev + 1)
     }
 
-    pushClient.emitter.on('push_subscription', () => refreshPushState)
-    pushClient.emitter.on('push_delete', refreshPushState)
-    pushClient.emitter.on('push_update', refreshPushState)
-    pushClient.emitter.on('sync_update', refreshPushState)
-    pushClient.emitter.on('push_message', handleNotificationEvent)
+    pushClient.emitter.on('notify_signature_requested', ({ message }) => setRegisterMessage(message))
+    pushClient.emitter.on('notify_signature_request_cancelled', () => setRegisterMessage(null))
+
+    pushClient.emitter.on('notify_subscription', () => refreshPushState)
+    pushClient.emitter.on('notify_delete', () => refreshPushState)
+    pushClient.emitter.on('notify_update', () => refreshPushState)
+    pushClient.emitter.on('notify_update', () => refreshPushState)
+    pushClient.emitter.on('notify_message', () => handleNotificationEvent)
 
     return () => {
-      pushClient.emitter.off('push_subscription', refreshPushState)
-      pushClient.emitter.off('push_delete', refreshPushState)
-      pushClient.emitter.off('push_update', refreshPushState)
-      pushClient.emitter.off('sync_update', refreshPushState)
-      pushClient.emitter.off('push_message', handleNotificationEvent)
+      pushClient.emitter.off('notify_subscription', () => refreshPushState)
+      pushClient.emitter.off('notify_delete', () => refreshPushState)
+      pushClient.emitter.off('notify_update', () => refreshPushState)
+      pushClient.emitter.off('notify_update', () => refreshPushState)
+      pushClient.emitter.off('notify_message', () => handleNotificationEvent)
+      pushClient.emitter.off('notify_signature_requested', ({ message }) => setRegisterMessage(message))
+      pushClient.emitter.off('notify_signature_request_cancelled', () => setRegisterMessage(null))
     }
-  }, [pushClient, refreshPushState, emitter])
+  }, [pushClient, refreshPushState])
 
   return (
     <PushClientContext.Provider
@@ -117,12 +142,13 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
         userPubkey,
         refreshNotifications: refreshPushState,
         activeSubscriptions,
+        pushRegisteredKey,
+        pushRegisterMessage,
         pushClientProxy: pushClient,
-        setUnread,
-        unread,
-        handleRegistration,
         isSubscribed,
         isOnBoarded,
+        unread,
+        setUnread,
       }}
     >
       {children}

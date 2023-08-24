@@ -1,23 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, Text, useToast } from '@pancakeswap/uikit'
-import { PushClientTypes } from '@walletconnect/push-client'
+import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { CommitButton } from 'components/CommitButton'
 import _isEqual from 'lodash/isEqual'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PushClient } from 'state/PushClientProxy'
+import { PushClient } from 'w3iProxy'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
 
 interface ISettingsProps {
-  currentSubscription: PushClientTypes.PushSubscription
+  currentSubscription: NotifyClientTypes.NotifySubscription
   pushClient: PushClient
+  refreshNotifications: () => void
 }
 
 interface PushSubButtonProps {
   isUnsubscribing: boolean
   handleSubscriptionAction: (e: React.MouseEvent<HTMLButtonElement>) => void
   objectsAreEqual: boolean
+  // refreshNotifications: () => void
 }
 
 function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, objectsAreEqual }: PushSubButtonProps) {
@@ -42,15 +44,15 @@ function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, o
   )
 }
 
-const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettingsProps) => {
+const NotificationSettingsMain = ({ pushClient, currentSubscription, refreshNotifications }: ISettingsProps) => {
   const [loading, setloading] = useState<boolean>(false)
-  const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
+  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
 
   const toast = useToast()
-  const prevScopesRef = useRef<PushClientTypes.PushSubscription['scope']>(scopes)
+  const prevScopesRef = useRef<NotifyClientTypes.NotifySubscription['scope']>(scopes)
   const objectsAreEqual = _isEqual(scopes, prevScopesRef.current)
 
-  const getEnabledScopes = (scopesMap: PushClientTypes.PushSubscription['scope']) => {
+  const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
     const enabledScopeKeys: string[] = []
     Object.entries(scopesMap).forEach(([key, scope]) => {
       if (scope.enabled) enabledScopeKeys.push(key)
@@ -66,7 +68,7 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettings
 
   const handleUpdatePreferences = useCallback(async () => {
     try {
-      pushClient?.emitter.on('push_update', () => {
+      pushClient?.emitter.on('notify_update', () => {
         toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
       })
       await pushClient.update({
@@ -83,10 +85,11 @@ const NotificationSettingsMain = ({ pushClient, currentSubscription }: ISettings
   const handleUnSubscribe = useCallback(async () => {
     setloading(true)
     try {
+      pushClient.emitter.on('notify_delete', () => {
+        refreshNotifications()
+        toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
+      })
       await pushClient.deleteSubscription({ topic: currentSubscription?.topic })
-      // pushClient?.emitter.on('notify_delete', () => {
-      //   toast.toastSuccess(Events.PreferencesUpdated.title, Events.PreferencesUpdated.message)
-      // })
     } catch (error: any) {
       toast.toastError(Events.UnsubscribeError.title, Events.UnsubscribeError.message)
     }

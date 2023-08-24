@@ -1,12 +1,12 @@
 import { Box, Flex, Row, Text, Toggle } from '@pancakeswap/uikit'
-import { PushClientTypes } from '@walletconnect/push-client'
+import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Divider from 'components/Divider'
 import { Dispatch, SetStateAction, useCallback } from 'react'
 
 interface ISettingsprops {
   title: string
   description: string
-  setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
+  setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
   isSubscribed: {
     description: string
     enabled: boolean
@@ -14,8 +14,8 @@ interface ISettingsprops {
 }
 
 interface ISettingsContainerProps {
-  scopes: PushClientTypes.ScopeMap
-  setScopes: Dispatch<SetStateAction<PushClientTypes.ScopeMap>>
+  scopes: NotifyClientTypes.ScopeMap
+  setScopes: Dispatch<SetStateAction<NotifyClientTypes.ScopeMap>>
 }
 
 const Settingsitem = ({ title, description, isSubscribed, setScopes }: ISettingsprops) => {

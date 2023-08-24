@@ -82,7 +82,7 @@ const useSendPushNotification = (): IUseSendNotification => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${'85a7792c-c5d7-486b-b37e-e752918e4866'}`,
+          Authorization: `Bearer ${'dea2d1c0-4f90-4f4e-b0a4-09e84d52b0ee'}`,
         },
         body: JSON.stringify(notificationPayload),
       })

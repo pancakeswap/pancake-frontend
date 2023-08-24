@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AnimatePresence, Box, ChevronDownIcon, ChevronUpIcon, CloseIcon, Flex, Row, Text } from '@pancakeswap/uikit'
-import { PushClientTypes } from '@walletconnect/push-client'
+import { NotifyClientTypes } from '@walletconnect/notify-client'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
@@ -25,7 +25,7 @@ interface INotificationprops {
 }
 
 interface INotificationContainerProps {
-  notifications: PushClientTypes.PushMessageRecord[]
+  notifications: NotifyClientTypes.NotifyMessageRecord[]
   sortOptionsType: string
   removeNotification: (id: number) => Promise<void>
 }
@@ -138,11 +138,11 @@ const NotificationContainer = ({ notifications, sortOptionsType, removeNotificat
   return (
     <Box>
       {notifications
-        .sort((a: PushClientTypes.PushMessageRecord, b: PushClientTypes.PushMessageRecord) => {
+        .sort((a: NotifyClientTypes.NotifyMessageRecord, b: NotifyClientTypes.NotifyMessageRecord) => {
           if (sortOptionsType === 'Latest') return b.publishedAt - a.publishedAt
           return a.publishedAt - b.publishedAt
         })
-        .map((notification: PushClientTypes.PushMessageRecord) => {
+        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
           return (
             <NotificationItem
               key={notification.id}

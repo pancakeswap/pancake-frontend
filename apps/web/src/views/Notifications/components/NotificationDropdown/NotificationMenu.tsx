@@ -1,7 +1,7 @@
 import { Box, Flex, ModalV2, ModalWrapper, NotificationBellIcon, UserMenuProps } from '@pancakeswap/uikit'
-// import { usePushClient } from 'contexts/PushClientContext'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
+import { usePushClient } from 'contexts/PushClientContext'
 import { useViewport } from '../hooks/useViewPort'
 
 interface InotificationBellProps {
@@ -24,14 +24,14 @@ const NotificationMenu: React.FC<
     setIsMenuOpen: Dispatch<SetStateAction<boolean>>
   }
 > = ({ children, isMenuOpen, setIsMenuOpen }) => {
-  // const { unread, setUnread } = usePushClient()
+  const { unread, setUnread } = usePushClient()
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useViewport()
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen)
-    // if (!isMenuOpen) setUnread(0)
-  }, [setIsMenuOpen, isMenuOpen])
+    if (!isMenuOpen) setUnread(0)
+  }, [setIsMenuOpen, isMenuOpen, setUnread])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
@@ -40,18 +40,14 @@ const NotificationMenu: React.FC<
         setIsMenuOpen(false)
       }
     }
-    // const t = setTimeout(() => refreshNotifications(), 1000)
     document.addEventListener('click', checkIfClickedOutside)
-    return () => {
-      document.removeEventListener('click', checkIfClickedOutside)
-      // clearTimeout(t)
-    }
+    return () => document.removeEventListener('click', checkIfClickedOutside)
   }, [isMenuOpen, setIsMenuOpen])
 
   if (width <= 650) {
     return (
       <Flex alignItems="center" justifyContent="center" height="100%">
-        <NotificationBell unread={0} toggleMenu={toggleMenu} />
+        <NotificationBell unread={unread} toggleMenu={toggleMenu} />
         <ModalV2 isOpen={isMenuOpen} onDismiss={toggleMenu} closeOnOverlayClick>
           <ModalWrapper minWidth="320px">{children?.({ isOpen: isMenuOpen })}</ModalWrapper>
         </ModalV2>
@@ -60,7 +56,7 @@ const NotificationMenu: React.FC<
   }
   return (
     <Flex alignItems="center" justifyContent="center" height="100%" ref={ref}>
-      <NotificationBell unread={0} toggleMenu={toggleMenu} />
+      <NotificationBell unread={unread} toggleMenu={toggleMenu} />
       <Menu isOpen={isMenuOpen} style={{ top: '100%', position: 'fixed' }}>
         <Box>{children?.({ isOpen: isMenuOpen })}</Box>
       </Menu>
