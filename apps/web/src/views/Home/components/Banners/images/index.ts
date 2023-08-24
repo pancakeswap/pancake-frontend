@@ -71,6 +71,11 @@ import moonpayBgMobile from './moonpay-bg-mobile.png'
 import moonpayBg from './moonpay-bg.png'
 import moonpayCash from './moonpay-cash.png'
 import moonpayLogo from './moonpay-logo.png'
+import lineaLogo from './linea-logo.png'
+import lineaBg from './linea-bg.png'
+import lineaBgMobile from './linea-bg-mobile.png'
+import lineaBunny from './linea-bunny.png'
+import lineaBunnyMobile from './linea-bunny-mobile.png'
 
 export {
   lotteryImage,
@@ -145,4 +150,9 @@ export {
   moonpayBg,
   moonpayCash,
   moonpayLogo,
+  lineaLogo,
+  lineaBg,
+  lineaBgMobile,
+  lineaBunny,
+  lineaBunnyMobile,
 }
