@@ -9,7 +9,7 @@ const ifos: Ifo[] = [
   {
     id: 'sable',
     address: '0xD247FFf8005917aDc02f59Ba8F2Dde02c13ee92d',
-    isActive: true,
+    isActive: false,
     cIFO: true,
     name: 'SABLE',
     plannedStartTime: 1690372800, // Wed Jul 26 2023 12:00:00 UTC
