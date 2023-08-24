@@ -34,6 +34,7 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
   ...BSC_URLS,
   ...ETH_URLS,
   ...ZKSYNC_URLS,
+  ...LINEA_URLS,
   ...POLYGON_ZKEVM_URLS,
   ...ARBITRUM_URLS,
   ...UNSUPPORTED_LIST_URLS, // need to load unsupported tokens as well
