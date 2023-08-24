@@ -1,8 +1,3 @@
-import { PushClientTypes } from '@walletconnect/push-client'
-
-export type PushResponseEmitter = PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
-export type PushDeleteEmitter = PushClientTypes.BaseEventArgs<PushClientTypes.PushDeleteRequestEventArgs>
-
 export enum ResponseEvents {
   SignatureRequest = 'SignatureRequest',
   SignatureRequestError = 'SignatureRequestError',
