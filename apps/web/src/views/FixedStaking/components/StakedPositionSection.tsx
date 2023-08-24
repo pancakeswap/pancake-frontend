@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text, IconButton, AddIcon, MinusIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 
 import { differenceInMilliseconds, format } from 'date-fns'
@@ -36,6 +36,7 @@ function StakedPositionRowView({
   pool,
   lockAPR,
   boostAPR,
+  unlockAPR,
   poolIndex,
   stakePositionUserInfo,
   token,
@@ -72,11 +73,11 @@ function StakedPositionRowView({
           <Text color="textSubtle" fontSize="12px">
             {shouldUnlock ? (
               <>
-                {t('Reward')}: {accrueInterest.toSignificant(3)}
+                {t('Reward')}: {accrueInterest.toSignificant(3)} {token.symbol}
               </>
             ) : (
               <>
-                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)}
+                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)} {token.symbol}
               </>
             )}
           </Text>
@@ -88,6 +89,7 @@ function StakedPositionRowView({
             pool={pool}
             lockAPR={lockAPR}
             boostAPR={boostAPR}
+            unlockAPR={unlockAPR}
             poolIndex={poolIndex}
             stakePositionUserInfo={stakePositionUserInfo}
             token={token}
@@ -109,6 +111,7 @@ function StakedPositionRowView({
               lockPeriod={lockPeriod}
               lockAPR={lockAPR}
               boostAPR={boostAPR}
+              unlockAPR={unlockAPR}
               stakePositionUserInfo={stakePositionUserInfo}
               withdrawalFee={withdrawalFee}
               poolIndex={poolIndex}
@@ -148,6 +151,7 @@ export function StakedPositionSection({
   poolIndex,
   lockDayPercent,
   boostDayPercent,
+  unlockDayPercent,
   withdrawalFee,
   pool,
   stakedPeriods,
@@ -162,6 +166,7 @@ export function StakedPositionSection({
   lockPeriod: number
   poolIndex: number
   lockDayPercent: number
+  unlockDayPercent: number
   withdrawalFee: number
   pool: PoolGroup
   stakedPeriods: number[]
@@ -169,14 +174,26 @@ export function StakedPositionSection({
 }) {
   const { t } = useTranslation()
 
-  const { boostAPR, lockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent })
+  const { boostAPR, lockAPR, unlockAPR } = useFixedStakeAPR({ lockDayPercent, boostDayPercent, unlockDayPercent })
 
-  const { accrueInterest, amountDeposit, projectedReturnAmount } = useCalculateProjectedReturnAmount({
-    token,
-    stakePositionUserInfo: stakePosition.userInfo,
+  const amountDeposit = useMemo(
+    () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.userDeposit.toString()),
+    [stakePositionUserInfo.userDeposit, token],
+  )
+
+  const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
+    amountDeposit,
+    lastDayAction: stakePositionUserInfo.lastDayAction,
     lockPeriod,
-    apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
+    apr: stakePositionUserInfo.boost ? boostAPR : lockAPR,
+    poolEndDay: stakePosition.pool.endDay,
+    unlockAPR,
   })
+
+  const accrueInterest = useMemo(
+    () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.accrueInterest.toString()),
+    [stakePositionUserInfo.accrueInterest, token],
+  )
 
   const poolEndDay = pool.pools.find((p) => p.poolIndex === poolIndex)?.endDay || 0
 
@@ -201,6 +218,7 @@ export function StakedPositionSection({
         pool={pool}
         lockAPR={lockAPR}
         boostAPR={boostAPR}
+        unlockAPR={unlockAPR}
         poolIndex={poolIndex}
         stakePositionUserInfo={stakePositionUserInfo}
         token={token}
@@ -238,11 +256,11 @@ export function StakedPositionSection({
           <Text color="textSubtle" fontSize="12px">
             {shouldUnlock ? (
               <>
-                {t('Reward')}: {accrueInterest.toSignificant(3)}
+                {t('Reward')}: {accrueInterest.toSignificant(3)} {token.symbol}
               </>
             ) : (
               <>
-                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)}
+                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)} {token.symbol}
               </>
             )}
           </Text>
@@ -254,6 +272,7 @@ export function StakedPositionSection({
             pool={pool}
             lockAPR={lockAPR}
             boostAPR={boostAPR}
+            unlockAPR={unlockAPR}
             poolIndex={poolIndex}
             stakePositionUserInfo={stakePositionUserInfo}
             token={token}
@@ -273,6 +292,7 @@ export function StakedPositionSection({
               poolEndDay={poolEndDay}
               token={token}
               lockPeriod={lockPeriod}
+              unlockAPR={unlockAPR}
               lockAPR={lockAPR}
               boostAPR={boostAPR}
               stakePositionUserInfo={stakePositionUserInfo}

@@ -1,8 +1,8 @@
 import { Box, Flex, Modal, ModalV2, PreTitle, Text, Button, useModalV2, Card } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent, Token } from '@pancakeswap/swap-sdk-core'
-import { ReactNode, useState } from 'react'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { ReactNode, useMemo, useState } from 'react'
 import { formatTime } from 'utils/formatTime'
 
 import { UnstakeEndedModal } from './UnstakeModal'
@@ -24,6 +24,7 @@ export function ClaimModal({
   poolIndex,
   pool,
   boostAPR,
+  unlockAPR,
   poolEndDay,
 }: {
   poolEndDay: number
@@ -32,6 +33,7 @@ export function ClaimModal({
   unlockTime: number
   lockAPR: Percent
   boostAPR: Percent
+  unlockAPR: Percent
   stakePositionUserInfo: StakePositionUserInfo
   poolIndex: number
   pool: PoolGroup
@@ -43,12 +45,24 @@ export function ClaimModal({
   const claimModal = useModalV2()
   const [isConfirmed, setIsConfirmed] = useState(false)
 
-  const { accrueInterest, amountDeposit, projectedReturnAmount } = useCalculateProjectedReturnAmount({
-    token,
-    stakePositionUserInfo,
+  const amountDeposit = useMemo(
+    () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.userDeposit.toString()),
+    [stakePositionUserInfo.userDeposit, token],
+  )
+
+  const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
+    amountDeposit,
+    lastDayAction: stakePositionUserInfo.lastDayAction,
     lockPeriod,
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
+    poolEndDay,
+    unlockAPR,
   })
+
+  const accrueInterest = useMemo(
+    () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.accrueInterest.toString()),
+    [stakePositionUserInfo.accrueInterest, token],
+  )
 
   const { handleSubmission, pendingTx } = useHandleWithdrawSubmission({
     poolIndex,
@@ -72,6 +86,7 @@ export function ClaimModal({
         pendingTx={pendingTx}
         lockAPR={lockAPR}
         boostAPR={boostAPR}
+        unlockAPR={unlockAPR}
         projectedReturnAmount={projectedReturnAmount}
         amountDeposit={amountDeposit}
         accrueInterest={accrueInterest}
@@ -131,7 +146,7 @@ export function ClaimModal({
                     {t('Rewards')}
                   </Text>
                   <Box style={{ textAlign: 'end' }}>
-                    <AmountWithUSDSub amount={projectedReturnAmount} />
+                    <AmountWithUSDSub amount={accrueInterest} />
                   </Box>
                 </Flex>
                 <Flex justifyContent="space-between" alignItems="center">

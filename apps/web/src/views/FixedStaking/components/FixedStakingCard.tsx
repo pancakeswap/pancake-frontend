@@ -50,6 +50,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                           stakePosition={stakePosition}
                           lockDayPercent={stakePosition.pool.lockDayPercent}
                           boostDayPercent={stakePosition.pool.boostDayPercent}
+                          unlockDayPercent={stakePosition.pool.unlockDayPercent}
                           lockPeriod={stakePosition.pool.lockPeriod}
                           unlockTime={stakePosition.endLockTime}
                           stakePositionUserInfo={stakePosition.userInfo}

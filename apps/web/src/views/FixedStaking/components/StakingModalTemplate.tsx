@@ -35,9 +35,11 @@ interface BodyParam {
   isStaked: boolean
   boostAPR: Percent
   lockAPR: Percent
+  unlockAPR: Percent
   formattedUsdProjectedReturnAmount: number
   poolEndDay: number
   isBoost: boolean
+  lastDayAction: number
 }
 
 export function StakingModalTemplate({
@@ -208,11 +210,12 @@ export function StakingModalTemplate({
     () => ({
       boostDayPercent: selectedPool?.boostDayPercent || 0,
       lockDayPercent: selectedPool?.lockDayPercent || 0,
+      unlockDayPercent: selectedPool?.unlockDayPercent || 0,
     }),
-    [selectedPool?.boostDayPercent, selectedPool?.lockDayPercent],
+    [selectedPool?.boostDayPercent, selectedPool?.lockDayPercent, selectedPool?.unlockDayPercent],
   )
 
-  const { boostAPR, lockAPR } = useFixedStakeAPR(aprParams)
+  const { boostAPR, lockAPR, unlockAPR } = useFixedStakeAPR(aprParams)
 
   const apr = isBoost ? boostAPR : lockAPR
 
@@ -224,6 +227,7 @@ export function StakingModalTemplate({
     stakingToken,
     toNumber(projectedReturnAmount?.toSignificant(2)),
   )
+
   const params = useMemo(
     () => ({
       alreadyStakedAmount: depositedAmount,
@@ -234,9 +238,11 @@ export function StakingModalTemplate({
       isStaked,
       boostAPR,
       lockAPR,
+      unlockAPR,
       isBoost,
       formattedUsdProjectedReturnAmount,
       poolEndDay: selectedPool?.endDay || 0,
+      lastDayAction: selectedStakedPosition ? selectedStakedPosition.userInfo.lastDayAction : 0,
     }),
     [
       depositedAmount,
@@ -246,9 +252,11 @@ export function StakingModalTemplate({
       isStaked,
       boostAPR,
       lockAPR,
+      unlockAPR,
       isBoost,
       formattedUsdProjectedReturnAmount,
       selectedPool?.endDay,
+      selectedStakedPosition,
     ],
   )
 
@@ -273,6 +281,7 @@ export function StakingModalTemplate({
           poolEndDay={params.poolEndDay}
           lockAPR={lockAPR}
           boostAPR={boostAPR}
+          unlockAPR={unlockAPR}
           lockPeriod={lockPeriod}
         />
       </Modal>

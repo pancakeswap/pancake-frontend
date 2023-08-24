@@ -96,6 +96,7 @@ export function FixedStakingCardBody({
             pools={pool.pools}
             boostDayPercent={p.boostDayPercent}
             lockDayPercent={p.lockDayPercent}
+            unlockDayPercent={p.unlockDayPercent}
           />
         ))}
       </FixedStakingCardFooter>

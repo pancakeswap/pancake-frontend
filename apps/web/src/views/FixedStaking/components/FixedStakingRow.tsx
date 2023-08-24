@@ -105,6 +105,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                   pools={pool.pools}
                   boostDayPercent={p.boostDayPercent}
                   lockDayPercent={p.lockDayPercent}
+                  unlockDayPercent={p.unlockDayPercent}
                 />
               ))}
             </InfoSection>
@@ -119,6 +120,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                           stakePosition={stakePosition}
                           lockDayPercent={stakePosition.pool.lockDayPercent}
                           boostDayPercent={stakePosition.pool.boostDayPercent}
+                          unlockDayPercent={stakePosition.pool.unlockDayPercent}
                           lockPeriod={stakePosition.pool.lockPeriod}
                           unlockTime={stakePosition.endLockTime}
                           stakePositionUserInfo={stakePosition.userInfo}

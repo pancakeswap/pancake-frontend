@@ -1,11 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { Box, Button, Flex, Message, MessageText, Modal, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 import { LightCard } from 'components/Card'
 import { ReactNode, useMemo } from 'react'
 
 import { FixedStakingPool, StakePositionUserInfo, UnstakeType } from '../type'
-import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useHandleWithdrawSubmission } from '../hooks/useHandleWithdrawSubmission'
 import FixedStakingOverview from './FixedStakingOverview'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
@@ -20,12 +19,14 @@ export function UnstakeBeforeEnededModal({
   withdrawalFee,
   poolIndex,
   boostAPR,
+  unlockAPR,
   pools,
   poolEndDay,
   children,
 }: {
   poolEndDay: number
   boostAPR: Percent
+  unlockAPR: Percent
   token: Token
   lockPeriod: number
   lockAPR: Percent
@@ -38,12 +39,15 @@ export function UnstakeBeforeEnededModal({
   const { t } = useTranslation()
   const unstakeModal = useModalV2()
 
-  const { accrueInterest, amountDeposit } = useCalculateProjectedReturnAmount({
-    token,
-    stakePositionUserInfo,
-    lockPeriod,
-    apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
-  })
+  const amountDeposit = useMemo(
+    () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.userDeposit.toString()),
+    [stakePositionUserInfo.userDeposit, token],
+  )
+
+  const accrueInterest = useMemo(
+    () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.accrueInterest.toString()),
+    [stakePositionUserInfo.accrueInterest, token],
+  )
 
   const feePercent = useMemo(() => new Percent(withdrawalFee, 10000), [withdrawalFee])
 
@@ -106,10 +110,12 @@ export function UnstakeBeforeEnededModal({
 
           <FixedStakingOverview
             isUnstakeView
+            lastDayAction={stakePositionUserInfo.lastDayAction}
             lockPeriod={lockPeriod}
             stakeAmount={amountDeposit}
             lockAPR={lockAPR}
             boostAPR={boostAPR}
+            unlockAPR={unlockAPR}
             isBoost={stakePositionUserInfo.boost}
             poolEndDay={poolEndDay}
             calculator={<FixedStakingCalculator stakingToken={token} pools={pools} initialLockPeriod={lockPeriod} />}

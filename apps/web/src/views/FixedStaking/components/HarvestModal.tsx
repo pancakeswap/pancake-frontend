@@ -31,6 +31,7 @@ export function HarvestModal({
   pools,
   isConfirmed,
   isBoost,
+  unlockAPR,
 }: {
   isBoost?: boolean
   isConfirmed?: boolean
@@ -45,6 +46,7 @@ export function HarvestModal({
   projectedReturnAmount: CurrencyAmount<Token>
   boostAPR: Percent
   lockAPR: Percent
+  unlockAPR: Percent
   pendingTx: boolean
   handleSubmission: (type: UnstakeType, amount: CurrencyAmount<Token>) => Promise<void>
 }) {
@@ -79,6 +81,7 @@ export function HarvestModal({
               poolEndDay={poolEndDay}
               lockAPR={lockAPR}
               boostAPR={boostAPR}
+              unlockAPR={unlockAPR}
               lockPeriod={lockPeriod}
             />
           ) : (

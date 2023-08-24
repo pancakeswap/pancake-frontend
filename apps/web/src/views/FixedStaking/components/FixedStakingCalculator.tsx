@@ -73,7 +73,9 @@ export function FixedStakingCalculator({
             lockPeriod,
             boostAPR,
             lockAPR,
+            unlockAPR,
             poolEndDay,
+            lastDayAction,
           }) => (
             <>
               <PreTitle textTransform="uppercase" bold mb="8px">
@@ -115,11 +117,13 @@ export function FixedStakingCalculator({
                   {t('Position Overview')}
                 </PreTitle>
                 <FixedStakingOverview
+                  lastDayAction={lastDayAction}
                   isBoost={isBoost}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
                   boostAPR={boostAPR}
+                  unlockAPR={unlockAPR}
                   lockPeriod={lockPeriod}
                 />
               </Box>

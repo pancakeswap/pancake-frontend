@@ -8,9 +8,9 @@ import TextRow from 'views/Pools/components/LockedPool/Common/Overview/TextRow'
 
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
-import { DAYS_A_YEAR } from '../constant'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
 import { useCurrenDay } from '../hooks/useStakedPools'
+import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 
 function DiffDuration({ lockPeriod }: { lockPeriod: number }) {
   const { t } = useTranslation()
@@ -32,8 +32,10 @@ export default function FixedStakingOverview({
   stakeAmount,
   lockAPR,
   boostAPR,
+  unlockAPR,
   isBoost,
   lockPeriod,
+  lastDayAction,
   poolEndDay,
   isUnstakeView,
   alreadyStakedAmount,
@@ -44,29 +46,34 @@ export default function FixedStakingOverview({
   isUnstakeView?: boolean
   stakeAmount: CurrencyAmount<Token>
   alreadyStakedAmount?: CurrencyAmount<Token>
-  lockAPR?: Percent
-  boostAPR?: Percent
-  lockPeriod?: number
+  lockAPR: Percent
+  boostAPR: Percent
+  unlockAPR: Percent
   poolEndDay: number
+  lastDayAction?: number
+  lockPeriod?: number
   calculator?: ReactNode
   isBoost?: boolean
 }) {
   const { t } = useTranslation()
 
-  const apr = isBoost ? boostAPR : lockAPR
+  const apr = useMemo(() => (isBoost ? boostAPR : lockAPR), [boostAPR, isBoost, lockAPR])
 
-  const safeAlreadyStakedAmount = alreadyStakedAmount || CurrencyAmount.fromRawAmount(stakeAmount.currency, '0')
-
-  const projectedReturnAmount = useMemo(
-    () =>
-      lockPeriod && apr
-        ? stakeAmount
-            .add(safeAlreadyStakedAmount)
-            .multiply(lockPeriod)
-            .multiply(apr.multiply(lockPeriod).divide(DAYS_A_YEAR))
-        : stakeAmount.multiply(0),
-    [safeAlreadyStakedAmount, apr, lockPeriod, stakeAmount],
+  const safeAlreadyStakedAmount = useMemo(
+    () => alreadyStakedAmount || CurrencyAmount.fromRawAmount(stakeAmount.currency, '0'),
+    [alreadyStakedAmount, stakeAmount.currency],
   )
+
+  const currentDay = useCurrenDay()
+
+  const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
+    amountDeposit: stakeAmount.add(safeAlreadyStakedAmount),
+    lastDayAction: safeAlreadyStakedAmount.greaterThan(0) && stakeAmount.equalTo(0) ? lastDayAction : currentDay,
+    lockPeriod: lockPeriod || 0,
+    apr,
+    poolEndDay,
+    unlockAPR,
+  })
 
   return (
     <LightGreyCard>

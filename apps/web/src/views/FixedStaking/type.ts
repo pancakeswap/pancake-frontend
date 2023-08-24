@@ -27,7 +27,7 @@ export interface FixedStakingPool {
 export interface StakePositionUserInfo {
   accrueInterest: BigNumber
   boost: boolean
-  endLockTime: boolean
+  lastDayAction: number
   userDeposit: BigNumber
 }
 

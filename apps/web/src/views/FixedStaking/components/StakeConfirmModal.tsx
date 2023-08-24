@@ -12,6 +12,7 @@ export function StakeConfirmModal({
   poolEndDay,
   lockAPR,
   boostAPR,
+  unlockAPR,
   lockPeriod,
   isBoost,
 }: {
@@ -19,6 +20,7 @@ export function StakeConfirmModal({
   lockPeriod: number
   boostAPR: Percent
   lockAPR: Percent
+  unlockAPR: Percent
   poolEndDay: number
   isBoost?: boolean
 }) {
@@ -65,6 +67,7 @@ export function StakeConfirmModal({
         isBoost={isBoost}
         lockAPR={lockAPR}
         boostAPR={boostAPR}
+        unlockAPR={unlockAPR}
         lockPeriod={lockPeriod}
       />
     </>
