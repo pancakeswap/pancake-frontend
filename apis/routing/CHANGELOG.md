@@ -1,5 +1,19 @@
 # routing-api
 
+## 0.1.0
+
+### Minor Changes
+
+- 5e15c611e: Add linea support
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/smart-router@4.4.0
+  - @pancakeswap/sdk@5.3.0
+  - @pancakeswap/v3-sdk@3.3.0
+  - @pancakeswap/farms@1.0.9
+
 ## 0.0.13
 
 ### Patch Changes

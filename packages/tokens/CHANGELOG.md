@@ -1,5 +1,18 @@
 # @pancakeswap/tokens
 
+## 0.3.0
+
+### Minor Changes
+
+- 5e15c611e: Add linea support
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/sdk@5.3.0
+  - @pancakeswap/utils@4.0.0
+  - @pancakeswap/token-lists@0.0.8
+
 ## 0.2.3
 
 ### Patch Changes

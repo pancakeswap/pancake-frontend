@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.3.0
+
+### Minor Changes
+
+- 5e15c611e: Add linea support
+
 ## 5.2.1
 
 ### Patch Changes
