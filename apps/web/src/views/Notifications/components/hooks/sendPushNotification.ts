@@ -75,7 +75,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      const notifyResponse = await fetch(`${DEFAULT_RELAY_URL}/${DEFAULT_PROJECT_ID}/notify`, {
+      const notifyResponse = await fetch(`${DEFAULT_RELAY_URL}/d460b3b88b735222abe849b3d43ed8e4/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -37,7 +37,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   const [pushClient, setPushClient] = useState<PushClient | null>(null)
 
   const relayUrl = 'wss://relay.walletconnect.com'
-  const projectId = DEFAULT_PROJECT_ID
+  const projectId = 'd460b3b88b735222abe849b3d43ed8e4'
 
   const [proxyReady, setProxyReady] = useState(false)
   const [w3iProxy] = useState(PushClientProxy.getProxy(projectId, relayUrl))
