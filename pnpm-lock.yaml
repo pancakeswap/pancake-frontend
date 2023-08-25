@@ -1374,10 +1374,10 @@ importers:
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
+    devDependencies:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
-    devDependencies:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.1.3)
