@@ -67,11 +67,11 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
   const { days, hours, minutes, seconds } = getTimePeriods(timeRemaining)
 
   const nextDistributionTime = useMemo(() => {
-    if (!days && !hours && !minutes && seconds > 0) {
-      return '< 1m'
+    if (!days && hours && minutes && seconds) {
+      return `< 1${t('day')}`
     }
 
-    return t('%day%d:%hour%h:%minute%m', { day: days, hour: hours, minute: minutes })
+    return `${days}${t('days')}`
   }, [days, hours, minutes, seconds, t])
 
   return (
@@ -178,7 +178,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
             />
             <Box>
-              {availableCake <= 0.01 ? (
+              {availableCake > 0 && availableCake <= 0.01 ? (
                 <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
               ) : (
                 <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
