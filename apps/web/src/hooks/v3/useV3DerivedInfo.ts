@@ -9,7 +9,6 @@ import {
   TICK_SPACINGS,
   TickMath,
 } from '@pancakeswap/v3-sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { ReactNode, useMemo } from 'react'
 import { Field } from 'state/mint/actions'
 import tryParseCurrencyAmount from 'utils/tryParseCurrencyAmount'
@@ -19,6 +18,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Bound } from 'config/constants/types'
 import { MintState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 
+import { useAccount } from 'wagmi'
 import { tryParseTick } from './utils'
 import { usePool } from './usePools'
 import { getTickToPrice } from './utils/getTickToPrice'
@@ -57,7 +57,7 @@ export default function useV3DerivedInfo(
 } {
   const { t } = useTranslation()
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { independentField, typedValue, leftRangeTypedValue, rightRangeTypedValue, startPriceTypedValue } = formState
 

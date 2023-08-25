@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { Card, Table, Th, Td, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserTradeRank } from 'views/TradingReward/hooks/useUserTradeRank'
 import DesktopResult from 'views/TradingReward/components/Leaderboard/DesktopResult'
 import MobileResult from 'views/TradingReward/components/Leaderboard/MobileResult'
+import { useAccount } from 'wagmi'
 
 interface MyRankProps {
   campaignId: string
@@ -12,7 +12,7 @@ interface MyRankProps {
 
 const MyRank: React.FC<React.PropsWithChildren<MyRankProps>> = ({ campaignId }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isDesktop } = useMatchBreakpoints()
   const { data: userRank, isFetching } = useUserTradeRank({ campaignId })
 
