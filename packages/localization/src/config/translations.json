@@ -2607,7 +2607,7 @@
   "revenue sharing": "revenue sharing",
   "Your shares": "Your shares",
   "Next distribution": "Next distribution",
-  "in %day%": "in %day%",
+  "in %day% days": "in %day% days",
   "Last distribution": "Last distribution",
   "You need to update your staking in order to start earning from protocol revenue sharing.": "You need to update your staking in order to start earning from protocol revenue sharing.",
   "Locked CAKE Benefits": "Locked CAKE Benefits",
@@ -2668,5 +2668,6 @@
   "Merchandise": "Merchandise",
   "Linea is LIVE!": "Linea is LIVE!",
   "PancakeSwap Now Live on Linea!": "PancakeSwap Now Live on Linea!",
-  "Swap and Provide Liquidity on Linea now": "Swap and Provide Liquidity on Linea now"
+  "Swap and Provide Liquidity on Linea now": "Swap and Provide Liquidity on Linea now",
+  "day": "day"
 }
