@@ -61,4 +61,5 @@ export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
   [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_URLS,
   [ChainId.ARBITRUM_ONE]: ARBITRUM_URLS,
   [ChainId.LINEA]: LINEA_URLS,
+  [ChainId.BASE]: [],
 }

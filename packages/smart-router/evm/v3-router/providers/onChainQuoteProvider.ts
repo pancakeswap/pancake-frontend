@@ -31,6 +31,7 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.LINEA]: 0.1,
   [ChainId.LINEA_TESTNET]: 0.1,
   [ChainId.OPBNB_TESTNET]: 0.1,
+  [ChainId.BASE]: 0.1,
   [ChainId.BASE_TESTNET]: 0.1,
   [ChainId.SCROLL_SEPOLIA]: 0.1,
 } as const satisfies Record<ChainId, number>
@@ -51,6 +52,7 @@ const BLOCK_CONFLICT_TOLERANCE = {
   [ChainId.LINEA]: 3,
   [ChainId.LINEA_TESTNET]: 3,
   [ChainId.OPBNB_TESTNET]: 3,
+  [ChainId.BASE]: 3,
   [ChainId.BASE_TESTNET]: 3,
   [ChainId.SCROLL_SEPOLIA]: 3,
 } as const satisfies Record<ChainId, number>

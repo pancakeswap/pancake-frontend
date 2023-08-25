@@ -17,6 +17,7 @@ export enum ChainId {
   SCROLL_SEPOLIA = 534351,
   LINEA = 59144,
   LINEA_TESTNET = 59140,
+  BASE = 8453,
   BASE_TESTNET = 84531,
 }
 
@@ -41,7 +42,8 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.LINEA]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
   [ChainId.LINEA_TESTNET]: '0xB6FAfd4ADbCd21cF665909767e0eD0D05709abfB',
   [ChainId.OPBNB_TESTNET]: '0x776e4bD2f72de2176A59465e316335aaf8ed4E8F',
-  [ChainId.BASE_TESTNET]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
+  [ChainId.BASE]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
+  [ChainId.BASE_TESTNET]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
   [ChainId.SCROLL_SEPOLIA]: '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
 } as const satisfies Record<ChainId, Address>
 
@@ -62,6 +64,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.LINEA]: INIT_CODE_HASH_ETH,
   [ChainId.LINEA_TESTNET]: INIT_CODE_HASH_ETH,
   [ChainId.OPBNB_TESTNET]: INIT_CODE_HASH_ETH,
+  [ChainId.BASE]: INIT_CODE_HASH_ETH,
   [ChainId.BASE_TESTNET]: INIT_CODE_HASH_ETH,
   [ChainId.SCROLL_SEPOLIA]: INIT_CODE_HASH_ETH,
 } as const satisfies Record<ChainId, Hash>
@@ -171,6 +174,14 @@ export const WETH9 = {
     'Wrapped Ether',
     'https://weth.io'
   ),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io'
+  ),
   [ChainId.BASE_TESTNET]: new ERC20Token(
     ChainId.BASE_TESTNET,
     '0x4200000000000000000000000000000000000006',
@@ -238,6 +249,7 @@ export const WNATIVE = {
   [ChainId.LINEA]: WETH9[ChainId.LINEA],
   [ChainId.LINEA_TESTNET]: WETH9[ChainId.LINEA_TESTNET],
   [ChainId.OPBNB_TESTNET]: WBNB[ChainId.OPBNB_TESTNET],
+  [ChainId.BASE]: WETH9[ChainId.BASE],
   [ChainId.BASE_TESTNET]: WETH9[ChainId.BASE_TESTNET],
   [ChainId.SCROLL_SEPOLIA]: WETH9[ChainId.SCROLL_SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>
@@ -274,6 +286,7 @@ export const NATIVE = {
     symbol: 'tBNB',
     decimals: 18,
   },
+  [ChainId.BASE]: ETHER,
   [ChainId.BASE_TESTNET]: ETHER,
   [ChainId.SCROLL_SEPOLIA]: ETHER,
 } satisfies Record<
