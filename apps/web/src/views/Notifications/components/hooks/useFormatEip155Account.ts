@@ -4,7 +4,7 @@ const useFormattedEip155Account = () => {
   const { address } = useAccount()
   const chainId = useChainId()
 
-  const eip155Account = chainId && address ? `eip155:${chainId}:${address}` : null
+  const eip155Account = chainId && address ? `eip155:1:${address}` : null
   return { eip155Account, account: address }
 }
 

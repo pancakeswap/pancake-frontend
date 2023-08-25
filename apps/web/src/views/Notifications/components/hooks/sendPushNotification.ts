@@ -1,9 +1,7 @@
 import { useToast } from '@pancakeswap/uikit'
-import { usePushClient } from 'contexts/PushClientContext'
 import { DEFAULT_PROJECT_ID, DEFAULT_RELAY_URL, PancakeNotifications } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
-import { usePublicClient } from 'wagmi'
-// import useFormattedEip155Account from './useFormatEip155Account'
+import useFormattedEip155Account from './useFormatEip155Account'
 
 type NotifyResponse = { sent: string[]; failed: string[]; not_found: string[] }
 interface IUseSendNotification {
@@ -15,9 +13,7 @@ interface IUseSendNotification {
 const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
 
 const useSendPushNotification = (): IUseSendNotification => {
-  const { userPubkey } = usePushClient()
-  const eip155Account = `eip155:1:${userPubkey}`
-
+  const { eip155Account } = useFormattedEip155Account()
   const toast = useToast()
 
   const requestNotificationPermission = async () => {

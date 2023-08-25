@@ -7,7 +7,7 @@ import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import useSendPushNotification from '../components/hooks/sendPushNotification'
-// import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
+import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
 import { DEFAULT_APP_METADATA, Events } from '../constants'
 import { BuilderNames } from '../types'
 
@@ -20,9 +20,7 @@ interface IOnboardingButtonProps {
 
 function OnboardingButton({ onClick, loading, isOnBoarded, pushRegisterMessage }: IOnboardingButtonProps) {
   const { t } = useTranslation()
-  // const { eip155Account } = useFormattedEip155Account()
-  const { userPubkey } = usePushClient()
-  const eip155Account = `eip155:1:${userPubkey}`
+  const { eip155Account } = useFormattedEip155Account()
 
   const purpose: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
   let buttonText: string = t('Enable (Subscribe in wallet)')
@@ -55,17 +53,10 @@ function OnboardingButton({ onClick, loading, isOnBoarded, pushRegisterMessage }
 
 const OnBoardingView = () => {
   const [loading, setloading] = useState<boolean>(false)
-  const {
-    pushClientProxy: pushClient,
-    refreshNotifications,
-    pushRegisterMessage,
-    isOnBoarded,
-    userPubkey,
-  } = usePushClient()
-  const eip155Account = `eip155:1:${userPubkey}`
+  const { pushClientProxy: pushClient, refreshNotifications, pushRegisterMessage, isOnBoarded } = usePushClient()
 
   const toast = useToast()
-  // const { eip155Account } = useFormattedEip155Account()
+  const { eip155Account } = useFormattedEip155Account()
   const { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission } =
     useSendPushNotification()
 
