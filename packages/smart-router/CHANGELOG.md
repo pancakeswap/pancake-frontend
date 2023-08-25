@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.5.0
+
+### Minor Changes
+
+- 659be0529: Add support for building v3 pool fetcher with customized fallbacks and source of pool tvl references
+
 ## 4.4.0
 
 ### Minor Changes
