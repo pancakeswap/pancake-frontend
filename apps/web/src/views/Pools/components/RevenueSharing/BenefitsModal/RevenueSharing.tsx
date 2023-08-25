@@ -68,10 +68,10 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
 
   const nextDistributionTime = useMemo(() => {
     if (!days && hours && minutes && seconds) {
-      return `< 1${t('day')}`
+      return `< 1 ${t('day')}`
     }
 
-    return `${days}${t('days')}`
+    return t('in %day%', { day: `${days} ${t('days')}` })
   }, [days, hours, minutes, seconds, t])
 
   return (
@@ -146,7 +146,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               }
             />
             <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
-              {t('in %day%', { day: nextDistributionTime })}
+              {nextDistributionTime}
             </Text>
           </Flex>
           {showExpireSoonWarning && (
