@@ -15,19 +15,21 @@ import { cloneElement, useMemo, useRef, useLayoutEffect, useState } from 'react'
 import Marquee from 'react-fast-marquee'
 import styled from 'styled-components'
 
-import { Partner1Inch, PartnerBinance, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
+import { PartnerApolloX, PartnerAlpaca, PartnerVenus, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
 
 const MARQUEE_WIDTH = 210
 
 export const usePartnerData = () => {
+  const { t } = useTranslation()
   return useMemo(() => {
     return [
-      { icon: <PartnerBinance />, width: 92 },
-      { icon: <Partner1Inch />, width: 72 },
-      { icon: <PartnerLedger />, width: 60 },
-      { icon: <PartnerMetaMask />, width: 86 },
+      { icon: <PartnerLedger />, width: 21, text: t('Ledger') },
+      { icon: <PartnerMetaMask />, width: 20, text: t('Metamask') },
+      { icon: <PartnerVenus />, width: 20, text: t('Venus') },
+      { icon: <PartnerAlpaca />, width: 20, text: t('Alpaca Finance') },
+      { icon: <PartnerApolloX />, width: 20, text: t('ApolloX') },
     ]
-  }, [])
+  }, [t])
 }
 
 export const useEcosystemTagData = () => {
@@ -86,7 +88,6 @@ export const PartnerTagsWrapper = styled(Marquee)`
   ${({ theme }) => theme.mediaQueries.lg} {
     height: ${MARQUEE_WIDTH}px !important;
     width: ${MARQUEE_WIDTH}px !important;
-    mask-image: none;
   }
   overflow: hidden;
 `
@@ -140,6 +141,7 @@ export const CakePartnerWrapper = styled.div<{ $bgWidth: number }>`
   height: 40px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   padding: 8px 16px;
+  gap: 8px;
   border-radius: 24px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background: ${({ theme }) => theme.colors.backgroundAlt};
@@ -192,11 +194,22 @@ export const CakeSectionTag: React.FC<{ icon: React.ReactElement; text: string }
 export const CakePartnerTag: React.FC<{
   icon: React.ReactElement
   width: number
-}> = ({ icon, width }) => {
+  text: string
+}> = ({ icon, width, text }) => {
   const { theme } = useTheme()
+  const textRef = useRef<HTMLDivElement>()
+  useLayoutEffect(() => {
+    if (textRef?.current) {
+      setBgWidth(textRef.current.offsetWidth)
+    }
+  }, [])
+  const [bgWidth, setBgWidth] = useState(() => textRef?.current?.offsetWidth ?? 0)
   return (
-    <CakePartnerWrapper $bgWidth={width + 50}>
+    <CakePartnerWrapper $bgWidth={bgWidth + 50}>
       {cloneElement(icon, { color: theme.isDark ? 'white' : 'black', width })}
+      <Text fontWeight="400" ref={textRef}>
+        {text}
+      </Text>
     </CakePartnerWrapper>
   )
 }

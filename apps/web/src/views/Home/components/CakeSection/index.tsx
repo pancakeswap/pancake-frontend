@@ -223,9 +223,9 @@ const CakeSection: React.FC = () => {
             {t('Partners')}
           </Text>
           <PartnerTagOuterWrapper>
-            <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'} play={isMobile || isTablet}>
+            <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
               {partnerData.map((d) => (
-                <CakePartnerTag icon={d.icon} width={d.width} />
+                <CakePartnerTag icon={d.icon} width={d.width} text={d.text} />
               ))}
             </PartnerTagsWrapper>
           </PartnerTagOuterWrapper>
