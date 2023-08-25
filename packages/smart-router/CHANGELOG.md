@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.6.0
+
+### Minor Changes
+
+- 24f51d314: Customizable v2 pool provider
+
 ## 4.5.2
 
 ### Patch Changes
