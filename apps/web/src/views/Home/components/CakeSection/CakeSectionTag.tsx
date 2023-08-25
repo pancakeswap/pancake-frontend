@@ -205,7 +205,7 @@ export const CakePartnerTag: React.FC<{
   }, [])
   const [bgWidth, setBgWidth] = useState(() => textRef?.current?.offsetWidth ?? 0)
   return (
-    <CakePartnerWrapper $bgWidth={bgWidth + 50}>
+    <CakePartnerWrapper $bgWidth={bgWidth + 58}>
       {cloneElement(icon, { color: theme.isDark ? 'white' : 'black', width })}
       <Text fontWeight="400" ref={textRef}>
         {text}
