@@ -71,7 +71,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
       return `< 1 ${t('day')}`
     }
 
-    return t('in %day%', { day: `${days} ${t('days')}` })
+    return t('in %day% days', { day: days })
   }, [days, hours, minutes, seconds, t])
 
   return (
