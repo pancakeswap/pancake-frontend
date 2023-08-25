@@ -86,6 +86,7 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
 
 export const FeatureBoxesWrapper = styled(Flex)`
   flex-wrap: wrap;
+  gap: 24px;
   ${({ theme }) => theme.mediaQueries.xxl} {
     flex-wrap: nowrap;
   }
