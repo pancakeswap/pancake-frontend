@@ -19,7 +19,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { distanceToNowStrict } from 'utils/timeHelper'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
@@ -61,6 +61,18 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
     () => new BigNumber(userData?.lockedAmount ?? '0').lte(0),
     [userData?.lockedAmount],
   )
+
+  const currentDate = Date.now() / 1000
+  const timeRemaining = nextDistributionTimestamp - currentDate
+  const { days, hours, minutes, seconds } = getTimePeriods(timeRemaining)
+
+  const nextDistributionTime = useMemo(() => {
+    if (!days && !hours && !minutes && seconds > 0) {
+      return '< 1m'
+    }
+
+    return t('%day%d:%hour%h:%minute%m', { day: days, hour: hours, minute: minutes })
+  }, [days, hours, minutes, seconds, t])
 
   return (
     <Card isActive mb={['24px', '24px', '24px', '0']}>
@@ -134,7 +146,7 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               }
             />
             <Text color={showExpireSoonWarning ? 'failure' : 'text'} bold>
-              {t('in %day%', { day: distanceToNowStrict(nextDistributionTimestamp * 1000) })}
+              {t('in %day%', { day: nextDistributionTime })}
             </Text>
           </Flex>
           {showExpireSoonWarning && (
@@ -166,7 +178,11 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
             />
             <Box>
-              <Balance unit=" CAKE" bold value={availableCake} decimals={2} />
+              {availableCake <= 0.01 ? (
+                <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
+              ) : (
+                <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
+              )}
               <Balance
                 ml="4px"
                 color="textSubtle"
