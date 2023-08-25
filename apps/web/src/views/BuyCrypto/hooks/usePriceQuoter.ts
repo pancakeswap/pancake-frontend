@@ -5,10 +5,10 @@ import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { fetchProviderQuotes } from './useProviderQuotes'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
 import { chainIdToNetwork } from '../constants'
-import { ProviderQoute } from '../types'
+import { ProviderQuote } from '../types'
 
 const usePriceQuotes = () => {
-  const [quotes, setQuotes] = useState<ProviderQoute[]>([])
+  const [quotes, setQuotes] = useState<ProviderQuote[]>([])
   const { chainId } = useActiveChainId()
 
   const {
@@ -20,12 +20,12 @@ const usePriceQuotes = () => {
   } = useBuyCryptoState()
 
   const sortProviderQuotes = useCallback(
-    async (combinedData: ProviderQoute[], isNew: boolean) => {
+    async (combinedData: ProviderQuote[], isNew: boolean) => {
       let sortedFilteredQuotes = combinedData
       try {
         if (userIp) {
           const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
-          sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
+          sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
             return providerAvailabilities[quote.provider]
           })
         }

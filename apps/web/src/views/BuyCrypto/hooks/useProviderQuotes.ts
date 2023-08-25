@@ -1,5 +1,5 @@
 import { MOONPAY_API_KEY, MOONPAY_BASE_URL, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { ProviderQoute } from '../types'
+import { ProviderQuote } from '../types'
 
 export async function fetchMoonpayQuote(baseAmount: number, currencyCode: string, outputCurrency: string) {
   // Fetch data from endpoint 1
@@ -16,7 +16,7 @@ export async function fetchMoonpayQuote(baseAmount: number, currencyCode: string
   return result
 }
 
-export async function fetchProviderQuotes(payload): Promise<ProviderQoute[]> {
+export async function fetchProviderQuotes(payload): Promise<ProviderQuote[]> {
   // Fetch data from endpoint 1
   const response = await fetch(`${MOONPAY_SIGN_URL}/fetch-provider-quotes`, {
     headers: {

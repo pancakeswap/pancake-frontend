@@ -1,9 +1,9 @@
 import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
@@ -37,6 +37,8 @@ const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmoun
   )
 }
 
+const MOONPAY_CAMPAIGN_END_TIME = 1693458000
+
 function AccordionItem({
   active,
   btnOnClick,
@@ -46,7 +48,7 @@ function AccordionItem({
 }: {
   active: boolean
   btnOnClick: any
-  quote: ProviderQoute
+  quote: ProviderQuote
   fetching: boolean
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }) {
@@ -57,18 +59,24 @@ function AccordionItem({
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(active ? 240 : 90)
   const multiple = false
-  const [visiblity, setVisiblity] = useState(false)
+  const [visibility, setVisibility] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { isNewCustomer } = useBuyCryptoState()
-  const { days, hours } = getTimePeriods(1681699200)
 
-  const isActive = () => (multiple ? visiblity : active)
-  const isCampaignEligible = isNewCustomer && quote.provider === 'MoonPay'
+  const isActive = () => (multiple ? visibility : active)
+  const isCampaignEligible = useMemo(
+    () => isNewCustomer && quote.provider === 'MoonPay' && Date.now() / 1000 < MOONPAY_CAMPAIGN_END_TIME,
+    [isNewCustomer, quote.provider],
+  )
+  const { days, hours } = useMemo(
+    () => isCampaignEligible && quote && getTimePeriods(MOONPAY_CAMPAIGN_END_TIME - Date.now() / 1000),
+    [isCampaignEligible, quote],
+  )
 
-  const toogleVisiblity = useCallback(() => {
-    setVisiblity((v) => !v)
+  const toggleVisibility = useCallback(() => {
+    setVisibility((v) => !v)
     btnOnClick()
-  }, [setVisiblity, btnOnClick])
+  }, [setVisibility, btnOnClick])
 
   useEffect(() => {
     const contentEl = getRefValue(contentRef)
@@ -124,7 +132,7 @@ function AccordionItem({
       <CryptoCard
         padding="16px 16px"
         style={{ height }}
-        onClick={!isActive() ? toogleVisiblity : () => null}
+        onClick={!isActive() ? toggleVisibility : () => null}
         position="relative"
         isClicked={active}
         isDisabled={false}
@@ -155,7 +163,7 @@ function AccordionItem({
             let fee = 0
             if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : providerFee)
             else if (index === 1) fee = quote.networkFee
-            else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : providerFee
+            else fee = isCampaignEligible ? 0 : providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
           {isCampaignEligible ? (
