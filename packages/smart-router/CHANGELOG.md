@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 4.5.2
+
+### Patch Changes
+
+- e9c080787: Export provider functions
+
 ## 4.5.1
 
 ### Patch Changes
