@@ -125,13 +125,13 @@ const useTradeBlockData = () => {
       },
       {
         title: t('Perpetual'),
-        description: t('Buy crypto with your preferred currency and payment method'),
+        description: t('Trade endlessly without expiration dates'),
         ctaTitle: t('Trade Now'),
         image: tradePerpetual,
       },
       {
         title: t('Buy Crypto'),
-        description: t('Trade endlessly without expiration dates'),
+        description: t('Buy crypto with your preferred currency and payment method'),
         ctaTitle: t('Buy Now'),
         image: tradeBuy,
       },
