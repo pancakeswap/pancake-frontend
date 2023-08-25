@@ -6,6 +6,7 @@ import {
   Text,
   ZkEVMIcon,
   ZksyncWithOutCircleIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
 import Marquee from 'react-fast-marquee'
@@ -68,12 +69,13 @@ const newsItems = [
 ]
 
 export const ChainTags: React.FC = () => {
+  const { isMobile } = useMatchBreakpoints()
   return (
     <StyledMarquee>
       {newsItems.map((d) => (
         <TagWrapper style={{ background: d.background }} key={d.key}>
           {cloneElement(d.component, { width: d.iconWidth, color: 'invertedContrast' })}
-          <Text fontWeight={600} ml="10px" color="invertedContrast">
+          <Text fontWeight={600} fontSize={isMobile ? '16px' : '20px'} ml="10px" color="invertedContrast">
             {d.key}
           </Text>
         </TagWrapper>

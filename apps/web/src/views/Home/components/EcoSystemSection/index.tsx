@@ -97,6 +97,7 @@ export const Title = styled.div`
   margin-bottom: 24px;
   font-weight: 600;
   line-height: 110%;
+  padding-left: 12px;
   color: ${({ theme }) => theme.colors.secondary};
 `
 
