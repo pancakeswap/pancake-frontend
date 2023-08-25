@@ -97,7 +97,6 @@ const bloctoConnector = new BloctoConnector({
 const ledgerConnector = new LedgerConnector({
   chains,
   options: {
-    metadata: DEFAULT_APP_METADATA,
     projectId: 'd460b3b88b735222abe849b3d43ed8e4',
   },
 })
