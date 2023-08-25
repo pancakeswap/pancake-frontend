@@ -6,4 +6,4 @@
 '@pancakeswap/v3-sdk': minor
 ---
 
-Add linea support
+Add base support
