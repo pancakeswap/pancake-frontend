@@ -11,7 +11,9 @@ Pool tvl references are necessary for us to pick the candidate pools to particip
 Sometimes the service from the graph might be unstable so you may want to use your own source of pool tvl references.
 
 ```typescript
-import { v3PoolsOnChainProviderFactory } from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router/evm'
+
+const { v3PoolsOnChainProviderFactory } = SmartRouter
 
 // For the detailed params type definition pls refer to `GetV3CandidatePoolsParams`
 const getV3PoolsWithCustomizedTvlReferences = v3PoolsOnChainProviderFactory((params) => {
@@ -30,10 +32,9 @@ const getV3PoolsWithCustomizedTvlReferences = v3PoolsOnChainProviderFactory((par
 In case your customized v3 pool fetcher suffers downtime, you can specify several fallback fetchers to guarantee the reliability of your service.
 
 ```typescript
-import {
-  createGetV3CandidatePoolsWithFallbacks,
-  getV3PoolsWithTvlFromOnChainFallback,
-} from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router/evm'
+
+const { createGetV3CandidatePoolsWithFallbacks, getV3PoolsWithTvlFromOnChainFallback } = SmartRouter
 
 const getV3CandidatePools = createGetV3CandidatePoolsWithFallbacks(
   // Use your customized v3 pool fetcher by default
