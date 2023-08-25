@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.3.1
+
+### Patch Changes
+
+- d0f9b28a9: Remove invalid dependency
+  - @pancakeswap/token-lists@0.0.8
+
 ## 0.3.0
 
 ### Minor Changes
