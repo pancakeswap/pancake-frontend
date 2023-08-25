@@ -8,6 +8,7 @@ const PANCAKE_ZKSYNC_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-z
 const PANCAKE_POLYGON_ZKEVM_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json'
 const PANCAKE_ARB_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json'
 const PANCAKE_LINEA_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-linea-default.json'
+const PANCAKE_BASE_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-base-default.json'
 
 export const PANCAKE_ETH_MM = 'https://tokens.pancakeswap.finance/pancakeswap-eth-mm.json'
 export const PANCAKE_BSC_MM = 'https://tokens.pancakeswap.finance/pancakeswap-bnb-mm.json'
@@ -19,9 +20,9 @@ const ETH_URLS = [PANCAKE_ETH_DEFAULT, PANCAKE_ETH_MM, COINGECKO_ETH]
 const BSC_URLS = [PANCAKE_EXTENDED, COINGECKO, PANCAKE_BSC_MM]
 const POLYGON_ZKEVM_URLS = [PANCAKE_POLYGON_ZKEVM_DEFAULT]
 const ARBITRUM_URLS = [PANCAKE_ARB_DEFAULT]
-
 const LINEA_URLS = [PANCAKE_LINEA_DEFAULT]
 const ZKSYNC_URLS = [PANCAKE_ZKSYNC_DEFAULT]
+const BASE_URLS = [PANCAKE_BASE_DEFAULT]
 
 // List of official tokens list
 export const OFFICIAL_LISTS = [PANCAKE_EXTENDED, PANCAKE_ETH_DEFAULT]
@@ -61,5 +62,5 @@ export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
   [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_URLS,
   [ChainId.ARBITRUM_ONE]: ARBITRUM_URLS,
   [ChainId.LINEA]: LINEA_URLS,
-  [ChainId.BASE]: [],
+  [ChainId.BASE]: BASE_URLS,
 }
