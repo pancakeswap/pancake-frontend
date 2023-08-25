@@ -41,7 +41,7 @@ export const CardWrapper = styled.div`
 export const ImageBox = styled.div`
   transition: filter 0.25s linear;
   ${({ theme }) => theme.mediaQueries.xl} {
-    filter: grayscale(100%);
+    filter: invert(38%) sepia(97%) saturate(433%) hue-rotate(215deg) brightness(83%) contrast(86%);
   }
 `
 
@@ -61,7 +61,7 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
       color: ${({ theme }) => theme.colors.primary};
     }
     ${ImageBox} {
-      filter: grayscale(0%);
+      filter: invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%);
     }
   }
   flex-basis: 50%;
