@@ -81,7 +81,7 @@ export const getTokenUsdPricesBySubgraph: GetTokenPrices<BySubgraphEssentials> =
     tokenPriceQuery,
     {
       pageSize: 1000,
-      tokenAddrs: addresses,
+      tokenAddrs: addresses.map((addr) => addr.toLocaleLowerCase()),
     },
   )
   return tokenPrices.map(({ id, derivedUSD }) => ({
