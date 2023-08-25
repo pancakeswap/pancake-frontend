@@ -46,6 +46,7 @@ export const useAuthState = (w3iProxy: PushClientProxy, proxyReady: boolean) => 
   }, [authClient])
 
   useEffect(() => {
+    if (!authClient) return () => null
     authClient?.emitter.on('auth_set_account', ({ account }) => setUserPubkey(account))
 
     return () => authClient?.emitter.off('auth_set_account', ({ account }) => setUserPubkey(account))
