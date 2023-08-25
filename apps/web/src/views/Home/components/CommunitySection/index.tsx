@@ -128,6 +128,7 @@ const CommunitySection = () => {
             justifyContent="center"
             alignItems="center"
             flexDirection={isMobile ? 'column' : 'row'}
+            mb="12px"
           >
             <Heading scale="xl">{t('Join our')}</Heading>{' '}
             <Heading color={theme.isDark ? '#A881FC' : theme.colors.secondary} scale="xl">
