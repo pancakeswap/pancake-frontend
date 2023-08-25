@@ -1,4 +1,3 @@
-import { signMessage } from 'wagmi/actions'
 import { Core } from '@walletconnect/core'
 import { IdentityKeys } from '@walletconnect/identity-keys'
 import { NotifyClient } from '@walletconnect/notify-client'
@@ -10,11 +9,11 @@ import InternalPushProvider from './internalPushProvider'
 
 export type PushClient = Omit<InternalPushProvider, 'initState'>
 
-declare global {
-  interface Window {
-    web3inbox: PushClientProxy
-  }
-}
+// declare global {
+//   interface Window {
+//     web3inbox: PushClientProxy
+//   }
+// }
 
 class PushClientProxy {
   private pushFacade: InternalPushProvider
@@ -33,14 +32,12 @@ class PushClientProxy {
 
   private identityKeys?: IdentityKeys
 
-  public readonly signMessage: (message: string) => Promise<string>
-
   private isInitialized = false
 
   /**
    *
    */
-  private constructor(projectId: string, relayUrl: string) {
+  public constructor(projectId: string, relayUrl: string) {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.emitter = new EventEmitter()
@@ -49,17 +46,6 @@ class PushClientProxy {
       relayUrl: this.relayUrl,
       projectId: this.projectId,
     })
-    this.signMessage = async (message: string) => {
-      return signMessage({ message })
-    }
-  }
-
-  public static getProxy(projectId: string, relayUrl: string) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!window.web3inbox) {
-      window.web3inbox = new PushClientProxy(projectId, relayUrl)
-    }
-    return window.web3inbox
   }
 
   public get notify(): InternalPushProvider {

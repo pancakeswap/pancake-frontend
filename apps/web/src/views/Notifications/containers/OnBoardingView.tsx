@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
+import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useSignMessage } from 'wagmi'
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
 import { DEFAULT_APP_METADATA, Events } from '../constants'
@@ -52,6 +53,7 @@ function OnboardingButton({ onClick, loading, isOnBoarded, pushRegisterMessage }
 }
 
 const OnBoardingView = () => {
+  const { signMessageAsync } = useSignMessage()
   const [loading, setloading] = useState<boolean>(false)
   const { pushClientProxy: pushClient, refreshNotifications, pushRegisterMessage, isOnBoarded } = usePushClient()
 
@@ -64,17 +66,16 @@ const OnBoardingView = () => {
 
   const handleOnboarding = useCallback(() => {
     setloading(true)
-    window.web3inbox
-      .signMessage(pushRegisterMessage)
+    signMessageAsync({ message: pushRegisterMessage })
       .then((signature) => {
-        window.web3inbox.notify.postMessage(formatJsonRpcRequest('notify_signature_delivered', { signature }))
+        pushClient.postMessage(formatJsonRpcRequest('notify_signature_delivered', { signature }))
+        setloading(false)
       })
       .catch((error) => {
         console.error(error)
         setloading(false)
       })
-    setloading(false)
-  }, [pushRegisterMessage, setloading])
+  }, [pushRegisterMessage, setloading, pushClient, signMessageAsync])
 
   const handleSubscribe = useCallback(async () => {
     if (!eip155Account) return
@@ -91,10 +92,11 @@ const OnBoardingView = () => {
         account: eip155Account,
         metadata: DEFAULT_APP_METADATA,
       })
+      setloading(false)
     } catch (error) {
       toast.toastError(Events.SubscriptionRequestError.title, 'Unable to subscribe')
+      setloading(false)
     }
-    setloading(false)
   }, [
     eip155Account,
     pushClient,

@@ -35,8 +35,8 @@ export const NotificationSortTypes: OptionProps[] = [
   },
 ]
 
-export const DEFAULT_CAST_SIGN_KEY = process.env.CAST_SERVER_SIGN_KEY
-export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID || 'd460b3b88b735222abe849b3d43ed8e4'
+export const DEFAULT_CAST_SIGN_KEY = process.env.NEXT_PUBLIC_CAST_SERVER_SIGN_KEY
+export const DEFAULT_PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID
 export const DEFAULT_RELAY_URL = 'https://notify.walletconnect.com'
 export const DEFAULT_APP_METADATA = {
   description: 'pancakeswap push notification demo with the web3inbox react widget',

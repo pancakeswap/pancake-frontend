@@ -87,7 +87,7 @@ export default class InternalPushProvider implements W3iPushProvider {
         account: params.account,
       })
     } catch (error) {
-      console.log({ error })
+      console.error({ error })
     }
 
     if (alreadySynced && identityKey !== '') {
@@ -127,8 +127,6 @@ export default class InternalPushProvider implements W3iPushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-    console.log('InternalPushProvider > PushClient.subscribe > params', params)
-
     const subscribed = await this.pushClient.subscribe({
       ...params,
     })
@@ -157,14 +155,9 @@ export default class InternalPushProvider implements W3iPushProvider {
   }
 
   public async getActiveSubscriptions(params?: { account: string }) {
-    if (!this.pushClient) {
+    if (!this.pushClient || !params?.account) {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
-
-    const subscriptions = this.pushClient.getActiveSubscriptions(params)
-
-    console.log('InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions', subscriptions)
-
     return Promise.resolve(this.pushClient.getActiveSubscriptions())
   }
 
@@ -172,11 +165,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('getMessageHistory'))
     }
-
     const messages = this.pushClient.getMessageHistory(params)
-
-    console.log('InternalPushProvider > PushClient.getMessageHistory > messages', messages)
-
     return Promise.resolve(messages)
   }
 

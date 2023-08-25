@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
-import PushContextProvider, { usePushClient } from 'contexts/PushClientContext'
+import { usePushClient } from 'contexts/PushClientContext'
 import { useCallback, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
@@ -98,12 +98,4 @@ const Notifications = () => {
   )
 }
 
-const NotificationsState = () => {
-  return (
-    <PushContextProvider>
-      <Notifications />
-    </PushContextProvider>
-  )
-}
-
-export default NotificationsState
+export default Notifications

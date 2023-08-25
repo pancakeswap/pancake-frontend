@@ -2596,12 +2596,9 @@
   "View Link": "View Link",
   "UnSubscribing": "UnSubscribing",
   "UnSubscribe": "UnSubscribe",
-  "User rejected the request": "User rejected the request",
-  "Notifications From PancakeSwap": "Notifications From PancakeSwap",
   "Get started with notifications from WalletConnect. Click the subscribe button below and accept": "Get started with notifications from WalletConnect. Click the subscribe button below and accept",
   "Enable (Subscribe in wallet)": "Enable (Subscribe in wallet)",
   "Awaiting signature response": "Awaiting signature response",
-  "Authorize In Wallet": "Authorize In Wallet",
   "PancakeSwap would like to send you notifications": "PancakeSwap would like to send you notifications",
   "Notifications": "Notifications",
   "Rank (Top 50 users)": "Rank (Top 50 users)",
@@ -2677,5 +2674,8 @@
   "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
   "All Set": "All Set",
   "Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.": "Any notifications that you recieve will appear here. you willl also recieve moblile notification on your mobile wallet.",
-  "Update Preferences": "Update Preferences"
+  "Update Preferences": "Update Preferences",
+  "Sync Push Notification Client": "Sync Push Notification Client",
+  "Authorize Push Notifications": "Authorize Push Notifications",
+  "Notifications From PancakeSwap": "Notifications From PancakeSwap"
 }

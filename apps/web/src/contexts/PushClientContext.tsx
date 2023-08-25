@@ -35,22 +35,18 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   const [pushRegisteredKey, setRegistered] = useState<string | null>(null)
 
   const [pushClient, setPushClient] = useState<PushClient | null>(null)
-
-  const relayUrl = 'wss://relay.walletconnect.com'
-  const projectId = 'd460b3b88b735222abe849b3d43ed8e4'
-
   const [proxyReady, setProxyReady] = useState(false)
-  const [w3iProxy] = useState(PushClientProxy.getProxy(projectId, relayUrl))
+  const [pushClientProxy] = useState(new PushClientProxy(DEFAULT_PROJECT_ID, 'wss://relay.walletconnect.com'))
 
   useEffect(() => {
-    w3iProxy.init().then(() => setProxyReady(true))
-  }, [w3iProxy, setProxyReady])
+    pushClientProxy.init().then(() => setProxyReady(true))
+  }, [pushClientProxy, setProxyReady])
 
   useEffect(() => {
     if (proxyReady) {
-      setPushClient(w3iProxy.notify)
+      setPushClient(pushClientProxy.notify)
     }
-  }, [w3iProxy, proxyReady])
+  }, [pushClientProxy, proxyReady])
 
   useEffect(() => {
     const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
@@ -72,10 +68,13 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
   }, [pushClient, eip155Account])
 
   useEffect(() => {
-    // Account for sync init
-    const timeoutId = setTimeout(() => refreshPushState(), 100)
-
-    return () => clearTimeout(timeoutId)
+    // refresh on acccount sync then every 60s
+    const timeoutId = setTimeout(() => refreshPushState(), 5000)
+    const intervalId: NodeJS.Timer = setInterval(refreshPushState, 60000)
+    return () => {
+      clearInterval(intervalId)
+      clearTimeout(timeoutId)
+    }
   }, [refreshPushState])
 
   const handleRegistration = useCallback(
@@ -115,18 +114,18 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
     pushClient.emitter.on('notify_signature_requested', ({ message }) => setRegisterMessage(message))
     pushClient.emitter.on('notify_signature_request_cancelled', () => setRegisterMessage(null))
 
-    pushClient.emitter.on('notify_subscription', () => refreshPushState)
-    pushClient.emitter.on('notify_delete', () => refreshPushState)
-    pushClient.emitter.on('notify_update', () => refreshPushState)
-    pushClient.emitter.on('notify_update', () => refreshPushState)
-    pushClient.emitter.on('notify_message', () => handleNotificationEvent)
+    pushClient.emitter.on('notify_subscription', () => refreshPushState())
+    pushClient.emitter.on('notify_delete', () => refreshPushState())
+    pushClient.emitter.on('notify_update', () => refreshPushState())
+    pushClient.emitter.on('notify_update', () => refreshPushState())
+    pushClient.emitter.on('notify_message', () => handleNotificationEvent())
 
     return () => {
-      pushClient.emitter.off('notify_subscription', () => refreshPushState)
-      pushClient.emitter.off('notify_delete', () => refreshPushState)
-      pushClient.emitter.off('notify_update', () => refreshPushState)
-      pushClient.emitter.off('notify_update', () => refreshPushState)
-      pushClient.emitter.off('notify_message', () => handleNotificationEvent)
+      pushClient.emitter.off('notify_subscription', () => refreshPushState())
+      pushClient.emitter.off('notify_delete', () => refreshPushState())
+      pushClient.emitter.off('notify_update', () => refreshPushState())
+      pushClient.emitter.off('notify_update', () => refreshPushState())
+      pushClient.emitter.off('notify_message', () => handleNotificationEvent())
       pushClient.emitter.off('notify_signature_requested', ({ message }) => setRegisterMessage(message))
       pushClient.emitter.off('notify_signature_request_cancelled', () => setRegisterMessage(null))
     }

@@ -19,7 +19,6 @@ interface PushSubButtonProps {
   isUnsubscribing: boolean
   handleSubscriptionAction: (e: React.MouseEvent<HTMLButtonElement>) => void
   objectsAreEqual: boolean
-  // refreshNotifications: () => void
 }
 
 function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, objectsAreEqual }: PushSubButtonProps) {
