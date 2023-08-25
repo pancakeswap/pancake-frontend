@@ -191,7 +191,7 @@ const CakeSection: React.FC = () => {
           <Button variant="primary">{t('Buy CAKE')}</Button>
         </Link>
         <Link href="https://docs.pancakeswap.finance/governance-and-tokenomics/cake-tokenomics">
-          <Button endIcon={<OpenNewIcon color="primary" />} variant="secondary">
+          <Button pl="0" endIcon={<OpenNewIcon color="primary" />} variant="text">
             {t('Learn')}
           </Button>
         </Link>
