@@ -7,7 +7,6 @@ export default defineConfig((options) => {
       index: './src/index.ts',
     },
     format: ['esm', 'cjs'],
-    noExternal: ['@pancakeswap/utils'],
     dts: false,
     clean: !options.watch,
     treeshake: true,

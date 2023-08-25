@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*"
   },
   "devDependencies": {
-    "@pancakeswap/utils": "workspace:*",
     "tsup": "^6.7.0"
   },
   "exports": {
