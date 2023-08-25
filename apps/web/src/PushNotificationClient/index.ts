@@ -7,6 +7,7 @@ import { SyncClient, SyncStore } from '@walletconnect/sync-client'
 import type { ICore } from '@walletconnect/types'
 import { EventEmitter } from 'events'
 import InternalPushProvider from './internalPushProvider'
+import InternalAuthProvider from './internalAuthProvider'
 
 export type PushClient = Omit<InternalPushProvider, 'initState'>
 
@@ -20,6 +21,8 @@ class PushClientProxy {
   private pushFacade: InternalPushProvider
 
   private pushClient?: NotifyClient
+
+  private authFacade: InternalAuthProvider
 
   private readonly relayUrl?: string
 
@@ -44,6 +47,7 @@ class PushClientProxy {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.emitter = new EventEmitter()
+    this.authFacade = new InternalAuthProvider(this.emitter)
     this.core = new Core({
       logger: 'debug',
       relayUrl: this.relayUrl,
@@ -64,6 +68,10 @@ class PushClientProxy {
 
   public get notify(): InternalPushProvider {
     return this.pushFacade
+  }
+
+  public get auth(): InternalAuthProvider {
+    return this.authFacade
   }
 
   public getInitComplete() {
@@ -104,6 +112,7 @@ class PushClientProxy {
       this.pushFacade = new InternalPushProvider(this.emitter)
       this.pushFacade.initState(this.pushClient)
     }
+    setTimeout(() => this.authFacade.initState(), 2000)
     this.isInitialized = true
   }
 }

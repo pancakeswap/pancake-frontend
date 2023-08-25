@@ -4,7 +4,8 @@ import { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { DEFAULT_PROJECT_ID } from 'views/Notifications/constants'
 import PushClientProxy, { PushClient } from 'PushNotificationClient'
-import useFormattedEip155Account from 'views/Notifications/components/hooks/useFormatEip155Account'
+// import useFormattedEip155Account from 'views/Notifications/components/hooks/useFormatEip155Account'
+import { useAuthState } from './hooks/authHooks'
 
 interface PushClientContext {
   refreshNotifications: () => void
@@ -16,6 +17,9 @@ interface PushClientContext {
   isOnBoarded: boolean
   unread: number
   setUnread: React.Dispatch<React.SetStateAction<number>>
+  setUserPubkey: React.Dispatch<React.SetStateAction<string>>
+  userPubkey: string
+  disconnect: () => void
 }
 
 export const PushClientContext = createContext<PushClientContext>({} as PushClientContext)
@@ -25,7 +29,7 @@ interface PushContextProviderProps {
 }
 
 const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) => {
-  const { eip155Account } = useFormattedEip155Account()
+  // const { eip155Account } = useFormattedEip155Account()
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false)
   const [unread, setUnread] = useState<number>(0)
   const [isOnBoarded, setIsOnBoarded] = useState<boolean>(false)
@@ -41,6 +45,9 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
 
   const [proxyReady, setProxyReady] = useState(false)
   const [w3iProxy] = useState(PushClientProxy.getProxy(projectId, relayUrl))
+  const { userPubkey, setUserPubkey, disconnect } = useAuthState(w3iProxy, proxyReady)
+
+  const eip155Account = `eip155:1:${userPubkey}`
 
   useEffect(() => {
     w3iProxy.init().then(() => setProxyReady(true))
@@ -144,6 +151,9 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
         isOnBoarded,
         unread,
         setUnread,
+        userPubkey,
+        disconnect,
+        setUserPubkey,
       }}
     >
       {children}

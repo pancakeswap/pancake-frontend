@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
 import PushContextProvider, { usePushClient } from 'contexts/PushClientContext'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
+// import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
 import { ModalHeader, ModalTitle, ViewContainer } from './styles'
 
@@ -27,8 +27,10 @@ const ModalBackButton: React.FC<
 
 const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHeaderprops) => {
   const { t } = useTranslation()
-  const { isSubscribed } = usePushClient()
-  const { eip155Account } = useFormattedEip155Account()
+  const { isSubscribed, userPubkey } = usePushClient()
+  // const { eip155Account } = useFormattedEip155Account()
+  const eip155Account = `eip155:1:${userPubkey}`
+
   return (
     <ModalHeader>
       {isSubscribed ? (
@@ -56,8 +58,15 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHe
 const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const { eip155Account } = useFormattedEip155Account()
-  const { activeSubscriptions, pushClientProxy: pushClient, isSubscribed, refreshNotifications } = usePushClient()
+  // const { eip155Account } = useFormattedEip155Account()
+  const {
+    activeSubscriptions,
+    pushClientProxy: pushClient,
+    isSubscribed,
+    refreshNotifications,
+    userPubkey,
+  } = usePushClient()
+  const eip155Account = `eip155:1:${userPubkey}`
 
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
 
@@ -70,6 +79,10 @@ const Notifications = () => {
     [setIsRightView, isRightView],
   )
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
+
+  useEffect(() => {
+    refreshNotifications()
+  }, [])
 
   return (
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">

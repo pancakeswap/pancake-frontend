@@ -56,6 +56,7 @@
     "@tanstack/react-query": "^4.28.0",
     "@types/pg": "^8.10.2",
     "@vanilla-extract/next-plugin": "^2.1.1",
+    "@wagmi/core": "^1.3.9",
     "@walletconnect/chat-client": "^0.7.7",
     "@walletconnect/core": "^2.9.2",
     "@walletconnect/identity-keys": "^0.1.10",
