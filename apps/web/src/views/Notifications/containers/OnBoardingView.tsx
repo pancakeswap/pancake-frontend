@@ -115,7 +115,16 @@ const OnBoardingView = () => {
     },
     [handleOnboarding, handleSubscribe, isOnBoarded, requestNotificationPermission],
   )
-
+  const purpose: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
+  let buttonText: string = t(
+    'Finally, Subscribe to PancakeSwap notifications TO stay informed on the latest news updates PancakeSwap has to offer.',
+  )
+  if (!isOnBoarded) {
+    buttonText =
+      purpose === 'sync'
+        ? t('Next enable notification syncing between DApp clients. This allows for real time udates')
+        : t('Get started with notifications from PancakeSwap. First Authorize notifications by signing in your wallet')
+  }
   return (
     <Box padding="24px">
       <Box pl="24px">
@@ -126,7 +135,7 @@ const OnBoardingView = () => {
           {t('Notifications From PancakeSwap')}
         </Text>
         <Text fontSize="16px" textAlign="center" color="textSubtle">
-          {t('Get started with notifications from WalletConnect. Click the subscribe button below and accept')}
+          {buttonText}
         </Text>
         <OnboardingButton
           loading={loading}

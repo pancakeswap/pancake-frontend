@@ -112,14 +112,9 @@ const SettingsModal = ({ activeSubscriptions, currentSubscription, pushClient }:
     if (!(pushClient && currentSubscription?.topic)) {
       return () => null
     }
-
-    pushClient.emitter.on('notify_message', () => updateMessages())
     pushClient.emitter.on('notify_message', () => updateMessages())
 
-    return () => {
-      pushClient.emitter.off('notify_message', () => updateMessages())
-      pushClient.emitter.off('notify_message', () => updateMessages())
-    }
+    return () => pushClient.emitter.off('notify_message', () => updateMessages())
   }, [pushClient, setNotifications, currentSubscription?.topic, updateMessages])
 
   return (

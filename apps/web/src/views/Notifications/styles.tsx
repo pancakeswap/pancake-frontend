@@ -1,8 +1,9 @@
-import styled, { keyframes } from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import styled, { keyframes, css } from 'styled-components'
+import { Box, CheckmarkIcon, Flex, Text } from '@pancakeswap/uikit'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
+// Notification View styles
 export const Menu = styled.div<{ isOpen: boolean }>`
   background-color: ${({ theme }) => theme.card.background};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -38,9 +39,11 @@ export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
   background: transparent;
   display: flex;
+  justify-content: space-between;
   padding-top: 12px;
   padding-left: 12px;
   padding-right: 12px;
+  width: 100%;
 
   ${({ theme }) => theme.mediaQueries.md} {
     background: ${({ background }) => background || 'transparent'};
@@ -188,4 +191,72 @@ export const BellIconContainer = styled(Box)`
     color: white;
     font-weight: bold;
   }
+`
+
+// Progress bar styles
+export const blinkAnimation = keyframes`
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+`
+
+export const StepContainer = styled.div<{ index: number; stepLength: number }>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.index !== props.stepLength - 1 &&
+    `
+      width: 100%;
+    `}
+`
+
+export const StepWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: green;
+`
+
+export const StepIcon = styled.div<{ pendingStep: boolean; nextStep: boolean; index: number }>`
+  border-radius: 50%;
+  background: ${({ pendingStep }) => (!pendingStep ? '#EDEAF4' : '#1DC7D3')};
+  border: 2px solid #7a6daa;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.nextStep &&
+    css`
+      animation: ${blinkAnimation} 1.5s infinite;
+    `}
+`
+
+export const Divider = styled.div<{ completedStep: boolean }>`
+  flex-grow: 1;
+  border-top: ${({ completedStep }) => (completedStep ? '2px dashed #1DC7D3' : '2px dashed #7A6DAA')};
+  margin-right: 4px;
+`
+
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+`
+export const StyledCheckIcon = styled(CheckmarkIcon)<{ index: number; stepLength: number }>`
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #32d0aa;
+  top: -12%;
+  right: ${({ index, stepLength }) => (index !== stepLength - 1 ? '75%' : '-5%')};
 `

@@ -1,17 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, Box, CogIcon, Heading, IconButton, LogoRoundIcon, ModalCloseButton } from '@pancakeswap/uikit'
 import { usePushClient } from 'contexts/PushClientContext'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import NotificationSettingsMain from 'views/Notifications/containers/NotificationSettings'
 import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import useFormattedEip155Account from './components/hooks/useFormatEip155Account'
 import SettingsModal from './containers/NotificationView'
 import { ModalHeader, ModalTitle, ViewContainer } from './styles'
+import ProgressStepBar from './components/ProgressBar/ProgressBar'
 
 interface INotifyHeaderprops {
   onBack: (e: React.MouseEvent<HTMLButtonElement>) => void
   onDismiss: () => void
+  isNotificationView: boolean
   isSettings?: boolean
 }
 
@@ -25,14 +27,20 @@ const ModalBackButton: React.FC<
   )
 }
 
-const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHeaderprops) => {
+const NotificationHeader = ({ isSettings = false, onBack, onDismiss, isNotificationView }: INotifyHeaderprops) => {
   const { t } = useTranslation()
-  const { isSubscribed } = usePushClient()
   const { eip155Account } = useFormattedEip155Account()
+
+  const checkSubscriptionStatus = () => {
+    const subscriptionStatus = localStorage.getItem(`isSubscribed_${eip155Account}`)
+    return subscriptionStatus === 'true'
+  }
+
+  const hasSubscribedOnce = checkSubscriptionStatus()
   return (
-    <ModalHeader>
-      {isSubscribed ? (
-        <>
+    <>
+      {isNotificationView ? (
+        <ModalHeader>
           {eip155Account ? <ModalBackButton onBack={onBack} isSettings={isSettings} /> : null}
           <ModalTitle>
             <Heading fontSize="20px" padding="0px" textAlign="center">
@@ -40,21 +48,28 @@ const NotificationHeader = ({ isSettings = false, onBack, onDismiss }: INotifyHe
             </Heading>
           </ModalTitle>
           {eip155Account ? <ModalCloseButton onDismiss={onDismiss} /> : null}
-        </>
-      ) : (
-        <Box display="flex" padding="8px" paddingLeft="20px">
-          <LogoRoundIcon width="40px" mr="12px" />
-          <Heading fontSize="24px" padding="0px" textAlign="left" mr="8px">
-            {t('PancakeSwap would like to send you notifications')}
-          </Heading>
+        </ModalHeader>
+      ) : !hasSubscribedOnce ? (
+        <Box background="#EDEAF4" borderRadius="16px" marginX="24px" marginTop="24px">
+          <ProgressStepBar />
         </Box>
+      ) : (
+        <ModalHeader>
+          <Box display="flex" padding="8px" paddingLeft="20px">
+            <LogoRoundIcon width="40px" mr="12px" />
+            <Heading fontSize="24px" padding="0px" textAlign="left" mr="8px">
+              {t('PancakeSwap would like to send you notifications')}
+            </Heading>
+          </Box>
+        </ModalHeader>
       )}
-    </ModalHeader>
+    </>
   )
 }
 
 const Notifications = () => {
   const [isRightView, setIsRightView] = useState(true)
+  const [isNotificationView, setIsNotificationView] = useState<boolean>(false)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { eip155Account } = useFormattedEip155Account()
   const { activeSubscriptions, pushClientProxy: pushClient, isSubscribed, refreshNotifications } = usePushClient()
@@ -71,12 +86,25 @@ const Notifications = () => {
   )
   const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null
+    if (isSubscribed) timeoutId = setTimeout(() => setIsNotificationView(true), 1500)
+    else setIsNotificationView(false)
+
+    return () => clearTimeout(timeoutId)
+  }, [isSubscribed])
+
   return (
     <NotificationMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} mr="8px">
       {() => (
         <Box>
-          <NotificationHeader onBack={toggleSettings} onDismiss={onDismiss} isSettings={!isRightView} />
-          {isSubscribed && eip155Account ? (
+          <NotificationHeader
+            onBack={toggleSettings}
+            onDismiss={onDismiss}
+            isSettings={!isRightView}
+            isNotificationView={isNotificationView}
+          />
+          {isNotificationView && eip155Account ? (
             <ViewContainer isRightView={isRightView}>
               <SettingsModal
                 currentSubscription={currentSubscription}

@@ -63,6 +63,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
       setActiveSubscriptions(Object.values(subscriptions))
       if (Object.values(subscriptions).some((sub) => sub.account === eip155Account)) {
         setIsSubscribed(true)
+        localStorage.setItem(`isSubscribed_${eip155Account}`, 'true')
       } else setIsSubscribed(false)
     })
   }, [pushClient, eip155Account])
@@ -81,6 +82,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
     async (key: string) => {
       if (pushClient && key) {
         try {
+          setRegistered(null)
           const identityKey = await pushClient.register({ account: key })
           setRegisterMessage(null)
           setRegistered(identityKey)

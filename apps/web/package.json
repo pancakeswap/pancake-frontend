@@ -34,6 +34,7 @@
   "dependencies": {
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
+    "@iconscout/react-unicons": "^2.0.2",
     "@next/bundle-analyzer": "13.0.7",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
