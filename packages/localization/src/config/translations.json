@@ -2596,7 +2596,7 @@
   "View Link": "View Link",
   "UnSubscribing": "UnSubscribing",
   "UnSubscribe": "UnSubscribe",
-  "Enable (Subscribe in wallet)": "Enable (Subscribe in wallet)",
+  "Enable Notifications": "Enable Notifications",
   "Awaiting signature response": "Awaiting signature response",
   "PancakeSwap would like to send you notifications": "PancakeSwap would like to send you notifications",
   "Notifications": "Notifications",
@@ -2678,6 +2678,6 @@
   "Authorize Push Notifications": "Authorize Push Notifications",
   "Notifications From PancakeSwap": "Notifications From PancakeSwap",
   "Next enable notification syncing between DApp clients. This allows for real time udates": "Next enable notification syncing between DApp clients. This allows for real time udates",
-  "Get started with notifications from PancakeSwap. First Authorize notifications by signing in your wallet": "Get started with notifications from PancakeSwap. First Authorize notifications by signing in your wallet",
-  "Finally, Subscribe to PancakeSwap notifications TO stay informed on the latest news updates PancakeSwap has to offer.": "Finally, Subscribe to PancakeSwap notifications TO stay informed on the latest news updates PancakeSwap has to offer."
+  "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet",
+  "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer."
 }

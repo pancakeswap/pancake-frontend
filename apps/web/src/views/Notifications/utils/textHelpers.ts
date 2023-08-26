@@ -6,13 +6,13 @@ export const getOnBoardingDescriptionMessage = (
   t: TranslateFunction,
 ) => {
   let onBoardingDescription: string = t(
-    'Finally, Subscribe to PancakeSwap notifications TO stay informed on the latest news updates PancakeSwap has to offer.',
+    'Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.',
   )
   if (!isOnBoarded) {
     onBoardingDescription =
       onboardingStep === 'sync'
         ? t('Next enable notification syncing between DApp clients. This allows for real time udates')
-        : t('Get started with notifications from PancakeSwap. First Authorize notifications by signing in your wallet')
+        : t('Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet')
   }
   return onBoardingDescription
 }
@@ -23,7 +23,7 @@ export const getOnBoardingButtonText = (
   loading: boolean,
   t: TranslateFunction,
 ) => {
-  let buttonText: string = t('Enable (Subscribe in wallet)')
+  let buttonText: string = t('Enable Notifications')
 
   if (loading) buttonText = t('Awaiting signature response')
   if (!isOnBoarded) {

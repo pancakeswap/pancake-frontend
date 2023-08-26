@@ -119,13 +119,11 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
     pushClient.emitter.on('notify_subscription', () => refreshPushState())
     pushClient.emitter.on('notify_delete', () => refreshPushState())
     pushClient.emitter.on('notify_update', () => refreshPushState())
-    pushClient.emitter.on('notify_update', () => refreshPushState())
     pushClient.emitter.on('notify_message', () => handleNotificationEvent())
 
     return () => {
       pushClient.emitter.off('notify_subscription', () => refreshPushState())
       pushClient.emitter.off('notify_delete', () => refreshPushState())
-      pushClient.emitter.off('notify_update', () => refreshPushState())
       pushClient.emitter.off('notify_update', () => refreshPushState())
       pushClient.emitter.off('notify_message', () => handleNotificationEvent())
       pushClient.emitter.off('notify_signature_requested', ({ message }) => setRegisterMessage(message))
