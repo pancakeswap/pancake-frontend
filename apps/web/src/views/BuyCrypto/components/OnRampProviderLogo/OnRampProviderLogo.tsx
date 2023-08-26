@@ -5,7 +5,7 @@ import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import MercuryoAltSvg from '../../../../../public/images/on-ramp-providers/mercuryo_new_logo_black.png'
 import MercuryoAltSvgLight from '../../../../../public/images/on-ramp-providers/mercuryo_new_logo_white.png'
 
-const OnRampProviderLogo = ({ provider }: { provider: string }) => {
+const OnRampProviderLogo = ({ provider }: { provider: keyof typeof ONRAMP_PROVIDERS }) => {
   const theme = useTheme()
   return (
     <>
