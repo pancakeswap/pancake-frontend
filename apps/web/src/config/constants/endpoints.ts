@@ -91,5 +91,8 @@ export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || 
 
 export const MOONPAY_API_KEY = process.env.NEXT_PUBLIC_MOONPAY_LIVE_KEY || 'pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54'
 
+// no need for extra public env
 export const MERCURYO_WIDGET_URL =
-  process.env.NEXT_PUBLIC_MERCURYO_WIDGET_URL || 'https://sandbox-widget.mrcr.io/embed.2.0.js'
+  typeof window !== 'undefined' && window.location.origin.includes('https')
+    ? 'https://widget.mercuryo.io/embed.2.0.js'
+    : 'https://sandbox-widget.mrcr.io/embed.2.0.js'
