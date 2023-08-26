@@ -70,7 +70,7 @@ const PushContextProvider: React.FC<PushContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     // refresh on acccount sync then every 60s
-    const timeoutId = setTimeout(() => refreshPushState(), 5000)
+    const timeoutId = setTimeout(() => refreshPushState(), 2000)
     const intervalId: NodeJS.Timer = setInterval(refreshPushState, 60000)
     return () => {
       clearInterval(intervalId)

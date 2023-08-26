@@ -72,9 +72,16 @@ const Notifications = () => {
   const [isNotificationView, setIsNotificationView] = useState<boolean>(false)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const { eip155Account } = useFormattedEip155Account()
-  const { activeSubscriptions, pushClientProxy: pushClient, isSubscribed, refreshNotifications } = usePushClient()
+  const {
+    activeSubscriptions,
+    pushClientProxy: pushClient,
+    isSubscribed,
+    refreshNotifications,
+    pushRegisterMessage,
+  } = usePushClient()
 
   const currentSubscription = activeSubscriptions.find((sub) => sub.account === eip155Account)
+  const onBoardingStep: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -118,7 +125,7 @@ const Notifications = () => {
               />
             </ViewContainer>
           ) : (
-            <OnBoardingView />
+            <OnBoardingView setIsRightView={setIsRightView} onBoardingStep={onBoardingStep} />
           )}
         </Box>
       )}

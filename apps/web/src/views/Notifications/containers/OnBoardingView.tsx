@@ -5,31 +5,30 @@ import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { usePushClient } from 'contexts/PushClientContext'
 import Image from 'next/image'
-import { useCallback, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { useSignMessage } from 'wagmi'
 import useSendPushNotification from '../components/hooks/sendPushNotification'
 import useFormattedEip155Account from '../components/hooks/useFormatEip155Account'
 import { DEFAULT_APP_METADATA, Events } from '../constants'
 import { BuilderNames } from '../types'
+import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
 interface IOnboardingButtonProps {
   onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
   loading: boolean
   isOnBoarded: boolean
-  pushRegisterMessage: string | null
+  onBoardingStep: 'identity' | 'sync'
 }
 
-function OnboardingButton({ onClick, loading, isOnBoarded, pushRegisterMessage }: IOnboardingButtonProps) {
+interface IOnBoardingProps {
+  setIsRightView: Dispatch<SetStateAction<boolean>>
+  onBoardingStep: 'identity' | 'sync'
+}
+
+function OnboardingButton({ onClick, loading, isOnBoarded, onBoardingStep }: IOnboardingButtonProps) {
   const { t } = useTranslation()
   const { eip155Account } = useFormattedEip155Account()
-
-  const purpose: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
-  let buttonText: string = t('Enable (Subscribe in wallet)')
-
-  if (loading) buttonText = t('Awaiting signature response')
-  if (!isOnBoarded) {
-    buttonText = purpose === 'sync' ? t('Sync Push Notification Client') : t('Authorize Push Notifications')
-  }
+  const buttonText = getOnBoardingButtonText(onBoardingStep, isOnBoarded, loading, t)
 
   if (!eip155Account)
     return (
@@ -52,7 +51,7 @@ function OnboardingButton({ onClick, loading, isOnBoarded, pushRegisterMessage }
   )
 }
 
-const OnBoardingView = () => {
+const OnBoardingView = ({ setIsRightView, onBoardingStep }: IOnBoardingProps) => {
   const { signMessageAsync } = useSignMessage()
   const [loading, setloading] = useState<boolean>(false)
   const { pushClientProxy: pushClient, refreshNotifications, pushRegisterMessage, isOnBoarded } = usePushClient()
@@ -84,6 +83,7 @@ const OnBoardingView = () => {
     pushClient.emitter.on('notify_subscription', () => {
       toast.toastSuccess('Already subscribed', 'actibating current subscription')
       sendPushNotification(BuilderNames.OnBoardNotification, [])
+      setIsRightView(true)
       refreshNotifications()
     })
     try {
@@ -105,6 +105,7 @@ const OnBoardingView = () => {
     refreshNotifications,
     sendPushNotification,
     subscribeToPushNotifications,
+    setIsRightView,
   ])
 
   const handleAction = useCallback(
@@ -115,16 +116,8 @@ const OnBoardingView = () => {
     },
     [handleOnboarding, handleSubscribe, isOnBoarded, requestNotificationPermission],
   )
-  const purpose: 'identity' | 'sync' = pushRegisterMessage?.includes('did:key') ? 'identity' : 'sync'
-  let buttonText: string = t(
-    'Finally, Subscribe to PancakeSwap notifications TO stay informed on the latest news updates PancakeSwap has to offer.',
-  )
-  if (!isOnBoarded) {
-    buttonText =
-      purpose === 'sync'
-        ? t('Next enable notification syncing between DApp clients. This allows for real time udates')
-        : t('Get started with notifications from PancakeSwap. First Authorize notifications by signing in your wallet')
-  }
+  const onBoardingDescription = getOnBoardingDescriptionMessage(onBoardingStep, isOnBoarded, t)
+
   return (
     <Box padding="24px">
       <Box pl="24px">
@@ -135,13 +128,13 @@ const OnBoardingView = () => {
           {t('Notifications From PancakeSwap')}
         </Text>
         <Text fontSize="16px" textAlign="center" color="textSubtle">
-          {buttonText}
+          {onBoardingDescription}
         </Text>
         <OnboardingButton
           loading={loading}
           onClick={handleAction}
           isOnBoarded={isOnBoarded}
-          pushRegisterMessage={pushRegisterMessage}
+          onBoardingStep={onBoardingStep}
         />
       </FlexGap>
     </Box>
