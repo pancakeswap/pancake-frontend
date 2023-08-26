@@ -269,6 +269,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
+        console.log(MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL)
         const transactonId = generateRandomString(20)
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
