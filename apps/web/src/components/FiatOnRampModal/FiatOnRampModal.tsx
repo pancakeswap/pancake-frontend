@@ -13,19 +13,14 @@ import {
 } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
-import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
 import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import styled, { useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import {
-  ONRAMP_PROVIDERS,
-  SUPPORTED_MERCURYO_FIAT_CURRENCIES,
-  chainIdToNetwork,
-  supportedTokenMap,
-} from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, chainIdToMercuryoNetworkId } from 'views/BuyCrypto/constants'
 import {
   fetchMercuryoSignedUrl,
   fetchMoonPaySignedUrl,
@@ -267,11 +262,9 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           fixFiatAmount: true,
           fixFiatCurrency: true,
           fixCurrency: true,
-          currencies: supportedTokenMap[chainId].mercuryoTokens,
-          fiatCurrencies: SUPPORTED_MERCURYO_FIAT_CURRENCIES,
           address: account.address,
           signature: sig,
-          network: chainIdToNetwork[chainId],
+          network: chainIdToMercuryoNetworkId[chainId],
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
         })

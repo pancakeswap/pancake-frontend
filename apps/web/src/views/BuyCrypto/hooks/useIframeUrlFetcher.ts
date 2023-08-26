@@ -1,5 +1,5 @@
 import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { moonapyCurrencyChainidentifier, supportedTokenMap, transakNetwork } from '../constants'
+import { ONRAMP_PROVIDERS, chainIdToMoonPayNetworkId, combinedNetworkIdMap } from '../constants'
 
 interface FetchResponse {
   urlWithSignature: string
@@ -14,7 +14,7 @@ export const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
+    const baseCurrency = `${inputCurrency.toLowerCase()}${chainIdToMoonPayNetworkId[chainId]}`
 
     const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
@@ -29,7 +29,6 @@ export const fetchMoonPaySignedUrl = async (
         baseCurrencyAmount: amount,
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
         walletAddress: account,
       }),
     })
@@ -60,7 +59,7 @@ export const fetchTransakSignedUrl = async (
         fiatCurrency: outputCurrency.toUpperCase(),
         cryptoCurrency: inputCurrency.toUpperCase(),
         amount,
-        network: transakNetwork[chainId],
+        network: combinedNetworkIdMap[ONRAMP_PROVIDERS.Transak][chainId],
         walletAddress: account,
       }),
     })

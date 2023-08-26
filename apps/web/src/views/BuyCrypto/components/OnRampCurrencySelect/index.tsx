@@ -21,9 +21,11 @@ import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
 
 const networkDisplay: { [id: number]: string } = {
   [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.BSC]: 'Binance Chain',
-  [ChainId.ZKSYNC]: 'ZK Sync',
+  [ChainId.BSC]: 'BNB Smart Chain',
+  [ChainId.ZKSYNC]: 'zkSync Era',
   [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
+  [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
+  [ChainId.LINEA]: 'Linea Mainnet',
 }
 
 const DropDownContainer = styled.div<{ error: boolean }>`

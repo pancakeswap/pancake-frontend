@@ -16,7 +16,12 @@ import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
 import { MOONPAY_API_KEY, MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
-import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
+import {
+  ONRAMP_PROVIDERS,
+  SUPPORTED_ONRAMP_TOKENS,
+  chainIdToMoonPayNetworkId,
+  combinedNetworkIdMap,
+} from 'views/BuyCrypto/constants'
 import {
   Field,
   replaceBuyCryptoState,
@@ -38,6 +43,9 @@ const defaultTokenByChain = {
   [ChainId.BSC]: 'BNB',
   [ChainId.ZKSYNC]: 'ETH',
   [ChainId.ARBITRUM_ONE]: 'ETH',
+  [ChainId.LINEA]: 'ETH',
+  [ChainId.ZKSYNC]: 'ETH',
+  [ChainId.POLYGON_ZKEVM]: 'ETH',
 }
 
 export function useBuyCryptoState() {
@@ -110,7 +118,7 @@ const fetchLimitOfMer = async (inputCurrencyId: string, outputCurrencyId: string
 
 const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: string, chainId: number) => {
   try {
-    const baseCurrency = `${outputCurrencyId.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
+    const baseCurrency = `${outputCurrencyId.toLowerCase()}${chainIdToMoonPayNetworkId[chainId]}`
     const response = await fetch(
       `${MOONPAY_BASE_URL}/v3/currencies/${baseCurrency}/limits?apiKey=${MOONPAY_API_KEY}&baseCurrencyCode=${inputCurrencyId.toLowerCase()}&areFeesIncluded=true`,
     )
@@ -132,6 +140,41 @@ const fetchLimitOfMoonpay = async (inputCurrencyId: string, outputCurrencyId: st
   }
 }
 
+const fetchLimitOfTransak = async (inputCurrencyId: string, outputCurrencyId: string, chainId: number) => {
+  try {
+    const response = await fetch(
+      'https://api.transak.com/api/v1/pricing/public/limits/BUY?apiKey=02624956-010b-4775-8e31-7b9c8b82df76',
+    )
+
+    if (!response.ok) {
+      return undefined
+    }
+
+    const defaultPaymentType = 'credit_debit_card'
+    const transakLimitQuote = await response.json()
+    const limitQuote =
+      transakLimitQuote.response[`${outputCurrencyId}${combinedNetworkIdMap[ONRAMP_PROVIDERS.Transak][chainId]}`][
+        inputCurrencyId
+      ][defaultPaymentType]
+
+    return {
+      baseCurrency: {
+        code: inputCurrencyId.toUpperCase(),
+        maxBuyAmount: limitQuote.maxFiatAmount,
+        minBuyAmount: limitQuote.minFiatAmount,
+      },
+      quoteCurrency: {
+        code: outputCurrencyId.toUpperCase(),
+        maxBuyAmount: limitQuote.maxCryptoAmount,
+        minBuyAmount: limitQuote.minCryptoAmount,
+      },
+    }
+  } catch (error) {
+    console.error('fetchLimitOfMoonpay: ', error)
+    return undefined
+  }
+}
+
 export const fetchMinimumBuyAmount = async (
   inputCurrencyId: string,
   outputCurrencyId: string,
@@ -140,8 +183,9 @@ export const fetchMinimumBuyAmount = async (
   try {
     const mercuryLimitQuote = await fetchLimitOfMer(inputCurrencyId, outputCurrencyId)
     const moonpayLimitQuote = await fetchLimitOfMoonpay(inputCurrencyId, outputCurrencyId, chainId)
+    const transakLimitQuote = await fetchLimitOfTransak(inputCurrencyId, outputCurrencyId, chainId)
 
-    const quotes = [moonpayLimitQuote, mercuryLimitQuote].filter(Boolean)
+    const quotes = [moonpayLimitQuote, mercuryLimitQuote, transakLimitQuote].filter(Boolean)
 
     return quotes?.length > 0 ? getMinMaxAmountCap(quotes) : undefined
   } catch (error) {

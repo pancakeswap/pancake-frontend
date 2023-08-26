@@ -4,7 +4,6 @@ import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { fetchProviderQuotes } from './useProviderQuotes'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
-import { chainIdToNetwork } from '../constants'
 import { ProviderQoute } from '../types'
 
 const usePriceQuotes = () => {
@@ -53,7 +52,7 @@ const usePriceQuotes = () => {
         fiatCurrency: outputCurrency.toUpperCase(),
         cryptoCurrency: inputCurrency.toUpperCase(),
         fiatAmount: Number(amount).toString(),
-        network: chainIdToNetwork[chainId],
+        network: chainId,
       })
       const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes, isNewCustomer)
       setQuotes(sortedFilteredQuotes)

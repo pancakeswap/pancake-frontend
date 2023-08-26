@@ -18,4 +18,5 @@ export const SUPPORT_BUY_CRYPTO = [
   ChainId.ARBITRUM_ONE,
   ChainId.ZKSYNC,
   ChainId.POLYGON_ZKEVM,
+  ChainId.LINEA,
 ]
