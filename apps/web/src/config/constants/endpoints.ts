@@ -13,7 +13,6 @@ export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/pottery'
 export const ONRAMP_API_BASE_URL = 'https://pcs-on-ramp-api.com'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
-export const MOONPAY_SIGN_URL = 'https://pcs-on-ramp-api.com'
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */
