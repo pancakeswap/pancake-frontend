@@ -24,9 +24,13 @@ import {
   ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   chainIdToNetwork,
-  moonapyCurrencyChainidentifier,
   supportedTokenMap,
 } from 'views/BuyCrypto/constants'
+import {
+  fetchMercuryoSignedUrl,
+  fetchMoonPaySignedUrl,
+  fetchTransakSignedUrl,
+} from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
@@ -76,18 +80,21 @@ export const ModalHeader = styled.div<{ background?: string }>`
 `
 
 interface FiatOnRampProps {
-  provider: string
+  provider: keyof typeof ONRAMP_PROVIDERS
   inputCurrency: string
   outputCurrency: string
   amount: string
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }
 
-interface FetchResponse {
-  urlWithSignature: string
+interface IProviderIFrameProps {
+  provider: keyof typeof ONRAMP_PROVIDERS
+  loading: boolean
+  signedIframeUrl: string
 }
 
-const LoadingBuffer = () => {
+const LoadingBuffer = ({ loading }: { loading: boolean }) => {
+  if (!loading) return <></>
   return (
     <IFrameWrapper justifyContent="center" alignItems="center" style={{ zIndex: 100 }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -98,41 +105,30 @@ const LoadingBuffer = () => {
   )
 }
 
-const fetchMoonPaySignedUrl = async (
-  inputCurrency: string,
-  outputCurrency: string,
-  amount: string,
-  isDark: boolean,
-  account: string,
-  chainId: number,
-) => {
-  try {
-    const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
+const ProviderIFrame = ({ provider, loading, signedIframeUrl }: IProviderIFrameProps) => {
+  const theme = useTheme()
+  const providerIframeId = `${ONRAMP_PROVIDERS[provider].toLowerCase()}_iframe`
 
-    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        type: 'MOONPAY',
-        defaultCurrencyCode: baseCurrency,
-        baseCurrencyCode: outputCurrency.toLowerCase(),
-        baseCurrencyAmount: amount,
-        redirectUrl: 'https://pancakeswap.finance',
-        theme: isDark ? 'dark' : 'light',
-        showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
-        walletAddress: account,
-      }),
-    })
-    const result: FetchResponse = await res.json()
-
-    return result.urlWithSignature
-  } catch (error) {
-    console.error('Error fetching signature:', error)
-    return '' // Return an empty string in case of an error
+  if (provider === ONRAMP_PROVIDERS.MoonPay || provider === ONRAMP_PROVIDERS.Transak) {
+    return (
+      <>
+        <LoadingBuffer loading={loading} />
+        <StyledIframe
+          id={providerIframeId}
+          src={signedIframeUrl}
+          title="fiat-onramp-iframe"
+          isDark={theme.isDark}
+          allow="camera;microphone;fullscreen;payment"
+        />
+      </>
+    )
   }
+  return (
+    <>
+      <LoadingBuffer loading={loading} />
+      <IFrameWrapper id="mercuryo-widget" />;
+    </>
+  )
 }
 
 export const FiatOnRampModalButton = ({
@@ -187,7 +183,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
 
   const [error, setError] = useState<boolean | string | null>(false)
-  const [signedIframeUrl, setSignedIframeUrl] = useState<string | null>(null)
+  const [signedIframeUrl, setSignedIframeUrl] = useState<string>('')
   const [sig, setSig] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
@@ -220,36 +216,34 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     setError(null)
 
     try {
-      const result = await fetchMoonPaySignedUrl(
-        inputCurrency,
-        outputCurrency,
-        amount,
-        theme.isDark,
-        account.address,
-        chainId,
-      )
-
+      let result = ''
+      if (provider === ONRAMP_PROVIDERS.MoonPay) {
+        result = await fetchMoonPaySignedUrl(
+          inputCurrency,
+          outputCurrency,
+          amount,
+          theme.isDark,
+          account.address,
+          chainId,
+        )
+      } else if (provider === ONRAMP_PROVIDERS.Transak) {
+        result = await fetchTransakSignedUrl(inputCurrency, outputCurrency, amount, account.address, chainId)
+      }
       setSignedIframeUrl(result)
     } catch (e) {
       setError(e.toString())
     } finally {
       setTimeout(() => setLoading(false), 2000)
     }
-  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, t, chainId])
+  }, [account.address, theme.isDark, inputCurrency, outputCurrency, amount, t, chainId, provider])
 
   useEffect(() => {
     const fetchSig = async () => {
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-mercuryo-sig?walletAddress=${account.address}`, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        })
-        const signature = await res.json()
-        setSig(signature.signature)
+        const signature = await fetchMercuryoSignedUrl(account.address)
+        setSig(signature)
       } catch (e) {
         setError(e.toString())
       } finally {
@@ -315,31 +309,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
               <Trans>something went wrong!</Trans>
             </ErrorText>
           </Flex>
-        ) : provider === ONRAMP_PROVIDERS.Mercuryo ? (
-          <>
-            {loading && <LoadingBuffer />}
-            <IFrameWrapper id="mercuryo-widget" />;
-          </>
-        ) : provider === 'MoonPay' ? (
-          <>
-            {loading && <LoadingBuffer />}
-            <StyledIframe
-              id="moonpayIframe"
-              src={signedIframeUrl ?? ''}
-              title="fiat-onramp-iframe"
-              isDark={theme.isDark}
-            />
-          </>
         ) : (
-          <>
-            {loading && <LoadingBuffer />}
-            <StyledIframe
-              id="moonpayIframe"
-              src="https://global-stg.transak.com?apiKey=<YOUR_API_KEY>&<QUERY_PARAMETERS>"
-              allow="camera;microphone;fullscreen;payment"
-              isDark={theme.isDark}
-            />
-          </>
+          <ProviderIFrame provider={provider} loading={loading} signedIframeUrl={signedIframeUrl} />
         )}
       </ModalWrapper>
       <Script
