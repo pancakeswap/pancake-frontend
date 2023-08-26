@@ -8,6 +8,7 @@ import { PushClient } from 'PushNotificationClient'
 import SettingsContainer from '../components/Settingsitem/SettingsItem'
 import { Events } from '../constants'
 import { ScrollableContainer } from '../styles'
+import { getSettingsButtonText } from '../utils/textHelpers'
 
 interface ISettingsProps {
   currentSubscription: NotifyClientTypes.NotifySubscription
@@ -23,11 +24,7 @@ interface PushSubButtonProps {
 
 function NotificationActionButton({ isUnsubscribing, handleSubscriptionAction, objectsAreEqual }: PushSubButtonProps) {
   const { t } = useTranslation()
-
-  let buttonText: string = t('UnSubscribe')
-  if (objectsAreEqual) {
-    buttonText = isUnsubscribing ? t('UnSubscribing') : t('UnSubscribe')
-  } else buttonText = isUnsubscribing ? t('Updating...') : t('Update Preferences')
+  const buttonText = getSettingsButtonText(isUnsubscribing, objectsAreEqual, t)
 
   return (
     <AutoColumn gap="md" marginTop="6px">
