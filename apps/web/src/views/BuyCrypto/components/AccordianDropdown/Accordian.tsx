@@ -18,9 +18,9 @@ function Accordion({
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
 
   combinedQuotes.sort((a: ProviderQoute, b: ProviderQoute) => {
-    if (a.provider === ONRAMP_PROVIDERS.Mercuryo) return 1
-    if (b.provider === ONRAMP_PROVIDERS.Mercuryo) return 1
-    return -1
+    if (a.provider === ONRAMP_PROVIDERS.Mercuryo && b.provider !== ONRAMP_PROVIDERS.Mercuryo) return -1
+    if (a.provider !== ONRAMP_PROVIDERS.Mercuryo && b.provider === ONRAMP_PROVIDERS.Mercuryo) return 1
+    return 0
   })
 
   if (combinedQuotes.length === 0) {

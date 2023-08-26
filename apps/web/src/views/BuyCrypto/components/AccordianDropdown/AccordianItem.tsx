@@ -149,7 +149,7 @@ function AccordionItem({
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.networkFee + providerFee
+            if (index === 0) fee = quote.provider === 'Mercuryo' ? 0 : quote.networkFee + providerFee
             else if (index === 1) fee = quote.networkFee
             else fee = providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
