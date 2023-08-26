@@ -10,7 +10,6 @@ import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { providerFeeTypes } from 'views/BuyCrypto/constants'
 import Image from 'next/image'
-import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
@@ -59,11 +58,9 @@ function AccordionItem({
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
-  const { isNewCustomer } = useBuyCryptoState()
-  const { days, hours } = getTimePeriods(1681699200)
 
+  const { days, hours } = getTimePeriods(1681699200)
   const isActive = () => (multiple ? visiblity : active)
-  const isCampaignEligible = isNewCustomer && quote.provider === 'MoonPay'
 
   const toogleVisiblity = useCallback(() => {
     setVisiblity((v) => !v)
@@ -134,7 +131,7 @@ function AccordionItem({
 
           <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
             {formatLocaleNumber({
-              number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
+              number: quote.quote,
               locale,
             })}{' '}
             {quote.cryptoCurrency}
@@ -145,20 +142,19 @@ function AccordionItem({
             {quote.cryptoCurrency} {t('rate')}
           </Text>
           <Text ml="4px" fontSize="16px">
-            = {formatLocaleNumber({ number: Number(quote.price), locale })}{' '}
-            {providerFee === 3.5 ? 'USD' : quote.fiatCurrency}
+            = {formatLocaleNumber({ number: Number(quote.price), locale })} {quote.fiatCurrency}
           </Text>
         </RowBetween>
 
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : providerFee)
+            if (index === 0) fee = quote.networkFee + providerFee
             else if (index === 1) fee = quote.networkFee
-            else fee = isNewCustomer && quote.provider === 'MoonPay' ? 0 : providerFee
+            else fee = providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
-          {isCampaignEligible ? (
+          {quote.provider === 'Mercuryo' ? (
             <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />

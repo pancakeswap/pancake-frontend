@@ -17,15 +17,7 @@ import toUpper from 'lodash/toUpper'
 
 import { MOONPAY_API_KEY, MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
 import { SUPPORTED_ONRAMP_TOKENS, moonapyCurrencyChainidentifier } from 'views/BuyCrypto/constants'
-import {
-  Field,
-  replaceBuyCryptoState,
-  selectCurrency,
-  setMinAmount,
-  setUsersIpAddress,
-  typeInput,
-  setIsNewCustomer,
-} from './actions'
+import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {
   code: string
@@ -227,7 +219,6 @@ export function useBuyCryptoActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
   onLimitAmountUpdate: (minAmount: number, minBaseAmount: number, maxAmount: number, maxBaseAmount: number) => void
   onUsersIp: (ip: string | null) => void
-  onIsNewCustomer: (isNew: boolean) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -272,21 +263,11 @@ export function useBuyCryptoActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onIsNewCustomer = useCallback((isNew: boolean) => {
-    dispatch(
-      setIsNewCustomer({
-        isNew,
-      }),
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return {
     onFieldAInput,
     onCurrencySelection,
     onLimitAmountUpdate,
     onUsersIp,
-    onIsNewCustomer,
   }
 }
 
@@ -316,7 +297,6 @@ export async function queryParametersToBuyCryptoState(
     maxBaseAmount: limitAmounts?.quoteCurrency?.maxBuyAmount,
     recipient: account,
     userIpAddress: null,
-    isNewCustomer: false,
   }
 }
 
@@ -358,15 +338,6 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
       if (!isReady || !chainId) return
       const parsed = await queryParametersToBuyCryptoState(query, account, chainId)
 
-      let isNewCustomer = false
-      try {
-        const moonpayCustomerResponse = await fetch(`https://pcs-on-ramp-api.com/checkItem?searchAddress=${address}`)
-        const moonpayCustomerResult = await moonpayCustomerResponse.json()
-        isNewCustomer = !moonpayCustomerResult.found
-      } catch (error) {
-        throw new Error('failed to fetch customer details')
-      }
-
       dispatch(
         replaceBuyCryptoState({
           typedValue: parsed.minAmount
@@ -379,7 +350,6 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: null,
-          isNewCustomer,
         }),
       )
     }

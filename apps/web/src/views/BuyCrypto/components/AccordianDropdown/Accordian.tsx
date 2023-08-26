@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import AccordionItem from './AccordianItem'
 
 function Accordion({
@@ -15,6 +16,12 @@ function Accordion({
 }) {
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
+
+  combinedQuotes.sort((a: ProviderQoute, b: ProviderQoute) => {
+    if (a.provider === ONRAMP_PROVIDERS.Mercuryo) return 1
+    if (b.provider === ONRAMP_PROVIDERS.Mercuryo) return 1
+    return -1
+  })
 
   if (combinedQuotes.length === 0) {
     return (

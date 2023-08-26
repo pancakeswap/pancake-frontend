@@ -199,7 +199,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { onIsNewCustomer } = useBuyCryptoActionHandlers()
 
   const theme = useTheme()
   const account = useAccount()
@@ -207,14 +206,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const handleDismiss = useCallback(async () => {
     onDismiss?.()
     setModalView(CryptoFormView.Input)
-    try {
-      const moonpayCustomerResponse = await fetch(`${ONRAMP_API_BASE_URL}/checkItem?searchAddress=${account.address}`)
-      const moonpayCustomerResult = await moonpayCustomerResponse.json()
-      onIsNewCustomer(!moonpayCustomerResult.found)
-    } catch (err) {
-      throw new Error(`unable to fetch new customer status ${err}`)
-    }
-  }, [onDismiss, setModalView, onIsNewCustomer, account.address])
+  }, [onDismiss, setModalView])
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
