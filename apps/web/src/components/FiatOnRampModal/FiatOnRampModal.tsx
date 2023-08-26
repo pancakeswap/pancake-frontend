@@ -14,10 +14,10 @@ import {
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import crypto from 'crypto'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import styled, { useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
@@ -30,7 +30,6 @@ import {
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
-import crypto from 'crypto'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
