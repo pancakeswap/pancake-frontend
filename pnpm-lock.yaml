@@ -1159,37 +1159,37 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@pancakeswap/utils':
-        specifier: workspace:*
-        version: link:../utils
       bignumber.js:
         specifier: ^9.0.0
         version: 9.1.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      viem:
+        specifier: ^1.2.9
+        version: 1.2.9(typescript@5.1.3)(zod@3.21.4)
+      wagmi:
+        specifier: ^1.3.10
+        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
     devDependencies:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.186
-      typechain:
-        specifier: ^6.1.0
-        version: 6.1.0(typescript@5.1.3)
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.1.3)
       typescript:
         specifier: ^5.1.3
         version: 5.1.3
-      viem:
-        specifier: ^1.2.9
-        version: 1.2.9(typescript@5.1.3)(zod@3.21.4)
       vitest:
         specifier: ^0.27.2
         version: 0.27.2
-      wagmi:
-        specifier: ^1.3.10
-        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
 
   packages/smart-router:
     dependencies:
@@ -1374,10 +1374,10 @@ importers:
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
+    devDependencies:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
-    devDependencies:
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.1.3)
@@ -15858,6 +15858,7 @@ packages:
 
   /esbuild@0.11.23:
     resolution: {integrity: sha512-iaiZZ9vUF5wJV8ob1tl+5aJTrwDczlvGP0JoMmnpC2B0ppiMCu8n8gmy5ZTGl5bcG081XBVn+U+jP+mPFm5T5Q==}
+    hasBin: true
     requiresBuild: true
     dev: true
 
@@ -15949,6 +15950,7 @@ packages:
   /esbuild@0.17.12:
     resolution: {integrity: sha512-bX/zHl7Gn2CpQwcMtRogTTBf9l1nl+H6R8nUbjk+RuKqAE3+8FDulLA+pHvX7aA7Xe07Iwa+CWvy9I8Y2qqPKQ==}
     engines: {node: '>=12'}
+    hasBin: true
     requiresBuild: true
     optionalDependencies:
       '@esbuild/android-arm': 0.17.12
@@ -15977,6 +15979,7 @@ packages:
   /esbuild@0.17.6:
     resolution: {integrity: sha512-TKFRp9TxrJDdRWfSsSERKEovm6v30iHnrjlcGhLBOtReE28Yp1VSBRfO3GTaOFMoxsNerx4TjrhzSuma9ha83Q==}
     engines: {node: '>=12'}
+    hasBin: true
     requiresBuild: true
     optionalDependencies:
       '@esbuild/android-arm': 0.17.6
@@ -23396,6 +23399,7 @@ packages:
   /rollup@3.21.3:
     resolution: {integrity: sha512-VnPfEG51nIv2xPLnZaekkuN06q9ZbnyDcLkaBdJa/W7UddyhOfMP2yOPziYQfeY7k++fZM8FdQIummFN5y14kA==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
+    hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -24484,6 +24488,7 @@ packages:
   /sucrase@3.24.0:
     resolution: {integrity: sha512-SevqflhW356TKEyWjFHg2e5f3eH+5rzmsMJxrVMDvZIEHh/goYrpzDGA6APEj4ME9MdGm8oNgIzi1eF3c3dDQA==}
     engines: {node: '>=8'}
+    hasBin: true
     dependencies:
       commander: 4.1.1
       glob: 7.1.6
@@ -24975,6 +24980,7 @@ packages:
 
   /tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
+    hasBin: true
     dev: true
 
   /trim-newlines@3.0.1:

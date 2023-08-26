@@ -1,7 +1,7 @@
 import { Box, Text, useTooltip, useMatchBreakpoints, LinkExternal, HelpIcon, Flex } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { useAccount } from 'wagmi'
 import { BoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
@@ -29,7 +29,7 @@ export const StatusView: React.FC<{
 }> = ({ status, boostedMultiplier, isFarmStaking }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<BoosterTooltip />, {
     placement: 'top',
     ...(isMobile && { hideTimeout: 1500 }),
@@ -77,7 +77,7 @@ export const StatusView: React.FC<{
 }
 
 const useBCakeMessage = (
-  account: `0x${string}`,
+  account: `0x${string}` | undefined,
   isFarmStaking: boolean,
   locked: boolean,
   isLockEnd: boolean,

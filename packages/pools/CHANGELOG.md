@@ -1,5 +1,30 @@
 # @pancakeswap/pools
 
+## 4.0.5
+
+### Patch Changes
+
+- Updated dependencies [d0f9b28a9]
+  - @pancakeswap/tokens@0.3.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.4
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/sdk@5.3.0
+  - @pancakeswap/tokens@0.3.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.3
+
+### Patch Changes
+
+- 84b5d3743: Export es and commonjs module
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.2.3
+
 ## 4.0.2
 
 ### Patch Changes

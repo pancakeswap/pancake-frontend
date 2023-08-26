@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/tokens",
   "license": "MIT",
-  "version": "0.2.2",
+  "version": "0.3.1",
   "description": "Tokens for pancakeswap",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*"
   },
   "devDependencies": {
+    "@pancakeswap/utils": "workspace:*",
     "tsup": "^6.7.0"
   },
   "exports": {

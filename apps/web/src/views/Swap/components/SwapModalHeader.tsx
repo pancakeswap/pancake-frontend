@@ -14,6 +14,7 @@ export default function SwapModalHeader({
   inputAmount,
   outputAmount,
   tradeType,
+  currencyBalances,
   priceImpactWithoutFee,
   slippageAdjustedAmounts,
   isEnoughInputBalance,
@@ -24,6 +25,10 @@ export default function SwapModalHeader({
 }: {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
+  currencyBalances: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
   tradeType: TradeType
   priceImpactWithoutFee?: Percent
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
@@ -74,7 +79,11 @@ export default function SwapModalHeader({
     <AutoColumn gap="md">
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo currency={inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
+          <CurrencyLogo
+            currency={currencyBalances.INPUT?.currency ?? inputAmount.currency}
+            size="24px"
+            style={{ marginRight: '12px' }}
+          />
           <TruncatedText fontSize="24px" color={inputTextColor}>
             {formatAmount(inputAmount, 6)}
           </TruncatedText>
@@ -90,7 +99,7 @@ export default function SwapModalHeader({
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo currency={outputAmount.currency} size="24px" />
+          <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
           <TruncatedText
             fontSize="24px"
             color={

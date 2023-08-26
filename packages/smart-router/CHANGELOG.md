@@ -1,5 +1,51 @@
 # @pancakeswap/smart-router
 
+## 4.6.0
+
+### Minor Changes
+
+- 24f51d314: Customizable v2 pool provider
+
+## 4.5.2
+
+### Patch Changes
+
+- e9c080787: Export provider functions
+
+## 4.5.1
+
+### Patch Changes
+
+- Updated dependencies [d0f9b28a9]
+  - @pancakeswap/tokens@0.3.1
+  - @pancakeswap/v3-sdk@3.3.1
+
+## 4.5.0
+
+### Minor Changes
+
+- 659be0529: Add support for building v3 pool fetcher with customized fallbacks and source of pool tvl references
+
+## 4.4.0
+
+### Minor Changes
+
+- 5e15c611e: Add linea support
+
+### Patch Changes
+
+- Updated dependencies [5e15c611e]
+  - @pancakeswap/sdk@5.3.0
+  - @pancakeswap/tokens@0.3.0
+  - @pancakeswap/v3-sdk@3.3.0
+
+## 4.3.6
+
+### Patch Changes
+
+- @pancakeswap/tokens@0.2.3
+- @pancakeswap/v3-sdk@3.2.3
+
 ## 4.3.5
 
 ### Patch Changes
