@@ -108,7 +108,7 @@ function AccordionItem({
             >
               <Flex alignItems="center" justifyContent="center">
                 <Text ml="4px" fontSize="14px" color="textSubtle">
-                  Quote not available
+                  {t('Quote not available')}
                 </Text>
                 <InfoIcon color="textSubtle" pl="4px" pt="2px" />
               </Flex>
