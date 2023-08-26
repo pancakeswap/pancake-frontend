@@ -1,4 +1,4 @@
-import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 
 // will cleanup urls later
 export async function fetchMoonpayAvailability(userIp: string): Promise<Response> {

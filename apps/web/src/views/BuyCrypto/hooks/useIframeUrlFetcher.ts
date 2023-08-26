@@ -1,4 +1,4 @@
-import { MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { ONRAMP_PROVIDERS, chainIdToMoonPayNetworkId, combinedNetworkIdMap } from '../constants'
 
 interface FetchResponse {
@@ -16,7 +16,7 @@ export const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = `${inputCurrency.toLowerCase()}${chainIdToMoonPayNetworkId[chainId]}`
 
-    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
