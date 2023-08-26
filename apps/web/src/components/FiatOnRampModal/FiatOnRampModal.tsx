@@ -24,7 +24,7 @@ import {
   ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   chainIdToNetwork,
-  moonapyCurrencyChainidentifier,
+  moonpayCurrencyChainIdentifier,
   supportedTokenMap,
 } from 'views/BuyCrypto/constants'
 import { CryptoFormView } from 'views/BuyCrypto/types'
@@ -107,7 +107,7 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
+    const baseCurrency = `${inputCurrency.toLowerCase()}${moonpayCurrencyChainIdentifier[chainId]}`
 
     const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
       headers: {
