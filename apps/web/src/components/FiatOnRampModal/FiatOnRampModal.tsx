@@ -208,9 +208,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
     onDismiss?.()
     setModalView(CryptoFormView.Input)
     try {
-      const moonpayCustomerResponse = await fetch(
-        `https://pcs-on-ramp-api.com/checkItem?searchAddress=${account.address}`,
-      )
+      const moonpayCustomerResponse = await fetch(`${ONRAMP_API_BASE_URL}/checkItem?searchAddress=${account.address}`)
       const moonpayCustomerResult = await moonpayCustomerResponse.json()
       onIsNewCustomer(!moonpayCustomerResult.found)
     } catch (err) {
@@ -269,7 +267,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
-        console.log(MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL)
         const transactonId = generateRandomString(20)
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
