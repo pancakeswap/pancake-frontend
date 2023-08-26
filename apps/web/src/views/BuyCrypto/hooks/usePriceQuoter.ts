@@ -23,8 +23,7 @@ const usePriceQuotes = () => {
     async (combinedData: ProviderQoute[], isNew: boolean) => {
       let sortedFilteredQuotes = combinedData
       try {
-        // skip for now
-        if (!userIp) {
+        if (userIp) {
           const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
           sortedFilteredQuotes = combinedData.filter((quote: ProviderQoute) => {
             return providerAvailabilities[quote.provider]
