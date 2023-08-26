@@ -37,7 +37,6 @@ const defaultTokenByChain = {
   [ChainId.ZKSYNC]: 'ETH',
   [ChainId.ARBITRUM_ONE]: 'ETH',
   [ChainId.LINEA]: 'ETH',
-  [ChainId.ZKSYNC]: 'ETH',
   [ChainId.POLYGON_ZKEVM]: 'ETH',
 }
 
