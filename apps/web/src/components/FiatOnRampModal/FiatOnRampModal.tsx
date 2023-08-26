@@ -13,7 +13,12 @@ import {
 } from '@pancakeswap/uikit'
 import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
-import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import {
+  MERCURYO_WIDGET_ID,
+  MERCURYO_WIDGET_URL,
+  MOONPAY_SIGN_URL,
+  ONRAMP_API_BASE_URL,
+} from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
@@ -109,7 +114,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
 
-    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -124,6 +129,7 @@ const fetchMoonPaySignedUrl = async (
         theme: isDark ? 'dark' : 'light',
         showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
         walletAddress: account,
+        isTestEnv: true,
       }),
     })
     const result: FetchResponse = await res.json()
@@ -333,7 +339,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </ModalWrapper>
       <Script
-        src="https://widget.mercuryo.io/embed.2.0.js"
+        src={MERCURYO_WIDGET_URL}
         onLoad={() => {
           setScriptOnLoad(true)
         }}
