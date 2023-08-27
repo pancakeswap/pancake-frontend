@@ -35,7 +35,7 @@ const useSendPushNotification = (): IUseSendNotification => {
     }
   }
 
-  async function subscribeToPushNotifications() {
+  async function subscribeToPushNotifications(title: string, body: string) {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
@@ -48,6 +48,7 @@ const useSendPushNotification = (): IUseSendNotification => {
           userVisibleOnly: true,
           applicationServerKey: publicVapidKey,
         })
+        await sendBrowserNotification(title, body)
       } catch (error) {
         throw new Error('Error:', error)
       }
@@ -66,7 +67,7 @@ const useSendPushNotification = (): IUseSendNotification => {
             headers: { 'Content-Type': 'application/json' },
           })
         } else {
-          await subscribeToPushNotifications()
+          await subscribeToPushNotifications(title, body)
         }
       } catch (error) {
         throw new Error('Error:', error)
