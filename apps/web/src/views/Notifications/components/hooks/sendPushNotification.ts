@@ -60,9 +60,9 @@ const useSendPushNotification = (): IUseSendNotification => {
         const registration = await navigator.serviceWorker.ready
         const subscription = await registration.pushManager.getSubscription()
         if (subscription) {
-          await fetch('http://localhost:8000/send-notification', {
+          await fetch('http://localhost:8000/broadcast-notifications', {
             method: 'POST',
-            body: JSON.stringify({ payload: { title, body }, subscription }),
+            body: JSON.stringify({ payload: { title, body }, subscription, singleSend: true }),
             headers: { 'Content-Type': 'application/json' },
           })
         } else {
