@@ -3,6 +3,7 @@ import {
   DEFAULT_CAST_SIGN_KEY,
   DEFAULT_PROJECT_ID,
   DEFAULT_RELAY_URL,
+  Events,
   PancakeNotifications,
 } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
@@ -12,7 +13,7 @@ type NotifyResponse = { sent: string[]; failed: string[]; not_found: string[] }
 interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
   sendBrowserNotification(title: string, body: string): Promise<void>
-  subscribeToPushNotifications(title: string, body: string): Promise<void>
+  subscribeToPushNotifications(): Promise<void>
   requestNotificationPermission: () => Promise<void | NotificationPermission>
 }
 const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
@@ -67,7 +68,7 @@ const useSendPushNotification = (): IUseSendNotification => {
             headers: { 'Content-Type': 'application/json' },
           })
         } else {
-          await subscribeToPushNotifications(title, body)
+          await subscribeToPushNotifications(Events.SignatureRequest.title, Events.SignatureRequest.message)
         }
       } catch (error) {
         throw new Error('Error:', error)
