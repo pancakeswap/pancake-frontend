@@ -12,7 +12,7 @@ type NotifyResponse = { sent: string[]; failed: string[]; not_found: string[] }
 interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
   sendBrowserNotification(title: string, body: string): Promise<void>
-  subscribeToPushNotifications(): Promise<void>
+  subscribeToPushNotifications(title: string, body: string): Promise<void>
   requestNotificationPermission: () => Promise<void | NotificationPermission>
 }
 const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
