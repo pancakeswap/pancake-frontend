@@ -54,6 +54,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   minWidth = "320px",
   headerRightSlot,
   bodyAlignItems,
+  headerBorderColor,
   ...props
 }) => {
   const context = useContext(ModalV2Context);
@@ -61,7 +62,10 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   const theme = useTheme();
   return (
     <ModalWrapper minWidth={minWidth} onDismiss={onDismiss} hideCloseButton={hideCloseButton} {...props}>
-      <ModalHeader background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}>
+      <ModalHeader
+        background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}
+        headerBorderColor={headerBorderColor}
+      >
         <ModalTitle>
           {onBack && <ModalBackButton onBack={onBack} />}
           <Heading>{title}</Heading>
