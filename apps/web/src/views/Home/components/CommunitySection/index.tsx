@@ -8,7 +8,7 @@ import CompositeImage from '../CompositeImage'
 import CommunitySummary from './CommunitySummary'
 import { CommunityTags } from './CommunityTags'
 import { BlogCard, TwitterCards } from './TwitterCards'
-import { LeftBottomBox } from './ImagesOnBg'
+import { LeftBottomBox, RightTopBox } from './ImagesOnBg'
 
 const TransparentFrame = styled.div<{ isDark: boolean }>`
   background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
@@ -121,6 +121,7 @@ const CommunitySection = () => {
         <TopRightImgWrapper>
           <CompositeImage {...topRightImage} />
         </TopRightImgWrapper> */}
+        <RightTopBox />
         <LeftBottomBox />
       </BgWrapper>
       <TransparentFrame isDark={theme.isDark}>
