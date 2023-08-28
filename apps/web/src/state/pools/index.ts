@@ -217,8 +217,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
           pool.stakingToken.address === arbitrumTokens.alp.address
         ) {
           // eslint-disable-next-line no-await-in-loop
-          const result = await fetchTokenAplPrice()
-          stakingTokenPrice = result
+          stakingTokenPrice = await fetchTokenAplPrice()
         } else {
           // eslint-disable-next-line no-await-in-loop
           const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
