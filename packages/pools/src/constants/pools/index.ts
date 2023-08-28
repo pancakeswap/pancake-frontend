@@ -3,6 +3,8 @@ import { ChainId } from '@pancakeswap/sdk'
 import { pools as ethPools, livePools as ethLivePools } from './1'
 import { pools as bscPools, livePools as bscLivePools } from './56'
 import { pools as bscTestnetPools, livePools as bscTestnetLivePools } from './97'
+import { pools as arbPools, livePools as arbLivePools } from './42161'
+import { pools as arbTestnetPools, livePools as arbTestnetLivePools } from './421613'
 import { SerializedPool } from '../../types'
 import { SupportedChainId } from '../supportedChains'
 import { isPoolsSupported } from '../../utils/isPoolsSupported'
@@ -15,12 +17,16 @@ export const POOLS_CONFIG_BY_CHAIN = {
   [ChainId.ETHEREUM]: ethPools,
   [ChainId.BSC]: bscPools,
   [ChainId.BSC_TESTNET]: bscTestnetPools,
+  [ChainId.ARBITRUM_ONE]: arbPools,
+  [ChainId.ARBITRUM_GOERLI]: arbTestnetPools,
 } as PoolsConfigByChain<SupportedChainId>
 
 export const LIVE_POOLS_CONFIG_BY_CHAIN = {
   [ChainId.ETHEREUM]: ethLivePools,
   [ChainId.BSC]: bscLivePools,
   [ChainId.BSC_TESTNET]: bscTestnetLivePools,
+  [ChainId.ARBITRUM_ONE]: arbLivePools,
+  [ChainId.ARBITRUM_GOERLI]: arbTestnetLivePools,
 } as PoolsConfigByChain<SupportedChainId>
 
 export const getPoolsConfig = (chainId: ChainId) => {

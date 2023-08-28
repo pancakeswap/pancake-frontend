@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { bscTokens } from '@pancakeswap/tokens'
+import { bscTokens, arbitrumTokens } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { fetchTokenUSDValue } from '@pancakeswap/utils/llamaPrice'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
@@ -49,6 +49,7 @@ import { getViemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
+import { fetchTokenAplPrice } from 'utils/fetchTokenAplPrice'
 
 import fetchFarms from '../farms/fetchFarms'
 import { nativeStableLpMap } from '../farms/getFarmsPrices'
@@ -210,9 +211,18 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       const stakingTokenAddress = isAddress(pool.stakingToken.address)
       let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
       if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
-        // eslint-disable-next-line no-await-in-loop
-        const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
-        stakingTokenPrice = result.get(stakingTokenAddress) || 0
+        // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
+        if (
+          pool.stakingToken.chainId === ChainId.ARBITRUM_ONE &&
+          pool.stakingToken.address === arbitrumTokens.alp.address
+        ) {
+          // eslint-disable-next-line no-await-in-loop
+          stakingTokenPrice = await fetchTokenAplPrice()
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
+          stakingTokenPrice = result.get(stakingTokenAddress) || 0
+        }
       }
 
       const earningTokenAddress = isAddress(pool.earningToken.address)

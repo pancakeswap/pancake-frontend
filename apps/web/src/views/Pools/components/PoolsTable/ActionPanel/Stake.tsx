@@ -250,7 +250,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     )
   }
 
-  if (needsApproval && !isNotVaultAndHasStake && !isVaultWithShares) {
+  if (needsApproval && !isNotVaultAndHasStake && !isVaultWithShares && !pool.isFinished) {
     return (
       <ActionContainer>
         <ActionTitles>
