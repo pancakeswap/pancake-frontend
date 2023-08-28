@@ -2607,7 +2607,7 @@
   "revenue sharing": "compartecipazione alle entrate",
   "Your shares": "La tua quota",
   "Next distribution": "Prossima distribuzione",
-  "in %day%": "in %day%",
+  "in %day% days": "in %day% days",
   "Last distribution": "Ultima distribuzione",
   "You need to update your staking in order to start earning from protocol revenue sharing.": "Devi aggiornare il tuo staking per iniziare a guadagnare dalla compartecipazione alle entrate del protocollo.",
   "Locked CAKE Benefits": "Benefit CAKE bloccati",
@@ -2665,5 +2665,10 @@
   "0% Credit/Debit Cards Fee": "0% Credit/Debit Cards Fee",
   "Get more details from": "Get more details from",
   "RedAlarm": "RedAlarm",
-  "Merchandise": "Merchandise"
+  "Merchandise": "Merchandise",
+  "Linea is LIVE!": "Linea is LIVE!",
+  "PancakeSwap Now Live on Linea!": "PancakeSwap Now Live on Linea!",
+  "Swap and Provide Liquidity on Linea now": "Swap and Provide Liquidity on Linea now",
+  "day": "day",
+  "Quote not available": "Quote not available"
 }
