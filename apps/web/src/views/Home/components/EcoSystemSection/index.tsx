@@ -86,11 +86,17 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
   cursor: pointer;
   .cta > * {
     transition: color 0.25s ease-in-out;
+    path {
+      transition: fill 0.25s ease-in-out;
+    }
   }
   padding: 12px;
   &:hover {
     .cta > * {
       color: ${({ theme }) => theme.colors.primary};
+      path {
+        fill: ${({ theme }) => theme.colors.primary};
+      }
     }
     ${ImageBox} {
       .hover {
