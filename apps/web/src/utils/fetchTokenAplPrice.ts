@@ -8,7 +8,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 const TOKEN_DECIMALS = 8
 const CONTRACT_ADDRESS = '0xB3879E95a4B8e3eE570c232B19d520821F540E48'
 
-const fetchTokenAplPrice = async () => {
+export const fetchTokenAplPrice = async () => {
   const client = getViemClients({ chainId: ChainId.ARBITRUM_ONE })
   const [alpPrice] = await client.multicall({
     contracts: [
@@ -24,5 +24,3 @@ const fetchTokenAplPrice = async () => {
   const alpUsdPrice = getBalanceAmount(new BigNumber(alpPrice.toString()), TOKEN_DECIMALS).toNumber()
   return alpUsdPrice ?? 0
 }
-
-export default fetchTokenAplPrice

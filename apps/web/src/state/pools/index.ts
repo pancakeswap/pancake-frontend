@@ -49,7 +49,7 @@ import { getViemClients } from 'utils/viem'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import { getCakePriceFromOracle } from 'hooks/useCakePrice'
-import fetchTokenAplPrice from 'utils/fetchTokenAplPrice'
+import { fetchTokenAplPrice } from 'utils/fetchTokenAplPrice'
 
 import fetchFarms from '../farms/fetchFarms'
 import { nativeStableLpMap } from '../farms/getFarmsPrices'
