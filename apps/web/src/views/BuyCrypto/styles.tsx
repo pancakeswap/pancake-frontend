@@ -2,7 +2,7 @@ import { Flex } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import styled from 'styled-components'
 
-export const StyledApBody = styled(AppBody)`
+export const StyledAppBody = styled(AppBody)`
   max-width: 375px;
 `
 

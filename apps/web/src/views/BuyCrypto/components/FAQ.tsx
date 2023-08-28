@@ -56,7 +56,7 @@ const config = (t) => [
   },
 ]
 
-export const OnRamoFaqs = () => {
+export const OnRampFaqs = () => {
   const { t } = useTranslation()
 
   return (

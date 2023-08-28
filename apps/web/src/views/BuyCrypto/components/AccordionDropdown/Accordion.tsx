@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
-import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
 import { useTranslation } from '@pancakeswap/localization'
-import AccordionItem from './AccordianItem'
+import AccordionItem from './AccordionItem'
 
 function Accordion({
   combinedQuotes,
   fetching,
   setModalView,
 }: {
-  combinedQuotes: ProviderQoute[]
+  combinedQuotes: ProviderQuote[]
   fetching: boolean
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }) {
@@ -31,7 +31,7 @@ function Accordion({
   }
   return (
     <FlexGap flexDirection="column" gap="16px">
-      {combinedQuotes.map((quote: ProviderQoute, idx) => {
+      {combinedQuotes.map((quote: ProviderQuote, idx) => {
         return (
           <AccordionItem
             key={quote.provider}

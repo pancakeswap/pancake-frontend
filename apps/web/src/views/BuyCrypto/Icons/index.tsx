@@ -6,10 +6,10 @@ export const ProviderIcon: React.FC<
     React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>)
 > = ({ provider, isDisabled }: any) => {
   const theme = useTheme()
-  const ProviderToLogo: { [key: string]: JSX.Element } = {
+  const providerToLogo: { [key: string]: JSX.Element } = {
     MoonPay: <MoonPaySvg opacity={isDisabled ? '0.3' : '1'} />,
     Mercuryo: <MercuryoSvg opacity={isDisabled ? '0.3' : '1'} isDark={theme.isDark} />,
   }
-  const Logo = ProviderToLogo[provider]
-  return Logo
+  const logo = providerToLogo[provider]
+  return logo
 }
