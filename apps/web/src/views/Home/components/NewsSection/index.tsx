@@ -143,10 +143,10 @@ export const NewsSection: React.FC = () => {
     const scrollTarget = scrollWrapper.current
     if (!scrollTarget) return
     if (scrollTo === 'next') {
-      scrollTarget.scrollLeft += 320
+      scrollTarget.scrollLeft += 280
       return
     }
-    scrollTarget.scrollLeft -= 320
+    scrollTarget.scrollLeft -= 280
   }, [])
 
   return (
