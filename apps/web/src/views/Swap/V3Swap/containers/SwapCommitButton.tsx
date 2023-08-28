@@ -5,7 +5,6 @@ import {
   Text,
   useModal,
   confirmPriceImpactWithoutFee,
-  Column,
   Box,
   Message,
   MessageText,
@@ -20,8 +19,7 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { AutoRow, RowBetween } from 'components/Layout/Row'
-import CircleLoader from 'components/Loader/CircleLoader'
+import { AutoRow } from 'components/Layout/Row'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
@@ -42,12 +40,10 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 
 import { useAccount } from 'wagmi'
-import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
-import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
 import { computeTradePriceBreakdown } from '../utils/exchange'
-import { ConfirmSwapModal } from './ConfirmSwapModal'
+import ConfirmSwapModal from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -98,7 +94,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
-  const parsedIndepentFieldAmount = parsedAmounts[independentField]
+  const parsedIndecentFieldAmount = parsedAmounts[independentField]
 
   // the callback to execute the swap
   const deadline = useTransactionDeadline()
@@ -149,10 +145,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
       })
       .catch((error) => {
-        if (error instanceof TransactionRejectedError) {
-          handleConfirmDismiss()
-          return
-        }
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -160,12 +152,24 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, handleConfirmDismiss])
+  }, [priceImpactWithoutFee, tradeToConfirm, t, swapCallback, setSwapState])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
   // End Handlers
+
+  // warnings on slippage
+  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+
+  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
+  // never show if price impact is above threshold in non expert mode
+  const showApproveFlow =
+    !swapInputError &&
+    (approval === ApprovalState.NOT_APPROVED ||
+      approval === ApprovalState.PENDING ||
+      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
+    !(priceImpactSeverity > 3 && !isExpertMode)
 
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
@@ -180,13 +184,16 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       trade={trade}
-      originalTrade={tradeToConfirm}
-      currencyBalances={currencyBalances}
-      onAcceptChanges={handleAcceptChanges}
-      attemptingTxn={attemptingTxn}
       txHash={txHash}
-      onConfirm={handleSwap}
+      approval={approval}
+      attemptingTxn={attemptingTxn}
+      originalTrade={tradeToConfirm}
+      showApproveFlow={showApproveFlow}
+      currencyBalances={currencyBalances}
       swapErrorMessage={swapErrorMessage}
+      onConfirm={handleSwap}
+      approveCallback={approveCallback}
+      onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
     />,
@@ -235,9 +242,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     }
   }, [approval, approvalSubmitted])
 
-  // warnings on slippage
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
-
   if (swapIsUnsupported) {
     return (
       <Button width="100%" disabled>
@@ -261,7 +265,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const noRoute = !(trade?.routes?.length > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
-    inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
+    inputCurrency && outputCurrency && parsedIndecentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
@@ -296,79 +300,19 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     )
   }
 
-  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
-  // never show if price impact is above threshold in non expert mode
-  const showApproveFlow =
-    !swapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
-
   const isValid = !swapInputError && !tradeLoading
-  const approved = approval === ApprovalState.APPROVED
-  const content = showApproveFlow ? (
-    <>
-      <RowBetween>
-        <CommitButton
-          variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
-          onClick={approveCallback}
-          disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-          width="48%"
-        >
-          {approval === ApprovalState.PENDING ? (
-            <AutoRow gap="6px" justify="center">
-              {t('Enabling')} <CircleLoader stroke="white" />
-            </AutoRow>
-          ) : approvalSubmitted && approved ? (
-            t('Enabled')
-          ) : (
-            t('Enable %asset%', { asset: inputCurrency?.symbol ?? '' })
-          )}
-        </CommitButton>
-        <CommitButton
-          variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
-          onClick={() => {
-            onSwapHandler()
-          }}
-          width="48%"
-          id="swap-button"
-          disabled={!isValid || !approved || (priceImpactSeverity > 3 && !isExpertMode)}
-        >
-          {(tradeLoading && (
-            <>
-              <Dots>{t('Searching For The Best Price')}</Dots>
-            </>
-          )) ||
-            (priceImpactSeverity > 3 && !isExpertMode
-              ? t('Price Impact High')
-              : priceImpactSeverity > 2
-              ? t('Swap Anyway')
-              : t('Swap'))}
-        </CommitButton>
-      </RowBetween>
-      <Column style={{ marginTop: '1rem' }}>
-        <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
-      </Column>
-      {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-    </>
-  ) : (
-    <>
+
+  return (
+    <Box mt="0.25rem">
       <CommitButton
-        variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
-        onClick={() => {
-          onSwapHandler()
-        }}
         id="swap-button"
         width="100%"
-        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
+        variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
+        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+        onClick={() => onSwapHandler()}
       >
         {swapInputError ||
-          (tradeLoading && (
-            <>
-              <Dots>{t('Searching For The Best Price')}</Dots>
-            </>
-          )) ||
+          (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
           (priceImpactSeverity > 3 && !isExpertMode
             ? t('Price Impact Too High')
             : priceImpactSeverity > 2
@@ -377,8 +321,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       </CommitButton>
 
       {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-    </>
+    </Box>
   )
-
-  return <Box mt="0.25rem">{content}</Box>
 })
