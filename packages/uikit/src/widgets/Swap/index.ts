@@ -12,4 +12,5 @@ export * from "./ConfirmationPendingContent";
 export * from "./withCurrencyLogo";
 export * from "./TokenRowButton";
 export * from "./ApproveModalContent";
-export * from "./ApprovePendingModalContent";
+export * from "./SwapPendingModalContent";
+export * from "./SwapTransactionReceiptModalContent";
