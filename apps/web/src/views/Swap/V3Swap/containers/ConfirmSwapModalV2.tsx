@@ -9,6 +9,7 @@ import {
   SwapPendingModalContent,
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/uikit'
+import { usePublicClient } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -47,6 +48,8 @@ interface ConfirmSwapModalV2Props {
 }
 
 interface UseConfirmModalStateProps {
+  txHash: string
+  chainId: ChainId
   approval: ApprovalState
   onConfirm: () => void
   approveCallback: () => Promise<SendTransactionResult>
@@ -58,7 +61,8 @@ function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   )
 }
 
-const useConfirmModalState = ({ approval, onConfirm, approveCallback }: UseConfirmModalStateProps) => {
+const useConfirmModalState = ({ chainId, txHash, approval, onConfirm, approveCallback }: UseConfirmModalStateProps) => {
+  const provider = usePublicClient({ chainId })
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
 
@@ -73,7 +77,7 @@ const useConfirmModalState = ({ approval, onConfirm, approveCallback }: UseConfi
   }, [approval])
 
   const performStep = useCallback(
-    async (step: ConfirmModalState) => {
+    (step: ConfirmModalState) => {
       switch (step) {
         case ConfirmModalState.APPROVING_TOKEN:
           setConfirmModalState(ConfirmModalState.APPROVING_TOKEN)
@@ -83,7 +87,9 @@ const useConfirmModalState = ({ approval, onConfirm, approveCallback }: UseConfi
           break
         case ConfirmModalState.PENDING_CONFIRMATION:
           setConfirmModalState(ConfirmModalState.PENDING_CONFIRMATION)
-          await onConfirm()
+          onConfirm()
+          break
+        case ConfirmModalState.COMPLETED:
           setConfirmModalState(ConfirmModalState.COMPLETED)
           break
         default:
@@ -104,11 +110,27 @@ const useConfirmModalState = ({ approval, onConfirm, approveCallback }: UseConfi
     setConfirmModalState(ConfirmModalState.REVIEWING)
   }
 
+  const checkHashIsReceipted = useCallback(
+    async (hash) => {
+      const receipt: any = await provider.waitForTransactionReceipt({ hash })
+      if (receipt.status === 'success') {
+        performStep(ConfirmModalState.COMPLETED)
+      }
+    },
+    [performStep, provider],
+  )
+
   useEffect(() => {
     if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVED) {
       performStep(ConfirmModalState.PENDING_CONFIRMATION)
     }
   }, [approval, confirmModalState, performStep])
+
+  useEffect(() => {
+    if (txHash && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && approval === ApprovalState.APPROVED) {
+      checkHashIsReceipted(txHash)
+    }
+  }, [approval, txHash, confirmModalState, checkHashIsReceipted, performStep])
 
   return { confirmModalState, pendingModalSteps, startSwapFlow, onCancel }
 }
@@ -137,6 +159,8 @@ const ConfirmSwapV2Modal = memo<InjectedModalProps & ConfirmSwapModalV2Props>(fu
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
   const { confirmModalState, pendingModalSteps, startSwapFlow, onCancel } = useConfirmModalState({
+    txHash,
+    chainId,
     approval,
     approveCallback,
     onConfirm,
@@ -144,9 +168,9 @@ const ConfirmSwapV2Modal = memo<InjectedModalProps & ConfirmSwapModalV2Props>(fu
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
-      customOnDismiss()
+      customOnDismiss?.()
     }
-    onCancel()
+    onCancel?.()
     onDismiss?.()
   }, [customOnDismiss, onCancel, onDismiss])
 
@@ -191,9 +215,10 @@ const ConfirmSwapV2Modal = memo<InjectedModalProps & ConfirmSwapModalV2Props>(fu
       )
     }
 
-    if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && txHash) {
+    if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
       return (
         <SwapPendingModalContent
+          showIcon
           title={t('Transaction Submitted')}
           currencyA={trade?.inputAmount?.currency}
           currencyB={trade?.outputAmount?.currency}
@@ -269,9 +294,10 @@ const ConfirmSwapV2Modal = memo<InjectedModalProps & ConfirmSwapModalV2Props>(fu
       <Box>{topModal()}</Box>
       {(confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
         confirmModalState === ConfirmModalState.APPROVE_PENDING ||
-        confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) && (
-        <ApproveStepFlow confirmModalState={confirmModalState} hideStepIndicators={pendingModalSteps.length === 1} />
-      )}
+        attemptingTxn) &&
+        !swapErrorMessage && (
+          <ApproveStepFlow confirmModalState={confirmModalState} hideStepIndicators={pendingModalSteps.length === 1} />
+        )}
     </ConfirmSwapModalContainer>
   )
 })

@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import { Currency } from "@pancakeswap/sdk";
 import { AutoColumn, ColumnCenter } from "../../components/Column";
-import { Spinner, Text, Box } from "../../components";
+import { Spinner, Text, Box, ArrowUpIcon } from "../../components";
 import TokenTransferInfo from "./TokenTransferInfo";
 
 interface SwapPendingModalContentProps {
   title: string;
+  showIcon?: boolean;
   currencyA: Currency;
   currencyB: Currency;
   amountA: string;
@@ -15,6 +16,7 @@ interface SwapPendingModalContentProps {
 
 export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = ({
   title,
+  showIcon,
   currencyA,
   currencyB,
   amountA,
@@ -25,9 +27,15 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
 
   return (
     <Box width="100%" mb="49px">
-      <ColumnCenter>
-        <Spinner />
-      </ColumnCenter>
+      {showIcon ? (
+        <Box margin="auto" width="fit-content">
+          <ArrowUpIcon color="success" width={80} height={80} />
+        </Box>
+      ) : (
+        <ColumnCenter>
+          <Spinner />
+        </ColumnCenter>
+      )}
       <AutoColumn gap="12px" justify="center">
         <Text bold mt="16px" textAlign="center">
           {title}
