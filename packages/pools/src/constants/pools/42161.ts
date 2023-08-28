@@ -6,11 +6,11 @@ import { PoolCategory, SerializedPool } from '../../types'
 export const livePools: SerializedPool[] = [
   {
     sousId: 1,
-    stakingToken: arbitrumTokens.cake,
-    earningToken: arbitrumTokens.mockA,
-    contractAddress: '0x1b08a836d43719EF2a7D8F3bb2A093EF3DBc9D09',
+    stakingToken: arbitrumTokens.alp,
+    earningToken: arbitrumTokens.cake,
+    contractAddress: '0x3dBdE2682330105902fb482d9849C270aa8E0881',
     poolCategory: PoolCategory.CORE,
-    tokenPerSecond: '0.01',
+    tokenPerSecond: '0.01135',
     version: 3,
   },
 ].map((p) => ({

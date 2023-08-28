@@ -211,27 +211,27 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       const stakingTokenAddress = isAddress(pool.stakingToken.address)
       let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
       if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
-        // eslint-disable-next-line no-await-in-loop
-        const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
-        stakingTokenPrice = result.get(stakingTokenAddress) || 0
+        // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
+        if (
+          pool.stakingToken.chainId === ChainId.ARBITRUM_ONE &&
+          pool.stakingToken.address === arbitrumTokens.alp.address
+        ) {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenAplPrice()
+          stakingTokenPrice = result
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenUSDValue(chainId, [stakingTokenAddress])
+          stakingTokenPrice = result.get(stakingTokenAddress) || 0
+        }
       }
 
       const earningTokenAddress = isAddress(pool.earningToken.address)
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
-        // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
-        if (
-          pool.earningToken.chainId === ChainId.ARBITRUM_ONE &&
-          pool.earningToken.address === arbitrumTokens.alp.address
-        ) {
-          // eslint-disable-next-line no-await-in-loop
-          const result = await fetchTokenAplPrice()
-          earningTokenPrice = result
-        } else {
-          // eslint-disable-next-line no-await-in-loop
-          const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
-          earningTokenPrice = result.get(earningTokenAddress) || 0
-        }
+        // eslint-disable-next-line no-await-in-loop
+        const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
+        earningTokenPrice = result.get(earningTokenAddress) || 0
       }
       const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
       const apr = !isPoolFinished
