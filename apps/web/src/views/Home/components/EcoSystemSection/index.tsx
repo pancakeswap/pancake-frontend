@@ -47,7 +47,7 @@ export const ImageBox = styled.div`
 
 export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
   align-items: left;
-  justify-content: start;
+  justify-content: space-between;
   flex-direction: column;
   flex-grow: 1;
   gap: 12px;
@@ -67,18 +67,30 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
   flex-basis: 50%;
 
   &.type-a {
+    height: 246px;
     ${({ theme }) => theme.mediaQueries.sm} {
       flex-basis: 33.3%;
+    }
+    ${({ theme }) => theme.mediaQueries.xl} {
+      height: 286px;
+      &.higher {
+        height: 292px;
+      }
     }
     ${({ theme }) => theme.mediaQueries.xxl} {
       flex-basis: ${({ $flexBasis }) => $flexBasis}%;
     }
   }
   &.type-b {
+    height: 263px;
     ${({ theme }) => theme.mediaQueries.lg} {
       flex-basis: ${({ $flexBasis }) => $flexBasis}%;
     }
+    ${({ theme }) => theme.mediaQueries.xl} {
+      height: 256px;
+    }
   }
+
   ${({ theme }) => theme.mediaQueries.xxl} {
     flex-wrap: nowrap;
   }
@@ -349,7 +361,7 @@ const EcoSystemSection: React.FC = () => {
             <FeatureBoxesWrapper>
               {nftGameBlockData.map((item) => (
                 <FeatureBox
-                  className="type-a"
+                  className="type-a higher"
                   key={`${item.title}Block`}
                   title={item.title}
                   description={item.description}
