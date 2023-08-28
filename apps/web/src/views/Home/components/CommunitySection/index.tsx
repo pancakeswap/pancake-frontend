@@ -8,6 +8,7 @@ import CompositeImage from '../CompositeImage'
 import CommunitySummary from './CommunitySummary'
 import { CommunityTags } from './CommunityTags'
 import { BlogCard, TwitterCards } from './TwitterCards'
+import { LeftBottomBox } from './ImagesOnBg'
 
 const TransparentFrame = styled.div<{ isDark: boolean }>`
   background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
@@ -85,26 +86,26 @@ const TopRightImgWrapper = styled(Flex)`
   }
 `
 
-const bottomLeftImage = {
-  path: '/images/home/socials/',
-  attributes: [
-    { src: '1', alt: 'CAKE card' },
-    { src: '2', alt: 'Green CAKE card with up arrow' },
-    { src: '3', alt: 'Red Cake card with down arrow' },
-    { src: '4', alt: 'CAKE card' },
-  ],
-}
+// const bottomLeftImage = {
+//   path: '/images/home/socials/',
+//   attributes: [
+//     { src: '1', alt: 'CAKE card' },
+//     { src: '2', alt: 'Green CAKE card with up arrow' },
+//     { src: '3', alt: 'Red Cake card with down arrow' },
+//     { src: '4', alt: 'CAKE card' },
+//   ],
+// }
 
-const topRightImage = {
-  path: '/images/home/community-items/',
-  attributes: [
-    { src: '5', alt: 'Lottery ball number 9' },
-    { src: '1', alt: 'Lottery ball number 2' },
-    { src: '2', alt: 'Lottery ball number 4' },
-    { src: '3', alt: 'Lottery ball number 6' },
-    { src: '4', alt: 'Lottery ball number 7' },
-  ],
-}
+// const topRightImage = {
+//   path: '/images/home/community-items/',
+//   attributes: [
+//     { src: '5', alt: 'Lottery ball number 9' },
+//     { src: '1', alt: 'Lottery ball number 2' },
+//     { src: '2', alt: 'Lottery ball number 4' },
+//     { src: '3', alt: 'Lottery ball number 6' },
+//     { src: '4', alt: 'Lottery ball number 7' },
+//   ],
+// }
 
 const CommunitySection = () => {
   const { t } = useTranslation()
@@ -114,12 +115,13 @@ const CommunitySection = () => {
   return (
     <>
       <BgWrapper>
-        <BottomLeftImgWrapper>
+        {/* <BottomLeftImgWrapper>
           <CompositeImage {...bottomLeftImage} />
         </BottomLeftImgWrapper>
         <TopRightImgWrapper>
           <CompositeImage {...topRightImage} />
-        </TopRightImgWrapper>
+        </TopRightImgWrapper> */}
+        <LeftBottomBox />
       </BgWrapper>
       <TransparentFrame isDark={theme.isDark}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center">
