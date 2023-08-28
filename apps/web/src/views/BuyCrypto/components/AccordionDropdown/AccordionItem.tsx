@@ -37,7 +37,7 @@ const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmoun
   )
 }
 
-const MOONPAY_CAMPAIGN_END_TIME = 1693458000
+const MOONPAY_CAMPAIGN_END_TIME = 1693465200
 
 function AccordionItem({
   active,
