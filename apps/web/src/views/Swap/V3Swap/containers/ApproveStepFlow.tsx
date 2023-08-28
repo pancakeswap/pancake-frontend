@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Text, Box, LinkExternal } from '@pancakeswap/uikit'
-import { ApprovalState } from 'hooks/useApproveCallback'
+import { ConfirmModalState } from '../types'
 
 const StepsContainer = styled(Flex)`
   width: 100px;
@@ -19,10 +19,14 @@ const Step = styled('div')<{ active?: boolean }>`
 `
 
 interface ApproveStepFlowProps {
-  approval: ApprovalState
+  confirmModalState: ConfirmModalState
+  hideStepIndicators: boolean
 }
 
-const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({ approval }) => {
+const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
+  confirmModalState,
+  hideStepIndicators,
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -30,18 +34,25 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
       <Text fontSize="12px" textAlign="center" color="textSubtle">
         {t('Proceed in your wallet')}
       </Text>
-      <StepsContainer>
-        <Step active={approval === ApprovalState.NOT_APPROVED} />
-        <Step active={approval === ApprovalState.PENDING} />
-        <Step active={approval === ApprovalState.APPROVED} />
-      </StepsContainer>
-      <LinkExternal
-        external
-        margin="auto"
-        href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated" // TODO: Change URL
-      >
-        {t('Why approving this?')}
-      </LinkExternal>
+      {!hideStepIndicators && (
+        <>
+          <StepsContainer>
+            <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} />
+            <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} />
+            <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} />
+          </StepsContainer>
+          {(confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+            confirmModalState === ConfirmModalState.APPROVE_PENDING) && (
+            <LinkExternal
+              external
+              margin="auto"
+              href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated" // TODO: Change URL
+            >
+              {t('Why approving this?')}
+            </LinkExternal>
+          )}
+        </>
+      )}
     </Box>
   )
 }
