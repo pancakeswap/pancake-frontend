@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { bscTokens, arbitrumTokens } from '@pancakeswap/tokens'
+import { bscTokens, arbitrumTokens, CAKE } from '@pancakeswap/tokens'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { fetchTokenUSDValue } from '@pancakeswap/utils/llamaPrice'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
@@ -228,9 +228,14 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       const earningTokenAddress = isAddress(pool.earningToken.address)
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
-        // eslint-disable-next-line no-await-in-loop
-        const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
-        earningTokenPrice = result.get(earningTokenAddress) || 0
+        if (earningTokenAddress === CAKE[chainId].address) {
+          // eslint-disable-next-line no-await-in-loop
+          earningTokenPrice = parseFloat(await getCakePriceFromOracle())
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await fetchTokenUSDValue(chainId, [earningTokenAddress])
+          earningTokenPrice = result.get(earningTokenAddress) || 0
+        }
       }
       const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
       const apr = !isPoolFinished
