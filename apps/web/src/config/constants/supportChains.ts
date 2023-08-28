@@ -14,3 +14,10 @@ export const SUPPORT_FARMS = [
   ChainId.ARBITRUM_GOERLI,
 ]
 export const SUPPORT_BUY_CRYPTO = [ChainId.BSC, ChainId.ETHEREUM, ChainId.ARBITRUM_ONE]
+
+export const LIQUID_STAKING_SUPPORTED_CHAINS = [
+  ChainId.BSC,
+  ChainId.ETHEREUM,
+  ChainId.BSC_TESTNET,
+  ChainId.ARBITRUM_GOERLI,
+]
