@@ -2,7 +2,7 @@
 // import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { AppBody } from 'components/App'
-import { SUPPORT_LIQUID_STAKING } from 'config/constants/supportChains'
+import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import Page from 'views/Page'
 import { LiquidStakingPageStake } from 'views/LiquidStaking/Stake'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
@@ -86,6 +86,6 @@ const LiquidStakingPage = () => {
   )
 }
 
-LiquidStakingPage.chains = SUPPORT_LIQUID_STAKING
+LiquidStakingPage.chains = LIQUID_STAKING_SUPPORTED_CHAINS
 
 export default LiquidStakingPage

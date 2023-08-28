@@ -21,7 +21,7 @@ import {
   SUPPORT_BUY_CRYPTO,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
-  SUPPORT_LIQUID_STAKING,
+  LIQUID_STAKING_SUPPORTED_CHAINS,
 } from 'config/constants/supportChains'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
@@ -113,7 +113,7 @@ const config: (
         {
           label: t('Liquid Staking'),
           href: '/liquid-staking',
-          supportChainIds: SUPPORT_LIQUID_STAKING,
+          supportChainIds: LIQUID_STAKING_SUPPORTED_CHAINS,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
