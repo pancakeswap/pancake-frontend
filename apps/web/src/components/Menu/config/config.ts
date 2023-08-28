@@ -17,7 +17,12 @@ import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORTED_CHAIN_IDS as POOL_SUPPORTED_CHAINS } from '@pancakeswap/pools'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import { SUPPORT_BUY_CRYPTO, SUPPORT_FARMS, SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import {
+  SUPPORT_BUY_CRYPTO,
+  SUPPORT_FARMS,
+  SUPPORT_ONLY_BSC,
+  SUPPORT_LIQUID_STAKING,
+} from 'config/constants/supportChains'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
@@ -108,7 +113,7 @@ const config: (
         {
           label: t('Liquid Staking'),
           href: '/liquid-staking',
-          supportChainIds: POOL_SUPPORTED_CHAINS,
+          supportChainIds: SUPPORT_LIQUID_STAKING,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
