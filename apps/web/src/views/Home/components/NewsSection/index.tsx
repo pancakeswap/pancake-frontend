@@ -1,9 +1,20 @@
-import { Heading, Flex, Text } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChevronLeftIcon, ChevronRightIcon, Flex, Text } from '@pancakeswap/uikit'
+import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
+import { useRef, useCallback } from 'react'
 
 export const newsData = [
+  {
+    platform: 'cointelegraph',
+    title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
+    description:
+      'Decentralized exchange (DEX) PancakeSwap wants to lower its token inflation to anywhere between 3% and 5% per annum, far below current rates of over 20%.',
+    imageSrc:
+      'https://images.cointelegraph.com/images/1434_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDQvOWYxOGU4YjMtM2M0Ni00YjkxLTkzMDktM2RmNGU0ZGZjOWIwLmpwZw==.jpg',
+    link: 'https://cointelegraph.com/news/pancakeswap-wants-to-cap-token-inflation-rate-between-3-to-5-per-annum',
+    date: '2023-04-18',
+  },
   {
     platform: 'cointelegraph',
     title: 'PancakeSwap wants to cap token inflation rate at 3%–5% per year',
@@ -110,10 +121,34 @@ const CardWrapper = styled.div`
     scrollbar-width: none; /* Firefox */
   }
 `
+const ArrowButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  svg path {
+    fill: ${({ theme }) => theme.colors.primary};
+  }
+  cursor: pointer;
+`
 
 export const NewsSection: React.FC = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
+  const scrollWrapper = useRef<HTMLDivElement>(null)
+  const onButtonClick = useCallback((scrollTo: 'next' | 'pre') => {
+    const scrollTarget = scrollWrapper.current
+    if (!scrollTarget) return
+    if (scrollTo === 'next') {
+      scrollTarget.scrollLeft += 320
+      return
+    }
+    scrollTarget.scrollLeft -= 320
+  }, [])
+
   return (
     <Flex flexDirection="column" style={{ gap: 36 }}>
       <Flex justifyContent="center" style={{ gap: 8 }}>
@@ -124,33 +159,45 @@ export const NewsSection: React.FC = () => {
           {t('News')}
         </Text>
       </Flex>
-      <CardWrapper>
-        {newsData.map((d) => (
-          <NewsCard
-            onClick={() => {
-              window.open(d.link, '_blank', 'noopener noreferrer')
-            }}
-          >
-            <ImageBox>
-              <img src={d.imageSrc} alt="" />
-            </ImageBox>
-            <ContentBox>
-              <Flex justifyContent="space-between">
-                <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
-                  {t('From')} [{d.platform}]
+      <Flex>
+        <Flex alignItems="center" mr="8px">
+          <ArrowButton>
+            <ChevronLeftIcon onClick={() => onButtonClick('pre')} color={theme.colors.textSubtle} />
+          </ArrowButton>
+        </Flex>
+        <CardWrapper ref={scrollWrapper}>
+          {newsData.map((d) => (
+            <NewsCard
+              onClick={() => {
+                window.open(d.link, '_blank', 'noopener noreferrer')
+              }}
+            >
+              <ImageBox>
+                <img src={d.imageSrc} alt="" />
+              </ImageBox>
+              <ContentBox>
+                <Flex justifyContent="space-between">
+                  <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
+                    {t('From')} [{d.platform}]
+                  </Text>
+                  <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
+                    {new Date(d.date).toLocaleString('en-US', { month: 'short', year: 'numeric', day: 'numeric' })}
+                  </Text>
+                </Flex>
+                <Text bold mt="20px" lineHeight="120%" style={{ whiteSpace: 'pre-wrap' }}>
+                  {d.title}
                 </Text>
-                <Text bold fontSize={12} color={theme.colors.textSubtle} lineHeight="120%">
-                  {new Date(d.date).toLocaleString('en-US', { month: 'short', year: 'numeric', day: 'numeric' })}
-                </Text>
-              </Flex>
-              <Text bold mt="20px" lineHeight="120%" style={{ whiteSpace: 'pre-wrap' }}>
-                {d.title}
-              </Text>
-              <DescriptionBox>{d.description}</DescriptionBox>
-            </ContentBox>
-          </NewsCard>
-        ))}
-      </CardWrapper>
+                <DescriptionBox>{d.description}</DescriptionBox>
+              </ContentBox>
+            </NewsCard>
+          ))}
+        </CardWrapper>
+        <Flex alignItems="center" ml="8px">
+          <ArrowButton>
+            <ChevronRightIcon onClick={() => onButtonClick('next')} color={theme.colors.textSubtle} />
+          </ArrowButton>
+        </Flex>
+      </Flex>
     </Flex>
   )
 }
