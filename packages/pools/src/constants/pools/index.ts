@@ -5,6 +5,8 @@ import { pools as bscPools, livePools as bscLivePools } from './56'
 import { pools as bscTestnetPools, livePools as bscTestnetLivePools } from './97'
 import { pools as arbPools, livePools as arbLivePools } from './42161'
 import { pools as arbTestnetPools, livePools as arbTestnetLivePools } from './421613'
+import { pools as zkSyncPools, livePools as zkSyncLivePools } from './324'
+import { pools as zkSyncTestnetPools, livePools as zkSyncTestnetLivePools } from './280'
 import { SerializedPool } from '../../types'
 import { SupportedChainId } from '../supportedChains'
 import { isPoolsSupported } from '../../utils/isPoolsSupported'
@@ -19,6 +21,8 @@ export const POOLS_CONFIG_BY_CHAIN = {
   [ChainId.BSC_TESTNET]: bscTestnetPools,
   [ChainId.ARBITRUM_ONE]: arbPools,
   [ChainId.ARBITRUM_GOERLI]: arbTestnetPools,
+  [ChainId.ZKSYNC]: zkSyncPools,
+  [ChainId.ZKSYNC_TESTNET]: zkSyncTestnetPools,
 } as PoolsConfigByChain<SupportedChainId>
 
 export const LIVE_POOLS_CONFIG_BY_CHAIN = {
@@ -27,6 +31,8 @@ export const LIVE_POOLS_CONFIG_BY_CHAIN = {
   [ChainId.BSC_TESTNET]: bscTestnetLivePools,
   [ChainId.ARBITRUM_ONE]: arbLivePools,
   [ChainId.ARBITRUM_GOERLI]: arbTestnetLivePools,
+  [ChainId.ZKSYNC]: zkSyncLivePools,
+  [ChainId.ZKSYNC_TESTNET]: zkSyncTestnetLivePools,
 } as PoolsConfigByChain<SupportedChainId>
 
 export const getPoolsConfig = (chainId: ChainId) => {

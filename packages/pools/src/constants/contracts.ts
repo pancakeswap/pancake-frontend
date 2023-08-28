@@ -13,6 +13,8 @@ export const ICAKE = {
   [ChainId.ETHEREUM]: '0x',
   [ChainId.ARBITRUM_ONE]: '0x',
   [ChainId.ARBITRUM_GOERLI]: '0x',
+  [ChainId.ZKSYNC]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>
 
 export const CAKE_VAULT = {
@@ -21,6 +23,8 @@ export const CAKE_VAULT = {
   [ChainId.ETHEREUM]: '0x',
   [ChainId.ARBITRUM_ONE]: '0x',
   [ChainId.ARBITRUM_GOERLI]: '0x',
+  [ChainId.ZKSYNC]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>
 
 export const CAKE_FLEXIBLE_SIDE_VAULT = {
@@ -29,4 +33,6 @@ export const CAKE_FLEXIBLE_SIDE_VAULT = {
   [ChainId.ETHEREUM]: '0x',
   [ChainId.ARBITRUM_ONE]: '0x',
   [ChainId.ARBITRUM_GOERLI]: '0x',
+  [ChainId.ZKSYNC]: '0x',
+  [ChainId.ZKSYNC_TESTNET]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>
