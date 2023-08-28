@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 4.0.6
+
+### Patch Changes
+
+- 4b3b18079: Add ALP pool at Arbitrum
+
 ## 4.0.5
 
 ### Patch Changes
