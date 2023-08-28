@@ -40,7 +40,7 @@ const LotteryCardContent = () => {
           15 +
         </StyledText>
         <Text color="white" bold fontSize="16px">
-          {t('Community Members')}
+          {t('Community Ambassadors')}
         </Text>
         <StyledText fontSize="40px" bold mb="27px">
           35 +
