@@ -148,6 +148,7 @@ export function MMSwapCommitButton({
       originalTrade={tradeToConfirm}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
+      isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
       swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
       onConfirm={handleSwap}
       approveCallback={approveCallback}
