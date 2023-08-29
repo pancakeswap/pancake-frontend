@@ -222,7 +222,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {!isRFQReady ? (
+          {isMM && !isRFQReady ? (
             <Dots>{t('Checking RFQ with MM')}</Dots>
           ) : severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
             t('Swap Anyway')
