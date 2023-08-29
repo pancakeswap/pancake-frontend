@@ -1,9 +1,13 @@
 import { Checkbox, Flex, Link, Text } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
-export function DisclaimerCheckBox() {
-  const [check, setCheck] = useState(false)
-
+export function DisclaimerCheckBox({
+  check,
+  setCheck,
+}: {
+  check: boolean
+  setCheck: Dispatch<SetStateAction<boolean>>
+}) {
   return (
     <Flex alignItems="center" mb="16px">
       <div style={{ flex: 'none', alignSelf: 'flex-start' }}>

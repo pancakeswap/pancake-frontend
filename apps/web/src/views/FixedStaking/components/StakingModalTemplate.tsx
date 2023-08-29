@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast } from '@pancakeswap/uikit'
+import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Link } from '@pancakeswap/uikit'
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
@@ -68,6 +68,7 @@ export function StakingModalTemplate({
   const { t } = useTranslation()
   const [stakeAmount, setStakeAmount] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
+  const [check, setCheck] = useState(false)
 
   const claimedPeriods = useMemo(
     () =>
@@ -347,8 +348,7 @@ export function StakingModalTemplate({
 
       {hideStakeButton ? null : (
         <>
-          <DisclaimerCheckBox />
-
+          <DisclaimerCheckBox check={check} setCheck={setCheck} />
           {error ? (
             <Button
               disabled
@@ -360,7 +360,7 @@ export function StakingModalTemplate({
             </Button>
           ) : !rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
             <Button
-              disabled={!rawAmount.gt(0) || pendingTx || error}
+              disabled={!rawAmount.gt(0) || pendingTx || error || !check}
               style={{
                 minHeight: '48px',
               }}
@@ -379,6 +379,18 @@ export function StakingModalTemplate({
               {approval === ApprovalState.PENDING ? t('Enabling') : t('Enable')}
             </Button>
           )}
+
+          {stakingTokenBalance.eq(0) ? (
+            <Button
+              as={Link}
+              external
+              style={{ width: '100%', marginTop: '8px', paddingTop: '16px', paddingBottom: '16px' }}
+              href={`/swap?outputCurrency=${stakingToken.symbol}`}
+              variant="secondary"
+            >
+              {t('Get %symbol%', { symbol: stakingToken.symbol })}
+            </Button>
+          ) : null}
         </>
       )}
     </Modal>

@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, ModalV2, useModalV2, Modal, Flex, Text, Box, PreTitle, InfoFilledIcon, Card } from '@pancakeswap/uikit'
 
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -51,6 +51,7 @@ export function HarvestModal({
   handleSubmission: (type: UnstakeType, amount: CurrencyAmount<Token>) => Promise<void>
 }) {
   const { account } = useAccountActiveChain()
+  const [check, setCheck] = useState(false)
 
   const { t } = useTranslation()
   const restakeModal = useModalV2()
@@ -170,9 +171,9 @@ export function HarvestModal({
                   </Flex>
                 </LightGreyCard>
               </Box>
-              <DisclaimerCheckBox />
+              <DisclaimerCheckBox check={check} setCheck={setCheck} />
               <Button
-                disabled={!amountDeposit.greaterThan(0) || pendingTx}
+                disabled={!amountDeposit.greaterThan(0) || pendingTx || !check}
                 style={{
                   minHeight: '48px',
                   marginBottom: '8px',
