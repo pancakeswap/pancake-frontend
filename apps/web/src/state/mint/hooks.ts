@@ -76,7 +76,6 @@ export function useDerivedMintInfo(
 
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && totalSupply.quotient === BIG_INT_ZERO) ||
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
