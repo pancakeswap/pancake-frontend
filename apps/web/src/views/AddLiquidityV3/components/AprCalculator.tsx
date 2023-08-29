@@ -244,8 +244,8 @@ export function AprCalculator({
           onSetFullRange()
         } else {
           onBothRangeInput({
-            leftTypedValue: isToken0Price ? position.priceLower?.toFixed() : position?.priceUpper?.invert()?.toFixed(),
-            rightTypedValue: isToken0Price ? position.priceUpper?.toFixed() : position?.priceLower?.invert()?.toFixed(),
+            leftTypedValue: isToken0Price ? position.priceLower : position?.priceUpper?.invert(),
+            rightTypedValue: isToken0Price ? position.priceUpper : position?.priceLower?.invert(),
           })
         }
 

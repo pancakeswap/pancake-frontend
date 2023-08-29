@@ -11,7 +11,9 @@ import {
   RowBetween,
   Spinner,
   Text,
+  LiquidityChartRangeInput,
 } from '@pancakeswap/uikit'
+import { tryParsePrice } from 'hooks/v3/utils'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
@@ -30,7 +32,7 @@ import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { FeeAmount, Pool, Position, priceToClosestTick, TickMath } from '@pancakeswap/v3-sdk'
 import { Address, useContractRead, useSignTypedData } from 'wagmi'
 import { CommitButton } from 'components/CommitButton'
-import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
+import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
 import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
@@ -168,6 +170,42 @@ function V2PairMigrate({
     )
   const { onLeftRangeInput, onRightRangeInput, onBothRangeInput } = useV3MintActionHandlers(noLiquidity)
 
+  const onBothRangePriceInput = useCallback(
+    (leftRangeValue: string, rightRangeValue: string) => {
+      onBothRangeInput({
+        leftTypedValue: tryParsePrice(
+          baseToken,
+          baseToken.equals(token0) ? token1 : token0 ?? undefined,
+          leftRangeValue,
+        ),
+        rightTypedValue: tryParsePrice(
+          baseToken,
+          baseToken.equals(token0) ? token1 : token0 ?? undefined,
+          rightRangeValue,
+        ),
+      })
+    },
+    [baseToken, token0, token1, onBothRangeInput],
+  )
+
+  const onLeftRangePriceInput = useCallback(
+    (leftRangeValue: string) => {
+      onLeftRangeInput(
+        tryParsePrice(baseToken, baseToken.equals(token0) ? token1 : token0 ?? undefined, leftRangeValue),
+      )
+    },
+    [baseToken, token0, token1, onLeftRangeInput],
+  )
+
+  const onRightRangePriceInput = useCallback(
+    (rightRangeValue: string) => {
+      onRightRangeInput(
+        tryParsePrice(baseToken, baseToken.equals(token0) ? token1 : token0 ?? undefined, rightRangeValue),
+      )
+    },
+    [baseToken, token0, token1, onRightRangeInput],
+  )
+
   // get spot prices + price difference
   const v2SpotPrice = useMemo(
     () => new Price(token0, token1, reserve0.quotient, reserve1.quotient),
@@ -198,7 +236,7 @@ function V2PairMigrate({
 
   useEffect(() => {
     if (feeAmount) {
-      onBothRangeInput({ leftTypedValue: '', rightTypedValue: '' })
+      onBothRangeInput({ leftTypedValue: null, rightTypedValue: null })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -210,13 +248,34 @@ function V2PairMigrate({
   const currency1 = unwrappedToken(token1)
 
   useEffect(() => {
-    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {
-      onLeftRangeInput(minPrice)
+    if (
+      minPrice &&
+      typeof minPrice === 'string' &&
+      !leftRangeTypedValue &&
+      typeof leftRangeTypedValue === 'object' &&
+      !leftRangeTypedValue.equalTo(minPrice)
+    ) {
+      onLeftRangeInput(tryParsePrice(token0, token1, minPrice))
     }
-    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !rightRangeTypedValue) {
-      onRightRangeInput(maxPrice)
+    if (
+      maxPrice &&
+      typeof maxPrice === 'string' &&
+      !rightRangeTypedValue &&
+      typeof rightRangeTypedValue === 'object' &&
+      !rightRangeTypedValue.equalTo(maxPrice)
+    ) {
+      onRightRangeInput(tryParsePrice(token0, token1, maxPrice))
     }
-  }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
+  }, [
+    minPrice,
+    maxPrice,
+    onRightRangeInput,
+    onLeftRangeInput,
+    leftRangeTypedValue,
+    rightRangeTypedValue,
+    token0,
+    token1,
+  ])
 
   useEffect(() => {
     if (!isError && !isLoading && largestUsageFeeTier) {
@@ -498,6 +557,16 @@ function V2PairMigrate({
     [pendingMigrationHash, pairBalance],
   )
 
+  const {
+    isLoading: isChartDataLoading,
+    error: chartDataError,
+    formattedData,
+  } = useDensityChartData({
+    currencyA: baseToken ?? undefined,
+    currencyB: baseToken.equals(token0) ? token1 : token0 ?? undefined,
+    feeAmount,
+  })
+
   return (
     <CardBody>
       <ResponsiveTwoColumns>
@@ -575,8 +644,8 @@ function V2PairMigrate({
                 setBaseToken((base) => (base.equals(token0) ? token1 : token0))
                 if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
                   onBothRangeInput({
-                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '',
-                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '',
+                    leftTypedValue: (invertPrice ? priceLower : priceUpper?.invert()) ?? null,
+                    rightTypedValue: (invertPrice ? priceUpper : priceLower?.invert()) ?? null,
                   })
                 }
               }}
@@ -665,9 +734,12 @@ function V2PairMigrate({
             price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
             priceLower={priceLower}
             priceUpper={priceUpper}
-            onLeftRangeInput={onLeftRangeInput}
-            onRightRangeInput={onRightRangeInput}
-            onBothRangeInput={onBothRangeInput}
+            onLeftRangeInput={onLeftRangePriceInput}
+            onRightRangeInput={onRightRangePriceInput}
+            onBothRangeInput={onBothRangePriceInput}
+            formattedData={formattedData}
+            isLoading={isChartDataLoading}
+            error={chartDataError}
             interactive
           />
           <RangeSelector
