@@ -95,7 +95,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
   )
 
   // BNB pools
-  const bnbBalanceJson = new BigNumber((bnbBalance.result as bigint).toString()).toJSON()
+  const bnbBalanceJson = new BigNumber((bnbBalance.result as bigint)?.toString()).toJSON()
   const bnbBalances = fromPairs(bnbPools.map((pool) => [pool.sousId, bnbBalanceJson]))
 
   return { ...poolTokenBalances, ...bnbBalances }
