@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text, IconButton, AddIcon, MinusIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 
 import { differenceInMilliseconds, format } from 'date-fns'
@@ -22,6 +22,48 @@ const FlexLeft = styled(Flex)`
   margin-right: 16px;
   border-right: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
+
+function InfoSection({
+  apr,
+  shouldUnlock,
+  unlockTime,
+  accrueInterest,
+  tokenSymbol,
+  projectedReturnAmount,
+}: {
+  apr: Percent
+  shouldUnlock: boolean
+  unlockTime: number
+  accrueInterest: CurrencyAmount<Token>
+  tokenSymbol: string
+  projectedReturnAmount: CurrencyAmount<Token>
+}) {
+  const { t } = useTranslation()
+
+  return (
+    <Box>
+      <Text color="textSubtle" fontSize="12px">
+        APR: {apr.toSignificant(2)}%
+      </Text>
+
+      <Text color="textSubtle" fontSize="12px">
+        {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
+      </Text>
+
+      <Text color="textSubtle" fontSize="12px">
+        {shouldUnlock ? (
+          <>
+            {t('Reward')}: {accrueInterest.toSignificant(3)} {tokenSymbol}
+          </>
+        ) : (
+          <>
+            {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)} {tokenSymbol}
+          </>
+        )}
+      </Text>
+    </Box>
+  )
+}
 
 function StakedPositionRowView({
   amountDeposit,
@@ -61,27 +103,14 @@ function StakedPositionRowView({
         )}
       </FlexLeft>
       <Flex justifyContent="space-between" width="100%">
-        <Box>
-          <Text color="textSubtle" fontSize="12px">
-            APR: {apr.toSignificant(2)}%
-          </Text>
-
-          <Text color="textSubtle" fontSize="12px">
-            {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
-          </Text>
-
-          <Text color="textSubtle" fontSize="12px">
-            {shouldUnlock ? (
-              <>
-                {t('Reward')}: {accrueInterest.toSignificant(3)} {token.symbol}
-              </>
-            ) : (
-              <>
-                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)} {token.symbol}
-              </>
-            )}
-          </Text>
-        </Box>
+        <InfoSection
+          apr={apr}
+          shouldUnlock={shouldUnlock}
+          unlockTime={unlockTime}
+          accrueInterest={accrueInterest}
+          tokenSymbol={token.symbol}
+          projectedReturnAmount={projectedReturnAmount}
+        />
         {shouldUnlock ? (
           <ClaimModal
             poolEndDay={poolEndDay}
@@ -244,27 +273,14 @@ export function StakedPositionSection({
         )}
       </Flex>
       <Flex justifyContent="space-between" width="100%">
-        <Box>
-          <Text color="textSubtle" fontSize="12px">
-            APR: {apr.toSignificant(2)}%
-          </Text>
-
-          <Text color="textSubtle" fontSize="12px">
-            {shouldUnlock ? 'Fixed Staking ended' : `Ends on ${format(unlockTime * 1_000, 'MMM d, yyyy')}`}
-          </Text>
-
-          <Text color="textSubtle" fontSize="12px">
-            {shouldUnlock ? (
-              <>
-                {t('Reward')}: {accrueInterest.toSignificant(3)} {token.symbol}
-              </>
-            ) : (
-              <>
-                {t('Est. Reward')}: {projectedReturnAmount.toSignificant(3)} {token.symbol}
-              </>
-            )}
-          </Text>
-        </Box>
+        <InfoSection
+          apr={apr}
+          shouldUnlock={shouldUnlock}
+          unlockTime={unlockTime}
+          accrueInterest={accrueInterest}
+          tokenSymbol={token.symbol}
+          projectedReturnAmount={projectedReturnAmount}
+        />
         {shouldUnlock ? (
           <ClaimModal
             poolEndDay={poolEndDay}

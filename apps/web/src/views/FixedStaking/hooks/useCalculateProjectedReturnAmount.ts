@@ -39,12 +39,8 @@ export function useCalculateProjectedReturnAmount({
     currentDay <= lockEndDay ? 0 : currentDay >= poolEndDay ? poolEndDay - lockEndDay : currentDay - lockEndDay
   const finalLockedPeriod = lockEndDay > poolEndDay ? poolEndDay - lastDayAction : lockPeriod
 
-  const lockReward = amountDeposit
-    ?.multiply(finalLockedPeriod)
-    ?.multiply(apr.multiply(finalLockedPeriod).divide(DAYS_A_YEAR))
-  const unlockReward = amountDeposit
-    ?.multiply(unlockPeriod)
-    ?.multiply(unlockAPR.multiply(unlockPeriod).divide(DAYS_A_YEAR))
+  const lockReward = amountDeposit?.multiply(finalLockedPeriod)?.multiply(apr.divide(DAYS_A_YEAR))
+  const unlockReward = amountDeposit?.multiply(unlockPeriod)?.multiply(unlockAPR.divide(DAYS_A_YEAR))
 
   return useMemo(
     () => ({
