@@ -74,6 +74,7 @@ export const multiChainPaths = {
   [ChainId.POLYGON_ZKEVM]: '/polygon-zkevm',
   [ChainId.ZKSYNC]: `/zksync`,
   [ChainId.ARBITRUM_ONE]: `/arb`,
+  [ChainId.LINEA]: `/linea`,
 }
 
 export const multiChainQueryClient = {
@@ -82,6 +83,7 @@ export const multiChainQueryClient = {
   POLYGON_ZKEVM: v2Clients[ChainId.POLYGON_ZKEVM],
   ZKSYNC: v2Clients[ChainId.ZKSYNC],
   ARB: v2Clients[ChainId.ARBITRUM_ONE],
+  LINEA: v2Clients[ChainId.LINEA],
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
