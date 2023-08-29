@@ -9,13 +9,13 @@ const StepsContainer = styled(Flex)`
   border-radius: 4px;
   margin: 16px auto;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.inputSecondary};
+  background: ${({ theme }) => theme.colors.input};
 `
 
 const Step = styled('div')<{ active?: boolean }>`
   height: 100%;
   width: 33.33%;
-  background: ${({ theme, active }) => (active ? theme.colors.textSubtle : theme.colors.inputSecondary)};
+  background: ${({ theme, active }) => (active ? theme.colors.secondary : theme.colors.input)};
 `
 
 interface ApproveStepFlowProps {
