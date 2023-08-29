@@ -30,6 +30,7 @@ export const BLOCKS_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/blockl
 export const BLOCKS_CLIENT_POLYGON_ZKEVM =
   'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest'
 export const BLOCKS_CLIENT_ZKSYNC = 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest'
+export const BLOCKS_CLIENT_LINEA = 'https://graph-query.linea.build/subgraphs/name/kybernetwork/linea-blocks'
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
@@ -51,6 +52,7 @@ export const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.ZKSYNC]: ' https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest',
   [ChainId.LINEA_TESTNET]: 'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exhange-eth/',
   [ChainId.ARBITRUM_ONE]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-arbitrum/version/latest',
+  [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2',
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = {
@@ -59,6 +61,7 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.POLYGON_ZKEVM]: BLOCKS_CLIENT_POLYGON_ZKEVM,
   [ChainId.ZKSYNC]: BLOCKS_CLIENT_ZKSYNC,
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+  [ChainId.LINEA]: BLOCKS_CLIENT_LINEA,
 }
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'

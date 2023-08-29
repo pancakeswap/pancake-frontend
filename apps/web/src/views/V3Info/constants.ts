@@ -60,6 +60,7 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.POLYGON_ZKEVM]: 750149,
   [ChainId.ZKSYNC]: 8639214,
   [ChainId.ARBITRUM_ONE]: 101028949,
+  [ChainId.LINEA]: 1444,
 }
 
 export const NODE_REAL_ADDRESS_LIMIT = 50
