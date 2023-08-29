@@ -40,7 +40,6 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 
 import { useAccount } from 'wagmi'
-import { SwapCallbackError } from '../../components/styleds'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import ConfirmSwapModal from './ConfirmSwapModal'
@@ -152,7 +151,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, tradeToConfirm, t, swapCallback, setSwapState])
+  }, [priceImpactWithoutFee, tradeToConfirm, t, swapCallback])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
@@ -204,19 +203,15 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    if (isExpertMode) {
-      handleSwap()
-    } else {
-      setSwapState({
-        tradeToConfirm: trade,
-        attemptingTxn: false,
-        swapErrorMessage: undefined,
-        txHash: undefined,
-      })
-      onPresentConfirmModal()
-    }
+    setSwapState({
+      tradeToConfirm: trade,
+      attemptingTxn: false,
+      swapErrorMessage: undefined,
+      txHash: undefined,
+    })
+    onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
+  }, [trade, onPresentConfirmModal])
 
   // useEffect
   useEffect(() => {
@@ -319,8 +314,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
             ? t('Swap Anyway')
             : t('Swap'))}
       </CommitButton>
-
-      {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
     </Box>
   )
 })
