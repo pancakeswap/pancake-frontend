@@ -13,6 +13,7 @@ import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjecte
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { ModalTitle } from './ModalTitle'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
+import { useCurrenDay } from '../hooks/useStakedPools'
 
 export function ClaimModal({
   token,
@@ -49,10 +50,11 @@ export function ClaimModal({
     () => CurrencyAmount.fromRawAmount(token, stakePositionUserInfo.userDeposit.toString()),
     [stakePositionUserInfo.userDeposit, token],
   )
+  const currentDay = useCurrenDay()
 
   const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
     amountDeposit,
-    lastDayAction: stakePositionUserInfo.lastDayAction,
+    lastDayAction: currentDay,
     lockPeriod,
     apr: boostAPR.greaterThan(0) ? boostAPR : lockAPR,
     poolEndDay,
