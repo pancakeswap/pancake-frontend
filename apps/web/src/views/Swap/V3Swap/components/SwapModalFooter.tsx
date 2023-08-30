@@ -218,7 +218,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               <Text fontSize="14px" mr="8px">
                 {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
               </Text>
-              <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
+              <CurrencyLogo currency={currencyBalances.INPUT?.currency ?? inputAmount.currency} size="24px" />
             </Flex>
           ) : (
             <Text fontSize="14px" textAlign="right">

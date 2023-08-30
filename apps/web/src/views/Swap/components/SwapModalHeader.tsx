@@ -139,11 +139,11 @@ export default function SwapModalHeader({
           </Text>
         </RowFixed>
         {tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
-          <Text fontSize={12} small color="failure" textAlign="left" style={{ width: '100%' }}>
+          <Text fontSize={12} color="failure" textAlign="left" style={{ width: '100%' }}>
             {t('Insufficient input token balance. Your transaction may fail.')}
           </Text>
         )}
-        <Text fontSize={12} small color="textSubtle" textAlign="left" style={{ maxWidth: '320px' }}>
+        <Text fontSize={12} color="textSubtle" textAlign="left" style={{ maxWidth: '320px' }}>
           {tradeInfoText}
         </Text>
       </AutoColumn>
