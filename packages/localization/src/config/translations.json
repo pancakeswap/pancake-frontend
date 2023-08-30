@@ -2672,5 +2672,6 @@
   "Quote not available": "Quote not available",
   "No provider fees.": "No provider fees.",
   "Ends in %minutes% minutes.": "Ends in %minutes% minutes.",
-  "Ends in %days% days and %hours% hours.": "Ends in %days% days and %hours% hours."
+  "Ends in %days% days and %hours% hours.": "Ends in %days% days and %hours% hours.",
+  "Invalid Pair": "Invalid Pair"
 }
