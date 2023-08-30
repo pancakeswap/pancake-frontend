@@ -74,6 +74,18 @@ export function useDerivedMintInfo(
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
+  const isOneWeiAttack = useMemo(
+    () =>
+      Boolean(
+        pairState === PairState.EXISTS &&
+          totalSupply &&
+          totalSupply.quotient === BIG_INT_ZERO &&
+          ((pair.reserve0.quotient > BIG_INT_ZERO && pair.reserve1.quotient === BIG_INT_ZERO) ||
+            (pair.reserve1.quotient > BIG_INT_ZERO && pair.reserve0.quotient === BIG_INT_ZERO)),
+      ),
+    [pairState, totalSupply, pair],
+  )
+
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
     Boolean(
@@ -81,7 +93,8 @@ export function useDerivedMintInfo(
         pair &&
         pair.reserve0.quotient === BIG_INT_ZERO &&
         pair.reserve1.quotient === BIG_INT_ZERO,
-    )
+    ) ||
+    isOneWeiAttack
 
   // balances
   const balances = useCurrencyBalances(
@@ -145,8 +158,11 @@ export function useDerivedMintInfo(
       }
       return undefined
     }
+    if (!pair || pair.reserve0.quotient === BIG_INT_ZERO || pair.reserve1.quotient === BIG_INT_ZERO) {
+      return undefined
+    }
     const wrappedCurrencyA = currencyA?.wrapped
-    return pair && wrappedCurrencyA ? pair.priceOf(wrappedCurrencyA) : undefined
+    return wrappedCurrencyA ? pair.priceOf(wrappedCurrencyA) : undefined
   }, [currencyA, noLiquidity, pair, parsedAmounts])
 
   // liquidity minted
@@ -202,6 +218,10 @@ export function useDerivedMintInfo(
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
     addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol })
+  }
+
+  if (isOneWeiAttack) {
+    addError = t('Invalid Pair')
   }
 
   return {
