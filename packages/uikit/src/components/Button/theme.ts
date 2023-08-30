@@ -1,4 +1,4 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
+import { vars } from "@pancakeswap/ui/css";
 import { scales, variants } from "./types";
 
 export const scaleVariants = {

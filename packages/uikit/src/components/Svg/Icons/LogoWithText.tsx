@@ -1,4 +1,4 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
+import { vars } from "@pancakeswap/ui/css";
 import React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";

@@ -1,5 +1,4 @@
-import { atoms } from '@pancakeswap/ui/css/atoms'
-import { responsiveStyle } from '@pancakeswap/ui/css/responsiveStyle'
+import { atoms, responsiveStyle } from '@pancakeswap/ui/css'
 import { style, keyframes } from '@vanilla-extract/css'
 
 const promotedGradientKf = keyframes({
@@ -28,18 +27,18 @@ export const modalWrapperClass = style([
   style({
     display: 'flex',
   }),
-  responsiveStyle({
-    xs: {
-      width: '100%',
-      marginBottom: 0,
-    },
-    md: {
-      height: '490px',
-    },
-    lg: {
-      width: '792px',
-    },
-  }),
+  // responsiveStyle({
+  //   xs: {
+  //     width: '100%',
+  //     marginBottom: 0,
+  //   },
+  //   md: {
+  //     height: '490px',
+  //   },
+  //   lg: {
+  //     width: '792px',
+  //   },
+  // }),
 ])
 
 export const desktopWalletSelectionClass = style(

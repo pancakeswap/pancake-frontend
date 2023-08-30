@@ -1,4 +1,3 @@
-import '@pancakeswap/ui/css/reset.css'
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
 import Script from 'next/script'

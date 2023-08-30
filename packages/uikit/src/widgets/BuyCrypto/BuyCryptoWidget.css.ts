@@ -1,6 +1,4 @@
-import { atoms } from "@pancakeswap/ui/css/atoms";
-import { vars } from "@pancakeswap/ui/css/vars.css";
-import { responsiveStyle } from "@pancakeswap/ui/css/responsiveStyle";
+import { atoms, vars, responsiveStyle } from "@pancakeswap/ui";
 import { style } from "@vanilla-extract/css";
 import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 

@@ -22,7 +22,6 @@ import { UIKitProvider, light, dark } from '@pancakeswap/uikit'
 A reset CSS is available as a global styled component.
 
 ```
-import '@pancakeswap/ui/css/reset.css'
 import { ResetCSS } from '@pancakeswap/uikit'
 ...
 <ResetCSS />

@@ -1,4 +1,4 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
+import { vars } from "@pancakeswap/ui/css";
 import { AlertTheme } from "../components/Alert/types";
 import { CardTheme } from "../components/Card/types";
 import { PancakeToggleTheme } from "../components/PancakeToggle/types";

@@ -1,6 +1,6 @@
 import { Price, Currency } from "@pancakeswap/swap-sdk-core";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
-import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
+import { AtomBox } from "@pancakeswap/ui";
 import { useState } from "react";
 import { iconButtonClass } from "./SwapWidget.css";
 import { AutoRenewIcon, SyncAltIcon } from "../../components/Svg";

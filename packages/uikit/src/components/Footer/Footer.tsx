@@ -1,4 +1,4 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
+import { vars } from "@pancakeswap/ui/css";
 import { useIsMounted } from "@pancakeswap/hooks";
 import React from "react";
 import { Box, Flex } from "../Box";

@@ -1,4 +1,4 @@
-import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
+import { baseColors, lightColors, darkColors } from '@pancakeswap/ui'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
