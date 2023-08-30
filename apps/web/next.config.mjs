@@ -52,7 +52,6 @@ const config = {
     },
   },
   transpilePackages: [
-    '@pancakeswap/ui',
     '@pancakeswap/uikit',
     '@pancakeswap/farms',
     '@pancakeswap/localization',

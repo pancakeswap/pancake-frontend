@@ -41,20 +41,12 @@
     },
     "./css": {
       "types": "./dist/css/index.d.ts",
-      "import": "./dist/css.js",
+      "import": "./dist/css.mjs",
       "require": "./dist/css.js"
     },
     "./index.css": {
       "import": "./dist/index.css",
       "require": "./dist/index.css"
-    },
-    "./reset.css": {
-      "import": "./dist/reset.css",
-      "require": "./dist/reset.css"
-    },
-    "./theme.css": {
-      "import": "./dist/css.css",
-      "require": "./dist/css.css"
     }
   }
 }

@@ -27,18 +27,18 @@ export const modalWrapperClass = style([
   style({
     display: 'flex',
   }),
-  // responsiveStyle({
-  //   xs: {
-  //     width: '100%',
-  //     marginBottom: 0,
-  //   },
-  //   md: {
-  //     height: '490px',
-  //   },
-  //   lg: {
-  //     width: '792px',
-  //   },
-  // }),
+  responsiveStyle({
+    xs: {
+      width: '100%',
+      marginBottom: 0,
+    },
+    md: {
+      height: '490px',
+    },
+    lg: {
+      width: '792px',
+    },
+  }),
 ])
 
 export const desktopWalletSelectionClass = style(

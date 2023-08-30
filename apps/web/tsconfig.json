@@ -8,7 +8,9 @@
     "downlevelIteration": true,
     "target": "ES2020",
     "paths": {
-      "*": ["./src/*"]
+      "*": ["./src/*"],
+      "@pancakeswap/ui": ["../../packages/ui/index.ts"],
+      "@pancakeswap/ui/css": ["../../packages/ui/css/index.ts"]
     }
   },
   "exclude": [

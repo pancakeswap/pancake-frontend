@@ -19,8 +19,12 @@ module.exports = {
   ],
   async viteFinal(config) {
     const finalConfig = mergeConfig(config, {
+      define: {
+        "process.env": process.env,
+      },
       resolve: {
         alias: {
+          "next/router": "next-router-mock",
           // @see https://github.com/nuxt/vite/issues/160#issuecomment-983080874
           crypto: require.resolve("rollup-plugin-node-builtins"),
         },

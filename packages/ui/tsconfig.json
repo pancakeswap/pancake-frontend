@@ -23,7 +23,6 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "jsx": "preserve"
+    "resolveJsonModule": true
   }
 }

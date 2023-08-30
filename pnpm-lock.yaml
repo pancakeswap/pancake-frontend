@@ -1640,6 +1640,9 @@ importers:
       next:
         specifier: '*'
         version: 13.4.2(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
+      next-router-mock:
+        specifier: ^0.9.9
+        version: 0.9.9(next@13.4.2)(react@18.2.0)
       next-seo:
         specifier: '*'
         version: 5.15.0(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
@@ -7756,7 +7759,7 @@ packages:
       '@sentry/utils': 7.52.1
       '@sentry/webpack-plugin': 1.20.0(encoding@0.1.13)
       chalk: 3.0.0
-      next: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.2(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       rollup: 2.78.0
       stacktrace-parser: 0.1.10
@@ -15458,7 +15461,7 @@ packages:
     resolution: {integrity: sha512-sPZmqHBe6JIiTfN5q2pEi//TwxmAFHwj/XEuYjTuse78i8KxaqMTTzxPoFKuzRpDpTJ+0NAbpfenkmH2rePtuw==}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
       has-symbols: 1.0.3
       is-arguments: 1.1.1
       is-map: 2.0.2
@@ -15475,7 +15478,7 @@ packages:
     resolution: {integrity: sha512-g3OMbtlwY3QewlqAiMLI47KywjWZoEytKr8pf6iTC8uJq5bIAH52Z9pnQ8pVL6whrCto53JZDuUIsifGeLorTg==}
     engines: {node: '>= 0.4'}
     dependencies:
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
       has: 1.0.3
       has-tostringtag: 1.0.0
 
@@ -17226,6 +17229,14 @@ packages:
       has: 1.0.3
       has-symbols: 1.0.3
 
+  /get-intrinsic@1.2.1:
+    resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
+    dependencies:
+      function-bind: 1.1.1
+      has: 1.0.3
+      has-proto: 1.0.1
+      has-symbols: 1.0.3
+
   /get-npm-tarball-url@2.0.3:
     resolution: {integrity: sha512-R/PW6RqyaBQNWYaSyfrh54/qtcnOp22FHCCiRhSSZj0FP3KQWCsxxt0DzIdVTbwTqe9CtQfvl/FPD4UIPt4pqw==}
     engines: {node: '>=12.17'}
@@ -17285,7 +17296,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
 
   /get-tsconfig@4.5.0:
     resolution: {integrity: sha512-MjhiaIWCJ1sAU4pIQ5i5OfOuHHxVo1oYeNsWTON7jxYkod8pHocXeh+SSbmu5OZZZK73B6cbJ2XADzXehLyovQ==}
@@ -17540,7 +17551,7 @@ packages:
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
 
   /got@12.6.0:
     resolution: {integrity: sha512-WTcaQ963xV97MN3x0/CbAriXFZcXCfgxVp91I+Ze6pawQOa7SgzwSx2zIJJsX+kTajMnVs0xcFD1TxZKFqhdnQ==}
@@ -17646,7 +17657,7 @@ packages:
   /has-property-descriptors@1.0.0:
     resolution: {integrity: sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==}
     dependencies:
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
 
   /has-proto@1.0.1:
     resolution: {integrity: sha512-7qE+iP+O+bgF9clE5+UoBFzE65mlBiVj3tKCrlNQ0Ogwm0BjpT/gK4SlLYDMybDh5I3TCTKnPPa0oMG7JDYrhg==}
@@ -18020,7 +18031,7 @@ packages:
     resolution: {integrity: sha512-y+FyyR/w8vfIRq4eQcM1EYgSTnmHXPqaF+IgzgraytCFq5Xh8lllDVmAZolPJiZttZLeFSINPYMaEJ7/vWUa1w==}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
       is-typed-array: 1.1.10
 
   /is-arrayish@0.2.1:
@@ -21101,6 +21112,16 @@ packages:
       whatwg-fetch: 3.6.2
     dev: false
 
+  /next-router-mock@0.9.9(next@13.4.2)(react@18.2.0):
+    resolution: {integrity: sha512-2o50zr+5pWj0zzcvBEWNHDlmWmlDExPdX5OuXKW2aCxV85XUA6MlELr0n0f0wtXj5dUVZ8qspHj6YwF7KZHrbA==}
+    peerDependencies:
+      next: '>=10.0.0'
+      react: '>=17.0.0'
+    dependencies:
+      next: 13.4.2(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+    dev: true
+
   /next-seo@5.15.0(next@13.4.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-LGbcY91yDKGMb7YI+28n3g+RuChUkt6pXNpa8FkfKkEmNiJkeRDEXTnnjVtwT9FmMhG6NH8qwHTelGrlYm9rgg==}
     peerDependencies:
@@ -21108,7 +21129,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      next: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.2(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -21119,7 +21140,7 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.2(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -21166,7 +21187,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-    dev: true
 
   /next@13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-aNFqLs3a3nTGvLWlO9SUhCuMUHVPSFQC0+tDNGAsDXqx+WJDFSbvc233gOJ5H19SBc7nw36A9LwQepOJ2u/8Kg==}
@@ -21383,6 +21403,7 @@ packages:
 
   /object-keys@0.2.0:
     resolution: {integrity: sha512-XODjdR2pBh/1qrjPcbSeSgEtKbYo7LqYNq64/TPuCf7j9SfDD3i21yatKoIy39yIWNvVM59iutfQQpCv1RfFzA==}
+    deprecated: Please update to the latest object-keys
     dependencies:
       foreach: 2.0.6
       indexof: 0.0.1
@@ -22175,7 +22196,7 @@ packages:
       call-bind: 1.0.2
       define-properties: 1.2.0
       es-abstract: 1.21.2
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
       iterate-value: 1.0.2
     dev: false
 
@@ -23488,7 +23509,7 @@ packages:
     resolution: {integrity: sha512-JBUUzyOgEwXQY1NuPtvcj/qcBDbDmEvWufhlnXZIm75DEHp+afM1r1ujJpJsV/gSM4t59tpDyPi1sd6ZaPFfsA==}
     dependencies:
       call-bind: 1.0.2
-      get-intrinsic: 1.2.0
+      get-intrinsic: 1.2.1
       is-regex: 1.1.4
 
   /safe-stable-stringify@2.4.2:
@@ -24365,7 +24386,6 @@ packages:
       '@babel/core': 7.21.3
       client-only: 0.0.1
       react: 18.2.0
-    dev: true
 
   /styled-jsx@5.1.1(@babel/core@7.21.4)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
