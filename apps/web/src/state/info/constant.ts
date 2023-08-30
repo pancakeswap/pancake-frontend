@@ -1,4 +1,4 @@
-import { BLOCKS_CLIENT, BLOCKS_CLIENT_ETH, BLOCKS_CLIENT_ZKSYNC } from 'config/constants/endpoints'
+import { BLOCKS_CLIENT, BLOCKS_CLIENT_ETH, BLOCKS_CLIENT_ZKSYNC, BLOCKS_CLIENT_LINEA } from 'config/constants/endpoints'
 import { infoClientETH, infoClient, infoStableSwapClient, v2Clients } from 'utils/graphql'
 import { GraphQLClient } from 'graphql-request'
 
@@ -11,9 +11,9 @@ import {
   BSC_TOKEN_WHITELIST,
   ETH_TOKEN_WHITELIST,
 } from 'config/constants/info'
-import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync } from 'wagmi/chains'
+import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea } from 'wagmi/chains'
 
-export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB'
+export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET' | 'ZKSYNC_TESTNET'
 
@@ -23,6 +23,7 @@ export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
   [ChainId.POLYGON_ZKEVM]: 'POLYGON_ZKEVM',
   [ChainId.ZKSYNC]: 'ZKSYNC',
+  [ChainId.LINEA]: 'LINEA',
 }
 
 export const multiChainShortName: Record<number, string> = {
@@ -35,6 +36,7 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   POLYGON_ZKEVM: 'ETH',
   ZKSYNC: 'ETH',
   ARB: 'ARB',
+  LINEA: 'ETH',
 }
 
 export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
@@ -45,6 +47,7 @@ export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
   ZKSYNC_TESTNET: 'https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest',
   ZKSYNC: BLOCKS_CLIENT_ZKSYNC,
   ARB: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+  LINEA: BLOCKS_CLIENT_LINEA,
 }
 
 export const multiChainStartTime = {
@@ -53,6 +56,7 @@ export const multiChainStartTime = {
   POLYGON_ZKEVM: 1686236845,
   ZKSYNC: 1690462800, // Thu Jul 27 2023 13:00:00 UTC+0000
   ARB: 1686732526,
+  LINEA: 1692878400,
 }
 
 export const multiChainId: Record<MultiChainName, ChainId> = {
@@ -61,14 +65,16 @@ export const multiChainId: Record<MultiChainName, ChainId> = {
   POLYGON_ZKEVM: ChainId.POLYGON_ZKEVM,
   ZKSYNC: ChainId.ZKSYNC,
   ARB: ChainId.ARBITRUM_ONE,
+  LINEA: ChainId.LINEA,
 }
 
 export const multiChainPaths = {
   [ChainId.BSC]: '',
   [ChainId.ETHEREUM]: '/eth',
   [ChainId.POLYGON_ZKEVM]: '/polygon-zkevm',
-  [ChainId.ZKSYNC]: `/zksync`,
-  [ChainId.ARBITRUM_ONE]: `/arb`,
+  [ChainId.ZKSYNC]: '/zksync',
+  [ChainId.ARBITRUM_ONE]: '/arb',
+  [ChainId.LINEA]: '/linea',
 }
 
 export const multiChainQueryClient = {
@@ -77,6 +83,7 @@ export const multiChainQueryClient = {
   POLYGON_ZKEVM: v2Clients[ChainId.POLYGON_ZKEVM],
   ZKSYNC: v2Clients[ChainId.ZKSYNC],
   ARB: v2Clients[ChainId.ARBITRUM_ONE],
+  LINEA: v2Clients[ChainId.LINEA],
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
@@ -85,6 +92,7 @@ export const multiChainScan: Record<MultiChainName, string> = {
   POLYGON_ZKEVM: polygonZkEvm.blockExplorers.default.name,
   ZKSYNC: zkSync.blockExplorers.default.name,
   ARB: arbitrum.blockExplorers.default.name,
+  LINEA: linea.blockExplorers.default.name,
 }
 
 export const multiChainTokenBlackList: Record<MultiChainName, string[]> = {
@@ -93,6 +101,7 @@ export const multiChainTokenBlackList: Record<MultiChainName, string[]> = {
   POLYGON_ZKEVM: ['0x'],
   ZKSYNC: ['0x'],
   ARB: ['0x'],
+  LINEA: ['0x'],
 }
 
 export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = {
@@ -101,6 +110,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = {
   POLYGON_ZKEVM: [],
   ZKSYNC: [],
   ARB: [],
+  LINEA: [],
 }
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNameExtend): GraphQLClient => {

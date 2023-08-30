@@ -302,6 +302,8 @@ export const useChainNameByQuery = (): MultiChainName => {
         return 'ZKSYNC'
       case 'arb':
         return 'ARB'
+      case 'linea':
+        return 'LINEA'
       default:
         return 'BSC'
     }
