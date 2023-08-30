@@ -1145,6 +1145,28 @@ importers:
         specifier: ^18.2.21
         version: 18.2.21
 
+  packages/multicall:
+    dependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
+      viem:
+        specifier: ^1.2.9
+        version: 1.2.9(typescript@5.1.3)(zod@3.21.4)
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.1.3)
+      typescript:
+        specifier: ^5.1.3
+        version: 5.1.3
+      vitest:
+        specifier: ^0.27.2
+        version: 0.27.2
+
   packages/next-config:
     devDependencies:
       next:
@@ -16256,6 +16278,7 @@ packages:
   /esbuild@0.15.14:
     resolution: {integrity: sha512-pJN8j42fvWLFWwSMG4luuupl2Me7mxciUOsMegKvwCmhEbJ2covUdFnihxm0FMIBV+cbwbtMoHgMCCI+pj1btQ==}
     engines: {node: '>=12'}
+    hasBin: true
     requiresBuild: true
     optionalDependencies:
       '@esbuild/android-arm': 0.15.14
