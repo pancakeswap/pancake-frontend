@@ -1,7 +1,6 @@
 import { getViemClients } from 'utils/viem'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { tokenAplABI } from 'config/abi/tokenApl'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
 // Contract will return price with 10^8, although ALP token decimals is 18.
@@ -13,7 +12,15 @@ export const fetchTokenAplPrice = async () => {
   const [alpPrice] = await client.multicall({
     contracts: [
       {
-        abi: tokenAplABI,
+        abi: [
+          {
+            inputs: [],
+            name: 'alpPrice',
+            outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ] as const,
         address: CONTRACT_ADDRESS,
         functionName: 'alpPrice',
       },
