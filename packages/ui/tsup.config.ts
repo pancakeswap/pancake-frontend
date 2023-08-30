@@ -5,7 +5,7 @@ import { exec } from 'child_process'
 export default defineConfig((options) => ({
   entry: {
     index: './index.ts',
-    css: './css/index.ts'
+    css: './css/index.ts',
   },
   format: ['esm', 'cjs'],
   dts: false,

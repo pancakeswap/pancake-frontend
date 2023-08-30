@@ -1028,7 +1028,7 @@ exports[`renders correctly 1`] = `
 }
 
 <div
-    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc15c sprinkles_minHeight_100vh_md__pkzlfc16k"
+    class="c0 reset_base__49x6zk0 sprinkles_minHeight_auto_xs__1xdk34d15c sprinkles_minHeight_100vh_md__1xdk34d16k"
   >
     <div
       class="c1"
@@ -1109,7 +1109,7 @@ exports[`renders correctly 1`] = `
             </a>
           </div>
           <div
-            class="reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_md__pkzlfc2"
+            class="reset_base__49x6zk0 sprinkles_display_none_xs__1xdk34d10 sprinkles_display_block_md__1xdk34d2"
           >
             <div
               class="c7 c3"
@@ -1409,7 +1409,7 @@ exports[`renders correctly 1`] = `
           height="100%"
         >
           <div
-            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfclo sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
+            class="reset_base__49x6zk0 sprinkles_marginRight_12px_xs__1xdk34dlo sprinkles_display_none_xs__1xdk34d10 sprinkles_display_block_lg__1xdk34d3"
           >
             <a
               class="c26"
@@ -1651,10 +1651,10 @@ exports[`renders correctly 1`] = `
       overflow="hidden"
     >
       <div
-        class="c39 c3 c40 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c40 reset_base__49x6zk0 sprinkles_display_none_xs__1xdk34d10 sprinkles_display_block_sm__1xdk34d1"
       >
         <div
-          class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c41 reset_base__49x6zk0 sprinkles_display_block_xs__1xdk34d0 sprinkles_display_none_md__1xdk34d12"
         >
           <svg
             class="c6"
@@ -1669,7 +1669,7 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c42 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c42 reset_base__49x6zk0 sprinkles_display_block_xs__1xdk34d0 sprinkles_display_none_md__1xdk34d12"
         >
           <svg
             class="c6"
@@ -1725,10 +1725,10 @@ exports[`renders correctly 1`] = `
         </div>
       </div>
       <div
-        class="c39 c3 c50 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c50 reset_base__49x6zk0 sprinkles_display_none_xs__1xdk34d10 sprinkles_display_block_sm__1xdk34d1"
       >
         <div
-          class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c41 reset_base__49x6zk0 sprinkles_display_block_xs__1xdk34d0 sprinkles_display_none_md__1xdk34d12"
         >
           <svg
             class="c6"
@@ -1743,7 +1743,7 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c42 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c42 reset_base__49x6zk0 sprinkles_display_block_xs__1xdk34d0 sprinkles_display_none_md__1xdk34d12"
         >
           <svg
             class="c6"
@@ -4416,7 +4416,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
 }
 
 <div
-    class="reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+    class="reset_base__49x6zk0 sprinkles_display_block_xs__1xdk34d0 sprinkles_display_none_md__1xdk34d12"
   >
     <div
       class="c0 c1 c2"
