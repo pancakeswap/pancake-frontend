@@ -42,8 +42,8 @@ import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
 import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -78,7 +78,7 @@ function useHideClosePosition() {
 }
 
 export default function PoolListPage() {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
   const { t } = useTranslation()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
