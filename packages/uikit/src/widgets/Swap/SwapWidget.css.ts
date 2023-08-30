@@ -4,30 +4,6 @@ import { responsiveStyle } from "@pancakeswap/ui/css/responsiveStyle";
 import { style } from "@vanilla-extract/css";
 import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 
-export const switchButtonClass = style({
-  backgroundColor: "primary",
-  boxShadow: "inset 0px -2px 0px rgba(0, 0, 0, 0.1)",
-});
-
-export const iconDownClass = style({
-  selectors: {
-    [`${switchButtonClass}:hover &`]: {
-      display: "none",
-      fill: "white",
-    },
-  },
-});
-
-export const iconUpDownClass = style({
-  display: "none",
-  selectors: {
-    [`${switchButtonClass}:hover &`]: {
-      display: "block",
-      fill: "white",
-    },
-  },
-});
-
 export const inputVariants = recipe({
   base: {
     width: 0,
@@ -116,11 +92,6 @@ export const inputContainerVariants = recipe({
       false: atoms({
         boxShadow: "inset",
       }),
-    },
-    hasZapStyle: {
-      true: {
-        borderRadius: "0px 16px 16px 16px",
-      },
     },
     showBridgeWarning: {
       true: atoms({
