@@ -187,6 +187,14 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.LINEA]: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x0D1E753a25eBda689453309112904807625bEFBe',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
 
 export const USDC = {
