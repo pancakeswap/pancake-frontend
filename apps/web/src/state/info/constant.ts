@@ -72,9 +72,9 @@ export const multiChainPaths = {
   [ChainId.BSC]: '',
   [ChainId.ETHEREUM]: '/eth',
   [ChainId.POLYGON_ZKEVM]: '/polygon-zkevm',
-  [ChainId.ZKSYNC]: `/zksync`,
-  [ChainId.ARBITRUM_ONE]: `/arb`,
-  [ChainId.LINEA]: `/linea`,
+  [ChainId.ZKSYNC]: '/zksync',
+  [ChainId.ARBITRUM_ONE]: '/arb',
+  [ChainId.LINEA]: '/linea',
 }
 
 export const multiChainQueryClient = {
