@@ -72,6 +72,8 @@ export function ClaimModal({
     onSuccess: () => (unstakeModal.isOpen ? unstakeModal.onDismiss() : setIsConfirmed(true)),
   })
 
+  const poolEnded = unlockTime >= poolEndDay * 86400 + 43200
+
   const unlockTimeFormat = formatTime(unlockTime * 1_000)
 
   const apr = stakePositionUserInfo.boost ? boostAPR : lockAPR
@@ -165,16 +167,18 @@ export function ClaimModal({
                   </Text>
                   <Text bold>{apr.toSignificant(2)}%</Text>
                 </Flex>
-                <Button
-                  variant="subtle"
-                  width="100%"
-                  onClick={() => {
-                    claimModal.onDismiss()
-                    openModal()
-                  }}
-                >
-                  {t('Claim Reward & Restake')}
-                </Button>
+                {poolEnded ? null : (
+                  <Button
+                    variant="subtle"
+                    width="100%"
+                    onClick={() => {
+                      claimModal.onDismiss()
+                      openModal()
+                    }}
+                  >
+                    {t('Claim Reward & Restake')}
+                  </Button>
+                )}
               </Card>
 
               <Button

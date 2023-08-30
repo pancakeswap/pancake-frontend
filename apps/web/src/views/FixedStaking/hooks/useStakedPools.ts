@@ -46,6 +46,8 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
       .map(({ result }, index) => {
         if (Array.isArray(result) && new BigNumber(result[0].userInfo.userDeposit).gt(0)) {
           const position = result[0]
+          const endPoolTime = position.pool.endDay * 86400 + 43200
+          const endLockTime = position.endLockTime > endPoolTime ? endPoolTime : position.endLockTime
           return {
             ...position,
             pool: {
@@ -53,6 +55,7 @@ export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[
               poolIndex: poolIndexes[index],
               token: tokens[getAddress(position.pool.token)],
             },
+            endLockTime,
           }
         }
 
