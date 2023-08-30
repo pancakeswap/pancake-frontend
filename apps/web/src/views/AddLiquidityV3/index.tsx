@@ -256,6 +256,18 @@ export function UniversalAddLiquidity({
           undefined,
           { shallow: true },
         )
+      } else {
+        router.replace(
+          {
+            pathname: router.pathname.replace('/v2', ''),
+            query: {
+              ...router.query,
+              currency: [currencyIdA, currencyIdB],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
       }
     },
     [currencyIdA, currencyIdB, router, setSelectorType],
