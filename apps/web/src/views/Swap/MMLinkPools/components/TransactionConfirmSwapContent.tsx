@@ -4,7 +4,7 @@ import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import SwapModalHeader from 'views/Swap/components/SwapModalHeader'
-import { TradeWithMM } from '../types'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as computeTradePriceBreakdownWithSmartRouter,
@@ -18,8 +18,8 @@ import { MMSlippageTolerance } from './MMSlippageTolerance'
  * @param tradeB trade B
  */
 function tradeMeaningfullyDiffers(
-  tradeA: TradeWithMM<Currency, Currency, TradeType> | undefined,
-  tradeB: TradeWithMM<Currency, Currency, TradeType> | undefined,
+  tradeA: SmartRouterTrade<TradeType> | undefined,
+  tradeB: SmartRouterTrade<TradeType> | undefined,
 ): boolean {
   return (
     tradeA.tradeType !== tradeB.tradeType ||
@@ -31,8 +31,8 @@ function tradeMeaningfullyDiffers(
 }
 
 interface TransactionConfirmSwapContentProps {
-  trade: TradeWithMM<Currency, Currency, TradeType> | undefined
-  originalTrade: TradeWithMM<Currency, Currency, TradeType> | undefined
+  trade: SmartRouterTrade<TradeType> | undefined
+  originalTrade: SmartRouterTrade<TradeType> | undefined
   onAcceptChanges: () => void
   onConfirm: () => void
   recipient: string
