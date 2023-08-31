@@ -12,6 +12,7 @@ import {
   lineaTestnet,
   arbitrum,
   arbitrumGoerli,
+  base,
   baseGoerli,
   scrollSepolia as scrollSepolia_,
   Chain,
@@ -31,6 +32,7 @@ export const CHAIN_QUERY_NAME = {
   [ChainId.LINEA]: 'linea',
   [ChainId.LINEA_TESTNET]: 'lineaTestnet',
   [ChainId.OPBNB_TESTNET]: 'opBnbTestnet',
+  [ChainId.BASE]: 'base',
   [ChainId.BASE_TESTNET]: 'baseTestnet',
   [ChainId.SCROLL_SEPOLIA]: 'scrollSepolia',
 } as const satisfies Record<ChainId, string>
@@ -155,6 +157,8 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.ZKSYNC_TESTNET,
   ChainId.LINEA_TESTNET,
   ChainId.LINEA,
+  ChainId.BASE,
+  ChainId.BASE_TESTNET,
 ]
 
 export const CHAINS = [
@@ -172,6 +176,7 @@ export const CHAINS = [
   lineaTestnet,
   arbitrumGoerli,
   arbitrum,
+  base,
   baseGoerli,
   opbnbTestnet,
   scrollSepolia,

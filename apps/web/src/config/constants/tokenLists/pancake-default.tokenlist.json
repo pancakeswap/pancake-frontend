@@ -267,6 +267,22 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
+      "name": "USD Base Coin",
+      "symbol": "USDbC",
+      "address": "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+      "chainId": 8453,
+      "decimals": 6,
+      "logoURI": "https://tokens.pancakeswap.finance/images/base/0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA.png"
+    },
+    {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "chainId": 8453,
+      "decimals": 6,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
       "name": "USD Coin",
       "address": "0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035",
       "symbol": "USDC",

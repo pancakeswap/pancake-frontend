@@ -41,6 +41,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.ARBITRUM_ONE]: "arb",
   [ChainId.ZKSYNC]: "zksync",
   [ChainId.LINEA]: "linea",
+  [ChainId.BASE]: "base",
 };
 
 // TODO: move to utils or token-list
