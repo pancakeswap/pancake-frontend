@@ -76,6 +76,11 @@ import lineaBg from './linea-bg.png'
 import lineaBgMobile from './linea-bg-mobile.png'
 import lineaBunny from './linea-bunny.png'
 import lineaBunnyMobile from './linea-bunny-mobile.png'
+import baseBg from './base-bg.png'
+import baseBgMobile from './base-bg-mobile.png'
+import baseBunny from './base-bunny.png'
+import baseTree from './base-tree.png'
+import baseMoon from './base-moon.png'
 
 export {
   lotteryImage,
@@ -155,4 +160,9 @@ export {
   lineaBgMobile,
   lineaBunny,
   lineaBunnyMobile,
+  baseBg,
+  baseBgMobile,
+  baseBunny,
+  baseMoon,
+  baseTree,
 }

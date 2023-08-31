@@ -2669,5 +2669,7 @@
   "Invalid Pair": "Invalid Pair",
   "Learn more how to fix": "Learn more how to fix",
   "View pool on explorer": "View pool on explorer",
-  "Adding liquidity to this V2 pair is currently not available on PancakeSwap UI. Please follow the instructions to resolve it using blockchain explorer.": "Adding liquidity to this V2 pair is currently not available on PancakeSwap UI. Please follow the instructions to resolve it using blockchain explorer."
+  "Adding liquidity to this V2 pair is currently not available on PancakeSwap UI. Please follow the instructions to resolve it using blockchain explorer.": "Adding liquidity to this V2 pair is currently not available on PancakeSwap UI. Please follow the instructions to resolve it using blockchain explorer.",
+  "Base is LIVE!": "Base is LIVE!",
+  "PancakeSwap Now Live on Base!": "PancakeSwap Now Live on Base!"
 }
