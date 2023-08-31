@@ -38,6 +38,7 @@ export interface LP2ChildrenProps {
     [Field.CURRENCY_A]?: Currency
     [Field.CURRENCY_B]?: Currency
   }
+  isOneWeiAttack?: boolean
   noLiquidity: boolean
   handleCurrencyASelect: (currencyA_: Currency) => void
   formattedAmounts: {
@@ -107,6 +108,7 @@ export default function AddLiquidity({
     poolTokenPercentage,
     error,
     addError,
+    isOneWeiAttack,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const poolData = useLPApr(pair)
@@ -173,8 +175,11 @@ export default function AddLiquidity({
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
     }
 
-    let estimate
-    let method
+    // eslint-disable-next-line
+    let estimate: any
+    // eslint-disable-next-line
+    let method: any
+    // eslint-disable-next-line
     let args: Array<string | string[] | number | bigint>
     let value: bigint | null
     if (currencyA?.isNative || currencyB?.isNative) {
@@ -320,6 +325,7 @@ export default function AddLiquidity({
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
   return children({
+    isOneWeiAttack,
     error,
     currencies,
     noLiquidity,
