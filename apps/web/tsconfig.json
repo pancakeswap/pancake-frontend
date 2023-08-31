@@ -9,6 +9,7 @@
     "target": "ES2020",
     "paths": {
       "*": ["./src/*"],
+      // import ui source directly for smaller bundle size
       "@pancakeswap/ui": ["../../packages/ui/index.ts"],
       "@pancakeswap/ui/css": ["../../packages/ui/css/index.ts"]
     }

@@ -5,7 +5,6 @@
     "*.css",
     "*.css.ts"
   ],
-  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.mjs",
