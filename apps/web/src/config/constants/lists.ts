@@ -24,6 +24,9 @@ const LINEA_URLS = [PANCAKE_LINEA_DEFAULT, 'https://tokens.coingecko.com/linea/a
 const ZKSYNC_URLS = [PANCAKE_ZKSYNC_DEFAULT, 'https://tokens.coingecko.com/zksync/all.json']
 const BASE_URLS = [PANCAKE_BASE_DEFAULT, 'https://tokens.coingecko.com/base/all.json']
 
+const OP_SUPER_CHAIN_URL =
+  'https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json'
+
 // List of official tokens list
 export const OFFICIAL_LISTS = [PANCAKE_EXTENDED, PANCAKE_ETH_DEFAULT]
 
@@ -39,6 +42,7 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
   ...POLYGON_ZKEVM_URLS,
   ...BASE_URLS,
   ...ARBITRUM_URLS,
+  OP_SUPER_CHAIN_URL,
   ...UNSUPPORTED_LIST_URLS, // need to load unsupported tokens as well
   ...WARNING_LIST_URLS,
 ]
