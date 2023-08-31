@@ -45,8 +45,8 @@
       "require": "./dist/css.js"
     },
     "./index.css": {
-      "import": "./dist/index.css",
-      "require": "./dist/index.css"
+      "import": "./dist/css.css",
+      "require": "./dist/css.css"
     }
   }
 }
