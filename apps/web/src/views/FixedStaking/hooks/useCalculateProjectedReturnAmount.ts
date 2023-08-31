@@ -1,7 +1,7 @@
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 import { DAYS_A_YEAR } from '../constant'
-import { useCurrenDay } from './useStakedPools'
+import { useCurrentDay } from './useStakedPools'
 
 export function useCalculateProjectedReturnAmount({
   amountDeposit,
@@ -18,7 +18,7 @@ export function useCalculateProjectedReturnAmount({
   apr: Percent
   unlockAPR: Percent
 }) {
-  const currentDay = useCurrenDay()
+  const currentDay = useCurrentDay()
 
   const lockEndDay = lastDayAction + lockPeriod
 

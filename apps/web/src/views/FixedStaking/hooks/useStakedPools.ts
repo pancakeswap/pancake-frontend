@@ -9,7 +9,7 @@ import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import BigNumber from 'bignumber.js'
 import { FixedStakingPool, StakedPosition } from '../type'
 
-export function useCurrenDay(): number {
+export function useCurrentDay(): number {
   const fixedStakingContract = useFixedStakingContract()
 
   const { chainId } = useActiveWeb3React()

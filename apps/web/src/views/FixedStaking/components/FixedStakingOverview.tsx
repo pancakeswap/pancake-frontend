@@ -9,13 +9,13 @@ import TextRow from 'views/Pools/components/LockedPool/Common/Overview/TextRow'
 import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { StakedLimitEndOn } from './StakedLimitEndOn'
-import { useCurrenDay } from '../hooks/useStakedPools'
+import { useCurrentDay } from '../hooks/useStakedPools'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 
 function DiffDuration({ lockPeriod }: { lockPeriod: number }) {
   const { t } = useTranslation()
 
-  const lastDayAction = useCurrenDay()
+  const lastDayAction = useCurrentDay()
 
   const lockEndDay = lastDayAction + lockPeriod
 
@@ -64,7 +64,7 @@ export default function FixedStakingOverview({
     [alreadyStakedAmount, stakeAmount.currency],
   )
 
-  const currentDay = useCurrenDay()
+  const currentDay = useCurrentDay()
 
   const { projectedReturnAmount } = useCalculateProjectedReturnAmount({
     amountDeposit: stakeAmount.add(safeAlreadyStakedAmount),

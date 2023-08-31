@@ -22,6 +22,7 @@ import { FixedStakingPool, StakedPosition } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+import { useCurrentDay } from '../hooks/useStakedPools'
 
 export function FixedStakingModal({
   stakingToken,
@@ -60,6 +61,8 @@ export function FixedStakingModal({
   )
 
   const hideStakeButton = stakedPositions.length === pools.length
+
+  const currentDay = useCurrentDay()
 
   return account ? (
     <>
@@ -100,7 +103,9 @@ export function FixedStakingModal({
                   <Flex>
                     {pools.map((pool) => (
                       <StyledButton
-                        disabled={claimedPeriods.includes(pool.lockPeriod)}
+                        disabled={
+                          currentDay + pool.lockPeriod > pool.endDay || claimedPeriods.includes(pool.lockPeriod)
+                        }
                         key={pool.lockPeriod}
                         scale="md"
                         variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'light'}

@@ -1,9 +1,9 @@
 import { formatTime } from 'utils/formatTime'
 
-import { useCurrenDay } from '../hooks/useStakedPools'
+import { useCurrentDay } from '../hooks/useStakedPools'
 
 export function StakedLimitEndOn({ lockPeriod, poolEndDay }: { lockPeriod: number; poolEndDay: number }) {
-  const lastDayAction = useCurrenDay()
+  const lastDayAction = useCurrentDay()
 
   /**
    * Duplicate logic on Smart Contract

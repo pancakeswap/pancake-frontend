@@ -15,6 +15,7 @@ import { UnstakeBeforeEnededModal } from './UnstakeBeforeEndedModal'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
+import { useCurrentDay } from '../hooks/useStakedPools'
 
 const FlexLeft = styled(Flex)`
   width: 100%;
@@ -65,28 +66,7 @@ function InfoSection({
   )
 }
 
-function StakedPositionRowView({
-  amountDeposit,
-  shouldUnlock,
-  lockPeriod,
-  apr,
-  unlockTime,
-  accrueInterest,
-  projectedReturnAmount,
-  poolEndDay,
-  stakedPeriods,
-  pool,
-  lockAPR,
-  boostAPR,
-  unlockAPR,
-  poolIndex,
-  stakePositionUserInfo,
-  token,
-  withdrawalFee,
-  stakedPositions,
-}) {
-  const { t } = useTranslation()
-
+function StakedPositionRowView({ amountDeposit, shouldUnlock, lockPeriod, children }) {
   return (
     <Flex>
       <FlexLeft>
@@ -102,73 +82,29 @@ function StakedPositionRowView({
           <LockedFixedTag>{lockPeriod}D</LockedFixedTag>
         )}
       </FlexLeft>
-      <Flex justifyContent="space-between" width="100%">
-        <InfoSection
-          apr={apr}
-          shouldUnlock={shouldUnlock}
-          unlockTime={unlockTime}
-          accrueInterest={accrueInterest}
-          tokenSymbol={token.symbol}
-          projectedReturnAmount={projectedReturnAmount}
-        />
+      {children}
+    </Flex>
+  )
+}
+
+function StakedPositionCardView({ amountDeposit, lockPeriod, shouldUnlock, children }) {
+  return (
+    <>
+      <Flex mb="8px" justifyContent="space-between" width="100%">
+        <Flex>
+          <Box>
+            <AmountWithUSDSub amount={amountDeposit} />
+          </Box>
+        </Flex>
+
         {shouldUnlock ? (
-          <ClaimModal
-            poolEndDay={poolEndDay}
-            stakedPeriods={stakedPeriods}
-            pool={pool}
-            lockAPR={lockAPR}
-            boostAPR={boostAPR}
-            unlockAPR={unlockAPR}
-            poolIndex={poolIndex}
-            stakePositionUserInfo={stakePositionUserInfo}
-            token={token}
-            lockPeriod={lockPeriod}
-            unlockTime={unlockTime}
-          >
-            {(openClaimModal) => (
-              <Button height="auto" onClick={openClaimModal}>
-                {t('Claim')}
-              </Button>
-            )}
-          </ClaimModal>
+          <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
         ) : (
-          <Flex>
-            <UnstakeBeforeEnededModal
-              pools={pool.pools}
-              poolEndDay={poolEndDay}
-              token={token}
-              lockPeriod={lockPeriod}
-              lockAPR={lockAPR}
-              boostAPR={boostAPR}
-              unlockAPR={unlockAPR}
-              stakePositionUserInfo={stakePositionUserInfo}
-              withdrawalFee={withdrawalFee}
-              poolIndex={poolIndex}
-            >
-              {(openUnstakeModal) => (
-                <IconButton variant="secondary" onClick={openUnstakeModal} mr="6px">
-                  <MinusIcon color="primary" width="14px" />
-                </IconButton>
-              )}
-            </UnstakeBeforeEnededModal>
-            <FixedRestakingModal
-              stakedPositions={stakedPositions}
-              amountDeposit={amountDeposit}
-              stakedPeriods={stakedPeriods}
-              stakingToken={token}
-              pools={pool.pools}
-              initialLockPeriod={lockPeriod}
-            >
-              {(openModal) => (
-                <IconButton variant="secondary" onClick={openModal}>
-                  <AddIcon color="primary" width="14px" />
-                </IconButton>
-              )}
-            </FixedRestakingModal>
-          </Flex>
+          <LockedFixedTag>{lockPeriod}D</LockedFixedTag>
         )}
       </Flex>
-    </Flex>
+      {children}
+    </>
   )
 }
 
@@ -232,112 +168,90 @@ export function StakedPositionSection({
 
   const apr = stakePosition.userInfo.boost ? boostAPR : lockAPR
 
-  if (showRow) {
-    return (
-      <StakedPositionRowView
-        amountDeposit={amountDeposit}
-        shouldUnlock={shouldUnlock}
-        lockPeriod={lockPeriod}
+  const currentDay = useCurrentDay()
+
+  const actionSection = (
+    <Flex justifyContent="space-between" width="100%">
+      <InfoSection
         apr={apr}
+        shouldUnlock={shouldUnlock}
         unlockTime={unlockTime}
         accrueInterest={accrueInterest}
+        tokenSymbol={token.symbol}
         projectedReturnAmount={projectedReturnAmount}
-        poolEndDay={poolEndDay}
-        stakedPeriods={stakedPeriods}
-        pool={pool}
-        lockAPR={lockAPR}
-        boostAPR={boostAPR}
-        unlockAPR={unlockAPR}
-        poolIndex={poolIndex}
-        stakePositionUserInfo={stakePositionUserInfo}
-        token={token}
-        withdrawalFee={withdrawalFee}
-        stakedPositions={stakedPositions}
       />
+      {shouldUnlock ? (
+        <ClaimModal
+          poolEndDay={poolEndDay}
+          stakedPeriods={stakedPeriods}
+          pool={pool}
+          lockAPR={lockAPR}
+          boostAPR={boostAPR}
+          unlockAPR={unlockAPR}
+          poolIndex={poolIndex}
+          stakePositionUserInfo={stakePositionUserInfo}
+          token={token}
+          lockPeriod={lockPeriod}
+          unlockTime={unlockTime}
+        >
+          {(openClaimModal) => (
+            <Button height="auto" onClick={openClaimModal}>
+              {t('Claim')}
+            </Button>
+          )}
+        </ClaimModal>
+      ) : (
+        <Flex>
+          <UnstakeBeforeEnededModal
+            pools={pool.pools}
+            poolEndDay={poolEndDay}
+            token={token}
+            lockPeriod={lockPeriod}
+            unlockAPR={unlockAPR}
+            lockAPR={lockAPR}
+            boostAPR={boostAPR}
+            stakePositionUserInfo={stakePositionUserInfo}
+            withdrawalFee={withdrawalFee}
+            poolIndex={poolIndex}
+          >
+            {(openUnstakeModal) => (
+              <IconButton variant="secondary" onClick={openUnstakeModal} mr="6px">
+                <MinusIcon color="primary" width="14px" />
+              </IconButton>
+            )}
+          </UnstakeBeforeEnededModal>
+          <FixedRestakingModal
+            stakedPositions={stakedPositions}
+            amountDeposit={amountDeposit}
+            stakedPeriods={stakedPeriods}
+            stakingToken={token}
+            pools={pool.pools}
+            initialLockPeriod={lockPeriod}
+          >
+            {(openModal) => (
+              <IconButton disabled={currentDay + lockPeriod > poolEndDay} variant="secondary" onClick={openModal}>
+                <AddIcon color="primary" width="14px" />
+              </IconButton>
+            )}
+          </FixedRestakingModal>
+        </Flex>
+      )}
+    </Flex>
+  )
+
+  if (showRow) {
+    return (
+      <StakedPositionRowView amountDeposit={amountDeposit} shouldUnlock={shouldUnlock} lockPeriod={lockPeriod}>
+        {actionSection}
+      </StakedPositionRowView>
     )
   }
 
   return (
     <>
-      <Flex mb="8px" justifyContent="space-between" width="100%">
-        <Flex>
-          <Box>
-            <AmountWithUSDSub amount={amountDeposit} />
-          </Box>
-        </Flex>
-
-        {shouldUnlock ? (
-          <UnlockedFixedTag>{lockPeriod}D</UnlockedFixedTag>
-        ) : (
-          <LockedFixedTag>{lockPeriod}D</LockedFixedTag>
-        )}
-      </Flex>
-      <Flex justifyContent="space-between" width="100%">
-        <InfoSection
-          apr={apr}
-          shouldUnlock={shouldUnlock}
-          unlockTime={unlockTime}
-          accrueInterest={accrueInterest}
-          tokenSymbol={token.symbol}
-          projectedReturnAmount={projectedReturnAmount}
-        />
-        {shouldUnlock ? (
-          <ClaimModal
-            poolEndDay={poolEndDay}
-            stakedPeriods={stakedPeriods}
-            pool={pool}
-            lockAPR={lockAPR}
-            boostAPR={boostAPR}
-            unlockAPR={unlockAPR}
-            poolIndex={poolIndex}
-            stakePositionUserInfo={stakePositionUserInfo}
-            token={token}
-            lockPeriod={lockPeriod}
-            unlockTime={unlockTime}
-          >
-            {(openClaimModal) => (
-              <Button height="auto" onClick={openClaimModal}>
-                {t('Claim')}
-              </Button>
-            )}
-          </ClaimModal>
-        ) : (
-          <Flex>
-            <UnstakeBeforeEnededModal
-              pools={pool.pools}
-              poolEndDay={poolEndDay}
-              token={token}
-              lockPeriod={lockPeriod}
-              unlockAPR={unlockAPR}
-              lockAPR={lockAPR}
-              boostAPR={boostAPR}
-              stakePositionUserInfo={stakePositionUserInfo}
-              withdrawalFee={withdrawalFee}
-              poolIndex={poolIndex}
-            >
-              {(openUnstakeModal) => (
-                <IconButton variant="secondary" onClick={openUnstakeModal} mr="6px">
-                  <MinusIcon color="primary" width="14px" />
-                </IconButton>
-              )}
-            </UnstakeBeforeEnededModal>
-            <FixedRestakingModal
-              stakedPositions={stakedPositions}
-              amountDeposit={amountDeposit}
-              stakedPeriods={stakedPeriods}
-              stakingToken={token}
-              pools={pool.pools}
-              initialLockPeriod={lockPeriod}
-            >
-              {(openModal) => (
-                <IconButton variant="secondary" onClick={openModal}>
-                  <AddIcon color="primary" width="14px" />
-                </IconButton>
-              )}
-            </FixedRestakingModal>
-          </Flex>
-        )}
-      </Flex>
+      <StakedPositionCardView amountDeposit={amountDeposit} lockPeriod={lockPeriod} shouldUnlock={shouldUnlock}>
+        {actionSection}
+      </StakedPositionCardView>
     </>
   )
 }
