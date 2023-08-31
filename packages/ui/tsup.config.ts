@@ -6,6 +6,7 @@ export default defineConfig((options) => ({
   entry: {
     index: './index.ts',
     css: './css/index.ts',
+    reset: './css/reset.css.ts',
   },
   format: ['esm', 'cjs'],
   dts: false,

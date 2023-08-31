@@ -1,3 +1,5 @@
+import "@pancakeswap/ui/index.css";
+
 import { ThemeProvider, DefaultTheme } from "styled-components";
 import { MatchBreakpointsProvider } from "./contexts/MatchBreakpoints/Provider";
 import { ToastsProvider } from "./contexts/ToastsContext/Provider";

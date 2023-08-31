@@ -46,6 +46,14 @@
     "./index.css": {
       "import": "./dist/css.css",
       "require": "./dist/css.css"
+    },
+    "./reset.css": {
+      "import": "./dist/reset.css",
+      "require": "./dist/reset.css"
+    },
+    "./reset": {
+      "import": "./dist/reset.mjs",
+      "require": "./dist/reset.js"
     }
   }
 }
