@@ -50,7 +50,7 @@ export interface ChartInfo {
 const chartConfig: ChartInfo[] = [
   {
     id: 'totalPerpSwapEarnFeeUSD',
-    name: <Trans>Perp Swap Earn Fee</Trans>,
+    name: <Trans>V1 Perp Swap Earn Fee</Trans>,
     chartColor: '#ED4B9E',
     usdValue: '0',
     cakeValue: '0',

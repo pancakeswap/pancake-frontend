@@ -42,8 +42,8 @@ const UsAgreement = () => {
           to swap trades on the BNB Smart Chain and Ethereum chain only; and
         </Text>
         <Text as="p">
-          (b) <strong>3</strong>% on trading fees paid by your Referrals on StableSwap, limited to swap trades on the
-          BNB Smart Chain only.
+          (b) <strong>3</strong>% BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum One, Linea, and
+          Base chain only; and
         </Text>
         <Text as="p">2.2 To be eligible for commissions, the swap trades must have:</Text>
         <Text as="p">(a) a token pair that:</Text>

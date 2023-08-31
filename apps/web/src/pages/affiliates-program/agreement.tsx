@@ -38,8 +38,10 @@ const Agreement = () => {
           rates on the following fees:
         </Text>
         <Text as="p">
-          (a) <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited
-          to swap trades on the BNB Smart Chain and Ethereum chain only; and
+          Our affiliate program’s terms and conditions have been updated as of September 1, 2023, wi (a){' '}
+          <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited to
+          swap trades on BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum one, Linea, and Base chain
+          only; and
         </Text>
         <Text as="p">
           (b) <strong>3</strong>% on trading fees paid by your Referrals on StableSwap, limited to swap trades on the
@@ -64,15 +66,15 @@ const Agreement = () => {
           trade is effectively executed) of less than 10%
         </Text>
 
-        <Text as="h3">3. Commissions for perpetual trades</Text>
+        <Text as="h3">3. Commissions for v1 perpetual trades</Text>
         <Text as="p">
           3.1 Subject to this Agreement (and especially Clause 6.2 ), you are eligible for commissions at a{' '}
-          <strong>20</strong>% rate on trading fees paid by your Referrals on perpetual trades, limited to perpetual
-          trades on the BNB Smart Chain and Ethereum chain only.
+          <strong>20</strong>% rate on trading fees paid by your Referrals on v1 perpetual trades, limited to v1
+          perpetual trades on the BNB Smart Chain and Ethereum chain only.
         </Text>
         <Text as="p">
-          3.2 For avoidance of doubt, the trading fees on perpetual trades (or any Referral’s position which may incur
-          liquidation fees) do not include any liquidation fees for liquidating your Referrals’ position.
+          3.2 For avoidance of doubt, the trading fees on v1 perpetual trades (or any Referral’s position which may
+          incur liquidation fees) do not include any liquidation fees for liquidating your Referrals’ position.
         </Text>
 
         <Text as="h3">4. Determination and Calculation of Commissions</Text>
