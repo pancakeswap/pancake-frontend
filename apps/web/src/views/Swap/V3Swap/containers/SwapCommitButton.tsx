@@ -93,7 +93,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
-  const parsedIndecentFieldAmount = parsedAmounts[independentField]
+  const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
   // the callback to execute the swap
   const deadline = useTransactionDeadline()
@@ -260,7 +260,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const noRoute = !(trade?.routes?.length > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
-    inputCurrency && outputCurrency && parsedIndecentFieldAmount?.greaterThan(BIG_INT_ZERO),
+    inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
