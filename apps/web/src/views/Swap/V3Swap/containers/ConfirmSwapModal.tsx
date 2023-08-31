@@ -181,7 +181,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
-  const { confirmModalState, pendingModalSteps, startSwapFlow, onCancel } = useConfirmModalState({
+  const { confirmModalState, startSwapFlow, onCancel } = useConfirmModalState({
     txHash,
     chainId,
     approval,
