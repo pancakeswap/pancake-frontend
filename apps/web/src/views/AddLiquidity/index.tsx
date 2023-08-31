@@ -176,12 +176,9 @@ export default function AddLiquidity({
     }
 
     // eslint-disable-next-line
-    let estimate:
-      | typeof routerContract.estimateGas.addLiquidityETH
-      | typeof routerContract.estimateGas.addLiquidity
-      | undefined
+    let estimate: any
     // eslint-disable-next-line
-    let method: typeof routerContract.write.addLiquidityETH | typeof routerContract.write.addLiquidity | undefined
+    let method: any
     // eslint-disable-next-line
     let args: Array<string | string[] | number | bigint>
     let value: bigint | null
