@@ -130,7 +130,10 @@ const BaseBanner = () => {
       }}
     >
       <S.Inner>
-        <S.LeftWrapper position="relative" style={{ zIndex: 2, justifyContent: isMobile ? 'flex-start' : 'center' }}>
+        <S.LeftWrapper
+          position="relative"
+          style={{ zIndex: 2, justifyContent: isMobile ? 'flex-start' : 'center', zIndex: 3 }}
+        >
           <Flex alignItems="center" mb="8px" style={{ gap: isMobile ? 8 : 10 }}>
             <Image
               src={pancakeSwapLogo}
