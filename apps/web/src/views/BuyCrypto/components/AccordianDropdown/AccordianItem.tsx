@@ -59,7 +59,7 @@ function AccordionItem({
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
-  const { days, hours } = getTimePeriods(1681699200)
+  const { days, hours, minutes } = getTimePeriods(1681699200)
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {
@@ -162,6 +162,7 @@ function AccordionItem({
                   {t('No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.', {
                     days,
                     hours,
+                    minutes,
                   })}
                 </Text>
               </Flex>
