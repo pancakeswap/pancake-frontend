@@ -39,6 +39,7 @@ export function useDerivedMintInfo(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
 ): {
+  isOneWeiAttack?: boolean
   dependentField: Field
   currencies: { [field in Field]?: Currency }
   pair?: Pair | null
@@ -225,6 +226,7 @@ export function useDerivedMintInfo(
   }
 
   return {
+    isOneWeiAttack,
     dependentField,
     currencies,
     pair,
