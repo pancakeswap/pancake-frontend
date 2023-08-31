@@ -3,23 +3,20 @@ import {
   DEFAULT_CAST_SIGN_KEY,
   DEFAULT_PROJECT_ID,
   DEFAULT_RELAY_URL,
-  Events,
   PancakeNotifications,
 } from 'views/Notifications/constants'
 import { BuilderNames, NotificationPayload } from 'views/Notifications/types'
 import useFormattedEip155Account from './useFormatEip155Account'
 
-type NotifyResponse = { sent: string[]; failed: string[]; not_found: string[] }
 interface IUseSendNotification {
   sendPushNotification: (notificationType: BuilderNames, args?: string[]) => Promise<void>
-  sendBrowserNotification(title: string, body: string): Promise<void>
   subscribeToPushNotifications(): Promise<void>
   requestNotificationPermission: () => Promise<void | NotificationPermission>
 }
 const publicVapidKey = 'BFEZ07DxapGRLITs13MKaqFPmmbKoHgNLUDn-8aFjF4eitQypUHHsYyx39RSaYvQAxWgz18zvGOXsXw0y8_WxTY'
 
 const useSendPushNotification = (): IUseSendNotification => {
-  const { eip155Account } = useFormattedEip155Account()
+  const { eip155Account, account } = useFormattedEip155Account()
   const toast = useToast()
 
   const requestNotificationPermission = async () => {
@@ -36,7 +33,7 @@ const useSendPushNotification = (): IUseSendNotification => {
     }
   }
 
-  async function subscribeToPushNotifications(title: string, body: string) {
+  async function subscribeToPushNotifications() {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/service-worker-sw.js')
@@ -45,31 +42,15 @@ const useSendPushNotification = (): IUseSendNotification => {
         const existingSubscription = await registration.pushManager.getSubscription()
         if (existingSubscription) return
 
-        await registration.pushManager.subscribe({
+        const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: publicVapidKey,
         })
-        await sendBrowserNotification(title, body)
-      } catch (error) {
-        throw new Error('Error:', error)
-      }
-    }
-  }
-
-  async function sendBrowserNotification(title: string, body: string) {
-    if ('serviceWorker' in navigator) {
-      try {
-        const registration = await navigator.serviceWorker.ready
-        const subscription = await registration.pushManager.getSubscription()
-        if (subscription) {
-          await fetch('http://localhost:8000/broadcast-notifications', {
-            method: 'POST',
-            body: JSON.stringify({ payload: { title, body }, subscription, singleSend: true }),
-            headers: { 'Content-Type': 'application/json' },
-          })
-        } else {
-          await subscribeToPushNotifications(Events.SignatureRequest.title, Events.SignatureRequest.message)
-        }
+        await fetch('http://localhost:8000/subscribe', {
+          method: 'POST',
+          body: JSON.stringify({ subscription, user: account }),
+          headers: { 'Content-Type': 'application/json' },
+        })
       } catch (error) {
         throw new Error('Error:', error)
       }
@@ -82,7 +63,7 @@ const useSendPushNotification = (): IUseSendNotification => {
       notification: PancakeNotifications[notificationType](args),
     }
     try {
-      const notifyResponse = await fetch(`${DEFAULT_RELAY_URL}/${DEFAULT_PROJECT_ID}/notify`, {
+      await fetch(`${DEFAULT_RELAY_URL}/${DEFAULT_PROJECT_ID}/notify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,20 +71,13 @@ const useSendPushNotification = (): IUseSendNotification => {
         },
         body: JSON.stringify(notificationPayload),
       })
-
-      const result: NotifyResponse = await notifyResponse.json()
-      const success = result.sent.includes(eip155Account as string)
-
-      if (success) {
-        await sendBrowserNotification(notificationPayload.notification.title, notificationPayload.notification.body)
-      }
     } catch (error) {
       if (error instanceof Error) {
         toast.toastError('Failed to send', error.message)
       }
     }
   }
-  return { sendPushNotification, sendBrowserNotification, subscribeToPushNotifications, requestNotificationPermission }
+  return { sendPushNotification, subscribeToPushNotifications, requestNotificationPermission }
 }
 
 export default useSendPushNotification
