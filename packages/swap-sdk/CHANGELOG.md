@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 5.4.0
+
+### Minor Changes
+
+- 868f4d11f: Add Base support
+
 ## 5.3.0
 
 ### Minor Changes

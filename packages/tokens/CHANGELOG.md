@@ -1,5 +1,17 @@
 # @pancakeswap/tokens
 
+## 0.4.0
+
+### Minor Changes
+
+- 868f4d11f: Add Base support
+
+### Patch Changes
+
+- Updated dependencies [868f4d11f]
+  - @pancakeswap/sdk@5.4.0
+  - @pancakeswap/token-lists@0.0.8
+
 ## 0.3.1
 
 ### Patch Changes
