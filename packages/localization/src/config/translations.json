@@ -2670,7 +2670,5 @@
   "Swap and Provide Liquidity on Linea now": "Swap and Provide Liquidity on Linea now",
   "day": "day",
   "Quote not available": "Quote not available",
-  "No provider fees.": "No provider fees.",
-  "Ends in %minutes% minutes.": "Ends in %minutes% minutes.",
-  "Ends in %days% days and %hours% hours.": "Ends in %days% days and %hours% hours."
+  "No provider fees. Ends in %days% days, %hours% hours and %minutes% minutes.": "No provider fees. Ends in %days% days, %hours% hours and %minutes% minutes."
 }

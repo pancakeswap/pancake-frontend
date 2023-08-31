@@ -72,10 +72,6 @@ function AccordionItem({
     () => (isCampaignEligible && quote ? getTimePeriods(MOONPAY_CAMPAIGN_END_TIME - Date.now() / 1000) : undefined),
     [isCampaignEligible, quote],
   )
-  const isCampaignLastHour = useMemo(
-    () => campaignTimeLeft && campaignTimeLeft.days === 0 && campaignTimeLeft.hours === 0,
-    [campaignTimeLeft],
-  )
 
   const toggleVisibility = useCallback(() => {
     setVisibility((v) => !v)
@@ -175,15 +171,11 @@ function AccordionItem({
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
                 <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                  {t('No provider fees.')}{' '}
-                  {isCampaignLastHour
-                    ? t('Ends in %minutes% minutes.', {
-                        minutes: campaignTimeLeft?.minutes,
-                      })
-                    : t('Ends in %days% days and %hours% hours.', {
-                        days: campaignTimeLeft?.days,
-                        hours: campaignTimeLeft?.hours,
-                      })}
+                  {t('No provider fees. Ends in %days% days, %hours% hours and %minutes% minutes.', {
+                    days: campaignTimeLeft?.days,
+                    hours: campaignTimeLeft?.hours,
+                    minutes: campaignTimeLeft?.minutes,
+                  })}
                 </Text>
               </Flex>
             </Box>
