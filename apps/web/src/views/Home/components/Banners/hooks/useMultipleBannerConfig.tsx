@@ -11,7 +11,6 @@ import ArbitrumOneBanner from '../ArbitrumOneBanner'
 import { ZksyncBanner } from '../ZksyncBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
-import MoonPayBanner from '../MoonPayBanner'
 import LineaBanner from '../LineaBanner'
 
 interface IBannerConfig {
@@ -39,7 +38,6 @@ export const useMultipleBannerConfig = () => {
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <LineaBanner /> },
-      { shouldRender: true, banner: <MoonPayBanner /> },
       { shouldRender: true, banner: <ArbitrumOneBanner /> },
       { shouldRender: true, banner: <ZksyncBanner /> },
       { shouldRender: true, banner: <PolygonZkEvmBanner /> },
