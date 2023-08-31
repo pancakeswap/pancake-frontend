@@ -232,7 +232,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         <Button
           variant={severity > 2 ? 'danger' : 'primary'}
           onClick={onConfirm}
-          disabled={disabledConfirm}
+          disabled={isMM ? disabledConfirm || !isRFQReady : disabledConfirm}
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
