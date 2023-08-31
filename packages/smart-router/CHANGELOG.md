@@ -1,5 +1,18 @@
 # @pancakeswap/smart-router
 
+## 4.7.0
+
+### Minor Changes
+
+- 868f4d11f: Add Base support
+
+### Patch Changes
+
+- Updated dependencies [868f4d11f]
+  - @pancakeswap/sdk@5.4.0
+  - @pancakeswap/tokens@0.4.0
+  - @pancakeswap/v3-sdk@3.4.0
+
 ## 4.6.0
 
 ### Minor Changes
