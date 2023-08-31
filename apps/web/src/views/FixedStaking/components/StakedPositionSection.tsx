@@ -180,27 +180,28 @@ export function StakedPositionSection({
         tokenSymbol={token.symbol}
         projectedReturnAmount={projectedReturnAmount}
       />
-      {shouldUnlock ? (
-        <ClaimModal
-          poolEndDay={poolEndDay}
-          stakedPeriods={stakedPeriods}
-          pool={pool}
-          lockAPR={lockAPR}
-          boostAPR={boostAPR}
-          unlockAPR={unlockAPR}
-          poolIndex={poolIndex}
-          stakePositionUserInfo={stakePositionUserInfo}
-          token={token}
-          lockPeriod={lockPeriod}
-          unlockTime={unlockTime}
-        >
-          {(openClaimModal) => (
+      <ClaimModal
+        poolEndDay={poolEndDay}
+        stakedPeriods={stakedPeriods}
+        pool={pool}
+        lockAPR={lockAPR}
+        boostAPR={boostAPR}
+        unlockAPR={unlockAPR}
+        poolIndex={poolIndex}
+        stakePositionUserInfo={stakePositionUserInfo}
+        token={token}
+        lockPeriod={lockPeriod}
+        unlockTime={unlockTime}
+      >
+        {(openClaimModal) =>
+          shouldUnlock ? (
             <Button height="auto" onClick={openClaimModal}>
               {t('Claim')}
             </Button>
-          )}
-        </ClaimModal>
-      ) : (
+          ) : null
+        }
+      </ClaimModal>
+      {shouldUnlock ? null : (
         <Flex>
           <UnstakeBeforeEnededModal
             pools={pool.pools}
