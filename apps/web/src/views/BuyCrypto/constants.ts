@@ -14,7 +14,7 @@ export const SUPPORTED_MOONPAY_ARBITRUM_TOKENS = ['eth_arbitrum', 'usdc_arbitrum
 
 export const SUPPORTED_MERCURYO_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 const MOONPAY_FEE_TYPES = ['Est. Total Fees', 'Networking Fees', 'Provider Fees']
-const MERCURYO_FEE_TYPES = ['Est Total Fees']
+const MERCURYO_FEE_TYPES = ['Est Total Fees', 'Provider Fees', 'Processing Fees']
 
 export const supportedTokenMap: {
   [chainId: number]: {

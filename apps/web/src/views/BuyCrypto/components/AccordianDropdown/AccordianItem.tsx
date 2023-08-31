@@ -149,9 +149,9 @@ function AccordionItem({
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.provider === 'Mercuryo' ? 0 : quote.networkFee + providerFee
+            if (index === 0) fee = quote.networkFee + providerFee
             else if (index === 1) fee = quote.networkFee
-            else fee = providerFee
+            else fee = quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
           {quote.provider === 'Mercuryo' ? (
@@ -159,7 +159,7 @@ function AccordionItem({
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
                 <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                  {t('No provider fees. Ends in %days% days and %hours% hours.', {
+                  {t('No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.', {
                     days,
                     hours,
                   })}
