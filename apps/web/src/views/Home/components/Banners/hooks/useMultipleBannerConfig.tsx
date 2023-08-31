@@ -12,6 +12,7 @@ import { ZksyncBanner } from '../ZksyncBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import LineaBanner from '../LineaBanner'
+import BaseBanner from '../BaseBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -37,6 +38,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <BaseBanner /> },
       { shouldRender: true, banner: <LineaBanner /> },
       { shouldRender: true, banner: <ArbitrumOneBanner /> },
       { shouldRender: true, banner: <ZksyncBanner /> },
