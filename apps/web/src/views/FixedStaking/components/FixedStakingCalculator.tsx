@@ -14,6 +14,7 @@ import { Token } from '@pancakeswap/sdk'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
+import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
@@ -33,6 +34,8 @@ export function FixedStakingCalculator({
   isBoost?: boolean
 }) {
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
+
+  const { locked } = useUserLockedCakeStatus()
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()
@@ -118,7 +121,7 @@ export function FixedStakingCalculator({
                 </PreTitle>
                 <FixedStakingOverview
                   lastDayAction={lastDayAction}
-                  isBoost={isBoost}
+                  isBoost={locked || isBoost}
                   poolEndDay={poolEndDay}
                   stakeAmount={stakeCurrencyAmount}
                   lockAPR={lockAPR}
