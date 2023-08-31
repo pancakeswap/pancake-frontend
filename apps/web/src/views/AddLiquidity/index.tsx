@@ -182,7 +182,8 @@ export default function AddLiquidity({
       | undefined
     // eslint-disable-next-line
     let method: typeof routerContract.write.addLiquidityETH | typeof routerContract.write.addLiquidity | undefined
-    let args: Array<string | string[] | number | bigint> | undefined
+    // eslint-disable-next-line
+    let args: Array<string | string[] | number | bigint>
     let value: bigint | null
     if (currencyA?.isNative || currencyB?.isNative) {
       const tokenBIsNative = currencyB?.isNative
