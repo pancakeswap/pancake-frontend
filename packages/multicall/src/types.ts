@@ -1,4 +1,11 @@
-import { PublicClient } from 'viem'
-import { ChainId } from '@pancakeswap/sdk'
+import type { Address } from 'viem'
+import { BigintIsh } from '@pancakeswap/sdk'
 
-export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => PublicClient
+export type MulticallRequest = {
+  to: Address
+  data: string
+}
+
+export type MulticallRequestWithGas = MulticallRequest & {
+  gas: BigintIsh
+}

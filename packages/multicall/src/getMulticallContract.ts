@@ -1,23 +1,22 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { GetContractReturnType, PublicClient, getContract } from 'viem'
 
-import { OnChainProvider } from './types'
 import { MULTICALL_ADDRESS } from './constants/contracts'
 import { iMulticallABI } from './abis/IMulticall'
 
 type Params = {
   chainId: ChainId
-  provider?: OnChainProvider
+  client?: PublicClient
 }
 
 export function getMulticallContract({
   chainId,
-  provider,
+  client,
 }: Params): GetContractReturnType<typeof iMulticallABI, PublicClient> {
   const address = MULTICALL_ADDRESS[chainId]
   if (!address) {
     throw new Error(`PancakeMulticall not supported on chain ${chainId}`)
   }
 
-  return getContract({ abi: iMulticallABI, address, publicClient: provider?.({ chainId }) })
+  return getContract({ abi: iMulticallABI, address, publicClient: client })
 }

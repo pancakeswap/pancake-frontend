@@ -1,4 +1,6 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { BigintIsh, ChainId } from '@pancakeswap/sdk'
+import { toBigInt } from '@pancakeswap/utils/toBigInt'
+import { PublicClient } from 'viem'
 
 import {
   DEFAULT_GAS_BUFFER,
@@ -6,20 +8,19 @@ import {
   DEFAULT_GAS_LIMIT,
   DEFAULT_GAS_LIMIT_BY_CHAIN,
 } from './constants'
-import { OnChainProvider } from './types'
 import { getMulticallContract } from './getMulticallContract'
 
 export type GetGasLimitParams = {
   chainId: ChainId
-  provider?: OnChainProvider
+  client?: PublicClient
 
   // If provided then would override the gas limit got from on chain
-  gasLimit?: bigint
+  gasLimit?: BigintIsh
 
   // The gas limit should be whichever is smaller between gasLimit and maxGasLimit
-  maxGasLimit?: bigint
+  maxGasLimit?: BigintIsh
 
-  gasBuffer?: bigint
+  gasBuffer?: BigintIsh
 }
 
 export function getDefaultGasLimit(chainId: ChainId) {
@@ -30,23 +31,26 @@ export function getDefaultGasBuffer(chainId: ChainId) {
   return DEFAULT_GAS_BUFFER_BY_CHAIN[chainId] || DEFAULT_GAS_BUFFER
 }
 
-export type GetGasLimitOnChainParams = Pick<GetGasLimitParams, 'chainId' | 'provider'>
+export type GetGasLimitOnChainParams = Pick<GetGasLimitParams, 'chainId' | 'client'>
 
-export async function getGasLimitOnChain({ chainId, provider }: GetGasLimitOnChainParams) {
-  const multicall = getMulticallContract({ chainId, provider })
+export async function getGasLimitOnChain({ chainId, client }: GetGasLimitOnChainParams) {
+  const multicall = getMulticallContract({ chainId, client })
   const gasLeft = (await multicall.read.gasLeft()) as bigint
   return gasLeft
 }
 
 export async function getGasLimit({
   chainId,
-  gasLimit: gasLimitOverride,
-  maxGasLimit = getDefaultGasLimit(chainId),
-  gasBuffer = getDefaultGasBuffer(chainId),
-  provider,
+  gasLimit: gasLimitInput,
+  maxGasLimit: maxGasLimitInput = getDefaultGasLimit(chainId),
+  gasBuffer: gasBufferInput = getDefaultGasBuffer(chainId),
+  client,
 }: GetGasLimitParams) {
-  const gasLimit =
-    (gasLimitOverride && BigInt(gasLimitOverride)) || (await getGasLimitOnChain({ chainId, provider })) || maxGasLimit
+  const gasLimitOverride = gasLimitInput && toBigInt(gasLimitInput)
+  const maxGasLimit = toBigInt(maxGasLimitInput)
+  const gasBuffer = toBigInt(gasBufferInput)
+
+  const gasLimit = gasLimitOverride || (await getGasLimitOnChain({ chainId, client })) || maxGasLimit
   const minGasLimit = gasLimit < maxGasLimit ? gasLimit : maxGasLimit
   return minGasLimit - gasBuffer
 }

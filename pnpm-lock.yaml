@@ -1157,6 +1157,9 @@ importers:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(@swc/core@1.2.218)(postcss@8.4.21)(typescript@5.1.3)
@@ -1218,6 +1221,9 @@ importers:
 
   packages/smart-router:
     dependencies:
+      '@pancakeswap/multicall':
+        specifier: workspace:*
+        version: link:../multicall
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -27516,7 +27522,7 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
 
   github.com/release-it/conventional-changelog/a4acfeac76369937a6566d698a5ae9180eceb413(release-it@15.10.3):
-    resolution: {tarball: https://codeload.github.com/release-it/conventional-changelog/tar.gz/a4acfeac76369937a6566d698a5ae9180eceb413}
+    resolution: {commit: a4acfeac76369937a6566d698a5ae9180eceb413, repo: git+ssh://git@github.com/release-it/conventional-changelog.git, type: git}
     id: github.com/release-it/conventional-changelog/a4acfeac76369937a6566d698a5ae9180eceb413
     name: '@release-it/conventional-changelog'
     version: 7.0.0
