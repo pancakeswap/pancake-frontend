@@ -1,3 +1,4 @@
+import shouldForwardProp from "@styled-system/should-forward-prop";
 import React from "react";
 import { styled, keyframes } from "styled-components";
 import BunnyIcon from "../Svg/Icons/Logo";
@@ -20,7 +21,7 @@ const bunnyFall = keyframes`
   }
 `;
 
-const Bunny = styled.div<BunnyProps>`
+const Bunny = styled.div.withConfig({ shouldForwardProp })<BunnyProps>`
   display: inline-flex;
   position: fixed;
   top: 0;

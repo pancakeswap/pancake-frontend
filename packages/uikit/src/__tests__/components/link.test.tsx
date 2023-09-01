@@ -13,28 +13,17 @@ it("renders link correctly", () => {
     }
 
     .c1 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
-      width: -webkit-fit-content;
-      width: -moz-fit-content;
       width: fit-content;
     }
 
     .c1:hover {
-      -webkit-text-decoration: underline;
       text-decoration: underline;
     }
 
     <a
         class="c0 c1"
-        color="primary"
-        font-size="16px"
         href="https://pancakeswap.finance"
       >
         Link
@@ -48,13 +37,9 @@ it("renders link external link correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c2 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-primary);
       color: var(--colors-primary);
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
       flex-shrink: 0;
       margin-left: 4px;
     }
@@ -67,35 +52,23 @@ it("renders link external link correctly", () => {
     }
 
     .c1 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
-      width: -webkit-fit-content;
-      width: -moz-fit-content;
       width: fit-content;
     }
 
     .c1:hover {
-      -webkit-text-decoration: underline;
       text-decoration: underline;
     }
 
-    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+    @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
       .c2 {
-        -webkit-filter: none !important;
-        filter: none !important;
+        filter: none!important;
       }
     }
 
     <a
         class="c0 c1"
-        color="primary"
-        font-size="16px"
         href="https://pancakeswap.finance"
         rel="noreferrer noopener"
         target="_blank"
@@ -104,6 +77,7 @@ it("renders link external link correctly", () => {
         <svg
           class="c2"
           color="primary"
+          ml="4px"
           viewBox="0 0 24 24"
           width="20px"
           xmlns="http://www.w3.org/2000/svg"

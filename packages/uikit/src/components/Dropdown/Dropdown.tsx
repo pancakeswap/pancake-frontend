@@ -1,3 +1,4 @@
+import shouldForwardProp from "@styled-system/should-forward-prop";
 import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
 import { styled, css } from "styled-components";
@@ -18,7 +19,9 @@ const getBottom = ({ position }: PositionProps) => {
   return "auto";
 };
 
-const DropdownContent = styled.div<{ position: Position }>`
+const DropdownContent = styled.div.withConfig({
+  shouldForwardProp,
+})<{ position: Position }>`
   width: max-content;
   display: flex;
   flex-direction: column;

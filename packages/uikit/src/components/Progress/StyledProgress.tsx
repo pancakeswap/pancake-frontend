@@ -1,3 +1,4 @@
+import shouldForwardProp from "@styled-system/should-forward-prop";
 import { styled } from "styled-components";
 import { space, variant as StyledSystemVariant } from "styled-system";
 import { styleVariants, styleScales } from "./themes";
@@ -10,7 +11,7 @@ interface ProgressBarProps {
   $background?: string;
 }
 
-export const Bar = styled.div<ProgressBarProps>`
+export const Bar = styled.div.withConfig({ shouldForwardProp })<ProgressBarProps>`
   position: absolute;
   top: 0;
   left: 0;

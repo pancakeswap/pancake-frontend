@@ -1,3 +1,4 @@
+import shouldForwardProp from "@styled-system/should-forward-prop";
 import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from "framer-motion";
 import React, { useRef } from "react";
 import { styled, keyframes } from "styled-components";
@@ -32,7 +33,7 @@ const pulse = keyframes`
   }
 `;
 
-const AnimationWrapper = styled(Motion.div)`
+const AnimationWrapper = styled(Motion.div).withConfig({ shouldForwardProp })`
   position: relative;
   will-change: opacity;
   opacity: 0;
@@ -44,14 +45,14 @@ const AnimationWrapper = styled(Motion.div)`
   }
 `;
 
-const SkeletonWrapper = styled.div<SkeletonProps>`
+const SkeletonWrapper = styled.div.withConfig({ shouldForwardProp })<SkeletonProps>`
   position: relative;
   ${layout}
   ${space}
   overflow: hidden;
 `;
 
-const Root = styled.div<SkeletonProps>`
+const Root = styled.div.withConfig({ shouldForwardProp })<SkeletonProps>`
   min-height: 20px;
   display: block;
   background-color: ${({ theme, isDark }) => (isDark ? theme.colors.inputSecondary : theme.colors.backgroundDisabled)};

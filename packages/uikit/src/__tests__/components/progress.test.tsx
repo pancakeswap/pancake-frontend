@@ -11,7 +11,6 @@ it("renders correctly", () => {
       left: 0;
       background: var(--colors-secondary);
       height: 100%;
-      -webkit-transition: width 200ms ease;
       transition: width 200ms ease;
     }
 
@@ -32,6 +31,7 @@ it("renders correctly", () => {
     <div
         class="c0"
         scale="md"
+        variant="round"
       >
         <div
           class="c1 c2"

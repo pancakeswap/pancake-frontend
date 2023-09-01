@@ -9,8 +9,6 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      -webkit-appearance: none;
-      -moz-appearance: none;
       appearance: none;
       overflow: hidden;
       cursor: pointer;
@@ -19,7 +17,6 @@ it("renders correctly", () => {
       height: 32px;
       width: 32px;
       vertical-align: middle;
-      -webkit-transition: background-color 0.2s ease-in-out;
       transition: background-color 0.2s ease-in-out;
       border: 0;
       border-radius: 8px;
@@ -39,10 +36,7 @@ it("renders correctly", () => {
       width: 50%;
       height: 25%;
       margin: auto;
-      -webkit-transform: rotate(-50deg);
-      -ms-transform: rotate(-50deg);
       transform: rotate(-50deg);
-      -webkit-transition: border-color 0.2s ease-in-out;
       transition: border-color 0.2s ease-in-out;
     }
 

@@ -23,6 +23,7 @@ import {
   Slider,
   Text,
   RoiCalculatorModal,
+  TextProps,
 } from "../../components";
 import { Modal } from "../Modal";
 
@@ -34,7 +35,7 @@ const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
 `;
 
-const AnnualRoiDisplay = styled(Text)`
+const AnnualRoiDisplay = styled((props: TextProps) => <Text {...props} />)`
   width: 72px;
   max-width: 72px;
   overflow: hidden;

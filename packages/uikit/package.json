@@ -44,7 +44,8 @@
     "build:storybook": "storybook build",
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

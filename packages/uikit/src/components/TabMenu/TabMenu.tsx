@@ -6,7 +6,7 @@ import { TabMenuProps } from "./types";
 const Wrapper = styled(Flex)<{ fullWidth?: boolean; isShowBorderBottom?: boolean }>`
   border-bottom: ${({ isShowBorderBottom, theme }) =>
     isShowBorderBottom ? `2px solid ${theme.colors.input}` : "none"};
-  overflow-x: scroll;
+  overflow-x: auto;
   padding: ${({ fullWidth }) => (fullWidth ? 0 : "16px 16px 0 16px")};
 
   ::-webkit-scrollbar {
