@@ -31,12 +31,16 @@ const NonAffiliateModal = () => {
 
   return (
     <ModalV2 isOpen={isOpen}>
-      <Modal title={t('Affiliate Program Update')} maxWidth={['100%', '100%', '100%', '480px']} hideCloseButton>
+      <Modal
+        title={t('Affiliate Program Update')}
+        maxWidth={['100%', '100%', '100%', '480px']}
+        onDismiss={() => handleCloseButton()}
+      >
         <Flex flexDirection="column">
           <Text mb="24px">
             <Text as="span">
               {t(
-                'Our affiliate program’s terms and conditions have been updated as of September 1, 2023, with changes related to sections 2 (a), 2.1 (a and b) and 3. Section 2 (a) includes chains such as Polygon zkEVM, zkSync Era, Arbitrum One, Linea, and Base for Swap Commissions. Section 2.1 (a and b) includes updating the “PancakeSwap token” list and adding MATIC, ARB, DAI in the major token pairs for the swap commission.  Section 3, the discount for perpetuals trading fee is limited to v1 perpetual trades.',
+                'For Affiliate program participants: Our affiliate program’s terms and conditions have been updated as of September 1, 2023, with changes related to sections 2 (a), 2.1 (a and b) and 3. Section 2 (a) includes chains such as Polygon zkEVM, zkSync Era, Arbitrum One, Linea, and Base for Swap Commissions. Section 2.1 (a and b) includes updating the “PancakeSwap token” list and adding MATIC, ARB, DAI in the major token pairs for the swap commission.  Section 3, the discount for perpetuals trading fee is limited to v1 perpetual trades.',
               )}
             </Text>
           </Text>

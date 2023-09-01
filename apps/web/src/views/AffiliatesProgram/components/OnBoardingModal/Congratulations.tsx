@@ -1,22 +1,13 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Flex, Text, Button, Link, ModalV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useTheme } from 'styled-components'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 
 const Congratulations = () => {
-  const {
-    t,
-    currentLanguage: { code },
-  } = useTranslation()
-  const { chainId } = useActiveChainId()
-  const { isDark } = useTheme()
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.AFFILIATE_PROGRAM)
-  const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
 
   return (
     <>
@@ -35,7 +26,7 @@ const Congratulations = () => {
         </Link>
         <Link
           external
-          href={perpetualUrl}
+          href="https://perp.pancakeswap.finance/en/futures/BTCUSDT"
           width="100% !important"
           onClick={(e) => {
             if (!userNotUsCitizenAcknowledgement) {
