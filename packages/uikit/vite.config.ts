@@ -12,7 +12,7 @@ export default defineConfig({
       formats: ["cjs", "es"],
     },
     rollupOptions: {
-      external: [...Object.keys(pkg.peerDependencies), "crypto"],
+      external: [...Object.keys(pkg.peerDependencies), ...Object.keys(pkg.dependencies), "crypto"],
     },
   },
   plugins: [

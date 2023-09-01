@@ -12,7 +12,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next"
   },
   "dependencies": {
-    "@vanilla-extract/next-plugin": "^2.1.1",
+    "@vanilla-extract/next-plugin": "^2.3.0",
     "@ethersproject/keccak256": "^5.7.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
@@ -37,7 +37,7 @@
     "date-fns": "^2.29.3",
     "next": "13.4.2",
     "next-axiom": "^0.16.0",
-    "next-themes": "^0.2.0",
+    "next-themes": "^0.2.1",
     "next-seo": "^5.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

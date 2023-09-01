@@ -6,7 +6,8 @@
     "baseUrl": "./",
     "paths": {
       "*": ["./*"],
-      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"]
+      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"],
+      "@pancakeswap/uikit/*": ["../../packages/uikit/src/*"]
     }
   },
   "exclude": ["node_modules"]

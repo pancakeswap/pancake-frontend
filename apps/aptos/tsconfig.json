@@ -10,7 +10,8 @@
       "@pancakeswap/awgmi": ["../../packages/awgmi/src"],
       "@pancakeswap/awgmi/core": ["../../packages/awgmi/core/src"],
       "@pancakeswap/awgmi/connectors/*": ["../../packages/awgmi/connectors/*"],
-      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"]
+      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"],
+      "@pancakeswap/uikit/*": ["../../packages/uikit/src/*"]
     }
   }
 }
