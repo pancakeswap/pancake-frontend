@@ -251,7 +251,7 @@ const Hero = () => {
             /> */}
             <CakeBox>
               <CakeCanvas width={width} height={height} ref={canvasRef} />
-              <CakeVideo ref={videoRef} width={width} loop controls autoPlay muted id="video">
+              <CakeVideo ref={videoRef} width={width} loop autoPlay muted playsInline>
                 <source src="/assets/bunny.webm" type="video/webm" />
               </CakeVideo>
             </CakeBox>
