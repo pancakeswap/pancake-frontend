@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 export const supportedChainIdV2 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM] as const
 export const supportedChainIdV3 = [
   ChainId.GOERLI,
+  ChainId.BASE,
   ChainId.BSC,
   ChainId.BSC_TESTNET,
   ChainId.ETHEREUM,
@@ -29,6 +30,7 @@ export const masterChefAddresses = {
 export const masterChefV3Addresses = {
   [ChainId.ETHEREUM]: '0x556B9306565093C855AEA9AE92A594704c2Cd59e',
   [ChainId.GOERLI]: '0x864ED564875BdDD6F421e226494a0E7c071C06f8',
+  [ChainId.BASE]: '0x9d2643c30F36A43B4D1c04Fe6129c979Ff330Bac',
   [ChainId.BSC]: '0x556B9306565093C855AEA9AE92A594704c2Cd59e',
   [ChainId.BSC_TESTNET]: '0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B',
   [ChainId.ZKSYNC_TESTNET]: '0x3c6Aa61f72932aD5D7C917737367be32D5509e6f',
@@ -36,7 +38,7 @@ export const masterChefV3Addresses = {
   [ChainId.POLYGON_ZKEVM]: '0xe9c7f3196ab8c09f6616365e8873daeb207c0391',
   [ChainId.ZKSYNC]: '0x4c615E78c5fCA1Ad31e4d66eb0D8688d84307463',
   [ChainId.ARBITRUM_ONE]: '0x5e09ACf80C0296740eC5d6F643005a4ef8DaA694',
-  [ChainId.LINEA]: '0x22E2f236065B780FA33EC8C4E58b99ebc8B55c57',
+  [ChainId.LINEA]: '0x22E2f236065B780FA33EC8C4E58b99ebc8B55c57'
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
 export const nonBSCVaultAddresses = {
