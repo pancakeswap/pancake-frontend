@@ -173,7 +173,12 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         <CommunitySection />
       </PageSection>
       <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
+        innerProps={{
+          style: {
+            ...HomeSectionContainerStyles,
+            maxWidth: '1400px',
+          },
+        }}
         background={theme.colors.background}
         index={2}
         hasCurvedDivider={false}
