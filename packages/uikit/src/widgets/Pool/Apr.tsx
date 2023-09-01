@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import styled, { css } from "styled-components";
+import { styled, css } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";

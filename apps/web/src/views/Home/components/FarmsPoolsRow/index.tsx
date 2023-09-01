@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
 import { Flex, Box, SwapVertIcon, IconButton, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'

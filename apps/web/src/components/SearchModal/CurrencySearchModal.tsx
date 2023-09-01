@@ -15,7 +15,7 @@ import {
   ImportList,
 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useListState } from 'state/lists/lists'
 import { useAllLists } from 'state/lists/hooks'
 import { usePreviousValue } from '@pancakeswap/hooks'

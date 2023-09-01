@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
-import { Heading } from '@pancakeswap/uikit'
+import { Heading, AtomBox } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'

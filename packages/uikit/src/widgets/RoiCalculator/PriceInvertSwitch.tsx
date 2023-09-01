@@ -1,7 +1,7 @@
 import { Currency } from "@pancakeswap/sdk";
 import { memo } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { Flex, Text, Button, SyncAltIcon } from "../../components";
 

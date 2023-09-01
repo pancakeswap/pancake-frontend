@@ -1,12 +1,12 @@
 import BigNumber from "bignumber.js";
 
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { useTranslation } from "@pancakeswap/localization";
 import { Flex, Text, Box } from "../../components";
 import { DeserializedPool } from "./types";
 
-const InlineText = styled((props) => <Text {...props} />)`
+const InlineText = styled(Text)`
   display: inline;
 `;
 

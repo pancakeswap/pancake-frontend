@@ -10,7 +10,6 @@ const nextConfig = {
   swcMinify: true,
   transpilePackages: [
     '@pancakeswap/uikit',
-    '@pancakeswap/ui',
     '@pancakeswap/hooks',
     '@pancakeswap/localization',
     '@pancakeswap/utils',

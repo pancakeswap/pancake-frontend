@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 const Label = styled.div`
   font-size: 12px;
@@ -12,7 +12,7 @@ const ContentContainer = styled.div`
   align-items: center;
 `;
 
-interface CellLayoutProps {
+export interface CellLayoutProps {
   label?: string;
 }
 

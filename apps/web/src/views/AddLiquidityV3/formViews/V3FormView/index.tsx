@@ -42,7 +42,7 @@ import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trad
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSendTransaction, useWalletClient } from 'wagmi'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'

@@ -1,7 +1,7 @@
 import { LayoutProps, SpaceProps, TypographyProps } from "styled-system";
 import { PropsWithChildren } from "react";
 
-interface Props extends SpaceProps, TypographyProps, LayoutProps {
+export interface TextBaseProps extends SpaceProps, TypographyProps, LayoutProps {
   color?: string;
   bold?: boolean;
   small?: boolean;
@@ -9,4 +9,4 @@ interface Props extends SpaceProps, TypographyProps, LayoutProps {
   textTransform?: "uppercase" | "lowercase" | "capitalize";
 }
 
-export type TextProps = PropsWithChildren<Props>;
+export type TextProps = PropsWithChildren<TextBaseProps>;

@@ -1,6 +1,6 @@
 import { Flex, Text, Button, Box, PageSection, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useTheme from 'hooks/useTheme'
 // import Calculator from 'views/AffiliatesProgram/components/Overview/Calculator'
 import CommissionStructure from 'views/AffiliatesProgram/components/Overview/CommissionStructure'

@@ -1,4 +1,5 @@
-import styled, { CSSProperties } from 'styled-components'
+import { CSSProperties } from 'react'
+import { styled } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from 'state/types'

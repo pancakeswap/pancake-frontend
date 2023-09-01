@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
-import styled from 'styled-components'
-import { Text, Flex, Box, CloseIcon, IconButton } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+import { AtomBox, Text, Flex, Box, CloseIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { DOMAIN } from 'config'
-import { AtomBox } from '@pancakeswap/ui'
 
 const Container = styled(Flex)`
   overflow: hidden;

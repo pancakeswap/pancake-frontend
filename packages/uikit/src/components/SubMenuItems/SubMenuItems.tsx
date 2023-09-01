@@ -1,9 +1,9 @@
-import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import { useIsomorphicLayoutEffect } from "framer-motion";
 import debounce from "lodash/debounce";
 import React, { useCallback, useRef, useState } from "react";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
+import { AtomBox } from '../AtomBox'
 import MenuItem from "../MenuItem/MenuItem";
 import { ChevronLeftIcon, ChevronRightIcon, OpenNewIcon } from "../Svg";
 import StyledSubMenuItems, {

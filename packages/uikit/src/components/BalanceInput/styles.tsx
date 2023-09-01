@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import Box from "../Box/Box";
 import Input from "../Input/Input";
 import Text from "../Text/Text";

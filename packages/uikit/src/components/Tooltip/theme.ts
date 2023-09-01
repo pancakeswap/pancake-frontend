@@ -1,5 +1,5 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
 import { darkColors, lightColors } from "../../theme/colors";
+import { vars } from "../../css/vars.css";
 import { TooltipTheme } from "./types";
 
 export const light: TooltipTheme = {

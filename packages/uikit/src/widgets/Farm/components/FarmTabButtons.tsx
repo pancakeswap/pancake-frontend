@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useRouter } from "next/router";
 import { useTranslation } from "@pancakeswap/localization";
 import { NextLinkFromReactRouter } from "../../../components/NextLink";

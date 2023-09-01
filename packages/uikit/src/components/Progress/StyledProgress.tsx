@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { space, variant as StyledSystemVariant } from "styled-system";
-import { lightColors } from "../../theme";
 import { styleVariants, styleScales } from "./themes";
 import { ProgressProps, variants } from "./types";
+import { lightColors } from "../..";
 
 interface ProgressBarProps {
   primary?: boolean;

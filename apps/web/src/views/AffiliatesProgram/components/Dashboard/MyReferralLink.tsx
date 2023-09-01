@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Flex, Text, Input, Box, Button, ArrowForwardIcon, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { keccak256, encodePacked } from 'viem'
 import { useAccount } from 'wagmi'

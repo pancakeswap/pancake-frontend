@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Link } from '@pancakeswap/uikit'
 
 export const PageButtons = styled.div`

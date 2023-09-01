@@ -1,4 +1,4 @@
-import styled, { css, DefaultTheme } from "styled-components";
+import { styled, css, DefaultTheme } from "styled-components";
 import { space } from "styled-system";
 import { promotedGradient } from "../../util/animationToolkit";
 import { Box } from "../Box";

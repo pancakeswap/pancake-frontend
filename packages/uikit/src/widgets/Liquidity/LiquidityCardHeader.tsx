@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { AtomBox } from "@pancakeswap/ui";
-import styled from "styled-components";
+import { styled } from "styled-components";
+import { AtomBox } from "../../components/AtomBox";
 import { ArrowBackIcon } from "../../components/Svg";
 import { IconButton } from "../../components/Button";
 import { Text } from "../../components/Text";
 import { Heading } from "../../components/Heading";
 import { QuestionHelper } from "../../components/QuestionHelper";
 
-interface LiquidityCardHeaderProps {
+export interface LiquidityCardHeaderProps {
   title: string;
   subtitle?: string;
   helper?: string;

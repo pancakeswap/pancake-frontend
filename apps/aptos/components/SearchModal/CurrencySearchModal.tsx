@@ -14,7 +14,7 @@ import {
   MODAL_SWIPE_TO_CLOSE_VELOCITY,
   ImportList,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { TokenList } from '@pancakeswap/token-lists'
 import { useTranslation } from '@pancakeswap/localization'

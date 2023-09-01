@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { ButtonProps, IconButton } from "../../components/Button";
 import { ArrowDownIcon, ArrowUpDownIcon } from "../../components/Svg";

@@ -2,7 +2,7 @@ import { useTranslation } from "@pancakeswap/localization";
 
 import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useState } from "react";
-import styled, { useTheme } from "styled-components";
+import { styled, useTheme } from "styled-components";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
 import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
@@ -26,15 +26,15 @@ import {
 } from "../../components";
 import { Modal } from "../Modal";
 
-const StyledLink = styled((props) => <Link {...props} />)`
+const StyledLink = styled(Link)`
   width: 100%;
 `;
 
-const AnnualRoiContainer = styled((props) => <Flex {...props} />)`
+const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
 `;
 
-const AnnualRoiDisplay = styled((props) => <Text {...props} />)`
+const AnnualRoiDisplay = styled(Text)`
   width: 72px;
   max-width: 72px;
   overflow: hidden;

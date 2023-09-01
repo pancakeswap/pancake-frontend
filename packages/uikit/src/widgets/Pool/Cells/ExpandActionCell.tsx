@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 
 import { Text, ChevronDownIcon } from "../../../components";
@@ -23,7 +23,7 @@ const StyledCell = styled(BaseCell)`
   }
 `;
 
-const ArrowIcon = styled((props) => <ChevronDownIcon {...props} />)`
+const ArrowIcon = styled(ChevronDownIcon)<{ toggled?: boolean }>`
   transform: ${({ toggled }) => (toggled ? "rotate(180deg)" : "rotate(0)")};
   height: 24px;
 `;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import { styled, keyframes } from "styled-components";
 import { Flex, ArrowDownIcon } from "../../components";
 
 const rotate = keyframes`

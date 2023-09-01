@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, ReactElement } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import BigNumber from "bignumber.js";
 import partition from "lodash/partition";
 import { useTranslation } from "@pancakeswap/localization";

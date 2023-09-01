@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, useMatchBreakpoints, Box, OpenNewIcon } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import * as S from './Styled'
 
 const { ETHBunny, ETHXPancakeSwap } = {

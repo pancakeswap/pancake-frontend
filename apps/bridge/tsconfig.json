@@ -5,7 +5,8 @@
     "target": "ES2015",
     "baseUrl": "./",
     "paths": {
-      "*": ["./*"]
+      "*": ["./*"],
+      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"]
     }
   },
   "exclude": ["node_modules"]

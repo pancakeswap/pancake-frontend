@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Box, Flex } from "../Box";
 
 export const InlineMenuContainer = styled(Box)`

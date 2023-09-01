@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { typography, TypographyProps } from "styled-system";
 
 export const Td = styled.td<TypographyProps>`

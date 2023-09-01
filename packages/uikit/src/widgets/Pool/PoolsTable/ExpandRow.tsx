@@ -1,5 +1,5 @@
 import { useState, memo, ReactNode, useCallback, useEffect, useRef } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useDelayedUnmount } from "@pancakeswap/hooks";
 import { ExpandActionCell } from "../Cells/ExpandActionCell";
 import useMatchBreakpoints from "../../../contexts/MatchBreakpoints/useMatchBreakpoints";

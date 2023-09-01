@@ -3,7 +3,7 @@ import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance, NextLinkFromRe
 import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { usePriceCakeUSD } from 'state/farms/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { fetchLottery, fetchCurrentLotteryId } from 'state/lottery/helpers'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { SLOW_INTERVAL } from 'config/constants'

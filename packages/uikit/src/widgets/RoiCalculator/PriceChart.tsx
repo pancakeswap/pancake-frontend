@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, memo } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { SpaceProps } from "styled-system";
 
 import {

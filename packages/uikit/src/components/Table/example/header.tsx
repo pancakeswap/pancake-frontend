@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 const StyledTh = styled.th`
   background: #eff4f5;

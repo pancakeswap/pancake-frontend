@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Tag, Flex, Heading, Box, Skeleton, Farm as FarmUI, useTooltip } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/aptos-swap-sdk'
 import { TokenPairImage } from 'components/TokenImage'

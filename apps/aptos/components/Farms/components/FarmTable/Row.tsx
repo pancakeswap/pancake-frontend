@@ -14,7 +14,7 @@ import {
   DesktopColumnSchema,
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 

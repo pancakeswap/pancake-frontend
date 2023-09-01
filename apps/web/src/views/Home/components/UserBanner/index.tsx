@@ -1,5 +1,5 @@
 import { Box, Flex } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import HarvestCard from './HarvestCard'
 import UserDetail from './UserDetail'
 

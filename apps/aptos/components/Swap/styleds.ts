@@ -1,5 +1,5 @@
 import { AutoColumn, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
   background-color: ${({ theme }) => `${theme.colors.warning33}`};

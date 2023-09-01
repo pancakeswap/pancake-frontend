@@ -5,7 +5,7 @@ import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { useState, memo } from 'react'
 import { Field } from 'state/swap/actions'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'

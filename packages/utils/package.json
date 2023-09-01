@@ -8,7 +8,7 @@
   "peerDependencies": {
     "viem": "^1.2.9",
     "date-fns": "^2.29.3",
-    "styled-components": "^5.3.3",
+    "styled-components": "^6.0.7",
     "lodash": "^4.17.21",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -18,8 +18,7 @@
   },
   "devDependencies": {
     "viem": "^1.2.9",
-    "styled-components": "^5.3.3",
-    "@types/styled-components": "^5.1.26",
+    "styled-components": "^6.0.7",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@types/lodash": "^4.14.168",

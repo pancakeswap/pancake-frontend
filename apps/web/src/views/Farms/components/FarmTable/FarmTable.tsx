@@ -7,7 +7,7 @@ import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useMemo, useRef } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../getDisplayApr'
 

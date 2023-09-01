@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { lightColors } from "../../theme";
+import { styled } from "styled-components";
+import { lightColors } from "../../theme/colors";
 
 export const TimelineContainer = styled.ul`
   display: flex;

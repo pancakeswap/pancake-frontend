@@ -1,7 +1,6 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { AtomBox } from "@pancakeswap/ui";
 //  should be ok to import type from sdk
 import type { FeeAmount } from "@pancakeswap/v3-sdk";
 
@@ -11,6 +10,7 @@ import { Button } from "../../../../components/Button";
 import Flex from "../../../../components/Box/Flex";
 import Tags from "../Tags";
 import { Tag } from "../../../../components/Tag";
+import { AtomBox } from "../../../../components/AtomBox";
 import { AutoColumn, AutoRow, RowBetween } from "../../../../components";
 
 const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags;

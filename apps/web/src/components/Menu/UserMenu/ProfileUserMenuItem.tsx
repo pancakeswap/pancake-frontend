@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import NextLink from 'next/link'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'

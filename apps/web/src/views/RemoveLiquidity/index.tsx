@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {

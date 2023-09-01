@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Text, Box, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'

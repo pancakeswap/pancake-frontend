@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../Text";
 import { ArrowBackIcon, ArrowForwardIcon } from "../Svg";

@@ -21,7 +21,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { useMemo, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { Bound } from 'config/constants/types'
 import { usePoolAvgInfo } from 'hooks/usePoolAvgInfo'

@@ -3,6 +3,7 @@
   "display": "Next.js",
   "extends": "./base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "allowJs": true,
     "declaration": false,
     "declarationMap": false,
@@ -12,6 +13,9 @@
     "module": "esnext",
     "target": "ES2020",
     "noEmit": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"]
+    }
   }
 }

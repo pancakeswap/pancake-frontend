@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Price } from "@pancakeswap/swap-sdk-core";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
-import styled, { useTheme } from "styled-components";
+import { styled, useTheme } from "styled-components";
 import { useCallback, useMemo } from "react";
 import { format } from "d3";
 import * as Sentry from "@sentry/nextjs";

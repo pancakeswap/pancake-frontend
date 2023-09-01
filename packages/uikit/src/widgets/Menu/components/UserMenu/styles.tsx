@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { UserMenuItemProps } from "./types";
 
 export const UserMenuDivider = styled.hr`

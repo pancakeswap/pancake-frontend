@@ -5,7 +5,7 @@ import { IconButton } from "../../../../../components/Button";
 import { MinusIcon, AddIcon } from "../../../../../components/Svg";
 import { StyledActionContainer, ActionContent, ActionTitles, IconButtonWrapper } from "./styles";
 
-interface StakedActionComponentProps {
+export interface StakedActionComponentProps {
   lpSymbol: string;
   children?: ReactNode;
   disabledMinusButton?: boolean;

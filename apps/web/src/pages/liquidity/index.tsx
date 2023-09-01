@@ -17,7 +17,7 @@ import {
 import { PositionDetails } from '@pancakeswap/farms'
 import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { AppBody, AppHeader } from 'components/App'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { CHAIN_IDS } from 'utils/wagmi'

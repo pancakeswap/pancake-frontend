@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import BigNumber from "bignumber.js";
 import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";

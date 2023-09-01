@@ -18,7 +18,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
 import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
   ONRAMP_PROVIDERS,

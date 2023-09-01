@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Colors } from "../../theme";
 
 export const StyledIconContainer = styled.div<{ activeBackgroundColor?: keyof Colors }>`

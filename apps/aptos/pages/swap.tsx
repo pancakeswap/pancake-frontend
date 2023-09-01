@@ -11,8 +11,8 @@ import {
 import { useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
 import {
+  AtomBox,
   AutoColumn,
   Card,
   confirmPriceImpactWithoutFee,
