@@ -52,20 +52,20 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
     items: [
       {
         label: t("Farms and Syrup Pools"),
-        href: "https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform",
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/syrup-pools-and-farms",
       },
       {
         label: t("IFO"),
-        href: "https://docs.google.com/forms/d/e/1FAIpQLSf0Vmy3k0KyXtXwqxr8QLjD8Xd6KBAmkYxcBRRVTUYJVX17fA/viewform",
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/initial-farm-offerings-ifos",
       },
       {
         label: t("NFT Marketplace"),
-        href: "https://docs.google.com/forms/d/e/1FAIpQLSdLjOEiJT4s8No2QT2TKknuUSlVMndARFgng4MDJMsoFQjR-A/viewform",
+        href: "https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/nft-market-applications",
       },
-      {
-        label: t("Multichain Deployment"),
-        href: "https://docs.pancakeswap.finance/multichain",
-      },
+      // {
+      //   label: t("Multichain Deployment"),
+      //   href: "https://docs.pancakeswap.finance/multichain",
+      // },
       // {
       //   label: t("Etherum Expansion"),
       //   href: "/swap",
