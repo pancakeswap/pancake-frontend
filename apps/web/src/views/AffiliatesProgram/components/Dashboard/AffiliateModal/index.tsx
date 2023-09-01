@@ -42,13 +42,9 @@ const AffiliateModal = () => {
           <Text mb="24px">
             <Text as="span">
               {t(
-                'Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to',
+                'Our affiliate program’s terms and conditions have been updated as of September 1, 2023, with changes related to sections 2 (a), 2.1 (a and b) and 3. Section 2 (a) includes chains such as Polygon zkEVM, zkSync Era, Arbitrum One, Linea, and Base for Swap Commissions. Section 2.1 (a and b) includes updating the “PancakeSwap extended” token list and adding MATIC, ARB, DAI in the major token pairs for the swap commission.  Section 3, the discount for perpetuals trading fee is limited to v1 perpetual trades.',
               )}
             </Text>
-            <Text as="span" bold m="0 4px">
-              {t('section 2.1 (c) on slippage during trades.')}
-            </Text>
-            <Text as="span">{t('Please review the updates to ensure you agree with the revised terms.')}</Text>
           </Text>
           <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
             <Flex alignItems="center">
@@ -58,7 +54,10 @@ const AffiliateModal = () => {
               <Text fontSize="14px" ml="8px">
                 {t('I have read and agree to the updated')}
                 <Text display="inline-block" as="span" ml="4px">
-                  <Link external href="https://docs.pancakeswap.finance/affiliate-program/terms-and-conditions">
+                  <Link
+                    external
+                    href="https://docs.pancakeswap.finance/ecosystem-and-partnerships/affiliate-program/terms-and-conditions"
+                  >
                     {t('terms and conditions')}
                   </Link>
                 </Text>
