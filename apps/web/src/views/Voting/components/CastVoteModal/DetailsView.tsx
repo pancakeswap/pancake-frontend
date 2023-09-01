@@ -7,7 +7,7 @@ import {
   HelpIcon,
   useTooltip,
   RocketIcon,
-  Link,
+  StyledLink,
   ScanLink,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
@@ -105,9 +105,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
             {`${t('CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
           </Text>
           <NextLinkFromReactRouter to="/pools" prefetch={false}>
-            <Link href="/pools" color="primary">
-              {t('Go to Pools')}
-            </Link>
+            <StyledLink color="primary">{t('Go to Pools')}</StyledLink>
           </NextLinkFromReactRouter>
         </Box>
       )}
