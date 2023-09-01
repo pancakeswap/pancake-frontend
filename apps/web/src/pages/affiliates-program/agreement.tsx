@@ -34,14 +34,13 @@ const Agreement = () => {
 
         <Text as="h3">2. Commissions for swap trades</Text>
         <Text as="p">
-          2.1 Subject to this Agreement (and especially Clause 5.2), you are eligible for commissions at the following
+          2.1 Subject to this Agreement (and especially Clause 6.2), you are eligible for commissions at the following
           rates on the following fees:
         </Text>
         <Text as="p">
-          Our affiliate program’s terms and conditions have been updated as of September 1, 2023, wi (a){' '}
-          <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited to
-          swap trades on BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum one, Linea, and Base chain
-          only; and
+          (a) <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited
+          to swap trades on the BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum one, Linea, and
+          Base chain only; and
         </Text>
         <Text as="p">
           (b) <strong>3</strong>% on trading fees paid by your Referrals on StableSwap, limited to swap trades on the
@@ -225,7 +224,9 @@ const Agreement = () => {
           a share of your commissions to your Referrals, using the system provided by us. The Referral may receive up to
           a maximum of 100% of the commissions that you have earnt from them.
         </Text>
-        <Text as="p">7.2 With respect to commissions received under Clause 3 (Commissions for perpetual trades):</Text>
+        <Text as="p">
+          7.2 With respect to commissions received under Clause 3 (Commissions for v1 perpetual trades):
+        </Text>
         <Text as="p">(a) you may not offer a share of your commissions to your Referrals; and</Text>
         <Text as="p">
           (b) Subject to this Agreement, the Referral is eligible to receive an equal amount of commissions that are
