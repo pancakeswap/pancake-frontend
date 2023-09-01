@@ -66,7 +66,6 @@ function AccordionItem({
     () => quote.provider === 'MoonPay' && Date.now() / 1000 < MOONPAY_CAMPAIGN_END_TIME,
     [quote.provider],
   )
-  console.log(isCampaignEligible)
 
   const campaignTimeLeft = useMemo(
     () => (isCampaignEligible && quote ? getTimePeriods(MOONPAY_CAMPAIGN_END_TIME - Date.now() / 1000) : undefined),
