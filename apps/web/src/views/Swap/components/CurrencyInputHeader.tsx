@@ -29,6 +29,7 @@ import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import InternalLink from 'components/Links'
 import Image from 'next/image'
+import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg'
@@ -110,7 +111,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
         <Flex width="100%" justifyContent="end">
-          {SUPPORTED_BUY_CRYPTO_CHAINS.includes(chainId) ? (
+          {SUPPORT_BUY_CRYPTO.includes(chainId) ? (
             <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
               <TooltipText
                 ref={buyCryptoTargetRef}
