@@ -1,8 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import React, { useRef, useLayoutEffect, useCallback } from 'react'
+import React, { useRef, useLayoutEffect } from 'react'
 import styled from 'styled-components'
+import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 
 import {
   CakeSectionTag,
@@ -102,38 +103,6 @@ const fps = 60
 const width = 734
 const height = 734
 
-const useDrawCanvas = (
-  videoRef: React.MutableRefObject<HTMLVideoElement>,
-  canvasRef: React.MutableRefObject<HTMLCanvasElement>,
-) => {
-  const video = videoRef?.current
-  const canvas = canvasRef?.current
-  const isElementReady = video && canvas
-
-  const drawImage = useCallback(() => {
-    const context = canvas?.getContext('2d', { alpha: true })
-    context.clearRect(0, 0, width, height)
-    context.drawImage(video, 0, 0, width, height)
-  }, [canvas, video])
-
-  if (isElementReady) {
-    video.onpause = () => {
-      clearInterval(canvasInterval)
-    }
-
-    video.onended = () => {
-      clearInterval(canvasInterval)
-    }
-    video.onplay = () => {
-      window.setInterval(() => {
-        drawImage()
-      }, 1000 / fps)
-    }
-  }
-
-  return { drawImage: isElementReady ? drawImage : null }
-}
-
 const CakeSection: React.FC = () => {
   const { theme } = useTheme()
   const { t } = useTranslation()
@@ -141,7 +110,7 @@ const CakeSection: React.FC = () => {
   const partnerData = usePartnerData()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { drawImage } = useDrawCanvas(videoRef, canvasRef)
+  const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval)
   const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
     canvasInterval = window.setInterval(() => {

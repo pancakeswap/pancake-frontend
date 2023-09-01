@@ -1,12 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/legacy/image'
+import { useLayoutEffect, useRef } from 'react'
 import { keyframes, styled } from 'styled-components'
 import { useAccount } from 'wagmi'
-import astronautBunny from '../images/astronaut-bunny.png'
+import { useDrawCanvas } from '../hooks/useDrawCanvas'
 import { CompositeImageProps } from './CompositeImage'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
@@ -89,12 +88,67 @@ const starsImage: CompositeImageProps = {
   ],
 }
 
+const CakeBox = styled.div`
+  width: 300px;
+  height: 300px;
+  > canvas {
+    transform: scale(0.5) translate(-50%, -50%);
+    transform-origin: top left;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 500px;
+    height: 500px;
+    > canvas {
+      transform: scale(0.8) translate(-50%, -50%);
+    }
+    transform-origin: center center;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    > canvas {
+      transform: scale(1) translate(-50%, -50%);
+    }
+    position: relative;
+    width: 734px;
+    height: 734px;
+    overflow: hidden;
+    margin-bottom: -100px;
+  }
+`
+
+const CakeVideo = styled.video`
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+`
+const CakeCanvas = styled.canvas`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+`
+
+let canvasInterval = 0
+const fps = 60
+const width = 734
+const height = 734
+
 const Hero = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval)
+  useLayoutEffect(() => {
+    canvasInterval = window.setInterval(() => {
+      drawImage?.()
+    }, 1000 / fps)
+    return () => clearInterval(canvasInterval)
+  }, [drawImage])
   return (
     <>
       <style jsx global>
@@ -185,7 +239,7 @@ const Hero = () => {
           position="relative"
         >
           <BunnyWrapper>
-            <Image
+            {/* <Image
               src={astronautBunny}
               priority
               // https://blurred.dev/
@@ -194,7 +248,13 @@ const Hero = () => {
               height={712}
               alt={t('Lunar bunny')}
               unoptimized
-            />
+            /> */}
+            <CakeBox>
+              <CakeCanvas width={width} height={height} ref={canvasRef} />
+              <CakeVideo ref={videoRef} width={width} loop controls autoPlay muted id="video">
+                <source src="/assets/bunny.webm" type="video/webm" />
+              </CakeVideo>
+            </CakeBox>
           </BunnyWrapper>
           {/* <StarsWrapper>
             <CompositeImage {...starsImage} />
