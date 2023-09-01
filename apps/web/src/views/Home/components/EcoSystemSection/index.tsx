@@ -40,8 +40,7 @@ import nftMarketplacePurple from '../../images/nft-marketplace-purple.png'
 
 export const CardWrapper = styled.div`
   border-radius: 24px;
-  background: ${({ theme }) =>
-    theme.isDark ? 'linear-gradient(140deg, #313D5C 0%, #3D2A54 100%)' : theme.colors.backgroundAlt};
+  background: ${({ theme }) => (theme.isDark ? theme.colors.gradientBubblegum : theme.colors.backgroundAlt)};
   width: 100%;
   box-sizing: border-box;
   padding: 48px 24px 24px 24px;

@@ -160,10 +160,10 @@ export const BlogCard: React.FC = () => {
       style={{ cursor: 'pointer' }}
     >
       <Text bold mb="24px">
-        {t('Our Latest Blog')}
+        {t('Latest Blog Post"')}
       </Text>
       <BlogImage style={{ backgroundImage: `url(${imageSrc})` }} />
-      <Text mt="8px" fontSize={14} color={theme.colors.textSubtle} textAlign="right">
+      <Text mt="8px" fontSize={14} color={theme.colors.textSubtle} textAlign="left">
         {date}
       </Text>
       <Text mt="10px" fontSize={14} bold>
