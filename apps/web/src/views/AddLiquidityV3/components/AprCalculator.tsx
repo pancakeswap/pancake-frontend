@@ -9,6 +9,7 @@ import {
   Text,
   IconButton,
   QuestionHelper,
+  useAmountsByUsdValue,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
@@ -27,7 +28,6 @@ import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
-import { useAmountsByUsdValue } from '@pancakeswap/uikit/src/widgets/RoiCalculator/hooks'
 import { batch } from 'react-redux'
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import currencyId from 'utils/currencyId'

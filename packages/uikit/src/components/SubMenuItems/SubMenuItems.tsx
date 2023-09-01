@@ -3,7 +3,7 @@ import debounce from "lodash/debounce";
 import React, { useCallback, useRef, useState } from "react";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
-import { AtomBox } from '../AtomBox'
+import { AtomBox } from "../AtomBox";
 import MenuItem from "../MenuItem/MenuItem";
 import { ChevronLeftIcon, ChevronRightIcon, OpenNewIcon } from "../Svg";
 import StyledSubMenuItems, {

@@ -20,10 +20,10 @@ import {
   RowFixed,
   Button,
   AddIcon,
-} from '@pancakeswap/uikit/src/components'
+  useTooltip,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 
-import { useTooltip } from '@pancakeswap/uikit/src/hooks'
-import { NextLinkFromReactRouter } from '@pancakeswap/uikit/src/components/NextLink'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 const FixedHeightRow = styled(RowBetween)`

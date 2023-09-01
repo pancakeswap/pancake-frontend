@@ -9,7 +9,6 @@ import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trad
 import { useLPApr } from 'state/swap/useLPApr'
 import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { Hash } from 'viem'
 import { SendTransactionResult } from 'wagmi/actions'
@@ -52,7 +51,7 @@ export interface LP2ChildrenProps {
   pairState: PairState
   poolTokenPercentage: Percent
   price: Price<Currency, Currency>
-  onPresentSettingsModal: Handler
+  onPresentSettingsModal: () => void
   allowedSlippage: number
   pair: Pair
   poolData: {
@@ -66,7 +65,7 @@ export interface LP2ChildrenProps {
   approveBCallback: () => Promise<SendTransactionResult>
   approvalB: ApprovalState
   onAdd: () => Promise<void>
-  onPresentAddLiquidityModal: Handler
+  onPresentAddLiquidityModal: () => void
   buttonDisabled: boolean
   errorText: string
   addIsWarning: boolean

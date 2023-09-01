@@ -8,8 +8,8 @@ import {
   MoreIcon,
   SwapFillIcon,
   SwapIcon,
+  LinkStatus,
 } from '@pancakeswap/uikit'
-import { LinkStatus } from '@pancakeswap/uikit/src/widgets/Menu/types'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 

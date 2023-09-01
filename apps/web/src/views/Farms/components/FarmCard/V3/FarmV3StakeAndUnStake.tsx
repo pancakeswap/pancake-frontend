@@ -2,13 +2,18 @@ import { useMemo, useState } from 'react'
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { AutoRow, QuestionHelper, RowBetween, SyncAltIcon } from '@pancakeswap/uikit'
-import { Balance } from '@pancakeswap/uikit/src/components/Balance'
-import { Box } from '@pancakeswap/uikit/src/components/Box'
-import { Button } from '@pancakeswap/uikit/src/components/Button'
-import { Link } from '@pancakeswap/uikit/src/components/Link'
-import { ChevronRightIcon } from '@pancakeswap/uikit/src/components/Svg'
-import { Text } from '@pancakeswap/uikit/src/components/Text'
+import {
+  Box,
+  AutoRow,
+  QuestionHelper,
+  RowBetween,
+  SyncAltIcon,
+  Button,
+  Link,
+  ChevronRightIcon,
+  Text,
+  Balance,
+} from '@pancakeswap/uikit'
 import { unwrappedToken } from '@pancakeswap/utils/unwrappedToken'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'

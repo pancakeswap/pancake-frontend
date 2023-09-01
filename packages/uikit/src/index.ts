@@ -1,4 +1,4 @@
-import 'csstype'
+import type {} from "csstype";
 // ui
 export * from "./tokens";
 export * from "./css/vars.css";
