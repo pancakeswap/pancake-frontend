@@ -53,7 +53,7 @@ const Stats = () => {
         lineHeight="110%"
         fontWeight={600}
         fontSize={isMobile ? '20px' : '32px'}
-        mb={isMobile ? '48px' : '32px'}
+        mb={isMobile ? '32px' : '48px'}
       >
         {t(' PancakeSwap’s Unstoppable Expansion')}
       </Text>
@@ -63,7 +63,7 @@ const Stats = () => {
         flexDirection={isMobile ? 'column' : 'row'}
         width={['100%', '100%', '100%', '800px']}
         style={{ gap: isMobile ? 32 : 50 }}
-        mb={isMobile ? '48px' : '32px'}
+        mb={isMobile ? '32px' : '48px'}
       >
         <MetricsCard title={t('Total Users:')} value={addressCount} description={t('in the last 30 days')} />
         <MetricsCard title={t('Total Trading Volume:')} value={txCount} description={t('in the last 30 days')} />

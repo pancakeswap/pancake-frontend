@@ -34,7 +34,6 @@ export const MetricsCard: React.FC<{ title: string; value: number; description: 
           delay={0}
           end={value}
           decimalPlaces={3}
-          prefix="$"
           decimals={0}
           duration={1}
           separator=","
