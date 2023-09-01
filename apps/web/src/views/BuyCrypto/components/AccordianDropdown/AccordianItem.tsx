@@ -4,13 +4,13 @@ import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { providerFeeTypes } from 'views/BuyCrypto/constants'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
+import { CryptoFormView, ProviderQoute } from 'views/BuyCrypto/types'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -36,8 +36,6 @@ const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmoun
   )
 }
 
-const MOONPAY_CAMPAIGN_END_TIME = 1693465200
-
 function AccordionItem({
   active,
   btnOnClick,
@@ -47,7 +45,7 @@ function AccordionItem({
 }: {
   active: boolean
   btnOnClick: any
-  quote: ProviderQuote
+  quote: ProviderQoute
   fetching: boolean
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }) {
@@ -58,27 +56,17 @@ function AccordionItem({
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(active ? 240 : 90)
   const multiple = false
-  const [visibility, setVisibility] = useState(false)
+  const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
+  const isCampaignEligible = false
+  const { days, hours } = getTimePeriods(1681699200)
 
-  const isActive = () => (multiple ? visibility : active)
-  const isCampaignEligible = useMemo(
-    () => quote.provider === 'MoonPay' && Date.now() / 1000 < MOONPAY_CAMPAIGN_END_TIME,
-    [quote.provider],
-  )
-  const campaignTimeLeft = useMemo(
-    () => (isCampaignEligible && quote ? getTimePeriods(MOONPAY_CAMPAIGN_END_TIME - Date.now() / 1000) : undefined),
-    [isCampaignEligible, quote],
-  )
-  const isCampaignLastHour = useMemo(
-    () => campaignTimeLeft && campaignTimeLeft.days === 0 && campaignTimeLeft.hours === 0,
-    [campaignTimeLeft],
-  )
+  const isActive = () => (multiple ? visiblity : active)
 
-  const toggleVisibility = useCallback(() => {
-    setVisibility((v) => !v)
+  const toogleVisiblity = useCallback(() => {
+    setVisiblity((v) => !v)
     btnOnClick()
-  }, [setVisibility, btnOnClick])
+  }, [setVisiblity, btnOnClick])
 
   useEffect(() => {
     const contentEl = getRefValue(contentRef)
@@ -134,7 +122,7 @@ function AccordionItem({
       <CryptoCard
         padding="16px 16px"
         style={{ height }}
-        onClick={!isActive() ? toggleVisibility : () => null}
+        onClick={!isActive() ? toogleVisiblity : () => null}
         position="relative"
         isClicked={active}
         isDisabled={false}
@@ -144,7 +132,7 @@ function AccordionItem({
 
           <Text ml="4px" fontSize="18px" color="#7A6EAA" fontWeight="bold">
             {formatLocaleNumber({
-              number: isCampaignEligible && quote.provider === 'MoonPay' ? quote.noFee : quote.quote,
+              number: quote.quote,
               locale,
             })}{' '}
             {quote.cryptoCurrency}
@@ -163,9 +151,9 @@ function AccordionItem({
         <DropdownWrapper ref={contentRef} isClicked={!isActive()}>
           {providerFeeTypes[quote.provider].map((feeType: string, index: number) => {
             let fee = 0
-            if (index === 0) fee = quote.networkFee + (isCampaignEligible ? 0 : providerFee)
+            if (index === 0) fee = quote.networkFee + providerFee
             else if (index === 1) fee = quote.networkFee
-            else fee = isCampaignEligible ? 0 : providerFee
+            else fee = providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
           {isCampaignEligible ? (
@@ -173,15 +161,10 @@ function AccordionItem({
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
                 <Text marginLeft="14px" fontSize="15px" color="#D67E0B">
-                  {t('No provider fees.')}{' '}
-                  {isCampaignLastHour
-                    ? t('Ends in %minutes% minutes.', {
-                        minutes: campaignTimeLeft?.minutes,
-                      })
-                    : t('Ends in %days% days and %hours% hours.', {
-                        days: campaignTimeLeft?.days,
-                        hours: campaignTimeLeft?.hours,
-                      })}
+                  {t('No provider fees. Ends in %days% days and %hours% hours.', {
+                    days,
+                    hours,
+                  })}
                 </Text>
               </Flex>
             </Box>

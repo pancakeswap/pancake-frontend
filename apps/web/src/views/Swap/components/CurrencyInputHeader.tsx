@@ -43,8 +43,6 @@ interface Props {
   onRefreshPrice: () => void
 }
 
-const SUPPORTED_BUY_CRYPTO_CHAINS = [1, 56]
-
 const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
   overflow: hidden;
