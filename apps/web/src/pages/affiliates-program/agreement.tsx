@@ -34,7 +34,7 @@ const Agreement = () => {
 
         <Text as="h3">2. Commissions for swap trades</Text>
         <Text as="p">
-          2.1 Subject to this Agreement (and especially Clause 5.2), you are eligible for commissions at the following
+          2.1 Subject to this Agreement (and especially Clause 6.2), you are eligible for commissions at the following
           rates on the following fees:
         </Text>
         <Text as="p">
