@@ -1,9 +1,7 @@
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Abi, Address } from 'viem'
 import retry, { Options as RetryOptions } from 'async-retry'
-import stats from 'stats-lite'
-import uniq from 'lodash/uniq.js'
-import chunk from 'lodash/chunk.js'
+// import uniq from 'lodash/uniq.js'
 
 import { GasModel, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
 import { mixedRouteQuoterV1ABI } from '../../abis/IMixedRouteQuoterV1'
@@ -38,24 +36,24 @@ const SUCCESS_RATE_CONFIG = {
 
 // Normally we expect to get quotes from within the same block
 // But for some chains like BSC the block time is quite short so need some extra tolerance
-const BLOCK_CONFLICT_TOLERANCE = {
-  [ChainId.BSC_TESTNET]: 3,
-  [ChainId.BSC]: 3,
-  [ChainId.ETHEREUM]: 1,
-  [ChainId.GOERLI]: 1,
-  [ChainId.ARBITRUM_ONE]: 5,
-  [ChainId.ARBITRUM_GOERLI]: 5,
-  [ChainId.POLYGON_ZKEVM]: 1,
-  [ChainId.POLYGON_ZKEVM_TESTNET]: 1,
-  [ChainId.ZKSYNC]: 3,
-  [ChainId.ZKSYNC_TESTNET]: 3,
-  [ChainId.LINEA]: 3,
-  [ChainId.LINEA_TESTNET]: 3,
-  [ChainId.OPBNB_TESTNET]: 3,
-  [ChainId.BASE]: 3,
-  [ChainId.BASE_TESTNET]: 3,
-  [ChainId.SCROLL_SEPOLIA]: 3,
-} as const satisfies Record<ChainId, number>
+// const BLOCK_CONFLICT_TOLERANCE = {
+//   [ChainId.BSC_TESTNET]: 3,
+//   [ChainId.BSC]: 3,
+//   [ChainId.ETHEREUM]: 1,
+//   [ChainId.GOERLI]: 1,
+//   [ChainId.ARBITRUM_ONE]: 5,
+//   [ChainId.ARBITRUM_GOERLI]: 5,
+//   [ChainId.POLYGON_ZKEVM]: 1,
+//   [ChainId.POLYGON_ZKEVM_TESTNET]: 1,
+//   [ChainId.ZKSYNC]: 3,
+//   [ChainId.ZKSYNC_TESTNET]: 3,
+//   [ChainId.LINEA]: 3,
+//   [ChainId.LINEA_TESTNET]: 3,
+//   [ChainId.OPBNB_TESTNET]: 3,
+//   [ChainId.BASE]: 3,
+//   [ChainId.BASE_TESTNET]: 3,
+//   [ChainId.SCROLL_SEPOLIA]: 3,
+// } as const satisfies Record<ChainId, number>
 
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
@@ -146,7 +144,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
         } = routes[0]
         const quoterAddress = getQuoterAddress(chainId)
         const minSuccessRate = SUCCESS_RATE_CONFIG[chainId as ChainId]
-        const blockConflictTolerance = BLOCK_CONFLICT_TOLERANCE[chainId as ChainId]
+        // const blockConflictTolerance = BLOCK_CONFLICT_TOLERANCE[chainId as ChainId]
         const multicallConfigs =
           multicallConfigsOverride?.[chainId as ChainId] ||
           BATCH_MULTICALL_CONFIGS[chainId as ChainId] ||
@@ -161,55 +159,35 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
 
         const { shouldRetry, onRetry } = retryControllerFactory()
 
-        async function getQuotes({ multicallGasLimit, multicallChunkSize }: GetQuotesConfig) {
-          const chunkSize = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunkSize))
-          const chunkedInputs = chunk(inputs, chunkSize)
+        async function getQuotes({ multicallGasLimit }: GetQuotesConfig) {
           try {
-            const chunkedResults = await Promise.all(
-              chunkedInputs.map((inputsChunk) =>
-                multicall2Provider.callSameFunctionOnContractWithMultipleParams<
-                  CallInputs,
-                  // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
-                  [bigint, bigint[], number[], bigint]
-                >({
-                  address: quoterAddress,
-                  abi,
-                  functionName,
-                  functionParams: inputsChunk,
-                  providerConfig,
-                  additionalConfig: {
-                    gasLimitPerCallOverride: multicallGasLimit,
-                  },
-                }),
-              ),
-            )
-
-            const results = chunkedResults.reduce<Result<[bigint, bigint[], number[], bigint]>[]>(
-              (acc, cur) => [...acc, ...cur.results],
-              [],
-            )
+            const { results, blockNumber, approxGasUsedPerSuccessCall } =
+              await multicall2Provider.callSameFunctionOnContractWithMultipleParams<
+                CallInputs,
+                // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
+                [bigint, bigint[], number[], bigint]
+              >({
+                address: quoterAddress,
+                abi,
+                functionName,
+                functionParams: inputs,
+                providerConfig,
+                additionalConfig: {
+                  gasLimitPerCallOverride: multicallGasLimit,
+                },
+              })
             const successRateError = validateSuccessRate(results, minSuccessRate)
             if (successRateError) {
               throw successRateError
             }
 
-            const resultsWithSuccessfulCalls = chunkedResults.filter(({ results: chunkResults }) =>
-              chunkResults.some(({ success }) => success),
-            )
-            const blockConflictError = validateBlockNumbers(resultsWithSuccessfulCalls, blockConflictTolerance)
-            if (blockConflictError) {
-              throw blockConflictError
-            }
-
             return {
               results,
-              blockNumber: BigInt(resultsWithSuccessfulCalls[0]?.blockNumber),
-              approxGasUsedPerSuccessCall: stats.percentile(
-                resultsWithSuccessfulCalls.map((result) => result.approxGasUsedPerSuccessCall),
-                100,
-              ),
+              blockNumber,
+              approxGasUsedPerSuccessCall,
             }
           } catch (err: any) {
+            console.error(err)
             if (err instanceof SuccessRateError || err instanceof BlockConflictError) {
               throw err
             }
@@ -326,22 +304,22 @@ function validateSuccessRate(
   return undefined
 }
 
-function validateBlockNumbers(results: { blockNumber: bigint }[], tolerance = 1): BlockConflictError | null {
-  if (results.length <= 1) {
-    return null
-  }
-
-  const blockNumbers = results.map((result) => result.blockNumber)
-
-  const blockStrs = blockNumbers.map((blockNumber) => blockNumber.toString())
-  const uniqBlocks = uniq(blockStrs)
-
-  if (uniqBlocks.length > 0 && uniqBlocks.length <= tolerance) {
-    return null
-  }
-
-  return new BlockConflictError(`Quotes returned from different blocks. ${uniqBlocks}`)
-}
+// function validateBlockNumbers(results: { blockNumber: bigint }[], tolerance = 1): BlockConflictError | null {
+//   if (results.length <= 1) {
+//     return null
+//   }
+//
+//   const blockNumbers = results.map((result) => result.blockNumber)
+//
+//   const blockStrs = blockNumbers.map((blockNumber) => blockNumber.toString())
+//   const uniqBlocks = uniq(blockStrs)
+//
+//   if (uniqBlocks.length > 0 && uniqBlocks.length <= tolerance) {
+//     return null
+//   }
+//
+//   return new BlockConflictError(`Quotes returned from different blocks. ${uniqBlocks}`)
+// }
 
 function processQuoteResults(
   quoteResults: (Result<[bigint, bigint[], number[], bigint]> | null)[],

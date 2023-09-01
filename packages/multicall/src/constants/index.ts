@@ -4,6 +4,7 @@ export const DEFAULT_GAS_LIMIT = 25000000n
 
 export const DEFAULT_GAS_LIMIT_BY_CHAIN: { [key in ChainId]?: bigint } = {
   [ChainId.BSC]: 150000000n,
+  [ChainId.ZKSYNC]: 10000000n,
 }
 
 export const DEFAULT_GAS_BUFFER = 3000000n

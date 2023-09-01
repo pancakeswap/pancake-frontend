@@ -2,6 +2,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { encodeFunctionData, PublicClient, decodeFunctionResult, Address } from 'viem'
 import stats from 'stats-lite'
+import { multicallByGasLimit } from '@pancakeswap/multicall'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
@@ -153,22 +154,18 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     results: Result<TReturn>[]
     approxGasUsedPerSuccessCall: number
   }> {
-    const { address, functionName, functionParams, additionalConfig, providerConfig, abi } = params
-
-    const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
-    const blockNumberOverride = providerConfig?.blockNumber ?? undefined
-
+    const { address, functionName, functionParams, abi } = params
     const calls = functionParams.map((functionParam) => {
-      const callData = encodeFunctionData({
+      const data = encodeFunctionData({
         abi,
         functionName,
         args: functionParam,
       })
 
       return {
-        target: address,
-        callData,
-        gasLimit: BigInt(gasLimitPerCall),
+        to: address,
+        data,
+        gas: 310000n,
       }
     })
 
@@ -177,55 +174,42 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
     // )
 
-    const {
-      result: [blockNumber, aggregateResults],
-    } = await this.provider.simulateContract({
-      abi: IMulticallABI,
-      address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
-      functionName: 'multicall',
-      args: [calls],
-      blockNumber: blockNumberOverride ? BigInt(Number(blockNumberOverride)) : undefined,
+    const result = await multicallByGasLimit(calls, {
+      chainId: this.chainId,
+      client: this.provider,
     })
 
     const results: Result<TReturn>[] = []
 
-    const gasUsedForSuccess: number[] = []
-    for (let i = 0; i < aggregateResults.length; i++) {
-      const { success, returnData, gasUsed } = aggregateResults[i]!
-
-      // Return data "0x" is sometimes returned for invalid pools.
-      if (!success || returnData.length <= 2) {
-        // console.log(
-        //   { result: aggregateResults[i] },
-        //   `Invalid result calling ${functionName} with params ${functionParams[i]}`,
-        // )
+    for (const callResult of result) {
+      if (callResult === '0x') {
         results.push({
           success: false,
-          returnData,
+          returnData: callResult,
         })
         continue
       }
-
-      gasUsedForSuccess.push(Number(gasUsed))
-
-      results.push({
-        success: true,
-        result: decodeFunctionResult({
-          abi,
-          functionName,
-          data: returnData,
-        }) as TReturn,
-      })
+      try {
+        results.push({
+          success: true,
+          result: decodeFunctionResult({
+            abi,
+            functionName,
+            data: callResult as `0x${string}`,
+          }) as TReturn,
+        })
+      } catch (e) {
+        results.push({
+          success: false,
+          returnData: callResult,
+        })
+      }
     }
 
-    // console.log(
-    //   { results, functionName, address },
-    //   `Results for multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params. Results as of block ${blockNumber}`,
-    // )
     return {
-      blockNumber,
+      blockNumber: 0n,
       results,
-      approxGasUsedPerSuccessCall: stats.percentile(gasUsedForSuccess, 99),
+      approxGasUsedPerSuccessCall: 0,
     }
   }
 
