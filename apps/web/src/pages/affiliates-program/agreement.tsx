@@ -38,10 +38,9 @@ const Agreement = () => {
           rates on the following fees:
         </Text>
         <Text as="p">
-          Our affiliate program’s terms and conditions have been updated as of September 1, 2023, wi (a){' '}
-          <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited to
-          swap trades on BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum one, Linea, and Base chain
-          only; and
+          (a) <strong>3</strong>% on trading fees paid by your Referrals on PancakeSwap V2 and PancakeSwap V3, limited
+          to swap trades on the BNB Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum one, Linea, and
+          Base chain only; and
         </Text>
         <Text as="p">
           (b) <strong>3</strong>% on trading fees paid by your Referrals on StableSwap, limited to swap trades on the
