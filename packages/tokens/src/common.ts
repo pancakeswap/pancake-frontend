@@ -195,6 +195,14 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+     '0x567ad2458Bb078cCB913693Aea92ea136CEd89F3',
+     18,
+    'BOMB',
+    'BaseBomb Token',
+    'https://basebomb.finance/',
+  )
 }
 
 export const USDC = {

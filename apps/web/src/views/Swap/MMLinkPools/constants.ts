@@ -8,6 +8,7 @@ export const MM_SUPPORT_CHAIN = {
   1: true,
   5: true,
   56: true,
+  8453: true,
 }
 
 export const MM_SWAP_CONTRACT_ADDRESS = contract.mmLinkedPool
