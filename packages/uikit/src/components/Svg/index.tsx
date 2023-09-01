@@ -190,4 +190,6 @@ export { GovernanceIcon } from "./Icons/Governance";
 export { FavoriteBorderIcon } from "./Icons/FavoriteBorder";
 export { BarChartIcon } from "./Icons/BarChart";
 export { StoreIcon } from "./Icons/Store";
+export { LineaIcon } from "./Icons/Linea";
+export { BaseIcon } from "./Icons/Base";
 export type { SvgProps } from "./types";

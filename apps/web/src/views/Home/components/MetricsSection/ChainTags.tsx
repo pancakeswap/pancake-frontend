@@ -7,6 +7,8 @@ import {
   ZkEVMIcon,
   ZksyncWithOutCircleIcon,
   useMatchBreakpoints,
+  LineaIcon,
+  BaseIcon,
 } from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
 import Marquee from 'react-fast-marquee'
@@ -34,7 +36,7 @@ const newsItems = [
     key: 'BNB Chain',
     component: <BinanceChainIcon />,
     background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #F0B90B',
-    iconWidth: '22px',
+    iconWidth: '26px',
   },
   {
     key: 'Aptos',
@@ -64,6 +66,18 @@ const newsItems = [
     key: 'Arbitrum One',
     component: <Arbitrum />,
     background: '#6E89AE',
+    iconWidth: '20px',
+  },
+  {
+    key: 'Linea',
+    component: <LineaIcon />,
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #81D8EA',
+    iconWidth: '20px',
+  },
+  {
+    key: 'Base',
+    component: <BaseIcon />,
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), #75A1FF',
     iconWidth: '20px',
   },
 ]
