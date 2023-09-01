@@ -1,12 +1,13 @@
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useFixedStakingContract } from 'hooks/useContract'
+import { useFixedStakingContract, useVaultPoolContract } from 'hooks/useContract'
 import { getAddress } from 'viem'
 import { useContractRead } from 'wagmi'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import BigNumber from 'bignumber.js'
+import { VaultKey } from '@pancakeswap/pools'
 import { FixedStakingPool, StakedPosition } from '../type'
 
 export function useCurrentDay(): number {
@@ -26,6 +27,25 @@ export function useCurrentDay(): number {
   return (data || 0) as number
 }
 
+export function useIfUserLocked() {
+  const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
+  const { account, chainId } = useActiveWeb3React()
+
+  const { data } = useContractRead({
+    chainId,
+    abi: vaultPoolContract.abi,
+    address: vaultPoolContract.address,
+    functionName: 'userInfo',
+    args: [account],
+    enabled: !!account,
+  })
+
+  if (!Array.isArray(data)) return false
+
+  const [, , , , , , , locked] = data
+
+  return locked
+}
 export function useStakedPositionsByUser(poolIndexes: number[]): StakedPosition[] {
   const fixedStakingContract = useFixedStakingContract()
   const { account } = useActiveWeb3React()
