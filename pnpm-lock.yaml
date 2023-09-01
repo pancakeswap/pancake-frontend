@@ -1607,15 +1607,9 @@ importers:
       '@types/react-transition-group':
         specifier: ^4.4.1
         version: 4.4.5
-      '@vanilla-extract/babel-plugin':
-        specifier: ^1.2.0
-        version: 1.2.0
       '@vanilla-extract/vite-plugin':
         specifier: ^3.8.0
         version: 3.8.0(@types/node@18.16.2)(vite@4.3.1)
-      '@vitejs/plugin-react':
-        specifier: 4.0.0
-        version: 4.0.0(vite@4.3.1)
       babel-jest:
         specifier: ^29.3.1
         version: 29.3.1(@babel/core@7.21.3)
@@ -1709,9 +1703,6 @@ importers:
       vite-plugin-dts:
         specifier: ^3.5.3
         version: 3.5.3(@types/node@18.16.2)(rollup@2.78.0)(typescript@5.1.3)(vite@4.3.1)
-      vite-plugin-on-success:
-        specifier: ^0.0.3
-        version: 0.0.3(vite@4.3.1)
       vite-tsconfig-paths:
         specifier: ^4.0.3
         version: 4.0.3(typescript@5.1.3)(vite@4.3.1)
@@ -11116,16 +11107,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@vanilla-extract/babel-plugin@1.2.0:
-    resolution: {integrity: sha512-4R+hqoyzoyJIrE+NgrYxZuL6GqGH28hiBrPUOxwtvqnJJ5WnUl2/WzItLDDH9YT1Auwl3cIR7pcbrV6HIchORA==}
-    dependencies:
-      '@babel/core': 7.21.4
-      '@babel/template': 7.20.7
-      '@vanilla-extract/integration': 5.0.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@vanilla-extract/css-utils@0.1.3:
     resolution: {integrity: sha512-PZAcHROlgtCUGI2y0JntdNwvPwCNyeVnkQu6KTYKdmxBbK3w72XJUmLFYapfaFfgami4I9CTLnrJTPdtmS3gpw==}
     dev: false
@@ -11144,18 +11125,6 @@ packages:
       deepmerge: 4.3.1
       media-query-parser: 2.0.2
       outdent: 0.8.0
-
-  /@vanilla-extract/integration@5.0.1:
-    resolution: {integrity: sha512-HRV/HvC/lihb9wT3x5s7pf5qLjqxSd9nBePJ10juOuMB5cl2ZClEcts076m9BuRKM3wRK2h7KuwkNsaUtjujxQ==}
-    dependencies:
-      '@vanilla-extract/css': 1.13.0
-      esbuild: 0.11.23
-      eval: 0.1.6
-      find-up: 5.0.0
-      javascript-stringify: 2.1.0
-      lodash: 4.17.21
-      outdent: 0.8.0
-    dev: true
 
   /@vanilla-extract/integration@6.2.1(@types/node@13.13.52):
     resolution: {integrity: sha512-+xYJz07G7TFAMZGrOqArOsURG+xcYvqctujEkANjw2McCBvGEK505RxQqOuNiA9Mi9hgGdNp2JedSa94f3eoLg==}
@@ -16347,12 +16316,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /esbuild@0.11.23:
-    resolution: {integrity: sha512-iaiZZ9vUF5wJV8ob1tl+5aJTrwDczlvGP0JoMmnpC2B0ppiMCu8n8gmy5ZTGl5bcG081XBVn+U+jP+mPFm5T5Q==}
-    hasBin: true
-    requiresBuild: true
-    dev: true
 
   /esbuild@0.14.34:
     resolution: {integrity: sha512-QIWdPT/gFF6hCaf4m7kP0cJ+JIuFkdHibI7vVFvu3eJS1HpVmYHWDulyN5WXwbRA0SX/7ZDaJ/1DH8SdY9xOJg==}
@@ -26613,19 +26576,6 @@ packages:
     transitivePeerDependencies:
       - '@types/node'
       - rollup
-      - supports-color
-    dev: true
-
-  /vite-plugin-on-success@0.0.3(vite@4.3.1):
-    resolution: {integrity: sha512-UcptCwe4+2tGGQIRLVhkwHtvA1y81FXq/mdiHz8NzUZptsGuN/ity7axzt6kTxjw1Bw3Uw8gkWjI65YLk7J5lg==}
-    peerDependencies:
-      vite: ^3.1.0
-    dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
-      execa: 6.1.0
-      tree-kill: 1.2.2
-      vite: 4.3.1(@types/node@18.16.2)
-    transitivePeerDependencies:
       - supports-color
     dev: true
 
