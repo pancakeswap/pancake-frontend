@@ -2252,8 +2252,6 @@
   "*I have read the": "*I have read the",
   "terms and conditions": "terms and conditions",
   "Trading pairs must meet the following eligibility criteria:": "Trading pairs must meet the following eligibility criteria:",
-  "Pairs must be in “PancakeSwap Extended” Official": "Pairs must be in “PancakeSwap Extended” Official",
-  "token list": "token list",
   "List of removed v2 liquidity": "List of removed v2 liquidity",
   "Previous LP": "Previous LP",
   "Add Other Pairs": "Add Other Pairs",
@@ -2670,5 +2668,13 @@
   "Adding liquidity to this V2 pair is currently not available on PancakeSwap UI. Please follow the instructions to resolve it using blockchain explorer.": "Adding liquidity to this V2 pair is currently not available on PancakeSwap UI. Please follow the instructions to resolve it using blockchain explorer.",
   "Base is LIVE!": "Base is LIVE!",
   "PancakeSwap Now Live on Base!": "PancakeSwap Now Live on Base!",
-  "V1 Perpetual": "V1 Perpetual"
+  "V1 Perpetual": "V1 Perpetual",
+  "Pairs must be in the PancakeSwap Token list for the following chains (": "Pairs must be in the PancakeSwap Token list for the following chains (",
+  "BNB Smart Chain": "BNB Smart Chain",
+  "Arbitrum One": "Arbitrum One",
+  "Base": "Base",
+  "Ethereum": "Ethereum",
+  "Linea": "Linea",
+  "Polygon zkEVM": "Polygon zkEVM",
+  "zkSync Era": "zkSync Era"
 }

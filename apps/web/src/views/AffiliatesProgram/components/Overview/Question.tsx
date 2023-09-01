@@ -79,16 +79,74 @@ const Question = () => {
                 {t('Trading pairs must meet the following eligibility criteria:')}
               </StyledListText>
               <StyledListText ml="16px" color="textSubtle">
-                {t('Pairs must be in “PancakeSwap Extended” Official')}
+                {t('Pairs must be in the PancakeSwap Token list for the following chains (')}
                 <Link
-                  style={{ display: 'inline-block' }}
                   external
+                  style={{ display: 'inline-block' }}
                   href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json"
                 >
                   <Text color="primary" ml="4px" as="span">
-                    {t('token list')}
+                    {t('BNB Smart Chain')},
                   </Text>
                 </Link>
+                <Link
+                  external
+                  style={{ display: 'inline-block' }}
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('Arbitrum One')},
+                  </Text>
+                </Link>
+                <Link
+                  external
+                  style={{ display: 'inline-block' }}
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-base-default.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('Base')},
+                  </Text>
+                </Link>
+                <Link
+                  external
+                  style={{ display: 'inline-block' }}
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-eth-default.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('Ethereum')},
+                  </Text>
+                </Link>
+                <Link
+                  external
+                  style={{ display: 'inline-block' }}
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-linea-default.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('Linea')},
+                  </Text>
+                </Link>
+                <Link
+                  external
+                  style={{ display: 'inline-block' }}
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('Polygon zkEVM')},
+                  </Text>
+                </Link>
+                <Link
+                  external
+                  style={{ display: 'inline-block' }}
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-zksync-default.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('zkSync Era')}
+                  </Text>
+                </Link>
+                <Text color="textSubtle" as="span">
+                  {' '}
+                  )
+                </Text>
               </StyledListText>
               <StyledListText ml="16px" color="textSubtle">
                 {t(
