@@ -225,7 +225,9 @@ const Agreement = () => {
           a share of your commissions to your Referrals, using the system provided by us. The Referral may receive up to
           a maximum of 100% of the commissions that you have earnt from them.
         </Text>
-        <Text as="p">7.2 With respect to commissions received under Clause 3 (Commissions for perpetual trades):</Text>
+        <Text as="p">
+          7.2 With respect to commissions received under Clause 3 (Commissions for v1 perpetual trades):
+        </Text>
         <Text as="p">(a) you may not offer a share of your commissions to your Referrals; and</Text>
         <Text as="p">
           (b) Subject to this Agreement, the Referral is eligible to receive an equal amount of commissions that are
