@@ -2157,6 +2157,7 @@ importers:
       '@pancakeswap/token-lists':
         specifier: workspace:*
         version: link:../token-lists
+    devDependencies:
       '@pancakeswap/utils':
         specifier: workspace:*
         version: link:../utils
