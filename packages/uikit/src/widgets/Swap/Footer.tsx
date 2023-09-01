@@ -70,7 +70,7 @@ const Footer: React.FC<
         </Flex>
       )}
       {isSide && <Flex flexGrow={1} />}
-      {helpUrl && (
+      {/* {helpUrl && (
         <Flex
           flexGrow={isSide ? 0 : 1}
           alignItems="center"
@@ -87,7 +87,7 @@ const Footer: React.FC<
           </BubbleWrapper>
           {helpImage}
         </Flex>
-      )}
+      )} */}
     </Wrapper>
   );
 };

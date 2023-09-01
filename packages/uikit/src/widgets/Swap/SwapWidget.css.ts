@@ -13,7 +13,7 @@ export const inputVariants = recipe({
     border: "none",
     flex: "1 1 auto",
     backgroundColor: "transparent",
-    fontSize: 16,
+    fontSize: 40,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -59,7 +59,7 @@ export const inputVariants = recipe({
     },
   },
   defaultVariants: {
-    align: "right",
+    align: "left",
     error: false,
   },
 });
@@ -70,7 +70,7 @@ export const inputContainerVariants = recipe({
   base: style([
     atoms({
       borderRadius: "default",
-      backgroundColor: "input",
+      // backgroundColor: "input",
     }),
     style({
       selectors: {
@@ -92,6 +92,11 @@ export const inputContainerVariants = recipe({
       false: atoms({
         boxShadow: "inset",
       }),
+    },
+    hasZapStyle: {
+      true: {
+        borderRadius: "0px 16px 16px 16px",
+      },
     },
     showBridgeWarning: {
       true: atoms({

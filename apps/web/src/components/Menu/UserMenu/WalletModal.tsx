@@ -18,6 +18,7 @@ import styled from 'styled-components'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 import WalletWrongNetwork from './WalletWrongNetwork'
+import WalletHeader from '../../../assets/walletheader.png'
 
 export enum WalletView {
   WALLET_INFO,
@@ -32,11 +33,11 @@ interface WalletModalProps extends InjectedModalProps {
 export const LOW_NATIVE_BALANCE = parseEther('0.002', 'wei')
 
 const ModalHeader = styled(UIKitModalHeader)`
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
+  background-image: url(${WalletHeader.src});
 `
 
 const Tabs = styled.div`
-  background-color: ${({ theme }) => theme.colors.dropdown};
+  background-color: #4e587a;
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   padding: 16px 24px;
 `

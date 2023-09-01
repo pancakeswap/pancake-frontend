@@ -400,7 +400,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
                 <Button p="0" variant="text">
                   <Text color="primary" bold fontSize="16px" mr="4px">
-                    {t('Community Auctions')}
+                    {/* {t('Community Auctions')} */}
                   </Text>
                   <ArrowForwardIcon color="primary" />
                 </Button>

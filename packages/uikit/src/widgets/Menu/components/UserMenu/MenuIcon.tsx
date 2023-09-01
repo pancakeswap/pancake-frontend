@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Variant, variants } from "./types";
 import { Image } from "../../../../components/Image";
-import { RefreshIcon, WalletFilledIcon, WarningIcon } from "../../../../components/Svg";
+import { RefreshIcon, ConnectWallet, WarningIcon } from "../../../../components/Svg";
 import { Colors } from "../../../../theme/types";
 
 const MenuIconWrapper = styled.div<{ borderColor: keyof Colors }>`
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.background};
-  border-color: ${({ theme, borderColor }) => theme.colors[borderColor]};
+  background-color: rgb(45, 152, 251);
+  border-color: rgb(45, 152, 251);
   border-radius: 50%;
   border-style: solid;
   border-width: 2px;
@@ -35,7 +35,7 @@ const ProfileIcon = styled(Image)`
 
 export const NoProfileMenuIcon: React.FC<React.PropsWithChildren> = () => (
   <MenuIconWrapper borderColor="primary">
-    <WalletFilledIcon color="primary" width="24px" />
+    <ConnectWallet color="primary" width="24px" height="24px" />
   </MenuIconWrapper>
 );
 

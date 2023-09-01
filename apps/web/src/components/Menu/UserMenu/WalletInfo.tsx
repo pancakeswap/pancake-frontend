@@ -92,7 +92,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
 
   return (
     <>
-      <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
+      <Text color="white" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
         {t('Your Address')}
       </Text>
       <FlexGap flexDirection="column" mb="24px" gap="8px">
@@ -100,7 +100,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         {domainName ? <Text color="textSubtle">{domainName}</Text> : null}
       </FlexGap>
       {hasLowNativeBalance && (
-        <Message variant="warning" mb="24px">
+        <Message variant="danger" mb="24px">
           <Box>
             <Text fontWeight="bold">
               {t('%currency% Balance Low', {
@@ -177,7 +177,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               <Flex alignItems="center" justifyContent="center">
                 <Text
                   fontWeight={Number(bnbBalance?.data?.value) === 0 ? 'bold' : 'normal'}
-                  color={Number(bnbBalance?.data?.value) === 0 ? 'warning' : 'normal'}
+                  color={Number(bnbBalance?.data?.value) === 0 ? 'danger' : 'normal'}
                 >
                   {formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
                 </Text>
@@ -216,7 +216,12 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         </Flex>
       </Box>
       <CakeBenefitsCard onDismiss={onDismiss} />
-      <Button variant="secondary" width="100%" minHeight={48} onClick={handleLogout}>
+      <Button
+        style={{ background: 'transparent', color: '#ffffff', border: '1px solid #ffffff' }}
+        width="100%"
+        minHeight={48}
+        onClick={handleLogout}
+      >
         {t('Disconnect Wallet')}
       </Button>
     </>

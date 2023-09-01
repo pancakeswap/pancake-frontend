@@ -24,9 +24,9 @@ export interface ITableProps {
 
 const Container = styled.div`
   width: 100%;
-  background: ${({ theme }) => theme.card.background};
+  background: #9eacd04a;
   border-radius: 32px;
-  margin: 16px 0px;
+  margin: 25px 0px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 

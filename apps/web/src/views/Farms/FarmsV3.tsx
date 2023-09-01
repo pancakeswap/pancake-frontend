@@ -51,15 +51,19 @@ import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
+import { LogoIcon, LogoWithTextIcon } from '../../../../../packages/uikit/src/components/Svg'
 
 const BIG_INT_ZERO = new BigNumber(0)
 const BIG_INT_ONE = new BigNumber(1)
 
 const ControlContainer = styled.div`
   display: flex;
+  padding: 15px;
   width: 100%;
   align-items: center;
   position: relative;
+  background-color: #9eacd04a;
+  border-radius: 20px;
 
   justify-content: space-between;
   flex-direction: column;
@@ -73,6 +77,47 @@ const ControlContainer = styled.div`
   }
 `
 
+const FarmCardContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 25px;
+
+  @media screen and (max-width: 835px) {
+    display: block;
+  }
+`
+
+const FarmCardCustom = styled.div`
+  width: 390px;
+  background-color: #9eacd04a;
+  border-radius: 20px;
+  text-align: center;
+  padding: 25px;
+
+  @media screen and (max-width: 1300px) {
+    width: 350px;
+  }
+
+  @media screen and (max-width: 1150px) {
+    width: 300px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 250px;
+  }
+
+  @media screen and (max-width: 835px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+`
+
+const FarmPrice = styled.div`
+  font-size: 20px;
+  color: #2d98fb;
+  padding: 10px;
+`
+
 const FarmFlexWrapper = styled(Flex)`
   flex-wrap: wrap;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -83,8 +128,8 @@ const FarmH1 = styled(Heading)`
   font-size: 32px;
   margin-bottom: 8px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 64px;
-    margin-bottom: 24px;
+    font-size: 40px;
+    margin-bottom: 0;
   }
 `
 const FarmH2 = styled(Heading)`
@@ -109,6 +154,7 @@ const ToggleWrapper = styled.div`
 const LabelWrapper = styled.div`
   > ${Text} {
     font-size: 12px;
+    color: white;
   }
 `
 
@@ -458,9 +504,33 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const isMigrationSupported = useMemo(() => isV3MigrationSupported(chainId), [chainId])
 
+  const LogoContainer = styled.div`
+    margin-right: 20px;
+    .mobile-icon {
+      width: 77px;
+      ${({ theme }) => theme.mediaQueries.xxl} {
+        display: none;
+      }
+    }
+    .desktop-icon {
+      width: 247px;
+      display: none;
+      ${({ theme }) => theme.mediaQueries.xxl} {
+        display: block;
+      }
+    }
+  `
+
+  const innerLogo = (
+    <>
+      <LogoIcon className="mobile-icon" />
+      <LogoWithTextIcon className="desktop-icon" />
+    </>
+  )
+
   return (
     <FarmsV3Context.Provider value={providerValue}>
-      <PageHeader>
+      {/* <PageHeader>
         <Flex flexDirection="column">
           {isMigrationSupported && (
             <Box m="24px 0">
@@ -492,8 +562,26 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             )}
           </FarmFlexWrapper>
         </Flex>
-      </PageHeader>
+      </PageHeader> */}
+      <Flex padding="20px 50px" justifyContent="center" alignItems="center">
+        <LogoContainer>{innerLogo}</LogoContainer>
+        <FarmH1>Farms</FarmH1>
+      </Flex>
       <Page>
+        <FarmCardContainer>
+          <FarmCardCustom>
+            <FarmH2>TVL</FarmH2>
+            <FarmPrice>$0.00</FarmPrice>
+          </FarmCardCustom>
+          <FarmCardCustom>
+            <FarmH2>Stacked Value</FarmH2>
+            <FarmPrice>$0.00</FarmPrice>
+          </FarmCardCustom>
+          <FarmCardCustom>
+            <FarmH2>Pending Rewards</FarmH2>
+            <FarmPrice>$0.00</FarmPrice>
+          </FarmCardCustom>
+        </FarmCardContainer>
         <ControlContainer>
           <ViewControls>
             <Flex mt="20px">
@@ -589,7 +677,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           (viewMode === ViewMode.TABLE ? (
             <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
           ) : (
-            <FlexLayout>{children}</FlexLayout>
+            <FlexLayout style={{ marginTop: '25px' }}>{children}</FlexLayout>
           ))}
         {account && !v2UserDataLoaded && !v3UserDataLoaded && stakedOnly && (
           <Flex justifyContent="center">
@@ -597,7 +685,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Flex>
         )}
         {chosenFarms.length > 0 && <div ref={observerRef} />}
-        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        {/* <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} /> */}
         <V3SubgraphHealthIndicator />
       </Page>
     </FarmsV3Context.Provider>

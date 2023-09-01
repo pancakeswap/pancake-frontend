@@ -10,14 +10,9 @@ export const mobileFooterHeight = 73;
 
 export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
-  background: transparent;
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   display: flex;
   padding: 12px 24px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    background: ${({ background }) => background || "transparent"};
-  }
 `;
 
 export const ModalTitle = styled(Flex)`
@@ -29,6 +24,7 @@ export const ModalBody = styled(Flex)`
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: #9eacd04a;
   max-height: calc(90vh - ${mobileFooterHeight}px);
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;

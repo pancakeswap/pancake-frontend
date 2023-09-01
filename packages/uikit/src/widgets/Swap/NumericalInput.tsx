@@ -10,6 +10,7 @@ export type NumericalInputProps = {
   value: string | number;
   onUserInput: (input: string) => void;
   fontSize?: string;
+  title?: React.ReactNode;
 } & InputVariants &
   Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">;
 
@@ -19,7 +20,7 @@ export const NumericalInput = memo(function InnerInput({
   placeholder,
   error,
   align,
-  className,
+  className = "",
   loading,
   ...rest
 }: NumericalInputProps) {

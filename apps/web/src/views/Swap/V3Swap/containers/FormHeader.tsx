@@ -15,7 +15,7 @@ export const FormHeader: FC<{ refreshDisabled: boolean; onRefresh: () => void }>
 
   return (
     <CurrencyInputHeader
-      title={t('Swap')}
+      title={t('Exchange')}
       subtitle={t('Trade tokens in an instant')}
       hasAmount={!refreshDisabled}
       onRefreshPrice={handleRefresh}

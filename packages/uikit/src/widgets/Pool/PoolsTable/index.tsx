@@ -5,7 +5,7 @@ const StyledTable = styled.div`
   border-radius: ${({ theme }) => theme.radii.card};
   scroll-margin-top: 64px;
 
-  background-color: ${({ theme }) => theme.card.background};
+  background-color: #9eacd04a;
   > div:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.disabled};
   }
@@ -18,9 +18,10 @@ const StyledTable = styled.div`
 
 const StyledTableBorder = styled.div`
   border-radius: ${({ theme }) => theme.radii.card};
-  background-color: ${({ theme }) => theme.colors.cardBorder};
+  background-color: #9eacd04a;
   padding: 1px 1px 3px 1px;
   background-size: 400% 400%;
+  margin-top: 25px;
 `;
 
 export const PoolsTable: React.FC<React.PropsWithChildren> = ({ children }) => {

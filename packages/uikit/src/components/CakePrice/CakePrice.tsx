@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import Image from "next/image";
 import LogoRound from "../Svg/Icons/LogoRound";
 import Text from "../Text/Text";
 import Skeleton from "../Skeleton/Skeleton";
 import { Colors } from "../../theme";
+import LogoImage from "../../assets/logo.png";
 
 export interface Props {
   color?: keyof Colors;
@@ -35,8 +37,10 @@ const CakePrice: React.FC<React.PropsWithChildren<Props>> = ({
     <PriceLink
       href={`https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=${chainId}`}
       target="_blank"
+      style={{ marginRight: "25px" }}
     >
-      <LogoRound width="24px" mr="8px" />
+      {/* <LogoRound width="24px" mr="8px" /> */}
+      <Image src={LogoImage} alt="logo" />
       <Text color={color} bold>{`$${cakePriceUsd.toFixed(3)}`}</Text>
     </PriceLink>
   ) : showSkeleton ? (

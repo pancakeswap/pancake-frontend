@@ -31,7 +31,7 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
   return (
     <Box minHeight="120px">
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
-        <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold">
+        <Text color="white" margin="auto" fontSize="15px" textTransform="uppercase" fontWeight="bold">
           {t('Recent Transactions')}
         </Text>
         {hasTransactions && (

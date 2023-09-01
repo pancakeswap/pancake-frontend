@@ -1,4 +1,5 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { MenuContext } from "../../widgets/Menu/context";
 import StyledMenuItem, { StyledMenuItemContainer } from "./styles";
 import { MenuItemProps } from "./types";
@@ -7,7 +8,6 @@ import { useMatchBreakpoints } from "../../contexts";
 const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   children,
   href,
-  isActive = false,
   isDisabled = false,
   variant = "default",
   scrollLayerRef,
@@ -17,6 +17,9 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   const { isMobile } = useMatchBreakpoints();
   const menuItemRef = useRef<HTMLDivElement>(null);
   const { linkComponent } = useContext(MenuContext);
+  const [isActive, setIsActive] = useState(false);
+  const router = useRouter();
+
   const itemLinkProps: any = href
     ? {
         as: linkComponent,
@@ -25,7 +28,10 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
     : {
         as: "div",
       };
+
   useEffect(() => {
+    setIsActive(router.pathname === href); // Compare current URL with href prop
+
     if (!isMobile || !isActive || !menuItemRef.current || !scrollLayerRef?.current) return;
     const scrollLayer = scrollLayerRef.current;
     const menuNode = menuItemRef.current.parentNode as HTMLDivElement;
@@ -36,7 +42,8 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
     ) {
       scrollLayer.scrollLeft = menuNode.offsetLeft;
     }
-  }, [isActive, isMobile, scrollLayerRef]);
+  }, [isActive, isMobile, scrollLayerRef, router.pathname, href]);
+
   return (
     <StyledMenuItemContainer $isActive={isActive} $variant={variant} ref={menuItemRef}>
       <StyledMenuItem

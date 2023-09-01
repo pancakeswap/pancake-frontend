@@ -23,7 +23,7 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
       <RowBetween alignItems="center">{price}</RowBetween>
       {typeof allowedSlippage === "number" && (
         <RowBetween alignItems="center">
-          <SwapInfoLabel>
+          <SwapInfoLabel color="white">
             {t("Slippage Tolerance")}
             {onSlippageClick ? (
               <IconButton scale="sm" variant="text" onClick={onSlippageClick}>

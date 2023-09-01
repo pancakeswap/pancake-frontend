@@ -104,15 +104,17 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
     }, [mobileTooltipClickOutside])
 
     const titleContent = (
-      <Flex width="100%" alignItems="center" justifyContent="space-between" flexDirection="column">
-        <Flex flexDirection="column" alignItems="flex-start" width="100%" marginBottom={15}>
-          <Swap.CurrencyInputHeaderTitle>{title}</Swap.CurrencyInputHeaderTitle>
+      <Flex width="100%" alignItems="center" justifyContent="space-between" flexDirection="row">
+        <Flex flexDirection="column" width="70%">
+          <Flex flexDirection="column" alignItems="flex-start" width="100%" marginBottom={15}>
+            <Swap.CurrencyInputHeaderTitle>{title}</Swap.CurrencyInputHeaderTitle>
+          </Flex>
+          <Flex justifyContent="start" width="100%" height="17px" alignItems="center" mb="14px">
+            <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
+          </Flex>
         </Flex>
-        <Flex justifyContent="start" width="100%" height="17px" alignItems="center" mb="14px">
-          <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
-        </Flex>
-        <Flex width="100%" justifyContent="end">
-          {SUPPORTED_BUY_CRYPTO_CHAINS.includes(chainId) ? (
+        <Flex width="30%" justifyContent="end">
+          {/* {SUPPORTED_BUY_CRYPTO_CHAINS.includes(chainId) ? (
             <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
               <TooltipText
                 ref={buyCryptoTargetRef}
@@ -126,8 +128,8 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               </TooltipText>
               {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
             </Flex>
-          ) : null}
-          {isChartSupported && setIsChartDisplayed && (
+          ) : null} */}
+          {/* {isChartSupported && setIsChartDisplayed && (
             <ColoredIconButton
               onClick={() => {
                 if (!isChartDisplayed && isSwapHotTokenDisplay) {
@@ -144,8 +146,8 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
                 <ChartIcon width="24px" color="textSubtle" />
               )}
             </ColoredIconButton>
-          )}
-          {isHotTokenSupported && (
+          )} */}
+          {/* {isHotTokenSupported && (
             <ColoredIconButton
               variant="text"
               scale="sm"
@@ -172,7 +174,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
                 </>
               )}
             </ColoredIconButton>
-          )}
+          )} */}
           <NotificationDot show={expertMode || isRoutingSettingChange}>
             <GlobalSettings color="textSubtle" mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
           </NotificationDot>

@@ -10,6 +10,7 @@ import {
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
+  ConnectWallet,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Trans from 'components/Trans'
@@ -56,7 +57,7 @@ const UserMenuItems = () => {
         {t('Recent Transactions')}
         {hasPendingTransactions && <RefreshIcon spin />}
       </UserMenuItem>
-      <UserMenuDivider />
+      {/* <UserMenuDivider />
       <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
         <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>
       </NextLink>
@@ -65,7 +66,7 @@ const UserMenuItems = () => {
         isLoading={isLoading}
         hasProfile={hasProfile}
         disabled={isWrongNetwork || chainId !== ChainId.BSC}
-      />
+      /> */}
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
@@ -125,7 +126,8 @@ const UserMenu = () => {
       <Box display={['none', , , 'block']}>
         <Trans>Connect Wallet</Trans>
       </Box>
-      <Box display={['block', , , 'none']}>
+      <Box display={['flex', , , , , , 'none']} style={{ alignItems: 'center' }}>
+        <ConnectWallet mr="8px" />
         <Trans>Connect</Trans>
       </Box>
     </ConnectWalletButton>

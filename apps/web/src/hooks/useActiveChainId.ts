@@ -11,7 +11,7 @@ const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
   const params = new URL(window.location.href).searchParams
-  let chainId
+  let chainId: string | number | null
   // chain has higher priority than chainId
   // keep chainId for backward compatible
   const c = params.get('chain')
@@ -48,7 +48,7 @@ export const useActiveChainId = () => {
   const queryChainId = useAtomValue(queryChainIdAtom)
 
   const { chain } = useNetwork()
-  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
+  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BASE : undefined)
 
   const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
 

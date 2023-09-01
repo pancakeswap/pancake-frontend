@@ -54,13 +54,13 @@ const Menu = (props) => {
         linkComponent={LinkComponent}
         rightSide={
           <>
-            <GlobalSettings mode={SettingsMode.GLOBAL} />
-            <NetworkSwitcher />
+            {/* <GlobalSettings mode={SettingsMode.GLOBAL} /> */}
+            {/* <NetworkSwitcher /> */}
             <UserMenu />
           </>
         }
         chainId={chainId}
-        banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
+        banner=""
         isDark={isDark}
         toggleTheme={toggleTheme}
         currentLang={currentLanguage.code}

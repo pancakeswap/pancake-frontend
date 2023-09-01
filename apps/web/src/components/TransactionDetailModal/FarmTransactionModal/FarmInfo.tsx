@@ -65,7 +65,7 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
       <ListStyle>{t('You have received 0.0005 BNB as a first-time BNB Smart Chain user')}</ListStyle>
       <ListStyle>
         {t('You can swap more BNB on')}
-        <LinkStyle href="/swap">{t('Swap.')}</LinkStyle>
+        <LinkStyle href="/">{t('Swap.')}</LinkStyle>
       </ListStyle>
       <ListStyle>
         {t('Explore more features like')}

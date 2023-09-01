@@ -8,7 +8,6 @@ import Flex from "../../../../../components/Box/Flex";
 
 const ActionContainer = styled.div`
   padding: 16px;
-  border: 2px solid ${({ theme }) => theme.colors.input};
   border-radius: 16px;
   flex-grow: 1;
   flex-basis: 0;

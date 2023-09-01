@@ -19,6 +19,9 @@ const PoolControlsView = styled.div`
   width: 100%;
   align-items: center;
   position: relative;
+  background-color: #9eacd04a;
+  border-radius: 20px;
+  padding: 15px;
 
   justify-content: space-between;
   flex-direction: column;
@@ -152,7 +155,7 @@ export function PoolControls<T>({
 
   const handleSortOptionChange = useCallback((option: OptionProps) => setSortOption(option.value), []);
 
-  let chosenPools: DeserializedPool<T>[];
+  let chosenPools: DeserializedPool<T>[] = [];
   if (showFinishedPools) {
     chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools;
   } else {

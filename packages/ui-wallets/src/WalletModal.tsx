@@ -369,7 +369,7 @@ function DesktopModal<T>({
           {selected && selected.installed !== false && (
             <>
               {typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
-              <Heading as="h1" fontSize="20px" color="secondary">
+              <Heading as="h1" fontSize="20px" color="white">
                 {t('Opening')} {selected.title}
               </Heading>
               {error ? (
@@ -455,7 +455,7 @@ const Intro = ({ docLink, docText }: { docLink: string; docText: string }) => {
   const { t } = useTranslation()
   return (
     <>
-      <Heading as="h1" fontSize="20px" color="secondary">
+      <Heading as="h1" fontSize="20px" color="white">
         {t('Haven’t got a wallet yet?')}
       </Heading>
       <Image src="https://cdn.pancakeswap.com/wallets/wallet_intro.png" width={198} height={178} />

@@ -18,9 +18,11 @@ import CardFooter from './components/PoolCard/CardFooter'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolControls from './components/PoolControls'
 import PoolRow, { VaultPoolRow } from './components/PoolsTable/PoolRow'
+import { LogoIcon, LogoWithTextIcon } from '../../../../../packages/uikit/src/components/Svg'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
+  margin-top: 25px;
 `
 
 const FinishedTextContainer = styled(Flex)`
@@ -37,6 +39,15 @@ const FinishedTextLink = styled(Link)`
   text-decoration: underline;
 `
 
+const PoolH1 = styled(Heading)`
+  font-size: 32px;
+  margin-bottom: 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 40px;
+    margin-bottom: 0;
+  }
+`
+
 const Pools: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
@@ -45,10 +56,34 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
 
   usePoolsPageFetch()
 
+  const LogoContainer = styled.div`
+    margin-right: 20px;
+    .mobile-icon {
+      width: 77px;
+      ${({ theme }) => theme.mediaQueries.xxl} {
+        display: none;
+      }
+    }
+    .desktop-icon {
+      width: 247px;
+      display: none;
+      ${({ theme }) => theme.mediaQueries.xxl} {
+        display: block;
+      }
+    }
+  `
+
+  const innerLogo = (
+    <>
+      <LogoIcon className="mobile-icon" />
+      <LogoWithTextIcon className="desktop-icon" />
+    </>
+  )
+
   return (
     <>
       <VCakeModal />
-      <PageHeader>
+      {/* <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" scale="xxl" color="secondary" mb="24px">
@@ -62,7 +97,11 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
             </Heading>
           </Flex>
         </Flex>
-      </PageHeader>
+      </PageHeader> */}
+      <Flex padding="20px 50px" justifyContent="center" alignItems="center">
+        <LogoContainer>{innerLogo}</LogoContainer>
+        <PoolH1>Pools</PoolH1>
+      </Flex>
       <Page>
         <PoolControls pools={pools}>
           {({ chosenPools, viewMode, stakedOnly, normalizedUrlSearch, showFinishedPools }) => (
@@ -143,14 +182,14 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                   )}
                 </Pool.PoolsTable>
               )}
-              <Image
+              {/* <Image
                 mx="auto"
                 mt="12px"
                 src="/images/decorations/3d-syrup-bunnies.png"
                 alt="Pancake illustration"
                 width={192}
                 height={184.5}
-              />
+              /> */}
             </>
           )}
         </PoolControls>

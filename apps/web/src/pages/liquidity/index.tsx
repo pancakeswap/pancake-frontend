@@ -44,9 +44,12 @@ import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { SwapPoolTabs } from 'views/Swap/components/NavigationTabs'
+import Image from 'next/image'
+import NoLiquidityImage from '../../assets/noLiquidity.png'
 
 const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+  background-color: transparent;
 `
 
 export const StableContextProvider = (props: { pair: LPStablePair; account: string }) => {
@@ -181,9 +184,12 @@ export default function PoolListPage() {
       )
     } else if (!v2PairsSection && !stablePairsSection && !v3PairsSection) {
       resultSection = (
-        <Text color="textSubtle" textAlign="center">
-          {t('No liquidity found.')}
-        </Text>
+        <Flex flexDirection="column" alignItems="center">
+          <Image src={NoLiquidityImage} alt="no liquidity" />
+          <Text color="textSubtle" textAlign="center">
+            {t('No liquidity found.')}
+          </Text>
+        </Flex>
       )
     } else {
       // Order should be v3, stable, v2
@@ -200,55 +206,55 @@ export default function PoolListPage() {
 
   return (
     <Page>
-      {isMigrationSupported && (
+      <SwapPoolTabs active="pool" />
+      {/* {isMigrationSupported && (
         <Flex m="24px 0" maxWidth="854px">
           <FarmV3MigrationBanner />
         </Flex>
-      )}
+      )} */}
       <AppBody
         style={{
           maxWidth: '854px',
         }}
       >
         <AppHeader
-          title={t('Your Liquidity')}
-          subtitle={t('List of your liquidity positions')}
+          title={t('My position')}
           IconSlot={
             <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
               <HistoryIcon color="textSubtle" width="24px" />
             </IconButton>
           }
-          filter={
-            <>
-              <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
-                <Checkbox
-                  id="hide-close-positions"
-                  scale="sm"
-                  name="confirmed"
-                  type="checkbox"
-                  checked={hideClosedPositions}
-                  onChange={() => setHideClosedPositions((prev) => !prev)}
-                />
-                <Text ml="8px" color="textSubtle" fontSize="14px">
-                  {t('Hide closed positions')}
-                </Text>
-              </Flex>
+          // filter={
+          //   <>
+          //     <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
+          //       <Checkbox
+          //         id="hide-close-positions"
+          //         scale="sm"
+          //         name="confirmed"
+          //         type="checkbox"
+          //         checked={hideClosedPositions}
+          //         onChange={() => setHideClosedPositions((prev) => !prev)}
+          //       />
+          //       <Text ml="8px" color="textSubtle" fontSize="14px">
+          //         {t('Hide closed positions')}
+          //       </Text>
+          //     </Flex>
 
-              <ButtonMenu
-                scale="sm"
-                activeIndex={selectedTypeIndex}
-                onItemClick={(index) => setSelectedTypeIndex(index)}
-                variant="subtle"
-              >
-                <ButtonMenuItem>{t('All')}</ButtonMenuItem>
-                <ButtonMenuItem>V3</ButtonMenuItem>
-                <ButtonMenuItem display={isStableSwapSupported(chainId) ? 'inline-flex' : 'none'}>
-                  {t('StableSwap')}
-                </ButtonMenuItem>
-                <ButtonMenuItem>V2</ButtonMenuItem>
-              </ButtonMenu>
-            </>
-          }
+          //     <ButtonMenu
+          //       scale="sm"
+          //       activeIndex={selectedTypeIndex}
+          //       onItemClick={(index) => setSelectedTypeIndex(index)}
+          //       variant="subtle"
+          //     >
+          //       <ButtonMenuItem>{t('All')}</ButtonMenuItem>
+          //       <ButtonMenuItem>V3</ButtonMenuItem>
+          //       <ButtonMenuItem display={isStableSwapSupported(chainId) ? 'inline-flex' : 'none'}>
+          //         {t('StableSwap')}
+          //       </ButtonMenuItem>
+          //       <ButtonMenuItem>V2</ButtonMenuItem>
+          //     </ButtonMenu>
+          //   </>
+          // }
         />
         <Body>
           {mainSection}
@@ -256,7 +262,12 @@ export default function PoolListPage() {
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>
-            <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="invertedContrast" />}>
+            <Button
+              id="join-pool-button"
+              width="100%"
+              startIcon={<AddIcon color="invertedContrast" />}
+              style={{ background: 'linear-gradient(90deg, rgba(0,194,255,1) 0%, rgba(202,28,230,1) 100%)' }}
+            >
               {t('Add Liquidity')}
             </Button>
           </NextLink>

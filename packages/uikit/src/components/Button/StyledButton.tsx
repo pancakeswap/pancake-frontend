@@ -107,7 +107,7 @@ const StyledButton = styled.button<BaseButtonProps>`
         font-size: 12px;
         font-weight: 400;
         transform: rotate(31.17deg);
-        color: ${decorator.color ?? "white"};
+        color: "white";
       }
     `}
 `;

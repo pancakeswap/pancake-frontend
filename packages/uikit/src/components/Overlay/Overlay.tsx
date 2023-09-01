@@ -1,6 +1,7 @@
 import styled, { css, keyframes } from "styled-components";
 import { useEffect } from "react";
 import { Box, BoxProps } from "../Box";
+import backgroundImage from "../../assets/background.png";
 
 const unmountAnimation = keyframes`
     0% {
@@ -26,7 +27,8 @@ const StyledOverlay = styled(Box)<{ isUnmounting?: boolean }>`
   left: 0px;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => `${theme.colors.text99}`};
+  background: url(${backgroundImage.src}) no-repeat center center fixed;
+  filter: blur(13px);
   z-index: 20;
   will-change: opacity;
   animation: ${mountAnimation} 350ms ease forwards;

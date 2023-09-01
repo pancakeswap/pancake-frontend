@@ -158,7 +158,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
             </Tag>
             <Text fontSize="16px">{cakeBenefits?.lockedCake}</Text>
           </Flex>
-          <Message mt="8px" mb="16px" variant="warning">
+          <Message mt="8px" mb="16px" variant="danger">
             <MessageText maxWidth="200px">
               {t(
                 'Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!',
@@ -184,7 +184,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
             </Tag>
             <Text fontSize="16px">{cakeBenefits?.lockedCake}</Text>
           </Flex>
-          <Message mt="8px" mb="16px" variant="warning">
+          <Message mt="8px" mb="16px" variant="danger">
             <MessageText maxWidth="200px">
               {t(
                 'Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!',

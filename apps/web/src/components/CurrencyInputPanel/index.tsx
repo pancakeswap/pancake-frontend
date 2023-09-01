@@ -24,11 +24,18 @@ import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStabl
 
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useAccount } from 'wagmi'
+import { Lalezar } from 'next/font/google'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
+
+const lalezar = Lalezar({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -70,6 +77,7 @@ interface CurrencyInputPanelProps {
   currencyLoading?: boolean
   inputLoading?: boolean
   title?: React.ReactNode
+  inputTitle?: string
   hideBalanceComp?: boolean
 }
 const CurrencyInputPanel = memo(function CurrencyInputPanel({
@@ -101,6 +109,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   currencyLoading,
   inputLoading,
   title,
+  inputTitle,
   hideBalanceComp,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
@@ -171,10 +180,14 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
       loading={inputLoading}
+      title={inputTitle}
       top={
         <>
           {title}
-          <Flex alignItems="center">
+          <Flex
+            alignItems="center"
+            style={{ backgroundColor: '#4F5F6D', paddingRight: '15px', paddingLeft: '15px', borderRadius: '16px' }}
+          >
             {beforeButton}
             <CurrencySelectButton
               className="open-currency-select-button"
@@ -210,7 +223,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
               </Flex>
             </CurrencySelectButton>
-            {token && tokenAddress ? (
+            {/* {token && tokenAddress ? (
               <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
                 <CopyButton
                   width="16px"
@@ -229,9 +242,9 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
                 />
               </Flex>
-            ) : null}
+            ) : null} */}
           </Flex>
-          {account && !hideBalanceComp && (
+          {/* {account && !hideBalanceComp && (
             <Text
               onClick={!disabled && onMax}
               color="textSubtle"
@@ -246,18 +259,18 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   : t('Balance: %balance%', { balance: balance ?? t('Loading') })
                 : ' -'}
             </Text>
-          )}
+          )} */}
         </>
       }
       bottom={
         <>
           {!!showUSDPrice && (
-            <Flex justifyContent="flex-end" mr="1rem">
+            <Flex justifyContent="flex-start" mr="1rem">
               <Flex maxWidth="200px">
                 {inputLoading ? (
                   <Loading width="14px" height="14px" />
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
-                  <Text fontSize="12px" color="textSubtle" ellipsis>
+                  <Text fontSize="12px" color="#A5A5A5" ellipsis className={`${lalezar.className}`}>
                     {`~${formatNumber(amountInDollar)} USD`}
                   </Text>
                 ) : (
@@ -266,7 +279,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               </Flex>
             </Flex>
           )}
-          <InputRow selected={disableCurrencySelect}>
+          {/* <InputRow selected={disableCurrencySelect}>
             {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
                 {maxAmount?.greaterThan(0) &&
@@ -311,7 +324,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 )}
               </Flex>
             )}
-          </InputRow>
+          </InputRow> */}
         </>
       }
     />

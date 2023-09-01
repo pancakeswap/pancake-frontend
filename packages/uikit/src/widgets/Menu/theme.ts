@@ -9,5 +9,5 @@ export const light: NavThemeType = {
 };
 
 export const dark: NavThemeType = {
-  background: darkColors.backgroundAlt,
+  background: "#00000000",
 };

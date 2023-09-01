@@ -3,6 +3,11 @@ import { StyledMenuItemProps } from "./types";
 
 export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
   position: relative;
+  padding: 0 15px;
+
+  @media screen and (max-width: 1500px) {
+    padding: 0 6px;
+  }
 
   ${({ $isActive, $variant, theme }) =>
     $isActive &&
@@ -25,11 +30,14 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
   display: flex;
   align-items: center;
 
-  color: ${({ theme, $isActive }) => ($isActive ? theme.colors.secondary : theme.colors.textSubtle)};
-  font-size: 16px;
+  color: white;
+  font-size: 15px;
   font-weight: ${({ $isActive }) => ($isActive ? "600" : "400")};
   opacity: ${({ $isDisabled }) => ($isDisabled ? 0.5 : 1)};
   pointer-events: ${({ $isDisabled }) => ($isDisabled ? "none" : "inherit")};
+
+  background-color: ${({ $isActive }) => ($isActive ? "#08060B" : "inherit")};
+  border-radius: ${({ $isActive }) => ($isActive ? "30px" : "unset")};
 
   ${({ $statusColor, theme }) =>
     $statusColor &&
@@ -47,19 +55,27 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
   ${({ $variant }) =>
     $variant === "default"
       ? `
-    padding: 0 16px;
-    height: 48px;
+    padding: 0 21px;
+    height: 33px;
   `
       : `
     padding-left: 4px;
     padding-right: 4px;
 
-    height: 42px;
+    height: 33px;
   `}
 
   &:hover {
-    background: ${({ theme }) => theme.colors.tertiary};
-    ${({ $variant }) => $variant === "default" && "border-radius: 16px;"};
+    background: #08060b;
+    border-radius: 30px;
+  }
+
+  @media screen and (max-width: 1380px) {
+    padding: 0 8px;
+  }
+
+  .menu-icon {
+    margin-right: 8px;
   }
 `;
 

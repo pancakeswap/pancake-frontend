@@ -25,7 +25,7 @@ const ScanLink: React.FC<React.PropsWithChildren<ScanLinkProps>> = ({ children, 
     return React.isValidElement(iconToShow)
       ? React.cloneElement(iconToShow, {
           // @ts-ignore
-          color: props.color ? props.color : "primary",
+          color: "white",
           ml: "4px",
         })
       : null;

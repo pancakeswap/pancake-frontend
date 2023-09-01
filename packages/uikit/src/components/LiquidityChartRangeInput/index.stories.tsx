@@ -5,8 +5,8 @@ import { bscTokens } from "@pancakeswap/tokens";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
 import { CurrencyAmount, Price } from "@pancakeswap/sdk";
 
+import { LiquidityChartRangeInput } from "./index";
 import mockData from "./mockData.json";
-import { LiquidityChartRangeInput } from "./LiquidityChartRangeInput";
 
 export default {
   title: "Components/LiquidityChart",
@@ -19,18 +19,17 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
     <div style={{ padding: "32px", width: "500px" }}>
       <LiquidityChartRangeInput
         // price={0.0006380911608100259}
-        price={parseFloat(
+        price={
           new Price({
             baseAmount: CurrencyAmount.fromRawAmount(bscTokens.bnb, "15671741929954778"),
             quoteAmount: CurrencyAmount.fromRawAmount(bscTokens.cake, "10000000000000"),
-          }).toSignificant(6)
-        )}
+          })
+        }
         currencyA={bscTokens.bnb}
         currencyB={bscTokens.cake}
         tickCurrent={-202763}
         liquidity={3799256509904881797n}
         feeAmount={FeeAmount.MEDIUM}
-        formattedData={[]}
         ticks={mockData}
       />
     </div>

@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import Image from "next/image";
+import { vars } from "@pancakeswap/ui/css/vars.css";
 import { darkColors } from "../../theme/colors";
 import { Box, Flex } from "../Box";
 import SocialLinks from "./Components/SocialLinks";
 
 export const StyledFooter = styled(Flex)`
-  background: ${darkColors.backgroundAlt};
+  background: #091321;
 `;
 
 export const StyledList = styled.ul`
@@ -20,11 +22,12 @@ export const StyledListItem = styled.li`
   font-size: 16px;
   margin-bottom: 8px;
   text-transform: capitalize;
+  margin-bottom: 20px;
 
   &:first-child {
-    color: ${darkColors.secondary};
-    font-weight: 600;
-    text-transform: uppercase;
+    color: ${vars.colors.white};
+    font-weight: 400;
+    font-size: 22px;
   }
 `;
 
@@ -54,4 +57,43 @@ export const StyledSocialLinks = styled(SocialLinks)`
 
 export const StyledText = styled.span`
   color: ${darkColors.text};
+`;
+
+export const StyledBottomCopyright = styled.span`
+  color: ${vars.colors.white};
+  z-index: 1;
+`;
+
+export const StyledBottomImage = styled(Image)`
+  position: absolute;
+  bottom: 0;
+`;
+
+export const StyledTextLogo = styled.span`
+  color: ${vars.colors.white};
+  width: 210px;
+  font-size: 19px;
+  & > span {
+    color: #2d98fb;
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+`;
+
+export const StyledPowerdBy = styled(Flex)`
+  border: 1px solid white;
+  border-radius: 50px;
+  position: absolute;
+  bottom: 20px;
+  padding: 18px;
+`;
+
+export const StyledBombImage = styled(Image)`
+  position: absolute;
+  right: 70px;
+  bottom: 130px;
 `;

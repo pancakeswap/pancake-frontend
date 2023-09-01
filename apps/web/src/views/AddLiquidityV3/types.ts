@@ -1,5 +1,5 @@
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { ZOOM_LEVELS, ZoomLevels } from '@pancakeswap/uikit'
+import { ZoomLevels, ZOOM_LEVELS } from 'components/LiquidityChartRangeInput/types'
 
 export enum SELECTOR_TYPE {
   V3,
