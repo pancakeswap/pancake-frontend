@@ -85,7 +85,7 @@ const Container = styled.div<{ expanded }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.dropdown};
+  background-color: #9eacd04a;
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
@@ -95,7 +95,7 @@ const Container = styled.div<{ expanded }>`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     align-items: center;
-    padding: 16px 24px;
+    padding: 0 24px;
   }
 `
 
@@ -126,6 +126,7 @@ const InfoContainer = styled.div`
   min-width: 200px;
   padding-left: 24px;
   padding-right: 24px;
+  border-right: 1px solid #949494;
 `
 
 const ValueContainer = styled.div``
@@ -223,16 +224,18 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           <>
             {isActive && (
               <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-                <StyledText color="primary" onClick={addLiquidityModal.onOpen}>
+                <StyledText color="white" onClick={addLiquidityModal.onOpen}>
                   {t('Add %symbol%', { symbol: lpLabel })}
                 </StyledText>
               </Flex>
             )}
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
+              <StyledLinkExternal href={infoUrl} color="white">
+                {t('See Pair Info')}
+              </StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink chainId={chainId} href={bsc} color="white">
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
@@ -352,10 +355,12 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
               </Flex>
             )}
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
+              <StyledLinkExternal href={infoUrl} color="white">
+                {t('See Pair Info')}
+              </StyledLinkExternal>
             </Flex>
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-              <StyledScanLink chainId={chainId} href={bsc}>
+              <StyledScanLink chainId={chainId} href={bsc} color="white">
                 {t('View Contract')}
               </StyledScanLink>
             </Flex>
