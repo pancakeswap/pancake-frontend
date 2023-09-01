@@ -12,6 +12,8 @@ import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
 const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
   position: relative;
   height: 179px;
+  max-width: 100%;
+  box-sizing: border-box;
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 221px;
   }

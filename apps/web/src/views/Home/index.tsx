@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, PageSection, Text } from '@pancakeswap/uikit'
+import { Box, Flex, PageSection, Text } from '@pancakeswap/uikit'
 import { useAnniversaryEffect } from 'hooks/useAnniversaryEffect'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
@@ -34,7 +34,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   useAnniversaryEffect()
   return (
-    <>
+    <Box style={{ width: 'calc(100vw - 8px)', overflow: 'hidden', boxSizing: 'border-box' }}>
       <style jsx global>
         {`
           #home-1 .page-bg {
@@ -193,7 +193,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       >
         <Footer />
       </PageSection>
-    </>
+    </Box>
   )
 }
 
