@@ -316,7 +316,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
   return (
     <ConfirmSwapModalContainer
       minHeight="410px"
-      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING}
+      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING && !swapErrorMessage}
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
