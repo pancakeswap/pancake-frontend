@@ -325,8 +325,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^10.0.4
-        version: 10.0.4
+        specifier: ^10.2.0
+        version: 10.2.0
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -422,8 +422,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)
       swiper:
-        specifier: ^10.0.4
-        version: 10.0.4
+        specifier: ^10.2.0
+        version: 10.2.0
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -758,8 +758,8 @@ importers:
         specifier: ^5.1.5
         version: 5.1.5
       swiper:
-        specifier: ^10.0.4
-        version: 10.0.4
+        specifier: ^10.2.0
+        version: 10.2.0
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -1446,7 +1446,7 @@ importers:
         version: 2.1.2(react-dom@17.0.2)(react@18.2.0)
       swiper:
         specifier: '*'
-        version: 10.0.4
+        version: 10.2.0
 
   packages/uikit:
     dependencies:
@@ -24567,8 +24567,8 @@ packages:
       picocolors: 1.0.0
     dev: false
 
-  /swiper@10.0.4:
-    resolution: {integrity: sha512-DlNR3KiaVkPep6RraZ2tNr7lvyuzELuR+4NZr4wO42t0UworIO3DxDlz8b5Q3uUioh7cJad99EdRJLkPF+r8Ag==}
+  /swiper@10.2.0:
+    resolution: {integrity: sha512-nktQsOtBInJjr3f5DicxC8eHYGcLXDVIGPSon0QoXRaO6NjKnATCbQ8SZsD3dN1Ph1RH4EhVPwSYCcuDRFWHGQ==}
     engines: {node: '>= 4.7.0'}
     dev: false
 
