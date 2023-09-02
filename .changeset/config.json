@@ -10,7 +10,6 @@
   "ignore": [
     "@pancakeswap/eslint-config-pancake",
     "@pancakeswap/ui-wallets",
-    "@pancakeswap/uikit",
     "farms-api",
     "aptos-web",
     "blog",
