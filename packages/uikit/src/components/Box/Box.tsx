@@ -7,9 +7,7 @@ import { BoxProps } from "./types";
 export { type AnimatePresence, type LazyMotion, domAnimation } from "framer-motion";
 export type MotionVariants = Variants;
 
-export const MotionBox = styled(motion.div).withConfig({
-  shouldForwardProp,
-})<BoxProps>`
+export const MotionBox = styled(motion.div).withConfig({})<BoxProps>`
   ${background}
   ${border}
   ${layout}
