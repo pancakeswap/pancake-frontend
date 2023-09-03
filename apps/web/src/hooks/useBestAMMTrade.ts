@@ -1,29 +1,36 @@
-import { useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
+import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { ChainId, Currency, CurrencyAmount, Native, Pair, Percent, Token, TradeType, Route as V2Route, ZERO_PERCENT } from '@pancakeswap/sdk'
 import {
-  SmartRouter,
+  BATCH_MULTICALL_CONFIGS,
   PoolType,
   QuoteProvider,
+  Route,
+  SmartRouter,
   SmartRouterTrade,
-  BATCH_MULTICALL_CONFIGS,
+  StablePool,
+  V2Pool,
+  V3Pool,
 } from '@pancakeswap/smart-router/evm'
-import { ChainId, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
-import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { MixedRouteSDK, Pool as PoolV3, Route as V3Route } from '@pancakeswap/v3-sdk'
+import { useQuery } from '@tanstack/react-query'
+import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
+import { QUOTING_API } from 'config/constants/endpoints'
+import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
-import { publicClient } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { getViemClients } from 'utils/viem'
-import { QUOTING_API } from 'config/constants/endpoints'
-import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
+import { publicClient } from 'utils/wagmi'
 import { worker, worker2 } from 'utils/worker'
 
+import { GetQuoteArgs } from 'views/Swap/V3Swap/hooks/swapRoutingAPIArguments'
+import { ClassicTrade, QuoteState, TradeResult } from 'views/Swap/V3Swap/utils/types'
 import {
-  useCommonPools as useCommonPoolsWithTicks,
-  useCommonPoolsLite,
-  PoolsWithState,
   CommonPoolsParams,
+  PoolsWithState,
+  useCommonPoolsLite,
+  useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 
 interface FactoryOptions {
@@ -49,6 +56,7 @@ interface Options {
   stableSwap?: boolean
   enabled?: boolean
   autoRevalidate?: boolean
+  queryArgs: GetQuoteArgs
 }
 
 interface useBestAMMTradeOptions extends Options {
@@ -56,7 +64,7 @@ interface useBestAMMTradeOptions extends Options {
 }
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
-  const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
+  const { amount, baseCurrency, currency, autoRevalidate, enabled = true, queryArgs } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
 
   const isQuoterEnabled = useMemo(
@@ -113,6 +121,7 @@ function bestTradeHookFactory({
     stableSwap = true,
     enabled = true,
     autoRevalidate,
+    queryArgs
   }: Options) {
     const { gasPrice } = useFeeDataWithGasPrice()
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
@@ -169,7 +178,7 @@ function bestTradeHookFactory({
         maxHops,
         maxSplits,
         poolTypes,
-      ],
+      ] as any,
       queryFn: async () => {
         if (!amount || !amount.currency || !currency || !deferQuotient) {
           return null
@@ -204,9 +213,13 @@ function bestTradeHookFactory({
           )
         }
         SmartRouter.log(label, res)
+        const tradeResult = await transformRoutesToTrade(queryArgs, tradeType, res, blockNumber)
         return {
+          res: {
           ...res,
-          blockNumber,
+            blockNumber
+          },
+          trade: tradeResult
         }
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
@@ -228,7 +241,8 @@ function bestTradeHookFactory({
 
     return {
       refresh,
-      trade,
+      trade: trade?.res,
+      trade2: trade?.trade,
       isLoading: isLoading || loading,
       isStale: trade?.blockNumber !== blockNumber,
       error,
@@ -353,3 +367,185 @@ export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
+
+export enum SwapRouterNativeAssets {
+  MATIC = 'MATIC',
+  BNB = 'BNB',
+  AVAX = 'AVAX',
+  ETH = 'ETH',
+}
+
+function getTradeCurrencies(args: GetQuoteArgs): [Currency, Currency] {
+  const {
+    tokenInAddress,
+    tokenInChainId,
+    tokenInDecimals,
+    tokenInSymbol,
+    tokenOutAddress,
+    tokenOutChainId,
+    tokenOutDecimals,
+    tokenOutSymbol,
+  } = args
+
+  const tokenInIsNative = Object.values(SwapRouterNativeAssets).includes(tokenInAddress as SwapRouterNativeAssets)
+  const tokenOutIsNative = Object.values(SwapRouterNativeAssets).includes(tokenOutAddress as SwapRouterNativeAssets)
+
+  const currencyIn = tokenInIsNative
+    ? Native.onChain(tokenInChainId)
+    : new Token(tokenInChainId, tokenInAddress as any, tokenInDecimals, tokenInSymbol )
+  const currencyOut = tokenOutIsNative
+  ? Native.onChain(tokenOutChainId)
+  : new Token(tokenOutChainId, tokenOutAddress as any, tokenOutDecimals, tokenOutSymbol )
+
+  return [currencyIn.isNative ? currencyIn.wrapped : currencyIn, currencyOut]
+}
+interface RouteResult {
+  routev3: V3Route<Currency, Currency> | null
+  routev2: V2Route<Currency, Currency> | null
+  mixedRoute: any | null
+  inputAmount: CurrencyAmount<Currency>
+  outputAmount: CurrencyAmount<Currency>
+}
+
+function parseToken({ address, chainId, decimals, symbol }: any): Token {
+  return new Token(chainId, address, parseInt(decimals.toString()), symbol)
+}
+
+function parsePool({ fee, sqrtRatioX96, liquidity, tick, token0, token1 }: V3Pool): PoolV3 {
+  return new PoolV3(
+    parseToken(token0),
+    parseToken(token1),
+    fee,
+    sqrtRatioX96,
+    liquidity,
+    parseInt(tick.toString())
+  )
+}
+
+const parsePair = ({ reserve0, reserve1 }: V2Pool): Pair =>
+  new Pair(
+    CurrencyAmount.fromRawAmount(reserve0.currency.wrapped, reserve0.quotient),
+    CurrencyAmount.fromRawAmount(reserve1.currency.wrapped, reserve1.quotient)
+  )
+
+  const parsePoolOrPair = (pool: V3Pool | V2Pool): PoolV3 | Pair => {
+    return pool.type === PoolType.V3 ? parsePool(pool) : parsePair(pool)
+  }
+  
+
+  function isVersionedRoute<T extends V2Pool | V3Pool | StablePool>(
+    type: T['type'],
+    route: (V3Pool| V2Pool | StablePool)[]
+  ): route is T[] {
+    return route.every((pool) => pool.type === type)
+  }
+export function computeRoutes(
+  currencyIn: Currency,
+  currencyOut: Currency,
+  routes: Route[]
+): RouteResult[] | undefined {
+  if (routes.length === 0) return []
+
+  // const tokenIn = routes[0]?.[0]?.tokenIn
+  // const tokenOut = routes[0]?.[routes[0]?.length - 1]?.tokenOut
+  // if (!tokenIn || !tokenOut) throw new Error('Expected both tokenIn and tokenOut to be present')
+
+  try {
+    return routes.map((route: Route) => {
+
+      const isOnlyV2 = isVersionedRoute<V2Pool>(PoolType.V2, route.pools)
+      const isOnlyV3 = isVersionedRoute<V3Pool>(PoolType.V3, route.pools)
+     
+      return {
+        routev3: isOnlyV3 ? new V3Route((route.pools as V3Pool[]).map(parsePool), currencyIn, currencyOut) : null,
+        routev2: isOnlyV2 ? new V2Route((route.pools as V2Pool[]).map(parsePair), currencyIn, currencyOut) : null,
+        mixedRoute:
+          !isOnlyV3 && !isOnlyV2 ? new MixedRouteSDK((route.pools as (PoolV3[] | Pair[])).map(parsePoolOrPair), currencyIn, currencyOut) : null,
+        inputAmount: route.inputAmount,
+        outputAmount: route.outputAmount,
+      }
+    })
+  } catch (e) {
+    console.error('Error computing routes', e)
+    return []
+  }
+}
+
+function getClassicTradeDetails(
+  currencyIn: Currency,
+  currencyOut: Currency,
+  data:  SmartRouterTrade<TradeType>,
+  block: number
+): {
+  gasUseEstimate?: number
+  gasUseEstimateUSD?: number
+  blockNumber?: string
+  routes?: RouteResult[]
+} {
+  return {
+    gasUseEstimate: data?.gasEstimate ? Number(data.gasEstimate.toString()) : undefined,
+    gasUseEstimateUSD: data?.gasEstimateInUSD ? data.gasEstimateInUSD.numerator : undefined,
+    blockNumber: block ? block.toString() : undefined,
+    routes: data ? computeRoutes(currencyIn, currencyOut, data.routes) : undefined,
+  }
+}
+
+export async function transformRoutesToTrade(
+  args: GetQuoteArgs,
+  tradeType: TradeType,
+  data: SmartRouterTrade<TradeType>,
+  block: number
+): Promise<TradeResult | null> {
+  if (!data || !args) return null
+
+  const [currencyIn, currencyOut] = getTradeCurrencies(args)
+  const { gasUseEstimateUSD, routes, blockNumber, gasUseEstimate } = getClassicTradeDetails(
+    currencyIn,
+    currencyOut,
+    data,
+    block
+  )
+  // // Some sus javascript float math but it's ok because its just an estimate for display purposes
+  // const usdCostPerGas = gasUseEstimateUSD && gasUseEstimate ? gasUseEstimateUSD / gasUseEstimate : undefined
+  // const approveInfo = await getApproveInfo(account, currencyIn, amount, usdCostPerGas)
+
+  const inputTax = new Percent(3, 100)
+  const outputTax = ZERO_PERCENT
+
+  const classicTrade = new ClassicTrade({
+    v2Routes:
+      routes
+        ?.filter((r): r is RouteResult & { routev2: NonNullable<RouteResult['routev2']> } => r.routev2 !== null)
+        .map(({ routev2, inputAmount, outputAmount }) => ({
+          routev2,
+          inputAmount,
+          outputAmount,
+        })) ?? [],
+    v3Routes:
+      routes
+        ?.filter((r): r is RouteResult & { routev3: NonNullable<RouteResult['routev3']> } => r.routev3 !== null)
+        .map(({ routev3, inputAmount, outputAmount }) => ({
+          routev3,
+          inputAmount,
+          outputAmount,
+        })) ?? [],
+    mixedRoutes:
+      routes
+        ?.filter(
+          (r): r is RouteResult & { mixedRoute: NonNullable<RouteResult['mixedRoute']> } => r.mixedRoute !== null
+        )
+        .map(({ mixedRoute, inputAmount, outputAmount }) => ({
+          mixedRoute,
+          inputAmount,
+          outputAmount,
+        })) ?? [],
+    tradeType,
+    gasUseEstimateUSD,
+    gasUseEstimate,
+    blockNumber,
+    inputTax,
+    outputTax,
+  })
+
+  return { state: QuoteState.SUCCESS, trade: classicTrade }
+}

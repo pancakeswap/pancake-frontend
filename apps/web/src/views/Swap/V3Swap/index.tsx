@@ -6,6 +6,8 @@ import { Box } from '@pancakeswap/uikit'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 
+import { basisPointsToPercent } from 'utils/exchange'
+import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 import {
@@ -21,7 +23,7 @@ import { MMCommitButton } from './containers/MMCommitButton'
 import { useSwapBestTrade } from './hooks'
 
 export function V3SwapForm() {
-  const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
+  const { isLoading, trade, trade2, refresh, syncing, isStale, error } = useSwapBestTrade()
   const mm = useDerivedBestTradeWithMM(trade)
   const throttledHandleRefresh = useMemo(
     () =>
@@ -37,6 +39,11 @@ export function V3SwapForm() {
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
 
   const insufficientFundCurrency = useCheckInsufficientError(trade)
+  const allowedSlippage = useMemo(() => basisPointsToPercent(10), [10])
+  const deadline = useTransactionDeadline()
+
+  console.log(trade2?.trade, 'traddddeeeeeeeeeeee')
+
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { TradeType } from '@pancakeswap/sdk'
+import { Currency, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
@@ -6,13 +6,15 @@ import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useMemo } from 'react'
 import {
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
 } from 'state/user/smartRouter'
+import { useAccount } from 'wagmi'
+import { useRoutingAPIArguments } from './swapRoutingAPIArguments'
 
 interface Options {
   maxHops?: number
@@ -25,6 +27,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
+  const { address } = useAccount()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const isExactIn = independentField === Field.INPUT
@@ -39,7 +42,25 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
   const [v3Swap] = useUserV3SwapEnable()
   const [stableSwap] = useUserStableSwapEnable()
 
-  const { isLoading, trade, refresh, syncing, isStale, error } = useBestAMMTrade({
+  const [currencyIn, currencyOut]: [Currency | undefined, Currency | undefined] = useMemo(
+    () =>
+      tradeType === TradeType.EXACT_INPUT
+        ? [amount?.currency, dependentCurrency]
+        : [dependentCurrency, amount?.currency],
+    [amount, dependentCurrency, tradeType]
+  )
+
+  const queryArgs = useRoutingAPIArguments({
+    account: address,
+    tokenIn: currencyIn,
+    tokenOut: currencyOut,
+    amount,
+    tradeType,
+    // routerPreference,
+  })
+
+
+  const { isLoading, trade, trade2, refresh, syncing, isStale, error } = useBestAMMTrade({
     amount,
     currency: dependentCurrency,
     baseCurrency: independentCurrency,
@@ -50,6 +71,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     v3Swap,
     stableSwap,
     type: 'auto',
+    queryArgs
   })
 
   return {
@@ -59,5 +81,6 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     error,
     isLoading: useDeferredValue(isLoading || (typedValue && !trade && !error)),
     trade: typedValue ? trade : null,
+    trade2: typedValue ? trade2 : null
   }
 }

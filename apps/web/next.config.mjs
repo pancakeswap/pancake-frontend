@@ -58,6 +58,7 @@ const config = {
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
+    '@pancakeswap/universal-router-sdk',
   ],
   reactStrictMode: true,
   swcMinify: true,

@@ -1,0 +1,44 @@
+name: Hardhat Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  tests:
+    name: Hardhat tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: build
+        run: yarn build
+
+      # needed to generate abi
+      - name: Build solidity
+        run: forge build
+
+      - name: Run tests
+        run: yarn test:hardhat
+        env:
+          FORK_URL: '${{ secrets.FORK_URL }}'
