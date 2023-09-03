@@ -47,11 +47,7 @@
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "@uniswap/permit2-sdk": "^1.2.0",
-    "@uniswap/router-sdk": "^1.6.0",
-    "@uniswap/sdk-core": "^4.0.0",
     "@uniswap/universal-router": "1.4.3",
-    "@uniswap/v2-sdk": "^3.2.0",
-    "@uniswap/v3-sdk": "^3.10.0",
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1",
     "viem": "^1.9.3"
