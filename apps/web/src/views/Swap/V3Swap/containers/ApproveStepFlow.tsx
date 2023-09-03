@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { Flex, Text, Box, LinkExternal } from '@pancakeswap/uikit'
+import { Flex, Text, Box, LinkExternal, useTooltip, TooltipText } from '@pancakeswap/uikit'
 import { ConfirmModalState } from '../types'
 
 const StepsContainer = styled(Flex)`
@@ -24,6 +24,14 @@ interface ApproveStepFlowProps {
 
 const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({ confirmModalState }) => {
   const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Text>
+      {t(
+        'If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.',
+      )}
+    </Text>,
+    { placement: 'top' },
+  )
 
   return (
     <Box>
@@ -42,7 +50,12 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
           margin="auto"
           href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated" // TODO: Change URL
         >
-          {t('Why approving this?')}
+          <Text color="primary">{t('Why')}</Text>
+          <TooltipText color="primary" m="0 2px" decorationColor="primary" ref={targetRef}>
+            {t('approving')}
+          </TooltipText>
+          {tooltipVisible && tooltip}
+          <Text color="primary">{t('this?')}</Text>
         </LinkExternal>
       )}
     </Box>

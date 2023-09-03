@@ -198,17 +198,20 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
   }, [customOnDismiss, onCancel, onDismiss])
 
   const topModal = useCallback(() => {
+    const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
+    const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
+
     if (showApproveFlow) {
       if (confirmModalState === ConfirmModalState.APPROVING_TOKEN) {
-        return <ApproveModalContent symbol={trade?.inputAmount?.currency?.symbol} />
+        return <ApproveModalContent isMM={isMM} symbol={trade?.inputAmount?.currency?.symbol} />
       }
 
       if (confirmModalState === ConfirmModalState.APPROVE_PENDING) {
         return (
           <SwapPendingModalContent
             title={t('Allow %symbol% to be used for swapping', { symbol: trade?.inputAmount?.currency?.symbol })}
-            currencyA={trade?.inputAmount?.currency}
-            currencyB={trade?.outputAmount?.currency}
+            currencyA={currencyA}
+            currencyB={currencyB}
             amountA={formatAmount(trade?.inputAmount, 6) ?? ''}
             amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
           />
@@ -230,8 +233,8 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
       return (
         <SwapPendingModalContent
           title={t('Confirm Swap')}
-          currencyA={trade?.inputAmount?.currency}
-          currencyB={trade?.outputAmount?.currency}
+          currencyA={currencyA}
+          currencyB={currencyB}
           amountA={formatAmount(trade?.inputAmount, 6) ?? ''}
           amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
         />
@@ -243,8 +246,8 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
         <SwapPendingModalContent
           showIcon
           title={t('Transaction Submitted')}
-          currencyA={trade?.inputAmount?.currency}
-          currencyB={trade?.outputAmount?.currency}
+          currencyA={currencyA}
+          currencyB={currencyB}
           amountA={formatAmount(trade?.inputAmount, 6) ?? ''}
           amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
         >
@@ -255,7 +258,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
             marginTextBetweenLogo="6px"
             textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
             tokenAddress={token?.address}
-            tokenSymbol={trade?.outputAmount?.currency?.symbol}
+            tokenSymbol={currencyB?.symbol}
             tokenDecimals={token?.decimals}
             tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
           />
