@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+// import invariant from 'tiny-invariant'
 import { ethers } from 'ethers'
 import { PermitSingle } from '@uniswap/permit2-sdk'
 import { CommandType, RoutePlanner } from './routerCommands'
@@ -48,15 +48,15 @@ export function encodePermit(planner: RoutePlanner, permit2: Permit2Permit): voi
 // Transfer: A Permit2 TransferFrom of tokens from a user to either the router or another address
 export function encodeInputTokenOptions(planner: RoutePlanner, options: InputTokenOptions) {
   // first ensure that all tokens provided for encoding are the same
-  if (!!options.approval && !!options.permit2Permit)
-    invariant(options.approval.token === options.permit2Permit.details.token, `inconsistent token`)
-  if (!!options.approval && !!options.permit2TransferFrom)
-    invariant(options.approval.token === options.permit2TransferFrom.token, `inconsistent token`)
-  if (!!options.permit2TransferFrom && !!options.permit2Permit)
-    invariant(options.permit2TransferFrom.token === options.permit2Permit.details.token, `inconsistent token`)
+  if (options.approval && options.permit2Permit)
+    // invariant(options.approval.token === options.permit2Permit.details.token, `inconsistent token`)
+  if (options.approval && options.permit2TransferFrom)
+    // invariant(options.approval.token === options.permit2TransferFrom.token, `inconsistent token`)
+  if (options.permit2TransferFrom && options.permit2Permit)
+    // invariant(options.permit2TransferFrom.token === options.permit2Permit.details.token, `inconsistent token`)
 
   // if an options.approval is required, add it
-  if (!!options.approval) {
+  if (options.approval) {
     planner.addCommand(CommandType.APPROVE_ERC20, [
       options.approval.token,
       mapApprovalProtocol(options.approval.protocol),
@@ -64,11 +64,11 @@ export function encodeInputTokenOptions(planner: RoutePlanner, options: InputTok
   }
 
   // if this order has a options.permit2Permit, encode it
-  if (!!options.permit2Permit) {
+  if (options.permit2Permit) {
     encodePermit(planner, options.permit2Permit)
   }
 
-  if (!!options.permit2TransferFrom) {
+  if (options.permit2TransferFrom) {
     planner.addCommand(CommandType.PERMIT2_TRANSFER_FROM, [
       options.permit2TransferFrom.token,
       options.permit2TransferFrom.recipient ? options.permit2TransferFrom.recipient : ROUTER_AS_RECIPIENT,

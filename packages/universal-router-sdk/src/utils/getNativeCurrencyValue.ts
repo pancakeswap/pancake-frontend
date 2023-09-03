@@ -7,6 +7,7 @@ export function getNativeCurrencyValue(currencyValues: CurrencyAmount<Currency>[
       const zero = CurrencyAmount.fromRawAmount(nativeCurrency, 0)
 
       return currencyValues.reduce(function (prevValue: CurrencyAmount<Currency>, currValue: CurrencyAmount<Currency>) {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         const value = currValue.currency.isNative ? currValue : zero
         return prevValue.add(value)
       }, zero)

@@ -1,4 +1,3 @@
-import JSBI from 'jsbi'
 import { ethers } from 'ethers'
 import { MixedRouteTrade, MixedRouteSDK, Trade as RouterTrade } from '@uniswap/router-sdk'
 import { Trade as V2Trade, Pair, Route as RouteV2, computePairAddress } from '@uniswap/v2-sdk'
@@ -11,10 +10,11 @@ import {
   TICK_SPACINGS,
   FeeAmount,
 } from '@uniswap/v3-sdk'
-import { SwapOptions } from '../../src'
 import { CurrencyAmount, TradeType, Ether, Token, Percent, Currency } from '@uniswap/sdk-core'
-import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
+import BigNumber from 'bignumber.js'
+import abi from '../../abis/IPancakeV3PoolABI.json'
 import { TEST_RECIPIENT_ADDRESS } from './addresses'
+import { SwapOptions } from '../../src'
 
 const V2_FACTORY = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 const V2_ABI = [
@@ -80,7 +80,7 @@ export async function getUniswapPools(forkBlock?: number): Promise<UniswapPools>
 }
 
 function getProvider(): ethers.providers.BaseProvider {
-  return new ethers.providers.JsonRpcProvider(process.env['FORK_URL'])
+  return new ethers.providers.JsonRpcProvider(process.env.FORK_URL)
 }
 
 export async function getPair(tokenA: Token, tokenB: Token, blockNumber: number): Promise<Pair> {
@@ -94,11 +94,12 @@ export async function getPair(tokenA: Token, tokenB: Token, blockNumber: number)
 export async function getPool(tokenA: Token, tokenB: Token, feeAmount: FeeAmount, blockNumber: number): Promise<Pool> {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
   const poolAddress = Pool.getAddress(token0, token1, feeAmount)
-  const contract = new ethers.Contract(poolAddress, IUniswapV3Pool.abi, getProvider())
+  const contract = new ethers.Contract(poolAddress, abi, getProvider())
   let liquidity = await contract.liquidity({ blockTag: blockNumber })
-  let { sqrtPriceX96, tick } = await contract.slot0({ blockTag: blockNumber })
-  liquidity = JSBI.BigInt(liquidity.toString())
-  sqrtPriceX96 = JSBI.BigInt(sqrtPriceX96.toString())
+  let { sqrtPriceX96 } = await contract.slot0({ blockTag: blockNumber })
+  const { tick } = await contract.slot0({ blockTag: blockNumber })
+  liquidity = new BigNumber(liquidity.toString())
+  sqrtPriceX96 = new BigNumber(sqrtPriceX96.toString())
 
   return new Pool(token0, token1, feeAmount, sqrtPriceX96, liquidity, tick, [
     {
@@ -108,7 +109,7 @@ export async function getPool(tokenA: Token, tokenB: Token, feeAmount: FeeAmount
     },
     {
       index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[feeAmount]),
-      liquidityNet: JSBI.multiply(liquidity, JSBI.BigInt('-1')),
+      liquidityNet: new BigNumber(liquidity).multipliedBy('-1'),
       liquidityGross: liquidity,
     },
   ])
@@ -118,14 +119,12 @@ export async function getPool(tokenA: Token, tokenB: Token, feeAmount: FeeAmount
 export function swapOptions(options: Partial<SwapOptions>): SwapOptions {
   // If theres a fee this counts as "slippage" for the amount out, so take it into account
   let slippageTolerance = new Percent(5, 100)
-  if (!!options.fee) slippageTolerance = slippageTolerance.add(options.fee.fee)
-  return Object.assign(
-    {
-      slippageTolerance,
+  if (options.fee) slippageTolerance = slippageTolerance.add(options.fee.fee)
+  return {
+    slippageTolerance,
       recipient: TEST_RECIPIENT_ADDRESS,
-    },
-    options
-  )
+    ...options
+  }
 }
 
 // alternative constructor to create from protocol-specific sdks

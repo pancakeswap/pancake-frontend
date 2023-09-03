@@ -1,36 +1,27 @@
-import invariant from 'tiny-invariant'
-import { Interface } from '@ethersproject/abi'
-import { BigNumber, BigNumberish } from 'ethers'
-import { MethodParameters } from '@uniswap/v3-sdk'
 import { Trade as RouterTrade } from '@uniswap/router-sdk'
 import { Currency, TradeType } from '@uniswap/sdk-core'
+import { MethodParameters } from '@uniswap/v3-sdk'
+import { BigNumber, BigNumberish } from 'ethers'
+import { encodeFunctionData } from 'viem'
 import abi from '../abis/UniversalRouterABI.json'
 import { Command, RouterTradeType } from './entities/Command'
-import { Market, NFTTrade, SupportedProtocolsData } from './entities/NFTTrade'
-import { UniswapTrade, SwapOptions } from './entities/protocols/uniswap'
+import { SwapOptions, UniswapTrade } from './entities/protocols/pancakeswap'
 import { UnwrapWETH } from './entities/protocols/unwrapWETH'
-import { CommandType, RoutePlanner } from './utils/routerCommands'
+import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from './utils/constants'
 import { encodePermit } from './utils/inputTokens'
-import { ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT, ETH_ADDRESS } from './utils/constants'
-import { SeaportTrade } from './entities'
+import { CommandType, RoutePlanner } from './utils/routerCommands'
 
 export type SwapRouterConfig = {
   sender?: string // address
   deadline?: BigNumberish
 }
 
-type SupportedNFTTrade = NFTTrade<SupportedProtocolsData>
-
 export abstract class SwapRouter {
-  public static INTERFACE: Interface = new Interface(abi)
 
   public static swapCallParameters(trades: Command[] | Command, config: SwapRouterConfig = {}): MethodParameters {
     // eslint-disable-next-line no-param-reassign
     if (!Array.isArray(trades)) trades = [trades]
 
-    // eslint-disable-next-line no-prototype-builtins, no-empty-pattern
-    const nftTrades = trades.filter((trade, _, []) => trade.hasOwnProperty('market')) as SupportedNFTTrade[]
-    const allowRevert = !(nftTrades.length === 1 && nftTrades[0].orders.length === 1)
     const planner = new RoutePlanner()
 
     // track value flow to require the right amount of native value
@@ -41,41 +32,14 @@ export abstract class SwapRouter {
     const nftInputTokens = new Set<string>()
 
     for (const trade of trades) {
-      /**
-       * is NFTTrade
-       */
-      if (trade.tradeType === RouterTradeType.NFTTrade) {
-        const nftTrade = trade as SupportedNFTTrade
-        nftTrade.encode(planner, { allowRevert })
-        const tradePrice = nftTrade.getTotalPrice()
 
-        if (nftTrade.market === Market.Seaport) {
-          const seaportTrade = nftTrade as SeaportTrade
-          const seaportInputTokens = seaportTrade.getInputTokens()
-          seaportInputTokens.forEach((inputToken) => {
-            nftInputTokens.add(inputToken)
-          })
-        } else {
-          nftInputTokens.add(ETH_ADDRESS)
-        }
-
-        // send enough native value to contract for NFT purchase
-        if (currentNativeValueInRouter.lt(tradePrice)) {
-          transactionValue = transactionValue.add(tradePrice.sub(currentNativeValueInRouter))
-          currentNativeValueInRouter = BigNumber.from(0)
-        } else {
-          currentNativeValueInRouter = currentNativeValueInRouter.sub(tradePrice)
-        }
-        /**
-         * is UniswapTrade
-         */
-      } else if (trade.tradeType === RouterTradeType.UniswapTrade) {
+      if (trade.tradeType === RouterTradeType.UniswapTrade) {
         const uniswapTrade = trade as UniswapTrade
         const inputIsNative = uniswapTrade.trade.inputAmount.currency.isNative
         const outputIsNative = uniswapTrade.trade.outputAmount.currency.isNative
         const swapOptions = uniswapTrade.options
 
-        invariant(!(inputIsNative && swapOptions.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
+        // invariant(!(inputIsNative && swapOptions.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
         if (swapOptions.inputTokenPermit) {
           encodePermit(planner, swapOptions.inputTokenPermit)
@@ -121,27 +85,6 @@ export abstract class SwapRouter {
 
   /**
    * @deprecated in favor of swapCallParameters. Update before next major version 2.0.0
-   * This version does not work correctly for Seaport ERC20->NFT purchases
-   * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given swap.
-   * @param trades to produce call parameters for
-   */
-  public static swapNFTCallParameters(trades: SupportedNFTTrade[], config: SwapRouterConfig = {}): MethodParameters {
-    const planner = new RoutePlanner()
-    let totalPrice = BigNumber.from(0)
-
-    const allowRevert = !(trades.length === 1 && trades[0].orders.length === 1)
-
-    for (const trade of trades) {
-      trade.encode(planner, { allowRevert })
-      totalPrice = totalPrice.add(trade.getTotalPrice())
-    }
-
-    planner.addCommand(CommandType.SWEEP, [ETH_ADDRESS, SENDER_AS_RECIPIENT, 0])
-    return SwapRouter.encodePlan(planner, totalPrice, config)
-  }
-
-  /**
-   * @deprecated in favor of swapCallParameters. Update before next major version 2.0.0
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
    * @param options options for the call parameters
@@ -156,7 +99,7 @@ export abstract class SwapRouter {
     const trade: UniswapTrade = new UniswapTrade(trades, options)
 
     const inputCurrency = trade.trade.inputAmount.currency
-    invariant(!(inputCurrency.isNative && options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
+    // invariant(!(inputCurrency.isNative && options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
 
     if (options.inputTokenPermit) {
       encodePermit(planner, options.inputTokenPermit)
@@ -186,7 +129,7 @@ export abstract class SwapRouter {
     const { commands, inputs } = planner
     const functionSignature = config.deadline ? 'execute(bytes,bytes[],uint256)' : 'execute(bytes,bytes[])'
     const parameters = config.deadline ? [commands, inputs, config.deadline] : [commands, inputs]
-    const calldata = SwapRouter.INTERFACE.encodeFunctionData(functionSignature, parameters)
+    const calldata = encodeFunctionData({ abi, functionName: functionSignature, args: parameters })
     return { calldata, value: nativeCurrencyValue.toHexString() }
   }
 }

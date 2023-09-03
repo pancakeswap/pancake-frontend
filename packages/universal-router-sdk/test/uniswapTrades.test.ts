@@ -1,15 +1,16 @@
 import { expect } from 'chai'
-import JSBI from 'jsbi'
-import { BigNumber, utils, Wallet } from 'ethers'
-import { expandTo18Decimals } from '../src/utils/numbers'
-import { SwapRouter, UniswapTrade } from '../src'
+import BigNumber from 'bignumber.js'
+import { utils, Wallet } from 'ethers'
 import { MixedRouteTrade, MixedRouteSDK } from '@uniswap/router-sdk'
 import { Trade as V2Trade, Pair, Route as RouteV2 } from '@uniswap/v2-sdk'
 import { Trade as V3Trade, Route as RouteV3, Pool, FeeOptions } from '@uniswap/v3-sdk'
-import { generatePermitSignature, toInputPermit, makePermit, generateEip2098PermitSignature } from './utils/permit2'
 import { CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core'
+import { before } from 'node:test'
+import { generatePermitSignature, toInputPermit, makePermit, generateEip2098PermitSignature } from './utils/permit2'
+import { SwapRouter, UniswapTrade } from '../src'
+import { expandTo18Decimals } from '../src/utils/numbers'
 import { registerFixture } from './forge/writeInterop'
-import { buildTrade, getUniswapPools, swapOptions, ETHER, DAI, USDC } from './utils/uniswapData'
+import { buildTrade, getUniswapPools, swapOptions, ETHER, DAI, USDC } from './utils/pancakeData'
 import { hexToDecimalString } from './utils/hexToDecimalString'
 import { FORGE_PERMIT2_ADDRESS, FORGE_ROUTER_ADDRESS, TEST_FEE_RECIPIENT_ADDRESS } from './utils/addresses'
 
@@ -26,7 +27,7 @@ describe('Uniswap', () => {
   let USDC_DAI_V3: Pool
 
   before(async () => {
-    ;({ WETH_USDC_V2, USDC_DAI_V2, WETH_USDC_V3, USDC_DAI_V3, WETH_USDC_V3_LOW_FEE } = await getUniswapPools(
+    ({ WETH_USDC_V2, USDC_DAI_V2, WETH_USDC_V3, USDC_DAI_V3, WETH_USDC_V3_LOW_FEE } = await getUniswapPools(
       FORK_BLOCK
     ))
   })
@@ -185,7 +186,7 @@ describe('Uniswap', () => {
       // slice off current v
       let signature = originalSignature.substring(0, originalSignature.length - 2)
       // append recoveryParam as v
-      signature += BigNumber.from(recoveryParam).toHexString().slice(2)
+      signature += new BigNumber(recoveryParam).toString().slice(2)
       // assert ethers sanitization technique works
       expect(utils.joinSignature(utils.splitSignature(signature))).to.eq(originalSignature)
       const opts = swapOptions({ inputTokenPermit: toInputPermit(signature, permit) })
@@ -560,7 +561,7 @@ describe('Uniswap', () => {
       const methodParameters = SwapRouter.swapERC20CallParameters(buildTrade([v2Trade, v3Trade]), opts)
       const methodParametersV2 = SwapRouter.swapCallParameters(new UniswapTrade(buildTrade([v2Trade, v3Trade]), opts))
       registerFixture('_UNISWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC', methodParametersV2)
-      expect(hexToDecimalString(methodParameters.value)).to.eq(JSBI.multiply(inputEther, JSBI.BigInt(2)).toString())
+      expect(hexToDecimalString(methodParameters.value)).to.eq(new BigNumber(inputEther).multipliedBy(2)).toString()
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
     })
@@ -590,7 +591,7 @@ describe('Uniswap', () => {
       ])
       registerFixture('_UNISWAP_SPLIT_TWO_ROUTES_ETH_TO_USDC', methodParametersV2)
       registerFixture('_UNISWAP_SPLIT_THREE_ROUTES_ETH_TO_USDC', methodParametersV2)
-      expect(hexToDecimalString(methodParameters.value)).to.eq(JSBI.multiply(inputEther, JSBI.BigInt(3)).toString())
+      expect(hexToDecimalString(methodParameters.value)).to.eq(new BigNumber(inputEther).multipliedBy(3)).toString()
       expect(methodParameters.calldata).to.eq(methodParametersV2.calldata)
       expect(methodParameters.value).to.eq(methodParametersV2.value)
     })

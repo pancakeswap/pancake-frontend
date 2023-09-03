@@ -69,7 +69,7 @@ const PERMIT_BATCH_STRUCT =
   '((address token,uint160 amount,uint48 expiration,uint48 nonce)[] details,address spender,uint256 sigDeadline)'
 
 const PERMIT2_TRANSFER_FROM_STRUCT = '(address from,address to,uint160 amount,address token)'
-const PERMIT2_TRANSFER_FROM_BATCH_STRUCT = PERMIT2_TRANSFER_FROM_STRUCT + '[]'
+const PERMIT2_TRANSFER_FROM_BATCH_STRUCT = `${PERMIT2_TRANSFER_FROM_STRUCT  }[]`
 
 const ABI_DEFINITION: { [key in CommandType]: string[] } = {
   // Batch Reverts
@@ -116,6 +116,7 @@ const ABI_DEFINITION: { [key in CommandType]: string[] } = {
 
 export class RoutePlanner {
   commands: string
+  
   inputs: string[]
 
   constructor() {
@@ -128,13 +129,14 @@ export class RoutePlanner {
   }
 
   addCommand(type: CommandType, parameters: any[], allowRevert = false): void {
-    let command = createCommand(type, parameters)
+    const command = createCommand(type, parameters)
     this.inputs.push(command.encodedInput)
     if (allowRevert) {
       if (!REVERTIBLE_COMMANDS.has(command.type)) {
         throw new Error(`command type: ${command.type} cannot be allowed to revert`)
       }
-      command.type = command.type | ALLOW_REVERT_FLAG
+      // eslint-disable-next-line no-bitwise
+      command.type |= ALLOW_REVERT_FLAG
     }
 
     this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0'))
