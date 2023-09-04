@@ -102,7 +102,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               <CakePrice chainId={chainId} cakePriceUsd={cakePriceUsd} color="textSubtle" />
             </Box>
             <Button
-              data-theme={isDark ? "dark" : "light"}
+              data-theme="dark"
               as="a"
               href={buyCakeLink}
               target="_blank"
