@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { SubMenuItems, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
@@ -41,21 +41,23 @@ export const IfoPageLayout = ({ children }) => {
     return () => clearTimeout(timer)
   }, [userNotUsCitizenAcknowledgement, onUSCitizenModalPresent])
 
+  const subMenuItems = useMemo(
+    () => [
+      {
+        label: t('Latest'),
+        href: '/ifo',
+      },
+      {
+        label: t('Finished'),
+        href: '/ifo/history',
+      },
+    ],
+    [t],
+  )
+
   return (
     <IfoProvider>
-      <SubMenuItems
-        items={[
-          {
-            label: t('Latest'),
-            href: '/ifo',
-          },
-          {
-            label: t('Finished'),
-            href: '/ifo/history',
-          },
-        ]}
-        activeItem={isExact ? '/ifo' : '/ifo/history'}
-      />
+      <SubMenuItems items={subMenuItems} activeItem={isExact ? '/ifo' : '/ifo/history'} />
       <Hero />
       {children}
     </IfoProvider>
