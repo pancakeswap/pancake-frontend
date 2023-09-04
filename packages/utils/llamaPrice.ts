@@ -5,6 +5,9 @@ const CHAIN_MAPPING = {
   [ChainId.BSC]: 'bsc',
   [ChainId.ARBITRUM_ONE]: 'arbitrum',
   [ChainId.ZKSYNC]: 'era',
+  [ChainId.LINEA]: 'linea',
+  [ChainId.BASE]: 'base',
+  [ChainId.POLYGON_ZKEVM]: 'polygon_zkevm',
 } as const satisfies Record<number, string>
 
 // use for fetch usd outside of the liquidity pools on PancakeSwap
