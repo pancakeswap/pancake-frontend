@@ -1446,9 +1446,6 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@pancakeswap/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
@@ -1522,6 +1519,9 @@ importers:
       '@babel/preset-react':
         specifier: ^7.18.6
         version: 7.18.6(@babel/core@7.21.3)
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@rollup/plugin-json':
         specifier: ^4.1.0
         version: 4.1.0(rollup@2.78.0)
