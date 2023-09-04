@@ -38,12 +38,9 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
         href: "https://pancakeswap.finance/terms-of-service",
       },
       {
-        label: "—",
-      },
-      {
         label: t("Merchandise"),
         href: "https://merch.pancakeswap.finance/",
-        isHighlighted: true,
+        // isHighlighted: true,
       },
     ],
   },
