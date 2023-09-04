@@ -29,6 +29,8 @@ export const TOKENS_BULK = (block: number | undefined, tokens: string[]) => {
         totalValueLocked
         feesUSD
         totalValueLockedUSD
+        totalValueLockedUSDUntracked
+        untrackedVolumeUSD
       }
     }
     `
@@ -49,6 +51,8 @@ interface TokenFields {
   totalValueLocked: string
   totalValueLockedUSD: string
   decimals: string
+  totalValueLockedUSDUntracked: string
+  untrackedVolumeUSD: string
 }
 
 interface TokenDataResponse {
@@ -134,6 +138,12 @@ export async function fetchedTokenDatas(
           : current
           ? [parseFloat(current.volumeUSD), 0]
           : [0, 0]
+      const [untrackedVolumeUSD] =
+        current && oneDay && twoDay
+          ? get2DayChange(current.untrackedVolumeUSD, oneDay.untrackedVolumeUSD, twoDay.untrackedVolumeUSD)
+          : current
+          ? [parseFloat(current.untrackedVolumeUSD), 0]
+          : [0, 0]
 
       const volumeUSDWeek =
         current && week
@@ -141,7 +151,15 @@ export async function fetchedTokenDatas(
           : current
           ? parseFloat(current.volumeUSD)
           : 0
+      const untrackedVolumeUSDWeek =
+        current && week
+          ? parseFloat(current.untrackedVolumeUSD) - parseFloat(week.untrackedVolumeUSD)
+          : current
+          ? parseFloat(current.untrackedVolumeUSD)
+          : 0
+
       const tvlUSD = current ? parseFloat(current.totalValueLockedUSD) : 0
+      const untrackedTvlUSD = current ? parseFloat(current.totalValueLockedUSDUntracked) : 0
       const tvlUSDChange = getPercentChange(
         parseFloat(current?.totalValueLockedUSD),
         parseFloat(oneDay?.totalValueLockedUSD),
@@ -185,6 +203,9 @@ export async function fetchedTokenDatas(
         priceUSD,
         priceUSDChange,
         priceUSDChangeWeek,
+        untrackedVolumeUSD,
+        untrackedVolumeUSDWeek,
+        untrackedTvlUSD,
       }
 
       return accum

@@ -13,6 +13,7 @@ import {
   useMatchBreakpoints,
   Button,
   ScanLink,
+  Checkbox,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -90,6 +91,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   const [view, setView] = useState(ChartView.VOL)
   const [latestValue, setLatestValue] = useState<number | undefined>()
   const [valueLabel, setValueLabel] = useState<string | undefined>()
+  const [showUntrackedData, setShowUntrackedData] = useState<boolean>(false)
 
   const hasSmallDifference = useMemo(() => {
     return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
@@ -184,7 +186,11 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 </GreyBadge>
               </Text>
             </Flex>
-            <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection={['column', 'column', 'column', 'row']}
+            >
               <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
                 <NextLinkFromReactRouter
                   to={`/${v3InfoPath}${chainPath}/tokens/${poolData.token0.address}${infoTypeParam}`}
@@ -214,6 +220,16 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     </Text>
                   </TokenButton>
                 </NextLinkFromReactRouter>
+                <Flex justifyContent="center" alignItems="center" style={{ gap: 3 }}>
+                  <Checkbox
+                    checked={showUntrackedData}
+                    scale="sm"
+                    onChange={() => {
+                      setShowUntrackedData(!showUntrackedData)
+                    }}
+                  />
+                  <Text>{t('shows the untracked data')}</Text>
+                </Flex>
               </Flex>
               <Flex>
                 <NextLinkFromReactRouter
@@ -266,7 +282,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     {t('TVL')}
                   </Text>
                   <Text lineHeight={1} fontSize="24px">
-                    {formatDollarAmount(poolData.tvlUSD)}
+                    {formatDollarAmount(poolData.tvlUSD + (showUntrackedData ? poolData.untrackedTvlUSD : 0))}
                   </Text>
                   <Percent value={poolData.tvlUSDChange} />
                 </Box>
@@ -275,7 +291,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     {t('Volume 24H')}
                   </Text>
                   <Text lineHeight={1} fontSize="24px">
-                    {formatDollarAmount(poolData.volumeUSD)}
+                    {formatDollarAmount(poolData.volumeUSD + (showUntrackedData ? poolData.untrackedVolumeUSD : 0))}
                   </Text>
                   <Percent value={poolData.volumeUSDChange} />
                 </Box>

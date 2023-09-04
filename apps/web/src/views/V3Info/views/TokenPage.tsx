@@ -15,6 +15,7 @@ import {
   Message,
   MessageText,
   ScanLink,
+  Checkbox,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
@@ -130,7 +131,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const [latestValue, setLatestValue] = useState<number | undefined>()
   const [valueLabel, setValueLabel] = useState<string | undefined>()
   const [timeWindow] = useState(DEFAULT_TIME_WINDOW)
-
+  const [showUntrackedData, setShowUntrackedData] = useState<boolean>(false)
   // pricing data
   const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, timeWindow)
   const adjustedToCurrent = useMemo(() => {
@@ -223,6 +224,16 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     <Percent value={tokenData.priceUSDChange} fontWeight={600} />
                   </Flex>
                 </Flex>
+                <Flex justifyContent="center" alignItems="center" style={{ gap: 3 }}>
+                  <Checkbox
+                    checked={showUntrackedData}
+                    scale="sm"
+                    onChange={() => {
+                      setShowUntrackedData(!showUntrackedData)
+                    }}
+                  />
+                  <Text>{t('shows the untracked data')}</Text>
+                </Flex>
                 <Flex>
                   <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
                     <Button mr="8px" variant="secondary">
@@ -251,7 +262,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     {t('TVL')}
                   </Text>
                   <Text bold fontSize="24px">
-                    ${formatAmount(tokenData.tvlUSD)}
+                    ${formatAmount(tokenData.tvlUSD + (showUntrackedData ? tokenData.untrackedTvlUSD : 0))}
                   </Text>
                   <Percent value={tokenData.tvlUSDChange} />
 
@@ -259,7 +270,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     {t('Volume 24H')}
                   </Text>
                   <Text bold fontSize="24px" textTransform="uppercase">
-                    ${formatAmount(tokenData.volumeUSD)}
+                    ${formatAmount(tokenData.volumeUSD + (showUntrackedData ? tokenData.untrackedVolumeUSD : 0))}
                   </Text>
                   <Percent value={tokenData.volumeUSDChange} />
 
@@ -267,7 +278,8 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     {t('Volume 7D')}
                   </Text>
                   <Text bold fontSize="24px">
-                    ${formatAmount(tokenData.volumeUSDWeek)}
+                    $
+                    {formatAmount(tokenData.volumeUSDWeek + (showUntrackedData ? tokenData.untrackedVolumeUSDWeek : 0))}
                   </Text>
 
                   <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">

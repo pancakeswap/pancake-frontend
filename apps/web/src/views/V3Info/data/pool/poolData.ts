@@ -45,6 +45,8 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
         totalValueLockedUSD
         feesUSD
         protocolFeesUSD
+        untrackedVolumeUSD
+        totalValueLockedUSDUntracked
       }
       bundles(where: {id: "1"}) {
         ethPriceUSD
@@ -87,6 +89,8 @@ interface PoolFields {
   totalValueLockedUSD: string
   feesUSD: string
   protocolFeesUSD: string
+  untrackedVolumeUSD: string
+  totalValueLockedUSDUntracked: string
 }
 
 interface PoolDataResponse {
@@ -169,12 +173,27 @@ export async function fetchPoolDatas(
           ? [parseFloat(current.volumeUSD), 0]
           : [0, 0]
 
+      const [untrackedVolumeUSD] =
+        current && oneDay && twoDay
+          ? get2DayChange(current.untrackedVolumeUSD, oneDay.untrackedVolumeUSD, twoDay.untrackedVolumeUSD)
+          : current
+          ? [parseFloat(current.untrackedVolumeUSD), 0]
+          : [0, 0]
+
       const volumeUSDWeek =
         current && week
           ? parseFloat(current.volumeUSD) - parseFloat(week.volumeUSD)
           : current
           ? parseFloat(current.volumeUSD)
           : 0
+
+      const untrackedVolumeUSDWeek =
+        current && week
+          ? parseFloat(current.untrackedVolumeUSD) - parseFloat(week.untrackedVolumeUSD)
+          : current
+          ? parseFloat(current.untrackedVolumeUSD)
+          : 0
+
       const feeUSD =
         current && oneDay
           ? new BigNumber(current?.feesUSD)
@@ -194,7 +213,7 @@ export async function fetchPoolDatas(
       const tvlToken0 = current ? parseFloat(current.totalValueLockedToken0) - tvlAdjust0 : 0
       const tvlToken1 = current ? parseFloat(current.totalValueLockedToken1) - tvlAdjust1 : 0
       let tvlUSD = current ? parseFloat(current.totalValueLockedUSD) : 0
-
+      const untrackedTvlUSD = current ? parseFloat(current.totalValueLockedUSDUntracked) : 0
       const tvlUSDChange =
         current && oneDay
           ? ((parseFloat(current.totalValueLockedUSD) - parseFloat(oneDay.totalValueLockedUSD)) /
@@ -245,6 +264,9 @@ export async function fetchPoolDatas(
           tvlToken0,
           tvlToken1,
           feeUSD: feeUSD.toNumber(),
+          untrackedVolumeUSD,
+          untrackedVolumeUSDWeek,
+          untrackedTvlUSD,
         }
       }
 
