@@ -1526,7 +1526,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c55 {
+.c54 {
   align-self: center;
   fill: var(--colors-text);
   color: var(--colors-text);
@@ -1572,7 +1572,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c26 {
+.c55 {
   color: var(--colors-textSubtle);
   font-weight: 600;
   line-height: 1.5;
@@ -1595,28 +1595,28 @@ exports[`renders correctly 1`] = `
 
 .c20 {
   color: var(--colors-primary);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.5;
   margin-right: 24px;
   font-size: 16px;
 }
 
-.c27 {
-  color: var(--colors-primary);
-  font-weight: 600;
-  line-height: 1.5;
-  margin-right: 0;
-  font-size: 16px;
-}
-
-.c47 {
+.c26 {
   color: var(--colors-textSubtle);
   font-weight: 400;
   line-height: 1.5;
   font-size: 16px;
 }
 
-.c49 {
+.c27 {
+  color: var(--colors-primary);
+  font-weight: 400;
+  line-height: 1.5;
+  margin-right: 0;
+  font-size: 16px;
+}
+
+.c48 {
   position: relative;
   align-items: center;
   border: 0;
@@ -1642,19 +1642,19 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
-.c49 :focus-visible {
+.c48 :focus-visible {
   outline: none;
   box-shadow: var(--shadows-focus);
 }
 
-.c49:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c48:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   transform: translateY(1px);
   box-shadow: none;
 }
 
-.c49:disabled,
-.c49.pancake-button--disabled {
+.c48:disabled,
+.c48.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -1753,7 +1753,7 @@ exports[`renders correctly 1`] = `
   height: 100%;
 }
 
-.c53 {
+.c52 {
   margin-right: 20px;
 }
 
@@ -1784,7 +1784,7 @@ exports[`renders correctly 1`] = `
   margin-bottom: 0;
 }
 
-.c51 {
+.c50 {
   margin-bottom: 24px;
 }
 
@@ -1829,7 +1829,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c52 {
+.c51 {
   display: flex;
   order: 1;
   justify-content: space-between;
@@ -1883,21 +1883,22 @@ exports[`renders correctly 1`] = `
   transform: translate3d(0, 0, 0);
 }
 
-.c54 {
+.c53 {
   display: flex;
   align-items: center;
 }
 
-.c54 svg {
+.c53 svg {
   transition: transform 0.3s;
 }
 
-.c54 :hover svg {
+.c53 :hover svg {
   transform: scale(1.2);
 }
 
 .c13 {
   display: flex;
+  font-weight: 600;
   align-items: center;
   width: fit-content;
 }
@@ -1927,7 +1928,7 @@ exports[`renders correctly 1`] = `
   pointer-events: none;
 }
 
-.c48 {
+.c47 {
   width: max-content;
   display: flex;
   flex-direction: column;
@@ -2003,7 +2004,7 @@ exports[`renders correctly 1`] = `
   color: var(--colors-text);
 }
 
-.c50 {
+.c49 {
   color: var(--colors-text);
   padding: 0 8px;
   border-radius: 8px;
@@ -2069,7 +2070,7 @@ exports[`renders correctly 1`] = `
 }
 
 @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
-  .c55 {
+  .c54 {
     filter: none!important;
   }
 }
@@ -2113,7 +2114,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media (hover: hover) {
-  .c49:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  .c48:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
   }
 }
@@ -2173,7 +2174,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width: 576px) {
-  .c51 {
+  .c50 {
     margin-bottom: 0;
   }
 }
@@ -2207,7 +2208,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width: 576px) {
-  .c52 {
+  .c51 {
     order: 2;
   }
 }
@@ -2985,16 +2986,16 @@ exports[`renders correctly 1`] = `
                 />
               </svg>
               <div
-                class="c47"
+                class="c26"
               >
                 EN-US
               </div>
             </button>
             <div
-              class="c24 c48"
+              class="c24 c47"
             >
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3002,7 +3003,7 @@ exports[`renders correctly 1`] = `
                 English0
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3010,7 +3011,7 @@ exports[`renders correctly 1`] = `
                 English1
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3018,7 +3019,7 @@ exports[`renders correctly 1`] = `
                 English2
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3026,7 +3027,7 @@ exports[`renders correctly 1`] = `
                 English3
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3034,7 +3035,7 @@ exports[`renders correctly 1`] = `
                 English4
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3042,7 +3043,7 @@ exports[`renders correctly 1`] = `
                 English5
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3050,7 +3051,7 @@ exports[`renders correctly 1`] = `
                 English6
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3058,7 +3059,7 @@ exports[`renders correctly 1`] = `
                 English7
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3066,7 +3067,7 @@ exports[`renders correctly 1`] = `
                 English8
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3074,7 +3075,7 @@ exports[`renders correctly 1`] = `
                 English9
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3082,7 +3083,7 @@ exports[`renders correctly 1`] = `
                 English10
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3090,7 +3091,7 @@ exports[`renders correctly 1`] = `
                 English11
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3098,7 +3099,7 @@ exports[`renders correctly 1`] = `
                 English12
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3106,7 +3107,7 @@ exports[`renders correctly 1`] = `
                 English13
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3114,7 +3115,7 @@ exports[`renders correctly 1`] = `
                 English14
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3122,7 +3123,7 @@ exports[`renders correctly 1`] = `
                 English15
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3130,7 +3131,7 @@ exports[`renders correctly 1`] = `
                 English16
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3138,7 +3139,7 @@ exports[`renders correctly 1`] = `
                 English17
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3146,7 +3147,7 @@ exports[`renders correctly 1`] = `
                 English18
               </button>
               <button
-                class="c49 c50"
+                class="c48 c49"
                 scale="md"
                 style="min-height: 32px; height: auto;"
                 variant="text"
@@ -3157,18 +3158,18 @@ exports[`renders correctly 1`] = `
           </div>
         </div>
         <div
-          class="c51 c52"
+          class="c50 c51"
         >
           <div
-            class="c53"
+            class="c52"
           >
             <a
-              class="c54"
+              class="c53"
               href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
               target="_blank"
             >
               <svg
-                class="c55"
+                class="c54"
                 color="text"
                 mr="8px"
                 viewBox="0 0 96 96"
@@ -3219,7 +3220,7 @@ exports[`renders correctly 1`] = `
                 </defs>
               </svg>
               <div
-                class="c26"
+                class="c55"
               >
                 $0.232
               </div>
