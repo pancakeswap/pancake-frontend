@@ -174,7 +174,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
     // )
 
-    const { results: result } = await multicallByGasLimit(calls, {
+    const { results: result, blockNumber } = await multicallByGasLimit(calls, {
       chainId: this.chainId,
       client: this.provider,
     })
@@ -207,7 +207,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     }
 
     return {
-      blockNumber: 0n,
+      blockNumber,
       results,
       approxGasUsedPerSuccessCall: 0,
     }

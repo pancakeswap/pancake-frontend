@@ -3,6 +3,7 @@ import { toBigInt } from '@pancakeswap/utils/toBigInt'
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
 import { MulticallRequestWithGas } from './types'
 import { getMulticallContract } from './getMulticallContract'
+import { getBlockConflictTolerance } from './getBlockConflictTolerance'
 
 export type CallByGasLimitParams = GetGasLimitParams & {
   // Normally we expect to get quotes from within the same block
@@ -59,7 +60,12 @@ function formatCallReturn([blockNumber, results, successIndex]: CallReturnFromCo
 }
 
 async function call(calls: MulticallRequestWithGas[], params: CallParams): Promise<CallResult> {
-  const { chainId, client, gasBuffer = getDefaultGasBuffer(chainId), blockConflictTolerance = 1 } = params
+  const {
+    chainId,
+    client,
+    gasBuffer = getDefaultGasBuffer(chainId),
+    blockConflictTolerance = getBlockConflictTolerance(chainId),
+  } = params
   if (!calls.length) {
     return {
       results: [],
@@ -100,7 +106,7 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
 }
 
 async function callByChunks(chunks: MulticallRequestWithGas[][], params: CallParams): Promise<CallResult> {
-  const { blockConflictTolerance = 1 } = params
+  const { blockConflictTolerance = getBlockConflictTolerance(1) } = params
   const callReturns = await Promise.all(chunks.map((chunk) => call(chunk, params)))
 
   let minBlock = 0n
