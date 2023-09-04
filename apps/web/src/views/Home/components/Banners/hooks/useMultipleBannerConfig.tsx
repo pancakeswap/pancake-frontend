@@ -41,7 +41,10 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: isRenderUserBanner, banner: <UserBanner /> },
+      {
+        shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
+        banner: <UserBanner />,
+      },
       { shouldRender: true, banner: <BaseBanner /> },
       {
         shouldRender: isRenderIFOBanner,
@@ -66,7 +69,15 @@ export const useMultipleBannerConfig = () => {
         banner: <PerpetualBanner />,
       },
     ]
-    return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
+    return [
+      ...NO_SHUFFLE_BANNERS,
+      ...shuffle(SHUFFLE_BANNERS),
+      {
+        // be the last one if harvest value is zero
+        shouldRender: isRenderUserBanner.shouldRender && isRenderUserBanner.isEarningsBusdZero,
+        banner: <UserBanner />,
+      },
+    ]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [isRenderIFOBanner, isRenderCompetitionBanner, isRenderUserBanner])
