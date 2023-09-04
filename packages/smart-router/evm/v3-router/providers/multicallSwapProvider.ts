@@ -156,16 +156,16 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
   }> {
     const { address, functionName, functionParams, abi } = params
     const calls = functionParams.map((functionParam) => {
-      const data = encodeFunctionData({
+      const callData = encodeFunctionData({
         abi,
         functionName,
         args: functionParam,
       })
 
       return {
-        to: address,
-        data,
-        gas: 310000n,
+        target: address,
+        callData,
+        gasLimit: 1000000n,
       }
     })
 
@@ -174,15 +174,15 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
     //   `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
     // )
 
-    const result = await multicallByGasLimit(calls, {
+    const { results: result } = await multicallByGasLimit(calls, {
       chainId: this.chainId,
       client: this.provider,
     })
 
     const results: Result<TReturn>[] = []
 
-    for (const callResult of result) {
-      if (callResult === '0x') {
+    for (const { result: callResult, success } of result) {
+      if (callResult === '0x' || !success) {
         results.push({
           success: false,
           returnData: callResult,

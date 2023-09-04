@@ -1,10 +1,15 @@
 import { toBigInt } from '@pancakeswap/utils/toBigInt'
 
 import { GetGasLimitParams, getDefaultGasBuffer, getGasLimit } from './getGasLimit'
-import { MulticallRequestWithGas, MulticallRequest } from './types'
+import { MulticallRequestWithGas } from './types'
 import { getMulticallContract } from './getMulticallContract'
 
-export type CallByGasLimitParams = GetGasLimitParams
+export type CallByGasLimitParams = GetGasLimitParams & {
+  // Normally we expect to get quotes from within the same block
+  // But for some chains like BSC the block time is quite short so need some extra tolerance
+  // 0 means no block conflict and all the multicall results should be queried within the same block
+  blockConflictTolerance?: number
+}
 
 export async function multicallByGasLimit(
   calls: MulticallRequestWithGas[],
@@ -17,82 +22,133 @@ export async function multicallByGasLimit(
     ...rest,
   })
   const callChunks = splitCallsIntoChunks(calls, gasLimit)
-  const resultChunks = await callByChunks(callChunks, { gasBuffer, client, chainId })
-  return resultChunks.reduce<string[]>((acc, cur) => [...acc, ...cur], [])
+  return callByChunks(callChunks, { gasBuffer, client, chainId })
 }
 
-type CallParams = Pick<CallByGasLimitParams, 'chainId' | 'client' | 'gasBuffer'>
+type CallParams = Pick<CallByGasLimitParams, 'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance'>
 
-type CallReturn = {
-  results: string[]
+type SingleCallResult = {
+  result: string
+  gasUsed: bigint
+  success: boolean
+}
+
+type CallResult = {
+  results: SingleCallResult[]
+  // Will be the greatest block number if block conflict tolerance is not 0
+  blockNumber: bigint
+}
+
+type MulticallReturn = CallResult & {
   lastSuccessIndex: number
 }
 
-async function call(
-  calls: MulticallRequest[],
-  { chainId, client, gasBuffer = getDefaultGasBuffer(chainId) }: CallParams,
-): Promise<CallReturn> {
+type CallReturnFromContract = [bigint, { success: boolean; gasUsed: bigint; returnData: string }[], bigint]
+
+function formatCallReturn([blockNumber, results, successIndex]: CallReturnFromContract): MulticallReturn {
+  const lastSuccessIndex = Number(successIndex)
+  return {
+    lastSuccessIndex,
+    blockNumber,
+    results: results.slice(0, lastSuccessIndex + 1).map(({ gasUsed, success, returnData }) => ({
+      gasUsed,
+      success,
+      result: returnData,
+    })),
+  }
+}
+
+async function call(calls: MulticallRequestWithGas[], params: CallParams): Promise<CallResult> {
+  const { chainId, client, gasBuffer = getDefaultGasBuffer(chainId), blockConflictTolerance = 1 } = params
   if (!calls.length) {
     return {
       results: [],
-      lastSuccessIndex: 0,
+      blockNumber: 0n,
     }
   }
 
   const contract = getMulticallContract({ chainId, client })
   const { result } = await contract.simulate.multicallWithGasLimitation([calls, gasBuffer])
-  const [results, lastSuccessIndex] = result as [string[], bigint]
-  return { results, lastSuccessIndex: Number(lastSuccessIndex) }
-}
-
-async function callByChunks(chunks: MulticallRequest[][], params: CallParams): Promise<string[][]> {
-  const callReturns = await Promise.all(chunks.map((chunk) => call(chunk, params)))
-
-  const resultChunks: string[][] = []
-  const remainingChunks: MulticallRequest[][] = []
-  for (const [index, callReturn] of callReturns.entries()) {
-    const chunkSize = chunks[index].length
-    const { results, lastSuccessIndex } = callReturn
-    resultChunks.push(results)
-    remainingChunks.push(chunks[index].slice(lastSuccessIndex + 1, chunkSize))
-  }
-
-  if (remainingChunks.every((chunk) => chunk.length === 0)) {
-    return resultChunks
+  const { results, lastSuccessIndex, blockNumber } = formatCallReturn(result as CallReturnFromContract)
+  if (lastSuccessIndex === calls.length - 1) {
+    return {
+      results,
+      blockNumber,
+    }
   }
   console.warn(
-    `Gas limit reached. Some of the multicalls doesn't get executed. Pls try adjust the gas limit per call. Chunks tried ${chunks}. Remaining chunks ${remainingChunks}`,
+    `Gas limit reached. Total num of ${calls.length} calls. First ${
+      lastSuccessIndex + 1
+    } calls executed. The remaining ${
+      calls.length - lastSuccessIndex - 1
+    } calls are not executed. Pls try adjust the gas limit per call.`,
   )
-  const remainingResults = await callByChunks(remainingChunks, params)
-  for (const [index, results] of remainingResults.entries()) {
-    resultChunks[index] = [...resultChunks[index], ...results]
+  const { results: remainingResults, blockNumber: nextBlockNumber } = await call(
+    calls.slice(lastSuccessIndex + 1),
+    params,
+  )
+  if (Number(nextBlockNumber - blockNumber) > blockConflictTolerance) {
+    throw new Error(
+      `Multicall failed because of block conflict. Latest calls are made at block ${nextBlockNumber} while last calls made at block ${blockNumber}. Block conflict tolerance is ${blockConflictTolerance}`,
+    )
   }
-  return resultChunks
+  return {
+    results: [...results, ...remainingResults],
+    // Use the latest block number
+    blockNumber: nextBlockNumber,
+  }
 }
 
-function splitCallsIntoChunks(calls: MulticallRequestWithGas[], gasLimit: bigint): MulticallRequest[][] {
-  const chunks: MulticallRequest[][] = [[]]
+async function callByChunks(chunks: MulticallRequestWithGas[][], params: CallParams): Promise<CallResult> {
+  const { blockConflictTolerance = 1 } = params
+  const callReturns = await Promise.all(chunks.map((chunk) => call(chunk, params)))
+
+  let minBlock = 0n
+  let maxBlock = 0n
+  let results: SingleCallResult[] = []
+  for (const { results: callResults, blockNumber } of callReturns) {
+    if (minBlock === 0n || blockNumber < minBlock) {
+      minBlock = blockNumber
+    }
+    if (blockNumber > maxBlock) {
+      maxBlock = blockNumber
+    }
+    if (Number(maxBlock - minBlock) > blockConflictTolerance) {
+      throw new Error(
+        `Multicall failed because of block conflict. Min block is ${minBlock} while max block is ${maxBlock}. Block conflict tolerance is ${blockConflictTolerance}`,
+      )
+    }
+    results = [...results, ...callResults]
+  }
+  return {
+    results,
+    blockNumber: maxBlock,
+  }
+}
+
+function splitCallsIntoChunks(calls: MulticallRequestWithGas[], gasLimit: bigint): MulticallRequestWithGas[][] {
+  const chunks: MulticallRequestWithGas[][] = [[]]
 
   let gasLeft = gasLimit
-  for (const { to, data, gas: gasCost } of calls) {
-    const gas = toBigInt(gasCost)
+  for (const callRequest of calls) {
+    const { target, callData, gasLimit: gasCostLimit } = callRequest
+    const singleGasLimit = toBigInt(gasCostLimit)
     const currentChunk = chunks[chunks.length - 1]
-    const callRequest = { to, data }
-    if (gas > gasLeft) {
+    if (singleGasLimit > gasLeft) {
       chunks.push([callRequest])
-      gasLeft = gasLimit - gas
+      gasLeft = gasLimit - singleGasLimit
 
       // Single call exceeds the gas limit
       if (gasLeft < 0n) {
         console.warn(
-          `Multicall request may fail as the gas cost of a single call exceeds the gas limit ${gasLimit}. Gas cost: ${gas}. To: ${to}. Data: ${data}`,
+          `Multicall request may fail as the gas cost of a single call exceeds the gas limit ${gasLimit}. Gas cost: ${singleGasLimit}. To: ${target}. Data: ${callData}`,
         )
       }
       continue
     }
 
     currentChunk.push(callRequest)
-    gasLeft -= gas
+    gasLeft -= singleGasLimit
   }
 
   return chunks

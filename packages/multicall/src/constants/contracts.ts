@@ -2,6 +2,6 @@ import { ChainId } from '@pancakeswap/sdk'
 import { Address } from 'viem'
 
 export const MULTICALL_ADDRESS: { [key in ChainId]?: Address } = {
-  [ChainId.ZKSYNC]: '0x5166acEd8Cdc2372A8D36DcF917d0a98cB85933f',
-  [ChainId.BSC]: '0x804708De7AF615085203FA2B18Eae59C5738e2a9',
+  [ChainId.ZKSYNC]: '0xbB7f63b41Fcc4F5f376AD360b14B3184fb8607e5',
+  [ChainId.BSC]: '0x26896202296fF7Fc3ea76290b98ef00c5C8FB80e',
 }

@@ -17,36 +17,29 @@ export const iMulticallABI = [
     inputs: [
       {
         components: [
-          { internalType: 'address', name: 'to', type: 'address' },
-          { internalType: 'bytes', name: 'data', type: 'bytes' },
+          { internalType: 'address', name: 'target', type: 'address' },
+          { internalType: 'uint256', name: 'gasLimit', type: 'uint256' },
+          { internalType: 'bytes', name: 'callData', type: 'bytes' },
         ],
-        internalType: 'struct MultiCall.Call[]',
+        internalType: 'struct MultiCallV2.Call[]',
         name: 'calls',
         type: 'tuple[]',
       },
     ],
     name: 'multicall',
-    outputs: [{ internalType: 'bytes[]', name: 'results', type: 'bytes[]' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
+    outputs: [
+      { internalType: 'uint256', name: 'blockNumber', type: 'uint256' },
       {
         components: [
-          { internalType: 'address', name: 'to', type: 'address' },
-          { internalType: 'bytes', name: 'data', type: 'bytes' },
+          { internalType: 'bool', name: 'success', type: 'bool' },
+          { internalType: 'uint256', name: 'gasUsed', type: 'uint256' },
+          { internalType: 'bytes', name: 'returnData', type: 'bytes' },
         ],
-        internalType: 'struct MultiCall.Call[]',
-        name: 'calls',
+        internalType: 'struct MultiCallV2.Result[]',
+        name: 'returnData',
         type: 'tuple[]',
       },
     ],
-    name: 'multicallWithGas',
-    outputs: [
-      { internalType: 'bytes[]', name: 'results', type: 'bytes[]' },
-      { internalType: 'uint256[]', name: 'gasUsed', type: 'uint256[]' },
-    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -54,10 +47,11 @@ export const iMulticallABI = [
     inputs: [
       {
         components: [
-          { internalType: 'address', name: 'to', type: 'address' },
-          { internalType: 'bytes', name: 'data', type: 'bytes' },
+          { internalType: 'address', name: 'target', type: 'address' },
+          { internalType: 'uint256', name: 'gasLimit', type: 'uint256' },
+          { internalType: 'bytes', name: 'callData', type: 'bytes' },
         ],
-        internalType: 'struct MultiCall.Call[]',
+        internalType: 'struct MultiCallV2.Call[]',
         name: 'calls',
         type: 'tuple[]',
       },
@@ -65,7 +59,17 @@ export const iMulticallABI = [
     ],
     name: 'multicallWithGasLimitation',
     outputs: [
-      { internalType: 'bytes[]', name: 'results', type: 'bytes[]' },
+      { internalType: 'uint256', name: 'blockNumber', type: 'uint256' },
+      {
+        components: [
+          { internalType: 'bool', name: 'success', type: 'bool' },
+          { internalType: 'uint256', name: 'gasUsed', type: 'uint256' },
+          { internalType: 'bytes', name: 'returnData', type: 'bytes' },
+        ],
+        internalType: 'struct MultiCallV2.Result[]',
+        name: 'returnData',
+        type: 'tuple[]',
+      },
       { internalType: 'uint256', name: 'lastSuccessIndex', type: 'uint256' },
     ],
     stateMutability: 'nonpayable',
