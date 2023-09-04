@@ -60,6 +60,7 @@ export const v2Clients = {
   [ChainId.POLYGON_ZKEVM]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.POLYGON_ZKEVM]),
   [ChainId.ZKSYNC]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.ZKSYNC]),
   [ChainId.LINEA]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.LINEA]),
+  [ChainId.BASE]: new GraphQLClient(INFO_CLIENT_WITH_CHAIN[ChainId.BASE]),
 }
 
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
