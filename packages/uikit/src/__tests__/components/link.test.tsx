@@ -7,13 +7,14 @@ it("renders link correctly", () => {
     <DocumentFragment>
       .c0 {
       color: var(--colors-primary);
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
     }
 
     .c1 {
       display: flex;
+      font-weight: 600;
       align-items: center;
       width: fit-content;
     }
@@ -46,13 +47,14 @@ it("renders link external link correctly", () => {
 
     .c0 {
       color: var(--colors-primary);
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
     }
 
     .c1 {
       display: flex;
+      font-weight: 600;
       align-items: center;
       width: fit-content;
     }

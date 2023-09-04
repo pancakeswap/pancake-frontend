@@ -1,16 +1,6 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import {
-  Flex,
-  Text,
-  Box,
-  HelpIcon,
-  useTooltip,
-  RocketIcon,
-  Link,
-  ScanLink,
-  NextLinkFromReactRouter,
-} from '@pancakeswap/uikit'
+import { Flex, Text, Box, HelpIcon, useTooltip, RocketIcon, ScanLink, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -104,11 +94,9 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
           <Text bold m="10px 0">
             {`${t('CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
           </Text>
-          <NextLinkFromReactRouter to="/pools" prefetch={false}>
-            <Link href="/pools" color="primary">
-              {t('Go to Pools')}
-            </Link>
-          </NextLinkFromReactRouter>
+          <Link external href="/pools">
+            {t('Go to Pools')}
+          </Link>
         </Box>
       )}
     </>,
