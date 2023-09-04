@@ -47,13 +47,11 @@ import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
+import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
-
-const BIG_INT_ZERO = new BigNumber(0)
-const BIG_INT_ONE = new BigNumber(1)
 
 const ControlContainer = styled.div`
   display: flex;
@@ -315,7 +313,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
         const totalLiquidityFromLp = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         // Mock 1$ tvl if the farm doesn't have lp staked
-        const totalLiquidity = totalLiquidityFromLp.eq(BIG_INT_ZERO) && mockApr ? BIG_INT_ONE : totalLiquidityFromLp
+        const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(
               chainId,

@@ -1,5 +1,4 @@
 import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
-import BigNumber from 'bignumber.js'
 import {
   useRoi,
   RoiCalculatorModalV2,
@@ -11,6 +10,7 @@ import {
   IconButton,
   QuestionHelper,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -201,7 +201,7 @@ export function AprCalculator({
     if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1 || !inRange) {
       return {
         positionFarmApr: '0',
-        positionFarmAprFactor: new BigNumber(0),
+        positionFarmAprFactor: BIG_ZERO,
       }
     }
     const { farm: farmDetail, cakePerSecond } = farm
