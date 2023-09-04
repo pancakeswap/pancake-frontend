@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Box, Text, Flex, Pool, SkeletonV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { DeserializedLockedVaultUser } from 'state/types'

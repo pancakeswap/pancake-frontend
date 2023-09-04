@@ -23,7 +23,7 @@ import {
   useAudioPlay,
   useUserSingleHopOnly,
 } from '@pancakeswap/utils/user'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const withCustomOnDismiss =
   (Component) =>

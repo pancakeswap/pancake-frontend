@@ -9,7 +9,6 @@ import {
   SwapFillIcon,
   SwapIcon,
 } from '@pancakeswap/uikit'
-import { LinkStatus } from '@pancakeswap/uikit/src/widgets/Menu/types'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
@@ -92,13 +91,13 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
         const innerItems = item.items?.map((innerItem) => {
           const itemStatus = innerItem?.href ? menuItemsStatus[innerItem.href] : null
           if (itemStatus) {
-            let itemMenuStatus
+            let itemMenuStatus: DropdownMenuItems['status']
             if (itemStatus === 'soon') {
-              itemMenuStatus = <LinkStatus>{ text: t('Soon'), color: 'warning' }
+              itemMenuStatus = { text: t('Soon'), color: 'warning' }
             } else if (itemStatus === 'live') {
-              itemMenuStatus = <LinkStatus>{ text: t('Live'), color: 'failure' }
+              itemMenuStatus = { text: t('Live'), color: 'failure' }
             } else {
-              itemMenuStatus = <LinkStatus>{ text: t('New'), color: 'success' }
+              itemMenuStatus = { text: t('New'), color: 'success' }
             }
             return { ...innerItem, status: itemMenuStatus }
           }

@@ -34,7 +34,7 @@ import {
   usePoolTransactionsSWR,
   useStableSwapPath,
 } from 'state/info/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'

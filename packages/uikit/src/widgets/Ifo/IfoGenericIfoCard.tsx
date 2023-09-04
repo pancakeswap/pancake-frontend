@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { ReactNode } from "react";
 import { Card, CardBody, CardHeader } from "../../components/Card";
 import { Flex, Box } from "../../components/Box";

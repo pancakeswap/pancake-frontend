@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import Text from "../Text/Text";
 import { LinkProps } from "./types";

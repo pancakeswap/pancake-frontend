@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import EasterPrizesCard from './EasterPrizesCard'
 import EasterPrizesText from './EasterPrizesText'

@@ -20,7 +20,7 @@ import {
   Farm as FarmUI,
   ToggleView,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'

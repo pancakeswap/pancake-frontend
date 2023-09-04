@@ -1,7 +1,6 @@
 import { useIsMounted } from '@pancakeswap/hooks'
 import { Trans } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
-import { Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
+import { AtomBox, Button, LinkExternal, Modal, ModalV2, Text, useModalV2, useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, Multicall } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCatchTxError from 'hooks/useCatchTxError'

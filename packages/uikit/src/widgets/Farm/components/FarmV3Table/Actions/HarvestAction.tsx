@@ -5,7 +5,7 @@ import { Button } from "../../../../../components/Button";
 import { Text } from "../../../../../components/Text";
 import { ActionContent, ActionTitles } from "./styles";
 
-interface HarvestActionProps {
+export interface HarvestActionProps {
   earnings: number;
   earningsBusd: number;
   pendingTx: boolean;

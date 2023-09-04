@@ -11,7 +11,7 @@ import {
   FarmIcon,
   TradeIcon,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
 interface FarmTypesFilterProps {

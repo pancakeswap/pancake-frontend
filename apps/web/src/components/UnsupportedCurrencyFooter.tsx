@@ -1,7 +1,7 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { Button, Text, Modal, useModal, InjectedModalProps, Link, AutoColumn } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { AutoRow } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
 import { getBlockExploreLink } from 'utils'

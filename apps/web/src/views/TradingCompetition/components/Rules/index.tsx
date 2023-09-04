@@ -1,5 +1,5 @@
 import { Flex, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import RulesCard from './RulesCard'
 import FAQs from './FAQs'

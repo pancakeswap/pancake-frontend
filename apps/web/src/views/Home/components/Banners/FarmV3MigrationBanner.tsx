@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
-import styled, { css } from 'styled-components'
+import { styled, css } from 'styled-components'
 import * as S from './Styled'
 
 const { farmV3MigrationBunny, farmV3MigrationMobileBunny } = {

@@ -18,7 +18,7 @@ import {
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import useBCakeProxyBalance from '../../../../hooks/useBCakeProxyBalance'
 import boosterCardImage from '../../../../images/boosterCardImage.png'

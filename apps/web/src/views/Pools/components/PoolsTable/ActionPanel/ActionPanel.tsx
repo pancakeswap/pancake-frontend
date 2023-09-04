@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import { styled, keyframes, css } from 'styled-components'
 import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, Pool, BalanceWithLoading } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'

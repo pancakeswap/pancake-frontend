@@ -17,7 +17,7 @@ import {
 } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import SaveIcon from 'views/Info/components/SaveIcon'

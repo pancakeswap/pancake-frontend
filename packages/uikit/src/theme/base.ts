@@ -1,4 +1,5 @@
-import { breakpoints, mediaQueries, vars } from "@pancakeswap/ui";
+import { breakpoints, mediaQueries } from "../css/breakpoints";
+import { vars } from "../css/vars.css";
 
 export default {
   siteWidth: 1200,

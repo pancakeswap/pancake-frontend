@@ -3,7 +3,7 @@ import { AnimatePresence, LazyMotion, m } from "framer-motion";
 import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import { useIsomorphicEffect } from "../../hooks";

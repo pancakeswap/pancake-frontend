@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { Field } from 'state/swap'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import FormattedPriceImpact from './FormattedPriceImpact'
 

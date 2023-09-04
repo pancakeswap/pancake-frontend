@@ -1,8 +1,7 @@
-import { AtomBox } from "@pancakeswap/ui";
 import { inputContainerVariants } from "./SwapWidget.css";
 
 import { NumericalInput, NumericalInputProps } from "./NumericalInput";
-import { Text } from "../../components";
+import { Text, AtomBox } from "../../components";
 
 interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
   onInputBlur?: () => void;

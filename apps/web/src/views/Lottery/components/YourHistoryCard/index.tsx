@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useAccount } from 'wagmi'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import {
   CardHeader,
   Card,

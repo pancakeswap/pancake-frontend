@@ -4,7 +4,7 @@ import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModa
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
 import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'

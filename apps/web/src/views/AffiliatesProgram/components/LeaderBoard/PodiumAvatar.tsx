@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { Flex, Skeleton, ProfileAvatar, NoProfileAvatarIcon } from '@pancakeswap/uikit'
 import { useDomainNameForAddress } from 'hooks/useDomain'

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 const StyledTable = styled.div`
   border-radius: ${({ theme }) => theme.radii.card};

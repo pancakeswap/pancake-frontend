@@ -1,10 +1,10 @@
-import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
+import { baseColors, lightColors, darkColors } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
 import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import Card from '../Card'
 import { RowBetween } from '../Row'
 

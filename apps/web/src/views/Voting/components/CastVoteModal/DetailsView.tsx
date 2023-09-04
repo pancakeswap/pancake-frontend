@@ -12,7 +12,7 @@ import {
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'

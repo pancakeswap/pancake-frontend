@@ -2,7 +2,7 @@ import { Token } from '@pancakeswap/sdk'
 import { AutoRow, Farm as FarmUI, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { TokenPairImage } from 'components/TokenImage'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
 

@@ -1,6 +1,6 @@
 import { useState, useMemo, ReactNode } from 'react'
 import shuffle from 'lodash/shuffle'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import type SwiperCore from 'swiper'

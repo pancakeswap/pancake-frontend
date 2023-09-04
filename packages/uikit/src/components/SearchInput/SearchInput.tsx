@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import debounce from "lodash/debounce";
 import { useTranslation } from "@pancakeswap/localization";
 import { Input } from "../Input";

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Skeleton, Text, FlexGap, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 

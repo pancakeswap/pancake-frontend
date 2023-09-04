@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { memo } from 'react'
 import { VaultKey } from 'state/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 const Container = styled.div`

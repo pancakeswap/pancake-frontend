@@ -23,7 +23,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { atom, useAtom } from 'jotai'
 
 import { useCurrency } from 'hooks/Tokens'

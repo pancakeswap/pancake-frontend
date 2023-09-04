@@ -1,5 +1,5 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
 import { scales, variants } from "./types";
+import { vars } from "../../css/vars.css";
 
 export const scaleVariants = {
   [scales.MD]: {

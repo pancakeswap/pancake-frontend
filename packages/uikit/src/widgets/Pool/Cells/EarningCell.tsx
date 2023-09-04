@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";

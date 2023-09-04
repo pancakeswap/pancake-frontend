@@ -1,4 +1,3 @@
-import { vars } from "@pancakeswap/ui/css/vars.css";
 import { useIsMounted } from "@pancakeswap/hooks";
 import React from "react";
 import { Box, Flex } from "../Box";
@@ -13,6 +12,7 @@ import {
   StyledToolsContainer,
 } from "./styles";
 
+import { vars } from "../../css/vars.css";
 import { Button } from "../Button";
 import CakePrice from "../CakePrice/CakePrice";
 import LangSelector from "../LangSelector/LangSelector";

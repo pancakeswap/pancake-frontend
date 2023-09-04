@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Flex } from "../../../components";
 
 export const ActionContainer = styled(Flex)`

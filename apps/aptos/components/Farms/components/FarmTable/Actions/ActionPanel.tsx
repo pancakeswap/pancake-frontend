@@ -8,7 +8,7 @@ import {
   FarmTableMultiplierProps,
   Flex,
 } from '@pancakeswap/uikit'
-import styled, { css, keyframes } from 'styled-components'
+import { styled, css, keyframes } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 

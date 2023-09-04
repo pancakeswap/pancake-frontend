@@ -2,7 +2,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
 import { useState, ReactNode, memo } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { formatPercent } from "@pancakeswap/utils/formatFractions";
 
 import { ExpandableLabel, Box, Grid, Text, Flex } from "../../components";

@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Skeleton } from "../../../../components/Skeleton";
 import { HelpIcon } from "../../../../components/Svg";
 import { Text } from "../../../../components/Text";

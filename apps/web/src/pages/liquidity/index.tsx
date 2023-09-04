@@ -13,11 +13,12 @@ import {
   IconButton,
   HistoryIcon,
   useModal,
+  Liquidity,
 } from '@pancakeswap/uikit'
 import { PositionDetails } from '@pancakeswap/farms'
 import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { AppBody, AppHeader } from 'components/App'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -40,7 +41,6 @@ import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
-import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -252,7 +252,7 @@ export default function PoolListPage() {
         />
         <Body>
           {mainSection}
-          {selectedTypeIndex === FILTER.V2 ? <FindOtherLP /> : null}
+          {selectedTypeIndex === FILTER.V2 ? <Liquidity.FindOtherLP /> : null}
         </Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>

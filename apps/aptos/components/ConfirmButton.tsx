@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button as UIKitButton, AutoRenewIcon } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 interface ConfirmButtonProps {
   isConfirming: boolean

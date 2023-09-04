@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'

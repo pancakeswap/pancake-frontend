@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
 import useSWR from 'swr'
 import Balancer from 'react-wrap-balancer'

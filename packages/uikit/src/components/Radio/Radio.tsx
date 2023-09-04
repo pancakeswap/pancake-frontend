@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import shouldForwardProp from "@styled-system/should-forward-prop";
+import { styled } from "styled-components";
 import { space } from "styled-system";
 import { RadioProps, scales } from "./types";
 
@@ -22,7 +23,7 @@ const getCheckedScale = ({ scale }: RadioProps) => {
   }
 };
 
-const Radio = styled.input.attrs({ type: "radio" })<RadioProps>`
+const Radio = styled.input.attrs({ type: "radio" }).withConfig({ shouldForwardProp })<RadioProps>`
   appearance: none;
   overflow: hidden;
   cursor: pointer;

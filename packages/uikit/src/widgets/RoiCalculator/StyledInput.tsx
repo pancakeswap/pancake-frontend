@@ -1,4 +1,4 @@
-import styled, { DefaultTheme, css } from "styled-components";
+import { styled, DefaultTheme, css } from "styled-components";
 
 import { Input } from "../../components";
 import getThemeValue from "../../util/getThemeValue";

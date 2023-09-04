@@ -1,6 +1,5 @@
 import { useTheme } from '@pancakeswap/hooks'
-import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, AutoRow, Heading, LinkExternal, Text, Chart } from '@pancakeswap/uikit'
+import { AtomBox, AutoColumn, AutoRow, Heading, LinkExternal, Text, Chart } from '@pancakeswap/uikit'
 import { format } from 'd3'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'

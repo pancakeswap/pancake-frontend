@@ -1,7 +1,7 @@
 import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../../helpers'
 import { UserTradingInformation } from '../../../types'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'

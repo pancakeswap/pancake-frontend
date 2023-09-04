@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Flex } from "../../../../components/Box";
 import { CalculateIcon } from "../../../../components/Svg";
 import { IconButton } from "../../../../components/Button";

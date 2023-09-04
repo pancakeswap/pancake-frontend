@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { ifosConfig } from 'config/constants'
 import { PoolIds } from 'config/constants/types'
 import { useRouter } from 'next/router'
-import styled, { keyframes, css } from 'styled-components'
+import { styled, keyframes, css } from 'styled-components'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import Info from './Info'
 

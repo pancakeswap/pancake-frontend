@@ -40,7 +40,7 @@ import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'

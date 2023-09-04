@@ -1,7 +1,7 @@
 import { CSSProperties, ReactElement } from "react";
 import { BaseCurrency } from "@pancakeswap/swap-sdk-core";
 import { useTranslation } from "@pancakeswap/localization";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { AutoColumn, AutoRow, Button, Flex, RowFixed, Text } from "../../components";
 import { useMatchBreakpoints } from "../../contexts";
 import { ListLogo } from "./ListLogo";

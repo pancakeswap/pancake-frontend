@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const BurnedText = styled(Text)`
   font-size: 52px;

@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, CurrencyAmount } from "@pancakeswap/sdk";
 import { memo, useCallback } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import {
   BalanceInput,

@@ -9,9 +9,7 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@pancakeswap/eslint-config-pancake",
-    "@pancakeswap/ui",
     "@pancakeswap/ui-wallets",
-    "@pancakeswap/uikit",
     "farms-api",
     "aptos-web",
     "blog",

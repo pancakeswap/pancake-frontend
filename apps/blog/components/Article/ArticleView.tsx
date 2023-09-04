@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTheme } from '@pancakeswap/hooks'
 import NoSSR from 'components/NoSSR'
 

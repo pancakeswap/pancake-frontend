@@ -3,7 +3,7 @@ import { StyledActionContainer, ActionContent, ActionTitles } from "./styles";
 import { Text } from "../../../../../components/Text";
 import { Button } from "../../../../../components/Button";
 
-interface StakeComponentProps {
+export interface StakeComponentProps {
   lpSymbol: string;
   isStakeReady: boolean;
   onPresentDeposit: () => void;

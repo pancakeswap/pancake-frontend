@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const StyledTable = styled.div`
   border-radius: 0px 0px 16px 16px;

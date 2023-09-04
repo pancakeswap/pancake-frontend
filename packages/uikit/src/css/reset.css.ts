@@ -1,63 +1,63 @@
-import { style } from '@vanilla-extract/css'
+import { style } from "@vanilla-extract/css";
 
 export const base = style({
   margin: 0,
   padding: 0,
   border: 0,
   minWidth: 0,
-  boxSizing: 'border-box',
-  fontSize: '100%',
-  font: 'inherit',
-  verticalAlign: 'baseline',
-})
+  boxSizing: "border-box",
+  fontSize: "100%",
+  font: "inherit",
+  verticalAlign: "baseline",
+});
 
 export const button = style({
   background: 0,
   border: 0,
-  WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
-})
+  WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+});
 
 // HTML5 display-role reset for older browsers
 const block = style({
-  display: 'block',
-})
+  display: "block",
+});
 
 const body = style({
   lineHeight: 1,
-})
+});
 
 const list = style({
-  listStyle: 'none',
-})
+  listStyle: "none",
+});
 
 const quote = style({
-  quotes: 'none',
+  quotes: "none",
   selectors: {
-    '&:before, &:after': {
+    "&:before, &:after": {
       content: "''",
     },
   },
-})
+});
 
 const table = style({
-  borderCollapse: 'collapse',
+  borderCollapse: "collapse",
   borderSpacing: 0,
-})
+});
 
 // Custom reset rules
 const mark = style({
-  backgroundColor: 'transparent',
-  color: 'inherit',
-})
+  backgroundColor: "transparent",
+  color: "inherit",
+});
 
 const select = style({
-  appearance: 'none',
+  appearance: "none",
   selectors: {
-    '&::-ms-expand': {
-      display: 'none',
+    "&::-ms-expand": {
+      display: "none",
     },
   },
-})
+});
 
 export const element = {
   article: block,
@@ -81,4 +81,4 @@ export const element = {
   table,
   mark,
   select,
-}
+};
