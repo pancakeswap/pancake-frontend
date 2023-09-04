@@ -108,20 +108,20 @@ const CakeBox = styled.div`
       transform: scale(1) translate(-50%, -50%);
     }
     position: relative;
-    width: 734px;
-    height: 734px;
+    width: 600px;
+    height: 736px;
     overflow: hidden;
     margin-bottom: -100px;
+    margin-right: -100px;
   }
 `
-
-const CakeVideo = styled.video`
+const VideoWrapper = styled.div`
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-  filter: grayscale(100%);
 `
+
+const CakeVideo = styled.video``
 const CakeCanvas = styled.canvas`
   position: absolute;
   top: 50%;
@@ -179,6 +179,7 @@ const Hero = () => {
         alignItems={['flex-end', null, null, 'center']}
         justifyContent="center"
         mt={['50px', null, 0]}
+        pl={['0px', '0px', '0px', '30px']}
         id="homepage-hero"
       >
         <Flex flex="1" flexDirection="column">
@@ -220,6 +221,7 @@ const Hero = () => {
             fontSize={['20px', '20px', null, '24px']}
             textAlign={isMobile ? 'center' : 'left'}
             lineHeight="110%"
+            fontWeight={600}
           >
             {t('Trade, earn, and own crypto on the all-in-one multichain DEX')}
           </Text>
@@ -251,9 +253,12 @@ const Hero = () => {
             /> */}
             <CakeBox>
               <CakeCanvas width={width} height={height} ref={canvasRef} />
-              <CakeVideo ref={videoRef} width={width} loop autoPlay muted playsInline>
-                <source src="/assets/bunny.webm" type="video/webm" />
-              </CakeVideo>
+              <VideoWrapper>
+                <CakeVideo ref={videoRef} width={width} loop autoPlay muted playsInline>
+                  <source src="/assets/bunny.webm" type="video/webm" />
+                  {/* <source src="/assets/bunny.mov" /> */}
+                </CakeVideo>
+              </VideoWrapper>
             </CakeBox>
           </BunnyWrapper>
           {/* <StarsWrapper>
