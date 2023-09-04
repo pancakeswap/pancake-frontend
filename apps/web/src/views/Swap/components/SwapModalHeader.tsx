@@ -79,28 +79,24 @@ export default function SwapModalHeader({
     <AutoColumn gap="md">
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo
-            currency={currencyBalances.INPUT?.currency ?? inputAmount.currency}
-            size="24px"
-            style={{ marginRight: '12px' }}
-          />
-          <TruncatedText fontSize="24px" color={inputTextColor}>
+          <TruncatedText fontSize="24px" bold color={inputTextColor}>
             {formatAmount(inputAmount, 6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed gap="0px">
-          <Text fontSize="24px" ml="10px">
+        <RowFixed>
+          <Text fontSize="14px" ml="10px" mr="8px">
             {inputAmount.currency.symbol}
           </Text>
+          <CurrencyLogo currency={currencyBalances.INPUT?.currency ?? inputAmount.currency} size="24px" />
         </RowFixed>
       </RowBetween>
-      <RowFixed>
+      <RowFixed margin="auto">
         <ArrowDownIcon width="16px" ml="4px" />
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
           <TruncatedText
+            bold
             fontSize="24px"
             color={
               priceImpactSeverity > 2
@@ -114,9 +110,10 @@ export default function SwapModalHeader({
           </TruncatedText>
         </RowFixed>
         <RowFixed>
-          <Text fontSize="24px" ml="10px">
+          <Text fontSize="14px" ml="10px" mr="8px">
             {outputAmount.currency.symbol}
           </Text>
+          <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
         </RowFixed>
       </RowBetween>
       {showAcceptChanges ? (
@@ -132,27 +129,27 @@ export default function SwapModalHeader({
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '24px 0 0 0px' }}>
         <RowFixed style={{ width: '100%' }}>
-          <Text color="secondary" bold textTransform="uppercase">
+          <Text fontSize={12} color="secondary" bold textTransform="uppercase">
             {t('Slippage Tolerance')}
           </Text>
-          <Text bold color="primary" ml="auto" textAlign="end">
+          <Text fontSize={12} bold color="primary" ml="auto" textAlign="end">
             {typeof allowedSlippage === 'number'
               ? `${basisPointsToPercent(allowedSlippage).toFixed(2)}%`
               : allowedSlippage}
           </Text>
         </RowFixed>
         {tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
-          <Text small color="failure" textAlign="left" style={{ width: '100%' }}>
+          <Text fontSize={12} small color="failure" textAlign="left" style={{ width: '100%' }}>
             {t('Insufficient input token balance. Your transaction may fail.')}
           </Text>
         )}
-        <Text small color="textSubtle" textAlign="left" style={{ maxWidth: '320px' }}>
+        <Text fontSize={12} small color="textSubtle" textAlign="left" style={{ maxWidth: '320px' }}>
           {tradeInfoText}
         </Text>
       </AutoColumn>
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-          <Text color="textSubtle">
+          <Text fontSize={12} color="textSubtle">
             {recipientSentToText}
             <b title={recipient}>{truncatedRecipient}</b>
             {postSentToText}

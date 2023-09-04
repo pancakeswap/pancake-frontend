@@ -21,6 +21,7 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
   currencyB,
   amountA,
   amountB,
+  children,
 }) => {
   const symbolA = currencyA?.symbol;
   const symbolB = currencyB?.symbol;
@@ -48,6 +49,7 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
           currencyA={currencyA}
           currencyB={currencyB}
         />
+        {children}
       </AutoColumn>
     </Box>
   );

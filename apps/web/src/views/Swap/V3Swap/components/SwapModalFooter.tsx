@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, QuestionHelper, Text, Link, AutoColumn, Dots } from '@pancakeswap/uikit'
+import { BackForwardIcon, Button, QuestionHelper, Text, Link, AutoColumn, Dots, Flex } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { useState, memo, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
+import { CurrencyLogo } from 'components/Logo'
 import { warningSeverity } from 'utils/exchange'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
@@ -37,6 +38,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   disabledConfirm,
   isMM,
   isRFQReady,
+  currencyBalances,
 }: {
   trade: SmartRouterTrade<TradeType> | undefined
   tradeType: TradeType
@@ -50,6 +52,10 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   disabledConfirm: boolean
   isMM?: boolean
   isRFQReady?: boolean
+  currencyBalances: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
   onConfirm: () => void
 }) {
   const { t } = useTranslation()
@@ -87,7 +93,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           >
             {executionPriceDisplay}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
+              <BackForwardIcon color="primary" width="14px" />
             </StyledBalanceMaxMini>
           </Text>
         </RowBetween>
@@ -207,9 +213,18 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               }
             />
           </RowFixed>
-          <Text fontSize="14px" textAlign="right">
-            {realizedLPFee ? `${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}` : '-'}
-          </Text>
+          {realizedLPFee ? (
+            <Flex>
+              <Text fontSize="14px" mr="8px">
+                {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
+              </Text>
+              <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
+            </Flex>
+          ) : (
+            <Text fontSize="14px" textAlign="right">
+              -
+            </Text>
+          )}
         </RowBetween>
       </SwapModalFooterContainer>
 
