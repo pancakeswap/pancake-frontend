@@ -9,6 +9,7 @@ import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
 
 import PercentageButton from "./PercentageButton";
 import getThemeValue from "../../util/getThemeValue";
+import ZkSyncWarning from "./ZkSyncWarning";
 
 import {
   AutoRenewIcon,
@@ -268,6 +269,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
         <PercentageButton onClick={() => handleChangePercent(100)}>{t("Max")}</PercentageButton>
       </Flex>
+      <ZkSyncWarning />
       {!isRemovingStake && (
         <Flex mt="24px" alignItems="center" justifyContent="space-between">
           <Text mr="8px" color="textSubtle">
