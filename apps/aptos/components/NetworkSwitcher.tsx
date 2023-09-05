@@ -15,6 +15,7 @@ const evmChains = [
   { id: 1101, name: 'Polygon zkEVM', chainName: 'polygonZkEVM' },
   { id: 42161, name: 'Arbitrum One', chainName: 'arb' },
   { id: 59144, name: 'Linea', chainName: 'linea' },
+  { id: 8453, name: 'Base', chainName: 'base' },
 ]
 
 const NetworkSelect = () => {
