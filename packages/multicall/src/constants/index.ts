@@ -3,7 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 export const DEFAULT_GAS_LIMIT = 150000000n
 
 export const DEFAULT_GAS_LIMIT_BY_CHAIN: { [key in ChainId]?: bigint } = {
-  [ChainId.BSC]: 150000000n,
+  [ChainId.BSC]: 100000000n,
   [ChainId.ZKSYNC]: 100000000n,
 }
 

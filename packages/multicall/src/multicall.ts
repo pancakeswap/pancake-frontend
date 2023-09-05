@@ -106,7 +106,7 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
 }
 
 async function callByChunks(chunks: MulticallRequestWithGas[][], params: CallParams): Promise<CallResult> {
-  const { blockConflictTolerance = getBlockConflictTolerance(1) } = params
+  const { blockConflictTolerance = getBlockConflictTolerance(params.chainId) } = params
   const callReturns = await Promise.all(chunks.map((chunk) => call(chunk, params)))
 
   let minBlock = 0n
