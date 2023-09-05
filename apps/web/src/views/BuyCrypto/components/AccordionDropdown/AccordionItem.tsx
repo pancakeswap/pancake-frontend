@@ -94,8 +94,8 @@ function AccordionItem({
   if (quote.amount === 0) {
     return (
       <Flex flexDirection="column">
-        <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
-          <RowBetween paddingBottom="20px">
+        <CryptoCard padding="16px 16px" style={{ height: '68px' }} position="relative" isClicked={false} isDisabled>
+          <RowBetween paddingBottom="24px" paddingTop="8px">
             <OnRampProviderLogo provider={quote.provider} />
             <TooltipText
               ref={buyCryptoTargetRef}
