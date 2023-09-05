@@ -21,5 +21,12 @@ export const SUPPORT_BUY_CRYPTO = [
   ChainId.ZKSYNC,
   ChainId.POLYGON_ZKEVM,
   ChainId.LINEA,
-  ChainId.BASE
+  ChainId.BASE,
+]
+
+export const LIQUID_STAKING_SUPPORTED_CHAINS = [
+  ChainId.BSC,
+  ChainId.ETHEREUM,
+  ChainId.BSC_TESTNET,
+  ChainId.ARBITRUM_GOERLI,
 ]

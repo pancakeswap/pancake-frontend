@@ -20,15 +20,16 @@ import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import {
-  ONRAMP_PROVIDERS,
-  chainIdToMercuryoNetworkId,
-} from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, chainIdToMercuryoNetworkId } from 'views/BuyCrypto/constants'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { nanoid } from '@reduxjs/toolkit'
-import { fetchMercuryoSignedUrl, fetchMoonPaySignedUrl, fetchTransakSignedUrl } from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
+import {
+  fetchMercuryoSignedUrl,
+  fetchMoonPaySignedUrl,
+  fetchTransakSignedUrl,
+} from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;

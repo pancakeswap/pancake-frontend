@@ -24,7 +24,6 @@ const SUPPORTED_TRANSAK_ZKSYNC_TOKENS = ['ETH']
 const SUPPORTED_TRANSAK_ZKEVM_TOKENS = ['ETH']
 const SUPPORTED_TRANSAK_BASE_TOKENS = ['ETH', 'USDC']
 
-
 export enum ONRAMP_PROVIDERS {
   MoonPay = 'MoonPay',
   Mercuryo = 'Mercuryo',
