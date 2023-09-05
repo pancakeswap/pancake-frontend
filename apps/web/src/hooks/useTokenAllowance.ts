@@ -1,8 +1,11 @@
 import { Token, CurrencyAmount } from '@pancakeswap/sdk'
-import { useContractRead } from 'wagmi'
+import { erc20ABI } from 'wagmi'
 import { useMemo } from 'react'
 
-import { useTokenContract } from './useContract'
+import { useQuery } from '@tanstack/react-query'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { publicClient } from 'utils/wagmi'
+import { FAST_INTERVAL } from 'config/constants'
 
 function useTokenAllowance(
   token?: Token,
@@ -12,17 +15,26 @@ function useTokenAllowance(
   allowance: CurrencyAmount<Token> | undefined
   refetch: () => Promise<any>
 } {
-  const contract = useTokenContract(token?.address)
+  const { chainId } = useActiveChainId()
 
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
 
-  const { data: allowance, refetch } = useContractRead({
-    ...contract,
-    functionName: 'allowance',
-    args: inputs,
-    enabled: Boolean(spender && owner),
-    watch: true,
-  })
+  const { data: allowance, refetch } = useQuery(
+    [chainId, token?.address, owner, spender],
+    () =>
+      publicClient({ chainId }).readContract({
+        abi: erc20ABI,
+        address: token?.address,
+        functionName: 'allowance',
+        args: inputs,
+      }),
+    {
+      refetchInterval: FAST_INTERVAL,
+      retry: true,
+      refetchOnWindowFocus: false,
+      enabled: Boolean(spender && owner),
+    },
+  )
 
   return useMemo(
     () => ({
