@@ -92,7 +92,7 @@ export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
   [ChainId.ZKSYNC]: 'ZKSYNC',
   [ChainId.POLYGON_ZKEVM]: 'ZKEVM',
   [ChainId.LINEA]: 'LINEA',
-  [ChainId.LINEA]: 'BASE',
+  [ChainId.BASE]: 'BASE',
 }
 
 export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
