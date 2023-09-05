@@ -80,7 +80,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const hasExistingPosition = !!existingPositionDetails && !positionLoading
   const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
-  // prevent an error if they input ETH/WETH
+  // prevent an error if they input NATIVE/WNATIVE
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
   // mint state

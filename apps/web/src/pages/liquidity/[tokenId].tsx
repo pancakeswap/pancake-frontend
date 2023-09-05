@@ -146,7 +146,7 @@ export default function PoolPage() {
 
   const [collecting, setCollecting] = useState<boolean>(false)
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
-  const [receiveWETH, setReceiveWETH] = useState(false)
+  const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
 
   const { data: signer } = useWalletClient()
   const { sendTransactionAsync } = useSendTransaction()
@@ -224,11 +224,19 @@ export default function PoolPage() {
   // }, [inverted, pool, priceLower, priceUpper])
 
   // fees
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWNATIVE)
 
   // these currencies will match the feeValue{0,1} currencies for the purposes of fee collection
-  const currency0ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token0 : unwrappedToken(pool.token0)) : undefined
-  const currency1ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token1 : unwrappedToken(pool.token1)) : undefined
+  const currency0ForFeeCollectionPurposes = pool
+    ? receiveWNATIVE
+      ? pool.token0
+      : unwrappedToken(pool.token0)
+    : undefined
+  const currency1ForFeeCollectionPurposes = pool
+    ? receiveWNATIVE
+      ? pool.token1
+      : unwrappedToken(pool.token1)
+    : undefined
 
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
@@ -370,7 +378,7 @@ export default function PoolPage() {
   const nativeCurrency = useNativeCurrency()
   const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
 
-  const showCollectAsWeth = Boolean(
+  const showCollectAsWNative = Boolean(
     ownsNFT &&
       (feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0)) &&
       currency0 &&
@@ -710,17 +718,17 @@ export default function PoolPage() {
                   </Box>
                 </Flex>
               </AutoRow>
-              {showCollectAsWeth && (
+              {showCollectAsWNative && (
                 <Flex mb="8px">
                   <Flex ml="auto" alignItems="center">
                     <Text mr="8px">
                       {t('Collect as')} {nativeWrappedSymbol}
                     </Text>
                     <Toggle
-                      id="receive-as-weth"
+                      id="receive-as-wnative"
                       scale="sm"
-                      checked={receiveWETH}
-                      onChange={() => setReceiveWETH((prevState) => !prevState)}
+                      checked={receiveWNATIVE}
+                      onChange={() => setReceiveWNATIVE((prevState) => !prevState)}
                     />
                   </Flex>
                 </Flex>
