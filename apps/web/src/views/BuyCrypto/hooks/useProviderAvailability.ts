@@ -1,4 +1,3 @@
-import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { ONRAMP_PROVIDERS } from '../constants'
 
 export async function fetchProviderAvailabilities(

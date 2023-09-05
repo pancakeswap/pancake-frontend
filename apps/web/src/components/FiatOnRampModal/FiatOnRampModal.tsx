@@ -14,7 +14,7 @@ import {
 import { LoadingDot } from '@pancakeswap/uikit/widgets/Liquidity'
 
 import { CommitButton } from 'components/CommitButton'
-import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
