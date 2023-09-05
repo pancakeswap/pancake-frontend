@@ -12,7 +12,7 @@ import {
   useTooltip,
   TooltipText,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { useVaultApy } from 'hooks/useVaultApy'

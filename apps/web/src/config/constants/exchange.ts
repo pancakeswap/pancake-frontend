@@ -14,6 +14,7 @@ import {
   lineaTestnetTokens,
   arbitrumGoerliTokens,
   opBnbTestnetTokens,
+  baseTokens,
   baseTestnetTokens,
   scrollSepoliaTokens,
   lineaTokens,
@@ -41,6 +42,7 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.LINEA]: 12_000,
   [ChainId.LINEA_TESTNET]: 12_000,
   [ChainId.OPBNB_TESTNET]: 6_000,
+  [ChainId.BASE]: 6_000,
   [ChainId.BASE_TESTNET]: 6_000,
   [ChainId.SCROLL_SEPOLIA]: 6_000,
 } as const satisfies Record<ChainId, number>
@@ -65,6 +67,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
     opBnbTestnetTokens.wbnb,
     opBnbTestnetTokens.usdt,
   ],
+  [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
@@ -84,6 +87,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.LINEA]: [lineaTokens.usdc, lineaTokens.weth],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
   [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.usdc, opBnbTestnetTokens.wbnb, opBnbTestnetTokens.usdt],
+  [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
 }
@@ -110,6 +114,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.LINEA]: [[lineaTokens.usdc, lineaTokens.weth]],
   [ChainId.LINEA_TESTNET]: [[lineaTestnetTokens.usdc, lineaTestnetTokens.weth]],
   [ChainId.OPBNB_TESTNET]: [[opBnbTestnetTokens.usdc, opBnbTestnetTokens.wbnb]],
+  [ChainId.BASE]: [[baseTokens.usdc, baseTokens.weth]],
   [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
   [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
 }

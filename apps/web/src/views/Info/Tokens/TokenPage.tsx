@@ -37,7 +37,7 @@ import {
   useTokenPriceDataSWR,
   useTokenTransactionsSWR,
 } from 'state/info/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'

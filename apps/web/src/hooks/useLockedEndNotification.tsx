@@ -1,4 +1,4 @@
-import { useToast, Text, NextLinkFromReactRouter, Link } from '@pancakeswap/uikit'
+import { useToast, Text, NextLinkFromReactRouter, StyledLink } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
 import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
@@ -19,9 +19,7 @@ const LockedEndDescription: React.FC = () => {
     <>
       <Text>{t('The locked staking duration has ended.')}</Text>
       <NextLinkFromReactRouter to="/pools" prefetch={false}>
-        <Link href="/pools" color="primary">
-          {t('Go to Pools')}
-        </Link>
+        <StyledLink color="primary">{t('Go to Pools')}</StyledLink>
       </NextLinkFromReactRouter>
     </>
   )

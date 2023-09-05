@@ -1,7 +1,7 @@
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { ProviderQoute } from '../types'
+import { ProviderQuote } from '../types'
 
-export async function fetchProviderQuotes(payload): Promise<ProviderQoute[]> {
+export async function fetchProviderQuotes(payload): Promise<ProviderQuote[]> {
   // Fetch data from endpoint 1
   const response = await fetch(`${ONRAMP_API_BASE_URL}/fetch-provider-quotes`, {
     headers: {

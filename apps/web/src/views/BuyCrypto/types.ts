@@ -1,4 +1,4 @@
-export type ProviderQoute = {
+export type ProviderQuote = {
   providerFee: number
   networkFee: number
   amount: number

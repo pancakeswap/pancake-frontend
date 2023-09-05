@@ -11,7 +11,7 @@ import {
   SubMenu,
   Skeleton,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'

@@ -10,7 +10,7 @@ import {
   ScanLink,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBscScanLinkForNft, isAddress } from 'utils'

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { ArticleDataType } from 'utils/transformArticle'
 import NextLink from 'next/link'

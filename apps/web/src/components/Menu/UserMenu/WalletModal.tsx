@@ -14,7 +14,7 @@ import {
 import { useAccount, useBalance } from 'wagmi'
 import { useState, useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 import WalletWrongNetwork from './WalletWrongNetwork'

@@ -32,7 +32,7 @@ import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import { isV3MigrationSupported } from 'utils/isV3MigrationSupported'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'

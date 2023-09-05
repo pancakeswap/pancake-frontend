@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useTranslation, Trans } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { usePriceCakeUSD } from 'state/farms/hooks'
@@ -50,7 +50,7 @@ export interface ChartInfo {
 const chartConfig: ChartInfo[] = [
   {
     id: 'totalPerpSwapEarnFeeUSD',
-    name: <Trans>Perp Swap Earn Fee</Trans>,
+    name: <Trans>V1 Perp Swap Earn Fee</Trans>,
     chartColor: '#ED4B9E',
     usdValue: '0',
     cakeValue: '0',

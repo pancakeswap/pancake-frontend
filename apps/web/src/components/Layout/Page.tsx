@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { NextSeo } from 'next-seo'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'

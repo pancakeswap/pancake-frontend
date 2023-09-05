@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { ChevronDownIcon } from "../../../../components/Svg";
 
-interface DetailsProps {
+export interface DetailsProps {
   actionPanelToggled: boolean;
 }
 
@@ -17,7 +17,7 @@ const Container = styled.div`
   }
 `;
 
-const ArrowIcon = styled((props) => <ChevronDownIcon {...props} />)`
+const ArrowIcon = styled(ChevronDownIcon)<{ toggled?: boolean }>`
   transform: ${({ toggled }) => (toggled ? "rotate(180deg)" : "rotate(0)")};
   height: 20px;
 `;

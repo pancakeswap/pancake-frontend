@@ -1,4 +1,4 @@
-import { Currency, ERC20Token, Price } from "@pancakeswap/sdk";
+import { Currency, ERC20Token, Price, Token } from "@pancakeswap/sdk";
 import {
   FeeAmount,
   nearestUsableTick,
@@ -17,17 +17,18 @@ interface Params {
   feeAmount?: FeeAmount;
   baseCurrency?: Currency;
   quoteCurrency?: Currency;
-  priceLower?: Price<Currency, Currency>;
-  priceUpper?: Price<Currency, Currency>;
+  priceLower?: Price<Token, Token>;
+  priceUpper?: Price<Token, Token>;
 }
 
 interface PriceRangeInfo {
   tickLower?: number;
   tickUpper?: number;
-  priceLower?: Price<Currency, Currency>;
-  priceUpper?: Price<Currency, Currency>;
+  priceLower?: Price<Token, Token>;
+  priceUpper?: Price<Token, Token>;
   onLeftRangeInput: (leftRangeValue: string) => void;
   onRightRangeInput: (rightRangeValue: string) => void;
+  onBothRangeInput: (leftRangeValue: string, rightRangeValue: string) => void;
   toggleFullRange: () => void;
   fullRange?: boolean;
   ticksAtLimit: { [bound in Bound]?: boolean };
@@ -41,8 +42,8 @@ export function usePriceRange({
   priceUpper: initialPriceUpper,
 }: Params): PriceRangeInfo | null {
   const [fullRange, setFullRange] = useState(false);
-  const [priceLower, setPriceLower] = useState<Price<Currency, Currency> | undefined>(initialPriceLower);
-  const [priceUpper, setPriceUpper] = useState<Price<Currency, Currency> | undefined>(initialPriceUpper);
+  const [priceLower, setPriceLower] = useState<Price<Token, Token> | undefined>(initialPriceLower);
+  const [priceUpper, setPriceUpper] = useState<Price<Token, Token> | undefined>(initialPriceUpper);
 
   const invertPrice = Boolean(baseCurrency && quoteCurrency && quoteCurrency.wrapped.sortsBefore(baseCurrency.wrapped));
 
@@ -58,7 +59,7 @@ export function usePriceRange({
   );
 
   const priceLimits: {
-    [bound in Bound]: Price<Currency, Currency> | undefined;
+    [bound in Bound]: Price<Token, Token> | undefined;
   } = useMemo(() => {
     const token0 = invertPrice ? quoteCurrency?.wrapped : baseCurrency?.wrapped;
     const token1 = invertPrice ? baseCurrency?.wrapped : quoteCurrency?.wrapped;
@@ -141,7 +142,7 @@ export function usePriceRange({
   );
 
   const saveSetPriceUpper = useCallback(
-    (price?: Price<Currency, Currency>) => {
+    (price?: Price<Token, Token>) => {
       if (!price || !priceLimits.UPPER) {
         return;
       }
@@ -152,7 +153,7 @@ export function usePriceRange({
   );
 
   const saveSetPriceLower = useCallback(
-    (price?: Price<Currency, Currency>) => {
+    (price?: Price<Token, Token>) => {
       if (!price || !priceLimits.LOWER) {
         return;
       }
@@ -184,6 +185,14 @@ export function usePriceRange({
     [baseCurrency, quoteCurrency, invertPrice, saveSetPriceUpper, saveSetPriceLower]
   );
 
+  const onBothRangeInput = useCallback(
+    (leftRangeValue: string, rightRangeValue: string) => {
+      onLeftRangeInput(leftRangeValue);
+      onRightRangeInput(rightRangeValue);
+    },
+    [onLeftRangeInput, onRightRangeInput]
+  );
+
   const toggleFullRange = useCallback(() => setFullRange(!fullRange), [fullRange]);
 
   useEffect(() => setPriceLower(initialPriceLower), [initialPriceLower]);
@@ -198,6 +207,7 @@ export function usePriceRange({
     priceUpper: fullRange ? priceLimits[Bound.UPPER] : priceUpper,
     onRightRangeInput,
     onLeftRangeInput,
+    onBothRangeInput,
     toggleFullRange,
     fullRange,
   };

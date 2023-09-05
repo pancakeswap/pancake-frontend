@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image, IfoNotTokens } from '@pancakeswap/uikit'
 import { useMemo, useState, useCallback, useEffect } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import Trans from 'components/Trans'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { VestingStatus } from './types'

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { HelpIcon } from "../../../../components/Svg";
 import { Skeleton } from "../../../../components/Skeleton";
 import { useTooltip } from "../../../../hooks/useTooltip";

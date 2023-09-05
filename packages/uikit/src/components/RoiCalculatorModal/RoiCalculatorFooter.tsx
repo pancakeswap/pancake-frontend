@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { useMemo, useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { BIG_ONE_HUNDRED } from "@pancakeswap/utils/bigNumber";
 import { useTooltip } from "../../hooks/useTooltip";

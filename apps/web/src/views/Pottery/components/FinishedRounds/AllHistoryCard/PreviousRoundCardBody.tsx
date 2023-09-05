@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Flex, Text, CardBody, CardRibbon, Skeleton, Balance, ScanLink } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'

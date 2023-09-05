@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { RoiCalculatorProps, RoiCalculator } from "./RoiCalculator";
 import { Modal, ModalV2, ModalV2Props } from "../Modal";

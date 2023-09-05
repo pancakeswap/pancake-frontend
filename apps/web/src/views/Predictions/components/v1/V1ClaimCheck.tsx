@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, ChevronRightIcon, useModal, Loading } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'

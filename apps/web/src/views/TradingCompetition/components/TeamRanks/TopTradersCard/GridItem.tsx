@@ -1,6 +1,6 @@
 import { Flex, Heading, Text, SkeletonV2, ProfileAvatar } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { localiseTradingVolume } from '../../../helpers'

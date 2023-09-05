@@ -1,5 +1,5 @@
 import { Box, Flex, Skeleton } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import times from 'lodash/times'
 import { PROPOSALS_TO_SHOW } from '../../config'
 

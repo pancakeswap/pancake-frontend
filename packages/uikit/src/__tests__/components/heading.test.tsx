@@ -19,7 +19,7 @@ it("renders correctly", () => {
       line-height: 1.1;
     }
 
-    @media screen and (min-width:968px) {
+    @media screen and (min-width: 968px) {
       .c1 {
         font-size: 20px;
       }
@@ -27,8 +27,6 @@ it("renders correctly", () => {
 
     <h2
         class="c0 c1"
-        color="text"
-        font-size="16px"
       >
         Title
       </h2>

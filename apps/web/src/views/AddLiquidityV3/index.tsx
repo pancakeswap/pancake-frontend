@@ -23,7 +23,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { atom, useAtom } from 'jotai'
 
 import { useCurrency } from 'hooks/Tokens'
@@ -251,6 +251,18 @@ export function UniversalAddLiquidity({
             query: {
               ...router.query,
               currency: [currencyIdA, currencyIdB, newFeeAmount.toString()],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
+      } else {
+        router.replace(
+          {
+            pathname: router.pathname.replace('/v2', ''),
+            query: {
+              ...router.query,
+              currency: [currencyIdA, currencyIdB],
             },
           },
           undefined,

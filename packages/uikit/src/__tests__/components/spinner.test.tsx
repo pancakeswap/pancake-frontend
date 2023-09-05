@@ -34,8 +34,6 @@ it("renders correctly", () => {
 
     <div
         class="c0"
-        height="153.216"
-        width="128"
       >
         <div
           class="c1"

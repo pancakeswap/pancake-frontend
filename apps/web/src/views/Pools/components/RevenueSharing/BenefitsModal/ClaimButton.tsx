@@ -18,7 +18,7 @@ const ClaimButton: React.FunctionComponent<React.PropsWithChildren<ClaimButtonPr
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { chainId, account } = useAccountActiveChain()
+  const { account, chainId } = useAccountActiveChain()
   const contract = useRevenueSharingPoolContract({ chainId })
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { space } from 'styled-system'
 import { LightGreyCard } from 'components/Card'
 

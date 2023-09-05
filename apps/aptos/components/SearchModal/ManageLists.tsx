@@ -21,7 +21,7 @@ import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import {
   useFetchListCallback,
   acceptListUpdate,

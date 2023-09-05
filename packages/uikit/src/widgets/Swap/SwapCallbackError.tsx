@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { ErrorIcon } from "../../components";
 
 const SwapCallbackErrorInner = styled.div`

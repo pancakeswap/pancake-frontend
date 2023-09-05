@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot, NextLinkFromReactRouter } from "../../components";
 import { ToggleView, ViewMode } from "../../components/ToggleView";

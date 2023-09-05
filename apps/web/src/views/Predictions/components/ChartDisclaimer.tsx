@@ -11,7 +11,7 @@ import {
   Checkbox,
   Box,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 

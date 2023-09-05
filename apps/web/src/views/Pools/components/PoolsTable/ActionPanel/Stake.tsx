@@ -25,7 +25,7 @@ import { useERC20 } from 'hooks/useContract'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
@@ -250,7 +250,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     )
   }
 
-  if (needsApproval && !isNotVaultAndHasStake && !isVaultWithShares) {
+  if (needsApproval && !isNotVaultAndHasStake && !isVaultWithShares && !pool.isFinished) {
     return (
       <ActionContainer>
         <ActionTitles>

@@ -9,7 +9,6 @@ import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
-import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
@@ -60,7 +59,7 @@ export interface AddStableChildrenProps {
   approvalB: ApprovalState
   approveBCallback: () => Promise<SendTransactionResult>
   onAdd: () => Promise<void>
-  onPresentAddLiquidityModal: Handler
+  onPresentAddLiquidityModal: () => void
   buttonDisabled: boolean
   errorText: string
   setLiquidityState: Dispatch<

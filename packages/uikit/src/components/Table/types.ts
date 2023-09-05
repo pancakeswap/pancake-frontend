@@ -1,4 +1,4 @@
-export type ColumnType<T extends DataType> = {
+export type ColumnType<T extends ColumnDataType> = {
   name: string;
   label?: string;
   hidden?: boolean;
@@ -8,7 +8,7 @@ export type ColumnType<T extends DataType> = {
   headerRender?: HeaderRenderType;
 };
 
-export type ColumnStateType<T extends DataType> = {
+export type ColumnStateType<T extends ColumnDataType> = {
   name: string;
   label: string;
   hidden: boolean;
@@ -23,7 +23,7 @@ export type ColumnStateType<T extends DataType> = {
 export type HeaderRenderType = ({ label }: { label: React.ReactNode }) => React.ReactNode;
 
 // this is the type saved as state and returned
-export type HeaderType<T extends DataType> = {
+export type HeaderType<T extends ColumnDataType> = {
   name: string;
   label?: string;
   hidden?: boolean;
@@ -36,9 +36,9 @@ export type HeaderType<T extends DataType> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type DataType = { [key: string]: any };
+export type ColumnDataType = { [key: string]: any };
 
-export type ColumnByNamesType<T extends DataType> = {
+export type ColumnByNamesType<T extends ColumnDataType> = {
   [key: string]: ColumnType<T>;
 };
 
@@ -50,9 +50,9 @@ type RenderFunctionArgsType<T> = {
   row: T;
 };
 
-export type ColumnByNameType<T extends DataType> = Omit<Required<ColumnType<T>>, "name" | "sort">;
+export type ColumnByNameType<T extends ColumnDataType> = Omit<Required<ColumnType<T>>, "name" | "sort">;
 
-export interface RowType<T extends DataType> {
+export interface RowType<T extends ColumnDataType> {
   id: number;
   cells: CellType[];
   hidden?: boolean;
@@ -66,7 +66,7 @@ export type CellType = {
   render: () => React.ReactNode;
 };
 
-export interface UseTableTypeParams<T extends DataType> {
+export interface UseTableTypeParams<T extends ColumnDataType> {
   columns: ColumnType<T>[];
   data: T[];
   options?: {
@@ -77,7 +77,7 @@ export interface UseTableTypeParams<T extends DataType> {
   };
 }
 
-export interface UseTablePropsType<T extends DataType> {
+export interface UseTablePropsType<T extends ColumnDataType> {
   columns: ColumnType<T>[];
   data: T[];
   options?: {
@@ -87,7 +87,7 @@ export interface UseTablePropsType<T extends DataType> {
   };
 }
 
-export interface UseTableOptionsType<T extends DataType> {
+export interface UseTableOptionsType<T extends ColumnDataType> {
   sortable?: boolean;
   selectable?: boolean;
   pagination?: boolean;
@@ -95,7 +95,7 @@ export interface UseTableOptionsType<T extends DataType> {
   filter?: (row: RowType<T>[]) => RowType<T>[];
 }
 
-export interface UseTableReturnType<T extends DataType> {
+export interface UseTableReturnType<T extends ColumnDataType> {
   headers: HeaderType<T>[];
   originalRows: RowType<T>[];
   rows: RowType<T>[];
@@ -118,7 +118,7 @@ type PaginatorType = {
   canPrev: boolean;
 };
 
-export type TableState<T extends DataType> = {
+export type TableState<T extends ColumnDataType> = {
   columnsByName: ColumnByNamesType<T>;
   columns: ColumnStateType<T>[];
   rows: RowType<T>[];
@@ -131,7 +131,7 @@ export type TableState<T extends DataType> = {
   paginationEnabled: boolean;
 };
 
-export type TableAction<T extends DataType> =
+export type TableAction<T extends ColumnDataType> =
   | { type: "TOGGLE_SORT"; columnName: string; isAscOverride?: boolean }
   | { type: "SELECT_ROW"; rowId: number }
   | { type: "GLOBAL_FILTER"; filter: (row: RowType<T>[]) => RowType<T>[] }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import Input from "../../components/Input/Input";
 import Toggle from "../../components/Toggle/Toggle";
 import Text from "../../components/Text/Text";

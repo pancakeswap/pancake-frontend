@@ -1,7 +1,7 @@
-import { AtomBox } from "@pancakeswap/ui";
 import { ReactNode, memo } from "react";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
+import { AtomBox } from "../../components/AtomBox";
 
 interface Props {
   title: ReactNode;

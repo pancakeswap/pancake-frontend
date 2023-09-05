@@ -17,7 +17,7 @@ import { TransactionSubmittedContent } from 'components/TransactionConfirmationM
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import LimitOrderDisclaimer from './LimitOrderDisclaimer'

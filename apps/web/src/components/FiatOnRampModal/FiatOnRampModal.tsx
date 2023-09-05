@@ -24,7 +24,7 @@ import {
   ONRAMP_PROVIDERS,
   SUPPORTED_MERCURYO_FIAT_CURRENCIES,
   chainIdToNetwork,
-  moonapyCurrencyChainidentifier,
+  moonpayCurrencyChainIdentifier,
   supportedTokenMap,
 } from 'views/BuyCrypto/constants'
 import { CryptoFormView } from 'views/BuyCrypto/types'
@@ -112,7 +112,7 @@ const fetchMoonPaySignedUrl = async (
   chainId: number,
 ) => {
   try {
-    const baseCurrency = `${inputCurrency.toLowerCase()}${moonapyCurrencyChainidentifier[chainId]}`
+    const baseCurrency = `${inputCurrency.toLowerCase()}${moonpayCurrencyChainIdentifier[chainId]}`
 
     const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
       headers: {
@@ -261,7 +261,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
-          widgetId: 'a9f3d282-db2d-4364-ae62-602c5000f003',
+          widgetId: MERCURYO_WIDGET_ID,
           fiatCurrency: outputCurrency.toUpperCase(),
           currency: inputCurrency.toUpperCase(),
           fiatAmount: amount,

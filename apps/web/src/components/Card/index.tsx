@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, BoxProps } from '@pancakeswap/uikit'
 
 export interface LightCardProps extends BoxProps {

@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import { styled, keyframes, css } from 'styled-components'
 import { Box, Flex, Text, useMatchBreakpoints, Pool, Farm, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'

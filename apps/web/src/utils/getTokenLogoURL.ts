@@ -8,6 +8,7 @@ const mapping = {
   [ChainId.POLYGON_ZKEVM]: 'polygonzkevm',
   [ChainId.ZKSYNC]: 'zksync',
   [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.LINEA]: 'linea',
 }
 
 const getTokenLogoURL = memoize(

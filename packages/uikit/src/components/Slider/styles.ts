@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import Text from "../Text/Text";
 
 interface SliderLabelProps {

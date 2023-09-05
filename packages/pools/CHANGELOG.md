@@ -1,5 +1,29 @@
 # @pancakeswap/pools
 
+## 4.0.8
+
+### Patch Changes
+
+- Updated dependencies [7a0c21e72]
+  - @pancakeswap/sdk@5.4.1
+  - @pancakeswap/tokens@0.4.1
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.7
+
+### Patch Changes
+
+- Updated dependencies [868f4d11f]
+  - @pancakeswap/sdk@5.4.0
+  - @pancakeswap/tokens@0.4.0
+  - @pancakeswap/token-lists@0.0.8
+
+## 4.0.6
+
+### Patch Changes
+
+- 4b3b18079: Add ALP pool at Arbitrum
+
 ## 4.0.5
 
 ### Patch Changes

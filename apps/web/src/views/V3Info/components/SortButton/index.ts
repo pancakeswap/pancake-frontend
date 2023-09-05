@@ -1,5 +1,5 @@
 import { Button } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useCallback } from 'react'
 
 export const useSortFieldClassName = (sortField: string, sortDirection: boolean) =>

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Link } from "../../components";
 
 export const IfoMessageTextLink = styled(Link)`

@@ -1,5 +1,5 @@
 import { Flex, Image, Button, IconButton } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const StyledItemRow = styled(Flex)`
   cursor: pointer;
@@ -34,7 +34,7 @@ export const TriggerButton = styled(Button)<{ hasItem: boolean }>`
   white-space: nowrap;
   ${({ hasItem }) =>
     hasItem &&
-    `  
+    `
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     padding-right: 8px;

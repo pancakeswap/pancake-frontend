@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Card } from "../../components";
 
 export const StyledCard = styled(Card)<{ isFinished?: boolean }>`

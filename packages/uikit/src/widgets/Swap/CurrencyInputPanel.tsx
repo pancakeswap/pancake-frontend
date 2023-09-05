@@ -1,15 +1,11 @@
-import { AtomBox } from "@pancakeswap/ui";
 import { inputContainerVariants } from "./SwapWidget.css";
 
 import { NumericalInput, NumericalInputProps } from "./NumericalInput";
-import { Text } from "../../components";
-
-type ZapStyle = "noZap" | "zap";
+import { Text, AtomBox } from "../../components";
 
 interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
   onInputBlur?: () => void;
   id: string;
-  zapStyle?: ZapStyle;
   top?: React.ReactNode;
   bottom?: React.ReactNode;
   showBridgeWarning?: boolean;
@@ -18,7 +14,6 @@ export function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
-  zapStyle,
   top,
   bottom,
   id,
@@ -43,7 +38,6 @@ export function CurrencyInputPanel({
         <AtomBox
           as="label"
           className={inputContainerVariants({
-            hasZapStyle: !!zapStyle,
             showBridgeWarning: !!showBridgeWarning,
             error: Boolean(error),
           })}

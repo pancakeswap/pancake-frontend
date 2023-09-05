@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
 export const OuterWedgeWrapper = styled.div`

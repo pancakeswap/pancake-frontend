@@ -18,12 +18,15 @@
       "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
     },
+    "build:uikit": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
     "lint": {
       "outputs": []
     },
     "dev": {
       "cache": false,
-      "dependsOn": ["^build"],
       "persistent": true
     },
     "start": {

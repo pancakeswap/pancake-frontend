@@ -1,7 +1,7 @@
 import { ChainId, Currency } from "@pancakeswap/sdk";
 import { useMemo } from "react";
 import { WrappedTokenInfo } from "@pancakeswap/token-lists";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useHttpLocations } from "@pancakeswap/hooks";
 
 import { TokenLogo } from "../TokenLogo";

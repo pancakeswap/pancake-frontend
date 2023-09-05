@@ -3,7 +3,7 @@ import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints } from '
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import styled, { css } from 'styled-components'
+import { styled, css } from 'styled-components'
 import * as S from './Styled'
 
 const { pancakeProtectorBunny, pancakeProtectorBgMobile, pancakeProtectorBg, pancakeSwapLogo } = {

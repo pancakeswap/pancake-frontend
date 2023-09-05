@@ -15,7 +15,7 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useNetwork'
 

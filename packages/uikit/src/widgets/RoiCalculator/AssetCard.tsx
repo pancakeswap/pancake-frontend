@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Percent } from "@pancakeswap/sdk";
 import { memo, PropsWithChildren, ReactNode, useCallback, Ref, MouseEvent } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { SpaceProps } from "styled-system";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
 

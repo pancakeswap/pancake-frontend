@@ -1,7 +1,7 @@
-import { AtomBox, AtomBoxProps } from "@pancakeswap/ui";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { Card, CardBody, CardFooter } from "../../components/Card";
+import { AtomBox, AtomBoxProps } from "../../components";
 import LiquidityCardHeader from "./LiquidityCardHeader";
 
 type LiquidityCardProps = AtomBoxProps;

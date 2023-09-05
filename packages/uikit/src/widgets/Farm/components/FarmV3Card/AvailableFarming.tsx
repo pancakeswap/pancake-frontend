@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { PositionDetails } from "@pancakeswap/farms";
 import { PreTitle, Text } from "../../../../components/Text";

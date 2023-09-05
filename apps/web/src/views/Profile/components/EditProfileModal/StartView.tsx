@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { Button, Flex, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'

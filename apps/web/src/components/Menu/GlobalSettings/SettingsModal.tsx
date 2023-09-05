@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import {
+  AtomBox,
   Flex,
   InjectedModalProps,
   Modal,
@@ -42,9 +43,8 @@ import {
   useUserV3SwapEnable,
   useRoutingSettingChanged,
 } from 'state/user/smartRouter'
-import { AtomBox } from '@pancakeswap/ui'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { TOKEN_RISK } from 'components/AccessRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import GasSettings from './GasSettings'

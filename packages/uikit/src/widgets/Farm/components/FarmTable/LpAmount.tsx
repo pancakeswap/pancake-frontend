@@ -2,7 +2,7 @@ import { Skeleton } from "../../../../components/Skeleton";
 import { FarmTableAmountProps } from "../../types";
 import { Amount } from "../styles";
 
-interface EarnedPropsWithLoading extends FarmTableAmountProps {
+export interface EarnedPropsWithLoading extends FarmTableAmountProps {
   userDataReady: boolean;
 }
 

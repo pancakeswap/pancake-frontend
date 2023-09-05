@@ -1,5 +1,5 @@
 import { useTranslation, Trans } from '@pancakeswap/localization'
-import { ChainId, ERC20Token, Token } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token, Token } from '@pancakeswap/sdK'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import {
   Button,
@@ -17,7 +17,7 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useAllLists } from 'state/lists/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'

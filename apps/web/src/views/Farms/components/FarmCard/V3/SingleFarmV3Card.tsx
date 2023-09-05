@@ -1,8 +1,9 @@
 import { IPendingCakeByTokenId, PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { AtomBox, AtomBoxProps } from '@pancakeswap/ui'
 import {
+  AtomBox,
+  AtomBoxProps,
   AutoColumn,
   Button,
   Farm as FarmUI,
@@ -26,7 +27,7 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'

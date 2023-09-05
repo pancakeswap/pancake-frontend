@@ -1,5 +1,5 @@
 import { ArrowBackIcon, ArrowForwardIcon, BunnyCardsIcon, Flex, IconButton } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useGetSortedRoundsCurrentEpoch } from 'state/predictions/hooks'
 import useSwiper from '../hooks/useSwiper'
 

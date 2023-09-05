@@ -1,5 +1,4 @@
 import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
-import BigNumber from 'bignumber.js'
 import {
   useRoi,
   RoiCalculatorModalV2,
@@ -10,10 +9,12 @@ import {
   Text,
   IconButton,
   QuestionHelper,
+  useAmountsByUsdValue,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -27,7 +28,6 @@ import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
-import { useAmountsByUsdValue } from '@pancakeswap/uikit/src/widgets/RoiCalculator/hooks'
 import { batch } from 'react-redux'
 import { PositionDetails, getPositionFarmApr, getPositionFarmAprFactor } from '@pancakeswap/farms'
 import currencyId from 'utils/currencyId'
@@ -160,8 +160,8 @@ export function AprCalculator({
     currencyBUsdPrice: inverted ? currencyAUsdPrice : currencyBUsdPrice,
   })
 
-  const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || aprAmountA
-  const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || aprAmountB
+  const validAmountA = amountA || (inverted ? tokenAmount1 : tokenAmount0) || (inverted ? aprAmountB : aprAmountA)
+  const validAmountB = amountB || (inverted ? tokenAmount0 : tokenAmount1) || (inverted ? aprAmountA : aprAmountB)
   const [amount0, amount1] = inverted ? [validAmountB, validAmountA] : [validAmountA, validAmountB]
   const inRange = isPoolTickInRange(pool, tickLower, tickUpper)
   const { apr } = useRoi({
@@ -201,7 +201,7 @@ export function AprCalculator({
     if (!farm || !cakePrice || !positionLiquidity || !amount0 || !amount1 || !inRange) {
       return {
         positionFarmApr: '0',
-        positionFarmAprFactor: new BigNumber(0),
+        positionFarmAprFactor: BIG_ZERO,
       }
     }
     const { farm: farmDetail, cakePerSecond } = farm
@@ -244,8 +244,8 @@ export function AprCalculator({
           onSetFullRange()
         } else {
           onBothRangeInput({
-            leftTypedValue: isToken0Price ? position.priceLower?.toFixed() : position?.priceUpper?.invert()?.toFixed(),
-            rightTypedValue: isToken0Price ? position.priceUpper?.toFixed() : position?.priceLower?.invert()?.toFixed(),
+            leftTypedValue: isToken0Price ? position.priceLower : position?.priceUpper?.invert(),
+            rightTypedValue: isToken0Price ? position.priceUpper : position?.priceLower?.invert(),
           })
         }
 

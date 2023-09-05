@@ -1,4 +1,4 @@
-import { AtomBox, AtomBoxProps } from '@pancakeswap/ui'
+import { AtomBox, AtomBoxProps } from '@pancakeswap/uikit'
 
 const Card = (props: AtomBoxProps) => <AtomBox width="100%" padding="20px" borderRadius="default" {...props} />
 

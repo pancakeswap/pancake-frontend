@@ -1,7 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Token } from '@pancakeswap/sdk'
-import { AtomBox } from '@pancakeswap/ui'
-import { AutoRow, Button, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text, useModalV2 } from '@pancakeswap/uikit'
+import {
+  AtomBox,
+  AutoRow,
+  Button,
+  Dots,
+  Flex,
+  Modal,
+  ModalV2,
+  PreTitle,
+  Tag,
+  Text,
+  useModalV2,
+} from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
