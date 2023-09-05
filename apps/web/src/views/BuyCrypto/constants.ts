@@ -102,7 +102,7 @@ export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
   [ChainId.ZKSYNC]: '_zksync',
   [ChainId.POLYGON_ZKEVM]: '_polygonzkevm',
   [ChainId.LINEA]: '_linea',
-  [ChainId.LINEA]: '_base',
+  [ChainId.BASE]: '_base',
 }
 
 export const chainIdToTransakNetworkId: { [id: number]: string } = {
