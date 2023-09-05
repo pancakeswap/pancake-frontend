@@ -2661,9 +2661,7 @@
   "Swap and Provide Liquidity on Linea now": "Vaihda ja tarjoa likviditeettiä Lineassa nyt",
   "day": "päivä",
   "Quote not available": "Tarjous ei ole saatavilla",
-  "No provider fees.": "No provider fees.",
-  "Ends in %minutes% minutes.": "Ends in %minutes% minutes.",
-  "Ends in %days% days and %hours% hours.": "Ends in %days% days and %hours% hours.",
+  "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.": "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.",
   "Invalid Pair": "Invalid Pair",
   "Learn more how to fix": "Learn more how to fix",
   "View pool on explorer": "View pool on explorer",
@@ -2679,5 +2677,6 @@
   "Linea": "Linea",
   "Polygon zkEVM": "Polygon zkEVM",
   "zkSync Era": "zkSync Era",
-  "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to"
+  "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to",
+  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned."
 }
