@@ -8,6 +8,7 @@ export enum RouteType {
   V3,
   STABLE,
   MIXED,
+  MM,
 }
 
 export interface BaseRoute {
