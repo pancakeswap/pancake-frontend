@@ -12,22 +12,12 @@ import {
   CurrencyLogo,
 } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAllOnRampTokens } from 'hooks/Tokens'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
-
-const networkDisplay: { [id: number]: string } = {
-  [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.BSC]: 'BNB Smart Chain',
-  [ChainId.ZKSYNC]: 'zkSync Era',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
-  [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
-  [ChainId.LINEA]: 'Linea Mainnet',
-  [ChainId.BASE]: 'Base Mainnet',
-}
+import { fiatCurrencyMap, networkDisplay } from 'views/BuyCrypto/constants'
 
 const DropDownContainer = styled.div<{ error: boolean }>`
   width: 100%;

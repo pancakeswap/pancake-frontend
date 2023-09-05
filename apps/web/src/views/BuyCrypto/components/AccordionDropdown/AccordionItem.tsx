@@ -1,4 +1,4 @@
-import { Box, Flex, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, InfoFilledIcon, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
@@ -94,7 +94,7 @@ function AccordionItem({
   if (quote.amount === 0) {
     return (
       <Flex flexDirection="column">
-        <CryptoCard padding="16px 16px" style={{ height: '68px' }} position="relative" isClicked={false} isDisabled>
+        <CryptoCard padding="16px 16px" style={{ height: '70px' }} position="relative" isClicked={false} isDisabled>
           <RowBetween paddingBottom="24px" paddingTop="8px">
             <OnRampProviderLogo provider={quote.provider} />
             <TooltipText
@@ -104,10 +104,10 @@ function AccordionItem({
               style={{ justifyContent: 'center', alignItems: 'center' }}
             >
               <Flex alignItems="center" justifyContent="center">
-                <Text ml="4px" fontSize="14px" color="textSubtle">
+                <Text ml="4px" fontSize="15px" color="textSubtle" fontWeight="bold">
                   {t('Quote not available')}
                 </Text>
-                <InfoIcon color="textSubtle" pl="4px" pt="2px" />
+                <InfoFilledIcon pl="4px" pt="2px" color="textSubtle" width="22px" />
               </Flex>
             </TooltipText>
             {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}

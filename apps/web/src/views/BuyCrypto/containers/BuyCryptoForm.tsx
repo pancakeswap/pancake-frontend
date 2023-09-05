@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
-import { Text, Box } from '@pancakeswap/uikit'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Text, Box, Message } from '@pancakeswap/uikit'
 import {
   calculateDefaultAmount,
   fetchMinimumBuyAmount,
@@ -18,7 +18,7 @@ import { useChainId } from 'wagmi'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
-import { fiatCurrencyMap } from '../constants'
+import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),
@@ -136,6 +136,13 @@ export function BuyCryptoForm({
             bottomElement={<></>}
           />
         </Box>
+        {[ChainId.BASE, ChainId.LINEA, ChainId.ZKSYNC].includes(chainId) ? (
+          <Message variant="warning" padding="16px">
+            <Text fontSize="15px" color="#D67E0B">
+              {getChainCurrencyWarningMessages(t, chainId)[chainId]}
+            </Text>
+          </Message>
+        ) : null}
         <Text color="textSubtle" fontSize="14px" px="4px">
           {t('Proceed to get live aggregated quotes from a variety of different fiat onramp providers.')}
         </Text>

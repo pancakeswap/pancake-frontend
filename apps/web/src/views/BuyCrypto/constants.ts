@@ -1,8 +1,11 @@
+import { ContextData, TranslationKey } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
-export const whiteListedFiatCurrencies = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
+export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
+export const WHITELISTED_FIAT_CURRENCIES_BASE = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
+export const WHITELISTED_FIAT_CURRENCIES_LINEA = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
 
 const MOONPAY_FEE_TYPES = ['Est. Total Fees', 'Networking Fees', 'Provider Fees']
 const MERCURYO_FEE_TYPES = ['Est. Total Fees']
@@ -75,6 +78,18 @@ export const supportedTokenMap: {
   // Add more chainId mappings as needed
 }
 
+export const whiteListedFiatCurrenciesMap: {
+  [chainId: number]: string[]
+} = {
+  [ChainId.BSC]: DEFAULT_FIAT_CURRENCIES,
+  [ChainId.ETHEREUM]: DEFAULT_FIAT_CURRENCIES,
+  [ChainId.ARBITRUM_ONE]: DEFAULT_FIAT_CURRENCIES,
+  [ChainId.ZKSYNC]: DEFAULT_FIAT_CURRENCIES,
+  [ChainId.LINEA]: WHITELISTED_FIAT_CURRENCIES_LINEA,
+  [ChainId.POLYGON_ZKEVM]: DEFAULT_FIAT_CURRENCIES,
+  [ChainId.BASE]: WHITELISTED_FIAT_CURRENCIES_BASE,
+}
+
 export function isBuyCryptoSupported(chain: ChainId) {
   return SUPPORT_BUY_CRYPTO.includes(chain)
 }
@@ -83,6 +98,16 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: string[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
+}
+
+export const networkDisplay: { [id: number]: string } = {
+  [ChainId.ETHEREUM]: 'Ethereum',
+  [ChainId.BSC]: 'BNB Smart Chain',
+  [ChainId.ZKSYNC]: 'zkSync Era',
+  [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
+  [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
+  [ChainId.LINEA]: 'Linea Mainnet',
+  [ChainId.BASE]: 'Base Mainnet',
 }
 
 export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
@@ -121,6 +146,24 @@ export const combinedNetworkIdMap: {
   [ONRAMP_PROVIDERS.MoonPay]: chainIdToMoonPayNetworkId,
   [ONRAMP_PROVIDERS.Mercuryo]: chainIdToMercuryoNetworkId,
   [ONRAMP_PROVIDERS.Transak]: chainIdToTransakNetworkId,
+}
+
+export const getChainCurrencyWarningMessages = (
+  t: (key: TranslationKey, data?: ContextData) => string,
+  chainId: number,
+) => {
+  return {
+    [ChainId.ZKSYNC]: t(
+      'Note Transak ETH quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a Transak quote for ETH',
+      { chainId: networkDisplay[chainId] },
+    ),
+    [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
+      chainId: networkDisplay[chainId],
+    }),
+    [ChainId.BASE]: t('%chainId% supports limited fiat currencies. USD are not supported', {
+      chainId: networkDisplay[chainId],
+    }),
+  }
 }
 
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
