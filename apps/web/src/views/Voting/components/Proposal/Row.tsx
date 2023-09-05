@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import { Grid, Box } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+import { Grid, Box, Flex } from '@pancakeswap/uikit'
 
-export const AddressColumn = styled(Box).attrs({ alignItems: 'center' })`
+export const AddressColumn = styled(Flex).attrs({ alignItems: 'center' })`
   grid-area: address;
 `
 

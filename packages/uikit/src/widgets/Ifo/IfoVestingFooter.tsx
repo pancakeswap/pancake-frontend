@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import { useTranslation } from "@pancakeswap/localization";

@@ -3,7 +3,7 @@ import { Box, Card, Flex, Text, NextLinkFromReactRouter } from '@pancakeswap/uik
 import { useEffect, useMemo, useRef } from 'react'
 import { useAllTokenDataSWR, useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import Percent from 'views/Info/components/Percent'

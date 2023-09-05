@@ -6,7 +6,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useCatchTxError from 'hooks/useCatchTxError'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { TokenPairImage } from 'components/TokenImage'
 import {
   Modal,

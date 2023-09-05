@@ -1,4 +1,5 @@
-import styled, { DefaultTheme } from "styled-components";
+import shouldForwardProp from "@styled-system/should-forward-prop";
+import { styled, DefaultTheme } from "styled-components";
 import { space, variant, typography } from "styled-system";
 import { Colors } from "../../theme/types";
 import { scaleVariants, styleVariants } from "./theme";
@@ -23,7 +24,7 @@ const getOutlineStyles = ({ outline, theme, variant: variantKey = variants.PRIMA
   return "";
 };
 
-export const StyledTag = styled.div<ThemedProps>`
+export const StyledTag = styled.div.withConfig({ shouldForwardProp })<ThemedProps>`
   align-items: center;
   border-radius: 16px;
   color: #ffffff;

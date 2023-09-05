@@ -10,6 +10,7 @@ import { farmsV3 as farm1101 } from '../1101'
 import { farmsV3 as farm324 } from '../324'
 import { farmsV3 as farm1442 } from '../1442'
 import { farmsV3 as farm42161 } from '../42161'
+import { farmsV3 as farm59144 } from '../59144'
 
 export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
   [ChainId.ETHEREUM]: farm1,
@@ -21,4 +22,5 @@ export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmC
   [ChainId.POLYGON_ZKEVM_TESTNET]: farm1442,
   [ChainId.ZKSYNC]: farm324,
   [ChainId.ARBITRUM_ONE]: farm42161,
+  [ChainId.LINEA]: farm59144,
 }

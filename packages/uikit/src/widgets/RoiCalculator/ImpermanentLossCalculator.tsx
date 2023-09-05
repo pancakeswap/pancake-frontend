@@ -2,7 +2,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo, memo } from "react";
 import { Currency, CurrencyAmount, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
 
 import { Section } from "./Section";

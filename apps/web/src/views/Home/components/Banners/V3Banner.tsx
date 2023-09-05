@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, NextLinkFromReactRouter, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
-import styled, { css, keyframes } from 'styled-components'
+import { styled, css, keyframes } from 'styled-components'
 import { v3AirdropBunny, v3BgBlingBlur, v3BgBlingNormal, v3BgCoinDown, v3BgCoinUp, v3Board } from './images'
 import * as S from './Styled'
 

@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { useCallback, useMemo, useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import _toNumber from "lodash/toNumber";
 import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from "@pancakeswap/utils/formatBalance";
@@ -17,11 +17,11 @@ import { Message, MessageText } from "../../../../components/Message";
 import { AutoRenewIcon, ErrorIcon, CalculateIcon } from "../../../../components/Svg";
 import { RoiCalculatorModal } from "../../../../components/RoiCalculatorModal";
 
-const AnnualRoiContainer = styled((props) => <Flex {...props} />)`
+const AnnualRoiContainer = styled(Flex)`
   cursor: pointer;
 `;
 
-const AnnualRoiDisplay = styled((props) => <Text {...props} />)`
+const AnnualRoiDisplay = styled(Text)`
   width: 72px;
   max-width: 72px;
   overflow: hidden;

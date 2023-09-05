@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useHttpLocations } from "@pancakeswap/hooks";
 import TokenLogo from "../../components/TokenLogo/TokenLogo";
 

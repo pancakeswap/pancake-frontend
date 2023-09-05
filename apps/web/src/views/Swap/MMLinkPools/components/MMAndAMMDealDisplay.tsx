@@ -2,9 +2,9 @@ import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { Box, Text } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { Field } from 'state/swap/actions'
-import { TradeWithMM } from '../types'
 
 export function useMMDevMode() {
   const { query } = useRouter()
@@ -17,7 +17,7 @@ export const MMAndAMMDealDisplay: React.FC<{
   isMMBetter: boolean
   tradeWithStableSwap?: TradeWithStableSwap<Currency, Currency, TradeType>
   v2Trade?: Trade<Currency, Currency, TradeType>
-  mmTrade?: TradeWithMM<Currency, Currency, TradeType>
+  mmTrade?: SmartRouterTrade<TradeType>
   mmQuoteExpiryRemainingSec?: number
   errorMessage?: string
   rfqId?: string

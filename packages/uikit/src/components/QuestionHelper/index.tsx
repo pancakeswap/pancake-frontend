@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Placement, useTooltip } from "../../hooks";
 import { BoxProps, Flex } from "../Box";
 import { HelpIcon } from "../Svg";

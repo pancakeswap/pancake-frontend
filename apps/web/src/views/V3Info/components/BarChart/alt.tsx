@@ -5,7 +5,7 @@ import { RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
 

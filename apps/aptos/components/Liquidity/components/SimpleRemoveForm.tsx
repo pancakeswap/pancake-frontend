@@ -1,10 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
-import { Text, ArrowDownIcon, AutoColumn, Liquidity, ColumnCenter } from '@pancakeswap/uikit'
+import { AtomBox, Text, ArrowDownIcon, AutoColumn, Liquidity, ColumnCenter } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useDeferredValue, useEffect } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useBurnActionHandlers } from '../state/remove'
 import { Field } from '../type'
 

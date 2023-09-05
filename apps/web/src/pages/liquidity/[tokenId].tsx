@@ -1,6 +1,7 @@
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import { isActiveV3Farm } from '@pancakeswap/farms'
 import {
+  AtomBox,
   AutoColumn,
   AutoRow,
   Box,
@@ -36,7 +37,6 @@ import { usePool } from 'hooks/v3/usePools'
 import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { AtomBox } from '@pancakeswap/ui'
 import { LightGreyCard } from 'components/Card'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
@@ -57,7 +57,7 @@ import { useRouter } from 'next/router'
 import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { calculateGasMargin, getBlockExploreLink } from 'utils'
 import currencyId from 'utils/currencyId'

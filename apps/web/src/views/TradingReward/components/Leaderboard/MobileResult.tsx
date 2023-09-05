@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Text, Flex, ProfileAvatar } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { RankListDetail } from 'views/TradingReward/hooks/useRankList'

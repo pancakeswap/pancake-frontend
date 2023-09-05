@@ -11,8 +11,8 @@ import { TransactionSubmittedContent } from 'components/TransactionConfirmationM
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { Field } from 'state/swap/actions'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
-import { TradeWithMM } from '../types'
 import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
 
 const PancakeRouterSlippageErrorMsg =
@@ -56,8 +56,8 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 }
 
 interface ConfirmSwapModalProps {
-  trade?: TradeWithMM<Currency, Currency, TradeType>
-  originalTrade?: TradeWithMM<Currency, Currency, TradeType>
+  trade?: SmartRouterTrade<TradeType>
+  originalTrade?: SmartRouterTrade<TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string

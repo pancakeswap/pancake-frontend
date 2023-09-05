@@ -6,7 +6,7 @@ import { LightGreyCard } from 'components/Card'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { isTokenOnList } from '../../utils'
@@ -46,7 +46,7 @@ const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
   grid-gap: 8px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
-  :hover {
+  &:hover {
     background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};

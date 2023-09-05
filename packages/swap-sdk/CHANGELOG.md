@@ -1,5 +1,17 @@
 # @pancakeswap/sdk
 
+## 5.4.1
+
+### Patch Changes
+
+- 7a0c21e72: fix base v2 factory address
+
+## 5.4.0
+
+### Minor Changes
+
+- 868f4d11f: Add Base support
+
 ## 5.3.0
 
 ### Minor Changes

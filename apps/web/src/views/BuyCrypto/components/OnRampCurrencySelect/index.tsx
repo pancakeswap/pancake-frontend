@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import {
   ArrowDropDownIcon,
   Box,
@@ -26,6 +26,7 @@ const networkDisplay: { [id: number]: string } = {
   [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
   [ChainId.POLYGON_ZKEVM]: 'Polygon zkEVM',
   [ChainId.LINEA]: 'Linea Mainnet',
+  [ChainId.BASE]: 'Base Mainnet',
 }
 
 const DropDownContainer = styled.div<{ error: boolean }>`

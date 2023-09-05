@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@pancakeswap/utils": "workspace:*",
-    "@types/react": "^18.0.17",
+    "@types/react": "^18.2.21",
     "localforage": "^1.10.0",
     "jotai": "^2.2.2",
     "@reduxjs/toolkit": "^1.9.1",

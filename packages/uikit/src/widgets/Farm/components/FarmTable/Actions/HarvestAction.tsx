@@ -9,7 +9,7 @@ import { useTooltip } from "../../../../../hooks/useTooltip";
 import { ActionContainer, ActionContent, ActionTitles } from "./styles";
 import { FARMS_SMALL_AMOUNT_THRESHOLD } from "../../../constants";
 
-interface HarvestActionProps {
+export interface HarvestActionProps {
   earnings: BigNumber;
   earningsBusd: number;
   displayBalance: string | JSX.Element;

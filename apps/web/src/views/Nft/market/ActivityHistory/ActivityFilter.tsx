@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { MarketEvent } from '../../../../state/nftMarket/types'
@@ -14,7 +14,7 @@ const TriggerButton = styled(Button)<{ hasItem: boolean }>`
   white-space: nowrap;
   ${({ hasItem }) =>
     hasItem &&
-    `  
+    `
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     padding-right: 8px;

@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { useCallback, useEffect, useState } from 'react'
 
-import styled, { keyframes } from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 
 export const v3PromotionFarms = {
   [ChainId.BSC]: {

@@ -1,10 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { LegacyRouter, LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { AtomBox } from '@pancakeswap/ui'
-import { Box, Flex, Text, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useTooltip, AtomBox } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const { isStableSwapPair } = LegacyRouter
 

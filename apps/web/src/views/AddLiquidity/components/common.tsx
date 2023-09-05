@@ -2,7 +2,7 @@ import React from 'react'
 import { Currency, Fraction, Percent, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { Text, useTooltip, TooltipText, Box, Flex, Svg, SvgProps, AutoColumn } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { DoubleCurrencyLogo, CurrencyLogo } from 'components/Logo'
@@ -77,7 +77,7 @@ export const PairDistribution = ({
   currencyBValue?: string
   tooltipTargetRef?: any
 }) => {
-  let stroke
+  let stroke: string | undefined
 
   if (percent === 100) {
     stroke = currencyAValue ? 'primary' : 'secondary'
@@ -189,7 +189,7 @@ export const AddLiquidityModalHeader = ({
           </RowBetween>
           <RowBetween style={{ justifyContent: 'flex-end' }}>
             <Text>
-              {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(4)} ${
+              {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert()?.toSignificant(4)} ${
                 currencies[Field.CURRENCY_A]?.symbol
               }`}
             </Text>

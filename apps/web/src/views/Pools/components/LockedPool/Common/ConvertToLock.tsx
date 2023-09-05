@@ -1,5 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
-import { Flex, Message, MessageText, useMatchBreakpoints, SkeletonV2 } from '@pancakeswap/uikit'
+import { Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -45,13 +45,13 @@ const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
       }
       actionInline={isTableView}
     >
-      <SkeletonV2 isDataReady={!!(avgLockDurationsInSeconds && lockedApy)} wrapperProps={{ height: 'fit-content' }}>
+      {!!(avgLockDurationsInSeconds && lockedApy) && (
         <MessageText>
           {t('Lock staking users are earning an average of %amount%% APR. More benefits are coming soon.', {
             amount: lockedApy ? parseFloat(lockedApy).toFixed(2) : 0,
           })}
         </MessageText>
-      </SkeletonV2>
+      )}
     </Message>
   )
 }

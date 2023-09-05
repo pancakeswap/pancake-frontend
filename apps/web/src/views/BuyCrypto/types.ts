@@ -1,6 +1,6 @@
 import { ONRAMP_PROVIDERS } from './constants'
 
-export type ProviderQoute = {
+export type ProviderQuote = {
   providerFee: number
   networkFee: number
   amount: number

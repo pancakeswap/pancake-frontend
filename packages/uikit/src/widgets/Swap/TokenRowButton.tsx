@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Button, RowFixed, Text } from "../../components";
 import { CheckmarkCircleIcon } from "../../components/Svg";

@@ -2,6 +2,7 @@ import { createReducer } from '@reduxjs/toolkit'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { atomWithReducer } from 'jotai/utils'
 import { createContext, useContext } from 'react'
+import { Price, Token } from '@pancakeswap/swap-sdk-core'
 
 import {
   Field,
@@ -19,16 +20,16 @@ export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
   readonly startPriceTypedValue: string // for the case when there's no liquidity
-  readonly leftRangeTypedValue: string | FullRange
-  readonly rightRangeTypedValue: string | FullRange
+  readonly leftRangeTypedValue: Price<Token, Token> | FullRange
+  readonly rightRangeTypedValue: Price<Token, Token> | FullRange
 }
 
 export const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   startPriceTypedValue: '',
-  leftRangeTypedValue: '',
-  rightRangeTypedValue: '',
+  leftRangeTypedValue: null,
+  rightRangeTypedValue: null,
 }
 
 const reducer = createReducer<MintState>(initialState, (builder) =>

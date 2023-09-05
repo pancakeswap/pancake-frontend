@@ -14,11 +14,12 @@ import { WrapType } from 'hooks/useWrapCallback'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { MMRfqTrade, TradeWithMM } from '../types'
+import { MMRfqTrade } from '../types'
 import ConfirmSwapModal from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
@@ -79,7 +80,7 @@ export function MMSwapCommitButton({
     swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: TradeWithMM<Currency, Currency, TradeType> | undefined
+    tradeToConfirm: SmartRouterTrade<TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined

@@ -4,7 +4,7 @@ import memoize from 'lodash/memoize'
 import { useHttpLocations } from '@pancakeswap/hooks'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { TokenLogo } from '@pancakeswap/uikit'
 import { aptosLogoClass } from './CurrencyLogo.css'
 

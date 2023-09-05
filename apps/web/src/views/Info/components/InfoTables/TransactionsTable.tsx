@@ -8,7 +8,7 @@ import { formatDistanceToNowStrict } from 'date-fns'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { multiChainId, subgraphTokenSymbol } from 'state/info/constant'
 

@@ -15,7 +15,7 @@ import {
 import { VaultPosition } from 'utils/cakePool'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useCakeBenefits from './hooks/useCakeBenefits'
 
 const CakeBenefitsCardWrapper = styled(Box)`

@@ -16,10 +16,10 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
+import { useAccount } from 'wagmi'
 import useBCakeProxyBalance from '../../../../hooks/useBCakeProxyBalance'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
@@ -140,7 +140,7 @@ export const BCakeBoosterCard = () => {
 
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const { locked, isLockEnd, remainingCounts, maxBoostLimit } = useBCakeBoostLimitAndLockInfo()
   const theme = useTheme()
 

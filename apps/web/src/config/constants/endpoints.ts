@@ -30,6 +30,8 @@ export const BLOCKS_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/blockl
 export const BLOCKS_CLIENT_POLYGON_ZKEVM =
   'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest'
 export const BLOCKS_CLIENT_ZKSYNC = 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest'
+export const BLOCKS_CLIENT_LINEA = 'https://graph-query.linea.build/subgraphs/name/kybernetwork/linea-blocks'
+export const BLOCKS_CLIENT_BASE = 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest'
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
@@ -51,6 +53,8 @@ export const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.ZKSYNC]: ' https://api.studio.thegraph.com/query/45376/exchange-v2-zksync/version/latest',
   [ChainId.LINEA_TESTNET]: 'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exhange-eth/',
   [ChainId.ARBITRUM_ONE]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-arbitrum/version/latest',
+  [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/pancakeswap/exhange-v2',
+  [ChainId.BASE]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-base/version/latest',
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = {
@@ -59,6 +63,8 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.POLYGON_ZKEVM]: BLOCKS_CLIENT_POLYGON_ZKEVM,
   [ChainId.ZKSYNC]: BLOCKS_CLIENT_ZKSYNC,
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+  [ChainId.LINEA]: BLOCKS_CLIENT_LINEA,
+  [ChainId.BASE]: BLOCKS_CLIENT_BASE,
 }
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
@@ -77,6 +83,7 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.LINEA]: 'https://graph-query.linea.build/subgraphs/name/pancakeswap/exchange-v3-linea',
   [ChainId.LINEA_TESTNET]:
     'https://thegraph.goerli.zkevm.consensys.net/subgraphs/name/pancakeswap/exchange-v3-linea-goerli',
+  [ChainId.BASE]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base/version/latest',
   [ChainId.BASE_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-base-testnet/version/latest',
   [ChainId.OPBNB_TESTNET]: null,
   [ChainId.SCROLL_SEPOLIA]: 'https://api.studio.thegraph.com/query/45376/exchange-v3-scroll-sepolia/version/latest',
@@ -88,8 +95,13 @@ export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
 export const FARMS_API = 'https://farms-api.pancakeswap.com'
 
-export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '76ba4ff5-2686-4ed4-8666-fadb0d9a5888'
+export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '64d1f9f9-85ee-4558-8168-1dc0e7057ce6'
 
 export const MOONPAY_API_KEY = process.env.NEXT_PUBLIC_MOONPAY_LIVE_KEY || 'pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54'
 
 export const TRANSAK_API_KEY = process.env.NEXT_PUBLIC_TRANSAK_LIVE_KEY || 'bf960e79-6d98-4fd0-823d-8409d290c346'
+// no need for extra public env
+export const MERCURYO_WIDGET_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'https://sandbox-widget.mrcr.io/embed.2.0.js'
+    : 'https://widget.mercuryo.io/embed.2.0.js'

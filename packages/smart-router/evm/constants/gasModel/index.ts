@@ -12,6 +12,7 @@ import {
   lineaTestnetTokens,
   arbitrumGoerliTokens,
   arbitrumTokens,
+  baseTokens,
   baseTestnetTokens,
   opBnbTestnetTokens,
   scrollSepoliaTokens,
@@ -31,6 +32,7 @@ export const usdGasTokensByChain = {
   [ChainId.LINEA]: [lineaTokens.usdc],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc],
   [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.usdc],
+  [ChainId.BASE]: [baseTokens.usdc],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc],
 } satisfies Record<ChainId, Token[]>

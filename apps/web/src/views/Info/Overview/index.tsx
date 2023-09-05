@@ -8,7 +8,7 @@ import {
   useProtocolDataSWR,
   useProtocolTransactionsSWR,
 } from 'state/info/hooks'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 import { ChainId } from '@pancakeswap/sdk'

@@ -14,7 +14,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'

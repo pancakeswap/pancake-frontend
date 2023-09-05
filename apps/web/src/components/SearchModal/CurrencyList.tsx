@@ -8,7 +8,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
 import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
@@ -52,7 +52,7 @@ const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
   grid-gap: 8px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
-  :hover {
+  &:hover {
     background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};

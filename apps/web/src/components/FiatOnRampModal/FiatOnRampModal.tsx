@@ -11,24 +11,24 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
+import { LoadingDot } from '@pancakeswap/uikit/widgets/Liquidity'
+
 import { CommitButton } from 'components/CommitButton'
-import { MERCURYO_WIDGET_ID } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import { ONRAMP_PROVIDERS, chainIdToMercuryoNetworkId } from 'views/BuyCrypto/constants'
 import {
-  fetchMercuryoSignedUrl,
-  fetchMoonPaySignedUrl,
-  fetchTransakSignedUrl,
-} from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
+  ONRAMP_PROVIDERS,
+  chainIdToMercuryoNetworkId,
+} from 'views/BuyCrypto/constants'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
+import { nanoid } from '@reduxjs/toolkit'
+import { fetchMercuryoSignedUrl, fetchMoonPaySignedUrl, fetchTransakSignedUrl } from 'views/BuyCrypto/hooks/useIframeUrlFetcher'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -183,7 +183,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { onIsNewCustomer } = useBuyCryptoActionHandlers()
 
   const theme = useTheme()
   const account = useAccount()
@@ -191,16 +190,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const handleDismiss = useCallback(async () => {
     onDismiss?.()
     setModalView(CryptoFormView.Input)
-    try {
-      const moonpayCustomerResponse = await fetch(
-        `https://pcs-on-ramp-api.com/checkItem?searchAddress=${account.address}`,
-      )
-      const moonpayCustomerResult = await moonpayCustomerResponse.json()
-      onIsNewCustomer(!moonpayCustomerResult.found)
-    } catch (err) {
-      throw new Error(`unable to fetch new customer status ${err}`)
-    }
-  }, [onDismiss, setModalView, onIsNewCustomer, account.address])
+  }, [onDismiss, setModalView])
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
@@ -251,6 +241,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
+        const transactonId = nanoid()
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
@@ -265,6 +256,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           address: account.address,
           signature: sig,
           network: chainIdToMercuryoNetworkId[chainId],
+          merchantTransactionId: `${account.address}_${transactonId}`,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
         })
@@ -307,7 +299,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </ModalWrapper>
       <Script
-        src="https://widget.mercuryo.io/embed.2.0.js"
+        src={MERCURYO_WIDGET_URL}
         onLoad={() => {
           setScriptOnLoad(true)
         }}

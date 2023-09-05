@@ -2722,4 +2722,12 @@ export const bscTokens = {
     'MixMarvel Token(Deprecated)',
     'https://www.mixmarvel.com/',
   ),
+  mbx: new ERC20Token(
+    ChainId.BSC,
+    '0xF95a5532D67C944dfa7EDDD2f8c358Fe0dc7FAc2',
+    18,
+    'MBX',
+    'MARBLEX on BNB',
+    'https://www.marblex.io/tc',
+  ),
 }

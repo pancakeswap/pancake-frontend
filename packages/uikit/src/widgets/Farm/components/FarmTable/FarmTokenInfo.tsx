@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../../../../components/Text";
 import { Skeleton } from "../../../../components/Skeleton";

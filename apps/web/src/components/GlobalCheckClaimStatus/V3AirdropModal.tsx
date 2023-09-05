@@ -3,7 +3,7 @@ import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text, useT
 import confetti from 'canvas-confetti'
 import { useTranslation } from '@pancakeswap/localization'
 import delay from 'lodash/delay'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import Dots from 'components/Loader/Dots'
 import useSWRImmutable from 'swr/immutable'
 import { useAccount } from 'wagmi'

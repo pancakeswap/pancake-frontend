@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Text } from "../../../../../components/Text";
 import { Button } from "../../../../../components/Button";
 import { ActionTitles, ActionContent } from "./styles";

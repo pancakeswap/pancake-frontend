@@ -179,6 +179,22 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.ARBITRUM_GOERLI]: new ERC20Token(
+    ChainId.ARBITRUM_GOERLI,
+    '0x62FF25CFD64E55673168c3656f4902bD7Aa5F0f4',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.LINEA]: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x0D1E753a25eBda689453309112904807625bEFBe',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
 
 export const USDC = {
@@ -229,6 +245,13 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+  ),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+    '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+    6,
+    'USDbC',
+    'USD Base Coin',
   ),
   [ChainId.OPBNB_TESTNET]: new ERC20Token(
     ChainId.OPBNB_TESTNET,
@@ -309,6 +332,7 @@ export const STABLE_COIN = {
   [ChainId.LINEA]: USDC[ChainId.LINEA],
   [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
   [ChainId.OPBNB_TESTNET]: USDC[ChainId.OPBNB_TESTNET],
+  [ChainId.BASE]: USDC[ChainId.BASE],
   [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],
   [ChainId.SCROLL_SEPOLIA]: USDC[ChainId.SCROLL_SEPOLIA],
 } satisfies Record<ChainId, ERC20Token>

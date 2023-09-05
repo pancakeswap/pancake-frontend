@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Flex, Skeleton, Text, useMatchBreakpoints, Balance, Pool, useTooltip, HelpIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'

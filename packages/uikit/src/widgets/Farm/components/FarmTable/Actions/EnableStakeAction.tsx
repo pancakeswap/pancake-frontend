@@ -3,7 +3,7 @@ import { Text } from "../../../../../components/Text";
 import { Button } from "../../../../../components/Button";
 import { StyledActionContainer, ActionContent, ActionTitles } from "./styles";
 
-interface EnableStakeActionProps {
+export interface EnableStakeActionProps {
   pendingTx: boolean;
   handleApprove: () => void;
 }

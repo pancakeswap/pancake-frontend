@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import Text from "../Text/Text";
 
 interface SliderLabelProps {
@@ -73,13 +73,13 @@ export const StyledInput = styled.input<StyledInputProps>`
   cursor: ${getCursorStyle};
   height: 32px;
   position: relative;
-  ::-webkit-slider-thumb {
+  &::-webkit-slider-thumb {
     ${getBaseThumbStyles}
   }
-  ::-moz-range-thumb {
+  &::-moz-range-thumb {
     ${getBaseThumbStyles}
   }
-  ::-ms-thumb {
+  &::-ms-thumb {
     ${getBaseThumbStyles}
   }
 `;

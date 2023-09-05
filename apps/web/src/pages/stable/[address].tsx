@@ -15,7 +15,7 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 
 import { CurrencyAmount } from '@pancakeswap/sdk'

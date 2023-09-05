@@ -3,13 +3,12 @@ import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/s
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
-import { TradeWithMM } from '../types'
 
 interface Options {
   independentField: Field
   trade?: TradeWithStableSwap<Currency, Currency, TradeType> | SmartRouterTrade<TradeType> | null
   v2Trade?: Trade<Currency, Currency, TradeType> | null
-  tradeWithMM?: TradeWithMM<Currency, Currency, TradeType> | null
+  tradeWithMM?: SmartRouterTrade<TradeType> | null
   isMMQuotingPair?: boolean
   isExpertMode?: boolean
 }

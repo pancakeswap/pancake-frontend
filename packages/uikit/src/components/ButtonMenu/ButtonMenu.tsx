@@ -1,5 +1,6 @@
+import shouldForwardProp from "@styled-system/should-forward-prop";
 import React, { cloneElement, Children, ReactElement } from "react";
-import styled, { DefaultTheme } from "styled-components";
+import { styled, DefaultTheme } from "styled-components";
 import { space } from "styled-system";
 import { scales, variants } from "../Button/types";
 import { ButtonMenuProps } from "./types";
@@ -16,7 +17,9 @@ const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
   return theme.colors[variant === variants.SUBTLE ? "inputSecondary" : "disabled"];
 };
 
-const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
+const StyledButtonMenu = styled.div.withConfig({
+  shouldForwardProp,
+})<StyledButtonMenuProps>`
   background-color: ${getBackgroundColor};
   border-radius: 16px;
   display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};

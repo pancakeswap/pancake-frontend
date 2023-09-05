@@ -1,5 +1,5 @@
 import { Flex, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const StyledFaqSection = styled(Flex)`
   position: relative;

@@ -9,11 +9,11 @@ import {
   PageHeader,
   RowBetween,
   Text,
+  AtomBox,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { AtomBox } from '@pancakeswap/ui'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { farmV3MigrationBunny, farmV3MigrationBunnyFull } from 'views/Home/components/Banners/images'
 import { useRouter } from 'next/router'

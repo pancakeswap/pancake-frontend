@@ -5,11 +5,11 @@ import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
-import { TradeWithMM } from '../types'
 import { computeTradePriceBreakdown, formatExecutionPrice } from '../utils/exchange'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
@@ -30,7 +30,7 @@ export default function SwapModalFooter({
   isMM = false,
   isRFQReady = false,
 }: {
-  trade: TradeWithMM<Currency, Currency, TradeType>
+  trade: SmartRouterTrade<TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
   onConfirm: () => void

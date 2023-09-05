@@ -22,6 +22,8 @@ const SUPPORTED_TRANSAK_ARBITRUM_TOKENS = ['ETH', 'USDC']
 const SUPPORTED_TRANSAK_LINEA_TOKENS = ['ETH', 'USDC']
 const SUPPORTED_TRANSAK_ZKSYNC_TOKENS = ['ETH']
 const SUPPORTED_TRANSAK_ZKEVM_TOKENS = ['ETH']
+const SUPPORTED_TRANSAK_BASE_TOKENS = ['ETH', 'USDC']
+
 
 export enum ONRAMP_PROVIDERS {
   MoonPay = 'MoonPay',
@@ -66,6 +68,11 @@ export const supportedTokenMap: {
     [ONRAMP_PROVIDERS.Mercuryo]: [],
     [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_ZKEVM_TOKENS,
   },
+  [ChainId.BASE]: {
+    [ONRAMP_PROVIDERS.MoonPay]: [],
+    [ONRAMP_PROVIDERS.Mercuryo]: [],
+    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_BASE_TOKENS,
+  },
   // Add more chainId mappings as needed
 }
 
@@ -86,6 +93,7 @@ export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
   [ChainId.ZKSYNC]: 'ZKSYNC',
   [ChainId.POLYGON_ZKEVM]: 'ZKEVM',
   [ChainId.LINEA]: 'LINEA',
+  [ChainId.LINEA]: 'BASE',
 }
 
 export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
@@ -95,6 +103,7 @@ export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
   [ChainId.ZKSYNC]: '_zksync',
   [ChainId.POLYGON_ZKEVM]: '_polygonzkevm',
   [ChainId.LINEA]: '_linea',
+  [ChainId.LINEA]: '_base',
 }
 
 export const chainIdToTransakNetworkId: { [id: number]: string } = {
@@ -104,6 +113,7 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
   [ChainId.ZKSYNC]: 'zksync',
   [ChainId.POLYGON_ZKEVM]: 'polygonzkevm',
   [ChainId.LINEA]: 'linea',
+  [ChainId.BASE]: 'base',
 }
 
 export const combinedNetworkIdMap: {

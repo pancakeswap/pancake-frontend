@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { useFarms } from 'state/farms/hook'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Card, Flex, Text, Skeleton, ExpandableSectionButton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'

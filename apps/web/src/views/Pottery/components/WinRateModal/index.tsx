@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { Modal, Text, Box, Flex, BalanceInput } from '@pancakeswap/uikit'

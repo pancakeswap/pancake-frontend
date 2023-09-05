@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, PageSection } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'

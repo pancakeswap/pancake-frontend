@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { AutoColumn } from '@pancakeswap/uikit'
 import { RowBetween } from 'components/Layout/Row'
 
