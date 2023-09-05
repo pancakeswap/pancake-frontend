@@ -1,4 +1,10 @@
-import { MERCURYO_WIDGET_ID, MOONPAY_API_KEY, MOONPAY_BASE_URL, TRANSAK_API_KEY } from 'config/constants/endpoints'
+import {
+  MERCURYO_WIDGET_ID,
+  MOONPAY_API_KEY,
+  MOONPAY_BASE_URL,
+  ONRAMP_API_BASE_URL,
+  TRANSAK_API_KEY,
+} from 'config/constants/endpoints'
 import toUpper from 'lodash/toUpper'
 import toNumber from 'lodash/toNumber'
 import { ONRAMP_PROVIDERS, chainIdToMoonPayNetworkId, combinedNetworkIdMap, supportedTokenMap } from '../constants'
@@ -6,7 +12,7 @@ import { ProviderQuote } from '../types'
 
 export async function fetchProviderQuotes(payload): Promise<ProviderQuote[]> {
   // Fetch data from endpoint 1
-  const response = await fetch(`${'http://localhost:8081'}/fetch-provider-quotes`, {
+  const response = await fetch(`${ONRAMP_API_BASE_URL}/fetch-provider-quotes`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
