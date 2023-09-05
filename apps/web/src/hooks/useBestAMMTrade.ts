@@ -307,13 +307,19 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
 })
 
 const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRouter.getBestTrade => {
-  return async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei }) => {
+  return async (
+    amount,
+    currency,
+    tradeType,
+    { maxHops, maxSplits, allowedPoolTypes, poolProvider, gasPriceWei, quoteProvider },
+  ) => {
     const candidatePools = await poolProvider.getCandidatePools({
       currencyA: amount.currency,
       currencyB: currency,
       protocols: allowedPoolTypes,
     })
 
+    const quoterConfig = (quoteProvider as ReturnType<typeof SmartRouter.createQuoteProvider>)?.getConfig()
     const result = await quoteWorker.getBestTrade({
       chainId: currency.chainId,
       currency: SmartRouter.Transformer.serializeCurrency(currency),
@@ -327,6 +333,7 @@ const createWorkerGetBestTrade = (quoteWorker: typeof worker): typeof SmartRoute
       maxSplits,
       poolTypes: allowedPoolTypes,
       candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+      onChainQuoterGasLimit: quoterConfig?.gasLimit?.toString(),
     })
     return SmartRouter.Transformer.parseTrade(currency.chainId, result as any)
   }
@@ -341,11 +348,13 @@ export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
   quoterOptimization: false,
 })
 
-function useQuoteProvider2() {
+function useQuoteProvider2(chainId?: ChainId) {
+  const gasLimit = useMulticallGasLimit(chainId)
   return useMemo(
     () =>
       SmartRouter.createQuoteProvider({
         onChainProvider: getViemClients,
+        gasLimit,
         multicallConfigs: {
           ...BATCH_MULTICALL_CONFIGS,
           [ChainId.BSC]: {
@@ -357,7 +366,7 @@ function useQuoteProvider2() {
           },
         },
       }),
-    [],
+    [gasLimit],
   )
 }
 

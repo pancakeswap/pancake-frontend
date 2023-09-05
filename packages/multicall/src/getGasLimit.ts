@@ -23,12 +23,12 @@ export type GetGasLimitParams = {
   gasBuffer?: BigintIsh
 }
 
-export function getDefaultGasLimit(chainId: ChainId) {
-  return DEFAULT_GAS_LIMIT_BY_CHAIN[chainId] || DEFAULT_GAS_LIMIT
+export function getDefaultGasLimit(chainId?: ChainId) {
+  return (chainId && DEFAULT_GAS_LIMIT_BY_CHAIN[chainId]) || DEFAULT_GAS_LIMIT
 }
 
-export function getDefaultGasBuffer(chainId: ChainId) {
-  return DEFAULT_GAS_BUFFER_BY_CHAIN[chainId] || DEFAULT_GAS_BUFFER
+export function getDefaultGasBuffer(chainId?: ChainId) {
+  return (chainId && DEFAULT_GAS_BUFFER_BY_CHAIN[chainId]) || DEFAULT_GAS_BUFFER
 }
 
 export type GetGasLimitOnChainParams = Pick<GetGasLimitParams, 'chainId' | 'client'>
