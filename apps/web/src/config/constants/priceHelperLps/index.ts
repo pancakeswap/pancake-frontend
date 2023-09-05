@@ -6,6 +6,8 @@ import PoolsBscPriceHelper from './pools/56'
 import PoolsBscTestnetPriceHelper from './pools/97'
 import PoolsArbPriceHelper from './pools/42161'
 import PoolsArbTestnetPriceHelper from './pools/421613'
+import PoolsZkSyncPriceHelper from './pools/324'
+import PoolsZkSyncTestnetPriceHelper from './pools/280'
 
 export { getFarmsPriceHelperLpFiles }
 
@@ -23,6 +25,10 @@ export const getPoolsPriceHelperLpFiles = (chainId: ChainId) => {
       return PoolsArbPriceHelper
     case ChainId.ARBITRUM_GOERLI:
       return PoolsArbTestnetPriceHelper
+    case ChainId.ZKSYNC:
+      return PoolsZkSyncPriceHelper
+    case ChainId.ZKSYNC_TESTNET:
+      return PoolsZkSyncTestnetPriceHelper
     default:
       return []
   }

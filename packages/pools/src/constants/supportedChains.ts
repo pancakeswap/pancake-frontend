@@ -6,6 +6,8 @@ export const SUPPORTED_CHAIN_IDS = [
   ChainId.ETHEREUM,
   ChainId.ARBITRUM_ONE,
   ChainId.ARBITRUM_GOERLI,
+  ChainId.ZKSYNC,
+  ChainId.ZKSYNC_TESTNET,
 ] as const
 
 export type SupportedChainId = (typeof SUPPORTED_CHAIN_IDS)[number]
