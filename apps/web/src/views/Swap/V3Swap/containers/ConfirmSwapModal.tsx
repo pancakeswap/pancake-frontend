@@ -181,7 +181,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
-  const { confirmModalState, startSwapFlow, onCancel } = useConfirmModalState({
+  const { confirmModalState, startSwapFlow } = useConfirmModalState({
     txHash,
     chainId,
     approval,
@@ -194,8 +194,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
       customOnDismiss?.()
     }
     onDismiss?.()
-    onCancel?.()
-  }, [customOnDismiss, onCancel, onDismiss])
+  }, [customOnDismiss, onDismiss])
 
   const topModal = useCallback(() => {
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
