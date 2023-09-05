@@ -4,7 +4,7 @@ import { Currency, CurrencyAmount, ERC20Token, Trade, TradeType } from '@pancake
 import { useToast } from '@pancakeswap/uikit'
 import { useAccount, Address } from 'wagmi'
 import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { isUserRejected, logError } from 'utils/sentry'
 import { SendTransactionResult } from 'wagmi/actions'
 import { Field } from '../state/swap/actions'
@@ -40,8 +40,19 @@ export function useApproveCallback(
   const { t } = useTranslation()
   const { toastError } = useToast()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
-  const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
+  const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
+  const [pending, setPending] = useState<boolean>(pendingApproval)
+
+  useEffect(() => {
+    if (pendingApproval) {
+      setPending(true)
+    } else if (pending) {
+      refetch().then(() => {
+        setPending(false)
+      })
+    }
+  }, [pendingApproval, pending, refetch])
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
@@ -52,11 +63,11 @@ export function useApproveCallback(
 
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lessThan(amountToApprove)
-      ? pendingApproval
+      ? pending
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED
-  }, [amountToApprove, currentAllowance, pendingApproval, spender])
+  }, [amountToApprove, currentAllowance, pending, spender])
 
   const tokenContract = useTokenContract(token?.address)
   const addTransaction = useTransactionAdder()
