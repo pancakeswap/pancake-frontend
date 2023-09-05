@@ -59,7 +59,7 @@ function AccordionItem({
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
-  const { days, hours, minutes } = getTimePeriods(1691942400)
+  const { days, hours, minutes } = getTimePeriods(1691520000)
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {
