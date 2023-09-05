@@ -1,23 +1,38 @@
 import { Token, CurrencyAmount } from '@pancakeswap/sdk'
+import { useContractRead } from 'wagmi'
 import { useMemo } from 'react'
 
 import { useTokenContract } from './useContract'
-import { useSingleCallResult } from '../state/multicall/hooks'
 
-function useTokenAllowance(token?: Token, owner?: string, spender?: string): CurrencyAmount<Token> | undefined {
+function useTokenAllowance(
+  token?: Token,
+  owner?: string,
+  spender?: string,
+): {
+  allowance: CurrencyAmount<Token> | undefined
+  refetch: () => Promise<any>
+} {
   const contract = useTokenContract(token?.address)
 
   const inputs = useMemo(() => [owner, spender] as [`0x${string}`, `0x${string}`], [owner, spender])
-  const allowance = useSingleCallResult({
-    contract: spender && owner ? contract : null,
+
+  const { data: allowance, refetch } = useContractRead({
+    ...contract,
     functionName: 'allowance',
     args: inputs,
-  }).result
+    enabled: Boolean(spender && owner),
+    watch: true,
+  })
 
   return useMemo(
-    () =>
-      token && typeof allowance !== 'undefined' ? CurrencyAmount.fromRawAmount(token, allowance.toString()) : undefined,
-    [token, allowance],
+    () => ({
+      allowance:
+        token && typeof allowance !== 'undefined'
+          ? CurrencyAmount.fromRawAmount(token, allowance.toString())
+          : undefined,
+      refetch,
+    }),
+    [token, refetch, allowance],
   )
 }
 
