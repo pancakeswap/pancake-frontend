@@ -1,13 +1,17 @@
 import { useRouter } from 'next/router'
-import { useSearchParams } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { updateQuery } from '@pancakeswap/utils/clientRouter'
 
 function filterHookFactory(filterName: string) {
   return function useFilter(): [string | undefined, (filter: string | undefined) => void] {
     const router = useRouter()
-    const searchParams = useSearchParams()
-    const filter = useMemo(() => searchParams.get(filterName), [searchParams])
+    const filter = useMemo(() => {
+      const value = router.query[filterName]
+      if (Array.isArray(value)) {
+        return value[0]
+      }
+      return value
+    }, [router.query])
 
     const setFilter = useCallback(
       (value?: string) => {

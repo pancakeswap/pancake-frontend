@@ -1,15 +1,13 @@
 import { ViewMode } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useSearchParams } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { updateQuery } from '@pancakeswap/utils/clientRouter'
 
 export function useViewMode() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const mode = useMemo(
-    () => (searchParams.get('view') === String(ViewMode.CARD).toLocaleLowerCase() ? ViewMode.CARD : ViewMode.TABLE),
-    [searchParams],
+    () => (router.query.view === String(ViewMode.CARD).toLocaleLowerCase() ? ViewMode.CARD : ViewMode.TABLE),
+    [router.query],
   )
   const setViewMode = useCallback(
     (viewMode: ViewMode) => {

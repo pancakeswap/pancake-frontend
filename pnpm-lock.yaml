@@ -1363,9 +1363,6 @@ importers:
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@pancakeswap/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
@@ -1375,28 +1372,28 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      viem:
+        specifier: ^1.2.9
+        version: 1.2.9(typescript@5.1.3)(zod@3.21.4)
+      wagmi:
+        specifier: ^1.3.10
+        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
     devDependencies:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.186
-      typechain:
-        specifier: ^6.1.0
-        version: 6.1.0(typescript@5.1.3)
       typescript:
         specifier: ^5.1.3
         version: 5.1.3
-      viem:
-        specifier: ^1.0.7
-        version: 1.2.9(typescript@5.1.3)(zod@3.21.4)
       vitest:
         specifier: ^0.27.2
         version: 0.27.2
-      wagmi:
-        specifier: ^1.2.0
-        version: 1.3.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)(viem@1.2.9)(zod@3.21.4)
 
   packages/smart-router:
     dependencies:
@@ -28217,7 +28214,7 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
 
   github.com/release-it/conventional-changelog/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e(release-it@15.10.3)(typescript@5.1.3):
-    resolution: {commit: 230b6f5eb075dd734f6af2d7dfe010e3fba1be6e, repo: git+ssh://git@github.com/release-it/conventional-changelog.git, type: git}
+    resolution: {tarball: https://codeload.github.com/release-it/conventional-changelog/tar.gz/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e}
     id: github.com/release-it/conventional-changelog/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e
     name: '@release-it/conventional-changelog'
     version: 7.0.1
