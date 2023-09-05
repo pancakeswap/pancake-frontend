@@ -46,8 +46,6 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
 
   const hasLabeledItem = items.some((item) => !!item.LabelIcon);
 
-  console.info(hasLabeledItem);
-
   useIsomorphicLayoutEffect(() => {
     layerController();
   }, [layerController, items]);
