@@ -4,7 +4,6 @@ import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { fetchProviderQuotes } from './useProviderQuotes'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
-import { chainIdToNetwork } from '../constants'
 import { ProviderQuote } from '../types'
 
 const usePriceQuotes = () => {
