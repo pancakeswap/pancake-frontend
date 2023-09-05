@@ -129,7 +129,6 @@ const fetchMoonPaySignedUrl = async (
         theme: isDark ? 'dark' : 'light',
         showOnlyCurrencies: supportedTokenMap[chainId].moonPayTokens,
         walletAddress: account,
-        isTestEnv: window.location.origin.includes('https') ? 'false' : 'true',
       }),
     })
     const result: FetchResponse = await res.json()
