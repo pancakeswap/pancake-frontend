@@ -4,7 +4,6 @@ import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { fetchProviderQuotes } from './useProviderQuotes'
 import { fetchProviderAvailabilities } from './useProviderAvailability'
-import { chainIdToNetwork } from '../constants'
 import { ProviderQuote } from '../types'
 
 const usePriceQuotes = () => {
@@ -19,13 +18,13 @@ const usePriceQuotes = () => {
   } = useBuyCryptoState()
 
   const sortProviderQuotes = useCallback(
-    async (combinedData: ProviderQuote[]) => {
+    async (combinedData: ProviderQuote[], disabledProviders: string[]) => {
       let sortedFilteredQuotes = combinedData
       try {
         if (userIp) {
           const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
           sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
-            return providerAvailabilities[quote.provider]
+            return providerAvailabilities[quote.provider] && !disabledProviders.includes(quote.provider)
           })
         }
         if (sortedFilteredQuotes.length === 0) return []
@@ -50,9 +49,9 @@ const usePriceQuotes = () => {
         fiatCurrency: outputCurrency.toUpperCase(),
         cryptoCurrency: inputCurrency.toUpperCase(),
         fiatAmount: Number(amount).toString(),
-        network: chainIdToNetwork[chainId],
+        network: chainId,
       })
-      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes)
+      const sortedFilteredQuotes = await sortProviderQuotes(providerQuotes, ['Transak'])
       setQuotes(sortedFilteredQuotes)
     } catch (error) {
       console.error('Error fetching price quotes:', error)
