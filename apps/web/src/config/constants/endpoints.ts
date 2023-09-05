@@ -11,9 +11,8 @@ export const API_NFT = 'https://nft.pancakeswap.com/api/v1'
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/pottery'
-export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
+export const ONRAMP_API_BASE_URL = 'https://pcs-on-ramp-api.com'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
-export const MOONPAY_SIGN_URL = 'https://pcs-on-ramp-api.com'
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */
@@ -95,6 +94,12 @@ export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
 export const FARMS_API = 'https://farms-api.pancakeswap.com'
 
-export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '76ba4ff5-2686-4ed4-8666-fadb0d9a5888'
+export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '64d1f9f9-85ee-4558-8168-1dc0e7057ce6'
 
 export const MOONPAY_API_KEY = process.env.NEXT_PUBLIC_MOONPAY_LIVE_KEY || 'pk_test_1Ibe44lMglFVL8COOYO7SEKnIBrzrp54'
+
+// no need for extra public env
+export const MERCURYO_WIDGET_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'https://sandbox-widget.mrcr.io/embed.2.0.js'
+    : 'https://widget.mercuryo.io/embed.2.0.js'

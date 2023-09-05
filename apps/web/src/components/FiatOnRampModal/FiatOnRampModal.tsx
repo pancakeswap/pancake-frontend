@@ -10,14 +10,14 @@ import {
   ModalWrapper,
   Text,
   useModal,
-  Liquidity,
 } from '@pancakeswap/uikit'
+import { LoadingDot } from '@pancakeswap/uikit/widgets/Liquidity'
+
 import { CommitButton } from 'components/CommitButton'
-import { MERCURYO_WIDGET_ID, MOONPAY_SIGN_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
@@ -30,6 +30,7 @@ import {
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
+import { nanoid } from '@reduxjs/toolkit'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -91,7 +92,7 @@ const LoadingBuffer = () => {
   return (
     <IFrameWrapper justifyContent="center" alignItems="center" style={{ zIndex: 100 }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Liquidity.LoadingDot />
+        <LoadingDot />
         <CircleLoader />
       </div>
     </IFrameWrapper>
@@ -109,7 +110,7 @@ const fetchMoonPaySignedUrl = async (
   try {
     const baseCurrency = `${inputCurrency.toLowerCase()}${moonpayCurrencyChainIdentifier[chainId]}`
 
-    const res = await fetch(`${MOONPAY_SIGN_URL}/generate-moonpay-sig`, {
+    const res = await fetch(`${ONRAMP_API_BASE_URL}/generate-moonpay-sig`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -192,7 +193,6 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const [loading, setLoading] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { onIsNewCustomer } = useBuyCryptoActionHandlers()
 
   const theme = useTheme()
   const account = useAccount()
@@ -200,16 +200,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   const handleDismiss = useCallback(async () => {
     onDismiss?.()
     setModalView(CryptoFormView.Input)
-    try {
-      const moonpayCustomerResponse = await fetch(
-        `https://pcs-on-ramp-api.com/checkItem?searchAddress=${account.address}`,
-      )
-      const moonpayCustomerResult = await moonpayCustomerResponse.json()
-      onIsNewCustomer(!moonpayCustomerResult.found)
-    } catch (err) {
-      throw new Error(`unable to fetch new customer status ${err}`)
-    }
-  }, [onDismiss, setModalView, onIsNewCustomer, account.address])
+  }, [onDismiss, setModalView])
 
   const fetchSignedIframeUrl = useCallback(async () => {
     if (!account.address) {
@@ -262,6 +253,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
+        const transactonId = nanoid()
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
@@ -278,6 +270,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
           address: account.address,
           signature: sig,
           network: chainIdToNetwork[chainId],
+          merchantTransactionId: `${account.address}_${transactonId}`,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
         })
@@ -333,7 +326,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         )}
       </ModalWrapper>
       <Script
-        src="https://widget.mercuryo.io/embed.2.0.js"
+        src={MERCURYO_WIDGET_URL}
         onLoad={() => {
           setScriptOnLoad(true)
         }}

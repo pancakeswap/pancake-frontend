@@ -6,7 +6,6 @@ export enum Field {
 }
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('buyCrypto/selectCurrency')
-export const isNewCustomer = createAction<{ field: Field; currencyId: string }>('buyCrypto/isNewCustomer')
 export const typeInput = createAction<{ typedValue: string }>('buyCrypto/typeInputBuyCrypto')
 export const resetBuyCryptoState = createAction<void>('buyCrypto/resetbuyCryptoState')
 export const setRecipient = createAction<{ recipient: string | null }>('buyCrypto/setRecipient')
@@ -17,7 +16,6 @@ export const setMinAmount = createAction<{
   maxBaseAmount: number
 }>('buyCrypto/setMinAmount')
 export const setUsersIpAddress = createAction<{ ip: string | null }>('buyCrypto/setUsersIpAddress')
-export const setIsNewCustomer = createAction<{ isNew: boolean }>('buyCrypto/setIsNewCustomer')
 export const replaceBuyCryptoState = createAction<{
   typedValue: string
   inputCurrencyId?: string
@@ -28,5 +26,4 @@ export const replaceBuyCryptoState = createAction<{
   maxAmount?: number | null
   maxBaseAmount?: number | null
   userIpAddress?: string | null
-  isNewCustomer?: boolean
 }>('swap/replaceBuyCryptoState')
