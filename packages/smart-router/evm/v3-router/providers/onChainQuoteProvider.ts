@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { BigintIsh, ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Abi, Address } from 'viem'
 import retry, { Options as RetryOptions } from 'async-retry'
 // import uniq from 'lodash/uniq.js'
@@ -34,27 +34,6 @@ const SUCCESS_RATE_CONFIG = {
   [ChainId.SCROLL_SEPOLIA]: 0.1,
 } as const satisfies Record<ChainId, number>
 
-// Normally we expect to get quotes from within the same block
-// But for some chains like BSC the block time is quite short so need some extra tolerance
-// const BLOCK_CONFLICT_TOLERANCE = {
-//   [ChainId.BSC_TESTNET]: 3,
-//   [ChainId.BSC]: 3,
-//   [ChainId.ETHEREUM]: 1,
-//   [ChainId.GOERLI]: 1,
-//   [ChainId.ARBITRUM_ONE]: 5,
-//   [ChainId.ARBITRUM_GOERLI]: 5,
-//   [ChainId.POLYGON_ZKEVM]: 1,
-//   [ChainId.POLYGON_ZKEVM_TESTNET]: 1,
-//   [ChainId.ZKSYNC]: 3,
-//   [ChainId.ZKSYNC_TESTNET]: 3,
-//   [ChainId.LINEA]: 3,
-//   [ChainId.LINEA_TESTNET]: 3,
-//   [ChainId.OPBNB_TESTNET]: 3,
-//   [ChainId.BASE]: 3,
-//   [ChainId.BASE_TESTNET]: 3,
-//   [ChainId.SCROLL_SEPOLIA]: 3,
-// } as const satisfies Record<ChainId, number>
-
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
 type CallInputs = V3Inputs | MixedInputs
@@ -68,6 +47,7 @@ interface FactoryConfig {
 
 interface ProviderConfig {
   onChainProvider: OnChainProvider
+  gasLimit?: BigintIsh
   multicallConfigs?: ChainMap<BatchMulticallConfigs>
 }
 
@@ -122,6 +102,7 @@ const retryControllerFactory = () => {
 function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, abi, getCallInputs }: FactoryConfig) {
   return function createOnChainQuoteProvider({
     onChainProvider,
+    gasLimit,
     multicallConfigs: multicallConfigsOverride,
   }: ProviderConfig): QuoteProvider {
     const createGetRoutesWithQuotes = (isExactIn = true) => {
@@ -173,7 +154,8 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                 functionParams: inputs,
                 providerConfig,
                 additionalConfig: {
-                  gasLimitPerCallOverride: multicallGasLimit,
+                  gasLimitPerCall: multicallGasLimit,
+                  gasLimit,
                 },
               })
             const successRateError = validateSuccessRate(results, minSuccessRate)
@@ -187,7 +169,6 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               approxGasUsedPerSuccessCall,
             }
           } catch (err: any) {
-            console.error(err)
             if (err instanceof SuccessRateError || err instanceof BlockConflictError) {
               throw err
             }

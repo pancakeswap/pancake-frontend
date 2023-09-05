@@ -565,6 +565,9 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../../packages/localization
+      '@pancakeswap/multicall':
+        specifier: workspace:*
+        version: link:../../packages/multicall
       '@pancakeswap/pools':
         specifier: workspace:*
         version: link:../../packages/pools
@@ -1887,7 +1890,7 @@ packages:
   /@0xsquid/sdk@1.6.3(encoding@0.1.13)(typescript@5.1.3):
     resolution: {integrity: sha512-PgiJpI65Wt1hUdMllpW4JUKqLrt97RaLJ1gL75BTduNTibnnnM4e1VjhAOnpAXk7dkE2CDOm2vFaseLbOfmGrQ==}
     dependencies:
-      '@release-it/conventional-changelog': github.com/release-it/conventional-changelog/c4e90e0eed55a08f764768011ab912709a961ef3(release-it@15.10.3)(typescript@5.1.3)
+      '@release-it/conventional-changelog': github.com/release-it/conventional-changelog/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e(release-it@15.10.3)(typescript@5.1.3)
       axios: 0.27.2
       ethers: 5.7.2
       release-it: 15.10.3(encoding@0.1.13)(typescript@5.1.3)
@@ -27324,11 +27327,11 @@ packages:
   /zwitch@1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
 
-  github.com/release-it/conventional-changelog/c4e90e0eed55a08f764768011ab912709a961ef3(release-it@15.10.3)(typescript@5.1.3):
-    resolution: {tarball: https://codeload.github.com/release-it/conventional-changelog/tar.gz/c4e90e0eed55a08f764768011ab912709a961ef3}
-    id: github.com/release-it/conventional-changelog/c4e90e0eed55a08f764768011ab912709a961ef3
+  github.com/release-it/conventional-changelog/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e(release-it@15.10.3)(typescript@5.1.3):
+    resolution: {tarball: https://codeload.github.com/release-it/conventional-changelog/tar.gz/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e}
+    id: github.com/release-it/conventional-changelog/230b6f5eb075dd734f6af2d7dfe010e3fba1be6e
     name: '@release-it/conventional-changelog'
-    version: 7.0.0
+    version: 7.0.1
     engines: {node: '>=16'}
     peerDependencies:
       release-it: ^16.0.0

@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { BigintIsh } from '@pancakeswap/sdk'
+
 import { BatchMulticallConfigs, ChainMap } from '../../types'
 import { QuoteProvider, OnChainProvider, RouteWithoutQuote, RouteWithQuote, RouteType, QuoterOptions } from '../types'
 import { isV3Pool } from '../utils'
@@ -7,14 +9,19 @@ import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } fr
 
 interface Config {
   onChainProvider: OnChainProvider
+  gasLimit?: BigintIsh
   multicallConfigs?: ChainMap<BatchMulticallConfigs>
 }
 
 // For evm
-export function createQuoteProvider({ onChainProvider, multicallConfigs }: Config): QuoteProvider {
+export function createQuoteProvider({ onChainProvider, multicallConfigs, gasLimit }: Config): QuoteProvider {
   const offChainQuoteProvider = createOffChainQuoteProvider()
-  const mixedRouteOnChainQuoteProvider = createMixedRouteOnChainQuoteProvider({ onChainProvider, multicallConfigs })
-  const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider, multicallConfigs })
+  const mixedRouteOnChainQuoteProvider = createMixedRouteOnChainQuoteProvider({
+    onChainProvider,
+    multicallConfigs,
+    gasLimit,
+  })
+  const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider, multicallConfigs, gasLimit })
 
   const createGetRouteWithQuotes = (isExactIn = true) => {
     const getOffChainQuotes = isExactIn
