@@ -11,7 +11,8 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { LoadingDot } from '@pancakeswap/uikit/src/widgets/Liquidity'
+import { LoadingDot } from '@pancakeswap/uikit/widgets/Liquidity'
+
 import { CommitButton } from 'components/CommitButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import crypto from 'crypto'

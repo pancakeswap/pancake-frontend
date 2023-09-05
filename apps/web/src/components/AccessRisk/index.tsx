@@ -1,5 +1,5 @@
 import { useTranslation, Trans } from '@pancakeswap/localization'
-import { ChainId, ERC20Token, Token } from '@pancakeswap/sdK'
+import { ChainId, ERC20Token, Token } from '@pancakeswap/sdk'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import {
   Button,
