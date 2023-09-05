@@ -1,12 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { Button, Column, useModal } from '@pancakeswap/uikit'
+import { Button, useModal } from '@pancakeswap/uikit'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { SendTransactionResult } from 'wagmi/actions'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { AutoRow, RowBetween } from 'components/Layout/Row'
-import CircleLoader from 'components/Loader/CircleLoader'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { ApprovalState } from 'hooks/useApproveCallback'
@@ -14,13 +13,10 @@ import { WrapType } from 'hooks/useWrapCallback'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import ProgressSteps from '../../components/ProgressSteps'
-import { SwapCallbackError } from '../../components/styleds'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { MMRfqTrade } from '../types'
-import ConfirmSwapModal from './ConfirmSwapModal'
+import { MMRfqTrade, RFQResponse } from '../types'
+import ConfirmSwapModal from '../../V3Swap/containers/ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -60,8 +56,6 @@ export function MMSwapCommitButton({
   approval,
   approveCallback,
   approvalSubmitted,
-  currencies,
-  isExpertMode,
   rfqTrade,
   swapInputError,
   currencyBalances,
@@ -71,10 +65,11 @@ export function MMSwapCommitButton({
   const { t } = useTranslation()
   // the callback to execute the swap
 
-  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq, recipient)
+  // @ts-ignore
+  const swapCalls = useSwapCallArguments(rfqTrade?.trade, rfqTrade?.rfq as RFQResponse['message'], recipient)
 
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    rfqTrade.trade,
+    rfqTrade.trade as SmartRouterTrade<TradeType>,
     recipient,
     // @ts-ignore
     swapCalls,
@@ -125,6 +120,14 @@ export function MMSwapCommitButton({
 
   // End Handlers
 
+  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
+  // never show if price impact is above threshold in non expert mode
+  const showApproveFlow =
+    !swapInputError &&
+    (approval === ApprovalState.NOT_APPROVED ||
+      approval === ApprovalState.PENDING ||
+      (approvalSubmitted && approval === ApprovalState.APPROVED))
+
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
@@ -137,18 +140,20 @@ export function MMSwapCommitButton({
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
+      isMM
       trade={rfqTrade.trade} // show the info while refresh RFQ
-      originalTrade={tradeToConfirm}
-      currencyBalances={currencyBalances}
-      onAcceptChanges={handleAcceptChanges}
-      attemptingTxn={attemptingTxn}
       txHash={txHash}
-      recipient={recipient}
-      onConfirm={handleSwap}
+      approval={approval}
+      attemptingTxn={attemptingTxn}
+      originalTrade={tradeToConfirm}
+      showApproveFlow={showApproveFlow}
+      currencyBalances={currencyBalances}
       swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
+      onConfirm={handleSwap}
+      approveCallback={approveCallback}
+      onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
-      isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
     />,
     true,
     true,
@@ -157,19 +162,15 @@ export function MMSwapCommitButton({
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    if (isExpertMode) {
-      handleSwap()
-    } else {
-      setSwapState({
-        tradeToConfirm: rfqTrade.trade,
-        attemptingTxn: false,
-        swapErrorMessage: undefined,
-        txHash: undefined,
-      })
-      onPresentConfirmModal()
-    }
+    setSwapState({
+      tradeToConfirm: rfqTrade.trade,
+      attemptingTxn: false,
+      swapErrorMessage: undefined,
+      txHash: undefined,
+    })
+    onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [isExpertMode, handleSwap, onPresentConfirmModal, rfqTrade])
+  }, [rfqTrade, onPresentConfirmModal])
 
   // useEffect
   useEffect(() => {
@@ -203,72 +204,17 @@ export function MMSwapCommitButton({
     )
   }
 
-  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
-  // never show if price impact is above threshold in non expert mode
-  const showApproveFlow =
-    !swapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED))
-
   const isValid = !swapInputError
-  const approved = approval === ApprovalState.APPROVED
-
-  if (showApproveFlow) {
-    return (
-      <>
-        <RowBetween>
-          <CommitButton
-            variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
-            onClick={approveCallback}
-            disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-            width="48%"
-          >
-            {approval === ApprovalState.PENDING ? (
-              <AutoRow gap="6px" justify="center">
-                {t('Enabling')} <CircleLoader stroke="white" />
-              </AutoRow>
-            ) : approvalSubmitted && approved ? (
-              t('Enabled')
-            ) : (
-              t('Enable %asset%', { asset: currencies[Field.INPUT]?.symbol ?? '' })
-            )}
-          </CommitButton>
-          <CommitButton
-            variant="primary"
-            onClick={() => {
-              onSwapHandler()
-            }}
-            width="48%"
-            id="swap-button"
-            disabled={!isValid || !approved}
-          >
-            {t('Swap')}
-          </CommitButton>
-        </RowBetween>
-        <Column style={{ marginTop: '1rem' }}>
-          <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
-        </Column>
-        {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-      </>
-    )
-  }
 
   return (
-    <>
-      <CommitButton
-        variant="primary"
-        onClick={() => {
-          onSwapHandler()
-        }}
-        id="swap-button"
-        width="100%"
-        disabled={!rfqTrade.rfq || !isValid || !!swapCallbackError || !approved}
-      >
-        {parseMMError(swapInputError) || t('Swap')}
-      </CommitButton>
-
-      {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-    </>
+    <CommitButton
+      width="100%"
+      id="swap-button"
+      variant="primary"
+      disabled={!rfqTrade.rfq || !isValid || !!swapCallbackError}
+      onClick={() => onSwapHandler()}
+    >
+      {parseMMError(swapInputError) || t('Swap')}
+    </CommitButton>
   )
 }
