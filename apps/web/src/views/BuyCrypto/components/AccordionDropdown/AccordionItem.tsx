@@ -54,7 +54,7 @@ function AccordionItem({
     currentLanguage: { locale },
   } = useTranslation()
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState(active ? 240 : 90)
+  const [height, setHeight] = useState(active ? 240 : 96)
   const multiple = false
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -69,7 +69,7 @@ function AccordionItem({
 
   useEffect(() => {
     const contentEl = getRefValue(contentRef)
-    setHeight(contentEl?.scrollHeight + 90)
+    setHeight(contentEl?.scrollHeight + 96)
   }, [active])
 
   const {
@@ -119,7 +119,7 @@ function AccordionItem({
   return (
     <Flex flexDirection="column">
       <CryptoCard
-        padding="16px 16px"
+        padding="18px 18px"
         style={{ height }}
         onClick={!isActive() ? toogleVisiblity : () => null}
         position="relative"
