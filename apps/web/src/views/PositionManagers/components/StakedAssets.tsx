@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react'
 import { Button, Text, RowBetween, Row, Flex, MinusIcon, AddIcon, CurrencyLogo } from '@pancakeswap/uikit'
-import type { AtomBoxProps } from '@pancakeswap/ui'
+import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { BaseAssets } from '@pancakeswap/position-managers'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'

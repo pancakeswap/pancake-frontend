@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { BaseAssets } from '@pancakeswap/position-managers'
-import type { AtomBoxProps } from '@pancakeswap/ui'
+import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { SpaceProps } from 'styled-system'
 
