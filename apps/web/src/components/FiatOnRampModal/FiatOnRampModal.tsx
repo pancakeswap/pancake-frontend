@@ -15,11 +15,10 @@ import { LoadingDot } from '@pancakeswap/uikit/widgets/Liquidity'
 
 import { CommitButton } from 'components/CommitButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL, ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import crypto from 'crypto'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Script from 'next/script'
 import { Dispatch, ReactNode, SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import styled, { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import {
   ONRAMP_PROVIDERS,
@@ -31,6 +30,7 @@ import {
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
+import { nanoid } from '@reduxjs/toolkit'
 
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
   height: 90%;
@@ -86,11 +86,6 @@ interface FiatOnRampProps {
 
 interface FetchResponse {
   urlWithSignature: string
-}
-
-function generateRandomString(length) {
-  const randomBytes = crypto.randomBytes(length)
-  return randomBytes.toString('hex') // 'hex' encoding converts bytes to a hexadecimal string
 }
 
 const LoadingBuffer = () => {
@@ -258,7 +253,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
   useEffect(() => {
     if (provider === ONRAMP_PROVIDERS.Mercuryo) {
       if (sig && window?.mercuryoWidget) {
-        const transactonId = generateRandomString(20)
+        const transactonId = nanoid();
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
