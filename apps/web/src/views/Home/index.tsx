@@ -19,6 +19,7 @@ import {
   WedgeTopLeft,
   WedgeTopRight,
 } from './components/WedgeSvgs'
+import MultipleBanner from './components/Banners/MultipleBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
