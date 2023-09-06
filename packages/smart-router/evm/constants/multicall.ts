@@ -12,7 +12,7 @@ const DEFAULT = {
     multicallChunk: 30,
   },
   successRateFailureOverrides: {
-    gasLimitOverride: 1_000_000,
+    gasLimitOverride: 2_000_000,
     multicallChunk: 40,
   },
 }
@@ -75,7 +75,7 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
       multicallChunk: 40,
     },
     successRateFailureOverrides: {
-      gasLimitOverride: 1_000_000,
+      gasLimitOverride: 3_000_000,
       multicallChunk: 45,
     },
   },
