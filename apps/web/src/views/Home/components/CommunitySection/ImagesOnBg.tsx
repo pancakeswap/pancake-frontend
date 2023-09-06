@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import Image from 'next/image'
 import discord from '../../images/socials/1.png'
 import twitter from '../../images/socials/2.png'

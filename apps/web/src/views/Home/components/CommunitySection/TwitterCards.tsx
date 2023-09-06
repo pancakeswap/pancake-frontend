@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 export const BlogImage = styled.div`
   width: 100%;

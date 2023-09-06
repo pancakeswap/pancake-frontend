@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Box, Text, lightColors, useMatchBreakpoints } from '@pancakeswap/uikit'
 import CountUp from 'react-countup'
 import useTheme from 'hooks/useTheme'

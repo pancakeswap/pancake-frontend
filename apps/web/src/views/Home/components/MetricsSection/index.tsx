@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import aptosBallRocket from '../../images/aptos-ball-rocket.png'
 import bnbBallRocket from '../../images/bnb-ball-rocket.png'

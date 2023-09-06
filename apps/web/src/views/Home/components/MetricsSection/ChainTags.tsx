@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import React, { cloneElement } from 'react'
 import Marquee from 'react-fast-marquee'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 const TagWrapper = styled.div`
   padding: 12px 24px;

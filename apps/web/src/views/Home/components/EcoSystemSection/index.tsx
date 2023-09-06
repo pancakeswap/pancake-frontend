@@ -1,7 +1,7 @@
 import { Flex, Text, Box, ChevronRightIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useMemo } from 'react'
 import Image, { StaticImageData } from 'next/image'
 import tradeBunny from '../../images/trade-bunny.png'

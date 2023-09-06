@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChevronLeftIcon, ChevronRightIcon, Flex, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useRef, useCallback } from 'react'
 
 export const newsData = [

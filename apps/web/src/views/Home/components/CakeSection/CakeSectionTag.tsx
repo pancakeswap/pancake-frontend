@@ -13,7 +13,7 @@ import {
 import useTheme from 'hooks/useTheme'
 import { cloneElement, useMemo, useRef, useLayoutEffect, useState } from 'react'
 import Marquee from 'react-fast-marquee'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { PartnerApolloX, PartnerAlpaca, PartnerVenus, PartnerLedger, PartnerMetaMask } from './PartnerLogos'
 

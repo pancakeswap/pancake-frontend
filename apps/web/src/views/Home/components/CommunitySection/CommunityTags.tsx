@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { useMemo, cloneElement } from 'react'
 import {
   TwitterIcon,
