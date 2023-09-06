@@ -28,19 +28,19 @@ export async function multicallByGasLimit(
 
 type CallParams = Pick<CallByGasLimitParams, 'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance'>
 
-type SingleCallResult = {
+export type SingleCallResult = {
   result: string
   gasUsed: bigint
   success: boolean
 }
 
-type CallResult = {
+export type CallResult = {
   results: SingleCallResult[]
   // Will be the greatest block number if block conflict tolerance is not 0
   blockNumber: bigint
 }
 
-type MulticallReturn = CallResult & {
+export type MulticallReturn = CallResult & {
   lastSuccessIndex: number
 }
 
