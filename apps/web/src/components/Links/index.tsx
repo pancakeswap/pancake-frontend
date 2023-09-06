@@ -11,12 +11,12 @@ const StyledInternalLink = styled('a')`
     text-decoration: underline;
   }
 
-  :focus {
+  &:focus {
     outline: none;
     text-decoration: underline;
   }
 
-  :active {
+  &:active {
     text-decoration: none;
   }
 `
