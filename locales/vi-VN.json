@@ -2652,7 +2652,6 @@
   "Please visit": "Vui lòng truy cập",
   "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "để hủy cọc SnBNB của bạn. PancakeSwap đang nỗ lực làm việc để hỗ trợ một hợp đồng chuyển đổi trên trang đặt cọc thanh khoản của chúng tôi để chuyển đổi SnBNB về lại BNB một cách liền mạch.",
   "0% Fee": "Phí 0%",
-  "0% Credit/Debit Cards Fee": "Phí thẻ tín dụng/ghi nợ 0%",
   "Get more details from": "Xem thêm chi tiết từ",
   "RedAlarm": "RedAlarm",
   "Merchandise": "Merchandise",
@@ -2678,5 +2677,6 @@
   "Polygon zkEVM": "Polygon zkEVM",
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to",
-  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned."
+  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
 }
