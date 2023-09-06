@@ -6,16 +6,7 @@ import { useCurrencyBalance } from 'hooks/Balances'
 import useStablePrice from 'hooks/useStablePrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AtomBox,
-  Button,
-  ChevronDownIcon,
-  CopyButton,
-  SkeletonV2,
-  Swap as SwapUI,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
+import { AtomBox, Button, ChevronDownIcon, CopyButton, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
 import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
@@ -131,9 +122,7 @@ export const CurrencyInputPanel = ({
               onClick={onPresentCurrencyModal}
               title={currency?.name}
             >
-              <SkeletonV2 isDataReady={isMounted} width="24px" height="24px" variant="circle" mr="8px">
-                <CurrencyLogo currency={currency} size="24px" />
-              </SkeletonV2>
+              {isMounted && <CurrencyLogo currency={currency} size="24px" />}
               <Text>{currency?.symbol}</Text>
               {!disableCurrencySelect && <ChevronDownIcon />}
             </Button>
