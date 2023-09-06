@@ -11,6 +11,10 @@ import speaker from '../../images/community-items/4.png'
 import yellowBubble from '../../images/community-items/5.png'
 
 export const LeftImageWrapper = styled.div`
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: block;
+  }
+  display: none;
   width: 391px;
   height: 620px;
   position: absolute;
@@ -45,10 +49,38 @@ export const LeftImageWrapper = styled.div`
     }
   }
 `
+
+const RightShadowWrapper = styled.div`
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  bottom: -110px;
+  left: calc(50% - 196px - 230px);
+  img {
+    position: absolute;
+    &.pinkBubble {
+      width: 150px;
+      top: 250px;
+      left: 100px;
+      z-index: 3;
+    }
+    &.ring {
+      width: 250px;
+      top: 200px;
+      left: -50px;
+      z-index: 1;
+    }
+  }
+`
+
 export const RightImageWrapper = styled.div`
   position: absolute;
   width: 520px;
   height: 520px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    left: calc(50% - 196px + 290px);
+    top: -140px;
+  }
   top: -110px;
   left: calc(50% - 196px + 590px);
   img {
@@ -87,13 +119,19 @@ export const RightImageWrapper = styled.div`
 
 export const RightTopBox: React.FC = () => {
   return (
-    <RightImageWrapper>
-      <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
-      <Image className="ring" src={ring} alt="ring" />
-      <Image className="heart" src={heart} alt="heart" />
-      <Image className="speaker" src={speaker} alt="speaker" />
-      <Image className="yellowBubble" src={yellowBubble} alt="yellowBubble" />
-    </RightImageWrapper>
+    <>
+      <RightImageWrapper>
+        <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
+        <Image className="ring" src={ring} alt="ring" />
+        <Image className="heart" src={heart} alt="heart" />
+        <Image className="speaker" src={speaker} alt="speaker" />
+        <Image className="yellowBubble" src={yellowBubble} alt="yellowBubble" />
+      </RightImageWrapper>
+      <RightShadowWrapper>
+        <Image className="pinkBubble" src={pinkBubble} alt="pinkBubble" />
+        <Image className="ring" src={ring} alt="ring" />
+      </RightShadowWrapper>
+    </>
   )
 }
 
