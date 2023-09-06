@@ -87,7 +87,7 @@ describe('Check translations available', () => {
   throughDirectory('../../apps/aptos')
   throughDirectory('../../packages/uikit/src')
   throughDirectory('../../packages/ui-wallets/src')
-  throughDirectory('../../packages/uikit/src')
+  throughDirectory('../../packages/widgets-internal')
   let match
 
   const extractedKeys = new Set<string>(whitelist)
