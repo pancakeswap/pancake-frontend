@@ -57,8 +57,6 @@ export type WorkerMultiChunkEvent = [
 
 export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent
 
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients })
-
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
@@ -107,7 +105,9 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       maxSplits,
       poolTypes,
       candidatePools,
+      onChainQuoterGasLimit: gasLimit,
     } = parsed.data
+    const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: getViemClients, gasLimit })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
 
@@ -132,7 +132,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           id,
           {
             success: true,
-            result: serializeTrade(res),
+            result: res && serializeTrade(res),
           },
         ])
       })

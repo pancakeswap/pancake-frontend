@@ -38,6 +38,7 @@
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
