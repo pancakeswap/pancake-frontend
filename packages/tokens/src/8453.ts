@@ -1,5 +1,5 @@
-import { ChainId, ERC20Token, WETH9, CAKE } from '@pancakeswap/sdk'
-import { USDC } from './common'
+import { ChainId, ERC20Token, WETH9 } from '@pancakeswap/sdk'
+import { USDC, CAKE } from './common'
 
 export const baseTokens = {
   weth: WETH9[ChainId.BASE],
