@@ -5,7 +5,7 @@ import { Message, MessageText, Box } from '@pancakeswap/uikit'
 
 const ZkSyncWarning = () => {
   const { t } = useTranslation()
-  const { chain } = useNetwork?.()
+  const { chain } = useNetwork()
 
   return (
     <>
