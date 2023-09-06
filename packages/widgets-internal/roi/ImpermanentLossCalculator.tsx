@@ -4,9 +4,9 @@ import { Currency, CurrencyAmount, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pa
 import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
 import { styled } from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
+import { Box, Row, AutoColumn, Toggle, RowBetween, DoubleCurrencyLogo, Message } from "@pancakeswap/uikit";
 
 import { Section } from "./Section";
-import { Box, Row, AutoColumn, Toggle, RowBetween, DoubleCurrencyLogo, Message } from "../../components";
 import {
   AssetCard,
   Asset,

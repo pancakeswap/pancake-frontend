@@ -1,9 +1,16 @@
 import { ReactElement } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
-import { Flex, LinkExternal, ScanLink, Skeleton, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
-
-import { FarmMultiplierInfo } from '../FarmMultiplierInfo'
+import {
+  Flex,
+  LinkExternal,
+  ScanLink,
+  Skeleton,
+  Text,
+  HelpIcon,
+  useTooltip,
+  FarmMultiplierInfo,
+} from '@pancakeswap/uikit'
 
 export interface ExpandableSectionProps {
   scanAddress?: { link: string; chainId?: number; icon?: ReactElement }

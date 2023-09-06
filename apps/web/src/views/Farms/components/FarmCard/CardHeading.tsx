@@ -1,5 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
+import { AutoRow, Flex, Heading, Skeleton, Tag, useTooltip, FarmMultiplierInfo } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { TokenPairImage } from 'components/TokenImage'
@@ -46,7 +46,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
 }) => {
   const isReady = multiplier !== undefined
 
-  const multiplierTooltipContent = FarmWidget.FarmMultiplierInfo({
+  const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
   })

@@ -3,7 +3,7 @@ import { memo } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { styled } from "styled-components";
 
-import { Flex, Text, Button, SyncAltIcon } from "../../components";
+import { Flex, Text, Button, SyncAltIcon } from "@pancakeswap/uikit";
 
 const StyledButton = styled(Button)`
   border-radius: 8px;

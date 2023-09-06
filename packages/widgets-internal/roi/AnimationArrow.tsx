@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { styled, keyframes } from "styled-components";
-import { Flex, ArrowDownIcon } from "../../components";
+import { Flex, ArrowDownIcon } from "@pancakeswap/uikit";
 
 const rotate = keyframes`
   0% {

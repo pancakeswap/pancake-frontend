@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react";
 
-import { Flex, Checkbox } from "../../components";
+import { Flex, Checkbox } from "@pancakeswap/uikit";
 
 interface Props {
   on?: boolean;

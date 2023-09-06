@@ -1,7 +1,6 @@
 import { styled } from 'styled-components'
-import { HelpIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
+import { HelpIcon, Skeleton, useTooltip, FarmMultiplierInfo } from '@pancakeswap/uikit'
 import { FarmTableMultiplierProps } from '../../types'
-import { FarmMultiplierInfo } from '../FarmMultiplierInfo'
 
 const ReferenceElement = styled.div`
   display: inline-block;

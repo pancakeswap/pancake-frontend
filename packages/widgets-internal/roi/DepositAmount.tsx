@@ -14,7 +14,7 @@ import {
   CurrencyLogo,
   Card,
   CardBody,
-} from "../../components";
+} from "@pancakeswap/uikit";
 
 type Props = UsdAmountInputProps & TokenAmountsDisplayProps;
 

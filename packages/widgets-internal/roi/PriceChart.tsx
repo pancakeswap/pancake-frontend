@@ -11,7 +11,7 @@ import {
   Box,
   Text,
   BunnyKnownPlaceholder,
-} from "../../components";
+} from "@pancakeswap/uikit";
 import { PriceData } from "./types";
 import { FullWidthButtonMenu } from "./FullWidthButtonMenu";
 

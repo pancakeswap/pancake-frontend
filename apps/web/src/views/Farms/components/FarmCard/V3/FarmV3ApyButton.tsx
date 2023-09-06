@@ -6,16 +6,15 @@ import {
   Flex,
   IconButton,
   RocketIcon,
-  RoiCalculatorModalV2,
   Skeleton,
   Text,
   TooltipText,
   useMatchBreakpoints,
   useModalV2,
-  useRoi,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { RoiCalculatorModalV2, useRoi } from '@pancakeswap/widgets-internal/roi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { Position, encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
