@@ -757,7 +757,7 @@
   "Receive LP tokens and earn 0.17% trading fees": "接收 LP 代幣並賺取 0.17% 的交易費用",
   "Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pair.": "流動性提供者將會按照其在流動性池中所佔的份額，獲得在該代幣對上進行的所有交易中的 0.17％ 做為交易費用。",
   "You are creating a trading pair": "您正在建立交易對",
-  "You are the first liquidity provider.": "您是第一個流動性供應商。",
+  "You are the first liquidity provider.": "您是第一個流動性提供者。",
   "The ratio of tokens you add will set the price of this pair.": "您新增的代幣比率將設定此幣對的價格。",
   "Once you are happy with the rate click supply to review.": "當您對匯率滿意後，按一下供應即可檢視。",
   "Initial prices and share in the pair": "初始價格與幣對中的持份",
@@ -2142,7 +2142,7 @@
   "Your position will not earn fees or be used in trades until the market price moves into your range.": "在市場價格進入您的範圍之前，您所持有的部位不會賺取費用或用於交易。",
   "Efficiency Comparison": "效率比較",
   "Full range positions may earn less fees than concentrated positions.": "持有全範圍部位所賺取的費用，可能會低於集中持有特定部位。",
-  "In PancakeSwap Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.": "在 PancakeSwap Exchange V3 中，流動性供應商可以自訂交易費用級別並將流動性集中在特定價格範圍內，從而最大限度地提高資本效率。",
+  "In PancakeSwap Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.": "在 PancakeSwap Exchange V3 中，流動性提供者可以自訂交易手續費級別並將流動性集中在特定價格區間內，從而最大限度地提高資本效率。",
   "The position is inactive and not earning trading fees due to the current price being out of the set price range.": "由於目前價格超出設定的價格範圍，該部位處於停用狀態且不會賺取交易費用。",
   "Claim $135K CAKE Airdrop & Exclusive NFT": "領取 13.5 萬美元 CAKE 空投和獨家 NFT",
   "Buy new tokens launching on Aptos": "購買在 Aptos 上發行的新代幣",
@@ -2652,7 +2652,6 @@
   "Please visit": "請前往頁面",
   "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "PancakeSwap 正致力於在我們的流動權益質押頁面上支援轉換合約，以期未來能協助持有者將 SnBNB 無縫轉換回 BNB。",
   "0% Fee": "0% 費用",
-  "0% Credit/Debit Cards Fee": "0% 信用卡/轉帳卡費用",
   "Get more details from": "取得更多詳細資料：",
   "RedAlarm": "RedAlarm",
   "Merchandise": "線上商店",
@@ -2678,5 +2677,6 @@
   "Polygon zkEVM": "Polygon zkEVM",
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "我們加盟計劃的條款與條件已於 2023 年 5 月 3 日更新，修改內容涉及",
-  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned."
+  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
 }
