@@ -30,6 +30,7 @@ export const fetchMoonPaySignedUrl = async (
         redirectUrl: 'https://pancakeswap.finance',
         theme: isDark ? 'dark' : 'light',
         walletAddress: account,
+        isTestEnv: 'development',
       }),
     })
     const result: FetchResponse = await res.json()
