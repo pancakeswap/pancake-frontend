@@ -53,7 +53,7 @@ export const StyledBalanceMaxMini = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.dropdown};
   }
-  :focus {
+  &:focus {
     background-color: ${({ theme }) => theme.colors.dropdown};
     outline: none;
   }
