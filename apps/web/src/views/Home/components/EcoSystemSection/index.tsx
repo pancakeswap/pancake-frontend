@@ -105,12 +105,12 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
       // filter: invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%);
     }
   }
-  flex-basis: 50%;
+  flex-basis: calc(50% - 24px);
 
   &.type-a {
     height: 246px;
     ${({ theme }) => theme.mediaQueries.sm} {
-      flex-basis: 33.3%;
+      flex-basis: calc(33.3% - 48px);
     }
     ${({ theme }) => theme.mediaQueries.xl} {
       height: 286px;
