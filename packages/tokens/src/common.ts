@@ -188,8 +188,16 @@ export const CAKE = {
     'https://pancakeswap.finance/',
   ),
   [ChainId.LINEA]: new ERC20Token(
-    ChainId.ARBITRUM_ONE,
+    ChainId.LINEA,
     '0x0D1E753a25eBda689453309112904807625bEFBe',
+    18,
+    'CAKE',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+    '0x3055913c90Fcc1A6CE9a358911721eEb942013A1',
     18,
     'CAKE',
     'PancakeSwap Token',
