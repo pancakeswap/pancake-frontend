@@ -84,8 +84,7 @@ export class ProviderGasError extends Error {
 export type QuoteRetryOptions = RetryOptions
 
 interface GetQuotesConfig {
-  multicallGasLimit: number
-  multicallChunkSize: number
+  gasLimitPerCall: number
 }
 
 const retryControllerFactory = () => {
@@ -131,16 +130,16 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
           BATCH_MULTICALL_CONFIGS[chainId as ChainId] ||
           BATCH_MULTICALL_CONFIGS[ChainId.ETHEREUM]
         const {
-          defaultConfig: { multicallChunk, gasLimitOverride },
+          defaultConfig: { gasLimitPerCall: defaultGasLimitPerCall },
         } = multicallConfigs
         const chainProvider = onChainProvider({ chainId })
         const providerConfig = { blockNumber: blockNumberFromConfig }
-        const multicall2Provider = new PancakeMulticallProvider(chainId, chainProvider, gasLimitOverride)
+        const multicall2Provider = new PancakeMulticallProvider(chainId, chainProvider, defaultGasLimitPerCall)
         const inputs = routes.map<CallInputs>((route) => getCallInputs(route, isExactIn))
 
         const { shouldRetry, onRetry } = retryControllerFactory()
 
-        async function getQuotes({ multicallGasLimit }: GetQuotesConfig) {
+        async function getQuotes({ gasLimitPerCall }: GetQuotesConfig) {
           try {
             const { results, blockNumber, approxGasUsedPerSuccessCall } =
               await multicall2Provider.callSameFunctionOnContractWithMultipleParams<
@@ -154,7 +153,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                 functionParams: inputs,
                 providerConfig,
                 additionalConfig: {
-                  gasLimitPerCall: multicallGasLimit,
+                  gasLimitPerCall,
                   gasLimit,
                 },
               })
@@ -194,8 +193,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
           async (bail) => {
             try {
               const quotes = await getQuotes({
-                multicallChunkSize: multicallChunk,
-                multicallGasLimit: gasLimitOverride,
+                gasLimitPerCall: defaultGasLimitPerCall,
               })
               return quotes
             } catch (e: unknown) {
@@ -208,16 +206,14 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                 onRetry(error)
                 const { successRateFailureOverrides } = multicallConfigs
                 return getQuotes({
-                  multicallChunkSize: successRateFailureOverrides.multicallChunk,
-                  multicallGasLimit: successRateFailureOverrides.gasLimitOverride,
+                  gasLimitPerCall: successRateFailureOverrides.gasLimitPerCall,
                 })
               }
               if (error instanceof ProviderGasError) {
                 onRetry(error)
                 const { gasErrorFailureOverride } = multicallConfigs
                 return getQuotes({
-                  multicallChunkSize: gasErrorFailureOverride.multicallChunk,
-                  multicallGasLimit: gasErrorFailureOverride.gasLimitOverride,
+                  gasLimitPerCall: gasErrorFailureOverride.gasLimitPerCall,
                 })
               }
               throw error

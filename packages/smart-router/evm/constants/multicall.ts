@@ -2,81 +2,56 @@ import { ChainId } from '@pancakeswap/sdk'
 
 import { ChainMap, BatchMulticallConfigs } from '../types'
 
-const DEFAULT = {
+const DEFAULT: BatchMulticallConfigs = {
   defaultConfig: {
-    multicallChunk: 150,
-    gasLimitOverride: 1_000_000,
+    gasLimitPerCall: 1_000_000,
   },
   gasErrorFailureOverride: {
-    gasLimitOverride: 1_000_000,
-    multicallChunk: 30,
+    gasLimitPerCall: 2_000_000,
   },
   successRateFailureOverrides: {
-    gasLimitOverride: 2_000_000,
-    multicallChunk: 40,
+    gasLimitPerCall: 2_000_000,
   },
 }
 
 export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.BSC_TESTNET]: DEFAULT,
-  [ChainId.BSC]: {
-    defaultConfig: {
-      multicallChunk: 50,
-      gasLimitOverride: 1_000_000,
-    },
-    gasErrorFailureOverride: {
-      gasLimitOverride: 1_000_000,
-      multicallChunk: 40,
-    },
-    successRateFailureOverrides: {
-      gasLimitOverride: 1_000_000,
-      multicallChunk: 45,
-    },
-  },
+  [ChainId.BSC]: DEFAULT,
   [ChainId.ETHEREUM]: DEFAULT,
   [ChainId.GOERLI]: DEFAULT,
   [ChainId.ARBITRUM_ONE]: DEFAULT,
   [ChainId.ARBITRUM_GOERLI]: DEFAULT,
   [ChainId.POLYGON_ZKEVM]: {
     defaultConfig: {
-      multicallChunk: 3,
-      gasLimitOverride: 500_000,
+      gasLimitPerCall: 500_000,
     },
     gasErrorFailureOverride: {
-      gasLimitOverride: 1_500_000,
-      multicallChunk: 1,
+      gasLimitPerCall: 1_500_000,
     },
     successRateFailureOverrides: {
-      gasLimitOverride: 1_500_000,
-      multicallChunk: 1,
+      gasLimitPerCall: 1_500_000,
     },
   },
   [ChainId.POLYGON_ZKEVM_TESTNET]: {
     defaultConfig: {
-      multicallChunk: 3,
-      gasLimitOverride: 500_000,
+      gasLimitPerCall: 500_000,
     },
     gasErrorFailureOverride: {
-      gasLimitOverride: 1_500_000,
-      multicallChunk: 1,
+      gasLimitPerCall: 1_500_000,
     },
     successRateFailureOverrides: {
-      gasLimitOverride: 1_500_000,
-      multicallChunk: 1,
+      gasLimitPerCall: 1_500_000,
     },
   },
   [ChainId.ZKSYNC]: {
     defaultConfig: {
-      multicallChunk: 50,
-      gasLimitOverride: 1_000_000,
+      gasLimitPerCall: 1_000_000,
     },
     gasErrorFailureOverride: {
-      gasLimitOverride: 1_000_000,
-      multicallChunk: 40,
+      gasLimitPerCall: 2_000_000,
     },
     successRateFailureOverrides: {
-      gasLimitOverride: 3_000_000,
-      multicallChunk: 45,
+      gasLimitPerCall: 3_000_000,
     },
   },
   [ChainId.ZKSYNC_TESTNET]: DEFAULT,

@@ -360,8 +360,7 @@ function useQuoteProvider2(chainId?: ChainId) {
           [ChainId.BSC]: {
             ...BATCH_MULTICALL_CONFIGS[ChainId.BSC],
             defaultConfig: {
-              multicallChunk: 150,
-              gasLimitOverride: 1_000_000,
+              gasLimitPerCall: 1_000_000,
             },
           },
         },
