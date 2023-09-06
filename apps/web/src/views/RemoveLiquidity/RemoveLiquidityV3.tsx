@@ -342,8 +342,8 @@ function Remove({ tokenId }: { tokenId: bigint }) {
         <AppHeader
           backTo={`/liquidity/${tokenId}`}
           title={t('Remove %assetA%-%assetB% Liquidity', {
-            assetA: position?.token0 ?? '',
-            assetB: position?.token1 ?? '',
+            assetA: liquidityValue0?.currency?.symbol ?? '',
+            assetB: liquidityValue1?.currency?.symbol ?? '',
           })}
           noConfig
         />
