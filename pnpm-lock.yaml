@@ -941,6 +941,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-fast-marquee:
+        specifier: ^1.6.0
+        version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
       react-redux:
         specifier: ^8.0.5
         version: 8.0.5(@types/react-dom@18.2.1)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -15245,6 +15248,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.3.1(@types/node@18.16.2)
     transitivePeerDependencies:
       - supports-color
@@ -15273,6 +15277,9 @@ packages:
 =======
       vite: 4.3.1(@types/node@18.0.4)
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+      vite: 4.3.1(@types/node@13.13.52)
+>>>>>>> 7af756035 (chore: update packages)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -29524,6 +29531,16 @@ packages:
   /react-fast-compare@3.2.0:
     resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
 
+  /react-fast-marquee@1.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-jtuwT9SNjrqxnE7lGZ8mTL1I8Q4+9G4aBta2p+y2Pa3SjR17QROblwrLICyM8rbjQFHgHawTHcaH9HvoVO2NOA==}
+    peerDependencies:
+      react: '>= 16.8.0 || 18.0.0'
+      react-dom: '>= 16.8.0 || 18.0.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-icons@4.8.0(react@18.2.0):
     resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
     peerDependencies:
@@ -33827,6 +33844,7 @@ packages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       vite: 4.3.1(@types/node@18.16.2)
     transitivePeerDependencies:
       - supports-color
@@ -33854,6 +33872,9 @@ packages:
 =======
       vite: 4.3.1(@types/node@18.0.4)
 >>>>>>> ea8941fcc (chore: update package lock)
+=======
+      vite: 4.3.1(@types/node@13.13.52)
+>>>>>>> 7af756035 (chore: update packages)
     transitivePeerDependencies:
       - supports-color
       - typescript
