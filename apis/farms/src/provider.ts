@@ -11,7 +11,47 @@ const requireCheck = [
   ZKSYNC_NODE,
   ARBITRUM_ONE_NODE,
   LINEA_NODE,
+  BASE_NODE,
 ]
+
+const base = {
+  id: 8453,
+  network: 'base',
+  name: 'Base',
+  nativeCurrency: {
+    name: 'Base',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.base.org'],
+    },
+    public: {
+      http: ['https://mainnet.base.org'],
+    },
+  },
+  blockExplorers: {
+    blockscout: {
+      name: 'Basescout',
+      url: 'https://base.blockscout.com',
+    },
+    default: {
+      name: 'Basescan',
+      url: 'https://basescan.org',
+    },
+    etherscan: {
+      name: 'Basescan',
+      url: 'https://basescan.org',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xca11bde05977b3631167028862be2a173976ca11',
+      blockCreated: 5022,
+    },
+  },
+} as const
 
 const linea = {
   id: 59_144,
@@ -159,6 +199,16 @@ const lineaClient = createPublicClient({
   },
 })
 
+const baseClient = createPublicClient({
+  chain: base,
+  transport: http(BASE_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+    },
+  },
+})
+
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {
   switch (chainId) {
     case ChainId.ETHEREUM:
@@ -179,6 +229,8 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return arbitrumOneClient
     case ChainId.LINEA:
       return lineaClient
+    case ChainId.BASE:
+      return baseClient
     default:
       return bscClient
   }
