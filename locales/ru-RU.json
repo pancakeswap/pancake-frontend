@@ -2652,7 +2652,6 @@
   "Please visit": "Пожалуйста, зайдите на",
   "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "чтобы отменить вложение SnBNB. PancakeSwap также работает над поддержкой контракта на конверсию на странице вложения ликвидности, чтобы обеспечить удобный перевод SnBNB обратно в BNB.",
   "0% Fee": "комиссия 0%",
-  "0% Credit/Debit Cards Fee": "комиссия за кредитную/дебетовую карту 0%",
   "Get more details from": "Узнайте подробнее на",
   "RedAlarm": "RedAlarm",
   "Merchandise": "Товары",
@@ -2678,5 +2677,6 @@
   "Polygon zkEVM": "Polygon zkEVM",
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Условия нашей партнерской программы были обновлены 3 мая 2023 г. Изменения касаются следующего:",
-  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned."
+  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
 }
