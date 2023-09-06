@@ -102,7 +102,7 @@ export const parseMMParameter = (
     networkId: chainId,
     takerSideToken: inputCurrency?.isToken
       ? inputCurrency.address
-      : isForRFQ // RFQ needs native address and order book use WETH to get quote
+      : isForRFQ // RFQ needs native address and order book use WNATIVE to get quote
       ? NATIVE_CURRENCY_ADDRESS
       : inputCurrency.wrapped.address,
     makerSideToken: outputCurrency?.isToken
