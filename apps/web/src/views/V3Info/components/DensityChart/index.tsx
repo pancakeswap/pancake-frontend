@@ -43,7 +43,7 @@ const ActionButton = styled.div<{ disabled?: boolean }>`
   background-color: ${({ theme, disabled }) => (disabled ? theme.colors.backgroundAlt2 : theme.colors.backgroundAlt)};
   user-select: none;
 
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.4;
   }

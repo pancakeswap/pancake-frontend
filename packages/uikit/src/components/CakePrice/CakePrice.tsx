@@ -18,7 +18,7 @@ const PriceLink = styled.a`
   svg {
     transition: transform 0.3s;
   }
-  :hover {
+  &:hover {
     svg {
       transform: scale(1.2);
     }

@@ -64,7 +64,7 @@ const StyledCMCLink = styled(UIKitLink)`
   height: 24px;
   margin-right: 8px;
 
-  & :hover {
+  &:hover {
     opacity: 0.8;
   }
 `

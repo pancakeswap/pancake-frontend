@@ -10,7 +10,7 @@ import LoadingTable from './LoadingTable'
 const Arrow = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   padding: 0 20px;
-  :hover {
+  &:hover {
     cursor: pointer;
   }
 `
