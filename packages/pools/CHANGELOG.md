@@ -1,5 +1,13 @@
 # @pancakeswap/pools
 
+## 4.0.9
+
+### Patch Changes
+
+- 0641cc6ed: Add zkSync Pool
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.4.1
+
 ## 4.0.8
 
 ### Patch Changes

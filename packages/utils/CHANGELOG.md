@@ -1,5 +1,15 @@
 # @pancakeswap/utils
 
+## 5.0.2
+
+### Patch Changes
+
+- a784ca6ed: Pancake Multicall release
+  - @pancakeswap/awgmi@0.1.14
+  - @pancakeswap/localization@5.0.2
+  - @pancakeswap/token-lists@0.0.8
+  - @pancakeswap/tokens@0.4.1
+
 ## 5.0.1
 
 ### Patch Changes

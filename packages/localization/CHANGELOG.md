@@ -1,5 +1,13 @@
 # @pancakeswap/localization
 
+## 5.0.2
+
+### Patch Changes
+
+- Updated dependencies [a784ca6ed]
+  - @pancakeswap/utils@5.0.2
+  - @pancakeswap/hooks@0.0.15
+
 ## 5.0.1
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @pancakeswap/smart-router
 
+## 4.8.0
+
+### Minor Changes
+
+- a784ca6ed: Pancake Multicall release
+
+### Patch Changes
+
+- e4bfa0a15: Add mm route type
+- Updated dependencies [a784ca6ed]
+  - @pancakeswap/multicall@1.0.0
+  - @pancakeswap/tokens@0.4.1
+  - @pancakeswap/v3-sdk@3.4.1
+
 ## 4.7.1
 
 ### Patch Changes
