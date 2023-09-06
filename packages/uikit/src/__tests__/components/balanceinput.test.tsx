@@ -315,7 +315,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
-    .c10 :focus-visible {
+    .c10:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }
