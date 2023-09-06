@@ -152,7 +152,7 @@ const StakeModalContainer = ({
       handleConfirmClick={handleConfirmClick}
       isRemovingStake={isRemovingStake}
       imageUrl={tokenImageUrl}
-      warningComponent={<ZkSyncWarning />}
+      warning={<ZkSyncWarning />}
     />
   )
 }

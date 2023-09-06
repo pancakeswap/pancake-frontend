@@ -69,7 +69,7 @@ interface StakeModalProps {
   handleConfirmClick: any;
   pendingTx: boolean;
   imageUrl?: string;
-  warningComponent?: React.ReactElement;
+  warning?: React.ReactElement;
 }
 
 export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
@@ -95,7 +95,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   pendingTx,
   handleConfirmClick,
   imageUrl = "/images/tokens/",
-  warningComponent,
+  warning,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -272,7 +272,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
           <PercentageButton onClick={() => handleChangePercent(100)}>{t("Max")}</PercentageButton>
         </Flex>
-        {warningComponent}
+        {warning}
         {!isRemovingStake && (
           <Flex mt="24px" alignItems="center" justifyContent="space-between">
             <Text mr="8px" color="textSubtle">
