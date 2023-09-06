@@ -1,5 +1,6 @@
 import { styled } from 'styled-components'
-import { Text, Flex, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/sdk'
@@ -13,7 +14,7 @@ const TokenWrapper = styled.div`
   }
 `
 
-const { V3Tag, V3FeeTag, EthTag, BscTag, ZkEVMTag, ZkSyncTag } = FarmUI.Tags
+const { V3Tag, V3FeeTag, EthTag, BscTag, ZkEVMTag, ZkSyncTag } = FarmWidget.Tags
 
 interface PairInfoProps {
   isReady: boolean

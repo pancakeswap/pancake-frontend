@@ -1,0 +1,29 @@
+{
+  "name": "@pancakeswap/widgets-internal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "dependencies": {
+    "@pancakeswap/farms": "workspace:*",
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
+    "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/uikit": "workspace:*",
+    "@pancakeswap/utils": "workspace:*",
+    "bignumber.js": "^9.0.0",
+    "date-fns": "^2.29.3",
+    "lodash": "^4.17.21"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "styled-components": "^6.0.7",
+    "next": "13.4.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/react": "^18.2.21",
+    "react": "^18.2.0",
+    "styled-components": "^6.0.7",
+    "next": "13.4.2"
+  }
+}

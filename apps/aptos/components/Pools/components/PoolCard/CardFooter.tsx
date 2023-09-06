@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 
 interface FooterProps {
   defaultExpanded?: boolean
 }
 
-const { ManualPoolTag } = FarmUI.Tags
+const { ManualPoolTag } = FarmWidget.Tags
 
 const ExpandableButtonWrapper = styled(Flex)`
   align-items: center;

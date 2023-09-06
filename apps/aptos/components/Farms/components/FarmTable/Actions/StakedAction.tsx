@@ -2,7 +2,8 @@ import { useAccountBalance } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { Farm as FarmUI, useModal, useToast } from '@pancakeswap/uikit'
+import { useModal, useToast } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
@@ -126,7 +127,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }
 
   const [onPresentDeposit] = useModal(
-    <FarmUI.DepositModal
+    <FarmWidget.DepositModal
       account={account || ''}
       pid={pid}
       lpTotalSupply={lpTotalSupply}
@@ -146,7 +147,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal
+    <FarmWidget.WithdrawModal
       max={stakedBalance}
       lpPrice={lpTokenPrice}
       onConfirm={handleUnstake}
@@ -157,25 +158,25 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!account) {
     return (
-      <FarmUI.FarmTable.AccountNotConnect>
+      <FarmWidget.FarmTable.AccountNotConnect>
         <ConnectWalletButton width="100%" />
-      </FarmUI.FarmTable.AccountNotConnect>
+      </FarmWidget.FarmTable.AccountNotConnect>
     )
   }
 
   if (!userDataReady) {
-    return <FarmUI.FarmTable.StakeActionDataNotReady />
+    return <FarmWidget.FarmTable.StakeActionDataNotReady />
   }
 
   if (stakedBalance.gt(0)) {
     return (
-      <FarmUI.FarmTable.StakedActionComponent
+      <FarmWidget.FarmTable.StakedActionComponent
         lpSymbol={lpSymbol}
         disabledPlusButton={isStakeReady}
         onPresentWithdraw={onPresentWithdraw}
         onPresentDeposit={onPresentDeposit}
       >
-        <FarmUI.StakedLP
+        <FarmWidget.StakedLP
           decimals={FARM_DEFAULT_DECIMALS}
           stakedBalance={stakedBalance}
           quoteTokenSymbol={quoteToken.symbol}
@@ -185,12 +186,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           tokenAmountTotal={tokenAmountTotal}
           quoteTokenAmountTotal={quoteTokenAmountTotal}
         />
-      </FarmUI.FarmTable.StakedActionComponent>
+      </FarmWidget.FarmTable.StakedActionComponent>
     )
   }
 
   return (
-    <FarmUI.FarmTable.StakeComponent
+    <FarmWidget.FarmTable.StakeComponent
       lpSymbol={lpSymbol}
       isStakeReady={isStakeReady}
       onPresentDeposit={onPresentDeposit}

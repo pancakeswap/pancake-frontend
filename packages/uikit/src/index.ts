@@ -20,7 +20,6 @@ export * from "./widgets/Menu";
 export * from "./widgets/Swap";
 export * as BuyCrypto from "./widgets/BuyCrypto";
 export * as Liquidity from "./widgets/Liquidity";
-export * from "./widgets/Farm";
 export * from "./widgets/Ifo";
 export * from "./widgets/RoiCalculator";
 export * as Pool from "./widgets/Pool";

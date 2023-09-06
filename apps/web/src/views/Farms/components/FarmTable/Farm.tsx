@@ -1,9 +1,10 @@
-import { Farm as FarmUI, FarmTableFarmTokenInfoProps, Flex } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 
-const { FarmTokenInfo } = FarmUI.FarmTable
+const { FarmTokenInfo } = FarmWidget.FarmTable
 
-export const FarmCell: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenInfoProps>> = ({
+export const FarmCell: React.FunctionComponent<React.PropsWithChildren<FarmWidget.FarmTableFarmTokenInfoProps>> = ({
   token,
   quoteToken,
   label,

@@ -1,18 +1,8 @@
 /* eslint-disable no-case-declarations */
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  DesktopColumnSchema,
-  FarmTableEarnedProps,
-  FarmTableFarmTokenInfoProps,
-  FarmTableLiquidityProps,
-  FarmTableMultiplierProps,
-  Farm as FarmUI,
-  Flex,
-  MobileColumnSchema,
-  V3DesktopColumnSchema,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
@@ -22,19 +12,20 @@ import { ActionPanelV2, ActionPanelV3 } from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
 
-const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
-const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount, StakedLiquidity } = FarmUI.FarmTable
+const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
+const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount, StakedLiquidity } = FarmWidget.FarmTable
+const { DesktopColumnSchema, MobileColumnSchema, V3DesktopColumnSchema } = FarmWidget
 
 export type RowProps = {
-  earned: FarmTableEarnedProps
+  earned: FarmWidget.FarmTableEarnedProps
   initialActivity?: boolean
-  multiplier: FarmTableMultiplierProps
+  multiplier: FarmWidget.FarmTableMultiplierProps
 } & (V2RowProps | V3RowProps | CommunityRowProps)
 
 export type V2RowProps = {
   type: 'v2'
-  farm: FarmTableFarmTokenInfoProps & { version: 2 }
-  liquidity: FarmTableLiquidityProps
+  farm: FarmWidget.FarmTableFarmTokenInfoProps & { version: 2 }
+  liquidity: FarmWidget.FarmTableLiquidityProps
   apr: AprProps
   details: V2Farm
 }
@@ -49,8 +40,8 @@ export type V3RowProps = {
     value: string
     pid: number
   }
-  stakedLiquidity: FarmTableLiquidityProps
-  farm: FarmTableFarmTokenInfoProps & { version: 3 }
+  stakedLiquidity: FarmWidget.FarmTableLiquidityProps
+  farm: FarmWidget.FarmTableFarmTokenInfoProps & { version: 3 }
   details: V3Farm
   availableLp: {
     pid: number
