@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
+import { Text, TooltipText, useModal, useTooltip, RoiCalculatorModal } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
-import { RoiCalculatorModal } from '@pancakeswap/widgets-internal/roi'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
