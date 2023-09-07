@@ -24,7 +24,7 @@ interface AuctionHistoryProps {
 const StyledIconButton = styled(IconButton)`
   width: 32px;
 
-  :disabled {
+  &:disabled {
     background: none;
 
     svg {
