@@ -61,7 +61,7 @@ const StyledButton = styled.button<BaseButtonProps>`
   outline: 0;
   transition: background-color 0.2s, opacity 0.2s;
 
-  :focus-visible {
+  &:focus-visible {
     outline: none;
     box-shadow: ${({ theme }) => theme.shadows.focus};
   }

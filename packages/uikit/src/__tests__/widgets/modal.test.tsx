@@ -48,7 +48,7 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c7 :focus-visible {
+    .c7:focus-visible {
       outline: none;
       box-shadow: var(--shadows-focus);
     }

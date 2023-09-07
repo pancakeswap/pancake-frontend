@@ -58,7 +58,7 @@ const ContentLayout = styled.div`
 const TokenButton = styled(Flex)`
   padding: 8px 0px;
   margin-right: 16px;
-  :hover {
+  &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
