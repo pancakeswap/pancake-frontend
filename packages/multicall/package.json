@@ -9,6 +9,9 @@
     "coverage": "vitest run --coverage",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
+  "files": [
+    "dist"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.mjs",
