@@ -1,5 +1,11 @@
 # @pancakeswap/multicall
 
+## 3.0.1
+
+### Patch Changes
+
+- 5a9836d39: Add contracts to readme
+
 ## 3.0.0
 
 ### Major Changes
