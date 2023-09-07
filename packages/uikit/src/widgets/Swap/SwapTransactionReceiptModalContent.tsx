@@ -8,7 +8,7 @@ export const SwapTransactionReceiptModalContent: React.FC<PropsWithChildren> = (
 
   return (
     <Box width="100%">
-      <Box margin="auto auto 78px auto" width="fit-content">
+      <Box margin="auto auto 66px auto" width="fit-content">
         <CheckmarkCircleIcon color="success" width={50} height={50} />
       </Box>
       <AutoColumn gap="12px" justify="center">

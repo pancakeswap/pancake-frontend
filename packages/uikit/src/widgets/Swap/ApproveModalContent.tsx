@@ -16,12 +16,14 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ isMM, 
   );
 
   return (
-    <Box width="100%" mb="49px">
-      <ColumnCenter>
-        <Spinner />
-      </ColumnCenter>
+    <Box width="100%">
+      <Box mb="16px">
+        <ColumnCenter>
+          <Spinner />
+        </ColumnCenter>
+      </Box>
       <AutoColumn gap="12px" justify="center">
-        <Text bold mt="16px" textAlign="center">
+        <Text bold textAlign="center">
           {t("Enable spending %symbol%", { symbol })}
         </Text>
         <Flex>
