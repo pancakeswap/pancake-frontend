@@ -1,7 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 import { Flex, Text, Box, LinkExternal, useTooltip } from '@pancakeswap/uikit'
 import { ConfirmModalState } from '../types'
+
+const StyledLinkExternal = styled(LinkExternal)`
+  &:hover {
+    text-decoration: initial;
+  }
+`
 
 const StepsContainer = styled(Flex)`
   width: 100px;
@@ -51,7 +57,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
           </StepsContainer>
           {(confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
             confirmModalState === ConfirmModalState.APPROVE_PENDING) && (
-            <LinkExternal
+            <StyledLinkExternal
               external
               margin="16px auto auto auto"
               href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated" // TODO: Change URL
@@ -62,7 +68,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
               </Text>
               {tooltipVisible && tooltip}
               <Text color="primary">{t('this?')}</Text>
-            </LinkExternal>
+            </StyledLinkExternal>
           )}
         </>
       )}

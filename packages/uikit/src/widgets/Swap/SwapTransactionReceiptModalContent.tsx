@@ -12,7 +12,7 @@ export const SwapTransactionReceiptModalContent: React.FC<PropsWithChildren> = (
         <CheckmarkCircleIcon color="success" width={50} height={50} />
       </Box>
       <AutoColumn gap="12px" justify="center">
-        <Text bold mt="16px" textAlign="center">
+        <Text bold textAlign="center">
           {t("Transaction receipt")}
         </Text>
         {children}

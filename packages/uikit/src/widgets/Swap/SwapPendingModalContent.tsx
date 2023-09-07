@@ -29,7 +29,7 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
   return (
     <Box width="100%">
       {showIcon ? (
-        <Box margin="auto auto 63px auto" width="fit-content">
+        <Box margin="auto auto 48px auto" width="fit-content">
           <ArrowUpIcon color="success" width={80} height={80} />
         </Box>
       ) : (

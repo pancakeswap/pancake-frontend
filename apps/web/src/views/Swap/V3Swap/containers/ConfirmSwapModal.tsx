@@ -1,4 +1,4 @@
-import { useCallback, memo, useState, useEffect } from 'react'
+import { useCallback, memo, useState, useEffect, useMemo } from 'react'
 import { Currency, TradeType, CurrencyAmount, ChainId, Token } from '@pancakeswap/sdk'
 import {
   Flex,
@@ -18,6 +18,7 @@ import { SendTransactionResult } from 'wagmi/actions'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 
 import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -275,7 +276,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
         <SwapTransactionReceiptModalContent>
           {chainId && (
             <Link external small href={getBlockExploreLink(txHash, 'transaction', chainId)}>
-              {t('View on %site%', { site: getBlockExploreName(chainId) })}
+              {t('View on %site%', { site: getBlockExploreName(chainId) })}: {truncateHash(txHash, 8, 0)}
               {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
             </Link>
           )}
@@ -331,16 +332,24 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     openSettingModal,
   ])
 
+  const isShowingLoadingAnimation = useMemo(
+    () =>
+      confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+      confirmModalState === ConfirmModalState.APPROVE_PENDING ||
+      attemptingTxn,
+    [confirmModalState, attemptingTxn],
+  )
+
   if (!chainId) return null
 
   return (
     <ConfirmSwapModalContainer
       minHeight="415px"
       width={['100%', '100%', '100%', '343px']}
-      // headerPadding="12px 24px 0px 24px !important"
-      // bodyPadding="0 24px 24px 24px"
-      // bodyTop="-15px"
       hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING}
+      headerPadding={isShowingLoadingAnimation ? '12px 24px 0px 24px !important' : '12px 24px'}
+      bodyPadding={isShowingLoadingAnimation ? '0 24px 24px 24px' : '24px'}
+      bodyTop={isShowingLoadingAnimation ? '-15px' : '0'}
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
