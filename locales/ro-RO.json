@@ -2652,7 +2652,6 @@
   "Please visit": "Te rugăm să vizitezi",
   "to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to convert SnBNB back to BNB seamlessly.": "pentru a renunța la staking SnBNB. PancakeSwap face eforturi pentru a susține un contract de conversie pe pagina noastră de staking de lichiditate pentru a converti SnBNB înapoi în BNB fără probleme.",
   "0% Fee": "0% comision",
-  "0% Credit/Debit Cards Fee": "0% comision la carduri de credit/debit",
   "Get more details from": "Obține mai multe detalii de la",
   "RedAlarm": "RedAlarm",
   "Merchandise": "Marfă",
@@ -2678,5 +2677,6 @@
   "Polygon zkEVM": "Polygon zkEVM",
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to",
-  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned."
+  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
 }
