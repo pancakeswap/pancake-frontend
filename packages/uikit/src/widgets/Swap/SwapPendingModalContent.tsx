@@ -27,18 +27,20 @@ export const SwapPendingModalContent: React.FC<SwapPendingModalContentProps> = (
   const symbolB = currencyB?.symbol;
 
   return (
-    <Box width="100%" mb="49px">
+    <Box width="100%">
       {showIcon ? (
-        <Box margin="auto" width="fit-content">
+        <Box margin="auto auto 63px auto" width="fit-content">
           <ArrowUpIcon color="success" width={80} height={80} />
         </Box>
       ) : (
-        <ColumnCenter>
-          <Spinner />
-        </ColumnCenter>
+        <Box mb="16px">
+          <ColumnCenter>
+            <Spinner />
+          </ColumnCenter>
+        </Box>
       )}
       <AutoColumn gap="12px" justify="center">
-        <Text bold mt="16px" textAlign="center">
+        <Text bold textAlign="center">
           {title}
         </Text>
         <TokenTransferInfo

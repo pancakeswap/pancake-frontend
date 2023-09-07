@@ -19,9 +19,11 @@ export interface ModalProps extends ModalWrapperProps {
   title: React.ReactNode;
   hideCloseButton?: boolean;
   onBack?: () => void;
+  headerPadding?: string;
   bodyPadding?: string;
   headerBackground?: string;
   headerRightSlot?: React.ReactNode;
   bodyAlignItems?: string;
   headerBorderColor?: string;
+  bodyTop?: string;
 }

@@ -1,6 +1,7 @@
 import { useCallback, memo, useState, useEffect } from 'react'
 import { Currency, TradeType, CurrencyAmount, ChainId, Token } from '@pancakeswap/sdk'
 import {
+  Flex,
   Box,
   Link,
   BscScanIcon,
@@ -181,7 +182,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
-  const { confirmModalState, startSwapFlow } = useConfirmModalState({
+  const { confirmModalState, pendingModalSteps, startSwapFlow } = useConfirmModalState({
     txHash,
     chainId,
     approval,
@@ -220,11 +221,13 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
     if (swapErrorMessage) {
       return (
-        <SwapTransactionErrorContent
-          message={swapErrorMessage}
-          onDismiss={handleDismiss}
-          openSettingModal={openSettingModal}
-        />
+        <Flex width="100%" alignItems="center" height="calc(430px - 73px - 120px)">
+          <SwapTransactionErrorContent
+            message={swapErrorMessage}
+            onDismiss={handleDismiss}
+            openSettingModal={openSettingModal}
+          />
+        </Flex>
       )
     }
 
@@ -251,9 +254,11 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
           amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
         >
           <AddToWalletButton
+            mt="39px"
+            height="auto"
             variant="tertiary"
-            mt="12px"
             width="fit-content"
+            padding="6.5px 20px"
             marginTextBetweenLogo="6px"
             textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
             tokenAddress={token?.address}
@@ -274,6 +279,19 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
               {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
             </Link>
           )}
+          <AddToWalletButton
+            mt="39px"
+            height="auto"
+            variant="tertiary"
+            width="fit-content"
+            padding="6.5px 20px"
+            marginTextBetweenLogo="6px"
+            textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+            tokenAddress={token?.address}
+            tokenSymbol={currencyB?.symbol}
+            tokenDecimals={token?.decimals}
+            tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
+          />
         </SwapTransactionReceiptModalContent>
       )
     }
@@ -317,15 +335,21 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
   return (
     <ConfirmSwapModalContainer
-      minHeight="410px"
-      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING && !swapErrorMessage}
+      minHeight="415px"
+      width={['100%', '100%', '100%', '343px']}
+      // headerPadding="12px 24px 0px 24px !important"
+      // bodyPadding="0 24px 24px 24px"
+      // bodyTop="-15px"
+      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING}
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
       {(confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
         confirmModalState === ConfirmModalState.APPROVE_PENDING ||
         attemptingTxn) &&
-        !swapErrorMessage && <ApproveStepFlow confirmModalState={confirmModalState} />}
+        !swapErrorMessage && (
+          <ApproveStepFlow confirmModalState={confirmModalState} hideStepIndicators={pendingModalSteps.length === 1} />
+        )}
     </ConfirmSwapModalContainer>
   )
 })

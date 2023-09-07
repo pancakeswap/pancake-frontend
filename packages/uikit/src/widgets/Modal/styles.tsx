@@ -8,7 +8,7 @@ import { ModalProps } from "./types";
 
 export const mobileFooterHeight = 73;
 
-export const ModalHeader = styled.div<{ background?: string; headerBorderColor?: string }>`
+export const ModalHeader = styled(Flex)<{ background?: string; headerBorderColor?: string }>`
   align-items: center;
   background: transparent;
   border-bottom: 1px solid ${({ theme, headerBorderColor }) => headerBorderColor || theme.colors.cardBorder};

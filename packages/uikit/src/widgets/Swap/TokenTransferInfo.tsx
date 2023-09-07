@@ -21,14 +21,14 @@ const TokenTransferInfo: React.FC<TokenTransferInfoProps> = ({
   return (
     <Flex>
       <Flex>
-        <Text mr="4px" fontSize="14px" bold>{`${amountA} ${symbolA}`}</Text>
+        <Text mr="4px" fontSize="14px">{`${amountA} ${symbolA}`}</Text>
         <CurrencyLogo size="20px" currency={currencyA} />
       </Flex>
       <Box m="0 8px">
         <ArrowForwardIcon color="textSubtle" />
       </Box>
       <Flex>
-        <Text mr="4px" fontSize="14px" bold>{`${amountB} ${symbolB}`}</Text>
+        <Text mr="4px" fontSize="14px">{`${amountB} ${symbolB}`}</Text>
         <CurrencyLogo size="20px" currency={currencyB} />
       </Flex>
     </Flex>

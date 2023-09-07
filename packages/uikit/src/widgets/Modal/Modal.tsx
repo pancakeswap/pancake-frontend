@@ -49,12 +49,14 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   onBack,
   children,
   hideCloseButton = false,
+  headerPadding = "12px 24px",
   bodyPadding = "24px",
   headerBackground = "transparent",
   minWidth = "320px",
   headerRightSlot,
   bodyAlignItems,
   headerBorderColor,
+  bodyTop = "0px",
   ...props
 }) => {
   const context = useContext(ModalV2Context);
@@ -64,6 +66,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
     <ModalWrapper minWidth={minWidth} onDismiss={onDismiss} hideCloseButton={hideCloseButton} {...props}>
       <ModalHeader
         background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}
+        p={headerPadding}
         headerBorderColor={headerBorderColor}
       >
         <ModalTitle>
@@ -74,6 +77,8 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
         {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
       </ModalHeader>
       <ModalBody
+        position="relative"
+        top={bodyTop}
         // prevent drag event from propagating to parent on scroll
         onPointerDownCapture={(e) => e.stopPropagation()}
         p={bodyPadding}

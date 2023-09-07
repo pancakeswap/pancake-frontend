@@ -7,9 +7,9 @@ export const SwapTransactionReceiptModalContent: React.FC<PropsWithChildren> = (
   const { t } = useTranslation();
 
   return (
-    <Box width="100%" mb="49px">
-      <Box margin="auto" width="fit-content">
-        <CheckmarkCircleIcon color="success" width={80} height={80} />
+    <Box width="100%">
+      <Box margin="auto auto 78px auto" width="fit-content">
+        <CheckmarkCircleIcon color="success" width={50} height={50} />
       </Box>
       <AutoColumn gap="12px" justify="center">
         <Text bold mt="16px" textAlign="center">
