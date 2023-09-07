@@ -2,7 +2,7 @@
 
 Enhanced multicall sdk to safely make multicalls within the gas limit.
 
-Inspired by the (1inch multicall)[https://github.com/1inch/multicall].
+Inspired by the [1inch multicall](https://github.com/1inch/multicall).
 
 ## Install
 
@@ -34,7 +34,7 @@ const calls: MulticallRequestWithGas[] = [
 const { results, blockNumber } = await multicallByGasLimit(calls, {
   chainId: ChainId.BSC,
 
-  // Rpc client. Pls refer to `PublicClient` from viem
+  // Rpc client. Please refer to `PublicClient` from viem
   client,
 })
 
@@ -69,3 +69,7 @@ import { getGasLimitOnChain } from '@pancakeswap/multicall'
 // Get the rpc call gas limit of the specified chain
 const gasLimit = await getGasLimitOnChain(ChainId.BSC)
 ```
+
+## Supported chains
+
+For supported chains and contract addresses, please refer to [multicall contracts](https://github.com/pancakeswap/pancake-frontend/blob/develop/packages/multicall/src/constants/contracts.ts).
