@@ -11,7 +11,7 @@ const StyledInput = styled(Input)`
 const StyledIconButton = styled(IconButton)`
   width: 32px;
 
-  :disabled {
+  &:disabled {
     background: none;
 
     svg {
