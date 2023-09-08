@@ -201,23 +201,15 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
   const topModal = useCallback(() => {
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
     const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
+    const amountA = formatAmount(trade?.inputAmount, 4) ?? ''
+    const amountB = formatAmount(trade?.outputAmount, 4) ?? ''
 
-    if (showApproveFlow) {
-      if (confirmModalState === ConfirmModalState.APPROVING_TOKEN) {
-        return <ApproveModalContent isMM={isMM} symbol={trade?.inputAmount?.currency?.symbol} />
-      }
-
-      if (confirmModalState === ConfirmModalState.APPROVE_PENDING) {
-        return (
-          <SwapPendingModalContent
-            title={t('Allow %symbol% to be used for swapping', { symbol: trade?.inputAmount?.currency?.symbol })}
-            currencyA={currencyA}
-            currencyB={currencyB}
-            amountA={formatAmount(trade?.inputAmount, 6) ?? ''}
-            amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
-          />
-        )
-      }
+    if (
+      showApproveFlow &&
+      (confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+        confirmModalState === ConfirmModalState.APPROVE_PENDING)
+    ) {
+      return <ApproveModalContent isMM={isMM} symbol={trade?.inputAmount?.currency?.symbol} />
     }
 
     if (swapErrorMessage) {
@@ -238,8 +230,8 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
           title={t('Confirm Swap')}
           currencyA={currencyA}
           currencyB={currencyB}
-          amountA={formatAmount(trade?.inputAmount, 6) ?? ''}
-          amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
+          amountA={amountA}
+          amountB={amountB}
         />
       )
     }
@@ -251,8 +243,8 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
           title={t('Transaction Submitted')}
           currencyA={currencyA}
           currencyB={currencyB}
-          amountA={formatAmount(trade?.inputAmount, 6) ?? ''}
-          amountB={formatAmount(trade?.outputAmount, 6) ?? ''}
+          amountA={amountA}
+          amountB={amountB}
         >
           <AddToWalletButton
             mt="39px"

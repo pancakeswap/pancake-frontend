@@ -55,8 +55,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
             <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} />
             <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} />
           </StepsContainer>
-          {(confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
-            confirmModalState === ConfirmModalState.APPROVE_PENDING) && (
+          {confirmModalState === ConfirmModalState.APPROVING_TOKEN && (
             <StyledLinkExternal
               external
               margin="16px auto auto auto"
