@@ -155,7 +155,7 @@ const useConfirmModalState = ({
 
   // Submit Approve, get error when submit approve.
   useEffect(() => {
-    if (isPendingError && previouslyPending && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
+    if (isPendingError && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
       onCancel()
     }
   }, [isPendingError, confirmModalState, previouslyPending])
