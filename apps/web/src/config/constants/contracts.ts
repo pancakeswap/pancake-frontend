@@ -253,4 +253,8 @@ export default {
     [ChainId.BSC]: '0xCD5d1935e9bfa4905f9f007C97aB1f1763dC1607',
     [ChainId.BSC_TESTNET]: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
   },
+  anniversaryAchievement: {
+    [ChainId.BSC]: '0xF839286bD9D14b358496829F3BaB3145C16ad3C1',
+    [ChainId.BSC_TESTNET]: '0x',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

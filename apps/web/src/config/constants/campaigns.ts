@@ -216,6 +216,13 @@ const campaigns: Campaign[] = [
     badge: '2-year.svg',
   },
   {
+    id: '516020001', // TODO confirm with SC
+    type: 'participation',
+    title: '3 Year',
+    description: 'Celebrate our 3rd birthday with us',
+    badge: '3-year.svg',
+  },
+  {
     id: '511120000',
     type: 'ifo',
     title: 'Duelist King',

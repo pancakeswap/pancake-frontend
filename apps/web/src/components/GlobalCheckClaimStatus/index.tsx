@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { useModal, useToast } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
-import { ModalV2 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useRouter } from 'next/router'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
-import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
-import useAirdropModalStatus from './hooks/useAirdropModalStatus'
+import { useAnniversaryAchievementContract } from 'hooks/useContract'
+import AnniversaryAchievementModal from './AnniversaryAchievementModal'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
@@ -31,35 +34,62 @@ const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimS
  */
 
 const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
-  const { address: account } = useAccount()
+  const { t } = useTranslation()
   const { pathname } = useRouter()
-  const [show, setShow] = useState(false)
-  const { shouldShowModal, v3WhitelistAddress } = useAirdropModalStatus()
-  const [showOnceAirdropModal, setShowOnceAirdropModal] = useShowOnceAirdropModal()
+  const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
+  const hasDisplayedModal = useRef(false)
+  const contract = useAnniversaryAchievementContract({ chainId: ChainId.BSC })
+
+  const { toastError, toastSuccess } = useToast()
+  const { fetchWithCatchTxError } = useCatchTxError()
+
+  const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
+
+  const [onPresentAnniversaryModal] = useModal(
+    <AnniversaryAchievementModal
+      onClick={async () => {
+        try {
+          const receipt = await fetchWithCatchTxError(() => contract.write.claimAnniversaryPoints({ account, chainId }))
+
+          if (receipt?.status) {
+            toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+          }
+        } catch (error: any) {
+          const errorDescription = `${error.message} - ${error.data?.message}`
+          toastError(t('Failed to claim'), errorDescription)
+        }
+      }}
+    />,
+  )
+
+  // Check claim status
+  useEffect(() => {
+    const fetchClaimAnniversaryStatus = async () => {
+      const canClaimAnniversary = await contract.read.canClaim([account])
+      setCanClaimAnniversaryPoints(canClaimAnniversary)
+    }
+
+    if (account && chainId === ChainId.BSC) {
+      fetchClaimAnniversaryStatus()
+    }
+  }, [account, chainId, contract])
 
   useEffect(() => {
-    if (shouldShowModal && !excludeLocations.some((location) => pathname.includes(location)) && showOnceAirdropModal) {
-      setShow(true)
-    } else {
-      setShow(false)
-    }
-  }, [account, excludeLocations, pathname, setShow, shouldShowModal, showOnceAirdropModal, v3WhitelistAddress])
+    const matchesSomeLocations = excludeLocations.some((location) => pathname.includes(location))
 
-  const handleCloseModal = () => {
-    if (showOnceAirdropModal) {
-      setShowOnceAirdropModal(!showOnceAirdropModal)
+    if (canClaimAnniversaryPoints && !matchesSomeLocations && !hasDisplayedModal.current) {
+      onPresentAnniversaryModal()
+      hasDisplayedModal.current = true
     }
-    setShow(false)
-  }
+  }, [pathname, excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, onPresentAnniversaryModal])
 
-  return (
-    <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
-      <V3AirdropModal
-        data={account ? (v3WhitelistAddress?.[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
-        onDismiss={handleCloseModal}
-      />
-    </ModalV2>
-  )
+  // Reset the check flag when account changes
+  useEffect(() => {
+    hasDisplayedModal.current = false
+  }, [account, hasDisplayedModal])
+
+  return null
 }
 
 export default GlobalCheckClaimStatus

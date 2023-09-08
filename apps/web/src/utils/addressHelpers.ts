@@ -148,3 +148,7 @@ export const getVCakeAddress = (chainId?: number) => {
 export const getRevenueSharingPoolAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.revenueSharingPool, chainId)
 }
+
+export const getAnniversaryAchievementAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.anniversaryAchievement, chainId)
+}

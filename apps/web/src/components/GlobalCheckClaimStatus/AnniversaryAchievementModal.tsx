@@ -58,15 +58,15 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
     <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
       <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
         <Box>
-          <AnniversaryImage src="/images/achievements/2-year.svg" />
+          <AnniversaryImage src="/images/achievements/3-year.svg" />
         </Box>
         <Text textAlign="center" bold fontSize="24px">
-          2 Years
+          3 Years
         </Text>
         <Text textAlign="center">+100 {t('Points')}</Text>
         <Text textAlign="center" bold color="secondary" mb="24px">
           {t(
-            'You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!',
+            'You won points and achievements for taking part in our three years journey. Now let’s celebrate our 3rd Birthday!',
           )}
         </Text>
         <Button
