@@ -26,7 +26,7 @@ import {
   chainIdToNetwork,
   moonpayCurrencyChainIdentifier,
   supportedTokenMap,
-} from 'views/BuyCrypto/constants'
+} from 'config/constants/buyCrypto'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'

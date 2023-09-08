@@ -18,7 +18,7 @@ import { useChainId } from 'wagmi'
 import { FormHeader } from './FormHeader'
 import { FormContainer } from './FormContainer'
 import GetQuotesButton from '../components/GetQuotesButton'
-import { fiatCurrencyMap } from '../constants'
+import { fiatCurrencyMap } from '../../../config/constants/buyCrypto'
 import { CurrencySelect } from '../components/OnRampCurrencySelect'
 
 // Since getting a quote with a number with more than 2 decimals (e.g., 123.121212),

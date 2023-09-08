@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS } from 'config/constants/buyCrypto'
 import AccordionItem from './AccordionItem'
 
 function Accordion({

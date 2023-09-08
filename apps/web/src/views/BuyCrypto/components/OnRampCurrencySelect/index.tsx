@@ -17,7 +17,7 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAllOnRampTokens } from 'hooks/Tokens'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { fiatCurrencyMap } from 'config/constants/buyCrypto'
 
 const networkDisplay: { [id: number]: string } = {
   [ChainId.ETHEREUM]: 'Ethereum',

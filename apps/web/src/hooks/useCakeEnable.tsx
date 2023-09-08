@@ -21,7 +21,7 @@ export const useCakeEnable = (enableAmount: BigNumber) => {
   const isTransactionPending = useIsTransactionPending(transactionHash)
   const swapAmount = useMemo(() => getFullDisplayBalance(enableAmount), [enableAmount])
 
-  const parsedAmount = tryParseAmount(swapAmount, CAKE[chainId])
+  const parsedAmount = useMemo(() => tryParseAmount(swapAmount, CAKE[chainId]), [swapAmount, chainId])
 
   const trade = useTradeExactOut(Native.onChain(ChainId.BSC), parsedAmount)
 

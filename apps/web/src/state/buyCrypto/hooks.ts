@@ -16,7 +16,7 @@ import toNumber from 'lodash/toNumber'
 import toUpper from 'lodash/toUpper'
 
 import { MOONPAY_API_KEY, MERCURYO_WIDGET_ID, MOONPAY_BASE_URL } from 'config/constants/endpoints'
-import { SUPPORTED_ONRAMP_TOKENS, moonpayCurrencyChainIdentifier } from 'views/BuyCrypto/constants'
+import { SUPPORTED_ONRAMP_TOKENS, moonpayCurrencyChainIdentifier } from 'config/constants/buyCrypto'
 import { Field, replaceBuyCryptoState, selectCurrency, setMinAmount, setUsersIpAddress, typeInput } from './actions'
 
 type CurrencyLimits = {

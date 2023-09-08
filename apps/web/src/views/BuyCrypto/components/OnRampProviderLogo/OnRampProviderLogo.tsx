@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useTheme } from 'styled-components'
 import { ProviderIcon } from 'views/BuyCrypto/Icons'
-import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS } from 'config/constants/buyCrypto'
 import MercuryoAltSvg from '../../../../../public/images/on-ramp-providers/mercuryo_new_logo_black.png'
 import MercuryoAltSvgLight from '../../../../../public/images/on-ramp-providers/mercuryo_new_logo_white.png'
 
