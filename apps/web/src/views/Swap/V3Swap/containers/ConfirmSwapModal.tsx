@@ -46,11 +46,12 @@ interface ConfirmSwapModalProps {
   swapErrorMessage?: string
   showApproveFlow: boolean
   isPendingError: boolean
+  currentAllowance: CurrencyAmount<Currency>
   onAcceptChanges: () => void
   onConfirm: () => void
   customOnDismiss?: () => void
   openSettingModal?: () => void
-  approveCallback: () => Promise<SendTransactionResult>
+  approveCallback: (amountApprove?: bigint) => Promise<SendTransactionResult>
 }
 
 interface UseConfirmModalStateProps {
@@ -59,8 +60,9 @@ interface UseConfirmModalStateProps {
   approval: ApprovalState
   approvalToken: Currency
   isPendingError: boolean
+  currentAllowance: CurrencyAmount<Currency>
   onConfirm: () => void
-  approveCallback: () => Promise<SendTransactionResult>
+  approveCallback: (amountApprove?: bigint) => Promise<SendTransactionResult>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
@@ -77,6 +79,7 @@ const useConfirmModalState = ({
   approval,
   approvalToken,
   isPendingError,
+  currentAllowance,
   onConfirm,
   approveCallback,
 }: UseConfirmModalStateProps) => {
@@ -91,9 +94,9 @@ const useConfirmModalState = ({
     // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
     // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
     if (
+      currentAllowance.greaterThan(0) &&
       approvalToken.chainId === ethereumTokens.usdt.chainId &&
       approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
-      // currentAllowance.greaterThan(0)
     ) {
       steps.push(ConfirmModalState.RESETTING_USDT)
     }
@@ -105,14 +108,16 @@ const useConfirmModalState = ({
 
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [approval, approvalToken])
+  }, [approval, approvalToken, currentAllowance])
 
   const performStep = useCallback(
     (step: ConfirmModalState) => {
       switch (step) {
         case ConfirmModalState.RESETTING_USDT:
           setConfirmModalState(ConfirmModalState.RESETTING_USDT)
-          // call approve.revoke()
+          approveCallback(0n)
+            .then(() => performStep(ConfirmModalState.APPROVING_TOKEN))
+            .catch(() => onCancel())
           break
         case ConfirmModalState.APPROVING_TOKEN:
           setConfirmModalState(ConfirmModalState.APPROVING_TOKEN)
@@ -207,6 +212,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
   showApproveFlow,
   currencyBalances,
   swapErrorMessage,
+  currentAllowance,
   onDismiss,
   onConfirm,
   approveCallback,
@@ -227,6 +233,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     approval,
     approvalToken: trade?.inputAmount?.currency,
     isPendingError,
+    currentAllowance,
     approveCallback,
     onConfirm,
   })
