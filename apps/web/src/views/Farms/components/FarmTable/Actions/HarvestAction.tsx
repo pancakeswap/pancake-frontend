@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Skeleton, useToast, useModal, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Skeleton, useToast, useModal } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -18,7 +19,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
-const { FarmTableHarvestAction } = FarmUI.FarmTable
+const { FarmTableHarvestAction } = FarmWidget.FarmTable
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean

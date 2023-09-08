@@ -10,7 +10,7 @@ import { ExpandableLabel } from "../Button";
 import { Link, LinkExternal } from "../Link";
 import { HelpIcon } from "../Svg";
 import { Text } from "../Text";
-import { FarmMultiplierInfo } from "../../widgets/Farm/components/FarmMultiplierInfo";
+import { FarmMultiplierInfo } from "./FarmMultiplierInfo";
 
 export const Footer = styled(Flex)`
   width: 100%;

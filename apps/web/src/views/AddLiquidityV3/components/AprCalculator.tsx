@@ -1,16 +1,11 @@
 import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
+import { TooltipText, Flex, CalculateIcon, Text, IconButton, QuestionHelper } from '@pancakeswap/uikit'
 import {
-  useRoi,
   RoiCalculatorModalV2,
   RoiCalculatorPositionInfo,
-  TooltipText,
-  Flex,
-  CalculateIcon,
-  Text,
-  IconButton,
-  QuestionHelper,
+  useRoi,
   useAmountsByUsdValue,
-} from '@pancakeswap/uikit'
+} from '@pancakeswap/widgets-internal/roi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool, FeeCalculator } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
+import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
@@ -237,7 +238,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   )
 
   const [onPresentDeposit] = useModal(
-    <FarmUI.DepositModal
+    <FarmWidget.DepositModal
       account={account}
       pid={pid}
       lpTotalSupply={lpTotalSupply}
@@ -268,7 +269,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal
+    <FarmWidget.WithdrawModal
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
@@ -320,7 +321,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <FarmUI.StakedLP
+      <FarmWidget.StakedLP
         decimals={18}
         stakedBalance={stakedBalance}
         quoteTokenSymbol={WNATIVE[chainId]?.symbol === quoteToken.symbol ? NATIVE[chainId]?.symbol : quoteToken.symbol}

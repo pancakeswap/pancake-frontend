@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useTooltip, Farm as FarmUI } from '@pancakeswap/uikit'
+import { useTooltip } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 
-const { CompoundingPoolTag, ManualPoolTag, LockedPoolTag, LockedOrAutoPoolTag } = FarmUI.Tags
+const { CompoundingPoolTag, ManualPoolTag, LockedPoolTag, LockedOrAutoPoolTag } = FarmWidget.Tags
 
 const PoolTypeTag = ({ account, vaultKey, isLocked, children }) => {
   const { t } = useTranslation()

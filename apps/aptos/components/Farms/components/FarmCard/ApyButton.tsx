@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip, Farm as FarmUI, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { Text, TooltipText, useModal, useTooltip, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -106,7 +107,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   }
 
   return (
-    <FarmUI.FarmApyButton variant={variant} hideButton={hideButton} handleClickButton={handleClickButton}>
+    <FarmWidget.FarmApyButton variant={variant} hideButton={hideButton} handleClickButton={handleClickButton}>
       {useTooltipText ? (
         <>
           <TooltipText ref={targetRef} decorationColor="secondary">
@@ -117,7 +118,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       ) : (
         <>{displayApr}%</>
       )}
-    </FarmUI.FarmApyButton>
+    </FarmWidget.FarmApyButton>
   )
 }
 

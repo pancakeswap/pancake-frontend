@@ -1,4 +1,5 @@
-import { Farm as FarmUI, useModalV2 } from '@pancakeswap/uikit'
+import { useModalV2 } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
@@ -7,7 +8,7 @@ import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import FarmInfo from './FarmInfo'
 
-const { NoPosition } = FarmUI.FarmV3Card
+const { NoPosition } = FarmWidget.FarmV3Card
 
 const Action = styled.div`
   padding-top: 16px;

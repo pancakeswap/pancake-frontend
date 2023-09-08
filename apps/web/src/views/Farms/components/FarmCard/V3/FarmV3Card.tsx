@@ -1,15 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  Card,
-  ExpandableSectionButton,
-  Farm as FarmUI,
-  Flex,
-  Text,
-  TooltipText,
-  useModalV2,
-  useTooltip,
-  Box,
-} from '@pancakeswap/uikit'
+import { Card, ExpandableSectionButton, Flex, Text, TooltipText, useModalV2, useTooltip, Box } from '@pancakeswap/uikit'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -27,7 +18,7 @@ import { FarmV3ApyButton } from './FarmV3ApyButton'
 import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
 import { useBoostStatus, BoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 
-const { DetailsSection } = FarmUI.FarmCard
+const { DetailsSection } = FarmWidget.FarmCard
 
 const StyledCard = styled(Card)`
   align-self: baseline;
