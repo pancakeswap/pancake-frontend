@@ -2678,5 +2678,9 @@
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
-  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
+  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!",
+  "Proceed in your wallet": "Proceed in your wallet",
+  "Why approving this?": "Why approving this?",
+  "Allow %symbol% to be used for swapping": "Allow %symbol% to be used for swapping",
+  "Enable spending %symbol%": "Enable spending %symbol%"
 }
