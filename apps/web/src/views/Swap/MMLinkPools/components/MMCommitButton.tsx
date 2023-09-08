@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { MMRfqTrade, RFQResponse } from '../types'
+import { MMRfqTrade } from '../types'
 import ConfirmSwapModal from '../../V3Swap/containers/ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
@@ -68,16 +68,16 @@ export function MMSwapCommitButton({
   // the callback to execute the swap
 
   // @ts-ignore
-  const swapCalls = useSwapCallArguments(rfqTrade?.trade, rfqTrade?.rfq as RFQResponse['message'], recipient)
+  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq, recipient)
 
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    rfqTrade.trade as SmartRouterTrade<TradeType>,
+    rfqTrade.trade,
     recipient,
     // @ts-ignore
     swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: SmartRouterTrade<TradeType> | undefined
+    tradeToConfirm: SmartRouterTrade<TradeType>
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
