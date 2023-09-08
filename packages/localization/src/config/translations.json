@@ -2680,7 +2680,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
   "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!",
   "Proceed in your wallet": "Proceed in your wallet",
-  "Allow %symbol% to be used for swapping": "Allow %symbol% to be used for swapping",
   "Enable spending %symbol%": "Enable spending %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.",
   "Why": "Why",
