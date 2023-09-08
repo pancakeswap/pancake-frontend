@@ -19,6 +19,7 @@ import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { ethereumTokens } from '@pancakeswap/tokens'
 
 import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -56,6 +57,7 @@ interface UseConfirmModalStateProps {
   txHash: string
   chainId: ChainId
   approval: ApprovalState
+  approvalToken: Currency
   isPendingError: boolean
   onConfirm: () => void
   approveCallback: () => Promise<SendTransactionResult>
@@ -63,7 +65,9 @@ interface UseConfirmModalStateProps {
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   return (
-    confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.APPROVE_PENDING
+    confirmModalState === ConfirmModalState.RESETTING_USDT ||
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
+    confirmModalState === ConfirmModalState.APPROVE_PENDING
   )
 }
 
@@ -71,6 +75,7 @@ const useConfirmModalState = ({
   chainId,
   txHash,
   approval,
+  approvalToken,
   isPendingError,
   onConfirm,
   approveCallback,
@@ -82,6 +87,17 @@ const useConfirmModalState = ({
 
   const generateRequiredSteps = useCallback(() => {
     const steps: PendingConfirmModalState[] = []
+
+    // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
+    // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
+    if (
+      approvalToken.chainId === ethereumTokens.usdt.chainId &&
+      approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
+      // currentAllowance.greaterThan(0)
+    ) {
+      steps.push(ConfirmModalState.RESETTING_USDT)
+    }
+
     if (approval === ApprovalState.NOT_APPROVED) {
       setPreviouslyPending(false)
       steps.push(ConfirmModalState.APPROVING_TOKEN, ConfirmModalState.APPROVE_PENDING)
@@ -89,11 +105,15 @@ const useConfirmModalState = ({
 
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [approval])
+  }, [approval, approvalToken])
 
   const performStep = useCallback(
     (step: ConfirmModalState) => {
       switch (step) {
+        case ConfirmModalState.RESETTING_USDT:
+          setConfirmModalState(ConfirmModalState.RESETTING_USDT)
+          // call approve.revoke()
+          break
         case ConfirmModalState.APPROVING_TOKEN:
           setConfirmModalState(ConfirmModalState.APPROVING_TOKEN)
           approveCallback()
@@ -205,6 +225,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     txHash,
     chainId,
     approval,
+    approvalToken: trade?.inputAmount?.currency,
     isPendingError,
     approveCallback,
     onConfirm,
@@ -223,12 +244,21 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     const amountA = formatAmount(trade?.inputAmount, 4) ?? ''
     const amountB = formatAmount(trade?.outputAmount, 4) ?? ''
 
+    if (confirmModalState === ConfirmModalState.RESETTING_USDT) {
+      return <ApproveModalContent title={t('Reset approval on USDT.')} isMM={isMM} />
+    }
+
     if (
       showApproveFlow &&
       (confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
         confirmModalState === ConfirmModalState.APPROVE_PENDING)
     ) {
-      return <ApproveModalContent isMM={isMM} symbol={trade?.inputAmount?.currency?.symbol} />
+      return (
+        <ApproveModalContent
+          title={t('Enable spending %symbol%', { symbol: trade?.inputAmount?.currency?.symbol })}
+          isMM={isMM}
+        />
+      )
     }
 
     if (swapErrorMessage) {
@@ -364,12 +394,9 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
-      {(confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
-        confirmModalState === ConfirmModalState.APPROVE_PENDING ||
-        attemptingTxn) &&
-        !swapErrorMessage && (
-          <ApproveStepFlow confirmModalState={confirmModalState} hideStepIndicators={pendingModalSteps.length === 1} />
-        )}
+      {(isInApprovalPhase(confirmModalState) || attemptingTxn) && !swapErrorMessage && (
+        <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
+      )}
     </ConfirmSwapModalContainer>
   )
 })

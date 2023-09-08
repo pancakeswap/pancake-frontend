@@ -1,7 +1,8 @@
+import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { Flex, Text, Box, LinkExternal, useTooltip } from '@pancakeswap/uikit'
-import { ConfirmModalState } from '../types'
+import { ConfirmModalState, PendingConfirmModalState } from '../types'
 
 const StyledLinkExternal = styled(LinkExternal)`
   &:hover {
@@ -18,20 +19,20 @@ const StepsContainer = styled(Flex)`
   background: ${({ theme }) => theme.colors.input};
 `
 
-const Step = styled('div')<{ active?: boolean }>`
+const Step = styled('div')<{ active?: boolean; width: string }>`
   height: 100%;
-  width: 33.33%;
+  width: ${({ width }) => width};
   background: ${({ theme, active }) => (active ? theme.colors.secondary : theme.colors.input)};
 `
 
 interface ApproveStepFlowProps {
   confirmModalState: ConfirmModalState
-  hideStepIndicators: boolean
+  pendingModalSteps: PendingConfirmModalState[]
 }
 
 const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
   confirmModalState,
-  hideStepIndicators,
+  pendingModalSteps,
 }) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -43,6 +44,9 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
     { placement: 'top' },
   )
 
+  const stepWidth = useMemo(() => `${100 / pendingModalSteps.length}%`, [pendingModalSteps])
+  const hideStepIndicators = useMemo(() => pendingModalSteps.length === 1, [pendingModalSteps])
+
   return (
     <Box mt="32px">
       <Text fontSize="12px" textAlign="center" color="textSubtle">
@@ -51,10 +55,22 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
       {!hideStepIndicators && (
         <>
           <StepsContainer>
-            <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} />
-            <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} />
-            <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} />
+            {pendingModalSteps.length === 4 && (
+              <Step active={confirmModalState === ConfirmModalState.RESETTING_USDT} width={stepWidth} />
+            )}
+            <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />
+            <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} width={stepWidth} />
+            <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} width={stepWidth} />
           </StepsContainer>
+          {confirmModalState === ConfirmModalState.RESETTING_USDT && (
+            <StyledLinkExternal
+              external
+              margin="16px auto auto auto"
+              href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#why-do-i-need-to-reset-approval-on-usdt-before-enabling-approving" // TODO: Change URL
+            >
+              <Text color="primary">{t('Why resetting approval')}</Text>
+            </StyledLinkExternal>
+          )}
           {confirmModalState === ConfirmModalState.APPROVING_TOKEN && (
             <StyledLinkExternal
               external

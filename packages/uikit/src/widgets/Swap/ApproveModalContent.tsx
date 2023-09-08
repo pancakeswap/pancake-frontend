@@ -4,11 +4,11 @@ import { Spinner, Text, Box, Flex, TooltipText } from "../../components";
 import { useTooltip } from "../../hooks/useTooltip";
 
 interface ApproveModalContentProps {
+  title: string;
   isMM: boolean;
-  symbol: string;
 }
 
-export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ isMM, symbol }) => {
+export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title, isMM }) => {
   const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
@@ -24,7 +24,7 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ isMM, 
       </Box>
       <AutoColumn gap="12px" justify="center">
         <Text bold textAlign="center">
-          {t("Enable spending %symbol%", { symbol })}
+          {title}
         </Text>
         <Flex>
           <Text fontSize="14px">{t("Swapping thru:")}</Text>
