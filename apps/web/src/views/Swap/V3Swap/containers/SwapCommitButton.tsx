@@ -89,7 +89,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     [Field.OUTPUT]: relevantTokenBalances[1],
   }
   // check whether the user has approved the router on the input token
-  const [approval, isPendingError, approveCallback] = useApproveCallback(amountToApprove, routerAddress)
+  const [approval, approveCallback, isPendingError] = useApproveCallback(amountToApprove, routerAddress)
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
