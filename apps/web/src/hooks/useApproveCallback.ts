@@ -34,7 +34,7 @@ export function useApproveCallback(
   } = {
     addToTransaction: true,
   },
-): [ApprovalState, () => Promise<SendTransactionResult>] {
+): [ApprovalState, () => Promise<SendTransactionResult>, CurrencyAmount<Currency> | undefined] {
   const { addToTransaction = true, targetAmount } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -178,7 +178,7 @@ export function useApproveCallback(
     ],
   )
 
-  return [approvalState, approve]
+  return [approvalState, approve, currentAllowance]
 }
 
 // wraps useApproveCallback in the context of a swap
