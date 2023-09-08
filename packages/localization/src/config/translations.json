@@ -2688,5 +2688,7 @@
   "Pancakeswap AMM includes V3, V2 and stable swap.": "Pancakeswap AMM includes V3, V2 and stable swap.",
   "Swapping thru:": "Swapping thru:",
   "Pancakeswap MM": "Pancakeswap MM",
-  "Pancakeswap AMM": "Pancakeswap AMM"
+  "Pancakeswap AMM": "Pancakeswap AMM",
+  "Why resetting approval": "Why resetting approval",
+  "Reset approval on USDT.": "Reset approval on USDT."
 }
