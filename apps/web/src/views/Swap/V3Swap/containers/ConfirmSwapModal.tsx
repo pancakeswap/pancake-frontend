@@ -44,6 +44,7 @@ interface ConfirmSwapModalProps {
   approval: ApprovalState
   swapErrorMessage?: string
   showApproveFlow: boolean
+  isPendingError: boolean
   onAcceptChanges: () => void
   onConfirm: () => void
   customOnDismiss?: () => void
@@ -55,6 +56,7 @@ interface UseConfirmModalStateProps {
   txHash: string
   chainId: ChainId
   approval: ApprovalState
+  isPendingError: boolean
   onConfirm: () => void
   approveCallback: () => Promise<SendTransactionResult>
 }
@@ -65,7 +67,14 @@ function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   )
 }
 
-const useConfirmModalState = ({ chainId, txHash, approval, onConfirm, approveCallback }: UseConfirmModalStateProps) => {
+const useConfirmModalState = ({
+  chainId,
+  txHash,
+  approval,
+  isPendingError,
+  onConfirm,
+  approveCallback,
+}: UseConfirmModalStateProps) => {
   const provider = usePublicClient({ chainId })
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
@@ -114,6 +123,7 @@ const useConfirmModalState = ({ chainId, txHash, approval, onConfirm, approveCal
 
   const onCancel = () => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
+    setPreviouslyPending(false)
   }
 
   const checkHashIsReceipted = useCallback(
@@ -132,16 +142,23 @@ const useConfirmModalState = ({ chainId, txHash, approval, onConfirm, approveCal
     }
   }, [approval, confirmModalState])
 
+  // Submit Approve but after submit find out still not enough.
   useEffect(() => {
     if (
       previouslyPending &&
       approval === ApprovalState.NOT_APPROVED &&
       confirmModalState === ConfirmModalState.APPROVE_PENDING
     ) {
-      setConfirmModalState(ConfirmModalState.REVIEWING)
-      setPreviouslyPending(false)
+      onCancel()
     }
   }, [approval, confirmModalState, previouslyPending])
+
+  // Submit Approve, get error when submit approve.
+  useEffect(() => {
+    if (isPendingError && previouslyPending && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
+      onCancel()
+    }
+  }, [isPendingError, confirmModalState, previouslyPending])
 
   useEffect(() => {
     if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVED) {
@@ -166,6 +183,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
   isRFQReady,
   attemptingTxn,
   originalTrade,
+  isPendingError,
   showApproveFlow,
   currencyBalances,
   swapErrorMessage,
@@ -187,6 +205,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     txHash,
     chainId,
     approval,
+    isPendingError,
     approveCallback,
     onConfirm,
   })

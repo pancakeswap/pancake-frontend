@@ -39,7 +39,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
 
-  const [approval, approveCallback] = useApproveCallback(
+  const [approval, isPendingError, approveCallback] = useApproveCallback(
     mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
     mmTradeInfo?.routerAddress,
   )
@@ -80,6 +80,7 @@ export function MMCommitButton({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRema
       wrapInputError={wrapInputError}
       recipient={recipient}
       onUserInput={onUserInput}
+      isPendingError={isPendingError}
     />
   )
 }

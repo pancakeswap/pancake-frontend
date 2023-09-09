@@ -44,6 +44,7 @@ interface SwapCommitButtonPropsType {
   recipient: string
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
+  isPendingError: boolean
 }
 
 export function MMSwapCommitButton({
@@ -61,6 +62,7 @@ export function MMSwapCommitButton({
   currencyBalances,
   recipient,
   onUserInput,
+  isPendingError,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   // the callback to execute the swap
@@ -146,6 +148,7 @@ export function MMSwapCommitButton({
       approval={approval}
       attemptingTxn={attemptingTxn}
       originalTrade={tradeToConfirm}
+      isPendingError={isPendingError}
       showApproveFlow={showApproveFlow}
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
