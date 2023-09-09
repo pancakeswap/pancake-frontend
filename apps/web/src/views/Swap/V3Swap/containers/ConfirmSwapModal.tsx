@@ -174,15 +174,15 @@ const useConfirmModalState = ({
   }, [approval, confirmModalState])
 
   // Submit Approve but after submit find out still not enough.
-  // useEffect(() => {
-  //   if (
-  //     previouslyPending &&
-  //     approval === ApprovalState.NOT_APPROVED &&
-  //     confirmModalState === ConfirmModalState.APPROVE_PENDING
-  //   ) {
-  //     onCancel()
-  //   }
-  // }, [approval, confirmModalState, previouslyPending])
+  useEffect(() => {
+    if (
+      previouslyPending &&
+      approval === ApprovalState.NOT_APPROVED &&
+      confirmModalState === ConfirmModalState.APPROVE_PENDING
+    ) {
+      onCancel()
+    }
+  }, [approval, confirmModalState, previouslyPending])
 
   // Submit Approve, get error when submit approve.
   useEffect(() => {
