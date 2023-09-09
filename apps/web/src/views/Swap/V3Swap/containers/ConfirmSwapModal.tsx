@@ -19,7 +19,7 @@ import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
+import { ethereumTokens } from '@pancakeswap/tokens'
 
 import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
