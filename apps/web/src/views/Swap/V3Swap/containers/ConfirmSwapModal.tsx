@@ -1,12 +1,12 @@
-import { useCallback, memo, useState, useEffect, useMemo } from 'react'
-import { Currency, TradeType, CurrencyAmount, ChainId, Token } from '@pancakeswap/sdk'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import {
-  Flex,
-  Box,
-  Link,
-  BscScanIcon,
-  InjectedModalProps,
   ApproveModalContent,
+  Box,
+  BscScanIcon,
+  Flex,
+  InjectedModalProps,
+  Link,
   SwapPendingModalContent,
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/uikit'
@@ -407,9 +407,12 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
-      {(isInApprovalPhase(confirmModalState) || attemptingTxn) && !swapErrorMessage && (
-        <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
-      )}
+      {(confirmModalState === ConfirmModalState.RESETTING_USDT ||
+        isInApprovalPhase(confirmModalState) ||
+        attemptingTxn) &&
+        !swapErrorMessage && (
+          <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
+        )}
     </ConfirmSwapModalContainer>
   )
 })
