@@ -1,12 +1,12 @@
-import { useCallback, memo, useState, useEffect, useMemo } from 'react'
-import { Currency, TradeType, CurrencyAmount, ChainId, Token } from '@pancakeswap/sdk'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import {
-  Flex,
-  Box,
-  Link,
-  BscScanIcon,
-  InjectedModalProps,
   ApproveModalContent,
+  Box,
+  BscScanIcon,
+  Flex,
+  InjectedModalProps,
+  Link,
   SwapPendingModalContent,
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/uikit'
@@ -67,9 +67,7 @@ interface UseConfirmModalStateProps {
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   return (
-    confirmModalState === ConfirmModalState.RESETTING_USDT ||
-    confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
-    confirmModalState === ConfirmModalState.APPROVE_PENDING
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.APPROVE_PENDING
   )
 }
 
@@ -87,6 +85,7 @@ const useConfirmModalState = ({
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
   const [previouslyPending, setPreviouslyPending] = useState<boolean>(false)
+  const [resettingApproval, setResettingApproval] = useState<boolean>(false)
 
   const generateRequiredSteps = useCallback(() => {
     const steps: PendingConfirmModalState[] = []
@@ -116,7 +115,7 @@ const useConfirmModalState = ({
         case ConfirmModalState.RESETTING_USDT:
           setConfirmModalState(ConfirmModalState.RESETTING_USDT)
           approveCallback(0n)
-            .then(() => performStep(ConfirmModalState.APPROVING_TOKEN))
+            .then(() => setResettingApproval(true))
             .catch(() => onCancel())
           break
         case ConfirmModalState.APPROVING_TOKEN:
@@ -145,6 +144,13 @@ const useConfirmModalState = ({
     setPendingModalSteps(steps)
     performStep(steps[0])
   }, [generateRequiredSteps, performStep])
+
+  useEffect(() => {
+    if (approval === ApprovalState.NOT_APPROVED && resettingApproval) {
+      startSwapFlow()
+      setResettingApproval(false)
+    }
+  }, [approval, resettingApproval, startSwapFlow])
 
   const onCancel = () => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
@@ -401,9 +407,12 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
-      {(isInApprovalPhase(confirmModalState) || attemptingTxn) && !swapErrorMessage && (
-        <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
-      )}
+      {(confirmModalState === ConfirmModalState.RESETTING_USDT ||
+        isInApprovalPhase(confirmModalState) ||
+        attemptingTxn) &&
+        !swapErrorMessage && (
+          <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
+        )}
     </ConfirmSwapModalContainer>
   )
 })
