@@ -19,7 +19,7 @@ import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { ethereumTokens } from '@pancakeswap/tokens'
+import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 
 import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -67,9 +67,7 @@ interface UseConfirmModalStateProps {
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
   return (
-    confirmModalState === ConfirmModalState.RESETTING_USDT ||
-    confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
-    confirmModalState === ConfirmModalState.APPROVE_PENDING
+    confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.APPROVE_PENDING
   )
 }
 
@@ -87,6 +85,7 @@ const useConfirmModalState = ({
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
   const [previouslyPending, setPreviouslyPending] = useState<boolean>(false)
+  const [resettingApproval, setResettingApproval] = useState<boolean>(false)
 
   const generateRequiredSteps = useCallback(() => {
     const steps: PendingConfirmModalState[] = []
@@ -116,7 +115,7 @@ const useConfirmModalState = ({
         case ConfirmModalState.RESETTING_USDT:
           setConfirmModalState(ConfirmModalState.RESETTING_USDT)
           approveCallback(0n)
-            .then(() => performStep(ConfirmModalState.APPROVING_TOKEN))
+            .then(() => setResettingApproval(true))
             .catch(() => onCancel())
           break
         case ConfirmModalState.APPROVING_TOKEN:
@@ -146,6 +145,13 @@ const useConfirmModalState = ({
     performStep(steps[0])
   }, [generateRequiredSteps, performStep])
 
+  useEffect(() => {
+    if (approval === ApprovalState.NOT_APPROVED && resettingApproval) {
+      startSwapFlow()
+      setResettingApproval(false)
+    }
+  }, [approval, resettingApproval, startSwapFlow])
+
   const onCancel = () => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setPreviouslyPending(false)
@@ -168,22 +174,22 @@ const useConfirmModalState = ({
   }, [approval, confirmModalState])
 
   // Submit Approve but after submit find out still not enough.
-  useEffect(() => {
-    if (
-      previouslyPending &&
-      approval === ApprovalState.NOT_APPROVED &&
-      confirmModalState === ConfirmModalState.APPROVE_PENDING
-    ) {
-      onCancel()
-    }
-  }, [approval, confirmModalState, previouslyPending])
+  // useEffect(() => {
+  //   if (
+  //     previouslyPending &&
+  //     approval === ApprovalState.NOT_APPROVED &&
+  //     confirmModalState === ConfirmModalState.APPROVE_PENDING
+  //   ) {
+  //     onCancel()
+  //   }
+  // }, [approval, confirmModalState, previouslyPending])
 
   // Submit Approve, get error when submit approve.
-  useEffect(() => {
-    if (isPendingError && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
-      onCancel()
-    }
-  }, [isPendingError, confirmModalState, previouslyPending])
+  // useEffect(() => {
+  //   if (isPendingError && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
+  //     onCancel()
+  //   }
+  // }, [isPendingError, confirmModalState, previouslyPending])
 
   useEffect(() => {
     if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVED) {
