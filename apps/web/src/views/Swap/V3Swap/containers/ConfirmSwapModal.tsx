@@ -162,8 +162,8 @@ const useConfirmModalState = ({
 
   useEffect(() => {
     if (approval === ApprovalState.NOT_APPROVED && resettingApproval) {
+      startSwapFlow()
       setResettingApproval(false)
-      performStep(ConfirmModalState.APPROVING_TOKEN)
     }
   }, [approval, resettingApproval, performStep, startSwapFlow])
 

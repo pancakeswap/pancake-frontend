@@ -19,7 +19,7 @@ const StepsContainer = styled(Flex)`
   background: ${({ theme }) => theme.colors.input};
 `
 
-const Step = styled('div')<{ active?: boolean; width: string }>`
+const Step = styled('div')<{ active: boolean; width: string }>`
   height: 100%;
   width: ${({ width }) => width};
   background: ${({ theme, active }) => (active ? theme.colors.secondary : theme.colors.input)};
@@ -55,7 +55,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
       {!hideStepIndicators && (
         <>
           <StepsContainer>
-            {pendingModalSteps.length === 4 && (
+            {pendingModalSteps.length !== 3 && (
               <Step active={confirmModalState === ConfirmModalState.RESETTING_USDT} width={stepWidth} />
             )}
             <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />
