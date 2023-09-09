@@ -55,7 +55,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
       {!hideStepIndicators && (
         <>
           <StepsContainer>
-            {pendingModalSteps.length === 2 && (
+            {pendingModalSteps.length === 4 && (
               <Step active={confirmModalState === ConfirmModalState.RESETTING_USDT} width={stepWidth} />
             )}
             <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />

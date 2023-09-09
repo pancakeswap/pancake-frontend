@@ -145,13 +145,6 @@ const useConfirmModalState = ({
     performStep(steps[0])
   }, [generateRequiredSteps, performStep])
 
-  useEffect(() => {
-    if (approval === ApprovalState.NOT_APPROVED && resettingApproval) {
-      startSwapFlow()
-      setResettingApproval(false)
-    }
-  }, [approval, resettingApproval, startSwapFlow])
-
   const onCancel = () => {
     setConfirmModalState(ConfirmModalState.REVIEWING)
     setPreviouslyPending(false)
@@ -166,6 +159,13 @@ const useConfirmModalState = ({
     },
     [performStep, provider],
   )
+
+  useEffect(() => {
+    if (approval === ApprovalState.NOT_APPROVED && resettingApproval) {
+      setResettingApproval(false)
+      performStep(ConfirmModalState.APPROVING_TOKEN)
+    }
+  }, [approval, resettingApproval, performStep, startSwapFlow])
 
   useEffect(() => {
     if (approval === ApprovalState.PENDING && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
@@ -388,6 +388,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
   const isShowingLoadingAnimation = useMemo(
     () =>
+      confirmModalState === ConfirmModalState.RESETTING_USDT ||
       confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
       confirmModalState === ConfirmModalState.APPROVE_PENDING ||
       attemptingTxn,
@@ -407,12 +408,9 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
       handleDismiss={handleDismiss}
     >
       <Box>{topModal()}</Box>
-      {(confirmModalState === ConfirmModalState.RESETTING_USDT ||
-        isInApprovalPhase(confirmModalState) ||
-        attemptingTxn) &&
-        !swapErrorMessage && (
-          <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
-        )}
+      {isShowingLoadingAnimation && !swapErrorMessage && (
+        <ApproveStepFlow confirmModalState={confirmModalState} pendingModalSteps={pendingModalSteps} />
+      )}
     </ConfirmSwapModalContainer>
   )
 })
