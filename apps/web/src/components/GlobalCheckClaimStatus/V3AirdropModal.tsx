@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text, useToast } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Flex, Modal, Text, useToast, ModalV2 } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import { useTranslation } from '@pancakeswap/localization'
 import delay from 'lodash/delay'
@@ -11,6 +11,8 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useV3AirdropContract } from 'hooks/useContract'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useSWRConfig } from 'swr'
+import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
+import useAirdropModalStatus from './hooks/useAirdropModalStatus'
 
 const Image = styled.img`
   display: block;
@@ -52,23 +54,47 @@ export interface WhitelistType {
   }
 }
 
-interface V3AirdropModalProps extends InjectedModalProps {
-  data: WhitelistType
-}
-
 const GITHUB_ENDPOINT = 'https://raw.githubusercontent.com/pancakeswap/airdrop-v3-users/master'
 
-const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
+const V3AirdropModal: React.FC = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const [isLoading, setIsLoading] = useState(false)
   const { toastSuccess } = useToast()
-  const v3AirdropContract = useV3AirdropContract()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { mutate } = useSWRConfig()
+  const v3AirdropContract = useV3AirdropContract()
+  const { v3WhitelistAddress } = useAirdropModalStatus()
+  const [showOnceAirdropModal, setShowOnceAirdropModal] = useShowOnceAirdropModal()
+
+  const [show, setShow] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const data = useMemo(
+    () => (account ? (v3WhitelistAddress?.[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)),
+    [account, v3WhitelistAddress],
+  )
 
   const { data: v3ForSC } = useSWRImmutable(data && '/airdrop-SC-json')
   const { data: v3MerkleProofs } = useSWRImmutable(data && '/airdrop-Merkle-json')
+
+  useEffect(() => {
+    delay(showConfetti, 100)
+  }, [])
+
+  useEffect(() => {
+    if (showOnceAirdropModal) {
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  }, [account, showOnceAirdropModal, v3WhitelistAddress])
+
+  const handleCloseModal = () => {
+    if (showOnceAirdropModal) {
+      setShowOnceAirdropModal(!showOnceAirdropModal)
+    }
+    setShow(false)
+  }
 
   const handleClick = async () => {
     setIsLoading(true)
@@ -96,13 +122,9 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
         }
       }
     } finally {
-      onDismiss()
+      handleCloseModal()
     }
   }
-
-  useEffect(() => {
-    delay(showConfetti, 100)
-  }, [])
 
   const hasPart1 = useMemo(() => (data ? Object.values(data.part1).find((i) => i !== null) : false), [data])
   const hasPart2 = useMemo(() => (data ? Object.values(data.part2).find((i) => i !== null) : false), [data])
@@ -124,84 +146,86 @@ const V3AirdropModal: React.FC<V3AirdropModalProps> = ({ data, onDismiss }) => {
   }
 
   return (
-    <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
-      <Flex
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        maxWidth={['100%', '100%', '100%', '450px']}
-      >
-        <Flex width="100%" justifyContent="space-between">
-          {hasPart1 && (
-            <Flex width="100%" flexDirection="column">
-              <Box>
-                <Image src="/images/nfts/v3-part1.jpg" />
-              </Box>
-              <Button
-                m="12px 0"
-                disabled={isLoading}
-                onClick={handleClick}
-                endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-              >
-                {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
-              </Button>
-              <Text textAlign="center" bold>
-                {t('Part 1')}
-              </Text>
-              <Box>
-                {data?.part1.btcb && (
-                  <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part1.btcb])}`}</Text>
-                )}
-                {data?.part1.busd && (
-                  <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part1.busd])}`}</Text>
-                )}
-                {data?.part1.eth && (
-                  <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part1.eth])}`}</Text>
-                )}
-                {data?.part1.usdt && (
-                  <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part1.usdt])}`}</Text>
-                )}
-              </Box>
-            </Flex>
-          )}
-          {hasPart2 && (
-            <Flex width="100%" flexDirection="column">
-              <Box>
-                <Image src="/images/nfts/v3-part2.jpg" />
-              </Box>
-              <Button
-                m="12px 0"
-                disabled={isLoading}
-                onClick={handleClick}
-                endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-              >
-                {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
-              </Button>
-              <Text textAlign="center" bold>
-                {t('Part 2')}
-              </Text>
-              <Box>
-                {data?.part2.btcb && (
-                  <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part2.btcb])}`}</Text>
-                )}
-                {data?.part2.busd && (
-                  <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part2.busd])}`}</Text>
-                )}
-                {data?.part2.eth && (
-                  <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part2.eth])}`}</Text>
-                )}
-                {data?.part2.usdt && (
-                  <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part2.usdt])}`}</Text>
-                )}
-              </Box>
-            </Flex>
-          )}
+    <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
+      <Modal title={t('Congratulations!')} onDismiss={handleCloseModal}>
+        <Flex
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          maxWidth={['100%', '100%', '100%', '450px']}
+        >
+          <Flex width="100%" justifyContent="space-between">
+            {hasPart1 && (
+              <Flex width="100%" flexDirection="column">
+                <Box>
+                  <Image src="/images/nfts/v3-part1.jpg" />
+                </Box>
+                <Button
+                  m="12px 0"
+                  disabled={isLoading}
+                  onClick={handleClick}
+                  endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+                >
+                  {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
+                </Button>
+                <Text textAlign="center" bold>
+                  {t('Part 1')}
+                </Text>
+                <Box>
+                  {data?.part1.btcb && (
+                    <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part1.btcb])}`}</Text>
+                  )}
+                  {data?.part1.busd && (
+                    <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part1.busd])}`}</Text>
+                  )}
+                  {data?.part1.eth && (
+                    <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part1.eth])}`}</Text>
+                  )}
+                  {data?.part1.usdt && (
+                    <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part1.usdt])}`}</Text>
+                  )}
+                </Box>
+              </Flex>
+            )}
+            {hasPart2 && (
+              <Flex width="100%" flexDirection="column">
+                <Box>
+                  <Image src="/images/nfts/v3-part2.jpg" />
+                </Box>
+                <Button
+                  m="12px 0"
+                  disabled={isLoading}
+                  onClick={handleClick}
+                  endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+                >
+                  {isLoading ? <Dots>{t('Claiming')}</Dots> : t('Claim now')}
+                </Button>
+                <Text textAlign="center" bold>
+                  {t('Part 2')}
+                </Text>
+                <Box>
+                  {data?.part2.btcb && (
+                    <Text fontSize="14px" textAlign="center">{`BTCB/WBNB ${t(TierType[data.part2.btcb])}`}</Text>
+                  )}
+                  {data?.part2.busd && (
+                    <Text fontSize="14px" textAlign="center">{`BUSD/WBNB ${t(TierType[data.part2.busd])}`}</Text>
+                  )}
+                  {data?.part2.eth && (
+                    <Text fontSize="14px" textAlign="center">{`ETH/WBNB ${t(TierType[data.part2.eth])}`}</Text>
+                  )}
+                  {data?.part2.usdt && (
+                    <Text fontSize="14px" textAlign="center">{`USDT/WBNB ${t(TierType[data.part2.usdt])}`}</Text>
+                  )}
+                </Box>
+              </Flex>
+            )}
+          </Flex>
+          <Text textAlign="center" bold color="secondary" mt="24px">
+            {textDisplay()}
+          </Text>
         </Flex>
-        <Text textAlign="center" bold color="secondary" mt="24px">
-          {textDisplay()}
-        </Text>
-      </Flex>
-    </Modal>
+      </Modal>
+    </ModalV2>
   )
 }
 
