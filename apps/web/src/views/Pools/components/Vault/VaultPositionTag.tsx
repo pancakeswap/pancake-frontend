@@ -45,8 +45,8 @@ const iconColorConfig: Record<VaultPosition, any> = {
   [VaultPosition.None]: null,
   [VaultPosition.Flexible]: 'white',
   [VaultPosition.Locked]: 'white',
-  [VaultPosition.LockedEnd]: null,
-  [VaultPosition.AfterBurning]: null,
+  [VaultPosition.LockedEnd]: 'secondary',
+  [VaultPosition.AfterBurning]: 'failure',
 }
 
 const positionLabel: Record<VaultPosition, ReactNode> = {
