@@ -254,8 +254,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const topModal = useCallback(() => {
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
     const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
-    const amountA = formatAmount(trade?.inputAmount, 4) ?? ''
-    const amountB = formatAmount(trade?.outputAmount, 4) ?? ''
+    const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
+    const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
     if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
       return <ApproveModalContent title={t('Reset approval on USDT.')} isMM={isMM} />
