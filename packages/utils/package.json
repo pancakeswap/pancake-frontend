@@ -9,18 +9,12 @@
     "viem": "^1.2.9",
     "date-fns": "^2.29.3",
     "styled-components": "^6.0.7",
-    "lodash": "^4.17.21",
-    "@pancakeswap/localization": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
-    "@pancakeswap/token-lists": "workspace:*",
-    "@pancakeswap/awgmi": "workspace:*",
-    "@pancakeswap/aptos-swap-sdk": "workspace:*"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "viem": "^1.2.9",
     "styled-components": "^6.0.7",
     "@pancakeswap/swap-sdk-core": "workspace:*",
-    "@pancakeswap/sdk": "workspace:*",
     "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.0.0",
     "vitest": "^0.30.1",
@@ -28,10 +22,7 @@
     "jotai": "^2.2.2"
   },
   "peerDependenciesMeta": {
-    "@pancakeswap/awgmi": {
-      "optional": true
-    },
-    "@pancakeswap/aptos-swap-sdk": {
+    "@pancakeswap/localization": {
       "optional": true
     }
   }

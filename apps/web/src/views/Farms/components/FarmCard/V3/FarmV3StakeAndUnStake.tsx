@@ -14,7 +14,6 @@ import {
   Text,
   Balance,
 } from '@pancakeswap/uikit'
-import { unwrappedToken } from '@pancakeswap/utils/unwrappedToken'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
 import { Bound } from 'config/constants/types'
@@ -24,6 +23,7 @@ import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { styled } from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
+import { unwrappedToken } from 'utils/wrappedCurrency'
 
 const StyledLink = styled(Link)`
   &:hover {
