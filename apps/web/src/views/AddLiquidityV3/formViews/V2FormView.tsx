@@ -10,6 +10,7 @@ import {
   MessageText,
   ScanLink,
   LinkExternal,
+  InfoBox,
 } from '@pancakeswap/uikit'
 import { ChainLinkSupportChains } from 'state/info/constant'
 import { useIsExpertMode } from '@pancakeswap/utils/user'
@@ -23,7 +24,6 @@ import { Field } from 'state/mint/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { Bound } from 'config/constants/types'
-import { InfoBox } from 'components/InfoBox'
 import { LP2ChildrenProps } from 'views/AddLiquidity'
 import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { CommonBasesType } from 'components/SearchModal/types'
