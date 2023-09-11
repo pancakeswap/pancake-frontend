@@ -13,9 +13,10 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "viem": "^1.2.9",
     "styled-components": "^6.0.7",
-    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.0.0",
     "vitest": "^0.30.1",
