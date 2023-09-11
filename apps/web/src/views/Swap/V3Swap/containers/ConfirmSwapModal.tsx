@@ -13,6 +13,7 @@ import {
 import { usePublicClient } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { SendTransactionResult } from 'wagmi/actions'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -253,8 +254,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const topModal = useCallback(() => {
     const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
     const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
-    const amountA = trade?.inputAmount?.toSignificant(6) ?? ''
-    const amountB = trade?.outputAmount?.toSignificant(6) ?? ''
+    const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
+    const amountB = formatAmount(trade?.inputAmount, 6) ?? ''
 
     if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
       return <ApproveModalContent title={t('Reset approval on USDT.')} isMM={isMM} />
