@@ -80,7 +80,7 @@ export function V3SubmitButton({
           isValid && (
             <RowBetween style={{ gap: '8px' }}>
               {showApprovalA && (
-                <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
+                <Button onClick={() => approveACallback()} disabled={approvalA === ApprovalState.PENDING} width="100%">
                   {approvalA === ApprovalState.PENDING ? (
                     <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
                   ) : (
@@ -89,7 +89,7 @@ export function V3SubmitButton({
                 </Button>
               )}
               {showApprovalB && (
-                <Button onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
+                <Button onClick={() => approveBCallback()} disabled={approvalB === ApprovalState.PENDING} width="100%">
                   {approvalB === ApprovalState.PENDING ? (
                     <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
                   ) : (

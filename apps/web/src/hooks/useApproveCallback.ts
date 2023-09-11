@@ -134,6 +134,9 @@ export function useApproveCallback(
         })
 
       if (!estimatedGas) return undefined
+      console.log(
+        overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256),
+      )
 
       return callWithGasPrice(
         tokenContract,
