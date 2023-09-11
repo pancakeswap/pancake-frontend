@@ -40,7 +40,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   isRFQReady,
   currencyBalances,
 }: {
-  trade: SmartRouterTrade<TradeType> | undefined
+  trade: SmartRouterTrade<TradeType> | null | undefined
   tradeType: TradeType
   lpFee: CurrencyAmount<Currency>
   inputAmount: CurrencyAmount<Currency>
@@ -72,7 +72,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
       return mmFormatExecutionPrice(trade, showInverted)
     }
 
-    const price = SmartRouter.getExecutionPrice(trade as SmartRouterTrade<TradeType>)
+    const price = SmartRouter.getExecutionPrice(trade)
     return formatExecutionPrice(price, inputAmount, outputAmount, showInverted)
   }, [inputAmount, isMM, outputAmount, trade, showInverted])
 

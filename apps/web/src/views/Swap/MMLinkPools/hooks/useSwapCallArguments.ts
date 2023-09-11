@@ -21,7 +21,7 @@ export interface SwapCall {
  * @param recipientAddressOrName
  */
 export function useSwapCallArguments(
-  trade: SmartRouterTrade<TradeType>, // trade to execute, required
+  trade: SmartRouterTrade<TradeType> | null | undefined, // trade to execute, required
   rfq: RFQResponse['message'],
   recipientAddress: string, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {

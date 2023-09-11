@@ -99,7 +99,7 @@ export interface MMOrderBookTrade {
 }
 
 export interface MMRfqTrade {
-  rfq: RFQResponse['message']
+  rfq: RFQResponse['message'] | null | undefined
   trade: SmartRouterTrade<TradeType>
   refreshRFQ: () => void
   quoteExpiry: number
