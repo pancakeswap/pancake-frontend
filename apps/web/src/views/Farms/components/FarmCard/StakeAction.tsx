@@ -33,7 +33,7 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   onStake?: (value: string) => Promise<SendTransactionResult>
   onUnstake?: (value: string) => Promise<SendTransactionResult>
   onDone?: () => void
-  onApprove?: () => Promise<SendTransactionResult>
+  onApprove?: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   isApproved?: boolean
 }
 

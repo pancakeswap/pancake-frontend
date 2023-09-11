@@ -53,11 +53,11 @@ export interface AddStableChildrenProps {
   stableAPR: number
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<SendTransactionResult>
+  approveACallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   approvalA: ApprovalState
   showFieldBApproval: boolean
   approvalB: ApprovalState
-  approveBCallback: () => Promise<SendTransactionResult>
+  approveBCallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: () => void
   buttonDisabled: boolean

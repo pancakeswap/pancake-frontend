@@ -70,7 +70,7 @@ interface OnSuccessProps {
 
 type CustomApproveProps = {
   onRequiresApproval: () => Promise<boolean>
-  onApprove: () => Promise<SendTransactionResult>
+  onApprove: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
 }
 
 type ERC20TokenApproveProps = {

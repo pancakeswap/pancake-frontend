@@ -28,7 +28,7 @@ interface SwapCommitButtonPropsType {
   onWrap: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
+  approveCallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   approvalSubmitted: boolean
   currencies: {
     INPUT?: Currency

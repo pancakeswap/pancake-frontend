@@ -17,12 +17,12 @@ interface V3SubmitButtonProps {
   approvalB: ApprovalState
   isValid: boolean
   showApprovalA: boolean
-  approveACallback: () => Promise<SendTransactionResult>
+  approveACallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   currencies: {
     CURRENCY_A?: Currency
     CURRENCY_B?: Currency
   }
-  approveBCallback: () => Promise<SendTransactionResult>
+  approveBCallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   showApprovalB: boolean
   parsedAmounts: {
     CURRENCY_A?: CurrencyAmount<Currency>

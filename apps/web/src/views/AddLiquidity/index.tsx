@@ -59,10 +59,10 @@ export interface LP2ChildrenProps {
   }
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<SendTransactionResult>
+  approveACallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   approvalA: ApprovalState
   showFieldBApproval: boolean
-  approveBCallback: () => Promise<SendTransactionResult>
+  approveBCallback: (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>
   approvalB: ApprovalState
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: () => void

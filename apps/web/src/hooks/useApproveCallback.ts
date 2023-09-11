@@ -34,7 +34,12 @@ export function useApproveCallback(
   } = {
     addToTransaction: true,
   },
-): [ApprovalState, () => Promise<SendTransactionResult>, CurrencyAmount<Currency> | undefined, boolean] {
+): [
+  ApprovalState,
+  (overrideAmountApprove?: bigint) => Promise<SendTransactionResult>,
+  CurrencyAmount<Currency> | undefined,
+  boolean,
+] {
   const { addToTransaction = true, targetAmount } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
