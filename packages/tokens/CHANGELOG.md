@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.4.2
+
+### Patch Changes
+
+- 51b77c787: Fix utils deps: `@pancakeswap/utils` now should not dependent on sdk and awgmi
+  - @pancakeswap/token-lists@0.0.8
+
 ## 0.4.1
 
 ### Patch Changes
