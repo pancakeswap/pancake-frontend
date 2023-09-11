@@ -57,6 +57,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
   [ChainId.BASE]: [
+    'https://base.publicnode.com',
     // process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION,
     ...base.rpcUrls.public.http,
   ],
@@ -101,6 +102,7 @@ export const PUBLIC_NODES = {
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
   [ChainId.BASE]: [
+    'https://base.publicnode.com',
     // process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION,
     ...base.rpcUrls.public.http,
   ],
