@@ -2,4 +2,4 @@
 '@pancakeswap/smart-router': patch
 ---
 
-Update Smart Router
+Accept nullish value to getExecutionPrice function
