@@ -15,7 +15,7 @@ const mapPerpChain = (chainId: ChainId): string => {
     case ChainId.ARBITRUM_ONE:
       return 'arbitrum'
     default:
-      return 'bnbchain'
+      return 'bsc'
   }
 }
 
