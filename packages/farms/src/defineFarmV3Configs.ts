@@ -1,7 +1,6 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { CAKE } from '@pancakeswap/tokens'
+import { CAKE, unwrappedToken } from '@pancakeswap/tokens'
 import { WNATIVE } from '@pancakeswap/sdk'
-import { unwrappedToken } from '@pancakeswap/utils/unwrappedToken'
 import { priceHelperTokens } from '../constants/common'
 import { FarmConfigV3, ComputedFarmConfigV3 } from './types'
 

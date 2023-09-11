@@ -1733,21 +1733,9 @@ importers:
 
   packages/utils:
     dependencies:
-      '@pancakeswap/aptos-swap-sdk':
-        specifier: workspace:*
-        version: link:../aptos-swap-sdk
-      '@pancakeswap/awgmi':
-        specifier: workspace:*
-        version: link:../awgmi
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
-      '@pancakeswap/token-lists':
-        specifier: workspace:*
-        version: link:../token-lists
-      '@pancakeswap/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       date-fns:
         specifier: ^2.29.3
         version: 2.29.3
@@ -1755,9 +1743,6 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
     devDependencies:
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
