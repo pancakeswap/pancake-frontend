@@ -79,7 +79,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   return (
     <>
       <SwapModalFooterContainer>
-        <RowBetween align="center">
+        <RowBetween align="center" mb="8px">
           <Text fontSize="14px">{t('Price')}</Text>
           <Text
             fontSize="14px"
@@ -98,7 +98,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           </Text>
         </RowBetween>
 
-        <RowBetween>
+        <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">
               {tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
@@ -122,7 +122,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </Text>
           </RowFixed>
         </RowBetween>
-        <RowBetween>
+        <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">{t('Price Impact')}</Text>
             <QuestionHelper

@@ -83,7 +83,7 @@ export default function SwapModalHeader({
             {formatAmount(inputAmount, 6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed>
+        <RowFixed style={{ alignSelf: 'center' }}>
           <Text fontSize="14px" ml="10px" mr="8px">
             {inputAmount.currency.symbol}
           </Text>
@@ -91,7 +91,7 @@ export default function SwapModalHeader({
         </RowFixed>
       </RowBetween>
       <RowFixed margin="auto">
-        <ArrowDownIcon width="16px" ml="4px" />
+        <ArrowDownIcon width="24px" ml="4px" />
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
@@ -109,7 +109,7 @@ export default function SwapModalHeader({
             {formatAmount(outputAmount, 6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed>
+        <RowFixed style={{ alignSelf: 'center' }}>
           <Text fontSize="14px" ml="10px" mr="8px">
             {outputAmount.currency.symbol}
           </Text>
