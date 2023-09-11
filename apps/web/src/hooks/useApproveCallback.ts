@@ -34,7 +34,7 @@ export function useApproveCallback(
   } = {
     addToTransaction: true,
   },
-): [ApprovalState, () => Promise<SendTransactionResult>, CurrencyAmount<Currency> | undefined] {
+): [ApprovalState, () => Promise<SendTransactionResult>, CurrencyAmount<Currency> | undefined, boolean] {
   const { addToTransaction = true, targetAmount } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -44,6 +44,7 @@ export function useApproveCallback(
   const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
   const [pending, setPending] = useState<boolean>(pendingApproval)
+  const [isPendingError, setIsPendingError] = useState<boolean>(false)
 
   useEffect(() => {
     if (pendingApproval) {
@@ -78,6 +79,7 @@ export function useApproveCallback(
       if (approvalState !== ApprovalState.NOT_APPROVED && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
+        setIsPendingError(true)
         return undefined
       }
       if (!token) {
@@ -89,18 +91,21 @@ export function useApproveCallback(
       if (!tokenContract) {
         toastError(t('Error'), t('Cannot find contract of the token %tokenAddress%', { tokenAddress: token?.address }))
         console.error('tokenContract is null')
+        setIsPendingError(true)
         return undefined
       }
 
       if (!amountToApprove && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Missing amount to approve'))
         console.error('missing amount to approve')
+        setIsPendingError(true)
         return undefined
       }
 
       if (!spender) {
         toastError(t('Error'), t('No spender'))
         console.error('no spender')
+        setIsPendingError(true)
         return undefined
       }
 
@@ -123,6 +128,7 @@ export function useApproveCallback(
             .catch((e) => {
               console.error('estimate gas failure', e)
               toastError(t('Error'), t('Unexpected error. Could not estimate gas for the approve.'))
+              setIsPendingError(true)
               return null
             })
         })
@@ -178,7 +184,7 @@ export function useApproveCallback(
     ],
   )
 
-  return [approvalState, approve, currentAllowance]
+  return [approvalState, approve, currentAllowance, isPendingError]
 }
 
 // wraps useApproveCallback in the context of a swap

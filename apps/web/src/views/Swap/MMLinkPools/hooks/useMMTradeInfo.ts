@@ -52,7 +52,7 @@ export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options):
       ),
       routerAddress: MM_SWAP_CONTRACT_ADDRESS[chainId],
       priceImpactWithoutFee: ZERO_PERCENT,
-      realizedLPFee: computeTradePriceBreakdown(mmTrade).realizedLPFee,
+      realizedLPFee: computeTradePriceBreakdown(mmTrade).lpFeeAmount,
       inputError: mmSwapInputError,
     }
   }, [mmTrade, chainId, mmSwapInputError])

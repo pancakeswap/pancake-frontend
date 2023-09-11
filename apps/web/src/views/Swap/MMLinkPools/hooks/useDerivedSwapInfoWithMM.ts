@@ -6,14 +6,19 @@ import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { useRouter } from 'next/router'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useMMDevMode } from '../components/MMAndAMMDealDisplay'
 import { MMOrderBookTrade, MMRfqTrade } from '../types'
 import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
 import { useIsTradeWithMMBetter } from './useIsMMTradeBetter'
 import { useMMTrade } from './useMMOrderBookTrade'
 import { useMMQuoteCountDown } from './useMMQuoteCountDown'
 import { MMTradeInfo, useMMTradeInfo } from './useMMTradeInfo'
+
+export function useMMDevMode() {
+  const { query } = useRouter()
+  return Boolean(query['dev-mode'])
+}
 
 export function useDerivedBestTradeWithMM<T extends TradeType>(bestTrade?: SmartRouterTrade<T>) {
   const {

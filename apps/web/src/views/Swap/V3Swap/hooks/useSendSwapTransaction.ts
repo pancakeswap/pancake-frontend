@@ -46,7 +46,7 @@ export class TransactionRejectedError extends Error {}
 export default function useSendSwapTransaction(
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType>, // trade to execute, required
+  trade?: SmartRouterTrade<TradeType> | null | undefined,
   swapCalls: SwapCall[] = [],
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
