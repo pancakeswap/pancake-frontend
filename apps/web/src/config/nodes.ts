@@ -56,7 +56,7 @@ export const SERVER_NODES = {
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
-  [ChainId.BASE]: [...base.rpcUrls.public.http, process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION],
+  [ChainId.BASE]: [process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION, ...base.rpcUrls.public.http],
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>
@@ -97,7 +97,7 @@ export const PUBLIC_NODES = {
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
-  [ChainId.BASE]: [...base.rpcUrls.public.http, process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION],
+  [ChainId.BASE]: [process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION, ...base.rpcUrls.public.http],
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>
