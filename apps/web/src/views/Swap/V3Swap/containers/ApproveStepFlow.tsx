@@ -66,7 +66,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
             <StyledLinkExternal
               external
               margin="16px auto auto auto"
-              href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#why-do-i-need-to-reset-approval-on-usdt-before-enabling-approving" // TODO: Change URL
+              href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#why-do-i-need-to-reset-approval-on-usdt-before-enabling-approving"
             >
               <Text color="primary">{t('Why resetting approval')}</Text>
             </StyledLinkExternal>
@@ -75,7 +75,7 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
             <StyledLinkExternal
               external
               margin="16px auto auto auto"
-              href="https://docs.pancakeswap.finance/products/yield-farming/bcake/faq#how-are-the-bcake-multipliers-calculated" // TODO: Change URL
+              href="https://docs.pancakeswap.finance/~/changes/d1gFBwxReM0gH1aeMo0G/readme/help/what-is-an-approval-transaction"
             >
               <Text color="primary">{t('Why')}</Text>
               <Text m="0 2px" color="primary" style={{ borderBottom: '1px dashed' }} ref={targetRef}>
