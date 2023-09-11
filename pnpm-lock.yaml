@@ -1733,6 +1733,9 @@ importers:
 
   packages/utils:
     dependencies:
+      '@pancakeswap/localization':
+        specifier: workspace:*
+        version: link:../localization
       date-fns:
         specifier: ^2.29.3
         version: 2.29.3

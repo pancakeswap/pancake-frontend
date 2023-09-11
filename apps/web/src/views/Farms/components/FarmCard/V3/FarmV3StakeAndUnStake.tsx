@@ -22,8 +22,8 @@ import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { styled } from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
-import { FarmV3ApyButton } from './FarmV3ApyButton'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { FarmV3ApyButton } from './FarmV3ApyButton'
 
 const StyledLink = styled(Link)`
   &:hover {
