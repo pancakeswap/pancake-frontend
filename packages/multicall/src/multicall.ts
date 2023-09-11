@@ -10,11 +10,14 @@ export type CallByGasLimitParams = GetGasLimitParams & {
   // But for some chains like BSC the block time is quite short so need some extra tolerance
   // 0 means no block conflict and all the multicall results should be queried within the same block
   blockConflictTolerance?: number
+
+  // Treat unexecuted calls as failed calls
+  dropUnexecutedCalls?: boolean
 }
 
 export async function multicallByGasLimit(
   calls: MulticallRequestWithGas[],
-  { chainId, gasBuffer = getDefaultGasBuffer(chainId), client, ...rest }: CallByGasLimitParams,
+  { chainId, gasBuffer = getDefaultGasBuffer(chainId), client, dropUnexecutedCalls, ...rest }: CallByGasLimitParams,
 ) {
   const gasLimit = await getGasLimit({
     chainId,
@@ -23,10 +26,13 @@ export async function multicallByGasLimit(
     ...rest,
   })
   const callChunks = splitCallsIntoChunks(calls, gasLimit)
-  return callByChunks(callChunks, { gasBuffer, client, chainId })
+  return callByChunks(callChunks, { gasBuffer, client, chainId, dropUnexecutedCalls })
 }
 
-type CallParams = Pick<CallByGasLimitParams, 'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance'>
+type CallParams = Pick<
+  CallByGasLimitParams,
+  'chainId' | 'client' | 'gasBuffer' | 'blockConflictTolerance' | 'dropUnexecutedCalls'
+>
 
 export type SingleCallResult = {
   result: string
@@ -65,6 +71,7 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
     client,
     gasBuffer = getDefaultGasBuffer(chainId),
     blockConflictTolerance = getBlockConflictTolerance(chainId),
+    dropUnexecutedCalls = false,
   } = params
   if (!calls.length) {
     return {
@@ -89,6 +96,13 @@ async function call(calls: MulticallRequestWithGas[], params: CallParams): Promi
       calls.length - lastSuccessIndex - 1
     } calls are not executed. Pls try adjust the gas limit per call.`,
   )
+  const remainingCalls = calls.slice(lastSuccessIndex + 1)
+  if (dropUnexecutedCalls) {
+    return {
+      results: [...results, ...remainingCalls.map(() => ({ result: '0x', gasUsed: 0n, success: false }))],
+      blockNumber,
+    }
+  }
   const { results: remainingResults, blockNumber: nextBlockNumber } = await call(
     calls.slice(lastSuccessIndex + 1),
     params,
