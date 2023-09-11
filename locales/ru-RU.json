@@ -2660,7 +2660,7 @@
   "Swap and Provide Liquidity on Linea now": "Обменивайтесь и предоставляйте ликвидность на Linea прямо сейчас",
   "day": " день",
   "Quote not available": "Нет котировки",
-  "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.": "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.",
+  "No provider fees. Ends in %days% days and %hours% hours and %minutes% minutes.": "Без комиссии провайдера. Акция заканчивается через %days% сут %hours% ч и %minutes% мин.",
   "Invalid Pair": "Недопустимая пара",
   "Learn more how to fix": "Узнайте подробнее, как исправить",
   "View pool on explorer": "Смотреть пул в обзоре",
@@ -2677,6 +2677,6 @@
   "Polygon zkEVM": "Polygon zkEVM",
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Условия нашей партнерской программы были обновлены 3 мая 2023 г. Изменения касаются следующего:",
-  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
-  "0%  Provider  Fee until Sep 12th!": "0%  Provider  Fee until Sep 12th!"
+  "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Отмена вложения CAKE на zkSync Era вскоре после его осуществления может привести к тому, что вознаграждения получены не будут.",
+  "0%  Provider  Fee until Sep 12th!": "Комиссия провайдера 0% до 12 сентября!"
 }
