@@ -1,5 +1,15 @@
 # @pancakeswap/smart-router
 
+## 4.8.3
+
+### Patch Changes
+
+- bb83caccc: Accept nullish value to getExecutionPrice function
+- Updated dependencies [51b77c787]
+  - @pancakeswap/tokens@0.4.2
+  - @pancakeswap/v3-sdk@3.4.2
+  - @pancakeswap/multicall@3.0.1
+
 ## 4.8.2
 
 ### Patch Changes

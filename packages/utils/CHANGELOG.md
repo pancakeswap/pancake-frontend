@@ -1,5 +1,12 @@
 # @pancakeswap/utils
 
+## 5.0.4
+
+### Patch Changes
+
+- 51b77c787: Fix utils deps: `@pancakeswap/utils` now should not dependent on sdk and awgmi
+  - @pancakeswap/localization@5.0.4
+
 ## 5.0.3
 
 ### Patch Changes
