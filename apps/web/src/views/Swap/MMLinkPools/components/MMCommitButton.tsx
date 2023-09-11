@@ -16,7 +16,7 @@ import { Field } from 'state/swap/actions'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { MMRfqTrade } from '../types'
-import ConfirmSwapModal from '../../V3Swap/containers/ConfirmSwapModal'
+import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 

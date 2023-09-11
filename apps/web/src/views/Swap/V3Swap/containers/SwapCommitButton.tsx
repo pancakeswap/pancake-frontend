@@ -42,7 +42,7 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useAccount } from 'wagmi'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
-import ConfirmSwapModal from './ConfirmSwapModal'
+import { ConfirmSwapModal } from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 

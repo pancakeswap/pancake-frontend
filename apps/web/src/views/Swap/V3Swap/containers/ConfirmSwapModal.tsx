@@ -32,7 +32,7 @@ import { ConfirmModalState, PendingConfirmModalState } from '../types'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
-import ApproveStepFlow from './ApproveStepFlow'
+import { ApproveStepFlow } from './ApproveStepFlow'
 
 interface ConfirmSwapModalProps {
   isMM?: boolean
@@ -97,7 +97,7 @@ const useConfirmModalState = ({
       approvalToken.chainId === ethereumTokens.usdt.chainId &&
       approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
     ) {
-      steps.push(ConfirmModalState.RESETTING_USDT)
+      steps.push(ConfirmModalState.RESETTING_APPROVAL)
     }
 
     if (approval === ApprovalState.NOT_APPROVED) {
@@ -112,8 +112,8 @@ const useConfirmModalState = ({
   const performStep = useCallback(
     (step: ConfirmModalState) => {
       switch (step) {
-        case ConfirmModalState.RESETTING_USDT:
-          setConfirmModalState(ConfirmModalState.RESETTING_USDT)
+        case ConfirmModalState.RESETTING_APPROVAL:
+          setConfirmModalState(ConfirmModalState.RESETTING_APPROVAL)
           approveCallback(0n)
             .then(() => setResettingApproval(true))
             .catch(() => onCancel())
@@ -206,7 +206,7 @@ const useConfirmModalState = ({
   return { confirmModalState, pendingModalSteps, startSwapFlow, onCancel }
 }
 
-const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(function ConfirmSwapModalComp({
+export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(function ConfirmSwapModalComp({
   isMM,
   trade,
   txHash,
@@ -257,7 +257,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     const amountA = formatAmount(trade?.inputAmount, 4) ?? ''
     const amountB = formatAmount(trade?.outputAmount, 4) ?? ''
 
-    if (confirmModalState === ConfirmModalState.RESETTING_USDT) {
+    if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
       return <ApproveModalContent title={t('Reset approval on USDT.')} isMM={isMM} />
     }
 
@@ -388,7 +388,7 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
 
   const isShowingLoadingAnimation = useMemo(
     () =>
-      confirmModalState === ConfirmModalState.RESETTING_USDT ||
+      confirmModalState === ConfirmModalState.RESETTING_APPROVAL ||
       confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
       confirmModalState === ConfirmModalState.APPROVE_PENDING ||
       attemptingTxn,
@@ -414,5 +414,3 @@ const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(functi
     </ConfirmSwapModalContainer>
   )
 })
-
-export default ConfirmSwapModal

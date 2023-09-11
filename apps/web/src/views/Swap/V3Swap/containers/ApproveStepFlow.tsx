@@ -30,7 +30,7 @@ interface ApproveStepFlowProps {
   pendingModalSteps: PendingConfirmModalState[]
 }
 
-const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
+export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
   confirmModalState,
   pendingModalSteps,
 }) => {
@@ -56,13 +56,13 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
         <>
           <StepsContainer>
             {pendingModalSteps.length !== 3 && (
-              <Step active={confirmModalState === ConfirmModalState.RESETTING_USDT} width={stepWidth} />
+              <Step active={confirmModalState === ConfirmModalState.RESETTING_APPROVAL} width={stepWidth} />
             )}
             <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />
             <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} width={stepWidth} />
             <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} width={stepWidth} />
           </StepsContainer>
-          {confirmModalState === ConfirmModalState.RESETTING_USDT && (
+          {confirmModalState === ConfirmModalState.RESETTING_APPROVAL && (
             <StyledLinkExternal
               external
               margin="16px auto auto auto"
@@ -90,5 +90,3 @@ const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> =
     </Box>
   )
 }
-
-export default ApproveStepFlow
