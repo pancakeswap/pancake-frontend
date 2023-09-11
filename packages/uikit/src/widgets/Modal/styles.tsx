@@ -82,4 +82,4 @@ export const ModalContainer = styled(MotionBox)`
     border-radius: 32px;
     max-height: 100vh;
   }
-`;
+` as typeof MotionBox;
