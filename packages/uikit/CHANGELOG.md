@@ -1,5 +1,17 @@
 # Change Log
 
+## 0.63.3
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.14
+- @pancakeswap/hooks@0.0.16
+- @pancakeswap/localization@5.0.3
+- @pancakeswap/pools@4.0.9
+- @pancakeswap/token-lists@0.0.8
+- @pancakeswap/tokens@0.4.1
+- @pancakeswap/v3-sdk@3.4.1
+
 ## 0.63.2
 
 ### Patch Changes
