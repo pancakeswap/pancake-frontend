@@ -51,7 +51,8 @@ interface ConfirmSwapModalProps {
   onConfirm: () => void
   customOnDismiss?: () => void
   openSettingModal?: () => void
-  approveCallback: (amountApprove?: bigint) => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult>
+  revokeCallback: () => Promise<SendTransactionResult>
 }
 
 interface UseConfirmModalStateProps {
@@ -62,7 +63,8 @@ interface UseConfirmModalStateProps {
   isPendingError: boolean
   currentAllowance: CurrencyAmount<Currency>
   onConfirm: () => void
-  approveCallback: (amountApprove?: bigint) => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult>
+  revokeCallback: () => Promise<SendTransactionResult>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
@@ -80,6 +82,7 @@ const useConfirmModalState = ({
   currentAllowance,
   onConfirm,
   approveCallback,
+  revokeCallback,
 }: UseConfirmModalStateProps) => {
   const provider = usePublicClient({ chainId })
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
@@ -114,7 +117,7 @@ const useConfirmModalState = ({
       switch (step) {
         case ConfirmModalState.RESETTING_APPROVAL:
           setConfirmModalState(ConfirmModalState.RESETTING_APPROVAL)
-          approveCallback(0n)
+          revokeCallback()
             .then(() => setResettingApproval(true))
             .catch(() => onCancel())
           break
@@ -136,7 +139,7 @@ const useConfirmModalState = ({
           break
       }
     },
-    [approveCallback, onConfirm],
+    [approveCallback, revokeCallback, onConfirm],
   )
 
   const startSwapFlow = useCallback(() => {
@@ -222,6 +225,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   onDismiss,
   onConfirm,
   approveCallback,
+  revokeCallback,
   onAcceptChanges,
   customOnDismiss,
   openSettingModal,
@@ -241,6 +245,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     isPendingError,
     currentAllowance,
     approveCallback,
+    revokeCallback,
     onConfirm,
   })
 

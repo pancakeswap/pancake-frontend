@@ -89,7 +89,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     [Field.OUTPUT]: relevantTokenBalances[1],
   }
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback, currentAllowance, isPendingError] = useApproveCallback(
+  const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
     amountToApprove,
     routerAddress,
   )
@@ -168,9 +168,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
     !swapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
+    (approvalState === ApprovalState.NOT_APPROVED ||
+      approvalState === ApprovalState.PENDING ||
+      (approvalSubmitted && approvalState === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   // Modals
@@ -187,7 +187,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     <ConfirmSwapModal
       trade={trade}
       txHash={txHash}
-      approval={approval}
+      approval={approvalState}
       attemptingTxn={attemptingTxn}
       originalTrade={tradeToConfirm}
       isPendingError={isPendingError}
@@ -197,6 +197,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       currentAllowance={currentAllowance}
       onConfirm={handleSwap}
       approveCallback={approveCallback}
+      revokeCallback={revokeCallback}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
@@ -237,10 +238,10 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
-    if (approval === ApprovalState.PENDING) {
+    if (approvalState === ApprovalState.PENDING) {
       setApprovalSubmitted(true)
     }
-  }, [approval, approvalSubmitted])
+  }, [approvalState, approvalSubmitted])
 
   if (swapIsUnsupported) {
     return (

@@ -29,6 +29,7 @@ interface SwapCommitButtonPropsType {
   wrapType: WrapType
   approval: ApprovalState
   approveCallback: () => Promise<SendTransactionResult>
+  revokeCallback: () => Promise<SendTransactionResult>
   approvalSubmitted: boolean
   currencies: {
     INPUT?: Currency
@@ -57,6 +58,7 @@ export function MMSwapCommitButton({
   wrapType,
   approval,
   approveCallback,
+  revokeCallback,
   approvalSubmitted,
   rfqTrade,
   swapInputError,
@@ -158,6 +160,7 @@ export function MMSwapCommitButton({
       swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
       onConfirm={handleSwap}
       approveCallback={approveCallback}
+      revokeCallback={revokeCallback}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
