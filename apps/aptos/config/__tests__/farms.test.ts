@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { ChainId, Pair, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { SerializedFarm } from '@pancakeswap/farms'
 import farms from '../constants/farms/1'
