@@ -42,7 +42,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "vitest": "^0.27.2",
+    "vitest": "^0.34.4",
     "@swc/core": "^1.2.215",
     "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",

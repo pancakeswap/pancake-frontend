@@ -31,7 +31,6 @@ export { useBalance, type UseBalanceArgs, type UseBalanceConfig } from './hooks/
 export { useCoin, type UseCoinArgs } from './hooks/useCoin'
 export { useConnect, type UseConnectArgs, type UseConnectConfig } from './hooks/useConnect'
 export { useDisconnect, type UseDisconnectConfig } from './hooks/useDisconnect'
-export { useHealthy, type UseHealthyConfig } from './hooks/useHealthy'
 export { useLedger, type UseLedgerConfig } from './hooks/useLedger'
 export { useTableItem, type UseTableItemConfig, useTableItems, type PayloadTableItem } from './hooks/useTableItem'
 export { useNetwork } from './hooks/useNetwork'

@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.0.1",
   "devDependencies": {
+    "@types/lodash": "^4.14.168",
     "@pancakeswap/aptos-swap-sdk": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "@types/lodash": "^4.14.168",
     "bignumber.js": "^9.1.1",
     "ethers": "^5.0.0",
     "graphql-request": "^5.0.0",

@@ -12,6 +12,6 @@ export function useProvider<TProvider extends AptosClient = AptosClient>({ netwo
     () => getProvider<TProvider>({ networkName }),
     (x) => x,
     // FIXME: should have better way to compare
-    (a, b) => a.client.accounts.httpRequest.config.BASE === b.client.accounts.httpRequest.config.BASE,
+    (a, b) => a.nodeUrl === b.nodeUrl,
   )
 }
