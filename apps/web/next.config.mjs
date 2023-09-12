@@ -56,7 +56,7 @@ const config = {
     '@pancakeswap/localization',
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
-    '@pancakeswap/widgets-internal',
+    '@pancakeswap/widgets-internal'
   ],
   reactStrictMode: true,
   swcMinify: true,
