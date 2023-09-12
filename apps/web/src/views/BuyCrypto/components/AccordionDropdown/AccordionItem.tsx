@@ -11,6 +11,8 @@ import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
 import Image from 'next/image'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { useBuyCryptoState } from 'state/buyCrypto/hooks'
+import { Field } from 'state/buyCrypto/actions'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 
@@ -65,6 +67,9 @@ function AccordionItem({
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - CURRENT_CAMPAIGN_TIMESTAMP)
+  const {
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+  } = useBuyCryptoState()
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {
@@ -96,7 +101,7 @@ function AccordionItem({
 
   const providerFee = quote.providerFee < 3.5 && quote.provider === 'MoonPay' ? 3.5 : quote.providerFee
 
-  if (quote.amount === 0) {
+  if (quote.amount === 0 || (inputCurrencyId === 'BUSD' && quote.provider === ONRAMP_PROVIDERS.Mercuryo)) {
     return (
       <Flex flexDirection="column">
         <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
