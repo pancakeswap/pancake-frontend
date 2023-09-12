@@ -48,7 +48,7 @@ export default function Updater(): null {
   })
 
   useSWRImmutable(
-    includeListUpdater && isReady && listState !== initialState ? ['token-list'] : null,
+    includeListUpdater && isReady && listState !== initialState && Object.keys(lists).length ? ['token-list'] : null,
     async () => {
       return Promise.all(
         Object.keys(lists).map((url) =>
