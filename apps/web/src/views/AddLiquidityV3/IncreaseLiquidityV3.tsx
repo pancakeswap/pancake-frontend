@@ -138,14 +138,18 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
 
-  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_A],
-    manager?.address,
-  )
-  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_B],
-    manager?.address,
-  )
+  const {
+    approvalState: approvalA,
+    approveCallback: approveACallback,
+    revokeCallback: revokeACallback,
+    currentAllowance: currentAllowanceA,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], manager?.address)
+  const {
+    approvalState: approvalB,
+    approveCallback: approveBCallback,
+    revokeCallback: revokeBCallback,
+    currentAllowance: currentAllowanceB,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], manager?.address)
 
   // we need an existence check on parsed amounts for single-asset deposits
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
@@ -302,8 +306,12 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       isValid={isValid}
       showApprovalA={showApprovalA}
       approveACallback={approveACallback}
+      currentAllowanceA={currentAllowanceA}
+      revokeACallback={revokeACallback}
       currencies={currencies}
       approveBCallback={approveBCallback}
+      currentAllowanceB={currentAllowanceB}
+      revokeBCallback={revokeBCallback}
       showApprovalB={showApprovalB}
       parsedAmounts={parsedAmounts}
       onClick={handleButtonSubmit}
