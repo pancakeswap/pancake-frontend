@@ -68,15 +68,15 @@ export function V3SubmitButton({
 }: V3SubmitButtonProps) {
   const { t } = useTranslation()
 
-  const approvalANeeded = useMemo(() => {
-    return showApprovalA && (approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && isValid
-  }, [showApprovalA, approvalA, isValid])
-  const approvalBNeeded = useMemo(() => {
-    return showApprovalB && (approvalB === ApprovalState.NOT_APPROVED || approvalB === ApprovalState.PENDING) && isValid
-  }, [showApprovalB, approvalB, isValid])
-  const anyApprovalNeeded = useMemo(() => {
-    return approvalANeeded || approvalBNeeded
-  }, [approvalANeeded, approvalBNeeded])
+  const shouldShowApprovalGroup = useMemo(
+    () =>
+      (approvalA === ApprovalState.NOT_APPROVED ||
+        approvalA === ApprovalState.PENDING ||
+        approvalB === ApprovalState.NOT_APPROVED ||
+        approvalB === ApprovalState.PENDING) &&
+      isValid,
+    [approvalA, approvalB, isValid],
+  )
 
   let buttons = null
   if (addIsUnsupported || addIsWarning) {
@@ -95,8 +95,8 @@ export function V3SubmitButton({
         <ApproveLiquidityTokens
           approvalA={approvalA}
           approvalB={approvalB}
-          showFieldAApproval={approvalANeeded}
-          showFieldBApproval={approvalBNeeded}
+          showFieldAApproval={showApprovalA}
+          showFieldBApproval={showApprovalB}
           approveACallback={approveACallback}
           approveBCallback={approveBCallback}
           revokeACallback={revokeACallback}
@@ -104,7 +104,7 @@ export function V3SubmitButton({
           currencies={currencies}
           currentAllowanceA={currentAllowanceA}
           currentAllowanceB={currentAllowanceB}
-          shouldShowApprovalGroup={anyApprovalNeeded}
+          shouldShowApprovalGroup={shouldShowApprovalGroup}
         />
         <CommitButton
           variant={
