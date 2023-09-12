@@ -22,7 +22,7 @@ const DropdownWrapper = styled.div<{ isClicked: boolean }>`
 
 const activeProviders: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
   [ONRAMP_PROVIDERS.Mercuryo]: false,
-  [ONRAMP_PROVIDERS.MoonPay]: true,
+  [ONRAMP_PROVIDERS.MoonPay]: false,
 }
 
 const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
