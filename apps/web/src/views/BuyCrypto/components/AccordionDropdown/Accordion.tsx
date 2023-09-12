@@ -17,12 +17,6 @@ function Accordion({
   const { t } = useTranslation()
   const [currentIdx, setCurrentIdx] = useState<number | string>(0)
 
-  combinedQuotes.sort((a: ProviderQuote, b: ProviderQuote) => {
-    if (a.provider === ONRAMP_PROVIDERS.Mercuryo && b.provider !== ONRAMP_PROVIDERS.Mercuryo) return -1
-    if (a.provider !== ONRAMP_PROVIDERS.Mercuryo && b.provider === ONRAMP_PROVIDERS.Mercuryo) return 1
-    return 0
-  })
-
   if (combinedQuotes.length === 0) {
     return (
       <FlexGap flexDirection="column" gap="16px">

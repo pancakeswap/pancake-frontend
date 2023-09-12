@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { providerFeeTypes } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
 import Image from 'next/image'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
@@ -19,6 +19,11 @@ const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   width: 100%;
   transition: display 0.6s ease-in-out;
 `
+
+const activeProviders: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
+  [ONRAMP_PROVIDERS.Mercuryo]: false,
+  [ONRAMP_PROVIDERS.MoonPay]: true,
+}
 
 const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
   const {
@@ -59,7 +64,7 @@ function AccordionItem({
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const { days, hours, minutes } = getTimePeriods(currentTimestamp - 1694512859)
+  const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - 1694512859)
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {
@@ -154,7 +159,7 @@ function AccordionItem({
             else fee = quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
-          {quote.provider === 'Mercuryo' ? (
+          {activeProviders[quote.provider] && seconds >= 1 ? (
             <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
