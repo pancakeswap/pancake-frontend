@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
+import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
 import Image from 'next/image'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
@@ -64,7 +64,7 @@ function AccordionItem({
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - 1694512859)
+  const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - CURRENT_CAMPAIGN_TIMESTAMP)
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {

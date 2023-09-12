@@ -11,10 +11,11 @@ export const SUPPORTED_MERCURYO_ARBITRUM_TOKENS = ['ETH', 'USDC']
 export const SUPPORTED_MONPAY_ETH_TOKENS = ['eth', 'usdc', 'dai', 'usdt']
 export const SUPPORTED_MOONPAY_BSC_TOKENS = ['bnb_bsc', 'busd_bsc']
 export const SUPPORTED_MOONPAY_ARBITRUM_TOKENS = ['eth_arbitrum', 'usdc_arbitrum']
-
 export const SUPPORTED_MERCURYO_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
 const MOONPAY_FEE_TYPES = ['Est. Total Fees', 'Networking Fees', 'Provider Fees']
 const MERCURYO_FEE_TYPES = ['Est Total Fees', 'Provider Fees', 'Processing Fees']
+
+export const CURRENT_CAMPAIGN_TIMESTAMP = 1694512859
 
 export const supportedTokenMap: {
   [chainId: number]: {
