@@ -64,9 +64,7 @@ export default function ApproveLiquidityTokens({
       currencies[Field.CURRENCY_B]?.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
     )
   }, [showFieldBApproval, currentAllowanceB, currencies])
-  const anyRevokeNeeded = useMemo(() => {
-    return revokeANeeded || revokeBNeeded
-  }, [revokeANeeded, revokeBNeeded])
+  const anyRevokeNeeded = revokeANeeded || revokeBNeeded
 
   return shouldShowApprovalGroup ? (
     <RowBetween style={{ gap: '8px' }}>
