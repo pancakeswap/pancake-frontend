@@ -153,10 +153,6 @@ export const getChainCurrencyWarningMessages = (
   chainId: number,
 ) => {
   return {
-    [ChainId.ZKSYNC]: t(
-      'Note Transak ETH quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a Transak quote for ETH',
-      { chainId: networkDisplay[chainId] },
-    ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
       chainId: networkDisplay[chainId],
     }),

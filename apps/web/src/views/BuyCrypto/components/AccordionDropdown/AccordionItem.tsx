@@ -1,18 +1,20 @@
-import { Box, Flex, InfoFilledIcon, InfoIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, InfoFilledIcon, RowBetween, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { CryptoCard } from 'components/Card'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
+import Image from 'next/image'
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
-import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
-import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
-import styled from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
+import { Field } from 'state/buyCrypto/actions'
+import { useBuyCryptoState } from 'state/buyCrypto/hooks'
+import styled from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { providerFeeTypes } from 'views/BuyCrypto/constants'
-import Image from 'next/image'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
+import { getRefValue } from 'views/BuyCrypto/hooks/useGetRefValue'
+import { CryptoFormView, ProviderQuote } from 'views/BuyCrypto/types'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
+import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
 const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   display: ${({ isClicked }) => (isClicked ? 'none' : 'block')};
@@ -60,6 +62,10 @@ function AccordionItem({
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const { days, hours, minutes } = getTimePeriods(currentTimestamp - 1694512859)
+  const {
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useBuyCryptoState()
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {

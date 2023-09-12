@@ -136,7 +136,7 @@ export function BuyCryptoForm({
             bottomElement={<></>}
           />
         </Box>
-        {[ChainId.BASE, ChainId.LINEA, ChainId.ZKSYNC].includes(chainId) ? (
+        {[ChainId.BASE, ChainId.LINEA].includes(chainId) ? (
           <Message variant="warning" padding="16px">
             <Text fontSize="15px" color="#D67E0B">
               {getChainCurrencyWarningMessages(t, chainId)[chainId]}
