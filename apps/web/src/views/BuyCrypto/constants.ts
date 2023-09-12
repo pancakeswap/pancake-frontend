@@ -153,6 +153,10 @@ export const getChainCurrencyWarningMessages = (
   chainId: number,
 ) => {
   return {
+    [ChainId.BSC]: t(
+      'Note USDT quotes are unavailable in USD on %chainId%. Please choose another currency to get offered a quote for USDT',
+      { chainId: networkDisplay[chainId] },
+    ),
     [ChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
       chainId: networkDisplay[chainId],
     }),

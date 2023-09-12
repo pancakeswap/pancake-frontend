@@ -19,6 +19,22 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/BUSD.png"
     },
     {
+      "name": "Binance Pegged USDT",
+      "symbol": "USDT",
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x55d398326f99059fF775485246999027B3197955.png"
+    },
+    {
+      "name": "Binance Pegged USD Coin",
+      "symbol": "USDC",
+      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+    },
+    {
       "name": "USD Coin",
       "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       "symbol": "USDC",
@@ -41,6 +57,14 @@
       "decimals": 18,
       "chainId": 1,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
+    },
+    {
+      "name": "Wrapped BTC",
+      "symbol": "WBTC",
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "chainId": 1,
+      "decimals": 8,
+      "logoURI": "https://tokens.pancakeswap.finance/images/eth/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599.png"
     },
     {
       "name": "DAI StableCoin",
