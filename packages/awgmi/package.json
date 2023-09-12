@@ -44,7 +44,8 @@
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
     "test": "vitest --run",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "exports": {
     "./package.json": "./package.json",
