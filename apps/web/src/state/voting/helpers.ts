@@ -5,7 +5,7 @@ import request, { gql } from 'graphql-request'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
-  const response: { proposals: Proposal[] } = await request(
+  const response: { proposals: Proposal[] } = await request<any>(
     SNAPSHOT_API,
     gql`
       query getProposals($first: Int!, $skip: Int!, $state: String!, $orderDirection: OrderDirection) {
@@ -34,7 +34,7 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
 }
 
 export const getProposal = async (id: string): Promise<Proposal> => {
-  const response: { proposal: Proposal } = await request(
+  const response: { proposal: Proposal } = await request<any>(
     SNAPSHOT_API,
     gql`
       query getProposal($id: String) {
@@ -58,7 +58,7 @@ export const getProposal = async (id: string): Promise<Proposal> => {
 }
 
 export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
-  const response: { votes: Vote[] } = await request(
+  const response: { votes: Vote[] } = await request<any>(
     SNAPSHOT_API,
     gql`
       query getVotes($first: Int, $skip: Int, $where: VoteWhere) {

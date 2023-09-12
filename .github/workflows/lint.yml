@@ -14,30 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v2.2.4
-      - name: Set up node@18
-        uses: actions/setup-node@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          cache: 'pnpm'
-          node-version: 18
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm i --ignore-scripts
+        run: bun i --frozen-lockfile
 
       - name: Get changed files
         id: changed-files
@@ -52,4 +35,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run ESLint
-        run: pnpm lint:report ${{ steps.changed-files.outputs.added_modified }}
+        run: bun lint:report ${{ steps.changed-files.outputs.added_modified }}

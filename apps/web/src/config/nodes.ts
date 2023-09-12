@@ -9,9 +9,10 @@ import {
   baseGoerli,
   scrollSepolia,
   base,
+  linea,
 } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
-import { opbnbTestnet, linea } from './chains'
+import { opbnbTestnet } from './chains'
 
 const POLYGON_ZKEVM_NODES = [
   'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',

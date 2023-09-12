@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "analyze": "ANALYZE=true pnpm build",
+    "analyze": "ANALYZE=true bun build",
     "dev": "next dev",
     "build": "next info && next build --debug",
     "start": "next start",

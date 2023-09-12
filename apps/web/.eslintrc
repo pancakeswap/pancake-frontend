@@ -6,6 +6,12 @@
   },
   "extends": ["plugin:@next/next/recommended"],
   "rules": {
+    "react/no-unknown-property": [
+      2,
+      {
+        "ignore": ["jsx", "global", "mask-type"]
+      }
+    ],
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug", "time", "timeLog", "timeEnd"] }],

@@ -3,7 +3,7 @@ import flatten from 'lodash/flatten'
 import { GRAPH_API_PREDICTION_V1 } from 'config/constants/endpoints'
 
 export const getV1History = async (skip = 0, where = {}): Promise<Record<string, any>[]> => {
-  const response = await request(
+  const response = await request<any>(
     GRAPH_API_PREDICTION_V1,
     gql`
       query getV1BetHistory($skip: Int!, $where: Bet_filter) {

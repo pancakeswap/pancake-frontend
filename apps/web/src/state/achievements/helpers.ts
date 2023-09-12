@@ -16,7 +16,7 @@ interface UserPointIncreaseEvent {
  */
 export const getUserPointIncreaseEvents = async (account: string): Promise<UserPointIncreaseEvent[]> => {
   try {
-    const { user } = await request(
+    const { user } = await request<any>(
       GRAPH_API_PROFILE,
       gql`
         query getUserPointIncreaseEvents($account: ID!) {

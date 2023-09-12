@@ -9,7 +9,10 @@
     "apis/*",
     "scripts"
   ],
-  "trustedDependencies": ["turbo"],
+  "trustedDependencies": [
+    "turbo",
+    "sentry-cli"
+  ],
   "scripts": {
     "dev": "turbo run dev --filter=web... --concurrency=20",
     "dev:aptos": "turbo run dev --filter=aptos-web... --concurrency=19",
@@ -35,7 +38,7 @@
     "updateAptosLPsAPR": "turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src tsx --tsconfig ./apps/aptos/tsconfig.json  scripts/updateAptosLpsAPR/index.ts",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
-    "version-packages": "changeset version && pnpm i --lockfile-only",
+    "version-packages": "changeset version && bun i --frozen-lockfile",
     "release-packages": "turbo run build --filter=./packages/* && changeset version && changeset publish",
     "prepare": "husky install"
   },

@@ -36,7 +36,7 @@
   "scripts": {
     "build:uikit": "vite build",
     "dev": "vite build --watch --mode development",
-    "start": "pnpm storybook",
+    "start": "bun storybook",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check --loglevel error 'src/**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
@@ -44,7 +44,7 @@
     "build:storybook": "storybook build",
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
-    "prepublishOnly": "pnpm run pkg:build",
+    "prepublishOnly": "bun run pkg:build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {

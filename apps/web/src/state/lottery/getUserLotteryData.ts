@@ -71,7 +71,7 @@ export const getGraphLotteryUser = async (
   }
 
   try {
-    const response = await request(
+    const response = await request<any>(
       GRAPH_API_LOTTERY,
       gql`
         query getUserLotteries($account: ID!, $first: Int!, $skip: Int!, $where: Round_filter) {
