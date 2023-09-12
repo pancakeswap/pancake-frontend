@@ -1,2 +1,2 @@
 [install.lockfile]
-print = "yarn"
+# print = "yarn"
