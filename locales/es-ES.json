@@ -2678,5 +2678,17 @@
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Los términos y condiciones de nuestro programa para afiliados se actualizó a partir del 3 de mayo del 2023, con cambios relacionados con",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Al invertir en zkSync Era, si retiras tu CAKE poco después de que hayas invertido puede que no obtengas ninguna recompensa.",
-  "0%  Provider  Fee until Sep 12th!": "0% de comisión del proveedor hasta el 12 de septiembre"
+  "0%  Provider  Fee until Sep 12th!": "0% de comisión del proveedor hasta el 12 de septiembre",
+  "Proceed in your wallet": "Proceed in your wallet",
+  "Enable spending %symbol%": "Enable spending %symbol%",
+  "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.",
+  "Why": "Why",
+  "approving": "approving",
+  "this?": "this?",
+  "Pancakeswap AMM includes V3, V2 and stable swap.": "Pancakeswap AMM includes V3, V2 and stable swap.",
+  "Swapping thru:": "Swapping thru:",
+  "Pancakeswap MM": "Pancakeswap MM",
+  "Pancakeswap AMM": "Pancakeswap AMM",
+  "Why resetting approval": "Why resetting approval",
+  "Reset approval on USDT.": "Reset approval on USDT."
 }
