@@ -1,5 +1,13 @@
 # @pancakeswap/smart-router
 
+## 4.8.4
+
+### Patch Changes
+
+- 4cca3f688: Support dropping unexected multicalls
+- Updated dependencies [4cca3f688]
+  - @pancakeswap/multicall@3.1.0
+
 ## 4.8.3
 
 ### Patch Changes

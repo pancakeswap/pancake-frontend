@@ -1,5 +1,11 @@
 # @pancakeswap/multicall
 
+## 3.1.0
+
+### Minor Changes
+
+- 4cca3f688: Support dropping unexected multicalls
+
 ## 3.0.1
 
 ### Patch Changes
