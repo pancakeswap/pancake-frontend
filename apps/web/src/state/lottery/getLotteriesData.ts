@@ -62,7 +62,7 @@ export const getGraphLotteries = async (
   where: LotteriesWhere = {},
 ): Promise<LotteryRoundGraphEntity[]> => {
   try {
-    const response = await request(
+    const response = await request<any>(
       GRAPH_API_LOTTERY,
       gql`
         query getLotteries($first: Int!, $skip: Int!, $where: Lottery_filter) {

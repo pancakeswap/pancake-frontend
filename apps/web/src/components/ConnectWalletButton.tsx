@@ -11,6 +11,7 @@ import { useMemo, useState } from 'react'
 import { useConnect } from 'wagmi'
 import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import Trans from './Trans'
+import type {} from 'styled-jsx'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const handleActive = useActiveHandle()

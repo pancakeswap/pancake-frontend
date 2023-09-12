@@ -3,7 +3,7 @@ import gfm from "remark-gfm";
 import markdownComponents from "./styles";
 
 const ReactMarkdown: React.FC<React.PropsWithChildren<ReactMarkdownOptions>> = (props) => {
-  return <ReactMarkdownLib remarkPlugins={[gfm]} components={markdownComponents} {...props} />;
+  return <ReactMarkdownLib remarkPlugins={[gfm as any]} components={markdownComponents} {...props} />;
 };
 
 export default ReactMarkdown;

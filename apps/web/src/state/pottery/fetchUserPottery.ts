@@ -59,7 +59,7 @@ export const fetchUserDrawData = async (account: Address) => {
 
 export const fetchWithdrawAbleData = async (account: Address) => {
   try {
-    const response = await request(
+    const response = await request<any>(
       GRAPH_API_POTTERY,
       gql`
         query getUserPotteryWithdrawAbleData($account: ID!) {

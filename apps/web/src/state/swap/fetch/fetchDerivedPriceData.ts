@@ -71,9 +71,9 @@ export const getTokenBestTvlProtocol = async (tokenAddress: string, chainId: Cha
   const infos = SWAP_INFO_BY_CHAIN[chainId]
   if (infos) {
     const [v2, v3, stable] = await Promise.allSettled([
-      'v2' in infos ? request(infos.v2, getTVL(tokenAddress.toLowerCase())) : Promise.resolve(),
-      'v3' in infos ? request(infos.v3, getTVL(tokenAddress.toLowerCase(), true)) : Promise.resolve(),
-      'stable' in infos ? request(infos.stable, getTVL(tokenAddress.toLowerCase())) : Promise.resolve(),
+      'v2' in infos ? request<any>(infos.v2, getTVL(tokenAddress.toLowerCase())) : Promise.resolve(),
+      'v3' in infos ? request<any>(infos.v3, getTVL(tokenAddress.toLowerCase(), true)) : Promise.resolve(),
+      'stable' in infos ? request<any>(infos.stable, getTVL(tokenAddress.toLowerCase())) : Promise.resolve(),
     ])
 
     const results = [v2, v3, stable]

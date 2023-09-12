@@ -20,6 +20,7 @@ import isEmpty from 'lodash/isEmpty'
 import times from 'lodash/times'
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import { useInitialBlock } from 'state/block/hooks'
+import EasyMDE from 'easymde'
 
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -157,7 +158,7 @@ const CreateProposal = () => {
         account && ADMINS.includes(account.toLowerCase())
           ? []
           : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
-    }
+    } as EasyMDE.Options
   }, [account])
 
   useEffect(() => {
