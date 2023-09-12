@@ -11,7 +11,7 @@ const Container = styled(Link)`
 
 const ThirdYearBirthdayCake = () => {
   return (
-    <Container href="https://blog.pancakeswap.finance/" external>
+    <Container href="https://blog.pancakeswap.finance/?category=PancakeSwap%20Birthday" external>
       <Image src="/images/third-year-cake-icon.png" alt="third-year-cake-icon" width={48} height={48} />
     </Container>
   )
