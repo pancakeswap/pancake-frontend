@@ -8,9 +8,11 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { isMobile } from 'react-device-detect'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { providerFeeTypes } from 'views/BuyCrypto/constants'
+import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS, providerFeeTypes } from 'views/BuyCrypto/constants'
 import Image from 'next/image'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { useBuyCryptoState } from 'state/buyCrypto/hooks'
+import { Field } from 'state/buyCrypto/actions'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
 
@@ -19,6 +21,11 @@ const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   width: 100%;
   transition: display 0.6s ease-in-out;
 `
+
+const activeProviders: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
+  [ONRAMP_PROVIDERS.Mercuryo]: false,
+  [ONRAMP_PROVIDERS.MoonPay]: false,
+}
 
 const FeeItem = ({ feeTitle, feeAmount, currency }: { feeTitle: string; feeAmount: number; currency: string }) => {
   const {
@@ -59,7 +66,10 @@ function AccordionItem({
   const [visiblity, setVisiblity] = useState(false)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const { days, hours, minutes } = getTimePeriods(currentTimestamp - 1694512859)
+  const { days, hours, minutes, seconds } = getTimePeriods(currentTimestamp - CURRENT_CAMPAIGN_TIMESTAMP)
+  const {
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+  } = useBuyCryptoState()
   const isActive = () => (multiple ? visiblity : active)
 
   const toogleVisiblity = useCallback(() => {
@@ -91,7 +101,7 @@ function AccordionItem({
 
   const providerFee = quote.providerFee < 3.5 && quote.provider === 'MoonPay' ? 3.5 : quote.providerFee
 
-  if (quote.amount === 0) {
+  if (quote.amount === 0 || (inputCurrencyId === 'BUSD' && quote.provider === ONRAMP_PROVIDERS.Mercuryo)) {
     return (
       <Flex flexDirection="column">
         <CryptoCard padding="16px 16px" style={{ height: '48px' }} position="relative" isClicked={false} isDisabled>
@@ -154,7 +164,7 @@ function AccordionItem({
             else fee = quote.providerFee
             return <FeeItem key={feeType} feeTitle={feeType} feeAmount={fee} currency={quote.fiatCurrency} />
           })}
-          {quote.provider === 'Mercuryo' ? (
+          {activeProviders[quote.provider] && seconds >= 1 ? (
             <Box mt="16px" background="#F0E4E2" padding="16px" border="1px solid #D67E0A" borderRadius="16px">
               <Flex>
                 <Image src={pocketWatch} alt="pocket-watch" height={30} width={30} />
