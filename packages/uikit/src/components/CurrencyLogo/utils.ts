@@ -8,6 +8,8 @@ const mapping: { [key: number]: string } = {
   [ChainId.POLYGON_ZKEVM]: "polygonzkevm",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ZKSYNC]: "zksync",
+  [ChainId.BASE]: "base",
+  [ChainId.LINEA]: "linea",
 };
 
 export const getTokenLogoURL = memoize(
