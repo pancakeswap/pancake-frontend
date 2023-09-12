@@ -92,7 +92,10 @@ const AllArticle = () => {
       )
       if (searchedTopic) {
         setSelectCategoriesSelected(searchedTopic.id)
-        handleScrollToArticleSection()
+        window.scrollTo({
+          top: articlesWrapperEl?.current?.offsetTop,
+          behavior: 'smooth',
+        })
       }
     }
   }, [categoriesData, router.isReady, router.query.category])
@@ -125,13 +128,6 @@ const AllArticle = () => {
     if (blogCodeFromStorage !== language) {
       localStorage.setItem(LS_KEY, language)
     }
-  }
-
-  const handleScrollToArticleSection = () => {
-    window.scrollTo({
-      top: articlesWrapperEl?.current?.offsetTop,
-      behavior: 'smooth',
-    })
   }
 
   return (
