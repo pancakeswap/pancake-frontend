@@ -12,6 +12,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useShowOnceAnniversaryModal } from 'hooks/useShowOnceAnniversaryModal'
 
 const AnniversaryImage = styled.img`
   border-radius: 50%;
@@ -44,6 +45,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   const { chainId } = useActiveChainId()
   const { toastError, toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
+  const [showOnceAnniversaryModal, setShowOnceAnniversaryModal] = useShowOnceAnniversaryModal()
 
   const hasDisplayedModal = useRef(false)
   const [show, setShow] = useState(false)
@@ -71,10 +73,10 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   useEffect(() => {
     const matchesSomeLocations = excludeLocations.some((location) => router.pathname.includes(location))
 
-    if (canClaimAnniversaryPoints && !matchesSomeLocations && !show) {
+    if (canClaimAnniversaryPoints && !matchesSomeLocations && !show && showOnceAnniversaryModal) {
       setShow(true)
     }
-  }, [excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, router, show])
+  }, [excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, router, show, showOnceAnniversaryModal])
 
   // Reset the check flag when account changes
   useEffect(() => {
@@ -82,6 +84,9 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   }, [account, hasDisplayedModal])
 
   const handleCloseModal = () => {
+    if (showOnceAnniversaryModal) {
+      setShowOnceAnniversaryModal(!showOnceAnniversaryModal)
+    }
     setShow(false)
   }
 
