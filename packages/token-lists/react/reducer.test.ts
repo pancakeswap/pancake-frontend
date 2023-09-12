@@ -1,11 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { Store } from 'redux'
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, type EnhancedStore } from '@reduxjs/toolkit'
 
 import { fetchTokenList, acceptListUpdate, addList, removeList, enableList, updateListVersion } from './actions'
-import { ListsState, createTokenListReducer, NEW_LIST_STATE } from './reducer'
+import { ListsState, createTokenListReducer, NEW_LIST_STATE, type ListByUrlState } from './reducer'
 
-const DEFAULT_ACTIVE_LIST_URLS = []
+const DEFAULT_ACTIVE_LIST_URLS: string[] = []
 const DEFAULT_LIST_OF_LISTS = ['https://tokens.pancakeswap.finance/pancakeswap-extended.json']
 const STUB_TOKEN_LIST = {
   name: '',
@@ -14,7 +13,7 @@ const STUB_TOKEN_LIST = {
   tokens: [],
 }
 
-const UNSUPPORTED_LIST_URLS = []
+const UNSUPPORTED_LIST_URLS: string[] = []
 
 const reducer = createTokenListReducer(
   {
@@ -23,7 +22,7 @@ const reducer = createTokenListReducer(
       ...DEFAULT_LIST_OF_LISTS.concat(...UNSUPPORTED_LIST_URLS).reduce((memo, listUrl) => {
         memo[listUrl] = NEW_LIST_STATE
         return memo
-      }, {}),
+      }, {} as Record<string, ListByUrlState>),
     },
     activeListUrls: DEFAULT_ACTIVE_LIST_URLS,
   },
@@ -44,12 +43,24 @@ const MAJOR_UPDATED_STUB_LIST = {
   version: { ...STUB_TOKEN_LIST.version, major: STUB_TOKEN_LIST.version.major + 1 },
 }
 
-describe.skip('list reducer', () => {
-  let store: Store<ListsState>
+const resetStore = (preloadedState?: ListsState) => {
+  return configureStore({ reducer, preloadedState })
+}
+
+describe('list reducer', () => {
+  let store: EnhancedStore<ListsState> = resetStore()
 
   beforeEach(() => {
-    store = configureStore({
-      reducer,
+    store = resetStore({
+      byUrl: {
+        'fake-url': {
+          error: null,
+          current: STUB_TOKEN_LIST,
+          pendingUpdate: null,
+          loadingRequestId: null,
+        },
+      },
+      activeListUrls: undefined,
     })
   })
 
@@ -62,7 +73,7 @@ describe.skip('list reducer', () => {
             'fake-url': {
               error: null,
               loadingRequestId: 'request-id',
-              current: null,
+              current: STUB_TOKEN_LIST,
               pendingUpdate: null,
             },
           },
@@ -71,7 +82,7 @@ describe.skip('list reducer', () => {
       })
 
       it('does not clear current list', () => {
-        store = createStore(reducer, {
+        store = resetStore({
           byUrl: {
             'fake-url': {
               error: null,
@@ -200,6 +211,7 @@ describe.skip('list reducer', () => {
 
     describe('rejected', () => {
       it('no-op if not loading', () => {
+        store = resetStore({ byUrl: {}, activeListUrls: undefined })
         store.dispatch(fetchTokenList.rejected({ requestId: 'request-id', errorMessage: 'abcd', url: 'fake-url' }))
         expect(store.getState()).toEqual({
           byUrl: {},
@@ -208,7 +220,7 @@ describe.skip('list reducer', () => {
       })
 
       it('sets the error if loading', () => {
-        store = createStore(reducer, {
+        store = resetStore({
           byUrl: {
             'fake-url': {
               error: null,
@@ -237,9 +249,26 @@ describe.skip('list reducer', () => {
 
   describe('addList', () => {
     it('adds the list key to byUrl', () => {
+      store = resetStore({
+        byUrl: {
+          'fake-url': {
+            error: null,
+            current: STUB_TOKEN_LIST,
+            loadingRequestId: null,
+            pendingUpdate: null,
+          },
+        },
+        activeListUrls: undefined,
+      })
       store.dispatch(addList('list-id'))
       expect(store.getState()).toEqual({
         byUrl: {
+          'fake-url': {
+            error: null,
+            current: STUB_TOKEN_LIST,
+            loadingRequestId: null,
+            pendingUpdate: null,
+          },
           'list-id': {
             error: null,
             current: null,
@@ -251,7 +280,7 @@ describe.skip('list reducer', () => {
       })
     })
     it('no op for existing list', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -279,7 +308,7 @@ describe.skip('list reducer', () => {
 
   describe('acceptListUpdate', () => {
     it('swaps pending update into current', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -307,7 +336,7 @@ describe.skip('list reducer', () => {
 
   describe('removeList', () => {
     it('deletes the list key', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -325,7 +354,7 @@ describe.skip('list reducer', () => {
       })
     })
     it('Removes from active lists if active list is removed', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -346,7 +375,7 @@ describe.skip('list reducer', () => {
 
   describe('enableList', () => {
     it('enables a list url', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -371,7 +400,7 @@ describe.skip('list reducer', () => {
       })
     })
     it('adds to url keys if not present already on enable', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -402,7 +431,7 @@ describe.skip('list reducer', () => {
       })
     })
     it('enable works if list already added', () => {
-      store = createStore(reducer, {
+      store = resetStore({
         byUrl: {
           'fake-url': {
             error: null,
@@ -431,7 +460,7 @@ describe.skip('list reducer', () => {
   describe('updateVersion', () => {
     describe('never initialized', () => {
       beforeEach(() => {
-        store = createStore(reducer, {
+        store = resetStore({
           byUrl: {
             'https://unpkg.com/@uniswap/default-token-list@latest/uniswap-default.tokenlist.json': {
               error: null,
@@ -481,7 +510,7 @@ describe.skip('list reducer', () => {
     })
     describe('initialized with a different set of lists', () => {
       beforeEach(() => {
-        store = createStore(reducer, {
+        store = resetStore({
           byUrl: {
             'https://unpkg.com/@uniswap/default-token-list@latest/uniswap-default.tokenlist.json': {
               error: null,
