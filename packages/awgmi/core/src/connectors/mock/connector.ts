@@ -78,7 +78,7 @@ export class MockConnector extends Connector {
     return provider?.signTransaction(transaction)
   }
 
-  protected isChainUnsupported(_networkName: string): boolean {
+  isChainUnsupported(_networkName: string): boolean {
     return false
   }
 
