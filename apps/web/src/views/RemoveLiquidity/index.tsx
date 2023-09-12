@@ -140,7 +140,10 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], V2_ROUTER_ADDRESS[chainId])
+  const { approvalState, approveCallback } = useApproveCallback(
+    parsedAmounts[Field.LIQUIDITY],
+    V2_ROUTER_ADDRESS[chainId],
+  )
 
   async function onAttemptToApprove() {
     if (!pairContractRead || !pair || !signTypedDataAsync || !deadline) throw new Error('missing dependencies')
@@ -259,7 +262,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     let methodNames: string[]
     let args
     // we have approval, use normal remove liquidity
-    if (approval === ApprovalState.APPROVED) {
+    if (approvalState === ApprovalState.APPROVED) {
       // removeLiquidityETH
       if (oneCurrencyIsNative) {
         methodNames = ['removeLiquidityETH', 'removeLiquidityETHSupportingFeeOnTransferTokens']
@@ -454,7 +457,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       allowedSlippage={allowedSlippage}
       onRemove={onRemove}
       pendingText={pendingText}
-      approval={approval}
+      approval={approvalState}
       signatureData={signatureData}
       tokenA={tokenA}
       tokenB={tokenB}
@@ -688,15 +691,15 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
         ) : (
           <RowBetween>
             <Button
-              variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
+              variant={approvalState === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
               onClick={onAttemptToApprove}
-              disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
+              disabled={approvalState !== ApprovalState.NOT_APPROVED || signatureData !== null}
               width="100%"
               mr="0.5rem"
             >
-              {approval === ApprovalState.PENDING ? (
+              {approvalState === ApprovalState.PENDING ? (
                 <Dots>{t('Enabling')}</Dots>
-              ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
+              ) : approvalState === ApprovalState.APPROVED || signatureData !== null ? (
                 t('Enabled')
               ) : (
                 t('Enable')
@@ -717,7 +720,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 onPresentRemoveLiquidity()
               }}
               width="100%"
-              disabled={!isValid || (signatureData === null && approval !== ApprovalState.APPROVED)}
+              disabled={!isValid || (signatureData === null && approvalState !== ApprovalState.APPROVED)}
             >
               {error || t('Remove')}
             </Button>

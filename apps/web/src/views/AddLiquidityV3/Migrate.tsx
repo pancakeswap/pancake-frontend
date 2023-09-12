@@ -359,7 +359,7 @@ function V2PairMigrate({
     s: `0x${string}`
     deadline: number
   } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(
+  const { approvalState, approveCallback } = useApproveCallback(
     CurrencyAmount.fromRawAmount(pair.liquidityToken, pairBalance.toString()),
     V2_ROUTER_ADDRESS[chainId],
   )
@@ -807,20 +807,20 @@ function V2PairMigrate({
             {!isSuccessfullyMigrated && !isMigrationPending ? (
               <AutoColumn gap="md" style={{ flex: '1' }}>
                 <CommitButton
-                  variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
+                  variant={approvalState === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
                   disabled={
-                    approval !== ApprovalState.NOT_APPROVED ||
+                    approvalState !== ApprovalState.NOT_APPROVED ||
                     signatureData !== null ||
                     invalidRange ||
                     confirmingMigration
                   }
                   onClick={approve}
                 >
-                  {approval === ApprovalState.PENDING ? (
+                  {approvalState === ApprovalState.PENDING ? (
                     <Dots>
                       <Trans>Enabling</Trans>
                     </Dots>
-                  ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
+                  ) : approvalState === ApprovalState.APPROVED || signatureData !== null ? (
                     <Trans>Enabled</Trans>
                   ) : (
                     <Trans>Enable</Trans>
@@ -833,7 +833,7 @@ function V2PairMigrate({
                 variant={isSuccessfullyMigrated ? 'success' : 'primary'}
                 disabled={
                   invalidRange ||
-                  (approval !== ApprovalState.APPROVED && signatureData === null) ||
+                  (approvalState !== ApprovalState.APPROVED && signatureData === null) ||
                   confirmingMigration ||
                   isMigrationPending ||
                   isSuccessfullyMigrated

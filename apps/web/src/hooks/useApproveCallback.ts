@@ -1,16 +1,13 @@
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, ERC20Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { useAccount, Address } from 'wagmi'
-import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { isUserRejected, logError } from 'utils/sentry'
 import { SendTransactionResult } from 'wagmi/actions'
-import { Field } from 'state/swap/actions'
 import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
-import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
@@ -34,7 +31,13 @@ export function useApproveCallback(
   } = {
     addToTransaction: true,
   },
-): [ApprovalState, () => Promise<SendTransactionResult>, CurrencyAmount<Currency> | undefined, boolean] {
+): {
+  approvalState: ApprovalState
+  approveCallback: () => Promise<SendTransactionResult>
+  revokeCallback: () => Promise<SendTransactionResult>
+  currentAllowance: CurrencyAmount<Currency> | undefined
+  isPendingError: boolean
+} {
   const { addToTransaction = true, targetAmount } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -184,21 +187,15 @@ export function useApproveCallback(
     ],
   )
 
-  return [approvalState, approve, currentAllowance, isPendingError]
-}
+  const approveCallback = useCallback(() => {
+    return approve()
+  }, [approve])
 
-// wraps useApproveCallback in the context of a swap
-export function useApproveCallbackFromTrade(
-  trade?: Trade<Currency, Currency, TradeType>,
-  allowedSlippage = 0,
-  chainId?: number,
-) {
-  const amountToApprove = useMemo(
-    () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
-    [trade, allowedSlippage],
-  )
+  const revokeCallback = useCallback(() => {
+    return approve(0n)
+  }, [approve])
 
-  return useApproveCallback(amountToApprove, V2_ROUTER_ADDRESS[chainId])
+  return { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError }
 }
 
 export function useApproveCallbackFromAmount({

@@ -85,7 +85,7 @@ export default function V2FormView({
         {shouldShowApprovalGroup && (
           <RowBetween style={{ gap: '8px' }}>
             {showFieldAApproval && (
-              <Button onClick={() => approveACallback()} disabled={approvalA === ApprovalState.PENDING} width="100%">
+              <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
                 {approvalA === ApprovalState.PENDING ? (
                   <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
                 ) : (
@@ -94,7 +94,7 @@ export default function V2FormView({
               </Button>
             )}
             {showFieldBApproval && (
-              <Button onClick={() => approveBCallback()} disabled={approvalB === ApprovalState.PENDING} width="100%">
+              <Button onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
                 {approvalB === ApprovalState.PENDING ? (
                   <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
                 ) : (
