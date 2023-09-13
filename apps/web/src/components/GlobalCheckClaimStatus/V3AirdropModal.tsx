@@ -59,11 +59,11 @@ const GITHUB_ENDPOINT = 'https://raw.githubusercontent.com/pancakeswap/airdrop-v
 const V3AirdropModal: React.FC = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { mutate } = useSWRConfig()
   const v3AirdropContract = useV3AirdropContract()
-  const { v3WhitelistAddress } = useAirdropModalStatus()
+  const { shouldShowModal, v3WhitelistAddress } = useAirdropModalStatus()
   const [showOnceAirdropModal, setShowOnceAirdropModal] = useShowOnceAirdropModal()
 
   const [show, setShow] = useState(false)
@@ -78,16 +78,13 @@ const V3AirdropModal: React.FC = () => {
   const { data: v3MerkleProofs } = useSWRImmutable(data && '/airdrop-Merkle-json')
 
   useEffect(() => {
-    delay(showConfetti, 100)
-  }, [])
-
-  useEffect(() => {
-    if (showOnceAirdropModal) {
+    if (shouldShowModal && showOnceAirdropModal) {
       setShow(true)
+      delay(showConfetti, 100)
     } else {
       setShow(false)
     }
-  }, [account, showOnceAirdropModal, v3WhitelistAddress])
+  }, [account, shouldShowModal, showOnceAirdropModal, v3WhitelistAddress])
 
   const handleCloseModal = () => {
     if (showOnceAirdropModal) {
@@ -117,12 +114,19 @@ const V3AirdropModal: React.FC = () => {
           }),
         )
         if (receipt?.status) {
+          if (showOnceAirdropModal) {
+            setShowOnceAirdropModal(!showOnceAirdropModal)
+          }
           mutate([account, '/airdrop-claimed'])
           toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         }
       }
+    } catch (error: any) {
+      const errorDescription = `${error.message} - ${error.data?.message}`
+      toastError(t('Failed to claim'), errorDescription)
     } finally {
-      handleCloseModal()
+      setShow(false)
+      setIsLoading(false)
     }
   }
 
@@ -147,7 +151,7 @@ const V3AirdropModal: React.FC = () => {
 
   return (
     <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
-      <Modal title={t('Congratulations!')} onDismiss={handleCloseModal}>
+      <Modal title={t('Congratulations!')}>
         <Flex
           flexDirection="column"
           alignItems="center"

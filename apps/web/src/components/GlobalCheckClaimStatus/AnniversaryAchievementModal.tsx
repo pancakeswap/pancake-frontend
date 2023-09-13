@@ -54,10 +54,6 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
 
   const contract = useAnniversaryAchievementContract({ chainId: ChainId.BSC })
 
-  useEffect(() => {
-    delay(showConfetti, 100)
-  }, [])
-
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
@@ -75,15 +71,20 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
 
     if (canClaimAnniversaryPoints && !matchesSomeLocations && !show && showOnceAnniversaryModal) {
       setShow(true)
+      delay(showConfetti, 100)
     }
   }, [excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, router, show, showOnceAnniversaryModal])
 
   // Reset the check flag when account changes
   useEffect(() => {
     setShow(false)
+    setIsLoading(false)
   }, [account, hasDisplayedModal])
 
   const handleCloseModal = () => {
+    if (showOnceAnniversaryModal) {
+      setShowOnceAnniversaryModal(!showOnceAnniversaryModal)
+    }
     setShow(false)
   }
 
@@ -106,13 +107,14 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
       const errorDescription = `${error.message} - ${error.data?.message}`
       toastError(t('Failed to claim'), errorDescription)
     } finally {
-      handleCloseModal()
+      setShow(false)
+      setIsLoading(false)
     }
   }
 
   return (
     <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
-      <Modal title={t('Congratulations!')} onDismiss={handleCloseModal}>
+      <Modal title={t('Congratulations!')}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
           <Box>
             <AnniversaryImage src="/images/achievements/3-year.svg" />
