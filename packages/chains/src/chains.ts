@@ -12,7 +12,6 @@ export {
   arbitrum,
   arbitrumGoerli,
   scrollSepolia,
-  scrollTestnet,
   linea,
   lineaTestnet,
   base,
