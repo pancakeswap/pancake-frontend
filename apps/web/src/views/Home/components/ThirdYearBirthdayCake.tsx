@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Link } from '@pancakeswap/uikit'
 import throttle from 'lodash/throttle'
 import Image from 'next/image'
+import { disableWhenEvenEnd } from 'hooks/useThirdYearBirthdayEffect'
 
 const Container = styled(Link)<{ hasScrollToTopButton: boolean }>`
   position: fixed;
@@ -14,6 +15,7 @@ const Container = styled(Link)<{ hasScrollToTopButton: boolean }>`
 
 const ThirdYearBirthdayCake = () => {
   const [hasScrollToTopButton, setHasScrollToTopButton] = useState(false)
+  const isEvenEnd = disableWhenEvenEnd()
 
   useEffect(() => {
     const toggleVisible = () => {
@@ -31,6 +33,10 @@ const ThirdYearBirthdayCake = () => {
 
     return () => window.removeEventListener('scroll', throttledToggleVisible)
   }, [])
+
+  if (isEvenEnd) {
+    return null
+  }
 
   return (
     <Container

@@ -72,9 +72,18 @@ const useConfetti = (options: Options): { initialize: () => void; teardown: () =
   return { initialize, teardown }
 }
 
+export const disableWhenEvenEnd = () => {
+  const now = Date.now()
+  const endDay = 1697212800000 // 14 Oct 2023
+  return endDay < now
+}
+
 const useThirdYearBirthdayEffect = () => {
   const { pathname } = useRouter()
-  const { initialize, teardown } = useConfetti({ debounceDuration: 1000 })
+  const { initialize, teardown } = useConfetti({
+    disableWhen: disableWhenEvenEnd,
+    debounceDuration: 1000,
+  })
 
   useEffect(() => {
     initialize()
