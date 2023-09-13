@@ -6,6 +6,7 @@
   },
   "extends": ["plugin:@next/next/recommended"],
   "rules": {
+    "no-empty-function": 0,
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug", "time", "timeLog", "timeEnd"] }],
