@@ -48,6 +48,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   const [showOnceAnniversaryModal, setShowOnceAnniversaryModal] = useShowOnceAnniversaryModal()
 
   const hasDisplayedModal = useRef(false)
+  const [isFirstTime, setIsFirstTime] = useState(true)
   const [show, setShow] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
@@ -76,15 +77,29 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
       account &&
       !Object.keys(showOnceAnniversaryModal).includes(account)
     ) {
+      if (isFirstTime) {
+        delay(showConfetti, 100)
+        setIsFirstTime(false)
+      }
+
       setShow(true)
-      delay(showConfetti, 100)
     }
-  }, [excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, router, show, showOnceAnniversaryModal, account])
+  }, [
+    excludeLocations,
+    hasDisplayedModal,
+    canClaimAnniversaryPoints,
+    router,
+    show,
+    isFirstTime,
+    showOnceAnniversaryModal,
+    account,
+  ])
 
   // Reset the check flag when account changes
   useEffect(() => {
     setShow(false)
     setIsLoading(false)
+    setIsFirstTime(true)
   }, [account, hasDisplayedModal])
 
   const closeOnceAnniversaryModal = () => {
