@@ -6,7 +6,7 @@ import Container from 'components/Layout/Container'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
-import { useThirdYearBirthdayEffect } from 'hooks/useThirdYearBirthdayEffect'
+import { useAnniversaryEffect } from 'hooks/useAnniversaryEffect'
 import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
 import MetricsSection from './components/MetricsSection'
@@ -52,7 +52,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
 
   const { t } = useTranslation()
 
-  useThirdYearBirthdayEffect()
+  useAnniversaryEffect()
 
   return (
     <>
