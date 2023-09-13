@@ -69,11 +69,17 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   useEffect(() => {
     const matchesSomeLocations = excludeLocations.some((location) => router.pathname.includes(location))
 
-    if (canClaimAnniversaryPoints && !matchesSomeLocations && !show && showOnceAnniversaryModal) {
+    if (
+      canClaimAnniversaryPoints &&
+      !matchesSomeLocations &&
+      !show &&
+      account &&
+      !Object.keys(showOnceAnniversaryModal).includes(account)
+    ) {
       setShow(true)
       delay(showConfetti, 100)
     }
-  }, [excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, router, show, showOnceAnniversaryModal])
+  }, [excludeLocations, hasDisplayedModal, canClaimAnniversaryPoints, router, show, showOnceAnniversaryModal, account])
 
   // Reset the check flag when account changes
   useEffect(() => {
@@ -81,11 +87,15 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
     setIsLoading(false)
   }, [account, hasDisplayedModal])
 
-  const handleCloseModal = () => {
-    if (showOnceAnniversaryModal) {
-      setShowOnceAnniversaryModal(!showOnceAnniversaryModal)
+  const closeOnceAnniversaryModal = () => {
+    if (account && !Object.keys(showOnceAnniversaryModal).includes(account)) {
+      setShowOnceAnniversaryModal({ ...showOnceAnniversaryModal, [account]: false })
     }
+  }
+
+  const handleCloseModal = () => {
     setShow(false)
+    closeOnceAnniversaryModal()
   }
 
   const handleClick = async () => {
@@ -97,9 +107,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
       if (receipt?.status) {
         toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         if (account) {
-          if (showOnceAnniversaryModal) {
-            setShowOnceAnniversaryModal(!showOnceAnniversaryModal)
-          }
+          closeOnceAnniversaryModal()
           router.push(`/profile/${account}/achievements`)
         }
       }
