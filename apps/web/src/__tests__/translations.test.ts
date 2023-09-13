@@ -65,7 +65,7 @@ describe.concurrent('Check translations integrity', () => {
 })
 
 describe('Check translations available', () => {
-  const files = []
+  const files: string[] = []
   const translationKeys = new Set(allTranslationKeys)
 
   function throughDirectory(directory, includeJs = false) {
@@ -88,7 +88,7 @@ describe('Check translations available', () => {
   throughDirectory('../../packages/uikit/src')
   throughDirectory('../../packages/ui-wallets/src')
   throughDirectory('../../packages/widgets-internal')
-  let match
+  let match: RegExpExecArray | null = null
 
   const extractedKeys = new Set<string>(whitelist)
 
@@ -118,7 +118,7 @@ describe('Check translations available', () => {
     ) {
       if (match[1].trim()) {
         const placeHolderMatch = regexWithSearchInputPlaceHolder.exec(match[1])
-        if (placeHolderMatch[1]) {
+        if (placeHolderMatch?.[1]) {
           extractedKeys.add(placeHolderMatch[1])
         }
       }

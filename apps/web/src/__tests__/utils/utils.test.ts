@@ -69,7 +69,7 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items?.[1])
   })
 
   it('should return the item with the longest href when multiple items are found', () => {
@@ -80,7 +80,7 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items?.[1])
   })
 
   it('should return undefined if item is not found', () => {
@@ -102,7 +102,7 @@ describe('getActiveSubMenuItem', () => {
     const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items?.[1])
   })
 
   it.todo('should return items with supportChainId')

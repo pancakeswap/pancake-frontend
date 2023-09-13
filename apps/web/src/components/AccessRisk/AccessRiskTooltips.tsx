@@ -3,10 +3,10 @@ import { Flex, Link, Text } from '@pancakeswap/uikit'
 import { TOKEN_RISK } from 'components/AccessRisk'
 
 interface AccessRiskTooltipsProps {
-  riskLevel: number
-  hasResult: boolean
+  riskLevel?: number
+  hasResult?: boolean
   tokenAddress?: string
-  riskLevelDescription: string
+  riskLevelDescription?: string
 }
 
 const AccessRiskTooltips: React.FC<AccessRiskTooltipsProps> = ({
