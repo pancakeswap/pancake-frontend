@@ -10,30 +10,30 @@
   },
   "dependencies": {
     "@pancakeswap/farms": "workspace:*",
-    "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
     "bignumber.js": "^9.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",
-    "viem": "^1.2.9"
+    "viem": "^1.10.9"
   },
   "peerDependencies": {
-    "styled-system": "^5.1.5",
+    "next": "13.4.2",
     "react": "^18.2.0",
     "styled-components": "^6.0.7",
-    "next": "13.4.2"
+    "styled-system": "^5.1.5"
   },
   "devDependencies": {
-    "@types/styled-system": "^5.1.17",
     "@types/lodash": "^4.14.168",
     "@types/react": "^18.2.21",
+    "@types/styled-system": "^5.1.17",
     "csstype": "^3.1.2",
+    "next": "13.4.2",
     "react": "^18.2.0",
-    "styled-components": "^6.0.7",
-    "next": "13.4.2"
+    "styled-components": "^6.0.7"
   }
 }
