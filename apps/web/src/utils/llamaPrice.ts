@@ -35,7 +35,9 @@ export const fetchTokenUSDValue = async (chainId: number, tokenAddresses: string
   const commonTokenUSDValue = new Map<string, string>()
 
   const cakeAddress = tokenAddresses
-    .map((address) => (address === CAKE[chainId].address ? `${CHAIN_MAPPING[chainId]}:${address}` : ''))
+    .map((address) =>
+      address.toLowerCase() === CAKE?.[chainId]?.address?.toLowerCase() ? `${CHAIN_MAPPING[chainId]}:${address}` : '',
+    )
     .filter(Boolean)
 
   if (cakeAddress.length > 0) {
