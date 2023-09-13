@@ -73,7 +73,7 @@ const useConfetti = (options: Options): { initialize: () => void; teardown: () =
 
 export const isEventEnded = (): boolean => {
   const now = Date.now()
-  const endDay = 1697212800000 // 14 Oct 2023
+  const endDay = 1697212799000 // 13 Oct 2023, 23:59:59
   return endDay < now
 }
 
