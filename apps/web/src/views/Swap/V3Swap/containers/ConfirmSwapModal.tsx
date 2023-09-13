@@ -96,6 +96,7 @@ const useConfirmModalState = ({
     // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
     // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
     if (
+      approval === ApprovalState.NOT_APPROVED &&
       currentAllowance?.greaterThan(0) &&
       approvalToken.chainId === ethereumTokens.usdt.chainId &&
       approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
