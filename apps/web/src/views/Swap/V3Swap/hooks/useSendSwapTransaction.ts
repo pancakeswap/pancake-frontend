@@ -80,6 +80,7 @@ export default function useSendSwapTransaction(
             return publicClient
               .estimateGas(tx)
               .then((gasEstimate) => {
+                console.log(gasEstimate)
                 return {
                   call,
                   gasEstimate,

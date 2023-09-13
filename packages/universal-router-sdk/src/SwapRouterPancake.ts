@@ -48,6 +48,7 @@ export abstract class PancakeUniSwapRouter {
       ? new BigNumber(maximumAmountIn(sampleTrade, options.slippageTolerance, sampleTrade.inputAmount).quotient.toString())
       : new BigNumber(0);
     
+      console.log(options.slippageTolerance)
 
     trade.encode(planner, { allowRevert: false })
     return PancakeUniSwapRouter.encodePlan(planner, nativeCurrencyValue, {
@@ -99,6 +100,6 @@ export abstract class PancakeUniSwapRouter {
     const parameters = !!config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]
     // const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
     const calldata = PancakeUniSwapRouter.INTERFACE.encodeFunctionData(functionSignature, parameters)
-    return { calldata, value: nativeCurrencyValue.toString() as `0x${string}` }
+    return { calldata: calldata as `0x${string}`, value: nativeCurrencyValue.toString() as `0x${string}` }
   }
 }

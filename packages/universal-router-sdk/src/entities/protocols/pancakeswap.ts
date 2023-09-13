@@ -19,6 +19,7 @@ import {
   minimumAmountOut,
   partitionMixedRouteByProtocol,
 } from '../../utils/utils'
+import { NativeCurrency } from '@pancakeswap/sdk'
 
 // Wrapper for pancakeswap router-sdk trade entity to encode swaps for Universal Router
 // also translates trade objects from previous (v2, v3) SDKs
@@ -64,10 +65,7 @@ export class PanckeSwapTrade implements Command {
     }
     const ZERO_OUT: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(sampleTrade.outputAmount.currency, 0)
 
-    let minAmountOut: CurrencyAmount<Currency> = trades.reduce(
-      (sum, trade) => sum.add(minimumAmountOut(trade, this.options.slippageTolerance)),
-      ZERO_OUT
-    )
+    let minAmountOut = minimumAmountOut(trades[0], this.options.slippageTolerance, trades[0].outputAmount).quotient.toString()
     // The router custodies for 3 reasons: to unwrap, to take a fee, and/or to do a slippage check
     if (routerMustCustody) {
       // If there is a fee, that percentage is sent to the fee recipient
@@ -90,12 +88,12 @@ export class PanckeSwapTrade implements Command {
       // The remaining tokens that need to be sent to the user after the fee is taken will be caught
       // by this if-else clause.
       if (outputIsNative) {
-        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, minimumAmountOut])
+        planner.addCommand(CommandType.UNWRAP_WETH, [this.options.recipient, minAmountOut])
       } else {
         planner.addCommand(CommandType.SWEEP, [
           sampleTrade.outputAmount.currency.wrapped.address,
           this.options.recipient,
-          minimumAmountOut,
+          minAmountOut,
         ])
       }
     }
@@ -124,6 +122,7 @@ function addV2Swap(
   const path = route.path.map((token) => token.wrapped.address)
   const recipient = routerMustCustody ? ROUTER_AS_RECIPIENT : validateAndParseAddress(options.recipient!)
 
+  console.log('making v22222')
   //same as encodeV2Swap only we dont return calldatas instead we push to the command planner
   if (trade.tradeType == TradeType.EXACT_INPUT) {
     planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
@@ -149,6 +148,8 @@ async function addV3Swap(
   performAggregatedSlippageCheck: boolean,
 
 ): Promise<void> {
+  console.log('making v3332')
+
   for (const route of trade.routes) {
     const { inputAmount, outputAmount } = route
 
@@ -166,7 +167,7 @@ async function addV3Swap(
     // similar to encodeV3Swap only we dont need to add a case for signle hop. by using ecodeMixedRoutePath
     // we can get the parthStr for all cases
     if (trade.tradeType === TradeType.EXACT_INPUT) {
-      const exactInputSingleParams = [recipient, amountIn, performAggregatedSlippageCheck ? 0n : amountOut,, path, payerIsUser]
+      const exactInputSingleParams = [recipient, amountIn, performAggregatedSlippageCheck ? 0n : amountOut, path, payerIsUser]
       planner.addCommand(CommandType.V3_SWAP_EXACT_IN, exactInputSingleParams)
     } else {
       const exactOutputSingleParams = [recipient, amountOut, amountIn, path, payerIsUser]

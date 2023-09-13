@@ -33,6 +33,6 @@ export class UnwrapWETH implements Command {
         amount: this.amount.toString(),
       },
     })
-    planner.addCommand(CommandType.UNWRAP_WETH, [ROUTER_AS_RECIPIENT, this.amount])
+    planner.addCommand(CommandType.UNWRAP_WETH, [ROUTER_AS_RECIPIENT, this.amount.toString()])
   }
 }

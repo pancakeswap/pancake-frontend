@@ -1,4 +1,4 @@
-import { createPublicClient, createWalletClient, http, publicActions } from 'viem'
+import { createPublicClient, createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { goerli } from 'viem/chains'
 import ERC20ABI from '../../src/abis/ERC20.json'

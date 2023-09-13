@@ -147,6 +147,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
       })
       .catch((error) => {
+        console.log(error)
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
