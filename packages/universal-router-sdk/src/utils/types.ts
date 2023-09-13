@@ -192,4 +192,3 @@ export type V2PoolWithTvl = V2Pool & WithTvl
 export type StablePoolWithTvl = StablePool & WithTvl
 
 export type AnyTradeType = SmartRouterTrade<TradeType> | SmartRouterTrade<TradeType>[]
-

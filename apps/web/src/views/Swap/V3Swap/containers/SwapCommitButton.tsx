@@ -14,7 +14,7 @@ import {
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
-
+import { UNIVERSAL_ROUTER_ADDRESS } from "@pancakeswap/universal-router-sdk"
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
@@ -43,6 +43,12 @@ import { useAccount } from 'wagmi'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
+import usePermit2Allowance, { AllowanceState } from 'hooks/usePermit2Allowance'
+import { CurrencyAmount, Fraction, ONE, Percent, Token } from '@pancakeswap/swap-sdk-core'
+import tryParseCurrencyAmount from 'utils/tryParseCurrencyAmount'
+import { isChainSupported } from 'utils/wagmi'
+import { useChainCurrentBlock } from 'state/block/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -52,6 +58,16 @@ interface SwapCommitButtonPropsType {
   tradeLoading?: boolean
 }
 
+export function useMaxAmountIn(trade: SmartRouterTrade<TradeType>, slippage: Percent, amountIn = trade?.inputAmount) {
+  if (!trade) return undefined
+  if (trade?.tradeType === TradeType.EXACT_INPUT) {
+    return amountIn
+  }
+
+  const slippageAdjustedAmountIn = new Fraction(ONE).add(slippage).multiply(amountIn.quotient).quotient
+  return CurrencyAmount.fromRawAmount(amountIn.currency, slippageAdjustedAmountIn)
+}
+
 export const SwapCommitButton = memo(function SwapCommitButton({
   trade,
   tradeError,
@@ -59,6 +75,8 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
+
   const [isExpertMode] = useExpertMode()
   const {
     typedValue,
@@ -93,14 +111,17 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     amountToApprove,
     routerAddress,
   )
+  const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
+  // const maximumAmountIn = useMaxAmountIn(trade,  slippageAdjustedAmounts)
+  const allowance = { state: AllowanceState.ALLOWED }
+
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
-  const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
   // the callback to execute the swap
   const deadline = useTransactionDeadline()
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, deadline })
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, permitSignature: allowance.state === AllowanceState.ALLOWED ? allowance.permitSignature : undefined,  deadline })
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: SmartRouterTrade<TradeType> | undefined

@@ -1,14 +1,4 @@
-import {
-  BigintIsh,
-  Currency,
-  CurrencyAmount,
-  Fraction,
-  ONE,
-  Percent,
-  Token,
-  TradeType,
-  sqrt,
-} from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, Fraction, ONE, Percent, Token, TradeType, sqrt } from '@pancakeswap/sdk'
 import { BigNumber } from 'bignumber.js'
 import { BaseRoute, Pool, PoolType, Route, RouteType, SmartRouterTrade, StablePool, V2Pool, V3Pool } from './types'
 import { Hex, encodePacked } from 'viem'

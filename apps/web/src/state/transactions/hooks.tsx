@@ -24,30 +24,31 @@ import {
   NonBscFarmStepType,
 } from './actions'
 
+export interface Info {
+  summary?: string
+  translatableSummary?: { text: string; data?: Record<string, string | number> }
+  approval?: { tokenAddress: string; spender: string, amount?: string }
+  claim?: { recipient: string }
+  type?: TransactionType
+  order?: Order
+  nonBscFarm?: NonBscFarmTransactionType
+  // add/remove pool
+  baseCurrencyId?: string
+  quoteCurrencyId?: string
+  expectedAmountBaseRaw?: string
+  expectedAmountQuoteRaw?: string
+  feeAmount?: FeeAmount
+  createPool?: boolean
+  // fee collect
+  currencyId0?: string
+  currencyId1?: string
+  expectedCurrencyOwed0?: string
+  expectedCurrencyOwed1?: string
+}
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
   response: { hash: Hash | string } | { transactionHash: Hash | string },
-  customData?: {
-    summary?: string
-    translatableSummary?: { text: string; data?: Record<string, string | number> }
-    approval?: { tokenAddress: string; spender: string }
-    claim?: { recipient: string }
-    type?: TransactionType
-    order?: Order
-    nonBscFarm?: NonBscFarmTransactionType
-    // add/remove pool
-    baseCurrencyId?: string
-    quoteCurrencyId?: string
-    expectedAmountBaseRaw?: string
-    expectedAmountQuoteRaw?: string
-    feeAmount?: FeeAmount
-    createPool?: boolean
-    // fee collect
-    currencyId0?: string
-    currencyId1?: string
-    expectedCurrencyOwed0?: string
-    expectedCurrencyOwed1?: string
-  },
+  customData?: Info,
 ) => void {
   const { account, chainId } = useAccountActiveChain()
   const dispatch = useAppDispatch()

@@ -1,7 +1,7 @@
 import { CurrencyAmount, Ether as PancakeEther, Pair as PancakePair, Percent, TradeType, computePairAddress as computePancakePairAddress, Currency, Token, Route as RouteV2, Trade as TradeV2 } from '@pancakeswap/sdk'
 import { Validation } from '@pancakeswap/smart-router/dist/evm/v3-router/utils/multicallExtended'
 import { FeeAmount, FeeOptions, FeeAmount as PancakeFeeAmont, Pool, Route as RouteV3, Trade as TradeV3, TICK_SPACINGS, encodeSqrtRatioX96, nearestUsableTick, TickMath } from '@pancakeswap/v3-sdk'
-import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
+import IUniswapV3Pool from '../../src/abis/IUniswapV3Pool.json'
 import { ethers } from 'ethers'
 import JSBI from 'jsbi'
 import { Permit2Permit } from '../../src/utils/inputTokens'

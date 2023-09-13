@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { isAddress } from 'utils'
 
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
-import { PancakeUniSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from "@pancakeswap/universal-router-sdk"
+import { PancakeUniSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@pancakeswap/universal-router-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { Address, Hex } from 'viem'
 
@@ -27,7 +27,7 @@ export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
   recipientAddress: string | null | undefined,
-  // signatureData: SignatureData | null | undefined,
+  permitSignature: string | null | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
@@ -46,60 +46,33 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const swapRouterAddress = chainId ? SMART_ROUTER_ADDRESSES[chainId] : undefined
+    let swapRouterAddress = undefined
+
+    let methodParamaters: { value: string; calldata: string } = null
+    if (trade.outputAmount.currency.isNative) {
+      methodParamaters = SwapRouter.swapCallParameters(trade, {
+        fee: feeOptions,
+        recipient,
+        slippageTolerance: allowedSlippage,
+        deadlineOrPreviousBlockhash: deadline?.toString(),
+      })
+      swapRouterAddress = chainId ? SMART_ROUTER_ADDRESSES[chainId] : undefined
+    } else {
+      methodParamaters = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
+        fee: feeOptions,
+        recipient,
+        permit: permitSignature,
+        slippageTolerance: allowedSlippage,
+        deadlineOrPreviousBlockhash: deadline?.toString(),
+      })
+      swapRouterAddress = chainId ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined
+    }
     if (!swapRouterAddress) return []
-
-    const { value, calldata } = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
-      fee: feeOptions,
-      recipient,
-      slippageTolerance: allowedSlippage,
-      // ...(signatureData
-      //   ? {
-      //       inputTokenPermit:
-      //         'allowed' in signatureData
-      //           ? {
-      //               expiry: signatureData.deadline,
-      //               nonce: signatureData.nonce,
-      //               s: signatureData.s,
-      //               r: signatureData.r,
-      //               v: signatureData.v as any,
-      //             }
-      //           : {
-      //               deadline: signatureData.deadline,
-      //               amount: signatureData.amount,
-      //               s: signatureData.s,
-      //               r: signatureData.r,
-      //               v: signatureData.v as any,
-      //             },
-      //     }
-      //   : {}),
-
-      deadlineOrPreviousBlockhash: deadline?.toString(),
-    })
-
-    // if (argentWalletContract && trade.inputAmount.currency.isToken) {
-    //   return [
-    //     {
-    //       address: argentWalletContract.address,
-    //       calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
-    //         [
-    //           approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
-    //           {
-    //             to: swapRouterAddress,
-    //             value,
-    //             data: calldata,
-    //           },
-    //         ],
-    //       ]),
-    //       value: '0x0',
-    //     },
-    //   ]
-    // }
     return [
       {
-        address: UNIVERSAL_ROUTER_ADDRESS(chainId),
-        calldata,
-        value,
+        address: swapRouterAddress,
+        calldata: methodParamaters.calldata,
+        value: methodParamaters.value,
       },
     ]
   }, [

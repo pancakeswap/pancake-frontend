@@ -30,7 +30,6 @@ interface UseSwapCallbackArgs {
   trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  // signatureData: SignatureData | null | undefined
   deadline?: bigint
   feeOptions?: FeeOptions
 }
@@ -39,10 +38,10 @@ interface UseSwapCallbackArgs {
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback({
   trade,
-  // signatureData,
+  permitSignature,
   deadline,
   feeOptions,
-}: UseSwapCallbackArgs): UseSwapCallbackReturns {
+}): UseSwapCallbackReturns {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
@@ -54,6 +53,7 @@ export function useSwapCallback({
     trade,
     allowedSlippage,
     recipientAddress,
+    permitSignature,
     // signatureData,
     deadline,
     feeOptions,
