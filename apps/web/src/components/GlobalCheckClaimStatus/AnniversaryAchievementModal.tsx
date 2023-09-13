@@ -84,9 +84,6 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   }, [account, hasDisplayedModal])
 
   const handleCloseModal = () => {
-    if (showOnceAnniversaryModal) {
-      setShowOnceAnniversaryModal(!showOnceAnniversaryModal)
-    }
     setShow(false)
   }
 
@@ -99,6 +96,9 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
       if (receipt?.status) {
         toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         if (account) {
+          if (showOnceAnniversaryModal) {
+            setShowOnceAnniversaryModal(!showOnceAnniversaryModal)
+          }
           router.push(`/profile/${account}/achievements`)
         }
       }
