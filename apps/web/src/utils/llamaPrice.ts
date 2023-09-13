@@ -34,21 +34,23 @@ export const fetchTokenUSDValue = async (chainId: number, tokenAddresses: string
 
   const commonTokenUSDValue = new Map<string, string>()
 
-  await Promise.all(
-    tokenAddresses.map(async (address) => {
-      if (address === CAKE[chainId].address) {
-        const cakePrice = parseFloat(await getCakePriceFromOracle())
-        tokenPriceArray = {
-          coins: {
-            ...tokenPriceArray.coins,
-            [`${CHAIN_MAPPING[chainId]}:${address}`]: {
-              price: cakePrice.toString(),
-            },
+  const cakePrice = parseFloat(await getCakePriceFromOracle())
+  const cakeAddress = tokenAddresses
+    .map((address) => (address === CAKE[chainId].address ? `${CHAIN_MAPPING[chainId]}:${address}` : ''))
+    .filter(Boolean)
+
+  if (cakeAddress.length > 0) {
+    cakeAddress.forEach((address) => {
+      tokenPriceArray = {
+        coins: {
+          ...tokenPriceArray.coins,
+          [address]: {
+            price: cakePrice.toString(),
           },
-        }
+        },
       }
-    }),
-  )
+    })
+  }
 
   Object.entries(tokenPriceArray.coins || {}).forEach(([key, value]) => {
     const [, address] = key.split(':')
