@@ -1,5 +1,6 @@
 packages:
   - 'packages/*'
+  - 'packages/universal-router-sdk'
   - 'apps/*'
   - 'apis/*'
   - 'examples/*'
