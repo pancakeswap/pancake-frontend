@@ -19,7 +19,7 @@ const isUserRejected = (err) => {
   }
 
   // fallback for raw rpc error code
-  if (typeof err === 'object') {
+  if (err && typeof err === 'object') {
     if (
       ('code' in err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) ||
       ('cause' in err && 'code' in err.cause && err.cause.code === 4001)
