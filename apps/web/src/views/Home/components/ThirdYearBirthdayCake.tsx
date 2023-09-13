@@ -6,8 +6,7 @@ import Image from 'next/image'
 
 const Container = styled(Link)<{ hasScrollToTopButton: boolean }>`
   position: fixed;
-  z-index: 100;
-  right: 5%;
+  right: 18px;
   transition: 0.2s;
   bottom: ${({ hasScrollToTopButton }) =>
     hasScrollToTopButton ? 'calc(146px + env(safe-area-inset-bottom))' : 'calc(82px + env(safe-area-inset-bottom))'};
