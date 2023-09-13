@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Modal, Flex, Text, BalanceInput, Slider, Box, PreTitle, useToast, Link } from '@pancakeswap/uikit'
-import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
@@ -19,12 +18,17 @@ import { CurrencyLogo } from 'components/Logo'
 import first from 'lodash/first'
 import { differenceInMilliseconds } from 'date-fns'
 import usePrevious from 'views/V3Info/hooks/usePrevious'
+import { styled } from 'styled-components'
 
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { StakeConfirmModal } from './StakeConfirmModal'
 import { ModalTitle } from './ModalTitle'
+
+const StyledButton = styled(Button)`
+  flex-grow: 1;
+`
 
 interface BodyParam {
   setLockPeriod: Dispatch<SetStateAction<number>>
@@ -145,7 +149,7 @@ export function StakingModalTemplate({
     })
   }
 
-  const [approval, approveCallback] = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
+  const { approvalState, approveCallback } = useApproveCallback(stakeCurrencyAmount, fixedStakingContract?.address)
 
   const handleSubmission = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -358,7 +362,7 @@ export function StakingModalTemplate({
             >
               {error}
             </Button>
-          ) : !rawAmount.gt(0) || approval === ApprovalState.APPROVED ? (
+          ) : !rawAmount.gt(0) || approvalState === ApprovalState.APPROVED ? (
             <Button
               disabled={!rawAmount.gt(0) || pendingTx || error || !check}
               style={{
@@ -370,13 +374,15 @@ export function StakingModalTemplate({
             </Button>
           ) : (
             <Button
-              disabled={!rawAmount.gt(0) || approval === ApprovalState.PENDING || approval === ApprovalState.UNKNOWN}
+              disabled={
+                !rawAmount.gt(0) || approvalState === ApprovalState.PENDING || approvalState === ApprovalState.UNKNOWN
+              }
               style={{
                 minHeight: '48px',
               }}
               onClick={approveCallback}
             >
-              {approval === ApprovalState.PENDING ? t('Enabling') : t('Enable')}
+              {approvalState === ApprovalState.PENDING ? t('Enabling') : t('Enable')}
             </Button>
           )}
 

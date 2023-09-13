@@ -9,11 +9,11 @@ import {
   RoiCard,
   CalculatorMode,
   Flex,
+  Button,
 } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
-import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
@@ -86,7 +86,7 @@ export function FixedStakingCalculator({
               </PreTitle>
               <Flex mb="16px">
                 {pools.map((pool) => (
-                  <StyledButton
+                  <Button
                     key={pool.lockPeriod}
                     scale="md"
                     variant={pool.lockPeriod === lockPeriod ? 'subtle' : 'light'}
@@ -98,7 +98,7 @@ export function FixedStakingCalculator({
                     }}
                   >
                     {pool.lockPeriod}D
-                  </StyledButton>
+                  </Button>
                 ))}
               </Flex>
               <RoiCard

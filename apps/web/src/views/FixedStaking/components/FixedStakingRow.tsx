@@ -178,80 +178,78 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
           </StyledActionPanel>
         }
       >
-        {() => (
-          <>
-            {isMobile ? null : (
-              <StyledCell minWidth="120px" display="flex" alignItems="center">
-                <CurrencyLogo currency={pool.token} size="48px" />
-                <Flex flexDirection="column" justifyContent="center" alignItems="start" ml="8px">
-                  <Text color="secondary" textTransform="uppercase" fontSize="12px" bold mb="-4px">
-                    {t('Stake & Earn')}
-                  </Text>
-                  <Text fontSize="16px" bold>
-                    {pool.token.symbol}
-                  </Text>
-                </Flex>
-              </StyledCell>
-            )}
+        <>
+          {isMobile ? null : (
+            <StyledCell minWidth="120px" display="flex" alignItems="center">
+              <CurrencyLogo currency={pool.token} size="48px" />
+              <Flex flexDirection="column" justifyContent="center" alignItems="start" ml="8px">
+                <Text color="secondary" textTransform="uppercase" fontSize="12px" bold mb="-4px">
+                  {t('Stake & Earn')}
+                </Text>
+                <Text fontSize="16px" bold>
+                  {pool.token.symbol}
+                </Text>
+              </Flex>
+            </StyledCell>
+          )}
 
+          <StyledCell>
+            <Pool.CellContent>
+              <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
+                {t('Stake Periods')}
+              </Text>
+              <ButtonMenu
+                activeIndex={selectedPeriodIndex ?? pool.pools.length}
+                onItemClick={(index, event) => {
+                  event.stopPropagation()
+
+                  if ([...claimedIndexes, ...lockedIndexes].includes(index)) {
+                    return
+                  }
+
+                  setSelectedPeriodIndex(index)
+                }}
+                scale="sm"
+                variant="subtle"
+              >
+                {pool.pools.map((p, index) => (
+                  <ButtonMenuItem width="48px" key={p.lockPeriod}>
+                    {claimedIndexes.includes(index) ? <UnlockIcon color="secondary" /> : null}
+                    {lockedIndexes.includes(index) ? <LockIcon color="secondary" /> : null}
+                    {p.lockPeriod}D
+                  </ButtonMenuItem>
+                ))}
+              </ButtonMenu>
+            </Pool.CellContent>
+          </StyledCell>
+
+          {isMobile ? null : (
             <StyledCell>
               <Pool.CellContent>
                 <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-                  {t('Stake Periods')}
+                  {t('APR')}
                 </Text>
-                <ButtonMenu
-                  activeIndex={selectedPeriodIndex ?? pool.pools.length}
-                  onItemClick={(index, event) => {
-                    event.stopPropagation()
 
-                    if ([...claimedIndexes, ...lockedIndexes].includes(index)) {
-                      return
-                    }
-
-                    setSelectedPeriodIndex(index)
-                  }}
-                  scale="sm"
-                  variant="subtle"
-                >
-                  {pool.pools.map((p, index) => (
-                    <ButtonMenuItem width="48px" key={p.lockPeriod}>
-                      {claimedIndexes.includes(index) ? <UnlockIcon color="secondary" /> : null}
-                      {lockedIndexes.includes(index) ? <LockIcon color="secondary" /> : null}
-                      {p.lockPeriod}D
-                    </ButtonMenuItem>
-                  ))}
-                </ButtonMenu>
+                <AprCell
+                  hideCalculator={isMobile}
+                  selectedPeriodIndex={selectedPeriodIndex}
+                  selectedPool={selectedPool}
+                  pool={pool}
+                />
               </Pool.CellContent>
             </StyledCell>
-
-            {isMobile ? null : (
-              <StyledCell>
-                <Pool.CellContent>
-                  <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-                    {t('APR')}
-                  </Text>
-
-                  <AprCell
-                    hideCalculator={isMobile}
-                    selectedPeriodIndex={selectedPeriodIndex}
-                    selectedPool={selectedPool}
-                    pool={pool}
-                  />
-                </Pool.CellContent>
-              </StyledCell>
-            )}
-            {isMobile || isTablet ? null : (
-              <StyledCell>
-                <Pool.CellContent>
-                  <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
-                    {t('Total Staked:')}
-                  </Text>
-                  <AmountWithUSDSub mb="0px" amount={totalStakedAmount} />
-                </Pool.CellContent>
-              </StyledCell>
-            )}
-          </>
-        )}
+          )}
+          {isMobile || isTablet ? null : (
+            <StyledCell>
+              <Pool.CellContent>
+                <Text fontSize="12px" color="textSubtle" textAlign="left" mb="4px">
+                  {t('Total Staked:')}
+                </Text>
+                <AmountWithUSDSub mb="0px" amount={totalStakedAmount} />
+              </Pool.CellContent>
+            </StyledCell>
+          )}
+        </>
       </Pool.ExpandRow>
     </>
   )

@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CardBody, Flex, Heading, Tag, Box, Button, StarCircle } from '@pancakeswap/uikit'
-import { StyledCard } from '@pancakeswap/uikit/src/widgets/Pool'
+import { CardBody, Flex, Heading, Tag, Box, Button, StarCircle, Pool } from '@pancakeswap/uikit'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import BigNumber from 'bignumber.js'
 import first from 'lodash/first'
@@ -18,7 +17,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
   const { t } = useTranslation()
 
   return (
-    <StyledCard>
+    <Pool.StyledCard>
       <Flex px="24px" pt="24px" alignItems="center" justifyContent="space-between">
         <>
           <CurrencyLogo currency={pool.token} size="56px" />
@@ -90,6 +89,6 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
           )}
         </FixedStakingCardBody>
       </CardBody>
-    </StyledCard>
+    </Pool.StyledCard>
   )
 }

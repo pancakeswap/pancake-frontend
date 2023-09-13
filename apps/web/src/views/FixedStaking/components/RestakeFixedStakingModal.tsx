@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Message, MessageText } from '@pancakeswap/uikit'
 import { ReactNode } from 'react'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
-import { LightGreyCard } from '@pancakeswap/uikit/src/widgets/RoiCalculator/Card'
+import { LightGreyCard } from 'components/Card'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'

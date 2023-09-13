@@ -4,7 +4,7 @@ import { CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { useMemo } from 'react'
 
 import { differenceInMilliseconds, format } from 'date-fns'
-import styled from 'styled-components'
+import { styled } from 'styled-components'
 
 import { LockedFixedTag } from './LockedFixedTag'
 import { PoolGroup, StakePositionUserInfo, StakedPosition } from '../type'

@@ -9,8 +9,8 @@ import {
   MessageText,
   Message,
   InfoFilledIcon,
+  Button,
 } from '@pancakeswap/uikit'
-import StyledButton from '@pancakeswap/uikit/src/components/Button/StyledButton'
 import { ReactNode, useMemo } from 'react'
 import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
@@ -102,7 +102,7 @@ export function FixedStakingModal({
                   </PreTitle>
                   <Flex>
                     {pools.map((pool) => (
-                      <StyledButton
+                      <Button
                         disabled={
                           currentDay + pool.lockPeriod > pool.endDay || claimedPeriods.includes(pool.lockPeriod)
                         }
@@ -114,7 +114,7 @@ export function FixedStakingModal({
                         onClick={() => setLockPeriod(pool.lockPeriod)}
                       >
                         {pool.lockPeriod}D
-                      </StyledButton>
+                      </Button>
                     ))}
                   </Flex>
                   <Flex mt="8px">
