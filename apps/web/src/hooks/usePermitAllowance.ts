@@ -29,7 +29,7 @@ export function usePermitAllowance(token?: Token, owner?: string, spender?: stri
       contract,
       functionName: 'allowance',
       args: inputs,
-  }).result // as Awaited<ReturnType<Permit2['allowance']>> | undefined
+  }).result as any// as Awaited<ReturnType<Permit2['allowance']>> | undefined
 
   const rawAmount = result?.amount?.toString() // convert to a string before using in a hook, to avoid spurious rerenders
   const allowance = useMemo(
