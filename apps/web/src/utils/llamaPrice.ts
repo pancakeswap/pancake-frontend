@@ -34,12 +34,12 @@ export const fetchTokenUSDValue = async (chainId: number, tokenAddresses: string
 
   const commonTokenUSDValue = new Map<string, string>()
 
-  const cakePrice = parseFloat(await getCakePriceFromOracle())
   const cakeAddress = tokenAddresses
     .map((address) => (address === CAKE[chainId].address ? `${CHAIN_MAPPING[chainId]}:${address}` : ''))
     .filter(Boolean)
 
   if (cakeAddress.length > 0) {
+    const cakePrice = parseFloat(await getCakePriceFromOracle())
     cakeAddress.forEach((address) => {
       tokenPriceArray = {
         coins: {
