@@ -97,7 +97,7 @@ export function useTokenRisk(token?: Token) {
   return useSWRImmutable(
     token && token.address && token.chainId === ChainId.BSC && ['risk', token.chainId, token.address],
     () => {
-      return fetchRiskToken(token?.address, token?.chainId)
+      return token && fetchRiskToken(token.address, token.chainId)
     },
   )
 }
@@ -129,7 +129,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
       .filter(Boolean)
     if (!tokenLists.length) return null
     return tokenLists.some((tokenInfoList) => {
-      return tokenInfoList.some((tokenInfo) => tokenInfo.address === token.address)
+      return tokenInfoList?.some((tokenInfo) => tokenInfo.address === token.address)
     })
   }, [lists, token?.address])
 
@@ -143,15 +143,12 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     { placement: 'bottom' },
   )
 
-  const isDataLoading = useMemo(
-    () => (!data && !data?.isError) || (data?.riskLevel === TOKEN_RISK.UNKNOWN && !data?.hasResult),
-    [data],
-  )
+  const isDataLoading = useMemo(() => !data || (data?.riskLevel === TOKEN_RISK.UNKNOWN && !data?.hasResult), [data])
 
   const riskLevel = useMemo(() => {
     if (!isUndefinedOrNull(data?.riskLevel)) {
-      if (tokenInLists || data.riskLevel) {
-        return data.riskLevel
+      if (tokenInLists || data?.riskLevel) {
+        return data?.riskLevel
       }
       return TOKEN_RISK.UNKNOWN
     }
@@ -159,20 +156,23 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   }, [data, tokenInLists])
 
   const tagColor = useMemo(() => {
-    if (data?.riskLevel > TOKEN_RISK.MEDIUM) {
+    if (!data?.riskLevel) {
+      return 'textDisabled'
+    }
+    if (data.riskLevel > TOKEN_RISK.MEDIUM) {
       return 'failure'
     }
-    if (data?.riskLevel >= TOKEN_RISK.LOW && data?.riskLevel <= TOKEN_RISK.MEDIUM) {
+    if (data.riskLevel >= TOKEN_RISK.LOW && data.riskLevel <= TOKEN_RISK.MEDIUM) {
       return 'warning'
     }
-    if (data?.riskLevel >= TOKEN_RISK.VERY_LOW && data?.riskLevel <= TOKEN_RISK.SOME_RISK) {
+    if (data.riskLevel >= TOKEN_RISK.VERY_LOW && data.riskLevel <= TOKEN_RISK.SOME_RISK) {
       return 'primary'
     }
     return 'textDisabled'
   }, [data?.riskLevel])
 
   if (!isDataLoading) {
-    const hasRiskValue = TOKEN_RISK_T[riskLevel]
+    const hasRiskValue = riskLevel && TOKEN_RISK_T[riskLevel]
     if (!hasRiskValue) return null
     return (
       <Flex justifyContent="flex-end">

@@ -1,4 +1,4 @@
-const numberOrNull = (value: string) => {
+const numberOrNull = (value: string | null) => {
   if (value === null) {
     return null
   }

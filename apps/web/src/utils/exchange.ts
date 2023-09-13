@@ -37,7 +37,7 @@ export function useRouterContract() {
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade: Trade<Currency, Currency, TradeType> | null): {
+export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
   realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {

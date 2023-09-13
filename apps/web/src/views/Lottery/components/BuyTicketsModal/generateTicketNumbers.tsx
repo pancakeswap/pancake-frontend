@@ -6,7 +6,7 @@ import random from 'lodash/random'
  */
 const generateTicketNumbers = (
   numberOfTickets: number,
-  userCurrentTickets?: LotteryTicket[],
+  userCurrentTickets?: LotteryTicket[] | null,
   minNumber = 1000000,
   maxNumber = 1999999,
 ): number[] => {
