@@ -34,7 +34,6 @@ const createParticle = (x: number, y: number, imgSrc: string, options: ParticleO
   particle.style.position = "fixed";
   particle.style.width = `${width}px`;
   particle.style.height = `${height}px`;
-  particle.style.zIndex = "100";
 
   const animation = particle.animate(
     [
