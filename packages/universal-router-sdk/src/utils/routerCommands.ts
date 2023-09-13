@@ -147,6 +147,7 @@ export type RouterCommand = {
 }
 
 export function createCommand(type: CommandType, parameters: any[]): RouterCommand {
-  const encodedInput = defaultAbiCoder.encode(ABI_DEFINITION[type], parameters)
+  const params = parameters.filter((param) => param !== null)
+  const encodedInput = defaultAbiCoder.encode(ABI_DEFINITION[type], params)
   return { type, encodedInput }
 }

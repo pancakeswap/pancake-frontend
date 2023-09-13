@@ -1,6 +1,6 @@
 import { Fraction, ONE, Currency as PancakeCurrency, CurrencyAmount, Percent, TradeType, ZERO } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/dist/evm/index'
-import { abi } from '@uniswap/universal-router/artifacts/contracts/UniversalRouter.sol/UniversalRouter.json'
+import abi from './abis/UniversalRouter.json'
 import BigNumber from 'bignumber.js';
 import invariant from 'tiny-invariant'
 import { PancakeSwapOptions } from '../test/utils/pancakeswapData'
@@ -10,6 +10,8 @@ import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
 import { encodeFunctionData } from 'viem'
 import { MethodParameters } from '@pancakeswap/v3-sdk';
+import { Interface } from '@ethersproject/abi'
+
 
 export type SwapRouterConfig = {
   sender?: string // address
@@ -17,6 +19,8 @@ export type SwapRouterConfig = {
 }
 
 export abstract class PancakeUniSwapRouter {
+  public static INTERFACE: Interface = new Interface(abi)
+
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
@@ -92,8 +96,9 @@ export abstract class PancakeUniSwapRouter {
     //view encodeFunctionData doesnt take in signature only name. so not sure how to handle this, perhaps solft 
     //fix is to force a deadline to be passed in SwapRouterConfig
     const functionSignature = !!config.deadline ? 'execute(bytes,bytes[],uint256)' : 'execute(bytes,bytes[])'
-    const parameters = !!config.deadline ? [commands, inputs, config.deadline] : [commands, inputs]
-    const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
+    const parameters = !!config.deadline ? [commands, inputs, Number(config.deadline)] : [commands, inputs]
+    // const calldata = encodeFunctionData({ abi, args: parameters, functionName: 'execute' })
+    const calldata = PancakeUniSwapRouter.INTERFACE.encodeFunctionData(functionSignature, parameters)
     return { calldata, value: nativeCurrencyValue.toString() as `0x${string}` }
   }
 }

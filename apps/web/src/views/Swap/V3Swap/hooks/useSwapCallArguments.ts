@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { isAddress } from 'utils'
 
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
-
+import { PancakeUniSwapRouter, UNIVERSAL_ROUTER_ADDRESS } from "@pancakeswap/universal-router-sdk"
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { Address, Hex } from 'viem'
 
@@ -49,7 +49,7 @@ export function useSwapCallArguments(
     const swapRouterAddress = chainId ? SMART_ROUTER_ADDRESSES[chainId] : undefined
     if (!swapRouterAddress) return []
 
-    const { value, calldata } = SwapRouter.swapCallParameters(trade, {
+    const { value, calldata } = PancakeUniSwapRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
       slippageTolerance: allowedSlippage,
@@ -97,7 +97,7 @@ export function useSwapCallArguments(
     // }
     return [
       {
-        address: swapRouterAddress,
+        address: UNIVERSAL_ROUTER_ADDRESS(chainId),
         calldata,
         value,
       },

@@ -211,12 +211,12 @@ const goerliTestnetClient = createWalletClient({
   account: getTestSigner(),
   chain: goerli,
   transport: http('https://goerli.infura.io/v3/3f4ad76a6b444342bde910d098ff8a4e'),
-}).extend(publicActions)
+})
 
 const goerliTestnetPublicClient = createPublicClient({
   chain: goerli,
   transport: http('https://goerli.infura.io/v3/3f4ad76a6b444342bde910d098ff8a4e'),
-}).extend(publicActions)
+})
 
 export const getViemClient = () => {
   return { goerliTestnetClient, goerliTestnetPublicClient }

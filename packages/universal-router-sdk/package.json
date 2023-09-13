@@ -1,4 +1,5 @@
 {
+  "name": "@pancakeswap/universal-router-sdk",
   "version": "1.0.0",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
@@ -18,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
-    "directory": "packages/swap-sdk"
+    "directory": "packages/universal-router-sdk"
   },
   "keywords": [
     "pancakeswap"
@@ -64,14 +65,16 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@pancakeswap/v3-sdk": "workspace:*",
+    "@ethersproject/abi": "^5.7.0",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
     "@uniswap/permit2-sdk": "^1.2.0",
     "@uniswap/universal-router": "1.4.3",
     "bignumber.js": "^9.0.2",
     "ethers": "^5.3.1",
-    "viem": "^1.10.9"
+    "tiny-invariant": "^1.1.0",
+    "viem": "^1.2.9"
   }
 }

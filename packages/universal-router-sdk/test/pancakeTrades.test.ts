@@ -53,7 +53,7 @@ describe('PancakeSwap', () => {
         TradeType.EXACT_INPUT
       )
       const pcsopts = pancakeSwapOptions({})
-      const { value, calldata } = await PancakeUniSwapRouter.swapERC20CallParameters(v2PancakeTrade, pcsopts)
+      const { value, calldata } = await PancakeUniSwapRouter.swapERC20CallParameters(v2PancakeTrade as any, pcsopts)
 
       const tx = {
         to: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
@@ -87,7 +87,7 @@ describe('PancakeSwap', () => {
     const signature = await generatePermitSignature(permit, signer, 5, FORGE_PERMIT2_ADDRESS)
     const opts = pancakeSwapOptions({ inputTokenPermit: toInputPermit(signature, permit) })
 
-    const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters([v2PancakeTrade], opts)
+    const { calldata, value } = PancakeUniSwapRouter.swapERC20CallParameters([v2PancakeTrade] as any, opts)
   })
   describe('v3', () => {
     it('encodes a single exactInput ETH->USDC swap', async () => {
@@ -116,7 +116,7 @@ describe('PancakeSwap', () => {
       )
       const pcsopts = pancakeSwapOptions({})
 
-      const { value, calldata } = await PancakeUniSwapRouter.swapERC20CallParameters(v3Trade, pcsopts)
+      const { value, calldata } = await PancakeUniSwapRouter.swapERC20CallParameters(v3Trade as any, pcsopts)
 
       const tx = {
         to: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
@@ -173,7 +173,7 @@ describe('PancakeSwap', () => {
 
       const pcsopts = pancakeSwapOptions({})
       const { value, calldata } = await PancakeUniSwapRouter.swapERC20CallParameters(
-        [mixedRouteTrade1, mixedRouteTrade2],
+        [mixedRouteTrade1, mixedRouteTrade2] as any,
         pcsopts
       )
       // console.log(calldata, value)

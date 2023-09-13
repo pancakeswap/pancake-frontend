@@ -183,6 +183,7 @@ export function encodeMixedRouteToPath(route: BaseRoute, exactOutput: boolean): 
     { inputToken: firstInputToken, path: [], types: [] }
   )
 
+  // @ts-ignore
   return exactOutput ? encodePacked(types.reverse(), path.reverse()) : encodePacked(types, path)
 }
 

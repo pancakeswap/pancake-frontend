@@ -7,17 +7,17 @@ export default defineConfig((options) => ({
   },
   format: ['esm', 'cjs'],
   dts: false,
+  clean: !options.watch,
   treeshake: true,
   splitting: true,
-  clean: !options.watch,
-  onSuccess: async () => {
-    exec('tsc --emitDeclarationOnly --declaration', (err) => {
-      if (err) {
-        console.error(err)
-        if (!options.watch) {
-          process.exit(1)
-        }
-      }
-    })
-  },
+//   onSuccess: async () => {
+//     exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
+//       if (err) {
+//         console.error(err)
+//         if (!options.watch) {
+//           process.exit(1)
+//         }
+//       }
+//     })
+//   },
 }))
