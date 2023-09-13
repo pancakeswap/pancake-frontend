@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import confetti from 'canvas-confetti'
 import debounce from 'lodash/debounce'
@@ -19,7 +19,7 @@ const useConfetti = (options: Options): { initialize: () => void; teardown: () =
     ...options,
   }
 
-  const makeListener = useCallback(
+  const showConfettiEffect = useMemo(
     () =>
       debounce(
         () => {
@@ -42,27 +42,26 @@ const useConfetti = (options: Options): { initialize: () => void; teardown: () =
       ),
     [debounceDuration, disableWhen],
   )
-  const listener = makeListener()
 
   const initialize = useCallback(() => {
     if (selector) {
       document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
-        element.addEventListener('click', listener)
+        element.addEventListener('click', showConfettiEffect)
       })
     } else {
-      document.addEventListener('click', listener)
+      document.addEventListener('click', showConfettiEffect)
     }
-  }, [selector, listener])
+  }, [selector, showConfettiEffect])
 
   const teardown = useCallback(() => {
     if (selector) {
       document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
-        element.removeEventListener('click', listener)
+        element.removeEventListener('click', showConfettiEffect)
       })
     } else {
-      document.removeEventListener('click', listener)
+      document.removeEventListener('click', showConfettiEffect)
     }
-  }, [selector, listener])
+  }, [selector, showConfettiEffect])
 
   useEffect(() => {
     initialize()
