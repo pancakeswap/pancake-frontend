@@ -90,9 +90,9 @@ export default function ApproveLiquidityTokens({
         (revokeANeeded ? (
           <Button onClick={revokeACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
             {approvalA === ApprovalState.PENDING ? (
-              <Dots>{t('Reset approval on USDT', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
+              <Dots>{t('Reset Approval on USDT', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
             ) : (
-              t('Reset approval on USDT', { asset: currencies[Field.CURRENCY_A]?.symbol })
+              t('Reset Approval on USDT', { asset: currencies[Field.CURRENCY_A]?.symbol })
             )}
           </Button>
         ) : (
@@ -108,9 +108,9 @@ export default function ApproveLiquidityTokens({
         (revokeBNeeded ? (
           <Button onClick={revokeBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
             {approvalB === ApprovalState.PENDING ? (
-              <Dots>{t('Reset approval on USDT', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
+              <Dots>{t('Reset Approval on USDT', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
             ) : (
-              t('Reset approval on USDT', { asset: currencies[Field.CURRENCY_B]?.symbol })
+              t('Reset Approval on USDT', { asset: currencies[Field.CURRENCY_B]?.symbol })
             )}
           </Button>
         ) : (
