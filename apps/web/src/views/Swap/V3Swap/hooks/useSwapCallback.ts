@@ -14,9 +14,8 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
-
-import { useWallchainSwapCallArguments } from './useWallchain'
 import type { TWallchainMasterInput } from './useWallchain'
+import { useWallchainSwapCallArguments } from './useWallchain'
 
 export enum SwapCallbackState {
   INVALID,
@@ -35,8 +34,8 @@ interface UseSwapCallbackArgs {
   trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  // signatureData: SignatureData | null | undefined
   deadline?: bigint
+  permitSignature?: any
   feeOptions?: FeeOptions
   onWallchainDrop: () => void
   wallchainMasterInput?: TWallchainMasterInput
@@ -46,8 +45,8 @@ interface UseSwapCallbackArgs {
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback({
   trade,
-  // signatureData,
   deadline,
+  permitSignature,
   feeOptions,
   onWallchainDrop,
   wallchainMasterInput,
@@ -63,7 +62,7 @@ export function useSwapCallback({
     trade,
     allowedSlippage,
     recipientAddress,
-    // signatureData,
+    permitSignature,
     deadline,
     feeOptions,
   )
@@ -75,13 +74,7 @@ export function useSwapCallback({
     wallchainMasterInput,
   )
 
-  const { callback } = useSendSwapTransaction(
-    account,
-    chainId,
-    trade,
-    // @ts-expect-error uncompatible types side-by-side cause wrong type assertion
-    wallchainSwapCalls,
-  )
+  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {

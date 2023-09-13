@@ -14,7 +14,6 @@ import {
 import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/estimateContractGas'
 import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
-import { calculateGasMargin } from 'utils'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useCallWithGasPrice() {
@@ -94,7 +93,8 @@ export function useCallWithGasPrice() {
         functionName: methodName,
         args: methodArgs,
         gasPrice,
-        gas: calculateGasMargin(gas),
+        // for some reason gas price is insamely high when using maxuint approval, so commenting out for now
+        // gas: calculateGasMargin(gas),
         value: 0n,
         ...overrides_,
       } as unknown as WriteContractParameters)
