@@ -28,7 +28,7 @@ import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-import ThirdYearBirthdayCake from '../views/Home/components/ThirdYearBirthdayCake'
+import { ThirdYearBirthdayCake } from '../views/Home/components/ThirdYearBirthdayCake'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 

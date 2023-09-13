@@ -13,7 +13,7 @@ const Container = styled(Link)<{ hasScrollToTopButton: boolean }>`
     hasScrollToTopButton ? 'calc(146px + env(safe-area-inset-bottom))' : 'calc(82px + env(safe-area-inset-bottom))'};
 `
 
-const ThirdYearBirthdayCake = () => {
+export const ThirdYearBirthdayCake = () => {
   const [hasScrollToTopButton, setHasScrollToTopButton] = useState(false)
   const isEvenEnd = disableWhenEvenEnd()
 
@@ -48,5 +48,3 @@ const ThirdYearBirthdayCake = () => {
     </Container>
   )
 }
-
-export default ThirdYearBirthdayCake

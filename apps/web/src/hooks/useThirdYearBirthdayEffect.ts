@@ -78,7 +78,7 @@ export const disableWhenEvenEnd = () => {
   return endDay < now
 }
 
-const useThirdYearBirthdayEffect = () => {
+export const useThirdYearBirthdayEffect = () => {
   const { pathname } = useRouter()
   const { initialize, teardown } = useConfetti({
     disableWhen: disableWhenEvenEnd,
@@ -91,5 +91,3 @@ const useThirdYearBirthdayEffect = () => {
     return () => teardown()
   }, [pathname, initialize, teardown])
 }
-
-export default useThirdYearBirthdayEffect
