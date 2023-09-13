@@ -1,5 +1,3 @@
-export * from './chains'
-
 export enum ChainId {
   ETHEREUM = 1,
   GOERLI = 5,
