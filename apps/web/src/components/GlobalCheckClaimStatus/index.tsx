@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { ModalV2 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useRouter } from 'next/router'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
+import { useShowOnceAnniversaryModal } from 'hooks/useShowOnceAnniversaryModal'
 import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
 import useAirdropModalStatus from './hooks/useAirdropModalStatus'
 
@@ -35,25 +35,30 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   const { pathname } = useRouter()
   const [show, setShow] = useState(false)
   const { shouldShowModal, v3WhitelistAddress } = useAirdropModalStatus()
-  const [showOnceAirdropModal, setShowOnceAirdropModal] = useShowOnceAirdropModal()
+  const [showOnceAnniversaryModal, setShowOnceAnniversaryModal] = useShowOnceAnniversaryModal()
 
   useEffect(() => {
-    if (shouldShowModal && !excludeLocations.some((location) => pathname.includes(location)) && showOnceAirdropModal) {
+    if (
+      shouldShowModal &&
+      !excludeLocations.some((location) => pathname.includes(location)) &&
+      account &&
+      !Object.keys(showOnceAnniversaryModal).includes(account)
+    ) {
       setShow(true)
     } else {
       setShow(false)
     }
-  }, [account, excludeLocations, pathname, setShow, shouldShowModal, showOnceAirdropModal, v3WhitelistAddress])
+  }, [account, excludeLocations, pathname, setShow, shouldShowModal, showOnceAnniversaryModal, v3WhitelistAddress])
 
-  const handleCloseModal = () => {
-    if (showOnceAirdropModal) {
-      setShowOnceAirdropModal(!showOnceAirdropModal)
+  const handleCloseModal = useCallback(() => {
+    if (account && !Object.keys(showOnceAnniversaryModal).includes(account)) {
+      setShowOnceAnniversaryModal({ ...showOnceAnniversaryModal, [account]: true })
     }
     setShow(false)
-  }
+  }, [account, setShowOnceAnniversaryModal, showOnceAnniversaryModal])
 
   return (
-    <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
+    <ModalV2 isOpen={show} onDismiss={handleCloseModal} closeOnOverlayClick>
       <V3AirdropModal
         data={account ? (v3WhitelistAddress?.[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
         onDismiss={handleCloseModal}
