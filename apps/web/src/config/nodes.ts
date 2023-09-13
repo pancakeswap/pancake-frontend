@@ -11,7 +11,7 @@ import {
   base,
 } from 'wagmi/chains'
 import { getNodeRealUrlV2 } from 'utils/nodeReal'
-import { opbnbTestnet, linea } from './chains'
+import { opbnbTestnet, linea, opbnb } from './chains'
 
 const POLYGON_ZKEVM_NODES = [
   'https://f2562de09abc5efbd21eefa083ff5326.zkevm-rpc.com/',
@@ -56,6 +56,7 @@ export const SERVER_NODES = {
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.OPBNB]: opbnb.rpcUrls.public.http,
   [ChainId.BASE]: [
     'https://base.publicnode.com',
     // process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION,
@@ -101,6 +102,7 @@ export const PUBLIC_NODES = {
     'https://consensys-zkevm-goerli-prealpha.infura.io/v3/93e8a17747e34ec0ac9a554c1b403965',
   ],
   [ChainId.OPBNB_TESTNET]: opbnbTestnet.rpcUrls.public.http,
+  [ChainId.OPBNB]: opbnb.rpcUrls.public.http,
   [ChainId.BASE]: [
     'https://base.publicnode.com',
     // process.env.NEXT_PUBLIC_NODE_REAL_BASE_PRODUCTION,

@@ -326,6 +326,13 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.OPBNB]: new ERC20Token(
+    ChainId.OPBNB,
+    '0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3',
+    18,
+    'USDT',
+    'Tether USD',
+  ),
   [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
 }
 
@@ -350,6 +357,7 @@ export const STABLE_COIN = {
   [ChainId.POLYGON_ZKEVM_TESTNET]: USDT[ChainId.POLYGON_ZKEVM_TESTNET],
   [ChainId.LINEA]: USDC[ChainId.LINEA],
   [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
+  [ChainId.OPBNB]: USDT[ChainId.OPBNB],
   [ChainId.OPBNB_TESTNET]: USDT[ChainId.OPBNB_TESTNET],
   [ChainId.BASE]: USDC[ChainId.BASE],
   [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],

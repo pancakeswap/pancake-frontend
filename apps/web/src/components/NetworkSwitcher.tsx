@@ -152,6 +152,7 @@ const SHORT_SYMBOL = {
   [ChainId.ZKSYNC_TESTNET]: 'tZkSync',
   [ChainId.LINEA]: 'Linea',
   [ChainId.LINEA_TESTNET]: 'tLinea',
+  [ChainId.OPBNB]: 'opBNB',
   [ChainId.OPBNB_TESTNET]: 'tOpBNB',
   [ChainId.BASE]: 'Base',
   [ChainId.BASE_TESTNET]: 'tBase',

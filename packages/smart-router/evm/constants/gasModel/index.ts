@@ -15,6 +15,7 @@ import {
   arbitrumTokens,
   baseTokens,
   baseTestnetTokens,
+  opBnbTokens,
   opBnbTestnetTokens,
   scrollSepoliaTokens,
 } from '@pancakeswap/tokens'
@@ -32,6 +33,7 @@ export const usdGasTokensByChain = {
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc],
   [ChainId.LINEA]: [lineaTokens.usdc],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc],
+  [ChainId.OPBNB]: [opBnbTokens.usdt],
   [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.usdc],
   [ChainId.BASE]: [baseTokens.usdc],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc],
