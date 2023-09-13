@@ -6,7 +6,11 @@
   "files": [
     "lib"
   ],
-  "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/eslint-config-pancake",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/eslint-config"
+  },
   "license": "MIT",
   "author": "RabbitDoge",
   "private": true,
