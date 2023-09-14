@@ -1,12 +1,11 @@
 import { Token, CurrencyAmount } from '@pancakeswap/sdk'
 import { erc20ABI } from 'wagmi'
-import { useMemo } from 'react'
+import { useMemo, useCallback } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
 import { FAST_INTERVAL } from 'config/constants'
-import { useCallback } from 'react'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { TransactionType } from 'state/info/types'
 import { isUserRejected } from 'utils/sentry'
