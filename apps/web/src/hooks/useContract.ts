@@ -48,6 +48,7 @@ import {
   getTradingRewardTopTradesContract,
   getVCakeContract,
   getRevenueSharingPoolContract,
+  getAnniversaryAchievementContract,
 } from 'utils/contractHelpers'
 
 import { ChainId, WNATIVE, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -405,4 +406,10 @@ export const useRevenueSharingPoolContract = ({ chainId: chainId_ }: { chainId?:
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getRevenueSharingPoolContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
+}
+
+export const useAnniversaryAchievementContract = ({ chainId: chainId_ }: { chainId?: ChainId } = {}) => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getAnniversaryAchievementContract(signer, chainId_ ?? chainId), [signer, chainId_, chainId])
 }

@@ -1,12 +1,7 @@
-import { useEffect, useState } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
-import { ModalV2 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { useRouter } from 'next/router'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
-import V3AirdropModal, { WhitelistType } from './V3AirdropModal'
-import useAirdropModalStatus from './hooks/useAirdropModalStatus'
+import AnniversaryAchievementModal from './AnniversaryAchievementModal'
+import V3AirdropModal from './V3AirdropModal'
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
@@ -31,34 +26,11 @@ const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimS
  */
 
 const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
-  const { address: account } = useAccount()
-  const { pathname } = useRouter()
-  const [show, setShow] = useState(false)
-  const { shouldShowModal, v3WhitelistAddress } = useAirdropModalStatus()
-  const [showOnceAirdropModal, setShowOnceAirdropModal] = useShowOnceAirdropModal()
-
-  useEffect(() => {
-    if (shouldShowModal && !excludeLocations.some((location) => pathname.includes(location)) && showOnceAirdropModal) {
-      setShow(true)
-    } else {
-      setShow(false)
-    }
-  }, [account, excludeLocations, pathname, setShow, shouldShowModal, showOnceAirdropModal, v3WhitelistAddress])
-
-  const handleCloseModal = () => {
-    if (showOnceAirdropModal) {
-      setShowOnceAirdropModal(!showOnceAirdropModal)
-    }
-    setShow(false)
-  }
-
   return (
-    <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
-      <V3AirdropModal
-        data={account ? (v3WhitelistAddress?.[account.toLowerCase()] as WhitelistType) : (null as WhitelistType)}
-        onDismiss={handleCloseModal}
-      />
-    </ModalV2>
+    <>
+      <AnniversaryAchievementModal excludeLocations={excludeLocations} />
+      <V3AirdropModal />
+    </>
   )
 }
 
