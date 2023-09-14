@@ -123,7 +123,7 @@ function useMintedStableLP({
   const balanceResult = useSingleCallResult({
     contract: stableSwapInfoContract,
     functionName: 'balances',
-    args: [stableSwapAddress as Address],
+    args: useMemo(() => [stableSwapAddress as Address] as const, [stableSwapAddress]),
   })
 
   return useMemo(
