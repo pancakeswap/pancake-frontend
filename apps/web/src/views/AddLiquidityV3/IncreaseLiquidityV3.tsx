@@ -6,7 +6,7 @@ import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -69,10 +69,14 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const addTransaction = useTransactionAdder()
   // fee selection from url
-  const feeAmount: FeeAmount | undefined =
-    feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
-      ? parseFloat(feeAmountFromUrl)
-      : undefined
+  const feeAmount: FeeAmount | undefined = useMemo(
+    () =>
+      feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
+        ? parseFloat(feeAmountFromUrl)
+        : undefined,
+    [feeAmountFromUrl],
+  )
+
   // check for existing position if tokenId in url
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
     tokenId ? BigInt(tokenId) : undefined,
@@ -81,8 +85,11 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const hasExistingPosition = !!existingPositionDetails && !positionLoading
   const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
   // prevent an error if they input NATIVE/WNATIVE
-  const quoteCurrency =
-    baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
+  const quoteCurrency = useMemo(
+    () => (baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB),
+    [baseCurrency, currencyB],
+  )
+
   // mint state
   const formState = useV3FormState()
   const { independentField, typedValue } = formState
@@ -114,38 +121,49 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
   // get formatted amounts
-  const formattedAmounts = {
-    [independentField]: typedValue,
-    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
-  }
+  const formattedAmounts = useMemo(
+    () => ({
+      [independentField]: typedValue,
+      [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+    }),
+    [parsedAmounts, typedValue, independentField, dependentField],
+  )
 
   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field]),
-      }
-    },
-    {},
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = useMemo(
+    () =>
+      [Field.CURRENCY_A, Field.CURRENCY_B].reduce((accumulator, field) => {
+        return {
+          ...accumulator,
+          [field]: maxAmountSpend(currencyBalances[field]),
+        }
+      }, {}),
+    [currencyBalances],
   )
 
   const positionManager = useV3NFTPositionManagerContract()
   const [allowedSlippage] = useUserSlippage() // custom from users
 
-  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id === BigInt(tokenId)))
+  const isStakedInMCv3 = useMemo(
+    () => Boolean(tokenId && stakedTokenIds.find((id) => id === BigInt(tokenId))),
+    [tokenId, stakedTokenIds],
+  )
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
 
-  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_A],
-    manager?.address,
-  )
-  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_B],
-    manager?.address,
-  )
+  const {
+    approvalState: approvalA,
+    approveCallback: approveACallback,
+    revokeCallback: revokeACallback,
+    currentAllowance: currentAllowanceA,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], manager?.address)
+  const {
+    approvalState: approvalB,
+    approveCallback: approveBCallback,
+    revokeCallback: revokeBCallback,
+    currentAllowance: currentAllowanceB,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], manager?.address)
 
   // we need an existence check on parsed amounts for single-asset deposits
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
@@ -254,11 +272,15 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     }
   }, [onFieldAInput, router, txHash, tokenId])
 
-  const pendingText = `Supplying ${
-    !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
-  } ${!depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''} ${!outOfRange ? 'and' : ''} ${
-    !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
-  } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
+  const pendingText = useMemo(
+    () =>
+      `Supplying ${!depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''} ${
+        !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
+      } ${!outOfRange ? 'and' : ''} ${
+        !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
+      } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`,
+    [depositADisabled, depositBDisabled, currencies, parsedAmounts, outOfRange, locale],
+  )
 
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal
@@ -302,8 +324,12 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       isValid={isValid}
       showApprovalA={showApprovalA}
       approveACallback={approveACallback}
+      currentAllowanceA={currentAllowanceA}
+      revokeACallback={revokeACallback}
       currencies={currencies}
       approveBCallback={approveBCallback}
+      currentAllowanceB={currentAllowanceB}
+      revokeBCallback={revokeBCallback}
       showApprovalB={showApprovalB}
       parsedAmounts={parsedAmounts}
       onClick={handleButtonSubmit}

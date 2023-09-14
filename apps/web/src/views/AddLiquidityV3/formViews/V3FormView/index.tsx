@@ -232,14 +232,18 @@ export default function V3FormView({
 
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   // check whether the user has approved the router on the tokens
-  const { approvalState: approvalA, approveCallback: approveACallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_A],
-    nftPositionManagerAddress,
-  )
-  const { approvalState: approvalB, approveCallback: approveBCallback } = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_B],
-    nftPositionManagerAddress,
-  )
+  const {
+    approvalState: approvalA,
+    approveCallback: approveACallback,
+    revokeCallback: revokeACallback,
+    currentAllowance: currentAllowanceA,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
+  const {
+    approvalState: approvalB,
+    approveCallback: approveBCallback,
+    revokeCallback: revokeBCallback,
+    currentAllowance: currentAllowanceB,
+  } = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
 
   const [allowedSlippage] = useUserSlippage() // custom from users
 
@@ -414,9 +418,13 @@ export default function V3FormView({
       isValid={isValid}
       showApprovalA={showApprovalA}
       approveACallback={approveACallback}
+      currentAllowanceA={currentAllowanceA}
+      revokeACallback={revokeACallback}
       currencies={currencies}
-      approveBCallback={approveBCallback}
       showApprovalB={showApprovalB}
+      approveBCallback={approveBCallback}
+      currentAllowanceB={currentAllowanceB}
+      revokeBCallback={revokeBCallback}
       parsedAmounts={parsedAmounts}
       onClick={handleButtonSubmit}
       attemptingTxn={attemptingTxn}

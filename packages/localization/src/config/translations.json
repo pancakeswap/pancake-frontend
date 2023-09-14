@@ -2690,5 +2690,6 @@
   "Pancakeswap MM": "Pancakeswap MM",
   "Pancakeswap AMM": "Pancakeswap AMM",
   "Why resetting approval": "Why resetting approval",
-  "Reset approval on USDT.": "Reset approval on USDT."
+  "Reset Approval on USDT": "Reset Approval on USDT",
+  "USDT on Ethereum requires resetting approval when spending allowances are too low.": "USDT on Ethereum requires resetting approval when spending allowances are too low."
 }

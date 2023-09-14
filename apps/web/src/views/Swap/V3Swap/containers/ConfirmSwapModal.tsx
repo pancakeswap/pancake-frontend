@@ -264,7 +264,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
     if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
-      return <ApproveModalContent title={t('Reset approval on USDT.')} isMM={isMM} />
+      return <ApproveModalContent title={t('Reset Approval on USDT')} isMM={isMM} />
     }
 
     if (
