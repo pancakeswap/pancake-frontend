@@ -71,7 +71,7 @@ export function useSwapCallArguments(
     return [
       {
         address: swapRouterAddress,
-        calldata: methodParamaters.calldata,
+        calldata: methodParamaters.calldata as `0x${string}`,
         value: methodParamaters.value,
       },
     ]
