@@ -1,4 +1,4 @@
-import { Token, CurrencyAmount, WETH9 } from '@pancakeswap/sdk'
+import { ERC20Token, CurrencyAmount, WETH9 } from '@pancakeswap/sdk'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { nearestUsableTick } from '../utils/nearestUsableTick'
 import { TickMath } from '../utils/tickMath'
@@ -9,8 +9,8 @@ import { NEGATIVE_ONE } from '../internalConstants'
 const ONE_ETHER = 10n ** 18n
 
 describe('Pool', () => {
-  const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
-  const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
+  const USDC = new ERC20Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
+  const DAI = new ERC20Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'DAI Stablecoin')
 
   describe('constructor', () => {
     it('cannot be used for tokens on different chains', () => {
