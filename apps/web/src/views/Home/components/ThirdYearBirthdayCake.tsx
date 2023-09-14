@@ -44,7 +44,7 @@ export const ThirdYearBirthdayCake = () => {
       hasScrollToTopButton={hasScrollToTopButton}
       href="https://blog.pancakeswap.finance/?category=Birthday"
     >
-      <Image src="/images/third-year-cake-1.png" alt="third-year-cake-icon" width={48} height={48} />
+      <Image src="/images/third-year-cake.svg" alt="third-year-cake-icon" width={48} height={58} />
     </Container>
   )
 }
