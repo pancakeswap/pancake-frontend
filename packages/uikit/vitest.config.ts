@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), vanillaExtractPlugin()],
   test: {
     setupFiles: ["./src/setupTests.js"],
-    environment: "jsdom",
+    environment: "happy-dom",
     globals: true,
   },
 });

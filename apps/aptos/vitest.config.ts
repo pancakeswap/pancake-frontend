@@ -7,7 +7,7 @@ export default defineConfig({
   // @ts-ignore
   plugins: [tsconfigPaths(), react(), vanillaExtractPlugin()],
   test: {
-    environment: 'jsdom',
+    environment: 'node',
     globals: true,
   },
 })

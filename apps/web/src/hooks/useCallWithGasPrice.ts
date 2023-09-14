@@ -7,11 +7,11 @@ import {
   Address,
   CallParameters,
   Chain,
+  EstimateContractGasParameters,
   GetFunctionArgs,
   InferFunctionName,
   WriteContractParameters,
 } from 'viem'
-import { EstimateContractGasParameters } from 'viem/dist/types/actions/public/estimateContractGas'
 import { useWalletClient } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'

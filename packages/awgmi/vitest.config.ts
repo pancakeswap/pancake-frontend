@@ -5,7 +5,7 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],
     },
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: ['./core/test/setup.ts'],
   },
 })
