@@ -1,14 +1,14 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { AllowanceTransfer, MaxAllowanceTransferAmount, PERMIT2_ADDRESS, PermitSingle } from '@uniswap/permit2-sdk'
-import PERMIT2_ABI from '../config/abi/permit2.json'
 import { useContract } from 'hooks/useContract'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSingleCallResult } from 'state/multicall/hooks'
-import { useTranslation } from '@pancakeswap/localization'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { publicClient } from 'utils/wagmi'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
+import { useSignTypedData } from 'wagmi'
+import PERMIT2_ABI from '../config/abi/permit2.json'
 import useAccountActiveChain from './useAccountActiveChain'
 
 const PERMIT_EXPIRATION = 2592000000 // 30 day
@@ -59,6 +59,7 @@ export function useUpdatePermitAllowance(
   onPermitSignature: (signature: PermitSignature) => void
 ) {
   const { account, chainId } = useAccountActiveChain()
+  const { signTypedDataAsync } = useSignTypedData()
   const { t } = useTranslation()
   return useCallback(async () => {
     try {
@@ -79,7 +80,13 @@ export function useUpdatePermitAllowance(
       }
 
       const { domain, types, values } = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId)
-      const signature = await publicClient({ chainId} ).signTypedData({account, domain, types, message: values })
+      const signature = await signTypedDataAsync({
+            // @ts-ignore
+            domain,
+            primaryType: 'Permit',
+            types,
+            message: values,
+          })
       onPermitSignature?.({ ...permit, signature })
       return
     } catch (error: unknown) {
