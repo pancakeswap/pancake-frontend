@@ -30,7 +30,7 @@
       "types": "./dist/css/responsiveStyle.d.ts"
     }
   },
-  "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit",
+  "repository": "https://github.com/pancakeswap/pancake-frontend/tree/develop/packages/uikit",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -44,7 +44,7 @@
     "build:storybook": "storybook build",
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
-    "prepublishOnly": "pnpm run pkg:build",
+    "prepublishOnly": "pnpm run build:uikit",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
@@ -127,11 +127,9 @@
     "react-redux": "^8.0.5",
     "react-transition-group": "*",
     "remark-gfm": "*",
-    "styled-components": "^6.0.7",
-    "viem": "^1.2.9"
+    "styled-components": "^6.0.7"
   },
   "dependencies": {
-    "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
