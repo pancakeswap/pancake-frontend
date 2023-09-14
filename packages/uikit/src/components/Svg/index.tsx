@@ -179,4 +179,5 @@ export { default as BCakeIcon } from "./Icons/BCake";
 export { default as VCakeIcon } from "./Icons/VCake";
 export { default as ZkEVMIcon } from "./Icons/ZkEVM";
 export { default as ZkSyncIcon } from "./Icons/ZkSync";
+export { default as BirthdayIcon } from "./Icons/Birthday";
 export type { SvgProps } from "./types";

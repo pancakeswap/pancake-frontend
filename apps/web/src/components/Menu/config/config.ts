@@ -8,9 +8,8 @@ import {
   EarnIcon,
   TrophyIcon,
   TrophyFillIcon,
-  NftIcon,
-  NftFillIcon,
   MoreIcon,
+  BirthdayIcon,
   DropdownMenuItems,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
@@ -153,26 +152,10 @@ const config: (
       ],
     },
     {
-      label: t('NFT'),
-      href: `${nftsBaseUrl}`,
-      icon: NftIcon,
-      fillIcon: NftFillIcon,
-      supportChainIds: SUPPORT_ONLY_BSC,
-      image: '/images/decorations/nft.png',
-      items: [
-        {
-          label: t('Overview'),
-          href: `${nftsBaseUrl}`,
-        },
-        {
-          label: t('Collections'),
-          href: `${nftsBaseUrl}/collections`,
-        },
-        {
-          label: t('Activity'),
-          href: `${nftsBaseUrl}/activity`,
-        },
-      ],
+      label: t('Birthday'),
+      icon: BirthdayIcon,
+      hideSubNav: true,
+      items: [],
     },
     {
       label: t('Game'),
@@ -202,6 +185,12 @@ const config: (
           href: '/ifo',
           supportChainIds: SUPPORT_ONLY_BSC,
           image: '/images/ifos/ifo-bunny.png',
+        },
+        {
+          label: t('NFT'),
+          href: `${nftsBaseUrl}`,
+          supportChainIds: SUPPORT_ONLY_BSC,
+          image: '/images/decorations/nft.png',
         },
         {
           label: t('Affiliate Program'),
