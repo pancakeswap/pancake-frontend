@@ -1,6 +1,8 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import { Text, ChevronDownIcon, Pool } from '@pancakeswap/uikit'
+import { Text, ChevronDownIcon } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 
 interface ExpandActionCellProps {

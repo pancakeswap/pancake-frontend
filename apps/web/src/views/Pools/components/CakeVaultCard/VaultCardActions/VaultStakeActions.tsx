@@ -1,4 +1,6 @@
-import { Flex, Skeleton, useModal, Pool } from '@pancakeswap/uikit'
+import { Flex, Skeleton, useModal } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import BigNumber from 'bignumber.js'
 import { VaultKey } from 'state/types'
 import { Token } from '@pancakeswap/sdk'

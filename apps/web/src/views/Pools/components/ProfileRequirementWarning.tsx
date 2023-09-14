@@ -1,4 +1,6 @@
-import { Box, Message, MessageText, NextLinkFromReactRouter, Pool } from '@pancakeswap/uikit'
+import { Box, Message, MessageText, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import { useProfileRequirement } from '../hooks/useProfileRequirement'

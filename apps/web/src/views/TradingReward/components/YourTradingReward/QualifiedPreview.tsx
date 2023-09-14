@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { Flex, Text, InfoIcon, Message, MessageText, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, InfoIcon, Message, MessageText } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
