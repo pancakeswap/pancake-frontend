@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import { Box, Text, lightColors, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Text, lightColors, useMatchBreakpoints, BoxProps } from '@pancakeswap/uikit'
 import CountUp from 'react-countup'
 import useTheme from 'hooks/useTheme'
 
@@ -9,16 +9,18 @@ export const Divider = styled.div`
   background-color: ${lightColors.inputSecondary};
 `
 
-export const MetricsCard: React.FC<{ title: string; value: number; description: string; prefix?: string }> = ({
-  title,
-  value,
-  description,
-  prefix,
-}) => {
+interface MetricsCardProps extends BoxProps {
+  title: string
+  value: number
+  description: string
+  prefix?: string
+}
+
+export const MetricsCard: React.FC<MetricsCardProps> = ({ title, value, description, prefix, ...rest }) => {
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
   return (
-    <Box>
+    <Box {...rest}>
       <Text fontSize={isMobile ? '16px' : '20px'} textAlign="center" fontWeight={600} lineHeight="120%">
         {title}
       </Text>
@@ -37,7 +39,7 @@ export const MetricsCard: React.FC<{ title: string; value: number; description: 
           decimalPlaces={3}
           decimals={0}
           duration={1}
-          prefix={prefix}
+          prefix={prefix ?? ''}
           separator=","
         >
           {({ countUpRef }) => <span ref={countUpRef} />}

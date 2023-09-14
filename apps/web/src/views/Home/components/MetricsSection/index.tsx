@@ -40,7 +40,7 @@ const Stats = () => {
   const { data: tvl } = useSWRImmutable('tvl')
   const { data: txCount } = useSWRImmutable('totalTx30Days')
   const { data: addressCount } = useSWRImmutable('addressCount30Days')
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isSm, isMd } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column" overflow="hidden">
@@ -64,8 +64,14 @@ const Stats = () => {
         width={['100%', '100%', '100%', '800px']}
         style={{ gap: isMobile ? 32 : 50 }}
         mb={isMobile ? '32px' : '48px'}
+        flexWrap="wrap"
       >
-        <MetricsCard title={t('Total Users:')} value={addressCount} description={t('in the last 30 days')} />
+        <MetricsCard
+          width={isSm || isMd ? '100%' : 'auto'}
+          title={t('Total Users:')}
+          value={addressCount}
+          description={t('in the last 30 days')}
+        />
         <MetricsCard
           title={t('Total Trading Volume:')}
           value={txCount}
