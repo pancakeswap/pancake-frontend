@@ -17,7 +17,7 @@
   "module": "dist/index.mjs",
   "dependencies": {
     "@pancakeswap/sdk": "workspace:*",
-    "viem": "^1.10.9"
+    "viem": "1.10.9"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",

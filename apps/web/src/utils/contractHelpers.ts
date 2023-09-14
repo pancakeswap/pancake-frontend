@@ -85,8 +85,8 @@ import { vCakeABI } from 'config/abi/vCake'
 import { anniversaryAchievementABI } from 'config/abi/anniversaryAchievement'
 import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { getViemClients, viemClients } from 'utils/viem'
-import { Abi, PublicClient, getContract as viemGetContract } from 'viem'
-import { Address, erc20ABI, erc721ABI, WalletClient } from 'wagmi'
+import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
+import { Address, erc20ABI, erc721ABI } from 'wagmi'
 
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
