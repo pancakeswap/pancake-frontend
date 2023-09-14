@@ -1,5 +1,17 @@
 # @pancakeswap/farms
 
+## 1.0.16
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/v3-sdk@3.4.3
+  - @pancakeswap/utils@5.0.5
+  - @pancakeswap/tokens@0.4.3
+  - @pancakeswap/token-lists@0.0.8
+
 ## 1.0.15
 
 ### Patch Changes

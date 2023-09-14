@@ -1,5 +1,13 @@
 # @pancakeswap/multicall
 
+## 3.1.1
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+
 ## 3.1.0
 
 ### Minor Changes

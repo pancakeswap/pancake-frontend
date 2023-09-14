@@ -1,5 +1,16 @@
 # @pancakeswap/pools
 
+## 4.0.11
+
+### Patch Changes
+
+- 2d7e1b3e2: Upgraded viem
+- 67d0780d1: Add wstETH pool
+- Updated dependencies [2d7e1b3e2]
+  - @pancakeswap/sdk@5.4.2
+  - @pancakeswap/tokens@0.4.3
+  - @pancakeswap/token-lists@0.0.8
+
 ## 4.0.10
 
 ### Patch Changes
