@@ -80,7 +80,7 @@ export function useUpdateTokenAllowance(
       if (!spender) throw new Error('missing spender')
 
       const allowance = amount.equalTo(0) ? '0' : MaxUint256.toString()
-      const response = contract.write.approve([spender as `0x${string}`, allowance], {
+      const response = contract.write.approve([spender as `0x${string}`, BigInt(allowance)], {
         account,
         chain,
       })
