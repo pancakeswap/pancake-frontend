@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 

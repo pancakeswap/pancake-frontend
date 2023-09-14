@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { AptosCoin, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { PoolCategory } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'

@@ -13,8 +13,9 @@ import {
   SkeletonV2,
   useMatchBreakpoints,
   Balance,
-  Pool,
 } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
