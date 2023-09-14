@@ -54,7 +54,7 @@ const StyledModalBody = styled(ModalBody)`
 
 export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
-  onCurrencySelect: (currency: Currency) => void
+  onCurrencySelect?: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   commonBasesType?: string
@@ -81,7 +81,7 @@ export default function CurrencySearchModal({
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       onDismiss?.()
-      onCurrencySelect(currency)
+      onCurrencySelect?.(currency)
     },
     [onDismiss, onCurrencySelect],
   )

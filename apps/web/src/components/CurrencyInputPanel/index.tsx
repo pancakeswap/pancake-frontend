@@ -233,7 +233,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
           </Flex>
           {account && !hideBalanceComp && (
             <Text
-              onClick={!disabled && onMax}
+              onClick={!disabled ? onMax : undefined}
               color="textSubtle"
               fontSize="12px"
               ellipsis

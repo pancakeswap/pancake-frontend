@@ -228,7 +228,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
 }
 
 export const useStablecoinPriceAmount = (
-  currency?: Currency,
+  currency?: Currency | null,
   amount?: number,
   config?: UseStablecoinPriceConfig,
 ): number | undefined => {
