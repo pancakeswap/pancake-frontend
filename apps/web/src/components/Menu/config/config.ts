@@ -153,7 +153,7 @@ const config: (
     },
     {
       label: t('Birthday'),
-      href: '',
+      href: 'https://blog.pancakeswap.finance/?category=Birthday',
       extends: true,
       icon: BirthdayIcon,
       hideSubNav: true,
