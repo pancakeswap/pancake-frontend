@@ -113,12 +113,12 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
             <AnniversaryImage src="/images/achievements/3-year.svg" />
           </Box>
           <Text textAlign="center" bold fontSize="24px">
-            3 Years
+            {t('Happy Birthday!')}
           </Text>
-          <Text textAlign="center">+300 {t('Points')}</Text>
+          <Text textAlign="center">+100 {t('Points')}</Text>
           <Text textAlign="center" bold color="secondary" mb="24px">
             {t(
-              'You won points and achievements for taking part in our three years journey. Now let’s celebrate our 3rd Birthday!',
+              'Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.',
             )}
           </Text>
           <Button
