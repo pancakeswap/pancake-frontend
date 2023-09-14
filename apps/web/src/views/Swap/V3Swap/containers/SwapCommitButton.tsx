@@ -113,7 +113,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   )
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   // const maximumAmountIn = useMaxAmountIn(trade,  slippageAdjustedAmounts)
-  const allowance = { state: AllowanceState.ALLOWED }
+  const allowance = { state: AllowanceState.ALLOWED, permitSignature: undefined }
 
   const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
@@ -121,7 +121,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   // the callback to execute the swap
   const deadline = useTransactionDeadline()
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, permitSignature: allowance.state === AllowanceState.ALLOWED ? allowance.permitSignature : undefined,  deadline })
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, permitSignature: allowance.state === AllowanceState.ALLOWED ? allowance.permitSignature : undefined,  deadline } as any)
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: SmartRouterTrade<TradeType> | undefined
