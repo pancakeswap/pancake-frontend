@@ -69,13 +69,13 @@ const borderBoxAnimation = css`
   }
   &.show {
     &:before {
-      transform: translateX(-87%);
+      transform: translateX(-95%);
       ${({ theme }) => theme.mediaQueries.lg} {
         transform: translateY(-87%);
       }
     }
     &:after {
-      transform: translateX(87%);
+      transform: translateX(95%);
       ${({ theme }) => theme.mediaQueries.lg} {
         transform: translateY(87%);
       }
