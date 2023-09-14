@@ -10,5 +10,6 @@ export * from './ether'
 export * from './fetcher'
 
 export * from '@pancakeswap/swap-sdk-core'
+export { ChainId } from '@pancakeswap/chains'
 
 export * from './abis/IPancakePair'
