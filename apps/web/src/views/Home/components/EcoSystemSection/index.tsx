@@ -90,7 +90,7 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
       transition: fill 0.25s ease-in-out;
     }
   }
-  padding: 12px;
+  padding: 4px;
   &:hover {
     .cta > * {
       color: ${({ theme }) => theme.colors.primary};
@@ -134,7 +134,9 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
       height: 256px;
     }
   }
-
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 12px;
+  }
   ${({ theme }) => theme.mediaQueries.xxl} {
     flex-wrap: nowrap;
   }
