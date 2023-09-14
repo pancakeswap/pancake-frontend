@@ -9,10 +9,11 @@ export const Divider = styled.div`
   background-color: ${lightColors.inputSecondary};
 `
 
-export const MetricsCard: React.FC<{ title: string; value: number; description: string }> = ({
+export const MetricsCard: React.FC<{ title: string; value: number; description: string; prefix?: string }> = ({
   title,
   value,
   description,
+  prefix,
 }) => {
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
@@ -36,6 +37,7 @@ export const MetricsCard: React.FC<{ title: string; value: number; description: 
           decimalPlaces={3}
           decimals={0}
           duration={1}
+          prefix={prefix}
           separator=","
         >
           {({ countUpRef }) => <span ref={countUpRef} />}
