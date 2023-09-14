@@ -59,7 +59,7 @@ export const ImageBox = styled.div`
   .default {
     display: none;
   }
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     .default {
       display: block;
       position: relative;
