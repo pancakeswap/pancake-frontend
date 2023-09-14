@@ -7,6 +7,7 @@ jobs:
   ts-check:
     name: Typescript Error Check
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -44,7 +45,8 @@ jobs:
           echo 'Files added: ${{steps.files.outputs.files_created}}'
           echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
 
-      - uses: chefjackson/action-check-typescript@v1.0.6
+      - name: Check typescript errors
+        uses: chefjackson/action-check-typescript@v1.0.6
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
         with:
