@@ -13,12 +13,12 @@ import {
 } from "../../util/animationToolkit";
 
 const waves = keyframes`
-   from {
-        left: -150px;
-    }
-    to   {
-        left: 100%;
-    }
+  from {
+    left: -150px;
+  }
+  to {
+    left: 100%;
+  }
 `;
 
 const pulse = keyframes`
@@ -33,7 +33,7 @@ const pulse = keyframes`
   }
 `;
 
-const AnimationWrapper = styled(Motion.div).withConfig({ shouldForwardProp })`
+const AnimationWrapper = styled(Motion.div)`
   position: relative;
   will-change: opacity;
   opacity: 0;

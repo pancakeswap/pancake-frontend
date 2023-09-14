@@ -76,7 +76,7 @@ it("renders correctly waves animation", () => {
       left: -150px;
       height: 100%;
       width: 150px;
-      animation: kudDcV 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      animation: ibgOBR 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
     <div
