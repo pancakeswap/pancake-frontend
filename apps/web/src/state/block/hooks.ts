@@ -2,41 +2,54 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 // eslint-disable-next-line camelcase
 import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { usePublicClient } from 'wagmi'
+import { useBlockNumber, usePublicClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { viemClients } from 'utils/viem'
+import { useEffect } from 'react'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
   const { chainId } = useActiveChainId()
+  const { data: blockNumber, isError, isLoading } = useBlockNumber()
 
-  const { data } = useSWR(
+  useSWR(
     chainId && ['blockNumberFetcher', chainId],
     async () => {
+      mutate(['blockNumber', chainId], blockNumber)
+    },
+    {
+      revalidateOnMount: false,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  )
+
+  useEffect(() => {
+    const fetchInitialBlockTimestamp = async () => {
       const provider = viemClients[chainId as keyof typeof viemClients]
-      const blockNumberBigInt = await provider.getBlockNumber()
-      const blockNumber = Number(blockNumberBigInt)
+      if (provider) {
+        const block = await provider.getBlock({ blockNumber })
+        mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
+      }
+    }
+    if (!isLoading && !isError) {
       mutate(['blockNumber', chainId], blockNumber)
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
         mutate(['initialBlockNumber', chainId], blockNumber)
       }
       if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
-        const block = await provider.getBlock({ blockNumber: blockNumberBigInt })
-        mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
+        fetchInitialBlockTimestamp()
       }
-      return blockNumber
-    },
-    {
-      refreshInterval: REFRESH_BLOCK_INTERVAL,
-    },
-  )
+    }
+  }, [mutate, blockNumber, cache, chainId, isError, isLoading])
 
   useSWR(
     chainId && [FAST_INTERVAL, 'blockNumber', chainId],
     async () => {
-      return data
+      return blockNumber
     },
     {
       refreshInterval: FAST_INTERVAL,
@@ -46,7 +59,7 @@ export const usePollBlockNumber = () => {
   useSWR(
     chainId && [SLOW_INTERVAL, 'blockNumber', chainId],
     async () => {
-      return data
+      return blockNumber
     },
     {
       refreshInterval: SLOW_INTERVAL,
