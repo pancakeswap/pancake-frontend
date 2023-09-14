@@ -30,8 +30,10 @@ export const usePollBlockNumber = () => {
   useEffect(() => {
     const fetchInitialBlockTimestamp = async () => {
       const provider = viemClients[chainId as keyof typeof viemClients]
-      const block = await provider.getBlock({ blockNumber })
-      mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
+      if (provider) {
+        const block = await provider.getBlock({ blockNumber })
+        mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
+      }
     }
     if (!isLoading && !isError) {
       mutate(['blockNumber', chainId], blockNumber)
