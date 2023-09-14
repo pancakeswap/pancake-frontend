@@ -25,10 +25,13 @@ export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): 
   )
 
   const results = useSingleContractMultipleData({
-    contract: {
-      abi: multicallABI,
-      address: getMulticallAddress(native.chainId),
-    },
+    contract: useMemo(
+      () => ({
+        abi: multicallABI,
+        address: getMulticallAddress(native.chainId),
+      }),
+      [native],
+    ),
     functionName: 'getEthBalance',
     args: useMemo(() => addresses.map((address) => [address] as const), [addresses]),
   })

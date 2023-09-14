@@ -343,8 +343,9 @@ export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunc
   args,
   options,
 }: SingleCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
+  const { enabled, blocksPerFetch } = options ?? { enabled: true }
   const calls = useMemo<Call[]>(() => {
-    return contract && contract.abi && contract.address
+    return contract && contract.abi && contract.address && enabled
       ? [
           {
             address: contract.address,
@@ -356,9 +357,9 @@ export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunc
           },
         ]
       : []
-  }, [contract, args, functionName])
+  }, [contract, args, functionName, enabled])
 
-  const result = useCallsData(calls, options)[0]
+  const result = useCallsData(calls, options?.blocksPerFetch ? { blocksPerFetch } : DEFAULT_OPTIONS)[0]
 
   const { cache } = useSWRConfig()
   const { chainId } = useActiveChainId()

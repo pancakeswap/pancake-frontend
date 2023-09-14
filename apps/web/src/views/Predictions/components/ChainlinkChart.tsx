@@ -26,7 +26,8 @@ import { NodeRound } from 'state/types'
 import { styled } from 'styled-components'
 import { useSWRConfig } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { useContractRead, useContractReads } from 'wagmi'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useContractReads } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -34,16 +35,13 @@ import useSwiper from '../hooks/useSwiper'
 
 function useChainlinkLatestRound() {
   const { chainlinkOracleAddress } = useConfig()
-  const { chainId } = useActiveChainId()
   const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress)
-  return useContractRead({
-    abi: chainlinkOracleABI,
-    address: chainlinkOracleContract.address,
+
+  return useSingleCallResult({
+    contract: chainlinkOracleContract,
     functionName: 'latestRound',
-    enabled: !!chainlinkOracleContract,
-    watch: true,
-    chainId,
-  })
+    options: { enabled: !!chainlinkOracleContract },
+  })?.result
 }
 
 function useChainlinkRoundDataSet() {
@@ -53,7 +51,7 @@ function useChainlinkRoundDataSet() {
 
   const { data, error } = useContractReads({
     contracts:
-      lastRound?.data &&
+      lastRound &&
       Array.from({ length: 50 }).map(
         (_, i) =>
           ({
@@ -61,10 +59,10 @@ function useChainlinkRoundDataSet() {
             abi: chainlinkOracleABI,
             address: chainlinkOracleAddress,
             functionName: 'getRoundData',
-            args: [(lastRound?.data ?? 0n) - BigInt(i)] as const,
+            args: [(lastRound ?? 0n) - BigInt(i)] as const,
           } as const),
       ),
-    enabled: !!lastRound.data,
+    enabled: !!lastRound,
     keepPreviousData: true,
   })
 

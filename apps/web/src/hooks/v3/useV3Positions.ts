@@ -2,8 +2,9 @@ import { PositionDetails } from '@pancakeswap/farms'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { useEffect, useMemo } from 'react'
-import { useContractRead, useContractReads, Address } from 'wagmi'
+import { useMemo } from 'react'
+import { useContractReads, Address } from 'wagmi'
+import { useSingleCallResult, useSingleContractMultipleData } from 'state/multicall/hooks'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -93,72 +94,49 @@ export function useV3TokenIdsByAccount(
   contractAddress?: Address,
   account?: Address | null | undefined,
 ): { tokenIds: bigint[]; loading: boolean } {
-  const { chainId } = useActiveChainId()
-  const {
-    isLoading: balanceLoading,
-    data: accountBalance,
-    refetch: refetchBalance,
-  } = useContractRead({
-    abi: masterChefV3ABI,
-    address: contractAddress as `0x${string}`,
-    args: [account ?? undefined],
-    functionName: 'balanceOf',
-    enabled: !!account && !!contractAddress,
-    watch: true,
-    chainId,
-  })
-
-  const tokenIdsArgs = useMemo(() => {
-    if (accountBalance && account) {
-      const tokenRequests: {
-        abi: typeof masterChefV3ABI
-        address: Address
-        functionName: 'tokenOfOwnerByIndex'
-        args: [Address, number]
-        chainId: number
-      }[] = []
-      for (let i = 0; i < accountBalance; i++) {
-        tokenRequests.push({
-          abi: masterChefV3ABI,
-          address: contractAddress as `0x${string}`,
-          functionName: 'tokenOfOwnerByIndex',
-          args: [account, i],
-          chainId,
-        })
-      }
-      return tokenRequests
-    }
-    return []
-  }, [account, accountBalance, chainId, contractAddress])
-
-  const {
-    isLoading: someTokenIdsLoading,
-    data: tokenIds = [],
-    refetch: refetchTokenIds,
-  } = useContractReads({
-    contracts: tokenIdsArgs,
-    watch: true,
-    allowFailure: true,
-    enabled: !!tokenIdsArgs.length,
-    keepPreviousData: true,
-  })
-
-  // refetch when account changes, It seems like the useContractReads doesn't refetch when the account changes on production
-  // check if we can remove this effect when we upgrade to the latest version of wagmi
-  useEffect(() => {
-    if (account) {
-      refetchBalance()
-      refetchTokenIds()
-    }
-  }, [account, refetchBalance, refetchTokenIds])
-
-  return {
-    tokenIds: useMemo(
-      () => tokenIds.map((r) => (r.status === 'success' ? r.result : null)).filter(Boolean) as bigint[],
-      [tokenIds],
+  const { result: accountBalance, loading: balanceLoading } = useSingleCallResult({
+    contract: useMemo(
+      () =>
+        contractAddress
+          ? {
+              abi: masterChefV3ABI,
+              address: contractAddress as `0x${string}`,
+            }
+          : null,
+      [contractAddress],
     ),
-    loading: someTokenIdsLoading || balanceLoading,
-  }
+    args: useMemo(() => [account ?? undefined] as readonly [`0x${string}`], [account]),
+    functionName: 'balanceOf',
+    options: { enabled: !!account && !!contractAddress },
+  })
+
+  const tokenIdCallState = useSingleContractMultipleData({
+    contract: useMemo(
+      () => ({
+        abi: masterChefV3ABI,
+        address: contractAddress as `0x${string}`,
+      }),
+      [contractAddress],
+    ),
+    args: useMemo(() => {
+      const resultArg = []
+      if (account) {
+        for (let i = 0; i < accountBalance; i++) {
+          resultArg.push([account, BigInt(i)])
+        }
+      }
+      return resultArg
+    }, [accountBalance, account]),
+    functionName: 'tokenOfOwnerByIndex',
+  })
+
+  return useMemo(
+    () => ({
+      tokenIds: tokenIdCallState.map((r) => (!r.error && !r.loading ? r.result : null)).filter(Boolean) as bigint[],
+      loading: tokenIdCallState.some((callState) => callState.loading) || balanceLoading,
+    }),
+    [tokenIdCallState, balanceLoading],
+  )
 }
 
 export function useV3Positions(account: Address | null | undefined): UseV3PositionsResults {
