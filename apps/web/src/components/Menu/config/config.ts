@@ -153,6 +153,8 @@ const config: (
     },
     {
       label: t('Birthday'),
+      href: '',
+      extends: true,
       icon: BirthdayIcon,
       hideSubNav: true,
       items: [],
