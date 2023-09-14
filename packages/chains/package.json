@@ -1,8 +1,8 @@
 {
-  "name": "@pancakeswap/sdk",
+  "name": "@pancakeswap/chains",
   "license": "MIT",
-  "version": "5.4.1",
-  "description": "🛠 An SDK for building applications on top of Pancakeswap.",
+  "version": "0.0.0",
+  "description": "The single source of truth for Pancakeswap chain-related information",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/index.mjs",
@@ -12,11 +12,11 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
-    "directory": "packages/swap-sdk"
+    "directory": "packages/chains"
   },
   "keywords": [
     "pancakeswap",
-    "bsc"
+    "chain"
   ],
   "exports": {
     ".": {
@@ -33,26 +33,10 @@
     "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
-  "dependencies": {
-    "@pancakeswap/chains": "workspace:^",
-    "@pancakeswap/swap-sdk-core": "workspace:*",
-    "big.js": "^5.2.2",
-    "decimal.js-light": "^2.5.0",
-    "tiny-invariant": "^1.1.0",
-    "tiny-warning": "^1.0.3",
-    "toformat": "^2.0.0",
-    "viem": "^1.10.9"
-  },
-  "devDependencies": {
-    "@types/big.js": "^4.0.5",
-    "tsup": "^6.7.0"
-  },
   "engines": {
     "node": ">=10"
   },
-  "prettier": {
-    "printWidth": 120,
-    "semi": false,
-    "singleQuote": true
+  "devDependencies": {
+    "tsup": "^6.7.0"
   }
 }

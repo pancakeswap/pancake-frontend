@@ -25,7 +25,6 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "viem": "^1.2.9",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
@@ -34,13 +33,14 @@
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
-    "toformat": "^2.0.0"
+    "toformat": "^2.0.0",
+    "viem": "^1.10.9"
   },
   "devDependencies": {
     "@pancakeswap/utils": "workspace:*",
-    "vitest": "^0.30.1",
     "tsup": "^6.7.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "vitest": "^0.30.1"
   },
   "engines": {
     "node": ">=10"

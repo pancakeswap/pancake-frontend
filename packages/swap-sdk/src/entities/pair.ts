@@ -27,8 +27,8 @@ import {
   concat,
 } from 'viem'
 import invariant from 'tiny-invariant'
-
-import { ChainId, FACTORY_ADDRESS_MAP, INIT_CODE_HASH_MAP } from '../constants'
+import { ChainId } from '@pancakeswap/chains'
+import { FACTORY_ADDRESS_MAP, INIT_CODE_HASH_MAP } from '../constants'
 import { ERC20Token } from './token'
 
 let PAIR_ADDRESS_CACHE: { [key: string]: Address } = {}
