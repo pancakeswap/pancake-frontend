@@ -127,6 +127,9 @@ export const ItemWrapper = styled(Flex)<{ $flexBasis: number }>`
     ${({ theme }) => theme.mediaQueries.lg} {
       flex-basis: ${({ $flexBasis }) => $flexBasis}%;
     }
+    ${({ theme }) => theme.mediaQueries.lg} {
+      height: 286px;
+    }
     ${({ theme }) => theme.mediaQueries.xl} {
       height: 256px;
     }
