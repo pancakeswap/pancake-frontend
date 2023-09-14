@@ -1983,7 +1983,6 @@
   "Weeks": "Mga Linggo",
   "Boost multiplier calculation does not include profit from CAKE staking pool": "Hindi kasama sa kalkulasyon ng multiplier ng pag-boost ang kita mula sa pool ng pag-stake ng CAKE",
   "Stable LP": "Stable na LP",
-  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "Nanalo ka ng mga puntos at achievement sa pakikibahagi sa aming dalawang taong paglalakbay. Ipagdiwang natin ngayon ang ika-2 Kaarawan!",
   "Asset": "Asset",
   "Value": "Value",
   "12H": "12H",
@@ -2690,5 +2689,9 @@
   "Pancakeswap MM": "Pancakeswap MM",
   "Pancakeswap AMM": "Pancakeswap AMM",
   "Why resetting approval": "Why resetting approval",
-  "Reset approval on USDT.": "Reset approval on USDT."
+  "Reset Approval on USDT": "Reset Approval on USDT",
+  "USDT on Ethereum requires resetting approval when spending allowances are too low.": "USDT on Ethereum requires resetting approval when spending allowances are too low.",
+  "Happy Birthday!": "Happy Birthday!",
+  "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
+  "Birthday": "Birthday"
 }
