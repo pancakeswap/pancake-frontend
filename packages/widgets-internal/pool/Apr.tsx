@@ -1,4 +1,6 @@
 import { useCallback, useMemo } from 'react'
+import { styled, css } from 'styled-components'
+
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -11,11 +13,21 @@ import {
   RoiCalculatorModal,
   BalanceWithLoading,
   useModal,
+  Flex,
 } from '@pancakeswap/uikit'
 
 import { DeserializedPool } from './types'
 
-const AprLabelContainer = null
+const AprLabelContainer = styled(Flex)<{ enableHover: boolean }>`
+  ${({ enableHover }) =>
+    enableHover
+      ? css`
+          &:hover {
+            opacity: 0.5;
+          }
+        `
+      : null}
+`
 
 interface AprProps<T> extends FlexProps {
   pool: DeserializedPool<T>

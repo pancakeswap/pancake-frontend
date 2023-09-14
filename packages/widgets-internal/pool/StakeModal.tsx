@@ -7,9 +7,6 @@ import { getInterestBreakdown } from '@pancakeswap/utils/compoundApyHelpers'
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import removeTrailingZeros from '@pancakeswap/utils/removeTrailingZeros'
 import getThemeValue from '@pancakeswap/uikit/util/getThemeValue'
-
-import PercentageButton from './PercentageButton'
-
 import {
   Box,
   AutoRenewIcon,
@@ -25,8 +22,10 @@ import {
   Text,
   RoiCalculatorModal,
   TextProps,
-} from '../../components'
-import { Modal } from '../Modal'
+  Modal,
+} from '@pancakeswap/uikit'
+
+import PercentageButton from './PercentageButton'
 
 const StyledLink = styled(Link)`
   width: 100%;
