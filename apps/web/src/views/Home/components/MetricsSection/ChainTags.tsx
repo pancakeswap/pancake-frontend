@@ -15,13 +15,19 @@ import Marquee from 'react-fast-marquee'
 import { styled } from 'styled-components'
 
 const TagWrapper = styled.div`
-  padding: 12px 24px;
   display: flex;
-  height: 46px;
+  padding: 8px 12px;
+  height: 38px;
   justify-content: start;
   align-items: center;
   border-radius: 25px;
-  margin-right: 12px;
+  margin-right: 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 12px 24px;
+    height: 46px;
+    border-radius: 25px;
+    margin-right: 12px;
+  }
 `
 
 const StyledMarquee = styled(Marquee)`
