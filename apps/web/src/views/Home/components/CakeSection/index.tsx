@@ -324,7 +324,7 @@ const CakeSection: React.FC = () => {
       overflow={isMobile ? 'hidden' : 'visible'}
     >
       <Text textAlign="center">
-        <Text fontSize="40px" display="inline" fontWeight={600} lineHeight="110%">
+        <Text fontSize={['32px', null, null, '40px']} display="inline" fontWeight={600} lineHeight="110%">
           {t('Unlock the Full Potential of DeFi with')}
         </Text>
         <Text
@@ -332,7 +332,7 @@ const CakeSection: React.FC = () => {
           display="inline"
           marginLeft={10}
           color={theme.isDark ? '#A881FC' : theme.colors.secondary}
-          fontSize="40px"
+          fontSize={['32px', null, null, '40px']}
           lineHeight="110%"
         >
           {t('CAKE')}
@@ -340,7 +340,7 @@ const CakeSection: React.FC = () => {
       </Text>
       <Flex justifyContent="center">
         <Text
-          fontSize={20}
+          fontSize={['16px', null, null, '20px']}
           fontWeight={600}
           color={theme.isDark ? '#B8ADD2' : '#7A6EAA'}
           textAlign="center"
