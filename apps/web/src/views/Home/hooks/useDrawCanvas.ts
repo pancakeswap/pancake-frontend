@@ -7,6 +7,7 @@ export const useDrawCanvas = (
   height: number,
   fps: number,
   canvasInterval: number,
+  onVideoEndCallback?: () => void,
 ) => {
   const video = videoRef?.current
   const canvas = canvasRef?.current

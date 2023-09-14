@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import React, { useRef, useLayoutEffect } from 'react'
-import { styled } from 'styled-components'
+import React, { useRef, useLayoutEffect, useState } from 'react'
+import { styled, css } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 
 import {
@@ -16,6 +16,73 @@ import {
   PartnerTagOuterWrapper,
 } from './CakeSectionTag'
 
+const borderBoxAnimation = css`
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    transition: transform 0.35s ease-in-out;
+    background: ${({ theme }) =>
+      theme.isDark
+        ? 'linear-gradient(90deg, #08060B 85%, rgba(8, 6, 11, 0.00) 100%)'
+        : 'linear-gradient(90deg, #faf9fa 85%, rgba(250, 249, 250, 0) 100%)'};
+    ${({ theme }) => theme.mediaQueries.lg} {
+      top: 0;
+      right: auto;
+      left: 0;
+      width: 100%;
+      height: 70%;
+      background: ${({ theme }) =>
+        theme.isDark
+          ? 'linear-gradient(180deg, #08060B 85%, rgba(8, 6, 11, 0.00) 100%)'
+          : 'linear-gradient(180deg, #faf9fa 85%, rgba(250, 249, 250, 0) 100%)'};
+    }
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: ${({ theme }) =>
+      theme.isDark
+        ? 'linear-gradient(90deg, rgba(8, 6, 11, 0.00) 0%, #08060B 15%)'
+        : 'linear-gradient(90deg, rgba(250, 249, 250, 0.00) 0%, #FAF9FA 15%)'};
+    transition: transform 0.35s ease-in-out;
+    ${({ theme }) => theme.mediaQueries.lg} {
+      width: 100%;
+      height: 70%;
+      top: auto;
+      left: 0;
+      bottom: 0;
+      background: ${({ theme }) =>
+        theme.isDark
+          ? 'linear-gradient(180deg, rgba(8, 6, 11, 0.00) 0%, #08060B 15%)'
+          : 'linear-gradient(180deg, rgba(250, 249, 250, 0.00) 0%, #FAF9FA 15%)'};
+    }
+  }
+  &.show {
+    &:before {
+      transform: translateX(-87%);
+      ${({ theme }) => theme.mediaQueries.lg} {
+        transform: translateY(-87%);
+      }
+    }
+    &:after {
+      transform: translateX(87%);
+      ${({ theme }) => theme.mediaQueries.lg} {
+        transform: translateY(87%);
+      }
+    }
+  }
+`
+
 export const CakeSectionMainBox = styled.div`
   position: relative;
   display: flex;
@@ -28,21 +95,26 @@ export const CakeSectionMainBox = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     width: 936px;
-    height: 400px;
+    height: 500px;
   }
 `
 export const CakeSectionLeftBox = styled.div`
+  position: relative;
   display: flex;
   flex-grow: 1;
   flex-shrink: 0;
   flex-direction: column;
+  z-index: 3;
   max-width: 100%;
   padding: 24px 36px;
   ${({ theme }) => theme.mediaQueries.lg} {
     max-width: 33%;
+    overflow: visible;
   }
 `
 export const CakeSectionRightBox = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-grow: 1;
   flex-shrink: 0;
@@ -54,9 +126,98 @@ export const CakeSectionRightBox = styled.div`
     max-width: 33%;
   }
 `
+const CakeRightBorderBox = styled.div`
+  position: relative;
+  ${borderBoxAnimation}
+`
+const CakeLeftBorderBox = styled.div`
+  position: relative;
+  z-index: 3;
+  margin-top: 118px;
+  ${borderBoxAnimation}
+`
+const CakeLeftBorder = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  bottom: 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: auto;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    width: 1px;
+  }
+`
+
+const CakeRightBorder = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  top: 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: 0;
+    top: auto;
+    left: 0px;
+    height: 100%;
+    width: 1px;
+  }
+`
+
+const CakeLeftLine = styled.div`
+  position: absolute;
+  z-index: 2;
+  height: 108px;
+  width: 1px;
+  left: 50%;
+  bottom: -108px;
+  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  &:before {
+    content: '';
+    bottom: 0;
+    left: -2px;
+    position: absolute;
+    background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+    width: 5px;
+    height: 5px;
+    border-radius: 3px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 108px;
+    height: 1px;
+    left: auto;
+    right: -108px;
+    top: 50%;
+    &:before {
+      bottom: auto;
+      left: auto;
+      right: 0;
+      top: -2px;
+    }
+  }
+`
+
+const CakeRightLine = styled.div`
+  position: absolute;
+  height: 92px;
+  width: 1px;
+  left: 50%;
+  top: -92px;
+  z-index: 2;
+  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 108px;
+    height: 1px;
+    left: -108px;
+    top: 50%;
+  }
+`
 
 export const CakeSectionCenterBox = styled.div`
   position: relative;
+  z-index: 2;
   display: flex;
   margin-top: 20px;
   justify-content: center;
@@ -110,7 +271,15 @@ const CakeSection: React.FC = () => {
   const partnerData = usePartnerData()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval)
+  const leftRef = useRef<HTMLDivElement>(null)
+  const rightRef = useRef<HTMLDivElement>(null)
+  const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
+    if (leftRef.current) leftRef.current.classList.add('show')
+    if (rightRef.current) rightRef.current.classList.add('show')
+  })
+
+  const [isShow, setIsShow] = useState(false)
+
   const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
     canvasInterval = window.setInterval(() => {
@@ -164,40 +333,49 @@ const CakeSection: React.FC = () => {
             {t('Learn')}
           </Button>
         </Link>
+        <Button onClick={() => setIsShow(!isShow)}>{t('Demo')}</Button>
       </Flex>
       <CakeSectionMainBox>
         <CakeSectionLeftBox>
-          <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
-            {t('Ecosystem')}
-          </Text>
-          <EcoSystemTagOuterWrapper>
-            <FeatureTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
-              {ecosystemTagData.map((item) => (
-                <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
-              ))}
-            </FeatureTagsWrapper>
-          </EcoSystemTagOuterWrapper>
+          <CakeLeftBorderBox className={isShow ? 'show' : ''} ref={leftRef}>
+            <CakeLeftBorder />
+            <CakeLeftLine />
+            <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
+              {t('Ecosystem')}
+            </Text>
+            <EcoSystemTagOuterWrapper>
+              <FeatureTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
+                {ecosystemTagData.map((item) => (
+                  <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
+                ))}
+              </FeatureTagsWrapper>
+            </EcoSystemTagOuterWrapper>
+          </CakeLeftBorderBox>
         </CakeSectionLeftBox>
         <CakeSectionCenterBox>
           <CakeBox>
             <CakeCanvas width={width} height={height} ref={canvasRef} />
-            <CakeVideo ref={videoRef} width={width} loop autoPlay muted playsInline>
+            <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
               <source src="/assets/cake-alpha.webm" type="video/webm" />
             </CakeVideo>
           </CakeBox>
           {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
         <CakeSectionRightBox>
-          <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
-            {t('Partners')}
-          </Text>
-          <PartnerTagOuterWrapper>
-            <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
-              {partnerData.map((d) => (
-                <CakePartnerTag icon={d.icon} width={d.width} text={d.text} />
-              ))}
-            </PartnerTagsWrapper>
-          </PartnerTagOuterWrapper>
+          <CakeRightBorderBox className={isShow ? 'show' : ''} ref={leftRef}>
+            <CakeRightBorder />
+            <CakeRightLine />
+            <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
+              {t('Partners')}
+            </Text>
+            <PartnerTagOuterWrapper>
+              <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
+                {partnerData.map((d) => (
+                  <CakePartnerTag icon={d.icon} width={d.width} text={d.text} />
+                ))}
+              </PartnerTagsWrapper>
+            </PartnerTagOuterWrapper>
+          </CakeRightBorderBox>
         </CakeSectionRightBox>
       </CakeSectionMainBox>
     </Flex>
