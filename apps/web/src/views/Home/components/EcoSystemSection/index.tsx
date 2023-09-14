@@ -327,7 +327,13 @@ const EcoSystemSection: React.FC = () => {
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
       <GradientLogo height="48px" width="48px" mb="24px" />
       <Text textAlign="center" p="0px 20px">
-        <Text fontSize={['32px', null, null, '40px']} display="inline-block" bold color={theme.colors.text}>
+        <Text
+          fontSize={['32px', null, null, '40px']}
+          lineHeight="110%"
+          display="inline-block"
+          bold
+          color={theme.colors.text}
+        >
           {t('Discover the')}
         </Text>
         <Text
@@ -335,6 +341,7 @@ const EcoSystemSection: React.FC = () => {
           ml="8px"
           display="inline-block"
           bold
+          lineHeight="110%"
           color={theme.colors.secondary}
         >
           {t('Ecosystem')}
