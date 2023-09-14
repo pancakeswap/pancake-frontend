@@ -1,12 +1,12 @@
-name: 'Check TS Errors'
+name: Check TS Errors
 
 on:
   pull_request:
 
 jobs:
-  ts:
-    runs-on: ubuntu-latest
+  ts-check:
     name: Typescript Error Check
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -18,6 +18,12 @@ jobs:
         with:
           cache: 'pnpm'
           node-version: 18
+
+      - name: Install dependencies
+        run: pnpm i --ignore-scripts
+
+      - name: Build package
+        run: pnpm build:packages
 
       - name: Get diff lines
         id: diff
@@ -38,7 +44,7 @@ jobs:
           echo 'Files added: ${{steps.files.outputs.files_created}}'
           echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
 
-      - uses: chefjackson/action-check-typescript@v1.0.5
+      - uses: chefjackson/action-check-typescript@v1.0.6
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
         with:
