@@ -85,7 +85,7 @@ export function useUpdatePermitAllowance(
             domain,
             primaryType: 'Permit',
             types: types as any,
-            message: values,
+            message: values as any,
           })
       onPermitSignature?.({ ...permit, signature })
       return
