@@ -25,6 +25,7 @@ import { DisclaimerCheckBox } from './DisclaimerCheckBox'
 import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
 import { StakeConfirmModal } from './StakeConfirmModal'
 import { ModalTitle } from './ModalTitle'
+import { useIfUserLocked } from '../hooks/useStakedPools'
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
@@ -93,8 +94,6 @@ export function StakingModalTemplate({
     [lockPeriod, stakedPositions],
   )
 
-  const isBoost = Boolean(selectedStakedPosition?.userInfo?.boost)
-
   const depositedAmount = useMemo(() => {
     return CurrencyAmount.fromRawAmount(
       stakingToken,
@@ -103,6 +102,10 @@ export function StakingModalTemplate({
   }, [selectedStakedPosition, stakingToken])
 
   const selectedPool = useMemo(() => pools.find((p) => p.lockPeriod === lockPeriod), [lockPeriod, pools])
+
+  const locked = useIfUserLocked()
+
+  const isBoost = Boolean(selectedPool?.boostDayPercent > 0 && locked)
 
   const [percent, setPercent] = useState(0)
   const { balance: stakingTokenBalance } = useTokenBalance(stakingToken?.address)
