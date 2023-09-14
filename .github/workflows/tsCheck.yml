@@ -1,0 +1,54 @@
+name: 'Check TS Errors'
+
+on:
+  pull_request:
+
+jobs:
+  ts:
+    runs-on: ubuntu-latest
+    name: Typescript Error Check
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2.2.4
+
+      - name: Set up node@18
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: 18
+
+      - name: Get diff lines
+        id: diff
+        uses: Equip-Collaboration/diff-line-numbers@v1.0.0
+        with:
+          include: '["\\.ts$"]'
+
+      - name: Detecting files changed
+        id: files
+        uses: umani/changed-files@v4.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: '^.*\.ts$'
+
+      - name: List files changed (you can remove this step, for monitoring only)
+        run: |
+          echo 'Files modified: ${{steps.files.outputs.files_updated}}'
+          echo 'Files added: ${{steps.files.outputs.files_created}}'
+          echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
+
+      - uses: chefjackson/action-check-typescript@v1.0.5
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          use-check: true
+          check-fail-mode: errors_in_pr
+          files-changed: ${{steps.files.outputs.files_updated}}
+          files-added: ${{steps.files.outputs.files_created}}
+          files-deleted: ${{steps.files.outputs.files_deleted}}
+          line-numbers: ${{steps.diff.outputs.lineNumbers}}
+          output-behaviour: both
+          comment-behaviour: edit
+          ts-config-path: ./apps/web/tsconfig.check.json
