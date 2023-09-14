@@ -922,7 +922,7 @@ importers:
         version: 18.2.1
       next:
         specifier: 13.4.2
-        version: 13.4.2(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -1189,7 +1189,7 @@ importers:
     devDependencies:
       next:
         specifier: 13.4.2
-        version: 13.4.2(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
 
   packages/pools:
     dependencies:
@@ -1858,9 +1858,15 @@ importers:
       '@pancakeswap/farms':
         specifier: workspace:*
         version: link:../farms
+      '@pancakeswap/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../localization
+      '@pancakeswap/pools':
+        specifier: workspace:*
+        version: link:../pools
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -21333,7 +21339,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-    dev: true
 
   /next@13.4.2(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-aNFqLs3a3nTGvLWlO9SUhCuMUHVPSFQC0+tDNGAsDXqx+WJDFSbvc233gOJ5H19SBc7nw36A9LwQepOJ2u/8Kg==}
@@ -24373,7 +24378,6 @@ packages:
       '@babel/core': 7.21.4
       client-only: 0.0.1
       react: 18.2.0
-    dev: true
 
   /styled-jsx@5.1.1(@babel/core@7.22.17)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
