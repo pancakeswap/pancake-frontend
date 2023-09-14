@@ -144,13 +144,13 @@ const CommunitySection = () => {
           <Flex m="0 auto" flexDirection={['column', null, null, 'row']} justifyContent="center" maxWidth="600px">
             <Flex
               flex="1"
-              maxWidth={['275px', null, null, '100%']}
+              maxWidth={['270px', '340px', null, '100%']}
               mr={[null, null, null, '24px']}
               mb={['32px', null, null, '0']}
             >
               <CommunitySummary />
             </Flex>
-            <Flex flex="1" maxWidth={['275px', null, null, '100%']}>
+            <Flex flex="1" maxWidth={['270px', '340px', null, '100%']} justifyContent="center" alignItems="center">
               <StyledSwiper
                 modules={[Autoplay, Pagination, EffectFade]}
                 spaceBetween={50}
