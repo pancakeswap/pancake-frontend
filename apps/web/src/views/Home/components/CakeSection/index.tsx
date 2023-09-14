@@ -77,7 +77,7 @@ const borderBoxAnimation = css`
     &:after {
       transform: translateX(95%);
       ${({ theme }) => theme.mediaQueries.lg} {
-        transform: translateY(87%);
+        transform: translateY(85%);
       }
     }
   }
@@ -104,7 +104,7 @@ export const CakeSectionLeftBox = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   flex-direction: column;
-  z-index: 3;
+  z-index: 1;
   max-width: 100%;
   padding: 24px 36px;
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -217,7 +217,7 @@ const CakeLeftBorder = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: auto;
     top: 0px;
-    right: 0px;
+    right: 1px;
     height: 100%;
     width: 1px;
   }
