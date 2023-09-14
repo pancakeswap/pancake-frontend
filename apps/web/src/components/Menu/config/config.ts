@@ -152,23 +152,29 @@ const config: (
       ],
     },
     {
-      label: t('Birthday'),
-      href: 'https://blog.pancakeswap.finance/?category=Birthday',
-      extends: true,
-      icon: BirthdayIcon,
-      hideSubNav: true,
-      items: [],
-    },
-    {
       label: t('Game'),
       icon: PancakeProtectorIcon,
       hideSubNav: true,
+      href: 'https://protectors.pancakeswap.finance',
       items: [
         {
           label: t('Pancake Protectors'),
           href: 'https://protectors.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+      ],
+    },
+    {
+      label: t('Birthday'),
+      extends: true,
+      icon: BirthdayIcon,
+      hideSubNav: true,
+      items: [
+        {
+          label: t('Event'),
+          href: 'https://blog.pancakeswap.finance/?category=Birthday',
           status: { text: t('New'), color: 'success' },
+          type: DropdownMenuItemType.EXTERNAL_LINK,
         },
       ],
     },
