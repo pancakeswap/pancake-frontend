@@ -1,21 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
+import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import {
-  Button,
-  Text,
-  useModal,
-  confirmPriceImpactWithoutFee,
+  AutoColumn,
   Box,
+  Button,
+  Dots,
   Message,
   MessageText,
-  AutoColumn,
-  Dots,
+  Text,
+  confirmPriceImpactWithoutFee,
+  useModal,
 } from '@pancakeswap/uikit'
-import { useCallback, useEffect, useState, useMemo, memo } from 'react'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
-import { UNIVERSAL_ROUTER_ADDRESS } from "@pancakeswap/universal-router-sdk"
-import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -23,32 +20,30 @@ import { AutoRow } from 'components/Layout/Row'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
+  ALLOWED_PRICE_IMPACT_HIGH,
   BIG_INT_ZERO,
   PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
-  ALLOWED_PRICE_IMPACT_HIGH,
 } from 'config/constants/exchange'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { Field } from 'state/swap/actions'
-import { useExpertMode } from '@pancakeswap/utils/user'
-import { warningSeverity } from 'utils/exchange'
-import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
-import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
-import { useCurrencyBalances } from 'state/wallet/hooks'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { Field } from 'state/swap/actions'
+import { useSwapState } from 'state/swap/hooks'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
+import { useCurrencyBalances } from 'state/wallet/hooks'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import { warningSeverity } from 'utils/exchange'
 
+import { CurrencyAmount, Fraction, ONE, Percent } from '@pancakeswap/swap-sdk-core'
+import { AllowanceState } from 'hooks/usePermit2Allowance'
 import { useAccount } from 'wagmi'
-import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
+import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
-import usePermit2Allowance, { AllowanceState } from 'hooks/usePermit2Allowance'
-import { CurrencyAmount, Fraction, ONE, Percent, Token } from '@pancakeswap/swap-sdk-core'
-import tryParseCurrencyAmount from 'utils/tryParseCurrencyAmount'
-import { isChainSupported } from 'utils/wagmi'
-import { useChainCurrentBlock } from 'state/block/hooks'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -75,7 +70,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
 
   const [isExpertMode] = useExpertMode()
   const {

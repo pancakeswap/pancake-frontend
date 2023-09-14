@@ -46,7 +46,7 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    let swapRouterAddress = undefined
+    let swapRouterAddress
 
     let methodParamaters: { value: string; calldata: string } = null
     if (trade.outputAmount.currency.isNative || (!trade.outputAmount.currency.isNative && !trade.inputAmount.currency.isNative)) {
@@ -84,6 +84,7 @@ export function useSwapCallArguments(
     feeOptions,
     recipient,
     // signatureData,
+    permitSignature,
     trade,
   ])
 }

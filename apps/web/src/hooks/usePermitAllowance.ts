@@ -97,5 +97,5 @@ export function useUpdatePermitAllowance(
             throw new Error(`Swap failed: ${transactionErrorToUserReadableMessage(error, t)}`)
           }
     }
-  }, [account, chainId, nonce, onPermitSignature, spender, token])
+  }, [ chainId, nonce, onPermitSignature, spender, token, signTypedDataAsync, t])
 }

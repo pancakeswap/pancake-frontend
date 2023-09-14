@@ -9,11 +9,11 @@ import { FAST_INTERVAL } from 'config/constants'
 import { useCallback } from 'react'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { TransactionType } from 'state/info/types'
-import { useTokenContract } from './useContract'
-import useAccountActiveChain from './useAccountActiveChain'
 import { isUserRejected } from 'utils/sentry'
 import { TransactionRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { Info } from 'state/transactions/hooks'
+import { useTokenContract } from './useContract'
+import useAccountActiveChain from './useAccountActiveChain'
 
 interface BaseTransactionInfo {
   type: TransactionType

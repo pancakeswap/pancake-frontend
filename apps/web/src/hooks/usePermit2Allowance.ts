@@ -3,9 +3,10 @@ import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
+import { useInterval } from '@pancakeswap/hooks'
 import useAccountActiveChain from './useAccountActiveChain'
 import useTokenAllowance, { useRevokeTokenAllowance, useUpdateTokenAllowance } from './useTokenAllowance'
-import { useInterval } from '@pancakeswap/hooks'
+
 
 enum ApprovalState {
   PENDING,
@@ -74,7 +75,7 @@ export default function usePermit2Allowance(
       setApprovalState((state) => {
         if (state === ApprovalState.PENDING) {
           return ApprovalState.SYNCING
-        } else if (state === ApprovalState.SYNCING) {
+        } if (state === ApprovalState.SYNCING) {
           return ApprovalState.SYNCED
         }
         return state
@@ -133,7 +134,7 @@ export default function usePermit2Allowance(
     if (token) {
       if (!tokenAllowance || !permitAllowance) {
         return { state: AllowanceState.LOADING }
-      } else if (shouldRequestSignature) {
+      } if (shouldRequestSignature) {
         return {
           token,
           state: AllowanceState.REQUIRED,
@@ -148,7 +149,7 @@ export default function usePermit2Allowance(
           needsPermitSignature: shouldRequestSignature,
           allowedAmount: tokenAllowance,
         }
-      } else if (!isApproved) {
+      } if (!isApproved) {
         return {
           token,
           state: AllowanceState.REQUIRED,
