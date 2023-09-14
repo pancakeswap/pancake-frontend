@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { useQueryClient } from '@pancakeswap/awgmi'
 import { SMARTCHEF_ADDRESS } from 'contracts/smartchef/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

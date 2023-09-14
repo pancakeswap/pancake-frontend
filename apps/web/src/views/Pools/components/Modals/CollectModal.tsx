@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Pool, useToast } from '@pancakeswap/uikit'
+import { useToast } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
+
 import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'

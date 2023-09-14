@@ -1,4 +1,4 @@
-import { Pool } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { useCallback } from 'react'
 
 import { Coin, ChainId } from '@pancakeswap/aptos-swap-sdk'
