@@ -49,7 +49,7 @@ export function useSwapCallArguments(
     let swapRouterAddress = undefined
 
     let methodParamaters: { value: string; calldata: string } = null
-    if (trade.outputAmount.currency.isNative) {
+    if (trade.outputAmount.currency.isNative || (!trade.outputAmount.currency.isNative && !trade.inputAmount.currency.isNative)) {
       methodParamaters = SwapRouter.swapCallParameters(trade, {
         fee: feeOptions,
         recipient,
