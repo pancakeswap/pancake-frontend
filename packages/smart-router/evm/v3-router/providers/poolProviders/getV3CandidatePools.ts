@@ -1,5 +1,6 @@
-import { BigintIsh, Currency, ChainId } from '@pancakeswap/sdk'
-import memoize from 'lodash/memoize'
+import { ChainId } from '@pancakeswap/chains'
+import { BigintIsh, Currency } from '@pancakeswap/sdk'
+import memoize from 'lodash/memoize.js'
 import { Address } from 'viem'
 
 import { OnChainProvider, SubgraphProvider, V3PoolWithTvl } from '../../types'

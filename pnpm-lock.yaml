@@ -1236,6 +1236,9 @@ importers:
 
   packages/smart-router:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/multicall':
         specifier: workspace:*
         version: link:../multicall
@@ -1245,6 +1248,9 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
+      '@pancakeswap/token-lists':
+        specifier: workspace:*
+        version: link:../token-lists
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -1282,9 +1288,6 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
-      '@pancakeswap/token-lists':
-        specifier: workspace:*
-        version: link:../token-lists
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
