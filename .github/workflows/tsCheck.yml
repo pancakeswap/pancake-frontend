@@ -47,6 +47,7 @@ jobs:
 
       - name: Check typescript errors
         uses: chefjackson/action-check-typescript@v1.0.6
+        if: steps.files.outputs.changed == true
         env:
           NODE_OPTIONS: '--max_old_space_size=4096'
         with:

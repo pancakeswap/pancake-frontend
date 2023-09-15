@@ -5,6 +5,7 @@ import useSWRImmutable from 'swr/immutable'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 import { warningSeverity } from 'utils/exchange'
 import { PairState, useV2Pairs } from './usePairs'
@@ -21,7 +22,7 @@ const DEFAULT_CONFIG: UseStablecoinPriceConfig = {
 }
 
 export function useStablecoinPrice(
-  currency?: Currency,
+  currency?: Currency | null,
   config: UseStablecoinPriceConfig = DEFAULT_CONFIG,
 ): Price<Currency, Currency> | undefined {
   const { chainId: currentChainId } = useActiveChainId()
@@ -29,8 +30,8 @@ export function useStablecoinPrice(
   const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
   const cakePrice = useCakePrice()
-  const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
-  const isCake = currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
+  const stableCoin = chainId && chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
+  const isCake = chainId && currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
 
   const isStableCoin = currency && stableCoin && currency.wrapped.equals(stableCoin)
 
@@ -62,11 +63,11 @@ export function useStablecoinPrice(
 
   const { trade } = useBestAMMTrade({
     amount: amountOut,
-    currency,
+    currency: currency ?? undefined,
     baseCurrency: stableCoin,
     tradeType: TradeType.EXACT_OUTPUT,
     maxSplits: 0,
-    enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
+    enabled: Boolean(enableLlama ? !isLoading && !priceFromLlama : shouldEnabled),
     autoRevalidate: false,
     type: 'api',
   })
@@ -102,7 +103,7 @@ export function useStablecoinPrice(
     }
 
     if (trade) {
-      const { inputAmount, outputAmount } = trade
+      const { inputAmount, outputAmount } = trade as unknown as SmartRouterTrade<TradeType>
 
       // if price impact is too high, don't show price
       if (hideIfPriceImpactTooHigh) {
@@ -141,8 +142,8 @@ export function useStablecoinPrice(
 export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
   const wrapped = currency?.wrapped
-  const wnative = WNATIVE[chainId]
-  const stable = BUSD[chainId] || USDC[chainId]
+  const wnative = chainId && WNATIVE[chainId]
+  const stable = chainId && (BUSD[chainId] || USDC[chainId])
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
