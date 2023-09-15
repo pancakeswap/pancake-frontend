@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import React, { useRef, useLayoutEffect } from 'react'
+import React, { useRef, useLayoutEffect, memo } from 'react'
 import { styled, css } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 
@@ -310,6 +310,7 @@ const CakeSection: React.FC = () => {
   const leftRef = useRef<HTMLDivElement>(null)
   const leftLineRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
+  const played = useRef<boolean>(false)
   const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
     setTimeout(() => {
       if (leftRef.current) leftRef.current?.classList.add('show')
@@ -318,12 +319,22 @@ const CakeSection: React.FC = () => {
     setTimeout(() => {
       if (rightRef.current) rightRef.current?.classList.add('show')
     }, 2000)
+    played.current = true
   })
+
+  const triggerAnimation = () => {
+    if (played.current) {
+      if (leftRef.current) leftRef.current?.classList.add('show')
+      if (leftLineRef.current) leftLineRef.current?.classList.add('show')
+      if (rightRef.current) rightRef.current?.classList.add('show')
+    }
+  }
 
   // const [isShow, setIsShow] = useState(() => false)
 
   const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
+    triggerAnimation()
     canvasInterval = window.setInterval(() => {
       drawImage?.()
     }, 1000 / fps)
@@ -378,9 +389,9 @@ const CakeSection: React.FC = () => {
         {/* <Button onClick={() => setIsShow(!isShow)}>{t('Demo')}</Button> */}
       </Flex>
       <CakeSectionMainBox>
-        <CakeLeftLine ref={leftLineRef} />
+        <CakeLeftLine ref={leftLineRef} className={played?.current ? 'show' : ''} />
         <CakeSectionLeftBox>
-          <CakeLeftBorderBox ref={leftRef}>
+          <CakeLeftBorderBox ref={leftRef} className={played?.current ? 'show' : ''}>
             <CakeLeftBorder />
 
             <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
@@ -405,7 +416,7 @@ const CakeSection: React.FC = () => {
           {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
         <CakeSectionRightBox>
-          <CakeRightBorderBox ref={rightRef}>
+          <CakeRightBorderBox ref={rightRef} className={played?.current ? 'show' : ''}>
             <CakeRightBorder />
             <CakeRightLine />
             <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
@@ -425,4 +436,4 @@ const CakeSection: React.FC = () => {
   )
 }
 
-export default CakeSection
+export default memo(CakeSection)
