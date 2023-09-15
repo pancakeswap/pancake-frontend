@@ -33,7 +33,7 @@ const pulse = keyframes`
   }
 `;
 
-const AnimationWrapper = styled(Motion.div).withConfig({ shouldForwardProp })`
+const AnimationWrapper = styled(Motion.div)`
   position: relative;
   will-change: opacity;
   opacity: 0;
