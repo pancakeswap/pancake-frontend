@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import AnniversaryAchievementModal from './AnniversaryAchievementModal'
+// import AnniversaryAchievementModal from './AnniversaryAchievementModal'
 import V3AirdropModal from './V3AirdropModal'
 
 interface GlobalCheckClaimStatusProps {
@@ -25,10 +25,10 @@ const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimS
  * TODO: Put global checks in redux or make a generic area to house global checks
  */
 
-const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
+const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = () => {
   return (
     <>
-      <AnniversaryAchievementModal excludeLocations={excludeLocations} />
+      {/* <AnniversaryAchievementModal excludeLocations={excludeLocations} /> */}
       <V3AirdropModal />
     </>
   )
