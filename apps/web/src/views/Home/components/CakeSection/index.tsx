@@ -318,7 +318,7 @@ const CakeSection: React.FC = () => {
     }, 2000)
   })
 
-  const [isShow, setIsShow] = useState(false)
+  const [isShow, setIsShow] = useState(() => false)
 
   const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
