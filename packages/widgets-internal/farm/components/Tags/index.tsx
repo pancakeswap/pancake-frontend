@@ -24,7 +24,7 @@ import {
   ZkSyncIcon,
   LineaIcon,
   BaseIcon,
-  ArbitrumIcon
+  ArbitrumIcon,
 } from '@pancakeswap/uikit'
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -292,7 +292,7 @@ const Tags = {
   ZkSyncTag,
   ArbTag,
   BaseTag,
-  LineaTag
+  LineaTag,
 }
 
 export default Tags
