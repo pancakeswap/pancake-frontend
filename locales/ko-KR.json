@@ -1983,7 +1983,6 @@
   "Weeks": "주",
   "Boost multiplier calculation does not include profit from CAKE staking pool": "부스트 승수 계산에는 CAKE 스테이킹 풀의 수익이 포함되지 않습니다",
   "Stable LP": "스테이블 LP",
-  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "2년간의 여정에 참여하여 포인트와 성과를 올렸습니다. 2주년을 함께 축하해주세요!",
   "Asset": "자산",
   "Value": "값",
   "12H": "12시간",
@@ -2690,5 +2689,9 @@
   "Pancakeswap MM": "Pancakeswap MM",
   "Pancakeswap AMM": "Pancakeswap AMM",
   "Why resetting approval": "Why resetting approval",
-  "Reset approval on USDT.": "Reset approval on USDT."
+  "Reset Approval on USDT": "Reset Approval on USDT",
+  "USDT on Ethereum requires resetting approval when spending allowances are too low.": "USDT on Ethereum requires resetting approval when spending allowances are too low.",
+  "Happy Birthday!": "Happy Birthday!",
+  "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
+  "Birthday": "Birthday"
 }

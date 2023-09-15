@@ -1983,7 +1983,6 @@
   "Weeks": "أسابيع",
   "Boost multiplier calculation does not include profit from CAKE staking pool": "حساب مضاعف التعزيز لا يشمل الربح من تجمع رهن CAKE",
   "Stable LP": "LP مستقر",
-  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "لقد فزت بنقاط وإنجازات للمشاركة في رحلتنا منذ سنتين. الآن هيا نحتفل بعيد ميلادنا الثاني!",
   "Asset": "الأصل",
   "Value": "القيمة",
   "12H": "12 ساعة",
@@ -2690,5 +2689,9 @@
   "Pancakeswap MM": "Pancakeswap MM",
   "Pancakeswap AMM": "Pancakeswap AMM",
   "Why resetting approval": "لماذا يلزم اعتماد إعادة الضبط",
-  "Reset approval on USDT.": "اعتماد إعادة الضبط على USDT."
+  "Reset Approval on USDT": "Reset Approval on USDT",
+  "USDT on Ethereum requires resetting approval when spending allowances are too low.": "USDT on Ethereum requires resetting approval when spending allowances are too low.",
+  "Happy Birthday!": "Happy Birthday!",
+  "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.": "Let’s celebrate our 3rd Birthday with some juicy profile points and achievements. Check out our social channels for other exciting campaigns and community events.",
+  "Birthday": "Birthday"
 }
