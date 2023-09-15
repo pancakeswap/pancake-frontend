@@ -5,14 +5,33 @@ import useSWRImmutable from 'swr/immutable'
 import { useBlockNumber, usePublicClient } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { viemClients } from 'utils/viem'
-import { useEffect } from 'react'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber, isError, isLoading } = useBlockNumber({ chainId })
+  const { data: blockNumber } = useBlockNumber({
+    chainId,
+    onBlock: (data) => {
+      mutate(['blockNumber', chainId], data)
+    },
+    onSuccess: (data) => {
+      if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
+        mutate(['initialBlockNumber', chainId], data)
+      }
+      if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
+        const fetchInitialBlockTimestamp = async () => {
+          const provider = viemClients[chainId as keyof typeof viemClients]
+          if (provider) {
+            const block = await provider.getBlock({ blockNumber })
+            mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
+          }
+        }
+        fetchInitialBlockTimestamp()
+      }
+    },
+  })
 
   useSWR(
     chainId && ['blockNumberFetcher', chainId],
@@ -26,25 +45,6 @@ export const usePollBlockNumber = () => {
       revalidateOnReconnect: false,
     },
   )
-
-  useEffect(() => {
-    const fetchInitialBlockTimestamp = async () => {
-      const provider = viemClients[chainId as keyof typeof viemClients]
-      if (provider) {
-        const block = await provider.getBlock({ blockNumber })
-        mutate(['initialBlockTimestamp', chainId], Number(block.timestamp))
-      }
-    }
-    if (!isLoading && !isError) {
-      mutate(['blockNumber', chainId], blockNumber)
-      if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))?.data) {
-        mutate(['initialBlockNumber', chainId], blockNumber)
-      }
-      if (!cache.get(unstable_serialize(['initialBlockTimestamp', chainId]))?.data) {
-        fetchInitialBlockTimestamp()
-      }
-    }
-  }, [mutate, blockNumber, cache, chainId, isError, isLoading])
 
   useSWR(
     chainId && [FAST_INTERVAL, 'blockNumber', chainId],
