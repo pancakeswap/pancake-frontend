@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import React, { useRef, useLayoutEffect, useState } from 'react'
+import React, { useRef, useLayoutEffect } from 'react'
 import { styled, css } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 
@@ -320,7 +320,7 @@ const CakeSection: React.FC = () => {
     }, 2000)
   })
 
-  const [isShow, setIsShow] = useState(() => false)
+  // const [isShow, setIsShow] = useState(() => false)
 
   const { isMobile, isTablet } = useMatchBreakpoints()
   useLayoutEffect(() => {
@@ -375,12 +375,12 @@ const CakeSection: React.FC = () => {
             {t('Learn')}
           </Button>
         </Link>
-        <Button onClick={() => setIsShow(!isShow)}>{t('Demo')}</Button>
+        {/* <Button onClick={() => setIsShow(!isShow)}>{t('Demo')}</Button> */}
       </Flex>
       <CakeSectionMainBox>
-        <CakeLeftLine className={isShow ? 'show' : ''} ref={leftLineRef} />
+        <CakeLeftLine ref={leftLineRef} />
         <CakeSectionLeftBox>
-          <CakeLeftBorderBox className={isShow ? 'show' : ''} ref={leftRef}>
+          <CakeLeftBorderBox ref={leftRef}>
             <CakeLeftBorder />
 
             <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
@@ -405,7 +405,7 @@ const CakeSection: React.FC = () => {
           {/* <Image src={cakeSectionMain} alt="cakeSectionMain" width={395} height={395} placeholder="blur" /> */}
         </CakeSectionCenterBox>
         <CakeSectionRightBox>
-          <CakeRightBorderBox className={isShow ? 'show' : ''} ref={rightRef}>
+          <CakeRightBorderBox ref={rightRef}>
             <CakeRightBorder />
             <CakeRightLine />
             <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
