@@ -16,6 +16,9 @@ import {
   PartnerTagOuterWrapper,
 } from './CakeSectionTag'
 
+const LINE_TRANSITION_TIMES = 0.35
+const COVER_TRANSITION_TIMES = 0.45
+
 const borderBoxAnimation = css`
   &:before {
     content: '';
@@ -25,7 +28,7 @@ const borderBoxAnimation = css`
     left: 0;
     width: 60%;
     height: 110%;
-    transition: transform 0.35s ease-in-out 0.25s;
+    transition: transform ${COVER_TRANSITION_TIMES}s ease-in-out ${LINE_TRANSITION_TIMES}s;
     background: ${({ theme }) =>
       theme.isDark
         ? 'linear-gradient(90deg, #08060B 85%, rgba(8, 6, 11, 0.00) 100%)'
@@ -54,7 +57,7 @@ const borderBoxAnimation = css`
       theme.isDark
         ? 'linear-gradient(90deg, rgba(8, 6, 11, 0.00) 0%, #08060B 15%)'
         : 'linear-gradient(90deg, rgba(250, 249, 250, 0.00) 0%, #FAF9FA 15%)'};
-    transition: transform 0.35s ease-in-out 0.25s;
+    transition: transform ${COVER_TRANSITION_TIMES}s ease-in-out ${LINE_TRANSITION_TIMES}s;
     ${({ theme }) => theme.mediaQueries.lg} {
       width: 100%;
       height: 70%;
@@ -87,12 +90,11 @@ export const CakeSectionMainBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
-
   margin-bottom: 40px;
+  margin-top: -100px;
   width: 100%;
-
   ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 50px;
     flex-direction: row;
     width: 936px;
     height: 500px;
@@ -133,17 +135,18 @@ const CakeLeftLine = styled.div`
   height: 108px;
   width: 1px;
   left: 50%;
-  bottom: -108px;
-  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
-  transition: transform 0.25s ease-in-out;
+  top: 283px;
+  background: ${({ theme }) => theme.colors.secondary};
+  transition: transform ${LINE_TRANSITION_TIMES}s ease-in-out;
   transform: scaleY(0);
   transform-origin: top center;
+  z-index: 4;
   &:before {
     content: '';
     bottom: 0;
     left: -2px;
     position: absolute;
-    background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+    background: ${({ theme }) => theme.colors.secondary};
     width: 5px;
     height: 5px;
     border-radius: 3px;
@@ -151,8 +154,7 @@ const CakeLeftLine = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 108px;
     height: 1px;
-    left: auto;
-    right: -108px;
+    left: 272px;
     top: 50%;
     transform: scaleX(0);
     transform-origin: right center;
@@ -161,6 +163,12 @@ const CakeLeftLine = styled.div`
       left: auto;
       right: 0;
       top: -2px;
+    }
+  }
+  &.show {
+    transform: scaleY(1);
+    ${({ theme }) => theme.mediaQueries.lg} {
+      transform: scaleX(1);
     }
   }
 `
@@ -172,10 +180,10 @@ const CakeRightLine = styled.div`
   left: 50%;
   top: -92px;
   z-index: 2;
-  transition: transform 0.25s ease-in-out;
+  transition: transform ${LINE_TRANSITION_TIMES}s ease-in-out;
   transform-origin: center top;
   transform: scaleY(0);
-  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  background: ${({ theme }) => theme.colors.secondary};
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 108px;
     height: 1px;
@@ -200,6 +208,9 @@ const CakeLeftBorderBox = styled.div`
   position: relative;
   z-index: 3;
   margin-top: 118px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-right: 20px;
+  }
   ${borderBoxAnimation}
   &.show ${CakeLeftLine} {
     transform: scaleY(1);
@@ -212,7 +223,7 @@ const CakeLeftBorder = styled.div`
   position: absolute;
   width: 100%;
   height: 1px;
-  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  background: ${({ theme }) => theme.colors.secondary};
   bottom: 0;
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: auto;
@@ -227,7 +238,7 @@ const CakeRightBorder = styled.div`
   position: absolute;
   width: 100%;
   height: 1px;
-  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundAlt : theme.colors.secondary)};
+  background: ${({ theme }) => theme.colors.secondary};
   top: 0;
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: 0;
@@ -295,14 +306,16 @@ const CakeSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const leftRef = useRef<HTMLDivElement>(null)
+  const leftLineRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
   const { drawImage } = useDrawCanvas(videoRef, canvasRef, width, height, fps, canvasInterval, () => {
     setTimeout(() => {
       if (leftRef.current) leftRef.current?.classList.add('show')
+      if (leftLineRef.current) leftLineRef.current?.classList.add('show')
     }, 1000)
     setTimeout(() => {
       if (rightRef.current) rightRef.current?.classList.add('show')
-    }, 1500)
+    }, 2000)
   })
 
   const [isShow, setIsShow] = useState(false)
@@ -363,10 +376,11 @@ const CakeSection: React.FC = () => {
         <Button onClick={() => setIsShow(!isShow)}>{t('Demo')}</Button>
       </Flex>
       <CakeSectionMainBox>
+        <CakeLeftLine className={isShow ? 'show' : ''} ref={leftLineRef} />
         <CakeSectionLeftBox>
           <CakeLeftBorderBox className={isShow ? 'show' : ''} ref={leftRef}>
             <CakeLeftBorder />
-            <CakeLeftLine />
+
             <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
               {t('Ecosystem')}
             </Text>
