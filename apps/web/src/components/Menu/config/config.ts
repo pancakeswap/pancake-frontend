@@ -171,8 +171,8 @@ const config: (
       hideSubNav: true,
       items: [
         {
-          label: t('Event'),
-          href: 'https://blog.pancakeswap.finance/?category=Birthday',
+          label: t('Uranus Communities'),
+          href: 'https://blog.pancakeswap.finance/articles/pancake-swap-s-de-fi-galaxy-tour-planet-1-uranus-communities-unite-with-your-local-de-fi-heroes',
           status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
