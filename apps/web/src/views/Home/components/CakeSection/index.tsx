@@ -22,6 +22,7 @@ const COVER_TRANSITION_TIMES = 0.45
 const borderBoxAnimation = css`
   &:before {
     content: '';
+    pointer-events: none;
     position: absolute;
     z-index: 2;
     top: -2px;
@@ -48,6 +49,7 @@ const borderBoxAnimation = css`
   &:after {
     content: '';
     position: absolute;
+    pointer-events: none;
     z-index: 2;
     top: -2px;
     right: 0;
