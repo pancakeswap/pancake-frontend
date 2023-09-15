@@ -44,14 +44,14 @@ jobs:
         id: diff
         uses: Equip-Collaboration/diff-line-numbers@v1.0.0
         with:
-          include: '["\\.ts$"]'
+          include: '["\\.tsx?$"]'
 
       - name: Detecting files changed
         id: files
         uses: umani/changed-files@v4.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: '^.*\.ts$'
+          pattern: '^.*\.tsx?$'
 
       - name: List files changed (you can remove this step, for monitoring only)
         run: |
