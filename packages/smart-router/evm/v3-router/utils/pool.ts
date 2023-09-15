@@ -1,7 +1,7 @@
 import { Currency, Pair, Price } from '@pancakeswap/sdk'
 import { Pool as SDKV3Pool, computePoolAddress } from '@pancakeswap/v3-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import memoize from 'lodash/memoize'
+import memoize from 'lodash/memoize.js'
 import { Address } from 'viem'
 
 import * as StableSwap from '../../stableSwap'

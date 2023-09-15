@@ -1,6 +1,7 @@
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
-import flatMap from 'lodash/flatMap'
-import memoize from 'lodash/memoize'
+import { ChainId } from '@pancakeswap/chains'
+import { Currency, Token } from '@pancakeswap/sdk'
+import flatMap from 'lodash/flatMap.js'
+import memoize from 'lodash/memoize.js'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
