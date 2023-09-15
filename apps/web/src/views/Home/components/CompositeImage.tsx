@@ -13,9 +13,9 @@ const floatingAnim = (x: string, y: string) => keyframes`
   }
 `
 
-const Wrapper = styled(Box)<{ maxHeight: string }>`
+const Wrapper = styled(Box)<{ $maxHeight: string }>`
   position: relative;
-  max-height: ${({ maxHeight }) => maxHeight};
+  max-height: ${({ $maxHeight }) => $maxHeight};
 
   & :nth-child(2) {
     animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
@@ -38,8 +38,8 @@ const Wrapper = styled(Box)<{ maxHeight: string }>`
   }
 `
 
-const DummyImg = styled.img<{ maxHeight: string }>`
-  max-height: ${({ maxHeight }) => maxHeight};
+const DummyImg = styled.img<{ $maxHeight: string }>`
+  max-height: ${({ $maxHeight }) => $maxHeight};
   visibility: hidden;
 `
 
@@ -89,10 +89,10 @@ const CompositeImage: React.FC<React.PropsWithChildren<ComponentProps>> = ({
   maxHeight = '512px',
 }) => {
   return (
-    <Wrapper maxHeight={maxHeight}>
+    <Wrapper $maxHeight={maxHeight}>
       <DummyImg
         srcSet={getSrcSet(path, attributes[0].src, '.webp')}
-        maxHeight={maxHeight}
+        $maxHeight={maxHeight}
         loading="lazy"
         decoding="async"
         onError={(e) => {

@@ -10,10 +10,10 @@ export const StyledIconContainer = styled.div.withConfig({ shouldForwardProp })<
 `;
 
 export const StyledAnimatedIconComponent = styled.div<{
-  isActive: boolean;
+  $isActive: boolean;
   height?: string;
   width?: string;
-  hasFillIcon: boolean;
+  $hasFillIcon: boolean;
 }>`
   position: relative;
   ${({ height }) => height && `height: ${height}`};
@@ -24,8 +24,8 @@ export const StyledAnimatedIconComponent = styled.div<{
     ${({ width }) => `width: ${width || "100%"}`};
     z-index: 0;
   }
-  ${({ hasFillIcon }) =>
-    hasFillIcon &&
+  ${({ $hasFillIcon }) =>
+    $hasFillIcon &&
     `
     div, svg {
       position: absolute;
@@ -41,11 +41,11 @@ export const StyledAnimatedIconComponent = styled.div<{
     }
   `}
 
-  ${({ isActive, height, width, hasFillIcon }) =>
-    isActive &&
+  ${({ $isActive, height, width, $hasFillIcon }) =>
+    $isActive &&
     `
     div:last-child {
-      ${height && hasFillIcon && `height:${height}`};
+      ${height && $hasFillIcon && `height:${height}`};
       ${`width: ${width || "100%"}`};
     }
   `}

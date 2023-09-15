@@ -9,7 +9,7 @@ const NotificationDotRoot = styled.span`
 `;
 
 const Dot = styled.span<DotProps>`
-  display: ${({ show }) => (show ? "inline-flex" : "none")};
+  display: ${({ $show }) => ($show ? "inline-flex" : "none")};
   position: absolute;
   top: 0;
   right: 0;
@@ -29,7 +29,7 @@ const NotificationDot: React.FC<React.PropsWithChildren<NotificationDotProps>> =
 }) => (
   <NotificationDotRoot>
     {Children.map(children, (child: ReactElement) => cloneElement(child, props))}
-    <Dot show={show} color={color} />
+    <Dot $show={show} color={color} />
   </NotificationDotRoot>
 );
 

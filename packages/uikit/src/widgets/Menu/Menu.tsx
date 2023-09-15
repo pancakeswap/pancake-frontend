@@ -38,9 +38,9 @@ const StyledNav = styled.nav`
   padding-right: 16px;
 `;
 
-const FixedContainer = styled.div<{ showMenu: boolean; height: number }>`
+const FixedContainer = styled.div<{ $showMenu: boolean; height: number }>`
   position: fixed;
-  top: ${({ showMenu, height }) => (showMenu ? 0 : `-${height}px`)};
+  top: ${({ $showMenu, height }) => ($showMenu ? 0 : `-${height}px`)};
   left: 0;
   transition: top 0.2s;
   height: ${({ height }) => `${height}px`};
@@ -142,7 +142,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
         }}
       >
         <Wrapper>
-          <FixedContainer showMenu={showMenu} height={totalTopMenuHeight}>
+          <FixedContainer $showMenu={showMenu} height={totalTopMenuHeight}>
             {banner && isMounted && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
             <StyledNav>
               <Flex>

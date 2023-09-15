@@ -19,16 +19,16 @@ const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
 
 const StyledButtonMenu = styled.div.withConfig({
   shouldForwardProp,
-})<StyledButtonMenuProps>`
+})<Omit<StyledButtonMenuProps, "fullWidth"> & { $fullWidth?: boolean }>`
   background-color: ${getBackgroundColor};
   border-radius: 16px;
-  display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
+  display: ${({ $fullWidth }) => ($fullWidth ? "flex" : "inline-flex")};
   border: 1px solid ${getBorderColor};
-  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+  width: ${({ $fullWidth }) => ($fullWidth ? "100%" : "auto")};
 
   & > button,
   & > a {
-    flex: ${({ fullWidth }) => (fullWidth ? 1 : "auto")};
+    flex: ${({ $fullWidth }) => ($fullWidth ? 1 : "auto")};
   }
 
   & > button + button,
@@ -68,7 +68,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
   ...props
 }) => {
   return (
-    <StyledButtonMenu disabled={disabled} variant={variant} fullWidth={fullWidth} {...props}>
+    <StyledButtonMenu disabled={disabled} variant={variant} $fullWidth={fullWidth} {...props}>
       {Children.map(children, (child: ReactElement, index) => {
         return cloneElement(child, {
           isActive: activeIndex === index,

@@ -1,14 +1,13 @@
 import { styled } from 'styled-components'
 import { Flex, Text, TicketFillIcon, PredictionsIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
 import ColoredWordHeading from '../ColoredWordHeading'
 import IconCard, { IconCardData } from '../IconCard'
 import PredictionCardContent from './PredictionCardContent'
 import LotteryCardContent from './LotteryCardContent'
 import CompositeImage from '../CompositeImage'
 
-const TransparentFrame = styled.div<{ isDark: boolean }>`
+const TransparentFrame = styled.div`
   background: ${({ theme }) => (theme.isDark ? 'rgba(8, 6, 11, 0.6)' : ' rgba(255, 255, 255, 0.6)')};
   padding: 16px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -91,7 +90,6 @@ const topRightImage = {
 
 const WinSection = () => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
 
   return (
     <>
@@ -103,7 +101,7 @@ const WinSection = () => {
           <CompositeImage {...topRightImage} />
         </TopRightImgWrapper>
       </BgWrapper>
-      <TransparentFrame isDark={theme.isDark}>
+      <TransparentFrame>
         <Flex flexDirection="column" alignItems="center" justifyContent="center">
           <ColoredWordHeading textAlign="center" text={t('Win millions in prizes')} />
           <Text color="textSubtle">{t('Provably fair, on-chain games.')}</Text>

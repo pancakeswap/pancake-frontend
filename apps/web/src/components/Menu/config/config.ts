@@ -32,11 +32,12 @@ const addMenuItemSupported = (item, chainId) => {
   if (!chainId || !item.supportChainIds) {
     return item
   }
-  if (item.supportChainIds?.includes(chainId)) {
-    return item
+  const { supportChainIds, ...restItem } = item
+  if (supportChainIds.includes(chainId)) {
+    return restItem
   }
   return {
-    ...item,
+    ...restItem,
     disabled: true,
   }
 }

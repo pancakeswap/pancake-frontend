@@ -42,9 +42,9 @@ const StyledCard = styled(Card)`
   overflow: visible;
 `
 
-const StyledCardHeader = styled(CardHeader)<{ bg: string }>`
+const StyledCardHeader = styled(CardHeader)<{ $bg: string }>`
   position: relative;
-  background: url(${({ bg }) => bg});
+  background: url(${({ $bg }) => $bg});
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -81,7 +81,7 @@ const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ id }) => {
   return (
     <Wrapper>
       <StyledCard>
-        <StyledCardHeader bg={`/images/teams/${team.background}`}>
+        <StyledCardHeader $bg={`/images/teams/${team.background}`}>
           <AvatarWrap>
             <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
           </AvatarWrap>

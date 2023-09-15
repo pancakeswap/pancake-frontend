@@ -7,6 +7,6 @@ export interface NotificationDotProps {
 }
 
 export interface DotProps {
-  show: boolean;
+  $show: boolean;
   color: keyof Colors;
 }

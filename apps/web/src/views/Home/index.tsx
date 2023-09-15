@@ -120,7 +120,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         hasCurvedDivider={false}
       >
         <OuterWedgeWrapper>
-          <InnerWedgeWrapper top>
+          <InnerWedgeWrapper $top>
             <WedgeTopLeft />
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
@@ -133,7 +133,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         hasCurvedDivider={false}
       >
         <OuterWedgeWrapper>
-          <InnerWedgeWrapper width="150%" top>
+          <InnerWedgeWrapper width="150%" $top>
             <WedgeTopRight />
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>

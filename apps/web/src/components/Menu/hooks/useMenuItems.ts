@@ -30,8 +30,8 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
       return menuItems.map((item) => {
         const innerItems = item?.items?.map((innerItem) => {
           const itemStatus = menuItemsStatus[innerItem.href]
-          const modalId = innerItem.confirmModalId
-          const isInfo = innerItem.href === '/info/v3'
+          const { confirmModalId: modalId, ...restInnerItem } = innerItem
+          const isInfo = restInnerItem.href === '/info/v3'
           if (itemStatus) {
             let itemMenuStatus = null
             if (itemStatus === 'soon') {
@@ -47,7 +47,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
             } else {
               itemMenuStatus = <DropdownMenuItems['status']>{ text: t('New'), color: 'success' }
             }
-            return { ...innerItem, status: itemMenuStatus }
+            return { ...restInnerItem, status: itemMenuStatus }
           }
           if (modalId) {
             let onClickEvent = null
@@ -60,14 +60,14 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
                 }
               }
             }
-            return { ...innerItem, onClick: onClickEvent }
+            return { ...restInnerItem, onClick: onClickEvent }
           }
           if (isInfo) {
             const href = `${innerItem.href}${multiChainPaths[chainId] ?? ''}`
-            return { ...innerItem, href }
+            return { ...restInnerItem, href }
           }
 
-          return innerItem
+          return restInnerItem
         })
         return { ...item, items: innerItems }
       })

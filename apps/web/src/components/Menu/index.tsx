@@ -18,7 +18,9 @@ import UserMenu from './UserMenu'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 
 const LinkComponent = (linkProps) => {
-  return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { hideSubNav, ...restLinkProps } = linkProps
+  return <NextLinkFromReactRouter to={linkProps.href} {...restLinkProps} prefetch={false} />
 }
 
 const Menu = (props) => {
