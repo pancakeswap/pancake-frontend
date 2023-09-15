@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { getTradingRewardContract } from 'utils/contractHelpers'
 import { useTradingRewardContract, useTradingRewardTopTraderContract } from 'hooks/useContract'

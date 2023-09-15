@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { tradingRewardPairConfigChainMap } from 'views/TradingReward/config/pairs'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ModalV2 } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useAccount } from 'wagmi'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useVCake from 'views/Pools/hooks/useVCake'

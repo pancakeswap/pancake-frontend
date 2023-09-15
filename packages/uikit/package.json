@@ -134,6 +134,7 @@
     "viem": "^1.2.9"
   },
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/localization": "workspace:*",

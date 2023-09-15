@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { gql } from 'graphql-request'
 import useSWR from 'swr'
 

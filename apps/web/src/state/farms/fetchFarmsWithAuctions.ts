@@ -5,7 +5,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import { add, sub } from 'date-fns'
 import { publicClient } from 'utils/wagmi'
 import { farmAuctionABI } from 'config/abi/farmAuction'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
 const fetchFarmsWithAuctions = async (

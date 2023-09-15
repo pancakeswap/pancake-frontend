@@ -19,6 +19,7 @@
     "dist"
   ],
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",

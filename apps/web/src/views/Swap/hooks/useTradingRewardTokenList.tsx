@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'

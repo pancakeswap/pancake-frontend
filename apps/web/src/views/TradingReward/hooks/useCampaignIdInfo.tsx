@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import BigNumber from 'bignumber.js'
 import { TRADING_REWARD_API } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 export interface CampaignVolume {

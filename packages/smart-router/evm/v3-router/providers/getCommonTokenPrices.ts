@@ -1,4 +1,5 @@
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { gql } from 'graphql-request'
 import { getAddress, Address } from 'viem'
 

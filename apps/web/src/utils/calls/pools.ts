@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getPoolsConfig } from '@pancakeswap/pools'
 
 import chunk from 'lodash/chunk'

@@ -1,4 +1,5 @@
-import { Token, ChainId, Percent, CurrencyAmount } from '@pancakeswap/sdk'
+import { Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getBlockExploreLink, isAddress, calculateGasMargin } from 'utils'
 import { calculateSlippageAmount, basisPointsToPercent } from 'utils/exchange'
 import { ADDRESS_ZERO } from '@pancakeswap/v3-sdk'

@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { UserClaimListResponse, MAX_PER_PAGE, ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import {

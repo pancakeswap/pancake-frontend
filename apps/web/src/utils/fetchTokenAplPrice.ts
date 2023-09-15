@@ -1,5 +1,5 @@
 import { getViemClients } from 'utils/viem'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 

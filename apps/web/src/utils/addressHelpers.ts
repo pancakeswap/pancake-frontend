@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 

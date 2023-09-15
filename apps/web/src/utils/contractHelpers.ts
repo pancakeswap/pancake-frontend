@@ -52,7 +52,7 @@ import {
   cakeVaultV2ABI,
   getIfoCreditAddressContract as getIfoCreditAddressContract_,
 } from '@pancakeswap/pools'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
 import { SIDResolverABI } from 'config/abi/SIDResolver'

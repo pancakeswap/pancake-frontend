@@ -1,4 +1,5 @@
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { parseProtocolFees, Pool, FeeAmount } from '@pancakeswap/v3-sdk'
 import { gql } from 'graphql-request'
 import type { GraphQLClient } from 'graphql-request'

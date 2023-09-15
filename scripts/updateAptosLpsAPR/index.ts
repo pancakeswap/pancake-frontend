@@ -3,7 +3,8 @@ import os from 'os'
 import fetch from 'node-fetch'
 import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
-import { ChainId, Pair } from '@pancakeswap/aptos-swap-sdk'
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { getFarmConfig } from '../../apps/aptos/config/constants/farms'
 
 interface AprMap {

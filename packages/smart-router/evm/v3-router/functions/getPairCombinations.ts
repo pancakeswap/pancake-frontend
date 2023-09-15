@@ -1,4 +1,5 @@
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import flatMap from 'lodash/flatMap'
 import memoize from 'lodash/memoize'
 

@@ -1,4 +1,5 @@
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { Text, QuestionHelper, AutoColumn, CurrencyLogo } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import useNativeCurrency from 'hooks/useNativeCurrency'

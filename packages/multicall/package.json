@@ -16,6 +16,7 @@
   "types": "dist/index.d.ts",
   "module": "dist/index.mjs",
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "viem": "^1.10.9"
   },

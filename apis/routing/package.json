@@ -2,6 +2,7 @@
   "name": "routing-api",
   "version": "0.2.8",
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",

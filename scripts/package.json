@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "devDependencies": {
     "@pancakeswap/aptos-swap-sdk": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@types/lodash": "^4.14.168",

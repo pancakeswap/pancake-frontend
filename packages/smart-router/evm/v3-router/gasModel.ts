@@ -1,4 +1,5 @@
-import { BigintIsh, ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import sum from 'lodash/sum.js'
 
 import {

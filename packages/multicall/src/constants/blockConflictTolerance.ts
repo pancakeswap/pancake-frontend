@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 
 export const DEFAULT_BLOCK_CONFLICT_TOLERANCE = 0
 

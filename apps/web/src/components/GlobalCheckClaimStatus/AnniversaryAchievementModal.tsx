@@ -1,6 +1,6 @@
 import { AutoRenewIcon, Box, Button, Flex, Modal, Text, ModalV2, useToast } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import delay from 'lodash/delay'
 import React, { useRef, useEffect, useState } from 'react'

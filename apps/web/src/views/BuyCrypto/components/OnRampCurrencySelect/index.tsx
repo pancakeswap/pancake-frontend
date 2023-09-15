@@ -12,7 +12,8 @@ import {
   CurrencyLogo,
 } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
