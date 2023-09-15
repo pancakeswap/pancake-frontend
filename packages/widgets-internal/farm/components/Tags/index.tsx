@@ -27,7 +27,7 @@ import {
   ArbitrumIcon
 } from '@pancakeswap/uikit'
 
-const CoreTag: React.FC<TagProps> = (props) => {
+const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag
